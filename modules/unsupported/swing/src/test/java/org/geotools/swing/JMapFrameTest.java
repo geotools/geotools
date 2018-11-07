@@ -23,9 +23,11 @@ import java.awt.AWTEvent;
 import java.awt.Frame;
 import java.awt.Toolkit;
 import javax.swing.JPanel;
-import org.fest.swing.core.GenericTypeMatcher;
-import org.fest.swing.fixture.JButtonFixture;
-import org.fest.swing.fixture.JPanelFixture;
+import org.assertj.swing.core.GenericTypeMatcher;
+import org.assertj.swing.driver.FrameDriver;
+import org.assertj.swing.fixture.FrameFixture;
+import org.assertj.swing.fixture.JButtonFixture;
+import org.assertj.swing.fixture.JPanelFixture;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.Layer;
 import org.geotools.map.MapContent;
@@ -51,11 +53,10 @@ import org.junit.runner.RunWith;
  *
  * @author Michael Bedward
  * @since 8.0
- * @source $URL$
  * @version $URL$
  */
 @RunWith(GraphicsTestRunner.class)
-public class JMapFrameTest extends GraphicsTestBase<Frame> {
+public class JMapFrameTest extends GraphicsTestBase<FrameFixture, Frame, FrameDriver> {
 
     private static final double TOL = 1.0e-8;
 
@@ -158,7 +159,7 @@ public class JMapFrameTest extends GraphicsTestBase<Frame> {
         JButtonFixture button = windowFixture.toolBar().button(JMapFrame.TOOLBAR_RESET_BUTTON_NAME);
 
         button.click();
-        windowFixture.robot.waitForIdle();
+        windowFixture.robot().waitForIdle();
 
         assertTrue(mapContent.getViewport().getBounds().covers(WORLD));
     }
@@ -171,10 +172,9 @@ public class JMapFrameTest extends GraphicsTestBase<Frame> {
         JButtonFixture button = windowFixture.toolBar().button(btnName);
 
         button.click();
-        windowFixture.robot.waitForIdle();
+        windowFixture.robot().waitForIdle();
 
-        CursorTool cursorTool =
-                ((JMapFrame) windowFixture.component()).getMapPane().getCursorTool();
+        CursorTool cursorTool = ((JMapFrame) windowFixture.target()).getMapPane().getCursorTool();
         if (expectedToolClass == null) {
             assertNull(cursorTool);
         } else {

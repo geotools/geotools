@@ -36,13 +36,13 @@ import org.geotools.styling.DefaultResourceLocator;
 import org.geotools.styling.NamedLayer;
 import org.geotools.styling.NamedStyle;
 import org.geotools.styling.ResourceLocator;
-import org.geotools.styling.SLDParser;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleFactory;
 import org.geotools.styling.StyledLayerDescriptor;
 import org.geotools.styling.UserLayer;
 import org.geotools.test.TestData;
-import org.geotools.xml.Parser;
+import org.geotools.xml.styling.SLDParser;
+import org.geotools.xsd.Parser;
 
 /**
  * Used to test a renderer implementation.
@@ -50,9 +50,6 @@ import org.geotools.xml.Parser;
  * <p>Mostly tests that the renderer produces an image at all.
  *
  * @author Simone Giannecchini
- * @source $URL$
- *     http://svn.osgeo.org/geotools/trunk/modules/library/render/src/test/java/org/geotools
- *     /renderer/lite/RendererBaseTest.java $
  */
 public abstract class RendererBaseTest {
 

@@ -22,7 +22,6 @@ import java.util.logging.Level;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import org.geotools.factory.Hints;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.ReferencingFactoryFinder;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
@@ -31,7 +30,8 @@ import org.geotools.referencing.factory.epsg.CartesianAuthorityFactory;
 import org.geotools.referencing.factory.epsg.LongitudeFirstFactory;
 import org.geotools.referencing.operation.LinearTransform;
 import org.geotools.referencing.operation.matrix.GeneralMatrix;
-import org.geotools.resources.Arguments;
+import org.geotools.util.Arguments;
+import org.geotools.util.factory.Hints;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.IdentifiedObject;
 import org.opengis.referencing.crs.CRSAuthorityFactory;
@@ -48,7 +48,6 @@ import org.opengis.referencing.operation.Matrix;
  * EPSG plugin should fit. However, this test live in the {@code plugin/epsg-hsql} module since the
  * HSQL plugin is the only one which is garantee to work on any machine running Maven.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @author Jody Garnett

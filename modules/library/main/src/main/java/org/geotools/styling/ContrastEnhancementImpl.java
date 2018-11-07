@@ -62,9 +62,6 @@ import org.opengis.style.ContrastMethod;
  * are selected in a ContrastEnhancement, then no enhancement is performed.
  *
  * @author iant
- * @source $URL$
- *     http://svn.osgeo.org/geotools/trunk/modules/library/main/src/main/java/org/geotools/
- *     styling/ContrastEnhancementImpl.java $
  */
 public class ContrastEnhancementImpl implements ContrastEnhancement {
 

@@ -20,11 +20,11 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
-import org.geotools.io.TableWriter;
 import org.geotools.referencing.operation.matrix.MatrixFactory;
-import org.geotools.resources.UnmodifiableArrayList;
-import org.geotools.resources.XArray;
+import org.geotools.util.TableWriter;
+import org.geotools.util.UnmodifiableArrayList;
 import org.geotools.util.Utilities;
+import org.geotools.util.XArray;
 import org.opengis.parameter.GeneralParameterDescriptor;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.ParameterDescriptor;
@@ -45,7 +45,6 @@ import org.opengis.util.InternationalString;
  * {@linkplain ParameterDescriptorGroup operation parameter group}.
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @see MatrixParameterDescriptors

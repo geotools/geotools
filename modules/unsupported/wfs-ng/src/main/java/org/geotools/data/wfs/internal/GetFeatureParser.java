@@ -27,8 +27,7 @@ import org.opengis.feature.simple.SimpleFeature;
  * @version $Id$
  * @since 2.5.x @Deprecated instead of using GetFeatureParser, just implement
  *     GetParser&lt;SimpleFeature&gt; directly.
- * @source $URL$
- *     http://gtsvn.refractions.net/trunk/modules/plugin/wfs/src/main/java/org/geotools/data
+ *     <p>http://gtsvn.refractions.net/trunk/modules/plugin/wfs/src/main/java/org/geotools/data
  *     /wfs/protocol/wfs/GetFeatureParser.java $
  */
 @Deprecated

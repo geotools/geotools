@@ -16,10 +16,7 @@
  */
 package org.geotools.renderer.lite;
 
-/**
- * @author jfc173
- * @source $URL$
- */
+/** @author jfc173 */
 public class GlyphProperty {
 
     private String name;

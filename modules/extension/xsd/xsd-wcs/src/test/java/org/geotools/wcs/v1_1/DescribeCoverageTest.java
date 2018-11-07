@@ -3,7 +3,7 @@ package org.geotools.wcs.v1_1;
 import static org.junit.Assert.*;
 
 import net.opengis.wcs11.DescribeCoverageType;
-import org.geotools.xml.Parser;
+import org.geotools.xsd.Parser;
 import org.junit.Test;
 
 public class DescribeCoverageTest {

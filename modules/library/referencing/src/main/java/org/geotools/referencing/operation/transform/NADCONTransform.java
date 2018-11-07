@@ -23,6 +23,10 @@ import java.io.Serializable;
 import java.net.URI;
 import java.net.URL;
 import java.util.prefs.Preferences;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
+import org.geotools.metadata.i18n.Vocabulary;
+import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.parameter.DefaultParameterDescriptor;
 import org.geotools.parameter.Parameter;
@@ -34,11 +38,7 @@ import org.geotools.referencing.factory.gridshift.NADCONGridShiftFactory;
 import org.geotools.referencing.factory.gridshift.NADConGridShift;
 import org.geotools.referencing.operation.MathTransformProvider;
 import org.geotools.referencing.operation.builder.LocalizationGrid;
-import org.geotools.resources.Arguments;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
-import org.geotools.resources.i18n.Vocabulary;
-import org.geotools.resources.i18n.VocabularyKeys;
+import org.geotools.util.Arguments;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.ParameterDescriptor;
 import org.opengis.parameter.ParameterDescriptorGroup;
@@ -108,7 +108,6 @@ import org.opengis.referencing.operation.Transformation;
  * @see <a href="http://www.ngs.noaa.gov/TOOLS/Nadcon/Nadcon.html">NADCON - North American Datum
  *     Conversion Utility</a>
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Rueben Schulz
  * @todo the transform code does not deal with the case where grids cross +- 180 degrees.

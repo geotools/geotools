@@ -2,8 +2,8 @@ package org.geotools.gml4wcs.bindings;
 
 import javax.xml.namespace.QName;
 import org.geotools.gml4wcs.GML;
-import org.geotools.xml.AbstractSimpleBinding;
-import org.geotools.xml.InstanceComponent;
+import org.geotools.xsd.AbstractSimpleBinding;
+import org.geotools.xsd.InstanceComponent;
 import org.opengis.temporal.IndeterminateValue;
 
 /**
@@ -31,7 +31,6 @@ import org.opengis.temporal.IndeterminateValue;
  *  </pre>
  *
  * @generated
- * @source $URL$
  */
 public class TimeIndeterminateValueTypeBinding extends AbstractSimpleBinding {
 

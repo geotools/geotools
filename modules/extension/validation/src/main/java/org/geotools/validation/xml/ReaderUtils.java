@@ -41,14 +41,13 @@ import org.xml.sax.SAXException;
  * <p>
  *
  * @author dzwiers, Refractions Research, Inc.
- * @source $URL$
  * @version $Id$
  * @see XMLConfigReader
  */
 class ReaderUtils {
     /** Used internally to create log information to detect errors. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.vfny.geoserver.global");
+            org.geotools.util.logging.Logging.getLogger(ReaderUtils.class);
 
     /**
      * ReaderUtils constructor.

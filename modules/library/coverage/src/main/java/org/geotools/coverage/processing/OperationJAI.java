@@ -44,21 +44,21 @@ import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.InvalidGridGeometryException;
-import org.geotools.factory.Hints;
+import org.geotools.coverage.util.CoverageUtilities;
+import org.geotools.image.util.ImageUtilities;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 import org.geotools.parameter.ImagingParameterDescriptors;
 import org.geotools.parameter.ImagingParameters;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.ReferencingFactoryFinder;
 import org.geotools.referencing.operation.transform.DimensionFilter;
-import org.geotools.resources.CRSUtilities;
-import org.geotools.resources.XArray;
-import org.geotools.resources.coverage.CoverageUtilities;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
-import org.geotools.resources.image.ImageUtilities;
+import org.geotools.referencing.util.CRSUtilities;
 import org.geotools.util.AbstractInternationalString;
 import org.geotools.util.NumberRange;
 import org.geotools.util.Utilities;
+import org.geotools.util.XArray;
+import org.geotools.util.factory.Hints;
 import org.opengis.coverage.Coverage;
 import org.opengis.coverage.processing.OperationNotFoundException;
 import org.opengis.parameter.InvalidParameterValueException;
@@ -113,7 +113,6 @@ import org.opengis.util.InternationalString;
  * </blockquote>
  *
  * @since 2.2
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @author Simone Giannecchini

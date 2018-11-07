@@ -39,8 +39,6 @@ import org.geotools.geometry.iso.topograph2D.Envelope;
  *
  * <p>This data structure is also known as an <i>MX-CIF quadtree</i> following the usage of Samet
  * and others.
- *
- * @source $URL$
  */
 public class Quadtree implements SpatialIndex {
     /**

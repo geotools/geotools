@@ -39,11 +39,11 @@ import org.geotools.data.shapefile.shp.ShapefileReader;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.simple.SimpleFeatureStore;
+import org.geotools.data.util.ScreenMap;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.referencing.operation.transform.IdentityTransform;
-import org.geotools.renderer.ScreenMap;
 import org.junit.Test;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
@@ -56,7 +56,6 @@ import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.Id;
 
 /**
- * @source $URL$
  * @version $Id$
  * @author Ian Schneider
  * @author James Macgill

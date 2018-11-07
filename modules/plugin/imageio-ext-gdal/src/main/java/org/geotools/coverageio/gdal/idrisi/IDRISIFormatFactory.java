@@ -31,14 +31,11 @@ import org.opengis.coverage.grid.Format;
  * @author Daniele Romagnoli, GeoSolutions
  * @author Simone Giannecchini (simboss), GeoSolutions
  * @since 2.5.x
- * @source $URL:
- *     http://svn.osgeo.org/geotools/trunk/modules/plugin/imageio-ext-gdal/src/main/java/org/geotools/coverageio/gdal/idrisi/IDRISIFormatFactory.java
- *     $
  */
 public final class IDRISIFormatFactory implements GridFormatFactorySpi {
     /** Logger. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(IDRISIFormatFactory.class.toString());
+            org.geotools.util.logging.Logging.getLogger(IDRISIFormatFactory.class);
 
     /**
      * Tells me if the coverage plugin to access EHdr is available or not.

@@ -25,129 +25,129 @@ import org.eclipse.emf.ecore.util.EDataTypeEList;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link net.opengis.wfs20.impl.DescribeStoredQueriesTypeImpl#getStoredQueryId <em>Stored Query Id</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
 public class DescribeStoredQueriesTypeImpl extends BaseRequestTypeImpl implements DescribeStoredQueriesType {
     /**
-     * The cached value of the '{@link #getStoredQueryId() <em>Stored Query Id</em>}' attribute list.
-     * <!-- begin-user-doc -->
+   * The cached value of the '{@link #getStoredQueryId() <em>Stored Query Id</em>}' attribute list.
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getStoredQueryId()
-     * @generated
-     * @ordered
-     */
+   * @see #getStoredQueryId()
+   * @generated
+   * @ordered
+   */
     protected EList<URI> storedQueryId;
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     protected DescribeStoredQueriesTypeImpl() {
-        super();
-    }
+    super();
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     protected EClass eStaticClass() {
-        return Wfs20Package.Literals.DESCRIBE_STORED_QUERIES_TYPE;
-    }
+    return Wfs20Package.Literals.DESCRIBE_STORED_QUERIES_TYPE;
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public EList<URI> getStoredQueryId() {
-        if (storedQueryId == null) {
-            storedQueryId = new EDataTypeUniqueEList<URI>(URI.class, this, Wfs20Package.DESCRIBE_STORED_QUERIES_TYPE__STORED_QUERY_ID);
-        }
-        return storedQueryId;
+    if (storedQueryId == null) {
+      storedQueryId = new EDataTypeUniqueEList<URI>(URI.class, this, Wfs20Package.DESCRIBE_STORED_QUERIES_TYPE__STORED_QUERY_ID);
     }
+    return storedQueryId;
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case Wfs20Package.DESCRIBE_STORED_QUERIES_TYPE__STORED_QUERY_ID:
-                return getStoredQueryId();
-        }
-        return super.eGet(featureID, resolve, coreType);
+    switch (featureID) {
+      case Wfs20Package.DESCRIBE_STORED_QUERIES_TYPE__STORED_QUERY_ID:
+        return getStoredQueryId();
     }
+    return super.eGet(featureID, resolve, coreType);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @SuppressWarnings("unchecked")
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case Wfs20Package.DESCRIBE_STORED_QUERIES_TYPE__STORED_QUERY_ID:
-                getStoredQueryId().clear();
-                getStoredQueryId().addAll((Collection<? extends URI>)newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
+    switch (featureID) {
+      case Wfs20Package.DESCRIBE_STORED_QUERIES_TYPE__STORED_QUERY_ID:
+        getStoredQueryId().clear();
+        getStoredQueryId().addAll((Collection<? extends URI>)newValue);
+        return;
     }
+    super.eSet(featureID, newValue);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case Wfs20Package.DESCRIBE_STORED_QUERIES_TYPE__STORED_QUERY_ID:
-                getStoredQueryId().clear();
-                return;
-        }
-        super.eUnset(featureID);
+    switch (featureID) {
+      case Wfs20Package.DESCRIBE_STORED_QUERIES_TYPE__STORED_QUERY_ID:
+        getStoredQueryId().clear();
+        return;
     }
+    super.eUnset(featureID);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case Wfs20Package.DESCRIBE_STORED_QUERIES_TYPE__STORED_QUERY_ID:
-                return storedQueryId != null && !storedQueryId.isEmpty();
-        }
-        return super.eIsSet(featureID);
+    switch (featureID) {
+      case Wfs20Package.DESCRIBE_STORED_QUERIES_TYPE__STORED_QUERY_ID:
+        return storedQueryId != null && !storedQueryId.isEmpty();
     }
+    return super.eIsSet(featureID);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     public String toString() {
-        if (eIsProxy()) return super.toString();
+    if (eIsProxy()) return super.toString();
 
-        StringBuffer result = new StringBuffer(super.toString());
-        result.append(" (storedQueryId: ");
-        result.append(storedQueryId);
-        result.append(')');
-        return result.toString();
-    }
+    StringBuilder result = new StringBuilder(super.toString());
+    result.append(" (storedQueryId: ");
+    result.append(storedQueryId);
+    result.append(')');
+    return result.toString();
+  }
 
 } //DescribeStoredQueriesTypeImpl

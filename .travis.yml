@@ -12,12 +12,13 @@ env:
   global:
     - MAVEN_OPTS=-Xmx512m
 script:
-  - mvn -B -fae -T4 -Dall clean install -Dfmt.action=check -U
+  - mvn -B -fae -T4 -Dall clean install -Dfmt.action=check
 notifications:
   email: false
   on_failure: never
 jdk: 
   - oraclejdk8
+  - oraclejdk11
 addons:
   apt:
     packages:

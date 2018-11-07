@@ -16,7 +16,7 @@
  */
 package org.geotools.filter.v1_1;
 
-import org.geotools.xml.Binding;
+import org.geotools.xsd.Binding;
 import org.opengis.filter.And;
 import org.opengis.filter.Filter;
 import org.opengis.filter.PropertyIsEqualTo;
@@ -24,7 +24,6 @@ import org.opengis.filter.spatial.Intersects;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-/** @source $URL$ */
 public class FilterTypeBindingTest extends FilterTestSupport {
     public void testType() {
         assertEquals(Filter.class, binding(OGC.FilterType).getType());

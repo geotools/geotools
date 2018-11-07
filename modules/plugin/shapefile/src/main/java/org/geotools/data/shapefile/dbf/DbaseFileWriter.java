@@ -37,7 +37,7 @@ import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.data.shapefile.files.StreamLogging;
-import org.geotools.resources.NIOUtilities;
+import org.geotools.util.NIOUtilities;
 
 /**
  * A DbaseFileWriter is used to write a dbase III format file. The general use of this class is:
@@ -53,7 +53,6 @@ import org.geotools.resources.NIOUtilities;
  * logic...
  *
  * @author Ian Schneider
- * @source $URL$
  */
 public class DbaseFileWriter {
     private DbaseFileHeader header;
@@ -321,7 +320,7 @@ public class DbaseFileWriter {
 
         private boolean swallowFieldSizeErrors = false;
         private static Logger logger =
-                org.geotools.util.logging.Logging.getLogger("org.geotools.data.shapefile");
+                org.geotools.util.logging.Logging.getLogger(DbaseFileWriter.class);
 
         public FieldFormatter(Charset charset, TimeZone timeZone, boolean swallowFieldSizeErrors) {
             // Avoid grouping on number format

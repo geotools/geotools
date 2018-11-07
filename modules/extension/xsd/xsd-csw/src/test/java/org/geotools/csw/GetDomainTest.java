@@ -3,7 +3,7 @@ package org.geotools.csw;
 import static org.junit.Assert.*;
 
 import net.opengis.cat.csw20.GetDomainType;
-import org.geotools.xml.Parser;
+import org.geotools.xsd.Parser;
 import org.junit.Test;
 
 public class GetDomainTest {

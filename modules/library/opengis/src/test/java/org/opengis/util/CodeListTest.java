@@ -17,8 +17,6 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.logging.Level;
-import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 import org.junit.*;
 import org.opengis.metadata.identification.CharacterSet;
@@ -27,17 +25,10 @@ import org.opengis.metadata.identification.CharacterSet;
  * Tests every {@link CodeList}.
  *
  * @author Martin desruisseaux (IRD)
- * @source $URL$
  */
 public final class CodeListTest {
     /** The logger to use. */
     private static final Logger LOGGER = Logger.getLogger("org.opengis");
-
-    /**
-     * For avoiding to pollute the output stream if {@code ArrayList.capacity()} method invocation
-     * failed.
-     */
-    private static boolean capacityFailed = false;
 
     /**
      * Tests the {@link CharacterSet} code list. At the difference of other code lists, its {@link
@@ -208,30 +199,6 @@ public final class CodeListTest {
                 return;
             }
             assertEquals(Arrays.asList(values), asList);
-            /*
-             * Verifies if the VALUES ArrayList size was properly sized. We need to access to
-             * private ArrayList.elementData field in order to perform this check.  Tested on
-             * Sun's JSE 6.0. It is not mandatory to have the VALUES list properly dimensioned;
-             * it just avoid a little bit of memory reallocation at application startup time.
-             */
-            if (!capacityFailed) {
-                final int capacity;
-                try {
-                    final Field candidate = ArrayList.class.getDeclaredField("elementData");
-                    candidate.setAccessible(true);
-                    final Object array = candidate.get(asList);
-                    capacity = ((Object[]) array).length;
-                } catch (Exception e) {
-                    // Not an error, since this test relies on an implementation-specific method.
-                    capacityFailed = true;
-                    final LogRecord record = new LogRecord(Level.WARNING, e.toString());
-                    record.setThrown(e);
-                    record.setLoggerName(LOGGER.getName());
-                    LOGGER.log(record);
-                    return;
-                }
-                assertEquals(fullName + " not properly sized.", asList.size(), capacity);
-            }
         }
         /*
          * Tries to create a new element.

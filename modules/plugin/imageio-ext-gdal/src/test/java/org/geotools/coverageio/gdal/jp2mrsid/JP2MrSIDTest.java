@@ -44,7 +44,6 @@ import org.opengis.referencing.NoSuchAuthorityCodeException;
  * @author Daniele Romagnoli, GeoSolutions
  * @author Simone Giannecchini (simboss), GeoSolutions
  *     <p>Testing {@link JP2MrSIDReader}
- * @source $URL$
  */
 public final class JP2MrSIDTest extends GDALTestCase {
     /** file name of a valid JP2K sample data to be used for tests. */

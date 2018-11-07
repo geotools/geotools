@@ -20,13 +20,13 @@ package org.geotools.data.complex.config;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import org.geotools.xml.AppSchemaConfiguration;
-import org.geotools.xml.Binding;
-import org.geotools.xml.Configuration;
-import org.geotools.xml.SchemaIndex;
-import org.geotools.xml.Schemas;
+import org.geotools.appschema.resolver.xml.AppSchemaConfiguration;
 import org.geotools.xml.resolver.SchemaCatalog;
 import org.geotools.xml.resolver.SchemaResolver;
+import org.geotools.xsd.Binding;
+import org.geotools.xsd.Configuration;
+import org.geotools.xsd.SchemaIndex;
+import org.geotools.xsd.Schemas;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.AttributeType;
 import org.xmlpull.mxp1.MXParser;
@@ -44,11 +44,6 @@ import org.xmlpull.v1.XmlPullParserException;
  * allows to provide the location of the root xsd schema for a given application schema.
  *
  * @author Gabriel Roldan
- * @version $Id$
- * @source $URL$
- *     http://svn.geotools.org/geotools/branches/2.4.x/modules/unsupported/community-schemas
- *     /community -schema-ds/src/main/java/org/geotools/data/complex/config/EmfAppSchemaReader.java
- *     $
  * @since 2.4
  */
 public class EmfComplexFeatureReader {

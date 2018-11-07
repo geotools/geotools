@@ -30,7 +30,6 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.PropertyIsEqualTo;
 
-/** @source $URL$ */
 public class TeradataDataStoreOnlineTest extends JDBCDataStoreOnlineTest {
 
     protected JDBCTestSetup createTestSetup() {

@@ -17,14 +17,13 @@
 package org.geotools.xlink;
 
 import javax.xml.namespace.QName;
-import org.geotools.xml.XSD;
+import org.geotools.xsd.XSD;
 
 /**
  * This interface contains the qualified names of all the types,elements, and attributes in the
  * http://www.w3.org/1999/xlink schema.
  *
  * @generated
- * @source $URL$
  */
 public final class XLINK extends XSD {
     /** singleton instance */

@@ -42,7 +42,6 @@ import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.data.DataSourceException;
-import org.geotools.factory.Hints;
 import org.geotools.gce.imagemosaic.ImageMosaicFormat;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -51,6 +50,7 @@ import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.test.TestData;
 import org.geotools.util.DateRange;
 import org.geotools.util.URLs;
+import org.geotools.util.factory.Hints;
 import org.junit.Test;
 import org.opengis.coverage.grid.GridEnvelope;
 import org.opengis.geometry.MismatchedDimensionException;
@@ -66,7 +66,6 @@ import org.opengis.referencing.NoSuchAuthorityCodeException;
  * @author Stefan Alfons Krueger (alfonx), Wikisquare.de : Test coverage for pyramids stored in JARs
  *     and referenced by URLs
  * @since 2.3
- * @source $URL$
  */
 public class ImagePyramidReaderTest extends ImageLevelsMapperTest {
 

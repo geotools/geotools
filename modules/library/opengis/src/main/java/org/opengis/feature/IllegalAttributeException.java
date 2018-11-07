@@ -17,7 +17,6 @@ import org.opengis.feature.type.AttributeDescriptor;
  *
  * @author Jody Garnett (Refractions Research, Inc.)
  * @since GeoAPI 2.2
- * @source $URL$
  */
 public class IllegalAttributeException extends IllegalArgumentException {
     private static final long serialVersionUID = 3373066465585246605L;

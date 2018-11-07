@@ -2,12 +2,12 @@ package org.geotools.kml.v22;
 
 import javax.xml.namespace.QName;
 import org.eclipse.xsd.XSDElementDeclaration;
-import org.geotools.xml.SchemaIndex;
-import org.geotools.xml.impl.ElementHandler;
-import org.geotools.xml.impl.Handler;
-import org.geotools.xml.impl.HandlerFactory;
-import org.geotools.xml.impl.HandlerFactoryImpl;
-import org.geotools.xml.impl.ParserHandler;
+import org.geotools.xsd.SchemaIndex;
+import org.geotools.xsd.impl.ElementHandler;
+import org.geotools.xsd.impl.Handler;
+import org.geotools.xsd.impl.HandlerFactory;
+import org.geotools.xsd.impl.HandlerFactoryImpl;
+import org.geotools.xsd.impl.ParserHandler;
 
 public class KMLCustomSchemaHandlerFactory extends HandlerFactoryImpl implements HandlerFactory {
 

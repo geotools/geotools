@@ -34,7 +34,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  *
  * @author Simone Giannecchini, GeoSolutions SAS
  * @deprecated Use a custom subclass of {@link MapContent} instead
- * @source $URL$
  * @version $Id$
  */
 public class GraphicEnhancedMapContext extends DefaultMapContext {

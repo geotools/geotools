@@ -46,7 +46,6 @@ import org.opengis.feature.type.Name;
  *
  * @author Jody Garnett, Refractions Research Inc.
  * @author Torben Barsballe (Boundless)
- * @source $URL$
  */
 public class PropertyDataStore extends ContentDataStore {
     protected File dir;

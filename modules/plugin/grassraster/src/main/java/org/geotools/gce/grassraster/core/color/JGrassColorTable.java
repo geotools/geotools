@@ -53,7 +53,6 @@ import org.geotools.util.logging.Logging;
  *
  * @author Andrea Antonello (www.hydrologis.com)
  * @since 3.0
- * @source $URL$
  */
 public class JGrassColorTable {
 

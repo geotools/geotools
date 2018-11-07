@@ -18,7 +18,6 @@ package org.geotools.data.postgis;
 
 import org.geotools.jdbc.JDBCDistanceFiltersTest;
 
-/** @source $URL$ */
 public class PostgisDistanceFiltersOnlineTest extends JDBCDistanceFiltersTest {
 
     @Override

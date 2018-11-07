@@ -66,7 +66,6 @@ import org.locationtech.jts.index.quadtree.Quadtree;
  * instance of this interface is passed to the generator at construction.
  *
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL$
  */
 public class PolygonGraphGenerator implements GraphGenerator {
 

@@ -47,10 +47,7 @@ import org.opengis.geometry.primitive.SurfaceBoundary;
 import org.opengis.geometry.primitive.SurfacePatch;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-/**
- * @author sanjay
- * @source $URL$
- */
+/** @author sanjay */
 public class SurfaceTest extends TestCase {
     GeometryBuilder builder;
 

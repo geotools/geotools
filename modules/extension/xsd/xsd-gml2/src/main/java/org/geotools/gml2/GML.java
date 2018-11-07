@@ -22,7 +22,7 @@ import java.util.Set;
 import javax.xml.namespace.QName;
 import org.eclipse.xsd.XSDSchema;
 import org.geotools.xlink.XLINK;
-import org.geotools.xml.XSD;
+import org.geotools.xsd.XSD;
 import org.opengis.feature.type.Schema;
 
 /**
@@ -30,7 +30,6 @@ import org.opengis.feature.type.Schema;
  * schema.
  *
  * @generated
- * @source $URL$
  */
 public final class GML extends XSD {
 

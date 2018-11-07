@@ -41,7 +41,6 @@ import org.geotools.data.DataStoreFactorySpi;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.data.simple.SimpleFeatureSource;
-import org.geotools.factory.Hints;
 import org.geotools.gce.imagemosaic.catalog.CatalogConfigurationBean;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalog;
 import org.geotools.parameter.DefaultParameterDescriptor;
@@ -50,6 +49,7 @@ import org.geotools.parameter.ParameterGroup;
 import org.geotools.util.Converters;
 import org.geotools.util.URLs;
 import org.geotools.util.Utilities;
+import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.Geometry;
 import org.opengis.coverage.grid.Format;
 import org.opengis.coverage.grid.GridCoverageWriter;
@@ -102,7 +102,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * @author Simone Giannecchini (simboss), GeoSolutions
  * @author Stefan Alfons Krueger (alfonx), Wikisquare.de : Support for
  *     jar:file:foo.jar/bar.properties URLs
- * @source $URL$
  * @since 2.3
  */
 @SuppressWarnings("rawtypes")
@@ -112,7 +111,7 @@ public final class ImageMosaicFormat extends AbstractGridFormat implements Forma
 
     /** Logger. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(ImageMosaicFormat.class.toString());
+            org.geotools.util.logging.Logging.getLogger(ImageMosaicFormat.class);
 
     /** Filter tiles based on attributes from the input coverage */
     public static final ParameterDescriptor<Filter> FILTER =

@@ -22,7 +22,6 @@ import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryCollection;
 import org.w3c.dom.Document;
 
-/** @source $URL$ */
 public class MultiGeometryTypeBindingTest extends GML3TestSupport {
 
     public void testParse() throws Exception {

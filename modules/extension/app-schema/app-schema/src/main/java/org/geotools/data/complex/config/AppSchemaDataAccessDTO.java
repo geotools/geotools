@@ -38,7 +38,6 @@ import org.geotools.util.CheckedHashSet;
  *
  * @author Gabriel Roldan (Axios Engineering)
  * @version $Id$
- * @source $URL$
  * @since 2.4
  */
 public class AppSchemaDataAccessDTO implements Serializable {

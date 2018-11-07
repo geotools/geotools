@@ -19,14 +19,13 @@ package org.geotools.gml2.bindings;
 import org.geotools.gml2.GML;
 import org.geotools.gml2.TEST;
 import org.geotools.gml2.TestConfiguration;
-import org.geotools.xml.Binding;
-import org.geotools.xml.Configuration;
+import org.geotools.xsd.Binding;
+import org.geotools.xsd.Configuration;
 import org.locationtech.jts.geom.Point;
 import org.opengis.feature.simple.SimpleFeature;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-/** @source $URL$ */
 public class GMLAbstractFeatureTypeBindingTest extends GMLTestSupport {
     protected Configuration createConfiguration() {
         return new TestConfiguration();

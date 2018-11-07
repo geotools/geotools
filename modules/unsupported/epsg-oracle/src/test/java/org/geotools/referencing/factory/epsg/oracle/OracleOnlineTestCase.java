@@ -28,8 +28,8 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
 import oracle.jdbc.pool.OracleDataSource;
-import org.geotools.factory.GeoTools;
 import org.geotools.test.OnlineTestCase;
+import org.geotools.util.factory.GeoTools;
 
 /**
  * This represents an online test case.
@@ -52,7 +52,6 @@ import org.geotools.test.OnlineTestCase;
  * <p>
  *
  * @author Jody Garnett (Refractions Research)
- * @source $URL$
  */
 public class OracleOnlineTestCase extends OnlineTestCase {
     protected DataSource datasource;

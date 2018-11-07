@@ -34,7 +34,6 @@ import org.h2.tools.Server;
 import org.junit.Before;
 import org.junit.Test;
 
-/** @source $URL$ */
 public class H2DataStoreFactoryTest {
     H2DataStoreFactory factory;
     HashMap params;

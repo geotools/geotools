@@ -8,9 +8,9 @@ import net.opengis.gml.RectifiedGridType;
 import org.geotools.coverage.grid.GeneralGridEnvelope;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.gml4wcs.GML;
-import org.geotools.xml.AbstractComplexBinding;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
+import org.geotools.xsd.AbstractComplexBinding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 
 /**
  * Binding object for the type http://www.opengis.net/gml:GridType.
@@ -38,7 +38,6 @@ import org.geotools.xml.Node;
  *  </pre>
  *
  * @generated
- * @source $URL$
  */
 public class GridTypeBinding extends AbstractComplexBinding {
 

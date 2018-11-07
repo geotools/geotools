@@ -25,11 +25,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.crs.GeographicCRS;
 import org.opengis.referencing.operation.MathTransform;
 
-/**
- * Returns a {@link ProjectionHandler} for any {@link GeographicCRS}
- *
- * @source $URL$
- */
+/** Returns a {@link ProjectionHandler} for any {@link GeographicCRS} */
 public class GeographicHandlerFactory implements ProjectionHandlerFactory {
 
     static final double MAX_LATITUDE = 89.99;

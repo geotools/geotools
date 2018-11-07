@@ -20,14 +20,13 @@ import java.awt.geom.Rectangle2D;
 import java.io.Serializable;
 import java.util.Arrays;
 import javax.measure.Unit;
+import org.geotools.geometry.util.XRectangle2D;
 import org.geotools.measure.Units;
-import org.geotools.metadata.iso.spatial.PixelTranslation;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
-import org.geotools.resources.Classes;
-import org.geotools.resources.geometry.XRectangle2D;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
+import org.geotools.util.Classes;
 import org.geotools.util.Utilities;
 import org.opengis.coverage.grid.GridEnvelope;
 import org.opengis.geometry.DirectPosition;
@@ -59,10 +58,6 @@ import org.opengis.util.Cloneable;
  * a coordinate reference system fixed to WGS 84 (EPSG:4326).
  *
  * @since 2.0
- * @source $URL$
- *     http://svn.osgeo.org/geotools/branches/2.6.x/modules/library/referencing/src/main/java
- *     /org/geotools/geometry/GeneralEnvelope.java $
- * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @author Simone Giannecchini
  * @see Envelope2D

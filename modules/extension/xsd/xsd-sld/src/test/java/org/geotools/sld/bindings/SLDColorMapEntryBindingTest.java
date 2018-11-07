@@ -20,7 +20,6 @@ import java.awt.Color;
 import org.geotools.filter.Filters;
 import org.geotools.styling.ColorMapEntry;
 
-/** @source $URL$ */
 public class SLDColorMapEntryBindingTest extends SLDTestSupport {
     public void testType() {
         assertEquals(ColorMapEntry.class, new SLDColorMapEntryBinding(null, null).getType());

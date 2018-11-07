@@ -26,7 +26,6 @@ import java.util.logging.Logger;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.factory.GeoTools;
 import org.geotools.feature.collection.DecoratingSimpleFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
@@ -38,6 +37,7 @@ import org.geotools.process.factory.DescribeResult;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.renderer.crs.GeometryDimensionCollector;
+import org.geotools.util.factory.GeoTools;
 import org.geotools.util.logging.Logging;
 import org.locationtech.jts.algorithm.LineIntersector;
 import org.locationtech.jts.algorithm.RobustLineIntersector;
@@ -68,7 +68,6 @@ import org.opengis.referencing.crs.GeographicCRS;
  * Modified version that can preserve Z values after the clip
  *
  * @author Andrea Aime - GeoSolutions
- * @source $URL$
  */
 @DescribeProcess(title = "Clip", description = "Clips (crops) features to a given geometry")
 public class ClipProcess implements VectorProcess {

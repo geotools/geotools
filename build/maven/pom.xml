@@ -71,7 +71,7 @@
   <!-- =========================================================== -->
   <modules>
     <module>jar-collector</module>
-    <module>javadoc</module>
+    <!--module>javadoc</module-->
     <module>jjtree-javacc</module>
     <module>xmlcodegen</module>
   </modules>

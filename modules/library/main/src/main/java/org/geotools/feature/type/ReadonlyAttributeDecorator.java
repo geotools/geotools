@@ -28,8 +28,6 @@ import org.opengis.filter.identity.Identifier;
  *
  * <p>This class is used by Types in order to protect provided attributes from modification during
  * evaluation.
- *
- * @source $URL$
  */
 public final class ReadonlyAttributeDecorator implements Attribute {
     private final Attribute delegate;

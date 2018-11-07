@@ -54,7 +54,6 @@ import org.opengis.style.GraphicalSymbol;
  *
  * @author milton
  * @author Andrea Aime - GeoSolutions
- * @source $URL$
  */
 public class UomRescaleStyleVisitor extends DuplicatingStyleVisitor {
 

@@ -35,7 +35,6 @@ import org.opengis.filter.Filter;
  * <p>Jody here - changed hasNext() to peek as required.
  *
  * @author Chris Holmes
- * @source $URL$
  * @version $Id$
  */
 public class FilteringFeatureReader<T extends FeatureType, F extends Feature>

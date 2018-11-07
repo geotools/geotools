@@ -10,7 +10,6 @@ import org.geotools.data.DefaultQuery;
 import org.geotools.data.property.PropertyDataStore;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.factory.Hints;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.FeatureLayer;
@@ -26,13 +25,16 @@ import org.geotools.styling.Style;
 import org.geotools.styling.StyleBuilder;
 import org.geotools.styling.Symbolizer;
 import org.geotools.test.TestData;
-import org.junit.After;
+import org.geotools.util.factory.Hints;
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Polygon;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.FilterFactory2;
+import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CRSAuthorityFactory;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
@@ -58,8 +60,8 @@ public class SpatialFilterTest {
 
     SimpleFeatureSource pointFS;
 
-    @Before
-    public void setUp() throws Exception {
+    @BeforeClass
+    public static void setupCRS() throws FactoryException {
         CRS.reset("all");
         Hints.putSystemDefault(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.TRUE);
 
@@ -75,7 +77,10 @@ public class SpatialFilterTest {
         }
         assertEquals(
                 AxisOrder.NORTH_EAST, CRS.getAxisOrder(CRS.decode("urn:ogc:def:crs:EPSG::4326")));
+    }
 
+    @Before
+    public void setUp() throws Exception {
         // setup data
         File property = new File(TestData.getResource(this, "square.properties").toURI());
         PropertyDataStore ds = new PropertyDataStore(property.getParentFile());
@@ -104,8 +109,8 @@ public class SpatialFilterTest {
         // System.setProperty("org.geotools.test.interactive", "true");
     }
 
-    @After
-    public void tearDown() {
+    @AfterClass
+    public static void tearDown() {
         Hints.removeSystemDefault(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER);
     }
 

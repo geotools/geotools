@@ -29,12 +29,12 @@ import java.util.Locale;
 import org.ejml.UtilEjml;
 import org.ejml.data.DMatrixRMaj;
 import org.ejml.dense.row.CommonOps_DDRM;
-import org.geotools.io.ContentFormatException;
-import org.geotools.io.LineFormat;
-import org.geotools.resources.XArray;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
+import org.geotools.util.ContentFormatException;
+import org.geotools.util.LineFormat;
 import org.geotools.util.Utilities;
+import org.geotools.util.XArray;
 import org.opengis.geometry.Envelope;
 import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.referencing.cs.AxisDirection;
@@ -45,7 +45,6 @@ import org.opengis.referencing.operation.Matrix;
  *
  * @since 2.2
  * @version 14.0
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @author Simone Giannecchini

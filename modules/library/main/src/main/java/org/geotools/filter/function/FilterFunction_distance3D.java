@@ -27,7 +27,6 @@ import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.operation.distance3d.Distance3DOp;
 import org.opengis.filter.capability.FunctionName;
 
-/** @source $URL$ */
 public class FilterFunction_distance3D extends FunctionExpressionImpl {
 
     public static FunctionName NAME =

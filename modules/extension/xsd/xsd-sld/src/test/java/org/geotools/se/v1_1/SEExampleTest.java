@@ -57,7 +57,6 @@ import org.opengis.style.GraphicalSymbol;
 import org.opengis.style.OverlapBehavior;
 import org.opengis.style.Rule;
 
-/** @source $URL$ */
 public class SEExampleTest extends SETestSupport {
 
     SimpleFeature f1;

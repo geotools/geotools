@@ -25,7 +25,6 @@ import org.opengis.filter.capability.FunctionName;
 import org.opengis.filter.expression.Expression;
 import org.opengis.parameter.Parameter;
 
-/** @source $URL$ */
 public class FunctionImplTest extends TestCase {
 
     public void testFunctionName() throws Exception {

@@ -25,9 +25,9 @@ import javax.media.jai.Interpolation;
 import javax.media.jai.Warp;
 import org.geotools.coverage.processing.operation.Crop;
 import org.geotools.coverage.processing.operation.Resample;
-import org.geotools.factory.Hints;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
+import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.Geometry;
 import org.opengis.coverage.Coverage;
 import org.opengis.coverage.grid.GridCoverage;
@@ -51,7 +51,6 @@ import org.opengis.referencing.operation.TransformException;
  * {@linkplain CoverageProcessor processor} directly.
  *
  * @since 2.2
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @see org.geotools.coverage.processing.operation

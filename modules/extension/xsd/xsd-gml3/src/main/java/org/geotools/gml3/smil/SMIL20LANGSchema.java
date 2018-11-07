@@ -22,7 +22,6 @@ import org.geotools.feature.type.ComplexTypeImpl;
 import org.geotools.feature.type.SchemaImpl;
 import org.opengis.feature.type.ComplexType;
 
-/** @source $URL$ */
 public class SMIL20LANGSchema extends SchemaImpl {
     /**
      *

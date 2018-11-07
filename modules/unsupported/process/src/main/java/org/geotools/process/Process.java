@@ -36,7 +36,6 @@ import org.opengis.util.ProgressListener;
  *     <p>/** Used to process inputs and is reported using a ProgressListener. Results are available
  *     after being run.
  * @author gdavis
- * @source $URL$
  */
 public interface Process {
     /**

@@ -27,7 +27,7 @@ import org.geotools.data.shapefile.files.FileReader;
 import org.geotools.data.shapefile.files.ShpFileType;
 import org.geotools.data.shapefile.files.ShpFiles;
 import org.geotools.data.shapefile.files.StreamLogging;
-import org.geotools.resources.NIOUtilities;
+import org.geotools.util.NIOUtilities;
 
 /**
  * IndexFile parser for .shx files.<br>
@@ -39,11 +39,10 @@ import org.geotools.resources.NIOUtilities;
  * * <i>'An ESRI White Paper . May 1997'</i></a>
  *
  * @author Ian Schneider
- * @source $URL$
  */
 public class IndexFile implements FileReader {
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.data.shapefile");
+            org.geotools.util.logging.Logging.getLogger(IndexFile.class);
 
     private static final int RECS_IN_BUFFER = 2000;
 

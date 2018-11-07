@@ -20,9 +20,6 @@ import java.util.concurrent.locks.ReentrantLock;
  * to memory demand. Soft references are most often used to implement memory-sensitive caches.
  *
  * @since 2.6
- * @version $Id$
- * @source $URL: http://svn.geotools.org/trunk/modules/library/metadata/src/main/
- *     java/org/geotools/util/SoftObjectCache.java $
  * @author Emily Gouge (Refractions Research)
  */
 final class SoftObjectCache implements ObjectCache {

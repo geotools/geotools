@@ -19,7 +19,6 @@ package org.geotools.data.mysql;
 import org.geotools.jdbc.JDBCFeatureSourceOnlineTest;
 import org.geotools.jdbc.JDBCTestSetup;
 
-/** @source $URL$ */
 public class MySQLFeatureSourceOnlineTest extends JDBCFeatureSourceOnlineTest {
     protected JDBCTestSetup createTestSetup() {
         return new MySQLTestSetup();

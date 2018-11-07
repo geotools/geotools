@@ -21,7 +21,6 @@ import org.geotools.graph.structure.DirectedGraphable;
 import org.geotools.graph.structure.Graphable;
 import org.geotools.graph.traverse.GraphTraversal;
 
-/** @source $URL$ */
 public class DirectedBreadthFirstIterator extends BreadthFirstIterator {
 
     public void cont(Graphable current, GraphTraversal traversal) {

@@ -101,13 +101,10 @@ import org.opengis.filter.temporal.TOverlaps;
  * </ul>
  *
  * @author Mueller Christian
- * @source $URL:
- *     http://svn.osgeo.org/geotools/trunk/modules/plugin/jdbc/jdbc-db2/src/main/java/org/geotools
- *     /data/db2/DB2FilterToSQL.java $
  */
 public class DB2FilterToSQL extends PreparedFilterToSQL {
     private static Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.data.db2");
+            org.geotools.util.logging.Logging.getLogger(DB2FilterToSQL.class);
 
     // Class to convert geometry value into a Well-known Text string
     private static WKTWriter wktWriter = new WKTWriter();

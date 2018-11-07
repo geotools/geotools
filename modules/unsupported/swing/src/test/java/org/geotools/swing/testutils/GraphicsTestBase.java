@@ -22,14 +22,15 @@ import static org.junit.Assert.assertNotNull;
 import java.awt.Component;
 import java.awt.Window;
 import javax.swing.JButton;
-import org.fest.swing.core.BasicComponentFinder;
-import org.fest.swing.core.ComponentFoundCondition;
-import org.fest.swing.core.GenericTypeMatcher;
-import org.fest.swing.core.TypeMatcher;
-import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
-import org.fest.swing.fixture.JButtonFixture;
-import org.fest.swing.fixture.WindowFixture;
-import org.fest.swing.timing.Pause;
+import org.assertj.swing.core.BasicComponentFinder;
+import org.assertj.swing.core.ComponentFoundCondition;
+import org.assertj.swing.core.GenericTypeMatcher;
+import org.assertj.swing.core.TypeMatcher;
+import org.assertj.swing.driver.WindowDriver;
+import org.assertj.swing.edt.FailOnThreadViolationRepaintManager;
+import org.assertj.swing.fixture.AbstractWindowFixture;
+import org.assertj.swing.fixture.JButtonFixture;
+import org.assertj.swing.timing.Pause;
 import org.junit.After;
 import org.junit.BeforeClass;
 
@@ -38,15 +39,14 @@ import org.junit.BeforeClass;
  *
  * @author Michael Bedward
  * @since 8.0
- * @source $URL$
  * @version $Id$
  */
-public abstract class GraphicsTestBase<T extends Window> {
+public abstract class GraphicsTestBase<S, C extends Window, D extends WindowDriver> {
 
     // Max waiting time for dialog display (milliseconds)
     public static final long DISPLAY_TIMEOUT = 1000;
 
-    protected WindowFixture<T> windowFixture;
+    protected AbstractWindowFixture<S, C, D> windowFixture;
 
     /** Installs the FEST repaint manager. */
     @BeforeClass

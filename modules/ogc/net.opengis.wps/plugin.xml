@@ -23,4 +23,12 @@
             class="net.opengis.wps._1._0.util._0ResourceFactoryImpl"/>
    </extension>
 
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated wps10 -->
+      <package
+            uri="http://www.opengis.net/wps/1.0.0"
+            class="net.opengis.wps10.Wps10Package"
+            genModel="wps10.genmodel"/>
+   </extension>
+
 </plugin>

@@ -63,7 +63,6 @@ import org.opengis.referencing.operation.TransformException;
  * <p>WARNING: this API is not finalized and is meant to be used by StreamingRenderer only
  *
  * @author Andrea Aime - OpenGeo
- * @source $URL$
  */
 public class ProjectionHandler {
 
@@ -200,32 +199,33 @@ public class ProjectionHandler {
             // subsystem directly
             ReferencedEnvelope re = renderingEnvelope;
             List<ReferencedEnvelope> envelopes = new ArrayList<ReferencedEnvelope>();
-            envelopes.add(re);
+            addTransformedEnvelope(re, envelopes);
             if (CRS.getAxisOrder(renderingCRS) == CRS.AxisOrder.NORTH_EAST) {
                 if (re.getMinY() >= -180.0 && re.getMaxY() <= 180) {
-                    return Collections.singletonList(
-                            transformEnvelope(renderingEnvelope, sourceCRS));
+                    return envelopes;
                 }
                 // We need to split reprojected envelope and normalize it. To be lenient with
                 // situations in which the data is just broken (people saying 4326 just because they
                 // have no idea at all) we don't actually split, but add elements
                 if (re.getMinY() < -180) {
-                    envelopes.add(
+                    ReferencedEnvelope envelope =
                             new ReferencedEnvelope(
                                     re.getMinX(),
                                     re.getMaxX(),
                                     re.getMinY() + 360,
                                     Math.min(re.getMaxY() + 360, 180),
-                                    re.getCoordinateReferenceSystem()));
+                                    re.getCoordinateReferenceSystem());
+                    addTransformedEnvelope(envelope, envelopes);
                 }
                 if (re.getMaxY() > 180) {
-                    envelopes.add(
+                    ReferencedEnvelope envelope =
                             new ReferencedEnvelope(
                                     re.getMinX(),
                                     re.getMaxX(),
                                     Math.max(re.getMinY() - 360, -180),
                                     re.getMaxY() - 360,
-                                    re.getCoordinateReferenceSystem()));
+                                    re.getCoordinateReferenceSystem());
+                    addTransformedEnvelope(envelope, envelopes);
                 }
             } else {
                 if (re.getMinX() >= -180.0 && re.getMaxX() <= 180) {
@@ -236,26 +236,27 @@ public class ProjectionHandler {
                 // situations in which the data is just broken (people saying 4326 just because they
                 // have no idea at all) we don't actually split, but add elements
                 if (re.getMinX() < -180) {
-                    envelopes.add(
+                    ReferencedEnvelope envelope =
                             new ReferencedEnvelope(
                                     re.getMinX() + 360,
                                     Math.min(re.getMaxX() + 360, 180),
                                     re.getMinY(),
                                     re.getMaxY(),
-                                    re.getCoordinateReferenceSystem()));
+                                    re.getCoordinateReferenceSystem());
+                    addTransformedEnvelope(envelope, envelopes);
                 }
                 if (re.getMaxX() > 180) {
-                    envelopes.add(
+                    ReferencedEnvelope envelope =
                             new ReferencedEnvelope(
                                     Math.max(re.getMinX() - 360, -180),
                                     re.getMaxX() - 360,
                                     re.getMinY(),
                                     re.getMaxY(),
-                                    re.getCoordinateReferenceSystem()));
+                                    re.getCoordinateReferenceSystem());
+                    addTransformedEnvelope(envelope, envelopes);
                 }
             }
             mergeEnvelopes(envelopes);
-            reprojectEnvelopes(sourceCRS, envelopes);
             return envelopes;
         } else {
             if (!Double.isNaN(datelineX)
@@ -272,7 +273,7 @@ public class ProjectionHandler {
                 ReferencedEnvelope tx1 = transformEnvelope(re1, WGS84);
                 if (tx1 != null) {
                     tx1.expandToInclude(180, tx1.getMinY());
-                    result.add(tx1);
+                    addTransformedEnvelope(tx1, result);
                 }
                 ReferencedEnvelope re2 =
                         new ReferencedEnvelope(datelineX + EPS, maxX, minY, maxY, renderingCRS);
@@ -282,7 +283,7 @@ public class ProjectionHandler {
                         tx2.translate(-360, 0);
                     }
                     tx2.expandToInclude(-180, tx1.getMinY());
-                    result.add(tx2);
+                    addTransformedEnvelope(tx2, result);
                 }
 
                 mergeEnvelopes(result);
@@ -290,6 +291,14 @@ public class ProjectionHandler {
             } else {
                 return getSourceEnvelopes(renderingEnvelope);
             }
+        }
+    }
+
+    private void addTransformedEnvelope(ReferencedEnvelope re, List<ReferencedEnvelope> envelopes)
+            throws TransformException, FactoryException {
+        ReferencedEnvelope transformed = transformEnvelope(re, sourceCRS);
+        if (transformed != null) {
+            envelopes.add(transformed);
         }
     }
 
@@ -339,6 +348,9 @@ public class ProjectionHandler {
     protected ReferencedEnvelope transformEnvelope(
             ReferencedEnvelope envelope, CoordinateReferenceSystem targetCRS)
             throws TransformException, FactoryException {
+        if (CRS.equalsIgnoreMetadata(envelope.getCoordinateReferenceSystem(), targetCRS)) {
+            return envelope;
+        }
         try {
             if (validAreaBounds != null) {
                 ReferencedEnvelope validAreaInTargetCRS =

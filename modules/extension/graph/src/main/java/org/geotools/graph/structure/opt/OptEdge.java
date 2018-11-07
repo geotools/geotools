@@ -26,7 +26,6 @@ import org.geotools.graph.structure.Node;
  *
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
  * @see Edge
- * @source $URL$
  */
 public class OptEdge extends OptGraphable implements Edge {
 

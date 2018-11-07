@@ -27,7 +27,6 @@ import org.opengis.util.InternationalString;
 /**
  * Graphic that provides an illustration of the dataset (should include a legend for the graphic).
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @author Touraïvane

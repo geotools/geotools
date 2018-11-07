@@ -40,7 +40,7 @@ import org.geotools.util.logging.Logging;
  */
 public abstract class Tile implements ImageLoader {
 
-    protected static final Logger LOGGER = Logging.getLogger(Tile.class.getPackage().getName());
+    protected static final Logger LOGGER = Logging.getLogger(Tile.class);
 
     /**
      * These are the states of the tile. This state represents if the tile needs to be re-rendered

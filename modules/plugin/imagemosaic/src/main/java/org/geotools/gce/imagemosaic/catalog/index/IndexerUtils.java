@@ -22,13 +22,13 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.bind.JAXBException;
+import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.gce.imagemosaic.Utils;
 import org.geotools.gce.imagemosaic.catalog.index.Indexer.Collectors;
 import org.geotools.gce.imagemosaic.catalog.index.Indexer.Collectors.Collector;
 import org.geotools.gce.imagemosaic.catalog.index.Indexer.Coverages;
 import org.geotools.gce.imagemosaic.catalog.index.Indexer.Coverages.Coverage;
 import org.geotools.gce.imagemosaic.catalog.index.ParametersType.Parameter;
-import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.util.URLs;
 import org.geotools.util.Utilities;
 
@@ -39,7 +39,7 @@ public class IndexerUtils {
     public static final String INDEXER_PROPERTIES = "indexer.properties";
 
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(IndexerUtils.class.toString());
+            org.geotools.util.logging.Logging.getLogger(IndexerUtils.class);
 
     /**
      * Build {@link Collectors} element by parsing the specified propertyCollectors, and put them on

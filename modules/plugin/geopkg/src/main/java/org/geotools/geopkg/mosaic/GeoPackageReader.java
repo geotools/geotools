@@ -17,9 +17,7 @@
 package org.geotools.geopkg.mosaic;
 
 import it.geosolutions.jaiext.mosaic.MosaicRIF;
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.Raster;
 import java.awt.image.RenderedImage;
@@ -36,8 +34,8 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.media.jai.Interpolation;
+import javax.media.jai.JAI;
 import javax.media.jai.ParameterBlockJAI;
-import javax.media.jai.PlanarImage;
 import javax.media.jai.operator.MosaicDescriptor;
 import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.grid.GridCoverage2D;
@@ -46,8 +44,6 @@ import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
-import org.geotools.factory.GeoTools;
-import org.geotools.factory.Hints;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.geopkg.GeoPackage;
@@ -58,6 +54,8 @@ import org.geotools.geopkg.TileReader;
 import org.geotools.image.ImageWorker;
 import org.geotools.referencing.CRS;
 import org.geotools.util.Utilities;
+import org.geotools.util.factory.GeoTools;
+import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.Envelope;
 import org.opengis.coverage.grid.Format;
@@ -76,7 +74,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 public class GeoPackageReader extends AbstractGridCoverage2DReader {
 
     /** The {@link Logger} for this {@link GeoPackageReader}. */
-    private static final Logger LOGGER = Logging.getLogger("org.geotools.geopkg.mosaic");
+    private static final Logger LOGGER = Logging.getLogger(GeoPackageReader.class);
 
     protected static final int DEFAULT_TILE_SIZE = 256;
 
@@ -369,10 +367,9 @@ public class GeoPackageReader extends AbstractGridCoverage2DReader {
                 pb.setParameter("backgroundValues", new double[] {0});
                 pb.setParameter("nodata", null);
 
-                image =
-                        PlanarImage.wrapRenderedImage(
-                                // explicit reference here too
-                                new MosaicRIF().create(pb, GeoTools.getDefaultHints()));
+                RenderingHints hints = new Hints(JAI.getDefaultInstance().getRenderingHints());
+                hints.putAll(GeoTools.getDefaultHints());
+                image = new MosaicRIF().create(pb, hints);
             }
         }
         return coverageFactory.create(entry.getTableName(), image, resultEnvelope);

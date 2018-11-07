@@ -32,7 +32,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * Merges curves at end points
  *
  * @author Sanjay Dominik Jena
- * @source $URL$
  */
 public class Merger {
 

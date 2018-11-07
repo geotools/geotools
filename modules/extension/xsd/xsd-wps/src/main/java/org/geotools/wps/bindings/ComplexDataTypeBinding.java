@@ -24,11 +24,11 @@ import javax.xml.namespace.QName;
 import net.opengis.wps10.ComplexDataType;
 import net.opengis.wps10.Wps10Factory;
 import org.geotools.wps.WPS;
-import org.geotools.xml.AbstractComplexBinding;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.EncoderDelegate;
-import org.geotools.xml.Node;
 import org.geotools.xs.XS;
+import org.geotools.xsd.AbstractComplexBinding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.EncoderDelegate;
+import org.geotools.xsd.Node;
 
 /**
  * &lt;complexType name="ComplexDataType" mixed="true"> &lt;annotation> &lt;documentation>Complex
@@ -39,7 +39,6 @@ import org.geotools.xs.XS;
  * &lt;/complexType>
  *
  * @author Justin Deoliveira, OpenGEO
- * @source $URL$
  */
 public class ComplexDataTypeBinding extends AbstractComplexBinding {
     private Wps10Factory factory;

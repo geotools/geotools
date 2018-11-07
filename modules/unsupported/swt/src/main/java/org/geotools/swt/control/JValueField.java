@@ -27,7 +27,6 @@ import org.eclipse.swt.widgets.Text;
  *
  * @author Michael Bedward
  * @author Andrea Antonello (www.hydrologis.com)
- * @source $URL$
  */
 public abstract class JValueField extends Text {
 

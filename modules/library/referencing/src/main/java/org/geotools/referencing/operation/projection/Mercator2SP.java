@@ -16,10 +16,10 @@
  */
 package org.geotools.referencing.operation.projection;
 
+import org.geotools.metadata.i18n.Vocabulary;
+import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.NamedIdentifier;
-import org.geotools.resources.i18n.Vocabulary;
-import org.geotools.resources.i18n.VocabularyKeys;
 import org.opengis.parameter.ParameterDescriptor;
 import org.opengis.parameter.ParameterDescriptorGroup;
 import org.opengis.parameter.ParameterNotFoundException;
@@ -33,7 +33,6 @@ import org.opengis.referencing.operation.MathTransform;
  * @see <A HREF="http://www.remotesensing.org/geotiff/proj_list/mercator_2sp.html">"Mercator 2SP" on
  *     RemoteSensing.org</A>
  * @since 2.2
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  * @author Rueben Schulz

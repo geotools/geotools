@@ -19,7 +19,6 @@ package org.geotools.data.spatialite;
 import org.geotools.jdbc.JDBCPrimaryKeyOnlineTest;
 import org.geotools.jdbc.JDBCPrimaryKeyTestSetup;
 
-/** @source $URL$ */
 public class SpatiaLitePrimaryKeyOnlineTest extends JDBCPrimaryKeyOnlineTest {
 
     @Override

@@ -24,10 +24,10 @@ import org.geotools.geometry.jts.ReferencedEnvelope3D;
 import org.geotools.gml2.SrsSyntax;
 import org.geotools.gml3.GML;
 import org.geotools.gml3.GMLConfiguration;
-import org.geotools.xml.AbstractComplexBinding;
-import org.geotools.xml.Configuration;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
+import org.geotools.xsd.AbstractComplexBinding;
+import org.geotools.xsd.Configuration;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.CoordinateSequence;
 import org.locationtech.jts.geom.Envelope;
@@ -80,7 +80,6 @@ import org.w3c.dom.Element;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class EnvelopeTypeBinding extends AbstractComplexBinding {
     Configuration config;

@@ -42,7 +42,6 @@ import org.locationtech.jts.geom.LineSegment;
  * @see org.geotools.graph.structure.opt.OptEdge
  * @see org.geotools.graph.structure.line.OptXYNode
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
- * @source $URL$
  */
 public class OptDirectedLineGraphGenerator extends OptLineGraphGenerator {
 

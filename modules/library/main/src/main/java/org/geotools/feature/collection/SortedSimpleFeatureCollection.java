@@ -4,7 +4,7 @@ import java.io.IOException;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.sort.SortedFeatureIterator;
-import org.geotools.factory.Hints;
+import org.geotools.util.factory.Hints;
 import org.opengis.filter.sort.SortBy;
 
 /**

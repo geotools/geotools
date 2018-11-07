@@ -19,7 +19,6 @@ package org.geotools.data.oracle;
 import org.geotools.jdbc.JDBCGeometrylessOnlineTest;
 import org.geotools.jdbc.JDBCGeometrylessTestSetup;
 
-/** @source $URL$ */
 public class OracleGeometrylessOnlineTest extends JDBCGeometrylessOnlineTest {
 
     @Override

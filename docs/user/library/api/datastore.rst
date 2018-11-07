@@ -12,7 +12,7 @@ Here is a quick example of accessing a shapefile::
 
 References:
 
-* :doc:`gt-data <../data/datastore>` DataStore Code Examples
+* :doc:`gt-main <../data/datastore>` DataStore Code Examples
 * javadoc: `DataStore <http://docs.geotools.org/latest/javadocs/org/geotools/data/DataStore.html>`_
 * javadoc: `FeatureSource <http://docs.geotools.org/latest/javadocs/org/geotools/data/FeatureSource.html>`_
 * javadoc: `SimpleFeatureSource <http://docs.geotools.org/latest/javadocs/org/geotools/data/simple/SimpleFeatureSource.html>`_

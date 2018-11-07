@@ -19,7 +19,9 @@ package org.geotools.sld.bindings;
 import javax.xml.namespace.QName;
 import org.geotools.styling.Extent;
 import org.geotools.styling.StyleFactory;
-import org.geotools.xml.*;
+import org.geotools.xsd.AbstractComplexBinding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 import org.picocontainer.MutablePicoContainer;
 
 /**
@@ -46,7 +48,6 @@ import org.picocontainer.MutablePicoContainer;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class SLDExtentBinding extends AbstractComplexBinding {
     StyleFactory styleFactory;

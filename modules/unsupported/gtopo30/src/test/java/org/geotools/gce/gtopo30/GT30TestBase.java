@@ -23,16 +23,13 @@ import junit.framework.TestCase;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.test.TestData;
 
-/**
- * @author Simone Giannecchini
- * @source $URL$
- */
+/** @author Simone Giannecchini */
 public abstract class GT30TestBase extends TestCase {
 
     protected GridCoverage2D gc;
 
     protected Logger logger =
-            org.geotools.util.logging.Logging.getLogger(GT30ReaderWriterTest.class.toString());
+            org.geotools.util.logging.Logging.getLogger(GT30ReaderWriterTest.class);
 
     protected File newDir;
 

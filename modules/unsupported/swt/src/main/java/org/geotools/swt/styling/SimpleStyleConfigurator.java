@@ -37,7 +37,6 @@ import org.eclipse.swt.widgets.Shell;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.factory.GeoTools;
 import org.geotools.map.Layer;
 import org.geotools.styling.FeatureTypeConstraint;
 import org.geotools.styling.FeatureTypeStyle;
@@ -66,6 +65,7 @@ import org.geotools.swt.styling.simple.ScaleViewer;
 import org.geotools.swt.styling.simple.StrokeViewer;
 import org.geotools.swt.utils.Messages;
 import org.geotools.swt.utils.Utils;
+import org.geotools.util.factory.GeoTools;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.feature.type.GeometryDescriptor;
@@ -129,7 +129,6 @@ import org.opengis.feature.type.PropertyDescriptor;
  *
  * @author Jody Garnett
  * @since 1.0.0
- * @source $URL$
  */
 public class SimpleStyleConfigurator extends AbstractSimpleConfigurator {
     private static final String DEFAULT_GEOMETRY = "(default)"; // $NON-NLS-1$

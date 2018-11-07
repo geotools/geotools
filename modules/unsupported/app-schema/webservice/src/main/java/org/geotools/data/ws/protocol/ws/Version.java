@@ -23,17 +23,14 @@ import java.util.List;
 
 /**
  * Enumeration for the supported WFS versions
- * 
+ *
  * @author rpetty
  * @version $Id$
  * @since 2.5.x
- *
- *
- *
- * @source $URL$
  */
 public enum Version {
-    v1_0_0("1.0.0"), v1_1_0("1.1.0");
+    v1_0_0("1.0.0"),
+    v1_1_0("1.1.0");
 
     private String version;
 
@@ -52,13 +49,11 @@ public enum Version {
     }
 
     /**
-     * To be used instead of {@code valueOf(String)}, as valueOf in enum can't
-     * be overridden and the argument string must match exactly the enum name,
-     * yet we want a lookup by version number.
-     * 
+     * To be used instead of {@code valueOf(String)}, as valueOf in enum can't be overridden and the
+     * argument string must match exactly the enum name, yet we want a lookup by version number.
+     *
      * @param version
-     * @return the Version corresponding to {@code version} or {@code null} if
-     *         not found.
+     * @return the Version corresponding to {@code version} or {@code null} if not found.
      */
     public static Version find(final String version) {
         for (Version v : values()) {

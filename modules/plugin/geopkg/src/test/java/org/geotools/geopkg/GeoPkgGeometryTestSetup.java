@@ -18,7 +18,6 @@ package org.geotools.geopkg;
 
 import org.geotools.jdbc.JDBCGeometryTestSetup;
 
-/** @source $URL$ */
 public class GeoPkgGeometryTestSetup extends JDBCGeometryTestSetup {
 
     protected GeoPkgGeometryTestSetup() {

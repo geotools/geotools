@@ -39,7 +39,6 @@ import org.opengis.feature.simple.SimpleFeature;
  *
  * @author Michael Bedward
  * @since 8.0
- * @source $URL$
  * @version $URL$
  */
 public class FeatureLayerHelperTest {

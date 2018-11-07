@@ -19,7 +19,6 @@ import org.opengis.annotation.UML;
  * defines the entire curve segment. These curves are defined in terms of a set of basis functions
  * called the Bézier or Bernstein polynomials.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/as">ISO 19107</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 2.0

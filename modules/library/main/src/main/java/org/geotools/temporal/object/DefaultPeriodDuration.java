@@ -25,7 +25,6 @@ import org.opengis.util.InternationalString;
  * Uses the format specified by ISO 8601 for exchanging information about the duration of a period.
  *
  * @author Mehdi Sidhoum (Geomatys)
- * @source $URL$
  */
 public class DefaultPeriodDuration extends DefaultDuration implements PeriodDuration {
 

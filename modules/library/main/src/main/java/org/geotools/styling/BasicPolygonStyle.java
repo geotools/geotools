@@ -20,7 +20,6 @@ package org.geotools.styling;
  * A style object is quite hard to set up, involving fills, strokes, symbolizers and rules.
  *
  * @author James Macgill, CCG
- * @source $URL$
  * @version $Id$
  */
 public class BasicPolygonStyle extends StyleImpl implements org.geotools.styling.Style {

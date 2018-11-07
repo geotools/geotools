@@ -41,7 +41,6 @@ import org.locationtech.jts.precision.GeometryPrecisionReducer;
  * class is not thread safe.
  *
  * @author Andrea Aime - OpenGeo
- * @source $URL$
  */
 public class GeometryClipper {
 

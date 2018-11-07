@@ -14,9 +14,9 @@ import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.factory.Hints;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.LineString;
 import org.opengis.feature.simple.SimpleFeature;
@@ -28,7 +28,6 @@ import org.opengis.filter.Id;
 import org.opengis.filter.sort.SortBy;
 import org.opengis.filter.sort.SortOrder;
 
-/** @source $URL$ */
 public abstract class JDBCVirtualTableOnlineTest extends JDBCTestSupport {
     protected String dbSchemaName = null;
 
@@ -315,7 +314,7 @@ public abstract class JDBCVirtualTableOnlineTest extends JDBCTestSupport {
                     }
                 };
         handler.setLevel(Level.WARNING);
-        Logger logger = Logging.getLogger("org.geotools.jdbc");
+        Logger logger = Logging.getLogger(JDBCVirtualTableOnlineTest.class);
         Level oldLevel = logger.getLevel();
 
         logger.setLevel(java.util.logging.Level.SEVERE);

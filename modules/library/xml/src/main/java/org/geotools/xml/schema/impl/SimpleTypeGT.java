@@ -40,7 +40,6 @@ import org.xml.sax.SAXException;
  * DOCUMENT ME!
  *
  * @author dzwiers
- * @source $URL$
  */
 public class SimpleTypeGT implements SimpleType {
     // file visible to avoid set* methods

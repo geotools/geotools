@@ -31,7 +31,6 @@ import org.opengis.util.GenericName;
  * Tests the various {@link InternationalString} implementations.
  *
  * @author Martin Desruisseaux (IRD)
- * @source $URL$
  * @version $Id$
  */
 public final class InternationalStringTest {

@@ -55,7 +55,6 @@ import org.geotools.swt.utils.Messages;
  *
  * @author Andrea Aime
  * @since 1.1
- * @source $URL$
  */
 public class ScaleViewer {
     public static final int MIN = 0;

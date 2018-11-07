@@ -17,13 +17,12 @@
 package org.geotools.feature.type;
 
 import java.util.Map;
-import org.geotools.resources.Classes;
+import org.geotools.util.Classes;
 import org.geotools.util.Utilities;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.AttributeType;
 import org.opengis.feature.type.Name;
 
-/** @source $URL$ */
 public class AttributeDescriptorImpl extends PropertyDescriptorImpl implements AttributeDescriptor {
 
     protected final Object defaultValue;

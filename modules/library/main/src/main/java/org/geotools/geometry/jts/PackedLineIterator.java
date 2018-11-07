@@ -26,8 +26,6 @@ import org.locationtech.jts.geom.impl.PackedCoordinateSequence.Double;
  * A path iterator for the LiteShape class, specialized to iterate over LineString object.
  *
  * @author Andrea Aime
- * @source $URL$
- * @source $URL$
  * @version $Id$
  */
 public final class PackedLineIterator extends AbstractLiteIterator {

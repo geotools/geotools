@@ -16,8 +16,8 @@
  */
 package org.geotools.coverage.grid.io.imageio.geotiff;
 
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 import org.geotools.util.Utilities;
 
 /**
@@ -31,7 +31,6 @@ import org.geotools.util.Utilities;
  *
  * @author Simone Giannecchini, GeoSolutions
  * @author Mike Nidel
- * @source $URL$
  */
 public final class GeoKeyEntry implements Comparable<GeoKeyEntry> {
     @Override

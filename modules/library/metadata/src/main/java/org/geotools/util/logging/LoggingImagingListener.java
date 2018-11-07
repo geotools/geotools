@@ -9,7 +9,7 @@ final class LoggingImagingListener implements ImagingListener {
     public boolean errorOccurred(
             String message, Throwable thrown, Object where, boolean isRetryable)
             throws RuntimeException {
-        Logger log = Logging.getLogger("javax.media.jai");
+        Logger log = Logging.getLogger(LoggingImagingListener.class);
         if (message.contains("Continuing in pure Java mode")) {
             log.log(Level.FINER, message, thrown);
         } else {

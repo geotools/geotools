@@ -13,7 +13,6 @@ import org.opengis.temporal.Instant;
 import org.opengis.temporal.Period;
 import org.opengis.temporal.TemporalPrimitive;
 
-/** @source $URL$ */
 public class BeforeImplTest extends TemporalFilterTestSupport {
 
     public void test() throws Exception {

@@ -28,7 +28,6 @@ import org.opengis.temporal.TemporalReferenceSystem;
  * be also used to identify the time of occurrence of an event that recurs every day.
  *
  * @author Mehdi Sidhoum (Geomatys)
- * @source $URL$
  */
 public class DefaultClockTime extends DefaultTemporalPosition implements ClockTime {
 

@@ -22,7 +22,6 @@ package org.opengis.parameter;
  * @since GeoAPI 1.0
  * @see ParameterValue#intValue
  * @see ParameterValue#doubleValue
- * @source $URL$
  */
 public class InvalidParameterTypeException extends IllegalStateException {
     /** Serial number for interoperability with different versions. */

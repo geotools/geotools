@@ -18,9 +18,9 @@ package org.geotools.gml2.bindings;
 
 import javax.xml.namespace.QName;
 import org.geotools.gml2.GML;
-import org.geotools.xml.AbstractComplexBinding;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
+import org.geotools.xsd.AbstractComplexBinding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 import org.locationtech.jts.geom.LinearRing;
 
 /**
@@ -49,7 +49,6 @@ import org.locationtech.jts.geom.LinearRing;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class GMLLinearRingMemberTypeBinding extends AbstractComplexBinding {
     /** @generated */

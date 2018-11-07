@@ -26,13 +26,13 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Locale;
 import javax.measure.Unit;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
+import org.geotools.metadata.i18n.Vocabulary;
+import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.referencing.wkt.UnformattableObjectException;
-import org.geotools.resources.Classes;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
-import org.geotools.resources.i18n.Vocabulary;
-import org.geotools.resources.i18n.VocabularyKeys;
 import org.geotools.util.AbstractInternationalString;
+import org.geotools.util.Classes;
 import org.geotools.util.NumberRange;
 import org.geotools.util.Utilities;
 import org.opengis.geometry.DirectPosition;
@@ -48,7 +48,6 @@ import org.opengis.util.InternationalString;
  * <p>Instances of {@link CategoryList} are immutable and thread-safe.
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
@@ -295,10 +294,10 @@ class CategoryList extends AbstractList<Category> implements Comparator<Category
 
     /**
      * Effectue une recherche bi-linéaire de la valeur spécifiée. Cette méthode est semblable à
-     * {@link Arrays#binarySearch(double[],double)}, excepté qu'elle peut distinguer différentes
+     * {@code Arrays#binarySearch(double[],double)}, excepté qu'elle peut distinguer différentes
      * valeurs de NaN.
      *
-     * <p>Note: This method is not private in order to allows testing by {@link CategoryTest}.
+     * <p>Note: This method is not private in order to allow testing by {@link CategoryTest}.
      */
     static int binarySearch(final double[] array, final double key) {
         int low = 0;

@@ -38,13 +38,12 @@ import org.opengis.util.Cloneable;
  * DOCUMENT ME!
  *
  * @author Ian Turton, CCG
- * @source $URL$
  * @version $Id$
  */
 public class ExternalGraphicImpl implements ExternalGraphic, Symbol, Cloneable {
     /** The logger for the default core module. */
     // private static final java.util.logging.Logger LOGGER =
-    // org.geotools.util.logging.Logging.getLogger("org.geotools.core");
+    // org.geotools.util.logging.Logging.getLogger(ExternalGraphicImpl.class);
     private Icon inlineContent;
 
     private OnLineResource online;

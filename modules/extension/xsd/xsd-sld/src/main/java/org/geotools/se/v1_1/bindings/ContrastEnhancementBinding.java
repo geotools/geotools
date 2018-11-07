@@ -45,7 +45,6 @@ import org.opengis.filter.FilterFactory;
  * </pre>
  *
  * @generated
- * @source $URL$
  */
 public class ContrastEnhancementBinding extends SLDContrastEnhancementBinding {
 

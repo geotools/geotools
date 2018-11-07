@@ -20,7 +20,6 @@ import junit.framework.TestCase;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-/** @source $URL$ */
 public class DoublePointArrayTest extends TestCase {
 
     public void testDoublePointArray() {

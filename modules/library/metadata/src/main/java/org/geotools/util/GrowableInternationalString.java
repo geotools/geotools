@@ -27,8 +27,8 @@ import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 import org.geotools.util.logging.Logging;
 import org.opengis.util.InternationalString;
 
@@ -39,7 +39,6 @@ import org.opengis.util.InternationalString;
  * making constructionss easier, and being suitable for use in immutable objects.
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

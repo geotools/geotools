@@ -12,10 +12,10 @@ import org.eclipse.emf.ecore.EObject;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link net.opengis.ows20.AcceptLanguagesType#getLanguage <em>Language</em>}</li>
  * </ul>
- * </p>
  *
  * @see net.opengis.ows20.Ows20Package#getAcceptLanguagesType()
  * @model extendedMetaData="name='AcceptLanguages_._type' kind='elementOnly'"

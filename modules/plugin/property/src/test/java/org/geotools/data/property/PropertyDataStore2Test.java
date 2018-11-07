@@ -44,7 +44,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  *
  * @author Jody Garnett, Refractions Research Inc.
  * @author Torben Barsballe (Boundless)
- * @source $URL$
  */
 public class PropertyDataStore2Test extends TestCase {
     PropertyDataStore store;

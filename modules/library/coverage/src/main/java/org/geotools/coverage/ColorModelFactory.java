@@ -25,10 +25,10 @@ import java.util.Arrays;
 import java.util.Map;
 import javax.media.jai.FloatDoubleColorModel;
 import javax.media.jai.RasterFactory;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
-import org.geotools.resources.image.ColorUtilities;
-import org.geotools.resources.image.ComponentColorModelJAI;
+import org.geotools.image.util.ColorUtilities;
+import org.geotools.image.util.ComponentColorModelJAI;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 import org.geotools.util.WeakValueHashMap;
 
 /**
@@ -37,7 +37,6 @@ import org.geotools.util.WeakValueHashMap;
  * ColorModel} are shared among all callers in the running virtual machine.
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

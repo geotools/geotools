@@ -22,7 +22,6 @@ import org.opengis.geometry.coordinate.GenericSurface;
  *
  * @author ISO/DIS 19107
  * @author <A HREF="http://www.opengis.org">OpenGIS&reg; consortium</A>
- * @source $URL$
  * @version 2.0
  * @revisit Why this interface is not defined in the primitive package, since the sub-interfaces
  *     ({@link org.opengis.geometry.primitive.Surface} and {@link

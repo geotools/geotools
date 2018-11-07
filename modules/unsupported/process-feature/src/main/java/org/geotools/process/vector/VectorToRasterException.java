@@ -32,7 +32,6 @@ import org.geotools.process.ProcessException;
  *
  * @author Steve Ansari, NOAA
  * @author Michael Bedward
- * @source $URL$
  */
 public class VectorToRasterException extends ProcessException {
 

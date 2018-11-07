@@ -32,7 +32,7 @@ public class DefaultResourceLocator implements ResourceLocator {
     URL sourceUrl;
 
     private static final java.util.logging.Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.styling");
+            org.geotools.util.logging.Logging.getLogger(DefaultResourceLocator.class);
 
     public void setSourceUrl(URL sourceUrl) {
         this.sourceUrl = sourceUrl;

@@ -17,9 +17,6 @@ package org.geotools.data.excel;
  *    Lesser General Public License for more details.
  */
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.geom.Point;
 import java.io.IOException;
 import java.sql.Time;
 import java.util.ArrayList;
@@ -39,14 +36,14 @@ import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.Point;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeType;
 
-/**
- * @author ijt1
- * @source $URL$
- */
+/** @author ijt1 */
 public class ExcelFeatureSource extends ContentFeatureSource implements SimpleFeatureSource {
 
     private Sheet sheet;
@@ -152,11 +149,12 @@ public class ExcelFeatureSource extends ContentFeatureSource implements SimpleFe
                             break;
 
                         default:
-                            // System.out.println(
-                                    "We don't handle "
-                                            + cell.getCellType()
-                                            + " type cells "
-                                            + cell.getStringCellValue());
+                            //                             System.out.println(
+                            //                                    "We don't handle "
+                            //                                            + cell.getCellType()
+                            //                                            + " type cells "
+                            //                                            +
+                            // cell.getStringCellValue());
                     }
                 }
             }

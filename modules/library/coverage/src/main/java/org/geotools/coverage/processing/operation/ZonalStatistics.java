@@ -37,12 +37,12 @@ import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.processing.BaseStatisticsOperationJAI;
 import org.geotools.coverage.processing.CoverageProcessingException;
+import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.parameter.ImagingParameters;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
-import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
@@ -72,8 +72,7 @@ public class ZonalStatistics extends BaseStatisticsOperationJAI {
     public static final String GT_SYNTHETIC_PROPERTY_ZONALSTATS = ZonalStatsDescriptor.ZS_PROPERTY;
 
     /** {@link Logger} for this class. */
-    public static final Logger LOGGER =
-            Logging.getLogger("org.geotools.coverage.processing.operation");
+    public static final Logger LOGGER = Logging.getLogger(ZonalStatistics.class);
 
     /** Constructs a default {@code "ZonalStatistics"} operation. */
     public ZonalStatistics() throws OperationNotFoundException {

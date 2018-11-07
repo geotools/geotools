@@ -3,7 +3,7 @@ package org.geotools.ows.bindings;
 import java.util.List;
 import javax.xml.namespace.QName;
 import org.eclipse.emf.ecore.EFactory;
-import org.geotools.xml.ComplexEMFBinding;
+import org.geotools.xsd.ComplexEMFBinding;
 
 /**
  * Parses rangeBinding

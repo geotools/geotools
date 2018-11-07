@@ -24,7 +24,6 @@ import org.geotools.xml.schema.AttributeGroup;
  * DOCUMENT ME!
  *
  * @author dzwiers
- * @source $URL$
  */
 public class AttributeGroupGT implements AttributeGroup {
     private String anyAttributeNamespace;

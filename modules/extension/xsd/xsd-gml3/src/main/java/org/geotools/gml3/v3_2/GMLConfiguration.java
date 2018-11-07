@@ -71,8 +71,8 @@ import org.geotools.gml3.v3_2.bindings.DoubleListBinding;
 import org.geotools.gml3.v3_2.bindings.EnvelopeTypeBinding;
 import org.geotools.gml3.v3_2.bindings.GML32EncodingUtils;
 import org.geotools.gml3.v3_2.bindings.LinearRingTypeBinding;
-import org.geotools.xml.Configuration;
 import org.geotools.xs.XS;
+import org.geotools.xsd.Configuration;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.picocontainer.MutablePicoContainer;
 
@@ -80,7 +80,6 @@ import org.picocontainer.MutablePicoContainer;
  * Parser configuration for the http://www.opengis.net/gml/3.2 schema.
  *
  * @generated
- * @source $URL$
  */
 public class GMLConfiguration extends Configuration {
 

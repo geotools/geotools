@@ -16,7 +16,6 @@ import org.opengis.annotation.UML;
 /**
  * Comparison of the classes assigned to features or their attributes to a universe of discourse.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/as#01-111">ISO 19115</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 2.0

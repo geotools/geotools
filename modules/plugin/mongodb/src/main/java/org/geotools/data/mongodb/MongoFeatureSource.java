@@ -56,7 +56,7 @@ import org.opengis.filter.sort.SortOrder;
 
 public class MongoFeatureSource extends ContentFeatureSource {
 
-    static Logger LOG = Logging.getLogger("org.geotools.data.mongodb");
+    static Logger LOG = Logging.getLogger(MongoFeatureSource.class);
 
     final DBCollection collection;
 

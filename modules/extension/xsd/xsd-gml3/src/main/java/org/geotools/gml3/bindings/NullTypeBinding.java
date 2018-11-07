@@ -18,8 +18,8 @@ package org.geotools.gml3.bindings;
 
 import javax.xml.namespace.QName;
 import org.geotools.gml3.GML;
-import org.geotools.xml.AbstractSimpleBinding;
-import org.geotools.xml.InstanceComponent;
+import org.geotools.xsd.AbstractSimpleBinding;
+import org.geotools.xsd.InstanceComponent;
 import org.locationtech.jts.geom.Envelope;
 
 /**
@@ -52,7 +52,6 @@ import org.locationtech.jts.geom.Envelope;
  * </pre>
  *
  * @generated
- * @source $URL$
  */
 public class NullTypeBinding extends AbstractSimpleBinding {
 

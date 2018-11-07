@@ -42,7 +42,6 @@ import org.geotools.ows.ServiceException;
  * (representing versions of the OWS to be implemented) and their own request/response instances.
  *
  * @author Richard Gould
- * @source $URL$
  */
 public abstract class AbstractOpenWebService<C extends Capabilities, R extends Object> {
 
@@ -61,7 +60,7 @@ public abstract class AbstractOpenWebService<C extends Capabilities, R extends O
     protected Map<String, Object> hints;
 
     protected static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.data.ows");
+            org.geotools.util.logging.Logging.getLogger(AbstractOpenWebService.class);
 
     /**
      * Set up the specifications used and retrieve the Capabilities document given by serverURL.

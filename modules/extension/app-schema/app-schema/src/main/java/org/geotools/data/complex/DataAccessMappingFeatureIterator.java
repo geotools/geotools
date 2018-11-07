@@ -30,6 +30,8 @@ import java.util.Set;
 import java.util.logging.Level;
 import javax.xml.namespace.QName;
 import org.apache.commons.lang3.StringUtils;
+import org.geotools.appschema.feature.AppSchemaAttributeBuilder;
+import org.geotools.appschema.jdbc.JoiningJDBCFeatureSource;
 import org.geotools.data.DataAccess;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.DefaultTransaction;
@@ -46,7 +48,6 @@ import org.geotools.data.complex.filter.XPathUtil.Step;
 import org.geotools.data.complex.filter.XPathUtil.StepList;
 import org.geotools.data.joining.JoiningNestedAttributeMapping;
 import org.geotools.data.joining.JoiningQuery;
-import org.geotools.feature.AppSchemaAttributeBuilder;
 import org.geotools.feature.ComplexAttributeImpl;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureImpl;
@@ -56,7 +57,6 @@ import org.geotools.filter.FilterAttributeExtractor;
 import org.geotools.gml2.bindings.GML2EncodingUtils;
 import org.geotools.jdbc.JDBCFeatureSource;
 import org.geotools.jdbc.JDBCFeatureStore;
-import org.geotools.jdbc.JoiningJDBCFeatureSource;
 import org.geotools.referencing.CRS;
 import org.opengis.feature.Attribute;
 import org.opengis.feature.ComplexAttribute;
@@ -92,10 +92,6 @@ import org.xml.sax.Attributes;
  * @author Ben Caradoc-Davies (CSIRO Earth Science and Resource Engineering)
  * @author Rini Angreani (CSIRO Earth Science and Resource Engineering)
  * @author Russell Petty (GeoScience Victoria)
- * @version $Id$
- * @source $URL$
- *     http://svn.osgeo.org/geotools/trunk/modules/unsupported/app-schema/app-schema/src/main
- *     /java/org/geotools/data/complex/DataAccessMappingFeatureIterator.java $
  * @since 2.4
  */
 public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIterator {

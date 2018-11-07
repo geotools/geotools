@@ -29,7 +29,7 @@ import org.geotools.data.shapefile.index.quadtree.QuadTree;
 import org.geotools.data.shapefile.index.quadtree.StoreException;
 import org.geotools.data.shapefile.index.quadtree.fs.FileSystemIndexStore;
 import org.geotools.data.shapefile.shp.IndexFile;
-import org.geotools.util.NullProgressListener;
+import org.geotools.data.util.NullProgressListener;
 import org.geotools.util.URLs;
 import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.Envelope;

@@ -30,7 +30,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * (but not longitudes)
  *
  * @author Andrea Aime - GeoSolutions
- * @source $URL$
  */
 public class WorldVanDerGrintenIHandlerFactory implements ProjectionHandlerFactory {
 

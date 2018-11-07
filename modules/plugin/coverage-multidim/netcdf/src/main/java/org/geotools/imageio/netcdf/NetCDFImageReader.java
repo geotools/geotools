@@ -47,6 +47,7 @@ import org.geotools.coverage.io.catalog.CoverageSlicesCatalog;
 import org.geotools.coverage.io.catalog.DataStoreConfiguration;
 import org.geotools.coverage.io.range.FieldType;
 import org.geotools.coverage.io.range.RangeType;
+import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.data.DefaultTransaction;
 import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
@@ -60,7 +61,6 @@ import org.geotools.imageio.netcdf.cv.CoordinateVariable;
 import org.geotools.imageio.netcdf.utilities.NetCDFCRSUtilities;
 import org.geotools.imageio.netcdf.utilities.NetCDFUtilities;
 import org.geotools.imageio.netcdf.utilities.NetCDFUtilities.CheckType;
-import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.util.SoftValueHashMap;
 import org.geotools.util.Utilities;
 import org.geotools.util.logging.Logging;
@@ -102,7 +102,7 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
     /** INTERNAL_INDEX_CREATION_PAGE_SIZE */
     private static final int INTERNAL_INDEX_CREATION_PAGE_SIZE = 1000;
 
-    private static final Logger LOGGER = Logging.getLogger(NetCDFImageReader.class.toString());
+    private static final Logger LOGGER = Logging.getLogger(NetCDFImageReader.class);
 
     private Exception tracer;
 

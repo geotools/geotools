@@ -24,7 +24,6 @@ import org.geotools.filter.expression.ExpressionAbstract;
  * Implements a default expression, with helpful variables and static methods.
  *
  * @author Rob Hranac, Vision for New York
- * @source $URL$
  * @version $Id$
  */
 public abstract class DefaultExpression extends ExpressionAbstract {
@@ -92,7 +91,7 @@ public abstract class DefaultExpression extends ExpressionAbstract {
      * @param expressionType Type of expression for check.
      * @return Whether or not this is a geometry expression type.
      */
-    protected static boolean isExpression(short expressionType) {
+    public static boolean isExpression(short expressionType) {
         return (isMathExpression(expressionType)
                         || isAttributeExpression(expressionType)
                         || isLiteralExpression(expressionType))

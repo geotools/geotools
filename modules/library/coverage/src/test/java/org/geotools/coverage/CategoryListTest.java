@@ -24,15 +24,14 @@ import static org.junit.Assert.fail;
 
 import java.util.Arrays;
 import java.util.Random;
-import org.geotools.resources.XArray;
 import org.geotools.util.Range;
+import org.geotools.util.XArray;
 import org.junit.Test;
 import org.opengis.referencing.operation.TransformException;
 
 /**
  * Tests the {@link CategoryList} implementation.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

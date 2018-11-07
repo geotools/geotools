@@ -46,7 +46,7 @@ import org.geotools.util.URLs;
 public class MaskOverviewProvider {
 
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(MaskOverviewProvider.class.toString());
+            org.geotools.util.logging.Logging.getLogger(MaskOverviewProvider.class);
 
     public static final String OVR_EXTENSION = ".ovr";
 

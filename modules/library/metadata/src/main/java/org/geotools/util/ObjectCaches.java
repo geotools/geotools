@@ -17,10 +17,10 @@
 package org.geotools.util;
 
 import java.util.Set;
-import org.geotools.factory.FactoryRegistryException;
-import org.geotools.factory.GeoTools;
-import org.geotools.factory.Hints;
 import org.geotools.metadata.iso.citation.Citations;
+import org.geotools.util.factory.FactoryRegistryException;
+import org.geotools.util.factory.GeoTools;
+import org.geotools.util.factory.Hints;
 import org.opengis.metadata.citation.Citation;
 import org.opengis.util.GenericName;
 
@@ -40,7 +40,6 @@ import org.opengis.util.GenericName;
  * @since 2.5
  * @author Jody Garnett
  * @author Cory Horner
- * @source $URL$
  */
 public final class ObjectCaches {
     /** Do not allow instantiation of this class. */

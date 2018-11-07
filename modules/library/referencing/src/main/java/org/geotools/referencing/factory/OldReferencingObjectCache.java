@@ -27,10 +27,6 @@ import java.util.Map;
  * desired. This is a temporary class.
  *
  * @since 2.4
- * @version $Id: DefaultReferencingObjectCache.java 25972 2007-06-21 13:38:35Z desruisseaux $
- * @source $URL:
- *     http://svn.geotools.org/geotools/trunk/gt/modules/library/referencing/src/main/java/org/geotools/referencing/factory/DefaultReferencingObjectCache.java
- *     $
  * @author Cory Horner (Refractions Research)
  */
 final class OldReferencingObjectCache {

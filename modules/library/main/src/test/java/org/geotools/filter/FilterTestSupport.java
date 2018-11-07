@@ -32,12 +32,11 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * Common filter testing code factored up here.
  *
  * @author Chris Holmes
- * @source $URL$
  */
 public abstract class FilterTestSupport extends TestCase {
     /** Standard logging instance */
     protected static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.filter");
+            org.geotools.util.logging.Logging.getLogger(FilterTestSupport.class);
     /** Schema on which to preform tests */
     protected static SimpleFeatureType testSchema = null;
 

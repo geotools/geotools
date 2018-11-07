@@ -22,10 +22,10 @@ import org.geotools.process.Process;
 import org.geotools.process.Processors;
 import org.geotools.referencing.crs.DefaultEngineeringCRS;
 import org.geotools.renderer.lite.StreamingRenderer;
-import org.geotools.styling.SLDParser;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleFactory;
 import org.geotools.test.TestData;
+import org.geotools.xml.styling.SLDParser;
 import org.junit.Assert;
 import org.junit.Test;
 

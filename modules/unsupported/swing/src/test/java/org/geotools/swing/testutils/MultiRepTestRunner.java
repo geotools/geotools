@@ -32,7 +32,6 @@ import org.junit.runner.notification.RunNotifier;
  *
  * @author Michael Bedward
  * @since 8.0
- * @source $URL$
  * @version $Id$
  */
 public class MultiRepTestRunner extends JUnit4ClassRunner {
@@ -49,7 +48,7 @@ public class MultiRepTestRunner extends JUnit4ClassRunner {
 
     @Override
     public void run(RunNotifier notifier) {
-        Logger logger = Logging.getLogger("org.geotools.swing");
+        Logger logger = Logging.getLogger(MultiRepTestRunner.class);
         logger.setLevel(Level.WARNING);
 
         notifier.addListener(

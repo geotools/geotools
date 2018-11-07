@@ -28,9 +28,9 @@ import org.geotools.data.shapefile.files.FileReader;
 import org.geotools.data.shapefile.files.ShpFileType;
 import org.geotools.data.shapefile.files.ShpFiles;
 import org.geotools.data.shapefile.files.StreamLogging;
+import org.geotools.data.util.ScreenMap;
 import org.geotools.geometry.jts.JTS;
-import org.geotools.renderer.ScreenMap;
-import org.geotools.resources.NIOUtilities;
+import org.geotools.util.NIOUtilities;
 import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.CoordinateSequence;
 import org.locationtech.jts.geom.CoordinateSequenceFactory;
@@ -60,7 +60,6 @@ import org.locationtech.jts.geom.Polygon;
  * @author jamesm
  * @author aaime
  * @author Ian Schneider
- * @source $URL$
  */
 public class ShapefileReader implements FileReader {
     private static final Logger LOGGER = Logging.getLogger(ShapefileReader.class);

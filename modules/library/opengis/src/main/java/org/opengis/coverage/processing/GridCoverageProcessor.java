@@ -64,7 +64,6 @@ import org.opengis.coverage.grid.GridCoverage;
  *   </TD></TR>
  * </TABLE>
  *
- * @source $URL$
  * @version <A HREF="http://www.opengis.org/docs/01-004.pdf">Grid Coverage specification 1.0</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0

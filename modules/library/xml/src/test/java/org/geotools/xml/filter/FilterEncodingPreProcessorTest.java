@@ -28,7 +28,6 @@ import org.opengis.filter.Id;
 import org.opengis.filter.PropertyIsNull;
 import org.opengis.filter.identity.FeatureId;
 
-/** @source $URL$ */
 public class FilterEncodingPreProcessorTest extends TestCase {
     protected void setUp() throws Exception {
         super.setUp();

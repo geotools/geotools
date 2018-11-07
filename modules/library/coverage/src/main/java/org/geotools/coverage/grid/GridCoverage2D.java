@@ -43,14 +43,14 @@ import javax.media.jai.RenderedImageAdapter;
 import javax.media.jai.remote.SerializableRenderedImage;
 import org.geotools.coverage.AbstractCoverage;
 import org.geotools.coverage.GridSampleDimension;
-import org.geotools.factory.Hints;
+import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.geometry.Envelope2D;
-import org.geotools.resources.Classes;
-import org.geotools.resources.coverage.CoverageUtilities;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
-import org.geotools.resources.i18n.LoggingKeys;
-import org.geotools.resources.i18n.Loggings;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
+import org.geotools.metadata.i18n.LoggingKeys;
+import org.geotools.metadata.i18n.Loggings;
+import org.geotools.util.Classes;
+import org.geotools.util.factory.Hints;
 import org.opengis.coverage.CannotEvaluateException;
 import org.opengis.coverage.PointOutsideCoverageException;
 import org.opengis.coverage.SampleDimension;
@@ -86,7 +86,6 @@ import org.opengis.referencing.datum.PixelInCell;
  * (usually on client side) of {@code GridCoverage2D} instances requires J2SE 1.5.
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

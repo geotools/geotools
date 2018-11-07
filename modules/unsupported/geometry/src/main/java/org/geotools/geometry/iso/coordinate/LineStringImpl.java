@@ -37,7 +37,6 @@ import org.opengis.geometry.primitive.CurveInterpolation;
  * with the obvious savings of storage space.
  *
  * @author Jackson Roehrig & Sanjay Jena
- * @source $URL$
  */
 public class LineStringImpl extends CurveSegmentImpl implements LineString {
     private static final long serialVersionUID = -4463400288452707656L;

@@ -35,11 +35,7 @@ import org.geotools.arcsde.session.ISession;
  * Handles a versioned table when in transaction mode
  *
  * @author Gabriel Roldan (TOPP)
- * @version $Id$
  * @since 2.5.x
- * @source $URL$
- *     http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/main/java
- *     /org/geotools/arcsde/data/versioning/TransactionVersionHandler.java $
  */
 public class TransactionVersionHandler implements ArcSdeVersionHandler {
 

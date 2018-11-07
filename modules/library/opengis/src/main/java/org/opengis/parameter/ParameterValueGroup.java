@@ -23,7 +23,6 @@ import org.opengis.metadata.Identifier;
  * ParameterValueGroup}, if those instances contain different values of one or more {@link
  * ParameterValue}s which suitably distinquish among those groups.
  *
- * @source $URL$
  * @version <A HREF="http://portal.opengeospatial.org/files/?artifact_id=6716">Abstract
  *     specification 2.0</A>
  * @author Martin Desruisseaux (IRD)

@@ -31,7 +31,6 @@ import org.geotools.jdbc.JDBCJNDIDataStoreFactory;
  * JNDI DataStoreFactory for sql server database.
  *
  * @author Christian Mueller
- * @source $URL$
  */
 public class SQLServerJNDIDataStoreFactory extends JDBCJNDIDataStoreFactory {
 

@@ -27,7 +27,7 @@ import org.geotools.util.ConverterFactory;
 /**
  * 
  *
- * @source $URL$
+
  */
 public class IngresClobConverterFactory implements ConverterFactory {
 	

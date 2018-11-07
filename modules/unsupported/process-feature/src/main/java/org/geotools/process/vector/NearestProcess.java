@@ -55,7 +55,6 @@ import systems.uom.common.USCustomary;
     description =
             "Returns the feature in a given feature collection that has the smallest distance to a given point."
 )
-/** @source $URL$ */
 public class NearestProcess implements VectorProcess {
     private static final Logger LOGGER = Logging.getLogger(NearestProcess.class);
 

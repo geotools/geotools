@@ -19,7 +19,6 @@ package org.geotools.styling;
 import org.geotools.util.Utilities;
 import org.opengis.util.Cloneable;
 
-/** @source $URL$ */
 public class ExtentImpl implements Extent, Cloneable {
     private String name;
     private String value;

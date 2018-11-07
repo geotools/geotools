@@ -35,7 +35,7 @@ import org.opengis.feature.type.FeatureType;
  * @author ian
  */
 public class GeoJSONReader {
-    private static final Logger LOGGER = Logging.getLogger(GeoJSONReader.class.getName());
+    private static final Logger LOGGER = Logging.getLogger(GeoJSONReader.class);
 
     private FeatureJSON reader = new FeatureJSON();
 

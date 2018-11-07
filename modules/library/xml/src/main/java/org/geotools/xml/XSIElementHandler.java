@@ -31,13 +31,12 @@ import org.xml.sax.SAXNotSupportedException;
  *
  * @author dzwiers, Refractions Research, Inc. http://www.refractions.net
  * @author $Author:$ (last modification)
- * @source $URL$
  * @version $Id$
  */
 public abstract class XSIElementHandler implements Serializable {
     /** the logger -- should be used for debugging (assuming there are bugs LOL) */
     public static final Logger logger =
-            org.geotools.util.logging.Logging.getLogger("net.refractions.xsi.element");
+            org.geotools.util.logging.Logging.getLogger(XSIElementHandler.class);
 
     private static Level level = Level.WARNING;
 

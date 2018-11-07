@@ -25,9 +25,6 @@ import org.geotools.util.logging.Logging;
 /**
  * @author jamesm
  * @author Ian Schneider
- * @source $URL$
- *     http://svn.geotools.org/geotools/trunk/gt/modules/plugin/shapefile/src/main/java/org
- *     /geotools/data/shapefile/shp/ShapefileHeader.java $
  */
 public class ShapefileHeader {
 
@@ -66,7 +63,7 @@ public class ShapefileHeader {
 
     private void checkVersion(boolean strict) throws java.io.IOException {
         if (version != VERSION) {
-            String message = "Wrong version, expected " + MAGIC + ", got " + version;
+            String message = "Wrong version, expected " + VERSION + ", got " + version;
             if (!strict) {
                 LOGGER.info(message);
             } else {

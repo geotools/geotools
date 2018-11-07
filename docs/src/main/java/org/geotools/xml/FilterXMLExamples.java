@@ -1,9 +1,9 @@
 package org.geotools.xml;
 
-import org.geotools.filter.FilterFilter;
 import org.geotools.filter.FilterHandler;
 import org.geotools.gml.GMLFilterDocument;
 import org.geotools.gml.GMLFilterGeometry;
+import org.geotools.xml.filter.FilterFilter;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
 import org.xml.sax.InputSource;

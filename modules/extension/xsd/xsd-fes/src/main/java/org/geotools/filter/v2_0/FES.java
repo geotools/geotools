@@ -4,14 +4,13 @@ import java.util.Set;
 import javax.xml.namespace.QName;
 import org.geotools.gml3.v3_2.GML;
 import org.geotools.ows.v1_1.OWS;
-import org.geotools.xml.XSD;
+import org.geotools.xsd.XSD;
 
 /**
  * This interface contains the qualified names of all the types,elements, and attributes in the
  * http://www.opengis.net/fes/2.0 schema.
  *
  * @generated
- * @source $URL$
  */
 public final class FES extends XSD {
 

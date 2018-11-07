@@ -30,7 +30,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * coordinate reference system}. Creating geometries in a different CRS may requires a different
  * instance of {@code GeometryFactory}.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/as">ISO 19107</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0

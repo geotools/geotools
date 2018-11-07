@@ -20,7 +20,6 @@ import org.opengis.util.Cloneable;
  * Holds the set of grid coordinates that specifies the location of the {@linkplain GridPoint grid
  * point} within the {@linkplain Grid grid}.
  *
- * @source $URL$
  * @version ISO 19123:2004
  * @author Martin Schouwenburg
  * @author Wim Koolhoven

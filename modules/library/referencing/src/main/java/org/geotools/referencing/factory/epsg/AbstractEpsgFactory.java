@@ -49,10 +49,13 @@ import java.util.logging.LogRecord;
 import javax.measure.Unit;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
-import org.geotools.factory.GeoTools;
-import org.geotools.factory.Hints;
-import org.geotools.io.TableWriter;
 import org.geotools.measure.Units;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
+import org.geotools.metadata.i18n.LoggingKeys;
+import org.geotools.metadata.i18n.Loggings;
+import org.geotools.metadata.i18n.Vocabulary;
+import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.metadata.iso.citation.CitationImpl;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.metadata.iso.extent.ExtentImpl;
@@ -74,18 +77,15 @@ import org.geotools.referencing.operation.DefaultConcatenatedOperation;
 import org.geotools.referencing.operation.DefaultOperation;
 import org.geotools.referencing.operation.DefaultOperationMethod;
 import org.geotools.referencing.operation.DefiningConversion;
-import org.geotools.resources.CRSUtilities;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
-import org.geotools.resources.i18n.LoggingKeys;
-import org.geotools.resources.i18n.Loggings;
-import org.geotools.resources.i18n.Vocabulary;
-import org.geotools.resources.i18n.VocabularyKeys;
+import org.geotools.referencing.util.CRSUtilities;
 import org.geotools.util.LocalName;
 import org.geotools.util.ObjectCache;
 import org.geotools.util.ScopedName;
 import org.geotools.util.SimpleInternationalString;
+import org.geotools.util.TableWriter;
 import org.geotools.util.Version;
+import org.geotools.util.factory.GeoTools;
+import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
 import org.opengis.metadata.Identifier;
 import org.opengis.metadata.citation.Citation;
@@ -165,7 +165,6 @@ import tec.uom.se.unit.MetricPrefix;
  * legal EPSG code, subclasses can override the {@link #isPrimaryKey} method.
  *
  * @since 2.4
- * @source $URL$
  * @version $Id$
  * @author Yann Cézard
  * @author Martin Desruisseaux (IRD)
@@ -3190,7 +3189,6 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
      * preserve any connection to the database.
      *
      * @since 2.2
-     * @source $URL$
      * @version $Id$
      * @author Martin Desruisseaux (IRD)
      */

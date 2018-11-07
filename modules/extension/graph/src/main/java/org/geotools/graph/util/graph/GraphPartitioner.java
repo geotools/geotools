@@ -34,7 +34,6 @@ import org.geotools.graph.traverse.standard.DepthFirstIterator;
  * every two pair of nodes, there is a path between them.
  *
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
- * @source $URL$
  */
 public class GraphPartitioner implements GraphWalker {
 

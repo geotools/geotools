@@ -37,10 +37,7 @@ import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Polygon;
 import org.xml.sax.Attributes;
 
-/**
- * @author Jesse
- * @source $URL$
- */
+/** @author Jesse */
 public class GeometryEncoderTest extends TestCase {
 
     protected void setUp() throws Exception {

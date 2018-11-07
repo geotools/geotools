@@ -32,7 +32,6 @@ import org.geotools.swt.utils.Messages;
  *
  * @author Michael Bedward
  * @since 2.6
- * @source $URL$
  */
 public class PanTool extends CursorTool {
 

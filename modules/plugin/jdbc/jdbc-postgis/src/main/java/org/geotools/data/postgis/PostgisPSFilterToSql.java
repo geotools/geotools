@@ -29,7 +29,6 @@ import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.spatial.BinarySpatialOperator;
 import org.opengis.filter.spatial.DistanceBufferOperator;
 
-/** @source $URL$ */
 public class PostgisPSFilterToSql extends PreparedFilterToSQL {
 
     FilterToSqlHelper helper;

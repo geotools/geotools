@@ -27,7 +27,6 @@ import org.opengis.geometry.primitive.CurveSegment;
 import org.opengis.geometry.primitive.OrientableCurve;
 import org.opengis.geometry.primitive.Ring;
 
-/** @source $URL$ */
 public class DisplayCurve {
 
     /** @param args */

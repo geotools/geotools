@@ -25,7 +25,6 @@ import org.opengis.util.CodeList;
  * @author Alexander Petkov
  * @author Martin Desruisseaux (IRD)
  * @todo Need javadoc for each enumeration.
- * @source $URL$
  */
 @UML(identifier = "TM_RelativePosition", specification = ISO_19108)
 public final class RelativePosition extends CodeList<RelativePosition> {

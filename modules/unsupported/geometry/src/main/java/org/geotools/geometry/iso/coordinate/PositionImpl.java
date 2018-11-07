@@ -30,7 +30,6 @@ import org.opengis.geometry.primitive.Point;
  *     indirectly as a reference to a Point (variant indirect). Position::direct [0,1] :
  *     DirectPosition2D Position::indirect [0,1] : PointRef Position: {direct.isNull =
  *     indirect.isNotNull}
- * @source $URL$
  */
 public class PositionImpl implements Position, Serializable {
 

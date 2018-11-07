@@ -24,7 +24,7 @@ import org.geotools.data.DataUtilities;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.IllegalFilterException;
 import org.geotools.filter.LengthFunction;
-import org.geotools.resources.Classes;
+import org.geotools.util.Classes;
 import org.geotools.util.SimpleInternationalString;
 import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -84,7 +84,6 @@ import org.opengis.util.InternationalString;
  * <p>This class maintains state and is not thread safe.
  *
  * @author Justin Deoliveira, The Open Planning Project, jdeolive@openplans.org
- * @source $URL$
  */
 public class AttributeTypeBuilder {
 

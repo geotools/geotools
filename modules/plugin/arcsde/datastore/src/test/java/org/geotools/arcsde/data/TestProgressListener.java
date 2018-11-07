@@ -27,9 +27,6 @@ import org.opengis.util.ProgressListener;
  * <p>This implementation is good about throwing illegal state exceptions and so forth.
  *
  * @author Jody
- * @source $URL$
- *     http://svn.osgeo.org/geotools/trunk/modules/plugin/arcsde/datastore/src/test/java/org
- *     /geotools/arcsde/data/TestProgressListener.java $
  */
 public class TestProgressListener implements ProgressListener {
     int progressCount;

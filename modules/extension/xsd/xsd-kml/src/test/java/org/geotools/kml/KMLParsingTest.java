@@ -29,16 +29,15 @@ import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.kml.bindings.DocumentTypeBinding;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.Symbolizer;
-import org.geotools.xml.Encoder;
-import org.geotools.xml.Parser;
-import org.geotools.xml.StreamingParser;
+import org.geotools.xsd.Encoder;
+import org.geotools.xsd.Parser;
+import org.geotools.xsd.StreamingParser;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.opengis.feature.simple.SimpleFeature;
 import org.w3c.dom.Document;
 
-/** @source $URL$ */
 public class KMLParsingTest extends TestCase {
 
     public void testParse() throws Exception {

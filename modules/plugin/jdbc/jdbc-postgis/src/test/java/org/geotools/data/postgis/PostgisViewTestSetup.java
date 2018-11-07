@@ -2,7 +2,6 @@ package org.geotools.data.postgis;
 
 import org.geotools.jdbc.JDBCViewTestSetup;
 
-/** @source $URL$ */
 public class PostgisViewTestSetup extends JDBCViewTestSetup {
 
     protected PostgisViewTestSetup() {

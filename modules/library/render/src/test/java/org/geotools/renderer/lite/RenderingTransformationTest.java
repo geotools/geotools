@@ -34,8 +34,6 @@ import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.Query;
 import org.geotools.data.property.PropertyDataStore;
-import org.geotools.factory.GeoTools;
-import org.geotools.factory.Hints;
 import org.geotools.filter.text.cql2.CQL;
 import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.gce.geotiff.GeoTiffReader;
@@ -48,8 +46,10 @@ import org.geotools.map.MapContent;
 import org.geotools.referencing.CRS;
 import org.geotools.renderer.RenderListener;
 import org.geotools.styling.Style;
-import org.junit.After;
-import org.junit.Before;
+import org.geotools.util.factory.GeoTools;
+import org.geotools.util.factory.Hints;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.opengis.coverage.grid.Format;
 import org.opengis.feature.simple.SimpleFeature;
@@ -63,15 +63,15 @@ public class RenderingTransformationTest {
 
     private static final long TIME = 4000;
 
-    @Before
-    public void setup() {
+    @BeforeClass
+    public static void setup() {
         // System.setProperty("org.geotools.test.interactive", "true");
         System.setProperty(GeoTools.FORCE_LONGITUDE_FIRST_AXIS_ORDER, "false");
         CRS.reset("all");
     }
 
-    @After
-    public void tearDown() {
+    @AfterClass
+    public static void tearDown() {
         Hints.removeSystemDefault(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER);
     }
 

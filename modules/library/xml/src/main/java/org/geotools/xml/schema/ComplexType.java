@@ -24,7 +24,6 @@ import org.xml.sax.Attributes;
  * generic XML schema type interface to represent datum within nested elements.
  *
  * @author dzwiers www.refractions.net
- * @source $URL$
  */
 public interface ComplexType extends Type {
     /**

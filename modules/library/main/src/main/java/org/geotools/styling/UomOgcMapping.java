@@ -25,8 +25,6 @@ import systems.uom.common.USCustomary;
  * Defines the Units of Measure (UOMs) specified by the OGC SE standard and their mappings to Java
  * Units defined in <code>javax.measure.unit</code>. Each entry in this enum provides both the Java
  * Unit for the given UOM and the corresponding String that is defined by the SE standard.
- *
- * @source $URL$
  */
 public enum UomOgcMapping {
     METRE(SI.METRE, "http://www.opengeospatial.org/se/units/metre"),

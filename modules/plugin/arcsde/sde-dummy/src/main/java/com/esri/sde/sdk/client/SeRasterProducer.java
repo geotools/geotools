@@ -1,6 +1,5 @@
 package com.esri.sde.sdk.client;
 
-/** @source $URL$ */
 public interface SeRasterProducer {
 
     public void addConsumer(SeRasterConsumer arg0);

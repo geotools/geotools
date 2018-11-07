@@ -34,12 +34,11 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * @author Gabriel Roldan (OpenGeo)
  * @version $Id$
  * @since 2.6
- * @source $URL$
  */
 @SuppressWarnings("nls")
 public class WFSResponse extends Response {
 
-    private static final Logger LOGGER = Logging.getLogger("org.geotools.data.wfs.protocol.wfs");
+    private static final Logger LOGGER = Logging.getLogger(WFSResponse.class);
 
     private Charset charset;
 

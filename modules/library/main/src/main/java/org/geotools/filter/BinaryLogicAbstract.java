@@ -19,10 +19,7 @@ package org.geotools.filter;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * @author jdeolive
- * @source $URL$
- */
+/** @author jdeolive */
 public abstract class BinaryLogicAbstract extends AbstractFilter {
     protected List<org.opengis.filter.Filter> children;
 

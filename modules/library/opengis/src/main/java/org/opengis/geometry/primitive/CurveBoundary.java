@@ -19,7 +19,6 @@ import org.opengis.annotation.UML;
  * point} references ({@linkplain #getStartPoint start point} and {@linkplain #getEndPoint end
  * point}).
  *
- * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/as">ISO 19107</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0

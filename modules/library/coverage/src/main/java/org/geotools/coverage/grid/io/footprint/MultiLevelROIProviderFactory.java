@@ -20,7 +20,7 @@ import java.io.File;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.geotools.resources.coverage.CoverageUtilities;
+import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.util.URLs;
 import org.geotools.util.Utilities;
 import org.locationtech.jts.geom.Geometry;
@@ -36,8 +36,7 @@ import org.locationtech.jts.geom.Geometry;
 public class MultiLevelROIProviderFactory {
 
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(
-                    MultiLevelROIProviderFactory.class.toString());
+            org.geotools.util.logging.Logging.getLogger(MultiLevelROIProviderFactory.class);
 
     // well known properties
     public static final String SOURCE_PROPERTY = "footprint_source";

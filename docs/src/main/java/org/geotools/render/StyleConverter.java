@@ -30,15 +30,15 @@ import net.miginfocom.swing.MigLayout;
 import org.geotools.data.Parameter;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.styling.FeatureTypeConstraint;
-import org.geotools.styling.SLDParser;
-import org.geotools.styling.SLDTransformer;
 import org.geotools.styling.StyleFactory;
 import org.geotools.styling.StyledLayerDescriptor;
 import org.geotools.styling.UserLayer;
 import org.geotools.swing.data.JParameterListWizard;
 import org.geotools.swing.wizard.JWizard;
 import org.geotools.util.KVP;
-import org.geotools.xml.Encoder;
+import org.geotools.xml.styling.SLDParser;
+import org.geotools.xml.styling.SLDTransformer;
+import org.geotools.xsd.Encoder;
 import org.opengis.style.Style;
 
 /**
@@ -191,7 +191,7 @@ public class StyleConverter extends JFrame {
         }
         org.geotools.sld.v1_1.SLDConfiguration configuration =
                 new org.geotools.sld.v1_1.SLDConfiguration();
-        Encoder encoder = new org.geotools.xml.Encoder(configuration);
+        Encoder encoder = new Encoder(configuration);
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         try {
@@ -232,7 +232,7 @@ public class StyleConverter extends JFrame {
 
         org.geotools.sld.v1_1.SLDConfiguration configuration =
                 new org.geotools.sld.v1_1.SLDConfiguration();
-        Encoder encoder = new org.geotools.xml.Encoder(configuration);
+        Encoder encoder = new Encoder(configuration);
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         try {

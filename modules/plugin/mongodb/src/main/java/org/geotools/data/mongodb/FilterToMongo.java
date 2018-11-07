@@ -102,8 +102,7 @@ import org.opengis.filter.temporal.TOverlaps;
  *
  * @author Gerald Gay, Data Tactics Corp.
  * @author Alan Mangan, Data Tactics Corp.
- * @author Tom Kunicki, Boundless Spatial Inc.
- * @source $URL$ (C) 2011, Open Source Geospatial Foundation (OSGeo)
+ * @author Tom Kunicki, Boundless Spatial Inc. (C) 2011, Open Source Geospatial Foundation (OSGeo)
  * @see The GNU Lesser General Public License (LGPL)
  */
 public class FilterToMongo implements FilterVisitor, ExpressionVisitor {

@@ -15,9 +15,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
-import org.geotools.geometry.jts.JTSGeometry;
-import org.geotools.geometry.jts.JTSUtils;
 import org.geotools.geometry.jts.spatialschema.geometry.GeometryImpl;
+import org.geotools.geometry.jts.spatialschema.geometry.JTSGeometry;
+import org.geotools.geometry.jts.spatialschema.geometry.JTSUtils;
 import org.geotools.geometry.jts.spatialschema.geometry.NotifyingArrayList;
 import org.geotools.geometry.jts.spatialschema.geometry.geometry.LineStringImpl;
 import org.opengis.geometry.DirectPosition;
@@ -35,8 +35,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * Simple implementation of the Curve interface that does not implement any of the (hard) math
  * functions like intersection, etc. A curve consists of any number of CurveSegment objects (such as
  * LineStrings) that must be connected end-to-end.
- *
- * @source $URL$
  */
 public class CurveImpl extends GeometryImpl implements Curve {
     /** Component parts of the Curve. Each element must implement CurveSegment. */

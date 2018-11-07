@@ -22,8 +22,8 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import org.geotools.metadata.iso.MetaDataImpl;
-import org.geotools.resources.Classes;
 import org.geotools.util.CheckedCollection;
+import org.geotools.util.Classes;
 import org.junit.*;
 import org.opengis.metadata.MetaData;
 import org.opengis.metadata.citation.CitationFactory;
@@ -39,7 +39,6 @@ import org.opengis.util.CodeList;
 /**
  * Tests every implementation in the {@link org.geotools.metadata.iso} package.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (Geomatys)
  * @todo Current implementation relies on {@link MetaData} dependencies. This is probably not

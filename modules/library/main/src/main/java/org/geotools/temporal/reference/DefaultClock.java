@@ -25,10 +25,7 @@ import org.opengis.temporal.Clock;
 import org.opengis.temporal.ClockTime;
 import org.opengis.util.InternationalString;
 
-/**
- * @author Mehdi Sidhoum (Geomatys)
- * @source $URL$
- */
+/** @author Mehdi Sidhoum (Geomatys) */
 public class DefaultClock extends DefaultTemporalReferenceSystem implements Clock {
 
     /** Provide the name or description of an event, such as solar noon or sunrise. */

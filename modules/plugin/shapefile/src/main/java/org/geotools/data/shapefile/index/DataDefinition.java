@@ -23,7 +23,6 @@ import java.util.ArrayList;
  * Field definition
  *
  * @author Tommaso Nolli
- * @source $URL$
  */
 public class DataDefinition {
     private Charset charset;

@@ -24,8 +24,6 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
  *
  * @author Michael Bedward
  * @since 8.0
- * @source $URL: $
- * @version $Id: $
  */
 public class MockLayer extends Layer {
 

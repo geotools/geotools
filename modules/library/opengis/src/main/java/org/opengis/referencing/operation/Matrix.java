@@ -18,7 +18,6 @@ import org.opengis.util.Cloneable;
 /**
  * A two dimensional array of numbers. Row and column numbering begins with zero.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengis.org/docs/01-009.pdf">Implementation specification 1.0</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0

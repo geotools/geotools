@@ -42,6 +42,7 @@ import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.geotools.appschema.filter.FilterFactoryImplReportInvalidProperty;
 import org.geotools.data.DataAccess;
 import org.geotools.data.DataAccessFinder;
 import org.geotools.data.DataSourceException;
@@ -52,6 +53,8 @@ import org.geotools.data.complex.ComplexFeatureConstants;
 import org.geotools.data.complex.FeatureTypeMapping;
 import org.geotools.data.complex.FeatureTypeMappingFactory;
 import org.geotools.data.complex.NestedAttributeMapping;
+import org.geotools.data.complex.expression.FeaturePropertyAccessorFactory;
+import org.geotools.data.complex.feature.type.ComplexFeatureTypeFactoryImpl;
 import org.geotools.data.complex.filter.XPath;
 import org.geotools.data.complex.filter.XPathUtil.Step;
 import org.geotools.data.complex.filter.XPathUtil.StepList;
@@ -59,14 +62,10 @@ import org.geotools.data.complex.spi.CustomImplementationsFinder;
 import org.geotools.data.complex.spi.CustomSourceDataStore;
 import org.geotools.data.complex.xml.XmlFeatureSource;
 import org.geotools.data.joining.JoiningNestedAttributeMapping;
-import org.geotools.factory.Hints;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.type.AttributeDescriptorImpl;
-import org.geotools.feature.type.ComplexFeatureTypeFactoryImpl;
 import org.geotools.feature.type.FeatureTypeFactoryImpl;
 import org.geotools.filter.AttributeExpressionImpl;
-import org.geotools.filter.FilterFactoryImplReportInvalidProperty;
-import org.geotools.filter.expression.FeaturePropertyAccessorFactory;
 import org.geotools.filter.expression.PropertyAccessor;
 import org.geotools.filter.expression.PropertyAccessorFactory;
 import org.geotools.filter.text.cql2.CQL;
@@ -74,10 +73,11 @@ import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.jdbc.JDBCFeatureSource;
 import org.geotools.jdbc.JDBCFeatureStore;
 import org.geotools.util.URLs;
-import org.geotools.xml.SchemaIndex;
+import org.geotools.util.factory.Hints;
 import org.geotools.xml.resolver.SchemaCache;
 import org.geotools.xml.resolver.SchemaCatalog;
 import org.geotools.xml.resolver.SchemaResolver;
+import org.geotools.xsd.SchemaIndex;
 import org.opengis.feature.Feature;
 import org.opengis.feature.GeometryAttribute;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -99,17 +99,12 @@ import org.xml.sax.helpers.NamespaceSupport;
  * @author Gabriel Roldan (Axios Engineering)
  * @author Rini Angreani (CSIRO Earth Science and Resource Engineering)
  * @author Russell Petty (GeoScience Victoria)
- * @version $Id$
- * @source $URL$
- *     http://svn.osgeo.org/geotools/trunk/modules/unsupported/app-schema/app-schema/src/main
- *     /java/org/geotools/data/complex/config/AppSchemaDataAccessConfigurator.java $
  * @since 2.4
  */
 public class AppSchemaDataAccessConfigurator {
     /** DOCUMENT ME! */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(
-                    AppSchemaDataAccessConfigurator.class.getPackage().getName());
+            org.geotools.util.logging.Logging.getLogger(AppSchemaDataAccessConfigurator.class);
 
     public static String PROPERTY_JOINING = "app-schema.joining";
 

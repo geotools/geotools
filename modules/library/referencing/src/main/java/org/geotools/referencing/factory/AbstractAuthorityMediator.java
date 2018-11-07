@@ -28,10 +28,10 @@ import org.apache.commons.pool.PoolableObjectFactory;
 import org.apache.commons.pool.impl.GenericObjectPool;
 import org.apache.commons.pool.impl.GenericObjectPool.Config;
 import org.apache.commons.pool.impl.GenericObjectPoolFactory;
-import org.geotools.factory.BufferedFactory;
-import org.geotools.factory.Hints;
 import org.geotools.util.ObjectCache;
 import org.geotools.util.ObjectCaches;
+import org.geotools.util.factory.BufferedFactory;
+import org.geotools.util.factory.Hints;
 import org.opengis.metadata.citation.Citation;
 import org.opengis.referencing.AuthorityFactory;
 import org.opengis.referencing.FactoryException;
@@ -89,7 +89,6 @@ import org.opengis.util.InternationalString;
  * </ul>
  *
  * @since 2.4
- * @source $URL$
  * @version $Id$
  * @author Jody Garnett (Refractions Research)
  * @author Cory Horner (Refractions Research)

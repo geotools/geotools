@@ -19,13 +19,13 @@ package org.geotools.referencing.factory.epsg;
 // J2SE dependencies
 
 import java.util.Iterator;
-import org.geotools.factory.Hints;
 import org.geotools.referencing.ReferencingFactoryFinder;
 import org.geotools.referencing.factory.epsg.oracle.OracleOnlineTestCase;
 import org.geotools.referencing.operation.AbstractCoordinateOperation;
 import org.geotools.referencing.operation.AuthorityBackedFactory;
 import org.geotools.referencing.operation.BufferedCoordinateOperationFactory;
-import org.geotools.resources.Classes;
+import org.geotools.util.Classes;
+import org.geotools.util.factory.Hints;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.IdentifiedObject;
 import org.opengis.referencing.crs.CRSAuthorityFactory;
@@ -39,7 +39,6 @@ import org.opengis.referencing.operation.Transformation;
 /**
  * Tests the usage of {@link CoordinateOperationFactory} with the help of the EPSG database.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

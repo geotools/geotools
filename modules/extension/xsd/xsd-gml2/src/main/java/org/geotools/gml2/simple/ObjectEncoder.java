@@ -16,7 +16,7 @@
  */
 package org.geotools.gml2.simple;
 
-import org.geotools.xml.Encoder;
+import org.geotools.xsd.Encoder;
 import org.xml.sax.helpers.AttributesImpl;
 
 /**

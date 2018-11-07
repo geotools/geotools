@@ -27,11 +27,14 @@
   <artifactId>gt-opengis</artifactId>
   <packaging>jar</packaging>
   <name>Open GIS Interfaces</name>
-  
 
   <description>
     Standard interfaces implemented throughout the library.
   </description>
+
+  <properties>
+    <moduleIdentifier>org.geotools.opengis</moduleIdentifier>
+  </properties>
 
   <licenses>
     <license>

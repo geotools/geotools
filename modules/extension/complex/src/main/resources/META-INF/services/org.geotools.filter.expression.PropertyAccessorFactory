@@ -1,1 +1,1 @@
-org.geotools.filter.expression.FeaturePropertyAccessorFactory
+org.geotools.data.complex.expression.FeaturePropertyAccessorFactory

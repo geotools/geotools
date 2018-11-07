@@ -46,12 +46,11 @@ import org.opengis.referencing.operation.MathTransform;
  * great cache for a JDBCDataStore, a temporary copy of an original file may work for shapefile etc.
  *
  * @author Jody Garnett, Refractions Research
- * @source $URL$
  */
 public class DefaultFeatureResults extends DataFeatureCollection {
     /** Shared package logger */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.data");
+            org.geotools.util.logging.Logging.getLogger(DefaultFeatureResults.class);
 
     /** Query used to define this subset of features from the feature source */
     protected Query query;

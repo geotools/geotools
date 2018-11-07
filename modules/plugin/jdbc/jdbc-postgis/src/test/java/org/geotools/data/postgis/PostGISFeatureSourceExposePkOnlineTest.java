@@ -19,7 +19,6 @@ package org.geotools.data.postgis;
 import org.geotools.jdbc.JDBCFeatureSourceExposePkOnlineTest;
 import org.geotools.jdbc.JDBCTestSetup;
 
-/** @source $URL$ */
 public class PostGISFeatureSourceExposePkOnlineTest extends JDBCFeatureSourceExposePkOnlineTest {
 
     @Override

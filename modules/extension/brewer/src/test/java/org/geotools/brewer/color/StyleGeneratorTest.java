@@ -43,7 +43,6 @@ import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Expression;
 
-/** @source $URL$ */
 public class StyleGeneratorTest extends DataTestCase {
     public StyleGeneratorTest(String arg0) {
         super(arg0);

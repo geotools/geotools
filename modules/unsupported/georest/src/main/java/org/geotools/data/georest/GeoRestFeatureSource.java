@@ -39,7 +39,7 @@ import org.opengis.filter.Filter;
  * read-only.
  *
  * @author Pieter De Graef, Geosparc
- * @source $URL$
+
  */
 public class GeoRestFeatureSource extends ContentFeatureSource implements SimpleFeatureSource {
 

@@ -19,7 +19,6 @@ package org.geotools.sld.bindings;
 import org.geotools.styling.PolygonSymbolizer;
 import org.opengis.filter.expression.Function;
 
-/** @source $URL$ */
 public class SLDPolygonSymbolizerBindingTest extends SLDTestSupport {
     public void testType() throws Exception {
         assertEquals(PolygonSymbolizer.class, new SLDPolygonSymbolizerBinding(null).getType());

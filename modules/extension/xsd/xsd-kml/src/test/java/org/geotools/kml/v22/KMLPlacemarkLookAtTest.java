@@ -17,7 +17,7 @@
 package org.geotools.kml.v22;
 
 import java.util.List;
-import org.geotools.xml.Parser;
+import org.geotools.xsd.Parser;
 import org.locationtech.jts.geom.Point;
 import org.opengis.feature.simple.SimpleFeature;
 

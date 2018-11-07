@@ -99,7 +99,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * <p>This is a port of the uDig "reshape" operation to the GeoTools process framework.
  *
  * @author Jody Garnett (LISAsoft)
- * @source $URL$
  */
 @DescribeProcess(
     title = "Transform",

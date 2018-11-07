@@ -22,10 +22,10 @@ import static java.lang.reflect.Array.newInstance;
 import static java.lang.reflect.Array.set;
 
 import java.sql.Array;
-import org.geotools.factory.Hints;
 import org.geotools.util.Converter;
 import org.geotools.util.ConverterFactory;
 import org.geotools.util.Converters;
+import org.geotools.util.factory.Hints;
 
 /** ConverterFactory for handling {@link org.postgresql.jdbc.PgArray} conversions */
 public class SQLArrayConverterFactory implements ConverterFactory {

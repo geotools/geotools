@@ -28,7 +28,6 @@ import org.locationtech.jts.geom.Envelope;
  *
  * @author dzwiers, Refractions Research, Inc.
  * @author $Author: jive $ (last modification)
- * @source $URL$
  * @version $Id$
  */
 public class LineCoveredByFeatureLineValidation extends DefaultIntegrityValidation {

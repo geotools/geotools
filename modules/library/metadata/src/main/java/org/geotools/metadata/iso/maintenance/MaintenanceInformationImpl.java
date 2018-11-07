@@ -33,7 +33,6 @@ import org.opengis.util.InternationalString;
 /**
  * Information about the scope and frequency of updating.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @author Touraïvane

@@ -1,6 +1,5 @@
 package com.esri.sde.sdk.client;
 
-/** @source $URL$ */
 public class SeObjectId {
 
     public SeObjectId(long l) {}

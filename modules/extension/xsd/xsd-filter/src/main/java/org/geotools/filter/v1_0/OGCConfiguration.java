@@ -18,7 +18,7 @@ package org.geotools.filter.v1_0;
 
 import org.geotools.filter.FilterFactoryImpl;
 import org.geotools.gml2.GMLConfiguration;
-import org.geotools.xml.Configuration;
+import org.geotools.xsd.Configuration;
 import org.opengis.filter.FilterFactory;
 import org.picocontainer.MutablePicoContainer;
 
@@ -26,7 +26,6 @@ import org.picocontainer.MutablePicoContainer;
  * Parser configuration for the filter 1.0 schema.
  *
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL$
  */
 public class OGCConfiguration extends Configuration {
     /** Adds a dependency on {@link GMLConfiguration} */

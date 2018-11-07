@@ -41,7 +41,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * A process that builds a regular grid as a feature collection
  *
  * @author Andrea Aime - GeoSolutions
- * @source $URL$
  */
 @DescribeProcess(
     title = "Grid",

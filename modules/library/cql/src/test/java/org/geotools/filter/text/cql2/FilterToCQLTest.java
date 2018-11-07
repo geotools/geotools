@@ -20,7 +20,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.factory.Hints;
+import org.geotools.util.factory.Hints;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -47,7 +47,6 @@ import org.opengis.filter.temporal.TOverlaps;
  * <p>Unit test for {@link FilterToCQL}
  *
  * @author Johann Sorel
- * @source $URL$
  */
 public class FilterToCQLTest {
 

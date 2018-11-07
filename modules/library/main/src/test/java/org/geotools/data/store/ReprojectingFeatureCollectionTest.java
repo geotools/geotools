@@ -39,7 +39,6 @@ import org.opengis.geometry.BoundingBox;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform2D;
 
-/** @source $URL$ */
 public class ReprojectingFeatureCollectionTest extends FeatureCollectionWrapperTestSupport {
 
     CoordinateReferenceSystem target;

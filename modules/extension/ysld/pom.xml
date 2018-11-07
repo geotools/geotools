@@ -39,7 +39,7 @@
       <dependency>
         <groupId>org.yaml</groupId>
         <artifactId>snakeyaml</artifactId>
-        <version>1.13</version>
+        <version>1.23</version>
       </dependency>
       <dependency>
         <groupId>com.google.code.findbugs</groupId>
@@ -52,7 +52,7 @@
   <dependencies>
     <dependency>
       <groupId>org.geotools</groupId>
-      <artifactId>gt-main</artifactId>
+      <artifactId>gt-xml</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>

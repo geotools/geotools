@@ -24,7 +24,6 @@ import org.opengis.feature.Feature;
  * A feature iterator that completely delegates to another FeatureIterator.
  *
  * @author Jody Garnett
- * @source $URL$
  */
 public class DecoratingFeatureIterator<F extends Feature> implements FeatureIterator<F> {
     FeatureIterator<F> delegate;

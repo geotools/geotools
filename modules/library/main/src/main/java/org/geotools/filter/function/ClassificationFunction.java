@@ -37,13 +37,12 @@ import org.opengis.util.ProgressListener;
  *
  * @author James Macgill
  * @author Cory Horner, Refractions Research Inc.
- * @source $URL$
  */
 public abstract class ClassificationFunction extends DefaultExpression
         implements FunctionExpression {
 
     protected static final java.util.logging.Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.filter.function");
+            org.geotools.util.logging.Logging.getLogger(ClassificationFunction.class);
 
     FunctionName name;
 

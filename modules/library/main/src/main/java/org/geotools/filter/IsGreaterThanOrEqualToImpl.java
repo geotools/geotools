@@ -20,10 +20,7 @@ import org.opengis.filter.FilterVisitor;
 import org.opengis.filter.PropertyIsGreaterThanOrEqualTo;
 import org.opengis.filter.expression.Expression;
 
-/**
- * @author jdeolive
- * @source $URL$
- */
+/** @author jdeolive */
 public class IsGreaterThanOrEqualToImpl extends MultiCompareFilterImpl
         implements PropertyIsGreaterThanOrEqualTo {
 

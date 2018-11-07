@@ -23,10 +23,7 @@ import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.coordinate.GeometryFactory;
 import org.opengis.util.Cloneable;
 
-/**
- * @author Sanjay Jena
- * @source $URL$
- */
+/** @author Sanjay Jena */
 public class DirectPositionTest extends TestCase {
     GeometryFactory gf2D;
     GeometryFactory gf3D;

@@ -20,9 +20,9 @@ import javax.xml.namespace.QName;
 import net.opengis.wfs.DeleteElementType;
 import net.opengis.wfs.WfsFactory;
 import org.geotools.wfs.WFS;
-import org.geotools.xml.AbstractComplexEMFBinding;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
+import org.geotools.xsd.AbstractComplexEMFBinding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 import org.opengis.filter.Filter;
 
 /**
@@ -83,7 +83,6 @@ import org.opengis.filter.Filter;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class DeleteElementTypeBinding extends AbstractComplexEMFBinding {
     WfsFactory wfsfactory;

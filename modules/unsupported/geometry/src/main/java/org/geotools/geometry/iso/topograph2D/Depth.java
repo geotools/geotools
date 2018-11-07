@@ -19,8 +19,6 @@ package org.geotools.geometry.iso.topograph2D;
 
 /**
  * A Depth object records the topological depth of the sides of an Edge for up to two Geometries.
- *
- * @source $URL$
  */
 public class Depth {
 

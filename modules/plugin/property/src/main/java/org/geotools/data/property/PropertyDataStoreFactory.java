@@ -31,7 +31,6 @@ import org.geotools.data.DataStoreFactorySpi;
  *
  * @author Jody Garnett
  * @author Torben Barsballe (Boundless)
- * @source $URL$
  * @version $Id$
  */
 public class PropertyDataStoreFactory implements DataStoreFactorySpi {

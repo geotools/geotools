@@ -30,7 +30,6 @@ import org.xml.sax.SAXNotRecognizedException;
  * specified schema.
  *
  * @author dzwiers www.refractions.net
- * @source $URL$
  */
 public class DocumentHandler extends XMLElementHandler {
     /** Supplied {@link Schema} for parsing and validation */

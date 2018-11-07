@@ -35,7 +35,6 @@ import org.geotools.util.URLs;
  * @author Simone Giannecchini
  * @author aaime
  * @author mkraemer
- * @source $URL$
  */
 final class GT30Header {
     /** Mnemonic constant for line labels in the header file */

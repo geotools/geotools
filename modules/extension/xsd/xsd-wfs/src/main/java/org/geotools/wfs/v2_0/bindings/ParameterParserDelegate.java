@@ -20,9 +20,9 @@ import javax.xml.namespace.QName;
 import net.opengis.wfs20.ParameterType;
 import net.opengis.wfs20.Wfs20Factory;
 import org.geotools.wfs.v2_0.WFS;
-import org.geotools.xml.ParserDelegate;
-import org.geotools.xml.ParserDelegate2;
-import org.geotools.xml.impl.Handler;
+import org.geotools.xsd.ParserDelegate;
+import org.geotools.xsd.ParserDelegate2;
+import org.geotools.xsd.impl.Handler;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 

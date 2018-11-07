@@ -22,9 +22,8 @@ import org.eclipse.xsd.util.XSDSchemaLocationResolver;
 import org.eclipse.xsd.util.XSDSchemaLocator;
 import org.geotools.gml3.smil.SMIL20;
 import org.geotools.gml3.smil.SMIL20LANG;
-import org.geotools.xml.Schemas;
+import org.geotools.xsd.Schemas;
 
-/** @source $URL$ */
 public class SMIL20SchemaLocator implements XSDSchemaLocator {
     public XSDSchema locateSchema(
             XSDSchema schema,

@@ -45,10 +45,7 @@ import org.opengis.geometry.primitive.Surface;
 import org.opengis.geometry.primitive.SurfaceBoundary;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-/**
- * @author sanjay
- * @source $URL$
- */
+/** @author sanjay */
 public class WKTReader {
 
     private static final String EMPTY = "EMPTY";

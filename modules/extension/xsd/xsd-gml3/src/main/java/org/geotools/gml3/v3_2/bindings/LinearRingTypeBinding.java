@@ -19,7 +19,6 @@ package org.geotools.gml3.v3_2.bindings;
 import org.locationtech.jts.geom.CoordinateSequenceFactory;
 import org.locationtech.jts.geom.GeometryFactory;
 
-/** @source $URL$ */
 public class LinearRingTypeBinding extends org.geotools.gml3.bindings.LinearRingTypeBinding {
 
     public LinearRingTypeBinding(GeometryFactory gFactory, CoordinateSequenceFactory csFactory) {

@@ -2,15 +2,13 @@ package org.geotools.renderer.lite;
 
 import static java.awt.RenderingHints.KEY_ANTIALIASING;
 import static java.awt.RenderingHints.VALUE_ANTIALIAS_ON;
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import junit.framework.TestCase;
 import org.geotools.data.property.PropertyDataStore;
 import org.geotools.data.simple.SimpleFeatureSource;
-import org.geotools.factory.GeoTools;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.test.ImageAssert;
@@ -21,28 +19,31 @@ import org.geotools.referencing.CRS.AxisOrder;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.styling.Style;
 import org.geotools.test.TestData;
+import org.geotools.util.factory.GeoTools;
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-/**
- * Test streaming renderer handling of 3D data (that must be transformed via WGS84).
- *
- * @source $URL$
- */
-public class GeographicTransformPointTest extends TestCase {
+/** Test streaming renderer handling of 3D data (that must be transformed via WGS84). */
+public class GeographicTransformPointTest {
 
     private static final long TIME = 4000;
     SimpleFeatureSource point_test;
     SimpleFeatureSource point_test_strict;
     SimpleFeatureSource point_test_2d;
 
-    @Override
-    protected void setUp() throws Exception {
+    @BeforeClass
+    public static void cleanupCRS() {
         System.setProperty(GeoTools.FORCE_LONGITUDE_FIRST_AXIS_ORDER, "true");
         CRS.reset("all");
+    }
+
+    @Before
+    public void setUp() throws Exception {
         // setup data
         File property = new File(TestData.getResource(this, "point_test.properties").toURI());
         PropertyDataStore ds = new PropertyDataStore(property.getParentFile());

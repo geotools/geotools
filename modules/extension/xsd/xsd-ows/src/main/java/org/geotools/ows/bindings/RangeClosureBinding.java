@@ -19,8 +19,8 @@ package org.geotools.ows.bindings;
 import javax.xml.namespace.QName;
 import net.opengis.ows11.RangeClosureType;
 import org.geotools.ows.v1_1.OWS;
-import org.geotools.xml.AbstractSimpleBinding;
-import org.geotools.xml.InstanceComponent;
+import org.geotools.xsd.AbstractSimpleBinding;
+import org.geotools.xsd.InstanceComponent;
 
 public class RangeClosureBinding extends AbstractSimpleBinding {
 

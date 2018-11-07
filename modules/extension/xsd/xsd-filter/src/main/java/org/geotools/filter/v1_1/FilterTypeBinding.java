@@ -19,10 +19,10 @@ package org.geotools.filter.v1_1;
 import java.util.HashSet;
 import java.util.List;
 import javax.xml.namespace.QName;
-import org.geotools.filter.FilterParsingUtils;
-import org.geotools.xml.AbstractComplexBinding;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
+import org.geotools.xsd.AbstractComplexBinding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
+import org.geotools.xsd.filter.FilterParsingUtils;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.identity.Identifier;
@@ -47,7 +47,6 @@ import org.opengis.filter.identity.Identifier;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class FilterTypeBinding extends AbstractComplexBinding {
     FilterFactory filterFactory;

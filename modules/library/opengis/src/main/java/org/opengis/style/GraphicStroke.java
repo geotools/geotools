@@ -16,7 +16,6 @@ import org.opengis.filter.expression.Expression;
 /**
  * The GraphicStroke element both indicates that a repeated-linear-graphic stroke type will be used.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/symbol">Symbology Encoding
  *     Implementation Specification 1.1.0</A>
  * @author Open Geospatial Consortium

@@ -22,7 +22,6 @@ import java.io.IOException;
  * Indicates a lock contention, and attempt was made to modify or aquire with out Authroization.
  *
  * @author Jody Garnett, Refractions Research
- * @source $URL$
  */
 public class FeatureLockException extends IOException {
     private static final long serialVersionUID = 1L;

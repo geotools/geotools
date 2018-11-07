@@ -49,10 +49,9 @@ import org.opengis.filter.expression.Literal;
  * implementations into a FunctionFactory.
  *
  * @author Justin Deoliveira, OpenGeo
- * @source $URL$
  */
 public class DefaultFunctionFactory implements FunctionFactory {
-    private static final Logger LOGGER = Logging.getLogger("org.geotools.filter");
+    private static final Logger LOGGER = Logging.getLogger(DefaultFunctionFactory.class);
     private FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory(null);
 
     private Map<Name, FunctionDescriptor> functionCache;

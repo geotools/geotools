@@ -19,12 +19,12 @@ package org.geotools.geometry.iso.primitive;
 import java.util.ArrayList;
 import java.util.List;
 import junit.framework.TestCase;
-import org.geotools.factory.GeoTools;
-import org.geotools.factory.Hints;
 import org.geotools.geometry.GeometryBuilder;
 import org.geotools.geometry.iso.coordinate.GeometryFactoryImpl;
 import org.geotools.geometry.iso.coordinate.PositionImpl;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.geotools.util.factory.GeoTools;
+import org.geotools.util.factory.Hints;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.coordinate.Position;
 import org.opengis.geometry.primitive.CurveSegment;
@@ -33,7 +33,6 @@ import org.opengis.geometry.primitive.Ring;
 import org.opengis.geometry.primitive.Surface;
 import org.opengis.referencing.operation.TransformException;
 
-/** @source $URL$ */
 public class RingImplUnsafeTest extends TestCase {
 
     public void testRingImpls() {

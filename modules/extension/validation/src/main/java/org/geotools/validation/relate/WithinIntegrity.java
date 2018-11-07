@@ -36,11 +36,10 @@ import org.opengis.filter.FilterFactory;
  *     <p>If only one Geometry is given, then this test checks to see if part of it lies within
  *     itself. <b>Usage:</b><br>
  *     <p>
- * @source $URL$
  */
 public class WithinIntegrity extends RelationIntegrity {
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.validation");
+            org.geotools.util.logging.Logging.getLogger(WithinIntegrity.class);
 
     /** OverlapsIntegrity Constructor */
     public WithinIntegrity() {

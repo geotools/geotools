@@ -24,7 +24,6 @@ import java.awt.geom.Point2D;
  * @author roehrig
  *     <p>TODO To change the template for this generated type comment go to Window - Preferences -
  *     Java - Code Style - Code Templates
- * @source $URL$
  */
 public class LineLineIntersection2D {
     // the range of the returned values is from 0.0 to 1.0

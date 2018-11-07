@@ -37,12 +37,12 @@ import org.opengis.filter.expression.Expression;
  * to attempt to simplify/make meaningful filter logic.
  *
  * @author Rob Hranac, Vision for New York
- * @source $URL$
  * @version $Id$
  */
 public abstract class CompareFilterImpl extends BinaryComparisonAbstract {
     /** The logger for the default core module. */
-    static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger("org.geotools.core");
+    static final Logger LOGGER =
+            org.geotools.util.logging.Logging.getLogger(CompareFilterImpl.class);
 
     /**
      * Constructor with filter type.

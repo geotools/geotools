@@ -19,7 +19,6 @@ import org.opengis.metadata.citation.OnLineResource;
  * mark in a mark archive to be selected. An example format for an external mark archive would be a
  * TrueType font file, with MarkIndex being used to select an individual glyph from that file.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/symbol">Symbology Encoding
  *     Implementation Specification 1.1.0</A>
  * @author Open Geospatial Consortium

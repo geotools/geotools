@@ -19,7 +19,6 @@ package org.geotools.geometry.iso.index;
 
 import java.util.ArrayList;
 
-/** @source $URL$ */
 public class ArrayListVisitor implements ItemVisitor {
 
     private ArrayList items = new ArrayList();

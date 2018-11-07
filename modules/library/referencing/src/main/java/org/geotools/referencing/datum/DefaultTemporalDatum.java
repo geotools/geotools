@@ -22,15 +22,14 @@ package org.geotools.referencing.datum;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Map;
+import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.referencing.AbstractIdentifiedObject;
-import org.geotools.resources.i18n.VocabularyKeys;
 import org.opengis.referencing.datum.TemporalDatum;
 import org.opengis.util.InternationalString;
 
 /**
  * A temporal datum defines the origin of a temporal coordinate reference system.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @since 2.1

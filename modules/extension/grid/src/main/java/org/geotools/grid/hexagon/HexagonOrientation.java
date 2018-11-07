@@ -15,7 +15,6 @@ package org.geotools.grid.hexagon;
  * </ul>
  *
  * @author michael
- * @source $URL$
  */
 public enum HexagonOrientation {
     /**

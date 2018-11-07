@@ -29,7 +29,6 @@ import org.opengis.filter.FilterFactory;
  *
  * @author Mauricio Pazos (Axios Engineering)
  * @since 2.6
- * @source $URL$
  */
 public abstract class AbstractCompilerFactory {
 

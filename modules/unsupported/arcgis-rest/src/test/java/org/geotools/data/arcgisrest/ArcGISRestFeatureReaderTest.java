@@ -18,7 +18,6 @@ package org.geotools.data.arcgisrest;
 
 import static org.junit.Assert.*;
 
-import org.locationtech.jts.geom.Geometry;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.NoSuchElementException;
@@ -27,12 +26,13 @@ import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.util.logging.Logging;
 import org.junit.Before;
 import org.junit.Test;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
 public class ArcGISRestFeatureReaderTest {
 
-    private static final Logger LOGGER = Logging.getLogger("org.geotools.data.arcgisrest");
+    private static final Logger LOGGER = Logging.getLogger(ArcGISRestFeatureReaderTest.class);
 
     ArcGISRestFeatureReader reader;
     SimpleFeatureType fType;

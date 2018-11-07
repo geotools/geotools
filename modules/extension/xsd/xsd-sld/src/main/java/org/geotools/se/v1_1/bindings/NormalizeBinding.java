@@ -20,7 +20,8 @@ import javax.xml.namespace.QName;
 import org.geotools.se.v1_1.SE;
 import org.geotools.sld.bindings.SLDNormalizeBinding;
 import org.geotools.styling.StyleFactory;
-import org.geotools.xml.*;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 import org.opengis.filter.FilterFactory;
 
 /**
@@ -43,7 +44,6 @@ import org.opengis.filter.FilterFactory;
  * </pre>
  *
  * @generated
- * @source $URL$
  */
 public class NormalizeBinding extends SLDNormalizeBinding {
 

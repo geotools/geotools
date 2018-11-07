@@ -56,14 +56,14 @@ import javax.media.jai.iterator.WritableRectIter;
 import org.geotools.geometry.GeneralDirectPosition;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.image.ImageWorker;
-import org.geotools.io.LineWriter;
+import org.geotools.image.util.ImageUtilities;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.operation.matrix.GeneralMatrix;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
-import org.geotools.resources.Classes;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
-import org.geotools.resources.image.ImageUtilities;
+import org.geotools.util.Classes;
+import org.geotools.util.LineWriter;
 import org.geotools.util.SimpleInternationalString;
 import org.geotools.util.logging.Logging;
 import org.opengis.coverage.CannotEvaluateException;
@@ -100,7 +100,6 @@ import org.opengis.util.RecordType;
  * </ul>
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
@@ -849,8 +848,7 @@ public abstract class AbstractCoverage extends PropertySourceImpl implements Cov
          * Returns all values of a given element for a specified set of coordinates. This method is
          * automatically invoked at rendering time for populating an image tile, providing that the
          * rendered image is created using the "{@link ImageFunctionDescriptor ImageFunction}"
-         * operator and the image type is not {@code double}. The default implementation invokes
-         * {@link AbstractCoverage#evaluate(DirectPosition,float[])} recursively.
+         * operator and the image type is not {@code double}.
          */
         public void getElements(
                 final float startX,

@@ -23,9 +23,9 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.geotools.geometry.iso.text.WKTParser;
 import org.geotools.geometry.jts.spatialschema.geometry.geometry.GeometryFactoryImpl;
 import org.geotools.geometry.jts.spatialschema.geometry.primitive.PrimitiveFactoryImpl;
-import org.geotools.geometry.text.WKTParser;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.opengis.geometry.Geometry;
 import org.opengis.geometry.PositionFactory;
@@ -41,7 +41,6 @@ import org.xml.sax.SAXException;
 /**
  * @author Jody Garnett
  * @author Joel Skelton
- * @source $URL$
  */
 public class GeometryTestParser {
     private static final Log LOG = LogFactory.getLog(GeometryTestParser.class);

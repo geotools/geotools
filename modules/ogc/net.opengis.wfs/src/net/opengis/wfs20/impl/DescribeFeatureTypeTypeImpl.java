@@ -29,217 +29,217 @@ import org.eclipse.emf.ecore.util.EDataTypeEList;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link net.opengis.wfs20.impl.DescribeFeatureTypeTypeImpl#getTypeName <em>Type Name</em>}</li>
  *   <li>{@link net.opengis.wfs20.impl.DescribeFeatureTypeTypeImpl#getOutputFormat <em>Output Format</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
 public class DescribeFeatureTypeTypeImpl extends BaseRequestTypeImpl implements DescribeFeatureTypeType {
     /**
-     * The cached value of the '{@link #getTypeName() <em>Type Name</em>}' attribute list.
-     * <!-- begin-user-doc -->
+   * The cached value of the '{@link #getTypeName() <em>Type Name</em>}' attribute list.
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getTypeName()
-     * @generated
-     * @ordered
-     */
+   * @see #getTypeName()
+   * @generated
+   * @ordered
+   */
     protected EList<QName> typeName;
 
     /**
-     * The default value of the '{@link #getOutputFormat() <em>Output Format</em>}' attribute.
-     * <!-- begin-user-doc -->
+   * The default value of the '{@link #getOutputFormat() <em>Output Format</em>}' attribute.
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getOutputFormat()
-     * @generated
-     * @ordered
-     */
+   * @see #getOutputFormat()
+   * @generated
+   * @ordered
+   */
     protected static final String OUTPUT_FORMAT_EDEFAULT = "application/gml+xml; version=3.2";
 
     /**
-     * The cached value of the '{@link #getOutputFormat() <em>Output Format</em>}' attribute.
-     * <!-- begin-user-doc -->
+   * The cached value of the '{@link #getOutputFormat() <em>Output Format</em>}' attribute.
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getOutputFormat()
-     * @generated
-     * @ordered
-     */
+   * @see #getOutputFormat()
+   * @generated
+   * @ordered
+   */
     protected String outputFormat = OUTPUT_FORMAT_EDEFAULT;
 
     /**
-     * This is true if the Output Format attribute has been set.
-     * <!-- begin-user-doc -->
+   * This is true if the Output Format attribute has been set.
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+   * @generated
+   * @ordered
+   */
     protected boolean outputFormatESet;
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     protected DescribeFeatureTypeTypeImpl() {
-        super();
-    }
+    super();
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     protected EClass eStaticClass() {
-        return Wfs20Package.Literals.DESCRIBE_FEATURE_TYPE_TYPE;
-    }
+    return Wfs20Package.Literals.DESCRIBE_FEATURE_TYPE_TYPE;
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public EList<QName> getTypeName() {
-        if (typeName == null) {
-            typeName = new EDataTypeEList<QName>(QName.class, this, Wfs20Package.DESCRIBE_FEATURE_TYPE_TYPE__TYPE_NAME);
-        }
-        return typeName;
+    if (typeName == null) {
+      typeName = new EDataTypeEList<QName>(QName.class, this, Wfs20Package.DESCRIBE_FEATURE_TYPE_TYPE__TYPE_NAME);
     }
+    return typeName;
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public String getOutputFormat() {
-        return outputFormat;
-    }
+    return outputFormat;
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public void setOutputFormat(String newOutputFormat) {
-        String oldOutputFormat = outputFormat;
-        outputFormat = newOutputFormat;
-        boolean oldOutputFormatESet = outputFormatESet;
-        outputFormatESet = true;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, Wfs20Package.DESCRIBE_FEATURE_TYPE_TYPE__OUTPUT_FORMAT, oldOutputFormat, outputFormat, !oldOutputFormatESet));
-    }
+    String oldOutputFormat = outputFormat;
+    outputFormat = newOutputFormat;
+    boolean oldOutputFormatESet = outputFormatESet;
+    outputFormatESet = true;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, Wfs20Package.DESCRIBE_FEATURE_TYPE_TYPE__OUTPUT_FORMAT, oldOutputFormat, outputFormat, !oldOutputFormatESet));
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public void unsetOutputFormat() {
-        String oldOutputFormat = outputFormat;
-        boolean oldOutputFormatESet = outputFormatESet;
-        outputFormat = OUTPUT_FORMAT_EDEFAULT;
-        outputFormatESet = false;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.UNSET, Wfs20Package.DESCRIBE_FEATURE_TYPE_TYPE__OUTPUT_FORMAT, oldOutputFormat, OUTPUT_FORMAT_EDEFAULT, oldOutputFormatESet));
-    }
+    String oldOutputFormat = outputFormat;
+    boolean oldOutputFormatESet = outputFormatESet;
+    outputFormat = OUTPUT_FORMAT_EDEFAULT;
+    outputFormatESet = false;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.UNSET, Wfs20Package.DESCRIBE_FEATURE_TYPE_TYPE__OUTPUT_FORMAT, oldOutputFormat, OUTPUT_FORMAT_EDEFAULT, oldOutputFormatESet));
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public boolean isSetOutputFormat() {
-        return outputFormatESet;
-    }
+    return outputFormatESet;
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case Wfs20Package.DESCRIBE_FEATURE_TYPE_TYPE__TYPE_NAME:
-                return getTypeName();
-            case Wfs20Package.DESCRIBE_FEATURE_TYPE_TYPE__OUTPUT_FORMAT:
-                return getOutputFormat();
-        }
-        return super.eGet(featureID, resolve, coreType);
+    switch (featureID) {
+      case Wfs20Package.DESCRIBE_FEATURE_TYPE_TYPE__TYPE_NAME:
+        return getTypeName();
+      case Wfs20Package.DESCRIBE_FEATURE_TYPE_TYPE__OUTPUT_FORMAT:
+        return getOutputFormat();
     }
+    return super.eGet(featureID, resolve, coreType);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @SuppressWarnings("unchecked")
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case Wfs20Package.DESCRIBE_FEATURE_TYPE_TYPE__TYPE_NAME:
-                getTypeName().clear();
-                getTypeName().addAll((Collection<? extends QName>)newValue);
-                return;
-            case Wfs20Package.DESCRIBE_FEATURE_TYPE_TYPE__OUTPUT_FORMAT:
-                setOutputFormat((String)newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
+    switch (featureID) {
+      case Wfs20Package.DESCRIBE_FEATURE_TYPE_TYPE__TYPE_NAME:
+        getTypeName().clear();
+        getTypeName().addAll((Collection<? extends QName>)newValue);
+        return;
+      case Wfs20Package.DESCRIBE_FEATURE_TYPE_TYPE__OUTPUT_FORMAT:
+        setOutputFormat((String)newValue);
+        return;
     }
+    super.eSet(featureID, newValue);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case Wfs20Package.DESCRIBE_FEATURE_TYPE_TYPE__TYPE_NAME:
-                getTypeName().clear();
-                return;
-            case Wfs20Package.DESCRIBE_FEATURE_TYPE_TYPE__OUTPUT_FORMAT:
-                unsetOutputFormat();
-                return;
-        }
-        super.eUnset(featureID);
+    switch (featureID) {
+      case Wfs20Package.DESCRIBE_FEATURE_TYPE_TYPE__TYPE_NAME:
+        getTypeName().clear();
+        return;
+      case Wfs20Package.DESCRIBE_FEATURE_TYPE_TYPE__OUTPUT_FORMAT:
+        unsetOutputFormat();
+        return;
     }
+    super.eUnset(featureID);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case Wfs20Package.DESCRIBE_FEATURE_TYPE_TYPE__TYPE_NAME:
-                return typeName != null && !typeName.isEmpty();
-            case Wfs20Package.DESCRIBE_FEATURE_TYPE_TYPE__OUTPUT_FORMAT:
-                return isSetOutputFormat();
-        }
-        return super.eIsSet(featureID);
+    switch (featureID) {
+      case Wfs20Package.DESCRIBE_FEATURE_TYPE_TYPE__TYPE_NAME:
+        return typeName != null && !typeName.isEmpty();
+      case Wfs20Package.DESCRIBE_FEATURE_TYPE_TYPE__OUTPUT_FORMAT:
+        return isSetOutputFormat();
     }
+    return super.eIsSet(featureID);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     public String toString() {
-        if (eIsProxy()) return super.toString();
+    if (eIsProxy()) return super.toString();
 
-        StringBuffer result = new StringBuffer(super.toString());
-        result.append(" (typeName: ");
-        result.append(typeName);
-        result.append(", outputFormat: ");
-        if (outputFormatESet) result.append(outputFormat); else result.append("<unset>");
-        result.append(')');
-        return result.toString();
-    }
+    StringBuilder result = new StringBuilder(super.toString());
+    result.append(" (typeName: ");
+    result.append(typeName);
+    result.append(", outputFormat: ");
+    if (outputFormatESet) result.append(outputFormat); else result.append("<unset>");
+    result.append(')');
+    return result.toString();
+  }
 
 } //DescribeFeatureTypeTypeImpl

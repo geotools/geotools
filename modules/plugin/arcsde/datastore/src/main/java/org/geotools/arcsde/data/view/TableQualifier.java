@@ -25,10 +25,6 @@ import org.geotools.arcsde.session.ISession;
  * Utility used to qualify table names
  *
  * @author Gabriel Roldan, Axios Engineering
- * @version $Id$
- * @source $URL:
- *     http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/main/java
- *     /org/geotools/arcsde/data/view/TableQualifier.java $
  * @since 2.3.x
  */
 class TableQualifier {

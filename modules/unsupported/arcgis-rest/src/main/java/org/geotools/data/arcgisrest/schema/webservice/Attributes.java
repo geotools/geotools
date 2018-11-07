@@ -1,9073 +1,10579 @@
+
 package org.geotools.data.arcgisrest.schema.webservice;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class Attributes {
 
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("LGA")
     @Expose
-    private Object lGA;
-    /** (Required) */
+    private Object lga;
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("MetropolitanRural")
     @Expose
     private Object metropolitanRural;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Departmental_Region")
     @Expose
     private Object departmentalRegion;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Departmental_Area")
     @Expose
     private Object departmentalArea;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Area_of_LGA_sq_km")
     @Expose
     private Object areaOfLGASqKm;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("ASGS_LGA_code")
     @Expose
     private Object aSGSLGACode;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Most_populous_town_or_suburb_in")
     @Expose
     private Object mostPopulousTownOrSuburbIn;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Distance_to_Melbourne_in_km")
     @Expose
     private Object distanceToMelbourneInKm;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Travel_time_from_Melbourne_GPO_")
     @Expose
     private Object travelTimeFromMelbourneGPO;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("ARIA_Remoteness_category")
     @Expose
     private Object aRIARemotenessCategory;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Percent_Business_land_use")
     @Expose
     private Object percentBusinessLandUse;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Percent_Industrial_land_use")
     @Expose
     private Object percentIndustrialLandUse;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Percent_Residential_land_use")
     @Expose
     private Object percentResidentialLandUse;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Percent_Rural_land_use")
     @Expose
     private Object percentRuralLandUse;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Percent_Other_land_use")
     @Expose
     private Object percentOtherLandUse;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Per_annum_pop_change_actual_for")
     @Expose
     private Object perAnnumPopChangeActualFor;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Per_annum_pop_change_projected_")
     @Expose
     private Object perAnnumPopChangeProjected;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Females0to14yrs")
     @Expose
     private Object females0to14yrs;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Females15to24yrs")
     @Expose
     private Object females15to24yrs;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Females25to44yrs")
     @Expose
     private Object females25to44yrs;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Females45to64yrs")
     @Expose
     private Object females45to64yrs;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Females65to84yrs")
     @Expose
     private Object females65to84yrs;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Female85yrsPlus")
     @Expose
     private Object female85yrsPlus;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("TotalFemales")
     @Expose
     private Object totalFemales;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Males0to14yrs")
     @Expose
     private Object males0to14yrs;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Males15to24yrs")
     @Expose
     private Object males15to24yrs;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Males25to44yrs")
     @Expose
     private Object males25to44yrs;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Males45to64yrs")
     @Expose
     private Object males45to64yrs;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Males65to84yrs")
     @Expose
     private Object males65to84yrs;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Male85yrsPlus")
     @Expose
     private Object male85yrsPlus;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("TotalMales")
     @Expose
     private Object totalMales;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Total0to14yrs")
     @Expose
     private Object total0to14yrs;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Tota15to24yrs")
     @Expose
     private Object tota15to24yrs;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Tota25to44yrs")
     @Expose
     private Object tota25to44yrs;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Tota45to64yrs")
     @Expose
     private Object tota45to64yrs;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Tota65to84yrs")
     @Expose
     private Object tota65to84yrs;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Tota85yrsPlus")
     @Expose
     private Object tota85yrsPlus;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Total2013ERP")
     @Expose
     private Object total2013ERP;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Percent_Total0to14yrs")
     @Expose
     private Object percentTotal0to14yrs;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("PercentTotal15to24yrs")
     @Expose
     private Object percentTotal15to24yrs;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("PercentTotal25to44yrs")
     @Expose
     private Object percentTotal25to44yrs;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("PercentTotal45to64yrs")
     @Expose
     private Object percentTotal45to64yrs;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("PercentTotal65to84yrs")
     @Expose
     private Object percentTotal65to84yrs;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("PercentTotal84yrsPlus")
     @Expose
     private Object percentTotal84yrsPlus;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Total_fertility_rate_2012")
     @Expose
     private Object totalFertilityRate2012;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Total_fertility_rate_2012")
     @Expose
     private Object rankTotalFertilityRate2012;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Teenage_fertility_rate_2012")
     @Expose
     private Object teenageFertilityRate2012;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Teenage_fertility_rate_201")
     @Expose
     private Object rankTeenageFertilityRate201;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Percent_Aboriginal_or_Torres_St")
     @Expose
     private Object percentAboriginalOrTorresSt;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Aboriginal_or_Torres_Strai")
     @Expose
     private Object rankAboriginalOrTorresStrai;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Percent_Born_overseas_2011")
     @Expose
     private Object percentBornOverseas2011;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Percent_Born_overseas_2011")
     @Expose
     private Object rankPercentBornOverseas2011;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Born_in_a_non_English_speaking_")
     @Expose
     private Object bornInANonEnglishSpeaking;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Born_in_a_non_English_spea")
     @Expose
     private Object rankBornInANonEnglishSpea;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Country_1_Percent_for_Top_5_ove")
     @Expose
     private Object country1PercentForTop5Ove;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Country_1_for_Top_5_overseas_co")
     @Expose
     private Object country1ForTop5OverseasCo;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Country_2_Percent_for_Top_5_ove")
     @Expose
     private Object country2PercentForTop5Ove;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Country_2_for_Top_5_overseas_co")
     @Expose
     private Object country2ForTop5OverseasCo;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Country_3_Percent_for_Top_5_ove")
     @Expose
     private Object country3PercentForTop5Ove;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Country_3_for_Top_5_overseas_co")
     @Expose
     private Object country3ForTop5OverseasCo;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Country_4_Percent_for_Top_5_ove")
     @Expose
     private Object country4PercentForTop5Ove;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Country_4_for_Top_5_overseas_co")
     @Expose
     private Object country4ForTop5OverseasCo;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Country_5_Percent_for_Top_5_ove")
     @Expose
     private Object country5PercentForTop5Ove;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Country_5_for_Top_5_overseas_co")
     @Expose
     private Object country5ForTop5OverseasCo;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Percent_Speaks_LOTE_at_home")
     @Expose
     private Object percentSpeaksLOTEAtHome;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Percent_Speaks_LOTE_at_hom")
     @Expose
     private Object rankPercentSpeaksLOTEAtHom;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Country_1_Percent_Top_5_languag")
     @Expose
     private Object country1PercentTop5Languag;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Country_1_Top_5_languages_spoke")
     @Expose
     private Object country1Top5LanguagesSpoke;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Country_2_Percent_Top_5_languag")
     @Expose
     private Object country2PercentTop5Languag;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Country_2_Top_5_languages_spoke")
     @Expose
     private Object country2Top5LanguagesSpoke;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Country_3_Percent_Top_5_languag")
     @Expose
     private Object country3PercentTop5Languag;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Country_3_Top_5_languages_spoke")
     @Expose
     private Object country3Top5LanguagesSpoke;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Country_4_Percent_Top_5_languag")
     @Expose
     private Object country4PercentTop5Languag;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Country_4_Top_5_languages_spoke")
     @Expose
     private Object country4Top5LanguagesSpoke;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Country_5_Percent_Top_5_languag")
     @Expose
     private Object country5PercentTop5Languag;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Country_5_Top_5_languages_spoke")
     @Expose
     private Object country5Top5LanguagesSpoke;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Percent_Low_English_proficiency")
     @Expose
     private Object percentLowEnglishProficiency;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Percent_Low_English_profic")
     @Expose
     private Object rankPercentLowEnglishProfic;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Ancestry_1_Percent_Top_5_ancest")
     @Expose
     private Object ancestry1PercentTop5Ancest;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Ancestry_1_Top_5_ancestries")
     @Expose
     private Object ancestry1Top5Ancestries;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Ancestry_2_Percent_Top_5_ancest")
     @Expose
     private Object ancestry2PercentTop5Ancest;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Ancestry_2_Top_5_ancestries")
     @Expose
     private Object ancestry2Top5Ancestries;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Ancestry_3_Percent_Top_5_ancest")
     @Expose
     private Object ancestry3PercentTop5Ancest;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Ancestry_3_Top_5_ancestries")
     @Expose
     private Object ancestry3Top5Ancestries;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Ancestry_4_Percent_Top_5_ancest")
     @Expose
     private Object ancestry4PercentTop5Ancest;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Ancestry_4_Top_5_ancestries")
     @Expose
     private Object ancestry4Top5Ancestries;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Ancestry_5_Percent_Top_5_ancest")
     @Expose
     private Object ancestry5PercentTop5Ancest;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Ancestry_5_Top_5_ancestries")
     @Expose
     private Object ancestry5Top5Ancestries;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("New_settler_arrivals_per_100000")
     @Expose
     private Object newSettlerArrivalsPer100000;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_New_settler_arrivals_per_1")
     @Expose
     private Object rankNewSettlerArrivalsPer1;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Humanitarian_arrivals_as_a_Perc")
     @Expose
     private Object humanitarianArrivalsAsAPerc;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Humanitarian_arrivals_as_a")
     @Expose
     private Object rankHumanitarianArrivalsAsA;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Community_acceptance_of_diverse")
     @Expose
     private Object communityAcceptanceOfDiverse;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Community_acceptance_of_di")
     @Expose
     private Object rankCommunityAcceptanceOfDi;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Proportion_of_households_with_b")
     @Expose
     private Object proportionOfHouseholdsWithB;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Households_with_broadband_inter")
     @Expose
     private Object householdsWithBroadbandInter;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Gaming_machine_losses_per_head_")
     @Expose
     private Object gamingMachineLossesPerHead;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Gaming_machine_losses_per_")
     @Expose
     private Object rankGamingMachineLossesPer;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Family_Incidents_per_1000_pop")
     @Expose
     private Object familyIncidentsPer1000Pop;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Family_Incidents_per_1000_")
     @Expose
     private Object rankFamilyIncidentsPer1000;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Drug_usage_and_possession_offen")
     @Expose
     private Object drugUsageAndPossessionOffen;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Drug_usage_and_possession_")
     @Expose
     private Object rankDrugUsageAndPossession;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Total_Crime_per_1000_pop")
     @Expose
     private Object totalCrimePer1000Pop;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Total_Crime_per_1000_pop")
     @Expose
     private Object rankTotalCrimePer1000Pop;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Feels_safe_walking_alone_during")
     @Expose
     private Object feelsSafeWalkingAloneDuring;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Feels_safe_walking_alone_d")
     @Expose
     private Object rankFeelsSafeWalkingAloneD;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Believe_other_people_can_be_tru")
     @Expose
     private Object believeOtherPeopleCanBeTru;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Believe_other_people_can_b")
     @Expose
     private Object rankBelieveOtherPeopleCanB;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Spoke_with_more_than_5_people_t")
     @Expose
     private Object spokeWithMoreThan5PeopleT;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Spoke_with_more_than_5_peo")
     @Expose
     private Object rankSpokeWithMoreThan5Peo;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Able_to_definitely_get_help_fro")
     @Expose
     private Object ableToDefinitelyGetHelpFro;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Able_to_definitely_get_hel")
     @Expose
     private Object rankAbleToDefinitelyGetHel;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Volunteers")
     @Expose
     private Object volunteers;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Volunteers")
     @Expose
     private Object rankVolunteers;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Feel_valued_by_society")
     @Expose
     private Object feelValuedBySociety;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Feel_valued_by_society")
     @Expose
     private Object rankFeelValuedBySociety;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Attended_a_local_community_even")
     @Expose
     private Object attendedALocalCommunityEven;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Attended_a_local_community")
     @Expose
     private Object rankAttendedALocalCommunity;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Take_action_on_behalf_of_the_lo")
     @Expose
     private Object takeActionOnBehalfOfTheLo;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Take_action_on_behalf_of_t")
     @Expose
     private Object rankTakeActionOnBehalfOfT;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Members_of_a_sports_group")
     @Expose
     private Object membersOfASportsGroup;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Members_of_a_sports_group")
     @Expose
     private Object rankMembersOfASportsGroup;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Members_of_a_religious_group")
     @Expose
     private Object membersOfAReligiousGroup;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Members_of_a_religious_gro")
     @Expose
     private Object rankMembersOfAReligiousGro;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rated_their_community_as_an_act")
     @Expose
     private Object ratedTheirCommunityAsAnAct;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Rated_their_community_as_a")
     @Expose
     private Object rankRatedTheirCommunityAsA;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rated_their_community_as_a_plea")
     @Expose
     private Object ratedTheirCommunityAsAPlea;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_ated_their_community_as_a_")
     @Expose
     private Object rankAtedTheirCommunityAsA;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rated_their_community_as_good_o")
     @Expose
     private Object ratedTheirCommunityAsGoodO;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Rated_their_community_as_g")
     @Expose
     private Object rankRatedTheirCommunityAsG;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Index_of_Relative_Socia_Economi")
     @Expose
     private Object indexOfRelativeSociaEconomi;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Index_of_Relative_Socia_Ec")
     @Expose
     private Object rankIndexOfRelativeSociaEc;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Unemployment_rate")
     @Expose
     private Object unemploymentRate;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Unemployment_rate")
     @Expose
     private Object rankUnemploymentRate;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Percent_Individual_income_Less_")
     @Expose
     private Object percentIndividualIncomeLess;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Percent_Individual_income_")
     @Expose
     private Object rankPercentIndividualIncome;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Percent_Female_income_Less_than")
     @Expose
     private Object percentFemaleIncomeLessThan;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Percent_Female_income_Less")
     @Expose
     private Object rankPercentFemaleIncomeLess;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Percent_Male_income_Less_than_4")
     @Expose
     private Object percentMaleIncomeLessThan4;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Percent_Male_income_Less_t")
     @Expose
     private Object rankPercentMaleIncomeLessT;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Percent_One_Parent_headed_famil")
     @Expose
     private Object percentOneParentHeadedFamil;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Percent_One_Parent_headed_")
     @Expose
     private Object rankPercentOneParentHeaded;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("One_Parent_headed_families_Perc")
     @Expose
     private Object oneParentHeadedFamiliesPerc;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_One_Parent_headed_families")
     @Expose
     private Object rankOneParentHeadedFamilies;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("One_Parent_headed_families_Pe_1")
     @Expose
     private Object oneParentHeadedFamiliesPe1;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_One_Parent_headed_famili_1")
     @Expose
     private Object rankOneParentHeadedFamili1;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Equivalised_median_income")
     @Expose
     private Object equivalisedMedianIncome;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Equivalised_median_income")
     @Expose
     private Object rankEquivalisedMedianIncome;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Delayed_medical_consultation_be")
     @Expose
     private Object delayedMedicalConsultationBe;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Delayed_medical_consultati")
     @Expose
     private Object rankDelayedMedicalConsultati;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Delayed_purchasing_prescribed_m")
     @Expose
     private Object delayedPurchasingPrescribedM;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Delayed_purchasing_prescri")
     @Expose
     private Object rankDelayedPurchasingPrescri;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Percent_low_income_welfare_depe")
     @Expose
     private Object percentLowIncomeWelfareDepe;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Percent_low_income_welfare")
     @Expose
     private Object rankPercentLowIncomeWelfare;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Percent_of_pop_with_food_insecu")
     @Expose
     private Object percentOfPopWithFoodInsecu;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Percent_of_pop_with_food_i")
     @Expose
     private Object rankPercentOfPopWithFoodI;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Percent_Mortgage_Stress")
     @Expose
     private Object percentMortgageStress;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Percent_Mortgage_Stress")
     @Expose
     private Object rankPercentMortgageStress;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Percent_Rental_Stress")
     @Expose
     private Object percentRentalStress;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Percent_Rental_Stress")
     @Expose
     private Object rankPercentRentalStress;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Percent_of_rental_housing_that_")
     @Expose
     private Object percentOfRentalHousingThat;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Percent_of_rental_housing_")
     @Expose
     private Object rankPercentOfRentalHousing;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Median_house_price")
     @Expose
     private Object medianHousePrice;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Median_house_price")
     @Expose
     private Object rankMedianHousePrice;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Median_rent_for_3_bedrooms_home")
     @Expose
     private Object medianRentFor3BedroomsHome;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Median_rent_for_3_bedrooms")
     @Expose
     private Object rankMedianRentFor3Bedrooms;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("New_dwellings_approved_for_cons")
     @Expose
     private Object newDwellingsApprovedForCons;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_New_dwellings_approved_for")
     @Expose
     private Object rankNewDwellingsApprovedFor;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Social_housing_stock_as_a_Perce")
     @Expose
     private Object socialHousingStockAsAPerce;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Social_housing_stock_as_a_")
     @Expose
     private Object rankSocialHousingStockAsA;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Number_of_Social_housing_dwelli")
     @Expose
     private Object numberOfSocialHousingDwelli;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Number_of_Social_housing_d")
     @Expose
     private Object rankNumberOfSocialHousingD;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Homelessness_rate_per_1000_pop")
     @Expose
     private Object homelessnessRatePer1000Pop;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Homelessness_rate_per_1000")
     @Expose
     private Object rankHomelessnessRatePer1000;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Percent_of_work_journeys_which_")
     @Expose
     private Object percentOfWorkJourneysWhich;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Percent_of_work_journeys_w")
     @Expose
     private Object rankPercentOfWorkJourneysW;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Percent_of_work_journeys_which1")
     @Expose
     private Object percentOfWorkJourneysWhich1;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Percent_of_work_journeys_1")
     @Expose
     private Object rankPercentOfWorkJourneys1;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Persons_with_at_least_2_hour_da")
     @Expose
     private Object personsWithAtLeast2HourDa;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Persons_with_at_least_2_ho")
     @Expose
     private Object rankPersonsWithAtLeast2Ho;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Percent_households_with_no_moto")
     @Expose
     private Object percentHouseholdsWithNoMoto;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Percent_households_with_no")
     @Expose
     private Object rankPercentHouseholdsWithNo;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("FTE_Students")
     @Expose
     private Object fTEStudents;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Percent_year_9_students_who_att")
     @Expose
     private Object percentYear9StudentsWhoAtt;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Percent_of_year_9_students")
     @Expose
     private Object rankPercentOfYear9Students;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Percent_of_year_9_students_who_")
     @Expose
     private Object percentOfYear9StudentsWho;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Percent_year_9_students_wh")
     @Expose
     private Object rankPercentYear9StudentsWh;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Percent_19_year_olds_completing")
     @Expose
     private Object percent19YearOldsCompleting;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Percent_19_year_olds_compl")
     @Expose
     private Object rankPercent19YearOldsCompl;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Percent_persons_who_did_not_com")
     @Expose
     private Object percentPersonsWhoDidNotCom;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Percent_of_persons_who_did")
     @Expose
     private Object rankPercentOfPersonsWhoDid;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Percent_persons_who_completed_a")
     @Expose
     private Object percentPersonsWhoCompletedA;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Percent_persons_who_comple")
     @Expose
     private Object rankPercentPersonsWhoComple;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Percent_of_school_children_atte")
     @Expose
     private Object percentOfSchoolChildrenAtte;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Percent_of_school_children")
     @Expose
     private Object rankPercentOfSchoolChildren;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Percent_of_persons_reporting_as")
     @Expose
     private Object percentOfPersonsReportingAs;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Percent_of_persons_reporti")
     @Expose
     private Object rankPercentOfPersonsReporti;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Percent_of_persons_reporting_ty")
     @Expose
     private Object percentOfPersonsReportingTy;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Percent_of_persons_repor_1")
     @Expose
     private Object rankPercentOfPersonsRepor1;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Percent_of_persons_reporting_hi")
     @Expose
     private Object percentOfPersonsReportingHi;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Percent_of_persons_repor_2")
     @Expose
     private Object rankPercentOfPersonsRepor2;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Percent_of_persons_reporting_he")
     @Expose
     private Object percentOfPersonsReportingHe;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Percent_of_persons_repor_3")
     @Expose
     private Object rankPercentOfPersonsRepor3;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Percent_of_persons_reporting_os")
     @Expose
     private Object percentOfPersonsReportingOs;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Percent_of_persons_repor_4")
     @Expose
     private Object rankPercentOfPersonsRepor4;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Percent_of_persons_reporting_ar")
     @Expose
     private Object percentOfPersonsReportingAr;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Percent_of_persons_repor_5")
     @Expose
     private Object rankPercentOfPersonsRepor5;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Percent_of_persons_who_are_over")
     @Expose
     private Object percentOfPersonsWhoAreOver;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Percent_of_persons_who_are")
     @Expose
     private Object rankPercentOfPersonsWhoAre;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Percent_of_females_who_are_over")
     @Expose
     private Object percentOfFemalesWhoAreOver;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Percent_of_females_who_are")
     @Expose
     private Object rankPercentOfFemalesWhoAre;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Percent_of_males_who_are_overwe")
     @Expose
     private Object percentOfMalesWhoAreOverwe;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Percent_of_males_who_are_o")
     @Expose
     private Object rankPercentOfMalesWhoAreO;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Percent_of_persons_who_are_obes")
     @Expose
     private Object percentOfPersonsWhoAreObes;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Percent_of_persons_who_a_1")
     @Expose
     private Object rankPercentOfPersonsWhoA1;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Percent_of_females_who_are_obes")
     @Expose
     private Object percentOfFemalesWhoAreObes;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Percent_of_females_who_a_1")
     @Expose
     private Object rankPercentOfFemalesWhoA1;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Percent_of_males_who_are_obese")
     @Expose
     private Object percentOfMalesWhoAreObese;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Percent_of_males_who_are_1")
     @Expose
     private Object rankPercentOfMalesWhoAre1;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Malignant_cancers_diagnosed_per")
     @Expose
     private Object malignantCancersDiagnosedPer;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Malignant_cancers_diagnose")
     @Expose
     private Object rankMalignantCancersDiagnose;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Male_Cancer_incidence_per_1000_")
     @Expose
     private Object maleCancerIncidencePer1000;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Male_Cancer_incidence_per_")
     @Expose
     private Object rankMaleCancerIncidencePer;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Female_Cancer_incidence_per_100")
     @Expose
     private Object femaleCancerIncidencePer100;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Female_Cancer_incidence_pe")
     @Expose
     private Object rankFemaleCancerIncidencePe;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Percent_Poor_dental_health")
     @Expose
     private Object percentPoorDentalHealth;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Percent_Poor_dental_health")
     @Expose
     private Object rankPercentPoorDentalHealth;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Notifications_per_100000_pop_of")
     @Expose
     private Object notificationsPer100000PopOf;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Notifications_per_100000_p")
     @Expose
     private Object rankNotificationsPer100000P;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Notifications_per_100000_pop__1")
     @Expose
     private Object notificationsPer100000Pop1;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Notifications_per_100000_1")
     @Expose
     private Object rankNotificationsPer1000001;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Notifications_per_100000_people")
     @Expose
     private Object notificationsPer100000People;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Notifications_per_100000_2")
     @Expose
     private Object rankNotificationsPer1000002;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Percent_of_persons_18yrsPlus_wh")
     @Expose
     private Object percentOfPersons18yrsPlusWh;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Percent_of_persons_18yrsPl")
     @Expose
     private Object rankPercentOfPersons18yrsPl;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Percent_of_males_18yrsPlus_who_")
     @Expose
     private Object percentOfMales18yrsPlusWho;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Percent_of_males_18yrsPlus")
     @Expose
     private Object rankPercentOfMales18yrsPlus;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Percent_of_females_18yrsPlus_wh")
     @Expose
     private Object percentOfFemales18yrsPlusWh;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Percent_of_females_18yrsPl")
     @Expose
     private Object rankPercentOfFemales18yrsPl;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Consumed_alcohol_at_least_weekl")
     @Expose
     private Object consumedAlcoholAtLeastWeekl;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Consumed_alcohol_at_least_")
     @Expose
     private Object rankConsumedAlcoholAtLeast;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Consumed_alcohol_at_least_wee_1")
     @Expose
     private Object consumedAlcoholAtLeastWee1;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Consumed_alcohol_at_least1")
     @Expose
     private Object rankConsumedAlcoholAtLeast1;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Percent_of_persons_who_do_not_m")
     @Expose
     private Object percentOfPersonsWhoDoNotM;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Percent_of_persons_who_do_")
     @Expose
     private Object rankPercentOfPersonsWhoDo;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Percent_of_males_who_do_not_mee")
     @Expose
     private Object percentOfMalesWhoDoNotMee;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Percent_of_males_who_do_no")
     @Expose
     private Object rankPercentOfMalesWhoDoNo;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Percent_of_females_who_do_not_m")
     @Expose
     private Object percentOfFemalesWhoDoNotM;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Percent_of_females_who_do_")
     @Expose
     private Object rankPercentOfFemalesWhoDo;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Percent_of_persons_who_drink_so")
     @Expose
     private Object percentOfPersonsWhoDrinkSo;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Percent_of_persons_who_dri")
     @Expose
     private Object rankPercentOfPersonsWhoDri;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Percent_of_persons_who_share_a_")
     @Expose
     private Object percentOfPersonsWhoShareA;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Percent_of_persons_who_sha")
     @Expose
     private Object rankPercentOfPersonsWhoSha;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Percent_of_persons_who_do_not_1")
     @Expose
     private Object percentOfPersonsWhoDoNot1;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Percent_of_persons_who_do1")
     @Expose
     private Object rankPercentOfPersonsWhoDo1;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Percent_of_males_who_do_not_m_1")
     @Expose
     private Object percentOfMalesWhoDoNotM1;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Percent_of_males_who_do__1")
     @Expose
     private Object rankPercentOfMalesWhoDo1;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Percent_of_females_who_do_not_1")
     @Expose
     private Object percentOfFemalesWhoDoNot1;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Percent_of_females_who_do1")
     @Expose
     private Object rankPercentOfFemalesWhoDo1;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Percent_of_persons_who_sit_for_")
     @Expose
     private Object percentOfPersonsWhoSitFor;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Percent_of_persons_who_sit")
     @Expose
     private Object rankPercentOfPersonsWhoSit;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Percent_of_persons_who_visit_a_")
     @Expose
     private Object percentOfPersonsWhoVisitA;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Percent_of_persons_who_vis")
     @Expose
     private Object rankPercentOfPersonsWhoVis;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Percent_of_breast_screening_par")
     @Expose
     private Object percentOfBreastScreeningPar;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Percent_of_breast_screenin")
     @Expose
     private Object rankPercentOfBreastScreenin;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Percent_of_cervical_cancer_scre")
     @Expose
     private Object percentOfCervicalCancerScre;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Percent_of_cervical_cancer")
     @Expose
     private Object rankPercentOfCervicalCancer;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Bowel_cancer_screening_particip")
     @Expose
     private Object bowelCancerScreeningParticip;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Bowel_cancer_screening_par")
     @Expose
     private Object rankBowelCancerScreeningPar;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Bowel_cancer_screening_partic_1")
     @Expose
     private Object bowelCancerScreeningPartic1;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Bowel_cancer_screening_p_1")
     @Expose
     private Object rankBowelCancerScreeningP1;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Bowel_cancer_screening_partic_2")
     @Expose
     private Object bowelCancerScreeningPartic2;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Bowel_cancer_screening_p_2")
     @Expose
     private Object rankBowelCancerScreeningP2;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Low_Birthweight_babies")
     @Expose
     private Object lowBirthweightBabies;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Low_Birthweight_babies")
     @Expose
     private Object rankLowBirthweightBabies;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Percent_Infants_fully_breastfed")
     @Expose
     private Object percentInfantsFullyBreastfed;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Percent_Infants_fully_brea")
     @Expose
     private Object rankPercentInfantsFullyBrea;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Percent_Children_fully_immunise")
     @Expose
     private Object percentChildrenFullyImmunise;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Percent_Children_fully_imm")
     @Expose
     private Object rankPercentChildrenFullyImm;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Proportion_of_infants_enrolled_")
     @Expose
     private Object proportionOfInfantsEnrolled;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Proportion_of_infants_enro")
     @Expose
     private Object rankProportionOfInfantsEnro;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Kindergarten_participation_rate")
     @Expose
     private Object kindergartenParticipationRate;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Percent_of_children_with_kinder")
     @Expose
     private Object percentOfChildrenWithKinder;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Percent_of_children_with_k")
     @Expose
     private Object rankPercentOfChildrenWithK;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Percent_of_children_with_emotio")
     @Expose
     private Object percentOfChildrenWithEmotio;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Percent_of_children_with_e")
     @Expose
     private Object rankPercentOfChildrenWithE;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Percent_of_children_with_speech")
     @Expose
     private Object percentOfChildrenWithSpeech;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Percent_of_children_with_s")
     @Expose
     private Object rankPercentOfChildrenWithS;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Percent_of_adolescents_who_repo")
     @Expose
     private Object percentOfAdolescentsWhoRepo;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Percent_of_adolescents_who")
     @Expose
     private Object rankPercentOfAdolescentsWho;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Percent_of_children_who_are_dev")
     @Expose
     private Object percentOfChildrenWhoAreDev;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Percent_of_children_who_ar")
     @Expose
     private Object rankPercentOfChildrenWhoAr;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Percent_of_children_who_are_d_1")
     @Expose
     private Object percentOfChildrenWhoAreD1;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Percent_of_children_who__1")
     @Expose
     private Object rankPercentOfChildrenWho1;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Core_activity_need_for_assistan")
     @Expose
     private Object coreActivityNeedForAssistan;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Core_activity_need_for_ass")
     @Expose
     private Object rankCoreActivityNeedForAss;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("People_with_severe_and_profound")
     @Expose
     private Object peopleWithSevereAndProfound;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_People_with_severe_and_pro")
     @Expose
     private Object rankPeopleWithSevereAndPro;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("People_with_severe_and_profou_1")
     @Expose
     private Object peopleWithSevereAndProfou1;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_People_with_severe_and_p_1")
     @Expose
     private Object rankPeopleWithSevereAndP1;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Percent_pop_aged_75yrsPlus_livi")
     @Expose
     private Object percentPopAged75yrsPlusLivi;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Percent_pop_aged_75yrsPlus")
     @Expose
     private Object rankPercentPopAged75yrsPlus;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Pop_aged_75yrsPlus_living_alone")
     @Expose
     private Object popAged75yrsPlusLivingAlone;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Pop_aged_75yrsPlus_living_")
     @Expose
     private Object rankPopAged75yrsPlusLiving;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Pop_aged_75yrsPlus_living_alo_1")
     @Expose
     private Object popAged75yrsPlusLivingAlo1;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Pop_aged_75yrsPlus_living1")
     @Expose
     private Object rankPopAged75yrsPlusLiving1;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Persons_receiving_Disability_Se")
     @Expose
     private Object personsReceivingDisabilitySe;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Persons_receiving_Disabili")
     @Expose
     private Object rankPersonsReceivingDisabili;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Disability_pension_per_1000_eli")
     @Expose
     private Object disabilityPensionPer1000Eli;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Disability_pension_per_100")
     @Expose
     private Object rankDisabilityPensionPer100;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Aged_care_HighCare_beds")
     @Expose
     private Object agedCareHighCareBeds;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Aged_care_LowCare_beds")
     @Expose
     private Object agedCareLowCareBeds;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Age_pension_per_1000_eligible_p")
     @Expose
     private Object agePensionPer1000EligibleP;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Age_pension_per_1000_eligi")
     @Expose
     private Object rankAgePensionPer1000Eligi;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Male_life_expectancy")
     @Expose
     private Object maleLifeExpectancy;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Male_life_expectancy")
     @Expose
     private Object rankMaleLifeExpectancy;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Female_life_expectancy")
     @Expose
     private Object femaleLifeExpectancy;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Female_life_expectancy")
     @Expose
     private Object rankFemaleLifeExpectancy;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Persons_reporting_fair_or_poor_")
     @Expose
     private Object personsReportingFairOrPoor;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Persons_reporting_fair_or_")
     @Expose
     private Object rankPersonsReportingFairOr;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Females_reporting_fair_or_poor_")
     @Expose
     private Object femalesReportingFairOrPoor;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Females_reporting_fair_or_")
     @Expose
     private Object rankFemalesReportingFairOr;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Males_reporting_fair_or_poor_he")
     @Expose
     private Object malesReportingFairOrPoorHe;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Males_reporting_fair_or_po")
     @Expose
     private Object rankMalesReportingFairOrPo;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Percent_who_have_a_high_degree_")
     @Expose
     private Object percentWhoHaveAHighDegree;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Percent_who_have_a_high_de")
     @Expose
     private Object rankPercentWhoHaveAHighDe;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Percent_of_persons_sleeping_les")
     @Expose
     private Object percentOfPersonsSleepingLes;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Percent_of_persons_sleepin")
     @Expose
     private Object rankPercentOfPersonsSleepin;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Percent_persons_with_adequate_w")
     @Expose
     private Object percentPersonsWithAdequateW;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Percent_persons_with_adequ")
     @Expose
     private Object rankPercentPersonsWithAdequ;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Unintentional_injuries_treated_")
     @Expose
     private Object unintentionalInjuriesTreated;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Unintentional_injuries_tre")
     @Expose
     private Object rankUnintentionalInjuriesTre;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Intentional_injuries_treated_in")
     @Expose
     private Object intentionalInjuriesTreatedIn;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Intentional_injuries_treat")
     @Expose
     private Object rankIntentionalInjuriesTreat;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Percent_of_unintentional_hospit")
     @Expose
     private Object percentOfUnintentionalHospit;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Percent_of_unintentional_h")
     @Expose
     private Object rankPercentOfUnintentionalH;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Indirect_standardised_death_rat")
     @Expose
     private Object indirectStandardisedDeathRat;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Indirect_standardised_deat")
     @Expose
     private Object rankIndirectStandardisedDeat;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Avoidable_deaths_0to74_yrs_for_")
     @Expose
     private Object avoidableDeaths0to74YrsFor;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Avoidable_deaths_0to74_yrs")
     @Expose
     private Object rankAvoidableDeaths0to74Yrs;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Avoidable_deaths_0to74yrsrs_for")
     @Expose
     private Object avoidableDeaths0to74yrsrsFor;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Avoidable_deaths_0to74yrsr")
     @Expose
     private Object rankAvoidableDeaths0to74yrsr;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Avoidable_deaths_0to74yrsrs_f_1")
     @Expose
     private Object avoidableDeaths0to74yrsrsF1;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Avoidable_deaths_0to74yr_1")
     @Expose
     private Object rankAvoidableDeaths0to74yr1;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Avoidable_deaths_0to74yrs_for_r")
     @Expose
     private Object avoidableDeaths0to74yrsForR;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Avoidable_deaths_0to74yrs_")
     @Expose
     private Object rankAvoidableDeaths0to74yrs;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Primary_Health_Network")
     @Expose
     private Object primaryHealthNetwork;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Primary_Care_Partnership")
     @Expose
     private Object primaryCarePartnership;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Number_of_hospitals_and_health_")
     @Expose
     private Object numberOfHospitalsAndHealth;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Number_of_public_hospitals_and_")
     @Expose
     private Object numberOfPublicHospitalsAnd;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Number_of_private_hospitals_and")
     @Expose
     private Object numberOfPrivateHospitalsAnd;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("GPs_per_1000_pop")
     @Expose
     private Object gPsPer1000Pop;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_GPs_per_1000_pop")
     @Expose
     private Object rankGPsPer1000Pop;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("GP_sites_per_1000_pop")
     @Expose
     private Object gPSitesPer1000Pop;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_GP_sites_per_1000_pop")
     @Expose
     private Object rankGPSitesPer1000Pop;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Allied_health_sites_per_1000_po")
     @Expose
     private Object alliedHealthSitesPer1000Po;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Allied_health_sites_per_10")
     @Expose
     private Object rankAlliedHealthSitesPer10;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Dental_services_per_1000_pop")
     @Expose
     private Object dentalServicesPer1000Pop;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Dental_services_per_1000_p")
     @Expose
     private Object rankDentalServicesPer1000P;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Pharmacies_per_1000_pop")
     @Expose
     private Object pharmaciesPer1000Pop;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Pharmacies_per_1000_pop")
     @Expose
     private Object rankPharmaciesPer1000Pop;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Percent_Near_Public_Transport")
     @Expose
     private Object percentNearPublicTransport;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Percent_Near_Public_Transp")
     @Expose
     private Object rankPercentNearPublicTransp;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Percent_with_private_health_ins")
     @Expose
     private Object percentWithPrivateHealthIns;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Percent_with_private_healt")
     @Expose
     private Object rankPercentWithPrivateHealt;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Hospital_inpatient_separations_")
     @Expose
     private Object hospitalInpatientSeparations;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Hospital_inpatient_separat")
     @Expose
     private Object rankHospitalInpatientSeparat;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Percent_inpatient_separations_f")
     @Expose
     private Object percentInpatientSeparationsF;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Percent_inpatient_separati")
     @Expose
     private Object rankPercentInpatientSeparati;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Main_public_hospital_attended_f")
     @Expose
     private Object mainPublicHospitalAttendedF;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Main_public_hospital_attended_P")
     @Expose
     private Object mainPublicHospitalAttendedP;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Main_public_hospital_atten")
     @Expose
     private Object rankMainPublicHospitalAtten;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Average_length_of_stay_in_days_")
     @Expose
     private Object averageLengthOfStayInDays;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Average_length_of_stay_in_")
     @Expose
     private Object rankAverageLengthOfStayIn;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Average_length_of_stay_for_all_")
     @Expose
     private Object averageLengthOfStayForAll;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Average_length_of_stay_for")
     @Expose
     private Object rankAverageLengthOfStayFor;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Per_annum_Percent_Change_in_Sep")
     @Expose
     private Object perAnnumPercentChangeInSep;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Per_annum_Percent_Change_i")
     @Expose
     private Object rankPerAnnumPercentChangeI;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Per_annum_Percent_Projected_Cha")
     @Expose
     private Object perAnnumPercentProjectedCha;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Per_annum_Percent_Projecte")
     @Expose
     private Object rankPerAnnumPercentProjecte;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("ACSCs_per_1000_pop_Total")
     @Expose
     private Object aCSCsPer1000PopTotal;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_ACSCs_per_1000_pop_Total")
     @Expose
     private Object rankACSCsPer1000PopTotal;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("ACSCs_per_1000_pop_Acute")
     @Expose
     private Object aCSCsPer1000PopAcute;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_ACSCs_per_1000_pop_Acute")
     @Expose
     private Object rankACSCsPer1000PopAcute;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("ACSCs_per_1000_pop_Chronic")
     @Expose
     private Object aCSCsPer1000PopChronic;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_ACSCs_per_1000_pop_Chronic")
     @Expose
     private Object rankACSCsPer1000PopChronic;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("ACSCs_per_1000_pop_Vaccine_prev")
     @Expose
     private Object aCSCsPer1000PopVaccinePrev;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_ACSCs_per_1000_pop_Vaccine")
     @Expose
     private Object rankACSCsPer1000PopVaccine;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Emergency_Department_presentati")
     @Expose
     private Object emergencyDepartmentPresentati;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Emergency_Department_prese")
     @Expose
     private Object rankEmergencyDepartmentPrese;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Primary_care_type_presentations")
     @Expose
     private Object primaryCareTypePresentations;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Primary_care_type_presenta")
     @Expose
     private Object rankPrimaryCareTypePresenta;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Child_protection_investigations")
     @Expose
     private Object childProtectionInvestigations;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Child_protection_investiga")
     @Expose
     private Object rankChildProtectionInvestiga;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Child_protection_substantiation")
     @Expose
     private Object childProtectionSubstantiation;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Child_protection_substanti")
     @Expose
     private Object rankChildProtectionSubstanti;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Number_of_Child_FIRST_assessmen")
     @Expose
     private Object numberOfChildFIRSTAssessmen;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Number_of_Child_FIRST_asse")
     @Expose
     private Object rankNumberOfChildFIRSTAsse;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("GP_attendances_per_1000_pop_Mal")
     @Expose
     private Object gPAttendancesPer1000PopMal;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_GP_attendances_per_1000_po")
     @Expose
     private Object rankGPAttendancesPer1000Po;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("GP_attendances_per_1000_pop_Fem")
     @Expose
     private Object gPAttendancesPer1000PopFem;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_GP_attendances_per_1000__1")
     @Expose
     private Object rankGPAttendancesPer10001;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("GP_attendances_per_1000_pop_Tot")
     @Expose
     private Object gPAttendancesPer1000PopTot;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_GP_attendances_per_1000__2")
     @Expose
     private Object rankGPAttendancesPer10002;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("HACC_clients_aged_0to64yrs_per_")
     @Expose
     private Object hACCClientsAged0to64yrsPer;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_HACC_clients_aged_0to64yrs")
     @Expose
     private Object rankHACCClientsAged0to64yrs;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("HACC_clients_aged_65yrsPlus_per")
     @Expose
     private Object hACCClientsAged65yrsPlusPer;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_HACC_clients_aged_65yrsPlu")
     @Expose
     private Object rankHACCClientsAged65yrsPlu;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("No_clients_who_received_Alcohol")
     @Expose
     private Object noClientsWhoReceivedAlcohol;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_No_clients_who_received_Al")
     @Expose
     private Object rankNoClientsWhoReceivedAl;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Registered_mental_mealth_client")
     @Expose
     private Object registeredMentalMealthClient;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("Rank_Registered_mental_mealth_c")
     @Expose
     private Object rankRegisteredMentalMealthC;
 
     /**
+     * 
      * (Required)
-     *
-     * @return The lGA
+     * 
      */
-    public Object getLGA() {
-        return lGA;
+    public Object getLga() {
+        return lga;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param lGA The LGA
+     * 
      */
-    public void setLGA(Object lGA) {
-        this.lGA = lGA;
+    public void setLga(Object lga) {
+        this.lga = lga;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The metropolitanRural
+     * 
      */
     public Object getMetropolitanRural() {
         return metropolitanRural;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param metropolitanRural The MetropolitanRural
+     * 
      */
     public void setMetropolitanRural(Object metropolitanRural) {
         this.metropolitanRural = metropolitanRural;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The departmentalRegion
+     * 
      */
     public Object getDepartmentalRegion() {
         return departmentalRegion;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param departmentalRegion The Departmental_Region
+     * 
      */
     public void setDepartmentalRegion(Object departmentalRegion) {
         this.departmentalRegion = departmentalRegion;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The departmentalArea
+     * 
      */
     public Object getDepartmentalArea() {
         return departmentalArea;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param departmentalArea The Departmental_Area
+     * 
      */
     public void setDepartmentalArea(Object departmentalArea) {
         this.departmentalArea = departmentalArea;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The areaOfLGASqKm
+     * 
      */
     public Object getAreaOfLGASqKm() {
         return areaOfLGASqKm;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param areaOfLGASqKm The Area_of_LGA_sq_km
+     * 
      */
     public void setAreaOfLGASqKm(Object areaOfLGASqKm) {
         this.areaOfLGASqKm = areaOfLGASqKm;
     }
 
-    /**
-     * (Required)
-     *
-     * @return The aSGSLGACode
-     */
     public Object getASGSLGACode() {
         return aSGSLGACode;
     }
 
-    /**
-     * (Required)
-     *
-     * @param aSGSLGACode The ASGS_LGA_code
-     */
     public void setASGSLGACode(Object aSGSLGACode) {
         this.aSGSLGACode = aSGSLGACode;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The mostPopulousTownOrSuburbIn
+     * 
      */
     public Object getMostPopulousTownOrSuburbIn() {
         return mostPopulousTownOrSuburbIn;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param mostPopulousTownOrSuburbIn The Most_populous_town_or_suburb_in
+     * 
      */
     public void setMostPopulousTownOrSuburbIn(Object mostPopulousTownOrSuburbIn) {
         this.mostPopulousTownOrSuburbIn = mostPopulousTownOrSuburbIn;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The distanceToMelbourneInKm
+     * 
      */
     public Object getDistanceToMelbourneInKm() {
         return distanceToMelbourneInKm;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param distanceToMelbourneInKm The Distance_to_Melbourne_in_km
+     * 
      */
     public void setDistanceToMelbourneInKm(Object distanceToMelbourneInKm) {
         this.distanceToMelbourneInKm = distanceToMelbourneInKm;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The travelTimeFromMelbourneGPO
+     * 
      */
     public Object getTravelTimeFromMelbourneGPO() {
         return travelTimeFromMelbourneGPO;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param travelTimeFromMelbourneGPO The Travel_time_from_Melbourne_GPO_
+     * 
      */
     public void setTravelTimeFromMelbourneGPO(Object travelTimeFromMelbourneGPO) {
         this.travelTimeFromMelbourneGPO = travelTimeFromMelbourneGPO;
     }
 
-    /**
-     * (Required)
-     *
-     * @return The aRIARemotenessCategory
-     */
     public Object getARIARemotenessCategory() {
         return aRIARemotenessCategory;
     }
 
-    /**
-     * (Required)
-     *
-     * @param aRIARemotenessCategory The ARIA_Remoteness_category
-     */
     public void setARIARemotenessCategory(Object aRIARemotenessCategory) {
         this.aRIARemotenessCategory = aRIARemotenessCategory;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The percentBusinessLandUse
+     * 
      */
     public Object getPercentBusinessLandUse() {
         return percentBusinessLandUse;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param percentBusinessLandUse The Percent_Business_land_use
+     * 
      */
     public void setPercentBusinessLandUse(Object percentBusinessLandUse) {
         this.percentBusinessLandUse = percentBusinessLandUse;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The percentIndustrialLandUse
+     * 
      */
     public Object getPercentIndustrialLandUse() {
         return percentIndustrialLandUse;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param percentIndustrialLandUse The Percent_Industrial_land_use
+     * 
      */
     public void setPercentIndustrialLandUse(Object percentIndustrialLandUse) {
         this.percentIndustrialLandUse = percentIndustrialLandUse;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The percentResidentialLandUse
+     * 
      */
     public Object getPercentResidentialLandUse() {
         return percentResidentialLandUse;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param percentResidentialLandUse The Percent_Residential_land_use
+     * 
      */
     public void setPercentResidentialLandUse(Object percentResidentialLandUse) {
         this.percentResidentialLandUse = percentResidentialLandUse;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The percentRuralLandUse
+     * 
      */
     public Object getPercentRuralLandUse() {
         return percentRuralLandUse;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param percentRuralLandUse The Percent_Rural_land_use
+     * 
      */
     public void setPercentRuralLandUse(Object percentRuralLandUse) {
         this.percentRuralLandUse = percentRuralLandUse;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The percentOtherLandUse
+     * 
      */
     public Object getPercentOtherLandUse() {
         return percentOtherLandUse;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param percentOtherLandUse The Percent_Other_land_use
+     * 
      */
     public void setPercentOtherLandUse(Object percentOtherLandUse) {
         this.percentOtherLandUse = percentOtherLandUse;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The perAnnumPopChangeActualFor
+     * 
      */
     public Object getPerAnnumPopChangeActualFor() {
         return perAnnumPopChangeActualFor;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param perAnnumPopChangeActualFor The Per_annum_pop_change_actual_for
+     * 
      */
     public void setPerAnnumPopChangeActualFor(Object perAnnumPopChangeActualFor) {
         this.perAnnumPopChangeActualFor = perAnnumPopChangeActualFor;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The perAnnumPopChangeProjected
+     * 
      */
     public Object getPerAnnumPopChangeProjected() {
         return perAnnumPopChangeProjected;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param perAnnumPopChangeProjected The Per_annum_pop_change_projected_
+     * 
      */
     public void setPerAnnumPopChangeProjected(Object perAnnumPopChangeProjected) {
         this.perAnnumPopChangeProjected = perAnnumPopChangeProjected;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The females0to14yrs
+     * 
      */
     public Object getFemales0to14yrs() {
         return females0to14yrs;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param females0to14yrs The Females0to14yrs
+     * 
      */
     public void setFemales0to14yrs(Object females0to14yrs) {
         this.females0to14yrs = females0to14yrs;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The females15to24yrs
+     * 
      */
     public Object getFemales15to24yrs() {
         return females15to24yrs;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param females15to24yrs The Females15to24yrs
+     * 
      */
     public void setFemales15to24yrs(Object females15to24yrs) {
         this.females15to24yrs = females15to24yrs;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The females25to44yrs
+     * 
      */
     public Object getFemales25to44yrs() {
         return females25to44yrs;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param females25to44yrs The Females25to44yrs
+     * 
      */
     public void setFemales25to44yrs(Object females25to44yrs) {
         this.females25to44yrs = females25to44yrs;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The females45to64yrs
+     * 
      */
     public Object getFemales45to64yrs() {
         return females45to64yrs;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param females45to64yrs The Females45to64yrs
+     * 
      */
     public void setFemales45to64yrs(Object females45to64yrs) {
         this.females45to64yrs = females45to64yrs;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The females65to84yrs
+     * 
      */
     public Object getFemales65to84yrs() {
         return females65to84yrs;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param females65to84yrs The Females65to84yrs
+     * 
      */
     public void setFemales65to84yrs(Object females65to84yrs) {
         this.females65to84yrs = females65to84yrs;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The female85yrsPlus
+     * 
      */
     public Object getFemale85yrsPlus() {
         return female85yrsPlus;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param female85yrsPlus The Female85yrsPlus
+     * 
      */
     public void setFemale85yrsPlus(Object female85yrsPlus) {
         this.female85yrsPlus = female85yrsPlus;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The totalFemales
+     * 
      */
     public Object getTotalFemales() {
         return totalFemales;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param totalFemales The TotalFemales
+     * 
      */
     public void setTotalFemales(Object totalFemales) {
         this.totalFemales = totalFemales;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The males0to14yrs
+     * 
      */
     public Object getMales0to14yrs() {
         return males0to14yrs;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param males0to14yrs The Males0to14yrs
+     * 
      */
     public void setMales0to14yrs(Object males0to14yrs) {
         this.males0to14yrs = males0to14yrs;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The males15to24yrs
+     * 
      */
     public Object getMales15to24yrs() {
         return males15to24yrs;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param males15to24yrs The Males15to24yrs
+     * 
      */
     public void setMales15to24yrs(Object males15to24yrs) {
         this.males15to24yrs = males15to24yrs;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The males25to44yrs
+     * 
      */
     public Object getMales25to44yrs() {
         return males25to44yrs;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param males25to44yrs The Males25to44yrs
+     * 
      */
     public void setMales25to44yrs(Object males25to44yrs) {
         this.males25to44yrs = males25to44yrs;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The males45to64yrs
+     * 
      */
     public Object getMales45to64yrs() {
         return males45to64yrs;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param males45to64yrs The Males45to64yrs
+     * 
      */
     public void setMales45to64yrs(Object males45to64yrs) {
         this.males45to64yrs = males45to64yrs;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The males65to84yrs
+     * 
      */
     public Object getMales65to84yrs() {
         return males65to84yrs;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param males65to84yrs The Males65to84yrs
+     * 
      */
     public void setMales65to84yrs(Object males65to84yrs) {
         this.males65to84yrs = males65to84yrs;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The male85yrsPlus
+     * 
      */
     public Object getMale85yrsPlus() {
         return male85yrsPlus;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param male85yrsPlus The Male85yrsPlus
+     * 
      */
     public void setMale85yrsPlus(Object male85yrsPlus) {
         this.male85yrsPlus = male85yrsPlus;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The totalMales
+     * 
      */
     public Object getTotalMales() {
         return totalMales;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param totalMales The TotalMales
+     * 
      */
     public void setTotalMales(Object totalMales) {
         this.totalMales = totalMales;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The total0to14yrs
+     * 
      */
     public Object getTotal0to14yrs() {
         return total0to14yrs;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param total0to14yrs The Total0to14yrs
+     * 
      */
     public void setTotal0to14yrs(Object total0to14yrs) {
         this.total0to14yrs = total0to14yrs;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The tota15to24yrs
+     * 
      */
     public Object getTota15to24yrs() {
         return tota15to24yrs;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param tota15to24yrs The Tota15to24yrs
+     * 
      */
     public void setTota15to24yrs(Object tota15to24yrs) {
         this.tota15to24yrs = tota15to24yrs;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The tota25to44yrs
+     * 
      */
     public Object getTota25to44yrs() {
         return tota25to44yrs;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param tota25to44yrs The Tota25to44yrs
+     * 
      */
     public void setTota25to44yrs(Object tota25to44yrs) {
         this.tota25to44yrs = tota25to44yrs;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The tota45to64yrs
+     * 
      */
     public Object getTota45to64yrs() {
         return tota45to64yrs;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param tota45to64yrs The Tota45to64yrs
+     * 
      */
     public void setTota45to64yrs(Object tota45to64yrs) {
         this.tota45to64yrs = tota45to64yrs;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The tota65to84yrs
+     * 
      */
     public Object getTota65to84yrs() {
         return tota65to84yrs;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param tota65to84yrs The Tota65to84yrs
+     * 
      */
     public void setTota65to84yrs(Object tota65to84yrs) {
         this.tota65to84yrs = tota65to84yrs;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The tota85yrsPlus
+     * 
      */
     public Object getTota85yrsPlus() {
         return tota85yrsPlus;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param tota85yrsPlus The Tota85yrsPlus
+     * 
      */
     public void setTota85yrsPlus(Object tota85yrsPlus) {
         this.tota85yrsPlus = tota85yrsPlus;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The total2013ERP
+     * 
      */
     public Object getTotal2013ERP() {
         return total2013ERP;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param total2013ERP The Total2013ERP
+     * 
      */
     public void setTotal2013ERP(Object total2013ERP) {
         this.total2013ERP = total2013ERP;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The percentTotal0to14yrs
+     * 
      */
     public Object getPercentTotal0to14yrs() {
         return percentTotal0to14yrs;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param percentTotal0to14yrs The Percent_Total0to14yrs
+     * 
      */
     public void setPercentTotal0to14yrs(Object percentTotal0to14yrs) {
         this.percentTotal0to14yrs = percentTotal0to14yrs;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The percentTotal15to24yrs
+     * 
      */
     public Object getPercentTotal15to24yrs() {
         return percentTotal15to24yrs;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param percentTotal15to24yrs The PercentTotal15to24yrs
+     * 
      */
     public void setPercentTotal15to24yrs(Object percentTotal15to24yrs) {
         this.percentTotal15to24yrs = percentTotal15to24yrs;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The percentTotal25to44yrs
+     * 
      */
     public Object getPercentTotal25to44yrs() {
         return percentTotal25to44yrs;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param percentTotal25to44yrs The PercentTotal25to44yrs
+     * 
      */
     public void setPercentTotal25to44yrs(Object percentTotal25to44yrs) {
         this.percentTotal25to44yrs = percentTotal25to44yrs;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The percentTotal45to64yrs
+     * 
      */
     public Object getPercentTotal45to64yrs() {
         return percentTotal45to64yrs;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param percentTotal45to64yrs The PercentTotal45to64yrs
+     * 
      */
     public void setPercentTotal45to64yrs(Object percentTotal45to64yrs) {
         this.percentTotal45to64yrs = percentTotal45to64yrs;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The percentTotal65to84yrs
+     * 
      */
     public Object getPercentTotal65to84yrs() {
         return percentTotal65to84yrs;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param percentTotal65to84yrs The PercentTotal65to84yrs
+     * 
      */
     public void setPercentTotal65to84yrs(Object percentTotal65to84yrs) {
         this.percentTotal65to84yrs = percentTotal65to84yrs;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The percentTotal84yrsPlus
+     * 
      */
     public Object getPercentTotal84yrsPlus() {
         return percentTotal84yrsPlus;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param percentTotal84yrsPlus The PercentTotal84yrsPlus
+     * 
      */
     public void setPercentTotal84yrsPlus(Object percentTotal84yrsPlus) {
         this.percentTotal84yrsPlus = percentTotal84yrsPlus;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The totalFertilityRate2012
+     * 
      */
     public Object getTotalFertilityRate2012() {
         return totalFertilityRate2012;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param totalFertilityRate2012 The Total_fertility_rate_2012
+     * 
      */
     public void setTotalFertilityRate2012(Object totalFertilityRate2012) {
         this.totalFertilityRate2012 = totalFertilityRate2012;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankTotalFertilityRate2012
+     * 
      */
     public Object getRankTotalFertilityRate2012() {
         return rankTotalFertilityRate2012;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankTotalFertilityRate2012 The Rank_Total_fertility_rate_2012
+     * 
      */
     public void setRankTotalFertilityRate2012(Object rankTotalFertilityRate2012) {
         this.rankTotalFertilityRate2012 = rankTotalFertilityRate2012;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The teenageFertilityRate2012
+     * 
      */
     public Object getTeenageFertilityRate2012() {
         return teenageFertilityRate2012;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param teenageFertilityRate2012 The Teenage_fertility_rate_2012
+     * 
      */
     public void setTeenageFertilityRate2012(Object teenageFertilityRate2012) {
         this.teenageFertilityRate2012 = teenageFertilityRate2012;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankTeenageFertilityRate201
+     * 
      */
     public Object getRankTeenageFertilityRate201() {
         return rankTeenageFertilityRate201;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankTeenageFertilityRate201 The Rank_Teenage_fertility_rate_201
+     * 
      */
     public void setRankTeenageFertilityRate201(Object rankTeenageFertilityRate201) {
         this.rankTeenageFertilityRate201 = rankTeenageFertilityRate201;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The percentAboriginalOrTorresSt
+     * 
      */
     public Object getPercentAboriginalOrTorresSt() {
         return percentAboriginalOrTorresSt;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param percentAboriginalOrTorresSt The Percent_Aboriginal_or_Torres_St
+     * 
      */
     public void setPercentAboriginalOrTorresSt(Object percentAboriginalOrTorresSt) {
         this.percentAboriginalOrTorresSt = percentAboriginalOrTorresSt;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankAboriginalOrTorresStrai
+     * 
      */
     public Object getRankAboriginalOrTorresStrai() {
         return rankAboriginalOrTorresStrai;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankAboriginalOrTorresStrai The Rank_Aboriginal_or_Torres_Strai
+     * 
      */
     public void setRankAboriginalOrTorresStrai(Object rankAboriginalOrTorresStrai) {
         this.rankAboriginalOrTorresStrai = rankAboriginalOrTorresStrai;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The percentBornOverseas2011
+     * 
      */
     public Object getPercentBornOverseas2011() {
         return percentBornOverseas2011;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param percentBornOverseas2011 The Percent_Born_overseas_2011
+     * 
      */
     public void setPercentBornOverseas2011(Object percentBornOverseas2011) {
         this.percentBornOverseas2011 = percentBornOverseas2011;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankPercentBornOverseas2011
+     * 
      */
     public Object getRankPercentBornOverseas2011() {
         return rankPercentBornOverseas2011;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankPercentBornOverseas2011 The Rank_Percent_Born_overseas_2011
+     * 
      */
     public void setRankPercentBornOverseas2011(Object rankPercentBornOverseas2011) {
         this.rankPercentBornOverseas2011 = rankPercentBornOverseas2011;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The bornInANonEnglishSpeaking
+     * 
      */
     public Object getBornInANonEnglishSpeaking() {
         return bornInANonEnglishSpeaking;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param bornInANonEnglishSpeaking The Born_in_a_non_English_speaking_
+     * 
      */
     public void setBornInANonEnglishSpeaking(Object bornInANonEnglishSpeaking) {
         this.bornInANonEnglishSpeaking = bornInANonEnglishSpeaking;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankBornInANonEnglishSpea
+     * 
      */
     public Object getRankBornInANonEnglishSpea() {
         return rankBornInANonEnglishSpea;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankBornInANonEnglishSpea The Rank_Born_in_a_non_English_spea
+     * 
      */
     public void setRankBornInANonEnglishSpea(Object rankBornInANonEnglishSpea) {
         this.rankBornInANonEnglishSpea = rankBornInANonEnglishSpea;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The country1PercentForTop5Ove
+     * 
      */
     public Object getCountry1PercentForTop5Ove() {
         return country1PercentForTop5Ove;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param country1PercentForTop5Ove The Country_1_Percent_for_Top_5_ove
+     * 
      */
     public void setCountry1PercentForTop5Ove(Object country1PercentForTop5Ove) {
         this.country1PercentForTop5Ove = country1PercentForTop5Ove;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The country1ForTop5OverseasCo
+     * 
      */
     public Object getCountry1ForTop5OverseasCo() {
         return country1ForTop5OverseasCo;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param country1ForTop5OverseasCo The Country_1_for_Top_5_overseas_co
+     * 
      */
     public void setCountry1ForTop5OverseasCo(Object country1ForTop5OverseasCo) {
         this.country1ForTop5OverseasCo = country1ForTop5OverseasCo;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The country2PercentForTop5Ove
+     * 
      */
     public Object getCountry2PercentForTop5Ove() {
         return country2PercentForTop5Ove;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param country2PercentForTop5Ove The Country_2_Percent_for_Top_5_ove
+     * 
      */
     public void setCountry2PercentForTop5Ove(Object country2PercentForTop5Ove) {
         this.country2PercentForTop5Ove = country2PercentForTop5Ove;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The country2ForTop5OverseasCo
+     * 
      */
     public Object getCountry2ForTop5OverseasCo() {
         return country2ForTop5OverseasCo;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param country2ForTop5OverseasCo The Country_2_for_Top_5_overseas_co
+     * 
      */
     public void setCountry2ForTop5OverseasCo(Object country2ForTop5OverseasCo) {
         this.country2ForTop5OverseasCo = country2ForTop5OverseasCo;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The country3PercentForTop5Ove
+     * 
      */
     public Object getCountry3PercentForTop5Ove() {
         return country3PercentForTop5Ove;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param country3PercentForTop5Ove The Country_3_Percent_for_Top_5_ove
+     * 
      */
     public void setCountry3PercentForTop5Ove(Object country3PercentForTop5Ove) {
         this.country3PercentForTop5Ove = country3PercentForTop5Ove;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The country3ForTop5OverseasCo
+     * 
      */
     public Object getCountry3ForTop5OverseasCo() {
         return country3ForTop5OverseasCo;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param country3ForTop5OverseasCo The Country_3_for_Top_5_overseas_co
+     * 
      */
     public void setCountry3ForTop5OverseasCo(Object country3ForTop5OverseasCo) {
         this.country3ForTop5OverseasCo = country3ForTop5OverseasCo;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The country4PercentForTop5Ove
+     * 
      */
     public Object getCountry4PercentForTop5Ove() {
         return country4PercentForTop5Ove;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param country4PercentForTop5Ove The Country_4_Percent_for_Top_5_ove
+     * 
      */
     public void setCountry4PercentForTop5Ove(Object country4PercentForTop5Ove) {
         this.country4PercentForTop5Ove = country4PercentForTop5Ove;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The country4ForTop5OverseasCo
+     * 
      */
     public Object getCountry4ForTop5OverseasCo() {
         return country4ForTop5OverseasCo;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param country4ForTop5OverseasCo The Country_4_for_Top_5_overseas_co
+     * 
      */
     public void setCountry4ForTop5OverseasCo(Object country4ForTop5OverseasCo) {
         this.country4ForTop5OverseasCo = country4ForTop5OverseasCo;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The country5PercentForTop5Ove
+     * 
      */
     public Object getCountry5PercentForTop5Ove() {
         return country5PercentForTop5Ove;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param country5PercentForTop5Ove The Country_5_Percent_for_Top_5_ove
+     * 
      */
     public void setCountry5PercentForTop5Ove(Object country5PercentForTop5Ove) {
         this.country5PercentForTop5Ove = country5PercentForTop5Ove;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The country5ForTop5OverseasCo
+     * 
      */
     public Object getCountry5ForTop5OverseasCo() {
         return country5ForTop5OverseasCo;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param country5ForTop5OverseasCo The Country_5_for_Top_5_overseas_co
+     * 
      */
     public void setCountry5ForTop5OverseasCo(Object country5ForTop5OverseasCo) {
         this.country5ForTop5OverseasCo = country5ForTop5OverseasCo;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The percentSpeaksLOTEAtHome
+     * 
      */
     public Object getPercentSpeaksLOTEAtHome() {
         return percentSpeaksLOTEAtHome;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param percentSpeaksLOTEAtHome The Percent_Speaks_LOTE_at_home
+     * 
      */
     public void setPercentSpeaksLOTEAtHome(Object percentSpeaksLOTEAtHome) {
         this.percentSpeaksLOTEAtHome = percentSpeaksLOTEAtHome;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankPercentSpeaksLOTEAtHom
+     * 
      */
     public Object getRankPercentSpeaksLOTEAtHom() {
         return rankPercentSpeaksLOTEAtHom;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankPercentSpeaksLOTEAtHom The Rank_Percent_Speaks_LOTE_at_hom
+     * 
      */
     public void setRankPercentSpeaksLOTEAtHom(Object rankPercentSpeaksLOTEAtHom) {
         this.rankPercentSpeaksLOTEAtHom = rankPercentSpeaksLOTEAtHom;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The country1PercentTop5Languag
+     * 
      */
     public Object getCountry1PercentTop5Languag() {
         return country1PercentTop5Languag;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param country1PercentTop5Languag The Country_1_Percent_Top_5_languag
+     * 
      */
     public void setCountry1PercentTop5Languag(Object country1PercentTop5Languag) {
         this.country1PercentTop5Languag = country1PercentTop5Languag;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The country1Top5LanguagesSpoke
+     * 
      */
     public Object getCountry1Top5LanguagesSpoke() {
         return country1Top5LanguagesSpoke;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param country1Top5LanguagesSpoke The Country_1_Top_5_languages_spoke
+     * 
      */
     public void setCountry1Top5LanguagesSpoke(Object country1Top5LanguagesSpoke) {
         this.country1Top5LanguagesSpoke = country1Top5LanguagesSpoke;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The country2PercentTop5Languag
+     * 
      */
     public Object getCountry2PercentTop5Languag() {
         return country2PercentTop5Languag;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param country2PercentTop5Languag The Country_2_Percent_Top_5_languag
+     * 
      */
     public void setCountry2PercentTop5Languag(Object country2PercentTop5Languag) {
         this.country2PercentTop5Languag = country2PercentTop5Languag;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The country2Top5LanguagesSpoke
+     * 
      */
     public Object getCountry2Top5LanguagesSpoke() {
         return country2Top5LanguagesSpoke;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param country2Top5LanguagesSpoke The Country_2_Top_5_languages_spoke
+     * 
      */
     public void setCountry2Top5LanguagesSpoke(Object country2Top5LanguagesSpoke) {
         this.country2Top5LanguagesSpoke = country2Top5LanguagesSpoke;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The country3PercentTop5Languag
+     * 
      */
     public Object getCountry3PercentTop5Languag() {
         return country3PercentTop5Languag;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param country3PercentTop5Languag The Country_3_Percent_Top_5_languag
+     * 
      */
     public void setCountry3PercentTop5Languag(Object country3PercentTop5Languag) {
         this.country3PercentTop5Languag = country3PercentTop5Languag;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The country3Top5LanguagesSpoke
+     * 
      */
     public Object getCountry3Top5LanguagesSpoke() {
         return country3Top5LanguagesSpoke;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param country3Top5LanguagesSpoke The Country_3_Top_5_languages_spoke
+     * 
      */
     public void setCountry3Top5LanguagesSpoke(Object country3Top5LanguagesSpoke) {
         this.country3Top5LanguagesSpoke = country3Top5LanguagesSpoke;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The country4PercentTop5Languag
+     * 
      */
     public Object getCountry4PercentTop5Languag() {
         return country4PercentTop5Languag;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param country4PercentTop5Languag The Country_4_Percent_Top_5_languag
+     * 
      */
     public void setCountry4PercentTop5Languag(Object country4PercentTop5Languag) {
         this.country4PercentTop5Languag = country4PercentTop5Languag;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The country4Top5LanguagesSpoke
+     * 
      */
     public Object getCountry4Top5LanguagesSpoke() {
         return country4Top5LanguagesSpoke;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param country4Top5LanguagesSpoke The Country_4_Top_5_languages_spoke
+     * 
      */
     public void setCountry4Top5LanguagesSpoke(Object country4Top5LanguagesSpoke) {
         this.country4Top5LanguagesSpoke = country4Top5LanguagesSpoke;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The country5PercentTop5Languag
+     * 
      */
     public Object getCountry5PercentTop5Languag() {
         return country5PercentTop5Languag;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param country5PercentTop5Languag The Country_5_Percent_Top_5_languag
+     * 
      */
     public void setCountry5PercentTop5Languag(Object country5PercentTop5Languag) {
         this.country5PercentTop5Languag = country5PercentTop5Languag;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The country5Top5LanguagesSpoke
+     * 
      */
     public Object getCountry5Top5LanguagesSpoke() {
         return country5Top5LanguagesSpoke;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param country5Top5LanguagesSpoke The Country_5_Top_5_languages_spoke
+     * 
      */
     public void setCountry5Top5LanguagesSpoke(Object country5Top5LanguagesSpoke) {
         this.country5Top5LanguagesSpoke = country5Top5LanguagesSpoke;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The percentLowEnglishProficiency
+     * 
      */
     public Object getPercentLowEnglishProficiency() {
         return percentLowEnglishProficiency;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param percentLowEnglishProficiency The Percent_Low_English_proficiency
+     * 
      */
     public void setPercentLowEnglishProficiency(Object percentLowEnglishProficiency) {
         this.percentLowEnglishProficiency = percentLowEnglishProficiency;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankPercentLowEnglishProfic
+     * 
      */
     public Object getRankPercentLowEnglishProfic() {
         return rankPercentLowEnglishProfic;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankPercentLowEnglishProfic The Rank_Percent_Low_English_profic
+     * 
      */
     public void setRankPercentLowEnglishProfic(Object rankPercentLowEnglishProfic) {
         this.rankPercentLowEnglishProfic = rankPercentLowEnglishProfic;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The ancestry1PercentTop5Ancest
+     * 
      */
     public Object getAncestry1PercentTop5Ancest() {
         return ancestry1PercentTop5Ancest;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param ancestry1PercentTop5Ancest The Ancestry_1_Percent_Top_5_ancest
+     * 
      */
     public void setAncestry1PercentTop5Ancest(Object ancestry1PercentTop5Ancest) {
         this.ancestry1PercentTop5Ancest = ancestry1PercentTop5Ancest;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The ancestry1Top5Ancestries
+     * 
      */
     public Object getAncestry1Top5Ancestries() {
         return ancestry1Top5Ancestries;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param ancestry1Top5Ancestries The Ancestry_1_Top_5_ancestries
+     * 
      */
     public void setAncestry1Top5Ancestries(Object ancestry1Top5Ancestries) {
         this.ancestry1Top5Ancestries = ancestry1Top5Ancestries;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The ancestry2PercentTop5Ancest
+     * 
      */
     public Object getAncestry2PercentTop5Ancest() {
         return ancestry2PercentTop5Ancest;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param ancestry2PercentTop5Ancest The Ancestry_2_Percent_Top_5_ancest
+     * 
      */
     public void setAncestry2PercentTop5Ancest(Object ancestry2PercentTop5Ancest) {
         this.ancestry2PercentTop5Ancest = ancestry2PercentTop5Ancest;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The ancestry2Top5Ancestries
+     * 
      */
     public Object getAncestry2Top5Ancestries() {
         return ancestry2Top5Ancestries;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param ancestry2Top5Ancestries The Ancestry_2_Top_5_ancestries
+     * 
      */
     public void setAncestry2Top5Ancestries(Object ancestry2Top5Ancestries) {
         this.ancestry2Top5Ancestries = ancestry2Top5Ancestries;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The ancestry3PercentTop5Ancest
+     * 
      */
     public Object getAncestry3PercentTop5Ancest() {
         return ancestry3PercentTop5Ancest;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param ancestry3PercentTop5Ancest The Ancestry_3_Percent_Top_5_ancest
+     * 
      */
     public void setAncestry3PercentTop5Ancest(Object ancestry3PercentTop5Ancest) {
         this.ancestry3PercentTop5Ancest = ancestry3PercentTop5Ancest;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The ancestry3Top5Ancestries
+     * 
      */
     public Object getAncestry3Top5Ancestries() {
         return ancestry3Top5Ancestries;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param ancestry3Top5Ancestries The Ancestry_3_Top_5_ancestries
+     * 
      */
     public void setAncestry3Top5Ancestries(Object ancestry3Top5Ancestries) {
         this.ancestry3Top5Ancestries = ancestry3Top5Ancestries;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The ancestry4PercentTop5Ancest
+     * 
      */
     public Object getAncestry4PercentTop5Ancest() {
         return ancestry4PercentTop5Ancest;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param ancestry4PercentTop5Ancest The Ancestry_4_Percent_Top_5_ancest
+     * 
      */
     public void setAncestry4PercentTop5Ancest(Object ancestry4PercentTop5Ancest) {
         this.ancestry4PercentTop5Ancest = ancestry4PercentTop5Ancest;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The ancestry4Top5Ancestries
+     * 
      */
     public Object getAncestry4Top5Ancestries() {
         return ancestry4Top5Ancestries;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param ancestry4Top5Ancestries The Ancestry_4_Top_5_ancestries
+     * 
      */
     public void setAncestry4Top5Ancestries(Object ancestry4Top5Ancestries) {
         this.ancestry4Top5Ancestries = ancestry4Top5Ancestries;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The ancestry5PercentTop5Ancest
+     * 
      */
     public Object getAncestry5PercentTop5Ancest() {
         return ancestry5PercentTop5Ancest;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param ancestry5PercentTop5Ancest The Ancestry_5_Percent_Top_5_ancest
+     * 
      */
     public void setAncestry5PercentTop5Ancest(Object ancestry5PercentTop5Ancest) {
         this.ancestry5PercentTop5Ancest = ancestry5PercentTop5Ancest;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The ancestry5Top5Ancestries
+     * 
      */
     public Object getAncestry5Top5Ancestries() {
         return ancestry5Top5Ancestries;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param ancestry5Top5Ancestries The Ancestry_5_Top_5_ancestries
+     * 
      */
     public void setAncestry5Top5Ancestries(Object ancestry5Top5Ancestries) {
         this.ancestry5Top5Ancestries = ancestry5Top5Ancestries;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The newSettlerArrivalsPer100000
+     * 
      */
     public Object getNewSettlerArrivalsPer100000() {
         return newSettlerArrivalsPer100000;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param newSettlerArrivalsPer100000 The New_settler_arrivals_per_100000
+     * 
      */
     public void setNewSettlerArrivalsPer100000(Object newSettlerArrivalsPer100000) {
         this.newSettlerArrivalsPer100000 = newSettlerArrivalsPer100000;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankNewSettlerArrivalsPer1
+     * 
      */
     public Object getRankNewSettlerArrivalsPer1() {
         return rankNewSettlerArrivalsPer1;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankNewSettlerArrivalsPer1 The Rank_New_settler_arrivals_per_1
+     * 
      */
     public void setRankNewSettlerArrivalsPer1(Object rankNewSettlerArrivalsPer1) {
         this.rankNewSettlerArrivalsPer1 = rankNewSettlerArrivalsPer1;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The humanitarianArrivalsAsAPerc
+     * 
      */
     public Object getHumanitarianArrivalsAsAPerc() {
         return humanitarianArrivalsAsAPerc;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param humanitarianArrivalsAsAPerc The Humanitarian_arrivals_as_a_Perc
+     * 
      */
     public void setHumanitarianArrivalsAsAPerc(Object humanitarianArrivalsAsAPerc) {
         this.humanitarianArrivalsAsAPerc = humanitarianArrivalsAsAPerc;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankHumanitarianArrivalsAsA
+     * 
      */
     public Object getRankHumanitarianArrivalsAsA() {
         return rankHumanitarianArrivalsAsA;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankHumanitarianArrivalsAsA The Rank_Humanitarian_arrivals_as_a
+     * 
      */
     public void setRankHumanitarianArrivalsAsA(Object rankHumanitarianArrivalsAsA) {
         this.rankHumanitarianArrivalsAsA = rankHumanitarianArrivalsAsA;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The communityAcceptanceOfDiverse
+     * 
      */
     public Object getCommunityAcceptanceOfDiverse() {
         return communityAcceptanceOfDiverse;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param communityAcceptanceOfDiverse The Community_acceptance_of_diverse
+     * 
      */
     public void setCommunityAcceptanceOfDiverse(Object communityAcceptanceOfDiverse) {
         this.communityAcceptanceOfDiverse = communityAcceptanceOfDiverse;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankCommunityAcceptanceOfDi
+     * 
      */
     public Object getRankCommunityAcceptanceOfDi() {
         return rankCommunityAcceptanceOfDi;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankCommunityAcceptanceOfDi The Rank_Community_acceptance_of_di
+     * 
      */
     public void setRankCommunityAcceptanceOfDi(Object rankCommunityAcceptanceOfDi) {
         this.rankCommunityAcceptanceOfDi = rankCommunityAcceptanceOfDi;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The proportionOfHouseholdsWithB
+     * 
      */
     public Object getProportionOfHouseholdsWithB() {
         return proportionOfHouseholdsWithB;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param proportionOfHouseholdsWithB The Proportion_of_households_with_b
+     * 
      */
     public void setProportionOfHouseholdsWithB(Object proportionOfHouseholdsWithB) {
         this.proportionOfHouseholdsWithB = proportionOfHouseholdsWithB;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The householdsWithBroadbandInter
+     * 
      */
     public Object getHouseholdsWithBroadbandInter() {
         return householdsWithBroadbandInter;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param householdsWithBroadbandInter The Households_with_broadband_inter
+     * 
      */
     public void setHouseholdsWithBroadbandInter(Object householdsWithBroadbandInter) {
         this.householdsWithBroadbandInter = householdsWithBroadbandInter;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The gamingMachineLossesPerHead
+     * 
      */
     public Object getGamingMachineLossesPerHead() {
         return gamingMachineLossesPerHead;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param gamingMachineLossesPerHead The Gaming_machine_losses_per_head_
+     * 
      */
     public void setGamingMachineLossesPerHead(Object gamingMachineLossesPerHead) {
         this.gamingMachineLossesPerHead = gamingMachineLossesPerHead;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankGamingMachineLossesPer
+     * 
      */
     public Object getRankGamingMachineLossesPer() {
         return rankGamingMachineLossesPer;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankGamingMachineLossesPer The Rank_Gaming_machine_losses_per_
+     * 
      */
     public void setRankGamingMachineLossesPer(Object rankGamingMachineLossesPer) {
         this.rankGamingMachineLossesPer = rankGamingMachineLossesPer;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The familyIncidentsPer1000Pop
+     * 
      */
     public Object getFamilyIncidentsPer1000Pop() {
         return familyIncidentsPer1000Pop;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param familyIncidentsPer1000Pop The Family_Incidents_per_1000_pop
+     * 
      */
     public void setFamilyIncidentsPer1000Pop(Object familyIncidentsPer1000Pop) {
         this.familyIncidentsPer1000Pop = familyIncidentsPer1000Pop;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankFamilyIncidentsPer1000
+     * 
      */
     public Object getRankFamilyIncidentsPer1000() {
         return rankFamilyIncidentsPer1000;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankFamilyIncidentsPer1000 The Rank_Family_Incidents_per_1000_
+     * 
      */
     public void setRankFamilyIncidentsPer1000(Object rankFamilyIncidentsPer1000) {
         this.rankFamilyIncidentsPer1000 = rankFamilyIncidentsPer1000;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The drugUsageAndPossessionOffen
+     * 
      */
     public Object getDrugUsageAndPossessionOffen() {
         return drugUsageAndPossessionOffen;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param drugUsageAndPossessionOffen The Drug_usage_and_possession_offen
+     * 
      */
     public void setDrugUsageAndPossessionOffen(Object drugUsageAndPossessionOffen) {
         this.drugUsageAndPossessionOffen = drugUsageAndPossessionOffen;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankDrugUsageAndPossession
+     * 
      */
     public Object getRankDrugUsageAndPossession() {
         return rankDrugUsageAndPossession;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankDrugUsageAndPossession The Rank_Drug_usage_and_possession_
+     * 
      */
     public void setRankDrugUsageAndPossession(Object rankDrugUsageAndPossession) {
         this.rankDrugUsageAndPossession = rankDrugUsageAndPossession;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The totalCrimePer1000Pop
+     * 
      */
     public Object getTotalCrimePer1000Pop() {
         return totalCrimePer1000Pop;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param totalCrimePer1000Pop The Total_Crime_per_1000_pop
+     * 
      */
     public void setTotalCrimePer1000Pop(Object totalCrimePer1000Pop) {
         this.totalCrimePer1000Pop = totalCrimePer1000Pop;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankTotalCrimePer1000Pop
+     * 
      */
     public Object getRankTotalCrimePer1000Pop() {
         return rankTotalCrimePer1000Pop;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankTotalCrimePer1000Pop The Rank_Total_Crime_per_1000_pop
+     * 
      */
     public void setRankTotalCrimePer1000Pop(Object rankTotalCrimePer1000Pop) {
         this.rankTotalCrimePer1000Pop = rankTotalCrimePer1000Pop;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The feelsSafeWalkingAloneDuring
+     * 
      */
     public Object getFeelsSafeWalkingAloneDuring() {
         return feelsSafeWalkingAloneDuring;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param feelsSafeWalkingAloneDuring The Feels_safe_walking_alone_during
+     * 
      */
     public void setFeelsSafeWalkingAloneDuring(Object feelsSafeWalkingAloneDuring) {
         this.feelsSafeWalkingAloneDuring = feelsSafeWalkingAloneDuring;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankFeelsSafeWalkingAloneD
+     * 
      */
     public Object getRankFeelsSafeWalkingAloneD() {
         return rankFeelsSafeWalkingAloneD;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankFeelsSafeWalkingAloneD The Rank_Feels_safe_walking_alone_d
+     * 
      */
     public void setRankFeelsSafeWalkingAloneD(Object rankFeelsSafeWalkingAloneD) {
         this.rankFeelsSafeWalkingAloneD = rankFeelsSafeWalkingAloneD;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The believeOtherPeopleCanBeTru
+     * 
      */
     public Object getBelieveOtherPeopleCanBeTru() {
         return believeOtherPeopleCanBeTru;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param believeOtherPeopleCanBeTru The Believe_other_people_can_be_tru
+     * 
      */
     public void setBelieveOtherPeopleCanBeTru(Object believeOtherPeopleCanBeTru) {
         this.believeOtherPeopleCanBeTru = believeOtherPeopleCanBeTru;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankBelieveOtherPeopleCanB
+     * 
      */
     public Object getRankBelieveOtherPeopleCanB() {
         return rankBelieveOtherPeopleCanB;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankBelieveOtherPeopleCanB The Rank_Believe_other_people_can_b
+     * 
      */
     public void setRankBelieveOtherPeopleCanB(Object rankBelieveOtherPeopleCanB) {
         this.rankBelieveOtherPeopleCanB = rankBelieveOtherPeopleCanB;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The spokeWithMoreThan5PeopleT
+     * 
      */
     public Object getSpokeWithMoreThan5PeopleT() {
         return spokeWithMoreThan5PeopleT;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param spokeWithMoreThan5PeopleT The Spoke_with_more_than_5_people_t
+     * 
      */
     public void setSpokeWithMoreThan5PeopleT(Object spokeWithMoreThan5PeopleT) {
         this.spokeWithMoreThan5PeopleT = spokeWithMoreThan5PeopleT;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankSpokeWithMoreThan5Peo
+     * 
      */
     public Object getRankSpokeWithMoreThan5Peo() {
         return rankSpokeWithMoreThan5Peo;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankSpokeWithMoreThan5Peo The Rank_Spoke_with_more_than_5_peo
+     * 
      */
     public void setRankSpokeWithMoreThan5Peo(Object rankSpokeWithMoreThan5Peo) {
         this.rankSpokeWithMoreThan5Peo = rankSpokeWithMoreThan5Peo;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The ableToDefinitelyGetHelpFro
+     * 
      */
     public Object getAbleToDefinitelyGetHelpFro() {
         return ableToDefinitelyGetHelpFro;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param ableToDefinitelyGetHelpFro The Able_to_definitely_get_help_fro
+     * 
      */
     public void setAbleToDefinitelyGetHelpFro(Object ableToDefinitelyGetHelpFro) {
         this.ableToDefinitelyGetHelpFro = ableToDefinitelyGetHelpFro;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankAbleToDefinitelyGetHel
+     * 
      */
     public Object getRankAbleToDefinitelyGetHel() {
         return rankAbleToDefinitelyGetHel;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankAbleToDefinitelyGetHel The Rank_Able_to_definitely_get_hel
+     * 
      */
     public void setRankAbleToDefinitelyGetHel(Object rankAbleToDefinitelyGetHel) {
         this.rankAbleToDefinitelyGetHel = rankAbleToDefinitelyGetHel;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The volunteers
+     * 
      */
     public Object getVolunteers() {
         return volunteers;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param volunteers The Volunteers
+     * 
      */
     public void setVolunteers(Object volunteers) {
         this.volunteers = volunteers;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankVolunteers
+     * 
      */
     public Object getRankVolunteers() {
         return rankVolunteers;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankVolunteers The Rank_Volunteers
+     * 
      */
     public void setRankVolunteers(Object rankVolunteers) {
         this.rankVolunteers = rankVolunteers;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The feelValuedBySociety
+     * 
      */
     public Object getFeelValuedBySociety() {
         return feelValuedBySociety;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param feelValuedBySociety The Feel_valued_by_society
+     * 
      */
     public void setFeelValuedBySociety(Object feelValuedBySociety) {
         this.feelValuedBySociety = feelValuedBySociety;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankFeelValuedBySociety
+     * 
      */
     public Object getRankFeelValuedBySociety() {
         return rankFeelValuedBySociety;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankFeelValuedBySociety The Rank_Feel_valued_by_society
+     * 
      */
     public void setRankFeelValuedBySociety(Object rankFeelValuedBySociety) {
         this.rankFeelValuedBySociety = rankFeelValuedBySociety;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The attendedALocalCommunityEven
+     * 
      */
     public Object getAttendedALocalCommunityEven() {
         return attendedALocalCommunityEven;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param attendedALocalCommunityEven The Attended_a_local_community_even
+     * 
      */
     public void setAttendedALocalCommunityEven(Object attendedALocalCommunityEven) {
         this.attendedALocalCommunityEven = attendedALocalCommunityEven;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankAttendedALocalCommunity
+     * 
      */
     public Object getRankAttendedALocalCommunity() {
         return rankAttendedALocalCommunity;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankAttendedALocalCommunity The Rank_Attended_a_local_community
+     * 
      */
     public void setRankAttendedALocalCommunity(Object rankAttendedALocalCommunity) {
         this.rankAttendedALocalCommunity = rankAttendedALocalCommunity;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The takeActionOnBehalfOfTheLo
+     * 
      */
     public Object getTakeActionOnBehalfOfTheLo() {
         return takeActionOnBehalfOfTheLo;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param takeActionOnBehalfOfTheLo The Take_action_on_behalf_of_the_lo
+     * 
      */
     public void setTakeActionOnBehalfOfTheLo(Object takeActionOnBehalfOfTheLo) {
         this.takeActionOnBehalfOfTheLo = takeActionOnBehalfOfTheLo;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankTakeActionOnBehalfOfT
+     * 
      */
     public Object getRankTakeActionOnBehalfOfT() {
         return rankTakeActionOnBehalfOfT;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankTakeActionOnBehalfOfT The Rank_Take_action_on_behalf_of_t
+     * 
      */
     public void setRankTakeActionOnBehalfOfT(Object rankTakeActionOnBehalfOfT) {
         this.rankTakeActionOnBehalfOfT = rankTakeActionOnBehalfOfT;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The membersOfASportsGroup
+     * 
      */
     public Object getMembersOfASportsGroup() {
         return membersOfASportsGroup;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param membersOfASportsGroup The Members_of_a_sports_group
+     * 
      */
     public void setMembersOfASportsGroup(Object membersOfASportsGroup) {
         this.membersOfASportsGroup = membersOfASportsGroup;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankMembersOfASportsGroup
+     * 
      */
     public Object getRankMembersOfASportsGroup() {
         return rankMembersOfASportsGroup;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankMembersOfASportsGroup The Rank_Members_of_a_sports_group
+     * 
      */
     public void setRankMembersOfASportsGroup(Object rankMembersOfASportsGroup) {
         this.rankMembersOfASportsGroup = rankMembersOfASportsGroup;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The membersOfAReligiousGroup
+     * 
      */
     public Object getMembersOfAReligiousGroup() {
         return membersOfAReligiousGroup;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param membersOfAReligiousGroup The Members_of_a_religious_group
+     * 
      */
     public void setMembersOfAReligiousGroup(Object membersOfAReligiousGroup) {
         this.membersOfAReligiousGroup = membersOfAReligiousGroup;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankMembersOfAReligiousGro
+     * 
      */
     public Object getRankMembersOfAReligiousGro() {
         return rankMembersOfAReligiousGro;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankMembersOfAReligiousGro The Rank_Members_of_a_religious_gro
+     * 
      */
     public void setRankMembersOfAReligiousGro(Object rankMembersOfAReligiousGro) {
         this.rankMembersOfAReligiousGro = rankMembersOfAReligiousGro;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The ratedTheirCommunityAsAnAct
+     * 
      */
     public Object getRatedTheirCommunityAsAnAct() {
         return ratedTheirCommunityAsAnAct;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param ratedTheirCommunityAsAnAct The Rated_their_community_as_an_act
+     * 
      */
     public void setRatedTheirCommunityAsAnAct(Object ratedTheirCommunityAsAnAct) {
         this.ratedTheirCommunityAsAnAct = ratedTheirCommunityAsAnAct;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankRatedTheirCommunityAsA
+     * 
      */
     public Object getRankRatedTheirCommunityAsA() {
         return rankRatedTheirCommunityAsA;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankRatedTheirCommunityAsA The Rank_Rated_their_community_as_a
+     * 
      */
     public void setRankRatedTheirCommunityAsA(Object rankRatedTheirCommunityAsA) {
         this.rankRatedTheirCommunityAsA = rankRatedTheirCommunityAsA;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The ratedTheirCommunityAsAPlea
+     * 
      */
     public Object getRatedTheirCommunityAsAPlea() {
         return ratedTheirCommunityAsAPlea;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param ratedTheirCommunityAsAPlea The Rated_their_community_as_a_plea
+     * 
      */
     public void setRatedTheirCommunityAsAPlea(Object ratedTheirCommunityAsAPlea) {
         this.ratedTheirCommunityAsAPlea = ratedTheirCommunityAsAPlea;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankAtedTheirCommunityAsA
+     * 
      */
     public Object getRankAtedTheirCommunityAsA() {
         return rankAtedTheirCommunityAsA;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankAtedTheirCommunityAsA The Rank_ated_their_community_as_a_
+     * 
      */
     public void setRankAtedTheirCommunityAsA(Object rankAtedTheirCommunityAsA) {
         this.rankAtedTheirCommunityAsA = rankAtedTheirCommunityAsA;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The ratedTheirCommunityAsGoodO
+     * 
      */
     public Object getRatedTheirCommunityAsGoodO() {
         return ratedTheirCommunityAsGoodO;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param ratedTheirCommunityAsGoodO The Rated_their_community_as_good_o
+     * 
      */
     public void setRatedTheirCommunityAsGoodO(Object ratedTheirCommunityAsGoodO) {
         this.ratedTheirCommunityAsGoodO = ratedTheirCommunityAsGoodO;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankRatedTheirCommunityAsG
+     * 
      */
     public Object getRankRatedTheirCommunityAsG() {
         return rankRatedTheirCommunityAsG;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankRatedTheirCommunityAsG The Rank_Rated_their_community_as_g
+     * 
      */
     public void setRankRatedTheirCommunityAsG(Object rankRatedTheirCommunityAsG) {
         this.rankRatedTheirCommunityAsG = rankRatedTheirCommunityAsG;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The indexOfRelativeSociaEconomi
+     * 
      */
     public Object getIndexOfRelativeSociaEconomi() {
         return indexOfRelativeSociaEconomi;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param indexOfRelativeSociaEconomi The Index_of_Relative_Socia_Economi
+     * 
      */
     public void setIndexOfRelativeSociaEconomi(Object indexOfRelativeSociaEconomi) {
         this.indexOfRelativeSociaEconomi = indexOfRelativeSociaEconomi;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankIndexOfRelativeSociaEc
+     * 
      */
     public Object getRankIndexOfRelativeSociaEc() {
         return rankIndexOfRelativeSociaEc;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankIndexOfRelativeSociaEc The Rank_Index_of_Relative_Socia_Ec
+     * 
      */
     public void setRankIndexOfRelativeSociaEc(Object rankIndexOfRelativeSociaEc) {
         this.rankIndexOfRelativeSociaEc = rankIndexOfRelativeSociaEc;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The unemploymentRate
+     * 
      */
     public Object getUnemploymentRate() {
         return unemploymentRate;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param unemploymentRate The Unemployment_rate
+     * 
      */
     public void setUnemploymentRate(Object unemploymentRate) {
         this.unemploymentRate = unemploymentRate;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankUnemploymentRate
+     * 
      */
     public Object getRankUnemploymentRate() {
         return rankUnemploymentRate;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankUnemploymentRate The Rank_Unemployment_rate
+     * 
      */
     public void setRankUnemploymentRate(Object rankUnemploymentRate) {
         this.rankUnemploymentRate = rankUnemploymentRate;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The percentIndividualIncomeLess
+     * 
      */
     public Object getPercentIndividualIncomeLess() {
         return percentIndividualIncomeLess;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param percentIndividualIncomeLess The Percent_Individual_income_Less_
+     * 
      */
     public void setPercentIndividualIncomeLess(Object percentIndividualIncomeLess) {
         this.percentIndividualIncomeLess = percentIndividualIncomeLess;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankPercentIndividualIncome
+     * 
      */
     public Object getRankPercentIndividualIncome() {
         return rankPercentIndividualIncome;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankPercentIndividualIncome The Rank_Percent_Individual_income_
+     * 
      */
     public void setRankPercentIndividualIncome(Object rankPercentIndividualIncome) {
         this.rankPercentIndividualIncome = rankPercentIndividualIncome;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The percentFemaleIncomeLessThan
+     * 
      */
     public Object getPercentFemaleIncomeLessThan() {
         return percentFemaleIncomeLessThan;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param percentFemaleIncomeLessThan The Percent_Female_income_Less_than
+     * 
      */
     public void setPercentFemaleIncomeLessThan(Object percentFemaleIncomeLessThan) {
         this.percentFemaleIncomeLessThan = percentFemaleIncomeLessThan;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankPercentFemaleIncomeLess
+     * 
      */
     public Object getRankPercentFemaleIncomeLess() {
         return rankPercentFemaleIncomeLess;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankPercentFemaleIncomeLess The Rank_Percent_Female_income_Less
+     * 
      */
     public void setRankPercentFemaleIncomeLess(Object rankPercentFemaleIncomeLess) {
         this.rankPercentFemaleIncomeLess = rankPercentFemaleIncomeLess;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The percentMaleIncomeLessThan4
+     * 
      */
     public Object getPercentMaleIncomeLessThan4() {
         return percentMaleIncomeLessThan4;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param percentMaleIncomeLessThan4 The Percent_Male_income_Less_than_4
+     * 
      */
     public void setPercentMaleIncomeLessThan4(Object percentMaleIncomeLessThan4) {
         this.percentMaleIncomeLessThan4 = percentMaleIncomeLessThan4;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankPercentMaleIncomeLessT
+     * 
      */
     public Object getRankPercentMaleIncomeLessT() {
         return rankPercentMaleIncomeLessT;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankPercentMaleIncomeLessT The Rank_Percent_Male_income_Less_t
+     * 
      */
     public void setRankPercentMaleIncomeLessT(Object rankPercentMaleIncomeLessT) {
         this.rankPercentMaleIncomeLessT = rankPercentMaleIncomeLessT;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The percentOneParentHeadedFamil
+     * 
      */
     public Object getPercentOneParentHeadedFamil() {
         return percentOneParentHeadedFamil;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param percentOneParentHeadedFamil The Percent_One_Parent_headed_famil
+     * 
      */
     public void setPercentOneParentHeadedFamil(Object percentOneParentHeadedFamil) {
         this.percentOneParentHeadedFamil = percentOneParentHeadedFamil;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankPercentOneParentHeaded
+     * 
      */
     public Object getRankPercentOneParentHeaded() {
         return rankPercentOneParentHeaded;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankPercentOneParentHeaded The Rank_Percent_One_Parent_headed_
+     * 
      */
     public void setRankPercentOneParentHeaded(Object rankPercentOneParentHeaded) {
         this.rankPercentOneParentHeaded = rankPercentOneParentHeaded;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The oneParentHeadedFamiliesPerc
+     * 
      */
     public Object getOneParentHeadedFamiliesPerc() {
         return oneParentHeadedFamiliesPerc;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param oneParentHeadedFamiliesPerc The One_Parent_headed_families_Perc
+     * 
      */
     public void setOneParentHeadedFamiliesPerc(Object oneParentHeadedFamiliesPerc) {
         this.oneParentHeadedFamiliesPerc = oneParentHeadedFamiliesPerc;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankOneParentHeadedFamilies
+     * 
      */
     public Object getRankOneParentHeadedFamilies() {
         return rankOneParentHeadedFamilies;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankOneParentHeadedFamilies The Rank_One_Parent_headed_families
+     * 
      */
     public void setRankOneParentHeadedFamilies(Object rankOneParentHeadedFamilies) {
         this.rankOneParentHeadedFamilies = rankOneParentHeadedFamilies;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The oneParentHeadedFamiliesPe1
+     * 
      */
     public Object getOneParentHeadedFamiliesPe1() {
         return oneParentHeadedFamiliesPe1;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param oneParentHeadedFamiliesPe1 The One_Parent_headed_families_Pe_1
+     * 
      */
     public void setOneParentHeadedFamiliesPe1(Object oneParentHeadedFamiliesPe1) {
         this.oneParentHeadedFamiliesPe1 = oneParentHeadedFamiliesPe1;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankOneParentHeadedFamili1
+     * 
      */
     public Object getRankOneParentHeadedFamili1() {
         return rankOneParentHeadedFamili1;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankOneParentHeadedFamili1 The Rank_One_Parent_headed_famili_1
+     * 
      */
     public void setRankOneParentHeadedFamili1(Object rankOneParentHeadedFamili1) {
         this.rankOneParentHeadedFamili1 = rankOneParentHeadedFamili1;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The equivalisedMedianIncome
+     * 
      */
     public Object getEquivalisedMedianIncome() {
         return equivalisedMedianIncome;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param equivalisedMedianIncome The Equivalised_median_income
+     * 
      */
     public void setEquivalisedMedianIncome(Object equivalisedMedianIncome) {
         this.equivalisedMedianIncome = equivalisedMedianIncome;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankEquivalisedMedianIncome
+     * 
      */
     public Object getRankEquivalisedMedianIncome() {
         return rankEquivalisedMedianIncome;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankEquivalisedMedianIncome The Rank_Equivalised_median_income
+     * 
      */
     public void setRankEquivalisedMedianIncome(Object rankEquivalisedMedianIncome) {
         this.rankEquivalisedMedianIncome = rankEquivalisedMedianIncome;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The delayedMedicalConsultationBe
+     * 
      */
     public Object getDelayedMedicalConsultationBe() {
         return delayedMedicalConsultationBe;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param delayedMedicalConsultationBe The Delayed_medical_consultation_be
+     * 
      */
     public void setDelayedMedicalConsultationBe(Object delayedMedicalConsultationBe) {
         this.delayedMedicalConsultationBe = delayedMedicalConsultationBe;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankDelayedMedicalConsultati
+     * 
      */
     public Object getRankDelayedMedicalConsultati() {
         return rankDelayedMedicalConsultati;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankDelayedMedicalConsultati The Rank_Delayed_medical_consultati
+     * 
      */
     public void setRankDelayedMedicalConsultati(Object rankDelayedMedicalConsultati) {
         this.rankDelayedMedicalConsultati = rankDelayedMedicalConsultati;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The delayedPurchasingPrescribedM
+     * 
      */
     public Object getDelayedPurchasingPrescribedM() {
         return delayedPurchasingPrescribedM;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param delayedPurchasingPrescribedM The Delayed_purchasing_prescribed_m
+     * 
      */
     public void setDelayedPurchasingPrescribedM(Object delayedPurchasingPrescribedM) {
         this.delayedPurchasingPrescribedM = delayedPurchasingPrescribedM;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankDelayedPurchasingPrescri
+     * 
      */
     public Object getRankDelayedPurchasingPrescri() {
         return rankDelayedPurchasingPrescri;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankDelayedPurchasingPrescri The Rank_Delayed_purchasing_prescri
+     * 
      */
     public void setRankDelayedPurchasingPrescri(Object rankDelayedPurchasingPrescri) {
         this.rankDelayedPurchasingPrescri = rankDelayedPurchasingPrescri;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The percentLowIncomeWelfareDepe
+     * 
      */
     public Object getPercentLowIncomeWelfareDepe() {
         return percentLowIncomeWelfareDepe;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param percentLowIncomeWelfareDepe The Percent_low_income_welfare_depe
+     * 
      */
     public void setPercentLowIncomeWelfareDepe(Object percentLowIncomeWelfareDepe) {
         this.percentLowIncomeWelfareDepe = percentLowIncomeWelfareDepe;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankPercentLowIncomeWelfare
+     * 
      */
     public Object getRankPercentLowIncomeWelfare() {
         return rankPercentLowIncomeWelfare;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankPercentLowIncomeWelfare The Rank_Percent_low_income_welfare
+     * 
      */
     public void setRankPercentLowIncomeWelfare(Object rankPercentLowIncomeWelfare) {
         this.rankPercentLowIncomeWelfare = rankPercentLowIncomeWelfare;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The percentOfPopWithFoodInsecu
+     * 
      */
     public Object getPercentOfPopWithFoodInsecu() {
         return percentOfPopWithFoodInsecu;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param percentOfPopWithFoodInsecu The Percent_of_pop_with_food_insecu
+     * 
      */
     public void setPercentOfPopWithFoodInsecu(Object percentOfPopWithFoodInsecu) {
         this.percentOfPopWithFoodInsecu = percentOfPopWithFoodInsecu;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankPercentOfPopWithFoodI
+     * 
      */
     public Object getRankPercentOfPopWithFoodI() {
         return rankPercentOfPopWithFoodI;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankPercentOfPopWithFoodI The Rank_Percent_of_pop_with_food_i
+     * 
      */
     public void setRankPercentOfPopWithFoodI(Object rankPercentOfPopWithFoodI) {
         this.rankPercentOfPopWithFoodI = rankPercentOfPopWithFoodI;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The percentMortgageStress
+     * 
      */
     public Object getPercentMortgageStress() {
         return percentMortgageStress;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param percentMortgageStress The Percent_Mortgage_Stress
+     * 
      */
     public void setPercentMortgageStress(Object percentMortgageStress) {
         this.percentMortgageStress = percentMortgageStress;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankPercentMortgageStress
+     * 
      */
     public Object getRankPercentMortgageStress() {
         return rankPercentMortgageStress;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankPercentMortgageStress The Rank_Percent_Mortgage_Stress
+     * 
      */
     public void setRankPercentMortgageStress(Object rankPercentMortgageStress) {
         this.rankPercentMortgageStress = rankPercentMortgageStress;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The percentRentalStress
+     * 
      */
     public Object getPercentRentalStress() {
         return percentRentalStress;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param percentRentalStress The Percent_Rental_Stress
+     * 
      */
     public void setPercentRentalStress(Object percentRentalStress) {
         this.percentRentalStress = percentRentalStress;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankPercentRentalStress
+     * 
      */
     public Object getRankPercentRentalStress() {
         return rankPercentRentalStress;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankPercentRentalStress The Rank_Percent_Rental_Stress
+     * 
      */
     public void setRankPercentRentalStress(Object rankPercentRentalStress) {
         this.rankPercentRentalStress = rankPercentRentalStress;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The percentOfRentalHousingThat
+     * 
      */
     public Object getPercentOfRentalHousingThat() {
         return percentOfRentalHousingThat;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param percentOfRentalHousingThat The Percent_of_rental_housing_that_
+     * 
      */
     public void setPercentOfRentalHousingThat(Object percentOfRentalHousingThat) {
         this.percentOfRentalHousingThat = percentOfRentalHousingThat;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankPercentOfRentalHousing
+     * 
      */
     public Object getRankPercentOfRentalHousing() {
         return rankPercentOfRentalHousing;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankPercentOfRentalHousing The Rank_Percent_of_rental_housing_
+     * 
      */
     public void setRankPercentOfRentalHousing(Object rankPercentOfRentalHousing) {
         this.rankPercentOfRentalHousing = rankPercentOfRentalHousing;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The medianHousePrice
+     * 
      */
     public Object getMedianHousePrice() {
         return medianHousePrice;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param medianHousePrice The Median_house_price
+     * 
      */
     public void setMedianHousePrice(Object medianHousePrice) {
         this.medianHousePrice = medianHousePrice;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankMedianHousePrice
+     * 
      */
     public Object getRankMedianHousePrice() {
         return rankMedianHousePrice;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankMedianHousePrice The Rank_Median_house_price
+     * 
      */
     public void setRankMedianHousePrice(Object rankMedianHousePrice) {
         this.rankMedianHousePrice = rankMedianHousePrice;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The medianRentFor3BedroomsHome
+     * 
      */
     public Object getMedianRentFor3BedroomsHome() {
         return medianRentFor3BedroomsHome;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param medianRentFor3BedroomsHome The Median_rent_for_3_bedrooms_home
+     * 
      */
     public void setMedianRentFor3BedroomsHome(Object medianRentFor3BedroomsHome) {
         this.medianRentFor3BedroomsHome = medianRentFor3BedroomsHome;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankMedianRentFor3Bedrooms
+     * 
      */
     public Object getRankMedianRentFor3Bedrooms() {
         return rankMedianRentFor3Bedrooms;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankMedianRentFor3Bedrooms The Rank_Median_rent_for_3_bedrooms
+     * 
      */
     public void setRankMedianRentFor3Bedrooms(Object rankMedianRentFor3Bedrooms) {
         this.rankMedianRentFor3Bedrooms = rankMedianRentFor3Bedrooms;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The newDwellingsApprovedForCons
+     * 
      */
     public Object getNewDwellingsApprovedForCons() {
         return newDwellingsApprovedForCons;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param newDwellingsApprovedForCons The New_dwellings_approved_for_cons
+     * 
      */
     public void setNewDwellingsApprovedForCons(Object newDwellingsApprovedForCons) {
         this.newDwellingsApprovedForCons = newDwellingsApprovedForCons;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankNewDwellingsApprovedFor
+     * 
      */
     public Object getRankNewDwellingsApprovedFor() {
         return rankNewDwellingsApprovedFor;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankNewDwellingsApprovedFor The Rank_New_dwellings_approved_for
+     * 
      */
     public void setRankNewDwellingsApprovedFor(Object rankNewDwellingsApprovedFor) {
         this.rankNewDwellingsApprovedFor = rankNewDwellingsApprovedFor;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The socialHousingStockAsAPerce
+     * 
      */
     public Object getSocialHousingStockAsAPerce() {
         return socialHousingStockAsAPerce;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param socialHousingStockAsAPerce The Social_housing_stock_as_a_Perce
+     * 
      */
     public void setSocialHousingStockAsAPerce(Object socialHousingStockAsAPerce) {
         this.socialHousingStockAsAPerce = socialHousingStockAsAPerce;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankSocialHousingStockAsA
+     * 
      */
     public Object getRankSocialHousingStockAsA() {
         return rankSocialHousingStockAsA;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankSocialHousingStockAsA The Rank_Social_housing_stock_as_a_
+     * 
      */
     public void setRankSocialHousingStockAsA(Object rankSocialHousingStockAsA) {
         this.rankSocialHousingStockAsA = rankSocialHousingStockAsA;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The numberOfSocialHousingDwelli
+     * 
      */
     public Object getNumberOfSocialHousingDwelli() {
         return numberOfSocialHousingDwelli;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param numberOfSocialHousingDwelli The Number_of_Social_housing_dwelli
+     * 
      */
     public void setNumberOfSocialHousingDwelli(Object numberOfSocialHousingDwelli) {
         this.numberOfSocialHousingDwelli = numberOfSocialHousingDwelli;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankNumberOfSocialHousingD
+     * 
      */
     public Object getRankNumberOfSocialHousingD() {
         return rankNumberOfSocialHousingD;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankNumberOfSocialHousingD The Rank_Number_of_Social_housing_d
+     * 
      */
     public void setRankNumberOfSocialHousingD(Object rankNumberOfSocialHousingD) {
         this.rankNumberOfSocialHousingD = rankNumberOfSocialHousingD;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The homelessnessRatePer1000Pop
+     * 
      */
     public Object getHomelessnessRatePer1000Pop() {
         return homelessnessRatePer1000Pop;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param homelessnessRatePer1000Pop The Homelessness_rate_per_1000_pop
+     * 
      */
     public void setHomelessnessRatePer1000Pop(Object homelessnessRatePer1000Pop) {
         this.homelessnessRatePer1000Pop = homelessnessRatePer1000Pop;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankHomelessnessRatePer1000
+     * 
      */
     public Object getRankHomelessnessRatePer1000() {
         return rankHomelessnessRatePer1000;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankHomelessnessRatePer1000 The Rank_Homelessness_rate_per_1000
+     * 
      */
     public void setRankHomelessnessRatePer1000(Object rankHomelessnessRatePer1000) {
         this.rankHomelessnessRatePer1000 = rankHomelessnessRatePer1000;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The percentOfWorkJourneysWhich
+     * 
      */
     public Object getPercentOfWorkJourneysWhich() {
         return percentOfWorkJourneysWhich;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param percentOfWorkJourneysWhich The Percent_of_work_journeys_which_
+     * 
      */
     public void setPercentOfWorkJourneysWhich(Object percentOfWorkJourneysWhich) {
         this.percentOfWorkJourneysWhich = percentOfWorkJourneysWhich;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankPercentOfWorkJourneysW
+     * 
      */
     public Object getRankPercentOfWorkJourneysW() {
         return rankPercentOfWorkJourneysW;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankPercentOfWorkJourneysW The Rank_Percent_of_work_journeys_w
+     * 
      */
     public void setRankPercentOfWorkJourneysW(Object rankPercentOfWorkJourneysW) {
         this.rankPercentOfWorkJourneysW = rankPercentOfWorkJourneysW;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The percentOfWorkJourneysWhich1
+     * 
      */
     public Object getPercentOfWorkJourneysWhich1() {
         return percentOfWorkJourneysWhich1;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param percentOfWorkJourneysWhich1 The Percent_of_work_journeys_which1
+     * 
      */
     public void setPercentOfWorkJourneysWhich1(Object percentOfWorkJourneysWhich1) {
         this.percentOfWorkJourneysWhich1 = percentOfWorkJourneysWhich1;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankPercentOfWorkJourneys1
+     * 
      */
     public Object getRankPercentOfWorkJourneys1() {
         return rankPercentOfWorkJourneys1;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankPercentOfWorkJourneys1 The Rank_Percent_of_work_journeys_1
+     * 
      */
     public void setRankPercentOfWorkJourneys1(Object rankPercentOfWorkJourneys1) {
         this.rankPercentOfWorkJourneys1 = rankPercentOfWorkJourneys1;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The personsWithAtLeast2HourDa
+     * 
      */
     public Object getPersonsWithAtLeast2HourDa() {
         return personsWithAtLeast2HourDa;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param personsWithAtLeast2HourDa The Persons_with_at_least_2_hour_da
+     * 
      */
     public void setPersonsWithAtLeast2HourDa(Object personsWithAtLeast2HourDa) {
         this.personsWithAtLeast2HourDa = personsWithAtLeast2HourDa;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankPersonsWithAtLeast2Ho
+     * 
      */
     public Object getRankPersonsWithAtLeast2Ho() {
         return rankPersonsWithAtLeast2Ho;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankPersonsWithAtLeast2Ho The Rank_Persons_with_at_least_2_ho
+     * 
      */
     public void setRankPersonsWithAtLeast2Ho(Object rankPersonsWithAtLeast2Ho) {
         this.rankPersonsWithAtLeast2Ho = rankPersonsWithAtLeast2Ho;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The percentHouseholdsWithNoMoto
+     * 
      */
     public Object getPercentHouseholdsWithNoMoto() {
         return percentHouseholdsWithNoMoto;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param percentHouseholdsWithNoMoto The Percent_households_with_no_moto
+     * 
      */
     public void setPercentHouseholdsWithNoMoto(Object percentHouseholdsWithNoMoto) {
         this.percentHouseholdsWithNoMoto = percentHouseholdsWithNoMoto;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankPercentHouseholdsWithNo
+     * 
      */
     public Object getRankPercentHouseholdsWithNo() {
         return rankPercentHouseholdsWithNo;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankPercentHouseholdsWithNo The Rank_Percent_households_with_no
+     * 
      */
     public void setRankPercentHouseholdsWithNo(Object rankPercentHouseholdsWithNo) {
         this.rankPercentHouseholdsWithNo = rankPercentHouseholdsWithNo;
     }
 
-    /**
-     * (Required)
-     *
-     * @return The fTEStudents
-     */
     public Object getFTEStudents() {
         return fTEStudents;
     }
 
-    /**
-     * (Required)
-     *
-     * @param fTEStudents The FTE_Students
-     */
     public void setFTEStudents(Object fTEStudents) {
         this.fTEStudents = fTEStudents;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The percentYear9StudentsWhoAtt
+     * 
      */
     public Object getPercentYear9StudentsWhoAtt() {
         return percentYear9StudentsWhoAtt;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param percentYear9StudentsWhoAtt The Percent_year_9_students_who_att
+     * 
      */
     public void setPercentYear9StudentsWhoAtt(Object percentYear9StudentsWhoAtt) {
         this.percentYear9StudentsWhoAtt = percentYear9StudentsWhoAtt;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankPercentOfYear9Students
+     * 
      */
     public Object getRankPercentOfYear9Students() {
         return rankPercentOfYear9Students;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankPercentOfYear9Students The Rank_Percent_of_year_9_students
+     * 
      */
     public void setRankPercentOfYear9Students(Object rankPercentOfYear9Students) {
         this.rankPercentOfYear9Students = rankPercentOfYear9Students;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The percentOfYear9StudentsWho
+     * 
      */
     public Object getPercentOfYear9StudentsWho() {
         return percentOfYear9StudentsWho;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param percentOfYear9StudentsWho The Percent_of_year_9_students_who_
+     * 
      */
     public void setPercentOfYear9StudentsWho(Object percentOfYear9StudentsWho) {
         this.percentOfYear9StudentsWho = percentOfYear9StudentsWho;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankPercentYear9StudentsWh
+     * 
      */
     public Object getRankPercentYear9StudentsWh() {
         return rankPercentYear9StudentsWh;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankPercentYear9StudentsWh The Rank_Percent_year_9_students_wh
+     * 
      */
     public void setRankPercentYear9StudentsWh(Object rankPercentYear9StudentsWh) {
         this.rankPercentYear9StudentsWh = rankPercentYear9StudentsWh;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The percent19YearOldsCompleting
+     * 
      */
     public Object getPercent19YearOldsCompleting() {
         return percent19YearOldsCompleting;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param percent19YearOldsCompleting The Percent_19_year_olds_completing
+     * 
      */
     public void setPercent19YearOldsCompleting(Object percent19YearOldsCompleting) {
         this.percent19YearOldsCompleting = percent19YearOldsCompleting;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankPercent19YearOldsCompl
+     * 
      */
     public Object getRankPercent19YearOldsCompl() {
         return rankPercent19YearOldsCompl;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankPercent19YearOldsCompl The Rank_Percent_19_year_olds_compl
+     * 
      */
     public void setRankPercent19YearOldsCompl(Object rankPercent19YearOldsCompl) {
         this.rankPercent19YearOldsCompl = rankPercent19YearOldsCompl;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The percentPersonsWhoDidNotCom
+     * 
      */
     public Object getPercentPersonsWhoDidNotCom() {
         return percentPersonsWhoDidNotCom;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param percentPersonsWhoDidNotCom The Percent_persons_who_did_not_com
+     * 
      */
     public void setPercentPersonsWhoDidNotCom(Object percentPersonsWhoDidNotCom) {
         this.percentPersonsWhoDidNotCom = percentPersonsWhoDidNotCom;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankPercentOfPersonsWhoDid
+     * 
      */
     public Object getRankPercentOfPersonsWhoDid() {
         return rankPercentOfPersonsWhoDid;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankPercentOfPersonsWhoDid The Rank_Percent_of_persons_who_did
+     * 
      */
     public void setRankPercentOfPersonsWhoDid(Object rankPercentOfPersonsWhoDid) {
         this.rankPercentOfPersonsWhoDid = rankPercentOfPersonsWhoDid;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The percentPersonsWhoCompletedA
+     * 
      */
     public Object getPercentPersonsWhoCompletedA() {
         return percentPersonsWhoCompletedA;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param percentPersonsWhoCompletedA The Percent_persons_who_completed_a
+     * 
      */
     public void setPercentPersonsWhoCompletedA(Object percentPersonsWhoCompletedA) {
         this.percentPersonsWhoCompletedA = percentPersonsWhoCompletedA;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankPercentPersonsWhoComple
+     * 
      */
     public Object getRankPercentPersonsWhoComple() {
         return rankPercentPersonsWhoComple;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankPercentPersonsWhoComple The Rank_Percent_persons_who_comple
+     * 
      */
     public void setRankPercentPersonsWhoComple(Object rankPercentPersonsWhoComple) {
         this.rankPercentPersonsWhoComple = rankPercentPersonsWhoComple;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The percentOfSchoolChildrenAtte
+     * 
      */
     public Object getPercentOfSchoolChildrenAtte() {
         return percentOfSchoolChildrenAtte;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param percentOfSchoolChildrenAtte The Percent_of_school_children_atte
+     * 
      */
     public void setPercentOfSchoolChildrenAtte(Object percentOfSchoolChildrenAtte) {
         this.percentOfSchoolChildrenAtte = percentOfSchoolChildrenAtte;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankPercentOfSchoolChildren
+     * 
      */
     public Object getRankPercentOfSchoolChildren() {
         return rankPercentOfSchoolChildren;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankPercentOfSchoolChildren The Rank_Percent_of_school_children
+     * 
      */
     public void setRankPercentOfSchoolChildren(Object rankPercentOfSchoolChildren) {
         this.rankPercentOfSchoolChildren = rankPercentOfSchoolChildren;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The percentOfPersonsReportingAs
+     * 
      */
     public Object getPercentOfPersonsReportingAs() {
         return percentOfPersonsReportingAs;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param percentOfPersonsReportingAs The Percent_of_persons_reporting_as
+     * 
      */
     public void setPercentOfPersonsReportingAs(Object percentOfPersonsReportingAs) {
         this.percentOfPersonsReportingAs = percentOfPersonsReportingAs;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankPercentOfPersonsReporti
+     * 
      */
     public Object getRankPercentOfPersonsReporti() {
         return rankPercentOfPersonsReporti;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankPercentOfPersonsReporti The Rank_Percent_of_persons_reporti
+     * 
      */
     public void setRankPercentOfPersonsReporti(Object rankPercentOfPersonsReporti) {
         this.rankPercentOfPersonsReporti = rankPercentOfPersonsReporti;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The percentOfPersonsReportingTy
+     * 
      */
     public Object getPercentOfPersonsReportingTy() {
         return percentOfPersonsReportingTy;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param percentOfPersonsReportingTy The Percent_of_persons_reporting_ty
+     * 
      */
     public void setPercentOfPersonsReportingTy(Object percentOfPersonsReportingTy) {
         this.percentOfPersonsReportingTy = percentOfPersonsReportingTy;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankPercentOfPersonsRepor1
+     * 
      */
     public Object getRankPercentOfPersonsRepor1() {
         return rankPercentOfPersonsRepor1;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankPercentOfPersonsRepor1 The Rank_Percent_of_persons_repor_1
+     * 
      */
     public void setRankPercentOfPersonsRepor1(Object rankPercentOfPersonsRepor1) {
         this.rankPercentOfPersonsRepor1 = rankPercentOfPersonsRepor1;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The percentOfPersonsReportingHi
+     * 
      */
     public Object getPercentOfPersonsReportingHi() {
         return percentOfPersonsReportingHi;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param percentOfPersonsReportingHi The Percent_of_persons_reporting_hi
+     * 
      */
     public void setPercentOfPersonsReportingHi(Object percentOfPersonsReportingHi) {
         this.percentOfPersonsReportingHi = percentOfPersonsReportingHi;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankPercentOfPersonsRepor2
+     * 
      */
     public Object getRankPercentOfPersonsRepor2() {
         return rankPercentOfPersonsRepor2;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankPercentOfPersonsRepor2 The Rank_Percent_of_persons_repor_2
+     * 
      */
     public void setRankPercentOfPersonsRepor2(Object rankPercentOfPersonsRepor2) {
         this.rankPercentOfPersonsRepor2 = rankPercentOfPersonsRepor2;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The percentOfPersonsReportingHe
+     * 
      */
     public Object getPercentOfPersonsReportingHe() {
         return percentOfPersonsReportingHe;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param percentOfPersonsReportingHe The Percent_of_persons_reporting_he
+     * 
      */
     public void setPercentOfPersonsReportingHe(Object percentOfPersonsReportingHe) {
         this.percentOfPersonsReportingHe = percentOfPersonsReportingHe;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankPercentOfPersonsRepor3
+     * 
      */
     public Object getRankPercentOfPersonsRepor3() {
         return rankPercentOfPersonsRepor3;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankPercentOfPersonsRepor3 The Rank_Percent_of_persons_repor_3
+     * 
      */
     public void setRankPercentOfPersonsRepor3(Object rankPercentOfPersonsRepor3) {
         this.rankPercentOfPersonsRepor3 = rankPercentOfPersonsRepor3;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The percentOfPersonsReportingOs
+     * 
      */
     public Object getPercentOfPersonsReportingOs() {
         return percentOfPersonsReportingOs;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param percentOfPersonsReportingOs The Percent_of_persons_reporting_os
+     * 
      */
     public void setPercentOfPersonsReportingOs(Object percentOfPersonsReportingOs) {
         this.percentOfPersonsReportingOs = percentOfPersonsReportingOs;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankPercentOfPersonsRepor4
+     * 
      */
     public Object getRankPercentOfPersonsRepor4() {
         return rankPercentOfPersonsRepor4;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankPercentOfPersonsRepor4 The Rank_Percent_of_persons_repor_4
+     * 
      */
     public void setRankPercentOfPersonsRepor4(Object rankPercentOfPersonsRepor4) {
         this.rankPercentOfPersonsRepor4 = rankPercentOfPersonsRepor4;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The percentOfPersonsReportingAr
+     * 
      */
     public Object getPercentOfPersonsReportingAr() {
         return percentOfPersonsReportingAr;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param percentOfPersonsReportingAr The Percent_of_persons_reporting_ar
+     * 
      */
     public void setPercentOfPersonsReportingAr(Object percentOfPersonsReportingAr) {
         this.percentOfPersonsReportingAr = percentOfPersonsReportingAr;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankPercentOfPersonsRepor5
+     * 
      */
     public Object getRankPercentOfPersonsRepor5() {
         return rankPercentOfPersonsRepor5;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankPercentOfPersonsRepor5 The Rank_Percent_of_persons_repor_5
+     * 
      */
     public void setRankPercentOfPersonsRepor5(Object rankPercentOfPersonsRepor5) {
         this.rankPercentOfPersonsRepor5 = rankPercentOfPersonsRepor5;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The percentOfPersonsWhoAreOver
+     * 
      */
     public Object getPercentOfPersonsWhoAreOver() {
         return percentOfPersonsWhoAreOver;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param percentOfPersonsWhoAreOver The Percent_of_persons_who_are_over
+     * 
      */
     public void setPercentOfPersonsWhoAreOver(Object percentOfPersonsWhoAreOver) {
         this.percentOfPersonsWhoAreOver = percentOfPersonsWhoAreOver;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankPercentOfPersonsWhoAre
+     * 
      */
     public Object getRankPercentOfPersonsWhoAre() {
         return rankPercentOfPersonsWhoAre;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankPercentOfPersonsWhoAre The Rank_Percent_of_persons_who_are
+     * 
      */
     public void setRankPercentOfPersonsWhoAre(Object rankPercentOfPersonsWhoAre) {
         this.rankPercentOfPersonsWhoAre = rankPercentOfPersonsWhoAre;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The percentOfFemalesWhoAreOver
+     * 
      */
     public Object getPercentOfFemalesWhoAreOver() {
         return percentOfFemalesWhoAreOver;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param percentOfFemalesWhoAreOver The Percent_of_females_who_are_over
+     * 
      */
     public void setPercentOfFemalesWhoAreOver(Object percentOfFemalesWhoAreOver) {
         this.percentOfFemalesWhoAreOver = percentOfFemalesWhoAreOver;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankPercentOfFemalesWhoAre
+     * 
      */
     public Object getRankPercentOfFemalesWhoAre() {
         return rankPercentOfFemalesWhoAre;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankPercentOfFemalesWhoAre The Rank_Percent_of_females_who_are
+     * 
      */
     public void setRankPercentOfFemalesWhoAre(Object rankPercentOfFemalesWhoAre) {
         this.rankPercentOfFemalesWhoAre = rankPercentOfFemalesWhoAre;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The percentOfMalesWhoAreOverwe
+     * 
      */
     public Object getPercentOfMalesWhoAreOverwe() {
         return percentOfMalesWhoAreOverwe;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param percentOfMalesWhoAreOverwe The Percent_of_males_who_are_overwe
+     * 
      */
     public void setPercentOfMalesWhoAreOverwe(Object percentOfMalesWhoAreOverwe) {
         this.percentOfMalesWhoAreOverwe = percentOfMalesWhoAreOverwe;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankPercentOfMalesWhoAreO
+     * 
      */
     public Object getRankPercentOfMalesWhoAreO() {
         return rankPercentOfMalesWhoAreO;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankPercentOfMalesWhoAreO The Rank_Percent_of_males_who_are_o
+     * 
      */
     public void setRankPercentOfMalesWhoAreO(Object rankPercentOfMalesWhoAreO) {
         this.rankPercentOfMalesWhoAreO = rankPercentOfMalesWhoAreO;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The percentOfPersonsWhoAreObes
+     * 
      */
     public Object getPercentOfPersonsWhoAreObes() {
         return percentOfPersonsWhoAreObes;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param percentOfPersonsWhoAreObes The Percent_of_persons_who_are_obes
+     * 
      */
     public void setPercentOfPersonsWhoAreObes(Object percentOfPersonsWhoAreObes) {
         this.percentOfPersonsWhoAreObes = percentOfPersonsWhoAreObes;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankPercentOfPersonsWhoA1
+     * 
      */
     public Object getRankPercentOfPersonsWhoA1() {
         return rankPercentOfPersonsWhoA1;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankPercentOfPersonsWhoA1 The Rank_Percent_of_persons_who_a_1
+     * 
      */
     public void setRankPercentOfPersonsWhoA1(Object rankPercentOfPersonsWhoA1) {
         this.rankPercentOfPersonsWhoA1 = rankPercentOfPersonsWhoA1;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The percentOfFemalesWhoAreObes
+     * 
      */
     public Object getPercentOfFemalesWhoAreObes() {
         return percentOfFemalesWhoAreObes;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param percentOfFemalesWhoAreObes The Percent_of_females_who_are_obes
+     * 
      */
     public void setPercentOfFemalesWhoAreObes(Object percentOfFemalesWhoAreObes) {
         this.percentOfFemalesWhoAreObes = percentOfFemalesWhoAreObes;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankPercentOfFemalesWhoA1
+     * 
      */
     public Object getRankPercentOfFemalesWhoA1() {
         return rankPercentOfFemalesWhoA1;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankPercentOfFemalesWhoA1 The Rank_Percent_of_females_who_a_1
+     * 
      */
     public void setRankPercentOfFemalesWhoA1(Object rankPercentOfFemalesWhoA1) {
         this.rankPercentOfFemalesWhoA1 = rankPercentOfFemalesWhoA1;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The percentOfMalesWhoAreObese
+     * 
      */
     public Object getPercentOfMalesWhoAreObese() {
         return percentOfMalesWhoAreObese;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param percentOfMalesWhoAreObese The Percent_of_males_who_are_obese
+     * 
      */
     public void setPercentOfMalesWhoAreObese(Object percentOfMalesWhoAreObese) {
         this.percentOfMalesWhoAreObese = percentOfMalesWhoAreObese;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankPercentOfMalesWhoAre1
+     * 
      */
     public Object getRankPercentOfMalesWhoAre1() {
         return rankPercentOfMalesWhoAre1;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankPercentOfMalesWhoAre1 The Rank_Percent_of_males_who_are_1
+     * 
      */
     public void setRankPercentOfMalesWhoAre1(Object rankPercentOfMalesWhoAre1) {
         this.rankPercentOfMalesWhoAre1 = rankPercentOfMalesWhoAre1;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The malignantCancersDiagnosedPer
+     * 
      */
     public Object getMalignantCancersDiagnosedPer() {
         return malignantCancersDiagnosedPer;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param malignantCancersDiagnosedPer The Malignant_cancers_diagnosed_per
+     * 
      */
     public void setMalignantCancersDiagnosedPer(Object malignantCancersDiagnosedPer) {
         this.malignantCancersDiagnosedPer = malignantCancersDiagnosedPer;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankMalignantCancersDiagnose
+     * 
      */
     public Object getRankMalignantCancersDiagnose() {
         return rankMalignantCancersDiagnose;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankMalignantCancersDiagnose The Rank_Malignant_cancers_diagnose
+     * 
      */
     public void setRankMalignantCancersDiagnose(Object rankMalignantCancersDiagnose) {
         this.rankMalignantCancersDiagnose = rankMalignantCancersDiagnose;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The maleCancerIncidencePer1000
+     * 
      */
     public Object getMaleCancerIncidencePer1000() {
         return maleCancerIncidencePer1000;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param maleCancerIncidencePer1000 The Male_Cancer_incidence_per_1000_
+     * 
      */
     public void setMaleCancerIncidencePer1000(Object maleCancerIncidencePer1000) {
         this.maleCancerIncidencePer1000 = maleCancerIncidencePer1000;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankMaleCancerIncidencePer
+     * 
      */
     public Object getRankMaleCancerIncidencePer() {
         return rankMaleCancerIncidencePer;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankMaleCancerIncidencePer The Rank_Male_Cancer_incidence_per_
+     * 
      */
     public void setRankMaleCancerIncidencePer(Object rankMaleCancerIncidencePer) {
         this.rankMaleCancerIncidencePer = rankMaleCancerIncidencePer;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The femaleCancerIncidencePer100
+     * 
      */
     public Object getFemaleCancerIncidencePer100() {
         return femaleCancerIncidencePer100;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param femaleCancerIncidencePer100 The Female_Cancer_incidence_per_100
+     * 
      */
     public void setFemaleCancerIncidencePer100(Object femaleCancerIncidencePer100) {
         this.femaleCancerIncidencePer100 = femaleCancerIncidencePer100;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankFemaleCancerIncidencePe
+     * 
      */
     public Object getRankFemaleCancerIncidencePe() {
         return rankFemaleCancerIncidencePe;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankFemaleCancerIncidencePe The Rank_Female_Cancer_incidence_pe
+     * 
      */
     public void setRankFemaleCancerIncidencePe(Object rankFemaleCancerIncidencePe) {
         this.rankFemaleCancerIncidencePe = rankFemaleCancerIncidencePe;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The percentPoorDentalHealth
+     * 
      */
     public Object getPercentPoorDentalHealth() {
         return percentPoorDentalHealth;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param percentPoorDentalHealth The Percent_Poor_dental_health
+     * 
      */
     public void setPercentPoorDentalHealth(Object percentPoorDentalHealth) {
         this.percentPoorDentalHealth = percentPoorDentalHealth;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankPercentPoorDentalHealth
+     * 
      */
     public Object getRankPercentPoorDentalHealth() {
         return rankPercentPoorDentalHealth;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankPercentPoorDentalHealth The Rank_Percent_Poor_dental_health
+     * 
      */
     public void setRankPercentPoorDentalHealth(Object rankPercentPoorDentalHealth) {
         this.rankPercentPoorDentalHealth = rankPercentPoorDentalHealth;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The notificationsPer100000PopOf
+     * 
      */
     public Object getNotificationsPer100000PopOf() {
         return notificationsPer100000PopOf;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param notificationsPer100000PopOf The Notifications_per_100000_pop_of
+     * 
      */
     public void setNotificationsPer100000PopOf(Object notificationsPer100000PopOf) {
         this.notificationsPer100000PopOf = notificationsPer100000PopOf;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankNotificationsPer100000P
+     * 
      */
     public Object getRankNotificationsPer100000P() {
         return rankNotificationsPer100000P;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankNotificationsPer100000P The Rank_Notifications_per_100000_p
+     * 
      */
     public void setRankNotificationsPer100000P(Object rankNotificationsPer100000P) {
         this.rankNotificationsPer100000P = rankNotificationsPer100000P;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The notificationsPer100000Pop1
+     * 
      */
     public Object getNotificationsPer100000Pop1() {
         return notificationsPer100000Pop1;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param notificationsPer100000Pop1 The Notifications_per_100000_pop__1
+     * 
      */
     public void setNotificationsPer100000Pop1(Object notificationsPer100000Pop1) {
         this.notificationsPer100000Pop1 = notificationsPer100000Pop1;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankNotificationsPer1000001
+     * 
      */
     public Object getRankNotificationsPer1000001() {
         return rankNotificationsPer1000001;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankNotificationsPer1000001 The Rank_Notifications_per_100000_1
+     * 
      */
     public void setRankNotificationsPer1000001(Object rankNotificationsPer1000001) {
         this.rankNotificationsPer1000001 = rankNotificationsPer1000001;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The notificationsPer100000People
+     * 
      */
     public Object getNotificationsPer100000People() {
         return notificationsPer100000People;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param notificationsPer100000People The Notifications_per_100000_people
+     * 
      */
     public void setNotificationsPer100000People(Object notificationsPer100000People) {
         this.notificationsPer100000People = notificationsPer100000People;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankNotificationsPer1000002
+     * 
      */
     public Object getRankNotificationsPer1000002() {
         return rankNotificationsPer1000002;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankNotificationsPer1000002 The Rank_Notifications_per_100000_2
+     * 
      */
     public void setRankNotificationsPer1000002(Object rankNotificationsPer1000002) {
         this.rankNotificationsPer1000002 = rankNotificationsPer1000002;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The percentOfPersons18yrsPlusWh
+     * 
      */
     public Object getPercentOfPersons18yrsPlusWh() {
         return percentOfPersons18yrsPlusWh;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param percentOfPersons18yrsPlusWh The Percent_of_persons_18yrsPlus_wh
+     * 
      */
     public void setPercentOfPersons18yrsPlusWh(Object percentOfPersons18yrsPlusWh) {
         this.percentOfPersons18yrsPlusWh = percentOfPersons18yrsPlusWh;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankPercentOfPersons18yrsPl
+     * 
      */
     public Object getRankPercentOfPersons18yrsPl() {
         return rankPercentOfPersons18yrsPl;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankPercentOfPersons18yrsPl The Rank_Percent_of_persons_18yrsPl
+     * 
      */
     public void setRankPercentOfPersons18yrsPl(Object rankPercentOfPersons18yrsPl) {
         this.rankPercentOfPersons18yrsPl = rankPercentOfPersons18yrsPl;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The percentOfMales18yrsPlusWho
+     * 
      */
     public Object getPercentOfMales18yrsPlusWho() {
         return percentOfMales18yrsPlusWho;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param percentOfMales18yrsPlusWho The Percent_of_males_18yrsPlus_who_
+     * 
      */
     public void setPercentOfMales18yrsPlusWho(Object percentOfMales18yrsPlusWho) {
         this.percentOfMales18yrsPlusWho = percentOfMales18yrsPlusWho;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankPercentOfMales18yrsPlus
+     * 
      */
     public Object getRankPercentOfMales18yrsPlus() {
         return rankPercentOfMales18yrsPlus;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankPercentOfMales18yrsPlus The Rank_Percent_of_males_18yrsPlus
+     * 
      */
     public void setRankPercentOfMales18yrsPlus(Object rankPercentOfMales18yrsPlus) {
         this.rankPercentOfMales18yrsPlus = rankPercentOfMales18yrsPlus;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The percentOfFemales18yrsPlusWh
+     * 
      */
     public Object getPercentOfFemales18yrsPlusWh() {
         return percentOfFemales18yrsPlusWh;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param percentOfFemales18yrsPlusWh The Percent_of_females_18yrsPlus_wh
+     * 
      */
     public void setPercentOfFemales18yrsPlusWh(Object percentOfFemales18yrsPlusWh) {
         this.percentOfFemales18yrsPlusWh = percentOfFemales18yrsPlusWh;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankPercentOfFemales18yrsPl
+     * 
      */
     public Object getRankPercentOfFemales18yrsPl() {
         return rankPercentOfFemales18yrsPl;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankPercentOfFemales18yrsPl The Rank_Percent_of_females_18yrsPl
+     * 
      */
     public void setRankPercentOfFemales18yrsPl(Object rankPercentOfFemales18yrsPl) {
         this.rankPercentOfFemales18yrsPl = rankPercentOfFemales18yrsPl;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The consumedAlcoholAtLeastWeekl
+     * 
      */
     public Object getConsumedAlcoholAtLeastWeekl() {
         return consumedAlcoholAtLeastWeekl;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param consumedAlcoholAtLeastWeekl The Consumed_alcohol_at_least_weekl
+     * 
      */
     public void setConsumedAlcoholAtLeastWeekl(Object consumedAlcoholAtLeastWeekl) {
         this.consumedAlcoholAtLeastWeekl = consumedAlcoholAtLeastWeekl;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankConsumedAlcoholAtLeast
+     * 
      */
     public Object getRankConsumedAlcoholAtLeast() {
         return rankConsumedAlcoholAtLeast;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankConsumedAlcoholAtLeast The Rank_Consumed_alcohol_at_least_
+     * 
      */
     public void setRankConsumedAlcoholAtLeast(Object rankConsumedAlcoholAtLeast) {
         this.rankConsumedAlcoholAtLeast = rankConsumedAlcoholAtLeast;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The consumedAlcoholAtLeastWee1
+     * 
      */
     public Object getConsumedAlcoholAtLeastWee1() {
         return consumedAlcoholAtLeastWee1;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param consumedAlcoholAtLeastWee1 The Consumed_alcohol_at_least_wee_1
+     * 
      */
     public void setConsumedAlcoholAtLeastWee1(Object consumedAlcoholAtLeastWee1) {
         this.consumedAlcoholAtLeastWee1 = consumedAlcoholAtLeastWee1;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankConsumedAlcoholAtLeast1
+     * 
      */
     public Object getRankConsumedAlcoholAtLeast1() {
         return rankConsumedAlcoholAtLeast1;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankConsumedAlcoholAtLeast1 The Rank_Consumed_alcohol_at_least1
+     * 
      */
     public void setRankConsumedAlcoholAtLeast1(Object rankConsumedAlcoholAtLeast1) {
         this.rankConsumedAlcoholAtLeast1 = rankConsumedAlcoholAtLeast1;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The percentOfPersonsWhoDoNotM
+     * 
      */
     public Object getPercentOfPersonsWhoDoNotM() {
         return percentOfPersonsWhoDoNotM;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param percentOfPersonsWhoDoNotM The Percent_of_persons_who_do_not_m
+     * 
      */
     public void setPercentOfPersonsWhoDoNotM(Object percentOfPersonsWhoDoNotM) {
         this.percentOfPersonsWhoDoNotM = percentOfPersonsWhoDoNotM;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankPercentOfPersonsWhoDo
+     * 
      */
     public Object getRankPercentOfPersonsWhoDo() {
         return rankPercentOfPersonsWhoDo;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankPercentOfPersonsWhoDo The Rank_Percent_of_persons_who_do_
+     * 
      */
     public void setRankPercentOfPersonsWhoDo(Object rankPercentOfPersonsWhoDo) {
         this.rankPercentOfPersonsWhoDo = rankPercentOfPersonsWhoDo;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The percentOfMalesWhoDoNotMee
+     * 
      */
     public Object getPercentOfMalesWhoDoNotMee() {
         return percentOfMalesWhoDoNotMee;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param percentOfMalesWhoDoNotMee The Percent_of_males_who_do_not_mee
+     * 
      */
     public void setPercentOfMalesWhoDoNotMee(Object percentOfMalesWhoDoNotMee) {
         this.percentOfMalesWhoDoNotMee = percentOfMalesWhoDoNotMee;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankPercentOfMalesWhoDoNo
+     * 
      */
     public Object getRankPercentOfMalesWhoDoNo() {
         return rankPercentOfMalesWhoDoNo;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankPercentOfMalesWhoDoNo The Rank_Percent_of_males_who_do_no
+     * 
      */
     public void setRankPercentOfMalesWhoDoNo(Object rankPercentOfMalesWhoDoNo) {
         this.rankPercentOfMalesWhoDoNo = rankPercentOfMalesWhoDoNo;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The percentOfFemalesWhoDoNotM
+     * 
      */
     public Object getPercentOfFemalesWhoDoNotM() {
         return percentOfFemalesWhoDoNotM;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param percentOfFemalesWhoDoNotM The Percent_of_females_who_do_not_m
+     * 
      */
     public void setPercentOfFemalesWhoDoNotM(Object percentOfFemalesWhoDoNotM) {
         this.percentOfFemalesWhoDoNotM = percentOfFemalesWhoDoNotM;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankPercentOfFemalesWhoDo
+     * 
      */
     public Object getRankPercentOfFemalesWhoDo() {
         return rankPercentOfFemalesWhoDo;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankPercentOfFemalesWhoDo The Rank_Percent_of_females_who_do_
+     * 
      */
     public void setRankPercentOfFemalesWhoDo(Object rankPercentOfFemalesWhoDo) {
         this.rankPercentOfFemalesWhoDo = rankPercentOfFemalesWhoDo;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The percentOfPersonsWhoDrinkSo
+     * 
      */
     public Object getPercentOfPersonsWhoDrinkSo() {
         return percentOfPersonsWhoDrinkSo;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param percentOfPersonsWhoDrinkSo The Percent_of_persons_who_drink_so
+     * 
      */
     public void setPercentOfPersonsWhoDrinkSo(Object percentOfPersonsWhoDrinkSo) {
         this.percentOfPersonsWhoDrinkSo = percentOfPersonsWhoDrinkSo;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankPercentOfPersonsWhoDri
+     * 
      */
     public Object getRankPercentOfPersonsWhoDri() {
         return rankPercentOfPersonsWhoDri;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankPercentOfPersonsWhoDri The Rank_Percent_of_persons_who_dri
+     * 
      */
     public void setRankPercentOfPersonsWhoDri(Object rankPercentOfPersonsWhoDri) {
         this.rankPercentOfPersonsWhoDri = rankPercentOfPersonsWhoDri;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The percentOfPersonsWhoShareA
+     * 
      */
     public Object getPercentOfPersonsWhoShareA() {
         return percentOfPersonsWhoShareA;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param percentOfPersonsWhoShareA The Percent_of_persons_who_share_a_
+     * 
      */
     public void setPercentOfPersonsWhoShareA(Object percentOfPersonsWhoShareA) {
         this.percentOfPersonsWhoShareA = percentOfPersonsWhoShareA;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankPercentOfPersonsWhoSha
+     * 
      */
     public Object getRankPercentOfPersonsWhoSha() {
         return rankPercentOfPersonsWhoSha;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankPercentOfPersonsWhoSha The Rank_Percent_of_persons_who_sha
+     * 
      */
     public void setRankPercentOfPersonsWhoSha(Object rankPercentOfPersonsWhoSha) {
         this.rankPercentOfPersonsWhoSha = rankPercentOfPersonsWhoSha;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The percentOfPersonsWhoDoNot1
+     * 
      */
     public Object getPercentOfPersonsWhoDoNot1() {
         return percentOfPersonsWhoDoNot1;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param percentOfPersonsWhoDoNot1 The Percent_of_persons_who_do_not_1
+     * 
      */
     public void setPercentOfPersonsWhoDoNot1(Object percentOfPersonsWhoDoNot1) {
         this.percentOfPersonsWhoDoNot1 = percentOfPersonsWhoDoNot1;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankPercentOfPersonsWhoDo1
+     * 
      */
     public Object getRankPercentOfPersonsWhoDo1() {
         return rankPercentOfPersonsWhoDo1;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankPercentOfPersonsWhoDo1 The Rank_Percent_of_persons_who_do1
+     * 
      */
     public void setRankPercentOfPersonsWhoDo1(Object rankPercentOfPersonsWhoDo1) {
         this.rankPercentOfPersonsWhoDo1 = rankPercentOfPersonsWhoDo1;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The percentOfMalesWhoDoNotM1
+     * 
      */
     public Object getPercentOfMalesWhoDoNotM1() {
         return percentOfMalesWhoDoNotM1;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param percentOfMalesWhoDoNotM1 The Percent_of_males_who_do_not_m_1
+     * 
      */
     public void setPercentOfMalesWhoDoNotM1(Object percentOfMalesWhoDoNotM1) {
         this.percentOfMalesWhoDoNotM1 = percentOfMalesWhoDoNotM1;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankPercentOfMalesWhoDo1
+     * 
      */
     public Object getRankPercentOfMalesWhoDo1() {
         return rankPercentOfMalesWhoDo1;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankPercentOfMalesWhoDo1 The Rank_Percent_of_males_who_do__1
+     * 
      */
     public void setRankPercentOfMalesWhoDo1(Object rankPercentOfMalesWhoDo1) {
         this.rankPercentOfMalesWhoDo1 = rankPercentOfMalesWhoDo1;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The percentOfFemalesWhoDoNot1
+     * 
      */
     public Object getPercentOfFemalesWhoDoNot1() {
         return percentOfFemalesWhoDoNot1;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param percentOfFemalesWhoDoNot1 The Percent_of_females_who_do_not_1
+     * 
      */
     public void setPercentOfFemalesWhoDoNot1(Object percentOfFemalesWhoDoNot1) {
         this.percentOfFemalesWhoDoNot1 = percentOfFemalesWhoDoNot1;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankPercentOfFemalesWhoDo1
+     * 
      */
     public Object getRankPercentOfFemalesWhoDo1() {
         return rankPercentOfFemalesWhoDo1;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankPercentOfFemalesWhoDo1 The Rank_Percent_of_females_who_do1
+     * 
      */
     public void setRankPercentOfFemalesWhoDo1(Object rankPercentOfFemalesWhoDo1) {
         this.rankPercentOfFemalesWhoDo1 = rankPercentOfFemalesWhoDo1;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The percentOfPersonsWhoSitFor
+     * 
      */
     public Object getPercentOfPersonsWhoSitFor() {
         return percentOfPersonsWhoSitFor;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param percentOfPersonsWhoSitFor The Percent_of_persons_who_sit_for_
+     * 
      */
     public void setPercentOfPersonsWhoSitFor(Object percentOfPersonsWhoSitFor) {
         this.percentOfPersonsWhoSitFor = percentOfPersonsWhoSitFor;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankPercentOfPersonsWhoSit
+     * 
      */
     public Object getRankPercentOfPersonsWhoSit() {
         return rankPercentOfPersonsWhoSit;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankPercentOfPersonsWhoSit The Rank_Percent_of_persons_who_sit
+     * 
      */
     public void setRankPercentOfPersonsWhoSit(Object rankPercentOfPersonsWhoSit) {
         this.rankPercentOfPersonsWhoSit = rankPercentOfPersonsWhoSit;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The percentOfPersonsWhoVisitA
+     * 
      */
     public Object getPercentOfPersonsWhoVisitA() {
         return percentOfPersonsWhoVisitA;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param percentOfPersonsWhoVisitA The Percent_of_persons_who_visit_a_
+     * 
      */
     public void setPercentOfPersonsWhoVisitA(Object percentOfPersonsWhoVisitA) {
         this.percentOfPersonsWhoVisitA = percentOfPersonsWhoVisitA;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankPercentOfPersonsWhoVis
+     * 
      */
     public Object getRankPercentOfPersonsWhoVis() {
         return rankPercentOfPersonsWhoVis;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankPercentOfPersonsWhoVis The Rank_Percent_of_persons_who_vis
+     * 
      */
     public void setRankPercentOfPersonsWhoVis(Object rankPercentOfPersonsWhoVis) {
         this.rankPercentOfPersonsWhoVis = rankPercentOfPersonsWhoVis;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The percentOfBreastScreeningPar
+     * 
      */
     public Object getPercentOfBreastScreeningPar() {
         return percentOfBreastScreeningPar;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param percentOfBreastScreeningPar The Percent_of_breast_screening_par
+     * 
      */
     public void setPercentOfBreastScreeningPar(Object percentOfBreastScreeningPar) {
         this.percentOfBreastScreeningPar = percentOfBreastScreeningPar;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankPercentOfBreastScreenin
+     * 
      */
     public Object getRankPercentOfBreastScreenin() {
         return rankPercentOfBreastScreenin;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankPercentOfBreastScreenin The Rank_Percent_of_breast_screenin
+     * 
      */
     public void setRankPercentOfBreastScreenin(Object rankPercentOfBreastScreenin) {
         this.rankPercentOfBreastScreenin = rankPercentOfBreastScreenin;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The percentOfCervicalCancerScre
+     * 
      */
     public Object getPercentOfCervicalCancerScre() {
         return percentOfCervicalCancerScre;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param percentOfCervicalCancerScre The Percent_of_cervical_cancer_scre
+     * 
      */
     public void setPercentOfCervicalCancerScre(Object percentOfCervicalCancerScre) {
         this.percentOfCervicalCancerScre = percentOfCervicalCancerScre;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankPercentOfCervicalCancer
+     * 
      */
     public Object getRankPercentOfCervicalCancer() {
         return rankPercentOfCervicalCancer;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankPercentOfCervicalCancer The Rank_Percent_of_cervical_cancer
+     * 
      */
     public void setRankPercentOfCervicalCancer(Object rankPercentOfCervicalCancer) {
         this.rankPercentOfCervicalCancer = rankPercentOfCervicalCancer;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The bowelCancerScreeningParticip
+     * 
      */
     public Object getBowelCancerScreeningParticip() {
         return bowelCancerScreeningParticip;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param bowelCancerScreeningParticip The Bowel_cancer_screening_particip
+     * 
      */
     public void setBowelCancerScreeningParticip(Object bowelCancerScreeningParticip) {
         this.bowelCancerScreeningParticip = bowelCancerScreeningParticip;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankBowelCancerScreeningPar
+     * 
      */
     public Object getRankBowelCancerScreeningPar() {
         return rankBowelCancerScreeningPar;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankBowelCancerScreeningPar The Rank_Bowel_cancer_screening_par
+     * 
      */
     public void setRankBowelCancerScreeningPar(Object rankBowelCancerScreeningPar) {
         this.rankBowelCancerScreeningPar = rankBowelCancerScreeningPar;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The bowelCancerScreeningPartic1
+     * 
      */
     public Object getBowelCancerScreeningPartic1() {
         return bowelCancerScreeningPartic1;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param bowelCancerScreeningPartic1 The Bowel_cancer_screening_partic_1
+     * 
      */
     public void setBowelCancerScreeningPartic1(Object bowelCancerScreeningPartic1) {
         this.bowelCancerScreeningPartic1 = bowelCancerScreeningPartic1;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankBowelCancerScreeningP1
+     * 
      */
     public Object getRankBowelCancerScreeningP1() {
         return rankBowelCancerScreeningP1;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankBowelCancerScreeningP1 The Rank_Bowel_cancer_screening_p_1
+     * 
      */
     public void setRankBowelCancerScreeningP1(Object rankBowelCancerScreeningP1) {
         this.rankBowelCancerScreeningP1 = rankBowelCancerScreeningP1;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The bowelCancerScreeningPartic2
+     * 
      */
     public Object getBowelCancerScreeningPartic2() {
         return bowelCancerScreeningPartic2;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param bowelCancerScreeningPartic2 The Bowel_cancer_screening_partic_2
+     * 
      */
     public void setBowelCancerScreeningPartic2(Object bowelCancerScreeningPartic2) {
         this.bowelCancerScreeningPartic2 = bowelCancerScreeningPartic2;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankBowelCancerScreeningP2
+     * 
      */
     public Object getRankBowelCancerScreeningP2() {
         return rankBowelCancerScreeningP2;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankBowelCancerScreeningP2 The Rank_Bowel_cancer_screening_p_2
+     * 
      */
     public void setRankBowelCancerScreeningP2(Object rankBowelCancerScreeningP2) {
         this.rankBowelCancerScreeningP2 = rankBowelCancerScreeningP2;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The lowBirthweightBabies
+     * 
      */
     public Object getLowBirthweightBabies() {
         return lowBirthweightBabies;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param lowBirthweightBabies The Low_Birthweight_babies
+     * 
      */
     public void setLowBirthweightBabies(Object lowBirthweightBabies) {
         this.lowBirthweightBabies = lowBirthweightBabies;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankLowBirthweightBabies
+     * 
      */
     public Object getRankLowBirthweightBabies() {
         return rankLowBirthweightBabies;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankLowBirthweightBabies The Rank_Low_Birthweight_babies
+     * 
      */
     public void setRankLowBirthweightBabies(Object rankLowBirthweightBabies) {
         this.rankLowBirthweightBabies = rankLowBirthweightBabies;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The percentInfantsFullyBreastfed
+     * 
      */
     public Object getPercentInfantsFullyBreastfed() {
         return percentInfantsFullyBreastfed;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param percentInfantsFullyBreastfed The Percent_Infants_fully_breastfed
+     * 
      */
     public void setPercentInfantsFullyBreastfed(Object percentInfantsFullyBreastfed) {
         this.percentInfantsFullyBreastfed = percentInfantsFullyBreastfed;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankPercentInfantsFullyBrea
+     * 
      */
     public Object getRankPercentInfantsFullyBrea() {
         return rankPercentInfantsFullyBrea;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankPercentInfantsFullyBrea The Rank_Percent_Infants_fully_brea
+     * 
      */
     public void setRankPercentInfantsFullyBrea(Object rankPercentInfantsFullyBrea) {
         this.rankPercentInfantsFullyBrea = rankPercentInfantsFullyBrea;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The percentChildrenFullyImmunise
+     * 
      */
     public Object getPercentChildrenFullyImmunise() {
         return percentChildrenFullyImmunise;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param percentChildrenFullyImmunise The Percent_Children_fully_immunise
+     * 
      */
     public void setPercentChildrenFullyImmunise(Object percentChildrenFullyImmunise) {
         this.percentChildrenFullyImmunise = percentChildrenFullyImmunise;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankPercentChildrenFullyImm
+     * 
      */
     public Object getRankPercentChildrenFullyImm() {
         return rankPercentChildrenFullyImm;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankPercentChildrenFullyImm The Rank_Percent_Children_fully_imm
+     * 
      */
     public void setRankPercentChildrenFullyImm(Object rankPercentChildrenFullyImm) {
         this.rankPercentChildrenFullyImm = rankPercentChildrenFullyImm;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The proportionOfInfantsEnrolled
+     * 
      */
     public Object getProportionOfInfantsEnrolled() {
         return proportionOfInfantsEnrolled;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param proportionOfInfantsEnrolled The Proportion_of_infants_enrolled_
+     * 
      */
     public void setProportionOfInfantsEnrolled(Object proportionOfInfantsEnrolled) {
         this.proportionOfInfantsEnrolled = proportionOfInfantsEnrolled;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankProportionOfInfantsEnro
+     * 
      */
     public Object getRankProportionOfInfantsEnro() {
         return rankProportionOfInfantsEnro;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankProportionOfInfantsEnro The Rank_Proportion_of_infants_enro
+     * 
      */
     public void setRankProportionOfInfantsEnro(Object rankProportionOfInfantsEnro) {
         this.rankProportionOfInfantsEnro = rankProportionOfInfantsEnro;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The kindergartenParticipationRate
+     * 
      */
     public Object getKindergartenParticipationRate() {
         return kindergartenParticipationRate;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param kindergartenParticipationRate The Kindergarten_participation_rate
+     * 
      */
     public void setKindergartenParticipationRate(Object kindergartenParticipationRate) {
         this.kindergartenParticipationRate = kindergartenParticipationRate;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The percentOfChildrenWithKinder
+     * 
      */
     public Object getPercentOfChildrenWithKinder() {
         return percentOfChildrenWithKinder;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param percentOfChildrenWithKinder The Percent_of_children_with_kinder
+     * 
      */
     public void setPercentOfChildrenWithKinder(Object percentOfChildrenWithKinder) {
         this.percentOfChildrenWithKinder = percentOfChildrenWithKinder;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankPercentOfChildrenWithK
+     * 
      */
     public Object getRankPercentOfChildrenWithK() {
         return rankPercentOfChildrenWithK;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankPercentOfChildrenWithK The Rank_Percent_of_children_with_k
+     * 
      */
     public void setRankPercentOfChildrenWithK(Object rankPercentOfChildrenWithK) {
         this.rankPercentOfChildrenWithK = rankPercentOfChildrenWithK;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The percentOfChildrenWithEmotio
+     * 
      */
     public Object getPercentOfChildrenWithEmotio() {
         return percentOfChildrenWithEmotio;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param percentOfChildrenWithEmotio The Percent_of_children_with_emotio
+     * 
      */
     public void setPercentOfChildrenWithEmotio(Object percentOfChildrenWithEmotio) {
         this.percentOfChildrenWithEmotio = percentOfChildrenWithEmotio;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankPercentOfChildrenWithE
+     * 
      */
     public Object getRankPercentOfChildrenWithE() {
         return rankPercentOfChildrenWithE;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankPercentOfChildrenWithE The Rank_Percent_of_children_with_e
+     * 
      */
     public void setRankPercentOfChildrenWithE(Object rankPercentOfChildrenWithE) {
         this.rankPercentOfChildrenWithE = rankPercentOfChildrenWithE;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The percentOfChildrenWithSpeech
+     * 
      */
     public Object getPercentOfChildrenWithSpeech() {
         return percentOfChildrenWithSpeech;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param percentOfChildrenWithSpeech The Percent_of_children_with_speech
+     * 
      */
     public void setPercentOfChildrenWithSpeech(Object percentOfChildrenWithSpeech) {
         this.percentOfChildrenWithSpeech = percentOfChildrenWithSpeech;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankPercentOfChildrenWithS
+     * 
      */
     public Object getRankPercentOfChildrenWithS() {
         return rankPercentOfChildrenWithS;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankPercentOfChildrenWithS The Rank_Percent_of_children_with_s
+     * 
      */
     public void setRankPercentOfChildrenWithS(Object rankPercentOfChildrenWithS) {
         this.rankPercentOfChildrenWithS = rankPercentOfChildrenWithS;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The percentOfAdolescentsWhoRepo
+     * 
      */
     public Object getPercentOfAdolescentsWhoRepo() {
         return percentOfAdolescentsWhoRepo;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param percentOfAdolescentsWhoRepo The Percent_of_adolescents_who_repo
+     * 
      */
     public void setPercentOfAdolescentsWhoRepo(Object percentOfAdolescentsWhoRepo) {
         this.percentOfAdolescentsWhoRepo = percentOfAdolescentsWhoRepo;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankPercentOfAdolescentsWho
+     * 
      */
     public Object getRankPercentOfAdolescentsWho() {
         return rankPercentOfAdolescentsWho;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankPercentOfAdolescentsWho The Rank_Percent_of_adolescents_who
+     * 
      */
     public void setRankPercentOfAdolescentsWho(Object rankPercentOfAdolescentsWho) {
         this.rankPercentOfAdolescentsWho = rankPercentOfAdolescentsWho;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The percentOfChildrenWhoAreDev
+     * 
      */
     public Object getPercentOfChildrenWhoAreDev() {
         return percentOfChildrenWhoAreDev;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param percentOfChildrenWhoAreDev The Percent_of_children_who_are_dev
+     * 
      */
     public void setPercentOfChildrenWhoAreDev(Object percentOfChildrenWhoAreDev) {
         this.percentOfChildrenWhoAreDev = percentOfChildrenWhoAreDev;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankPercentOfChildrenWhoAr
+     * 
      */
     public Object getRankPercentOfChildrenWhoAr() {
         return rankPercentOfChildrenWhoAr;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankPercentOfChildrenWhoAr The Rank_Percent_of_children_who_ar
+     * 
      */
     public void setRankPercentOfChildrenWhoAr(Object rankPercentOfChildrenWhoAr) {
         this.rankPercentOfChildrenWhoAr = rankPercentOfChildrenWhoAr;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The percentOfChildrenWhoAreD1
+     * 
      */
     public Object getPercentOfChildrenWhoAreD1() {
         return percentOfChildrenWhoAreD1;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param percentOfChildrenWhoAreD1 The Percent_of_children_who_are_d_1
+     * 
      */
     public void setPercentOfChildrenWhoAreD1(Object percentOfChildrenWhoAreD1) {
         this.percentOfChildrenWhoAreD1 = percentOfChildrenWhoAreD1;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankPercentOfChildrenWho1
+     * 
      */
     public Object getRankPercentOfChildrenWho1() {
         return rankPercentOfChildrenWho1;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankPercentOfChildrenWho1 The Rank_Percent_of_children_who__1
+     * 
      */
     public void setRankPercentOfChildrenWho1(Object rankPercentOfChildrenWho1) {
         this.rankPercentOfChildrenWho1 = rankPercentOfChildrenWho1;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The coreActivityNeedForAssistan
+     * 
      */
     public Object getCoreActivityNeedForAssistan() {
         return coreActivityNeedForAssistan;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param coreActivityNeedForAssistan The Core_activity_need_for_assistan
+     * 
      */
     public void setCoreActivityNeedForAssistan(Object coreActivityNeedForAssistan) {
         this.coreActivityNeedForAssistan = coreActivityNeedForAssistan;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankCoreActivityNeedForAss
+     * 
      */
     public Object getRankCoreActivityNeedForAss() {
         return rankCoreActivityNeedForAss;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankCoreActivityNeedForAss The Rank_Core_activity_need_for_ass
+     * 
      */
     public void setRankCoreActivityNeedForAss(Object rankCoreActivityNeedForAss) {
         this.rankCoreActivityNeedForAss = rankCoreActivityNeedForAss;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The peopleWithSevereAndProfound
+     * 
      */
     public Object getPeopleWithSevereAndProfound() {
         return peopleWithSevereAndProfound;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param peopleWithSevereAndProfound The People_with_severe_and_profound
+     * 
      */
     public void setPeopleWithSevereAndProfound(Object peopleWithSevereAndProfound) {
         this.peopleWithSevereAndProfound = peopleWithSevereAndProfound;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankPeopleWithSevereAndPro
+     * 
      */
     public Object getRankPeopleWithSevereAndPro() {
         return rankPeopleWithSevereAndPro;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankPeopleWithSevereAndPro The Rank_People_with_severe_and_pro
+     * 
      */
     public void setRankPeopleWithSevereAndPro(Object rankPeopleWithSevereAndPro) {
         this.rankPeopleWithSevereAndPro = rankPeopleWithSevereAndPro;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The peopleWithSevereAndProfou1
+     * 
      */
     public Object getPeopleWithSevereAndProfou1() {
         return peopleWithSevereAndProfou1;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param peopleWithSevereAndProfou1 The People_with_severe_and_profou_1
+     * 
      */
     public void setPeopleWithSevereAndProfou1(Object peopleWithSevereAndProfou1) {
         this.peopleWithSevereAndProfou1 = peopleWithSevereAndProfou1;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankPeopleWithSevereAndP1
+     * 
      */
     public Object getRankPeopleWithSevereAndP1() {
         return rankPeopleWithSevereAndP1;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankPeopleWithSevereAndP1 The Rank_People_with_severe_and_p_1
+     * 
      */
     public void setRankPeopleWithSevereAndP1(Object rankPeopleWithSevereAndP1) {
         this.rankPeopleWithSevereAndP1 = rankPeopleWithSevereAndP1;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The percentPopAged75yrsPlusLivi
+     * 
      */
     public Object getPercentPopAged75yrsPlusLivi() {
         return percentPopAged75yrsPlusLivi;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param percentPopAged75yrsPlusLivi The Percent_pop_aged_75yrsPlus_livi
+     * 
      */
     public void setPercentPopAged75yrsPlusLivi(Object percentPopAged75yrsPlusLivi) {
         this.percentPopAged75yrsPlusLivi = percentPopAged75yrsPlusLivi;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankPercentPopAged75yrsPlus
+     * 
      */
     public Object getRankPercentPopAged75yrsPlus() {
         return rankPercentPopAged75yrsPlus;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankPercentPopAged75yrsPlus The Rank_Percent_pop_aged_75yrsPlus
+     * 
      */
     public void setRankPercentPopAged75yrsPlus(Object rankPercentPopAged75yrsPlus) {
         this.rankPercentPopAged75yrsPlus = rankPercentPopAged75yrsPlus;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The popAged75yrsPlusLivingAlone
+     * 
      */
     public Object getPopAged75yrsPlusLivingAlone() {
         return popAged75yrsPlusLivingAlone;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param popAged75yrsPlusLivingAlone The Pop_aged_75yrsPlus_living_alone
+     * 
      */
     public void setPopAged75yrsPlusLivingAlone(Object popAged75yrsPlusLivingAlone) {
         this.popAged75yrsPlusLivingAlone = popAged75yrsPlusLivingAlone;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankPopAged75yrsPlusLiving
+     * 
      */
     public Object getRankPopAged75yrsPlusLiving() {
         return rankPopAged75yrsPlusLiving;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankPopAged75yrsPlusLiving The Rank_Pop_aged_75yrsPlus_living_
+     * 
      */
     public void setRankPopAged75yrsPlusLiving(Object rankPopAged75yrsPlusLiving) {
         this.rankPopAged75yrsPlusLiving = rankPopAged75yrsPlusLiving;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The popAged75yrsPlusLivingAlo1
+     * 
      */
     public Object getPopAged75yrsPlusLivingAlo1() {
         return popAged75yrsPlusLivingAlo1;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param popAged75yrsPlusLivingAlo1 The Pop_aged_75yrsPlus_living_alo_1
+     * 
      */
     public void setPopAged75yrsPlusLivingAlo1(Object popAged75yrsPlusLivingAlo1) {
         this.popAged75yrsPlusLivingAlo1 = popAged75yrsPlusLivingAlo1;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankPopAged75yrsPlusLiving1
+     * 
      */
     public Object getRankPopAged75yrsPlusLiving1() {
         return rankPopAged75yrsPlusLiving1;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankPopAged75yrsPlusLiving1 The Rank_Pop_aged_75yrsPlus_living1
+     * 
      */
     public void setRankPopAged75yrsPlusLiving1(Object rankPopAged75yrsPlusLiving1) {
         this.rankPopAged75yrsPlusLiving1 = rankPopAged75yrsPlusLiving1;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The personsReceivingDisabilitySe
+     * 
      */
     public Object getPersonsReceivingDisabilitySe() {
         return personsReceivingDisabilitySe;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param personsReceivingDisabilitySe The Persons_receiving_Disability_Se
+     * 
      */
     public void setPersonsReceivingDisabilitySe(Object personsReceivingDisabilitySe) {
         this.personsReceivingDisabilitySe = personsReceivingDisabilitySe;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankPersonsReceivingDisabili
+     * 
      */
     public Object getRankPersonsReceivingDisabili() {
         return rankPersonsReceivingDisabili;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankPersonsReceivingDisabili The Rank_Persons_receiving_Disabili
+     * 
      */
     public void setRankPersonsReceivingDisabili(Object rankPersonsReceivingDisabili) {
         this.rankPersonsReceivingDisabili = rankPersonsReceivingDisabili;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The disabilityPensionPer1000Eli
+     * 
      */
     public Object getDisabilityPensionPer1000Eli() {
         return disabilityPensionPer1000Eli;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param disabilityPensionPer1000Eli The Disability_pension_per_1000_eli
+     * 
      */
     public void setDisabilityPensionPer1000Eli(Object disabilityPensionPer1000Eli) {
         this.disabilityPensionPer1000Eli = disabilityPensionPer1000Eli;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankDisabilityPensionPer100
+     * 
      */
     public Object getRankDisabilityPensionPer100() {
         return rankDisabilityPensionPer100;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankDisabilityPensionPer100 The Rank_Disability_pension_per_100
+     * 
      */
     public void setRankDisabilityPensionPer100(Object rankDisabilityPensionPer100) {
         this.rankDisabilityPensionPer100 = rankDisabilityPensionPer100;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The agedCareHighCareBeds
+     * 
      */
     public Object getAgedCareHighCareBeds() {
         return agedCareHighCareBeds;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param agedCareHighCareBeds The Aged_care_HighCare_beds
+     * 
      */
     public void setAgedCareHighCareBeds(Object agedCareHighCareBeds) {
         this.agedCareHighCareBeds = agedCareHighCareBeds;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The agedCareLowCareBeds
+     * 
      */
     public Object getAgedCareLowCareBeds() {
         return agedCareLowCareBeds;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param agedCareLowCareBeds The Aged_care_LowCare_beds
+     * 
      */
     public void setAgedCareLowCareBeds(Object agedCareLowCareBeds) {
         this.agedCareLowCareBeds = agedCareLowCareBeds;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The agePensionPer1000EligibleP
+     * 
      */
     public Object getAgePensionPer1000EligibleP() {
         return agePensionPer1000EligibleP;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param agePensionPer1000EligibleP The Age_pension_per_1000_eligible_p
+     * 
      */
     public void setAgePensionPer1000EligibleP(Object agePensionPer1000EligibleP) {
         this.agePensionPer1000EligibleP = agePensionPer1000EligibleP;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankAgePensionPer1000Eligi
+     * 
      */
     public Object getRankAgePensionPer1000Eligi() {
         return rankAgePensionPer1000Eligi;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankAgePensionPer1000Eligi The Rank_Age_pension_per_1000_eligi
+     * 
      */
     public void setRankAgePensionPer1000Eligi(Object rankAgePensionPer1000Eligi) {
         this.rankAgePensionPer1000Eligi = rankAgePensionPer1000Eligi;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The maleLifeExpectancy
+     * 
      */
     public Object getMaleLifeExpectancy() {
         return maleLifeExpectancy;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param maleLifeExpectancy The Male_life_expectancy
+     * 
      */
     public void setMaleLifeExpectancy(Object maleLifeExpectancy) {
         this.maleLifeExpectancy = maleLifeExpectancy;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankMaleLifeExpectancy
+     * 
      */
     public Object getRankMaleLifeExpectancy() {
         return rankMaleLifeExpectancy;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankMaleLifeExpectancy The Rank_Male_life_expectancy
+     * 
      */
     public void setRankMaleLifeExpectancy(Object rankMaleLifeExpectancy) {
         this.rankMaleLifeExpectancy = rankMaleLifeExpectancy;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The femaleLifeExpectancy
+     * 
      */
     public Object getFemaleLifeExpectancy() {
         return femaleLifeExpectancy;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param femaleLifeExpectancy The Female_life_expectancy
+     * 
      */
     public void setFemaleLifeExpectancy(Object femaleLifeExpectancy) {
         this.femaleLifeExpectancy = femaleLifeExpectancy;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankFemaleLifeExpectancy
+     * 
      */
     public Object getRankFemaleLifeExpectancy() {
         return rankFemaleLifeExpectancy;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankFemaleLifeExpectancy The Rank_Female_life_expectancy
+     * 
      */
     public void setRankFemaleLifeExpectancy(Object rankFemaleLifeExpectancy) {
         this.rankFemaleLifeExpectancy = rankFemaleLifeExpectancy;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The personsReportingFairOrPoor
+     * 
      */
     public Object getPersonsReportingFairOrPoor() {
         return personsReportingFairOrPoor;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param personsReportingFairOrPoor The Persons_reporting_fair_or_poor_
+     * 
      */
     public void setPersonsReportingFairOrPoor(Object personsReportingFairOrPoor) {
         this.personsReportingFairOrPoor = personsReportingFairOrPoor;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankPersonsReportingFairOr
+     * 
      */
     public Object getRankPersonsReportingFairOr() {
         return rankPersonsReportingFairOr;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankPersonsReportingFairOr The Rank_Persons_reporting_fair_or_
+     * 
      */
     public void setRankPersonsReportingFairOr(Object rankPersonsReportingFairOr) {
         this.rankPersonsReportingFairOr = rankPersonsReportingFairOr;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The femalesReportingFairOrPoor
+     * 
      */
     public Object getFemalesReportingFairOrPoor() {
         return femalesReportingFairOrPoor;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param femalesReportingFairOrPoor The Females_reporting_fair_or_poor_
+     * 
      */
     public void setFemalesReportingFairOrPoor(Object femalesReportingFairOrPoor) {
         this.femalesReportingFairOrPoor = femalesReportingFairOrPoor;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankFemalesReportingFairOr
+     * 
      */
     public Object getRankFemalesReportingFairOr() {
         return rankFemalesReportingFairOr;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankFemalesReportingFairOr The Rank_Females_reporting_fair_or_
+     * 
      */
     public void setRankFemalesReportingFairOr(Object rankFemalesReportingFairOr) {
         this.rankFemalesReportingFairOr = rankFemalesReportingFairOr;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The malesReportingFairOrPoorHe
+     * 
      */
     public Object getMalesReportingFairOrPoorHe() {
         return malesReportingFairOrPoorHe;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param malesReportingFairOrPoorHe The Males_reporting_fair_or_poor_he
+     * 
      */
     public void setMalesReportingFairOrPoorHe(Object malesReportingFairOrPoorHe) {
         this.malesReportingFairOrPoorHe = malesReportingFairOrPoorHe;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankMalesReportingFairOrPo
+     * 
      */
     public Object getRankMalesReportingFairOrPo() {
         return rankMalesReportingFairOrPo;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankMalesReportingFairOrPo The Rank_Males_reporting_fair_or_po
+     * 
      */
     public void setRankMalesReportingFairOrPo(Object rankMalesReportingFairOrPo) {
         this.rankMalesReportingFairOrPo = rankMalesReportingFairOrPo;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The percentWhoHaveAHighDegree
+     * 
      */
     public Object getPercentWhoHaveAHighDegree() {
         return percentWhoHaveAHighDegree;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param percentWhoHaveAHighDegree The Percent_who_have_a_high_degree_
+     * 
      */
     public void setPercentWhoHaveAHighDegree(Object percentWhoHaveAHighDegree) {
         this.percentWhoHaveAHighDegree = percentWhoHaveAHighDegree;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankPercentWhoHaveAHighDe
+     * 
      */
     public Object getRankPercentWhoHaveAHighDe() {
         return rankPercentWhoHaveAHighDe;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankPercentWhoHaveAHighDe The Rank_Percent_who_have_a_high_de
+     * 
      */
     public void setRankPercentWhoHaveAHighDe(Object rankPercentWhoHaveAHighDe) {
         this.rankPercentWhoHaveAHighDe = rankPercentWhoHaveAHighDe;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The percentOfPersonsSleepingLes
+     * 
      */
     public Object getPercentOfPersonsSleepingLes() {
         return percentOfPersonsSleepingLes;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param percentOfPersonsSleepingLes The Percent_of_persons_sleeping_les
+     * 
      */
     public void setPercentOfPersonsSleepingLes(Object percentOfPersonsSleepingLes) {
         this.percentOfPersonsSleepingLes = percentOfPersonsSleepingLes;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankPercentOfPersonsSleepin
+     * 
      */
     public Object getRankPercentOfPersonsSleepin() {
         return rankPercentOfPersonsSleepin;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankPercentOfPersonsSleepin The Rank_Percent_of_persons_sleepin
+     * 
      */
     public void setRankPercentOfPersonsSleepin(Object rankPercentOfPersonsSleepin) {
         this.rankPercentOfPersonsSleepin = rankPercentOfPersonsSleepin;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The percentPersonsWithAdequateW
+     * 
      */
     public Object getPercentPersonsWithAdequateW() {
         return percentPersonsWithAdequateW;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param percentPersonsWithAdequateW The Percent_persons_with_adequate_w
+     * 
      */
     public void setPercentPersonsWithAdequateW(Object percentPersonsWithAdequateW) {
         this.percentPersonsWithAdequateW = percentPersonsWithAdequateW;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankPercentPersonsWithAdequ
+     * 
      */
     public Object getRankPercentPersonsWithAdequ() {
         return rankPercentPersonsWithAdequ;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankPercentPersonsWithAdequ The Rank_Percent_persons_with_adequ
+     * 
      */
     public void setRankPercentPersonsWithAdequ(Object rankPercentPersonsWithAdequ) {
         this.rankPercentPersonsWithAdequ = rankPercentPersonsWithAdequ;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The unintentionalInjuriesTreated
+     * 
      */
     public Object getUnintentionalInjuriesTreated() {
         return unintentionalInjuriesTreated;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param unintentionalInjuriesTreated The Unintentional_injuries_treated_
+     * 
      */
     public void setUnintentionalInjuriesTreated(Object unintentionalInjuriesTreated) {
         this.unintentionalInjuriesTreated = unintentionalInjuriesTreated;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankUnintentionalInjuriesTre
+     * 
      */
     public Object getRankUnintentionalInjuriesTre() {
         return rankUnintentionalInjuriesTre;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankUnintentionalInjuriesTre The Rank_Unintentional_injuries_tre
+     * 
      */
     public void setRankUnintentionalInjuriesTre(Object rankUnintentionalInjuriesTre) {
         this.rankUnintentionalInjuriesTre = rankUnintentionalInjuriesTre;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The intentionalInjuriesTreatedIn
+     * 
      */
     public Object getIntentionalInjuriesTreatedIn() {
         return intentionalInjuriesTreatedIn;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param intentionalInjuriesTreatedIn The Intentional_injuries_treated_in
+     * 
      */
     public void setIntentionalInjuriesTreatedIn(Object intentionalInjuriesTreatedIn) {
         this.intentionalInjuriesTreatedIn = intentionalInjuriesTreatedIn;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankIntentionalInjuriesTreat
+     * 
      */
     public Object getRankIntentionalInjuriesTreat() {
         return rankIntentionalInjuriesTreat;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankIntentionalInjuriesTreat The Rank_Intentional_injuries_treat
+     * 
      */
     public void setRankIntentionalInjuriesTreat(Object rankIntentionalInjuriesTreat) {
         this.rankIntentionalInjuriesTreat = rankIntentionalInjuriesTreat;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The percentOfUnintentionalHospit
+     * 
      */
     public Object getPercentOfUnintentionalHospit() {
         return percentOfUnintentionalHospit;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param percentOfUnintentionalHospit The Percent_of_unintentional_hospit
+     * 
      */
     public void setPercentOfUnintentionalHospit(Object percentOfUnintentionalHospit) {
         this.percentOfUnintentionalHospit = percentOfUnintentionalHospit;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankPercentOfUnintentionalH
+     * 
      */
     public Object getRankPercentOfUnintentionalH() {
         return rankPercentOfUnintentionalH;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankPercentOfUnintentionalH The Rank_Percent_of_unintentional_h
+     * 
      */
     public void setRankPercentOfUnintentionalH(Object rankPercentOfUnintentionalH) {
         this.rankPercentOfUnintentionalH = rankPercentOfUnintentionalH;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The indirectStandardisedDeathRat
+     * 
      */
     public Object getIndirectStandardisedDeathRat() {
         return indirectStandardisedDeathRat;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param indirectStandardisedDeathRat The Indirect_standardised_death_rat
+     * 
      */
     public void setIndirectStandardisedDeathRat(Object indirectStandardisedDeathRat) {
         this.indirectStandardisedDeathRat = indirectStandardisedDeathRat;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankIndirectStandardisedDeat
+     * 
      */
     public Object getRankIndirectStandardisedDeat() {
         return rankIndirectStandardisedDeat;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankIndirectStandardisedDeat The Rank_Indirect_standardised_deat
+     * 
      */
     public void setRankIndirectStandardisedDeat(Object rankIndirectStandardisedDeat) {
         this.rankIndirectStandardisedDeat = rankIndirectStandardisedDeat;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The avoidableDeaths0to74YrsFor
+     * 
      */
     public Object getAvoidableDeaths0to74YrsFor() {
         return avoidableDeaths0to74YrsFor;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param avoidableDeaths0to74YrsFor The Avoidable_deaths_0to74_yrs_for_
+     * 
      */
     public void setAvoidableDeaths0to74YrsFor(Object avoidableDeaths0to74YrsFor) {
         this.avoidableDeaths0to74YrsFor = avoidableDeaths0to74YrsFor;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankAvoidableDeaths0to74Yrs
+     * 
      */
     public Object getRankAvoidableDeaths0to74Yrs() {
         return rankAvoidableDeaths0to74Yrs;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankAvoidableDeaths0to74Yrs The Rank_Avoidable_deaths_0to74_yrs
+     * 
      */
     public void setRankAvoidableDeaths0to74Yrs(Object rankAvoidableDeaths0to74Yrs) {
         this.rankAvoidableDeaths0to74Yrs = rankAvoidableDeaths0to74Yrs;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The avoidableDeaths0to74yrsrsFor
+     * 
      */
     public Object getAvoidableDeaths0to74yrsrsFor() {
         return avoidableDeaths0to74yrsrsFor;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param avoidableDeaths0to74yrsrsFor The Avoidable_deaths_0to74yrsrs_for
+     * 
      */
     public void setAvoidableDeaths0to74yrsrsFor(Object avoidableDeaths0to74yrsrsFor) {
         this.avoidableDeaths0to74yrsrsFor = avoidableDeaths0to74yrsrsFor;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankAvoidableDeaths0to74yrsr
+     * 
      */
     public Object getRankAvoidableDeaths0to74yrsr() {
         return rankAvoidableDeaths0to74yrsr;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankAvoidableDeaths0to74yrsr The Rank_Avoidable_deaths_0to74yrsr
+     * 
      */
     public void setRankAvoidableDeaths0to74yrsr(Object rankAvoidableDeaths0to74yrsr) {
         this.rankAvoidableDeaths0to74yrsr = rankAvoidableDeaths0to74yrsr;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The avoidableDeaths0to74yrsrsF1
+     * 
      */
     public Object getAvoidableDeaths0to74yrsrsF1() {
         return avoidableDeaths0to74yrsrsF1;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param avoidableDeaths0to74yrsrsF1 The Avoidable_deaths_0to74yrsrs_f_1
+     * 
      */
     public void setAvoidableDeaths0to74yrsrsF1(Object avoidableDeaths0to74yrsrsF1) {
         this.avoidableDeaths0to74yrsrsF1 = avoidableDeaths0to74yrsrsF1;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankAvoidableDeaths0to74yr1
+     * 
      */
     public Object getRankAvoidableDeaths0to74yr1() {
         return rankAvoidableDeaths0to74yr1;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankAvoidableDeaths0to74yr1 The Rank_Avoidable_deaths_0to74yr_1
+     * 
      */
     public void setRankAvoidableDeaths0to74yr1(Object rankAvoidableDeaths0to74yr1) {
         this.rankAvoidableDeaths0to74yr1 = rankAvoidableDeaths0to74yr1;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The avoidableDeaths0to74yrsForR
+     * 
      */
     public Object getAvoidableDeaths0to74yrsForR() {
         return avoidableDeaths0to74yrsForR;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param avoidableDeaths0to74yrsForR The Avoidable_deaths_0to74yrs_for_r
+     * 
      */
     public void setAvoidableDeaths0to74yrsForR(Object avoidableDeaths0to74yrsForR) {
         this.avoidableDeaths0to74yrsForR = avoidableDeaths0to74yrsForR;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankAvoidableDeaths0to74yrs
+     * 
      */
     public Object getRankAvoidableDeaths0to74yrs() {
         return rankAvoidableDeaths0to74yrs;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankAvoidableDeaths0to74yrs The Rank_Avoidable_deaths_0to74yrs_
+     * 
      */
     public void setRankAvoidableDeaths0to74yrs(Object rankAvoidableDeaths0to74yrs) {
         this.rankAvoidableDeaths0to74yrs = rankAvoidableDeaths0to74yrs;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The primaryHealthNetwork
+     * 
      */
     public Object getPrimaryHealthNetwork() {
         return primaryHealthNetwork;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param primaryHealthNetwork The Primary_Health_Network
+     * 
      */
     public void setPrimaryHealthNetwork(Object primaryHealthNetwork) {
         this.primaryHealthNetwork = primaryHealthNetwork;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The primaryCarePartnership
+     * 
      */
     public Object getPrimaryCarePartnership() {
         return primaryCarePartnership;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param primaryCarePartnership The Primary_Care_Partnership
+     * 
      */
     public void setPrimaryCarePartnership(Object primaryCarePartnership) {
         this.primaryCarePartnership = primaryCarePartnership;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The numberOfHospitalsAndHealth
+     * 
      */
     public Object getNumberOfHospitalsAndHealth() {
         return numberOfHospitalsAndHealth;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param numberOfHospitalsAndHealth The Number_of_hospitals_and_health_
+     * 
      */
     public void setNumberOfHospitalsAndHealth(Object numberOfHospitalsAndHealth) {
         this.numberOfHospitalsAndHealth = numberOfHospitalsAndHealth;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The numberOfPublicHospitalsAnd
+     * 
      */
     public Object getNumberOfPublicHospitalsAnd() {
         return numberOfPublicHospitalsAnd;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param numberOfPublicHospitalsAnd The Number_of_public_hospitals_and_
+     * 
      */
     public void setNumberOfPublicHospitalsAnd(Object numberOfPublicHospitalsAnd) {
         this.numberOfPublicHospitalsAnd = numberOfPublicHospitalsAnd;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The numberOfPrivateHospitalsAnd
+     * 
      */
     public Object getNumberOfPrivateHospitalsAnd() {
         return numberOfPrivateHospitalsAnd;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param numberOfPrivateHospitalsAnd The Number_of_private_hospitals_and
+     * 
      */
     public void setNumberOfPrivateHospitalsAnd(Object numberOfPrivateHospitalsAnd) {
         this.numberOfPrivateHospitalsAnd = numberOfPrivateHospitalsAnd;
     }
 
-    /**
-     * (Required)
-     *
-     * @return The gPsPer1000Pop
-     */
     public Object getGPsPer1000Pop() {
         return gPsPer1000Pop;
     }
 
-    /**
-     * (Required)
-     *
-     * @param gPsPer1000Pop The GPs_per_1000_pop
-     */
     public void setGPsPer1000Pop(Object gPsPer1000Pop) {
         this.gPsPer1000Pop = gPsPer1000Pop;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankGPsPer1000Pop
+     * 
      */
     public Object getRankGPsPer1000Pop() {
         return rankGPsPer1000Pop;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankGPsPer1000Pop The Rank_GPs_per_1000_pop
+     * 
      */
     public void setRankGPsPer1000Pop(Object rankGPsPer1000Pop) {
         this.rankGPsPer1000Pop = rankGPsPer1000Pop;
     }
 
-    /**
-     * (Required)
-     *
-     * @return The gPSitesPer1000Pop
-     */
     public Object getGPSitesPer1000Pop() {
         return gPSitesPer1000Pop;
     }
 
-    /**
-     * (Required)
-     *
-     * @param gPSitesPer1000Pop The GP_sites_per_1000_pop
-     */
     public void setGPSitesPer1000Pop(Object gPSitesPer1000Pop) {
         this.gPSitesPer1000Pop = gPSitesPer1000Pop;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankGPSitesPer1000Pop
+     * 
      */
     public Object getRankGPSitesPer1000Pop() {
         return rankGPSitesPer1000Pop;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankGPSitesPer1000Pop The Rank_GP_sites_per_1000_pop
+     * 
      */
     public void setRankGPSitesPer1000Pop(Object rankGPSitesPer1000Pop) {
         this.rankGPSitesPer1000Pop = rankGPSitesPer1000Pop;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The alliedHealthSitesPer1000Po
+     * 
      */
     public Object getAlliedHealthSitesPer1000Po() {
         return alliedHealthSitesPer1000Po;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param alliedHealthSitesPer1000Po The Allied_health_sites_per_1000_po
+     * 
      */
     public void setAlliedHealthSitesPer1000Po(Object alliedHealthSitesPer1000Po) {
         this.alliedHealthSitesPer1000Po = alliedHealthSitesPer1000Po;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankAlliedHealthSitesPer10
+     * 
      */
     public Object getRankAlliedHealthSitesPer10() {
         return rankAlliedHealthSitesPer10;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankAlliedHealthSitesPer10 The Rank_Allied_health_sites_per_10
+     * 
      */
     public void setRankAlliedHealthSitesPer10(Object rankAlliedHealthSitesPer10) {
         this.rankAlliedHealthSitesPer10 = rankAlliedHealthSitesPer10;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The dentalServicesPer1000Pop
+     * 
      */
     public Object getDentalServicesPer1000Pop() {
         return dentalServicesPer1000Pop;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param dentalServicesPer1000Pop The Dental_services_per_1000_pop
+     * 
      */
     public void setDentalServicesPer1000Pop(Object dentalServicesPer1000Pop) {
         this.dentalServicesPer1000Pop = dentalServicesPer1000Pop;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankDentalServicesPer1000P
+     * 
      */
     public Object getRankDentalServicesPer1000P() {
         return rankDentalServicesPer1000P;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankDentalServicesPer1000P The Rank_Dental_services_per_1000_p
+     * 
      */
     public void setRankDentalServicesPer1000P(Object rankDentalServicesPer1000P) {
         this.rankDentalServicesPer1000P = rankDentalServicesPer1000P;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The pharmaciesPer1000Pop
+     * 
      */
     public Object getPharmaciesPer1000Pop() {
         return pharmaciesPer1000Pop;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param pharmaciesPer1000Pop The Pharmacies_per_1000_pop
+     * 
      */
     public void setPharmaciesPer1000Pop(Object pharmaciesPer1000Pop) {
         this.pharmaciesPer1000Pop = pharmaciesPer1000Pop;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankPharmaciesPer1000Pop
+     * 
      */
     public Object getRankPharmaciesPer1000Pop() {
         return rankPharmaciesPer1000Pop;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankPharmaciesPer1000Pop The Rank_Pharmacies_per_1000_pop
+     * 
      */
     public void setRankPharmaciesPer1000Pop(Object rankPharmaciesPer1000Pop) {
         this.rankPharmaciesPer1000Pop = rankPharmaciesPer1000Pop;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The percentNearPublicTransport
+     * 
      */
     public Object getPercentNearPublicTransport() {
         return percentNearPublicTransport;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param percentNearPublicTransport The Percent_Near_Public_Transport
+     * 
      */
     public void setPercentNearPublicTransport(Object percentNearPublicTransport) {
         this.percentNearPublicTransport = percentNearPublicTransport;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankPercentNearPublicTransp
+     * 
      */
     public Object getRankPercentNearPublicTransp() {
         return rankPercentNearPublicTransp;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankPercentNearPublicTransp The Rank_Percent_Near_Public_Transp
+     * 
      */
     public void setRankPercentNearPublicTransp(Object rankPercentNearPublicTransp) {
         this.rankPercentNearPublicTransp = rankPercentNearPublicTransp;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The percentWithPrivateHealthIns
+     * 
      */
     public Object getPercentWithPrivateHealthIns() {
         return percentWithPrivateHealthIns;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param percentWithPrivateHealthIns The Percent_with_private_health_ins
+     * 
      */
     public void setPercentWithPrivateHealthIns(Object percentWithPrivateHealthIns) {
         this.percentWithPrivateHealthIns = percentWithPrivateHealthIns;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankPercentWithPrivateHealt
+     * 
      */
     public Object getRankPercentWithPrivateHealt() {
         return rankPercentWithPrivateHealt;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankPercentWithPrivateHealt The Rank_Percent_with_private_healt
+     * 
      */
     public void setRankPercentWithPrivateHealt(Object rankPercentWithPrivateHealt) {
         this.rankPercentWithPrivateHealt = rankPercentWithPrivateHealt;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The hospitalInpatientSeparations
+     * 
      */
     public Object getHospitalInpatientSeparations() {
         return hospitalInpatientSeparations;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param hospitalInpatientSeparations The Hospital_inpatient_separations_
+     * 
      */
     public void setHospitalInpatientSeparations(Object hospitalInpatientSeparations) {
         this.hospitalInpatientSeparations = hospitalInpatientSeparations;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankHospitalInpatientSeparat
+     * 
      */
     public Object getRankHospitalInpatientSeparat() {
         return rankHospitalInpatientSeparat;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankHospitalInpatientSeparat The Rank_Hospital_inpatient_separat
+     * 
      */
     public void setRankHospitalInpatientSeparat(Object rankHospitalInpatientSeparat) {
         this.rankHospitalInpatientSeparat = rankHospitalInpatientSeparat;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The percentInpatientSeparationsF
+     * 
      */
     public Object getPercentInpatientSeparationsF() {
         return percentInpatientSeparationsF;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param percentInpatientSeparationsF The Percent_inpatient_separations_f
+     * 
      */
     public void setPercentInpatientSeparationsF(Object percentInpatientSeparationsF) {
         this.percentInpatientSeparationsF = percentInpatientSeparationsF;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankPercentInpatientSeparati
+     * 
      */
     public Object getRankPercentInpatientSeparati() {
         return rankPercentInpatientSeparati;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankPercentInpatientSeparati The Rank_Percent_inpatient_separati
+     * 
      */
     public void setRankPercentInpatientSeparati(Object rankPercentInpatientSeparati) {
         this.rankPercentInpatientSeparati = rankPercentInpatientSeparati;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The mainPublicHospitalAttendedF
+     * 
      */
     public Object getMainPublicHospitalAttendedF() {
         return mainPublicHospitalAttendedF;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param mainPublicHospitalAttendedF The Main_public_hospital_attended_f
+     * 
      */
     public void setMainPublicHospitalAttendedF(Object mainPublicHospitalAttendedF) {
         this.mainPublicHospitalAttendedF = mainPublicHospitalAttendedF;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The mainPublicHospitalAttendedP
+     * 
      */
     public Object getMainPublicHospitalAttendedP() {
         return mainPublicHospitalAttendedP;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param mainPublicHospitalAttendedP The Main_public_hospital_attended_P
+     * 
      */
     public void setMainPublicHospitalAttendedP(Object mainPublicHospitalAttendedP) {
         this.mainPublicHospitalAttendedP = mainPublicHospitalAttendedP;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankMainPublicHospitalAtten
+     * 
      */
     public Object getRankMainPublicHospitalAtten() {
         return rankMainPublicHospitalAtten;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankMainPublicHospitalAtten The Rank_Main_public_hospital_atten
+     * 
      */
     public void setRankMainPublicHospitalAtten(Object rankMainPublicHospitalAtten) {
         this.rankMainPublicHospitalAtten = rankMainPublicHospitalAtten;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The averageLengthOfStayInDays
+     * 
      */
     public Object getAverageLengthOfStayInDays() {
         return averageLengthOfStayInDays;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param averageLengthOfStayInDays The Average_length_of_stay_in_days_
+     * 
      */
     public void setAverageLengthOfStayInDays(Object averageLengthOfStayInDays) {
         this.averageLengthOfStayInDays = averageLengthOfStayInDays;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankAverageLengthOfStayIn
+     * 
      */
     public Object getRankAverageLengthOfStayIn() {
         return rankAverageLengthOfStayIn;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankAverageLengthOfStayIn The Rank_Average_length_of_stay_in_
+     * 
      */
     public void setRankAverageLengthOfStayIn(Object rankAverageLengthOfStayIn) {
         this.rankAverageLengthOfStayIn = rankAverageLengthOfStayIn;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The averageLengthOfStayForAll
+     * 
      */
     public Object getAverageLengthOfStayForAll() {
         return averageLengthOfStayForAll;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param averageLengthOfStayForAll The Average_length_of_stay_for_all_
+     * 
      */
     public void setAverageLengthOfStayForAll(Object averageLengthOfStayForAll) {
         this.averageLengthOfStayForAll = averageLengthOfStayForAll;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankAverageLengthOfStayFor
+     * 
      */
     public Object getRankAverageLengthOfStayFor() {
         return rankAverageLengthOfStayFor;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankAverageLengthOfStayFor The Rank_Average_length_of_stay_for
+     * 
      */
     public void setRankAverageLengthOfStayFor(Object rankAverageLengthOfStayFor) {
         this.rankAverageLengthOfStayFor = rankAverageLengthOfStayFor;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The perAnnumPercentChangeInSep
+     * 
      */
     public Object getPerAnnumPercentChangeInSep() {
         return perAnnumPercentChangeInSep;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param perAnnumPercentChangeInSep The Per_annum_Percent_Change_in_Sep
+     * 
      */
     public void setPerAnnumPercentChangeInSep(Object perAnnumPercentChangeInSep) {
         this.perAnnumPercentChangeInSep = perAnnumPercentChangeInSep;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankPerAnnumPercentChangeI
+     * 
      */
     public Object getRankPerAnnumPercentChangeI() {
         return rankPerAnnumPercentChangeI;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankPerAnnumPercentChangeI The Rank_Per_annum_Percent_Change_i
+     * 
      */
     public void setRankPerAnnumPercentChangeI(Object rankPerAnnumPercentChangeI) {
         this.rankPerAnnumPercentChangeI = rankPerAnnumPercentChangeI;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The perAnnumPercentProjectedCha
+     * 
      */
     public Object getPerAnnumPercentProjectedCha() {
         return perAnnumPercentProjectedCha;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param perAnnumPercentProjectedCha The Per_annum_Percent_Projected_Cha
+     * 
      */
     public void setPerAnnumPercentProjectedCha(Object perAnnumPercentProjectedCha) {
         this.perAnnumPercentProjectedCha = perAnnumPercentProjectedCha;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankPerAnnumPercentProjecte
+     * 
      */
     public Object getRankPerAnnumPercentProjecte() {
         return rankPerAnnumPercentProjecte;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankPerAnnumPercentProjecte The Rank_Per_annum_Percent_Projecte
+     * 
      */
     public void setRankPerAnnumPercentProjecte(Object rankPerAnnumPercentProjecte) {
         this.rankPerAnnumPercentProjecte = rankPerAnnumPercentProjecte;
     }
 
-    /**
-     * (Required)
-     *
-     * @return The aCSCsPer1000PopTotal
-     */
     public Object getACSCsPer1000PopTotal() {
         return aCSCsPer1000PopTotal;
     }
 
-    /**
-     * (Required)
-     *
-     * @param aCSCsPer1000PopTotal The ACSCs_per_1000_pop_Total
-     */
     public void setACSCsPer1000PopTotal(Object aCSCsPer1000PopTotal) {
         this.aCSCsPer1000PopTotal = aCSCsPer1000PopTotal;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankACSCsPer1000PopTotal
+     * 
      */
     public Object getRankACSCsPer1000PopTotal() {
         return rankACSCsPer1000PopTotal;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankACSCsPer1000PopTotal The Rank_ACSCs_per_1000_pop_Total
+     * 
      */
     public void setRankACSCsPer1000PopTotal(Object rankACSCsPer1000PopTotal) {
         this.rankACSCsPer1000PopTotal = rankACSCsPer1000PopTotal;
     }
 
-    /**
-     * (Required)
-     *
-     * @return The aCSCsPer1000PopAcute
-     */
     public Object getACSCsPer1000PopAcute() {
         return aCSCsPer1000PopAcute;
     }
 
-    /**
-     * (Required)
-     *
-     * @param aCSCsPer1000PopAcute The ACSCs_per_1000_pop_Acute
-     */
     public void setACSCsPer1000PopAcute(Object aCSCsPer1000PopAcute) {
         this.aCSCsPer1000PopAcute = aCSCsPer1000PopAcute;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankACSCsPer1000PopAcute
+     * 
      */
     public Object getRankACSCsPer1000PopAcute() {
         return rankACSCsPer1000PopAcute;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankACSCsPer1000PopAcute The Rank_ACSCs_per_1000_pop_Acute
+     * 
      */
     public void setRankACSCsPer1000PopAcute(Object rankACSCsPer1000PopAcute) {
         this.rankACSCsPer1000PopAcute = rankACSCsPer1000PopAcute;
     }
 
-    /**
-     * (Required)
-     *
-     * @return The aCSCsPer1000PopChronic
-     */
     public Object getACSCsPer1000PopChronic() {
         return aCSCsPer1000PopChronic;
     }
 
-    /**
-     * (Required)
-     *
-     * @param aCSCsPer1000PopChronic The ACSCs_per_1000_pop_Chronic
-     */
     public void setACSCsPer1000PopChronic(Object aCSCsPer1000PopChronic) {
         this.aCSCsPer1000PopChronic = aCSCsPer1000PopChronic;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankACSCsPer1000PopChronic
+     * 
      */
     public Object getRankACSCsPer1000PopChronic() {
         return rankACSCsPer1000PopChronic;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankACSCsPer1000PopChronic The Rank_ACSCs_per_1000_pop_Chronic
+     * 
      */
     public void setRankACSCsPer1000PopChronic(Object rankACSCsPer1000PopChronic) {
         this.rankACSCsPer1000PopChronic = rankACSCsPer1000PopChronic;
     }
 
-    /**
-     * (Required)
-     *
-     * @return The aCSCsPer1000PopVaccinePrev
-     */
     public Object getACSCsPer1000PopVaccinePrev() {
         return aCSCsPer1000PopVaccinePrev;
     }
 
-    /**
-     * (Required)
-     *
-     * @param aCSCsPer1000PopVaccinePrev The ACSCs_per_1000_pop_Vaccine_prev
-     */
     public void setACSCsPer1000PopVaccinePrev(Object aCSCsPer1000PopVaccinePrev) {
         this.aCSCsPer1000PopVaccinePrev = aCSCsPer1000PopVaccinePrev;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankACSCsPer1000PopVaccine
+     * 
      */
     public Object getRankACSCsPer1000PopVaccine() {
         return rankACSCsPer1000PopVaccine;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankACSCsPer1000PopVaccine The Rank_ACSCs_per_1000_pop_Vaccine
+     * 
      */
     public void setRankACSCsPer1000PopVaccine(Object rankACSCsPer1000PopVaccine) {
         this.rankACSCsPer1000PopVaccine = rankACSCsPer1000PopVaccine;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The emergencyDepartmentPresentati
+     * 
      */
     public Object getEmergencyDepartmentPresentati() {
         return emergencyDepartmentPresentati;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param emergencyDepartmentPresentati The Emergency_Department_presentati
+     * 
      */
     public void setEmergencyDepartmentPresentati(Object emergencyDepartmentPresentati) {
         this.emergencyDepartmentPresentati = emergencyDepartmentPresentati;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankEmergencyDepartmentPrese
+     * 
      */
     public Object getRankEmergencyDepartmentPrese() {
         return rankEmergencyDepartmentPrese;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankEmergencyDepartmentPrese The Rank_Emergency_Department_prese
+     * 
      */
     public void setRankEmergencyDepartmentPrese(Object rankEmergencyDepartmentPrese) {
         this.rankEmergencyDepartmentPrese = rankEmergencyDepartmentPrese;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The primaryCareTypePresentations
+     * 
      */
     public Object getPrimaryCareTypePresentations() {
         return primaryCareTypePresentations;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param primaryCareTypePresentations The Primary_care_type_presentations
+     * 
      */
     public void setPrimaryCareTypePresentations(Object primaryCareTypePresentations) {
         this.primaryCareTypePresentations = primaryCareTypePresentations;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankPrimaryCareTypePresenta
+     * 
      */
     public Object getRankPrimaryCareTypePresenta() {
         return rankPrimaryCareTypePresenta;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankPrimaryCareTypePresenta The Rank_Primary_care_type_presenta
+     * 
      */
     public void setRankPrimaryCareTypePresenta(Object rankPrimaryCareTypePresenta) {
         this.rankPrimaryCareTypePresenta = rankPrimaryCareTypePresenta;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The childProtectionInvestigations
+     * 
      */
     public Object getChildProtectionInvestigations() {
         return childProtectionInvestigations;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param childProtectionInvestigations The Child_protection_investigations
+     * 
      */
     public void setChildProtectionInvestigations(Object childProtectionInvestigations) {
         this.childProtectionInvestigations = childProtectionInvestigations;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankChildProtectionInvestiga
+     * 
      */
     public Object getRankChildProtectionInvestiga() {
         return rankChildProtectionInvestiga;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankChildProtectionInvestiga The Rank_Child_protection_investiga
+     * 
      */
     public void setRankChildProtectionInvestiga(Object rankChildProtectionInvestiga) {
         this.rankChildProtectionInvestiga = rankChildProtectionInvestiga;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The childProtectionSubstantiation
+     * 
      */
     public Object getChildProtectionSubstantiation() {
         return childProtectionSubstantiation;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param childProtectionSubstantiation The Child_protection_substantiation
+     * 
      */
     public void setChildProtectionSubstantiation(Object childProtectionSubstantiation) {
         this.childProtectionSubstantiation = childProtectionSubstantiation;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankChildProtectionSubstanti
+     * 
      */
     public Object getRankChildProtectionSubstanti() {
         return rankChildProtectionSubstanti;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankChildProtectionSubstanti The Rank_Child_protection_substanti
+     * 
      */
     public void setRankChildProtectionSubstanti(Object rankChildProtectionSubstanti) {
         this.rankChildProtectionSubstanti = rankChildProtectionSubstanti;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The numberOfChildFIRSTAssessmen
+     * 
      */
     public Object getNumberOfChildFIRSTAssessmen() {
         return numberOfChildFIRSTAssessmen;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param numberOfChildFIRSTAssessmen The Number_of_Child_FIRST_assessmen
+     * 
      */
     public void setNumberOfChildFIRSTAssessmen(Object numberOfChildFIRSTAssessmen) {
         this.numberOfChildFIRSTAssessmen = numberOfChildFIRSTAssessmen;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankNumberOfChildFIRSTAsse
+     * 
      */
     public Object getRankNumberOfChildFIRSTAsse() {
         return rankNumberOfChildFIRSTAsse;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankNumberOfChildFIRSTAsse The Rank_Number_of_Child_FIRST_asse
+     * 
      */
     public void setRankNumberOfChildFIRSTAsse(Object rankNumberOfChildFIRSTAsse) {
         this.rankNumberOfChildFIRSTAsse = rankNumberOfChildFIRSTAsse;
     }
 
-    /**
-     * (Required)
-     *
-     * @return The gPAttendancesPer1000PopMal
-     */
     public Object getGPAttendancesPer1000PopMal() {
         return gPAttendancesPer1000PopMal;
     }
 
-    /**
-     * (Required)
-     *
-     * @param gPAttendancesPer1000PopMal The GP_attendances_per_1000_pop_Mal
-     */
     public void setGPAttendancesPer1000PopMal(Object gPAttendancesPer1000PopMal) {
         this.gPAttendancesPer1000PopMal = gPAttendancesPer1000PopMal;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankGPAttendancesPer1000Po
+     * 
      */
     public Object getRankGPAttendancesPer1000Po() {
         return rankGPAttendancesPer1000Po;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankGPAttendancesPer1000Po The Rank_GP_attendances_per_1000_po
+     * 
      */
     public void setRankGPAttendancesPer1000Po(Object rankGPAttendancesPer1000Po) {
         this.rankGPAttendancesPer1000Po = rankGPAttendancesPer1000Po;
     }
 
-    /**
-     * (Required)
-     *
-     * @return The gPAttendancesPer1000PopFem
-     */
     public Object getGPAttendancesPer1000PopFem() {
         return gPAttendancesPer1000PopFem;
     }
 
-    /**
-     * (Required)
-     *
-     * @param gPAttendancesPer1000PopFem The GP_attendances_per_1000_pop_Fem
-     */
     public void setGPAttendancesPer1000PopFem(Object gPAttendancesPer1000PopFem) {
         this.gPAttendancesPer1000PopFem = gPAttendancesPer1000PopFem;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankGPAttendancesPer10001
+     * 
      */
     public Object getRankGPAttendancesPer10001() {
         return rankGPAttendancesPer10001;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankGPAttendancesPer10001 The Rank_GP_attendances_per_1000__1
+     * 
      */
     public void setRankGPAttendancesPer10001(Object rankGPAttendancesPer10001) {
         this.rankGPAttendancesPer10001 = rankGPAttendancesPer10001;
     }
 
-    /**
-     * (Required)
-     *
-     * @return The gPAttendancesPer1000PopTot
-     */
     public Object getGPAttendancesPer1000PopTot() {
         return gPAttendancesPer1000PopTot;
     }
 
-    /**
-     * (Required)
-     *
-     * @param gPAttendancesPer1000PopTot The GP_attendances_per_1000_pop_Tot
-     */
     public void setGPAttendancesPer1000PopTot(Object gPAttendancesPer1000PopTot) {
         this.gPAttendancesPer1000PopTot = gPAttendancesPer1000PopTot;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankGPAttendancesPer10002
+     * 
      */
     public Object getRankGPAttendancesPer10002() {
         return rankGPAttendancesPer10002;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankGPAttendancesPer10002 The Rank_GP_attendances_per_1000__2
+     * 
      */
     public void setRankGPAttendancesPer10002(Object rankGPAttendancesPer10002) {
         this.rankGPAttendancesPer10002 = rankGPAttendancesPer10002;
     }
 
-    /**
-     * (Required)
-     *
-     * @return The hACCClientsAged0to64yrsPer
-     */
     public Object getHACCClientsAged0to64yrsPer() {
         return hACCClientsAged0to64yrsPer;
     }
 
-    /**
-     * (Required)
-     *
-     * @param hACCClientsAged0to64yrsPer The HACC_clients_aged_0to64yrs_per_
-     */
     public void setHACCClientsAged0to64yrsPer(Object hACCClientsAged0to64yrsPer) {
         this.hACCClientsAged0to64yrsPer = hACCClientsAged0to64yrsPer;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankHACCClientsAged0to64yrs
+     * 
      */
     public Object getRankHACCClientsAged0to64yrs() {
         return rankHACCClientsAged0to64yrs;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankHACCClientsAged0to64yrs The Rank_HACC_clients_aged_0to64yrs
+     * 
      */
     public void setRankHACCClientsAged0to64yrs(Object rankHACCClientsAged0to64yrs) {
         this.rankHACCClientsAged0to64yrs = rankHACCClientsAged0to64yrs;
     }
 
-    /**
-     * (Required)
-     *
-     * @return The hACCClientsAged65yrsPlusPer
-     */
     public Object getHACCClientsAged65yrsPlusPer() {
         return hACCClientsAged65yrsPlusPer;
     }
 
-    /**
-     * (Required)
-     *
-     * @param hACCClientsAged65yrsPlusPer The HACC_clients_aged_65yrsPlus_per
-     */
     public void setHACCClientsAged65yrsPlusPer(Object hACCClientsAged65yrsPlusPer) {
         this.hACCClientsAged65yrsPlusPer = hACCClientsAged65yrsPlusPer;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankHACCClientsAged65yrsPlu
+     * 
      */
     public Object getRankHACCClientsAged65yrsPlu() {
         return rankHACCClientsAged65yrsPlu;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankHACCClientsAged65yrsPlu The Rank_HACC_clients_aged_65yrsPlu
+     * 
      */
     public void setRankHACCClientsAged65yrsPlu(Object rankHACCClientsAged65yrsPlu) {
         this.rankHACCClientsAged65yrsPlu = rankHACCClientsAged65yrsPlu;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The noClientsWhoReceivedAlcohol
+     * 
      */
     public Object getNoClientsWhoReceivedAlcohol() {
         return noClientsWhoReceivedAlcohol;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param noClientsWhoReceivedAlcohol The No_clients_who_received_Alcohol
+     * 
      */
     public void setNoClientsWhoReceivedAlcohol(Object noClientsWhoReceivedAlcohol) {
         this.noClientsWhoReceivedAlcohol = noClientsWhoReceivedAlcohol;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankNoClientsWhoReceivedAl
+     * 
      */
     public Object getRankNoClientsWhoReceivedAl() {
         return rankNoClientsWhoReceivedAl;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankNoClientsWhoReceivedAl The Rank_No_clients_who_received_Al
+     * 
      */
     public void setRankNoClientsWhoReceivedAl(Object rankNoClientsWhoReceivedAl) {
         this.rankNoClientsWhoReceivedAl = rankNoClientsWhoReceivedAl;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The registeredMentalMealthClient
+     * 
      */
     public Object getRegisteredMentalMealthClient() {
         return registeredMentalMealthClient;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param registeredMentalMealthClient The Registered_mental_mealth_client
+     * 
      */
     public void setRegisteredMentalMealthClient(Object registeredMentalMealthClient) {
         this.registeredMentalMealthClient = registeredMentalMealthClient;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The rankRegisteredMentalMealthC
+     * 
      */
     public Object getRankRegisteredMentalMealthC() {
         return rankRegisteredMentalMealthC;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param rankRegisteredMentalMealthC The Rank_Registered_mental_mealth_c
+     * 
      */
     public void setRankRegisteredMentalMealthC(Object rankRegisteredMentalMealthC) {
         this.rankRegisteredMentalMealthC = rankRegisteredMentalMealthC;
@@ -9075,425 +10581,2080 @@ public class Attributes {
 
     @Override
     public String toString() {
-        return ToStringBuilder.reflectionToString(this);
+        StringBuilder sb = new StringBuilder();
+        sb.append(Attributes.class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this))).append('[');
+        sb.append("lga");
+        sb.append('=');
+        sb.append(((this.lga == null)?"<null>":this.lga));
+        sb.append(',');
+        sb.append("metropolitanRural");
+        sb.append('=');
+        sb.append(((this.metropolitanRural == null)?"<null>":this.metropolitanRural));
+        sb.append(',');
+        sb.append("departmentalRegion");
+        sb.append('=');
+        sb.append(((this.departmentalRegion == null)?"<null>":this.departmentalRegion));
+        sb.append(',');
+        sb.append("departmentalArea");
+        sb.append('=');
+        sb.append(((this.departmentalArea == null)?"<null>":this.departmentalArea));
+        sb.append(',');
+        sb.append("areaOfLGASqKm");
+        sb.append('=');
+        sb.append(((this.areaOfLGASqKm == null)?"<null>":this.areaOfLGASqKm));
+        sb.append(',');
+        sb.append("aSGSLGACode");
+        sb.append('=');
+        sb.append(((this.aSGSLGACode == null)?"<null>":this.aSGSLGACode));
+        sb.append(',');
+        sb.append("mostPopulousTownOrSuburbIn");
+        sb.append('=');
+        sb.append(((this.mostPopulousTownOrSuburbIn == null)?"<null>":this.mostPopulousTownOrSuburbIn));
+        sb.append(',');
+        sb.append("distanceToMelbourneInKm");
+        sb.append('=');
+        sb.append(((this.distanceToMelbourneInKm == null)?"<null>":this.distanceToMelbourneInKm));
+        sb.append(',');
+        sb.append("travelTimeFromMelbourneGPO");
+        sb.append('=');
+        sb.append(((this.travelTimeFromMelbourneGPO == null)?"<null>":this.travelTimeFromMelbourneGPO));
+        sb.append(',');
+        sb.append("aRIARemotenessCategory");
+        sb.append('=');
+        sb.append(((this.aRIARemotenessCategory == null)?"<null>":this.aRIARemotenessCategory));
+        sb.append(',');
+        sb.append("percentBusinessLandUse");
+        sb.append('=');
+        sb.append(((this.percentBusinessLandUse == null)?"<null>":this.percentBusinessLandUse));
+        sb.append(',');
+        sb.append("percentIndustrialLandUse");
+        sb.append('=');
+        sb.append(((this.percentIndustrialLandUse == null)?"<null>":this.percentIndustrialLandUse));
+        sb.append(',');
+        sb.append("percentResidentialLandUse");
+        sb.append('=');
+        sb.append(((this.percentResidentialLandUse == null)?"<null>":this.percentResidentialLandUse));
+        sb.append(',');
+        sb.append("percentRuralLandUse");
+        sb.append('=');
+        sb.append(((this.percentRuralLandUse == null)?"<null>":this.percentRuralLandUse));
+        sb.append(',');
+        sb.append("percentOtherLandUse");
+        sb.append('=');
+        sb.append(((this.percentOtherLandUse == null)?"<null>":this.percentOtherLandUse));
+        sb.append(',');
+        sb.append("perAnnumPopChangeActualFor");
+        sb.append('=');
+        sb.append(((this.perAnnumPopChangeActualFor == null)?"<null>":this.perAnnumPopChangeActualFor));
+        sb.append(',');
+        sb.append("perAnnumPopChangeProjected");
+        sb.append('=');
+        sb.append(((this.perAnnumPopChangeProjected == null)?"<null>":this.perAnnumPopChangeProjected));
+        sb.append(',');
+        sb.append("females0to14yrs");
+        sb.append('=');
+        sb.append(((this.females0to14yrs == null)?"<null>":this.females0to14yrs));
+        sb.append(',');
+        sb.append("females15to24yrs");
+        sb.append('=');
+        sb.append(((this.females15to24yrs == null)?"<null>":this.females15to24yrs));
+        sb.append(',');
+        sb.append("females25to44yrs");
+        sb.append('=');
+        sb.append(((this.females25to44yrs == null)?"<null>":this.females25to44yrs));
+        sb.append(',');
+        sb.append("females45to64yrs");
+        sb.append('=');
+        sb.append(((this.females45to64yrs == null)?"<null>":this.females45to64yrs));
+        sb.append(',');
+        sb.append("females65to84yrs");
+        sb.append('=');
+        sb.append(((this.females65to84yrs == null)?"<null>":this.females65to84yrs));
+        sb.append(',');
+        sb.append("female85yrsPlus");
+        sb.append('=');
+        sb.append(((this.female85yrsPlus == null)?"<null>":this.female85yrsPlus));
+        sb.append(',');
+        sb.append("totalFemales");
+        sb.append('=');
+        sb.append(((this.totalFemales == null)?"<null>":this.totalFemales));
+        sb.append(',');
+        sb.append("males0to14yrs");
+        sb.append('=');
+        sb.append(((this.males0to14yrs == null)?"<null>":this.males0to14yrs));
+        sb.append(',');
+        sb.append("males15to24yrs");
+        sb.append('=');
+        sb.append(((this.males15to24yrs == null)?"<null>":this.males15to24yrs));
+        sb.append(',');
+        sb.append("males25to44yrs");
+        sb.append('=');
+        sb.append(((this.males25to44yrs == null)?"<null>":this.males25to44yrs));
+        sb.append(',');
+        sb.append("males45to64yrs");
+        sb.append('=');
+        sb.append(((this.males45to64yrs == null)?"<null>":this.males45to64yrs));
+        sb.append(',');
+        sb.append("males65to84yrs");
+        sb.append('=');
+        sb.append(((this.males65to84yrs == null)?"<null>":this.males65to84yrs));
+        sb.append(',');
+        sb.append("male85yrsPlus");
+        sb.append('=');
+        sb.append(((this.male85yrsPlus == null)?"<null>":this.male85yrsPlus));
+        sb.append(',');
+        sb.append("totalMales");
+        sb.append('=');
+        sb.append(((this.totalMales == null)?"<null>":this.totalMales));
+        sb.append(',');
+        sb.append("total0to14yrs");
+        sb.append('=');
+        sb.append(((this.total0to14yrs == null)?"<null>":this.total0to14yrs));
+        sb.append(',');
+        sb.append("tota15to24yrs");
+        sb.append('=');
+        sb.append(((this.tota15to24yrs == null)?"<null>":this.tota15to24yrs));
+        sb.append(',');
+        sb.append("tota25to44yrs");
+        sb.append('=');
+        sb.append(((this.tota25to44yrs == null)?"<null>":this.tota25to44yrs));
+        sb.append(',');
+        sb.append("tota45to64yrs");
+        sb.append('=');
+        sb.append(((this.tota45to64yrs == null)?"<null>":this.tota45to64yrs));
+        sb.append(',');
+        sb.append("tota65to84yrs");
+        sb.append('=');
+        sb.append(((this.tota65to84yrs == null)?"<null>":this.tota65to84yrs));
+        sb.append(',');
+        sb.append("tota85yrsPlus");
+        sb.append('=');
+        sb.append(((this.tota85yrsPlus == null)?"<null>":this.tota85yrsPlus));
+        sb.append(',');
+        sb.append("total2013ERP");
+        sb.append('=');
+        sb.append(((this.total2013ERP == null)?"<null>":this.total2013ERP));
+        sb.append(',');
+        sb.append("percentTotal0to14yrs");
+        sb.append('=');
+        sb.append(((this.percentTotal0to14yrs == null)?"<null>":this.percentTotal0to14yrs));
+        sb.append(',');
+        sb.append("percentTotal15to24yrs");
+        sb.append('=');
+        sb.append(((this.percentTotal15to24yrs == null)?"<null>":this.percentTotal15to24yrs));
+        sb.append(',');
+        sb.append("percentTotal25to44yrs");
+        sb.append('=');
+        sb.append(((this.percentTotal25to44yrs == null)?"<null>":this.percentTotal25to44yrs));
+        sb.append(',');
+        sb.append("percentTotal45to64yrs");
+        sb.append('=');
+        sb.append(((this.percentTotal45to64yrs == null)?"<null>":this.percentTotal45to64yrs));
+        sb.append(',');
+        sb.append("percentTotal65to84yrs");
+        sb.append('=');
+        sb.append(((this.percentTotal65to84yrs == null)?"<null>":this.percentTotal65to84yrs));
+        sb.append(',');
+        sb.append("percentTotal84yrsPlus");
+        sb.append('=');
+        sb.append(((this.percentTotal84yrsPlus == null)?"<null>":this.percentTotal84yrsPlus));
+        sb.append(',');
+        sb.append("totalFertilityRate2012");
+        sb.append('=');
+        sb.append(((this.totalFertilityRate2012 == null)?"<null>":this.totalFertilityRate2012));
+        sb.append(',');
+        sb.append("rankTotalFertilityRate2012");
+        sb.append('=');
+        sb.append(((this.rankTotalFertilityRate2012 == null)?"<null>":this.rankTotalFertilityRate2012));
+        sb.append(',');
+        sb.append("teenageFertilityRate2012");
+        sb.append('=');
+        sb.append(((this.teenageFertilityRate2012 == null)?"<null>":this.teenageFertilityRate2012));
+        sb.append(',');
+        sb.append("rankTeenageFertilityRate201");
+        sb.append('=');
+        sb.append(((this.rankTeenageFertilityRate201 == null)?"<null>":this.rankTeenageFertilityRate201));
+        sb.append(',');
+        sb.append("percentAboriginalOrTorresSt");
+        sb.append('=');
+        sb.append(((this.percentAboriginalOrTorresSt == null)?"<null>":this.percentAboriginalOrTorresSt));
+        sb.append(',');
+        sb.append("rankAboriginalOrTorresStrai");
+        sb.append('=');
+        sb.append(((this.rankAboriginalOrTorresStrai == null)?"<null>":this.rankAboriginalOrTorresStrai));
+        sb.append(',');
+        sb.append("percentBornOverseas2011");
+        sb.append('=');
+        sb.append(((this.percentBornOverseas2011 == null)?"<null>":this.percentBornOverseas2011));
+        sb.append(',');
+        sb.append("rankPercentBornOverseas2011");
+        sb.append('=');
+        sb.append(((this.rankPercentBornOverseas2011 == null)?"<null>":this.rankPercentBornOverseas2011));
+        sb.append(',');
+        sb.append("bornInANonEnglishSpeaking");
+        sb.append('=');
+        sb.append(((this.bornInANonEnglishSpeaking == null)?"<null>":this.bornInANonEnglishSpeaking));
+        sb.append(',');
+        sb.append("rankBornInANonEnglishSpea");
+        sb.append('=');
+        sb.append(((this.rankBornInANonEnglishSpea == null)?"<null>":this.rankBornInANonEnglishSpea));
+        sb.append(',');
+        sb.append("country1PercentForTop5Ove");
+        sb.append('=');
+        sb.append(((this.country1PercentForTop5Ove == null)?"<null>":this.country1PercentForTop5Ove));
+        sb.append(',');
+        sb.append("country1ForTop5OverseasCo");
+        sb.append('=');
+        sb.append(((this.country1ForTop5OverseasCo == null)?"<null>":this.country1ForTop5OverseasCo));
+        sb.append(',');
+        sb.append("country2PercentForTop5Ove");
+        sb.append('=');
+        sb.append(((this.country2PercentForTop5Ove == null)?"<null>":this.country2PercentForTop5Ove));
+        sb.append(',');
+        sb.append("country2ForTop5OverseasCo");
+        sb.append('=');
+        sb.append(((this.country2ForTop5OverseasCo == null)?"<null>":this.country2ForTop5OverseasCo));
+        sb.append(',');
+        sb.append("country3PercentForTop5Ove");
+        sb.append('=');
+        sb.append(((this.country3PercentForTop5Ove == null)?"<null>":this.country3PercentForTop5Ove));
+        sb.append(',');
+        sb.append("country3ForTop5OverseasCo");
+        sb.append('=');
+        sb.append(((this.country3ForTop5OverseasCo == null)?"<null>":this.country3ForTop5OverseasCo));
+        sb.append(',');
+        sb.append("country4PercentForTop5Ove");
+        sb.append('=');
+        sb.append(((this.country4PercentForTop5Ove == null)?"<null>":this.country4PercentForTop5Ove));
+        sb.append(',');
+        sb.append("country4ForTop5OverseasCo");
+        sb.append('=');
+        sb.append(((this.country4ForTop5OverseasCo == null)?"<null>":this.country4ForTop5OverseasCo));
+        sb.append(',');
+        sb.append("country5PercentForTop5Ove");
+        sb.append('=');
+        sb.append(((this.country5PercentForTop5Ove == null)?"<null>":this.country5PercentForTop5Ove));
+        sb.append(',');
+        sb.append("country5ForTop5OverseasCo");
+        sb.append('=');
+        sb.append(((this.country5ForTop5OverseasCo == null)?"<null>":this.country5ForTop5OverseasCo));
+        sb.append(',');
+        sb.append("percentSpeaksLOTEAtHome");
+        sb.append('=');
+        sb.append(((this.percentSpeaksLOTEAtHome == null)?"<null>":this.percentSpeaksLOTEAtHome));
+        sb.append(',');
+        sb.append("rankPercentSpeaksLOTEAtHom");
+        sb.append('=');
+        sb.append(((this.rankPercentSpeaksLOTEAtHom == null)?"<null>":this.rankPercentSpeaksLOTEAtHom));
+        sb.append(',');
+        sb.append("country1PercentTop5Languag");
+        sb.append('=');
+        sb.append(((this.country1PercentTop5Languag == null)?"<null>":this.country1PercentTop5Languag));
+        sb.append(',');
+        sb.append("country1Top5LanguagesSpoke");
+        sb.append('=');
+        sb.append(((this.country1Top5LanguagesSpoke == null)?"<null>":this.country1Top5LanguagesSpoke));
+        sb.append(',');
+        sb.append("country2PercentTop5Languag");
+        sb.append('=');
+        sb.append(((this.country2PercentTop5Languag == null)?"<null>":this.country2PercentTop5Languag));
+        sb.append(',');
+        sb.append("country2Top5LanguagesSpoke");
+        sb.append('=');
+        sb.append(((this.country2Top5LanguagesSpoke == null)?"<null>":this.country2Top5LanguagesSpoke));
+        sb.append(',');
+        sb.append("country3PercentTop5Languag");
+        sb.append('=');
+        sb.append(((this.country3PercentTop5Languag == null)?"<null>":this.country3PercentTop5Languag));
+        sb.append(',');
+        sb.append("country3Top5LanguagesSpoke");
+        sb.append('=');
+        sb.append(((this.country3Top5LanguagesSpoke == null)?"<null>":this.country3Top5LanguagesSpoke));
+        sb.append(',');
+        sb.append("country4PercentTop5Languag");
+        sb.append('=');
+        sb.append(((this.country4PercentTop5Languag == null)?"<null>":this.country4PercentTop5Languag));
+        sb.append(',');
+        sb.append("country4Top5LanguagesSpoke");
+        sb.append('=');
+        sb.append(((this.country4Top5LanguagesSpoke == null)?"<null>":this.country4Top5LanguagesSpoke));
+        sb.append(',');
+        sb.append("country5PercentTop5Languag");
+        sb.append('=');
+        sb.append(((this.country5PercentTop5Languag == null)?"<null>":this.country5PercentTop5Languag));
+        sb.append(',');
+        sb.append("country5Top5LanguagesSpoke");
+        sb.append('=');
+        sb.append(((this.country5Top5LanguagesSpoke == null)?"<null>":this.country5Top5LanguagesSpoke));
+        sb.append(',');
+        sb.append("percentLowEnglishProficiency");
+        sb.append('=');
+        sb.append(((this.percentLowEnglishProficiency == null)?"<null>":this.percentLowEnglishProficiency));
+        sb.append(',');
+        sb.append("rankPercentLowEnglishProfic");
+        sb.append('=');
+        sb.append(((this.rankPercentLowEnglishProfic == null)?"<null>":this.rankPercentLowEnglishProfic));
+        sb.append(',');
+        sb.append("ancestry1PercentTop5Ancest");
+        sb.append('=');
+        sb.append(((this.ancestry1PercentTop5Ancest == null)?"<null>":this.ancestry1PercentTop5Ancest));
+        sb.append(',');
+        sb.append("ancestry1Top5Ancestries");
+        sb.append('=');
+        sb.append(((this.ancestry1Top5Ancestries == null)?"<null>":this.ancestry1Top5Ancestries));
+        sb.append(',');
+        sb.append("ancestry2PercentTop5Ancest");
+        sb.append('=');
+        sb.append(((this.ancestry2PercentTop5Ancest == null)?"<null>":this.ancestry2PercentTop5Ancest));
+        sb.append(',');
+        sb.append("ancestry2Top5Ancestries");
+        sb.append('=');
+        sb.append(((this.ancestry2Top5Ancestries == null)?"<null>":this.ancestry2Top5Ancestries));
+        sb.append(',');
+        sb.append("ancestry3PercentTop5Ancest");
+        sb.append('=');
+        sb.append(((this.ancestry3PercentTop5Ancest == null)?"<null>":this.ancestry3PercentTop5Ancest));
+        sb.append(',');
+        sb.append("ancestry3Top5Ancestries");
+        sb.append('=');
+        sb.append(((this.ancestry3Top5Ancestries == null)?"<null>":this.ancestry3Top5Ancestries));
+        sb.append(',');
+        sb.append("ancestry4PercentTop5Ancest");
+        sb.append('=');
+        sb.append(((this.ancestry4PercentTop5Ancest == null)?"<null>":this.ancestry4PercentTop5Ancest));
+        sb.append(',');
+        sb.append("ancestry4Top5Ancestries");
+        sb.append('=');
+        sb.append(((this.ancestry4Top5Ancestries == null)?"<null>":this.ancestry4Top5Ancestries));
+        sb.append(',');
+        sb.append("ancestry5PercentTop5Ancest");
+        sb.append('=');
+        sb.append(((this.ancestry5PercentTop5Ancest == null)?"<null>":this.ancestry5PercentTop5Ancest));
+        sb.append(',');
+        sb.append("ancestry5Top5Ancestries");
+        sb.append('=');
+        sb.append(((this.ancestry5Top5Ancestries == null)?"<null>":this.ancestry5Top5Ancestries));
+        sb.append(',');
+        sb.append("newSettlerArrivalsPer100000");
+        sb.append('=');
+        sb.append(((this.newSettlerArrivalsPer100000 == null)?"<null>":this.newSettlerArrivalsPer100000));
+        sb.append(',');
+        sb.append("rankNewSettlerArrivalsPer1");
+        sb.append('=');
+        sb.append(((this.rankNewSettlerArrivalsPer1 == null)?"<null>":this.rankNewSettlerArrivalsPer1));
+        sb.append(',');
+        sb.append("humanitarianArrivalsAsAPerc");
+        sb.append('=');
+        sb.append(((this.humanitarianArrivalsAsAPerc == null)?"<null>":this.humanitarianArrivalsAsAPerc));
+        sb.append(',');
+        sb.append("rankHumanitarianArrivalsAsA");
+        sb.append('=');
+        sb.append(((this.rankHumanitarianArrivalsAsA == null)?"<null>":this.rankHumanitarianArrivalsAsA));
+        sb.append(',');
+        sb.append("communityAcceptanceOfDiverse");
+        sb.append('=');
+        sb.append(((this.communityAcceptanceOfDiverse == null)?"<null>":this.communityAcceptanceOfDiverse));
+        sb.append(',');
+        sb.append("rankCommunityAcceptanceOfDi");
+        sb.append('=');
+        sb.append(((this.rankCommunityAcceptanceOfDi == null)?"<null>":this.rankCommunityAcceptanceOfDi));
+        sb.append(',');
+        sb.append("proportionOfHouseholdsWithB");
+        sb.append('=');
+        sb.append(((this.proportionOfHouseholdsWithB == null)?"<null>":this.proportionOfHouseholdsWithB));
+        sb.append(',');
+        sb.append("householdsWithBroadbandInter");
+        sb.append('=');
+        sb.append(((this.householdsWithBroadbandInter == null)?"<null>":this.householdsWithBroadbandInter));
+        sb.append(',');
+        sb.append("gamingMachineLossesPerHead");
+        sb.append('=');
+        sb.append(((this.gamingMachineLossesPerHead == null)?"<null>":this.gamingMachineLossesPerHead));
+        sb.append(',');
+        sb.append("rankGamingMachineLossesPer");
+        sb.append('=');
+        sb.append(((this.rankGamingMachineLossesPer == null)?"<null>":this.rankGamingMachineLossesPer));
+        sb.append(',');
+        sb.append("familyIncidentsPer1000Pop");
+        sb.append('=');
+        sb.append(((this.familyIncidentsPer1000Pop == null)?"<null>":this.familyIncidentsPer1000Pop));
+        sb.append(',');
+        sb.append("rankFamilyIncidentsPer1000");
+        sb.append('=');
+        sb.append(((this.rankFamilyIncidentsPer1000 == null)?"<null>":this.rankFamilyIncidentsPer1000));
+        sb.append(',');
+        sb.append("drugUsageAndPossessionOffen");
+        sb.append('=');
+        sb.append(((this.drugUsageAndPossessionOffen == null)?"<null>":this.drugUsageAndPossessionOffen));
+        sb.append(',');
+        sb.append("rankDrugUsageAndPossession");
+        sb.append('=');
+        sb.append(((this.rankDrugUsageAndPossession == null)?"<null>":this.rankDrugUsageAndPossession));
+        sb.append(',');
+        sb.append("totalCrimePer1000Pop");
+        sb.append('=');
+        sb.append(((this.totalCrimePer1000Pop == null)?"<null>":this.totalCrimePer1000Pop));
+        sb.append(',');
+        sb.append("rankTotalCrimePer1000Pop");
+        sb.append('=');
+        sb.append(((this.rankTotalCrimePer1000Pop == null)?"<null>":this.rankTotalCrimePer1000Pop));
+        sb.append(',');
+        sb.append("feelsSafeWalkingAloneDuring");
+        sb.append('=');
+        sb.append(((this.feelsSafeWalkingAloneDuring == null)?"<null>":this.feelsSafeWalkingAloneDuring));
+        sb.append(',');
+        sb.append("rankFeelsSafeWalkingAloneD");
+        sb.append('=');
+        sb.append(((this.rankFeelsSafeWalkingAloneD == null)?"<null>":this.rankFeelsSafeWalkingAloneD));
+        sb.append(',');
+        sb.append("believeOtherPeopleCanBeTru");
+        sb.append('=');
+        sb.append(((this.believeOtherPeopleCanBeTru == null)?"<null>":this.believeOtherPeopleCanBeTru));
+        sb.append(',');
+        sb.append("rankBelieveOtherPeopleCanB");
+        sb.append('=');
+        sb.append(((this.rankBelieveOtherPeopleCanB == null)?"<null>":this.rankBelieveOtherPeopleCanB));
+        sb.append(',');
+        sb.append("spokeWithMoreThan5PeopleT");
+        sb.append('=');
+        sb.append(((this.spokeWithMoreThan5PeopleT == null)?"<null>":this.spokeWithMoreThan5PeopleT));
+        sb.append(',');
+        sb.append("rankSpokeWithMoreThan5Peo");
+        sb.append('=');
+        sb.append(((this.rankSpokeWithMoreThan5Peo == null)?"<null>":this.rankSpokeWithMoreThan5Peo));
+        sb.append(',');
+        sb.append("ableToDefinitelyGetHelpFro");
+        sb.append('=');
+        sb.append(((this.ableToDefinitelyGetHelpFro == null)?"<null>":this.ableToDefinitelyGetHelpFro));
+        sb.append(',');
+        sb.append("rankAbleToDefinitelyGetHel");
+        sb.append('=');
+        sb.append(((this.rankAbleToDefinitelyGetHel == null)?"<null>":this.rankAbleToDefinitelyGetHel));
+        sb.append(',');
+        sb.append("volunteers");
+        sb.append('=');
+        sb.append(((this.volunteers == null)?"<null>":this.volunteers));
+        sb.append(',');
+        sb.append("rankVolunteers");
+        sb.append('=');
+        sb.append(((this.rankVolunteers == null)?"<null>":this.rankVolunteers));
+        sb.append(',');
+        sb.append("feelValuedBySociety");
+        sb.append('=');
+        sb.append(((this.feelValuedBySociety == null)?"<null>":this.feelValuedBySociety));
+        sb.append(',');
+        sb.append("rankFeelValuedBySociety");
+        sb.append('=');
+        sb.append(((this.rankFeelValuedBySociety == null)?"<null>":this.rankFeelValuedBySociety));
+        sb.append(',');
+        sb.append("attendedALocalCommunityEven");
+        sb.append('=');
+        sb.append(((this.attendedALocalCommunityEven == null)?"<null>":this.attendedALocalCommunityEven));
+        sb.append(',');
+        sb.append("rankAttendedALocalCommunity");
+        sb.append('=');
+        sb.append(((this.rankAttendedALocalCommunity == null)?"<null>":this.rankAttendedALocalCommunity));
+        sb.append(',');
+        sb.append("takeActionOnBehalfOfTheLo");
+        sb.append('=');
+        sb.append(((this.takeActionOnBehalfOfTheLo == null)?"<null>":this.takeActionOnBehalfOfTheLo));
+        sb.append(',');
+        sb.append("rankTakeActionOnBehalfOfT");
+        sb.append('=');
+        sb.append(((this.rankTakeActionOnBehalfOfT == null)?"<null>":this.rankTakeActionOnBehalfOfT));
+        sb.append(',');
+        sb.append("membersOfASportsGroup");
+        sb.append('=');
+        sb.append(((this.membersOfASportsGroup == null)?"<null>":this.membersOfASportsGroup));
+        sb.append(',');
+        sb.append("rankMembersOfASportsGroup");
+        sb.append('=');
+        sb.append(((this.rankMembersOfASportsGroup == null)?"<null>":this.rankMembersOfASportsGroup));
+        sb.append(',');
+        sb.append("membersOfAReligiousGroup");
+        sb.append('=');
+        sb.append(((this.membersOfAReligiousGroup == null)?"<null>":this.membersOfAReligiousGroup));
+        sb.append(',');
+        sb.append("rankMembersOfAReligiousGro");
+        sb.append('=');
+        sb.append(((this.rankMembersOfAReligiousGro == null)?"<null>":this.rankMembersOfAReligiousGro));
+        sb.append(',');
+        sb.append("ratedTheirCommunityAsAnAct");
+        sb.append('=');
+        sb.append(((this.ratedTheirCommunityAsAnAct == null)?"<null>":this.ratedTheirCommunityAsAnAct));
+        sb.append(',');
+        sb.append("rankRatedTheirCommunityAsA");
+        sb.append('=');
+        sb.append(((this.rankRatedTheirCommunityAsA == null)?"<null>":this.rankRatedTheirCommunityAsA));
+        sb.append(',');
+        sb.append("ratedTheirCommunityAsAPlea");
+        sb.append('=');
+        sb.append(((this.ratedTheirCommunityAsAPlea == null)?"<null>":this.ratedTheirCommunityAsAPlea));
+        sb.append(',');
+        sb.append("rankAtedTheirCommunityAsA");
+        sb.append('=');
+        sb.append(((this.rankAtedTheirCommunityAsA == null)?"<null>":this.rankAtedTheirCommunityAsA));
+        sb.append(',');
+        sb.append("ratedTheirCommunityAsGoodO");
+        sb.append('=');
+        sb.append(((this.ratedTheirCommunityAsGoodO == null)?"<null>":this.ratedTheirCommunityAsGoodO));
+        sb.append(',');
+        sb.append("rankRatedTheirCommunityAsG");
+        sb.append('=');
+        sb.append(((this.rankRatedTheirCommunityAsG == null)?"<null>":this.rankRatedTheirCommunityAsG));
+        sb.append(',');
+        sb.append("indexOfRelativeSociaEconomi");
+        sb.append('=');
+        sb.append(((this.indexOfRelativeSociaEconomi == null)?"<null>":this.indexOfRelativeSociaEconomi));
+        sb.append(',');
+        sb.append("rankIndexOfRelativeSociaEc");
+        sb.append('=');
+        sb.append(((this.rankIndexOfRelativeSociaEc == null)?"<null>":this.rankIndexOfRelativeSociaEc));
+        sb.append(',');
+        sb.append("unemploymentRate");
+        sb.append('=');
+        sb.append(((this.unemploymentRate == null)?"<null>":this.unemploymentRate));
+        sb.append(',');
+        sb.append("rankUnemploymentRate");
+        sb.append('=');
+        sb.append(((this.rankUnemploymentRate == null)?"<null>":this.rankUnemploymentRate));
+        sb.append(',');
+        sb.append("percentIndividualIncomeLess");
+        sb.append('=');
+        sb.append(((this.percentIndividualIncomeLess == null)?"<null>":this.percentIndividualIncomeLess));
+        sb.append(',');
+        sb.append("rankPercentIndividualIncome");
+        sb.append('=');
+        sb.append(((this.rankPercentIndividualIncome == null)?"<null>":this.rankPercentIndividualIncome));
+        sb.append(',');
+        sb.append("percentFemaleIncomeLessThan");
+        sb.append('=');
+        sb.append(((this.percentFemaleIncomeLessThan == null)?"<null>":this.percentFemaleIncomeLessThan));
+        sb.append(',');
+        sb.append("rankPercentFemaleIncomeLess");
+        sb.append('=');
+        sb.append(((this.rankPercentFemaleIncomeLess == null)?"<null>":this.rankPercentFemaleIncomeLess));
+        sb.append(',');
+        sb.append("percentMaleIncomeLessThan4");
+        sb.append('=');
+        sb.append(((this.percentMaleIncomeLessThan4 == null)?"<null>":this.percentMaleIncomeLessThan4));
+        sb.append(',');
+        sb.append("rankPercentMaleIncomeLessT");
+        sb.append('=');
+        sb.append(((this.rankPercentMaleIncomeLessT == null)?"<null>":this.rankPercentMaleIncomeLessT));
+        sb.append(',');
+        sb.append("percentOneParentHeadedFamil");
+        sb.append('=');
+        sb.append(((this.percentOneParentHeadedFamil == null)?"<null>":this.percentOneParentHeadedFamil));
+        sb.append(',');
+        sb.append("rankPercentOneParentHeaded");
+        sb.append('=');
+        sb.append(((this.rankPercentOneParentHeaded == null)?"<null>":this.rankPercentOneParentHeaded));
+        sb.append(',');
+        sb.append("oneParentHeadedFamiliesPerc");
+        sb.append('=');
+        sb.append(((this.oneParentHeadedFamiliesPerc == null)?"<null>":this.oneParentHeadedFamiliesPerc));
+        sb.append(',');
+        sb.append("rankOneParentHeadedFamilies");
+        sb.append('=');
+        sb.append(((this.rankOneParentHeadedFamilies == null)?"<null>":this.rankOneParentHeadedFamilies));
+        sb.append(',');
+        sb.append("oneParentHeadedFamiliesPe1");
+        sb.append('=');
+        sb.append(((this.oneParentHeadedFamiliesPe1 == null)?"<null>":this.oneParentHeadedFamiliesPe1));
+        sb.append(',');
+        sb.append("rankOneParentHeadedFamili1");
+        sb.append('=');
+        sb.append(((this.rankOneParentHeadedFamili1 == null)?"<null>":this.rankOneParentHeadedFamili1));
+        sb.append(',');
+        sb.append("equivalisedMedianIncome");
+        sb.append('=');
+        sb.append(((this.equivalisedMedianIncome == null)?"<null>":this.equivalisedMedianIncome));
+        sb.append(',');
+        sb.append("rankEquivalisedMedianIncome");
+        sb.append('=');
+        sb.append(((this.rankEquivalisedMedianIncome == null)?"<null>":this.rankEquivalisedMedianIncome));
+        sb.append(',');
+        sb.append("delayedMedicalConsultationBe");
+        sb.append('=');
+        sb.append(((this.delayedMedicalConsultationBe == null)?"<null>":this.delayedMedicalConsultationBe));
+        sb.append(',');
+        sb.append("rankDelayedMedicalConsultati");
+        sb.append('=');
+        sb.append(((this.rankDelayedMedicalConsultati == null)?"<null>":this.rankDelayedMedicalConsultati));
+        sb.append(',');
+        sb.append("delayedPurchasingPrescribedM");
+        sb.append('=');
+        sb.append(((this.delayedPurchasingPrescribedM == null)?"<null>":this.delayedPurchasingPrescribedM));
+        sb.append(',');
+        sb.append("rankDelayedPurchasingPrescri");
+        sb.append('=');
+        sb.append(((this.rankDelayedPurchasingPrescri == null)?"<null>":this.rankDelayedPurchasingPrescri));
+        sb.append(',');
+        sb.append("percentLowIncomeWelfareDepe");
+        sb.append('=');
+        sb.append(((this.percentLowIncomeWelfareDepe == null)?"<null>":this.percentLowIncomeWelfareDepe));
+        sb.append(',');
+        sb.append("rankPercentLowIncomeWelfare");
+        sb.append('=');
+        sb.append(((this.rankPercentLowIncomeWelfare == null)?"<null>":this.rankPercentLowIncomeWelfare));
+        sb.append(',');
+        sb.append("percentOfPopWithFoodInsecu");
+        sb.append('=');
+        sb.append(((this.percentOfPopWithFoodInsecu == null)?"<null>":this.percentOfPopWithFoodInsecu));
+        sb.append(',');
+        sb.append("rankPercentOfPopWithFoodI");
+        sb.append('=');
+        sb.append(((this.rankPercentOfPopWithFoodI == null)?"<null>":this.rankPercentOfPopWithFoodI));
+        sb.append(',');
+        sb.append("percentMortgageStress");
+        sb.append('=');
+        sb.append(((this.percentMortgageStress == null)?"<null>":this.percentMortgageStress));
+        sb.append(',');
+        sb.append("rankPercentMortgageStress");
+        sb.append('=');
+        sb.append(((this.rankPercentMortgageStress == null)?"<null>":this.rankPercentMortgageStress));
+        sb.append(',');
+        sb.append("percentRentalStress");
+        sb.append('=');
+        sb.append(((this.percentRentalStress == null)?"<null>":this.percentRentalStress));
+        sb.append(',');
+        sb.append("rankPercentRentalStress");
+        sb.append('=');
+        sb.append(((this.rankPercentRentalStress == null)?"<null>":this.rankPercentRentalStress));
+        sb.append(',');
+        sb.append("percentOfRentalHousingThat");
+        sb.append('=');
+        sb.append(((this.percentOfRentalHousingThat == null)?"<null>":this.percentOfRentalHousingThat));
+        sb.append(',');
+        sb.append("rankPercentOfRentalHousing");
+        sb.append('=');
+        sb.append(((this.rankPercentOfRentalHousing == null)?"<null>":this.rankPercentOfRentalHousing));
+        sb.append(',');
+        sb.append("medianHousePrice");
+        sb.append('=');
+        sb.append(((this.medianHousePrice == null)?"<null>":this.medianHousePrice));
+        sb.append(',');
+        sb.append("rankMedianHousePrice");
+        sb.append('=');
+        sb.append(((this.rankMedianHousePrice == null)?"<null>":this.rankMedianHousePrice));
+        sb.append(',');
+        sb.append("medianRentFor3BedroomsHome");
+        sb.append('=');
+        sb.append(((this.medianRentFor3BedroomsHome == null)?"<null>":this.medianRentFor3BedroomsHome));
+        sb.append(',');
+        sb.append("rankMedianRentFor3Bedrooms");
+        sb.append('=');
+        sb.append(((this.rankMedianRentFor3Bedrooms == null)?"<null>":this.rankMedianRentFor3Bedrooms));
+        sb.append(',');
+        sb.append("newDwellingsApprovedForCons");
+        sb.append('=');
+        sb.append(((this.newDwellingsApprovedForCons == null)?"<null>":this.newDwellingsApprovedForCons));
+        sb.append(',');
+        sb.append("rankNewDwellingsApprovedFor");
+        sb.append('=');
+        sb.append(((this.rankNewDwellingsApprovedFor == null)?"<null>":this.rankNewDwellingsApprovedFor));
+        sb.append(',');
+        sb.append("socialHousingStockAsAPerce");
+        sb.append('=');
+        sb.append(((this.socialHousingStockAsAPerce == null)?"<null>":this.socialHousingStockAsAPerce));
+        sb.append(',');
+        sb.append("rankSocialHousingStockAsA");
+        sb.append('=');
+        sb.append(((this.rankSocialHousingStockAsA == null)?"<null>":this.rankSocialHousingStockAsA));
+        sb.append(',');
+        sb.append("numberOfSocialHousingDwelli");
+        sb.append('=');
+        sb.append(((this.numberOfSocialHousingDwelli == null)?"<null>":this.numberOfSocialHousingDwelli));
+        sb.append(',');
+        sb.append("rankNumberOfSocialHousingD");
+        sb.append('=');
+        sb.append(((this.rankNumberOfSocialHousingD == null)?"<null>":this.rankNumberOfSocialHousingD));
+        sb.append(',');
+        sb.append("homelessnessRatePer1000Pop");
+        sb.append('=');
+        sb.append(((this.homelessnessRatePer1000Pop == null)?"<null>":this.homelessnessRatePer1000Pop));
+        sb.append(',');
+        sb.append("rankHomelessnessRatePer1000");
+        sb.append('=');
+        sb.append(((this.rankHomelessnessRatePer1000 == null)?"<null>":this.rankHomelessnessRatePer1000));
+        sb.append(',');
+        sb.append("percentOfWorkJourneysWhich");
+        sb.append('=');
+        sb.append(((this.percentOfWorkJourneysWhich == null)?"<null>":this.percentOfWorkJourneysWhich));
+        sb.append(',');
+        sb.append("rankPercentOfWorkJourneysW");
+        sb.append('=');
+        sb.append(((this.rankPercentOfWorkJourneysW == null)?"<null>":this.rankPercentOfWorkJourneysW));
+        sb.append(',');
+        sb.append("percentOfWorkJourneysWhich1");
+        sb.append('=');
+        sb.append(((this.percentOfWorkJourneysWhich1 == null)?"<null>":this.percentOfWorkJourneysWhich1));
+        sb.append(',');
+        sb.append("rankPercentOfWorkJourneys1");
+        sb.append('=');
+        sb.append(((this.rankPercentOfWorkJourneys1 == null)?"<null>":this.rankPercentOfWorkJourneys1));
+        sb.append(',');
+        sb.append("personsWithAtLeast2HourDa");
+        sb.append('=');
+        sb.append(((this.personsWithAtLeast2HourDa == null)?"<null>":this.personsWithAtLeast2HourDa));
+        sb.append(',');
+        sb.append("rankPersonsWithAtLeast2Ho");
+        sb.append('=');
+        sb.append(((this.rankPersonsWithAtLeast2Ho == null)?"<null>":this.rankPersonsWithAtLeast2Ho));
+        sb.append(',');
+        sb.append("percentHouseholdsWithNoMoto");
+        sb.append('=');
+        sb.append(((this.percentHouseholdsWithNoMoto == null)?"<null>":this.percentHouseholdsWithNoMoto));
+        sb.append(',');
+        sb.append("rankPercentHouseholdsWithNo");
+        sb.append('=');
+        sb.append(((this.rankPercentHouseholdsWithNo == null)?"<null>":this.rankPercentHouseholdsWithNo));
+        sb.append(',');
+        sb.append("fTEStudents");
+        sb.append('=');
+        sb.append(((this.fTEStudents == null)?"<null>":this.fTEStudents));
+        sb.append(',');
+        sb.append("percentYear9StudentsWhoAtt");
+        sb.append('=');
+        sb.append(((this.percentYear9StudentsWhoAtt == null)?"<null>":this.percentYear9StudentsWhoAtt));
+        sb.append(',');
+        sb.append("rankPercentOfYear9Students");
+        sb.append('=');
+        sb.append(((this.rankPercentOfYear9Students == null)?"<null>":this.rankPercentOfYear9Students));
+        sb.append(',');
+        sb.append("percentOfYear9StudentsWho");
+        sb.append('=');
+        sb.append(((this.percentOfYear9StudentsWho == null)?"<null>":this.percentOfYear9StudentsWho));
+        sb.append(',');
+        sb.append("rankPercentYear9StudentsWh");
+        sb.append('=');
+        sb.append(((this.rankPercentYear9StudentsWh == null)?"<null>":this.rankPercentYear9StudentsWh));
+        sb.append(',');
+        sb.append("percent19YearOldsCompleting");
+        sb.append('=');
+        sb.append(((this.percent19YearOldsCompleting == null)?"<null>":this.percent19YearOldsCompleting));
+        sb.append(',');
+        sb.append("rankPercent19YearOldsCompl");
+        sb.append('=');
+        sb.append(((this.rankPercent19YearOldsCompl == null)?"<null>":this.rankPercent19YearOldsCompl));
+        sb.append(',');
+        sb.append("percentPersonsWhoDidNotCom");
+        sb.append('=');
+        sb.append(((this.percentPersonsWhoDidNotCom == null)?"<null>":this.percentPersonsWhoDidNotCom));
+        sb.append(',');
+        sb.append("rankPercentOfPersonsWhoDid");
+        sb.append('=');
+        sb.append(((this.rankPercentOfPersonsWhoDid == null)?"<null>":this.rankPercentOfPersonsWhoDid));
+        sb.append(',');
+        sb.append("percentPersonsWhoCompletedA");
+        sb.append('=');
+        sb.append(((this.percentPersonsWhoCompletedA == null)?"<null>":this.percentPersonsWhoCompletedA));
+        sb.append(',');
+        sb.append("rankPercentPersonsWhoComple");
+        sb.append('=');
+        sb.append(((this.rankPercentPersonsWhoComple == null)?"<null>":this.rankPercentPersonsWhoComple));
+        sb.append(',');
+        sb.append("percentOfSchoolChildrenAtte");
+        sb.append('=');
+        sb.append(((this.percentOfSchoolChildrenAtte == null)?"<null>":this.percentOfSchoolChildrenAtte));
+        sb.append(',');
+        sb.append("rankPercentOfSchoolChildren");
+        sb.append('=');
+        sb.append(((this.rankPercentOfSchoolChildren == null)?"<null>":this.rankPercentOfSchoolChildren));
+        sb.append(',');
+        sb.append("percentOfPersonsReportingAs");
+        sb.append('=');
+        sb.append(((this.percentOfPersonsReportingAs == null)?"<null>":this.percentOfPersonsReportingAs));
+        sb.append(',');
+        sb.append("rankPercentOfPersonsReporti");
+        sb.append('=');
+        sb.append(((this.rankPercentOfPersonsReporti == null)?"<null>":this.rankPercentOfPersonsReporti));
+        sb.append(',');
+        sb.append("percentOfPersonsReportingTy");
+        sb.append('=');
+        sb.append(((this.percentOfPersonsReportingTy == null)?"<null>":this.percentOfPersonsReportingTy));
+        sb.append(',');
+        sb.append("rankPercentOfPersonsRepor1");
+        sb.append('=');
+        sb.append(((this.rankPercentOfPersonsRepor1 == null)?"<null>":this.rankPercentOfPersonsRepor1));
+        sb.append(',');
+        sb.append("percentOfPersonsReportingHi");
+        sb.append('=');
+        sb.append(((this.percentOfPersonsReportingHi == null)?"<null>":this.percentOfPersonsReportingHi));
+        sb.append(',');
+        sb.append("rankPercentOfPersonsRepor2");
+        sb.append('=');
+        sb.append(((this.rankPercentOfPersonsRepor2 == null)?"<null>":this.rankPercentOfPersonsRepor2));
+        sb.append(',');
+        sb.append("percentOfPersonsReportingHe");
+        sb.append('=');
+        sb.append(((this.percentOfPersonsReportingHe == null)?"<null>":this.percentOfPersonsReportingHe));
+        sb.append(',');
+        sb.append("rankPercentOfPersonsRepor3");
+        sb.append('=');
+        sb.append(((this.rankPercentOfPersonsRepor3 == null)?"<null>":this.rankPercentOfPersonsRepor3));
+        sb.append(',');
+        sb.append("percentOfPersonsReportingOs");
+        sb.append('=');
+        sb.append(((this.percentOfPersonsReportingOs == null)?"<null>":this.percentOfPersonsReportingOs));
+        sb.append(',');
+        sb.append("rankPercentOfPersonsRepor4");
+        sb.append('=');
+        sb.append(((this.rankPercentOfPersonsRepor4 == null)?"<null>":this.rankPercentOfPersonsRepor4));
+        sb.append(',');
+        sb.append("percentOfPersonsReportingAr");
+        sb.append('=');
+        sb.append(((this.percentOfPersonsReportingAr == null)?"<null>":this.percentOfPersonsReportingAr));
+        sb.append(',');
+        sb.append("rankPercentOfPersonsRepor5");
+        sb.append('=');
+        sb.append(((this.rankPercentOfPersonsRepor5 == null)?"<null>":this.rankPercentOfPersonsRepor5));
+        sb.append(',');
+        sb.append("percentOfPersonsWhoAreOver");
+        sb.append('=');
+        sb.append(((this.percentOfPersonsWhoAreOver == null)?"<null>":this.percentOfPersonsWhoAreOver));
+        sb.append(',');
+        sb.append("rankPercentOfPersonsWhoAre");
+        sb.append('=');
+        sb.append(((this.rankPercentOfPersonsWhoAre == null)?"<null>":this.rankPercentOfPersonsWhoAre));
+        sb.append(',');
+        sb.append("percentOfFemalesWhoAreOver");
+        sb.append('=');
+        sb.append(((this.percentOfFemalesWhoAreOver == null)?"<null>":this.percentOfFemalesWhoAreOver));
+        sb.append(',');
+        sb.append("rankPercentOfFemalesWhoAre");
+        sb.append('=');
+        sb.append(((this.rankPercentOfFemalesWhoAre == null)?"<null>":this.rankPercentOfFemalesWhoAre));
+        sb.append(',');
+        sb.append("percentOfMalesWhoAreOverwe");
+        sb.append('=');
+        sb.append(((this.percentOfMalesWhoAreOverwe == null)?"<null>":this.percentOfMalesWhoAreOverwe));
+        sb.append(',');
+        sb.append("rankPercentOfMalesWhoAreO");
+        sb.append('=');
+        sb.append(((this.rankPercentOfMalesWhoAreO == null)?"<null>":this.rankPercentOfMalesWhoAreO));
+        sb.append(',');
+        sb.append("percentOfPersonsWhoAreObes");
+        sb.append('=');
+        sb.append(((this.percentOfPersonsWhoAreObes == null)?"<null>":this.percentOfPersonsWhoAreObes));
+        sb.append(',');
+        sb.append("rankPercentOfPersonsWhoA1");
+        sb.append('=');
+        sb.append(((this.rankPercentOfPersonsWhoA1 == null)?"<null>":this.rankPercentOfPersonsWhoA1));
+        sb.append(',');
+        sb.append("percentOfFemalesWhoAreObes");
+        sb.append('=');
+        sb.append(((this.percentOfFemalesWhoAreObes == null)?"<null>":this.percentOfFemalesWhoAreObes));
+        sb.append(',');
+        sb.append("rankPercentOfFemalesWhoA1");
+        sb.append('=');
+        sb.append(((this.rankPercentOfFemalesWhoA1 == null)?"<null>":this.rankPercentOfFemalesWhoA1));
+        sb.append(',');
+        sb.append("percentOfMalesWhoAreObese");
+        sb.append('=');
+        sb.append(((this.percentOfMalesWhoAreObese == null)?"<null>":this.percentOfMalesWhoAreObese));
+        sb.append(',');
+        sb.append("rankPercentOfMalesWhoAre1");
+        sb.append('=');
+        sb.append(((this.rankPercentOfMalesWhoAre1 == null)?"<null>":this.rankPercentOfMalesWhoAre1));
+        sb.append(',');
+        sb.append("malignantCancersDiagnosedPer");
+        sb.append('=');
+        sb.append(((this.malignantCancersDiagnosedPer == null)?"<null>":this.malignantCancersDiagnosedPer));
+        sb.append(',');
+        sb.append("rankMalignantCancersDiagnose");
+        sb.append('=');
+        sb.append(((this.rankMalignantCancersDiagnose == null)?"<null>":this.rankMalignantCancersDiagnose));
+        sb.append(',');
+        sb.append("maleCancerIncidencePer1000");
+        sb.append('=');
+        sb.append(((this.maleCancerIncidencePer1000 == null)?"<null>":this.maleCancerIncidencePer1000));
+        sb.append(',');
+        sb.append("rankMaleCancerIncidencePer");
+        sb.append('=');
+        sb.append(((this.rankMaleCancerIncidencePer == null)?"<null>":this.rankMaleCancerIncidencePer));
+        sb.append(',');
+        sb.append("femaleCancerIncidencePer100");
+        sb.append('=');
+        sb.append(((this.femaleCancerIncidencePer100 == null)?"<null>":this.femaleCancerIncidencePer100));
+        sb.append(',');
+        sb.append("rankFemaleCancerIncidencePe");
+        sb.append('=');
+        sb.append(((this.rankFemaleCancerIncidencePe == null)?"<null>":this.rankFemaleCancerIncidencePe));
+        sb.append(',');
+        sb.append("percentPoorDentalHealth");
+        sb.append('=');
+        sb.append(((this.percentPoorDentalHealth == null)?"<null>":this.percentPoorDentalHealth));
+        sb.append(',');
+        sb.append("rankPercentPoorDentalHealth");
+        sb.append('=');
+        sb.append(((this.rankPercentPoorDentalHealth == null)?"<null>":this.rankPercentPoorDentalHealth));
+        sb.append(',');
+        sb.append("notificationsPer100000PopOf");
+        sb.append('=');
+        sb.append(((this.notificationsPer100000PopOf == null)?"<null>":this.notificationsPer100000PopOf));
+        sb.append(',');
+        sb.append("rankNotificationsPer100000P");
+        sb.append('=');
+        sb.append(((this.rankNotificationsPer100000P == null)?"<null>":this.rankNotificationsPer100000P));
+        sb.append(',');
+        sb.append("notificationsPer100000Pop1");
+        sb.append('=');
+        sb.append(((this.notificationsPer100000Pop1 == null)?"<null>":this.notificationsPer100000Pop1));
+        sb.append(',');
+        sb.append("rankNotificationsPer1000001");
+        sb.append('=');
+        sb.append(((this.rankNotificationsPer1000001 == null)?"<null>":this.rankNotificationsPer1000001));
+        sb.append(',');
+        sb.append("notificationsPer100000People");
+        sb.append('=');
+        sb.append(((this.notificationsPer100000People == null)?"<null>":this.notificationsPer100000People));
+        sb.append(',');
+        sb.append("rankNotificationsPer1000002");
+        sb.append('=');
+        sb.append(((this.rankNotificationsPer1000002 == null)?"<null>":this.rankNotificationsPer1000002));
+        sb.append(',');
+        sb.append("percentOfPersons18yrsPlusWh");
+        sb.append('=');
+        sb.append(((this.percentOfPersons18yrsPlusWh == null)?"<null>":this.percentOfPersons18yrsPlusWh));
+        sb.append(',');
+        sb.append("rankPercentOfPersons18yrsPl");
+        sb.append('=');
+        sb.append(((this.rankPercentOfPersons18yrsPl == null)?"<null>":this.rankPercentOfPersons18yrsPl));
+        sb.append(',');
+        sb.append("percentOfMales18yrsPlusWho");
+        sb.append('=');
+        sb.append(((this.percentOfMales18yrsPlusWho == null)?"<null>":this.percentOfMales18yrsPlusWho));
+        sb.append(',');
+        sb.append("rankPercentOfMales18yrsPlus");
+        sb.append('=');
+        sb.append(((this.rankPercentOfMales18yrsPlus == null)?"<null>":this.rankPercentOfMales18yrsPlus));
+        sb.append(',');
+        sb.append("percentOfFemales18yrsPlusWh");
+        sb.append('=');
+        sb.append(((this.percentOfFemales18yrsPlusWh == null)?"<null>":this.percentOfFemales18yrsPlusWh));
+        sb.append(',');
+        sb.append("rankPercentOfFemales18yrsPl");
+        sb.append('=');
+        sb.append(((this.rankPercentOfFemales18yrsPl == null)?"<null>":this.rankPercentOfFemales18yrsPl));
+        sb.append(',');
+        sb.append("consumedAlcoholAtLeastWeekl");
+        sb.append('=');
+        sb.append(((this.consumedAlcoholAtLeastWeekl == null)?"<null>":this.consumedAlcoholAtLeastWeekl));
+        sb.append(',');
+        sb.append("rankConsumedAlcoholAtLeast");
+        sb.append('=');
+        sb.append(((this.rankConsumedAlcoholAtLeast == null)?"<null>":this.rankConsumedAlcoholAtLeast));
+        sb.append(',');
+        sb.append("consumedAlcoholAtLeastWee1");
+        sb.append('=');
+        sb.append(((this.consumedAlcoholAtLeastWee1 == null)?"<null>":this.consumedAlcoholAtLeastWee1));
+        sb.append(',');
+        sb.append("rankConsumedAlcoholAtLeast1");
+        sb.append('=');
+        sb.append(((this.rankConsumedAlcoholAtLeast1 == null)?"<null>":this.rankConsumedAlcoholAtLeast1));
+        sb.append(',');
+        sb.append("percentOfPersonsWhoDoNotM");
+        sb.append('=');
+        sb.append(((this.percentOfPersonsWhoDoNotM == null)?"<null>":this.percentOfPersonsWhoDoNotM));
+        sb.append(',');
+        sb.append("rankPercentOfPersonsWhoDo");
+        sb.append('=');
+        sb.append(((this.rankPercentOfPersonsWhoDo == null)?"<null>":this.rankPercentOfPersonsWhoDo));
+        sb.append(',');
+        sb.append("percentOfMalesWhoDoNotMee");
+        sb.append('=');
+        sb.append(((this.percentOfMalesWhoDoNotMee == null)?"<null>":this.percentOfMalesWhoDoNotMee));
+        sb.append(',');
+        sb.append("rankPercentOfMalesWhoDoNo");
+        sb.append('=');
+        sb.append(((this.rankPercentOfMalesWhoDoNo == null)?"<null>":this.rankPercentOfMalesWhoDoNo));
+        sb.append(',');
+        sb.append("percentOfFemalesWhoDoNotM");
+        sb.append('=');
+        sb.append(((this.percentOfFemalesWhoDoNotM == null)?"<null>":this.percentOfFemalesWhoDoNotM));
+        sb.append(',');
+        sb.append("rankPercentOfFemalesWhoDo");
+        sb.append('=');
+        sb.append(((this.rankPercentOfFemalesWhoDo == null)?"<null>":this.rankPercentOfFemalesWhoDo));
+        sb.append(',');
+        sb.append("percentOfPersonsWhoDrinkSo");
+        sb.append('=');
+        sb.append(((this.percentOfPersonsWhoDrinkSo == null)?"<null>":this.percentOfPersonsWhoDrinkSo));
+        sb.append(',');
+        sb.append("rankPercentOfPersonsWhoDri");
+        sb.append('=');
+        sb.append(((this.rankPercentOfPersonsWhoDri == null)?"<null>":this.rankPercentOfPersonsWhoDri));
+        sb.append(',');
+        sb.append("percentOfPersonsWhoShareA");
+        sb.append('=');
+        sb.append(((this.percentOfPersonsWhoShareA == null)?"<null>":this.percentOfPersonsWhoShareA));
+        sb.append(',');
+        sb.append("rankPercentOfPersonsWhoSha");
+        sb.append('=');
+        sb.append(((this.rankPercentOfPersonsWhoSha == null)?"<null>":this.rankPercentOfPersonsWhoSha));
+        sb.append(',');
+        sb.append("percentOfPersonsWhoDoNot1");
+        sb.append('=');
+        sb.append(((this.percentOfPersonsWhoDoNot1 == null)?"<null>":this.percentOfPersonsWhoDoNot1));
+        sb.append(',');
+        sb.append("rankPercentOfPersonsWhoDo1");
+        sb.append('=');
+        sb.append(((this.rankPercentOfPersonsWhoDo1 == null)?"<null>":this.rankPercentOfPersonsWhoDo1));
+        sb.append(',');
+        sb.append("percentOfMalesWhoDoNotM1");
+        sb.append('=');
+        sb.append(((this.percentOfMalesWhoDoNotM1 == null)?"<null>":this.percentOfMalesWhoDoNotM1));
+        sb.append(',');
+        sb.append("rankPercentOfMalesWhoDo1");
+        sb.append('=');
+        sb.append(((this.rankPercentOfMalesWhoDo1 == null)?"<null>":this.rankPercentOfMalesWhoDo1));
+        sb.append(',');
+        sb.append("percentOfFemalesWhoDoNot1");
+        sb.append('=');
+        sb.append(((this.percentOfFemalesWhoDoNot1 == null)?"<null>":this.percentOfFemalesWhoDoNot1));
+        sb.append(',');
+        sb.append("rankPercentOfFemalesWhoDo1");
+        sb.append('=');
+        sb.append(((this.rankPercentOfFemalesWhoDo1 == null)?"<null>":this.rankPercentOfFemalesWhoDo1));
+        sb.append(',');
+        sb.append("percentOfPersonsWhoSitFor");
+        sb.append('=');
+        sb.append(((this.percentOfPersonsWhoSitFor == null)?"<null>":this.percentOfPersonsWhoSitFor));
+        sb.append(',');
+        sb.append("rankPercentOfPersonsWhoSit");
+        sb.append('=');
+        sb.append(((this.rankPercentOfPersonsWhoSit == null)?"<null>":this.rankPercentOfPersonsWhoSit));
+        sb.append(',');
+        sb.append("percentOfPersonsWhoVisitA");
+        sb.append('=');
+        sb.append(((this.percentOfPersonsWhoVisitA == null)?"<null>":this.percentOfPersonsWhoVisitA));
+        sb.append(',');
+        sb.append("rankPercentOfPersonsWhoVis");
+        sb.append('=');
+        sb.append(((this.rankPercentOfPersonsWhoVis == null)?"<null>":this.rankPercentOfPersonsWhoVis));
+        sb.append(',');
+        sb.append("percentOfBreastScreeningPar");
+        sb.append('=');
+        sb.append(((this.percentOfBreastScreeningPar == null)?"<null>":this.percentOfBreastScreeningPar));
+        sb.append(',');
+        sb.append("rankPercentOfBreastScreenin");
+        sb.append('=');
+        sb.append(((this.rankPercentOfBreastScreenin == null)?"<null>":this.rankPercentOfBreastScreenin));
+        sb.append(',');
+        sb.append("percentOfCervicalCancerScre");
+        sb.append('=');
+        sb.append(((this.percentOfCervicalCancerScre == null)?"<null>":this.percentOfCervicalCancerScre));
+        sb.append(',');
+        sb.append("rankPercentOfCervicalCancer");
+        sb.append('=');
+        sb.append(((this.rankPercentOfCervicalCancer == null)?"<null>":this.rankPercentOfCervicalCancer));
+        sb.append(',');
+        sb.append("bowelCancerScreeningParticip");
+        sb.append('=');
+        sb.append(((this.bowelCancerScreeningParticip == null)?"<null>":this.bowelCancerScreeningParticip));
+        sb.append(',');
+        sb.append("rankBowelCancerScreeningPar");
+        sb.append('=');
+        sb.append(((this.rankBowelCancerScreeningPar == null)?"<null>":this.rankBowelCancerScreeningPar));
+        sb.append(',');
+        sb.append("bowelCancerScreeningPartic1");
+        sb.append('=');
+        sb.append(((this.bowelCancerScreeningPartic1 == null)?"<null>":this.bowelCancerScreeningPartic1));
+        sb.append(',');
+        sb.append("rankBowelCancerScreeningP1");
+        sb.append('=');
+        sb.append(((this.rankBowelCancerScreeningP1 == null)?"<null>":this.rankBowelCancerScreeningP1));
+        sb.append(',');
+        sb.append("bowelCancerScreeningPartic2");
+        sb.append('=');
+        sb.append(((this.bowelCancerScreeningPartic2 == null)?"<null>":this.bowelCancerScreeningPartic2));
+        sb.append(',');
+        sb.append("rankBowelCancerScreeningP2");
+        sb.append('=');
+        sb.append(((this.rankBowelCancerScreeningP2 == null)?"<null>":this.rankBowelCancerScreeningP2));
+        sb.append(',');
+        sb.append("lowBirthweightBabies");
+        sb.append('=');
+        sb.append(((this.lowBirthweightBabies == null)?"<null>":this.lowBirthweightBabies));
+        sb.append(',');
+        sb.append("rankLowBirthweightBabies");
+        sb.append('=');
+        sb.append(((this.rankLowBirthweightBabies == null)?"<null>":this.rankLowBirthweightBabies));
+        sb.append(',');
+        sb.append("percentInfantsFullyBreastfed");
+        sb.append('=');
+        sb.append(((this.percentInfantsFullyBreastfed == null)?"<null>":this.percentInfantsFullyBreastfed));
+        sb.append(',');
+        sb.append("rankPercentInfantsFullyBrea");
+        sb.append('=');
+        sb.append(((this.rankPercentInfantsFullyBrea == null)?"<null>":this.rankPercentInfantsFullyBrea));
+        sb.append(',');
+        sb.append("percentChildrenFullyImmunise");
+        sb.append('=');
+        sb.append(((this.percentChildrenFullyImmunise == null)?"<null>":this.percentChildrenFullyImmunise));
+        sb.append(',');
+        sb.append("rankPercentChildrenFullyImm");
+        sb.append('=');
+        sb.append(((this.rankPercentChildrenFullyImm == null)?"<null>":this.rankPercentChildrenFullyImm));
+        sb.append(',');
+        sb.append("proportionOfInfantsEnrolled");
+        sb.append('=');
+        sb.append(((this.proportionOfInfantsEnrolled == null)?"<null>":this.proportionOfInfantsEnrolled));
+        sb.append(',');
+        sb.append("rankProportionOfInfantsEnro");
+        sb.append('=');
+        sb.append(((this.rankProportionOfInfantsEnro == null)?"<null>":this.rankProportionOfInfantsEnro));
+        sb.append(',');
+        sb.append("kindergartenParticipationRate");
+        sb.append('=');
+        sb.append(((this.kindergartenParticipationRate == null)?"<null>":this.kindergartenParticipationRate));
+        sb.append(',');
+        sb.append("percentOfChildrenWithKinder");
+        sb.append('=');
+        sb.append(((this.percentOfChildrenWithKinder == null)?"<null>":this.percentOfChildrenWithKinder));
+        sb.append(',');
+        sb.append("rankPercentOfChildrenWithK");
+        sb.append('=');
+        sb.append(((this.rankPercentOfChildrenWithK == null)?"<null>":this.rankPercentOfChildrenWithK));
+        sb.append(',');
+        sb.append("percentOfChildrenWithEmotio");
+        sb.append('=');
+        sb.append(((this.percentOfChildrenWithEmotio == null)?"<null>":this.percentOfChildrenWithEmotio));
+        sb.append(',');
+        sb.append("rankPercentOfChildrenWithE");
+        sb.append('=');
+        sb.append(((this.rankPercentOfChildrenWithE == null)?"<null>":this.rankPercentOfChildrenWithE));
+        sb.append(',');
+        sb.append("percentOfChildrenWithSpeech");
+        sb.append('=');
+        sb.append(((this.percentOfChildrenWithSpeech == null)?"<null>":this.percentOfChildrenWithSpeech));
+        sb.append(',');
+        sb.append("rankPercentOfChildrenWithS");
+        sb.append('=');
+        sb.append(((this.rankPercentOfChildrenWithS == null)?"<null>":this.rankPercentOfChildrenWithS));
+        sb.append(',');
+        sb.append("percentOfAdolescentsWhoRepo");
+        sb.append('=');
+        sb.append(((this.percentOfAdolescentsWhoRepo == null)?"<null>":this.percentOfAdolescentsWhoRepo));
+        sb.append(',');
+        sb.append("rankPercentOfAdolescentsWho");
+        sb.append('=');
+        sb.append(((this.rankPercentOfAdolescentsWho == null)?"<null>":this.rankPercentOfAdolescentsWho));
+        sb.append(',');
+        sb.append("percentOfChildrenWhoAreDev");
+        sb.append('=');
+        sb.append(((this.percentOfChildrenWhoAreDev == null)?"<null>":this.percentOfChildrenWhoAreDev));
+        sb.append(',');
+        sb.append("rankPercentOfChildrenWhoAr");
+        sb.append('=');
+        sb.append(((this.rankPercentOfChildrenWhoAr == null)?"<null>":this.rankPercentOfChildrenWhoAr));
+        sb.append(',');
+        sb.append("percentOfChildrenWhoAreD1");
+        sb.append('=');
+        sb.append(((this.percentOfChildrenWhoAreD1 == null)?"<null>":this.percentOfChildrenWhoAreD1));
+        sb.append(',');
+        sb.append("rankPercentOfChildrenWho1");
+        sb.append('=');
+        sb.append(((this.rankPercentOfChildrenWho1 == null)?"<null>":this.rankPercentOfChildrenWho1));
+        sb.append(',');
+        sb.append("coreActivityNeedForAssistan");
+        sb.append('=');
+        sb.append(((this.coreActivityNeedForAssistan == null)?"<null>":this.coreActivityNeedForAssistan));
+        sb.append(',');
+        sb.append("rankCoreActivityNeedForAss");
+        sb.append('=');
+        sb.append(((this.rankCoreActivityNeedForAss == null)?"<null>":this.rankCoreActivityNeedForAss));
+        sb.append(',');
+        sb.append("peopleWithSevereAndProfound");
+        sb.append('=');
+        sb.append(((this.peopleWithSevereAndProfound == null)?"<null>":this.peopleWithSevereAndProfound));
+        sb.append(',');
+        sb.append("rankPeopleWithSevereAndPro");
+        sb.append('=');
+        sb.append(((this.rankPeopleWithSevereAndPro == null)?"<null>":this.rankPeopleWithSevereAndPro));
+        sb.append(',');
+        sb.append("peopleWithSevereAndProfou1");
+        sb.append('=');
+        sb.append(((this.peopleWithSevereAndProfou1 == null)?"<null>":this.peopleWithSevereAndProfou1));
+        sb.append(',');
+        sb.append("rankPeopleWithSevereAndP1");
+        sb.append('=');
+        sb.append(((this.rankPeopleWithSevereAndP1 == null)?"<null>":this.rankPeopleWithSevereAndP1));
+        sb.append(',');
+        sb.append("percentPopAged75yrsPlusLivi");
+        sb.append('=');
+        sb.append(((this.percentPopAged75yrsPlusLivi == null)?"<null>":this.percentPopAged75yrsPlusLivi));
+        sb.append(',');
+        sb.append("rankPercentPopAged75yrsPlus");
+        sb.append('=');
+        sb.append(((this.rankPercentPopAged75yrsPlus == null)?"<null>":this.rankPercentPopAged75yrsPlus));
+        sb.append(',');
+        sb.append("popAged75yrsPlusLivingAlone");
+        sb.append('=');
+        sb.append(((this.popAged75yrsPlusLivingAlone == null)?"<null>":this.popAged75yrsPlusLivingAlone));
+        sb.append(',');
+        sb.append("rankPopAged75yrsPlusLiving");
+        sb.append('=');
+        sb.append(((this.rankPopAged75yrsPlusLiving == null)?"<null>":this.rankPopAged75yrsPlusLiving));
+        sb.append(',');
+        sb.append("popAged75yrsPlusLivingAlo1");
+        sb.append('=');
+        sb.append(((this.popAged75yrsPlusLivingAlo1 == null)?"<null>":this.popAged75yrsPlusLivingAlo1));
+        sb.append(',');
+        sb.append("rankPopAged75yrsPlusLiving1");
+        sb.append('=');
+        sb.append(((this.rankPopAged75yrsPlusLiving1 == null)?"<null>":this.rankPopAged75yrsPlusLiving1));
+        sb.append(',');
+        sb.append("personsReceivingDisabilitySe");
+        sb.append('=');
+        sb.append(((this.personsReceivingDisabilitySe == null)?"<null>":this.personsReceivingDisabilitySe));
+        sb.append(',');
+        sb.append("rankPersonsReceivingDisabili");
+        sb.append('=');
+        sb.append(((this.rankPersonsReceivingDisabili == null)?"<null>":this.rankPersonsReceivingDisabili));
+        sb.append(',');
+        sb.append("disabilityPensionPer1000Eli");
+        sb.append('=');
+        sb.append(((this.disabilityPensionPer1000Eli == null)?"<null>":this.disabilityPensionPer1000Eli));
+        sb.append(',');
+        sb.append("rankDisabilityPensionPer100");
+        sb.append('=');
+        sb.append(((this.rankDisabilityPensionPer100 == null)?"<null>":this.rankDisabilityPensionPer100));
+        sb.append(',');
+        sb.append("agedCareHighCareBeds");
+        sb.append('=');
+        sb.append(((this.agedCareHighCareBeds == null)?"<null>":this.agedCareHighCareBeds));
+        sb.append(',');
+        sb.append("agedCareLowCareBeds");
+        sb.append('=');
+        sb.append(((this.agedCareLowCareBeds == null)?"<null>":this.agedCareLowCareBeds));
+        sb.append(',');
+        sb.append("agePensionPer1000EligibleP");
+        sb.append('=');
+        sb.append(((this.agePensionPer1000EligibleP == null)?"<null>":this.agePensionPer1000EligibleP));
+        sb.append(',');
+        sb.append("rankAgePensionPer1000Eligi");
+        sb.append('=');
+        sb.append(((this.rankAgePensionPer1000Eligi == null)?"<null>":this.rankAgePensionPer1000Eligi));
+        sb.append(',');
+        sb.append("maleLifeExpectancy");
+        sb.append('=');
+        sb.append(((this.maleLifeExpectancy == null)?"<null>":this.maleLifeExpectancy));
+        sb.append(',');
+        sb.append("rankMaleLifeExpectancy");
+        sb.append('=');
+        sb.append(((this.rankMaleLifeExpectancy == null)?"<null>":this.rankMaleLifeExpectancy));
+        sb.append(',');
+        sb.append("femaleLifeExpectancy");
+        sb.append('=');
+        sb.append(((this.femaleLifeExpectancy == null)?"<null>":this.femaleLifeExpectancy));
+        sb.append(',');
+        sb.append("rankFemaleLifeExpectancy");
+        sb.append('=');
+        sb.append(((this.rankFemaleLifeExpectancy == null)?"<null>":this.rankFemaleLifeExpectancy));
+        sb.append(',');
+        sb.append("personsReportingFairOrPoor");
+        sb.append('=');
+        sb.append(((this.personsReportingFairOrPoor == null)?"<null>":this.personsReportingFairOrPoor));
+        sb.append(',');
+        sb.append("rankPersonsReportingFairOr");
+        sb.append('=');
+        sb.append(((this.rankPersonsReportingFairOr == null)?"<null>":this.rankPersonsReportingFairOr));
+        sb.append(',');
+        sb.append("femalesReportingFairOrPoor");
+        sb.append('=');
+        sb.append(((this.femalesReportingFairOrPoor == null)?"<null>":this.femalesReportingFairOrPoor));
+        sb.append(',');
+        sb.append("rankFemalesReportingFairOr");
+        sb.append('=');
+        sb.append(((this.rankFemalesReportingFairOr == null)?"<null>":this.rankFemalesReportingFairOr));
+        sb.append(',');
+        sb.append("malesReportingFairOrPoorHe");
+        sb.append('=');
+        sb.append(((this.malesReportingFairOrPoorHe == null)?"<null>":this.malesReportingFairOrPoorHe));
+        sb.append(',');
+        sb.append("rankMalesReportingFairOrPo");
+        sb.append('=');
+        sb.append(((this.rankMalesReportingFairOrPo == null)?"<null>":this.rankMalesReportingFairOrPo));
+        sb.append(',');
+        sb.append("percentWhoHaveAHighDegree");
+        sb.append('=');
+        sb.append(((this.percentWhoHaveAHighDegree == null)?"<null>":this.percentWhoHaveAHighDegree));
+        sb.append(',');
+        sb.append("rankPercentWhoHaveAHighDe");
+        sb.append('=');
+        sb.append(((this.rankPercentWhoHaveAHighDe == null)?"<null>":this.rankPercentWhoHaveAHighDe));
+        sb.append(',');
+        sb.append("percentOfPersonsSleepingLes");
+        sb.append('=');
+        sb.append(((this.percentOfPersonsSleepingLes == null)?"<null>":this.percentOfPersonsSleepingLes));
+        sb.append(',');
+        sb.append("rankPercentOfPersonsSleepin");
+        sb.append('=');
+        sb.append(((this.rankPercentOfPersonsSleepin == null)?"<null>":this.rankPercentOfPersonsSleepin));
+        sb.append(',');
+        sb.append("percentPersonsWithAdequateW");
+        sb.append('=');
+        sb.append(((this.percentPersonsWithAdequateW == null)?"<null>":this.percentPersonsWithAdequateW));
+        sb.append(',');
+        sb.append("rankPercentPersonsWithAdequ");
+        sb.append('=');
+        sb.append(((this.rankPercentPersonsWithAdequ == null)?"<null>":this.rankPercentPersonsWithAdequ));
+        sb.append(',');
+        sb.append("unintentionalInjuriesTreated");
+        sb.append('=');
+        sb.append(((this.unintentionalInjuriesTreated == null)?"<null>":this.unintentionalInjuriesTreated));
+        sb.append(',');
+        sb.append("rankUnintentionalInjuriesTre");
+        sb.append('=');
+        sb.append(((this.rankUnintentionalInjuriesTre == null)?"<null>":this.rankUnintentionalInjuriesTre));
+        sb.append(',');
+        sb.append("intentionalInjuriesTreatedIn");
+        sb.append('=');
+        sb.append(((this.intentionalInjuriesTreatedIn == null)?"<null>":this.intentionalInjuriesTreatedIn));
+        sb.append(',');
+        sb.append("rankIntentionalInjuriesTreat");
+        sb.append('=');
+        sb.append(((this.rankIntentionalInjuriesTreat == null)?"<null>":this.rankIntentionalInjuriesTreat));
+        sb.append(',');
+        sb.append("percentOfUnintentionalHospit");
+        sb.append('=');
+        sb.append(((this.percentOfUnintentionalHospit == null)?"<null>":this.percentOfUnintentionalHospit));
+        sb.append(',');
+        sb.append("rankPercentOfUnintentionalH");
+        sb.append('=');
+        sb.append(((this.rankPercentOfUnintentionalH == null)?"<null>":this.rankPercentOfUnintentionalH));
+        sb.append(',');
+        sb.append("indirectStandardisedDeathRat");
+        sb.append('=');
+        sb.append(((this.indirectStandardisedDeathRat == null)?"<null>":this.indirectStandardisedDeathRat));
+        sb.append(',');
+        sb.append("rankIndirectStandardisedDeat");
+        sb.append('=');
+        sb.append(((this.rankIndirectStandardisedDeat == null)?"<null>":this.rankIndirectStandardisedDeat));
+        sb.append(',');
+        sb.append("avoidableDeaths0to74YrsFor");
+        sb.append('=');
+        sb.append(((this.avoidableDeaths0to74YrsFor == null)?"<null>":this.avoidableDeaths0to74YrsFor));
+        sb.append(',');
+        sb.append("rankAvoidableDeaths0to74Yrs");
+        sb.append('=');
+        sb.append(((this.rankAvoidableDeaths0to74Yrs == null)?"<null>":this.rankAvoidableDeaths0to74Yrs));
+        sb.append(',');
+        sb.append("avoidableDeaths0to74yrsrsFor");
+        sb.append('=');
+        sb.append(((this.avoidableDeaths0to74yrsrsFor == null)?"<null>":this.avoidableDeaths0to74yrsrsFor));
+        sb.append(',');
+        sb.append("rankAvoidableDeaths0to74yrsr");
+        sb.append('=');
+        sb.append(((this.rankAvoidableDeaths0to74yrsr == null)?"<null>":this.rankAvoidableDeaths0to74yrsr));
+        sb.append(',');
+        sb.append("avoidableDeaths0to74yrsrsF1");
+        sb.append('=');
+        sb.append(((this.avoidableDeaths0to74yrsrsF1 == null)?"<null>":this.avoidableDeaths0to74yrsrsF1));
+        sb.append(',');
+        sb.append("rankAvoidableDeaths0to74yr1");
+        sb.append('=');
+        sb.append(((this.rankAvoidableDeaths0to74yr1 == null)?"<null>":this.rankAvoidableDeaths0to74yr1));
+        sb.append(',');
+        sb.append("avoidableDeaths0to74yrsForR");
+        sb.append('=');
+        sb.append(((this.avoidableDeaths0to74yrsForR == null)?"<null>":this.avoidableDeaths0to74yrsForR));
+        sb.append(',');
+        sb.append("rankAvoidableDeaths0to74yrs");
+        sb.append('=');
+        sb.append(((this.rankAvoidableDeaths0to74yrs == null)?"<null>":this.rankAvoidableDeaths0to74yrs));
+        sb.append(',');
+        sb.append("primaryHealthNetwork");
+        sb.append('=');
+        sb.append(((this.primaryHealthNetwork == null)?"<null>":this.primaryHealthNetwork));
+        sb.append(',');
+        sb.append("primaryCarePartnership");
+        sb.append('=');
+        sb.append(((this.primaryCarePartnership == null)?"<null>":this.primaryCarePartnership));
+        sb.append(',');
+        sb.append("numberOfHospitalsAndHealth");
+        sb.append('=');
+        sb.append(((this.numberOfHospitalsAndHealth == null)?"<null>":this.numberOfHospitalsAndHealth));
+        sb.append(',');
+        sb.append("numberOfPublicHospitalsAnd");
+        sb.append('=');
+        sb.append(((this.numberOfPublicHospitalsAnd == null)?"<null>":this.numberOfPublicHospitalsAnd));
+        sb.append(',');
+        sb.append("numberOfPrivateHospitalsAnd");
+        sb.append('=');
+        sb.append(((this.numberOfPrivateHospitalsAnd == null)?"<null>":this.numberOfPrivateHospitalsAnd));
+        sb.append(',');
+        sb.append("gPsPer1000Pop");
+        sb.append('=');
+        sb.append(((this.gPsPer1000Pop == null)?"<null>":this.gPsPer1000Pop));
+        sb.append(',');
+        sb.append("rankGPsPer1000Pop");
+        sb.append('=');
+        sb.append(((this.rankGPsPer1000Pop == null)?"<null>":this.rankGPsPer1000Pop));
+        sb.append(',');
+        sb.append("gPSitesPer1000Pop");
+        sb.append('=');
+        sb.append(((this.gPSitesPer1000Pop == null)?"<null>":this.gPSitesPer1000Pop));
+        sb.append(',');
+        sb.append("rankGPSitesPer1000Pop");
+        sb.append('=');
+        sb.append(((this.rankGPSitesPer1000Pop == null)?"<null>":this.rankGPSitesPer1000Pop));
+        sb.append(',');
+        sb.append("alliedHealthSitesPer1000Po");
+        sb.append('=');
+        sb.append(((this.alliedHealthSitesPer1000Po == null)?"<null>":this.alliedHealthSitesPer1000Po));
+        sb.append(',');
+        sb.append("rankAlliedHealthSitesPer10");
+        sb.append('=');
+        sb.append(((this.rankAlliedHealthSitesPer10 == null)?"<null>":this.rankAlliedHealthSitesPer10));
+        sb.append(',');
+        sb.append("dentalServicesPer1000Pop");
+        sb.append('=');
+        sb.append(((this.dentalServicesPer1000Pop == null)?"<null>":this.dentalServicesPer1000Pop));
+        sb.append(',');
+        sb.append("rankDentalServicesPer1000P");
+        sb.append('=');
+        sb.append(((this.rankDentalServicesPer1000P == null)?"<null>":this.rankDentalServicesPer1000P));
+        sb.append(',');
+        sb.append("pharmaciesPer1000Pop");
+        sb.append('=');
+        sb.append(((this.pharmaciesPer1000Pop == null)?"<null>":this.pharmaciesPer1000Pop));
+        sb.append(',');
+        sb.append("rankPharmaciesPer1000Pop");
+        sb.append('=');
+        sb.append(((this.rankPharmaciesPer1000Pop == null)?"<null>":this.rankPharmaciesPer1000Pop));
+        sb.append(',');
+        sb.append("percentNearPublicTransport");
+        sb.append('=');
+        sb.append(((this.percentNearPublicTransport == null)?"<null>":this.percentNearPublicTransport));
+        sb.append(',');
+        sb.append("rankPercentNearPublicTransp");
+        sb.append('=');
+        sb.append(((this.rankPercentNearPublicTransp == null)?"<null>":this.rankPercentNearPublicTransp));
+        sb.append(',');
+        sb.append("percentWithPrivateHealthIns");
+        sb.append('=');
+        sb.append(((this.percentWithPrivateHealthIns == null)?"<null>":this.percentWithPrivateHealthIns));
+        sb.append(',');
+        sb.append("rankPercentWithPrivateHealt");
+        sb.append('=');
+        sb.append(((this.rankPercentWithPrivateHealt == null)?"<null>":this.rankPercentWithPrivateHealt));
+        sb.append(',');
+        sb.append("hospitalInpatientSeparations");
+        sb.append('=');
+        sb.append(((this.hospitalInpatientSeparations == null)?"<null>":this.hospitalInpatientSeparations));
+        sb.append(',');
+        sb.append("rankHospitalInpatientSeparat");
+        sb.append('=');
+        sb.append(((this.rankHospitalInpatientSeparat == null)?"<null>":this.rankHospitalInpatientSeparat));
+        sb.append(',');
+        sb.append("percentInpatientSeparationsF");
+        sb.append('=');
+        sb.append(((this.percentInpatientSeparationsF == null)?"<null>":this.percentInpatientSeparationsF));
+        sb.append(',');
+        sb.append("rankPercentInpatientSeparati");
+        sb.append('=');
+        sb.append(((this.rankPercentInpatientSeparati == null)?"<null>":this.rankPercentInpatientSeparati));
+        sb.append(',');
+        sb.append("mainPublicHospitalAttendedF");
+        sb.append('=');
+        sb.append(((this.mainPublicHospitalAttendedF == null)?"<null>":this.mainPublicHospitalAttendedF));
+        sb.append(',');
+        sb.append("mainPublicHospitalAttendedP");
+        sb.append('=');
+        sb.append(((this.mainPublicHospitalAttendedP == null)?"<null>":this.mainPublicHospitalAttendedP));
+        sb.append(',');
+        sb.append("rankMainPublicHospitalAtten");
+        sb.append('=');
+        sb.append(((this.rankMainPublicHospitalAtten == null)?"<null>":this.rankMainPublicHospitalAtten));
+        sb.append(',');
+        sb.append("averageLengthOfStayInDays");
+        sb.append('=');
+        sb.append(((this.averageLengthOfStayInDays == null)?"<null>":this.averageLengthOfStayInDays));
+        sb.append(',');
+        sb.append("rankAverageLengthOfStayIn");
+        sb.append('=');
+        sb.append(((this.rankAverageLengthOfStayIn == null)?"<null>":this.rankAverageLengthOfStayIn));
+        sb.append(',');
+        sb.append("averageLengthOfStayForAll");
+        sb.append('=');
+        sb.append(((this.averageLengthOfStayForAll == null)?"<null>":this.averageLengthOfStayForAll));
+        sb.append(',');
+        sb.append("rankAverageLengthOfStayFor");
+        sb.append('=');
+        sb.append(((this.rankAverageLengthOfStayFor == null)?"<null>":this.rankAverageLengthOfStayFor));
+        sb.append(',');
+        sb.append("perAnnumPercentChangeInSep");
+        sb.append('=');
+        sb.append(((this.perAnnumPercentChangeInSep == null)?"<null>":this.perAnnumPercentChangeInSep));
+        sb.append(',');
+        sb.append("rankPerAnnumPercentChangeI");
+        sb.append('=');
+        sb.append(((this.rankPerAnnumPercentChangeI == null)?"<null>":this.rankPerAnnumPercentChangeI));
+        sb.append(',');
+        sb.append("perAnnumPercentProjectedCha");
+        sb.append('=');
+        sb.append(((this.perAnnumPercentProjectedCha == null)?"<null>":this.perAnnumPercentProjectedCha));
+        sb.append(',');
+        sb.append("rankPerAnnumPercentProjecte");
+        sb.append('=');
+        sb.append(((this.rankPerAnnumPercentProjecte == null)?"<null>":this.rankPerAnnumPercentProjecte));
+        sb.append(',');
+        sb.append("aCSCsPer1000PopTotal");
+        sb.append('=');
+        sb.append(((this.aCSCsPer1000PopTotal == null)?"<null>":this.aCSCsPer1000PopTotal));
+        sb.append(',');
+        sb.append("rankACSCsPer1000PopTotal");
+        sb.append('=');
+        sb.append(((this.rankACSCsPer1000PopTotal == null)?"<null>":this.rankACSCsPer1000PopTotal));
+        sb.append(',');
+        sb.append("aCSCsPer1000PopAcute");
+        sb.append('=');
+        sb.append(((this.aCSCsPer1000PopAcute == null)?"<null>":this.aCSCsPer1000PopAcute));
+        sb.append(',');
+        sb.append("rankACSCsPer1000PopAcute");
+        sb.append('=');
+        sb.append(((this.rankACSCsPer1000PopAcute == null)?"<null>":this.rankACSCsPer1000PopAcute));
+        sb.append(',');
+        sb.append("aCSCsPer1000PopChronic");
+        sb.append('=');
+        sb.append(((this.aCSCsPer1000PopChronic == null)?"<null>":this.aCSCsPer1000PopChronic));
+        sb.append(',');
+        sb.append("rankACSCsPer1000PopChronic");
+        sb.append('=');
+        sb.append(((this.rankACSCsPer1000PopChronic == null)?"<null>":this.rankACSCsPer1000PopChronic));
+        sb.append(',');
+        sb.append("aCSCsPer1000PopVaccinePrev");
+        sb.append('=');
+        sb.append(((this.aCSCsPer1000PopVaccinePrev == null)?"<null>":this.aCSCsPer1000PopVaccinePrev));
+        sb.append(',');
+        sb.append("rankACSCsPer1000PopVaccine");
+        sb.append('=');
+        sb.append(((this.rankACSCsPer1000PopVaccine == null)?"<null>":this.rankACSCsPer1000PopVaccine));
+        sb.append(',');
+        sb.append("emergencyDepartmentPresentati");
+        sb.append('=');
+        sb.append(((this.emergencyDepartmentPresentati == null)?"<null>":this.emergencyDepartmentPresentati));
+        sb.append(',');
+        sb.append("rankEmergencyDepartmentPrese");
+        sb.append('=');
+        sb.append(((this.rankEmergencyDepartmentPrese == null)?"<null>":this.rankEmergencyDepartmentPrese));
+        sb.append(',');
+        sb.append("primaryCareTypePresentations");
+        sb.append('=');
+        sb.append(((this.primaryCareTypePresentations == null)?"<null>":this.primaryCareTypePresentations));
+        sb.append(',');
+        sb.append("rankPrimaryCareTypePresenta");
+        sb.append('=');
+        sb.append(((this.rankPrimaryCareTypePresenta == null)?"<null>":this.rankPrimaryCareTypePresenta));
+        sb.append(',');
+        sb.append("childProtectionInvestigations");
+        sb.append('=');
+        sb.append(((this.childProtectionInvestigations == null)?"<null>":this.childProtectionInvestigations));
+        sb.append(',');
+        sb.append("rankChildProtectionInvestiga");
+        sb.append('=');
+        sb.append(((this.rankChildProtectionInvestiga == null)?"<null>":this.rankChildProtectionInvestiga));
+        sb.append(',');
+        sb.append("childProtectionSubstantiation");
+        sb.append('=');
+        sb.append(((this.childProtectionSubstantiation == null)?"<null>":this.childProtectionSubstantiation));
+        sb.append(',');
+        sb.append("rankChildProtectionSubstanti");
+        sb.append('=');
+        sb.append(((this.rankChildProtectionSubstanti == null)?"<null>":this.rankChildProtectionSubstanti));
+        sb.append(',');
+        sb.append("numberOfChildFIRSTAssessmen");
+        sb.append('=');
+        sb.append(((this.numberOfChildFIRSTAssessmen == null)?"<null>":this.numberOfChildFIRSTAssessmen));
+        sb.append(',');
+        sb.append("rankNumberOfChildFIRSTAsse");
+        sb.append('=');
+        sb.append(((this.rankNumberOfChildFIRSTAsse == null)?"<null>":this.rankNumberOfChildFIRSTAsse));
+        sb.append(',');
+        sb.append("gPAttendancesPer1000PopMal");
+        sb.append('=');
+        sb.append(((this.gPAttendancesPer1000PopMal == null)?"<null>":this.gPAttendancesPer1000PopMal));
+        sb.append(',');
+        sb.append("rankGPAttendancesPer1000Po");
+        sb.append('=');
+        sb.append(((this.rankGPAttendancesPer1000Po == null)?"<null>":this.rankGPAttendancesPer1000Po));
+        sb.append(',');
+        sb.append("gPAttendancesPer1000PopFem");
+        sb.append('=');
+        sb.append(((this.gPAttendancesPer1000PopFem == null)?"<null>":this.gPAttendancesPer1000PopFem));
+        sb.append(',');
+        sb.append("rankGPAttendancesPer10001");
+        sb.append('=');
+        sb.append(((this.rankGPAttendancesPer10001 == null)?"<null>":this.rankGPAttendancesPer10001));
+        sb.append(',');
+        sb.append("gPAttendancesPer1000PopTot");
+        sb.append('=');
+        sb.append(((this.gPAttendancesPer1000PopTot == null)?"<null>":this.gPAttendancesPer1000PopTot));
+        sb.append(',');
+        sb.append("rankGPAttendancesPer10002");
+        sb.append('=');
+        sb.append(((this.rankGPAttendancesPer10002 == null)?"<null>":this.rankGPAttendancesPer10002));
+        sb.append(',');
+        sb.append("hACCClientsAged0to64yrsPer");
+        sb.append('=');
+        sb.append(((this.hACCClientsAged0to64yrsPer == null)?"<null>":this.hACCClientsAged0to64yrsPer));
+        sb.append(',');
+        sb.append("rankHACCClientsAged0to64yrs");
+        sb.append('=');
+        sb.append(((this.rankHACCClientsAged0to64yrs == null)?"<null>":this.rankHACCClientsAged0to64yrs));
+        sb.append(',');
+        sb.append("hACCClientsAged65yrsPlusPer");
+        sb.append('=');
+        sb.append(((this.hACCClientsAged65yrsPlusPer == null)?"<null>":this.hACCClientsAged65yrsPlusPer));
+        sb.append(',');
+        sb.append("rankHACCClientsAged65yrsPlu");
+        sb.append('=');
+        sb.append(((this.rankHACCClientsAged65yrsPlu == null)?"<null>":this.rankHACCClientsAged65yrsPlu));
+        sb.append(',');
+        sb.append("noClientsWhoReceivedAlcohol");
+        sb.append('=');
+        sb.append(((this.noClientsWhoReceivedAlcohol == null)?"<null>":this.noClientsWhoReceivedAlcohol));
+        sb.append(',');
+        sb.append("rankNoClientsWhoReceivedAl");
+        sb.append('=');
+        sb.append(((this.rankNoClientsWhoReceivedAl == null)?"<null>":this.rankNoClientsWhoReceivedAl));
+        sb.append(',');
+        sb.append("registeredMentalMealthClient");
+        sb.append('=');
+        sb.append(((this.registeredMentalMealthClient == null)?"<null>":this.registeredMentalMealthClient));
+        sb.append(',');
+        sb.append("rankRegisteredMentalMealthC");
+        sb.append('=');
+        sb.append(((this.rankRegisteredMentalMealthC == null)?"<null>":this.rankRegisteredMentalMealthC));
+        sb.append(',');
+        if (sb.charAt((sb.length()- 1)) == ',') {
+            sb.setCharAt((sb.length()- 1), ']');
+        } else {
+            sb.append(']');
+        }
+        return sb.toString();
     }
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder()
-                .append(lGA)
-                .append(metropolitanRural)
-                .append(departmentalRegion)
-                .append(departmentalArea)
-                .append(areaOfLGASqKm)
-                .append(aSGSLGACode)
-                .append(mostPopulousTownOrSuburbIn)
-                .append(distanceToMelbourneInKm)
-                .append(travelTimeFromMelbourneGPO)
-                .append(aRIARemotenessCategory)
-                .append(percentBusinessLandUse)
-                .append(percentIndustrialLandUse)
-                .append(percentResidentialLandUse)
-                .append(percentRuralLandUse)
-                .append(percentOtherLandUse)
-                .append(perAnnumPopChangeActualFor)
-                .append(perAnnumPopChangeProjected)
-                .append(females0to14yrs)
-                .append(females15to24yrs)
-                .append(females25to44yrs)
-                .append(females45to64yrs)
-                .append(females65to84yrs)
-                .append(female85yrsPlus)
-                .append(totalFemales)
-                .append(males0to14yrs)
-                .append(males15to24yrs)
-                .append(males25to44yrs)
-                .append(males45to64yrs)
-                .append(males65to84yrs)
-                .append(male85yrsPlus)
-                .append(totalMales)
-                .append(total0to14yrs)
-                .append(tota15to24yrs)
-                .append(tota25to44yrs)
-                .append(tota45to64yrs)
-                .append(tota65to84yrs)
-                .append(tota85yrsPlus)
-                .append(total2013ERP)
-                .append(percentTotal0to14yrs)
-                .append(percentTotal15to24yrs)
-                .append(percentTotal25to44yrs)
-                .append(percentTotal45to64yrs)
-                .append(percentTotal65to84yrs)
-                .append(percentTotal84yrsPlus)
-                .append(totalFertilityRate2012)
-                .append(rankTotalFertilityRate2012)
-                .append(teenageFertilityRate2012)
-                .append(rankTeenageFertilityRate201)
-                .append(percentAboriginalOrTorresSt)
-                .append(rankAboriginalOrTorresStrai)
-                .append(percentBornOverseas2011)
-                .append(rankPercentBornOverseas2011)
-                .append(bornInANonEnglishSpeaking)
-                .append(rankBornInANonEnglishSpea)
-                .append(country1PercentForTop5Ove)
-                .append(country1ForTop5OverseasCo)
-                .append(country2PercentForTop5Ove)
-                .append(country2ForTop5OverseasCo)
-                .append(country3PercentForTop5Ove)
-                .append(country3ForTop5OverseasCo)
-                .append(country4PercentForTop5Ove)
-                .append(country4ForTop5OverseasCo)
-                .append(country5PercentForTop5Ove)
-                .append(country5ForTop5OverseasCo)
-                .append(percentSpeaksLOTEAtHome)
-                .append(rankPercentSpeaksLOTEAtHom)
-                .append(country1PercentTop5Languag)
-                .append(country1Top5LanguagesSpoke)
-                .append(country2PercentTop5Languag)
-                .append(country2Top5LanguagesSpoke)
-                .append(country3PercentTop5Languag)
-                .append(country3Top5LanguagesSpoke)
-                .append(country4PercentTop5Languag)
-                .append(country4Top5LanguagesSpoke)
-                .append(country5PercentTop5Languag)
-                .append(country5Top5LanguagesSpoke)
-                .append(percentLowEnglishProficiency)
-                .append(rankPercentLowEnglishProfic)
-                .append(ancestry1PercentTop5Ancest)
-                .append(ancestry1Top5Ancestries)
-                .append(ancestry2PercentTop5Ancest)
-                .append(ancestry2Top5Ancestries)
-                .append(ancestry3PercentTop5Ancest)
-                .append(ancestry3Top5Ancestries)
-                .append(ancestry4PercentTop5Ancest)
-                .append(ancestry4Top5Ancestries)
-                .append(ancestry5PercentTop5Ancest)
-                .append(ancestry5Top5Ancestries)
-                .append(newSettlerArrivalsPer100000)
-                .append(rankNewSettlerArrivalsPer1)
-                .append(humanitarianArrivalsAsAPerc)
-                .append(rankHumanitarianArrivalsAsA)
-                .append(communityAcceptanceOfDiverse)
-                .append(rankCommunityAcceptanceOfDi)
-                .append(proportionOfHouseholdsWithB)
-                .append(householdsWithBroadbandInter)
-                .append(gamingMachineLossesPerHead)
-                .append(rankGamingMachineLossesPer)
-                .append(familyIncidentsPer1000Pop)
-                .append(rankFamilyIncidentsPer1000)
-                .append(drugUsageAndPossessionOffen)
-                .append(rankDrugUsageAndPossession)
-                .append(totalCrimePer1000Pop)
-                .append(rankTotalCrimePer1000Pop)
-                .append(feelsSafeWalkingAloneDuring)
-                .append(rankFeelsSafeWalkingAloneD)
-                .append(believeOtherPeopleCanBeTru)
-                .append(rankBelieveOtherPeopleCanB)
-                .append(spokeWithMoreThan5PeopleT)
-                .append(rankSpokeWithMoreThan5Peo)
-                .append(ableToDefinitelyGetHelpFro)
-                .append(rankAbleToDefinitelyGetHel)
-                .append(volunteers)
-                .append(rankVolunteers)
-                .append(feelValuedBySociety)
-                .append(rankFeelValuedBySociety)
-                .append(attendedALocalCommunityEven)
-                .append(rankAttendedALocalCommunity)
-                .append(takeActionOnBehalfOfTheLo)
-                .append(rankTakeActionOnBehalfOfT)
-                .append(membersOfASportsGroup)
-                .append(rankMembersOfASportsGroup)
-                .append(membersOfAReligiousGroup)
-                .append(rankMembersOfAReligiousGro)
-                .append(ratedTheirCommunityAsAnAct)
-                .append(rankRatedTheirCommunityAsA)
-                .append(ratedTheirCommunityAsAPlea)
-                .append(rankAtedTheirCommunityAsA)
-                .append(ratedTheirCommunityAsGoodO)
-                .append(rankRatedTheirCommunityAsG)
-                .append(indexOfRelativeSociaEconomi)
-                .append(rankIndexOfRelativeSociaEc)
-                .append(unemploymentRate)
-                .append(rankUnemploymentRate)
-                .append(percentIndividualIncomeLess)
-                .append(rankPercentIndividualIncome)
-                .append(percentFemaleIncomeLessThan)
-                .append(rankPercentFemaleIncomeLess)
-                .append(percentMaleIncomeLessThan4)
-                .append(rankPercentMaleIncomeLessT)
-                .append(percentOneParentHeadedFamil)
-                .append(rankPercentOneParentHeaded)
-                .append(oneParentHeadedFamiliesPerc)
-                .append(rankOneParentHeadedFamilies)
-                .append(oneParentHeadedFamiliesPe1)
-                .append(rankOneParentHeadedFamili1)
-                .append(equivalisedMedianIncome)
-                .append(rankEquivalisedMedianIncome)
-                .append(delayedMedicalConsultationBe)
-                .append(rankDelayedMedicalConsultati)
-                .append(delayedPurchasingPrescribedM)
-                .append(rankDelayedPurchasingPrescri)
-                .append(percentLowIncomeWelfareDepe)
-                .append(rankPercentLowIncomeWelfare)
-                .append(percentOfPopWithFoodInsecu)
-                .append(rankPercentOfPopWithFoodI)
-                .append(percentMortgageStress)
-                .append(rankPercentMortgageStress)
-                .append(percentRentalStress)
-                .append(rankPercentRentalStress)
-                .append(percentOfRentalHousingThat)
-                .append(rankPercentOfRentalHousing)
-                .append(medianHousePrice)
-                .append(rankMedianHousePrice)
-                .append(medianRentFor3BedroomsHome)
-                .append(rankMedianRentFor3Bedrooms)
-                .append(newDwellingsApprovedForCons)
-                .append(rankNewDwellingsApprovedFor)
-                .append(socialHousingStockAsAPerce)
-                .append(rankSocialHousingStockAsA)
-                .append(numberOfSocialHousingDwelli)
-                .append(rankNumberOfSocialHousingD)
-                .append(homelessnessRatePer1000Pop)
-                .append(rankHomelessnessRatePer1000)
-                .append(percentOfWorkJourneysWhich)
-                .append(rankPercentOfWorkJourneysW)
-                .append(percentOfWorkJourneysWhich1)
-                .append(rankPercentOfWorkJourneys1)
-                .append(personsWithAtLeast2HourDa)
-                .append(rankPersonsWithAtLeast2Ho)
-                .append(percentHouseholdsWithNoMoto)
-                .append(rankPercentHouseholdsWithNo)
-                .append(fTEStudents)
-                .append(percentYear9StudentsWhoAtt)
-                .append(rankPercentOfYear9Students)
-                .append(percentOfYear9StudentsWho)
-                .append(rankPercentYear9StudentsWh)
-                .append(percent19YearOldsCompleting)
-                .append(rankPercent19YearOldsCompl)
-                .append(percentPersonsWhoDidNotCom)
-                .append(rankPercentOfPersonsWhoDid)
-                .append(percentPersonsWhoCompletedA)
-                .append(rankPercentPersonsWhoComple)
-                .append(percentOfSchoolChildrenAtte)
-                .append(rankPercentOfSchoolChildren)
-                .append(percentOfPersonsReportingAs)
-                .append(rankPercentOfPersonsReporti)
-                .append(percentOfPersonsReportingTy)
-                .append(rankPercentOfPersonsRepor1)
-                .append(percentOfPersonsReportingHi)
-                .append(rankPercentOfPersonsRepor2)
-                .append(percentOfPersonsReportingHe)
-                .append(rankPercentOfPersonsRepor3)
-                .append(percentOfPersonsReportingOs)
-                .append(rankPercentOfPersonsRepor4)
-                .append(percentOfPersonsReportingAr)
-                .append(rankPercentOfPersonsRepor5)
-                .append(percentOfPersonsWhoAreOver)
-                .append(rankPercentOfPersonsWhoAre)
-                .append(percentOfFemalesWhoAreOver)
-                .append(rankPercentOfFemalesWhoAre)
-                .append(percentOfMalesWhoAreOverwe)
-                .append(rankPercentOfMalesWhoAreO)
-                .append(percentOfPersonsWhoAreObes)
-                .append(rankPercentOfPersonsWhoA1)
-                .append(percentOfFemalesWhoAreObes)
-                .append(rankPercentOfFemalesWhoA1)
-                .append(percentOfMalesWhoAreObese)
-                .append(rankPercentOfMalesWhoAre1)
-                .append(malignantCancersDiagnosedPer)
-                .append(rankMalignantCancersDiagnose)
-                .append(maleCancerIncidencePer1000)
-                .append(rankMaleCancerIncidencePer)
-                .append(femaleCancerIncidencePer100)
-                .append(rankFemaleCancerIncidencePe)
-                .append(percentPoorDentalHealth)
-                .append(rankPercentPoorDentalHealth)
-                .append(notificationsPer100000PopOf)
-                .append(rankNotificationsPer100000P)
-                .append(notificationsPer100000Pop1)
-                .append(rankNotificationsPer1000001)
-                .append(notificationsPer100000People)
-                .append(rankNotificationsPer1000002)
-                .append(percentOfPersons18yrsPlusWh)
-                .append(rankPercentOfPersons18yrsPl)
-                .append(percentOfMales18yrsPlusWho)
-                .append(rankPercentOfMales18yrsPlus)
-                .append(percentOfFemales18yrsPlusWh)
-                .append(rankPercentOfFemales18yrsPl)
-                .append(consumedAlcoholAtLeastWeekl)
-                .append(rankConsumedAlcoholAtLeast)
-                .append(consumedAlcoholAtLeastWee1)
-                .append(rankConsumedAlcoholAtLeast1)
-                .append(percentOfPersonsWhoDoNotM)
-                .append(rankPercentOfPersonsWhoDo)
-                .append(percentOfMalesWhoDoNotMee)
-                .append(rankPercentOfMalesWhoDoNo)
-                .append(percentOfFemalesWhoDoNotM)
-                .append(rankPercentOfFemalesWhoDo)
-                .append(percentOfPersonsWhoDrinkSo)
-                .append(rankPercentOfPersonsWhoDri)
-                .append(percentOfPersonsWhoShareA)
-                .append(rankPercentOfPersonsWhoSha)
-                .append(percentOfPersonsWhoDoNot1)
-                .append(rankPercentOfPersonsWhoDo1)
-                .append(percentOfMalesWhoDoNotM1)
-                .append(rankPercentOfMalesWhoDo1)
-                .append(percentOfFemalesWhoDoNot1)
-                .append(rankPercentOfFemalesWhoDo1)
-                .append(percentOfPersonsWhoSitFor)
-                .append(rankPercentOfPersonsWhoSit)
-                .append(percentOfPersonsWhoVisitA)
-                .append(rankPercentOfPersonsWhoVis)
-                .append(percentOfBreastScreeningPar)
-                .append(rankPercentOfBreastScreenin)
-                .append(percentOfCervicalCancerScre)
-                .append(rankPercentOfCervicalCancer)
-                .append(bowelCancerScreeningParticip)
-                .append(rankBowelCancerScreeningPar)
-                .append(bowelCancerScreeningPartic1)
-                .append(rankBowelCancerScreeningP1)
-                .append(bowelCancerScreeningPartic2)
-                .append(rankBowelCancerScreeningP2)
-                .append(lowBirthweightBabies)
-                .append(rankLowBirthweightBabies)
-                .append(percentInfantsFullyBreastfed)
-                .append(rankPercentInfantsFullyBrea)
-                .append(percentChildrenFullyImmunise)
-                .append(rankPercentChildrenFullyImm)
-                .append(proportionOfInfantsEnrolled)
-                .append(rankProportionOfInfantsEnro)
-                .append(kindergartenParticipationRate)
-                .append(percentOfChildrenWithKinder)
-                .append(rankPercentOfChildrenWithK)
-                .append(percentOfChildrenWithEmotio)
-                .append(rankPercentOfChildrenWithE)
-                .append(percentOfChildrenWithSpeech)
-                .append(rankPercentOfChildrenWithS)
-                .append(percentOfAdolescentsWhoRepo)
-                .append(rankPercentOfAdolescentsWho)
-                .append(percentOfChildrenWhoAreDev)
-                .append(rankPercentOfChildrenWhoAr)
-                .append(percentOfChildrenWhoAreD1)
-                .append(rankPercentOfChildrenWho1)
-                .append(coreActivityNeedForAssistan)
-                .append(rankCoreActivityNeedForAss)
-                .append(peopleWithSevereAndProfound)
-                .append(rankPeopleWithSevereAndPro)
-                .append(peopleWithSevereAndProfou1)
-                .append(rankPeopleWithSevereAndP1)
-                .append(percentPopAged75yrsPlusLivi)
-                .append(rankPercentPopAged75yrsPlus)
-                .append(popAged75yrsPlusLivingAlone)
-                .append(rankPopAged75yrsPlusLiving)
-                .append(popAged75yrsPlusLivingAlo1)
-                .append(rankPopAged75yrsPlusLiving1)
-                .append(personsReceivingDisabilitySe)
-                .append(rankPersonsReceivingDisabili)
-                .append(disabilityPensionPer1000Eli)
-                .append(rankDisabilityPensionPer100)
-                .append(agedCareHighCareBeds)
-                .append(agedCareLowCareBeds)
-                .append(agePensionPer1000EligibleP)
-                .append(rankAgePensionPer1000Eligi)
-                .append(maleLifeExpectancy)
-                .append(rankMaleLifeExpectancy)
-                .append(femaleLifeExpectancy)
-                .append(rankFemaleLifeExpectancy)
-                .append(personsReportingFairOrPoor)
-                .append(rankPersonsReportingFairOr)
-                .append(femalesReportingFairOrPoor)
-                .append(rankFemalesReportingFairOr)
-                .append(malesReportingFairOrPoorHe)
-                .append(rankMalesReportingFairOrPo)
-                .append(percentWhoHaveAHighDegree)
-                .append(rankPercentWhoHaveAHighDe)
-                .append(percentOfPersonsSleepingLes)
-                .append(rankPercentOfPersonsSleepin)
-                .append(percentPersonsWithAdequateW)
-                .append(rankPercentPersonsWithAdequ)
-                .append(unintentionalInjuriesTreated)
-                .append(rankUnintentionalInjuriesTre)
-                .append(intentionalInjuriesTreatedIn)
-                .append(rankIntentionalInjuriesTreat)
-                .append(percentOfUnintentionalHospit)
-                .append(rankPercentOfUnintentionalH)
-                .append(indirectStandardisedDeathRat)
-                .append(rankIndirectStandardisedDeat)
-                .append(avoidableDeaths0to74YrsFor)
-                .append(rankAvoidableDeaths0to74Yrs)
-                .append(avoidableDeaths0to74yrsrsFor)
-                .append(rankAvoidableDeaths0to74yrsr)
-                .append(avoidableDeaths0to74yrsrsF1)
-                .append(rankAvoidableDeaths0to74yr1)
-                .append(avoidableDeaths0to74yrsForR)
-                .append(rankAvoidableDeaths0to74yrs)
-                .append(primaryHealthNetwork)
-                .append(primaryCarePartnership)
-                .append(numberOfHospitalsAndHealth)
-                .append(numberOfPublicHospitalsAnd)
-                .append(numberOfPrivateHospitalsAnd)
-                .append(gPsPer1000Pop)
-                .append(rankGPsPer1000Pop)
-                .append(gPSitesPer1000Pop)
-                .append(rankGPSitesPer1000Pop)
-                .append(alliedHealthSitesPer1000Po)
-                .append(rankAlliedHealthSitesPer10)
-                .append(dentalServicesPer1000Pop)
-                .append(rankDentalServicesPer1000P)
-                .append(pharmaciesPer1000Pop)
-                .append(rankPharmaciesPer1000Pop)
-                .append(percentNearPublicTransport)
-                .append(rankPercentNearPublicTransp)
-                .append(percentWithPrivateHealthIns)
-                .append(rankPercentWithPrivateHealt)
-                .append(hospitalInpatientSeparations)
-                .append(rankHospitalInpatientSeparat)
-                .append(percentInpatientSeparationsF)
-                .append(rankPercentInpatientSeparati)
-                .append(mainPublicHospitalAttendedF)
-                .append(mainPublicHospitalAttendedP)
-                .append(rankMainPublicHospitalAtten)
-                .append(averageLengthOfStayInDays)
-                .append(rankAverageLengthOfStayIn)
-                .append(averageLengthOfStayForAll)
-                .append(rankAverageLengthOfStayFor)
-                .append(perAnnumPercentChangeInSep)
-                .append(rankPerAnnumPercentChangeI)
-                .append(perAnnumPercentProjectedCha)
-                .append(rankPerAnnumPercentProjecte)
-                .append(aCSCsPer1000PopTotal)
-                .append(rankACSCsPer1000PopTotal)
-                .append(aCSCsPer1000PopAcute)
-                .append(rankACSCsPer1000PopAcute)
-                .append(aCSCsPer1000PopChronic)
-                .append(rankACSCsPer1000PopChronic)
-                .append(aCSCsPer1000PopVaccinePrev)
-                .append(rankACSCsPer1000PopVaccine)
-                .append(emergencyDepartmentPresentati)
-                .append(rankEmergencyDepartmentPrese)
-                .append(primaryCareTypePresentations)
-                .append(rankPrimaryCareTypePresenta)
-                .append(childProtectionInvestigations)
-                .append(rankChildProtectionInvestiga)
-                .append(childProtectionSubstantiation)
-                .append(rankChildProtectionSubstanti)
-                .append(numberOfChildFIRSTAssessmen)
-                .append(rankNumberOfChildFIRSTAsse)
-                .append(gPAttendancesPer1000PopMal)
-                .append(rankGPAttendancesPer1000Po)
-                .append(gPAttendancesPer1000PopFem)
-                .append(rankGPAttendancesPer10001)
-                .append(gPAttendancesPer1000PopTot)
-                .append(rankGPAttendancesPer10002)
-                .append(hACCClientsAged0to64yrsPer)
-                .append(rankHACCClientsAged0to64yrs)
-                .append(hACCClientsAged65yrsPlusPer)
-                .append(rankHACCClientsAged65yrsPlu)
-                .append(noClientsWhoReceivedAlcohol)
-                .append(rankNoClientsWhoReceivedAl)
-                .append(registeredMentalMealthClient)
-                .append(rankRegisteredMentalMealthC)
-                .toHashCode();
+        int result = 1;
+        result = ((result* 31)+((this.primaryCarePartnership == null)? 0 :this.primaryCarePartnership.hashCode()));
+        result = ((result* 31)+((this.percentOfPersonsReportingOs == null)? 0 :this.percentOfPersonsReportingOs.hashCode()));
+        result = ((result* 31)+((this.country4PercentForTop5Ove == null)? 0 :this.country4PercentForTop5Ove.hashCode()));
+        result = ((result* 31)+((this.bowelCancerScreeningParticip == null)? 0 :this.bowelCancerScreeningParticip.hashCode()));
+        result = ((result* 31)+((this.kindergartenParticipationRate == null)? 0 :this.kindergartenParticipationRate.hashCode()));
+        result = ((result* 31)+((this.feelValuedBySociety == null)? 0 :this.feelValuedBySociety.hashCode()));
+        result = ((result* 31)+((this.percentRentalStress == null)? 0 :this.percentRentalStress.hashCode()));
+        result = ((result* 31)+((this.maleLifeExpectancy == null)? 0 :this.maleLifeExpectancy.hashCode()));
+        result = ((result* 31)+((this.rankPercentOfChildrenWithE == null)? 0 :this.rankPercentOfChildrenWithE.hashCode()));
+        result = ((result* 31)+((this.delayedMedicalConsultationBe == null)? 0 :this.delayedMedicalConsultationBe.hashCode()));
+        result = ((result* 31)+((this.percentWhoHaveAHighDegree == null)? 0 :this.percentWhoHaveAHighDegree.hashCode()));
+        result = ((result* 31)+((this.rankPercentOfChildrenWithK == null)? 0 :this.rankPercentOfChildrenWithK.hashCode()));
+        result = ((result* 31)+((this.femaleCancerIncidencePer100 == null)? 0 :this.femaleCancerIncidencePer100 .hashCode()));
+        result = ((result* 31)+((this.volunteers == null)? 0 :this.volunteers.hashCode()));
+        result = ((result* 31)+((this.female85yrsPlus == null)? 0 :this.female85yrsPlus.hashCode()));
+        result = ((result* 31)+((this.rankBowelCancerScreeningP1 == null)? 0 :this.rankBowelCancerScreeningP1 .hashCode()));
+        result = ((result* 31)+((this.percentOfFemalesWhoAreObes == null)? 0 :this.percentOfFemalesWhoAreObes.hashCode()));
+        result = ((result* 31)+((this.rankBowelCancerScreeningP2 == null)? 0 :this.rankBowelCancerScreeningP2 .hashCode()));
+        result = ((result* 31)+((this.rankPercentOfChildrenWithS == null)? 0 :this.rankPercentOfChildrenWithS.hashCode()));
+        result = ((result* 31)+((this.personsReceivingDisabilitySe == null)? 0 :this.personsReceivingDisabilitySe.hashCode()));
+        result = ((result* 31)+((this.percentPersonsWhoCompletedA == null)? 0 :this.percentPersonsWhoCompletedA.hashCode()));
+        result = ((result* 31)+((this.socialHousingStockAsAPerce == null)? 0 :this.socialHousingStockAsAPerce.hashCode()));
+        result = ((result* 31)+((this.percentOfChildrenWithSpeech == null)? 0 :this.percentOfChildrenWithSpeech.hashCode()));
+        result = ((result* 31)+((this.rankPopAged75yrsPlusLiving1 == null)? 0 :this.rankPopAged75yrsPlusLiving1 .hashCode()));
+        result = ((result* 31)+((this.rankGPsPer1000Pop == null)? 0 :this.rankGPsPer1000Pop.hashCode()));
+        result = ((result* 31)+((this.rankPercentOfAdolescentsWho == null)? 0 :this.rankPercentOfAdolescentsWho.hashCode()));
+        result = ((result* 31)+((this.rankSpokeWithMoreThan5Peo == null)? 0 :this.rankSpokeWithMoreThan5Peo.hashCode()));
+        result = ((result* 31)+((this.percentResidentialLandUse == null)? 0 :this.percentResidentialLandUse.hashCode()));
+        result = ((result* 31)+((this.percentAboriginalOrTorresSt == null)? 0 :this.percentAboriginalOrTorresSt.hashCode()));
+        result = ((result* 31)+((this.rankPercentOfPersonsRepor1 == null)? 0 :this.rankPercentOfPersonsRepor1 .hashCode()));
+        result = ((result* 31)+((this.rankPercentChildrenFullyImm == null)? 0 :this.rankPercentChildrenFullyImm.hashCode()));
+        result = ((result* 31)+((this.rankNoClientsWhoReceivedAl == null)? 0 :this.rankNoClientsWhoReceivedAl.hashCode()));
+        result = ((result* 31)+((this.tota65to84yrs == null)? 0 :this.tota65to84yrs.hashCode()));
+        result = ((result* 31)+((this.country2ForTop5OverseasCo == null)? 0 :this.country2ForTop5OverseasCo.hashCode()));
+        result = ((result* 31)+((this.rankFemaleLifeExpectancy == null)? 0 :this.rankFemaleLifeExpectancy.hashCode()));
+        result = ((result* 31)+((this.personsWithAtLeast2HourDa == null)? 0 :this.personsWithAtLeast2HourDa.hashCode()));
+        result = ((result* 31)+((this.rankAlliedHealthSitesPer10 == null)? 0 :this.rankAlliedHealthSitesPer10 .hashCode()));
+        result = ((result* 31)+((this.rankPercentOfChildrenWho1 == null)? 0 :this.rankPercentOfChildrenWho1 .hashCode()));
+        result = ((result* 31)+((this.rankVolunteers == null)? 0 :this.rankVolunteers.hashCode()));
+        result = ((result* 31)+((this.numberOfPrivateHospitalsAnd == null)? 0 :this.numberOfPrivateHospitalsAnd.hashCode()));
+        result = ((result* 31)+((this.femaleLifeExpectancy == null)? 0 :this.femaleLifeExpectancy.hashCode()));
+        result = ((result* 31)+((this.membersOfAReligiousGroup == null)? 0 :this.membersOfAReligiousGroup.hashCode()));
+        result = ((result* 31)+((this.rankAtedTheirCommunityAsA == null)? 0 :this.rankAtedTheirCommunityAsA.hashCode()));
+        result = ((result* 31)+((this.rankIntentionalInjuriesTreat == null)? 0 :this.rankIntentionalInjuriesTreat.hashCode()));
+        result = ((result* 31)+((this.intentionalInjuriesTreatedIn == null)? 0 :this.intentionalInjuriesTreatedIn.hashCode()));
+        result = ((result* 31)+((this.rankPercentOfPersonsWhoDri == null)? 0 :this.rankPercentOfPersonsWhoDri.hashCode()));
+        result = ((result* 31)+((this.agedCareLowCareBeds == null)? 0 :this.agedCareLowCareBeds.hashCode()));
+        result = ((result* 31)+((this.percentOfChildrenWhoAreDev == null)? 0 :this.percentOfChildrenWhoAreDev.hashCode()));
+        result = ((result* 31)+((this.percentOfFemalesWhoDoNotM == null)? 0 :this.percentOfFemalesWhoDoNotM.hashCode()));
+        result = ((result* 31)+((this.travelTimeFromMelbourneGPO == null)? 0 :this.travelTimeFromMelbourneGPO.hashCode()));
+        result = ((result* 31)+((this.homelessnessRatePer1000Pop == null)? 0 :this.homelessnessRatePer1000Pop.hashCode()));
+        result = ((result* 31)+((this.percentMaleIncomeLessThan4 == null)? 0 :this.percentMaleIncomeLessThan4 .hashCode()));
+        result = ((result* 31)+((this.country5PercentTop5Languag == null)? 0 :this.country5PercentTop5Languag.hashCode()));
+        result = ((result* 31)+((this.perAnnumPercentChangeInSep == null)? 0 :this.perAnnumPercentChangeInSep.hashCode()));
+        result = ((result* 31)+((this.takeActionOnBehalfOfTheLo == null)? 0 :this.takeActionOnBehalfOfTheLo.hashCode()));
+        result = ((result* 31)+((this.rankDrugUsageAndPossession == null)? 0 :this.rankDrugUsageAndPossession.hashCode()));
+        result = ((result* 31)+((this.rankPercentOfChildrenWhoAr == null)? 0 :this.rankPercentOfChildrenWhoAr.hashCode()));
+        result = ((result* 31)+((this.rankHACCClientsAged65yrsPlu == null)? 0 :this.rankHACCClientsAged65yrsPlu.hashCode()));
+        result = ((result* 31)+((this.totalCrimePer1000Pop == null)? 0 :this.totalCrimePer1000Pop.hashCode()));
+        result = ((result* 31)+((this.perAnnumPopChangeActualFor == null)? 0 :this.perAnnumPopChangeActualFor.hashCode()));
+        result = ((result* 31)+((this.registeredMentalMealthClient == null)? 0 :this.registeredMentalMealthClient.hashCode()));
+        result = ((result* 31)+((this.percentOfFemalesWhoDoNot1 == null)? 0 :this.percentOfFemalesWhoDoNot1 .hashCode()));
+        result = ((result* 31)+((this.malesReportingFairOrPoorHe == null)? 0 :this.malesReportingFairOrPoorHe.hashCode()));
+        result = ((result* 31)+((this.primaryHealthNetwork == null)? 0 :this.primaryHealthNetwork.hashCode()));
+        result = ((result* 31)+((this.rankPercentOfPersonsWhoAre == null)? 0 :this.rankPercentOfPersonsWhoAre.hashCode()));
+        result = ((result* 31)+((this.totalFertilityRate2012 == null)? 0 :this.totalFertilityRate2012 .hashCode()));
+        result = ((result* 31)+((this.rankChildProtectionInvestiga == null)? 0 :this.rankChildProtectionInvestiga.hashCode()));
+        result = ((result* 31)+((this.percentRuralLandUse == null)? 0 :this.percentRuralLandUse.hashCode()));
+        result = ((result* 31)+((this.percentInpatientSeparationsF == null)? 0 :this.percentInpatientSeparationsF.hashCode()));
+        result = ((result* 31)+((this.metropolitanRural == null)? 0 :this.metropolitanRural.hashCode()));
+        result = ((result* 31)+((this.percentOfRentalHousingThat == null)? 0 :this.percentOfRentalHousingThat.hashCode()));
+        result = ((result* 31)+((this.percentOfWorkJourneysWhich == null)? 0 :this.percentOfWorkJourneysWhich.hashCode()));
+        result = ((result* 31)+((this.rankDisabilityPensionPer100 == null)? 0 :this.rankDisabilityPensionPer100 .hashCode()));
+        result = ((result* 31)+((this.gPAttendancesPer1000PopFem == null)? 0 :this.gPAttendancesPer1000PopFem.hashCode()));
+        result = ((result* 31)+((this.percentPersonsWithAdequateW == null)? 0 :this.percentPersonsWithAdequateW.hashCode()));
+        result = ((result* 31)+((this.rankGamingMachineLossesPer == null)? 0 :this.rankGamingMachineLossesPer.hashCode()));
+        result = ((result* 31)+((this.indirectStandardisedDeathRat == null)? 0 :this.indirectStandardisedDeathRat.hashCode()));
+        result = ((result* 31)+((this.rankPercentPoorDentalHealth == null)? 0 :this.rankPercentPoorDentalHealth.hashCode()));
+        result = ((result* 31)+((this.country5ForTop5OverseasCo == null)? 0 :this.country5ForTop5OverseasCo.hashCode()));
+        result = ((result* 31)+((this.country2PercentTop5Languag == null)? 0 :this.country2PercentTop5Languag.hashCode()));
+        result = ((result* 31)+((this.rankTeenageFertilityRate201 == null)? 0 :this.rankTeenageFertilityRate201 .hashCode()));
+        result = ((result* 31)+((this.rankGPAttendancesPer1000Po == null)? 0 :this.rankGPAttendancesPer1000Po.hashCode()));
+        result = ((result* 31)+((this.rankPercentHouseholdsWithNo == null)? 0 :this.rankPercentHouseholdsWithNo.hashCode()));
+        result = ((result* 31)+((this.percentOfWorkJourneysWhich1 == null)? 0 :this.percentOfWorkJourneysWhich1 .hashCode()));
+        result = ((result* 31)+((this.emergencyDepartmentPresentati == null)? 0 :this.emergencyDepartmentPresentati.hashCode()));
+        result = ((result* 31)+((this.percentSpeaksLOTEAtHome == null)? 0 :this.percentSpeaksLOTEAtHome.hashCode()));
+        result = ((result* 31)+((this.rankIndexOfRelativeSociaEc == null)? 0 :this.rankIndexOfRelativeSociaEc.hashCode()));
+        result = ((result* 31)+((this.rankSocialHousingStockAsA == null)? 0 :this.rankSocialHousingStockAsA.hashCode()));
+        result = ((result* 31)+((this.mainPublicHospitalAttendedF == null)? 0 :this.mainPublicHospitalAttendedF.hashCode()));
+        result = ((result* 31)+((this.mainPublicHospitalAttendedP == null)? 0 :this.mainPublicHospitalAttendedP.hashCode()));
+        result = ((result* 31)+((this.bornInANonEnglishSpeaking == null)? 0 :this.bornInANonEnglishSpeaking.hashCode()));
+        result = ((result* 31)+((this.percentOneParentHeadedFamil == null)? 0 :this.percentOneParentHeadedFamil.hashCode()));
+        result = ((result* 31)+((this.percentHouseholdsWithNoMoto == null)? 0 :this.percentHouseholdsWithNoMoto.hashCode()));
+        result = ((result* 31)+((this.rankOneParentHeadedFamili1 == null)? 0 :this.rankOneParentHeadedFamili1 .hashCode()));
+        result = ((result* 31)+((this.rankMainPublicHospitalAtten == null)? 0 :this.rankMainPublicHospitalAtten.hashCode()));
+        result = ((result* 31)+((this.percentOfPopWithFoodInsecu == null)? 0 :this.percentOfPopWithFoodInsecu.hashCode()));
+        result = ((result* 31)+((this.percentBusinessLandUse == null)? 0 :this.percentBusinessLandUse.hashCode()));
+        result = ((result* 31)+((this.rankPerAnnumPercentChangeI == null)? 0 :this.rankPerAnnumPercentChangeI.hashCode()));
+        result = ((result* 31)+((this.rankPercentOneParentHeaded == null)? 0 :this.rankPercentOneParentHeaded.hashCode()));
+        result = ((result* 31)+((this.gPSitesPer1000Pop == null)? 0 :this.gPSitesPer1000Pop.hashCode()));
+        result = ((result* 31)+((this.teenageFertilityRate2012 == null)? 0 :this.teenageFertilityRate2012 .hashCode()));
+        result = ((result* 31)+((this.medianHousePrice == null)? 0 :this.medianHousePrice.hashCode()));
+        result = ((result* 31)+((this.percentOfPersonsReportingTy == null)? 0 :this.percentOfPersonsReportingTy.hashCode()));
+        result = ((result* 31)+((this.hospitalInpatientSeparations == null)? 0 :this.hospitalInpatientSeparations.hashCode()));
+        result = ((result* 31)+((this.rankUnintentionalInjuriesTre == null)? 0 :this.rankUnintentionalInjuriesTre.hashCode()));
+        result = ((result* 31)+((this.percentTotal84yrsPlus == null)? 0 :this.percentTotal84yrsPlus.hashCode()));
+        result = ((result* 31)+((this.rankPercentInpatientSeparati == null)? 0 :this.rankPercentInpatientSeparati.hashCode()));
+        result = ((result* 31)+((this.newSettlerArrivalsPer100000 == null)? 0 :this.newSettlerArrivalsPer100000 .hashCode()));
+        result = ((result* 31)+((this.popAged75yrsPlusLivingAlone == null)? 0 :this.popAged75yrsPlusLivingAlone.hashCode()));
+        result = ((result* 31)+((this.rankPercentOfFemalesWhoAre == null)? 0 :this.rankPercentOfFemalesWhoAre.hashCode()));
+        result = ((result* 31)+((this.percentTotal25to44yrs == null)? 0 :this.percentTotal25to44yrs.hashCode()));
+        result = ((result* 31)+((this.rankEmergencyDepartmentPrese == null)? 0 :this.rankEmergencyDepartmentPrese.hashCode()));
+        result = ((result* 31)+((this.ancestry3PercentTop5Ancest == null)? 0 :this.ancestry3PercentTop5Ancest.hashCode()));
+        result = ((result* 31)+((this.avoidableDeaths0to74yrsrsF1 == null)? 0 :this.avoidableDeaths0to74yrsrsF1 .hashCode()));
+        result = ((result* 31)+((this.averageLengthOfStayInDays == null)? 0 :this.averageLengthOfStayInDays.hashCode()));
+        result = ((result* 31)+((this.averageLengthOfStayForAll == null)? 0 :this.averageLengthOfStayForAll.hashCode()));
+        result = ((result* 31)+((this.rankDelayedPurchasingPrescri == null)? 0 :this.rankDelayedPurchasingPrescri.hashCode()));
+        result = ((result* 31)+((this.percent19YearOldsCompleting == null)? 0 :this.percent19YearOldsCompleting.hashCode()));
+        result = ((result* 31)+((this.rankAverageLengthOfStayIn == null)? 0 :this.rankAverageLengthOfStayIn.hashCode()));
+        result = ((result* 31)+((this.aCSCsPer1000PopChronic == null)? 0 :this.aCSCsPer1000PopChronic.hashCode()));
+        result = ((result* 31)+((this.percentYear9StudentsWhoAtt == null)? 0 :this.percentYear9StudentsWhoAtt.hashCode()));
+        result = ((result* 31)+((this.rankPercentBornOverseas2011 == null)? 0 :this.rankPercentBornOverseas2011 .hashCode()));
+        result = ((result* 31)+((this.rankNumberOfSocialHousingD == null)? 0 :this.rankNumberOfSocialHousingD.hashCode()));
+        result = ((result* 31)+((this.tota85yrsPlus == null)? 0 :this.tota85yrsPlus.hashCode()));
+        result = ((result* 31)+((this.rankTotalFertilityRate2012 == null)? 0 :this.rankTotalFertilityRate2012 .hashCode()));
+        result = ((result* 31)+((this.rankPersonsWithAtLeast2Ho == null)? 0 :this.rankPersonsWithAtLeast2Ho.hashCode()));
+        result = ((result* 31)+((this.rankTotalCrimePer1000Pop == null)? 0 :this.rankTotalCrimePer1000Pop.hashCode()));
+        result = ((result* 31)+((this.familyIncidentsPer1000Pop == null)? 0 :this.familyIncidentsPer1000Pop.hashCode()));
+        result = ((result* 31)+((this.percentOfFemalesWhoAreOver == null)? 0 :this.percentOfFemalesWhoAreOver.hashCode()));
+        result = ((result* 31)+((this.rankBowelCancerScreeningPar == null)? 0 :this.rankBowelCancerScreeningPar.hashCode()));
+        result = ((result* 31)+((this.bowelCancerScreeningPartic2 == null)? 0 :this.bowelCancerScreeningPartic2 .hashCode()));
+        result = ((result* 31)+((this.country2Top5LanguagesSpoke == null)? 0 :this.country2Top5LanguagesSpoke.hashCode()));
+        result = ((result* 31)+((this.aCSCsPer1000PopAcute == null)? 0 :this.aCSCsPer1000PopAcute.hashCode()));
+        result = ((result* 31)+((this.newDwellingsApprovedForCons == null)? 0 :this.newDwellingsApprovedForCons.hashCode()));
+        result = ((result* 31)+((this.mostPopulousTownOrSuburbIn == null)? 0 :this.mostPopulousTownOrSuburbIn.hashCode()));
+        result = ((result* 31)+((this.percentLowIncomeWelfareDepe == null)? 0 :this.percentLowIncomeWelfareDepe.hashCode()));
+        result = ((result* 31)+((this.unemploymentRate == null)? 0 :this.unemploymentRate.hashCode()));
+        result = ((result* 31)+((this.numberOfSocialHousingDwelli == null)? 0 :this.numberOfSocialHousingDwelli.hashCode()));
+        result = ((result* 31)+((this.percentPersonsWhoDidNotCom == null)? 0 :this.percentPersonsWhoDidNotCom.hashCode()));
+        result = ((result* 31)+((this.fTEStudents == null)? 0 :this.fTEStudents.hashCode()));
+        result = ((result* 31)+((this.country1PercentTop5Languag == null)? 0 :this.country1PercentTop5Languag.hashCode()));
+        result = ((result* 31)+((this.percentOtherLandUse == null)? 0 :this.percentOtherLandUse.hashCode()));
+        result = ((result* 31)+((this.drugUsageAndPossessionOffen == null)? 0 :this.drugUsageAndPossessionOffen.hashCode()));
+        result = ((result* 31)+((this.rankPharmaciesPer1000Pop == null)? 0 :this.rankPharmaciesPer1000Pop.hashCode()));
+        result = ((result* 31)+((this.rankACSCsPer1000PopAcute == null)? 0 :this.rankACSCsPer1000PopAcute.hashCode()));
+        result = ((result* 31)+((this.females25to44yrs == null)? 0 :this.females25to44yrs.hashCode()));
+        result = ((result* 31)+((this.rankPercentOfWorkJourneysW == null)? 0 :this.rankPercentOfWorkJourneysW.hashCode()));
+        result = ((result* 31)+((this.rankPercentOfUnintentionalH == null)? 0 :this.rankPercentOfUnintentionalH.hashCode()));
+        result = ((result* 31)+((this.numberOfHospitalsAndHealth == null)? 0 :this.numberOfHospitalsAndHealth.hashCode()));
+        result = ((result* 31)+((this.rankPercentOfPersonsWhoA1 == null)? 0 :this.rankPercentOfPersonsWhoA1 .hashCode()));
+        result = ((result* 31)+((this.bowelCancerScreeningPartic1 == null)? 0 :this.bowelCancerScreeningPartic1 .hashCode()));
+        result = ((result* 31)+((this.rankPercentInfantsFullyBrea == null)? 0 :this.rankPercentInfantsFullyBrea.hashCode()));
+        result = ((result* 31)+((this.percentChildrenFullyImmunise == null)? 0 :this.percentChildrenFullyImmunise.hashCode()));
+        result = ((result* 31)+((this.ratedTheirCommunityAsAPlea == null)? 0 :this.ratedTheirCommunityAsAPlea.hashCode()));
+        result = ((result* 31)+((this.rankGPSitesPer1000Pop == null)? 0 :this.rankGPSitesPer1000Pop.hashCode()));
+        result = ((result* 31)+((this.oneParentHeadedFamiliesPe1 == null)? 0 :this.oneParentHeadedFamiliesPe1 .hashCode()));
+        result = ((result* 31)+((this.percentMortgageStress == null)? 0 :this.percentMortgageStress.hashCode()));
+        result = ((result* 31)+((this.rankPercentRentalStress == null)? 0 :this.rankPercentRentalStress.hashCode()));
+        result = ((result* 31)+((this.maleCancerIncidencePer1000 == null)? 0 :this.maleCancerIncidencePer1000 .hashCode()));
+        result = ((result* 31)+((this.notificationsPer100000PopOf == null)? 0 :this.notificationsPer100000PopOf.hashCode()));
+        result = ((result* 31)+((this.rankCoreActivityNeedForAss == null)? 0 :this.rankCoreActivityNeedForAss.hashCode()));
+        result = ((result* 31)+((this.percentOfBreastScreeningPar == null)? 0 :this.percentOfBreastScreeningPar.hashCode()));
+        result = ((result* 31)+((this.agedCareHighCareBeds == null)? 0 :this.agedCareHighCareBeds.hashCode()));
+        result = ((result* 31)+((this.totalFemales == null)? 0 :this.totalFemales.hashCode()));
+        result = ((result* 31)+((this.gamingMachineLossesPerHead == null)? 0 :this.gamingMachineLossesPerHead.hashCode()));
+        result = ((result* 31)+((this.rankAboriginalOrTorresStrai == null)? 0 :this.rankAboriginalOrTorresStrai.hashCode()));
+        result = ((result* 31)+((this.rankPercentOfWorkJourneys1 == null)? 0 :this.rankPercentOfWorkJourneys1 .hashCode()));
+        result = ((result* 31)+((this.rankAverageLengthOfStayFor == null)? 0 :this.rankAverageLengthOfStayFor.hashCode()));
+        result = ((result* 31)+((this.percentOfFemales18yrsPlusWh == null)? 0 :this.percentOfFemales18yrsPlusWh.hashCode()));
+        result = ((result* 31)+((this.tota45to64yrs == null)? 0 :this.tota45to64yrs.hashCode()));
+        result = ((result* 31)+((this.percentIndustrialLandUse == null)? 0 :this.percentIndustrialLandUse.hashCode()));
+        result = ((result* 31)+((this.tota15to24yrs == null)? 0 :this.tota15to24yrs.hashCode()));
+        result = ((result* 31)+((this.rankUnemploymentRate == null)? 0 :this.rankUnemploymentRate.hashCode()));
+        result = ((result* 31)+((this.lowBirthweightBabies == null)? 0 :this.lowBirthweightBabies.hashCode()));
+        result = ((result* 31)+((this.personsReportingFairOrPoor == null)? 0 :this.personsReportingFairOrPoor.hashCode()));
+        result = ((result* 31)+((this.rankPercentOfMalesWhoDo1 == null)? 0 :this.rankPercentOfMalesWhoDo1 .hashCode()));
+        result = ((result* 31)+((this.rankPercentOfPopWithFoodI == null)? 0 :this.rankPercentOfPopWithFoodI.hashCode()));
+        result = ((result* 31)+((this.distanceToMelbourneInKm == null)? 0 :this.distanceToMelbourneInKm.hashCode()));
+        result = ((result* 31)+((this.peopleWithSevereAndProfou1 == null)? 0 :this.peopleWithSevereAndProfou1 .hashCode()));
+        result = ((result* 31)+((this.percentOfMalesWhoDoNotMee == null)? 0 :this.percentOfMalesWhoDoNotMee.hashCode()));
+        result = ((result* 31)+((this.country4ForTop5OverseasCo == null)? 0 :this.country4ForTop5OverseasCo.hashCode()));
+        result = ((result* 31)+((this.country1Top5LanguagesSpoke == null)? 0 :this.country1Top5LanguagesSpoke.hashCode()));
+        result = ((result* 31)+((this.percentOfChildrenWithKinder == null)? 0 :this.percentOfChildrenWithKinder.hashCode()));
+        result = ((result* 31)+((this.ratedTheirCommunityAsGoodO == null)? 0 :this.ratedTheirCommunityAsGoodO.hashCode()));
+        result = ((result* 31)+((this.rankPercentOfMalesWhoDoNo == null)? 0 :this.rankPercentOfMalesWhoDoNo.hashCode()));
+        result = ((result* 31)+((this.numberOfChildFIRSTAssessmen == null)? 0 :this.numberOfChildFIRSTAssessmen.hashCode()));
+        result = ((result* 31)+((this.rankEquivalisedMedianIncome == null)? 0 :this.rankEquivalisedMedianIncome.hashCode()));
+        result = ((result* 31)+((this.percentOfPersonsWhoShareA == null)? 0 :this.percentOfPersonsWhoShareA.hashCode()));
+        result = ((result* 31)+((this.rankCommunityAcceptanceOfDi == null)? 0 :this.rankCommunityAcceptanceOfDi.hashCode()));
+        result = ((result* 31)+((this.rankPercentIndividualIncome == null)? 0 :this.rankPercentIndividualIncome.hashCode()));
+        result = ((result* 31)+((this.rankPercentOfMales18yrsPlus == null)? 0 :this.rankPercentOfMales18yrsPlus.hashCode()));
+        result = ((result* 31)+((this.rankHACCClientsAged0to64yrs == null)? 0 :this.rankHACCClientsAged0to64yrs.hashCode()));
+        result = ((result* 31)+((this.males45to64yrs == null)? 0 :this.males45to64yrs.hashCode()));
+        result = ((result* 31)+((this.rankAttendedALocalCommunity == null)? 0 :this.rankAttendedALocalCommunity.hashCode()));
+        result = ((result* 31)+((this.country1PercentForTop5Ove == null)? 0 :this.country1PercentForTop5Ove.hashCode()));
+        result = ((result* 31)+((this.agePensionPer1000EligibleP == null)? 0 :this.agePensionPer1000EligibleP.hashCode()));
+        result = ((result* 31)+((this.popAged75yrsPlusLivingAlo1 == null)? 0 :this.popAged75yrsPlusLivingAlo1 .hashCode()));
+        result = ((result* 31)+((this.percentNearPublicTransport == null)? 0 :this.percentNearPublicTransport.hashCode()));
+        result = ((result* 31)+((this.rankAvoidableDeaths0to74yrsr == null)? 0 :this.rankAvoidableDeaths0to74yrsr.hashCode()));
+        result = ((result* 31)+((this.country1ForTop5OverseasCo == null)? 0 :this.country1ForTop5OverseasCo.hashCode()));
+        result = ((result* 31)+((this.males15to24yrs == null)? 0 :this.males15to24yrs.hashCode()));
+        result = ((result* 31)+((this.rankPercentOfPersons18yrsPl == null)? 0 :this.rankPercentOfPersons18yrsPl.hashCode()));
+        result = ((result* 31)+((this.rankPrimaryCareTypePresenta == null)? 0 :this.rankPrimaryCareTypePresenta.hashCode()));
+        result = ((result* 31)+((this.primaryCareTypePresentations == null)? 0 :this.primaryCareTypePresentations.hashCode()));
+        result = ((result* 31)+((this.unintentionalInjuriesTreated == null)? 0 :this.unintentionalInjuriesTreated.hashCode()));
+        result = ((result* 31)+((this.percentOfPersonsWhoVisitA == null)? 0 :this.percentOfPersonsWhoVisitA.hashCode()));
+        result = ((result* 31)+((this.rankMaleCancerIncidencePer == null)? 0 :this.rankMaleCancerIncidencePer.hashCode()));
+        result = ((result* 31)+((this.ableToDefinitelyGetHelpFro == null)? 0 :this.ableToDefinitelyGetHelpFro.hashCode()));
+        result = ((result* 31)+((this.rankRatedTheirCommunityAsG == null)? 0 :this.rankRatedTheirCommunityAsG.hashCode()));
+        result = ((result* 31)+((this.percentWithPrivateHealthIns == null)? 0 :this.percentWithPrivateHealthIns.hashCode()));
+        result = ((result* 31)+((this.rankRatedTheirCommunityAsA == null)? 0 :this.rankRatedTheirCommunityAsA.hashCode()));
+        result = ((result* 31)+((this.ancestry3Top5Ancestries == null)? 0 :this.ancestry3Top5Ancestries.hashCode()));
+        result = ((result* 31)+((this.percentOfChildrenWhoAreD1 == null)? 0 :this.percentOfChildrenWhoAreD1 .hashCode()));
+        result = ((result* 31)+((this.females65to84yrs == null)? 0 :this.females65to84yrs.hashCode()));
+        result = ((result* 31)+((this.percentOfPersonsWhoAreObes == null)? 0 :this.percentOfPersonsWhoAreObes.hashCode()));
+        result = ((result* 31)+((this.ancestry5PercentTop5Ancest == null)? 0 :this.ancestry5PercentTop5Ancest.hashCode()));
+        result = ((result* 31)+((this.rankPopAged75yrsPlusLiving == null)? 0 :this.rankPopAged75yrsPlusLiving.hashCode()));
+        result = ((result* 31)+((this.dentalServicesPer1000Pop == null)? 0 :this.dentalServicesPer1000Pop.hashCode()));
+        result = ((result* 31)+((this.rankPercentOfFemalesWhoA1 == null)? 0 :this.rankPercentOfFemalesWhoA1 .hashCode()));
+        result = ((result* 31)+((this.rankFemalesReportingFairOr == null)? 0 :this.rankFemalesReportingFairOr.hashCode()));
+        result = ((result* 31)+((this.rankPercentNearPublicTransp == null)? 0 :this.rankPercentNearPublicTransp.hashCode()));
+        result = ((result* 31)+((this.femalesReportingFairOrPoor == null)? 0 :this.femalesReportingFairOrPoor.hashCode()));
+        result = ((result* 31)+((this.notificationsPer100000Pop1 == null)? 0 :this.notificationsPer100000Pop1 .hashCode()));
+        result = ((result* 31)+((this.lga == null)? 0 :this.lga.hashCode()));
+        result = ((result* 31)+((this.rankBornInANonEnglishSpea == null)? 0 :this.rankBornInANonEnglishSpea.hashCode()));
+        result = ((result* 31)+((this.rankMalesReportingFairOrPo == null)? 0 :this.rankMalesReportingFairOrPo.hashCode()));
+        result = ((result* 31)+((this.percentOfPersonsWhoDrinkSo == null)? 0 :this.percentOfPersonsWhoDrinkSo.hashCode()));
+        result = ((result* 31)+((this.indexOfRelativeSociaEconomi == null)? 0 :this.indexOfRelativeSociaEconomi.hashCode()));
+        result = ((result* 31)+((this.pharmaciesPer1000Pop == null)? 0 :this.pharmaciesPer1000Pop.hashCode()));
+        result = ((result* 31)+((this.percentPoorDentalHealth == null)? 0 :this.percentPoorDentalHealth.hashCode()));
+        result = ((result* 31)+((this.aSGSLGACode == null)? 0 :this.aSGSLGACode.hashCode()));
+        result = ((result* 31)+((this.percentOfPersonsReportingAs == null)? 0 :this.percentOfPersonsReportingAs.hashCode()));
+        result = ((result* 31)+((this.percentOfPersonsReportingAr == null)? 0 :this.percentOfPersonsReportingAr.hashCode()));
+        result = ((result* 31)+((this.rankAvoidableDeaths0to74yrs == null)? 0 :this.rankAvoidableDeaths0to74yrs.hashCode()));
+        result = ((result* 31)+((this.rankRegisteredMentalMealthC == null)? 0 :this.rankRegisteredMentalMealthC.hashCode()));
+        result = ((result* 31)+((this.childProtectionInvestigations == null)? 0 :this.childProtectionInvestigations.hashCode()));
+        result = ((result* 31)+((this.rankMedianRentFor3Bedrooms == null)? 0 :this.rankMedianRentFor3Bedrooms.hashCode()));
+        result = ((result* 31)+((this.percentOfCervicalCancerScre == null)? 0 :this.percentOfCervicalCancerScre.hashCode()));
+        result = ((result* 31)+((this.rankHumanitarianArrivalsAsA == null)? 0 :this.rankHumanitarianArrivalsAsA.hashCode()));
+        result = ((result* 31)+((this.rankPercentOfRentalHousing == null)? 0 :this.rankPercentOfRentalHousing.hashCode()));
+        result = ((result* 31)+((this.rankPercentWithPrivateHealt == null)? 0 :this.rankPercentWithPrivateHealt.hashCode()));
+        result = ((result* 31)+((this.ancestry4Top5Ancestries == null)? 0 :this.ancestry4Top5Ancestries.hashCode()));
+        result = ((result* 31)+((this.rankPercentOfFemalesWhoDo1 == null)? 0 :this.rankPercentOfFemalesWhoDo1 .hashCode()));
+        result = ((result* 31)+((this.percentBornOverseas2011 == null)? 0 :this.percentBornOverseas2011 .hashCode()));
+        result = ((result* 31)+((this.rankNotificationsPer1000001 == null)? 0 :this.rankNotificationsPer1000001 .hashCode()));
+        result = ((result* 31)+((this.rankNotificationsPer1000002 == null)? 0 :this.rankNotificationsPer1000002 .hashCode()));
+        result = ((result* 31)+((this.percentTotal65to84yrs == null)? 0 :this.percentTotal65to84yrs.hashCode()));
+        result = ((result* 31)+((this.rankPercentOfFemales18yrsPl == null)? 0 :this.rankPercentOfFemales18yrsPl.hashCode()));
+        result = ((result* 31)+((this.rankMembersOfAReligiousGro == null)? 0 :this.rankMembersOfAReligiousGro.hashCode()));
+        result = ((result* 31)+((this.rankConsumedAlcoholAtLeast == null)? 0 :this.rankConsumedAlcoholAtLeast.hashCode()));
+        result = ((result* 31)+((this.rankAvoidableDeaths0to74Yrs == null)? 0 :this.rankAvoidableDeaths0to74Yrs.hashCode()));
+        result = ((result* 31)+((this.rankMembersOfASportsGroup == null)? 0 :this.rankMembersOfASportsGroup.hashCode()));
+        result = ((result* 31)+((this.malignantCancersDiagnosedPer == null)? 0 :this.malignantCancersDiagnosedPer.hashCode()));
+        result = ((result* 31)+((this.country3PercentForTop5Ove == null)? 0 :this.country3PercentForTop5Ove.hashCode()));
+        result = ((result* 31)+((this.ancestry2PercentTop5Ancest == null)? 0 :this.ancestry2PercentTop5Ancest.hashCode()));
+        result = ((result* 31)+((this.rankPercentMortgageStress == null)? 0 :this.rankPercentMortgageStress.hashCode()));
+        result = ((result* 31)+((this.rankPercentOfMalesWhoAre1 == null)? 0 :this.rankPercentOfMalesWhoAre1 .hashCode()));
+        result = ((result* 31)+((this.avoidableDeaths0to74YrsFor == null)? 0 :this.avoidableDeaths0to74YrsFor.hashCode()));
+        result = ((result* 31)+((this.alliedHealthSitesPer1000Po == null)? 0 :this.alliedHealthSitesPer1000Po.hashCode()));
+        result = ((result* 31)+((this.gPAttendancesPer1000PopTot == null)? 0 :this.gPAttendancesPer1000PopTot.hashCode()));
+        result = ((result* 31)+((this.gPAttendancesPer1000PopMal == null)? 0 :this.gPAttendancesPer1000PopMal.hashCode()));
+        result = ((result* 31)+((this.total0to14yrs == null)? 0 :this.total0to14yrs.hashCode()));
+        result = ((result* 31)+((this.rankPercentOfPersonsWhoDid == null)? 0 :this.rankPercentOfPersonsWhoDid.hashCode()));
+        result = ((result* 31)+((this.percentOfSchoolChildrenAtte == null)? 0 :this.percentOfSchoolChildrenAtte.hashCode()));
+        result = ((result* 31)+((this.percentInfantsFullyBreastfed == null)? 0 :this.percentInfantsFullyBreastfed.hashCode()));
+        result = ((result* 31)+((this.rankACSCsPer1000PopVaccine == null)? 0 :this.rankACSCsPer1000PopVaccine.hashCode()));
+        result = ((result* 31)+((this.rankPercentMaleIncomeLessT == null)? 0 :this.rankPercentMaleIncomeLessT.hashCode()));
+        result = ((result* 31)+((this.perAnnumPopChangeProjected == null)? 0 :this.perAnnumPopChangeProjected.hashCode()));
+        result = ((result* 31)+((this.percentOfAdolescentsWhoRepo == null)? 0 :this.percentOfAdolescentsWhoRepo.hashCode()));
+        result = ((result* 31)+((this.percentOfChildrenWithEmotio == null)? 0 :this.percentOfChildrenWithEmotio.hashCode()));
+        result = ((result* 31)+((this.rankAvoidableDeaths0to74yr1 == null)? 0 :this.rankAvoidableDeaths0to74yr1 .hashCode()));
+        result = ((result* 31)+((this.rankDentalServicesPer1000P == null)? 0 :this.rankDentalServicesPer1000P.hashCode()));
+        result = ((result* 31)+((this.country5PercentForTop5Ove == null)? 0 :this.country5PercentForTop5Ove.hashCode()));
+        result = ((result* 31)+((this.rankFamilyIncidentsPer1000 == null)? 0 :this.rankFamilyIncidentsPer1000 .hashCode()));
+        result = ((result* 31)+((this.percentOfUnintentionalHospit == null)? 0 :this.percentOfUnintentionalHospit.hashCode()));
+        result = ((result* 31)+((this.percentOfMales18yrsPlusWho == null)? 0 :this.percentOfMales18yrsPlusWho.hashCode()));
+        result = ((result* 31)+((this.hACCClientsAged0to64yrsPer == null)? 0 :this.hACCClientsAged0to64yrsPer.hashCode()));
+        result = ((result* 31)+((this.percentLowEnglishProficiency == null)? 0 :this.percentLowEnglishProficiency.hashCode()));
+        result = ((result* 31)+((this.rankPercentOfPersonsReporti == null)? 0 :this.rankPercentOfPersonsReporti.hashCode()));
+        result = ((result* 31)+((this.rankDelayedMedicalConsultati == null)? 0 :this.rankDelayedMedicalConsultati.hashCode()));
+        result = ((result* 31)+((this.ancestry2Top5Ancestries == null)? 0 :this.ancestry2Top5Ancestries.hashCode()));
+        result = ((result* 31)+((this.country3Top5LanguagesSpoke == null)? 0 :this.country3Top5LanguagesSpoke.hashCode()));
+        result = ((result* 31)+((this.percentOfYear9StudentsWho == null)? 0 :this.percentOfYear9StudentsWho.hashCode()));
+        result = ((result* 31)+((this.males0to14yrs == null)? 0 :this.males0to14yrs.hashCode()));
+        result = ((result* 31)+((this.noClientsWhoReceivedAlcohol == null)? 0 :this.noClientsWhoReceivedAlcohol.hashCode()));
+        result = ((result* 31)+((this.rankIndirectStandardisedDeat == null)? 0 :this.rankIndirectStandardisedDeat.hashCode()));
+        result = ((result* 31)+((this.perAnnumPercentProjectedCha == null)? 0 :this.perAnnumPercentProjectedCha.hashCode()));
+        result = ((result* 31)+((this.notificationsPer100000People == null)? 0 :this.notificationsPer100000People.hashCode()));
+        result = ((result* 31)+((this.rankPeopleWithSevereAndPro == null)? 0 :this.rankPeopleWithSevereAndPro.hashCode()));
+        result = ((result* 31)+((this.percentOfMalesWhoAreObese == null)? 0 :this.percentOfMalesWhoAreObese.hashCode()));
+        result = ((result* 31)+((this.consumedAlcoholAtLeastWee1 == null)? 0 :this.consumedAlcoholAtLeastWee1 .hashCode()));
+        result = ((result* 31)+((this.rankPercentOfFemalesWhoDo == null)? 0 :this.rankPercentOfFemalesWhoDo.hashCode()));
+        result = ((result* 31)+((this.ancestry1Top5Ancestries == null)? 0 :this.ancestry1Top5Ancestries.hashCode()));
+        result = ((result* 31)+((this.rankPercentOfPersonsWhoDo == null)? 0 :this.rankPercentOfPersonsWhoDo.hashCode()));
+        result = ((result* 31)+((this.rankGPAttendancesPer10001 == null)? 0 :this.rankGPAttendancesPer10001 .hashCode()));
+        result = ((result* 31)+((this.rankGPAttendancesPer10002 == null)? 0 :this.rankGPAttendancesPer10002 .hashCode()));
+        result = ((result* 31)+((this.rankPercentOfMalesWhoAreO == null)? 0 :this.rankPercentOfMalesWhoAreO.hashCode()));
+        result = ((result* 31)+((this.percentOfPersonsWhoSitFor == null)? 0 :this.percentOfPersonsWhoSitFor.hashCode()));
+        result = ((result* 31)+((this.rankChildProtectionSubstanti == null)? 0 :this.rankChildProtectionSubstanti.hashCode()));
+        result = ((result* 31)+((this.equivalisedMedianIncome == null)? 0 :this.equivalisedMedianIncome.hashCode()));
+        result = ((result* 31)+((this.rankPercentOfPersonsWhoVis == null)? 0 :this.rankPercentOfPersonsWhoVis.hashCode()));
+        result = ((result* 31)+((this.departmentalRegion == null)? 0 :this.departmentalRegion.hashCode()));
+        result = ((result* 31)+((this.rankPercentOfBreastScreenin == null)? 0 :this.rankPercentOfBreastScreenin.hashCode()));
+        result = ((result* 31)+((this.rankPercentWhoHaveAHighDe == null)? 0 :this.rankPercentWhoHaveAHighDe.hashCode()));
+        result = ((result* 31)+((this.rankPercentPopAged75yrsPlus == null)? 0 :this.rankPercentPopAged75yrsPlus.hashCode()));
+        result = ((result* 31)+((this.rankPeopleWithSevereAndP1 == null)? 0 :this.rankPeopleWithSevereAndP1 .hashCode()));
+        result = ((result* 31)+((this.oneParentHeadedFamiliesPerc == null)? 0 :this.oneParentHeadedFamiliesPerc.hashCode()));
+        result = ((result* 31)+((this.proportionOfHouseholdsWithB == null)? 0 :this.proportionOfHouseholdsWithB.hashCode()));
+        result = ((result* 31)+((this.areaOfLGASqKm == null)? 0 :this.areaOfLGASqKm.hashCode()));
+        result = ((result* 31)+((this.ratedTheirCommunityAsAnAct == null)? 0 :this.ratedTheirCommunityAsAnAct.hashCode()));
+        result = ((result* 31)+((this.percentOfPersonsWhoDoNot1 == null)? 0 :this.percentOfPersonsWhoDoNot1 .hashCode()));
+        result = ((result* 31)+((this.percentOfMalesWhoDoNotM1 == null)? 0 :this.percentOfMalesWhoDoNotM1 .hashCode()));
+        result = ((result* 31)+((this.coreActivityNeedForAssistan == null)? 0 :this.coreActivityNeedForAssistan.hashCode()));
+        result = ((result* 31)+((this.aCSCsPer1000PopVaccinePrev == null)? 0 :this.aCSCsPer1000PopVaccinePrev.hashCode()));
+        result = ((result* 31)+((this.percentOfPersons18yrsPlusWh == null)? 0 :this.percentOfPersons18yrsPlusWh.hashCode()));
+        result = ((result* 31)+((this.rankPersonsReportingFairOr == null)? 0 :this.rankPersonsReportingFairOr.hashCode()));
+        result = ((result* 31)+((this.rankPercentOfPersonsWhoDo1 == null)? 0 :this.rankPercentOfPersonsWhoDo1 .hashCode()));
+        result = ((result* 31)+((this.percentOfPersonsSleepingLes == null)? 0 :this.percentOfPersonsSleepingLes.hashCode()));
+        result = ((result* 31)+((this.percentOfPersonsWhoAreOver == null)? 0 :this.percentOfPersonsWhoAreOver.hashCode()));
+        result = ((result* 31)+((this.rankPercent19YearOldsCompl == null)? 0 :this.rankPercent19YearOldsCompl.hashCode()));
+        result = ((result* 31)+((this.total2013ERP == null)? 0 :this.total2013ERP.hashCode()));
+        result = ((result* 31)+((this.tota25to44yrs == null)? 0 :this.tota25to44yrs.hashCode()));
+        result = ((result* 31)+((this.percentPopAged75yrsPlusLivi == null)? 0 :this.percentPopAged75yrsPlusLivi.hashCode()));
+        result = ((result* 31)+((this.rankPercentSpeaksLOTEAtHom == null)? 0 :this.rankPercentSpeaksLOTEAtHom.hashCode()));
+        result = ((result* 31)+((this.percentOfPersonsWhoDoNotM == null)? 0 :this.percentOfPersonsWhoDoNotM.hashCode()));
+        result = ((result* 31)+((this.rankPersonsReceivingDisabili == null)? 0 :this.rankPersonsReceivingDisabili.hashCode()));
+        result = ((result* 31)+((this.rankPercentOfPersonsWhoSit == null)? 0 :this.rankPercentOfPersonsWhoSit.hashCode()));
+        result = ((result* 31)+((this.rankBelieveOtherPeopleCanB == null)? 0 :this.rankBelieveOtherPeopleCanB.hashCode()));
+        result = ((result* 31)+((this.hACCClientsAged65yrsPlusPer == null)? 0 :this.hACCClientsAged65yrsPlusPer.hashCode()));
+        result = ((result* 31)+((this.avoidableDeaths0to74yrsForR == null)? 0 :this.avoidableDeaths0to74yrsForR.hashCode()));
+        result = ((result* 31)+((this.rankPercentOfYear9Students == null)? 0 :this.rankPercentOfYear9Students.hashCode()));
+        result = ((result* 31)+((this.rankLowBirthweightBabies == null)? 0 :this.rankLowBirthweightBabies.hashCode()));
+        result = ((result* 31)+((this.country2PercentForTop5Ove == null)? 0 :this.country2PercentForTop5Ove.hashCode()));
+        result = ((result* 31)+((this.rankFemaleCancerIncidencePe == null)? 0 :this.rankFemaleCancerIncidencePe.hashCode()));
+        result = ((result* 31)+((this.percentFemaleIncomeLessThan == null)? 0 :this.percentFemaleIncomeLessThan.hashCode()));
+        result = ((result* 31)+((this.country3ForTop5OverseasCo == null)? 0 :this.country3ForTop5OverseasCo.hashCode()));
+        result = ((result* 31)+((this.males65to84yrs == null)? 0 :this.males65to84yrs.hashCode()));
+        result = ((result* 31)+((this.delayedPurchasingPrescribedM == null)? 0 :this.delayedPurchasingPrescribedM.hashCode()));
+        result = ((result* 31)+((this.rankPercentPersonsWhoComple == null)? 0 :this.rankPercentPersonsWhoComple.hashCode()));
+        result = ((result* 31)+((this.aCSCsPer1000PopTotal == null)? 0 :this.aCSCsPer1000PopTotal.hashCode()));
+        result = ((result* 31)+((this.rankACSCsPer1000PopTotal == null)? 0 :this.rankACSCsPer1000PopTotal.hashCode()));
+        result = ((result* 31)+((this.avoidableDeaths0to74yrsrsFor == null)? 0 :this.avoidableDeaths0to74yrsrsFor.hashCode()));
+        result = ((result* 31)+((this.rankPercentOfSchoolChildren == null)? 0 :this.rankPercentOfSchoolChildren.hashCode()));
+        result = ((result* 31)+((this.feelsSafeWalkingAloneDuring == null)? 0 :this.feelsSafeWalkingAloneDuring.hashCode()));
+        result = ((result* 31)+((this.rankNewDwellingsApprovedFor == null)? 0 :this.rankNewDwellingsApprovedFor.hashCode()));
+        result = ((result* 31)+((this.percentOfMalesWhoAreOverwe == null)? 0 :this.percentOfMalesWhoAreOverwe.hashCode()));
+        result = ((result* 31)+((this.percentOfPersonsReportingHe == null)? 0 :this.percentOfPersonsReportingHe.hashCode()));
+        result = ((result* 31)+((this.medianRentFor3BedroomsHome == null)? 0 :this.medianRentFor3BedroomsHome.hashCode()));
+        result = ((result* 31)+((this.percentIndividualIncomeLess == null)? 0 :this.percentIndividualIncomeLess.hashCode()));
+        result = ((result* 31)+((this.ancestry5Top5Ancestries == null)? 0 :this.ancestry5Top5Ancestries.hashCode()));
+        result = ((result* 31)+((this.percentOfPersonsReportingHi == null)? 0 :this.percentOfPersonsReportingHi.hashCode()));
+        result = ((result* 31)+((this.rankHomelessnessRatePer1000 == null)? 0 :this.rankHomelessnessRatePer1000 .hashCode()));
+        result = ((result* 31)+((this.rankPercentPersonsWithAdequ == null)? 0 :this.rankPercentPersonsWithAdequ.hashCode()));
+        result = ((result* 31)+((this.consumedAlcoholAtLeastWeekl == null)? 0 :this.consumedAlcoholAtLeastWeekl.hashCode()));
+        result = ((result* 31)+((this.rankProportionOfInfantsEnro == null)? 0 :this.rankProportionOfInfantsEnro.hashCode()));
+        result = ((result* 31)+((this.rankPercentYear9StudentsWh == null)? 0 :this.rankPercentYear9StudentsWh.hashCode()));
+        result = ((result* 31)+((this.rankPercentOfPersonsWhoSha == null)? 0 :this.rankPercentOfPersonsWhoSha.hashCode()));
+        result = ((result* 31)+((this.rankPerAnnumPercentProjecte == null)? 0 :this.rankPerAnnumPercentProjecte.hashCode()));
+        result = ((result* 31)+((this.rankAbleToDefinitelyGetHel == null)? 0 :this.rankAbleToDefinitelyGetHel.hashCode()));
+        result = ((result* 31)+((this.attendedALocalCommunityEven == null)? 0 :this.attendedALocalCommunityEven.hashCode()));
+        result = ((result* 31)+((this.householdsWithBroadbandInter == null)? 0 :this.householdsWithBroadbandInter.hashCode()));
+        result = ((result* 31)+((this.country4Top5LanguagesSpoke == null)? 0 :this.country4Top5LanguagesSpoke.hashCode()));
+        result = ((result* 31)+((this.rankNotificationsPer100000P == null)? 0 :this.rankNotificationsPer100000P.hashCode()));
+        result = ((result* 31)+((this.rankFeelValuedBySociety == null)? 0 :this.rankFeelValuedBySociety.hashCode()));
+        result = ((result* 31)+((this.country5Top5LanguagesSpoke == null)? 0 :this.country5Top5LanguagesSpoke.hashCode()));
+        result = ((result* 31)+((this.percentTotal45to64yrs == null)? 0 :this.percentTotal45to64yrs.hashCode()));
+        result = ((result* 31)+((this.spokeWithMoreThan5PeopleT == null)? 0 :this.spokeWithMoreThan5PeopleT.hashCode()));
+        result = ((result* 31)+((this.ancestry4PercentTop5Ancest == null)? 0 :this.ancestry4PercentTop5Ancest.hashCode()));
+        result = ((result* 31)+((this.males25to44yrs == null)? 0 :this.males25to44yrs.hashCode()));
+        result = ((result* 31)+((this.country4PercentTop5Languag == null)? 0 :this.country4PercentTop5Languag.hashCode()));
+        result = ((result* 31)+((this.membersOfASportsGroup == null)? 0 :this.membersOfASportsGroup.hashCode()));
+        result = ((result* 31)+((this.rankFeelsSafeWalkingAloneD == null)? 0 :this.rankFeelsSafeWalkingAloneD.hashCode()));
+        result = ((result* 31)+((this.rankHospitalInpatientSeparat == null)? 0 :this.rankHospitalInpatientSeparat.hashCode()));
+        result = ((result* 31)+((this.females0to14yrs == null)? 0 :this.females0to14yrs.hashCode()));
+        result = ((result* 31)+((this.percentTotal15to24yrs == null)? 0 :this.percentTotal15to24yrs.hashCode()));
+        result = ((result* 31)+((this.rankMedianHousePrice == null)? 0 :this.rankMedianHousePrice.hashCode()));
+        result = ((result* 31)+((this.country3PercentTop5Languag == null)? 0 :this.country3PercentTop5Languag.hashCode()));
+        result = ((result* 31)+((this.rankPercentLowIncomeWelfare == null)? 0 :this.rankPercentLowIncomeWelfare.hashCode()));
+        result = ((result* 31)+((this.rankACSCsPer1000PopChronic == null)? 0 :this.rankACSCsPer1000PopChronic.hashCode()));
+        result = ((result* 31)+((this.percentTotal0to14yrs == null)? 0 :this.percentTotal0to14yrs.hashCode()));
+        result = ((result* 31)+((this.rankPercentOfPersonsRepor2 == null)? 0 :this.rankPercentOfPersonsRepor2 .hashCode()));
+        result = ((result* 31)+((this.rankPercentOfPersonsRepor3 == null)? 0 :this.rankPercentOfPersonsRepor3 .hashCode()));
+        result = ((result* 31)+((this.rankPercentOfPersonsRepor4 == null)? 0 :this.rankPercentOfPersonsRepor4 .hashCode()));
+        result = ((result* 31)+((this.rankPercentOfPersonsRepor5 == null)? 0 :this.rankPercentOfPersonsRepor5 .hashCode()));
+        result = ((result* 31)+((this.females45to64yrs == null)? 0 :this.females45to64yrs.hashCode()));
+        result = ((result* 31)+((this.rankNewSettlerArrivalsPer1 == null)? 0 :this.rankNewSettlerArrivalsPer1 .hashCode()));
+        result = ((result* 31)+((this.proportionOfInfantsEnrolled == null)? 0 :this.proportionOfInfantsEnrolled.hashCode()));
+        result = ((result* 31)+((this.numberOfPublicHospitalsAnd == null)? 0 :this.numberOfPublicHospitalsAnd.hashCode()));
+        result = ((result* 31)+((this.rankPercentFemaleIncomeLess == null)? 0 :this.rankPercentFemaleIncomeLess.hashCode()));
+        result = ((result* 31)+((this.rankNumberOfChildFIRSTAsse == null)? 0 :this.rankNumberOfChildFIRSTAsse.hashCode()));
+        result = ((result* 31)+((this.rankOneParentHeadedFamilies == null)? 0 :this.rankOneParentHeadedFamilies.hashCode()));
+        result = ((result* 31)+((this.rankTakeActionOnBehalfOfT == null)? 0 :this.rankTakeActionOnBehalfOfT.hashCode()));
+        result = ((result* 31)+((this.departmentalArea == null)? 0 :this.departmentalArea.hashCode()));
+        result = ((result* 31)+((this.totalMales == null)? 0 :this.totalMales.hashCode()));
+        result = ((result* 31)+((this.females15to24yrs == null)? 0 :this.females15to24yrs.hashCode()));
+        result = ((result* 31)+((this.male85yrsPlus == null)? 0 :this.male85yrsPlus.hashCode()));
+        result = ((result* 31)+((this.communityAcceptanceOfDiverse == null)? 0 :this.communityAcceptanceOfDiverse.hashCode()));
+        result = ((result* 31)+((this.rankPercentOfCervicalCancer == null)? 0 :this.rankPercentOfCervicalCancer.hashCode()));
+        result = ((result* 31)+((this.rankMalignantCancersDiagnose == null)? 0 :this.rankMalignantCancersDiagnose.hashCode()));
+        result = ((result* 31)+((this.rankAgePensionPer1000Eligi == null)? 0 :this.rankAgePensionPer1000Eligi.hashCode()));
+        result = ((result* 31)+((this.childProtectionSubstantiation == null)? 0 :this.childProtectionSubstantiation.hashCode()));
+        result = ((result* 31)+((this.rankPercentOfPersonsSleepin == null)? 0 :this.rankPercentOfPersonsSleepin.hashCode()));
+        result = ((result* 31)+((this.peopleWithSevereAndProfound == null)? 0 :this.peopleWithSevereAndProfound.hashCode()));
+        result = ((result* 31)+((this.rankConsumedAlcoholAtLeast1 == null)? 0 :this.rankConsumedAlcoholAtLeast1 .hashCode()));
+        result = ((result* 31)+((this.aRIARemotenessCategory == null)? 0 :this.aRIARemotenessCategory.hashCode()));
+        result = ((result* 31)+((this.ancestry1PercentTop5Ancest == null)? 0 :this.ancestry1PercentTop5Ancest.hashCode()));
+        result = ((result* 31)+((this.rankPercentLowEnglishProfic == null)? 0 :this.rankPercentLowEnglishProfic.hashCode()));
+        result = ((result* 31)+((this.disabilityPensionPer1000Eli == null)? 0 :this.disabilityPensionPer1000Eli.hashCode()));
+        result = ((result* 31)+((this.gPsPer1000Pop == null)? 0 :this.gPsPer1000Pop.hashCode()));
+        result = ((result* 31)+((this.humanitarianArrivalsAsAPerc == null)? 0 :this.humanitarianArrivalsAsAPerc.hashCode()));
+        result = ((result* 31)+((this.believeOtherPeopleCanBeTru == null)? 0 :this.believeOtherPeopleCanBeTru.hashCode()));
+        result = ((result* 31)+((this.rankMaleLifeExpectancy == null)? 0 :this.rankMaleLifeExpectancy.hashCode()));
+        return result;
     }
 
     @Override
@@ -9505,419 +12666,7 @@ public class Attributes {
             return false;
         }
         Attributes rhs = ((Attributes) other);
-        return new EqualsBuilder()
-                .append(lGA, rhs.lGA)
-                .append(metropolitanRural, rhs.metropolitanRural)
-                .append(departmentalRegion, rhs.departmentalRegion)
-                .append(departmentalArea, rhs.departmentalArea)
-                .append(areaOfLGASqKm, rhs.areaOfLGASqKm)
-                .append(aSGSLGACode, rhs.aSGSLGACode)
-                .append(mostPopulousTownOrSuburbIn, rhs.mostPopulousTownOrSuburbIn)
-                .append(distanceToMelbourneInKm, rhs.distanceToMelbourneInKm)
-                .append(travelTimeFromMelbourneGPO, rhs.travelTimeFromMelbourneGPO)
-                .append(aRIARemotenessCategory, rhs.aRIARemotenessCategory)
-                .append(percentBusinessLandUse, rhs.percentBusinessLandUse)
-                .append(percentIndustrialLandUse, rhs.percentIndustrialLandUse)
-                .append(percentResidentialLandUse, rhs.percentResidentialLandUse)
-                .append(percentRuralLandUse, rhs.percentRuralLandUse)
-                .append(percentOtherLandUse, rhs.percentOtherLandUse)
-                .append(perAnnumPopChangeActualFor, rhs.perAnnumPopChangeActualFor)
-                .append(perAnnumPopChangeProjected, rhs.perAnnumPopChangeProjected)
-                .append(females0to14yrs, rhs.females0to14yrs)
-                .append(females15to24yrs, rhs.females15to24yrs)
-                .append(females25to44yrs, rhs.females25to44yrs)
-                .append(females45to64yrs, rhs.females45to64yrs)
-                .append(females65to84yrs, rhs.females65to84yrs)
-                .append(female85yrsPlus, rhs.female85yrsPlus)
-                .append(totalFemales, rhs.totalFemales)
-                .append(males0to14yrs, rhs.males0to14yrs)
-                .append(males15to24yrs, rhs.males15to24yrs)
-                .append(males25to44yrs, rhs.males25to44yrs)
-                .append(males45to64yrs, rhs.males45to64yrs)
-                .append(males65to84yrs, rhs.males65to84yrs)
-                .append(male85yrsPlus, rhs.male85yrsPlus)
-                .append(totalMales, rhs.totalMales)
-                .append(total0to14yrs, rhs.total0to14yrs)
-                .append(tota15to24yrs, rhs.tota15to24yrs)
-                .append(tota25to44yrs, rhs.tota25to44yrs)
-                .append(tota45to64yrs, rhs.tota45to64yrs)
-                .append(tota65to84yrs, rhs.tota65to84yrs)
-                .append(tota85yrsPlus, rhs.tota85yrsPlus)
-                .append(total2013ERP, rhs.total2013ERP)
-                .append(percentTotal0to14yrs, rhs.percentTotal0to14yrs)
-                .append(percentTotal15to24yrs, rhs.percentTotal15to24yrs)
-                .append(percentTotal25to44yrs, rhs.percentTotal25to44yrs)
-                .append(percentTotal45to64yrs, rhs.percentTotal45to64yrs)
-                .append(percentTotal65to84yrs, rhs.percentTotal65to84yrs)
-                .append(percentTotal84yrsPlus, rhs.percentTotal84yrsPlus)
-                .append(totalFertilityRate2012, rhs.totalFertilityRate2012)
-                .append(rankTotalFertilityRate2012, rhs.rankTotalFertilityRate2012)
-                .append(teenageFertilityRate2012, rhs.teenageFertilityRate2012)
-                .append(rankTeenageFertilityRate201, rhs.rankTeenageFertilityRate201)
-                .append(percentAboriginalOrTorresSt, rhs.percentAboriginalOrTorresSt)
-                .append(rankAboriginalOrTorresStrai, rhs.rankAboriginalOrTorresStrai)
-                .append(percentBornOverseas2011, rhs.percentBornOverseas2011)
-                .append(rankPercentBornOverseas2011, rhs.rankPercentBornOverseas2011)
-                .append(bornInANonEnglishSpeaking, rhs.bornInANonEnglishSpeaking)
-                .append(rankBornInANonEnglishSpea, rhs.rankBornInANonEnglishSpea)
-                .append(country1PercentForTop5Ove, rhs.country1PercentForTop5Ove)
-                .append(country1ForTop5OverseasCo, rhs.country1ForTop5OverseasCo)
-                .append(country2PercentForTop5Ove, rhs.country2PercentForTop5Ove)
-                .append(country2ForTop5OverseasCo, rhs.country2ForTop5OverseasCo)
-                .append(country3PercentForTop5Ove, rhs.country3PercentForTop5Ove)
-                .append(country3ForTop5OverseasCo, rhs.country3ForTop5OverseasCo)
-                .append(country4PercentForTop5Ove, rhs.country4PercentForTop5Ove)
-                .append(country4ForTop5OverseasCo, rhs.country4ForTop5OverseasCo)
-                .append(country5PercentForTop5Ove, rhs.country5PercentForTop5Ove)
-                .append(country5ForTop5OverseasCo, rhs.country5ForTop5OverseasCo)
-                .append(percentSpeaksLOTEAtHome, rhs.percentSpeaksLOTEAtHome)
-                .append(rankPercentSpeaksLOTEAtHom, rhs.rankPercentSpeaksLOTEAtHom)
-                .append(country1PercentTop5Languag, rhs.country1PercentTop5Languag)
-                .append(country1Top5LanguagesSpoke, rhs.country1Top5LanguagesSpoke)
-                .append(country2PercentTop5Languag, rhs.country2PercentTop5Languag)
-                .append(country2Top5LanguagesSpoke, rhs.country2Top5LanguagesSpoke)
-                .append(country3PercentTop5Languag, rhs.country3PercentTop5Languag)
-                .append(country3Top5LanguagesSpoke, rhs.country3Top5LanguagesSpoke)
-                .append(country4PercentTop5Languag, rhs.country4PercentTop5Languag)
-                .append(country4Top5LanguagesSpoke, rhs.country4Top5LanguagesSpoke)
-                .append(country5PercentTop5Languag, rhs.country5PercentTop5Languag)
-                .append(country5Top5LanguagesSpoke, rhs.country5Top5LanguagesSpoke)
-                .append(percentLowEnglishProficiency, rhs.percentLowEnglishProficiency)
-                .append(rankPercentLowEnglishProfic, rhs.rankPercentLowEnglishProfic)
-                .append(ancestry1PercentTop5Ancest, rhs.ancestry1PercentTop5Ancest)
-                .append(ancestry1Top5Ancestries, rhs.ancestry1Top5Ancestries)
-                .append(ancestry2PercentTop5Ancest, rhs.ancestry2PercentTop5Ancest)
-                .append(ancestry2Top5Ancestries, rhs.ancestry2Top5Ancestries)
-                .append(ancestry3PercentTop5Ancest, rhs.ancestry3PercentTop5Ancest)
-                .append(ancestry3Top5Ancestries, rhs.ancestry3Top5Ancestries)
-                .append(ancestry4PercentTop5Ancest, rhs.ancestry4PercentTop5Ancest)
-                .append(ancestry4Top5Ancestries, rhs.ancestry4Top5Ancestries)
-                .append(ancestry5PercentTop5Ancest, rhs.ancestry5PercentTop5Ancest)
-                .append(ancestry5Top5Ancestries, rhs.ancestry5Top5Ancestries)
-                .append(newSettlerArrivalsPer100000, rhs.newSettlerArrivalsPer100000)
-                .append(rankNewSettlerArrivalsPer1, rhs.rankNewSettlerArrivalsPer1)
-                .append(humanitarianArrivalsAsAPerc, rhs.humanitarianArrivalsAsAPerc)
-                .append(rankHumanitarianArrivalsAsA, rhs.rankHumanitarianArrivalsAsA)
-                .append(communityAcceptanceOfDiverse, rhs.communityAcceptanceOfDiverse)
-                .append(rankCommunityAcceptanceOfDi, rhs.rankCommunityAcceptanceOfDi)
-                .append(proportionOfHouseholdsWithB, rhs.proportionOfHouseholdsWithB)
-                .append(householdsWithBroadbandInter, rhs.householdsWithBroadbandInter)
-                .append(gamingMachineLossesPerHead, rhs.gamingMachineLossesPerHead)
-                .append(rankGamingMachineLossesPer, rhs.rankGamingMachineLossesPer)
-                .append(familyIncidentsPer1000Pop, rhs.familyIncidentsPer1000Pop)
-                .append(rankFamilyIncidentsPer1000, rhs.rankFamilyIncidentsPer1000)
-                .append(drugUsageAndPossessionOffen, rhs.drugUsageAndPossessionOffen)
-                .append(rankDrugUsageAndPossession, rhs.rankDrugUsageAndPossession)
-                .append(totalCrimePer1000Pop, rhs.totalCrimePer1000Pop)
-                .append(rankTotalCrimePer1000Pop, rhs.rankTotalCrimePer1000Pop)
-                .append(feelsSafeWalkingAloneDuring, rhs.feelsSafeWalkingAloneDuring)
-                .append(rankFeelsSafeWalkingAloneD, rhs.rankFeelsSafeWalkingAloneD)
-                .append(believeOtherPeopleCanBeTru, rhs.believeOtherPeopleCanBeTru)
-                .append(rankBelieveOtherPeopleCanB, rhs.rankBelieveOtherPeopleCanB)
-                .append(spokeWithMoreThan5PeopleT, rhs.spokeWithMoreThan5PeopleT)
-                .append(rankSpokeWithMoreThan5Peo, rhs.rankSpokeWithMoreThan5Peo)
-                .append(ableToDefinitelyGetHelpFro, rhs.ableToDefinitelyGetHelpFro)
-                .append(rankAbleToDefinitelyGetHel, rhs.rankAbleToDefinitelyGetHel)
-                .append(volunteers, rhs.volunteers)
-                .append(rankVolunteers, rhs.rankVolunteers)
-                .append(feelValuedBySociety, rhs.feelValuedBySociety)
-                .append(rankFeelValuedBySociety, rhs.rankFeelValuedBySociety)
-                .append(attendedALocalCommunityEven, rhs.attendedALocalCommunityEven)
-                .append(rankAttendedALocalCommunity, rhs.rankAttendedALocalCommunity)
-                .append(takeActionOnBehalfOfTheLo, rhs.takeActionOnBehalfOfTheLo)
-                .append(rankTakeActionOnBehalfOfT, rhs.rankTakeActionOnBehalfOfT)
-                .append(membersOfASportsGroup, rhs.membersOfASportsGroup)
-                .append(rankMembersOfASportsGroup, rhs.rankMembersOfASportsGroup)
-                .append(membersOfAReligiousGroup, rhs.membersOfAReligiousGroup)
-                .append(rankMembersOfAReligiousGro, rhs.rankMembersOfAReligiousGro)
-                .append(ratedTheirCommunityAsAnAct, rhs.ratedTheirCommunityAsAnAct)
-                .append(rankRatedTheirCommunityAsA, rhs.rankRatedTheirCommunityAsA)
-                .append(ratedTheirCommunityAsAPlea, rhs.ratedTheirCommunityAsAPlea)
-                .append(rankAtedTheirCommunityAsA, rhs.rankAtedTheirCommunityAsA)
-                .append(ratedTheirCommunityAsGoodO, rhs.ratedTheirCommunityAsGoodO)
-                .append(rankRatedTheirCommunityAsG, rhs.rankRatedTheirCommunityAsG)
-                .append(indexOfRelativeSociaEconomi, rhs.indexOfRelativeSociaEconomi)
-                .append(rankIndexOfRelativeSociaEc, rhs.rankIndexOfRelativeSociaEc)
-                .append(unemploymentRate, rhs.unemploymentRate)
-                .append(rankUnemploymentRate, rhs.rankUnemploymentRate)
-                .append(percentIndividualIncomeLess, rhs.percentIndividualIncomeLess)
-                .append(rankPercentIndividualIncome, rhs.rankPercentIndividualIncome)
-                .append(percentFemaleIncomeLessThan, rhs.percentFemaleIncomeLessThan)
-                .append(rankPercentFemaleIncomeLess, rhs.rankPercentFemaleIncomeLess)
-                .append(percentMaleIncomeLessThan4, rhs.percentMaleIncomeLessThan4)
-                .append(rankPercentMaleIncomeLessT, rhs.rankPercentMaleIncomeLessT)
-                .append(percentOneParentHeadedFamil, rhs.percentOneParentHeadedFamil)
-                .append(rankPercentOneParentHeaded, rhs.rankPercentOneParentHeaded)
-                .append(oneParentHeadedFamiliesPerc, rhs.oneParentHeadedFamiliesPerc)
-                .append(rankOneParentHeadedFamilies, rhs.rankOneParentHeadedFamilies)
-                .append(oneParentHeadedFamiliesPe1, rhs.oneParentHeadedFamiliesPe1)
-                .append(rankOneParentHeadedFamili1, rhs.rankOneParentHeadedFamili1)
-                .append(equivalisedMedianIncome, rhs.equivalisedMedianIncome)
-                .append(rankEquivalisedMedianIncome, rhs.rankEquivalisedMedianIncome)
-                .append(delayedMedicalConsultationBe, rhs.delayedMedicalConsultationBe)
-                .append(rankDelayedMedicalConsultati, rhs.rankDelayedMedicalConsultati)
-                .append(delayedPurchasingPrescribedM, rhs.delayedPurchasingPrescribedM)
-                .append(rankDelayedPurchasingPrescri, rhs.rankDelayedPurchasingPrescri)
-                .append(percentLowIncomeWelfareDepe, rhs.percentLowIncomeWelfareDepe)
-                .append(rankPercentLowIncomeWelfare, rhs.rankPercentLowIncomeWelfare)
-                .append(percentOfPopWithFoodInsecu, rhs.percentOfPopWithFoodInsecu)
-                .append(rankPercentOfPopWithFoodI, rhs.rankPercentOfPopWithFoodI)
-                .append(percentMortgageStress, rhs.percentMortgageStress)
-                .append(rankPercentMortgageStress, rhs.rankPercentMortgageStress)
-                .append(percentRentalStress, rhs.percentRentalStress)
-                .append(rankPercentRentalStress, rhs.rankPercentRentalStress)
-                .append(percentOfRentalHousingThat, rhs.percentOfRentalHousingThat)
-                .append(rankPercentOfRentalHousing, rhs.rankPercentOfRentalHousing)
-                .append(medianHousePrice, rhs.medianHousePrice)
-                .append(rankMedianHousePrice, rhs.rankMedianHousePrice)
-                .append(medianRentFor3BedroomsHome, rhs.medianRentFor3BedroomsHome)
-                .append(rankMedianRentFor3Bedrooms, rhs.rankMedianRentFor3Bedrooms)
-                .append(newDwellingsApprovedForCons, rhs.newDwellingsApprovedForCons)
-                .append(rankNewDwellingsApprovedFor, rhs.rankNewDwellingsApprovedFor)
-                .append(socialHousingStockAsAPerce, rhs.socialHousingStockAsAPerce)
-                .append(rankSocialHousingStockAsA, rhs.rankSocialHousingStockAsA)
-                .append(numberOfSocialHousingDwelli, rhs.numberOfSocialHousingDwelli)
-                .append(rankNumberOfSocialHousingD, rhs.rankNumberOfSocialHousingD)
-                .append(homelessnessRatePer1000Pop, rhs.homelessnessRatePer1000Pop)
-                .append(rankHomelessnessRatePer1000, rhs.rankHomelessnessRatePer1000)
-                .append(percentOfWorkJourneysWhich, rhs.percentOfWorkJourneysWhich)
-                .append(rankPercentOfWorkJourneysW, rhs.rankPercentOfWorkJourneysW)
-                .append(percentOfWorkJourneysWhich1, rhs.percentOfWorkJourneysWhich1)
-                .append(rankPercentOfWorkJourneys1, rhs.rankPercentOfWorkJourneys1)
-                .append(personsWithAtLeast2HourDa, rhs.personsWithAtLeast2HourDa)
-                .append(rankPersonsWithAtLeast2Ho, rhs.rankPersonsWithAtLeast2Ho)
-                .append(percentHouseholdsWithNoMoto, rhs.percentHouseholdsWithNoMoto)
-                .append(rankPercentHouseholdsWithNo, rhs.rankPercentHouseholdsWithNo)
-                .append(fTEStudents, rhs.fTEStudents)
-                .append(percentYear9StudentsWhoAtt, rhs.percentYear9StudentsWhoAtt)
-                .append(rankPercentOfYear9Students, rhs.rankPercentOfYear9Students)
-                .append(percentOfYear9StudentsWho, rhs.percentOfYear9StudentsWho)
-                .append(rankPercentYear9StudentsWh, rhs.rankPercentYear9StudentsWh)
-                .append(percent19YearOldsCompleting, rhs.percent19YearOldsCompleting)
-                .append(rankPercent19YearOldsCompl, rhs.rankPercent19YearOldsCompl)
-                .append(percentPersonsWhoDidNotCom, rhs.percentPersonsWhoDidNotCom)
-                .append(rankPercentOfPersonsWhoDid, rhs.rankPercentOfPersonsWhoDid)
-                .append(percentPersonsWhoCompletedA, rhs.percentPersonsWhoCompletedA)
-                .append(rankPercentPersonsWhoComple, rhs.rankPercentPersonsWhoComple)
-                .append(percentOfSchoolChildrenAtte, rhs.percentOfSchoolChildrenAtte)
-                .append(rankPercentOfSchoolChildren, rhs.rankPercentOfSchoolChildren)
-                .append(percentOfPersonsReportingAs, rhs.percentOfPersonsReportingAs)
-                .append(rankPercentOfPersonsReporti, rhs.rankPercentOfPersonsReporti)
-                .append(percentOfPersonsReportingTy, rhs.percentOfPersonsReportingTy)
-                .append(rankPercentOfPersonsRepor1, rhs.rankPercentOfPersonsRepor1)
-                .append(percentOfPersonsReportingHi, rhs.percentOfPersonsReportingHi)
-                .append(rankPercentOfPersonsRepor2, rhs.rankPercentOfPersonsRepor2)
-                .append(percentOfPersonsReportingHe, rhs.percentOfPersonsReportingHe)
-                .append(rankPercentOfPersonsRepor3, rhs.rankPercentOfPersonsRepor3)
-                .append(percentOfPersonsReportingOs, rhs.percentOfPersonsReportingOs)
-                .append(rankPercentOfPersonsRepor4, rhs.rankPercentOfPersonsRepor4)
-                .append(percentOfPersonsReportingAr, rhs.percentOfPersonsReportingAr)
-                .append(rankPercentOfPersonsRepor5, rhs.rankPercentOfPersonsRepor5)
-                .append(percentOfPersonsWhoAreOver, rhs.percentOfPersonsWhoAreOver)
-                .append(rankPercentOfPersonsWhoAre, rhs.rankPercentOfPersonsWhoAre)
-                .append(percentOfFemalesWhoAreOver, rhs.percentOfFemalesWhoAreOver)
-                .append(rankPercentOfFemalesWhoAre, rhs.rankPercentOfFemalesWhoAre)
-                .append(percentOfMalesWhoAreOverwe, rhs.percentOfMalesWhoAreOverwe)
-                .append(rankPercentOfMalesWhoAreO, rhs.rankPercentOfMalesWhoAreO)
-                .append(percentOfPersonsWhoAreObes, rhs.percentOfPersonsWhoAreObes)
-                .append(rankPercentOfPersonsWhoA1, rhs.rankPercentOfPersonsWhoA1)
-                .append(percentOfFemalesWhoAreObes, rhs.percentOfFemalesWhoAreObes)
-                .append(rankPercentOfFemalesWhoA1, rhs.rankPercentOfFemalesWhoA1)
-                .append(percentOfMalesWhoAreObese, rhs.percentOfMalesWhoAreObese)
-                .append(rankPercentOfMalesWhoAre1, rhs.rankPercentOfMalesWhoAre1)
-                .append(malignantCancersDiagnosedPer, rhs.malignantCancersDiagnosedPer)
-                .append(rankMalignantCancersDiagnose, rhs.rankMalignantCancersDiagnose)
-                .append(maleCancerIncidencePer1000, rhs.maleCancerIncidencePer1000)
-                .append(rankMaleCancerIncidencePer, rhs.rankMaleCancerIncidencePer)
-                .append(femaleCancerIncidencePer100, rhs.femaleCancerIncidencePer100)
-                .append(rankFemaleCancerIncidencePe, rhs.rankFemaleCancerIncidencePe)
-                .append(percentPoorDentalHealth, rhs.percentPoorDentalHealth)
-                .append(rankPercentPoorDentalHealth, rhs.rankPercentPoorDentalHealth)
-                .append(notificationsPer100000PopOf, rhs.notificationsPer100000PopOf)
-                .append(rankNotificationsPer100000P, rhs.rankNotificationsPer100000P)
-                .append(notificationsPer100000Pop1, rhs.notificationsPer100000Pop1)
-                .append(rankNotificationsPer1000001, rhs.rankNotificationsPer1000001)
-                .append(notificationsPer100000People, rhs.notificationsPer100000People)
-                .append(rankNotificationsPer1000002, rhs.rankNotificationsPer1000002)
-                .append(percentOfPersons18yrsPlusWh, rhs.percentOfPersons18yrsPlusWh)
-                .append(rankPercentOfPersons18yrsPl, rhs.rankPercentOfPersons18yrsPl)
-                .append(percentOfMales18yrsPlusWho, rhs.percentOfMales18yrsPlusWho)
-                .append(rankPercentOfMales18yrsPlus, rhs.rankPercentOfMales18yrsPlus)
-                .append(percentOfFemales18yrsPlusWh, rhs.percentOfFemales18yrsPlusWh)
-                .append(rankPercentOfFemales18yrsPl, rhs.rankPercentOfFemales18yrsPl)
-                .append(consumedAlcoholAtLeastWeekl, rhs.consumedAlcoholAtLeastWeekl)
-                .append(rankConsumedAlcoholAtLeast, rhs.rankConsumedAlcoholAtLeast)
-                .append(consumedAlcoholAtLeastWee1, rhs.consumedAlcoholAtLeastWee1)
-                .append(rankConsumedAlcoholAtLeast1, rhs.rankConsumedAlcoholAtLeast1)
-                .append(percentOfPersonsWhoDoNotM, rhs.percentOfPersonsWhoDoNotM)
-                .append(rankPercentOfPersonsWhoDo, rhs.rankPercentOfPersonsWhoDo)
-                .append(percentOfMalesWhoDoNotMee, rhs.percentOfMalesWhoDoNotMee)
-                .append(rankPercentOfMalesWhoDoNo, rhs.rankPercentOfMalesWhoDoNo)
-                .append(percentOfFemalesWhoDoNotM, rhs.percentOfFemalesWhoDoNotM)
-                .append(rankPercentOfFemalesWhoDo, rhs.rankPercentOfFemalesWhoDo)
-                .append(percentOfPersonsWhoDrinkSo, rhs.percentOfPersonsWhoDrinkSo)
-                .append(rankPercentOfPersonsWhoDri, rhs.rankPercentOfPersonsWhoDri)
-                .append(percentOfPersonsWhoShareA, rhs.percentOfPersonsWhoShareA)
-                .append(rankPercentOfPersonsWhoSha, rhs.rankPercentOfPersonsWhoSha)
-                .append(percentOfPersonsWhoDoNot1, rhs.percentOfPersonsWhoDoNot1)
-                .append(rankPercentOfPersonsWhoDo1, rhs.rankPercentOfPersonsWhoDo1)
-                .append(percentOfMalesWhoDoNotM1, rhs.percentOfMalesWhoDoNotM1)
-                .append(rankPercentOfMalesWhoDo1, rhs.rankPercentOfMalesWhoDo1)
-                .append(percentOfFemalesWhoDoNot1, rhs.percentOfFemalesWhoDoNot1)
-                .append(rankPercentOfFemalesWhoDo1, rhs.rankPercentOfFemalesWhoDo1)
-                .append(percentOfPersonsWhoSitFor, rhs.percentOfPersonsWhoSitFor)
-                .append(rankPercentOfPersonsWhoSit, rhs.rankPercentOfPersonsWhoSit)
-                .append(percentOfPersonsWhoVisitA, rhs.percentOfPersonsWhoVisitA)
-                .append(rankPercentOfPersonsWhoVis, rhs.rankPercentOfPersonsWhoVis)
-                .append(percentOfBreastScreeningPar, rhs.percentOfBreastScreeningPar)
-                .append(rankPercentOfBreastScreenin, rhs.rankPercentOfBreastScreenin)
-                .append(percentOfCervicalCancerScre, rhs.percentOfCervicalCancerScre)
-                .append(rankPercentOfCervicalCancer, rhs.rankPercentOfCervicalCancer)
-                .append(bowelCancerScreeningParticip, rhs.bowelCancerScreeningParticip)
-                .append(rankBowelCancerScreeningPar, rhs.rankBowelCancerScreeningPar)
-                .append(bowelCancerScreeningPartic1, rhs.bowelCancerScreeningPartic1)
-                .append(rankBowelCancerScreeningP1, rhs.rankBowelCancerScreeningP1)
-                .append(bowelCancerScreeningPartic2, rhs.bowelCancerScreeningPartic2)
-                .append(rankBowelCancerScreeningP2, rhs.rankBowelCancerScreeningP2)
-                .append(lowBirthweightBabies, rhs.lowBirthweightBabies)
-                .append(rankLowBirthweightBabies, rhs.rankLowBirthweightBabies)
-                .append(percentInfantsFullyBreastfed, rhs.percentInfantsFullyBreastfed)
-                .append(rankPercentInfantsFullyBrea, rhs.rankPercentInfantsFullyBrea)
-                .append(percentChildrenFullyImmunise, rhs.percentChildrenFullyImmunise)
-                .append(rankPercentChildrenFullyImm, rhs.rankPercentChildrenFullyImm)
-                .append(proportionOfInfantsEnrolled, rhs.proportionOfInfantsEnrolled)
-                .append(rankProportionOfInfantsEnro, rhs.rankProportionOfInfantsEnro)
-                .append(kindergartenParticipationRate, rhs.kindergartenParticipationRate)
-                .append(percentOfChildrenWithKinder, rhs.percentOfChildrenWithKinder)
-                .append(rankPercentOfChildrenWithK, rhs.rankPercentOfChildrenWithK)
-                .append(percentOfChildrenWithEmotio, rhs.percentOfChildrenWithEmotio)
-                .append(rankPercentOfChildrenWithE, rhs.rankPercentOfChildrenWithE)
-                .append(percentOfChildrenWithSpeech, rhs.percentOfChildrenWithSpeech)
-                .append(rankPercentOfChildrenWithS, rhs.rankPercentOfChildrenWithS)
-                .append(percentOfAdolescentsWhoRepo, rhs.percentOfAdolescentsWhoRepo)
-                .append(rankPercentOfAdolescentsWho, rhs.rankPercentOfAdolescentsWho)
-                .append(percentOfChildrenWhoAreDev, rhs.percentOfChildrenWhoAreDev)
-                .append(rankPercentOfChildrenWhoAr, rhs.rankPercentOfChildrenWhoAr)
-                .append(percentOfChildrenWhoAreD1, rhs.percentOfChildrenWhoAreD1)
-                .append(rankPercentOfChildrenWho1, rhs.rankPercentOfChildrenWho1)
-                .append(coreActivityNeedForAssistan, rhs.coreActivityNeedForAssistan)
-                .append(rankCoreActivityNeedForAss, rhs.rankCoreActivityNeedForAss)
-                .append(peopleWithSevereAndProfound, rhs.peopleWithSevereAndProfound)
-                .append(rankPeopleWithSevereAndPro, rhs.rankPeopleWithSevereAndPro)
-                .append(peopleWithSevereAndProfou1, rhs.peopleWithSevereAndProfou1)
-                .append(rankPeopleWithSevereAndP1, rhs.rankPeopleWithSevereAndP1)
-                .append(percentPopAged75yrsPlusLivi, rhs.percentPopAged75yrsPlusLivi)
-                .append(rankPercentPopAged75yrsPlus, rhs.rankPercentPopAged75yrsPlus)
-                .append(popAged75yrsPlusLivingAlone, rhs.popAged75yrsPlusLivingAlone)
-                .append(rankPopAged75yrsPlusLiving, rhs.rankPopAged75yrsPlusLiving)
-                .append(popAged75yrsPlusLivingAlo1, rhs.popAged75yrsPlusLivingAlo1)
-                .append(rankPopAged75yrsPlusLiving1, rhs.rankPopAged75yrsPlusLiving1)
-                .append(personsReceivingDisabilitySe, rhs.personsReceivingDisabilitySe)
-                .append(rankPersonsReceivingDisabili, rhs.rankPersonsReceivingDisabili)
-                .append(disabilityPensionPer1000Eli, rhs.disabilityPensionPer1000Eli)
-                .append(rankDisabilityPensionPer100, rhs.rankDisabilityPensionPer100)
-                .append(agedCareHighCareBeds, rhs.agedCareHighCareBeds)
-                .append(agedCareLowCareBeds, rhs.agedCareLowCareBeds)
-                .append(agePensionPer1000EligibleP, rhs.agePensionPer1000EligibleP)
-                .append(rankAgePensionPer1000Eligi, rhs.rankAgePensionPer1000Eligi)
-                .append(maleLifeExpectancy, rhs.maleLifeExpectancy)
-                .append(rankMaleLifeExpectancy, rhs.rankMaleLifeExpectancy)
-                .append(femaleLifeExpectancy, rhs.femaleLifeExpectancy)
-                .append(rankFemaleLifeExpectancy, rhs.rankFemaleLifeExpectancy)
-                .append(personsReportingFairOrPoor, rhs.personsReportingFairOrPoor)
-                .append(rankPersonsReportingFairOr, rhs.rankPersonsReportingFairOr)
-                .append(femalesReportingFairOrPoor, rhs.femalesReportingFairOrPoor)
-                .append(rankFemalesReportingFairOr, rhs.rankFemalesReportingFairOr)
-                .append(malesReportingFairOrPoorHe, rhs.malesReportingFairOrPoorHe)
-                .append(rankMalesReportingFairOrPo, rhs.rankMalesReportingFairOrPo)
-                .append(percentWhoHaveAHighDegree, rhs.percentWhoHaveAHighDegree)
-                .append(rankPercentWhoHaveAHighDe, rhs.rankPercentWhoHaveAHighDe)
-                .append(percentOfPersonsSleepingLes, rhs.percentOfPersonsSleepingLes)
-                .append(rankPercentOfPersonsSleepin, rhs.rankPercentOfPersonsSleepin)
-                .append(percentPersonsWithAdequateW, rhs.percentPersonsWithAdequateW)
-                .append(rankPercentPersonsWithAdequ, rhs.rankPercentPersonsWithAdequ)
-                .append(unintentionalInjuriesTreated, rhs.unintentionalInjuriesTreated)
-                .append(rankUnintentionalInjuriesTre, rhs.rankUnintentionalInjuriesTre)
-                .append(intentionalInjuriesTreatedIn, rhs.intentionalInjuriesTreatedIn)
-                .append(rankIntentionalInjuriesTreat, rhs.rankIntentionalInjuriesTreat)
-                .append(percentOfUnintentionalHospit, rhs.percentOfUnintentionalHospit)
-                .append(rankPercentOfUnintentionalH, rhs.rankPercentOfUnintentionalH)
-                .append(indirectStandardisedDeathRat, rhs.indirectStandardisedDeathRat)
-                .append(rankIndirectStandardisedDeat, rhs.rankIndirectStandardisedDeat)
-                .append(avoidableDeaths0to74YrsFor, rhs.avoidableDeaths0to74YrsFor)
-                .append(rankAvoidableDeaths0to74Yrs, rhs.rankAvoidableDeaths0to74Yrs)
-                .append(avoidableDeaths0to74yrsrsFor, rhs.avoidableDeaths0to74yrsrsFor)
-                .append(rankAvoidableDeaths0to74yrsr, rhs.rankAvoidableDeaths0to74yrsr)
-                .append(avoidableDeaths0to74yrsrsF1, rhs.avoidableDeaths0to74yrsrsF1)
-                .append(rankAvoidableDeaths0to74yr1, rhs.rankAvoidableDeaths0to74yr1)
-                .append(avoidableDeaths0to74yrsForR, rhs.avoidableDeaths0to74yrsForR)
-                .append(rankAvoidableDeaths0to74yrs, rhs.rankAvoidableDeaths0to74yrs)
-                .append(primaryHealthNetwork, rhs.primaryHealthNetwork)
-                .append(primaryCarePartnership, rhs.primaryCarePartnership)
-                .append(numberOfHospitalsAndHealth, rhs.numberOfHospitalsAndHealth)
-                .append(numberOfPublicHospitalsAnd, rhs.numberOfPublicHospitalsAnd)
-                .append(numberOfPrivateHospitalsAnd, rhs.numberOfPrivateHospitalsAnd)
-                .append(gPsPer1000Pop, rhs.gPsPer1000Pop)
-                .append(rankGPsPer1000Pop, rhs.rankGPsPer1000Pop)
-                .append(gPSitesPer1000Pop, rhs.gPSitesPer1000Pop)
-                .append(rankGPSitesPer1000Pop, rhs.rankGPSitesPer1000Pop)
-                .append(alliedHealthSitesPer1000Po, rhs.alliedHealthSitesPer1000Po)
-                .append(rankAlliedHealthSitesPer10, rhs.rankAlliedHealthSitesPer10)
-                .append(dentalServicesPer1000Pop, rhs.dentalServicesPer1000Pop)
-                .append(rankDentalServicesPer1000P, rhs.rankDentalServicesPer1000P)
-                .append(pharmaciesPer1000Pop, rhs.pharmaciesPer1000Pop)
-                .append(rankPharmaciesPer1000Pop, rhs.rankPharmaciesPer1000Pop)
-                .append(percentNearPublicTransport, rhs.percentNearPublicTransport)
-                .append(rankPercentNearPublicTransp, rhs.rankPercentNearPublicTransp)
-                .append(percentWithPrivateHealthIns, rhs.percentWithPrivateHealthIns)
-                .append(rankPercentWithPrivateHealt, rhs.rankPercentWithPrivateHealt)
-                .append(hospitalInpatientSeparations, rhs.hospitalInpatientSeparations)
-                .append(rankHospitalInpatientSeparat, rhs.rankHospitalInpatientSeparat)
-                .append(percentInpatientSeparationsF, rhs.percentInpatientSeparationsF)
-                .append(rankPercentInpatientSeparati, rhs.rankPercentInpatientSeparati)
-                .append(mainPublicHospitalAttendedF, rhs.mainPublicHospitalAttendedF)
-                .append(mainPublicHospitalAttendedP, rhs.mainPublicHospitalAttendedP)
-                .append(rankMainPublicHospitalAtten, rhs.rankMainPublicHospitalAtten)
-                .append(averageLengthOfStayInDays, rhs.averageLengthOfStayInDays)
-                .append(rankAverageLengthOfStayIn, rhs.rankAverageLengthOfStayIn)
-                .append(averageLengthOfStayForAll, rhs.averageLengthOfStayForAll)
-                .append(rankAverageLengthOfStayFor, rhs.rankAverageLengthOfStayFor)
-                .append(perAnnumPercentChangeInSep, rhs.perAnnumPercentChangeInSep)
-                .append(rankPerAnnumPercentChangeI, rhs.rankPerAnnumPercentChangeI)
-                .append(perAnnumPercentProjectedCha, rhs.perAnnumPercentProjectedCha)
-                .append(rankPerAnnumPercentProjecte, rhs.rankPerAnnumPercentProjecte)
-                .append(aCSCsPer1000PopTotal, rhs.aCSCsPer1000PopTotal)
-                .append(rankACSCsPer1000PopTotal, rhs.rankACSCsPer1000PopTotal)
-                .append(aCSCsPer1000PopAcute, rhs.aCSCsPer1000PopAcute)
-                .append(rankACSCsPer1000PopAcute, rhs.rankACSCsPer1000PopAcute)
-                .append(aCSCsPer1000PopChronic, rhs.aCSCsPer1000PopChronic)
-                .append(rankACSCsPer1000PopChronic, rhs.rankACSCsPer1000PopChronic)
-                .append(aCSCsPer1000PopVaccinePrev, rhs.aCSCsPer1000PopVaccinePrev)
-                .append(rankACSCsPer1000PopVaccine, rhs.rankACSCsPer1000PopVaccine)
-                .append(emergencyDepartmentPresentati, rhs.emergencyDepartmentPresentati)
-                .append(rankEmergencyDepartmentPrese, rhs.rankEmergencyDepartmentPrese)
-                .append(primaryCareTypePresentations, rhs.primaryCareTypePresentations)
-                .append(rankPrimaryCareTypePresenta, rhs.rankPrimaryCareTypePresenta)
-                .append(childProtectionInvestigations, rhs.childProtectionInvestigations)
-                .append(rankChildProtectionInvestiga, rhs.rankChildProtectionInvestiga)
-                .append(childProtectionSubstantiation, rhs.childProtectionSubstantiation)
-                .append(rankChildProtectionSubstanti, rhs.rankChildProtectionSubstanti)
-                .append(numberOfChildFIRSTAssessmen, rhs.numberOfChildFIRSTAssessmen)
-                .append(rankNumberOfChildFIRSTAsse, rhs.rankNumberOfChildFIRSTAsse)
-                .append(gPAttendancesPer1000PopMal, rhs.gPAttendancesPer1000PopMal)
-                .append(rankGPAttendancesPer1000Po, rhs.rankGPAttendancesPer1000Po)
-                .append(gPAttendancesPer1000PopFem, rhs.gPAttendancesPer1000PopFem)
-                .append(rankGPAttendancesPer10001, rhs.rankGPAttendancesPer10001)
-                .append(gPAttendancesPer1000PopTot, rhs.gPAttendancesPer1000PopTot)
-                .append(rankGPAttendancesPer10002, rhs.rankGPAttendancesPer10002)
-                .append(hACCClientsAged0to64yrsPer, rhs.hACCClientsAged0to64yrsPer)
-                .append(rankHACCClientsAged0to64yrs, rhs.rankHACCClientsAged0to64yrs)
-                .append(hACCClientsAged65yrsPlusPer, rhs.hACCClientsAged65yrsPlusPer)
-                .append(rankHACCClientsAged65yrsPlu, rhs.rankHACCClientsAged65yrsPlu)
-                .append(noClientsWhoReceivedAlcohol, rhs.noClientsWhoReceivedAlcohol)
-                .append(rankNoClientsWhoReceivedAl, rhs.rankNoClientsWhoReceivedAl)
-                .append(registeredMentalMealthClient, rhs.registeredMentalMealthClient)
-                .append(rankRegisteredMentalMealthC, rhs.rankRegisteredMentalMealthC)
-                .isEquals();
+        return (((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((this.primaryCarePartnership == rhs.primaryCarePartnership)||((this.primaryCarePartnership!= null)&&this.primaryCarePartnership.equals(rhs.primaryCarePartnership)))&&((this.percentOfPersonsReportingOs == rhs.percentOfPersonsReportingOs)||((this.percentOfPersonsReportingOs!= null)&&this.percentOfPersonsReportingOs.equals(rhs.percentOfPersonsReportingOs))))&&((this.country4PercentForTop5Ove == rhs.country4PercentForTop5Ove)||((this.country4PercentForTop5Ove!= null)&&this.country4PercentForTop5Ove.equals(rhs.country4PercentForTop5Ove))))&&((this.bowelCancerScreeningParticip == rhs.bowelCancerScreeningParticip)||((this.bowelCancerScreeningParticip!= null)&&this.bowelCancerScreeningParticip.equals(rhs.bowelCancerScreeningParticip))))&&((this.kindergartenParticipationRate == rhs.kindergartenParticipationRate)||((this.kindergartenParticipationRate!= null)&&this.kindergartenParticipationRate.equals(rhs.kindergartenParticipationRate))))&&((this.feelValuedBySociety == rhs.feelValuedBySociety)||((this.feelValuedBySociety!= null)&&this.feelValuedBySociety.equals(rhs.feelValuedBySociety))))&&((this.percentRentalStress == rhs.percentRentalStress)||((this.percentRentalStress!= null)&&this.percentRentalStress.equals(rhs.percentRentalStress))))&&((this.maleLifeExpectancy == rhs.maleLifeExpectancy)||((this.maleLifeExpectancy!= null)&&this.maleLifeExpectancy.equals(rhs.maleLifeExpectancy))))&&((this.rankPercentOfChildrenWithE == rhs.rankPercentOfChildrenWithE)||((this.rankPercentOfChildrenWithE!= null)&&this.rankPercentOfChildrenWithE.equals(rhs.rankPercentOfChildrenWithE))))&&((this.delayedMedicalConsultationBe == rhs.delayedMedicalConsultationBe)||((this.delayedMedicalConsultationBe!= null)&&this.delayedMedicalConsultationBe.equals(rhs.delayedMedicalConsultationBe))))&&((this.percentWhoHaveAHighDegree == rhs.percentWhoHaveAHighDegree)||((this.percentWhoHaveAHighDegree!= null)&&this.percentWhoHaveAHighDegree.equals(rhs.percentWhoHaveAHighDegree))))&&((this.rankPercentOfChildrenWithK == rhs.rankPercentOfChildrenWithK)||((this.rankPercentOfChildrenWithK!= null)&&this.rankPercentOfChildrenWithK.equals(rhs.rankPercentOfChildrenWithK))))&&((this.femaleCancerIncidencePer100 == rhs.femaleCancerIncidencePer100)||((this.femaleCancerIncidencePer100 != null)&&this.femaleCancerIncidencePer100 .equals(rhs.femaleCancerIncidencePer100))))&&((this.volunteers == rhs.volunteers)||((this.volunteers!= null)&&this.volunteers.equals(rhs.volunteers))))&&((this.female85yrsPlus == rhs.female85yrsPlus)||((this.female85yrsPlus!= null)&&this.female85yrsPlus.equals(rhs.female85yrsPlus))))&&((this.rankBowelCancerScreeningP1 == rhs.rankBowelCancerScreeningP1)||((this.rankBowelCancerScreeningP1 != null)&&this.rankBowelCancerScreeningP1 .equals(rhs.rankBowelCancerScreeningP1))))&&((this.percentOfFemalesWhoAreObes == rhs.percentOfFemalesWhoAreObes)||((this.percentOfFemalesWhoAreObes!= null)&&this.percentOfFemalesWhoAreObes.equals(rhs.percentOfFemalesWhoAreObes))))&&((this.rankBowelCancerScreeningP2 == rhs.rankBowelCancerScreeningP2)||((this.rankBowelCancerScreeningP2 != null)&&this.rankBowelCancerScreeningP2 .equals(rhs.rankBowelCancerScreeningP2))))&&((this.rankPercentOfChildrenWithS == rhs.rankPercentOfChildrenWithS)||((this.rankPercentOfChildrenWithS!= null)&&this.rankPercentOfChildrenWithS.equals(rhs.rankPercentOfChildrenWithS))))&&((this.personsReceivingDisabilitySe == rhs.personsReceivingDisabilitySe)||((this.personsReceivingDisabilitySe!= null)&&this.personsReceivingDisabilitySe.equals(rhs.personsReceivingDisabilitySe))))&&((this.percentPersonsWhoCompletedA == rhs.percentPersonsWhoCompletedA)||((this.percentPersonsWhoCompletedA!= null)&&this.percentPersonsWhoCompletedA.equals(rhs.percentPersonsWhoCompletedA))))&&((this.socialHousingStockAsAPerce == rhs.socialHousingStockAsAPerce)||((this.socialHousingStockAsAPerce!= null)&&this.socialHousingStockAsAPerce.equals(rhs.socialHousingStockAsAPerce))))&&((this.percentOfChildrenWithSpeech == rhs.percentOfChildrenWithSpeech)||((this.percentOfChildrenWithSpeech!= null)&&this.percentOfChildrenWithSpeech.equals(rhs.percentOfChildrenWithSpeech))))&&((this.rankPopAged75yrsPlusLiving1 == rhs.rankPopAged75yrsPlusLiving1)||((this.rankPopAged75yrsPlusLiving1 != null)&&this.rankPopAged75yrsPlusLiving1 .equals(rhs.rankPopAged75yrsPlusLiving1))))&&((this.rankGPsPer1000Pop == rhs.rankGPsPer1000Pop)||((this.rankGPsPer1000Pop!= null)&&this.rankGPsPer1000Pop.equals(rhs.rankGPsPer1000Pop))))&&((this.rankPercentOfAdolescentsWho == rhs.rankPercentOfAdolescentsWho)||((this.rankPercentOfAdolescentsWho!= null)&&this.rankPercentOfAdolescentsWho.equals(rhs.rankPercentOfAdolescentsWho))))&&((this.rankSpokeWithMoreThan5Peo == rhs.rankSpokeWithMoreThan5Peo)||((this.rankSpokeWithMoreThan5Peo!= null)&&this.rankSpokeWithMoreThan5Peo.equals(rhs.rankSpokeWithMoreThan5Peo))))&&((this.percentResidentialLandUse == rhs.percentResidentialLandUse)||((this.percentResidentialLandUse!= null)&&this.percentResidentialLandUse.equals(rhs.percentResidentialLandUse))))&&((this.percentAboriginalOrTorresSt == rhs.percentAboriginalOrTorresSt)||((this.percentAboriginalOrTorresSt!= null)&&this.percentAboriginalOrTorresSt.equals(rhs.percentAboriginalOrTorresSt))))&&((this.rankPercentOfPersonsRepor1 == rhs.rankPercentOfPersonsRepor1)||((this.rankPercentOfPersonsRepor1 != null)&&this.rankPercentOfPersonsRepor1 .equals(rhs.rankPercentOfPersonsRepor1))))&&((this.rankPercentChildrenFullyImm == rhs.rankPercentChildrenFullyImm)||((this.rankPercentChildrenFullyImm!= null)&&this.rankPercentChildrenFullyImm.equals(rhs.rankPercentChildrenFullyImm))))&&((this.rankNoClientsWhoReceivedAl == rhs.rankNoClientsWhoReceivedAl)||((this.rankNoClientsWhoReceivedAl!= null)&&this.rankNoClientsWhoReceivedAl.equals(rhs.rankNoClientsWhoReceivedAl))))&&((this.tota65to84yrs == rhs.tota65to84yrs)||((this.tota65to84yrs!= null)&&this.tota65to84yrs.equals(rhs.tota65to84yrs))))&&((this.country2ForTop5OverseasCo == rhs.country2ForTop5OverseasCo)||((this.country2ForTop5OverseasCo!= null)&&this.country2ForTop5OverseasCo.equals(rhs.country2ForTop5OverseasCo))))&&((this.rankFemaleLifeExpectancy == rhs.rankFemaleLifeExpectancy)||((this.rankFemaleLifeExpectancy!= null)&&this.rankFemaleLifeExpectancy.equals(rhs.rankFemaleLifeExpectancy))))&&((this.personsWithAtLeast2HourDa == rhs.personsWithAtLeast2HourDa)||((this.personsWithAtLeast2HourDa!= null)&&this.personsWithAtLeast2HourDa.equals(rhs.personsWithAtLeast2HourDa))))&&((this.rankAlliedHealthSitesPer10 == rhs.rankAlliedHealthSitesPer10)||((this.rankAlliedHealthSitesPer10 != null)&&this.rankAlliedHealthSitesPer10 .equals(rhs.rankAlliedHealthSitesPer10))))&&((this.rankPercentOfChildrenWho1 == rhs.rankPercentOfChildrenWho1)||((this.rankPercentOfChildrenWho1 != null)&&this.rankPercentOfChildrenWho1 .equals(rhs.rankPercentOfChildrenWho1))))&&((this.rankVolunteers == rhs.rankVolunteers)||((this.rankVolunteers!= null)&&this.rankVolunteers.equals(rhs.rankVolunteers))))&&((this.numberOfPrivateHospitalsAnd == rhs.numberOfPrivateHospitalsAnd)||((this.numberOfPrivateHospitalsAnd!= null)&&this.numberOfPrivateHospitalsAnd.equals(rhs.numberOfPrivateHospitalsAnd))))&&((this.femaleLifeExpectancy == rhs.femaleLifeExpectancy)||((this.femaleLifeExpectancy!= null)&&this.femaleLifeExpectancy.equals(rhs.femaleLifeExpectancy))))&&((this.membersOfAReligiousGroup == rhs.membersOfAReligiousGroup)||((this.membersOfAReligiousGroup!= null)&&this.membersOfAReligiousGroup.equals(rhs.membersOfAReligiousGroup))))&&((this.rankAtedTheirCommunityAsA == rhs.rankAtedTheirCommunityAsA)||((this.rankAtedTheirCommunityAsA!= null)&&this.rankAtedTheirCommunityAsA.equals(rhs.rankAtedTheirCommunityAsA))))&&((this.rankIntentionalInjuriesTreat == rhs.rankIntentionalInjuriesTreat)||((this.rankIntentionalInjuriesTreat!= null)&&this.rankIntentionalInjuriesTreat.equals(rhs.rankIntentionalInjuriesTreat))))&&((this.intentionalInjuriesTreatedIn == rhs.intentionalInjuriesTreatedIn)||((this.intentionalInjuriesTreatedIn!= null)&&this.intentionalInjuriesTreatedIn.equals(rhs.intentionalInjuriesTreatedIn))))&&((this.rankPercentOfPersonsWhoDri == rhs.rankPercentOfPersonsWhoDri)||((this.rankPercentOfPersonsWhoDri!= null)&&this.rankPercentOfPersonsWhoDri.equals(rhs.rankPercentOfPersonsWhoDri))))&&((this.agedCareLowCareBeds == rhs.agedCareLowCareBeds)||((this.agedCareLowCareBeds!= null)&&this.agedCareLowCareBeds.equals(rhs.agedCareLowCareBeds))))&&((this.percentOfChildrenWhoAreDev == rhs.percentOfChildrenWhoAreDev)||((this.percentOfChildrenWhoAreDev!= null)&&this.percentOfChildrenWhoAreDev.equals(rhs.percentOfChildrenWhoAreDev))))&&((this.percentOfFemalesWhoDoNotM == rhs.percentOfFemalesWhoDoNotM)||((this.percentOfFemalesWhoDoNotM!= null)&&this.percentOfFemalesWhoDoNotM.equals(rhs.percentOfFemalesWhoDoNotM))))&&((this.travelTimeFromMelbourneGPO == rhs.travelTimeFromMelbourneGPO)||((this.travelTimeFromMelbourneGPO!= null)&&this.travelTimeFromMelbourneGPO.equals(rhs.travelTimeFromMelbourneGPO))))&&((this.homelessnessRatePer1000Pop == rhs.homelessnessRatePer1000Pop)||((this.homelessnessRatePer1000Pop!= null)&&this.homelessnessRatePer1000Pop.equals(rhs.homelessnessRatePer1000Pop))))&&((this.percentMaleIncomeLessThan4 == rhs.percentMaleIncomeLessThan4)||((this.percentMaleIncomeLessThan4 != null)&&this.percentMaleIncomeLessThan4 .equals(rhs.percentMaleIncomeLessThan4))))&&((this.country5PercentTop5Languag == rhs.country5PercentTop5Languag)||((this.country5PercentTop5Languag!= null)&&this.country5PercentTop5Languag.equals(rhs.country5PercentTop5Languag))))&&((this.perAnnumPercentChangeInSep == rhs.perAnnumPercentChangeInSep)||((this.perAnnumPercentChangeInSep!= null)&&this.perAnnumPercentChangeInSep.equals(rhs.perAnnumPercentChangeInSep))))&&((this.takeActionOnBehalfOfTheLo == rhs.takeActionOnBehalfOfTheLo)||((this.takeActionOnBehalfOfTheLo!= null)&&this.takeActionOnBehalfOfTheLo.equals(rhs.takeActionOnBehalfOfTheLo))))&&((this.rankDrugUsageAndPossession == rhs.rankDrugUsageAndPossession)||((this.rankDrugUsageAndPossession!= null)&&this.rankDrugUsageAndPossession.equals(rhs.rankDrugUsageAndPossession))))&&((this.rankPercentOfChildrenWhoAr == rhs.rankPercentOfChildrenWhoAr)||((this.rankPercentOfChildrenWhoAr!= null)&&this.rankPercentOfChildrenWhoAr.equals(rhs.rankPercentOfChildrenWhoAr))))&&((this.rankHACCClientsAged65yrsPlu == rhs.rankHACCClientsAged65yrsPlu)||((this.rankHACCClientsAged65yrsPlu!= null)&&this.rankHACCClientsAged65yrsPlu.equals(rhs.rankHACCClientsAged65yrsPlu))))&&((this.totalCrimePer1000Pop == rhs.totalCrimePer1000Pop)||((this.totalCrimePer1000Pop!= null)&&this.totalCrimePer1000Pop.equals(rhs.totalCrimePer1000Pop))))&&((this.perAnnumPopChangeActualFor == rhs.perAnnumPopChangeActualFor)||((this.perAnnumPopChangeActualFor!= null)&&this.perAnnumPopChangeActualFor.equals(rhs.perAnnumPopChangeActualFor))))&&((this.registeredMentalMealthClient == rhs.registeredMentalMealthClient)||((this.registeredMentalMealthClient!= null)&&this.registeredMentalMealthClient.equals(rhs.registeredMentalMealthClient))))&&((this.percentOfFemalesWhoDoNot1 == rhs.percentOfFemalesWhoDoNot1)||((this.percentOfFemalesWhoDoNot1 != null)&&this.percentOfFemalesWhoDoNot1 .equals(rhs.percentOfFemalesWhoDoNot1))))&&((this.malesReportingFairOrPoorHe == rhs.malesReportingFairOrPoorHe)||((this.malesReportingFairOrPoorHe!= null)&&this.malesReportingFairOrPoorHe.equals(rhs.malesReportingFairOrPoorHe))))&&((this.primaryHealthNetwork == rhs.primaryHealthNetwork)||((this.primaryHealthNetwork!= null)&&this.primaryHealthNetwork.equals(rhs.primaryHealthNetwork))))&&((this.rankPercentOfPersonsWhoAre == rhs.rankPercentOfPersonsWhoAre)||((this.rankPercentOfPersonsWhoAre!= null)&&this.rankPercentOfPersonsWhoAre.equals(rhs.rankPercentOfPersonsWhoAre))))&&((this.totalFertilityRate2012 == rhs.totalFertilityRate2012)||((this.totalFertilityRate2012 != null)&&this.totalFertilityRate2012 .equals(rhs.totalFertilityRate2012))))&&((this.rankChildProtectionInvestiga == rhs.rankChildProtectionInvestiga)||((this.rankChildProtectionInvestiga!= null)&&this.rankChildProtectionInvestiga.equals(rhs.rankChildProtectionInvestiga))))&&((this.percentRuralLandUse == rhs.percentRuralLandUse)||((this.percentRuralLandUse!= null)&&this.percentRuralLandUse.equals(rhs.percentRuralLandUse))))&&((this.percentInpatientSeparationsF == rhs.percentInpatientSeparationsF)||((this.percentInpatientSeparationsF!= null)&&this.percentInpatientSeparationsF.equals(rhs.percentInpatientSeparationsF))))&&((this.metropolitanRural == rhs.metropolitanRural)||((this.metropolitanRural!= null)&&this.metropolitanRural.equals(rhs.metropolitanRural))))&&((this.percentOfRentalHousingThat == rhs.percentOfRentalHousingThat)||((this.percentOfRentalHousingThat!= null)&&this.percentOfRentalHousingThat.equals(rhs.percentOfRentalHousingThat))))&&((this.percentOfWorkJourneysWhich == rhs.percentOfWorkJourneysWhich)||((this.percentOfWorkJourneysWhich!= null)&&this.percentOfWorkJourneysWhich.equals(rhs.percentOfWorkJourneysWhich))))&&((this.rankDisabilityPensionPer100 == rhs.rankDisabilityPensionPer100)||((this.rankDisabilityPensionPer100 != null)&&this.rankDisabilityPensionPer100 .equals(rhs.rankDisabilityPensionPer100))))&&((this.gPAttendancesPer1000PopFem == rhs.gPAttendancesPer1000PopFem)||((this.gPAttendancesPer1000PopFem!= null)&&this.gPAttendancesPer1000PopFem.equals(rhs.gPAttendancesPer1000PopFem))))&&((this.percentPersonsWithAdequateW == rhs.percentPersonsWithAdequateW)||((this.percentPersonsWithAdequateW!= null)&&this.percentPersonsWithAdequateW.equals(rhs.percentPersonsWithAdequateW))))&&((this.rankGamingMachineLossesPer == rhs.rankGamingMachineLossesPer)||((this.rankGamingMachineLossesPer!= null)&&this.rankGamingMachineLossesPer.equals(rhs.rankGamingMachineLossesPer))))&&((this.indirectStandardisedDeathRat == rhs.indirectStandardisedDeathRat)||((this.indirectStandardisedDeathRat!= null)&&this.indirectStandardisedDeathRat.equals(rhs.indirectStandardisedDeathRat))))&&((this.rankPercentPoorDentalHealth == rhs.rankPercentPoorDentalHealth)||((this.rankPercentPoorDentalHealth!= null)&&this.rankPercentPoorDentalHealth.equals(rhs.rankPercentPoorDentalHealth))))&&((this.country5ForTop5OverseasCo == rhs.country5ForTop5OverseasCo)||((this.country5ForTop5OverseasCo!= null)&&this.country5ForTop5OverseasCo.equals(rhs.country5ForTop5OverseasCo))))&&((this.country2PercentTop5Languag == rhs.country2PercentTop5Languag)||((this.country2PercentTop5Languag!= null)&&this.country2PercentTop5Languag.equals(rhs.country2PercentTop5Languag))))&&((this.rankTeenageFertilityRate201 == rhs.rankTeenageFertilityRate201)||((this.rankTeenageFertilityRate201 != null)&&this.rankTeenageFertilityRate201 .equals(rhs.rankTeenageFertilityRate201))))&&((this.rankGPAttendancesPer1000Po == rhs.rankGPAttendancesPer1000Po)||((this.rankGPAttendancesPer1000Po!= null)&&this.rankGPAttendancesPer1000Po.equals(rhs.rankGPAttendancesPer1000Po))))&&((this.rankPercentHouseholdsWithNo == rhs.rankPercentHouseholdsWithNo)||((this.rankPercentHouseholdsWithNo!= null)&&this.rankPercentHouseholdsWithNo.equals(rhs.rankPercentHouseholdsWithNo))))&&((this.percentOfWorkJourneysWhich1 == rhs.percentOfWorkJourneysWhich1)||((this.percentOfWorkJourneysWhich1 != null)&&this.percentOfWorkJourneysWhich1 .equals(rhs.percentOfWorkJourneysWhich1))))&&((this.emergencyDepartmentPresentati == rhs.emergencyDepartmentPresentati)||((this.emergencyDepartmentPresentati!= null)&&this.emergencyDepartmentPresentati.equals(rhs.emergencyDepartmentPresentati))))&&((this.percentSpeaksLOTEAtHome == rhs.percentSpeaksLOTEAtHome)||((this.percentSpeaksLOTEAtHome!= null)&&this.percentSpeaksLOTEAtHome.equals(rhs.percentSpeaksLOTEAtHome))))&&((this.rankIndexOfRelativeSociaEc == rhs.rankIndexOfRelativeSociaEc)||((this.rankIndexOfRelativeSociaEc!= null)&&this.rankIndexOfRelativeSociaEc.equals(rhs.rankIndexOfRelativeSociaEc))))&&((this.rankSocialHousingStockAsA == rhs.rankSocialHousingStockAsA)||((this.rankSocialHousingStockAsA!= null)&&this.rankSocialHousingStockAsA.equals(rhs.rankSocialHousingStockAsA))))&&((this.mainPublicHospitalAttendedF == rhs.mainPublicHospitalAttendedF)||((this.mainPublicHospitalAttendedF!= null)&&this.mainPublicHospitalAttendedF.equals(rhs.mainPublicHospitalAttendedF))))&&((this.mainPublicHospitalAttendedP == rhs.mainPublicHospitalAttendedP)||((this.mainPublicHospitalAttendedP!= null)&&this.mainPublicHospitalAttendedP.equals(rhs.mainPublicHospitalAttendedP))))&&((this.bornInANonEnglishSpeaking == rhs.bornInANonEnglishSpeaking)||((this.bornInANonEnglishSpeaking!= null)&&this.bornInANonEnglishSpeaking.equals(rhs.bornInANonEnglishSpeaking))))&&((this.percentOneParentHeadedFamil == rhs.percentOneParentHeadedFamil)||((this.percentOneParentHeadedFamil!= null)&&this.percentOneParentHeadedFamil.equals(rhs.percentOneParentHeadedFamil))))&&((this.percentHouseholdsWithNoMoto == rhs.percentHouseholdsWithNoMoto)||((this.percentHouseholdsWithNoMoto!= null)&&this.percentHouseholdsWithNoMoto.equals(rhs.percentHouseholdsWithNoMoto))))&&((this.rankOneParentHeadedFamili1 == rhs.rankOneParentHeadedFamili1)||((this.rankOneParentHeadedFamili1 != null)&&this.rankOneParentHeadedFamili1 .equals(rhs.rankOneParentHeadedFamili1))))&&((this.rankMainPublicHospitalAtten == rhs.rankMainPublicHospitalAtten)||((this.rankMainPublicHospitalAtten!= null)&&this.rankMainPublicHospitalAtten.equals(rhs.rankMainPublicHospitalAtten))))&&((this.percentOfPopWithFoodInsecu == rhs.percentOfPopWithFoodInsecu)||((this.percentOfPopWithFoodInsecu!= null)&&this.percentOfPopWithFoodInsecu.equals(rhs.percentOfPopWithFoodInsecu))))&&((this.percentBusinessLandUse == rhs.percentBusinessLandUse)||((this.percentBusinessLandUse!= null)&&this.percentBusinessLandUse.equals(rhs.percentBusinessLandUse))))&&((this.rankPerAnnumPercentChangeI == rhs.rankPerAnnumPercentChangeI)||((this.rankPerAnnumPercentChangeI!= null)&&this.rankPerAnnumPercentChangeI.equals(rhs.rankPerAnnumPercentChangeI))))&&((this.rankPercentOneParentHeaded == rhs.rankPercentOneParentHeaded)||((this.rankPercentOneParentHeaded!= null)&&this.rankPercentOneParentHeaded.equals(rhs.rankPercentOneParentHeaded))))&&((this.gPSitesPer1000Pop == rhs.gPSitesPer1000Pop)||((this.gPSitesPer1000Pop!= null)&&this.gPSitesPer1000Pop.equals(rhs.gPSitesPer1000Pop))))&&((this.teenageFertilityRate2012 == rhs.teenageFertilityRate2012)||((this.teenageFertilityRate2012 != null)&&this.teenageFertilityRate2012 .equals(rhs.teenageFertilityRate2012))))&&((this.medianHousePrice == rhs.medianHousePrice)||((this.medianHousePrice!= null)&&this.medianHousePrice.equals(rhs.medianHousePrice))))&&((this.percentOfPersonsReportingTy == rhs.percentOfPersonsReportingTy)||((this.percentOfPersonsReportingTy!= null)&&this.percentOfPersonsReportingTy.equals(rhs.percentOfPersonsReportingTy))))&&((this.hospitalInpatientSeparations == rhs.hospitalInpatientSeparations)||((this.hospitalInpatientSeparations!= null)&&this.hospitalInpatientSeparations.equals(rhs.hospitalInpatientSeparations))))&&((this.rankUnintentionalInjuriesTre == rhs.rankUnintentionalInjuriesTre)||((this.rankUnintentionalInjuriesTre!= null)&&this.rankUnintentionalInjuriesTre.equals(rhs.rankUnintentionalInjuriesTre))))&&((this.percentTotal84yrsPlus == rhs.percentTotal84yrsPlus)||((this.percentTotal84yrsPlus!= null)&&this.percentTotal84yrsPlus.equals(rhs.percentTotal84yrsPlus))))&&((this.rankPercentInpatientSeparati == rhs.rankPercentInpatientSeparati)||((this.rankPercentInpatientSeparati!= null)&&this.rankPercentInpatientSeparati.equals(rhs.rankPercentInpatientSeparati))))&&((this.newSettlerArrivalsPer100000 == rhs.newSettlerArrivalsPer100000)||((this.newSettlerArrivalsPer100000 != null)&&this.newSettlerArrivalsPer100000 .equals(rhs.newSettlerArrivalsPer100000))))&&((this.popAged75yrsPlusLivingAlone == rhs.popAged75yrsPlusLivingAlone)||((this.popAged75yrsPlusLivingAlone!= null)&&this.popAged75yrsPlusLivingAlone.equals(rhs.popAged75yrsPlusLivingAlone))))&&((this.rankPercentOfFemalesWhoAre == rhs.rankPercentOfFemalesWhoAre)||((this.rankPercentOfFemalesWhoAre!= null)&&this.rankPercentOfFemalesWhoAre.equals(rhs.rankPercentOfFemalesWhoAre))))&&((this.percentTotal25to44yrs == rhs.percentTotal25to44yrs)||((this.percentTotal25to44yrs!= null)&&this.percentTotal25to44yrs.equals(rhs.percentTotal25to44yrs))))&&((this.rankEmergencyDepartmentPrese == rhs.rankEmergencyDepartmentPrese)||((this.rankEmergencyDepartmentPrese!= null)&&this.rankEmergencyDepartmentPrese.equals(rhs.rankEmergencyDepartmentPrese))))&&((this.ancestry3PercentTop5Ancest == rhs.ancestry3PercentTop5Ancest)||((this.ancestry3PercentTop5Ancest!= null)&&this.ancestry3PercentTop5Ancest.equals(rhs.ancestry3PercentTop5Ancest))))&&((this.avoidableDeaths0to74yrsrsF1 == rhs.avoidableDeaths0to74yrsrsF1)||((this.avoidableDeaths0to74yrsrsF1 != null)&&this.avoidableDeaths0to74yrsrsF1 .equals(rhs.avoidableDeaths0to74yrsrsF1))))&&((this.averageLengthOfStayInDays == rhs.averageLengthOfStayInDays)||((this.averageLengthOfStayInDays!= null)&&this.averageLengthOfStayInDays.equals(rhs.averageLengthOfStayInDays))))&&((this.averageLengthOfStayForAll == rhs.averageLengthOfStayForAll)||((this.averageLengthOfStayForAll!= null)&&this.averageLengthOfStayForAll.equals(rhs.averageLengthOfStayForAll))))&&((this.rankDelayedPurchasingPrescri == rhs.rankDelayedPurchasingPrescri)||((this.rankDelayedPurchasingPrescri!= null)&&this.rankDelayedPurchasingPrescri.equals(rhs.rankDelayedPurchasingPrescri))))&&((this.percent19YearOldsCompleting == rhs.percent19YearOldsCompleting)||((this.percent19YearOldsCompleting!= null)&&this.percent19YearOldsCompleting.equals(rhs.percent19YearOldsCompleting))))&&((this.rankAverageLengthOfStayIn == rhs.rankAverageLengthOfStayIn)||((this.rankAverageLengthOfStayIn!= null)&&this.rankAverageLengthOfStayIn.equals(rhs.rankAverageLengthOfStayIn))))&&((this.aCSCsPer1000PopChronic == rhs.aCSCsPer1000PopChronic)||((this.aCSCsPer1000PopChronic!= null)&&this.aCSCsPer1000PopChronic.equals(rhs.aCSCsPer1000PopChronic))))&&((this.percentYear9StudentsWhoAtt == rhs.percentYear9StudentsWhoAtt)||((this.percentYear9StudentsWhoAtt!= null)&&this.percentYear9StudentsWhoAtt.equals(rhs.percentYear9StudentsWhoAtt))))&&((this.rankPercentBornOverseas2011 == rhs.rankPercentBornOverseas2011)||((this.rankPercentBornOverseas2011 != null)&&this.rankPercentBornOverseas2011 .equals(rhs.rankPercentBornOverseas2011))))&&((this.rankNumberOfSocialHousingD == rhs.rankNumberOfSocialHousingD)||((this.rankNumberOfSocialHousingD!= null)&&this.rankNumberOfSocialHousingD.equals(rhs.rankNumberOfSocialHousingD))))&&((this.tota85yrsPlus == rhs.tota85yrsPlus)||((this.tota85yrsPlus!= null)&&this.tota85yrsPlus.equals(rhs.tota85yrsPlus))))&&((this.rankTotalFertilityRate2012 == rhs.rankTotalFertilityRate2012)||((this.rankTotalFertilityRate2012 != null)&&this.rankTotalFertilityRate2012 .equals(rhs.rankTotalFertilityRate2012))))&&((this.rankPersonsWithAtLeast2Ho == rhs.rankPersonsWithAtLeast2Ho)||((this.rankPersonsWithAtLeast2Ho!= null)&&this.rankPersonsWithAtLeast2Ho.equals(rhs.rankPersonsWithAtLeast2Ho))))&&((this.rankTotalCrimePer1000Pop == rhs.rankTotalCrimePer1000Pop)||((this.rankTotalCrimePer1000Pop!= null)&&this.rankTotalCrimePer1000Pop.equals(rhs.rankTotalCrimePer1000Pop))))&&((this.familyIncidentsPer1000Pop == rhs.familyIncidentsPer1000Pop)||((this.familyIncidentsPer1000Pop!= null)&&this.familyIncidentsPer1000Pop.equals(rhs.familyIncidentsPer1000Pop))))&&((this.percentOfFemalesWhoAreOver == rhs.percentOfFemalesWhoAreOver)||((this.percentOfFemalesWhoAreOver!= null)&&this.percentOfFemalesWhoAreOver.equals(rhs.percentOfFemalesWhoAreOver))))&&((this.rankBowelCancerScreeningPar == rhs.rankBowelCancerScreeningPar)||((this.rankBowelCancerScreeningPar!= null)&&this.rankBowelCancerScreeningPar.equals(rhs.rankBowelCancerScreeningPar))))&&((this.bowelCancerScreeningPartic2 == rhs.bowelCancerScreeningPartic2)||((this.bowelCancerScreeningPartic2 != null)&&this.bowelCancerScreeningPartic2 .equals(rhs.bowelCancerScreeningPartic2))))&&((this.country2Top5LanguagesSpoke == rhs.country2Top5LanguagesSpoke)||((this.country2Top5LanguagesSpoke!= null)&&this.country2Top5LanguagesSpoke.equals(rhs.country2Top5LanguagesSpoke))))&&((this.aCSCsPer1000PopAcute == rhs.aCSCsPer1000PopAcute)||((this.aCSCsPer1000PopAcute!= null)&&this.aCSCsPer1000PopAcute.equals(rhs.aCSCsPer1000PopAcute))))&&((this.newDwellingsApprovedForCons == rhs.newDwellingsApprovedForCons)||((this.newDwellingsApprovedForCons!= null)&&this.newDwellingsApprovedForCons.equals(rhs.newDwellingsApprovedForCons))))&&((this.mostPopulousTownOrSuburbIn == rhs.mostPopulousTownOrSuburbIn)||((this.mostPopulousTownOrSuburbIn!= null)&&this.mostPopulousTownOrSuburbIn.equals(rhs.mostPopulousTownOrSuburbIn))))&&((this.percentLowIncomeWelfareDepe == rhs.percentLowIncomeWelfareDepe)||((this.percentLowIncomeWelfareDepe!= null)&&this.percentLowIncomeWelfareDepe.equals(rhs.percentLowIncomeWelfareDepe))))&&((this.unemploymentRate == rhs.unemploymentRate)||((this.unemploymentRate!= null)&&this.unemploymentRate.equals(rhs.unemploymentRate))))&&((this.numberOfSocialHousingDwelli == rhs.numberOfSocialHousingDwelli)||((this.numberOfSocialHousingDwelli!= null)&&this.numberOfSocialHousingDwelli.equals(rhs.numberOfSocialHousingDwelli))))&&((this.percentPersonsWhoDidNotCom == rhs.percentPersonsWhoDidNotCom)||((this.percentPersonsWhoDidNotCom!= null)&&this.percentPersonsWhoDidNotCom.equals(rhs.percentPersonsWhoDidNotCom))))&&((this.fTEStudents == rhs.fTEStudents)||((this.fTEStudents!= null)&&this.fTEStudents.equals(rhs.fTEStudents))))&&((this.country1PercentTop5Languag == rhs.country1PercentTop5Languag)||((this.country1PercentTop5Languag!= null)&&this.country1PercentTop5Languag.equals(rhs.country1PercentTop5Languag))))&&((this.percentOtherLandUse == rhs.percentOtherLandUse)||((this.percentOtherLandUse!= null)&&this.percentOtherLandUse.equals(rhs.percentOtherLandUse))))&&((this.drugUsageAndPossessionOffen == rhs.drugUsageAndPossessionOffen)||((this.drugUsageAndPossessionOffen!= null)&&this.drugUsageAndPossessionOffen.equals(rhs.drugUsageAndPossessionOffen))))&&((this.rankPharmaciesPer1000Pop == rhs.rankPharmaciesPer1000Pop)||((this.rankPharmaciesPer1000Pop!= null)&&this.rankPharmaciesPer1000Pop.equals(rhs.rankPharmaciesPer1000Pop))))&&((this.rankACSCsPer1000PopAcute == rhs.rankACSCsPer1000PopAcute)||((this.rankACSCsPer1000PopAcute!= null)&&this.rankACSCsPer1000PopAcute.equals(rhs.rankACSCsPer1000PopAcute))))&&((this.females25to44yrs == rhs.females25to44yrs)||((this.females25to44yrs!= null)&&this.females25to44yrs.equals(rhs.females25to44yrs))))&&((this.rankPercentOfWorkJourneysW == rhs.rankPercentOfWorkJourneysW)||((this.rankPercentOfWorkJourneysW!= null)&&this.rankPercentOfWorkJourneysW.equals(rhs.rankPercentOfWorkJourneysW))))&&((this.rankPercentOfUnintentionalH == rhs.rankPercentOfUnintentionalH)||((this.rankPercentOfUnintentionalH!= null)&&this.rankPercentOfUnintentionalH.equals(rhs.rankPercentOfUnintentionalH))))&&((this.numberOfHospitalsAndHealth == rhs.numberOfHospitalsAndHealth)||((this.numberOfHospitalsAndHealth!= null)&&this.numberOfHospitalsAndHealth.equals(rhs.numberOfHospitalsAndHealth))))&&((this.rankPercentOfPersonsWhoA1 == rhs.rankPercentOfPersonsWhoA1)||((this.rankPercentOfPersonsWhoA1 != null)&&this.rankPercentOfPersonsWhoA1 .equals(rhs.rankPercentOfPersonsWhoA1))))&&((this.bowelCancerScreeningPartic1 == rhs.bowelCancerScreeningPartic1)||((this.bowelCancerScreeningPartic1 != null)&&this.bowelCancerScreeningPartic1 .equals(rhs.bowelCancerScreeningPartic1))))&&((this.rankPercentInfantsFullyBrea == rhs.rankPercentInfantsFullyBrea)||((this.rankPercentInfantsFullyBrea!= null)&&this.rankPercentInfantsFullyBrea.equals(rhs.rankPercentInfantsFullyBrea))))&&((this.percentChildrenFullyImmunise == rhs.percentChildrenFullyImmunise)||((this.percentChildrenFullyImmunise!= null)&&this.percentChildrenFullyImmunise.equals(rhs.percentChildrenFullyImmunise))))&&((this.ratedTheirCommunityAsAPlea == rhs.ratedTheirCommunityAsAPlea)||((this.ratedTheirCommunityAsAPlea!= null)&&this.ratedTheirCommunityAsAPlea.equals(rhs.ratedTheirCommunityAsAPlea))))&&((this.rankGPSitesPer1000Pop == rhs.rankGPSitesPer1000Pop)||((this.rankGPSitesPer1000Pop!= null)&&this.rankGPSitesPer1000Pop.equals(rhs.rankGPSitesPer1000Pop))))&&((this.oneParentHeadedFamiliesPe1 == rhs.oneParentHeadedFamiliesPe1)||((this.oneParentHeadedFamiliesPe1 != null)&&this.oneParentHeadedFamiliesPe1 .equals(rhs.oneParentHeadedFamiliesPe1))))&&((this.percentMortgageStress == rhs.percentMortgageStress)||((this.percentMortgageStress!= null)&&this.percentMortgageStress.equals(rhs.percentMortgageStress))))&&((this.rankPercentRentalStress == rhs.rankPercentRentalStress)||((this.rankPercentRentalStress!= null)&&this.rankPercentRentalStress.equals(rhs.rankPercentRentalStress))))&&((this.maleCancerIncidencePer1000 == rhs.maleCancerIncidencePer1000)||((this.maleCancerIncidencePer1000 != null)&&this.maleCancerIncidencePer1000 .equals(rhs.maleCancerIncidencePer1000))))&&((this.notificationsPer100000PopOf == rhs.notificationsPer100000PopOf)||((this.notificationsPer100000PopOf!= null)&&this.notificationsPer100000PopOf.equals(rhs.notificationsPer100000PopOf))))&&((this.rankCoreActivityNeedForAss == rhs.rankCoreActivityNeedForAss)||((this.rankCoreActivityNeedForAss!= null)&&this.rankCoreActivityNeedForAss.equals(rhs.rankCoreActivityNeedForAss))))&&((this.percentOfBreastScreeningPar == rhs.percentOfBreastScreeningPar)||((this.percentOfBreastScreeningPar!= null)&&this.percentOfBreastScreeningPar.equals(rhs.percentOfBreastScreeningPar))))&&((this.agedCareHighCareBeds == rhs.agedCareHighCareBeds)||((this.agedCareHighCareBeds!= null)&&this.agedCareHighCareBeds.equals(rhs.agedCareHighCareBeds))))&&((this.totalFemales == rhs.totalFemales)||((this.totalFemales!= null)&&this.totalFemales.equals(rhs.totalFemales))))&&((this.gamingMachineLossesPerHead == rhs.gamingMachineLossesPerHead)||((this.gamingMachineLossesPerHead!= null)&&this.gamingMachineLossesPerHead.equals(rhs.gamingMachineLossesPerHead))))&&((this.rankAboriginalOrTorresStrai == rhs.rankAboriginalOrTorresStrai)||((this.rankAboriginalOrTorresStrai!= null)&&this.rankAboriginalOrTorresStrai.equals(rhs.rankAboriginalOrTorresStrai))))&&((this.rankPercentOfWorkJourneys1 == rhs.rankPercentOfWorkJourneys1)||((this.rankPercentOfWorkJourneys1 != null)&&this.rankPercentOfWorkJourneys1 .equals(rhs.rankPercentOfWorkJourneys1))))&&((this.rankAverageLengthOfStayFor == rhs.rankAverageLengthOfStayFor)||((this.rankAverageLengthOfStayFor!= null)&&this.rankAverageLengthOfStayFor.equals(rhs.rankAverageLengthOfStayFor))))&&((this.percentOfFemales18yrsPlusWh == rhs.percentOfFemales18yrsPlusWh)||((this.percentOfFemales18yrsPlusWh!= null)&&this.percentOfFemales18yrsPlusWh.equals(rhs.percentOfFemales18yrsPlusWh))))&&((this.tota45to64yrs == rhs.tota45to64yrs)||((this.tota45to64yrs!= null)&&this.tota45to64yrs.equals(rhs.tota45to64yrs))))&&((this.percentIndustrialLandUse == rhs.percentIndustrialLandUse)||((this.percentIndustrialLandUse!= null)&&this.percentIndustrialLandUse.equals(rhs.percentIndustrialLandUse))))&&((this.tota15to24yrs == rhs.tota15to24yrs)||((this.tota15to24yrs!= null)&&this.tota15to24yrs.equals(rhs.tota15to24yrs))))&&((this.rankUnemploymentRate == rhs.rankUnemploymentRate)||((this.rankUnemploymentRate!= null)&&this.rankUnemploymentRate.equals(rhs.rankUnemploymentRate))))&&((this.lowBirthweightBabies == rhs.lowBirthweightBabies)||((this.lowBirthweightBabies!= null)&&this.lowBirthweightBabies.equals(rhs.lowBirthweightBabies))))&&((this.personsReportingFairOrPoor == rhs.personsReportingFairOrPoor)||((this.personsReportingFairOrPoor!= null)&&this.personsReportingFairOrPoor.equals(rhs.personsReportingFairOrPoor))))&&((this.rankPercentOfMalesWhoDo1 == rhs.rankPercentOfMalesWhoDo1)||((this.rankPercentOfMalesWhoDo1 != null)&&this.rankPercentOfMalesWhoDo1 .equals(rhs.rankPercentOfMalesWhoDo1))))&&((this.rankPercentOfPopWithFoodI == rhs.rankPercentOfPopWithFoodI)||((this.rankPercentOfPopWithFoodI!= null)&&this.rankPercentOfPopWithFoodI.equals(rhs.rankPercentOfPopWithFoodI))))&&((this.distanceToMelbourneInKm == rhs.distanceToMelbourneInKm)||((this.distanceToMelbourneInKm!= null)&&this.distanceToMelbourneInKm.equals(rhs.distanceToMelbourneInKm))))&&((this.peopleWithSevereAndProfou1 == rhs.peopleWithSevereAndProfou1)||((this.peopleWithSevereAndProfou1 != null)&&this.peopleWithSevereAndProfou1 .equals(rhs.peopleWithSevereAndProfou1))))&&((this.percentOfMalesWhoDoNotMee == rhs.percentOfMalesWhoDoNotMee)||((this.percentOfMalesWhoDoNotMee!= null)&&this.percentOfMalesWhoDoNotMee.equals(rhs.percentOfMalesWhoDoNotMee))))&&((this.country4ForTop5OverseasCo == rhs.country4ForTop5OverseasCo)||((this.country4ForTop5OverseasCo!= null)&&this.country4ForTop5OverseasCo.equals(rhs.country4ForTop5OverseasCo))))&&((this.country1Top5LanguagesSpoke == rhs.country1Top5LanguagesSpoke)||((this.country1Top5LanguagesSpoke!= null)&&this.country1Top5LanguagesSpoke.equals(rhs.country1Top5LanguagesSpoke))))&&((this.percentOfChildrenWithKinder == rhs.percentOfChildrenWithKinder)||((this.percentOfChildrenWithKinder!= null)&&this.percentOfChildrenWithKinder.equals(rhs.percentOfChildrenWithKinder))))&&((this.ratedTheirCommunityAsGoodO == rhs.ratedTheirCommunityAsGoodO)||((this.ratedTheirCommunityAsGoodO!= null)&&this.ratedTheirCommunityAsGoodO.equals(rhs.ratedTheirCommunityAsGoodO))))&&((this.rankPercentOfMalesWhoDoNo == rhs.rankPercentOfMalesWhoDoNo)||((this.rankPercentOfMalesWhoDoNo!= null)&&this.rankPercentOfMalesWhoDoNo.equals(rhs.rankPercentOfMalesWhoDoNo))))&&((this.numberOfChildFIRSTAssessmen == rhs.numberOfChildFIRSTAssessmen)||((this.numberOfChildFIRSTAssessmen!= null)&&this.numberOfChildFIRSTAssessmen.equals(rhs.numberOfChildFIRSTAssessmen))))&&((this.rankEquivalisedMedianIncome == rhs.rankEquivalisedMedianIncome)||((this.rankEquivalisedMedianIncome!= null)&&this.rankEquivalisedMedianIncome.equals(rhs.rankEquivalisedMedianIncome))))&&((this.percentOfPersonsWhoShareA == rhs.percentOfPersonsWhoShareA)||((this.percentOfPersonsWhoShareA!= null)&&this.percentOfPersonsWhoShareA.equals(rhs.percentOfPersonsWhoShareA))))&&((this.rankCommunityAcceptanceOfDi == rhs.rankCommunityAcceptanceOfDi)||((this.rankCommunityAcceptanceOfDi!= null)&&this.rankCommunityAcceptanceOfDi.equals(rhs.rankCommunityAcceptanceOfDi))))&&((this.rankPercentIndividualIncome == rhs.rankPercentIndividualIncome)||((this.rankPercentIndividualIncome!= null)&&this.rankPercentIndividualIncome.equals(rhs.rankPercentIndividualIncome))))&&((this.rankPercentOfMales18yrsPlus == rhs.rankPercentOfMales18yrsPlus)||((this.rankPercentOfMales18yrsPlus!= null)&&this.rankPercentOfMales18yrsPlus.equals(rhs.rankPercentOfMales18yrsPlus))))&&((this.rankHACCClientsAged0to64yrs == rhs.rankHACCClientsAged0to64yrs)||((this.rankHACCClientsAged0to64yrs!= null)&&this.rankHACCClientsAged0to64yrs.equals(rhs.rankHACCClientsAged0to64yrs))))&&((this.males45to64yrs == rhs.males45to64yrs)||((this.males45to64yrs!= null)&&this.males45to64yrs.equals(rhs.males45to64yrs))))&&((this.rankAttendedALocalCommunity == rhs.rankAttendedALocalCommunity)||((this.rankAttendedALocalCommunity!= null)&&this.rankAttendedALocalCommunity.equals(rhs.rankAttendedALocalCommunity))))&&((this.country1PercentForTop5Ove == rhs.country1PercentForTop5Ove)||((this.country1PercentForTop5Ove!= null)&&this.country1PercentForTop5Ove.equals(rhs.country1PercentForTop5Ove))))&&((this.agePensionPer1000EligibleP == rhs.agePensionPer1000EligibleP)||((this.agePensionPer1000EligibleP!= null)&&this.agePensionPer1000EligibleP.equals(rhs.agePensionPer1000EligibleP))))&&((this.popAged75yrsPlusLivingAlo1 == rhs.popAged75yrsPlusLivingAlo1)||((this.popAged75yrsPlusLivingAlo1 != null)&&this.popAged75yrsPlusLivingAlo1 .equals(rhs.popAged75yrsPlusLivingAlo1))))&&((this.percentNearPublicTransport == rhs.percentNearPublicTransport)||((this.percentNearPublicTransport!= null)&&this.percentNearPublicTransport.equals(rhs.percentNearPublicTransport))))&&((this.rankAvoidableDeaths0to74yrsr == rhs.rankAvoidableDeaths0to74yrsr)||((this.rankAvoidableDeaths0to74yrsr!= null)&&this.rankAvoidableDeaths0to74yrsr.equals(rhs.rankAvoidableDeaths0to74yrsr))))&&((this.country1ForTop5OverseasCo == rhs.country1ForTop5OverseasCo)||((this.country1ForTop5OverseasCo!= null)&&this.country1ForTop5OverseasCo.equals(rhs.country1ForTop5OverseasCo))))&&((this.males15to24yrs == rhs.males15to24yrs)||((this.males15to24yrs!= null)&&this.males15to24yrs.equals(rhs.males15to24yrs))))&&((this.rankPercentOfPersons18yrsPl == rhs.rankPercentOfPersons18yrsPl)||((this.rankPercentOfPersons18yrsPl!= null)&&this.rankPercentOfPersons18yrsPl.equals(rhs.rankPercentOfPersons18yrsPl))))&&((this.rankPrimaryCareTypePresenta == rhs.rankPrimaryCareTypePresenta)||((this.rankPrimaryCareTypePresenta!= null)&&this.rankPrimaryCareTypePresenta.equals(rhs.rankPrimaryCareTypePresenta))))&&((this.primaryCareTypePresentations == rhs.primaryCareTypePresentations)||((this.primaryCareTypePresentations!= null)&&this.primaryCareTypePresentations.equals(rhs.primaryCareTypePresentations))))&&((this.unintentionalInjuriesTreated == rhs.unintentionalInjuriesTreated)||((this.unintentionalInjuriesTreated!= null)&&this.unintentionalInjuriesTreated.equals(rhs.unintentionalInjuriesTreated))))&&((this.percentOfPersonsWhoVisitA == rhs.percentOfPersonsWhoVisitA)||((this.percentOfPersonsWhoVisitA!= null)&&this.percentOfPersonsWhoVisitA.equals(rhs.percentOfPersonsWhoVisitA))))&&((this.rankMaleCancerIncidencePer == rhs.rankMaleCancerIncidencePer)||((this.rankMaleCancerIncidencePer!= null)&&this.rankMaleCancerIncidencePer.equals(rhs.rankMaleCancerIncidencePer))))&&((this.ableToDefinitelyGetHelpFro == rhs.ableToDefinitelyGetHelpFro)||((this.ableToDefinitelyGetHelpFro!= null)&&this.ableToDefinitelyGetHelpFro.equals(rhs.ableToDefinitelyGetHelpFro))))&&((this.rankRatedTheirCommunityAsG == rhs.rankRatedTheirCommunityAsG)||((this.rankRatedTheirCommunityAsG!= null)&&this.rankRatedTheirCommunityAsG.equals(rhs.rankRatedTheirCommunityAsG))))&&((this.percentWithPrivateHealthIns == rhs.percentWithPrivateHealthIns)||((this.percentWithPrivateHealthIns!= null)&&this.percentWithPrivateHealthIns.equals(rhs.percentWithPrivateHealthIns))))&&((this.rankRatedTheirCommunityAsA == rhs.rankRatedTheirCommunityAsA)||((this.rankRatedTheirCommunityAsA!= null)&&this.rankRatedTheirCommunityAsA.equals(rhs.rankRatedTheirCommunityAsA))))&&((this.ancestry3Top5Ancestries == rhs.ancestry3Top5Ancestries)||((this.ancestry3Top5Ancestries!= null)&&this.ancestry3Top5Ancestries.equals(rhs.ancestry3Top5Ancestries))))&&((this.percentOfChildrenWhoAreD1 == rhs.percentOfChildrenWhoAreD1)||((this.percentOfChildrenWhoAreD1 != null)&&this.percentOfChildrenWhoAreD1 .equals(rhs.percentOfChildrenWhoAreD1))))&&((this.females65to84yrs == rhs.females65to84yrs)||((this.females65to84yrs!= null)&&this.females65to84yrs.equals(rhs.females65to84yrs))))&&((this.percentOfPersonsWhoAreObes == rhs.percentOfPersonsWhoAreObes)||((this.percentOfPersonsWhoAreObes!= null)&&this.percentOfPersonsWhoAreObes.equals(rhs.percentOfPersonsWhoAreObes))))&&((this.ancestry5PercentTop5Ancest == rhs.ancestry5PercentTop5Ancest)||((this.ancestry5PercentTop5Ancest!= null)&&this.ancestry5PercentTop5Ancest.equals(rhs.ancestry5PercentTop5Ancest))))&&((this.rankPopAged75yrsPlusLiving == rhs.rankPopAged75yrsPlusLiving)||((this.rankPopAged75yrsPlusLiving!= null)&&this.rankPopAged75yrsPlusLiving.equals(rhs.rankPopAged75yrsPlusLiving))))&&((this.dentalServicesPer1000Pop == rhs.dentalServicesPer1000Pop)||((this.dentalServicesPer1000Pop!= null)&&this.dentalServicesPer1000Pop.equals(rhs.dentalServicesPer1000Pop))))&&((this.rankPercentOfFemalesWhoA1 == rhs.rankPercentOfFemalesWhoA1)||((this.rankPercentOfFemalesWhoA1 != null)&&this.rankPercentOfFemalesWhoA1 .equals(rhs.rankPercentOfFemalesWhoA1))))&&((this.rankFemalesReportingFairOr == rhs.rankFemalesReportingFairOr)||((this.rankFemalesReportingFairOr!= null)&&this.rankFemalesReportingFairOr.equals(rhs.rankFemalesReportingFairOr))))&&((this.rankPercentNearPublicTransp == rhs.rankPercentNearPublicTransp)||((this.rankPercentNearPublicTransp!= null)&&this.rankPercentNearPublicTransp.equals(rhs.rankPercentNearPublicTransp))))&&((this.femalesReportingFairOrPoor == rhs.femalesReportingFairOrPoor)||((this.femalesReportingFairOrPoor!= null)&&this.femalesReportingFairOrPoor.equals(rhs.femalesReportingFairOrPoor))))&&((this.notificationsPer100000Pop1 == rhs.notificationsPer100000Pop1)||((this.notificationsPer100000Pop1 != null)&&this.notificationsPer100000Pop1 .equals(rhs.notificationsPer100000Pop1))))&&((this.lga == rhs.lga)||((this.lga!= null)&&this.lga.equals(rhs.lga))))&&((this.rankBornInANonEnglishSpea == rhs.rankBornInANonEnglishSpea)||((this.rankBornInANonEnglishSpea!= null)&&this.rankBornInANonEnglishSpea.equals(rhs.rankBornInANonEnglishSpea))))&&((this.rankMalesReportingFairOrPo == rhs.rankMalesReportingFairOrPo)||((this.rankMalesReportingFairOrPo!= null)&&this.rankMalesReportingFairOrPo.equals(rhs.rankMalesReportingFairOrPo))))&&((this.percentOfPersonsWhoDrinkSo == rhs.percentOfPersonsWhoDrinkSo)||((this.percentOfPersonsWhoDrinkSo!= null)&&this.percentOfPersonsWhoDrinkSo.equals(rhs.percentOfPersonsWhoDrinkSo))))&&((this.indexOfRelativeSociaEconomi == rhs.indexOfRelativeSociaEconomi)||((this.indexOfRelativeSociaEconomi!= null)&&this.indexOfRelativeSociaEconomi.equals(rhs.indexOfRelativeSociaEconomi))))&&((this.pharmaciesPer1000Pop == rhs.pharmaciesPer1000Pop)||((this.pharmaciesPer1000Pop!= null)&&this.pharmaciesPer1000Pop.equals(rhs.pharmaciesPer1000Pop))))&&((this.percentPoorDentalHealth == rhs.percentPoorDentalHealth)||((this.percentPoorDentalHealth!= null)&&this.percentPoorDentalHealth.equals(rhs.percentPoorDentalHealth))))&&((this.aSGSLGACode == rhs.aSGSLGACode)||((this.aSGSLGACode!= null)&&this.aSGSLGACode.equals(rhs.aSGSLGACode))))&&((this.percentOfPersonsReportingAs == rhs.percentOfPersonsReportingAs)||((this.percentOfPersonsReportingAs!= null)&&this.percentOfPersonsReportingAs.equals(rhs.percentOfPersonsReportingAs))))&&((this.percentOfPersonsReportingAr == rhs.percentOfPersonsReportingAr)||((this.percentOfPersonsReportingAr!= null)&&this.percentOfPersonsReportingAr.equals(rhs.percentOfPersonsReportingAr))))&&((this.rankAvoidableDeaths0to74yrs == rhs.rankAvoidableDeaths0to74yrs)||((this.rankAvoidableDeaths0to74yrs!= null)&&this.rankAvoidableDeaths0to74yrs.equals(rhs.rankAvoidableDeaths0to74yrs))))&&((this.rankRegisteredMentalMealthC == rhs.rankRegisteredMentalMealthC)||((this.rankRegisteredMentalMealthC!= null)&&this.rankRegisteredMentalMealthC.equals(rhs.rankRegisteredMentalMealthC))))&&((this.childProtectionInvestigations == rhs.childProtectionInvestigations)||((this.childProtectionInvestigations!= null)&&this.childProtectionInvestigations.equals(rhs.childProtectionInvestigations))))&&((this.rankMedianRentFor3Bedrooms == rhs.rankMedianRentFor3Bedrooms)||((this.rankMedianRentFor3Bedrooms!= null)&&this.rankMedianRentFor3Bedrooms.equals(rhs.rankMedianRentFor3Bedrooms))))&&((this.percentOfCervicalCancerScre == rhs.percentOfCervicalCancerScre)||((this.percentOfCervicalCancerScre!= null)&&this.percentOfCervicalCancerScre.equals(rhs.percentOfCervicalCancerScre))))&&((this.rankHumanitarianArrivalsAsA == rhs.rankHumanitarianArrivalsAsA)||((this.rankHumanitarianArrivalsAsA!= null)&&this.rankHumanitarianArrivalsAsA.equals(rhs.rankHumanitarianArrivalsAsA))))&&((this.rankPercentOfRentalHousing == rhs.rankPercentOfRentalHousing)||((this.rankPercentOfRentalHousing!= null)&&this.rankPercentOfRentalHousing.equals(rhs.rankPercentOfRentalHousing))))&&((this.rankPercentWithPrivateHealt == rhs.rankPercentWithPrivateHealt)||((this.rankPercentWithPrivateHealt!= null)&&this.rankPercentWithPrivateHealt.equals(rhs.rankPercentWithPrivateHealt))))&&((this.ancestry4Top5Ancestries == rhs.ancestry4Top5Ancestries)||((this.ancestry4Top5Ancestries!= null)&&this.ancestry4Top5Ancestries.equals(rhs.ancestry4Top5Ancestries))))&&((this.rankPercentOfFemalesWhoDo1 == rhs.rankPercentOfFemalesWhoDo1)||((this.rankPercentOfFemalesWhoDo1 != null)&&this.rankPercentOfFemalesWhoDo1 .equals(rhs.rankPercentOfFemalesWhoDo1))))&&((this.percentBornOverseas2011 == rhs.percentBornOverseas2011)||((this.percentBornOverseas2011 != null)&&this.percentBornOverseas2011 .equals(rhs.percentBornOverseas2011))))&&((this.rankNotificationsPer1000001 == rhs.rankNotificationsPer1000001)||((this.rankNotificationsPer1000001 != null)&&this.rankNotificationsPer1000001 .equals(rhs.rankNotificationsPer1000001))))&&((this.rankNotificationsPer1000002 == rhs.rankNotificationsPer1000002)||((this.rankNotificationsPer1000002 != null)&&this.rankNotificationsPer1000002 .equals(rhs.rankNotificationsPer1000002))))&&((this.percentTotal65to84yrs == rhs.percentTotal65to84yrs)||((this.percentTotal65to84yrs!= null)&&this.percentTotal65to84yrs.equals(rhs.percentTotal65to84yrs))))&&((this.rankPercentOfFemales18yrsPl == rhs.rankPercentOfFemales18yrsPl)||((this.rankPercentOfFemales18yrsPl!= null)&&this.rankPercentOfFemales18yrsPl.equals(rhs.rankPercentOfFemales18yrsPl))))&&((this.rankMembersOfAReligiousGro == rhs.rankMembersOfAReligiousGro)||((this.rankMembersOfAReligiousGro!= null)&&this.rankMembersOfAReligiousGro.equals(rhs.rankMembersOfAReligiousGro))))&&((this.rankConsumedAlcoholAtLeast == rhs.rankConsumedAlcoholAtLeast)||((this.rankConsumedAlcoholAtLeast!= null)&&this.rankConsumedAlcoholAtLeast.equals(rhs.rankConsumedAlcoholAtLeast))))&&((this.rankAvoidableDeaths0to74Yrs == rhs.rankAvoidableDeaths0to74Yrs)||((this.rankAvoidableDeaths0to74Yrs!= null)&&this.rankAvoidableDeaths0to74Yrs.equals(rhs.rankAvoidableDeaths0to74Yrs))))&&((this.rankMembersOfASportsGroup == rhs.rankMembersOfASportsGroup)||((this.rankMembersOfASportsGroup!= null)&&this.rankMembersOfASportsGroup.equals(rhs.rankMembersOfASportsGroup))))&&((this.malignantCancersDiagnosedPer == rhs.malignantCancersDiagnosedPer)||((this.malignantCancersDiagnosedPer!= null)&&this.malignantCancersDiagnosedPer.equals(rhs.malignantCancersDiagnosedPer))))&&((this.country3PercentForTop5Ove == rhs.country3PercentForTop5Ove)||((this.country3PercentForTop5Ove!= null)&&this.country3PercentForTop5Ove.equals(rhs.country3PercentForTop5Ove))))&&((this.ancestry2PercentTop5Ancest == rhs.ancestry2PercentTop5Ancest)||((this.ancestry2PercentTop5Ancest!= null)&&this.ancestry2PercentTop5Ancest.equals(rhs.ancestry2PercentTop5Ancest))))&&((this.rankPercentMortgageStress == rhs.rankPercentMortgageStress)||((this.rankPercentMortgageStress!= null)&&this.rankPercentMortgageStress.equals(rhs.rankPercentMortgageStress))))&&((this.rankPercentOfMalesWhoAre1 == rhs.rankPercentOfMalesWhoAre1)||((this.rankPercentOfMalesWhoAre1 != null)&&this.rankPercentOfMalesWhoAre1 .equals(rhs.rankPercentOfMalesWhoAre1))))&&((this.avoidableDeaths0to74YrsFor == rhs.avoidableDeaths0to74YrsFor)||((this.avoidableDeaths0to74YrsFor!= null)&&this.avoidableDeaths0to74YrsFor.equals(rhs.avoidableDeaths0to74YrsFor))))&&((this.alliedHealthSitesPer1000Po == rhs.alliedHealthSitesPer1000Po)||((this.alliedHealthSitesPer1000Po!= null)&&this.alliedHealthSitesPer1000Po.equals(rhs.alliedHealthSitesPer1000Po))))&&((this.gPAttendancesPer1000PopTot == rhs.gPAttendancesPer1000PopTot)||((this.gPAttendancesPer1000PopTot!= null)&&this.gPAttendancesPer1000PopTot.equals(rhs.gPAttendancesPer1000PopTot))))&&((this.gPAttendancesPer1000PopMal == rhs.gPAttendancesPer1000PopMal)||((this.gPAttendancesPer1000PopMal!= null)&&this.gPAttendancesPer1000PopMal.equals(rhs.gPAttendancesPer1000PopMal))))&&((this.total0to14yrs == rhs.total0to14yrs)||((this.total0to14yrs!= null)&&this.total0to14yrs.equals(rhs.total0to14yrs))))&&((this.rankPercentOfPersonsWhoDid == rhs.rankPercentOfPersonsWhoDid)||((this.rankPercentOfPersonsWhoDid!= null)&&this.rankPercentOfPersonsWhoDid.equals(rhs.rankPercentOfPersonsWhoDid))))&&((this.percentOfSchoolChildrenAtte == rhs.percentOfSchoolChildrenAtte)||((this.percentOfSchoolChildrenAtte!= null)&&this.percentOfSchoolChildrenAtte.equals(rhs.percentOfSchoolChildrenAtte))))&&((this.percentInfantsFullyBreastfed == rhs.percentInfantsFullyBreastfed)||((this.percentInfantsFullyBreastfed!= null)&&this.percentInfantsFullyBreastfed.equals(rhs.percentInfantsFullyBreastfed))))&&((this.rankACSCsPer1000PopVaccine == rhs.rankACSCsPer1000PopVaccine)||((this.rankACSCsPer1000PopVaccine!= null)&&this.rankACSCsPer1000PopVaccine.equals(rhs.rankACSCsPer1000PopVaccine))))&&((this.rankPercentMaleIncomeLessT == rhs.rankPercentMaleIncomeLessT)||((this.rankPercentMaleIncomeLessT!= null)&&this.rankPercentMaleIncomeLessT.equals(rhs.rankPercentMaleIncomeLessT))))&&((this.perAnnumPopChangeProjected == rhs.perAnnumPopChangeProjected)||((this.perAnnumPopChangeProjected!= null)&&this.perAnnumPopChangeProjected.equals(rhs.perAnnumPopChangeProjected))))&&((this.percentOfAdolescentsWhoRepo == rhs.percentOfAdolescentsWhoRepo)||((this.percentOfAdolescentsWhoRepo!= null)&&this.percentOfAdolescentsWhoRepo.equals(rhs.percentOfAdolescentsWhoRepo))))&&((this.percentOfChildrenWithEmotio == rhs.percentOfChildrenWithEmotio)||((this.percentOfChildrenWithEmotio!= null)&&this.percentOfChildrenWithEmotio.equals(rhs.percentOfChildrenWithEmotio))))&&((this.rankAvoidableDeaths0to74yr1 == rhs.rankAvoidableDeaths0to74yr1)||((this.rankAvoidableDeaths0to74yr1 != null)&&this.rankAvoidableDeaths0to74yr1 .equals(rhs.rankAvoidableDeaths0to74yr1))))&&((this.rankDentalServicesPer1000P == rhs.rankDentalServicesPer1000P)||((this.rankDentalServicesPer1000P!= null)&&this.rankDentalServicesPer1000P.equals(rhs.rankDentalServicesPer1000P))))&&((this.country5PercentForTop5Ove == rhs.country5PercentForTop5Ove)||((this.country5PercentForTop5Ove!= null)&&this.country5PercentForTop5Ove.equals(rhs.country5PercentForTop5Ove))))&&((this.rankFamilyIncidentsPer1000 == rhs.rankFamilyIncidentsPer1000)||((this.rankFamilyIncidentsPer1000 != null)&&this.rankFamilyIncidentsPer1000 .equals(rhs.rankFamilyIncidentsPer1000))))&&((this.percentOfUnintentionalHospit == rhs.percentOfUnintentionalHospit)||((this.percentOfUnintentionalHospit!= null)&&this.percentOfUnintentionalHospit.equals(rhs.percentOfUnintentionalHospit))))&&((this.percentOfMales18yrsPlusWho == rhs.percentOfMales18yrsPlusWho)||((this.percentOfMales18yrsPlusWho!= null)&&this.percentOfMales18yrsPlusWho.equals(rhs.percentOfMales18yrsPlusWho))))&&((this.hACCClientsAged0to64yrsPer == rhs.hACCClientsAged0to64yrsPer)||((this.hACCClientsAged0to64yrsPer!= null)&&this.hACCClientsAged0to64yrsPer.equals(rhs.hACCClientsAged0to64yrsPer))))&&((this.percentLowEnglishProficiency == rhs.percentLowEnglishProficiency)||((this.percentLowEnglishProficiency!= null)&&this.percentLowEnglishProficiency.equals(rhs.percentLowEnglishProficiency))))&&((this.rankPercentOfPersonsReporti == rhs.rankPercentOfPersonsReporti)||((this.rankPercentOfPersonsReporti!= null)&&this.rankPercentOfPersonsReporti.equals(rhs.rankPercentOfPersonsReporti))))&&((this.rankDelayedMedicalConsultati == rhs.rankDelayedMedicalConsultati)||((this.rankDelayedMedicalConsultati!= null)&&this.rankDelayedMedicalConsultati.equals(rhs.rankDelayedMedicalConsultati))))&&((this.ancestry2Top5Ancestries == rhs.ancestry2Top5Ancestries)||((this.ancestry2Top5Ancestries!= null)&&this.ancestry2Top5Ancestries.equals(rhs.ancestry2Top5Ancestries))))&&((this.country3Top5LanguagesSpoke == rhs.country3Top5LanguagesSpoke)||((this.country3Top5LanguagesSpoke!= null)&&this.country3Top5LanguagesSpoke.equals(rhs.country3Top5LanguagesSpoke))))&&((this.percentOfYear9StudentsWho == rhs.percentOfYear9StudentsWho)||((this.percentOfYear9StudentsWho!= null)&&this.percentOfYear9StudentsWho.equals(rhs.percentOfYear9StudentsWho))))&&((this.males0to14yrs == rhs.males0to14yrs)||((this.males0to14yrs!= null)&&this.males0to14yrs.equals(rhs.males0to14yrs))))&&((this.noClientsWhoReceivedAlcohol == rhs.noClientsWhoReceivedAlcohol)||((this.noClientsWhoReceivedAlcohol!= null)&&this.noClientsWhoReceivedAlcohol.equals(rhs.noClientsWhoReceivedAlcohol))))&&((this.rankIndirectStandardisedDeat == rhs.rankIndirectStandardisedDeat)||((this.rankIndirectStandardisedDeat!= null)&&this.rankIndirectStandardisedDeat.equals(rhs.rankIndirectStandardisedDeat))))&&((this.perAnnumPercentProjectedCha == rhs.perAnnumPercentProjectedCha)||((this.perAnnumPercentProjectedCha!= null)&&this.perAnnumPercentProjectedCha.equals(rhs.perAnnumPercentProjectedCha))))&&((this.notificationsPer100000People == rhs.notificationsPer100000People)||((this.notificationsPer100000People!= null)&&this.notificationsPer100000People.equals(rhs.notificationsPer100000People))))&&((this.rankPeopleWithSevereAndPro == rhs.rankPeopleWithSevereAndPro)||((this.rankPeopleWithSevereAndPro!= null)&&this.rankPeopleWithSevereAndPro.equals(rhs.rankPeopleWithSevereAndPro))))&&((this.percentOfMalesWhoAreObese == rhs.percentOfMalesWhoAreObese)||((this.percentOfMalesWhoAreObese!= null)&&this.percentOfMalesWhoAreObese.equals(rhs.percentOfMalesWhoAreObese))))&&((this.consumedAlcoholAtLeastWee1 == rhs.consumedAlcoholAtLeastWee1)||((this.consumedAlcoholAtLeastWee1 != null)&&this.consumedAlcoholAtLeastWee1 .equals(rhs.consumedAlcoholAtLeastWee1))))&&((this.rankPercentOfFemalesWhoDo == rhs.rankPercentOfFemalesWhoDo)||((this.rankPercentOfFemalesWhoDo!= null)&&this.rankPercentOfFemalesWhoDo.equals(rhs.rankPercentOfFemalesWhoDo))))&&((this.ancestry1Top5Ancestries == rhs.ancestry1Top5Ancestries)||((this.ancestry1Top5Ancestries!= null)&&this.ancestry1Top5Ancestries.equals(rhs.ancestry1Top5Ancestries))))&&((this.rankPercentOfPersonsWhoDo == rhs.rankPercentOfPersonsWhoDo)||((this.rankPercentOfPersonsWhoDo!= null)&&this.rankPercentOfPersonsWhoDo.equals(rhs.rankPercentOfPersonsWhoDo))))&&((this.rankGPAttendancesPer10001 == rhs.rankGPAttendancesPer10001)||((this.rankGPAttendancesPer10001 != null)&&this.rankGPAttendancesPer10001 .equals(rhs.rankGPAttendancesPer10001))))&&((this.rankGPAttendancesPer10002 == rhs.rankGPAttendancesPer10002)||((this.rankGPAttendancesPer10002 != null)&&this.rankGPAttendancesPer10002 .equals(rhs.rankGPAttendancesPer10002))))&&((this.rankPercentOfMalesWhoAreO == rhs.rankPercentOfMalesWhoAreO)||((this.rankPercentOfMalesWhoAreO!= null)&&this.rankPercentOfMalesWhoAreO.equals(rhs.rankPercentOfMalesWhoAreO))))&&((this.percentOfPersonsWhoSitFor == rhs.percentOfPersonsWhoSitFor)||((this.percentOfPersonsWhoSitFor!= null)&&this.percentOfPersonsWhoSitFor.equals(rhs.percentOfPersonsWhoSitFor))))&&((this.rankChildProtectionSubstanti == rhs.rankChildProtectionSubstanti)||((this.rankChildProtectionSubstanti!= null)&&this.rankChildProtectionSubstanti.equals(rhs.rankChildProtectionSubstanti))))&&((this.equivalisedMedianIncome == rhs.equivalisedMedianIncome)||((this.equivalisedMedianIncome!= null)&&this.equivalisedMedianIncome.equals(rhs.equivalisedMedianIncome))))&&((this.rankPercentOfPersonsWhoVis == rhs.rankPercentOfPersonsWhoVis)||((this.rankPercentOfPersonsWhoVis!= null)&&this.rankPercentOfPersonsWhoVis.equals(rhs.rankPercentOfPersonsWhoVis))))&&((this.departmentalRegion == rhs.departmentalRegion)||((this.departmentalRegion!= null)&&this.departmentalRegion.equals(rhs.departmentalRegion))))&&((this.rankPercentOfBreastScreenin == rhs.rankPercentOfBreastScreenin)||((this.rankPercentOfBreastScreenin!= null)&&this.rankPercentOfBreastScreenin.equals(rhs.rankPercentOfBreastScreenin))))&&((this.rankPercentWhoHaveAHighDe == rhs.rankPercentWhoHaveAHighDe)||((this.rankPercentWhoHaveAHighDe!= null)&&this.rankPercentWhoHaveAHighDe.equals(rhs.rankPercentWhoHaveAHighDe))))&&((this.rankPercentPopAged75yrsPlus == rhs.rankPercentPopAged75yrsPlus)||((this.rankPercentPopAged75yrsPlus!= null)&&this.rankPercentPopAged75yrsPlus.equals(rhs.rankPercentPopAged75yrsPlus))))&&((this.rankPeopleWithSevereAndP1 == rhs.rankPeopleWithSevereAndP1)||((this.rankPeopleWithSevereAndP1 != null)&&this.rankPeopleWithSevereAndP1 .equals(rhs.rankPeopleWithSevereAndP1))))&&((this.oneParentHeadedFamiliesPerc == rhs.oneParentHeadedFamiliesPerc)||((this.oneParentHeadedFamiliesPerc!= null)&&this.oneParentHeadedFamiliesPerc.equals(rhs.oneParentHeadedFamiliesPerc))))&&((this.proportionOfHouseholdsWithB == rhs.proportionOfHouseholdsWithB)||((this.proportionOfHouseholdsWithB!= null)&&this.proportionOfHouseholdsWithB.equals(rhs.proportionOfHouseholdsWithB))))&&((this.areaOfLGASqKm == rhs.areaOfLGASqKm)||((this.areaOfLGASqKm!= null)&&this.areaOfLGASqKm.equals(rhs.areaOfLGASqKm))))&&((this.ratedTheirCommunityAsAnAct == rhs.ratedTheirCommunityAsAnAct)||((this.ratedTheirCommunityAsAnAct!= null)&&this.ratedTheirCommunityAsAnAct.equals(rhs.ratedTheirCommunityAsAnAct))))&&((this.percentOfPersonsWhoDoNot1 == rhs.percentOfPersonsWhoDoNot1)||((this.percentOfPersonsWhoDoNot1 != null)&&this.percentOfPersonsWhoDoNot1 .equals(rhs.percentOfPersonsWhoDoNot1))))&&((this.percentOfMalesWhoDoNotM1 == rhs.percentOfMalesWhoDoNotM1)||((this.percentOfMalesWhoDoNotM1 != null)&&this.percentOfMalesWhoDoNotM1 .equals(rhs.percentOfMalesWhoDoNotM1))))&&((this.coreActivityNeedForAssistan == rhs.coreActivityNeedForAssistan)||((this.coreActivityNeedForAssistan!= null)&&this.coreActivityNeedForAssistan.equals(rhs.coreActivityNeedForAssistan))))&&((this.aCSCsPer1000PopVaccinePrev == rhs.aCSCsPer1000PopVaccinePrev)||((this.aCSCsPer1000PopVaccinePrev!= null)&&this.aCSCsPer1000PopVaccinePrev.equals(rhs.aCSCsPer1000PopVaccinePrev))))&&((this.percentOfPersons18yrsPlusWh == rhs.percentOfPersons18yrsPlusWh)||((this.percentOfPersons18yrsPlusWh!= null)&&this.percentOfPersons18yrsPlusWh.equals(rhs.percentOfPersons18yrsPlusWh))))&&((this.rankPersonsReportingFairOr == rhs.rankPersonsReportingFairOr)||((this.rankPersonsReportingFairOr!= null)&&this.rankPersonsReportingFairOr.equals(rhs.rankPersonsReportingFairOr))))&&((this.rankPercentOfPersonsWhoDo1 == rhs.rankPercentOfPersonsWhoDo1)||((this.rankPercentOfPersonsWhoDo1 != null)&&this.rankPercentOfPersonsWhoDo1 .equals(rhs.rankPercentOfPersonsWhoDo1))))&&((this.percentOfPersonsSleepingLes == rhs.percentOfPersonsSleepingLes)||((this.percentOfPersonsSleepingLes!= null)&&this.percentOfPersonsSleepingLes.equals(rhs.percentOfPersonsSleepingLes))))&&((this.percentOfPersonsWhoAreOver == rhs.percentOfPersonsWhoAreOver)||((this.percentOfPersonsWhoAreOver!= null)&&this.percentOfPersonsWhoAreOver.equals(rhs.percentOfPersonsWhoAreOver))))&&((this.rankPercent19YearOldsCompl == rhs.rankPercent19YearOldsCompl)||((this.rankPercent19YearOldsCompl!= null)&&this.rankPercent19YearOldsCompl.equals(rhs.rankPercent19YearOldsCompl))))&&((this.total2013ERP == rhs.total2013ERP)||((this.total2013ERP!= null)&&this.total2013ERP.equals(rhs.total2013ERP))))&&((this.tota25to44yrs == rhs.tota25to44yrs)||((this.tota25to44yrs!= null)&&this.tota25to44yrs.equals(rhs.tota25to44yrs))))&&((this.percentPopAged75yrsPlusLivi == rhs.percentPopAged75yrsPlusLivi)||((this.percentPopAged75yrsPlusLivi!= null)&&this.percentPopAged75yrsPlusLivi.equals(rhs.percentPopAged75yrsPlusLivi))))&&((this.rankPercentSpeaksLOTEAtHom == rhs.rankPercentSpeaksLOTEAtHom)||((this.rankPercentSpeaksLOTEAtHom!= null)&&this.rankPercentSpeaksLOTEAtHom.equals(rhs.rankPercentSpeaksLOTEAtHom))))&&((this.percentOfPersonsWhoDoNotM == rhs.percentOfPersonsWhoDoNotM)||((this.percentOfPersonsWhoDoNotM!= null)&&this.percentOfPersonsWhoDoNotM.equals(rhs.percentOfPersonsWhoDoNotM))))&&((this.rankPersonsReceivingDisabili == rhs.rankPersonsReceivingDisabili)||((this.rankPersonsReceivingDisabili!= null)&&this.rankPersonsReceivingDisabili.equals(rhs.rankPersonsReceivingDisabili))))&&((this.rankPercentOfPersonsWhoSit == rhs.rankPercentOfPersonsWhoSit)||((this.rankPercentOfPersonsWhoSit!= null)&&this.rankPercentOfPersonsWhoSit.equals(rhs.rankPercentOfPersonsWhoSit))))&&((this.rankBelieveOtherPeopleCanB == rhs.rankBelieveOtherPeopleCanB)||((this.rankBelieveOtherPeopleCanB!= null)&&this.rankBelieveOtherPeopleCanB.equals(rhs.rankBelieveOtherPeopleCanB))))&&((this.hACCClientsAged65yrsPlusPer == rhs.hACCClientsAged65yrsPlusPer)||((this.hACCClientsAged65yrsPlusPer!= null)&&this.hACCClientsAged65yrsPlusPer.equals(rhs.hACCClientsAged65yrsPlusPer))))&&((this.avoidableDeaths0to74yrsForR == rhs.avoidableDeaths0to74yrsForR)||((this.avoidableDeaths0to74yrsForR!= null)&&this.avoidableDeaths0to74yrsForR.equals(rhs.avoidableDeaths0to74yrsForR))))&&((this.rankPercentOfYear9Students == rhs.rankPercentOfYear9Students)||((this.rankPercentOfYear9Students!= null)&&this.rankPercentOfYear9Students.equals(rhs.rankPercentOfYear9Students))))&&((this.rankLowBirthweightBabies == rhs.rankLowBirthweightBabies)||((this.rankLowBirthweightBabies!= null)&&this.rankLowBirthweightBabies.equals(rhs.rankLowBirthweightBabies))))&&((this.country2PercentForTop5Ove == rhs.country2PercentForTop5Ove)||((this.country2PercentForTop5Ove!= null)&&this.country2PercentForTop5Ove.equals(rhs.country2PercentForTop5Ove))))&&((this.rankFemaleCancerIncidencePe == rhs.rankFemaleCancerIncidencePe)||((this.rankFemaleCancerIncidencePe!= null)&&this.rankFemaleCancerIncidencePe.equals(rhs.rankFemaleCancerIncidencePe))))&&((this.percentFemaleIncomeLessThan == rhs.percentFemaleIncomeLessThan)||((this.percentFemaleIncomeLessThan!= null)&&this.percentFemaleIncomeLessThan.equals(rhs.percentFemaleIncomeLessThan))))&&((this.country3ForTop5OverseasCo == rhs.country3ForTop5OverseasCo)||((this.country3ForTop5OverseasCo!= null)&&this.country3ForTop5OverseasCo.equals(rhs.country3ForTop5OverseasCo))))&&((this.males65to84yrs == rhs.males65to84yrs)||((this.males65to84yrs!= null)&&this.males65to84yrs.equals(rhs.males65to84yrs))))&&((this.delayedPurchasingPrescribedM == rhs.delayedPurchasingPrescribedM)||((this.delayedPurchasingPrescribedM!= null)&&this.delayedPurchasingPrescribedM.equals(rhs.delayedPurchasingPrescribedM))))&&((this.rankPercentPersonsWhoComple == rhs.rankPercentPersonsWhoComple)||((this.rankPercentPersonsWhoComple!= null)&&this.rankPercentPersonsWhoComple.equals(rhs.rankPercentPersonsWhoComple))))&&((this.aCSCsPer1000PopTotal == rhs.aCSCsPer1000PopTotal)||((this.aCSCsPer1000PopTotal!= null)&&this.aCSCsPer1000PopTotal.equals(rhs.aCSCsPer1000PopTotal))))&&((this.rankACSCsPer1000PopTotal == rhs.rankACSCsPer1000PopTotal)||((this.rankACSCsPer1000PopTotal!= null)&&this.rankACSCsPer1000PopTotal.equals(rhs.rankACSCsPer1000PopTotal))))&&((this.avoidableDeaths0to74yrsrsFor == rhs.avoidableDeaths0to74yrsrsFor)||((this.avoidableDeaths0to74yrsrsFor!= null)&&this.avoidableDeaths0to74yrsrsFor.equals(rhs.avoidableDeaths0to74yrsrsFor))))&&((this.rankPercentOfSchoolChildren == rhs.rankPercentOfSchoolChildren)||((this.rankPercentOfSchoolChildren!= null)&&this.rankPercentOfSchoolChildren.equals(rhs.rankPercentOfSchoolChildren))))&&((this.feelsSafeWalkingAloneDuring == rhs.feelsSafeWalkingAloneDuring)||((this.feelsSafeWalkingAloneDuring!= null)&&this.feelsSafeWalkingAloneDuring.equals(rhs.feelsSafeWalkingAloneDuring))))&&((this.rankNewDwellingsApprovedFor == rhs.rankNewDwellingsApprovedFor)||((this.rankNewDwellingsApprovedFor!= null)&&this.rankNewDwellingsApprovedFor.equals(rhs.rankNewDwellingsApprovedFor))))&&((this.percentOfMalesWhoAreOverwe == rhs.percentOfMalesWhoAreOverwe)||((this.percentOfMalesWhoAreOverwe!= null)&&this.percentOfMalesWhoAreOverwe.equals(rhs.percentOfMalesWhoAreOverwe))))&&((this.percentOfPersonsReportingHe == rhs.percentOfPersonsReportingHe)||((this.percentOfPersonsReportingHe!= null)&&this.percentOfPersonsReportingHe.equals(rhs.percentOfPersonsReportingHe))))&&((this.medianRentFor3BedroomsHome == rhs.medianRentFor3BedroomsHome)||((this.medianRentFor3BedroomsHome!= null)&&this.medianRentFor3BedroomsHome.equals(rhs.medianRentFor3BedroomsHome))))&&((this.percentIndividualIncomeLess == rhs.percentIndividualIncomeLess)||((this.percentIndividualIncomeLess!= null)&&this.percentIndividualIncomeLess.equals(rhs.percentIndividualIncomeLess))))&&((this.ancestry5Top5Ancestries == rhs.ancestry5Top5Ancestries)||((this.ancestry5Top5Ancestries!= null)&&this.ancestry5Top5Ancestries.equals(rhs.ancestry5Top5Ancestries))))&&((this.percentOfPersonsReportingHi == rhs.percentOfPersonsReportingHi)||((this.percentOfPersonsReportingHi!= null)&&this.percentOfPersonsReportingHi.equals(rhs.percentOfPersonsReportingHi))))&&((this.rankHomelessnessRatePer1000 == rhs.rankHomelessnessRatePer1000)||((this.rankHomelessnessRatePer1000 != null)&&this.rankHomelessnessRatePer1000 .equals(rhs.rankHomelessnessRatePer1000))))&&((this.rankPercentPersonsWithAdequ == rhs.rankPercentPersonsWithAdequ)||((this.rankPercentPersonsWithAdequ!= null)&&this.rankPercentPersonsWithAdequ.equals(rhs.rankPercentPersonsWithAdequ))))&&((this.consumedAlcoholAtLeastWeekl == rhs.consumedAlcoholAtLeastWeekl)||((this.consumedAlcoholAtLeastWeekl!= null)&&this.consumedAlcoholAtLeastWeekl.equals(rhs.consumedAlcoholAtLeastWeekl))))&&((this.rankProportionOfInfantsEnro == rhs.rankProportionOfInfantsEnro)||((this.rankProportionOfInfantsEnro!= null)&&this.rankProportionOfInfantsEnro.equals(rhs.rankProportionOfInfantsEnro))))&&((this.rankPercentYear9StudentsWh == rhs.rankPercentYear9StudentsWh)||((this.rankPercentYear9StudentsWh!= null)&&this.rankPercentYear9StudentsWh.equals(rhs.rankPercentYear9StudentsWh))))&&((this.rankPercentOfPersonsWhoSha == rhs.rankPercentOfPersonsWhoSha)||((this.rankPercentOfPersonsWhoSha!= null)&&this.rankPercentOfPersonsWhoSha.equals(rhs.rankPercentOfPersonsWhoSha))))&&((this.rankPerAnnumPercentProjecte == rhs.rankPerAnnumPercentProjecte)||((this.rankPerAnnumPercentProjecte!= null)&&this.rankPerAnnumPercentProjecte.equals(rhs.rankPerAnnumPercentProjecte))))&&((this.rankAbleToDefinitelyGetHel == rhs.rankAbleToDefinitelyGetHel)||((this.rankAbleToDefinitelyGetHel!= null)&&this.rankAbleToDefinitelyGetHel.equals(rhs.rankAbleToDefinitelyGetHel))))&&((this.attendedALocalCommunityEven == rhs.attendedALocalCommunityEven)||((this.attendedALocalCommunityEven!= null)&&this.attendedALocalCommunityEven.equals(rhs.attendedALocalCommunityEven))))&&((this.householdsWithBroadbandInter == rhs.householdsWithBroadbandInter)||((this.householdsWithBroadbandInter!= null)&&this.householdsWithBroadbandInter.equals(rhs.householdsWithBroadbandInter))))&&((this.country4Top5LanguagesSpoke == rhs.country4Top5LanguagesSpoke)||((this.country4Top5LanguagesSpoke!= null)&&this.country4Top5LanguagesSpoke.equals(rhs.country4Top5LanguagesSpoke))))&&((this.rankNotificationsPer100000P == rhs.rankNotificationsPer100000P)||((this.rankNotificationsPer100000P!= null)&&this.rankNotificationsPer100000P.equals(rhs.rankNotificationsPer100000P))))&&((this.rankFeelValuedBySociety == rhs.rankFeelValuedBySociety)||((this.rankFeelValuedBySociety!= null)&&this.rankFeelValuedBySociety.equals(rhs.rankFeelValuedBySociety))))&&((this.country5Top5LanguagesSpoke == rhs.country5Top5LanguagesSpoke)||((this.country5Top5LanguagesSpoke!= null)&&this.country5Top5LanguagesSpoke.equals(rhs.country5Top5LanguagesSpoke))))&&((this.percentTotal45to64yrs == rhs.percentTotal45to64yrs)||((this.percentTotal45to64yrs!= null)&&this.percentTotal45to64yrs.equals(rhs.percentTotal45to64yrs))))&&((this.spokeWithMoreThan5PeopleT == rhs.spokeWithMoreThan5PeopleT)||((this.spokeWithMoreThan5PeopleT!= null)&&this.spokeWithMoreThan5PeopleT.equals(rhs.spokeWithMoreThan5PeopleT))))&&((this.ancestry4PercentTop5Ancest == rhs.ancestry4PercentTop5Ancest)||((this.ancestry4PercentTop5Ancest!= null)&&this.ancestry4PercentTop5Ancest.equals(rhs.ancestry4PercentTop5Ancest))))&&((this.males25to44yrs == rhs.males25to44yrs)||((this.males25to44yrs!= null)&&this.males25to44yrs.equals(rhs.males25to44yrs))))&&((this.country4PercentTop5Languag == rhs.country4PercentTop5Languag)||((this.country4PercentTop5Languag!= null)&&this.country4PercentTop5Languag.equals(rhs.country4PercentTop5Languag))))&&((this.membersOfASportsGroup == rhs.membersOfASportsGroup)||((this.membersOfASportsGroup!= null)&&this.membersOfASportsGroup.equals(rhs.membersOfASportsGroup))))&&((this.rankFeelsSafeWalkingAloneD == rhs.rankFeelsSafeWalkingAloneD)||((this.rankFeelsSafeWalkingAloneD!= null)&&this.rankFeelsSafeWalkingAloneD.equals(rhs.rankFeelsSafeWalkingAloneD))))&&((this.rankHospitalInpatientSeparat == rhs.rankHospitalInpatientSeparat)||((this.rankHospitalInpatientSeparat!= null)&&this.rankHospitalInpatientSeparat.equals(rhs.rankHospitalInpatientSeparat))))&&((this.females0to14yrs == rhs.females0to14yrs)||((this.females0to14yrs!= null)&&this.females0to14yrs.equals(rhs.females0to14yrs))))&&((this.percentTotal15to24yrs == rhs.percentTotal15to24yrs)||((this.percentTotal15to24yrs!= null)&&this.percentTotal15to24yrs.equals(rhs.percentTotal15to24yrs))))&&((this.rankMedianHousePrice == rhs.rankMedianHousePrice)||((this.rankMedianHousePrice!= null)&&this.rankMedianHousePrice.equals(rhs.rankMedianHousePrice))))&&((this.country3PercentTop5Languag == rhs.country3PercentTop5Languag)||((this.country3PercentTop5Languag!= null)&&this.country3PercentTop5Languag.equals(rhs.country3PercentTop5Languag))))&&((this.rankPercentLowIncomeWelfare == rhs.rankPercentLowIncomeWelfare)||((this.rankPercentLowIncomeWelfare!= null)&&this.rankPercentLowIncomeWelfare.equals(rhs.rankPercentLowIncomeWelfare))))&&((this.rankACSCsPer1000PopChronic == rhs.rankACSCsPer1000PopChronic)||((this.rankACSCsPer1000PopChronic!= null)&&this.rankACSCsPer1000PopChronic.equals(rhs.rankACSCsPer1000PopChronic))))&&((this.percentTotal0to14yrs == rhs.percentTotal0to14yrs)||((this.percentTotal0to14yrs!= null)&&this.percentTotal0to14yrs.equals(rhs.percentTotal0to14yrs))))&&((this.rankPercentOfPersonsRepor2 == rhs.rankPercentOfPersonsRepor2)||((this.rankPercentOfPersonsRepor2 != null)&&this.rankPercentOfPersonsRepor2 .equals(rhs.rankPercentOfPersonsRepor2))))&&((this.rankPercentOfPersonsRepor3 == rhs.rankPercentOfPersonsRepor3)||((this.rankPercentOfPersonsRepor3 != null)&&this.rankPercentOfPersonsRepor3 .equals(rhs.rankPercentOfPersonsRepor3))))&&((this.rankPercentOfPersonsRepor4 == rhs.rankPercentOfPersonsRepor4)||((this.rankPercentOfPersonsRepor4 != null)&&this.rankPercentOfPersonsRepor4 .equals(rhs.rankPercentOfPersonsRepor4))))&&((this.rankPercentOfPersonsRepor5 == rhs.rankPercentOfPersonsRepor5)||((this.rankPercentOfPersonsRepor5 != null)&&this.rankPercentOfPersonsRepor5 .equals(rhs.rankPercentOfPersonsRepor5))))&&((this.females45to64yrs == rhs.females45to64yrs)||((this.females45to64yrs!= null)&&this.females45to64yrs.equals(rhs.females45to64yrs))))&&((this.rankNewSettlerArrivalsPer1 == rhs.rankNewSettlerArrivalsPer1)||((this.rankNewSettlerArrivalsPer1 != null)&&this.rankNewSettlerArrivalsPer1 .equals(rhs.rankNewSettlerArrivalsPer1))))&&((this.proportionOfInfantsEnrolled == rhs.proportionOfInfantsEnrolled)||((this.proportionOfInfantsEnrolled!= null)&&this.proportionOfInfantsEnrolled.equals(rhs.proportionOfInfantsEnrolled))))&&((this.numberOfPublicHospitalsAnd == rhs.numberOfPublicHospitalsAnd)||((this.numberOfPublicHospitalsAnd!= null)&&this.numberOfPublicHospitalsAnd.equals(rhs.numberOfPublicHospitalsAnd))))&&((this.rankPercentFemaleIncomeLess == rhs.rankPercentFemaleIncomeLess)||((this.rankPercentFemaleIncomeLess!= null)&&this.rankPercentFemaleIncomeLess.equals(rhs.rankPercentFemaleIncomeLess))))&&((this.rankNumberOfChildFIRSTAsse == rhs.rankNumberOfChildFIRSTAsse)||((this.rankNumberOfChildFIRSTAsse!= null)&&this.rankNumberOfChildFIRSTAsse.equals(rhs.rankNumberOfChildFIRSTAsse))))&&((this.rankOneParentHeadedFamilies == rhs.rankOneParentHeadedFamilies)||((this.rankOneParentHeadedFamilies!= null)&&this.rankOneParentHeadedFamilies.equals(rhs.rankOneParentHeadedFamilies))))&&((this.rankTakeActionOnBehalfOfT == rhs.rankTakeActionOnBehalfOfT)||((this.rankTakeActionOnBehalfOfT!= null)&&this.rankTakeActionOnBehalfOfT.equals(rhs.rankTakeActionOnBehalfOfT))))&&((this.departmentalArea == rhs.departmentalArea)||((this.departmentalArea!= null)&&this.departmentalArea.equals(rhs.departmentalArea))))&&((this.totalMales == rhs.totalMales)||((this.totalMales!= null)&&this.totalMales.equals(rhs.totalMales))))&&((this.females15to24yrs == rhs.females15to24yrs)||((this.females15to24yrs!= null)&&this.females15to24yrs.equals(rhs.females15to24yrs))))&&((this.male85yrsPlus == rhs.male85yrsPlus)||((this.male85yrsPlus!= null)&&this.male85yrsPlus.equals(rhs.male85yrsPlus))))&&((this.communityAcceptanceOfDiverse == rhs.communityAcceptanceOfDiverse)||((this.communityAcceptanceOfDiverse!= null)&&this.communityAcceptanceOfDiverse.equals(rhs.communityAcceptanceOfDiverse))))&&((this.rankPercentOfCervicalCancer == rhs.rankPercentOfCervicalCancer)||((this.rankPercentOfCervicalCancer!= null)&&this.rankPercentOfCervicalCancer.equals(rhs.rankPercentOfCervicalCancer))))&&((this.rankMalignantCancersDiagnose == rhs.rankMalignantCancersDiagnose)||((this.rankMalignantCancersDiagnose!= null)&&this.rankMalignantCancersDiagnose.equals(rhs.rankMalignantCancersDiagnose))))&&((this.rankAgePensionPer1000Eligi == rhs.rankAgePensionPer1000Eligi)||((this.rankAgePensionPer1000Eligi!= null)&&this.rankAgePensionPer1000Eligi.equals(rhs.rankAgePensionPer1000Eligi))))&&((this.childProtectionSubstantiation == rhs.childProtectionSubstantiation)||((this.childProtectionSubstantiation!= null)&&this.childProtectionSubstantiation.equals(rhs.childProtectionSubstantiation))))&&((this.rankPercentOfPersonsSleepin == rhs.rankPercentOfPersonsSleepin)||((this.rankPercentOfPersonsSleepin!= null)&&this.rankPercentOfPersonsSleepin.equals(rhs.rankPercentOfPersonsSleepin))))&&((this.peopleWithSevereAndProfound == rhs.peopleWithSevereAndProfound)||((this.peopleWithSevereAndProfound!= null)&&this.peopleWithSevereAndProfound.equals(rhs.peopleWithSevereAndProfound))))&&((this.rankConsumedAlcoholAtLeast1 == rhs.rankConsumedAlcoholAtLeast1)||((this.rankConsumedAlcoholAtLeast1 != null)&&this.rankConsumedAlcoholAtLeast1 .equals(rhs.rankConsumedAlcoholAtLeast1))))&&((this.aRIARemotenessCategory == rhs.aRIARemotenessCategory)||((this.aRIARemotenessCategory!= null)&&this.aRIARemotenessCategory.equals(rhs.aRIARemotenessCategory))))&&((this.ancestry1PercentTop5Ancest == rhs.ancestry1PercentTop5Ancest)||((this.ancestry1PercentTop5Ancest!= null)&&this.ancestry1PercentTop5Ancest.equals(rhs.ancestry1PercentTop5Ancest))))&&((this.rankPercentLowEnglishProfic == rhs.rankPercentLowEnglishProfic)||((this.rankPercentLowEnglishProfic!= null)&&this.rankPercentLowEnglishProfic.equals(rhs.rankPercentLowEnglishProfic))))&&((this.disabilityPensionPer1000Eli == rhs.disabilityPensionPer1000Eli)||((this.disabilityPensionPer1000Eli!= null)&&this.disabilityPensionPer1000Eli.equals(rhs.disabilityPensionPer1000Eli))))&&((this.gPsPer1000Pop == rhs.gPsPer1000Pop)||((this.gPsPer1000Pop!= null)&&this.gPsPer1000Pop.equals(rhs.gPsPer1000Pop))))&&((this.humanitarianArrivalsAsAPerc == rhs.humanitarianArrivalsAsAPerc)||((this.humanitarianArrivalsAsAPerc!= null)&&this.humanitarianArrivalsAsAPerc.equals(rhs.humanitarianArrivalsAsAPerc))))&&((this.believeOtherPeopleCanBeTru == rhs.believeOtherPeopleCanBeTru)||((this.believeOtherPeopleCanBeTru!= null)&&this.believeOtherPeopleCanBeTru.equals(rhs.believeOtherPeopleCanBeTru))))&&((this.rankMaleLifeExpectancy == rhs.rankMaleLifeExpectancy)||((this.rankMaleLifeExpectancy!= null)&&this.rankMaleLifeExpectancy.equals(rhs.rankMaleLifeExpectancy))));
     }
+
 }

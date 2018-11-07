@@ -24,7 +24,6 @@ import org.opengis.annotation.Extension;
  *
  * <p>It is very common for a single instnace to implement both ExpressionVisitor and FilterVisitor.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengis.org/docs/02-059.pdf">Implementation specification 1.0</A>
  * @author Chris Dillard (SYS Technologies)
  * @since GeoAPI 2.0

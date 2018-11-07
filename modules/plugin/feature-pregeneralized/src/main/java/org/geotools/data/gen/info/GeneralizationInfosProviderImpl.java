@@ -40,7 +40,6 @@ import org.xml.sax.SAXException;
  *     <p>The default implementation for GeneralizationInfosProvider, reading the info from an XML
  *     file.
  *     <p>The xml schema file is "/geninfos_1.0.xsd"
- * @source $URL$
  */
 public class GeneralizationInfosProviderImpl implements GeneralizationInfosProvider {
 

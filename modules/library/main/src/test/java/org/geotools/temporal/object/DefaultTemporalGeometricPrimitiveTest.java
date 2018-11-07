@@ -28,10 +28,7 @@ import org.opengis.temporal.Instant;
 import org.opengis.temporal.Position;
 import org.opengis.temporal.TemporalGeometricPrimitive;
 
-/**
- * @author Mehdi Sidhoum (Geomatys)
- * @source $URL$
- */
+/** @author Mehdi Sidhoum (Geomatys) */
 public class DefaultTemporalGeometricPrimitiveTest {
 
     private TemporalGeometricPrimitive temporalGeomericPrimitive1;

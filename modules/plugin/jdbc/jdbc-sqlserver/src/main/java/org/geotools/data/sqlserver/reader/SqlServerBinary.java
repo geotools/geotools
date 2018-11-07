@@ -7,7 +7,6 @@ import org.locationtech.jts.geom.CoordinateSequence;
  * Represents the information from a binary sqlserver geometry
  *
  * @author Anders Bakkevold, Bouvet
- * @source $URL$
  */
 class SqlServerBinary {
 

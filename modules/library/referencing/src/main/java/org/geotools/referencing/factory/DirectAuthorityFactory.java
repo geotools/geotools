@@ -24,7 +24,7 @@ import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
-import org.geotools.factory.Hints;
+import org.geotools.util.factory.Hints;
 import org.opengis.referencing.*;
 
 /**
@@ -34,7 +34,6 @@ import org.opengis.referencing.*;
  * factory.
  *
  * @since 2.3
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

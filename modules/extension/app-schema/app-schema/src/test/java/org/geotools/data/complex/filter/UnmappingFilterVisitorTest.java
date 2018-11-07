@@ -34,6 +34,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import javax.xml.namespace.QName;
+import org.geotools.appschema.filter.FilterFactoryImplNamespaceAware;
 import org.geotools.data.DataAccess;
 import org.geotools.data.DataAccessFinder;
 import org.geotools.data.DataUtilities;
@@ -43,6 +44,7 @@ import org.geotools.data.complex.AttributeMapping;
 import org.geotools.data.complex.FeatureTypeMapping;
 import org.geotools.data.complex.TestData;
 import org.geotools.data.complex.config.Types;
+import org.geotools.data.complex.feature.type.UniqueNameFeatureTypeFactoryImpl;
 import org.geotools.data.complex.filter.XPathUtil.Step;
 import org.geotools.data.complex.filter.XPathUtil.StepList;
 import org.geotools.data.memory.MemoryDataStore;
@@ -51,8 +53,6 @@ import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.TypeBuilder;
-import org.geotools.feature.type.UniqueNameFeatureTypeFactoryImpl;
-import org.geotools.filter.FilterFactoryImplNamespaceAware;
 import org.geotools.filter.IsEqualsToImpl;
 import org.geotools.filter.OrImpl;
 import org.geotools.filter.spatial.BBOX3DImpl;
@@ -99,7 +99,6 @@ import org.xml.sax.helpers.NamespaceSupport;
 /**
  * @author Gabriel Roldan (Axios Engineering)
  * @version $Id$
- * @source $URL$
  * @since 2.4
  */
 public class UnmappingFilterVisitorTest extends AppSchemaTestSupport {

@@ -24,7 +24,6 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * rows in a file. For jdbc datasources a ResultSetFIDReader should be used.
  *
  * @author Chris Holmes
- * @source $URL$
  * @version $Id$
  */
 public class DefaultFIDReader implements FIDReader {

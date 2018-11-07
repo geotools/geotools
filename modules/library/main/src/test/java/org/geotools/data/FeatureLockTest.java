@@ -28,7 +28,6 @@ import org.junit.Test;
  *
  * @see org.geotools.data
  * @author jgarnett, Refractions Reasearch Inc.
- * @source $URL$
  * @version CVS Version
  */
 public class FeatureLockTest {

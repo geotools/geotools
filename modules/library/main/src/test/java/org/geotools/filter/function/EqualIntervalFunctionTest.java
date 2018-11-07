@@ -22,10 +22,7 @@ import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
 
-/**
- * @author James
- * @source $URL$
- */
+/** @author James */
 public class EqualIntervalFunctionTest extends FunctionTestSupport {
 
     private static final org.opengis.filter.FilterFactory ff =

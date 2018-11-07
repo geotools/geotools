@@ -90,40 +90,40 @@ public class RepeatedLabelTest {
                         "src/test/resources/org/geotools/renderer/lite/test-data/"
                                 + styleName
                                 + ".png");
-        int tolerance = 1400;
+        int tolerance = 2000;
         ImageAssert.assertEquals(expected, image, tolerance);
     }
 
     @Test
     public void testLabelSquareBorders() throws Exception {
-        checkRepeatedLabelsPolygonBorder(square, "repeatedLabelsAlongLine", "poly", null, 1000);
+        checkRepeatedLabelsPolygonBorder(square, "repeatedLabelsAlongLine", "poly", null, 1600);
     }
 
     @Test
     public void testLabelSquareBordersWithHoles() throws Exception {
         checkRepeatedLabelsPolygonBorder(
-                squareHoles, "repeatedLabelsAlongLine", "polyHole", null, 1400);
+                squareHoles, "repeatedLabelsAlongLine", "polyHole", null, 2100);
     }
 
     @Test
     public void testLabelSquareBordersPositiveOffset() throws Exception {
         PerpendicularOffsetVisitor visitor = new PerpendicularOffsetVisitor(10);
         checkRepeatedLabelsPolygonBorder(
-                square, "repeatedLabelsAlongLine", "poly-perp-offset", visitor, 1000);
+                square, "repeatedLabelsAlongLine", "poly-perp-offset", visitor, 1700);
     }
 
     @Test
     public void testLabelSquareBordersNegativeOffset() throws Exception {
         PerpendicularOffsetVisitor visitor = new PerpendicularOffsetVisitor(-10);
         checkRepeatedLabelsPolygonBorder(
-                square, "repeatedLabelsAlongLine", "poly-perp-negative-offset", visitor, 1000);
+                square, "repeatedLabelsAlongLine", "poly-perp-negative-offset", visitor, 1500);
     }
 
     @Test
     public void testLabelSquareBordersHolesPositiveOffset() throws Exception {
         PerpendicularOffsetVisitor visitor = new PerpendicularOffsetVisitor(5);
         checkRepeatedLabelsPolygonBorder(
-                squareHoles, "repeatedLabelsAlongLine", "poly-hole-perp-offset", visitor, 1400);
+                squareHoles, "repeatedLabelsAlongLine", "poly-hole-perp-offset", visitor, 2100);
     }
 
     @Test
@@ -134,7 +134,7 @@ public class RepeatedLabelTest {
                 "repeatedLabelsAlongLine",
                 "poly-hole-perp-negative-offset",
                 visitor,
-                1400);
+                2200);
     }
 
     private void checkRepeatedLabelsPolygonBorder(

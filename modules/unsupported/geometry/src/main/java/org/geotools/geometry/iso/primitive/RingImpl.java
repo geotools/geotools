@@ -37,7 +37,6 @@ import org.opengis.geometry.primitive.Ring;
  * enforce stronger restrictions on the interaction of boundary elements.
  *
  * @author Jackson Roehrig & Sanjay Jena
- * @source $URL$
  */
 public class RingImpl extends RingImplUnsafe implements Ring {
 

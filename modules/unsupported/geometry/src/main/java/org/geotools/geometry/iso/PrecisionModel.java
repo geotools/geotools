@@ -59,7 +59,6 @@ import org.opengis.geometry.PrecisionType;
  *
  * <p>JTS methods currently do not handle inputs with different precision models.
  *
- * @source $URL$
  * @version 1.7.2
  */
 public class PrecisionModel implements Serializable, Precision {

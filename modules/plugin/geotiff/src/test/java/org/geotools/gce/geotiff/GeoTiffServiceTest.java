@@ -26,7 +26,6 @@ import org.junit.Test;
  * Testing {@link GeoTiffFormatFactorySpi}.
  *
  * @author Simone Giannecchini
- * @source $URL$
  */
 public class GeoTiffServiceTest extends Assert {
 

@@ -21,7 +21,6 @@ import static org.geotools.data.postgis.PostGISDialect.BIGDATE_UDT;
 
 import org.geotools.jdbc.JDBCUDTTestSetup;
 
-/** @source $URL$ */
 public class PostgisUDTTestSetup extends JDBCUDTTestSetup {
 
     public PostgisUDTTestSetup() {

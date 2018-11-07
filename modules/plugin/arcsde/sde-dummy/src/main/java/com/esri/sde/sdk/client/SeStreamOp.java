@@ -2,7 +2,6 @@ package com.esri.sde.sdk.client;
 
 import java.io.IOException;
 
-/** @source $URL$ */
 public class SeStreamOp {
     public void execute() throws SeException {}
 

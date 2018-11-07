@@ -48,11 +48,7 @@ import org.opengis.geometry.primitive.Primitive;
 import org.opengis.geometry.primitive.Ring;
 import org.opengis.geometry.primitive.Surface;
 
-/**
- * A GeometryGraph is a graph that models a given Geometry
- *
- * @source $URL$
- */
+/** A GeometryGraph is a graph that models a given Geometry */
 public class GeometryGraph extends PlanarGraph {
 
     /**

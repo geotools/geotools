@@ -32,7 +32,6 @@ import org.geotools.jdbc.SQLDialect;
  * DataStoreFacotry for H2 database.
  *
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL$
  */
 public class H2DataStoreFactory extends JDBCDataStoreFactory {
     /** parameter for database type */

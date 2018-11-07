@@ -24,7 +24,6 @@ import javax.naming.OperationNotSupportedException;
  * generic XML schema type interface to represent datum within a single element.
  *
  * @author dzwiers www.refractions.net
- * @source $URL$
  */
 public interface SimpleType extends Type {
     /**

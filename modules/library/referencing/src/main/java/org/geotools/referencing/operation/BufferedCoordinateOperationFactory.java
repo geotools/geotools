@@ -18,11 +18,11 @@ package org.geotools.referencing.operation;
 
 import java.util.Map;
 import java.util.Set;
-import org.geotools.factory.BufferedFactory;
-import org.geotools.factory.Hints;
 import org.geotools.referencing.ReferencingFactoryFinder;
 import org.geotools.util.SoftValueHashMap;
 import org.geotools.util.Utilities;
+import org.geotools.util.factory.BufferedFactory;
+import org.geotools.util.factory.Hints;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.CoordinateOperation;
@@ -41,7 +41,6 @@ import org.opengis.referencing.operation.OperationNotFoundException;
  *
  * @since 2.3
  * @version $Id$
- * @source $URL$
  * @author Simone Giannecchini
  * @author Martin Desruisseaux
  */

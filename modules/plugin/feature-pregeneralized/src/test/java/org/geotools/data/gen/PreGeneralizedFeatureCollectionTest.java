@@ -25,7 +25,6 @@ import org.geotools.data.gen.info.GeneralizationInfosProviderImpl;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.junit.Assert;
 
-/** @source $URL$ */
 public class PreGeneralizedFeatureCollectionTest extends TestCase {
 
     @Override

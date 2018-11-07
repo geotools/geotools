@@ -37,10 +37,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-/** @source $URL$ */
 public class ArcGISRestDataStoreFactoryTest {
 
-    private static final Logger LOGGER = Logging.getLogger("org.geotools.data.arcgisrest");
+    private static final Logger LOGGER = Logging.getLogger(ArcGISRestDataStoreFactoryTest.class);
 
     public static String URL = "http://data.dhs.opendata.arcgis.com/data.json";
     public static String WSURL =

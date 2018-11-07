@@ -26,7 +26,6 @@ import java.nio.channels.ReadableByteChannel;
  * {@link #close()} it also calls ShapefileFiles.unlock method to release the lock on the URL.
  *
  * @author jesse
- * @source $URL$
  */
 public class ReadableByteChannelDecorator implements ReadableByteChannel {
 

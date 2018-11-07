@@ -35,15 +35,11 @@ import org.geotools.util.logging.Logging;
  * @author Saul Farber (saul.farber)
  * @author aaime
  * @author Simone Giannecchini (simboss)
- * @source $URL$
- *     http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/main/java
- *     /org/geotools/arcsde/ArcSDERasterFormatFactory.java $
  */
 public class ArcSDERasterFormatFactory implements GridFormatFactorySpi {
 
     /** package's logger */
-    protected static final Logger LOGGER =
-            Logging.getLogger(ArcSDERasterFormatFactory.class.getName());
+    protected static final Logger LOGGER = Logging.getLogger(ArcSDERasterFormatFactory.class);
 
     /** @see GridFormatFactorySpi#isAvailable() */
     public boolean isAvailable() {

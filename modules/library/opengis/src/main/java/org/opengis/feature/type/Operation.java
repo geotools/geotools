@@ -16,7 +16,6 @@ import org.opengis.feature.Attribute;
  * An implementation of an operation that may be invoked on an Attribute.
  *
  * @author Jody Garnett, Refractions Research
- * @source $URL$
  */
 public interface Operation extends PropertyDescriptor {
 

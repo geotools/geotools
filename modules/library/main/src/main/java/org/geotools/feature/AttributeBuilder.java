@@ -49,7 +49,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * Builder for attributes.
  *
  * @author Justin Deoliveira (The Open Planning Project)
- * @source $URL$
  */
 public class AttributeBuilder {
 

@@ -25,21 +25,21 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.namespace.QName;
+import org.geotools.appschema.feature.AppSchemaAttributeBuilder;
 import org.geotools.data.complex.AbstractMappingFeatureIterator;
 import org.geotools.data.complex.ComplexFeatureConstants;
 import org.geotools.data.complex.config.NonFeatureTypeProxy;
 import org.geotools.data.complex.config.Types;
+import org.geotools.data.complex.feature.type.ComplexFeatureTypeFactoryImpl;
+import org.geotools.data.complex.feature.type.UniqueNameFeatureTypeFactoryImpl;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.feature.AppSchemaAttributeBuilder;
 import org.geotools.feature.AttributeImpl;
 import org.geotools.feature.AttributeTypeBuilder;
 import org.geotools.feature.ComplexAttributeImpl;
 import org.geotools.feature.GeometryAttributeImpl;
 import org.geotools.feature.ValidatingFeatureFactoryImpl;
 import org.geotools.feature.type.AttributeDescriptorImpl;
-import org.geotools.feature.type.ComplexFeatureTypeFactoryImpl;
 import org.geotools.feature.type.GeometryTypeImpl;
-import org.geotools.feature.type.UniqueNameFeatureTypeFactoryImpl;
 import org.geotools.gml3.GML;
 import org.geotools.xs.XSSchema;
 import org.locationtech.jts.geom.Geometry;
@@ -70,20 +70,15 @@ import org.xml.sax.Attributes;
  * <p>At the difference of the Filter subsystem, which works against Attribute contents (for example
  * to evaluate a comparison filter), the XPath subsystem, for which this class is the single entry
  * point, works against Attribute instances. That is, the result of an XPath expression, if a single
- * value, is an Attribtue, not the attribute content, or a List of Attributes, for instance.
+ * value, is an Attribute, not the attribute content, or a List of Attributes, for instance.
  *
  * @author Gabriel Roldan (Axios Engineering)
  * @author Rini Angreani (CSIRO Earth Science and Resource Engineering)
- * @version $Id$
- * @source $URL$
- *     http://svn.osgeo.org/geotools/trunk/modules/unsupported/app-schema/app-schema/src/main
- *     /java/org/geotools/data/complex/filter/XPath.java $
  * @since 2.4
  */
 public class XPath extends XPathUtil {
 
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(XPath.class.getPackage().getName());
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(XPath.class);
 
     private FilterFactory FF;
 

@@ -25,7 +25,6 @@ import org.opengis.referencing.FactoryException;
  * DeferredAuthorityFactory#createBackingStore}.
  *
  * @since 2.3
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

@@ -333,7 +333,6 @@ import org.opengis.util.InternationalString;
  *
  * @author Justin Deoliveira
  * @author Jody Garnett
- * @source $URL$
  */
 public class TypeBuilder {
 

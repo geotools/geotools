@@ -29,7 +29,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * (Triangle). There is no restriction on how the triangulation is derived.
  *
  * @author Jackson Roehrig & Sanjay Jena
- * @source $URL$
  */
 public class TriangulatedSurfaceImpl extends PolyhedralSurfaceImpl implements TriangulatedSurface {
 

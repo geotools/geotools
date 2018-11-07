@@ -41,7 +41,7 @@ import org.geotools.data.shapefile.shp.IndexFile;
 import org.geotools.data.shapefile.shp.ShapefileHeader;
 import org.geotools.data.shapefile.shp.ShapefileReader;
 import org.geotools.data.shapefile.shp.ShapefileReader.Record;
-import org.geotools.util.NullProgressListener;
+import org.geotools.data.util.NullProgressListener;
 import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.GeometryFactory;
@@ -51,7 +51,6 @@ import org.opengis.util.ProgressListener;
  * Utility class for Shapefile spatial indexing
  *
  * @author Tommaso Nolli
- * @source $URL$
  */
 class ShapeFileIndexer implements FileWriter {
     private static final Logger LOGGER = Logging.getLogger(ShapeFileIndexer.class);

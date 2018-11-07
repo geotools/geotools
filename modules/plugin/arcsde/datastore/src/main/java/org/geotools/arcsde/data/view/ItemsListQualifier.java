@@ -32,10 +32,6 @@ import org.geotools.arcsde.session.ISession;
  * Seems to visit a list and update the entries and fill in the blanks qualifying them.
  *
  * @author Gabriel Roldan, Axios Engineering
- * @version $Id$
- * @source $URL:
- *     http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/main/java
- *     /org/geotools/arcsde/data/view/ItemsListQualifier.java $
  * @since 2.3.x
  */
 class ItemsListQualifier implements ItemsListVisitor {

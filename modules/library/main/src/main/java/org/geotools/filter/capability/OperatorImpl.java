@@ -22,7 +22,6 @@ import org.opengis.filter.capability.Operator;
  * Implementation of the Operator interface.
  *
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL$
  */
 public class OperatorImpl implements Operator {
     private String name;

@@ -17,7 +17,7 @@
 package org.geotools.filter.v1_1.capabilities;
 
 import org.geotools.filter.v1_1.OGC;
-import org.geotools.xml.Binding;
+import org.geotools.xsd.Binding;
 import org.opengis.filter.capability.FilterCapabilities;
 import org.w3c.dom.Document;
 
@@ -40,7 +40,6 @@ import org.w3c.dom.Document;
  *   </pre>
  *
  * @generated
- * @source $URL$
  */
 public class _Filter_CapabilitiesTypeBindingTest extends OGCTestSupport {
     public void testType() {

@@ -17,11 +17,7 @@
  */
 package org.geotools.geometry.iso.topograph2D;
 
-/**
- * Indicates an invalid or inconsistent topological situation encountered during processing
- *
- * @source $URL$
- */
+/** Indicates an invalid or inconsistent topological situation encountered during processing */
 public class TopologyException extends RuntimeException {
 
     private static String msgWithCoord(String msg, Coordinate pt) {

@@ -19,9 +19,9 @@ package org.geotools.renderer.style;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.logging.Logger;
-import org.geotools.factory.FactoryCreator;
-import org.geotools.factory.FactoryRegistry;
-import org.geotools.factory.Hints;
+import org.geotools.util.factory.FactoryCreator;
+import org.geotools.util.factory.FactoryRegistry;
+import org.geotools.util.factory.Hints;
 
 /**
  * Searches for all available {@link ExternalGraphicFactory} and {@link MarkFactory}
@@ -41,13 +41,11 @@ import org.geotools.factory.Hints;
  *
  * <p>Example:<br>
  * <code>org.geotools.data.jdbc.DBCPDataSourceFactory</code>
- *
- * @source $URL$
  */
 public final class DynamicSymbolFactoryFinder {
     /** The logger for the filter module. */
     protected static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.data.jdbc");
+            org.geotools.util.logging.Logging.getLogger(DynamicSymbolFactoryFinder.class);
 
     /** The service registry for this manager. Will be initialized only when first needed. */
     private static FactoryRegistry registry;

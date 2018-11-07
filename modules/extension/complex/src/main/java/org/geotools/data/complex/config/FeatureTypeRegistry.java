@@ -41,11 +41,11 @@ import org.geotools.feature.type.GeometryTypeImpl;
 import org.geotools.feature.type.Types;
 import org.geotools.geometry.jts.CurvedGeometry;
 import org.geotools.util.logging.Logging;
-import org.geotools.xml.Configuration;
-import org.geotools.xml.SchemaIndex;
-import org.geotools.xml.Schemas;
-import org.geotools.xml.complex.FeatureTypeRegistryConfiguration;
 import org.geotools.xs.XSSchema;
+import org.geotools.xsd.Configuration;
+import org.geotools.xsd.SchemaIndex;
+import org.geotools.xsd.Schemas;
+import org.geotools.xsd.complex.FeatureTypeRegistryConfiguration;
 import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.AttributeType;
@@ -72,7 +72,7 @@ import org.xml.sax.helpers.NamespaceSupport;
  */
 public class FeatureTypeRegistry {
 
-    private static final Logger LOGGER = Logging.getLogger("org.geotools.data.complex");
+    private static final Logger LOGGER = Logging.getLogger(FeatureTypeRegistry.class);
 
     private List<SchemaIndex> schemas;
 

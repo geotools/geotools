@@ -28,7 +28,6 @@ import org.opengis.metadata.maintenance.ScopeDescription;
 /**
  * Description of the class of information covered by the information.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @author Touraïvane

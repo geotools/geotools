@@ -28,7 +28,6 @@ import org.opengis.feature.type.AttributeDescriptor;
  *
  * @author Justin Deoliveira, The Open Planning Project
  * @deprecated Please use {@link ReTypingFeatureIterator}
- * @source $URL$
  */
 public class ReTypingIterator implements Iterator<SimpleFeature> {
 

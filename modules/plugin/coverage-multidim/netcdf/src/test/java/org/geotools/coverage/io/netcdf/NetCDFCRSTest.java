@@ -16,6 +16,8 @@
  */
 package org.geotools.coverage.io.netcdf;
 
+import static org.junit.Assert.*;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
@@ -36,8 +38,8 @@ import org.geotools.referencing.operation.projection.RotatedPole;
 import org.geotools.referencing.operation.projection.TransverseMercator;
 import org.geotools.test.TestData;
 import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.opengis.coverage.grid.GridEnvelope;
 import org.opengis.parameter.ParameterValueGroup;
@@ -55,20 +57,27 @@ import org.opengis.referencing.operation.Projection;
  *
  * @author Daniele Romagnoli, GeoSolutions SAS
  */
-public class NetCDFCRSTest extends Assert {
+public class NetCDFCRSTest {
 
     private static final double DELTA = 1E-6;
 
     private static CoordinateReferenceSystem UTM32611;
 
     /** Sets up the custom definitions */
-    @Before
-    public void setUp() throws Exception {
+    @BeforeClass
+    public static void setUp() throws Exception {
         String netcdfPropertiesPath =
-                TestData.file(this, "netcdf.projections.properties").getCanonicalPath();
+                TestData.file(NetCDFCRSTest.class, "netcdf.projections.properties")
+                        .getCanonicalPath();
         System.setProperty(
                 NetCDFCRSAuthorityFactory.SYSTEM_DEFAULT_USER_PROJ_FILE, netcdfPropertiesPath);
+        CRS.reset("all");
         UTM32611 = CRS.decode("EPSG:32611");
+    }
+
+    @AfterClass
+    public static void cleanUp() {
+        System.clearProperty(NetCDFCRSAuthorityFactory.SYSTEM_DEFAULT_USER_PROJ_FILE);
     }
 
     @Test

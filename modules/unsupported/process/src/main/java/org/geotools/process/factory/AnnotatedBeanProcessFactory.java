@@ -26,8 +26,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
-import org.geotools.factory.FactoryRegistry;
 import org.geotools.feature.NameImpl;
+import org.geotools.util.factory.FactoryRegistry;
 import org.opengis.feature.type.Name;
 import org.opengis.util.InternationalString;
 
@@ -68,8 +68,6 @@ import org.opengis.util.InternationalString;
  * }
  * </pre>
  * </ol>
- *
- * @source $URL$
  */
 public class AnnotatedBeanProcessFactory extends AnnotationDrivenProcessFactory {
     Map<String, Class<?>> classMap;

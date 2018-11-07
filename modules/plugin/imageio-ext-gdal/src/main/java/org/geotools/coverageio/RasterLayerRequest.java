@@ -37,18 +37,18 @@ import org.geotools.coverage.grid.io.OverviewPolicy;
 import org.geotools.coverage.grid.io.footprint.FootprintBehavior;
 import org.geotools.coverage.grid.io.footprint.MultiLevelROI;
 import org.geotools.coverage.grid.io.imageio.ReadType;
+import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.coverageio.gdal.BaseGDALGridFormat;
 import org.geotools.data.DataSourceException;
-import org.geotools.factory.Hints;
 import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.PixelTranslation;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.geometry.util.XRectangle2D;
 import org.geotools.metadata.iso.extent.GeographicBoundingBoxImpl;
-import org.geotools.metadata.iso.spatial.PixelTranslation;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.operation.builder.GridToEnvelopeMapper;
-import org.geotools.resources.coverage.CoverageUtilities;
-import org.geotools.resources.geometry.XRectangle2D;
+import org.geotools.util.factory.Hints;
 import org.opengis.geometry.BoundingBox;
 import org.opengis.geometry.Envelope;
 import org.opengis.metadata.Identifier;
@@ -73,7 +73,7 @@ class RasterLayerRequest {
 
     /** Logger. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.coverageio");
+            org.geotools.util.logging.Logging.getLogger(RasterLayerRequest.class);
 
     private ReadType readType = ReadType.UNSPECIFIED;
 

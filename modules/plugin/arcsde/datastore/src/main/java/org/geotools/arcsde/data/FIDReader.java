@@ -48,10 +48,6 @@ import org.opengis.feature.type.AttributeDescriptor;
  * </ul>
  *
  * @author Gabriel Roldan, Axios Engineering
- * @version $Id$
- * @source $URL$
- *     http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/main/java
- *     /org/geotools/arcsde/data/FIDReader.java $
  */
 public abstract class FIDReader {
 

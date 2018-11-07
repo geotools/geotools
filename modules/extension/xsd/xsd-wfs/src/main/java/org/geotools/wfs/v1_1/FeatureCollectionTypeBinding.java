@@ -23,7 +23,7 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.gml3.GML;
 import org.geotools.gml3.GMLConfiguration;
 import org.geotools.gml3.simple.GML3FeatureCollectionEncoderDelegate;
-import org.geotools.xml.Encoder;
+import org.geotools.xsd.Encoder;
 
 /**
  * A feature collection binding with specific optimizations for {@link SimpleFeatureCollection}

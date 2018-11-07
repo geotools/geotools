@@ -3,9 +3,9 @@ package org.geotools.gml4wcs.bindings;
 import javax.xml.namespace.QName;
 import org.geotools.geometry.GeneralDirectPosition;
 import org.geotools.gml4wcs.GML;
-import org.geotools.xml.AbstractComplexBinding;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
+import org.geotools.xsd.AbstractComplexBinding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 import org.opengis.geometry.DirectPosition;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -36,7 +36,6 @@ import org.w3c.dom.Element;
  *  </pre>
  *
  * @generated
- * @source $URL$
  */
 public class DirectPositionTypeBinding extends AbstractComplexBinding {
 

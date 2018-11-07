@@ -41,13 +41,11 @@ import org.opengis.filter.expression.Subtract;
 
 /**
  * @author Gabriel Roldan, Axios Engineering
- * @source $URL$
  * @version $Id$
  */
 public class FunctionExpressionImplTest extends TestCase {
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(
-                    FunctionExpressionImplTest.class.getPackage().getName());
+            org.geotools.util.logging.Logging.getLogger(FunctionExpressionImplTest.class);
 
     FunctionExpressionImpl function;
 

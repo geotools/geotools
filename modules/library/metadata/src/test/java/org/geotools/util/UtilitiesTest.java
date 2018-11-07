@@ -24,7 +24,6 @@ import org.junit.*;
 /**
  * Tests the {@link Utilities} static methods.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  */

@@ -50,10 +50,7 @@ import org.junit.Test;
 import org.opengis.feature.Feature;
 import org.opengis.feature.FeatureVisitor;
 
-/**
- * @author Simone Giannecchini, GeoSolutions SAS
- * @source $URL$
- */
+/** @author Simone Giannecchini, GeoSolutions SAS */
 public class PropertiesCollectorTest {
 
     @BeforeClass

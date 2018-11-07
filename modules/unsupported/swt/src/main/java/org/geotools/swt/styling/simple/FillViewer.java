@@ -59,7 +59,6 @@ import org.geotools.swt.utils.Messages;
  *
  * @author Jody Garnett
  * @since 1.0.0
- * @source $URL$
  */
 public class FillViewer {
     boolean enabled;

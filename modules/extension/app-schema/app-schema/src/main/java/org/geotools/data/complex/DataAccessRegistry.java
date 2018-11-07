@@ -26,14 +26,14 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.geotools.appschema.util.InterpolationProperties;
 import org.geotools.data.DataAccess;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.DataStore;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.Repository;
 import org.geotools.data.complex.config.Types;
-import org.geotools.factory.Hints;
-import org.geotools.util.InterpolationProperties;
+import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
 import org.opengis.feature.Feature;
 import org.opengis.feature.type.FeatureType;
@@ -46,7 +46,6 @@ import org.opengis.filter.identity.FeatureId;
  *
  * @author Rini Angreani (CSIRO Earth Science and Resource Engineering)
  * @author Niels Charlier (Curtin University Of Technology)
- * @source $URL$
  */
 public class DataAccessRegistry implements Repository {
 

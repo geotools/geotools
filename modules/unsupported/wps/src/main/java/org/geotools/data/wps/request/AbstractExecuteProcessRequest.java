@@ -35,15 +35,14 @@ import net.opengis.wps10.Wps10Factory;
 import org.eclipse.emf.ecore.EObject;
 import org.geotools.wps.WPS;
 import org.geotools.wps.WPSConfiguration;
-import org.geotools.xml.Configuration;
-import org.geotools.xml.Encoder;
+import org.geotools.xsd.Configuration;
+import org.geotools.xsd.Encoder;
 
 /**
  * Describes an abstract ExecuteProcess request. Provides everything except the versioning info,
  * which subclasses must implement.
  *
  * @author gdavis
- * @source $URL$
  */
 public abstract class AbstractExecuteProcessRequest extends AbstractWPSRequest
         implements ExecuteProcessRequest {

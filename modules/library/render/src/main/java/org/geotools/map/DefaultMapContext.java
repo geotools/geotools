@@ -26,7 +26,6 @@ import org.geotools.data.FeatureSource;
 import org.geotools.data.memory.CollectionSource;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.map.event.MapLayerListEvent;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.styling.SLD;
 import org.geotools.styling.Style;
@@ -46,9 +45,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * </ul>
  *
  * @author Andrea Aime
- * @source $URL$
- *     http://svn.osgeo.org/geotools/trunk/modules/library/render/src/main/java/org/geotools
- *     /map/DefaultMapContext.java $
  * @deprecated Use {@link MapContent} instead
  */
 public class DefaultMapContext extends MapContext {

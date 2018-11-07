@@ -27,7 +27,6 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * see the DataStoreCache test
  *
  * @author Andrea Aime - OpenGeo
- * @source $URL$
  */
 public class DirectoryDataStoreTest extends DirectoryTestSupport {
 

@@ -24,7 +24,6 @@ import org.opengis.parameter.ParameterNotFoundException;
  * @since GeoAPI 2.0
  * @see GridCoverageExchange#getWriter
  * @see javax.imageio.ImageWriter
- * @source $URL$
  */
 public interface GridCoverageWriter {
     /** Returns the format handled by this {@code GridCoverageWriter}. */

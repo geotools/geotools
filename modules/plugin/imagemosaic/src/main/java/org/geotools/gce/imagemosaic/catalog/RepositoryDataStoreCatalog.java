@@ -25,9 +25,9 @@ import org.geotools.data.DataAccess;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFactorySpi;
 import org.geotools.data.Repository;
-import org.geotools.factory.Hints;
 import org.geotools.feature.NameImpl;
 import org.geotools.util.Utilities;
+import org.geotools.util.factory.Hints;
 import org.opengis.feature.type.Name;
 
 /**

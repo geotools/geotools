@@ -28,7 +28,6 @@ import java.util.Locale;
  * this package.
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

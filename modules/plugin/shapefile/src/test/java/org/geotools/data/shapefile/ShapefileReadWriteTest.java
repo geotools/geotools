@@ -39,7 +39,6 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
 /**
- * @source $URL$
  * @version $Id$
  * @author Ian Schneider
  */

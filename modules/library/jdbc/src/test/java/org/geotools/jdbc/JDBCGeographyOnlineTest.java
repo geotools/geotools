@@ -22,7 +22,6 @@ import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.spatial.BBOX;
 import org.opengis.filter.spatial.DWithin;
 
-/** @source $URL$ */
 public abstract class JDBCGeographyOnlineTest extends JDBCTestSupport {
 
     FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);

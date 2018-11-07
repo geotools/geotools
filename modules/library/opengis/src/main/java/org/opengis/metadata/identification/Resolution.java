@@ -19,7 +19,6 @@ import org.opengis.annotation.UML;
 /**
  * Level of detail expressed as a scale factor or a ground distance.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/as#01-111">ISO 19115</A>
  * @author Martin Desruisseaux (IRD)
  * @author Cory Horner (Refractions Research)

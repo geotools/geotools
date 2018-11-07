@@ -27,7 +27,6 @@ import org.opengis.metadata.citation.OnLineResource;
 /**
  * Information describing metadata extensions.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @author Touraïvane

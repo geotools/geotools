@@ -163,7 +163,7 @@ If that is not the case, the following are the full dependencies of the GeoTools
     |  +- org.geotools:gt-api:jar:<VERSION>:compile
     |  +- org.geotools:gt-main:jar:<VERSION>:compile
     |  |  \- org.jdom:jdom2:jar:2.0.6:compile
-    |  +- org.geotools:gt-data:jar:<VERSION>:compile
+    |  +- org.geotools:gt-main:jar:<VERSION>:compile
     |  +- commons-dbcp:commons-dbcp:jar:1.4:compile
     |  \- commons-collections:commons-collections:jar:3.2.2:compile
     +- org.geotools:gt-coverage:jar:<VERSION>:compile

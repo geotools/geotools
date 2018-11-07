@@ -17,7 +17,6 @@ import org.geotools.renderer.label.LabelCacheImpl;
 import org.geotools.styling.Style;
 import org.geotools.test.TestData;
 
-/** @source $URL$ */
 public class LabelOrientationTest extends TestCase {
 
     private static final long TIME = 10000;

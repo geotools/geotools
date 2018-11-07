@@ -36,8 +36,8 @@ import org.geotools.data.Transaction;
 import org.geotools.data.gen.info.GeneralizationInfo;
 import org.geotools.data.gen.info.GeneralizationInfos;
 import org.geotools.data.simple.SimpleFeatureSource;
-import org.geotools.factory.Hints;
 import org.geotools.feature.FeatureTypes;
+import org.geotools.util.factory.Hints;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.Name;
@@ -54,7 +54,6 @@ import org.opengis.filter.Filter;
  *     pregeneralized geometries and returns these geometries instead of the original ones.
  *     <p>This process results in a lower memory usage, lower cpu usage for further processing and
  *     will decrease response time for the user.
- * @source $URL$
  */
 public class PreGeneralizedDataStore implements DataStore {
 

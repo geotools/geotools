@@ -52,13 +52,12 @@ import org.opengis.geometry.BoundingBox;
  * <p>This should be considered a MemoryFeatureCollection.
  *
  * @author Ian Schneider
- * @source $URL$
  * @version $Id$
  */
 public class DefaultFeatureCollection
         implements SimpleFeatureCollection, Collection<SimpleFeature> {
     protected static Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.feature");
+            org.geotools.util.logging.Logging.getLogger(DefaultFeatureCollection.class);
 
     /**
      * Contents of collection, referenced by FeatureID.

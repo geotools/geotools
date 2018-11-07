@@ -21,8 +21,8 @@ import java.util.List;
 import java.util.StringTokenizer;
 import javax.xml.namespace.QName;
 import org.geotools.kml.KML;
-import org.geotools.xml.AbstractSimpleBinding;
-import org.geotools.xml.InstanceComponent;
+import org.geotools.xsd.AbstractSimpleBinding;
+import org.geotools.xsd.InstanceComponent;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.CoordinateSequence;
 import org.locationtech.jts.geom.CoordinateSequenceFactory;
@@ -42,7 +42,6 @@ import org.locationtech.jts.geom.CoordinateSequenceFactory;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class CoordinatesTypeBinding extends AbstractSimpleBinding {
     CoordinateSequenceFactory csFactory;

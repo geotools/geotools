@@ -29,6 +29,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.geotools.data.jdbc.FilterToSQL;
+import org.geotools.data.postgis.filter.FilterFunction_pgNearest;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.FilterCapabilities;
 import org.geotools.filter.function.DateDifferenceFunction;
@@ -188,6 +189,9 @@ class FilterToSqlHelper {
 
             // time related functions
             caps.addType(DateDifferenceFunction.class);
+
+            // n nearest function
+            caps.addType(FilterFunction_pgNearest.class);
         }
 
         // native filter support

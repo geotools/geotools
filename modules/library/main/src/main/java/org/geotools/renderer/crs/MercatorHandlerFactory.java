@@ -34,7 +34,7 @@ public class MercatorHandlerFactory implements ProjectionHandlerFactory {
 
     private static final ReferencedEnvelope VALID_AREA =
             new ReferencedEnvelope(
-                    -Double.MAX_VALUE, Double.MAX_VALUE, -85, 85, DefaultGeographicCRS.WGS84);
+                    -Integer.MAX_VALUE, Integer.MAX_VALUE, -85, 85, DefaultGeographicCRS.WGS84);
 
     public ProjectionHandler getHandler(
             ReferencedEnvelope renderingEnvelope,

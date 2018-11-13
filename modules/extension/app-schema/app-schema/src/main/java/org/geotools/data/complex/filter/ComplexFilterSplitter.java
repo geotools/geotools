@@ -316,7 +316,7 @@ public class ComplexFilterSplitter extends PostPreProcessFilterSplittingVisitor 
             checkAttributeFound(
                     expression, exprSteps, nestedAttrExtractor, existsAttrExtractor, fcAttrs);
             // encoding of filters on multiple nested attributes is not (yet) supported
-            if (fcAttrs.size() == 1) {
+            if (fcAttrs.size() >= 1) {
                 FeatureChainedAttributeDescriptor nestedAttrDescr = fcAttrs.get(0);
                 if (nestedAttrDescr.chainSize() > 1 && nestedAttrDescr.isJoiningEnabled()) {
                     FeatureTypeMapping featureMapping =

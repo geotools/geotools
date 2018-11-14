@@ -3834,7 +3834,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
                             "AND " + toSQL.encodeToString(filter));
                     toSQL.setInline(false);
                 } else {
-                    sql.append(toSQL.encodeToString(filter));
+                    sql.append(" ").append(toSQL.encodeToString(filter));
                 }
             } catch (FilterToSQLException e) {
                 throw new RuntimeException(e);

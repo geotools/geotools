@@ -17,16 +17,9 @@
 package org.geotools.data.postgis;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.Optional;
 import org.geotools.data.postgis.filter.FilterFunction_pgNearest;
 import org.geotools.filter.FilterCapabilities;
-import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.PreparedFilterToSQL;
-import org.geotools.jdbc.PrimaryKeyColumn;
-import org.geotools.util.factory.Hints;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.LinearRing;
 import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.filter.BinaryComparisonOperator;
 import org.opengis.filter.PropertyIsBetween;
@@ -174,134 +167,28 @@ public class PostgisPSFilterToSql extends PreparedFilterToSQL {
     }
 
     public Object visit(PropertyIsEqualTo filter, Object extraData) {
-        Optional<FilterFunction_pgNearest> nearestOpt = getNearestFilter(filter);
-        if (nearestOpt.isPresent()) {
-            return visit(nearestOpt.get(), extraData);
+        helper.out = out;
+        FilterFunction_pgNearest nearest = helper.getNearestFilter(filter);
+        if (nearest != null) {
+            return helper.visit(
+                    nearest,
+                    extraData,
+                    new FilterToSqlHelper.NearestHelperContext(
+                            dialect,
+                            (a, b) -> {
+                                try {
+                                    ((PostGISPSDialect) dialect)
+                                            .encodeGeometryValue(
+                                                    a,
+                                                    helper.getFeatureTypeGeometryDimension(),
+                                                    helper.getFeatureTypeGeometrySRID(),
+                                                    b);
+                                } catch (IOException e) {
+                                    throw new RuntimeException(e);
+                                }
+                            }));
         } else {
             return super.visit(filter, extraData);
-        }
-    }
-
-    /**
-     * Detects and return a FilterFunction_pgNearest if found, otherwise an empty optional
-     *
-     * @param filter filter to evaluate
-     * @return optional of FilterFunction_pgNearest if found
-     */
-    private Optional<FilterFunction_pgNearest> getNearestFilter(PropertyIsEqualTo filter) {
-        Expression expr1 = filter.getExpression1();
-        Expression expr2 = filter.getExpression2();
-        // if expr2 is nearest filter, switch positions
-        if (expr2 instanceof FilterFunction_pgNearest) {
-            Expression tmp = expr1;
-            expr1 = expr2;
-            expr2 = tmp;
-        }
-        if (expr1 instanceof FilterFunction_pgNearest) {
-            if (!(expr2 instanceof Literal)) {
-                throw new UnsupportedOperationException(
-                        "Unsupported usage of Nearest Operator: it can be compared only to a Boolean \"true\" value");
-            }
-            Boolean nearest = (Boolean) evaluateLiteral((Literal) expr2, Boolean.class);
-            if (nearest == null || !nearest.booleanValue()) {
-                throw new UnsupportedOperationException(
-                        "Unsupported usage of Nearest Operator: it can be compared only to a Boolean \"true\" value");
-            }
-            return Optional.of((FilterFunction_pgNearest) expr1);
-        } else {
-            return Optional.empty();
-        }
-    }
-
-    private Object visit(FilterFunction_pgNearest filter, Object extraData) {
-        Expression geometryExp = getParameter(filter, 0, true);
-        Expression numNearest = getParameter(filter, 1, true);
-        try {
-            List<PrimaryKeyColumn> pkColumns = getPrimaryKey().getColumns();
-            if (pkColumns == null || pkColumns.size() == 0) {
-                throw new UnsupportedOperationException(
-                        "Unsupported usage of Postgis Nearest Operator: table with no primary key");
-            }
-
-            String pkColumnsAsString = getPrimaryKeyColumnsAsCommaSeparatedList(pkColumns);
-            StringBuffer sb = new StringBuffer();
-            sb.append(" (")
-                    .append(pkColumnsAsString)
-                    .append(")")
-                    .append(" in (select ")
-                    .append(pkColumnsAsString)
-                    .append(" from ");
-            if (getDatabaseSchema() != null) {
-                dialect.encodeSchemaName(getDatabaseSchema(), sb);
-                sb.append(".");
-            }
-            dialect.encodeTableName(getPrimaryKey().getTableName(), sb);
-            sb.append(" order by ");
-            // geometry column name
-            dialect.encodeColumnName(null, featureType.getGeometryDescriptor().getLocalName(), sb);
-            sb.append(" <-> ");
-            // reference geometry
-            Geometry geomValue = (Geometry) evaluateLiteral((Literal) geometryExp, Geometry.class);
-            bufferGeom(geomValue, sb);
-            // num of features
-            sb.append(" limit ");
-            int numFeatures = numNearest.evaluate(null, Number.class).intValue();
-            sb.append(numFeatures);
-            sb.append(")");
-
-            out.write(sb.toString());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        return extraData;
-    }
-
-    private String getPrimaryKeyColumnsAsCommaSeparatedList(List<PrimaryKeyColumn> pkColumns) {
-        StringBuffer sb = new StringBuffer();
-        boolean first = true;
-        for (PrimaryKeyColumn c : pkColumns) {
-            if (first) {
-                first = false;
-            } else {
-                sb.append(",");
-            }
-            dialect.encodeColumnName(c.getName(), sb);
-        }
-        return sb.toString();
-    }
-
-    private Integer getFeatureTypeGeometrySRID() {
-        return (Integer)
-                featureType
-                        .getGeometryDescriptor()
-                        .getUserData()
-                        .get(JDBCDataStore.JDBC_NATIVE_SRID);
-    }
-
-    private Integer getFeatureTypeGeometryDimension() {
-        GeometryDescriptor descriptor = featureType.getGeometryDescriptor();
-        return (Integer) descriptor.getUserData().get(Hints.COORDINATE_DIMENSION);
-    }
-
-    private void bufferGeom(Geometry geom, StringBuffer sb) {
-        if (geom instanceof LinearRing) {
-            // postgis does not handle linear rings, convert to just a line string
-            geom = geom.getFactory().createLineString(((LinearRing) geom).getCoordinateSequence());
-        }
-
-        Object typename =
-                featureType
-                        .getGeometryDescriptor()
-                        .getUserData()
-                        .get(JDBCDataStore.JDBC_NATIVE_TYPENAME);
-        if ("geography".equals(typename)) {
-            sb.append("ST_GeogFromText('");
-            sb.append(geom.toText());
-            sb.append("')");
-        } else {
-            sb.append("ST_GeomFromText('");
-            sb.append(geom.toText());
-            sb.append("', " + getFeatureTypeGeometrySRID() + ")");
         }
     }
 }

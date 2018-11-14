@@ -283,4 +283,9 @@ public class PostGISPSDialect extends PreparedStatementSQLDialect {
         }
         return super.getArrayComponentTypeName(att);
     }
+
+    public void encodeGeometryValue(Geometry value, int dimension, int srid, StringBuffer sql)
+            throws IOException {
+        delegate.encodeGeometryValue(value, dimension, srid, sql);
+    }
 }

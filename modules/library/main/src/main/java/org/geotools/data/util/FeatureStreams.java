@@ -48,7 +48,7 @@ public final class FeatureStreams {
         return StreamSupport.stream(Spliterators.spliteratorUnknownSize(fi, 0), false)
                 .onClose(
                         () -> {
-                            fc.features().close();
+                            fi.close();
                         });
     }
 

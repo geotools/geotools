@@ -19,6 +19,7 @@ package org.geotools.data.postgis;
 import java.io.IOException;
 import java.util.Date;
 import org.geotools.data.jdbc.FilterToSQL;
+import org.geotools.data.postgis.filter.FilterFunction_pgNearest;
 import org.geotools.filter.FilterCapabilities;
 import org.geotools.jdbc.JDBCDataStore;
 import org.locationtech.jts.geom.Geometry;
@@ -26,6 +27,7 @@ import org.locationtech.jts.geom.LinearRing;
 import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.filter.BinaryComparisonOperator;
 import org.opengis.filter.PropertyIsBetween;
+import org.opengis.filter.PropertyIsEqualTo;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
@@ -37,9 +39,11 @@ public class PostgisFilterToSQL extends FilterToSQL {
 
     FilterToSqlHelper helper;
     private boolean functionEncodingEnabled;
+    protected PostGISDialect pgDialect;
 
     public PostgisFilterToSQL(PostGISDialect dialect) {
         helper = new FilterToSqlHelper(this);
+        pgDialect = dialect;
     }
 
     public boolean isLooseBBOXEnabled() {
@@ -207,6 +211,31 @@ public class PostgisFilterToSQL extends FilterToSQL {
             helper.out = out;
             helper.visitArrayBetween(filter, context.getComponentType(), extraData);
             return extraData;
+        } else {
+            return super.visit(filter, extraData);
+        }
+    }
+
+    public Object visit(PropertyIsEqualTo filter, Object extraData) {
+        helper.out = out;
+        FilterFunction_pgNearest nearest = helper.getNearestFilter(filter);
+        if (nearest != null) {
+            return helper.visit(
+                    nearest,
+                    extraData,
+                    new FilterToSqlHelper.NearestHelperContext(
+                            pgDialect,
+                            (a, b) -> {
+                                try {
+                                    pgDialect.encodeGeometryValue(
+                                            a,
+                                            helper.getFeatureTypeGeometryDimension(),
+                                            helper.getFeatureTypeGeometrySRID(),
+                                            b);
+                                } catch (IOException e) {
+                                    throw new RuntimeException(e);
+                                }
+                            }));
         } else {
             return super.visit(filter, extraData);
         }

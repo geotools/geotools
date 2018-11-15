@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2018, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -17,11 +17,13 @@
 package org.geotools.data.postgis;
 
 import java.io.IOException;
+import org.geotools.data.postgis.filter.FilterFunction_pgNearest;
 import org.geotools.filter.FilterCapabilities;
 import org.geotools.jdbc.PreparedFilterToSQL;
 import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.filter.BinaryComparisonOperator;
 import org.opengis.filter.PropertyIsBetween;
+import org.opengis.filter.PropertyIsEqualTo;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
@@ -159,6 +161,32 @@ public class PostgisPSFilterToSql extends PreparedFilterToSQL {
             helper.out = out;
             helper.visitArrayBetween(filter, context.getComponentType(), extraData);
             return extraData;
+        } else {
+            return super.visit(filter, extraData);
+        }
+    }
+
+    public Object visit(PropertyIsEqualTo filter, Object extraData) {
+        helper.out = out;
+        FilterFunction_pgNearest nearest = helper.getNearestFilter(filter);
+        if (nearest != null) {
+            return helper.visit(
+                    nearest,
+                    extraData,
+                    new FilterToSqlHelper.NearestHelperContext(
+                            dialect,
+                            (a, b) -> {
+                                try {
+                                    ((PostGISPSDialect) dialect)
+                                            .encodeGeometryValue(
+                                                    a,
+                                                    helper.getFeatureTypeGeometryDimension(),
+                                                    helper.getFeatureTypeGeometrySRID(),
+                                                    b);
+                                } catch (IOException e) {
+                                    throw new RuntimeException(e);
+                                }
+                            }));
         } else {
             return super.visit(filter, extraData);
         }

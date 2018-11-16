@@ -453,7 +453,7 @@ public final class GridCoverageRenderer {
         // FINAL AFFINE
         //
         // ///////////////////////////////////////////////////////////////////
-        final GridCoverage2D preSymbolizer = affine(coverage, bkgValues);
+        final GridCoverage2D preSymbolizer = affine(coverage, bkgValues, symbolizer);
         if (preSymbolizer == null) {
             return null;
         }
@@ -605,7 +605,8 @@ public final class GridCoverageRenderer {
      * @param preResample
      * @return
      */
-    private GridCoverage2D affine(GridCoverage2D input, double[] bkgValues) {
+    private GridCoverage2D affine(
+            GridCoverage2D input, double[] bkgValues, RasterSymbolizer symbolizer) {
         // NOTICE that at this stage the image we get should be 8 bits, either RGB, RGBA, Gray,
         // GrayA
         // either multiband or indexed. It could also be 16 bits indexed!!!!
@@ -664,8 +665,14 @@ public final class GridCoverageRenderer {
 
         RenderedImage im = null;
         try {
+            // if we have a color map don't expand the index color model
+            Hints localHints = new Hints();
+            localHints.putAll(hints);
+            if (symbolizer != null && symbolizer.getColorMap() != null) {
+                localHints.put(JAI.KEY_REPLACE_INDEX_COLOR_MODEL, false);
+            }
             ImageWorker iw = new ImageWorker(finalImage);
-            iw.setRenderingHints(hints);
+            iw.setRenderingHints(localHints);
             iw.setROI(roi);
             iw.setNoData(noData);
             iw.affine(finalRasterTransformation, interpolation, bkgValues);

@@ -1593,6 +1593,7 @@
           <!-- Redirect the unit test standard output to a file. -->
           <redirectTestOutputToFile>false</redirectTestOutputToFile>
           <forkMode>${test.forkMode}</forkMode>
+          <useSystemClassLoader>false</useSystemClassLoader>
         </configuration>
       </plugin>
 

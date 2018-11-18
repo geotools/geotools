@@ -87,16 +87,16 @@ public class PolarStereographicHandlerFactory implements ProjectionHandlerFactor
             if (north) {
                 validArea =
                         new ReferencedEnvelope(
-                                -Double.MAX_VALUE,
-                                Double.MAX_VALUE,
+                                -Integer.MAX_VALUE,
+                                Integer.MAX_VALUE,
                                 -0,
                                 90,
                                 DefaultGeographicCRS.WGS84);
             } else {
                 validArea =
                         new ReferencedEnvelope(
-                                -Double.MAX_VALUE,
-                                Double.MAX_VALUE,
+                                -Integer.MAX_VALUE,
+                                Integer.MAX_VALUE,
                                 -90,
                                 0,
                                 DefaultGeographicCRS.WGS84);

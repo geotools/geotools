@@ -59,8 +59,8 @@ public class GeographicHandlerFactory implements ProjectionHandlerFactory {
                     } else {
                         validArea =
                                 new ReferencedEnvelope(
-                                        Float.MAX_VALUE,
-                                        -Float.MAX_VALUE,
+                                        Integer.MAX_VALUE,
+                                        -Integer.MAX_VALUE,
                                         MIN_LATITUDE,
                                         MAX_LATITUDE,
                                         horizontalSourceCrs);

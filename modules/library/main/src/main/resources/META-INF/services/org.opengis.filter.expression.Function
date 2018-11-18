@@ -6,6 +6,7 @@ org.geotools.filter.function.ClassifyFunction
 org.geotools.filter.function.EqualIntervalFunction
 org.geotools.filter.function.StandardDeviationFunction
 org.geotools.filter.function.QuantileFunction
+org.geotools.filter.function.EqualAreaFunction
 org.geotools.filter.function.UniqueIntervalFunction
 org.geotools.filter.function.Collection_AverageFunction
 org.geotools.filter.function.Collection_BoundsFunction

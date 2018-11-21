@@ -37,6 +37,7 @@ package org.geotools.gce.geotiff;
 import it.geosolutions.imageio.maskband.DatasetLayout;
 import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReaderSpi;
 import it.geosolutions.imageioimpl.plugins.tiff.TiffDatasetLayoutImpl;
+import it.geosolutions.jaiext.range.NoDataContainer;
 import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
@@ -859,6 +860,7 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
                             new Color[] {new Color(0, 0, 0, 0)},
                             NumberRange.create(noData, noData));
             CoverageUtilities.setNoDataProperty(properties, new Double(noData));
+            image.setProperty(NoDataContainer.GC_NODATA, new NoDataContainer(noData));
         }
         // Setting ROI Property
         if (roi != null) {

@@ -16,7 +16,7 @@
  */
 package org.geotools.processing.jai;
 
-import java.awt.Rectangle;
+import java.awt.*;
 import java.awt.image.DataBuffer;
 import java.awt.image.Raster;
 import java.awt.image.RenderedImage;
@@ -102,7 +102,7 @@ public abstract class ClassBreaksOpImage extends StatisticsOpImage {
         if (ClassBreaksDescriptor.CLASSIFICATION_PROPERTY.equals(name)) {
             return createClassification();
         }
-        return null;
+        return Image.UndefinedProperty;
     }
 
     @Override

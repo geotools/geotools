@@ -208,7 +208,7 @@ public class CoverageClassStatsTest {
         return factory.create("coverage", img, env);
     }
 
-    GridCoverage2D createCoverage() {
+    static GridCoverage2D createCoverage() {
         TiledImage img =
                 ImageUtils.createImageFromArray(
                         new Number[] {1, 1, 2, 3, 3, 8, 8, 9, 11, 14, 16, 24, 26, 26, 45, 53},

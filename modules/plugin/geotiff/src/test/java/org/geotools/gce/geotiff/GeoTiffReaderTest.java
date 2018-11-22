@@ -68,6 +68,7 @@ import org.geotools.referencing.operation.projection.Sinusoidal;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
 import org.geotools.test.TestData;
 import org.geotools.util.factory.Hints;
+import org.hamcrest.CoreMatchers;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -499,6 +500,13 @@ public class GeoTiffReaderTest extends org.junit.Assert {
         assertTrue(nd.isPoint());
         assertEquals(nd.getMin().doubleValue(), -9999, 0.001);
         assertEquals(nd.getMax().doubleValue(), -9999, 0.001);
+
+        // check the image too
+        RenderedImage image = coverage.getRenderedImage();
+        Object property = image.getProperty(NoDataContainer.GC_NODATA);
+        assertThat(property, CoreMatchers.instanceOf(NoDataContainer.class));
+        NoDataContainer nc = (NoDataContainer) property;
+        assertEquals(-9999, nc.getAsSingleValue(), 0.0001);
     }
 
     /**

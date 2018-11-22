@@ -18,3 +18,4 @@ org.geotools.data.util.ArrayConverterFactory
 org.geotools.data.util.ComplexAttributeConverterFactory
 org.geotools.data.util.CRSConverterFactory
 org.geotools.data.util.InterpolationConverterFactory
+org.geotools.data.util.LobConverterFactory

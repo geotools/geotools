@@ -20,7 +20,7 @@ package org.geotools.data.complex.feature.type;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import org.geotools.data.complex.ComplexFeatureConstants;
+import org.geotools.data.complex.util.ComplexFeatureConstants;
 import org.opengis.feature.type.AttributeType;
 import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.feature.type.Name;

@@ -16,7 +16,7 @@
  */
 package org.geotools.data.complex;
 
-import static org.geotools.data.complex.ComplexFeatureConstants.DEFAULT_GEOMETRY_LOCAL_NAME;
+import static org.geotools.data.complex.util.ComplexFeatureConstants.DEFAULT_GEOMETRY_LOCAL_NAME;
 
 import java.io.IOException;
 import java.util.ArrayList;

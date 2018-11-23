@@ -24,7 +24,7 @@ import java.util.Scanner;
 import java.util.logging.Logger;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
-import org.geotools.data.complex.ComplexFeatureConstants;
+import org.geotools.data.complex.util.ComplexFeatureConstants;
 import org.geotools.feature.type.Types;
 import org.geotools.util.CheckedArrayList;
 import org.opengis.feature.type.AttributeDescriptor;

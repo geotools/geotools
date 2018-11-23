@@ -30,6 +30,7 @@ import org.geotools.data.FeatureSource;
 import org.geotools.data.Query;
 import org.geotools.data.complex.config.Types;
 import org.geotools.data.complex.filter.XPathUtil.StepList;
+import org.geotools.data.complex.util.ComplexFeatureConstants;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.util.Converters;

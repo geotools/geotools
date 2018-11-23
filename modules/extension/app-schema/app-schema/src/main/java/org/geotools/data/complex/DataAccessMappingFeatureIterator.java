@@ -46,6 +46,7 @@ import org.geotools.data.complex.config.Types;
 import org.geotools.data.complex.filter.XPath;
 import org.geotools.data.complex.filter.XPathUtil.Step;
 import org.geotools.data.complex.filter.XPathUtil.StepList;
+import org.geotools.data.complex.util.ComplexFeatureConstants;
 import org.geotools.data.joining.JoiningNestedAttributeMapping;
 import org.geotools.data.joining.JoiningQuery;
 import org.geotools.feature.ComplexAttributeImpl;

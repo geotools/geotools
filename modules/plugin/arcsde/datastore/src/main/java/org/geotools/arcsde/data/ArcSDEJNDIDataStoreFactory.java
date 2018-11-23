@@ -28,7 +28,6 @@ import java.util.Map;
 import java.util.logging.Logger;
 import javax.naming.Context;
 import javax.naming.NamingException;
-
 import org.geotools.arcsde.jndi.ArcSDEConnectionFactory;
 import org.geotools.arcsde.session.ArcSDEConnectionConfig;
 import org.geotools.arcsde.session.ISessionPool;

@@ -32,7 +32,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-
 import org.geotools.arcsde.data.*;
 import org.geotools.arcsde.session.ArcSDEConnectionConfig;
 import org.geotools.arcsde.session.ISession;
@@ -140,10 +139,7 @@ public class ArcSDEDataStoreFactoryTest {
         assertNotNull(sdeFac);
     }
 
-    /**
-     * Test method for {@link
-     * ArcSDEDataStoreFactory#createNewDataStore(java.util.Map)}.
-     */
+    /** Test method for {@link ArcSDEDataStoreFactory#createNewDataStore(java.util.Map)}. */
     @SuppressWarnings("unchecked")
     @Test
     public void testCreateNewDataStore() {
@@ -155,9 +151,7 @@ public class ArcSDEDataStoreFactoryTest {
         }
     }
 
-    /**
-     * Test method for {@link ArcSDEDataStoreFactory#canProcess(java.util.Map)}.
-     */
+    /** Test method for {@link ArcSDEDataStoreFactory#canProcess(java.util.Map)}. */
     @Test
     public void testCanProcess() {
         assertFalse(dsFactory.canProcess(illegalParams));
@@ -166,8 +160,7 @@ public class ArcSDEDataStoreFactoryTest {
     }
 
     /**
-     * Test method for {@link
-     * ArcSDEDataStoreFactory#createDataStore(java.util.Map)}.
+     * Test method for {@link ArcSDEDataStoreFactory#createDataStore(java.util.Map)}.
      *
      * @throws IOException
      */
@@ -186,8 +179,7 @@ public class ArcSDEDataStoreFactoryTest {
     }
 
     /**
-     * Test method for {@link
-     * ArcSDEDataStoreFactory#createDataStore(java.util.Map)}.
+     * Test method for {@link ArcSDEDataStoreFactory#createDataStore(java.util.Map)}.
      *
      * @throws IOException
      * @throws SeException

@@ -5,19 +5,12 @@ GeoTools is written in the Java Programming Language. The library is targeted fo
 
 Java Runtime Environment:
 
+* Java 11 - GeoTools 21.x and above (OpenJDK tested)
 * Java 8 - GeoTools 15.x and above (OpenJDK and Oracle JRE tested)
 * Java 7 - GeoTools 11.x to GeoTools 14.x (OpenJDK and Oracle JRE tested)
 * Java 6 - Geotools 8.x to GeoTools 10.x (Oracle JRE tested)
 * Java 5 - GeoTools 2.5.x to GeoTools 8.x (Sun JRE tested)
 * Java 1.4 - GeoTools 2.x to GeoTools 2.4.x (Sun JRE tested)
-
-If you wish to experiment with Java 9 please visit the user list for discussion.
-
-Java Extension:
-
-* Java Advanced Imaging is used to process rasters. If you have installed the native support into your JRE you can take advantage of hardware acceleration.
-* Java Image IO - used to support additional raster formats
-* ImageIO-Ext - used to support additional geospatial raster formats
 
 When developing GeoTools please change your compile options to:
 
@@ -31,10 +24,10 @@ Java Standard Edition Software Developers Kit
 2. Use the one click installer
 3. When it asks if you want to install a JRE you can say yes
 
-Use Java 8 starting with GeoTools 15.x
-''''''''''''''''''''''''''''''''''''''
+Using Java 8 with GeoTools
+''''''''''''''''''''''''''
 
-Since the API changes from Java version to version, building a GeoTOols version with a newer Java SDK is risky (you may accidentally use a new method).
+Since the API changes from Java version to version, building a GeoTools version with a newer Java SDK is risky (you may accidentally use a new method).
 
 GeoTools requires a Java 1.8 SDK for versions 15.x and above. If your project uses an older version of Java use an appropriate version of GeoTools as shown in the table below.
 
@@ -48,23 +41,37 @@ Java 5    GeoTools 2.5.x   GeoTools 8.x     compiler=1.5
 Java 1.4  GeoTools 2.x     GeoTools 2.4.x   compiler=1.4 
 ========= ================ ================ =================
 
-Using Java 9 with GeoTools
-''''''''''''''''''''''''''
+Using Java 11 with GeoTools
+'''''''''''''''''''''''''''
 
-Java 9 introduces a number of changes to the JVM, most notably the module system (Project Jigsaw). Refer to `The State of the Module System <http://openjdk.java.net/projects/jigsaw/spec/sotms/>`_ for more details.
-While GeoTools has not yet been updated to use the module system, GeoTools 19.x can run on Java 9.
+Java introduced a number of changes to the JVM, most notably the module system (Project Jigsaw). Refer to `The State of the Module System <http://openjdk.java.net/projects/jigsaw/spec/sotms/>`_ for more details.
 
-If your project depends on GeoTools 19.x, and you want to use it with Java 9, you will need to add the following flags to your JVM runtime arguments::
+========= ================ ================ =================
+Java      Initial          Final            Compiler Setting 
+========= ================ ================ =================
+Java 11   GeoTools 21.x    And Above        compiler=1.8 
+========= ================ ================ =================
+
+If your project depends on GeoTools 21.x, and you want to use it with Java 11:
+
+* Use the GeoTools jars on the module path, they are configured with automatic module names
+
+* Use the GeoTools jars on the classpath, adding the following flags to your JVM runtime arguments::
 
     --add-modules=java.xml.bind --add-modules=java.activation
 
-This adds the JAXB and Activation modules to the Java Runtime (They are not included by default in Java 9).
+  These arguments are not supported under Java 8, to retain compatibility with Java 8 include::
 
-Note that these arguments are not supported under Java 8. If you wish to retain compatibility with Java 8, also include::
+    --add-modules=java.xml.bind --add-modules=java.activation -XX:+IgnoreUnrecognizedVMOptions
 
-    -XX:+IgnoreUnrecognizedVMOptions
+  This tells Java 8 to ignore options it doesn't recognize and not throw an error.
 
-This tells the JVM to ignore options it doesn't recognize, so Java 8 won't throw an error.
+.. note::
+   
+   Compatibility note due to breaking API changes in Java 11:
+   
+   * Building with Java 8, compatible with Java 8 and Java 11.
+   * Building with Java 11, compatible with Java 11.
 
 Why JAVA_HOME does not work on Windows
 ''''''''''''''''''''''''''''''''''''''
@@ -105,20 +112,17 @@ One technique is to set up a batch file similar to the following:
    
    Placing JAVA_HOME on the path before System32 shortcuts this annoying "feature".
 
-Java Extensions (Optional)
-^^^^^^^^^^^^^^^^^^^^^^^^^^
+Java Extensions (Pre Java 9)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. note::
-   Optional
-   
-   GeoTools is now able to build with just a normal Java Software Developers Kit.
+Our image processing library is capable of making use of native code (packaged up as Java extensions).
 
-You should be aware that several of our raster formats are capable of making use of native code (packaged up as Java extensions).
-
-Java Developers Kit:
-* Can make use of JAI and ImageIO if they have been installed into your JDK
-Java Runtime Environment:
-* Can make use of JAI and ImageIO if you have installed them into your JRE
+========================== ========== ==========
+Installation               JDK        JRE
+========================== ========== ==========
+JDK Installation           Available  Available
+JRE Installation                      Available
+========================== ========== ==========
 
 These extensions end up adding:
 * some jars into your lib folder
@@ -233,8 +237,6 @@ The goal is to place the required jars into your lib/ext directory of both your 
 
 Optional: Mac ImageIO
 '''''''''''''''''''''
-
-Java Advanced Imaging is included with recent releases of Mac OS (but that may be changing in the future).
 
 The JAI ImageIO extension is not available as a download for the mac. However, you can use the jar from the Linux/windows download to get “pure java” functionality without hardware acceleration:
 

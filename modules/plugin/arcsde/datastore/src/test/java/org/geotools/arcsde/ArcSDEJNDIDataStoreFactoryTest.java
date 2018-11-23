@@ -29,6 +29,8 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import org.geotools.arcsde.data.ArcSDEDataStore;
+import org.geotools.arcsde.data.ArcSDEDataStoreFactory;
+import org.geotools.arcsde.data.ArcSDEJNDIDataStoreFactory;
 import org.geotools.arcsde.data.TestData;
 import org.geotools.arcsde.session.ISession;
 import org.geotools.arcsde.session.ISessionPool;

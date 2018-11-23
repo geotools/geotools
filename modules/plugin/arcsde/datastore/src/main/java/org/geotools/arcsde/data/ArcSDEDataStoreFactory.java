@@ -15,7 +15,7 @@
  *    Lesser General Public License for more details.
  *
  */
-package org.geotools.arcsde;
+package org.geotools.arcsde.data;
 
 import static org.geotools.arcsde.data.ArcSDEDataStoreConfig.ALLOW_NON_SPATIAL_TABLES_PARAM_NAME;
 import static org.geotools.arcsde.data.ArcSDEDataStoreConfig.DBTYPE_PARAM_NAME;
@@ -42,9 +42,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
-import org.geotools.arcsde.data.ArcSDEDataStore;
-import org.geotools.arcsde.data.ArcSDEDataStoreConfig;
-import org.geotools.arcsde.data.ViewRegisteringFactoryHelper;
+
 import org.geotools.arcsde.session.Commands;
 import org.geotools.arcsde.session.ISession;
 import org.geotools.arcsde.session.ISessionPool;

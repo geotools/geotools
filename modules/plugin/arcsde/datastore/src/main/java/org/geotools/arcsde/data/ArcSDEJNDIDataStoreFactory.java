@@ -14,11 +14,11 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.arcsde;
+package org.geotools.arcsde.data;
 
-import static org.geotools.arcsde.ArcSDEDataStoreFactory.ALLOW_NON_SPATIAL_PARAM;
-import static org.geotools.arcsde.ArcSDEDataStoreFactory.NAMESPACE_PARAM;
-import static org.geotools.arcsde.ArcSDEDataStoreFactory.VERSION_PARAM;
+import static org.geotools.arcsde.data.ArcSDEDataStoreFactory.ALLOW_NON_SPATIAL_PARAM;
+import static org.geotools.arcsde.data.ArcSDEDataStoreFactory.NAMESPACE_PARAM;
+import static org.geotools.arcsde.data.ArcSDEDataStoreFactory.VERSION_PARAM;
 
 import java.awt.RenderingHints.Key;
 import java.io.IOException;
@@ -28,8 +28,7 @@ import java.util.Map;
 import java.util.logging.Logger;
 import javax.naming.Context;
 import javax.naming.NamingException;
-import org.geotools.arcsde.data.ArcSDEDataStore;
-import org.geotools.arcsde.data.ArcSDEDataStoreConfig;
+
 import org.geotools.arcsde.jndi.ArcSDEConnectionFactory;
 import org.geotools.arcsde.session.ArcSDEConnectionConfig;
 import org.geotools.arcsde.session.ISessionPool;

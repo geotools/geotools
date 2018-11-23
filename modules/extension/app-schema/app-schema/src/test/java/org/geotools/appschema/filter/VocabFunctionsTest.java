@@ -30,7 +30,7 @@ import org.geotools.data.DataAccess;
 import org.geotools.data.DataAccessFinder;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureSource;
-import org.geotools.data.complex.config.Types;
+import org.geotools.data.complex.feature.type.Types;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;

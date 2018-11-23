@@ -15,7 +15,7 @@
  *    Lesser General Public License for more details.
  */
 
-package org.geotools.data.complex.config;
+package org.geotools.data.complex.feature.type;
 
 import java.util.Collection;
 import java.util.List;
@@ -30,7 +30,7 @@ import org.opengis.util.InternationalString;
  * @version $Id$
  * @since 2.4
  */
-class AttributeTypeProxy implements AttributeType {
+public class AttributeTypeProxy implements AttributeType {
 
     private Name typeName;
 

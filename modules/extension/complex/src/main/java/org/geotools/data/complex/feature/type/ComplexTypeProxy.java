@@ -15,7 +15,7 @@
  *    Lesser General Public License for more details.
  */
 
-package org.geotools.data.complex.config;
+package org.geotools.data.complex.feature.type;
 
 import java.util.Collection;
 import java.util.Map;
@@ -27,7 +27,7 @@ import org.opengis.feature.type.PropertyDescriptor;
  * @author Gabriel Roldan (Axios Engineering)
  * @since 2.4
  */
-class ComplexTypeProxy extends AttributeTypeProxy implements ComplexType {
+public class ComplexTypeProxy extends AttributeTypeProxy implements ComplexType {
 
     public ComplexTypeProxy(Name typeName, Map registry) {
         super(typeName, registry);

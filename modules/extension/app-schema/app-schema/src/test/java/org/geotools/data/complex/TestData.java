@@ -20,7 +20,7 @@ package org.geotools.data.complex;
 import java.util.LinkedList;
 import java.util.List;
 import org.geotools.data.FeatureSource;
-import org.geotools.data.complex.config.Types;
+import org.geotools.data.complex.feature.type.Types;
 import org.geotools.data.complex.feature.type.UniqueNameFeatureTypeFactoryImpl;
 import org.geotools.data.complex.filter.XPath;
 import org.geotools.data.memory.MemoryDataStore;

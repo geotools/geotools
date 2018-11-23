@@ -25,7 +25,7 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.xml.namespace.QName;
 import org.geotools.data.DataSourceException;
-import org.geotools.data.complex.config.Types;
+import org.geotools.data.complex.feature.type.Types;
 import org.geotools.data.complex.util.ComplexFeatureConstants;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.AttributeBuilder;

@@ -40,7 +40,7 @@ import org.geotools.data.complex.config.AppSchemaDataAccessDTO;
 import org.geotools.data.complex.config.NonFeatureTypeProxy;
 import org.geotools.data.complex.config.SourceDataStore;
 import org.geotools.data.complex.config.TypeMapping;
-import org.geotools.data.complex.config.Types;
+import org.geotools.data.complex.feature.type.Types;
 import org.geotools.test.AppSchemaTestSupport;
 import org.junit.BeforeClass;
 import org.junit.Test;

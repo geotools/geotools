@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 import org.geotools.appschema.filter.expression.ToDirectPositionFunction;
-import org.geotools.data.complex.config.Types;
+import org.geotools.data.complex.feature.type.Types;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeImpl;

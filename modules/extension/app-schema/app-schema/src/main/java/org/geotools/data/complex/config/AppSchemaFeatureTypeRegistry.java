@@ -19,6 +19,8 @@ package org.geotools.data.complex.config;
 import org.eclipse.xsd.XSDElementDeclaration;
 import org.eclipse.xsd.XSDTypeDefinition;
 import org.geotools.data.complex.feature.type.ComplexFeatureTypeFactoryImpl;
+import org.geotools.data.complex.feature.type.FeatureTypeRegistry;
+import org.geotools.data.complex.util.EmfComplexFeatureReader;
 import org.geotools.gml3.complex.GmlFeatureTypeRegistryConfiguration;
 import org.geotools.xsd.SchemaIndex;
 import org.opengis.feature.type.AttributeDescriptor;

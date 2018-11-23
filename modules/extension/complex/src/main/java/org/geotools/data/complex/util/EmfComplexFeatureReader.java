@@ -1,4 +1,4 @@
-package org.geotools.data.complex.config;
+package org.geotools.data.complex.util;
 
 /*
  *    GeoTools - The Open Source Java GIS Toolkit

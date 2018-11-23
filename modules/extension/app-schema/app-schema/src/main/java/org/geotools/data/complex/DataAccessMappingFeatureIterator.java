@@ -42,7 +42,7 @@ import org.geotools.data.Transaction;
 import org.geotools.data.complex.config.JdbcMultipleValue;
 import org.geotools.data.complex.config.MultipleValue;
 import org.geotools.data.complex.config.NonFeatureTypeProxy;
-import org.geotools.data.complex.config.Types;
+import org.geotools.data.complex.feature.type.Types;
 import org.geotools.data.complex.filter.XPath;
 import org.geotools.data.complex.filter.XPathUtil.Step;
 import org.geotools.data.complex.filter.XPathUtil.StepList;

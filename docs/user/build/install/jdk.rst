@@ -17,61 +17,72 @@ When developing GeoTools please change your compile options to:
 * IDE: Produce Java 8 compliant code
 * Maven: source=1.8
 
-Java Standard Edition Software Developers Kit
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. warning:: When building with Java 11 the result can only be used with Java 11 (even with source=1.8) due to class incompatibilities between Java 11 and Java 8.
 
-1. Download a JDK
-2. Use the one click installer
-3. When it asks if you want to install a JRE you can say yes
-
-Using Java 8 with GeoTools
-''''''''''''''''''''''''''
-
-Since the API changes from Java version to version, building a GeoTools version with a newer Java SDK is risky (you may accidentally use a new method).
+Building GeoTools with Java 8
+'''''''''''''''''''''''''''''
 
 GeoTools requires a Java 1.8 SDK for versions 15.x and above. If your project uses an older version of Java use an appropriate version of GeoTools as shown in the table below.
 
-========= ================ ================ =================
-Java      Initial          Final            Compiler Setting 
-========= ================ ================ =================
-Java 8    GeoTools 15.x    And Above        compiler=1.8 
-Java 7    GeoTools 11.x    GeoTools 14.x    compiler=1.7 
-Java 6    Geotools 8.x     GeoTools 10.x    compiler=1.6 
-Java 5    GeoTools 2.5.x   GeoTools 8.x     compiler=1.5 
-Java 1.4  GeoTools 2.x     GeoTools 2.4.x   compiler=1.4 
-========= ================ ================ =================
+========= ================ ================ ================= ===============
+Java      Initial          Final            Compiler Setting  Compatibility
+========= ================ ================ ================= ===============
+Java 8    GeoTools 21.x    And Above        compiler=1.8      Java 8, Java 11
+Java 8    GeoTools 15.x    GeoTools 20.x    compiler=1.8      Java 8
+Java 7    GeoTools 11.x    GeoTools 14.x    compiler=1.7      Java 7
+Java 6    Geotools 8.x     GeoTools 10.x    compiler=1.6      Java 6
+Java 5    GeoTools 2.5.x   GeoTools 8.x     compiler=1.5      Java 5
+Java 1.4  GeoTools 2.x     GeoTools 2.4.x   compiler=1.4      Java 1.4
+========= ================ ================ ================= ===============
 
-Using Java 11 with GeoTools
-'''''''''''''''''''''''''''
+GeoTools 21.x built with Java 8 can be used in a Java 11 environment. Each jar includes an automatic module name for use on the Java 11 module path.
+
+GeoTools Java 8 development is supported on both OpenJDK and Oracle JDK as downloaded from:
+
+========================= ================== ===== ===== ======= ======= ==============
+Java 8 Provider           License            Linux macOS Solaris Windows Free Updates
+========================= ================== ===== ===== ======= ======= ==============
+Oracle JDK                Binary Code Licene x     x     x       x       2019 January
+Oracle OpenJDK            GPL                x                           reference only
+Oracle OpenJDK            Binary Code Licene x                   x       reference only
+RedHat OpenJDK            GPL                x                           2023 June
+Adopt OpenJDK             GPL                x     x             x       2023 September
+========================= ================== ===== ===== ======= ======= ==============
+
+Although the closed source Oracle Technology Network Oracle JDK 8 reached end-of-life in January 2019 `free Java 8 updates <https://medium.com/@javachampions/java-is-still-free-c02aef8c9e04>`__ are provided by Linux distros, AdoptOpenJDK, Azul, IBM, Red Hat, and others.
+
+.. note:: Windows users, when installing a JDK do not forget to install matching JRE:
+
+   1. Download a JDK
+   2. Use the one click installer
+   3. When it asks if you want to install a JRE you can say yes
+
+
+Building GeoTools with Java 11
+''''''''''''''''''''''''''''''
 
 Java introduced a number of changes to the JVM, most notably the module system (Project Jigsaw). Refer to `The State of the Module System <http://openjdk.java.net/projects/jigsaw/spec/sotms/>`_ for more details.
 
-========= ================ ================ =================
-Java      Initial          Final            Compiler Setting 
-========= ================ ================ =================
-Java 11   GeoTools 21.x    And Above        compiler=1.8 
-========= ================ ================ =================
+========= ================ ================ ================= ===============
+Java      Initial          Final            Compiler Setting  Compatibility
+========= ================ ================ ================= ===============
+Java 11   GeoTools 21.x    And Above        compiler=1.8      Java 11
+========= ================ ================ ================= ===============
 
-If your project depends on GeoTools 21.x, and you want to use it with Java 11:
+GeoTools 21.x built with Java 11 can only be used in a Java 11 environment (and is not compatible with Java 8). Each jar includes an automatic module name for use on the Java 11 module path.
 
-* Use the GeoTools jars on the module path, they are configured with automatic module names
+GeoTools Java 11 development is supported on both OpenJDK and Oracle JDK as downloaded from:
 
-* Use the GeoTools jars on the classpath, adding the following flags to your JVM runtime arguments::
+========================= ================== ===== ===== ======= ======= ==============
+Java 11 Provider          License            Linux macOS Solaris Windows Free Updates
+========================= ================== ===== ===== ======= ======= ==============
+Oracle JDK                Binary Code Licene x     x     x       x       2019 March
+Oracle OpenJDK            GPL                x     x             x       2019 March
+RedHat OpenJDK            GPL                x                           2024 October
+Adopt OpenJDK             GPL                x     x             x       2022 September
+========================= ================== ===== ===== ======= ======= ==============
 
-    --add-modules=java.xml.bind --add-modules=java.activation
-
-  These arguments are not supported under Java 8, to retain compatibility with Java 8 include::
-
-    --add-modules=java.xml.bind --add-modules=java.activation -XX:+IgnoreUnrecognizedVMOptions
-
-  This tells Java 8 to ignore options it doesn't recognize and not throw an error.
-
-.. note::
-   
-   Compatibility note due to breaking API changes in Java 11:
-   
-   * Building with Java 8, compatible with Java 8 and Java 11.
-   * Building with Java 11, compatible with Java 11.
+.. warning:: Since the API changes from Java version to version, building a GeoTools version with a newer Java SDK is risky (you may accidentally use a new method). Pull requests are tested against Java 8, but we do ask you to be careful.
 
 Why JAVA_HOME does not work on Windows
 ''''''''''''''''''''''''''''''''''''''
@@ -112,23 +123,12 @@ One technique is to set up a batch file similar to the following:
    
    Placing JAVA_HOME on the path before System32 shortcuts this annoying "feature".
 
-Java Extensions (Pre Java 9)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Java 8 Extensions
+^^^^^^^^^^^^^^^^^
 
-Our image processing library is capable of making use of native code (packaged up as Java extensions).
+The image processing library used by GeoTools is capable of making use of native code.
 
-========================== ========== ==========
-Installation               JDK        JRE
-========================== ========== ==========
-JDK Installation           Available  Available
-JRE Installation                      Available
-========================== ========== ==========
-
-These extensions end up adding:
-* some jars into your lib folder
-* some dlls into your bin folder
-
-Please follow the installation instructions carefully.
+.. note:: The Java extension system used for these native libraries was replaced in Java 9 with a module system. As a result these extensions may only be used in a Java 8 environment.
 
 Java Advanced Imaging
 '''''''''''''''''''''
@@ -160,14 +160,24 @@ References:
 
 5. Use the one click installer to install JAI into your JRE
 
-   (If you are working on linux you will of course need to choose the appropriate download)
+.. note::
+   
+   If you are working on linux you will of course need to choose the appropriate download.
+
+.. note::
+   
+   Separate installers are provided for both the JDK and the JRE above:
+   
+   * JDK Installation: Installs native extension into JDK and JRE.
+   * JRE Installation: Installs native extension into JRE only.
+   
+   These installers unpack jars into the JRE lib folder, and native code into the bin folder.
 
 Java Image IO
 '''''''''''''
 
 Java ImageIO provides the raw "formats" that allow both Java and JAI to read in additional image
 files. This is similar in practice to the JDBC library allowing data vendors to supply JDBC drivers.
-
 
 References:
 
@@ -197,6 +207,15 @@ References:
 5. Use the one click installer to install the ImageIO into your JRE.
    
    (If you are working on linux you will of course need to choose the appropriate download)
+
+.. note::
+   
+   Separate installers are provided for both the JDK and the JRE above:
+   
+   * JDK Installation: Installs native extension into JDK and JRE.
+   * JRE Installation: Installs native extension into JRE only.
+   
+   These installers unpack jars into the JRE lib folder, and native code into the bin folder.
 
 ImageIO-Ext Install
 '''''''''''''''''''
@@ -235,10 +254,10 @@ This is only needed if the windows one-click installers don't work for you:
 
 The goal is to place the required jars into your lib/ext directory of both your JDK (for compiling) and your JRE (for running).
 
-Optional: Mac ImageIO
-'''''''''''''''''''''
+Optional: macOS ImageIO
+'''''''''''''''''''''''
 
-The JAI ImageIO extension is not available as a download for the mac. However, you can use the jar from the Linux/windows download to get “pure java” functionality without hardware acceleration:
+The JAI ImageIO extension is not available as a download for macOS. However, you can use the jar from the Linux/windows download to get “pure java” functionality without hardware acceleration:
 
 1. Copy the jars to ~/Library/Java/Extensions
 2. Check that the files are present as expected:

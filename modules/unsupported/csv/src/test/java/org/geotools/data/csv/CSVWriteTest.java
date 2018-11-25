@@ -104,17 +104,18 @@ public class CSVWriteTest {
         tmp.delete();
     }
 
-    //Make sure any temp files were cleaned up.
+    // Make sure any temp files were cleaned up.
     public boolean cleanedup() {
-      File list[] = tmp.listFiles((dir, name) -> name.endsWith(".csv") );
-      for (int i = 0; i < list.length; i++) {
-          if (list[i].getName().equalsIgnoreCase("locations.csv")) {
-            continue;
-          }
-          return false;
-      }
-      return true;
+        File list[] = tmp.listFiles((dir, name) -> name.endsWith(".csv"));
+        for (int i = 0; i < list.length; i++) {
+            if (list[i].getName().equalsIgnoreCase("locations.csv")) {
+                continue;
+            }
+            return false;
+        }
+        return true;
     }
+
     @Test
     public void featureStoreExample() throws Exception {
         Map<String, Serializable> params = new HashMap<String, Serializable>();

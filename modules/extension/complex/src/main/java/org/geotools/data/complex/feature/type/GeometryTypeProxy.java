@@ -15,7 +15,7 @@
  *    Lesser General Public License for more details.
  */
 
-package org.geotools.data.complex.config;
+package org.geotools.data.complex.feature.type;
 
 import java.util.Map;
 import org.opengis.feature.type.GeometryType;
@@ -27,7 +27,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * @version $Id$
  * @since 2.4
  */
-class GeometryTypeProxy extends AttributeTypeProxy implements GeometryType {
+public class GeometryTypeProxy extends AttributeTypeProxy implements GeometryType {
 
     public GeometryTypeProxy(final Name typeName, final Map registry) {
         super(typeName, registry);

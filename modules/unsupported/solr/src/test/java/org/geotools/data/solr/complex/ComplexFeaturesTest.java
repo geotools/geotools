@@ -37,7 +37,7 @@ import org.apache.solr.client.solrj.impl.HttpSolrClient;
 import org.geotools.data.DataAccess;
 import org.geotools.data.DataAccessFinder;
 import org.geotools.data.FeatureSource;
-import org.geotools.data.complex.config.Types;
+import org.geotools.data.complex.feature.type.Types;
 import org.geotools.data.solr.TestsSolrUtils;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.NameImpl;

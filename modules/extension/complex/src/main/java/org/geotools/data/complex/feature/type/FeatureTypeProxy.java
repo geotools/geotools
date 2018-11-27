@@ -15,7 +15,7 @@
  *    Lesser General Public License for more details.
  */
 
-package org.geotools.data.complex.config;
+package org.geotools.data.complex.feature.type;
 
 import java.util.Map;
 import org.opengis.feature.type.FeatureType;
@@ -27,7 +27,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * @author Gabriel Roldan
  * @since 2.4.x
  */
-class FeatureTypeProxy extends ComplexTypeProxy implements FeatureType {
+public class FeatureTypeProxy extends ComplexTypeProxy implements FeatureType {
 
     public FeatureTypeProxy(final Name typeName, final Map registry) {
         super(typeName, registry);

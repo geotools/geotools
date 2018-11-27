@@ -25,6 +25,8 @@ import org.eclipse.xsd.XSDElementDeclaration;
 import org.eclipse.xsd.XSDTypeDefinition;
 import org.geotools.appschema.resolver.xml.AppSchemaConfiguration;
 import org.geotools.data.complex.feature.type.ComplexFeatureTypeImpl;
+import org.geotools.data.complex.feature.type.Types;
+import org.geotools.data.complex.util.EmfComplexFeatureReader;
 import org.geotools.gml3.GML;
 import org.geotools.gml3.GMLConfiguration;
 import org.geotools.gml3.complex.GmlFeatureTypeRegistryConfiguration;

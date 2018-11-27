@@ -26,7 +26,7 @@ import java.util.Map;
 import javax.xml.namespace.QName;
 import org.geotools.appschema.util.IndexQueryUtils;
 import org.geotools.data.FeatureSource;
-import org.geotools.data.complex.config.Types;
+import org.geotools.data.complex.feature.type.Types;
 import org.geotools.data.complex.filter.XPath;
 import org.geotools.data.complex.filter.XPathUtil.Step;
 import org.geotools.data.complex.filter.XPathUtil.StepList;

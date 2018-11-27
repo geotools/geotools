@@ -34,7 +34,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.solr.client.solrj.impl.HttpSolrClient;
 import org.geotools.data.DataAccess;
 import org.geotools.data.DataAccessFinder;
-import org.geotools.data.complex.config.Types;
+import org.geotools.data.complex.feature.type.Types;
 import org.geotools.data.solr.SolrTypeData.SolrTypes;
 import org.geotools.data.solr.StationData.Stations;
 import org.geotools.test.OnlineTestCase;

@@ -15,7 +15,7 @@
  *    Lesser General Public License for more details.
  *
  */
-package org.geotools.arcsde;
+package org.geotools.arcsde.data;
 
 import com.esri.sde.sdk.client.SeConnection;
 import com.esri.sde.sdk.pe.PeCoordinateSystem;

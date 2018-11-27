@@ -15,7 +15,7 @@
  *    Lesser General Public License for more details.
  */
 
-package org.geotools.data.complex.config;
+package org.geotools.data.complex.feature.type;
 
 import java.util.Map;
 import java.util.logging.Level;

@@ -36,7 +36,9 @@ import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
 import org.opengis.filter.Filter;
 import org.opengis.filter.Id;
+import org.opengis.filter.PropertyIsLike;
 import org.opengis.filter.PropertyIsNotEqualTo;
+import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.spatial.Beyond;
@@ -275,6 +277,16 @@ public class DOMParserTest extends FilterTestSupport {
         PropertyIsNotEqualTo filter = (PropertyIsNotEqualTo) parseDocumentFirst("testNotEqual.xml");
 
         TestCase.assertTrue(filter.isMatchingCase());
+    }
+
+    public void testLikeWithExpression() throws Exception {
+        Filter filter = parseDocument("like-expression.xml");
+        TestCase.assertTrue(filter instanceof PropertyIsLike);
+        PropertyIsLike like = (PropertyIsLike) filter;
+        Function function = (Function) like.getExpression();
+        assertEquals("env", function.getName());
+        assertEquals("key", function.getParameters().get(0).evaluate(null, String.class));
+        assertEquals("value", function.getParameters().get(1).evaluate(null, String.class));
     }
 
     public Filter parseDocument(String uri) throws Exception {

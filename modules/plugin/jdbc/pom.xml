@@ -93,7 +93,7 @@
     <module>jdbc-db2</module>
     <module>jdbc-mysql</module>
     <module>jdbc-sqlserver</module>
-    <module>jdbc-spatialite</module>
+    <!-- Pending Java 11 migration: <module>jdbc-spatialite</module> -->
     <module>jdbc-teradata</module>
   </modules>
 </project>

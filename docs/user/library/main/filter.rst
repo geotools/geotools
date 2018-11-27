@@ -590,7 +590,7 @@ There is a small utility class **Filters** that packages up some common Filter o
 * Filters.removeFilter(Filter, Filter)
 * Filters.removeFilter(Filter, Filter, boolean)
   
-  Used to seperate out a child from the provided filter.
+  Used to separate out a child from the provided filter.
   
   Much like *and* and *or* above these methods return a modified
   filter.

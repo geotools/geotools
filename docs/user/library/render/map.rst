@@ -137,7 +137,7 @@ Used to render a GridCoverage.
 
 .. image:: /images/gridcoverage_layer.PNG
 
-Note that direct use of a GridCoverage in this fashion is generally not as efficent 
+Note that direct use of a GridCoverage in this fashion is generally not as efficient 
 as using GridReaderLayer below.
 
 GridReaderLayer

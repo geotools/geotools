@@ -121,7 +121,7 @@ The default execution behaviour is to execute after its "parent" binding has exe
    
    You may have asked yourself the question Whats the point of the binding for "integerElement". If you did give yourself a gold star because the binding indeed unnecessary. Transforming the string "25" to the integer 25 can really be done with a single binding. Which brings the next question Which binding should do the job?.
    
-   The answer depends on the java object model being mapped to. Suppose we chose the binding for "integerElement" to perform the mapping and removed the binding for "integer" from the chain. This would be perfectly valid, but lets assume that we have other elements and attributes in our schema that are of type "xs:integer". Do we want to create bindings indentical to the "integerElement" binding? Probably not.
+   The answer depends on the java object model being mapped to. Suppose we chose the binding for "integerElement" to perform the mapping and removed the binding for "integer" from the chain. This would be perfectly valid, but lets assume that we have other elements and attributes in our schema that are of type "xs:integer". Do we want to create bindings identical to the "integerElement" binding? Probably not.
    
    In this case, it makes more sense to have the "integer" binding do the work, and remove the "integerElement" completley (that is, remove the element binding from the configuration, so that the chain will be built only up to the type handler):
    
@@ -376,7 +376,7 @@ The interface for complex bindings looks like::
         return null;
      }
    
-   In this example, all the work is done in the encode method. However it is evident that the second example results in much more work for the binding implementor which is why teh first method is often preferred.
+   In this example, all the work is done in the encode method. However it is evident that the second example results in much more work for the binding implementor which is why the first method is often preferred.
 
 * AbstractComplexBinding
   

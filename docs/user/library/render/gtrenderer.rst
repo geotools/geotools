@@ -38,7 +38,7 @@ consider the following ideas:
 * Experiment with different Java 2D graphics settings such as
   anti-aliasing
 * Use background threads to draw tiles, and allowing your swing control
-  to pull the tiles onto the screen for a smooth "slippy" map
+  to pull the tiles onto the screen for a smooth "slippery" map
 
 3D
 ^^

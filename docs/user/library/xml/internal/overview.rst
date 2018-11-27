@@ -38,7 +38,7 @@ During parsing an XML schema is used to assist in the transformation. The parser
    As an example, consider processing the "purchaseOrder" element shown above. The following bindings would be derived:
    
    * The "purchaseOrder" global element declaration
-   * The "PurchaseOrderType" type defintion ( the declared type of the "purchaseOrder" element )
+   * The "PurchaseOrderType" type definition ( the declared type of the "purchaseOrder" element )
    * The "anyType" type definition ( the base type of all complex type definitions )
    
    Once a set of bindings has been located, they are executed in a defined order, and the element or attribute is transformed into an object. Binding derivation and execution is explained in greater detail here.
@@ -90,7 +90,7 @@ Encoding is the process of serializing a hierarchy of objects as xml.
 
      .. image:: /images/xml/encoderOverview.png
 
-During encoding an xml schema is used to determine how various objects should be encoded as elemements / attributes, and to navigate through the hierachy of objects.
+During encoding an xml schema is used to determine how various objects should be encoded as elemements / attributes, and to navigate through the hierarchy of objects.
 
 1. Element and Attribute Binding
    

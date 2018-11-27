@@ -514,7 +514,7 @@ will be translated to raw SQL optimizing significantly is execution. In particul
 to JDBC data stores:
 
 * Aggregations and grouping on property names is support
-* Simple math expressions of the above are also supported (substract, add, multiply, divide)
+* Simple math expressions of the above are also supported (subtract, add, multiply, divide)
 * Functions may be supported, or not, depending on the filter capabilities of the data store. At the time
   of writing only PostgreSQL supports a small set of functions (e.g., dateDifference, floor, ceil, 
   string concatenation and the like).

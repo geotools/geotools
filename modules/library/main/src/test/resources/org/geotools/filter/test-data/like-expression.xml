@@ -1,0 +1,9 @@
+<Filter>
+    <PropertyIsLike wildCard="%" singleChar="_" escape="\">
+        <Function name="env">
+            <Literal>key</Literal>
+            <Literal>value</Literal>
+        </Function>
+        <ogc:Literal>value</ogc:Literal>
+    </PropertyIsLike>
+</Filter>

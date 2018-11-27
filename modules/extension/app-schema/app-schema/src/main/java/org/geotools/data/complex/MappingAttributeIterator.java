@@ -22,8 +22,8 @@ import java.util.Iterator;
 import org.geotools.data.Query;
 import org.geotools.data.Transaction;
 import org.geotools.data.complex.filter.XPath;
-import org.geotools.data.complex.util.XPathUtil.StepList;
 import org.geotools.data.complex.util.ComplexFeatureConstants;
+import org.geotools.data.complex.util.XPathUtil.StepList;
 import org.opengis.feature.type.Name;
 
 /**

@@ -249,6 +249,7 @@ public final class FilterDOMParser {
                     Expression value = null;
                     NodeList map = child.getChildNodes();
 
+                    int parsedExpressions = 0;
                     for (int i = 0; i < map.getLength(); i++) {
                         Node kid = map.item(i);
 
@@ -265,12 +266,12 @@ public final class FilterDOMParser {
                             res = res.substring(res.indexOf(':') + 1);
                         }
 
-                        if (res.equalsIgnoreCase("PropertyName")) {
+                        if (parsedExpressions == 0) {
                             value = expressionDOMParser.expression(kid);
-                        }
-
-                        if (res.equalsIgnoreCase("Literal")) {
+                            parsedExpressions++;
+                        } else if (parsedExpressions == 1 && res.equalsIgnoreCase("Literal")) {
                             pattern = expressionDOMParser.expression(kid).toString();
+                            parsedExpressions++;
                         }
                     }
 

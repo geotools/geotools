@@ -35,7 +35,7 @@ import org.geotools.data.complex.FeatureTypeMapping;
 import org.geotools.data.complex.MappingFeatureCollection;
 import org.geotools.data.complex.MappingFeatureSource;
 import org.geotools.data.complex.NestedAttributeMapping;
-import org.geotools.data.complex.filter.XPathUtil;
+import org.geotools.data.complex.util.XPathUtil;
 import org.geotools.data.memory.MemoryFeatureCollection;
 import org.geotools.data.mongodb.MongoFeature;
 import org.geotools.feature.FeatureCollection;

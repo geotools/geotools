@@ -42,7 +42,7 @@ import org.geotools.data.complex.config.AppSchemaFeatureTypeRegistry;
 import org.geotools.data.complex.config.XMLConfigDigester;
 import org.geotools.data.complex.feature.type.ComplexFeatureTypeImpl;
 import org.geotools.data.complex.feature.type.Types;
-import org.geotools.data.complex.filter.XPathUtil.StepList;
+import org.geotools.data.complex.util.XPathUtil.StepList;
 import org.geotools.data.complex.util.EmfComplexFeatureReader;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;

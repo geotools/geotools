@@ -29,7 +29,7 @@ import org.geotools.appschema.filter.FilterFactoryImplNamespaceAware;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.Query;
 import org.geotools.data.complex.feature.type.Types;
-import org.geotools.data.complex.filter.XPathUtil.StepList;
+import org.geotools.data.complex.util.XPathUtil.StepList;
 import org.geotools.data.complex.util.ComplexFeatureConstants;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;

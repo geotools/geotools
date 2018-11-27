@@ -20,7 +20,7 @@ package org.geotools.data.complex;
 import java.util.Collections;
 import java.util.Map;
 import org.geotools.data.complex.config.MultipleValue;
-import org.geotools.data.complex.filter.XPathUtil.StepList;
+import org.geotools.data.complex.util.XPathUtil.StepList;
 import org.geotools.util.Utilities;
 import org.opengis.feature.type.AttributeType;
 import org.opengis.feature.type.Name;

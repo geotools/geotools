@@ -22,7 +22,7 @@ import java.util.List;
 import org.geotools.data.complex.AttributeMapping;
 import org.geotools.data.complex.FeatureTypeMapping;
 import org.geotools.data.complex.NestedAttributeMapping;
-import org.geotools.data.complex.filter.XPathUtil;
+import org.geotools.data.complex.util.XPathUtil;
 import org.geotools.data.complex.spi.CustomAttributeExpressionFactory;
 import org.geotools.data.mongodb.MongoFeatureStore;
 import org.geotools.filter.ConstantExpression;

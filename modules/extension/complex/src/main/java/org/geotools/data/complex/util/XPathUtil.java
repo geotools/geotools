@@ -15,7 +15,7 @@
  *    Lesser General Public License for more details.
  */
 
-package org.geotools.data.complex.filter;
+package org.geotools.data.complex.util;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -24,7 +24,7 @@ import java.util.Scanner;
 import java.util.logging.Logger;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
-import org.geotools.data.complex.util.ComplexFeatureConstants;
+
 import org.geotools.feature.type.Types;
 import org.geotools.util.CheckedArrayList;
 import org.opengis.feature.type.AttributeDescriptor;

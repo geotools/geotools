@@ -18,7 +18,7 @@ package org.geotools.data.complex.spi;
 
 import org.geotools.data.complex.FeatureTypeMapping;
 import org.geotools.data.complex.NestedAttributeMapping;
-import org.geotools.data.complex.filter.XPathUtil;
+import org.geotools.data.complex.util.XPathUtil;
 import org.opengis.filter.expression.Expression;
 
 /** Allow extensions to build custom nested expressions for chained entities. */

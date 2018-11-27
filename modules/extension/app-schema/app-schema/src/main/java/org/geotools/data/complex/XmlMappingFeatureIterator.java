@@ -30,7 +30,7 @@ import org.geotools.appschema.util.XmlXpathUtilites;
 import org.geotools.data.Query;
 import org.geotools.data.complex.PathAttributeList.Pair;
 import org.geotools.data.complex.feature.type.Types;
-import org.geotools.data.complex.filter.XPathUtil.*;
+import org.geotools.data.complex.util.XPathUtil.*;
 import org.geotools.data.complex.util.ComplexFeatureConstants;
 import org.geotools.data.complex.xml.*;
 import org.geotools.feature.FeatureIterator;

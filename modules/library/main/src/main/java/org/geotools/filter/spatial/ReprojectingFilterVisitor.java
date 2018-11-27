@@ -63,9 +63,17 @@ import org.opengis.referencing.operation.TransformException;
 public class ReprojectingFilterVisitor extends DuplicatingFilterVisitor {
     FeatureType featureType;
 
+    private final CoordinateReferenceSystem targetCrs;
+
     public ReprojectingFilterVisitor(FilterFactory2 factory, FeatureType featureType) {
+        this(factory, featureType, null);
+    }
+
+    public ReprojectingFilterVisitor(
+            FilterFactory2 factory, FeatureType featureType, CoordinateReferenceSystem targetCrs) {
         super(factory);
         this.featureType = featureType;
+        this.targetCrs = targetCrs;
     }
 
     /**
@@ -76,6 +84,11 @@ public class ReprojectingFilterVisitor extends DuplicatingFilterVisitor {
      * @return
      */
     private CoordinateReferenceSystem findPropertyCRS(PropertyName propertyName) {
+        if (targetCrs != null) {
+            // an explicit target CRS was provided
+            return targetCrs;
+        }
+        // let's try to get the CRS from the provided property name
         Object o = propertyName.evaluate(featureType);
         if (o instanceof GeometryDescriptor) {
             GeometryDescriptor gat = (GeometryDescriptor) o;

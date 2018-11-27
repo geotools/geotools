@@ -148,6 +148,8 @@ import org.opengis.referencing.operation.MathTransformFactory;
  */
 public class ImageWorker {
 
+    static final Integer ONE = 1;
+
     /** Byte identity lookup table for indexed color models */
     private static final byte[][] IDENTITY_BYTE;
     /** Short identity lookup table for indexed color models */
@@ -455,6 +457,12 @@ public class ImageWorker {
      */
     private int tileCacheDisabled = 0;
 
+    /** Subsampling factor for the x axis, used in statistical operations (extrema and histogram) */
+    private int xPeriod = ONE;
+
+    /** Subsampling factor for the y axis, used in statistical operations (extrema and histogram) */
+    private int yPeriod = ONE;
+
     /**
      * Creates a new uninitialized builder for an {@linkplain #load image read} or a {@linkplain
      * #mosaic mosaic operation}
@@ -495,6 +503,44 @@ public class ImageWorker {
      */
     public ImageWorker(final RenderedImage image) {
         setImage(image);
+    }
+
+    /**
+     * The x-period used by statistical operations (e.g. extrema, mean, histogram). Defaults to 1.
+     *
+     * @return
+     */
+    public int getXPeriod() {
+        return xPeriod;
+    }
+
+    /**
+     * Sets the x-period used by statistical operations (e.g. extrema, mean, histogram). E.g.,
+     * setting it to 2 wil make the statistical operations read one pixel and skip one pixel, and so
+     * on.
+     */
+    public ImageWorker setXPeriod(int xPeriod) {
+        this.xPeriod = xPeriod;
+        return this;
+    }
+
+    /**
+     * The y-period used by statistical operations (e.g. extrema, mean, histogram). Defaults to 1.
+     *
+     * @return
+     */
+    public int getYPeriod() {
+        return yPeriod;
+    }
+
+    /**
+     * Sets the x-period used by statistical operations (e.g. extrema, mean, histogram). E.g.,
+     * setting it to 2 wil make the statistical operations read one pixel and skip one pixel, and so
+     * on.
+     */
+    public ImageWorker setYPeriod(int yPeriod) {
+        this.yPeriod = yPeriod;
+        return this;
     }
 
     public Range extractNoDataProperty(final RenderedImage image) {
@@ -1040,7 +1086,6 @@ public class ImageWorker {
     private double[][] getExtremas() {
         Object extrema = getComputedProperty(EXTREMA);
         if (!(extrema instanceof double[][])) {
-            final Integer ONE = 1;
             // Create the parameterBlock
             ParameterBlock pb = new ParameterBlock();
             pb.setSource(image, 0);
@@ -1054,8 +1099,8 @@ public class ImageWorker {
                 }
 
                 // Image parameters
-                pb.set(ONE, 0); // xPeriod
-                pb.set(ONE, 1); // yPeriod
+                pb.set(xPeriod, 0); // xPeriod
+                pb.set(yPeriod, 1); // yPeriod
                 pb.set(roi, 2); // ROI
                 pb.set(nodata, 3); // NoData
                 pb.set(bands, 5); // band indexes
@@ -1080,8 +1125,8 @@ public class ImageWorker {
                 }
             } else {
                 pb.set(roi, 0); // The region of the image to scan. Default to all.
-                pb.set(ONE, 1); // The horizontal sampling rate. Default to 1.
-                pb.set(ONE, 2); // The vertical sampling rate. Default to 1.
+                pb.set(xPeriod, 1); // The horizontal sampling rate. Default to 1.
+                pb.set(yPeriod, 2); // The vertical sampling rate. Default to 1.
                 pb.set(ONE, 4); // Maximum number of run length codes to store. Default to 1.
                 image = JAI.create("Extrema", pb, getRenderingHints());
             }
@@ -1108,8 +1153,8 @@ public class ImageWorker {
                 }
 
                 // Image parameters
-                pb.set(ONE, 0); // xPeriod
-                pb.set(ONE, 1); // yPeriod
+                pb.set(xPeriod, 0); // xPeriod
+                pb.set(yPeriod, 1); // yPeriod
                 pb.set(roi, 2); // ROI
                 pb.set(nodata, 3); // NoData
                 pb.set(bands, 5); // band indexes
@@ -1154,8 +1199,8 @@ public class ImageWorker {
                 }
             } else {
                 pb.set(roi, 0); // The region of the image to scan. Default to all.
-                pb.set(ONE, 1); // The horizontal sampling rate. Default to 1.
-                pb.set(ONE, 2); // The vertical sampling rate. Default to 1.
+                pb.set(xPeriod, 1); // The horizontal sampling rate. Default to 1.
+                pb.set(yPeriod, 2); // The vertical sampling rate. Default to 1.
                 pb.set(numBins, 3); // Bin number.
                 pb.set(lowValues, 4); // Lower values per band.
                 pb.set(highValues, 5); // Higher values per band.
@@ -1187,8 +1232,8 @@ public class ImageWorker {
                 }
 
                 // Image parameters
-                pb.set(ONE, 0); // xPeriod
-                pb.set(ONE, 1); // yPeriod
+                pb.set(xPeriod, 0); // xPeriod
+                pb.set(yPeriod, 1); // yPeriod
                 pb.set(roi, 2); // ROI
                 pb.set(nodata, 3); // NoData
                 pb.set(bands, 5); // band indexes
@@ -1211,8 +1256,8 @@ public class ImageWorker {
                 }
             } else {
                 pb.set(roi, 0); // The region of the image to scan. Default to all.
-                pb.set(ONE, 1); // The horizontal sampling rate. Default to 1.
-                pb.set(ONE, 2); // The vertical sampling rate. Default to 1.
+                pb.set(xPeriod, 1); // The horizontal sampling rate. Default to 1.
+                pb.set(yPeriod, 2); // The vertical sampling rate. Default to 1.
                 image = JAI.create("Mean", pb, getRenderingHints());
             }
             mean = getComputedProperty(MEAN);

@@ -4,9 +4,12 @@
  */
 package mil.nga.giat.data.elasticsearch;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.util.List;
 import java.util.Map;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ElasticAggregation {
 
     private List<Map<String,Object>> buckets;

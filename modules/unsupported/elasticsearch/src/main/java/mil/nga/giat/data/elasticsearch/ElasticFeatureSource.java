@@ -134,7 +134,6 @@ public class ElasticFeatureSource extends ContentFeatureSource {
     }
 
     private ElasticRequest prepareSearchRequest(Query query, boolean scroll) throws IOException {
-        String naturalSortOrder = SortOrder.ASCENDING.toSQL().toLowerCase();
         final ElasticRequest searchRequest = new ElasticRequest();
         final ElasticDataStore dataStore = getDataStore();
         final String docType = dataStore.getDocType(entry.getName());
@@ -147,8 +146,8 @@ public class ElasticFeatureSource extends ContentFeatureSource {
                     if (sort.getPropertyName() != null) {
                         final String name = sort.getPropertyName().getPropertyName();
                         searchRequest.addSort(name, sortOrder);
-                    } else {
-                        naturalSortOrder = sortOrder;
+                    } else if (sort == SortBy.NATURAL_ORDER || sort == SortBy.REVERSE_ORDER) {
+                        searchRequest.addSort("_uid", sortOrder);
                     }
                 }
             }
@@ -187,13 +186,7 @@ public class ElasticFeatureSource extends ContentFeatureSource {
         }
         final Map<String,Object> queryBuilder = filterToElastic.getQueryBuilder();
 
-        final Map<String,Object> nativeQueryBuilder = filterToElastic.getNativeQueryBuilder();
-
         searchRequest.setQuery(queryBuilder);
-
-        if (isSort(query) && nativeQueryBuilder.equals(ElasticConstants.MATCH_ALL)) {
-            searchRequest.addSort("_uid", naturalSortOrder);
-        }
 
         if (filterToElastic.getAggregations() != null) {
             final Map<String, Map<String, Map<String, Object>>> aggregations = filterToElastic.getAggregations();
@@ -230,10 +223,6 @@ public class ElasticFeatureSource extends ContentFeatureSource {
                 searchRequest.addSourceInclude(attribute.getName());
             }
         }
-    }
-
-    private boolean isSort(Query query) {
-        return query.getSortBy() != null && query.getSortBy().length > 0;
     }
 
     private boolean useSortOrPagination(Query query) {

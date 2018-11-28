@@ -230,7 +230,7 @@ at all. In the simple case PropertyIsNull can be used to check that a property e
 that the value is empty.
 
 We also have the situation where a property is allowed to occur zero or many times; in this case
-we want a nice clear way to check that a Property does not exsit at all (that is occure = zero).
+we want a nice clear way to check that a Property does not exsit at all (that is occur = zero).
 
 .. literalinclude:: /../src/main/java/org/geotools/opengis/FilterExamples.java
    :language: java

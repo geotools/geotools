@@ -91,7 +91,7 @@ Adding Module Info
 
 Java 9 introduced the concept of modules to the JVM. 
 
-A module is a named, self-contained bundle of Java code. Modules may depend upon other modules, and may export packages from themselves to other modules that depend upon them. Module configuration is controled by the :file:`module-info.java` file.
+A module is a named, self-contained bundle of Java code. Modules may depend upon other modules, and may export packages from themselves to other modules that depend upon them. Module configuration is controlled by the :file:`module-info.java` file.
 
 For a more detailed overview of the module system, refer to the `State of the Module System <http://openjdk.java.net/projects/jigsaw/spec/sotms/>`_.
 

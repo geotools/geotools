@@ -295,7 +295,7 @@ XDO allows you to declare w/ Objects the Schema you are interested in, and how i
 * reuse occurs on a schema by schema basis
 * You can "generated" a schema explicitly out into code
 * Code has been generated for GML2, WFS, and WMS
-* Custom documents, based on an extention of a known schema can be parsed
+* Custom documents, based on an extension of a known schema can be parsed
 * generated code also includes support for the production of XML documents.
 * validation of content is supported
 

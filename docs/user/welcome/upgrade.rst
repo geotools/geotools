@@ -1332,7 +1332,7 @@ Name
 ^^^^
 
 In order to better support app-schema work we can no longer assume names are a simple String. The
-**Name** class has been introduced to make this easier and is availble
+**Name** class has been introduced to make this easier and is available
 throughout the library: example FeatureSource.getName().
 
 * BEFORE  (GeoTools 2.4 Code)::

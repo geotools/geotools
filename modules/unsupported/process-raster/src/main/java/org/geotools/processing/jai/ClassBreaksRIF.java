@@ -16,9 +16,18 @@
  */
 package org.geotools.processing.jai;
 
-import static org.geotools.processing.jai.ClassBreaksDescriptor.*;
+import static org.geotools.processing.jai.ClassBreaksDescriptor.BAND_ARG;
+import static org.geotools.processing.jai.ClassBreaksDescriptor.EXTREMA_ARG;
+import static org.geotools.processing.jai.ClassBreaksDescriptor.HISTOGRAM_ARG;
+import static org.geotools.processing.jai.ClassBreaksDescriptor.HISTOGRAM_BINS;
+import static org.geotools.processing.jai.ClassBreaksDescriptor.METHOD_ARG;
+import static org.geotools.processing.jai.ClassBreaksDescriptor.NODATA_ARG;
+import static org.geotools.processing.jai.ClassBreaksDescriptor.NUM_CLASSES_ARG;
+import static org.geotools.processing.jai.ClassBreaksDescriptor.ROI_ARG;
+import static org.geotools.processing.jai.ClassBreaksDescriptor.X_PERIOD_ARG;
+import static org.geotools.processing.jai.ClassBreaksDescriptor.Y_PERIOD_ARG;
 
-import java.awt.RenderingHints;
+import java.awt.*;
 import java.awt.image.RenderedImage;
 import java.awt.image.renderable.ParameterBlock;
 import java.awt.image.renderable.RenderedImageFactory;
@@ -52,6 +61,13 @@ public class ClassBreaksRIF implements RenderedImageFactory {
         Integer xPeriod = pb.getIntParameter(X_PERIOD_ARG);
         Integer yPeriod = pb.getIntParameter(Y_PERIOD_ARG);
         Double noData = (Double) pb.getObjectParameter(NODATA_ARG);
+        Boolean histogram = false;
+        if (pb.getNumParameters() >= 9) {
+            histogram = (Boolean) pb.getObjectParameter(HISTOGRAM_ARG);
+        }
+        Integer histogramBins = 256;
+        if (pb.getNumParameters() >= 10)
+            histogramBins = (Integer) pb.getObjectParameter(HISTOGRAM_BINS);
 
         switch (method) {
             case EQUAL_INTERVAL:
@@ -59,13 +75,43 @@ public class ClassBreaksRIF implements RenderedImageFactory {
                         src, numBins, extrema, roi, bands, xStart, yStart, xPeriod, yPeriod,
                         noData);
             case QUANTILE:
-                return new QuantileBreaksOpImage(
-                        src, numBins, extrema, roi, bands, xStart, yStart, xPeriod, yPeriod,
-                        noData);
+                if (histogram) {
+                    return new QuantileBreaksHistogramOpImage(
+                            src,
+                            numBins,
+                            extrema,
+                            roi,
+                            bands,
+                            xStart,
+                            yStart,
+                            xPeriod,
+                            yPeriod,
+                            noData,
+                            histogramBins);
+                } else {
+                    return new QuantileBreaksOpImage(
+                            src, numBins, extrema, roi, bands, xStart, yStart, xPeriod, yPeriod,
+                            noData);
+                }
             case NATURAL_BREAKS:
-                return new NaturalBreaksOpImage(
-                        src, numBins, extrema, roi, bands, xStart, yStart, xPeriod, yPeriod,
-                        noData);
+                if (histogram) {
+                    return new NaturalBreaksHistogramOpImage(
+                            src,
+                            numBins,
+                            extrema,
+                            roi,
+                            bands,
+                            xStart,
+                            yStart,
+                            xPeriod,
+                            yPeriod,
+                            noData,
+                            histogramBins);
+                } else {
+                    return new NaturalBreaksOpImage(
+                            src, numBins, extrema, roi, bands, xStart, yStart, xPeriod, yPeriod,
+                            noData);
+                }
             default:
                 throw new IllegalArgumentException(method.name());
         }

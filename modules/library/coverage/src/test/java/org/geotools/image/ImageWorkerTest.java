@@ -67,6 +67,7 @@ import java.util.zip.GZIPInputStream;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
 import javax.imageio.stream.ImageInputStream;
+import javax.media.jai.Histogram;
 import javax.media.jai.ImageLayout;
 import javax.media.jai.Interpolation;
 import javax.media.jai.JAI;
@@ -92,6 +93,7 @@ import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.geotools.referencing.operation.transform.WarpBuilder;
+import org.hamcrest.CoreMatchers;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
@@ -169,7 +171,8 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         final int height = 128;
         final WritableRaster raster =
                 RasterFactory.createBandedRaster(DataBuffer.TYPE_DOUBLE, width, height, 1, null);
-        final Random random = new Random();
+        // random, but repeatable, by using a fixed seed value
+        final Random random = new Random(1);
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
                 raster.setSample(x, y, 0, Math.ceil(random.nextDouble() * maximum));
@@ -2252,5 +2255,78 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         // subtract the original
         double[] maximums = worker.getMaximums();
         assertThat(maximums, equalTo(maximumBefore));
+    }
+
+    @Test
+    public void testExtremaSubsample() {
+        // increase the subsampling factor, it should lead to progressive deterioration of
+        // the extracted stats values. Images and workers are re-created over and over, since
+        // the worker attaches the stats to the image as a property (so a new one is needed to
+        // force re-calculation
+        assertMinMax(getSynthetic(1000), 1, 1, 1, 1000);
+        assertMinMax(getSynthetic(1000), 4, 4, 1, 1000);
+        assertMinMax(getSynthetic(1000), 8, 8, 4, 985);
+        assertMinMax(getSynthetic(1000), 16, 16, 9, 985);
+        assertMinMax(getSynthetic(1000), 32, 32, 11, 931);
+    }
+
+    private void assertMinMax(
+            RenderedImage image, int xPeriod, int yPeriod, double expectedMin, double expectedMax) {
+        ImageWorker iw = new ImageWorker(image).setXPeriod(xPeriod).setYPeriod(yPeriod);
+        double[] minimums = iw.getMinimums();
+        assertEquals(expectedMin, minimums[0], 1e-6);
+        double[] maximums = iw.getMaximums();
+        assertEquals(expectedMax, maximums[0], 1e-6);
+    }
+
+    @Test
+    public void testMeanSubsample() {
+        // increase the subsampling factor, it should lead to progressive deterioration of
+        // the extracted stats values. Images and workers are re-created over and over, since
+        // the worker attaches the stats to the image as a property (so a new one is needed to
+        // force re-calculation
+        assertMean(getSynthetic(1000), 1, 1, 500);
+        assertMean(getSynthetic(1000), 4, 4, 500);
+        assertMean(getSynthetic(1000), 8, 8, 490);
+        assertMean(getSynthetic(1000), 16, 16, 495);
+        assertMean(getSynthetic(1000), 32, 32, 455);
+    }
+
+    private void assertMean(RenderedImage image, int xPeriod, int yPeriod, double expectedMean) {
+        ImageWorker iw = new ImageWorker(image).setXPeriod(xPeriod).setYPeriod(yPeriod);
+        double[] means = iw.getMean();
+        assertEquals(expectedMean, means[0], 1);
+    }
+
+    @Test
+    public void testHistogramSubsample() {
+        // increase the subsampling factor, it should lead to progressive deterioration of
+        // the extracted stats values. Images and workers are re-created over and over, since
+        // the worker attaches the stats to the image as a property (so a new one is needed to
+        // force re-calculation.
+        // In this case we have actual counts, so they will have to go down accordingly too
+        assertHistogram(getSynthetic(1000), 1, 1, 5408, 5487, 5475);
+        assertHistogram(getSynthetic(1000), 2, 2, 1372, 1384, 1339);
+        assertHistogram(getSynthetic(1000), 4, 4, 324, 363, 336);
+        assertHistogram(getSynthetic(1000), 8, 8, 83, 85, 87);
+        assertHistogram(getSynthetic(1000), 16, 16, 22, 18, 23);
+        assertHistogram(getSynthetic(1000), 32, 32, 6, 5, 4);
+    }
+
+    private void assertHistogram(
+            RenderedImage image,
+            int xPeriod,
+            int yPeriod,
+            int expectedCountBin1,
+            int expectedCountBin2,
+            int expectedCountBin3) {
+        ImageWorker iw = new ImageWorker(image).setXPeriod(xPeriod).setYPeriod(yPeriod);
+        double[] minimums = iw.getMinimums();
+        double[] maximums = iw.getMaximums();
+        Histogram histogram = iw.getHistogram(new int[] {3}, minimums, maximums);
+        assertThat(
+                histogram.getBins(0),
+                CoreMatchers.equalTo(
+                        new int[] {expectedCountBin1, expectedCountBin2, expectedCountBin3}));
     }
 }

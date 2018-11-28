@@ -37,10 +37,21 @@ public class ClassBreaksDescriptor extends OperationDescriptorImpl {
     static final int X_PERIOD_ARG = 5;
     static final int Y_PERIOD_ARG = 6;
     static final int NODATA_ARG = 7;
+    static final int HISTOGRAM_ARG = 8;
+    static final int HISTOGRAM_BINS = 9;
 
     static String[] paramNames =
             new String[] {
-                "numClasses", "method", "extrema", "roi", "band", "xPeriod", "yPeriod", "noData"
+                "numClasses",
+                "method",
+                "extrema",
+                "roi",
+                "band",
+                "xPeriod",
+                "yPeriod",
+                "noData",
+                "histogram",
+                "histogramBins"
             };
 
     static final Class<?>[] paramClasses = {
@@ -51,7 +62,9 @@ public class ClassBreaksDescriptor extends OperationDescriptorImpl {
         Integer[].class,
         Integer.class,
         Integer.class,
-        Double.class
+        Double.class,
+        Boolean.class,
+        Integer.class
     };
 
     static final Object[] paramDefaults = {
@@ -62,7 +75,9 @@ public class ClassBreaksDescriptor extends OperationDescriptorImpl {
         new Integer[] {Integer.valueOf(0)},
         1,
         1,
-        null
+        null,
+        false,
+        256
     };
 
     public ClassBreaksDescriptor() {
@@ -119,6 +134,18 @@ public class ClassBreaksDescriptor extends OperationDescriptorImpl {
                         String.format(
                                 "%s (default %s) - value to treat as NODATA",
                                 paramNames[NODATA_ARG], paramDefaults[NODATA_ARG])
+                    },
+                    {
+                        String.format("arg%dDesc", HISTOGRAM_ARG),
+                        String.format(
+                                "%s (default %s) - if true, a histogram based computation will be used",
+                                paramNames[HISTOGRAM_ARG], paramDefaults[HISTOGRAM_ARG])
+                    },
+                    {
+                        String.format("arg%dDesc", HISTOGRAM_BINS),
+                        String.format(
+                                "%s (default %s) - if true, number of histogram bins to be used",
+                                paramNames[HISTOGRAM_BINS], paramDefaults[HISTOGRAM_BINS])
                     },
                 },
                 new String[] {RenderedRegistryMode.MODE_NAME},

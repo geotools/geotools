@@ -63,11 +63,11 @@ public class Srs {
         if ((type == Type.GEOGRAPHIC) || (type == Type.FLAT)) {
             if (angularUom == null) {
                 throw new NullPointerException(
-                        "angularUom must not be null in case geographic or flat reference systems");
+                        "angularUom must not be null in case of geographic or flat reference systems");
             }
             if (angularUom.isEmpty()) {
-                throw new NullPointerException(
-                        "angularUom must not be empty in case geographic or flat reference systems");
+                throw new IllegalArgumentException(
+                        "angularUom must not be empty in case of geographic or flat reference systems");
             }
             if (majorAxis == null) {
                 throw new NullPointerException(
@@ -85,7 +85,7 @@ public class Srs {
         if ((majorAxis != null) && (majorAxis <= 0.0)) {
             throw new IllegalArgumentException("majorAxis must be greater than 0");
         }
-        if ((minorAxis != null) && (minorAxis < 0.0)) {
+        if ((minorAxis != null) && (minorAxis <= 0.0)) {
             throw new IllegalArgumentException("minorAxis must be greater than 0");
         }
         if ((inverseFlattening != null) && (inverseFlattening <= 0.0)) {

@@ -1856,15 +1856,17 @@ public class SLDParser {
             }
 
             if (childName.equalsIgnoreCase("format")) {
-                LOGGER.finest("format child is " + child);
-                LOGGER.finest("seting ExtGraph format " + getFirstChildValue(child));
+                if (LOGGER.isLoggable(Level.FINEST)) {
+                    LOGGER.finest("format child is " + child);
+                    LOGGER.finest("setting ExtGraph format " + getFirstChildValue(child));
+                }
                 format = (getFirstChildValue(child));
             } else if (childName.equalsIgnoreCase("customProperty")) {
                 if (LOGGER.isLoggable(Level.FINEST)) LOGGER.finest("custom child is " + child);
                 String propName = child.getAttributes().getNamedItem("name").getNodeValue();
                 if (LOGGER.isLoggable(Level.FINEST))
                     LOGGER.finest(
-                            "seting custom property "
+                            "setting custom property "
                                     + propName
                                     + " to "
                                     + getFirstChildValue(child));

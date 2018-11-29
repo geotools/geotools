@@ -153,6 +153,11 @@
                 </exclusion>
             </exclusions>
         </dependency>
+        <dependency>
+            <groupId>it.geosolutions.jaiext.classbreaks</groupId>
+            <artifactId>jt-classbreaks</artifactId>
+            <version>${jaiext.version}</version>
+        </dependency>
         
         <!-- Test dependencies -->
         <dependency>

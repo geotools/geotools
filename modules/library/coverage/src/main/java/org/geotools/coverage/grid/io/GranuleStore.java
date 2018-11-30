@@ -19,6 +19,7 @@ package org.geotools.coverage.grid.io;
 import java.io.IOException;
 import org.geotools.data.Transaction;
 import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.factory.Hints;
 import org.opengis.filter.Filter;
 
 /**
@@ -44,6 +45,19 @@ public interface GranuleStore extends GranuleSource {
      * @throws IOException if an error occurs modifying the data source
      */
     int removeGranules(Filter filter);
+
+    /**
+     * Removes granules selected by the given filter, controlled by a set of hints (might be
+     * implementation dependent and eventually ignored).
+     *
+     * @param filter an OpenGIS filter
+     * @param hints a set of hints to control how the removal is performed
+     * @throws IOException if an error occurs modifying the data source
+     */
+    default int removeGranules(Filter filter, Hints hints) {
+        // the default implementation just delegates to the hint-less version of the method
+        return removeGranules(filter);
+    }
 
     /**
      * Modifies the attributes with the supplied values in all granules selected by the given

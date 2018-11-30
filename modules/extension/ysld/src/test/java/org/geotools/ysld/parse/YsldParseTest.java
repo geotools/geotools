@@ -31,6 +31,7 @@ import static org.geotools.ysld.TestUtils.nilExpression;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.anyOf;
 import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.describedAs;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasEntry;
@@ -99,6 +100,7 @@ import org.opengis.style.Mark;
 import org.opengis.style.PointPlacement;
 import org.opengis.style.RasterSymbolizer;
 import org.opengis.style.SelectedChannelType;
+import org.yaml.snakeyaml.constructor.ConstructorException;
 
 public class YsldParseTest {
 
@@ -2259,5 +2261,16 @@ public class YsldParseTest {
         LineSymbolizer p = (LineSymbolizer) SLD.lineSymbolizer(SLD.defaultStyle(sld));
 
         assertThat(p, hasProperty("unitOfMeasure", sameInstance(UomOgcMapping.METRE.getUnit())));
+    }
+
+    @Test
+    public void testDeserializationAttempt() throws Exception {
+        try {
+            String yaml = "!!java.util.Date\n" + "date: 25\n" + "month: 12\n" + "year: 2016";
+            Ysld.parse(yaml);
+            fail("Expected parsing to fail");
+        } catch (ConstructorException e) {
+            assertThat(e.getMessage(), containsString("could not determine a constructor"));
+        }
     }
 }

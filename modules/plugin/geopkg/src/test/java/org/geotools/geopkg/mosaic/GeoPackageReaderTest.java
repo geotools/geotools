@@ -34,6 +34,7 @@ import org.geotools.referencing.CRS;
 import org.geotools.util.URLs;
 import org.junit.Test;
 import org.opengis.parameter.GeneralParameterValue;
+import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 public class GeoPackageReaderTest {
@@ -69,6 +70,18 @@ public class GeoPackageReaderTest {
         RenderedImage img = gc.getRenderedImage();
         assertEquals(1536, img.getWidth());
         assertEquals(768, img.getHeight());
+        reader.dispose();
+    }
+
+    @Test
+    public void testCoverageSRS() throws IOException, FactoryException {
+        GeoPackageReader reader =
+                new GeoPackageReader(
+                        GeoPackageTest.class.getResource("test_tiles_srid.gpkg"), null);
+        CoordinateReferenceSystem crs =
+                reader.getCoordinateReferenceSystem(reader.getGridCoverageNames()[0]);
+        assertEquals(crs, CRS.decode("EPSG:3857", true));
+        reader.dispose();
     }
 
     @Test
@@ -100,6 +113,7 @@ public class GeoPackageReaderTest {
         // ImageIO.write(img, "png", URLs.urlToFile(getClass().getResource("world_lakes.png")));
         ImageAssert.assertEquals(
                 URLs.urlToFile(GeoPackageTest.class.getResource("bluemarble.jpeg")), img, 250);
+        reader.dispose();
     }
 
     @Test
@@ -116,11 +130,12 @@ public class GeoPackageReaderTest {
         GridCoverage2D gc = reader.read("bluemarble_tif_tiles", parameters);
         RenderedImage img = gc.getRenderedImage();
         assertEquals(0, gc.getEnvelope().getMinimum(0), 0.01);
-        assertEquals(-30, gc.getEnvelope().getMinimum(1), 0.01);
+        assertEquals(0, gc.getEnvelope().getMinimum(1), 0.01);
         assertEquals(180, gc.getEnvelope().getMaximum(0), 0.01);
         assertEquals(90, gc.getEnvelope().getMaximum(1), 0.01);
         assertEquals(1536, img.getWidth());
-        assertEquals(1024, img.getHeight());
+        assertEquals(768, img.getHeight());
+        reader.dispose();
     }
 
     @Test
@@ -137,11 +152,12 @@ public class GeoPackageReaderTest {
         GridCoverage2D gc = reader.read("bluemarble_tif_tiles", parameters);
         RenderedImage img = gc.getRenderedImage();
         assertEquals(0, gc.getEnvelope().getMinimum(0), 0.01);
-        assertEquals(-15, gc.getEnvelope().getMinimum(1), 0.01);
-        assertEquals(105, gc.getEnvelope().getMaximum(0), 0.01);
+        assertEquals(0, gc.getEnvelope().getMinimum(1), 0.01);
+        assertEquals(90, gc.getEnvelope().getMaximum(0), 0.01);
         assertEquals(45, gc.getEnvelope().getMaximum(1), 0.01);
-        assertEquals(1792, img.getWidth());
-        assertEquals(1024, img.getHeight());
+        assertEquals(1536, img.getWidth());
+        assertEquals(768, img.getHeight());
+        reader.dispose();
     }
 
     @Test
@@ -158,11 +174,12 @@ public class GeoPackageReaderTest {
         GridCoverage2D gc = reader.read("bluemarble_tif_tiles", parameters);
         RenderedImage img = gc.getRenderedImage();
         assertEquals(0, gc.getEnvelope().getMinimum(0), 0.01);
-        assertEquals(-7.5, gc.getEnvelope().getMinimum(1), 0.01);
-        assertEquals(52.5, gc.getEnvelope().getMaximum(0), 0.01);
+        assertEquals(0, gc.getEnvelope().getMinimum(1), 0.01);
+        assertEquals(45, gc.getEnvelope().getMaximum(0), 0.01);
         assertEquals(22.5, gc.getEnvelope().getMaximum(1), 0.01);
-        assertEquals(1792, img.getWidth());
-        assertEquals(1024, img.getHeight());
+        assertEquals(1536, img.getWidth());
+        assertEquals(768, img.getHeight());
+        reader.dispose();
     }
 
     @Test
@@ -179,11 +196,12 @@ public class GeoPackageReaderTest {
         GridCoverage2D gc = reader.read("bluemarble_tif_tiles", parameters);
         RenderedImage img = gc.getRenderedImage();
         assertEquals(0, gc.getEnvelope().getMinimum(0), 0.01);
-        assertEquals(-3.75, gc.getEnvelope().getMinimum(1), 0.01);
-        assertEquals(26.25, gc.getEnvelope().getMaximum(0), 0.01);
+        assertEquals(0, gc.getEnvelope().getMinimum(1), 0.01);
+        assertEquals(22.5, gc.getEnvelope().getMaximum(0), 0.01);
         assertEquals(11.25, gc.getEnvelope().getMaximum(1), 0.01);
-        assertEquals(1792, img.getWidth());
-        assertEquals(1024, img.getHeight());
+        assertEquals(1536, img.getWidth());
+        assertEquals(768, img.getHeight());
+        reader.dispose();
     }
 
     @Test
@@ -198,12 +216,13 @@ public class GeoPackageReaderTest {
                 new GridGeometry2D(
                         new GridEnvelope2D(new Rectangle(128, 128)),
                         new ReferencedEnvelope(-81, -80, 30, 31, WGS_84));
-        parameters[0] = new Parameter<GridGeometry2D>(AbstractGridFormat.READ_GRIDGEOMETRY2D, gg);
+        parameters[0] = new Parameter<>(AbstractGridFormat.READ_GRIDGEOMETRY2D, gg);
         GridCoverage2D gc = reader.read("bluemarble_tif_tiles", parameters);
         RenderedImage img = gc.getRenderedImage();
         File reference =
                 new File("./src/test/resources/org/geotools/geopkg/tilePositionZoomLevel4.png");
         ImageAssert.assertEquals(reference, img, 1000);
+        reader.dispose();
     }
 
     @Test
@@ -215,6 +234,7 @@ public class GeoPackageReaderTest {
         RenderedImage img = gc.getRenderedImage();
         File referenceFull = new File("./src/test/resources/org/geotools/geopkg/giantPolyFull.png");
         ImageAssert.assertEquals(referenceFull, img, 1000);
+        reader.dispose();
     }
 
     @Test
@@ -235,5 +255,6 @@ public class GeoPackageReaderTest {
         RenderedImage img = gc.getRenderedImage();
         File referenceFull = new File("./src/test/resources/org/geotools/geopkg/giantPolyFull.png");
         ImageAssert.assertEquals(referenceFull, img, 1000);
+        reader.dispose();
     }
 }

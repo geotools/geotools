@@ -119,6 +119,8 @@ public class FeatureTransformer extends TransformerBase {
     private String srsName;
     private String lockId;
     private int numDecimals = 4;
+    private boolean padWithZeros = false;
+    private boolean forceDecimalEncoding = false;
 
     public void setCollectionNamespace(String nsURI) {
         collectionNamespace = nsURI;
@@ -147,6 +149,14 @@ public class FeatureTransformer extends TransformerBase {
      */
     public void setNumDecimals(int numDecimals) {
         this.numDecimals = numDecimals;
+    }
+
+    public void setPadWithZeros(boolean padWithZeros) {
+        this.padWithZeros = padWithZeros;
+    }
+
+    public void setForceDecimalEncoding(boolean forceDecimalEncoding) {
+        this.forceDecimalEncoding = forceDecimalEncoding;
     }
 
     public NamespaceSupport getFeatureNamespaces() {
@@ -278,6 +288,8 @@ public class FeatureTransformer extends TransformerBase {
 
         // setGmlPrefixing(true);
         t.setNumDecimals(numDecimals);
+        t.setPadWithZeros(padWithZeros);
+        t.setForceDecimalEncoding(forceDecimalEncoding);
         t.setGmlPrefixing(prefixGml);
         t.setSrsName(srsName);
         t.setLockId(lockId);
@@ -413,8 +425,12 @@ public class FeatureTransformer extends TransformerBase {
         }
 
         protected GeometryTranslator createGeometryTranslator(
-                ContentHandler handler, int numDecimals) {
-            return new GeometryTransformer.GeometryTranslator(handler, numDecimals);
+                ContentHandler handler,
+                int numDecimals,
+                boolean padWithZeros,
+                boolean forceDecimalEncoding) {
+            return new GeometryTransformer.GeometryTranslator(
+                    handler, numDecimals, padWithZeros, forceDecimalEncoding);
         }
         /**
          * @param handler
@@ -423,8 +439,13 @@ public class FeatureTransformer extends TransformerBase {
          * @return
          */
         protected GeometryTranslator createGeometryTranslator(
-                ContentHandler handler, int numDecimals, boolean useDummyZ) {
-            return new GeometryTransformer.GeometryTranslator(handler, numDecimals, useDummyZ);
+                ContentHandler handler,
+                int numDecimals,
+                boolean padWithZeros,
+                boolean forceDecimalEncoding,
+                boolean useDummyZ) {
+            return new GeometryTransformer.GeometryTranslator(
+                    handler, numDecimals, padWithZeros, forceDecimalEncoding, useDummyZ);
         }
 
         /**
@@ -440,9 +461,20 @@ public class FeatureTransformer extends TransformerBase {
          *     above parameters
          */
         protected GeometryTranslator createGeometryTranslator(
-                ContentHandler handler, int numDecimals, int dimension) {
+                ContentHandler handler,
+                int numDecimals,
+                boolean padWithZeros,
+                boolean forceDecimalEncoding,
+                int dimension) {
             return new GeometryTranslator(
-                    handler, "gml", GMLUtils.GML_URL, numDecimals, false, dimension);
+                    handler,
+                    "gml",
+                    GMLUtils.GML_URL,
+                    numDecimals,
+                    padWithZeros,
+                    forceDecimalEncoding,
+                    false,
+                    dimension);
         }
 
         void setGmlPrefixing(boolean prefixGml) {
@@ -462,20 +494,51 @@ public class FeatureTransformer extends TransformerBase {
         }
 
         void setNumDecimals(int numDecimals) {
-            geometryTranslator = createGeometryTranslator(handler, numDecimals);
+            geometryTranslator =
+                    createGeometryTranslator(
+                            handler,
+                            numDecimals,
+                            geometryTranslator.getPadWithZeros(),
+                            geometryTranslator.getForceDecimalEncoding());
+        }
+
+        void setPadWithZeros(boolean padWithZeros) {
+            geometryTranslator =
+                    createGeometryTranslator(
+                            handler,
+                            geometryTranslator.getNumDecimals(),
+                            padWithZeros,
+                            geometryTranslator.getForceDecimalEncoding());
+        }
+
+        void setForceDecimalEncoding(boolean forceDecimalEncoding) {
+            geometryTranslator =
+                    createGeometryTranslator(
+                            handler,
+                            geometryTranslator.getNumDecimals(),
+                            geometryTranslator.getPadWithZeros(),
+                            forceDecimalEncoding);
         }
 
         void setUseDummyZ(boolean useDummyZ) {
             geometryTranslator =
                     createGeometryTranslator(
-                            handler, geometryTranslator.getNumDecimals(), useDummyZ);
+                            handler,
+                            geometryTranslator.getNumDecimals(),
+                            geometryTranslator.getPadWithZeros(),
+                            geometryTranslator.getForceDecimalEncoding(),
+                            useDummyZ);
         }
 
         /** If set to 3 the real z value from the coordinates will be used */
         void setDimension(int dimension) {
             geometryTranslator =
                     createGeometryTranslator(
-                            handler, geometryTranslator.getNumDecimals(), dimension);
+                            handler,
+                            geometryTranslator.getNumDecimals(),
+                            geometryTranslator.getPadWithZeros(),
+                            geometryTranslator.getForceDecimalEncoding(),
+                            dimension);
         }
 
         public void setLockId(String lockId) {

@@ -21,12 +21,18 @@ import java.io.InputStream;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import org.geotools.data.wfs.internal.GetFeatureParser;
+import org.geotools.data.wfs.internal.WFSConfig;
+import org.geotools.geometry.jts.GeometryCoordinateSequenceTransformer;
+import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.geotools.xml.Configuration;
 import org.geotools.xml.PullParser;
 import org.geotools.xml.impl.ParserHandler.ContextCustomizer;
+import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.type.FeatureType;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.referencing.operation.TransformException;
 import org.xml.sax.SAXException;
 
 /**
@@ -43,14 +49,19 @@ public class PullParserFeatureReader implements GetFeatureParser {
 
     private FeatureType featureType;
 
+    private final String axisOrder;
+
+    GeometryCoordinateSequenceTransformer transformer;
+
     public PullParserFeatureReader(
             final Configuration wfsConfiguration,
             final InputStream getFeatureResponseStream,
-            final FeatureType featureType)
+            final FeatureType featureType,
+            String axisOrder)
             throws IOException {
         this.inputStream = getFeatureResponseStream;
         this.featureType = featureType;
-
+        this.axisOrder = axisOrder;
         this.parser =
                 new PullParser(
                         wfsConfiguration,
@@ -58,6 +69,9 @@ public class PullParserFeatureReader implements GetFeatureParser {
                         new QName(
                                 featureType.getName().getNamespaceURI(),
                                 featureType.getName().getLocalPart()));
+
+        transformer = new GeometryCoordinateSequenceTransformer();
+        transformer.setMathTransform(new AffineTransform2D(0, 1, 1, 0, 0, 0));
     }
 
     /** @see GetFeatureParser#close() */
@@ -81,7 +95,24 @@ public class PullParserFeatureReader implements GetFeatureParser {
             throw new IOException(e);
         }
         SimpleFeature feature = (SimpleFeature) parsed;
+        if (feature != null && feature.getDefaultGeometry() != null) {
+            Geometry geometry = (Geometry) feature.getDefaultGeometry();
+            if (geometry.getUserData() instanceof CoordinateReferenceSystem) {
+                CoordinateReferenceSystem crs = (CoordinateReferenceSystem) geometry.getUserData();
+                if (WFSConfig.invertAxisNeeded(axisOrder, crs)) {
+                    try {
+                        feature.setDefaultGeometry(invertGeometryCoordinates(geometry));
+                    } catch (TransformException e) {
+                        throw new IOException(e);
+                    }
+                }
+            }
+        }
         return feature;
+    }
+
+    private Geometry invertGeometryCoordinates(Geometry geometry) throws TransformException {
+        return transformer.transform(geometry);
     }
 
     /** @see GetFeatureParser#getNumberOfFeatures() */

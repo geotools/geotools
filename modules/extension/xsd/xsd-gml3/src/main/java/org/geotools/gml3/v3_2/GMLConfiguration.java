@@ -342,4 +342,42 @@ public class GMLConfiguration extends Configuration {
     public void setGeometryFactory(GeometryFactory geometryFactory) {
         delegate.setGeometryFactory(geometryFactory);
     }
+
+    /**
+     * Formats decimals of coordinates padding with zeros up to the configured number of decimals.
+     *
+     * @param padWithZeros right pad decimals with zeros
+     */
+    public void setPadWithZeros(boolean padWithZeros) {
+        delegate.setPadWithZeros(padWithZeros);
+    }
+
+    /**
+     * Forces usage of decimal notation, avoiding scientific notations to encode coordinates.
+     *
+     * @param forceDecimalEncoding avoid scientific notation, always use decimal
+     */
+    public void setForceDecimalEncoding(boolean forceDecimalEncoding) {
+        delegate.setForceDecimalEncoding(forceDecimalEncoding);
+    }
+
+    /**
+     * Returns true if decimals of coordinates are padded with zeros up to the configured number of
+     * decimals.
+     *
+     * @return true if decimals are right-padded with zeros
+     */
+    public boolean getPadWithZeros() {
+        return delegate.getPadWithZeros();
+    }
+
+    /**
+     * Returns true if decimal notation should always be used, and scientific notation always
+     * avoided.
+     *
+     * @return true if decimal notation is always used for encoding coordinates
+     */
+    public boolean getForceDecimalEncoding() {
+        return delegate.getForceDecimalEncoding();
+    }
 }

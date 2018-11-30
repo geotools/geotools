@@ -76,7 +76,6 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
@@ -586,7 +585,8 @@ public class GeoPackageTest {
         TileEntry e = new TileEntry();
         e.setTableName("foo");
         e.setBounds(new ReferencedEnvelope(-10, 10, -10, 10, DefaultGeographicCRS.WGS84));
-        e.setTileMatrixSetBounds(new Envelope(-180, 180, -90, 90));
+        e.setTileMatrixSetBounds(
+                new ReferencedEnvelope(-180, 180, -90, 90, DefaultGeographicCRS.WGS84));
         e.getTileMatricies().add(new TileMatrix(0, 1, 1, 256, 256, 0.1, 0.1));
         e.getTileMatricies().add(new TileMatrix(1, 2, 2, 256, 256, 0.1, 0.1));
 
@@ -772,10 +772,10 @@ public class GeoPackageTest {
 
             rs.next();
             assertEquals(rs.getInt(2), entry.getSrid().intValue());
-            assertEquals(rs.getDouble(3), entry.getBounds().getMinX(), 0.01);
-            assertEquals(rs.getDouble(4), entry.getBounds().getMinY(), 0.01);
-            assertEquals(rs.getDouble(5), entry.getBounds().getMaxX(), 0.01);
-            assertEquals(rs.getDouble(6), entry.getBounds().getMaxY(), 0.01);
+            assertEquals(rs.getDouble(3), entry.getTileMatrixSetBounds().getMinX(), 0.01);
+            assertEquals(rs.getDouble(4), entry.getTileMatrixSetBounds().getMinY(), 0.01);
+            assertEquals(rs.getDouble(5), entry.getTileMatrixSetBounds().getMaxX(), 0.01);
+            assertEquals(rs.getDouble(6), entry.getTileMatrixSetBounds().getMaxY(), 0.01);
 
             assertFalse(rs.next());
 

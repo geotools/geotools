@@ -49,6 +49,7 @@ import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.DefaultHarvestedSource;
 import org.geotools.coverage.grid.io.DimensionDescriptor;
 import org.geotools.coverage.grid.io.GranuleSource;
+import org.geotools.coverage.grid.io.GranuleStore;
 import org.geotools.coverage.grid.io.HarvestedSource;
 import org.geotools.coverage.grid.io.OverviewPolicy;
 import org.geotools.coverage.grid.io.StructuredGridCoverage2DReader;
@@ -1179,12 +1180,14 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
             coverageName = defaultName;
         }
         RasterManager manager = getRasterManager(coverageName);
-        if (manager == null) {
-            // Consider creating a new GranuleStore
-        } else {
-            return manager.getGranuleSource(readOnly, getHints());
+        GranuleSource source = null;
+        if (manager != null) {
+            source = manager.getGranuleSource(readOnly, getHints());
+            if (source instanceof GranuleStore) {
+                source = new PurgingGranuleStore((GranuleStore) source, manager);
+            }
         }
-        return null;
+        return source;
     }
 
     @Override

@@ -62,11 +62,23 @@ public abstract class GeometryEncoderTestSupport extends GML3TestSupport {
 
     protected Document encode(GeometryEncoder encoder, Geometry geometry, String gmlId)
             throws Exception {
-        return encode(encoder, geometry, true, gmlId);
+        return encode(encoder, geometry, true, gmlId, 6, false, false);
     }
 
     protected Document encode(
             GeometryEncoder encoder, Geometry geometry, boolean encodeMeasures, String gmlId)
+            throws Exception {
+        return encode(encoder, geometry, encodeMeasures, gmlId, 6, false, false);
+    }
+
+    protected Document encode(
+            GeometryEncoder encoder,
+            Geometry geometry,
+            boolean encodeMeasures,
+            String gmlId,
+            int numDecimals,
+            boolean decimalEncoding,
+            boolean padWithZeros)
             throws Exception {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
 
@@ -87,7 +99,14 @@ public abstract class GeometryEncoderTestSupport extends GML3TestSupport {
         xmls.setResult(new StreamResult(out));
 
         GMLWriter handler =
-                new GMLWriter(xmls, gtEncoder.getNamespaces(), 6, false, "gml", encodeMeasures);
+                new GMLWriter(
+                        xmls,
+                        gtEncoder.getNamespaces(),
+                        numDecimals,
+                        decimalEncoding,
+                        padWithZeros,
+                        "gml",
+                        encodeMeasures);
         handler.startDocument();
         handler.startPrefixMapping("gml", GML.NAMESPACE);
         handler.endPrefixMapping("gml");

@@ -16,9 +16,11 @@
  */
 package org.geotools.gce.imagemosaic.catalog;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map.Entry;
 import org.geotools.coverage.grid.io.footprint.MultiLevelROI;
 import org.geotools.coverage.grid.io.footprint.MultiLevelROIProvider;
@@ -133,6 +135,20 @@ public abstract class GranuleCatalog {
             }
         }
         return null;
+    }
+
+    /**
+     * Returns the list of footprint files for the given granule
+     *
+     * @param sf
+     * @return
+     * @throws IOException
+     */
+    public List<File> getFootprintFiles(SimpleFeature sf) throws IOException {
+        if (multiScaleROIProvider != null) {
+            return multiScaleROIProvider.getFootprintFiles(sf);
+        }
+        return Collections.emptyList();
     }
 
     /**

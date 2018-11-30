@@ -1383,9 +1383,7 @@ public class SLDTransformer extends TransformerBase {
             // gamma
             Expression exp = ce.getGammaValue();
             if (exp != null) {
-                // gamma is a double so the actual value needs to be printed here
-                element("GammaValue", ((Literal) exp).getValue().toString());
-                // element("GammaValue", exp);
+                element("GammaValue", exp);
             }
             end("ContrastEnhancement");
         }

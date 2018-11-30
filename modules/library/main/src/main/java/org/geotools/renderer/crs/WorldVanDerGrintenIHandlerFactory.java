@@ -48,8 +48,8 @@ public class WorldVanDerGrintenIHandlerFactory implements ProjectionHandlerFacto
         if (mapProjection instanceof WorldVanDerGrintenI) {
             ReferencedEnvelope validArea =
                     new ReferencedEnvelope(
-                            -Double.MAX_VALUE,
-                            Double.MAX_VALUE,
+                            -Integer.MAX_VALUE,
+                            Integer.MAX_VALUE,
                             -90,
                             90,
                             DefaultGeographicCRS.WGS84);

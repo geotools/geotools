@@ -1948,6 +1948,27 @@ public class SLDTransformerTest {
     }
 
     @Test
+    public void testGammaValueExpressionContrastEnhancement() throws Exception {
+        StyleBuilder sb = new StyleBuilder();
+
+        ContrastEnhancement ce = new ContrastEnhancementImpl();
+        ce.setGammaValue(ff.add(ff.literal(1.0), ff.literal(0.5)));
+        SLDTransformer st = new SLDTransformer();
+        String xml = st.transform(ce);
+        // System.out.println(xml);
+        Document doc = buildTestDocument(xml);
+        assertXpathExists("//sld:ContrastEnhancement/sld:GammaValue", doc);
+        assertXpathExists("//sld:ContrastEnhancement/sld:GammaValue/ogc:Add", doc);
+
+        String skeleton =
+                "<?xml version=\"1.0\" encoding=\"UTF-8\"?><sld:ContrastEnhancement xmlns=\"http://www.opengis.net/sld\" xmlns:sld=\"http://www.opengis.net/sld\" xmlns:gml=\"http://www.opengis.net/gml\" xmlns:ogc=\"http://www.opengis.net/ogc\"><sld:GammaValue><ogc:Add><ogc:Literal>1.0</ogc:Literal><ogc:Literal>0.5</ogc:Literal></ogc:Add></sld:GammaValue></sld:ContrastEnhancement>";
+        // System.out.println(xml);
+        Diff myDiff = new Diff(skeleton, xml);
+
+        assertTrue("test XML matches control skeleton XML " + myDiff, myDiff.similar());
+    }
+
+    @Test
     public void testMultipleFontsUniform() throws Exception {
         StyleBuilder sb = new StyleBuilder();
         Font f1 = sb.createFont("Arial", 10);

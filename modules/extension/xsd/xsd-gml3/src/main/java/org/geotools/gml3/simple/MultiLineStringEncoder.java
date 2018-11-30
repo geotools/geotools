@@ -65,6 +65,23 @@ class MultiLineStringEncoder extends GeometryEncoder<Geometry> {
         lse = new LineStringEncoder(encoder, gmlPrefix, gmlUri);
         lre = new LinearRingEncoder(encoder, gmlPrefix, gmlUri);
         ce = new CurveEncoder(encoder, gmlPrefix, gmlUri);
+        init(encoder, gmlPrefix, gmlUri, curveEncoding);
+    }
+
+    protected MultiLineStringEncoder(
+            Encoder encoder,
+            String gmlPrefix,
+            String gmlUri,
+            boolean curveEncoding,
+            boolean encodeGmlId) {
+        super(encoder, encodeGmlId);
+        lse = new LineStringEncoder(encoder, gmlPrefix, gmlUri, encodeGmlId);
+        lre = new LinearRingEncoder(encoder, gmlPrefix, gmlUri, encodeGmlId);
+        ce = new CurveEncoder(encoder, gmlPrefix, gmlUri, encodeGmlId);
+        init(encoder, gmlPrefix, gmlUri, curveEncoding);
+    }
+
+    private void init(Encoder encoder, String gmlPrefix, String gmlUri, boolean curveEncoding) {
         this.curveEncoding = curveEncoding;
         if (curveEncoding) {
             multiContainer = MULTI_CURVE.derive(gmlPrefix, gmlUri);

@@ -186,20 +186,25 @@ class WFSFeatureSource extends ContentFeatureSource {
      *
      * @param query
      */
-    private void invertAxisInFilterIfNeeded(Query query) {
-        boolean invertXY =
-                WFSConfig.invertAxisNeeded(
-                        client.getAxisOrderFilter(), query.getCoordinateSystem());
-        if (invertXY) {
-            Filter filter = query.getFilter();
-
-            FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
-            InvertAxisFilterVisitor visitor =
-                    new InvertAxisFilterVisitor(ff, new GeometryFactory());
-            filter = (Filter) filter.accept(visitor, null);
-
-            query.setFilter(filter);
+    private void invertAxisInFilterIfNeeded(Query query, SimpleFeatureType featureType) {
+        CoordinateReferenceSystem crs = query.getCoordinateSystem();
+        if (crs == null) {
+            crs = featureType.getCoordinateReferenceSystem();
         }
+        boolean invertXY = WFSConfig.invertAxisNeeded(client.getAxisOrderFilter(), crs);
+        if (invertXY) {
+            invertAxisInFilter(query);
+        }
+    }
+
+    private void invertAxisInFilter(Query query) {
+        Filter filter = query.getFilter();
+
+        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+        InvertAxisFilterVisitor visitor = new InvertAxisFilterVisitor(ff, new GeometryFactory());
+        filter = (Filter) filter.accept(visitor, null);
+
+        query.setFilter(filter);
     }
 
     protected GetFeatureRequest createGetFeature(Query query, ResultType resultType)
@@ -214,9 +219,7 @@ class WFSFeatureSource extends ContentFeatureSource {
 
         request.setTypeName(remoteTypeName);
         request.setFullType(remoteSimpleFeatureType);
-
-        invertAxisInFilterIfNeeded(query);
-
+        invertAxisInFilterIfNeeded(query, remoteSimpleFeatureType);
         request.setFilter(query.getFilter());
         request.setResultType(resultType);
         request.setHints(query.getHints());

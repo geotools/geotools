@@ -65,25 +65,36 @@ public class CoordinateWriter {
     private String namespaceUri = GMLUtils.GML_URL;
 
     public CoordinateWriter() {
-        this(4);
-    }
-
-    public CoordinateWriter(int numDecimals, boolean isDummyZEnabled) {
-        this(numDecimals, " ", ",", isDummyZEnabled);
+        this(4, false, true);
     }
 
     public CoordinateWriter(int numDecimals) {
-        this(numDecimals, false);
+        this(numDecimals, false, true);
     }
 
-    // TODO: check gml spec - can it be strings?  Or just chars?
+    public CoordinateWriter(int numDecimals, boolean isDummyZEnabled) {
+        this(numDecimals, false, true, isDummyZEnabled);
+    }
+
     public CoordinateWriter(int numDecimals, String tupleDelim, String coordDelim) {
-        this(numDecimals, tupleDelim, coordDelim, false);
+        this(numDecimals, false, true, tupleDelim, coordDelim);
+    }
+
+    public CoordinateWriter(
+            int numDecimals,
+            boolean padWithZeros,
+            boolean forceDecimalEncoding,
+            boolean isDummyZEnabled) {
+        this(numDecimals, padWithZeros, forceDecimalEncoding, " ", ",", isDummyZEnabled);
     }
 
     public CoordinateWriter(
             int numDecimals, String tupleDelim, String coordDelim, boolean useDummyZ) {
-        this(numDecimals, tupleDelim, coordDelim, useDummyZ, 0);
+        this(numDecimals, false, true, tupleDelim, coordDelim, useDummyZ);
+    }
+
+    public CoordinateWriter(int numDecimals, boolean padWithZeros, boolean forceDecimalEncoding) {
+        this(numDecimals, padWithZeros, forceDecimalEncoding, false);
     }
 
     public CoordinateWriter(
@@ -92,11 +103,69 @@ public class CoordinateWriter {
             String coordDelim,
             boolean useDummyZ,
             double zValue) {
-        this(numDecimals, tupleDelim, coordDelim, useDummyZ, 0, 2);
+        this(numDecimals, false, true, tupleDelim, coordDelim, useDummyZ, zValue);
     }
 
     public CoordinateWriter(int numDecimals, boolean useDummyZ, int dimension) {
-        this(numDecimals, " ", ",", useDummyZ, 0, dimension);
+        this(numDecimals, false, true, useDummyZ, dimension);
+    }
+
+    // TODO: check gml spec - can it be strings?  Or just chars?
+    public CoordinateWriter(
+            int numDecimals,
+            boolean padWithZeros,
+            boolean forceDecimalEncoding,
+            String tupleDelim,
+            String coordDelim) {
+        this(numDecimals, padWithZeros, forceDecimalEncoding, tupleDelim, coordDelim, false);
+    }
+
+    public CoordinateWriter(
+            int numDecimals,
+            String tupleDelim,
+            String coordDelim,
+            boolean useZ,
+            double z,
+            int dimension) {
+        this(numDecimals, false, true, tupleDelim, coordDelim, useZ, z, dimension);
+    }
+
+    public CoordinateWriter(
+            int numDecimals,
+            boolean padWithZeros,
+            boolean forceDecimalEncoding,
+            String tupleDelim,
+            String coordDelim,
+            boolean useDummyZ) {
+        this(numDecimals, padWithZeros, forceDecimalEncoding, tupleDelim, coordDelim, useDummyZ, 0);
+    }
+
+    public CoordinateWriter(
+            int numDecimals,
+            boolean padWithZeros,
+            boolean forceDecimalEncoding,
+            String tupleDelim,
+            String coordDelim,
+            boolean useDummyZ,
+            double zValue) {
+        this(
+                numDecimals,
+                padWithZeros,
+                forceDecimalEncoding,
+                tupleDelim,
+                coordDelim,
+                useDummyZ,
+                0,
+                2);
+    }
+
+    public CoordinateWriter(
+            int numDecimals,
+            boolean padWithZeros,
+            boolean forceDecimalEncoding,
+            boolean useDummyZ,
+            int dimension) {
+        this(numDecimals, padWithZeros, forceDecimalEncoding, " ", ",", useDummyZ, 0, dimension);
     }
 
     /**
@@ -121,6 +190,8 @@ public class CoordinateWriter {
      */
     public CoordinateWriter(
             int numDecimals,
+            boolean padWithZeros,
+            boolean forceDecimalEncoding,
             String tupleDelim,
             String coordDelim,
             boolean useZ,
@@ -139,7 +210,8 @@ public class CoordinateWriter {
         coordinateDelimiter = coordDelim;
 
         coordFormatter = new CoordinateFormatter(numDecimals);
-        coordFormatter.setForcedDecimal(true);
+        coordFormatter.setForcedDecimal(forceDecimalEncoding);
+        coordFormatter.setPadWithZeros(padWithZeros);
 
         String uri = namespaceUri;
         if (!namespaceAware) {
@@ -156,6 +228,14 @@ public class CoordinateWriter {
 
     public int getNumDecimals() {
         return coordFormatter.getMaximumFractionDigits();
+    }
+
+    public boolean getPadWithZeros() {
+        return coordFormatter.isPadWithZeros();
+    }
+
+    public boolean getForceDecimalEncoding() {
+        return coordFormatter.isForcedDecimal();
     }
 
     public boolean isDummyZEnabled() {

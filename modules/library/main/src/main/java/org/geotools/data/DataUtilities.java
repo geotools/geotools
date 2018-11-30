@@ -234,27 +234,43 @@ public class DataUtilities {
 
         typeEncode.put(Geometry.class, "Geometry");
         typeMap.put("Geometry", Geometry.class);
+        typeMap.put("com.vividsolutions.jts.geom.Geometry", Geometry.class);
+        typeMap.put("org.locationtech.jts.geom.Geometry", Geometry.class);
 
         typeEncode.put(Point.class, "Point");
         typeMap.put("Point", Point.class);
+        typeMap.put("com.vividsolutions.jts.geom.Point", Point.class);
+        typeMap.put("org.locationtech.jts.geom.Point", Point.class);
 
         typeEncode.put(LineString.class, "LineString");
         typeMap.put("LineString", LineString.class);
+        typeMap.put("com.vividsolutions.jts.geom.LineString", LineString.class);
+        typeMap.put("org.locationtech.jts.geom.LineString", LineString.class);
 
         typeEncode.put(Polygon.class, "Polygon");
         typeMap.put("Polygon", Polygon.class);
+        typeMap.put("com.vividsolutions.jts.geom.Polygon", Polygon.class);
+        typeMap.put("org.locationtech.jts.geom.Polygon", Polygon.class);
 
         typeEncode.put(MultiPoint.class, "MultiPoint");
         typeMap.put("MultiPoint", MultiPoint.class);
+        typeMap.put("com.vividsolutions.jts.geom.MultiPoint", MultiPoint.class);
+        typeMap.put("org.locationtech.jts.geom.MultiPoint", MultiPoint.class);
 
         typeEncode.put(MultiLineString.class, "MultiLineString");
         typeMap.put("MultiLineString", MultiLineString.class);
+        typeMap.put("com.vividsolutions.jts.geom.MultiPoint", MultiLineString.class);
+        typeMap.put("org.locationtech.jts.geom.MultiPoint", MultiLineString.class);
 
         typeEncode.put(MultiPolygon.class, "MultiPolygon");
         typeMap.put("MultiPolygon", MultiPolygon.class);
+        typeMap.put("com.vividsolutions.jts.geom.MultiPolygon", MultiPolygon.class);
+        typeMap.put("org.locationtech.jts.geom.MultiPolygon", MultiPolygon.class);
 
         typeEncode.put(GeometryCollection.class, "GeometryCollection");
         typeMap.put("GeometryCollection", GeometryCollection.class);
+        typeMap.put("com.vividsolutions.jts.geom.GeometryCollection", GeometryCollection.class);
+        typeMap.put("org.locationtech.jts.geom.GeometryCollection", GeometryCollection.class);
 
         typeEncode.put(Date.class, "Date");
         typeMap.put("Date", Date.class);
@@ -802,7 +818,7 @@ public class DataUtilities {
 
     /**
      * Returns a non-null default value for the class that is passed in. This is a helper class an
-     * can't create a default class for any type but it does support:
+     * can't create a default class for all types but it does support:
      *
      * <ul>
      *   <li>String
@@ -822,6 +838,7 @@ public class DataUtilities {
      *   <li>java.sql.Time
      *   <li>java.util.Date
      *   <li>JTS Geometries
+     *   <li>Arrays - will return an empty array of the appropriate type
      * </ul>
      *
      * @param type
@@ -902,6 +919,10 @@ public class DataUtilities {
         }
         if (type == MultiPolygon.class) {
             return fac.createMultiPolygon(new Polygon[] {polygon});
+        }
+
+        if (type.isArray()) {
+            return Array.newInstance(type.getComponentType(), 0);
         }
 
         throw new IllegalArgumentException(type + " is not supported by this method");
@@ -2582,7 +2603,7 @@ public class DataUtilities {
                     if (h.equals("nillable")) {
                         nillable = true;
                     }
-                    // spatial reference identieger?
+                    // spatial reference identifier
                     if (h.startsWith("srid=")) {
                         String srid = h.split("=")[1];
                         Integer.parseInt(srid);
@@ -2596,7 +2617,7 @@ public class DataUtilities {
                 }
             }
 
-            Class clazz = type(type);
+            Class<?> clazz = type(type);
             if (Geometry.class.isAssignableFrom(clazz)) {
                 GeometryType at =
                         new GeometryTypeImpl(
@@ -2605,7 +2626,7 @@ public class DataUtilities {
                                 crs,
                                 false,
                                 false,
-                                Collections.EMPTY_LIST,
+                                Collections.emptyList(),
                                 null,
                                 null);
                 return new GeometryDescriptorImpl(at, new NameImpl(name), 0, 1, nillable, null);
@@ -2616,7 +2637,7 @@ public class DataUtilities {
                                 clazz,
                                 false,
                                 false,
-                                Collections.EMPTY_LIST,
+                                Collections.emptyList(),
                                 null,
                                 null);
                 return new AttributeDescriptorImpl(at, new NameImpl(name), 0, 1, nillable, null);

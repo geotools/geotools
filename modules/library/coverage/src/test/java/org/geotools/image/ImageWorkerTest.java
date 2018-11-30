@@ -16,7 +16,9 @@
  */
 package org.geotools.image;
 
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -37,13 +39,10 @@ import it.geosolutions.jaiext.range.NoDataContainer;
 import it.geosolutions.jaiext.range.Range;
 import it.geosolutions.jaiext.range.RangeFactory;
 import it.geosolutions.jaiext.vectorbin.ROIGeometry;
-import java.awt.Color;
-import java.awt.Image;
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.awt.Transparency;
+import java.awt.*;
 import java.awt.color.ColorSpace;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Area;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
@@ -212,6 +211,10 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         return image;
     }
 
+    private static BufferedImage getSyntheticRGB(Color color) {
+        return getSyntheticRGB(color, 128);
+    }
+
     /**
      * Creates a test image in RGB with either {@link ComponentColorModel} or {@link
      * DirectColorModel}.
@@ -220,9 +223,9 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
      *     </code> otherwise.
      * @return
      */
-    private static BufferedImage getSyntheticRGB(Color color) {
-        final int width = 128;
-        final int height = 128;
+    private static BufferedImage getSyntheticRGB(Color color, int sideSize) {
+        final int width = sideSize;
+        final int height = sideSize;
         final BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_3BYTE_BGR);
         final WritableRaster raster = image.getRaster();
         for (int y = 0; y < height; y++) {
@@ -235,6 +238,10 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         return image;
     }
 
+    private static BufferedImage getSyntheticSolidGray(byte gray) {
+        return getSyntheticSolidGray(gray, 128);
+    }
+
     /**
      * Creates a test image in RGB with either {@link ComponentColorModel} or {@link
      * DirectColorModel}.
@@ -243,9 +250,9 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
      *     </code> otherwise.
      * @return
      */
-    private static BufferedImage getSyntheticSolidGray(byte gray) {
-        final int width = 128;
-        final int height = 128;
+    private static BufferedImage getSyntheticSolidGray(byte gray, int sideSize) {
+        final int width = sideSize;
+        final int height = sideSize;
         final BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_BYTE_GRAY);
         final WritableRaster raster = image.getRaster();
         for (int y = 0; y < height; y++) {
@@ -272,6 +279,42 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
             for (int j = raster.getMinY(); j < raster.getMinY() + raster.getHeight(); j++)
                 raster.setSample(i, j, 0, (i + j) / 32);
         return new BufferedImage(icm, raster, false, null);
+    }
+
+    /**
+     * Creates a test paletted image with nodata and no transparency
+     *
+     * @return
+     */
+    private static RenderedImage getIndexedRGBNodata() {
+        // a palette with just the first 200 entries filled, the others are all zero (but present!)
+        final byte bb[] = new byte[256];
+        for (int i = 0; i < 256; i++) {
+            if (i < 200) {
+                bb[i] = (byte) i;
+            } else {
+                bb[i] = (byte) 0;
+            }
+        }
+        int noDataValue = 200;
+        NoDataContainer noData = new NoDataContainer(noDataValue);
+        final IndexColorModel icm = new IndexColorModel(8, 256, bb, bb, bb);
+        final WritableRaster raster =
+                RasterFactory.createWritableRaster(
+                        icm.createCompatibleSampleModel(1024, 1024), null);
+        for (int i = raster.getMinX(); i < raster.getMinX() + raster.getWidth(); i++) {
+            for (int j = raster.getMinY(); j < raster.getMinY() + raster.getHeight(); j++) {
+                if (i - raster.getMinX() < raster.getWidth() / 2) {
+                    raster.setSample(i, j, 0, (i + j) / 32);
+                } else {
+                    raster.setSample(i, j, 0, 200);
+                }
+            }
+        }
+        BufferedImage bi = new BufferedImage(icm, raster, false, null);
+        PlanarImage planarImage = PlanarImage.wrapRenderedImage(bi);
+        planarImage.setProperty(NoDataContainer.GC_NODATA, noData);
+        return planarImage;
     }
 
     /**
@@ -1341,6 +1384,65 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
     }
 
     @Test
+    public void testIndexedRGBNoDataPrepareForRendering() {
+        RenderedImage image = getIndexedRGBNodata();
+        ImageWorker iw = new ImageWorker(image);
+        iw.prepareForRendering();
+        RenderedImage expanded = iw.getRenderedImage();
+
+        // nodata forced expansion
+        assertTrue(expanded.getColorModel() instanceof ComponentColorModel);
+        assertTrue(expanded.getColorModel().hasAlpha());
+        assertNoData(expanded, null);
+        // check the value has been made transparent
+        assertEquals(
+                0,
+                expanded.getData()
+                        .getSample(
+                                expanded.getMinX() + expanded.getWidth() / 3 * 2,
+                                expanded.getMinY(),
+                                3));
+    }
+
+    @Test
+    public void testIndexedRGBNoDataForceComponentColorModel() {
+        RenderedImage image = getIndexedRGBNodata();
+        ImageWorker iw = new ImageWorker(image);
+        iw.setBackground(new double[] {0, 0, 255});
+        iw.forceComponentColorModel();
+        RenderedImage expanded = iw.getRenderedImage();
+
+        // nodata forced expansion
+        assertTrue(expanded.getColorModel() instanceof ComponentColorModel);
+        assertTrue(expanded.getColorModel().hasAlpha());
+        // assertNoData(expanded, null);
+        // check the value has been made transparent
+        assertEquals(
+                0,
+                expanded.getData()
+                        .getSample(
+                                expanded.getMinX() + expanded.getWidth() / 3 * 2,
+                                expanded.getMinY(),
+                                3));
+    }
+
+    @Test
+    public void testIndexedRGBNoDataForceComponentColorModelNoAlpha() {
+        RenderedImage image = getIndexedRGBNodata();
+        ImageWorker iw = new ImageWorker(image);
+        iw.setBackground(new double[] {0, 0, 255});
+        iw.forceComponentColorModel(false, true, true);
+        RenderedImage expanded = iw.getRenderedImage();
+
+        // nodata forced expansion
+        assertTrue(expanded.getColorModel() instanceof ComponentColorModel);
+
+        // Make sure there is noAlpha
+        assertFalse(expanded.getColorModel().hasAlpha());
+        assertEquals(3, expanded.getColorModel().getNumComponents());
+    }
+
+    @Test
     public void testOptimizeAffine() throws Exception {
         BufferedImage bi = new BufferedImage(100, 100, BufferedImage.TYPE_3BYTE_BGR);
         ImageWorker iw = new ImageWorker(bi);
@@ -2019,6 +2121,93 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         assertWarpROI();
     }
 
+    @Test
+    public void testAlphaInterpolation() {
+
+        // All image pixels are initialized to RED.
+        BufferedImage red = getSyntheticRGB(Color.RED, 512);
+        BufferedImage alphaChannel = getSyntheticSolidGray((byte) 255, 512);
+
+        final int w = red.getWidth();
+        final int h = red.getHeight();
+        final int specialPixelsOriginX = w / 2;
+        final int specialPixelsOriginY = h / 2;
+
+        // Setting the top left quarter of the image to all zeros
+        int[] zero = new int[] {0, 0, 0};
+        int[] redValues = new int[] {255, 0, 0};
+        WritableRaster raster = red.getRaster();
+        WritableRaster alphaRaster = alphaChannel.getRaster();
+        for (int i = 0; i < specialPixelsOriginX; i++) {
+            for (int j = 0; j < specialPixelsOriginY; j++) {
+                raster.setPixel(i, j, zero);
+                alphaRaster.setSample(i, j, 0, 0);
+            }
+        }
+
+        // Setting the edge of the quarter with some red teeth for future interpolation
+        // Alpha follows the teeth edges.
+        //      **
+        //       *
+        //      **
+        //       *
+        // * * * *
+        // *******
+        int[] values = null;
+        for (int i = specialPixelsOriginX; i < specialPixelsOriginX + 3; i += 3) {
+            for (int j = 0; j < specialPixelsOriginY; j += 6) {
+                for (int k = 0; k < 3; k++) {
+                    for (int l = 0; l < 6; l++) {
+                        values = l > 2 ? redValues : zero;
+                        raster.setPixel(i + k, j + l, values);
+                        alphaRaster.setSample(i + k, j + l, 0, values[0]);
+                    }
+                }
+            }
+        }
+        for (int i = 0; i < specialPixelsOriginX; i += 6) {
+            for (int j = specialPixelsOriginY; j < specialPixelsOriginY + 3; j += 3) {
+                for (int l = 0; l < 3; l++) {
+                    for (int k = 0; k < 6; k++) {
+                        values = k > 2 ? redValues : zero;
+                        raster.setPixel(i + k, j + l, values);
+                        alphaRaster.setSample(i + k, j + l, 0, values[0]);
+                    }
+                }
+            }
+        }
+        // Applying transparency to create RGBA image
+        ImageWorker iw = new ImageWorker(red);
+        iw.addBand(alphaChannel, false, true, null);
+        RenderedImage rgbA = iw.getRenderedImage();
+
+        ImageWorker scalingWorker =
+                new ImageWorker(rgbA)
+                        .scale(
+                                0.5,
+                                0.5,
+                                0,
+                                0,
+                                Interpolation.getInstance(Interpolation.INTERP_BILINEAR));
+        RenderedImage result = scalingWorker.getRenderedImage();
+
+        // Check alpha has not been interpolated
+        SampleModel sm = result.getSampleModel();
+        assertEquals(4, sm.getNumBands());
+        ColorModel cm = result.getColorModel();
+        assertTrue(cm.hasAlpha());
+        Raster alpha = result.getData();
+
+        // Checking alpha component for pixels is either fully opaque (255) or
+        // fully transparent (0) (No interpolation occurred on alpha)
+        for (int i = 0; i < specialPixelsOriginX; i++) {
+            for (int j = 0; j < specialPixelsOriginY; j++) {
+                int sample = alpha.getSample(i, j, 3);
+                assertTrue(sample == 0 || sample == 255);
+            }
+        }
+    }
+
     public void assertWarpROI() throws IOException, TransformException {
         ImageWorker worker = new ImageWorker(gray);
         // ROI covers just 1/4th
@@ -2043,5 +2232,26 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         ImageWorker warpedROIWorker = new ImageWorker(warpedROIImage);
         assertEquals(1, warpedROIWorker.getMaximums()[0], 0d);
         assertEquals(0, warpedROIWorker.getMinimums()[0], 0d);
+    }
+
+    @Test
+    public void testRemoveColorModel() {
+        // cheap way to get a binary image, a ROI is always represented as one
+        Area area = new Area(new Rectangle(0, 0, 32, 16));
+        area.add(new Area(new Rectangle(128, 0, 16, 32)));
+        ROI roi = new ROIShape(area);
+        PlanarImage image = roi.getAsImage();
+        assertThat(image.getColorModel(), instanceOf(IndexColorModel.class));
+        ImageWorker worker = new ImageWorker(image);
+        double[] maximumBefore = worker.getMaximums();
+        assertTrue(worker.isBinary());
+        // remove
+        worker.removeIndexColorModel();
+        RenderedImage result = worker.getRenderedImage();
+        assertThat(result, not(is(image)));
+        assertThat(result.getColorModel(), instanceOf(ComponentColorModel.class));
+        // subtract the original
+        double[] maximums = worker.getMaximums();
+        assertThat(maximums, equalTo(maximumBefore));
     }
 }

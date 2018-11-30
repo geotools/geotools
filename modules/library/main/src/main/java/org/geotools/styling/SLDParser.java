@@ -1513,8 +1513,8 @@ public class SLDParser {
                 symbol.setOptions(parseContrastMethod.getOptions());
             } else if (childName.equalsIgnoreCase("GammaValue")) {
                 try {
-                    final String gammaString = getFirstChildValue(child);
-                    symbol.setGammaValue(ff.literal(Double.parseDouble(gammaString)));
+                    Expression gamma = parseParameterValueExpression(child, false);
+                    symbol.setGammaValue(gamma);
                 } catch (Exception e) {
                     if (LOGGER.isLoggable(Level.WARNING))
                         LOGGER.log(Level.WARNING, e.getLocalizedMessage(), e);

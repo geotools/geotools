@@ -161,6 +161,11 @@ public class GeoPackage {
 
     /** Creates a GeoPackage from an existing file specifying database credentials. */
     public GeoPackage(File file, String user, String passwd) throws IOException {
+        this(file, user, passwd, false);
+    }
+
+    /** Creates a GeoPackage from an existing file specifying database credentials. */
+    public GeoPackage(File file, String user, String passwd, boolean readOnly) throws IOException {
         this.file = file;
 
         Map params = new HashMap();
@@ -169,6 +174,9 @@ public class GeoPackage {
         }
         if (passwd != null) {
             params.put(GeoPkgDataStoreFactory.PASSWD.key, passwd);
+        }
+        if (readOnly) {
+            params.put(GeoPkgDataStoreFactory.READ_ONLY.key, readOnly);
         }
 
         params.put(GeoPkgDataStoreFactory.DATABASE.key, file.getPath());
@@ -1307,7 +1315,7 @@ public class GeoPackage {
     }
 
     /**
-     * Retrieve tiles within certain zooms and column/row boundaries
+     * Retrieve tiles within certain zooms and column/row boundaries.
      *
      * @param entry the tile entry
      * @param lowZoom low zoom boundary
@@ -1331,24 +1339,9 @@ public class GeoPackage {
 
         try {
             List<String> q = new ArrayList();
-            if (lowZoom != null) {
-                q.add("zoom_level >= " + lowZoom);
-            }
-            if (highZoom != null) {
-                q.add("zoom_level <= " + highZoom);
-            }
-            if (lowCol != null) {
-                q.add("tile_column >= " + lowCol);
-            }
-            if (highCol != null) {
-                q.add("tile_column <= " + highCol);
-            }
-            if (lowRow != null) {
-                q.add("tile_row >= " + lowRow);
-            }
-            if (highRow != null) {
-                q.add("tile_row <= " + highRow);
-            }
+            addRange("zoom_level", lowZoom, highZoom, q);
+            addRange("tile_column", lowCol, highCol, q);
+            addRange("tile_row", lowRow, highRow, q);
 
             StringBuffer sql = new StringBuffer("SELECT * FROM ").append(entry.getTableName());
             if (!q.isEmpty()) {
@@ -1368,6 +1361,19 @@ public class GeoPackage {
 
         } catch (SQLException e) {
             throw new IOException(e);
+        }
+    }
+
+    public void addRange(String attribute, Integer low, Integer high, List<String> q) {
+        if (low != null && high != null && low == high) {
+            q.add(attribute + " = " + low);
+        } else {
+            if (low != null) {
+                q.add(attribute + " >= " + low);
+            }
+            if (high != null) {
+                q.add(attribute + " <= " + high);
+            }
         }
     }
 
@@ -1567,6 +1573,52 @@ public class GeoPackage {
                     m.setTiles(rsm.getBoolean("has_tiles"));
 
                     e.getTileMatricies().add(m);
+                }
+            } finally {
+                close(rsm);
+            }
+        } finally {
+            close(psm);
+        }
+        // use the tile matrix set bounds rather that gpkg_contents bounds
+        // per spec, the tile matrix set bounds should be exact and used to calculate tile
+        // coordinates
+        // and in contrast the gpkg_contents is "informational" only
+        psm =
+                cx.prepareStatement(
+                        format(
+                                "SELECT * FROM %s a, %s b "
+                                        + "WHERE a.table_name = ? "
+                                        + "AND a.srs_id = b.srs_id "
+                                        + "LIMIT 1",
+                                TILE_MATRIX_SET, SPATIAL_REF_SYS));
+        try {
+            psm.setString(1, e.getTableName());
+
+            ResultSet rsm = psm.executeQuery();
+            try {
+                if (rsm.next()) {
+
+                    int srid = rsm.getInt("organization_coordsys_id");
+                    e.setSrid(srid);
+
+                    CoordinateReferenceSystem crs;
+                    try {
+                        crs = CRS.decode("EPSG:" + srid);
+                    } catch (Exception ex) {
+                        // not a major concern, by spec the tile matrix set srs should match the
+                        // gpkg_contents srs_id
+                        // which can found in the tile entry bounds
+                        crs = e.getBounds().getCoordinateReferenceSystem();
+                    }
+
+                    e.setTileMatrixSetBounds(
+                            new ReferencedEnvelope(
+                                    rsm.getDouble("min_x"),
+                                    rsm.getDouble("max_x"),
+                                    rsm.getDouble("min_y"),
+                                    rsm.getDouble("max_y"),
+                                    crs));
                 }
             } finally {
                 close(rsm);

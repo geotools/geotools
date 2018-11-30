@@ -18,14 +18,14 @@ package org.geotools.coverage.io.netcdf;
 
 import it.geosolutions.jaiext.JAIExt;
 import it.geosolutions.jaiext.range.NoDataContainer;
-import java.awt.Dimension;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
@@ -33,6 +33,7 @@ import java.util.EnumSet;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.TimeZone;
 import javax.media.jai.PlanarImage;
@@ -207,7 +208,7 @@ public class NetCDFReaderTest extends Assert {
         }
         NetcdfDataset.setDefaultEnhanceMode(newEnhanceMode);
         File file = TestData.file(this, "o3_no2_so.nc");
-        final NetCDFReader reader = new NetCDFReader(file, null);
+        NetCDFReader reader = new NetCDFReader(file, null);
         String coverageName = "NO2";
         GeneralParameterValue[] values = new GeneralParameterValue[] {};
         GridCoverage2D coverage = reader.read(coverageName, values);
@@ -219,7 +220,14 @@ public class NetCDFReaderTest extends Assert {
                         new float[1]);
 
         assertEquals(1.615991, result[0], 1e-6f);
+        reader.dispose();
 
+        // let's open a file containing a time variable with _FillValue attribute
+        file = TestData.file(this, "o3_no2_so_fv_time.nc");
+        reader = new NetCDFReader(file, null);
+        assertEquals(
+                "2012-04-01T00:00:00.000Z",
+                reader.getMetadataValue(coverageName, "TIME_DOMAIN_MINIMUM"));
         NetcdfDataset.setDefaultEnhanceMode(currentEnhanceMode);
         System.setProperty(NetCDFUtilities.ENHANCE_SCALE_MISSING, currentEnhanceMode.toString());
         reader.dispose();
@@ -1431,5 +1439,81 @@ public class NetCDFReaderTest extends Assert {
         assertEquals("file", sourceUrl.getProtocol());
         assertTrue(sourceUrl.getPath().endsWith("O3-NO2.nc"));
         reader.dispose();
+    }
+
+    @Test
+    public void testPurgeMetadataOnly() throws Exception {
+        String directoryName = "purgeMetadataOnly";
+        PurgeSetupHelper purgeSetupHelper = new PurgeSetupHelper(directoryName).invoke();
+
+        // now remove only the metadata
+        NetCDFReader reader = purgeSetupHelper.reader;
+        reader.delete(false);
+        reader.dispose();
+
+        // check we indeed removed the metadata only
+        assertFalse(
+                "Metadata dir should have been removed",
+                purgeSetupHelper.metadataDirectory.get().exists());
+        assertTrue("Data file should still be there", purgeSetupHelper.dataFile.get().exists());
+    }
+
+    @Test
+    public void testPurgeAll() throws Exception {
+        String directoryName = "purgeAll";
+        PurgeSetupHelper purgeSetupHelper = new PurgeSetupHelper(directoryName).invoke();
+
+        // now remove only the metadata
+        NetCDFReader reader = purgeSetupHelper.reader;
+        reader.delete(true);
+        reader.dispose();
+
+        assertFalse(
+                "Metadata dir should have been removed",
+                purgeSetupHelper.metadataDirectory.get().exists());
+        assertFalse(
+                "Data file should also have been removed",
+                purgeSetupHelper.dataFile.get().exists());
+    }
+
+    private class PurgeSetupHelper {
+        private String directoryName;
+        NetCDFReader reader;
+        Optional<File> metadataDirectory;
+        Optional<File> dataFile;
+
+        public PurgeSetupHelper(String directoryName) {
+            this.directoryName = directoryName;
+        }
+
+        public PurgeSetupHelper invoke() throws IOException {
+            File directory = new File(TestData.file(NetCDFReaderTest.this, "."), directoryName);
+            if (directory.exists()) {
+                FileUtils.deleteDirectory(directory);
+            }
+            assertTrue(directory.mkdirs());
+
+            FileUtils.copyFileToDirectory(
+                    TestData.file(NetCDFReaderTest.this, "O3-NO2.nc"), directory);
+            File file = new File(directory, "O3-NO2.nc");
+
+            // create a reader and read coverage, should create everything
+            reader = new NetCDFReader(file, null);
+            GridCoverage2D read = reader.read(reader.getGridCoverageNames()[0], null);
+            read.dispose(true);
+
+            // check we have file and the metadata directory
+            File[] files = directory.listFiles();
+            assertEquals(2, files.length);
+            metadataDirectory =
+                    Arrays.stream(files)
+                            .filter(f -> f.getName().startsWith(".O3-NO2") && f.isDirectory())
+                            .findFirst();
+            assertTrue(metadataDirectory.isPresent());
+            dataFile =
+                    Arrays.stream(files).filter(f -> f.getName().equals("O3-NO2.nc")).findFirst();
+            assertTrue(dataFile.isPresent());
+            return this;
+        }
     }
 }

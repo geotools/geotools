@@ -97,7 +97,27 @@ public class GMLWriter {
             int numDecimals,
             boolean forceDecimal,
             String gmlPrefix) {
-        this(delegate, namespaces, numDecimals, forceDecimal, gmlPrefix, true);
+        this(delegate, namespaces, numDecimals, forceDecimal, false, gmlPrefix, true);
+    }
+
+    /**
+     * Create a new content handler
+     *
+     * @param delegate The actual XML writer
+     * @param namespaces The namespaces known to the Encoder
+     * @param numDecimals How many decimals to preserve when writing ordinates
+     * @param forceDecimal If xs:decimal compliant encoding should be used, or not
+     * @param padWithZeros If apply zero padding
+     * @param gmlPrefix The GML namespace prefix
+     */
+    public GMLWriter(
+            ContentHandler delegate,
+            NamespaceSupport namespaces,
+            int numDecimals,
+            boolean forceDecimal,
+            boolean padWithZeros,
+            String gmlPrefix) {
+        this(delegate, namespaces, numDecimals, forceDecimal, padWithZeros, gmlPrefix, true);
     }
 
     /**
@@ -115,6 +135,7 @@ public class GMLWriter {
             NamespaceSupport namespaces,
             int numDecimals,
             boolean forceDecimal,
+            boolean padWithZeros,
             String gmlPrefix,
             boolean encodeMeasures) {
         this.handler = delegate;
@@ -130,6 +151,7 @@ public class GMLWriter {
 
         this.coordFormatter = new CoordinateFormatter(numDecimals);
         this.coordFormatter.setForcedDecimal(forceDecimal);
+        this.coordFormatter.setPadWithZeros(padWithZeros);
 
         this.encodeMeasures = encodeMeasures;
     }

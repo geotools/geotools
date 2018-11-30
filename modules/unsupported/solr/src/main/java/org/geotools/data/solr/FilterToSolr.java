@@ -709,6 +709,7 @@ public class FilterToSolr implements FilterVisitor {
         visitor.setFeatureType(featureType);
 
         // initialize spatial strategy
+        if (filter instanceof BBOX) visitor.setSpatialStrategy(SolrSpatialStrategy.BBOX);
         AttributeDescriptor spatialAtt = (AttributeDescriptor) e1.evaluate(featureType);
         if (spatialAtt != null && spatialAtt instanceof GeometryDescriptor) {
             visitor.setSpatialStrategy(

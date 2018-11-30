@@ -602,7 +602,13 @@
 		</xsd:sequence>
 	</xsd:complexType>
 	
-	<xsd:element name="GammaValue" type="xsd:double"/>
+	<xsd:element name="GammaValue">
+	    <xsd:complexType mixed="true">
+	      <xsd:complexContent>
+	        <xsd:extension base="se:ParameterValueType"/>
+	      </xsd:complexContent>
+	    </xsd:complexType>
+	  </xsd:element>
 	<xsd:element name="ShadedRelief" type="se:ShadedReliefType">
 		<xsd:annotation>
 			<xsd:documentation>

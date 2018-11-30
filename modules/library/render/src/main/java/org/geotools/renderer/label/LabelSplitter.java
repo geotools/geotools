@@ -369,9 +369,10 @@ class LabelSplitter {
                             foundFont = true;
                             result.add(new FontRange(text, base, start, fonts[0]));
                             break;
-                        } else {
-                            start++;
                         }
+                    }
+                    if (!foundFont) {
+                        start++;
                     }
                 }
             }
@@ -389,7 +390,7 @@ class LabelSplitter {
      *
      * @author Andrea Aime - GeoSolutions
      */
-    private static class FontRange {
+    static class FontRange {
         int startChar;
 
         int endChar;

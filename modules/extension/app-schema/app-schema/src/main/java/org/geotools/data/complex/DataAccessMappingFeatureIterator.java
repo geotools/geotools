@@ -33,9 +33,12 @@ import org.apache.commons.lang3.StringUtils;
 import org.geotools.data.DataAccess;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.DefaultTransaction;
+import org.geotools.data.FeatureReader;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.Query;
 import org.geotools.data.Transaction;
+import org.geotools.data.complex.config.JdbcMultipleValue;
+import org.geotools.data.complex.config.MultipleValue;
 import org.geotools.data.complex.config.NonFeatureTypeProxy;
 import org.geotools.data.complex.config.Types;
 import org.geotools.data.complex.filter.XPath;
@@ -59,6 +62,8 @@ import org.opengis.feature.Attribute;
 import org.opengis.feature.ComplexAttribute;
 import org.opengis.feature.Feature;
 import org.opengis.feature.Property;
+import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.AttributeType;
 import org.opengis.feature.type.FeatureType;
@@ -67,6 +72,7 @@ import org.opengis.feature.type.GeometryType;
 import org.opengis.feature.type.Name;
 import org.opengis.feature.type.PropertyDescriptor;
 import org.opengis.filter.Filter;
+import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
@@ -109,6 +115,9 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
     protected List<Expression> foreignIds;
 
     protected AttributeDescriptor targetFeature;
+
+    private Map<JdbcMultipleValue, Map<Object, List<MultiValueContainer>>> jdbcMultiValues =
+            new HashMap<>();
 
     /**
      * True if joining is turned off and pre filter exists. There's a need to run extra query to get
@@ -637,7 +646,12 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
                 return null;
             }
         }
-        if (values == null && source != null) {
+        if (source instanceof Feature
+                && attMapping.isMultiValued()
+                && attMapping.getMultipleValue() != null) {
+            // extract the multiple value for the current multiple values attributes
+            values = extractMultipleValues((Feature) source, attMapping);
+        } else if (values == null && source != null) {
             values = getValues(attMapping.isMultiValued(), sourceExpression, source);
         }
         boolean isHRefLink = isByReference(clientPropsMappings, isNestedFeature);
@@ -751,12 +765,20 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
                         clientPropsMappings.putAll(valueProperties);
                     }
                 }
+                Map<Name, Expression> clientProperties = clientPropsMappings;
                 if (!isNestedFeature) {
                     if (singleVal instanceof Attribute) {
                         singleVal = ((Attribute) singleVal).getValue();
                     }
                     if (singleVal instanceof Collection) {
                         valueList.addAll((Collection) singleVal);
+                    }
+                    if (singleVal instanceof MultiValueContainer) {
+                        MultiValueContainer multiValue = (MultiValueContainer) singleVal;
+                        valueList.add(multiValue.value);
+                        clientProperties =
+                                MultiValueContainer.resolve(
+                                        filterFac, multiValue, clientProperties);
                     } else {
                         valueList.add(singleVal);
                     }
@@ -773,7 +795,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
                                 false,
                                 sourceExpression,
                                 source,
-                                clientPropsMappings,
+                                clientProperties,
                                 ignoreXlinkHref);
             }
         } else {
@@ -804,6 +826,95 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
             instance.getDescriptor().getUserData().put("encodeIfEmpty", attMapping.encodeIfEmpty());
         }
         return instance;
+    }
+
+    /** Helper class that holds the relations between a feature and multiple value element. */
+    private static final class MultiValueContainer {
+
+        final Feature feature;
+        final Object value;
+
+        MultiValueContainer(Feature feature, Object value) {
+            this.feature = feature;
+            this.value = value;
+        }
+
+        static List<MultiValueContainer> toList(Feature feature, List<Object> values) {
+            List<MultiValueContainer> list = new ArrayList<>();
+            for (Object value : values) {
+                list.add(new MultiValueContainer(feature, value));
+            }
+            return list;
+        }
+
+        /**
+         * Updates the client properties associated with an attribute mapping that has a multivalued
+         * value.
+         */
+        static Map<Name, Expression> resolve(
+                FilterFactory filterFactory,
+                MultiValueContainer multiValue,
+                Map<Name, Expression> properties) {
+            Map<Name, Expression> resolved = new HashMap<>();
+            for (Map.Entry<Name, Expression> entry : properties.entrySet()) {
+                Name key = entry.getKey();
+                Expression expression = entry.getValue();
+                Object value = expression.evaluate(multiValue.feature);
+                resolved.put(key, filterFactory.literal(value));
+            }
+            return resolved;
+        }
+    }
+
+    /** Helper method that gets the values associated with multivalued mapping. */
+    private List<MultiValueContainer> extractMultipleValues(
+            Feature sourceFeature, AttributeMapping attributeMapping) throws IOException {
+        MultipleValue multipleValue = attributeMapping.getMultipleValue();
+        if (!(multipleValue instanceof JdbcMultipleValue)) {
+            // extension point for multiple values support (e.g. Solr)
+            List<Object> values = multipleValue.getValues(sourceFeature, attributeMapping);
+            return MultiValueContainer.toList(sourceFeature, values);
+        }
+        // jdbc multiple values are explicitly handled
+        JdbcMultipleValue jdbcMultipleValue = (JdbcMultipleValue) multipleValue;
+        // let's see if we have the multiple values already in cache
+        Map<Object, List<MultiValueContainer>> candidates = jdbcMultiValues.get(jdbcMultipleValue);
+        if (candidates == null) {
+            candidates = new HashMap<>();
+            // we need to get the values from the jdbc based data source
+            if (!(mappedSource instanceof JoiningJDBCFeatureSource)) {
+                // ouch, this should a jdbc based data source
+                throw new RuntimeException(
+                        String.format(
+                                "JDBC multi values only work with JDBC based data sources, got '%s'.",
+                                mappedSource.getName()));
+            }
+            JoiningJDBCFeatureSource jdbcDataSource = (JoiningJDBCFeatureSource) mappedSource;
+            // query the multiple values
+            FeatureReader<SimpleFeatureType, SimpleFeature> featuresReader =
+                    jdbcDataSource.getJoiningReaderInternal(
+                            jdbcMultipleValue, (JoiningQuery) this.query);
+            // read and cache the multiple values obtained
+            while (featuresReader.hasNext()) {
+                SimpleFeature readFeature = featuresReader.next();
+                // get the read feature foreign key associated value
+                Object targetColumnValue =
+                        readFeature.getProperty(jdbcMultipleValue.getTargetColumn()).getValue();
+                List<MultiValueContainer> candidatesValues = candidates.get(targetColumnValue);
+                if (candidatesValues == null) {
+                    // no values yet for the current foreign key value
+                    candidatesValues = new ArrayList<>();
+                    candidates.put(targetColumnValue, candidatesValues);
+                }
+                Object targetValue = jdbcMultipleValue.getTargetValue().evaluate(readFeature);
+                candidatesValues.add(new MultiValueContainer(readFeature, targetValue));
+            }
+            jdbcMultiValues.put(jdbcMultipleValue, candidates);
+        }
+        // get the multiple values for the current jdbc multiple values attribute
+        Object sourceColumnValue =
+                sourceFeature.getProperty(jdbcMultipleValue.getSourceColumn()).getValue();
+        return candidates.get(sourceColumnValue);
     }
 
     /**

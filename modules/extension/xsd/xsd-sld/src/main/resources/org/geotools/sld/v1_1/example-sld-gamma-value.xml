@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<StyledLayerDescriptor version="1.1.0"
+  xsi:schemaLocation="http://www.opengis.net/sld StyledLayerDescriptor.xsd"
+  xmlns="http://www.opengis.net/sld" xmlns:ogc="http://www.opengis.net/ogc"
+  xmlns:se="http://www.opengis.net/se" xmlns:xlink="http://www.w3.org/1999/xlink"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <NamedLayer>
+    <se:Name>raster</se:Name>
+    <UserStyle>
+      <se:Name>raster</se:Name>
+      <IsDefault>1</IsDefault>
+      <se:FeatureTypeStyle>
+        <se:FeatureTypeName>raster</se:FeatureTypeName>
+        <se:Rule>
+          <se:Name>raster</se:Name>
+          <se:RasterSymbolizer>
+            <se:ContrastEnhancement>
+                <se:GammaValue>
+                    <ogc:Add>
+		               <ogc:Literal>1.0</ogc:Literal>
+		               <ogc:Literal>0.5</ogc:Literal>
+		           </ogc:Add>
+                </se:GammaValue>
+            </se:ContrastEnhancement>
+          </se:RasterSymbolizer>
+        </se:Rule>
+      </se:FeatureTypeStyle>
+    </UserStyle>
+  </NamedLayer>
+</StyledLayerDescriptor>

@@ -63,10 +63,6 @@ public class PropertyDataStoreFactory implements DataStoreFactorySpi {
     public DataStore createNewDataStore(Map<String, Serializable> params) throws IOException {
         File dir = (File) DIRECTORY.lookUp(params);
 
-        if (dir.exists()) {
-            throw new IOException(dir + " already exists");
-        }
-
         String namespaceURI = (String) NAMESPACE.lookUp(params);
         return new PropertyDataStore(dir, namespaceURI);
     }

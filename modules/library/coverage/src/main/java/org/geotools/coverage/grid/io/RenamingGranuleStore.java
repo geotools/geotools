@@ -20,8 +20,10 @@ import java.io.IOException;
 import org.geotools.data.Transaction;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.store.ReTypingFeatureCollection;
+import org.geotools.factory.Hints;
 import org.opengis.filter.Filter;
 
+/** Write supporting subclass of {@link RenamingGranuleSource} */
 public class RenamingGranuleStore extends RenamingGranuleSource implements GranuleStore {
 
     private final GranuleStore store;
@@ -45,6 +47,11 @@ public class RenamingGranuleStore extends RenamingGranuleSource implements Granu
     @Override
     public int removeGranules(Filter filter) {
         return store.removeGranules(filter);
+    }
+
+    @Override
+    public int removeGranules(Filter filter, Hints hints) {
+        return store.removeGranules(filter, hints);
     }
 
     @Override

@@ -10,7 +10,7 @@
           <ogc:PropertyName>name</ogc:PropertyName>
         </sld:Label>
         <sld:Font>
-          <sld:CssParameter name="font-family">Dialog</sld:CssParameter>
+          <sld:CssParameter name="font-family">Bitstream Vera Sans</sld:CssParameter>
           <sld:CssParameter name="font-size">9.0</sld:CssParameter>
           <sld:CssParameter name="font-style">normal</sld:CssParameter>
           <sld:CssParameter name="font-weight">normal</sld:CssParameter>

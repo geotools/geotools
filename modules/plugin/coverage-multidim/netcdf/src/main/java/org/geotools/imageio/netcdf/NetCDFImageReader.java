@@ -104,6 +104,8 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
 
     private static final Logger LOGGER = Logging.getLogger(NetCDFImageReader.class.toString());
 
+    private Exception tracer;
+
     /**
      * An instance of {@link AncillaryFileManager} which takes care of handling all the auxiliary
      * index files and initializations.
@@ -163,6 +165,11 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
 
     public NetCDFImageReader(ImageReaderSpi originatingProvider) {
         super(originatingProvider);
+
+        if (NetCDFUtilities.TRACE_ENABLED) {
+            tracer = new Exception();
+            tracer.fillInStackTrace();
+        }
     }
 
     /**
@@ -466,6 +473,22 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
             dataset = null;
             ancillaryFileManager = null;
             imageInputStream = null;
+        }
+    }
+
+    @Override
+    protected void finalize() throws Throwable {
+        if (numImages > 0) {
+            LOGGER.warning(
+                    "There is code leaving netcdf image readers open, this might cause "
+                            + "issues with file deletion on Windows!");
+            if (NetCDFUtilities.TRACE_ENABLED) {
+                LOGGER.log(
+                        Level.WARNING,
+                        "The unclosed image reader originated on this stack trace",
+                        tracer);
+            }
+            dispose();
         }
     }
 

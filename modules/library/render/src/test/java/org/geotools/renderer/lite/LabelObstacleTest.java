@@ -90,6 +90,8 @@ public class LabelObstacleTest {
         loadData(mem, "lines");
         loadData(mem, "polys");
         loadData(mem, "lines2");
+
+        RendererBaseTest.setupVeraFonts();
     }
 
     static void loadData(MemoryDataStore mem, String name) throws Exception {

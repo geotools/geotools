@@ -122,32 +122,32 @@ public class WMTSTileFactory4326Test {
                 Tile mtile = factory.findTileAtCoordinate(tp.lon, tp.lat, zoomLevel, service);
                 Tile ltile = factory.constrainToUpperLeftTile(mtile, zoomLevel, service);
 
-                System.out.println(
-                        tp.lat
-                                + ","
-                                + tp.lon
-                                + " z:"
-                                + tp.zoomlevel
-                                + " in matrix["
-                                + mtile.getTileIdentifier().getX()
-                                + ","
-                                + mtile.getTileIdentifier().getY()
-                                + "]"
-                                + " limited["
-                                + ltile.getTileIdentifier().getX()
-                                + ","
-                                + ltile.getTileIdentifier().getY()
-                                + "]"
-                                + " expectedM: ["
-                                + tp.expectedMCol
-                                + ","
-                                + tp.expectedMRow
-                                + "]"
-                                + " expectedL: ["
-                                + tp.expectedLCol
-                                + ","
-                                + tp.expectedLRow
-                                + "]");
+                /*System.out.println(
+                tp.lat
+                        + ","
+                        + tp.lon
+                        + " z:"
+                        + tp.zoomlevel
+                        + " in matrix["
+                        + mtile.getTileIdentifier().getX()
+                        + ","
+                        + mtile.getTileIdentifier().getY()
+                        + "]"
+                        + " limited["
+                        + ltile.getTileIdentifier().getX()
+                        + ","
+                        + ltile.getTileIdentifier().getY()
+                        + "]"
+                        + " expectedM: ["
+                        + tp.expectedMCol
+                        + ","
+                        + tp.expectedMRow
+                        + "]"
+                        + " expectedL: ["
+                        + tp.expectedLCol
+                        + ","
+                        + tp.expectedLRow
+                        + "]");*/
 
                 Assert.assertEquals("Bad mX", tp.expectedMCol, mtile.getTileIdentifier().getX());
                 Assert.assertEquals("Bad mY", tp.expectedMRow, mtile.getTileIdentifier().getY());

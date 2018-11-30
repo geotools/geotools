@@ -82,7 +82,7 @@ public class CoordinateWriterTest extends TestCase {
 
         final boolean useDummyZ = true;
         final double zValue = 0.0;
-        CoordinateWriter writer = new CoordinateWriter(4, " ", ",", useDummyZ, zValue);
+        CoordinateWriter writer = new CoordinateWriter(4, false, true, " ", ",", useDummyZ, zValue);
         CoordinateHandler output = new CoordinateHandler();
 
         output.startDocument();
@@ -99,7 +99,7 @@ public class CoordinateWriterTest extends TestCase {
 
         final boolean useDummyZ = true;
         final double zValue = 0.0;
-        CoordinateWriter writer = new CoordinateWriter(4, " ", ",", useDummyZ, zValue);
+        CoordinateWriter writer = new CoordinateWriter(4, false, true, " ", ",", useDummyZ, zValue);
         CoordinateHandler output = new CoordinateHandler();
 
         output.startDocument();
@@ -114,7 +114,7 @@ public class CoordinateWriterTest extends TestCase {
         assertNotNull(coords);
         assertEquals(4, coords.length);
 
-        CoordinateWriter writer = new CoordinateWriter(4, " ", ",", true, 0.0, 3);
+        CoordinateWriter writer = new CoordinateWriter(4, false, true, " ", ",", true, 0.0, 3);
         CoordinateHandler output = new CoordinateHandler();
 
         output.startDocument();
@@ -130,7 +130,7 @@ public class CoordinateWriterTest extends TestCase {
                 new CoordinateArraySequence(
                         coords3D(new int[] {1, 1, 3, 4, 4, 2, 0, 4, 2, 1, 1, 3}));
 
-        CoordinateWriter writer = new CoordinateWriter(4, " ", ",", true, 0.0, 3);
+        CoordinateWriter writer = new CoordinateWriter(4, false, true, " ", ",", true, 0.0, 3);
         CoordinateHandler output = new CoordinateHandler();
 
         output.startDocument();
@@ -146,7 +146,7 @@ public class CoordinateWriterTest extends TestCase {
                 new CoordinateArraySequence(
                         coords3D(new int[] {1, 1, 3, 4, 4, 2, 0, 4, 2, 1, 1, 3}));
 
-        CoordinateWriter writer = new CoordinateWriter(4, " ", ",", true, 0.0, 2);
+        CoordinateWriter writer = new CoordinateWriter(4, false, true, " ", ",", true, 0.0, 2);
         CoordinateHandler output = new CoordinateHandler();
 
         output.startDocument();
@@ -154,6 +154,23 @@ public class CoordinateWriterTest extends TestCase {
         output.endDocument();
 
         assertEquals("<coordinates>1,1,3 4,4,2 0,4,2 1,1,3</coordinates>", output.received);
+    }
+
+    public void testFormatting() throws Exception {
+        CoordinateSequence coords =
+                new CoordinateArraySequence(
+                        coords3DDouble(new double[] {1, 1, 3, 4.5, 4, 2, 0, 4, 2, 1, 1, 3.582}));
+
+        CoordinateWriter writer = new CoordinateWriter(2, true, true, " ", ",", true, 0.0, 2);
+        CoordinateHandler output = new CoordinateHandler();
+
+        output.startDocument();
+        writer.writeCoordinates(coords, output);
+        output.endDocument();
+
+        assertEquals(
+                "<coordinates>1.00,1.00,3.00 4.50,4.00,2.00 0.00,4.00,2.00 1.00,1.00,3.58</coordinates>",
+                output.received);
     }
 
     class CoordinateHandler implements ContentHandler {
@@ -208,6 +225,15 @@ public class CoordinateWriterTest extends TestCase {
     }
 
     Coordinate[] coords3D(int array[]) {
+        Coordinate coords[] = new Coordinate[array.length / 3];
+        for (int i = 0; i < coords.length; i++) {
+            int offset = i * 3;
+            coords[i] = new Coordinate(array[offset + 0], array[offset + 1], array[offset + 2]);
+        }
+        return coords;
+    }
+
+    Coordinate[] coords3DDouble(double array[]) {
         Coordinate coords[] = new Coordinate[array.length / 3];
         for (int i = 0; i < coords.length; i++) {
             int offset = i * 3;

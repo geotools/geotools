@@ -22,8 +22,8 @@ import java.io.Reader;
 import java.util.Collections;
 import java.util.EmptyStackException;
 import java.util.List;
+import org.geotools.ysld.YamlUtil;
 import org.geotools.ysld.parse.ZoomContextFinder;
-import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.error.MarkedYAMLException;
 import org.yaml.snakeyaml.events.AliasEvent;
 import org.yaml.snakeyaml.events.Event;
@@ -52,9 +52,7 @@ public class YsldValidator {
         context.push(new RootValidator());
 
         try {
-            Yaml yaml = new Yaml();
-
-            for (Event evt : yaml.parse(input)) {
+            for (Event evt : YamlUtil.getSafeYaml().parse(input)) {
                 YsldValidateHandler h = context.peek();
 
                 if (evt instanceof MappingStartEvent) {

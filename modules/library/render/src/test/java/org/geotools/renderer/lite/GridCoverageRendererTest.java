@@ -166,12 +166,15 @@ public class GridCoverageRendererTest {
 
     private GeoTiffReader sampleGribReader;
 
+    private GeoTiffReader multiPixelPacked;
+
     private static double DELTA = 1E-6;
-    // @BeforeClass
-    // public static void enableJaiExt() {
-    // final String JAIEXT_ENABLED_KEY = "org.geotools.coverage.jaiext.enabled";
-    // System.setProperty(JAIEXT_ENABLED_KEY, "true");
-    // }j
+
+    //     @BeforeClass
+    //     public static void enableJaiExt() {
+    //     final String JAIEXT_ENABLED_KEY = "org.geotools.coverage.jaiext.enabled";
+    //     System.setProperty(JAIEXT_ENABLED_KEY, "true");
+    //     }
 
     @Before
     public void disableJaiExt() {
@@ -215,6 +218,14 @@ public class GridCoverageRendererTest {
                         GridCoverageRendererTest.class.getResource("test-data/sampleGrib.tif"));
         assertTrue(coverageFile.exists());
         sampleGribReader = new GeoTiffReader(coverageFile);
+
+        // multi pixel packed sample model test case, two bits per pixel
+        coverageFile =
+                DataUtilities.urlToFile(
+                        GridCoverageRendererTest.class.getResource(
+                                "test-data/multi_pixel_packed.tif"));
+        assertTrue(coverageFile.exists());
+        multiPixelPacked = new GeoTiffReader(coverageFile);
     }
 
     @After
@@ -2216,6 +2227,33 @@ public class GridCoverageRendererTest {
         assertEquals(0, counter.features);
     }
 
+    @Test
+    public void testNullSymbolizer() throws Exception {
+        CoordinateReferenceSystem googleMercator = CRS.decode("EPSG:3857");
+        ReferencedEnvelope mapExtent =
+                new ReferencedEnvelope(
+                        -20037508.34, 20037508.34, -20037508.34, 20037508.34, googleMercator);
+        Rectangle screenSize =
+                new Rectangle(200, (int) (mapExtent.getHeight() / mapExtent.getWidth() * 200));
+        AffineTransform w2s = RendererUtilities.worldToScreenTransform(mapExtent, screenSize);
+        GridCoverageRenderer renderer =
+                new GridCoverageRenderer(googleMercator, mapExtent, screenSize, w2s);
+
+        GridCoverage2D coverage = worldReader.read(null);
+        RenderedImage image =
+                renderer.renderImage(
+                        coverage,
+                        null,
+                        Interpolation.getInstance(Interpolation.INTERP_BICUBIC),
+                        Color.RED,
+                        256,
+                        256);
+        File reference =
+                new File(
+                        "src/test/resources/org/geotools/renderer/lite/gridcoverage2d/googleMercatorBicubic.png");
+        ImageAssert.assertEquals(reference, image, 0);
+    }
+
     /**
      * Test custom PADDING is being used when provided as Hint
      *
@@ -2249,5 +2287,39 @@ public class GridCoverageRendererTest {
         ReferencedEnvelope readEnvelope = helper.getReadEnvelope();
         assertEquals(requestedEnvelope.getWidth() + padding * 2, readEnvelope.getWidth(), DELTA);
         assertEquals(requestedEnvelope.getHeight() + padding * 2, readEnvelope.getHeight(), DELTA);
+    }
+
+    @Test
+    public void testMultiPixelPackedRender() throws Exception {
+        GridCoverage2D coverage = multiPixelPacked.read(null);
+        RenderedImage image = coverage.getRenderedImage();
+        ReferencedEnvelope mapExtent = ReferencedEnvelope.reference(coverage.getEnvelope2D());
+        Rectangle screenSize =
+                new Rectangle(
+                        image.getMinX(), image.getMinY(), image.getWidth(), image.getHeight());
+        AffineTransform w2s = RendererUtilities.worldToScreenTransform(mapExtent, screenSize);
+        GridCoverageRenderer renderer =
+                new GridCoverageRenderer(
+                        coverage.getCoordinateReferenceSystem(), mapExtent, screenSize, w2s);
+
+        Style style = RendererBaseTest.loadStyle(this, "landWaterRaster.sld");
+        RasterSymbolizer rasterSymbolizer =
+                (RasterSymbolizer)
+                        style.featureTypeStyles().get(0).rules().get(0).symbolizers().get(0);
+        RenderedImage rendered =
+                renderer.renderImage(
+                        coverage,
+                        rasterSymbolizer,
+                        Interpolation.getInstance(Interpolation.INTERP_NEAREST),
+                        Color.RED,
+                        256,
+                        256);
+
+        File reference =
+                new File(
+                        "src/test/resources/org/geotools/renderer/lite/gridcoverage2d/multiPixelPacked.png");
+        ImageAssert.assertEquals(reference, rendered, 0);
+
+        coverage.dispose(true);
     }
 }

@@ -64,7 +64,8 @@ public class CSVFeatureWriter implements FeatureWriter<SimpleFeatureType, Simple
         File file = csvFileState.getFile();
         File directory = file.getParentFile();
         String typeName = query.getTypeName();
-        this.temp = File.createTempFile(typeName + System.currentTimeMillis(), "csv", directory);
+        this.temp = File.createTempFile(typeName + System.currentTimeMillis(), ".csv", directory);
+        this.temp.deleteOnExit();
         this.featureType = csvStrategy.getFeatureType();
         this.iterator = csvStrategy.iterator();
         this.csvStrategy = csvStrategy;
@@ -168,5 +169,6 @@ public class CSVFeatureWriter implements FeatureWriter<SimpleFeatureType, Simple
         File file = this.csvFileState.getFile();
 
         Files.copy(temp.toPath(), file.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        temp.delete();
     }
 }

@@ -19,6 +19,11 @@ package org.geotools.geopkg.mosaic;
 import it.geosolutions.jaiext.mosaic.MosaicRIF;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.awt.image.ColorModel;
+import java.awt.image.ComponentColorModel;
+import java.awt.image.DataBuffer;
+import java.awt.image.IndexColorModel;
+import java.awt.image.PackedColorModel;
 import java.awt.image.Raster;
 import java.awt.image.RenderedImage;
 import java.awt.image.SampleModel;
@@ -26,15 +31,18 @@ import java.awt.image.WritableRaster;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Hashtable;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
+import javax.media.jai.ImageLayout;
 import javax.media.jai.Interpolation;
 import javax.media.jai.JAI;
+import javax.media.jai.OpImage;
 import javax.media.jai.ParameterBlockJAI;
 import javax.media.jai.operator.MosaicDescriptor;
 import org.geotools.coverage.CoverageFactoryFinder;
@@ -274,13 +282,6 @@ public class GeoPackageReader extends AbstractGridCoverage2DReader {
             rightTile = tileBoundsCalculator.getRightTile();
             topTile = tileBoundsCalculator.getTopTile();
         } else {
-            TileBoundsCalculator tileBoundsCalculator =
-                    new TileBoundsCalculator(entryBounds, resX, resY, offsetX, offsetY).invoke();
-            leftTile = tileBoundsCalculator.getLeftTile();
-            bottomTile = tileBoundsCalculator.getBottomTile();
-            rightTile = tileBoundsCalculator.getRightTile();
-            topTile = tileBoundsCalculator.getTopTile();
-
             final double minX = entryBounds.getMinX();
             final double maxX = entryBounds.getMaxX();
             final double minY = entryBounds.getMinY();
@@ -312,8 +313,7 @@ public class GeoPackageReader extends AbstractGridCoverage2DReader {
              * RGBA. GDAL in particular defaults to generate a mix of PNG and JPEG to generate the
              * slow and large PNG format only when transparency is actually needed
              */
-            List<RenderedImage> sources = new ArrayList<>();
-            ImageWorker iw = new ImageWorker();
+            List<ImageInTile> sources = new ArrayList<>();
             TileImageReader tileReader = new TileImageReader();
 
             while (it.hasNext()) {
@@ -334,17 +334,9 @@ public class GeoPackageReader extends AbstractGridCoverage2DReader {
 
                 BufferedImage tileImage = tileReader.read(tile.getData());
 
-                iw.setImage(tileImage);
                 int posx = (tile.getColumn() - leftTile) * DEFAULT_TILE_SIZE;
                 int posy = (tile.getRow() - topTile) * DEFAULT_TILE_SIZE;
-                if (posx != 0 || posy != 0) {
-                    iw.translate(
-                            posx, posy, Interpolation.getInstance(Interpolation.INTERP_NEAREST));
-                    RenderedImage translated = iw.getRenderedImage();
-                    sources.add(translated);
-                } else {
-                    sources.add(tileImage);
-                }
+                sources.add(new ImageInTile(tileImage, posx, posy));
             }
             it.close();
 
@@ -353,85 +345,119 @@ public class GeoPackageReader extends AbstractGridCoverage2DReader {
                 return null;
             } else if (sources.size() == 1) {
                 // one tile
-                image = sources.get(0);
+                image = sources.get(0).image;
             } else {
-                // at the time of writing, only JAI-EXT mosaic can handle a mix of different
-                // color models, we need to use it explicitly
-                final ParameterBlockJAI pb =
-                        new ParameterBlockJAI(new it.geosolutions.jaiext.mosaic.MosaicDescriptor());
-                sources.forEach(s -> pb.addSource(s));
-                pb.setParameter("mosaicType", MosaicDescriptor.MOSAIC_TYPE_OVERLAY);
-                pb.setParameter("sourceAlpha", null);
-                pb.setParameter("sourceROI", null);
-                pb.setParameter("sourceThreshold", null);
-                pb.setParameter("backgroundValues", new double[] {0});
-                pb.setParameter("nodata", null);
-
-                RenderingHints hints = new Hints(JAI.getDefaultInstance().getRenderingHints());
-                hints.putAll(GeoTools.getDefaultHints());
-                image = new MosaicRIF().create(pb, hints);
+                image = mosaicImages(sources);
             }
         }
         return coverageFactory.create(entry.getTableName(), image, resultEnvelope);
     }
 
-    private int normalizeTile(int tile, int min, int max) {
-        if (tile < min) {
-            return min;
-        } else if (tile > max) {
-            return max;
+    private RenderedImage mosaicImages(List<ImageInTile> sources) {
+        if (uniformImages(sources.stream().map(it -> it.image).collect(Collectors.toList()))) {
+            return mosaicUniformImages(sources);
         } else {
-            return tile;
+            return mosaicHeterogeneousImages(sources);
         }
     }
 
-    protected BufferedImage getStartImage(BufferedImage copyFrom, int width, int height) {
-        Map<String, Object> properties = null;
+    /**
+     * Fast lane mosaicker, basically builds an OpImage that returns translated versions of the
+     * source images, without actually copying pixels around
+     */
+    private OpImage mosaicUniformImages(List<ImageInTile> sources) {
+        // compute bounds
+        int minx = sources.stream().mapToInt(it -> it.posx).min().getAsInt();
+        int maxx = sources.stream().mapToInt(it -> it.posx + it.image.getWidth()).max().getAsInt();
+        int miny = sources.stream().mapToInt(it -> it.posy).min().getAsInt();
+        int maxy = sources.stream().mapToInt(it -> it.posy + it.image.getHeight()).max().getAsInt();
+        int width = maxx - minx;
+        int height = maxy - miny;
 
-        if (copyFrom.getPropertyNames() != null) {
-            properties = new HashMap<String, Object>();
-            for (String name : copyFrom.getPropertyNames()) {
-                properties.put(name, copyFrom.getProperty(name));
+        // compute layout
+        List<BufferedImage> sourceImages =
+                sources.stream().map(it -> it.image).collect(Collectors.toList());
+        ImageLayout il = new ImageLayout(sourceImages.get(0));
+        il.setMinX(minx);
+        il.setWidth(width);
+        il.setHeight(height);
+        il.setMinY(miny);
+        il.setTileWidth(sourceImages.get(0).getWidth());
+        il.setTileHeight(sourceImages.get(0).getHeight());
+
+        // simple
+        RenderingHints hints = new Hints(JAI.getDefaultInstance().getRenderingHints());
+        hints.putAll(GeoTools.getDefaultHints());
+        return new OpImage(new Vector(sourceImages), il, hints, false) {
+
+            @Override
+            public Raster computeTile(int tileX, int tileY) {
+                int posx = tileX * tileWidth + tileGridXOffset;
+                int posy = tileY * tileHeight + tileGridYOffset;
+                ImageInTile candidate =
+                        sources.stream()
+                                .filter(it -> it.posx == posx && it.posy == posy)
+                                .findFirst()
+                                .orElse(null);
+                if (candidate != null) {
+                    return candidate.image.getData().createTranslatedChild(posx, posy);
+                }
+
+                // not inside the available grid, build a white cell then
+                WritableRaster dest =
+                        createWritableRaster(
+                                sampleModel, new Point(tileXToX(tileX), tileYToY(tileY)));
+                BufferedImage bi = new BufferedImage(getColorModel(), dest, false, null);
+                Graphics2D g2D = (Graphics2D) bi.getGraphics();
+                g2D.setColor(Color.WHITE);
+                g2D.fillRect(0, 0, bi.getWidth(), bi.getHeight());
+                g2D.dispose();
+
+                return dest;
+            }
+
+            @Override
+            public Rectangle mapSourceRect(Rectangle sourceRect, int sourceIndex) {
+                // should not really be used
+                return sourceRect;
+            }
+
+            @Override
+            public Rectangle mapDestRect(Rectangle destRect, int sourceIndex) {
+                // should not really be used
+                return destRect;
+            }
+        };
+    }
+
+    private RenderedImage mosaicHeterogeneousImages(List<ImageInTile> sources) {
+        // at the time of writing, only JAI-EXT mosaic can handle a mix of different
+        // color models, we need to use it explicitly
+        RenderedImage image;
+        final ParameterBlockJAI pb =
+                new ParameterBlockJAI(new it.geosolutions.jaiext.mosaic.MosaicDescriptor());
+        for (ImageInTile it : sources) {
+            if (it.posx != 0 || it.posy != 0) {
+                ImageWorker iw = new ImageWorker(it.image);
+                iw.translate(
+                        it.posx, it.posy, Interpolation.getInstance(Interpolation.INTERP_NEAREST));
+                RenderedImage translated = iw.getRenderedImage();
+                pb.addSource(translated);
+            } else {
+                pb.addSource(it.image);
             }
         }
+        pb.setParameter("mosaicType", MosaicDescriptor.MOSAIC_TYPE_OVERLAY);
+        pb.setParameter("sourceAlpha", null);
+        pb.setParameter("sourceROI", null);
+        pb.setParameter("sourceThreshold", null);
+        pb.setParameter("backgroundValues", new double[] {0});
+        pb.setParameter("nodata", null);
 
-        SampleModel sm = copyFrom.getSampleModel().createCompatibleSampleModel(width, height);
-        WritableRaster raster = Raster.createWritableRaster(sm, null);
-
-        BufferedImage image =
-                new BufferedImage(
-                        copyFrom.getColorModel(),
-                        raster,
-                        copyFrom.isAlphaPremultiplied(),
-                        (Hashtable<?, ?>) properties);
-
-        // white background
-        Graphics2D g2D = (Graphics2D) image.getGraphics();
-        Color save = g2D.getColor();
-        g2D.setColor(Color.WHITE);
-        g2D.fillRect(0, 0, image.getWidth(), image.getHeight());
-        g2D.setColor(save);
-
+        RenderingHints hints = new Hints(JAI.getDefaultInstance().getRenderingHints());
+        hints.putAll(GeoTools.getDefaultHints());
+        image = new MosaicRIF().create(pb, hints);
         return image;
-    }
-
-    protected BufferedImage getStartImage(int imageType, int width, int height) {
-        if (imageType == BufferedImage.TYPE_CUSTOM) imageType = BufferedImage.TYPE_3BYTE_BGR;
-
-        BufferedImage image = new BufferedImage(width, height, imageType);
-
-        // white background
-        Graphics2D g2D = (Graphics2D) image.getGraphics();
-        Color save = g2D.getColor();
-        g2D.setColor(Color.WHITE);
-        g2D.fillRect(0, 0, image.getWidth(), image.getHeight());
-        g2D.setColor(save);
-
-        return image;
-    }
-
-    protected BufferedImage getStartImage(int width, int height) {
-        return getStartImage(BufferedImage.TYPE_CUSTOM, width, height);
     }
 
     @Override
@@ -509,5 +535,164 @@ public class GeoPackageReader extends AbstractGridCoverage2DReader {
             }
             return this;
         }
+    }
+
+    /** Simple holder for tile information, the image and its position */
+    private static class ImageInTile {
+        BufferedImage image;
+        int posx;
+        int posy;
+
+        public ImageInTile(BufferedImage image, int posX, int posY) {
+            this.image = image;
+            this.posx = posX;
+            this.posy = posY;
+        }
+    }
+
+    /**
+     * Returns true if the provided images are uniform color and sample model wise
+     *
+     * @param sources
+     * @return
+     */
+    private static boolean uniformImages(List<RenderedImage> sources) {
+        final int numSources = sources.size();
+
+        // get first image as reference
+        RenderedImage first = (RenderedImage) sources.get(0);
+        ColorModel firstColorModel = first.getColorModel();
+        SampleModel firstSampleModel = first.getSampleModel();
+
+        // starting point image layout
+        ImageLayout result = new ImageLayout();
+        result.setSampleModel(firstSampleModel);
+        // easy case
+        if (numSources == 1) {
+            result.setColorModel(firstColorModel);
+            return true;
+        }
+
+        // See if they all are the same
+        int firstDataType = firstSampleModel.getDataType();
+        int firstBands = firstSampleModel.getNumBands();
+        int firstSampleSize = firstSampleModel.getSampleSize()[0];
+        boolean hasIndexedColorModels = firstColorModel instanceof IndexColorModel;
+        boolean hasComponentColorModels = firstColorModel instanceof ComponentColorModel;
+        boolean hasPackedColorModels = firstColorModel instanceof PackedColorModel;
+        boolean hasUnrecognizedColorModels =
+                !hasComponentColorModels && !hasIndexedColorModels && !hasPackedColorModels;
+        boolean hasUnsupportedTypes = false;
+        int maxBands = firstBands;
+        for (int i = 1; i < numSources; i++) {
+            RenderedImage source = (RenderedImage) sources.get(i);
+            SampleModel sourceSampleModel = source.getSampleModel();
+            ColorModel sourceColorModel = source.getColorModel();
+            int sourceBands = sourceSampleModel.getNumBands();
+            int sourceDataType = sourceSampleModel.getDataType();
+            if (sourceDataType == DataBuffer.TYPE_UNDEFINED) {
+                hasUnsupportedTypes = true;
+            }
+
+            if (sourceBands > maxBands) {
+                maxBands = sourceBands;
+            }
+
+            if (sourceColorModel instanceof IndexColorModel) {
+                hasIndexedColorModels = true;
+            } else if (sourceColorModel instanceof ComponentColorModel) {
+                hasComponentColorModels = true;
+            } else if (sourceColorModel instanceof PackedColorModel) {
+                hasPackedColorModels = true;
+            } else {
+                hasUnrecognizedColorModels = true;
+            }
+
+            if (sourceDataType != firstDataType || sourceBands != firstBands) {
+                return false;
+            }
+
+            for (int j = 0; j < sourceBands; j++) {
+                if (sourceSampleModel.getSampleSize(j) != firstSampleSize) {
+                    return false;
+                }
+            }
+        }
+        if (hasUnrecognizedColorModels || hasUnsupportedTypes) {
+            return false;
+        }
+
+        // see how many types we're dealing with
+        int colorModelsTypes =
+                (hasIndexedColorModels ? 1 : 0)
+                        + (hasComponentColorModels ? 1 : 0)
+                        + (hasPackedColorModels ? 1 : 0);
+        // if uniform, we have it easy
+        if (colorModelsTypes > 1) {
+            return false;
+        }
+        if (hasIndexedColorModels) {
+            return hasUniformPalettes(sources);
+        }
+        return true;
+    }
+
+    private static boolean hasUniformPalettes(List<RenderedImage> sources) {
+        // all indexed, but are the palettes the same?
+        RenderedImage first = sources.get(0);
+        IndexColorModel reference = (IndexColorModel) first.getColorModel();
+        int mapSize = reference.getMapSize();
+        byte[] reference_reds = new byte[mapSize];
+        byte[] reference_greens = new byte[mapSize];
+        byte[] reference_blues = new byte[mapSize];
+        byte[] reference_alphas = new byte[mapSize];
+        byte[] reds = new byte[mapSize];
+        byte[] greens = new byte[mapSize];
+        byte[] blues = new byte[mapSize];
+        byte[] alphas = new byte[mapSize];
+        reference.getReds(reference_reds);
+        reference.getGreens(reference_greens);
+        reference.getBlues(reference_blues);
+        reference.getAlphas(reference_alphas);
+        boolean uniformPalettes = true;
+        final int numSources = sources.size();
+        for (int i = 1; i < numSources; i++) {
+            RenderedImage source = sources.get(i);
+
+            IndexColorModel sourceColorModel = (IndexColorModel) source.getColorModel();
+
+            // check the basics
+            if (reference.getNumColorComponents() != sourceColorModel.getNumColorComponents()) {
+                throw new IllegalArgumentException(
+                        "Cannot mosaic togheter images with index "
+                                + "color models having different numbers of color components:\n "
+                                + reference
+                                + "\n"
+                                + sourceColorModel);
+            }
+
+            // if not the same color space, then we need to expand
+            if (!reference.getColorSpace().equals(reference.getColorSpace())) {
+                return false;
+            }
+
+            if (!sourceColorModel.equals(reference) || sourceColorModel.getMapSize() != mapSize) {
+                uniformPalettes = false;
+                break;
+            }
+            // the above does not compare the rgb(a) arrays, do it
+            sourceColorModel.getReds(reds);
+            sourceColorModel.getGreens(greens);
+            sourceColorModel.getBlues(blues);
+            sourceColorModel.getAlphas(alphas);
+            if (!Arrays.equals(reds, reference_reds)
+                    || !Arrays.equals(greens, reference_greens)
+                    || !Arrays.equals(blues, reference_blues)
+                    || !Arrays.equals(alphas, reference_alphas)) {
+                uniformPalettes = false;
+                break;
+            }
+        }
+        return uniformPalettes;
     }
 }

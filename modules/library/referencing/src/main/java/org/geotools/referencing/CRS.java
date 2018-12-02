@@ -52,6 +52,7 @@ import org.geotools.referencing.operation.transform.IdentityTransform;
 import org.geotools.referencing.util.CRSUtilities;
 import org.geotools.referencing.wkt.Formattable;
 import org.geotools.util.GenericName;
+import org.geotools.util.SoftValueHashMap;
 import org.geotools.util.UnsupportedImplementationException;
 import org.geotools.util.Version;
 import org.geotools.util.factory.Factory;
@@ -187,6 +188,14 @@ public final class CRS {
     /** A factory for default lenient operations. */
     private static volatile CoordinateOperationFactory lenientFactory;
 
+    /** A cache for coordinate reference systems in the default axis order */
+    private static SoftValueHashMap<String, CoordinateReferenceSystem> defaultCache =
+            new SoftValueHashMap<>();
+
+    /** A cache for the coordinate reference systems in the xy (east/north) axis order */
+    private static SoftValueHashMap<String, CoordinateReferenceSystem> xyCache =
+            new SoftValueHashMap<>();
+
     /** Registers a listener automatically invoked when the system-wide configuration changed. */
     static {
         GeoTools.addChangeListener(
@@ -197,6 +206,8 @@ public final class CRS {
                             xyFactory = null;
                             strictFactory = null;
                             lenientFactory = null;
+                            xyCache.clear();
+                            defaultCache.clear();
                         }
                     }
                 });
@@ -510,7 +521,24 @@ public final class CRS {
         // @deprecated: 'toUpperCase()' is required only for epsg-wkt.
         // Remove after we deleted the epsg-wkt module.
         code = code.trim().toUpperCase();
-        return getAuthorityFactory(longitudeFirst).createCoordinateReferenceSystem(code);
+
+        CoordinateReferenceSystem result;
+        if (longitudeFirst) {
+            result = defaultCache.get(code);
+        } else {
+            result = xyCache.get(code);
+        }
+
+        if (result == null) {
+            result = getAuthorityFactory(longitudeFirst).createCoordinateReferenceSystem(code);
+            if (longitudeFirst) {
+                defaultCache.put(code, result);
+            } else {
+                xyCache.put(code, result);
+            }
+        }
+
+        return result;
     }
 
     /**
@@ -2105,6 +2133,8 @@ public final class CRS {
                 MapProjection.resetWarnings();
             }
         }
+        xyCache.clear();
+        defaultCache.clear();
         FORCED_LON_LAT = null;
         defaultFactory = null;
         xyFactory = null;

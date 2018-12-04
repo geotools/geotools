@@ -109,6 +109,7 @@ public class ApplicationSchemaXSD extends XSD {
                     if (locationUri == null
                             && location != null
                             && schemaLocationFolder.startsWith("jar:file:")) {
+                        // handle schemas included in a JAR file
                         locationUri = schemaLocationFolder + "/" + location;
                     }
                 }

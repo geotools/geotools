@@ -23,9 +23,7 @@ import org.junit.Test;
 
 public class ApplicationSchemaXSDTest {
 
-    /**
-     * Test to resolve schema urls within jar files.
-     */
+    /** Test to resolve schema urls within jar files. */
     @Test
     public void testCreateSchemaLocationResolver() {
         ApplicationSchemaXSD instance =

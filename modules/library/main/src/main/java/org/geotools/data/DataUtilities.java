@@ -259,8 +259,8 @@ public class DataUtilities {
 
         typeEncode.put(MultiLineString.class, "MultiLineString");
         typeMap.put("MultiLineString", MultiLineString.class);
-        typeMap.put("com.vividsolutions.jts.geom.MultiPoint", MultiLineString.class);
-        typeMap.put("org.locationtech.jts.geom.MultiPoint", MultiLineString.class);
+        typeMap.put("com.vividsolutions.jts.geom.MultiLineString", MultiLineString.class);
+        typeMap.put("org.locationtech.jts.geom.MultiLineString", MultiLineString.class);
 
         typeEncode.put(MultiPolygon.class, "MultiPolygon");
         typeMap.put("MultiPolygon", MultiPolygon.class);

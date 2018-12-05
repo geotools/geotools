@@ -48,7 +48,13 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryCollection;
+import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.MultiLineString;
+import org.locationtech.jts.geom.MultiPoint;
+import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.geom.Polygon;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -760,6 +766,37 @@ public class DataUtilitiesTest extends DataTestCase {
         // System.out.println("BEFORE:"+spec);
         // System.out.println(" AFTER:"+spec2);
         assertEquals(spec, spec2);
+    }
+
+    public void testAllGeometryTypes() throws Exception {
+        List<Class<?>> bindings =
+                Arrays.asList(
+                        Geometry.class,
+                        Point.class,
+                        LineString.class,
+                        Polygon.class,
+                        MultiPoint.class,
+                        MultiLineString.class,
+                        MultiPolygon.class,
+                        GeometryCollection.class);
+
+        StringBuilder specBuilder = new StringBuilder();
+        bindings.forEach(
+                b ->
+                        specBuilder
+                                .append(b.getSimpleName())
+                                .append("_type:")
+                                .append(b.getName())
+                                .append(','));
+
+        String spec = specBuilder.toString();
+        SimpleFeatureType ft = DataUtilities.createType("testType", spec);
+        bindings.forEach(
+                b -> {
+                    AttributeDescriptor descriptor = ft.getDescriptor(b.getSimpleName() + "_type");
+                    assertNotNull(descriptor);
+                    assertEquals(b, descriptor.getType().getBinding());
+                });
     }
 
     public void testSpecNotIdentifiable() throws Exception {

@@ -80,6 +80,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
 import javax.imageio.ImageIO;
@@ -5605,7 +5606,10 @@ public class ImageMosaicReaderTest extends Assert {
                                                 reader.harvest(coverageName, file, null);
                                         assertThat(harvested, hasSize(1));
                                         assertTrue(
-                                                "Feature not found after successful harvest?",
+                                                "Feature not found after successful harvest? Loop is "
+                                                        + i
+                                                        + " and filter "
+                                                        + filter,
                                                 store.getCount(query) > 0);
                                     }
                                     return removedCount;
@@ -5617,10 +5621,17 @@ public class ImageMosaicReaderTest extends Assert {
             latch.countDown();
 
             // make sure nothing threw an exception
+            boolean failed = false;
             for (Future<Integer> future : futures) {
-                final Integer removedCount = future.get();
-                assertEquals(loops - 1, removedCount.intValue());
+                try {
+                    final Integer removedCount = future.get();
+                    assertEquals(loops - 1, removedCount.intValue());
+                } catch (Exception e) {
+                    LOGGER.log(Level.SEVERE, "Thread failed execution", e);
+                    failed = true;
+                }
             }
+            assertFalse("Terminating test due to previus failures", failed);
 
             // check that all the files are there
             assertEquals(

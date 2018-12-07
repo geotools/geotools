@@ -5580,10 +5580,9 @@ public class ImageMosaicReaderTest extends Assert {
             CountDownLatch latch = new CountDownLatch(1);
             for (File file : files) {
                 Filter filter =
-                        FF.equal(
+                        FF.like(
                                 FF.property("location"),
-                                FF.literal("../harvest2-concurrent/" + file.getName()),
-                                false);
+                                "*" + file.getName() + "*");
                 Callable callable =
                         (Callable<Integer>)
                                 () -> {

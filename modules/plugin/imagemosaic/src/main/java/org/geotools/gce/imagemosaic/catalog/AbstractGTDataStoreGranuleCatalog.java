@@ -24,9 +24,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReadWriteLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.spi.ImageInputStreamSpi;
@@ -36,6 +33,7 @@ import org.geotools.coverage.grid.io.footprint.MultiLevelROI;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFactorySpi;
 import org.geotools.data.DataUtilities;
+import org.geotools.data.DefaultTransaction;
 import org.geotools.data.Query;
 import org.geotools.data.QueryCapabilities;
 import org.geotools.data.Transaction;
@@ -362,27 +360,18 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
         }
     }
 
-    private final ReadWriteLock rwLock = new ReentrantReadWriteLock(true);
-
     public void dispose() {
-        final Lock l = rwLock.writeLock();
         try {
-            l.lock();
-
-            try {
-                if (multiScaleROIProvider != null) {
-                    multiScaleROIProvider.dispose();
-                }
-            } catch (Throwable e) {
-                if (LOGGER.isLoggable(Level.FINE)) {
-                    LOGGER.log(Level.FINE, e.getLocalizedMessage(), e);
-                }
-            } finally {
-                multiScaleROIProvider = null;
-                disposeTileIndexStore();
+            if (multiScaleROIProvider != null) {
+                multiScaleROIProvider.dispose();
+            }
+        } catch (Throwable e) {
+            if (LOGGER.isLoggable(Level.FINE)) {
+                LOGGER.log(Level.FINE, e.getLocalizedMessage(), e);
             }
         } finally {
-            l.unlock();
+            multiScaleROIProvider = null;
+            disposeTileIndexStore();
         }
     }
 
@@ -393,29 +382,34 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
     public int removeGranules(Query query) {
         Utilities.ensureNonNull("query", query);
         query = mergeHints(query);
-        final Lock lock = rwLock.writeLock();
+        // check if the index has been cleared
+        checkStore();
+        String typeName = query.getTypeName();
+        SimpleFeatureStore fs = null;
         try {
-            lock.lock();
-            // check if the index has been cleared
-            checkStore();
-            String typeName = query.getTypeName();
-            SimpleFeatureStore fs = null;
+            // create a writer that appends this features
+            fs = (SimpleFeatureStore) getTileIndexStore().getFeatureSource(typeName);
+            Transaction t = new DefaultTransaction();
+            fs.setTransaction(t);
+            boolean rollback = true;
             try {
-                // create a writer that appends this features
-                fs = (SimpleFeatureStore) getTileIndexStore().getFeatureSource(typeName);
                 final int retVal = fs.getFeatures(query).size(); // ensures we get a value
                 fs.removeFeatures(query.getFilter());
+                t.commit();
+                rollback = false;
 
                 return retVal;
-
-            } catch (Throwable e) {
-                if (LOGGER.isLoggable(Level.SEVERE))
-                    LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
-                return -1;
+            } finally {
+                if (rollback) {
+                    t.rollback();
+                }
+                t.close();
             }
-            // do your thing
-        } finally {
-            lock.unlock();
+
+        } catch (Throwable e) {
+            if (LOGGER.isLoggable(Level.SEVERE))
+                LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
+            return -1;
         }
     }
 
@@ -426,31 +420,25 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
             final Transaction transaction)
             throws IOException {
         Utilities.ensureNonNull("granuleMetadata", granules);
-        final Lock lock = rwLock.writeLock();
-        try {
-            lock.lock();
-            // check if the index has been cleared
-            checkStore();
+        // check if the index has been cleared
+        checkStore();
 
-            SimpleFeatureStore store =
-                    (SimpleFeatureStore) getTileIndexStore().getFeatureSource(typeName);
-            store.setTransaction(transaction);
+        SimpleFeatureStore store =
+                (SimpleFeatureStore) getTileIndexStore().getFeatureSource(typeName);
+        store.setTransaction(transaction);
 
-            ListFeatureCollection featureCollection =
-                    new ListFeatureCollection(getTileIndexStore().getSchema(typeName));
+        ListFeatureCollection featureCollection =
+                new ListFeatureCollection(getTileIndexStore().getSchema(typeName));
 
-            // add them all
-            Set<FeatureId> fids = new HashSet<FeatureId>();
-            for (SimpleFeature f : granules) {
-                // Add the feature to the feature collection
-                featureCollection.add(f);
-                fids.add(ff.featureId(f.getID()));
-            }
-            store.addFeatures(featureCollection);
-
-        } finally {
-            lock.unlock();
+        // add them all
+        Set<FeatureId> fids = new HashSet<FeatureId>();
+        for (SimpleFeature f : granules) {
+            // Add the feature to the feature collection
+            featureCollection.add(f);
+            fids.add(ff.featureId(f.getID()));
         }
+        store.addFeatures(featureCollection);
+        store.setTransaction(null);
     }
 
     @Override
@@ -459,62 +447,51 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
         Utilities.ensureNonNull("query", query);
         final Query q = mergeHints(query);
         String typeName = q.getTypeName();
-        final Lock lock = rwLock.readLock();
-        try {
-            lock.lock();
-            checkStore();
+        checkStore();
 
-            //
-            // Load tiles informations, especially the bounds, which will be
-            // reused
-            //
-            final SimpleFeatureSource featureSource =
-                    getTileIndexStore().getFeatureSource(typeName);
-            if (featureSource == null) {
-                throw new NullPointerException(
-                        "The provided SimpleFeatureSource is null, it's impossible to create an index!");
-            }
+        //
+        // Load tiles informations, especially the bounds, which will be
+        // reused
+        //
+        final SimpleFeatureSource featureSource = getTileIndexStore().getFeatureSource(typeName);
+        if (featureSource == null) {
+            throw new NullPointerException(
+                    "The provided SimpleFeatureSource is null, it's impossible to create an index!");
+        }
 
-            final SimpleFeatureCollection features = featureSource.getFeatures(q);
-            if (features == null)
-                throw new NullPointerException(
-                        "The provided SimpleFeatureCollection is null, it's impossible to create an index!");
+        final SimpleFeatureCollection features = featureSource.getFeatures(q);
+        if (features == null)
+            throw new NullPointerException(
+                    "The provided SimpleFeatureCollection is null, it's impossible to create an index!");
 
-            if (LOGGER.isLoggable(Level.FINE)) LOGGER.fine("Index Loaded");
+        if (LOGGER.isLoggable(Level.FINE)) LOGGER.fine("Index Loaded");
 
-            // visiting the features from the underlying store, caring for early bail out
-            try (SimpleFeatureIterator fi = features.features()) {
-                while (fi.hasNext() && !visitor.isVisitComplete()) {
-                    final SimpleFeature sf = fi.next();
-                    MultiLevelROI footprint = getGranuleFootprint(sf);
-                    if (footprint == null || !footprint.isEmpty()) {
-                        try {
-                            final GranuleDescriptor granule =
-                                    new GranuleDescriptor(
-                                            sf,
-                                            suggestedFormat,
-                                            suggestedRasterSPI,
-                                            suggestedIsSPI,
-                                            pathType,
-                                            locationAttribute,
-                                            parentLocation,
-                                            footprint,
-                                            heterogeneous,
-                                            q.getHints());
+        // visiting the features from the underlying store, caring for early bail out
+        try (SimpleFeatureIterator fi = features.features()) {
+            while (fi.hasNext() && !visitor.isVisitComplete()) {
+                final SimpleFeature sf = fi.next();
+                MultiLevelROI footprint = getGranuleFootprint(sf);
+                if (footprint == null || !footprint.isEmpty()) {
+                    try {
+                        final GranuleDescriptor granule =
+                                new GranuleDescriptor(
+                                        sf,
+                                        suggestedFormat,
+                                        suggestedRasterSPI,
+                                        suggestedIsSPI,
+                                        pathType,
+                                        locationAttribute,
+                                        parentLocation,
+                                        footprint,
+                                        heterogeneous,
+                                        q.getHints());
 
-                            visitor.visit(granule, sf);
-                        } catch (Exception e) {
-                            LOGGER.log(Level.FINE, "Skipping invalid granule", e);
-                        }
+                        visitor.visit(granule, sf);
+                    } catch (Exception e) {
+                        LOGGER.log(Level.FINE, "Skipping invalid granule", e);
                     }
                 }
             }
-        } catch (Throwable e) {
-            final IOException ioe = new IOException();
-            ioe.initCause(e);
-            throw ioe;
-        } finally {
-            lock.unlock();
         }
     }
 
@@ -523,43 +500,27 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
         Utilities.ensureNonNull("query", q);
         q = mergeHints(q);
         String typeName = q.getTypeName();
-        final Lock lock = rwLock.readLock();
-        try {
-            lock.lock();
-            checkStore();
+        checkStore();
 
-            //
-            // Load tiles informations, especially the bounds, which will be
-            // reused
-            //
-            final SimpleFeatureSource featureSource =
-                    getTileIndexStore().getFeatureSource(typeName);
-            if (featureSource == null) {
-                throw new NullPointerException(
-                        "The provided SimpleFeatureSource is null, it's impossible to create an index!");
-            }
-            return featureSource.getFeatures(q);
-
-        } catch (Throwable e) {
-            final IOException ioe = new IOException();
-            ioe.initCause(e);
-            throw ioe;
-        } finally {
-            lock.unlock();
+        //
+        // Load tiles informations, especially the bounds, which will be
+        // reused
+        //
+        final SimpleFeatureSource featureSource = getTileIndexStore().getFeatureSource(typeName);
+        if (featureSource == null) {
+            throw new NullPointerException(
+                    "The provided SimpleFeatureSource is null, it's impossible to create an index!");
         }
+        return featureSource.getFeatures(q);
     }
 
     @Override
     public BoundingBox getBounds(final String typeName) {
-        final Lock lock = rwLock.readLock();
         try {
-            lock.lock();
             checkStore();
             return this.getTileIndexStore().getFeatureSource(typeName).getBounds();
         } catch (IOException e) {
             LOGGER.log(Level.FINER, e.getMessage(), e);
-        } finally {
-            lock.unlock();
         }
 
         return null;
@@ -569,24 +530,17 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
             throws IOException, SchemaException {
         Utilities.ensureNonNull("typeName", typeName);
         Utilities.ensureNonNull("typeSpec", typeSpec);
-        final Lock lock = rwLock.writeLock();
-        String type = null;
-        try {
-            lock.lock();
-            checkStore();
+        checkStore();
 
-            final SimpleFeatureType featureType =
-                    DataUtilities.createType(namespace, typeName, typeSpec);
-            checkMosaicSchema(featureType);
-            getTileIndexStore().createSchema(featureType);
-            type = featureType.getTypeName();
-            if (typeName != null) {
-                addTypeName(typeName, true);
-            }
-            extractBasicProperties(type);
-        } finally {
-            lock.unlock();
+        final SimpleFeatureType featureType =
+                DataUtilities.createType(namespace, typeName, typeSpec);
+        checkMosaicSchema(featureType);
+        getTileIndexStore().createSchema(featureType);
+        String type = featureType.getTypeName();
+        if (typeName != null) {
+            addTypeName(typeName, true);
         }
+        extractBasicProperties(type);
     }
 
     private void addTypeName(String typeName, final boolean check) {
@@ -614,110 +568,72 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
     public void createType(SimpleFeatureType featureType) throws IOException {
         Utilities.ensureNonNull("featureType", featureType);
         checkMosaicSchema(featureType);
-        final Lock lock = rwLock.writeLock();
-        String typeName = null;
-        try {
-            lock.lock();
-            checkStore();
+        checkStore();
 
-            getTileIndexStore().createSchema(featureType);
-            typeName = featureType.getTypeName();
-            if (typeName != null) {
-                addTypeName(typeName, true);
-            }
-            extractBasicProperties(typeName);
-        } finally {
-            lock.unlock();
+        getTileIndexStore().createSchema(featureType);
+        String typeName = featureType.getTypeName();
+        if (typeName != null) {
+            addTypeName(typeName, true);
         }
+        extractBasicProperties(typeName);
     }
 
     public void removeType(String typeName) throws IOException {
         Utilities.ensureNonNull("featureType", typeName);
-        final Lock lock = rwLock.writeLock();
-        try {
-            lock.lock();
-            checkStore();
+        checkStore();
 
-            getTileIndexStore().removeSchema(typeName);
-            removeTypeName(typeName);
-
-        } finally {
-            lock.unlock();
-        }
+        getTileIndexStore().removeSchema(typeName);
+        removeTypeName(typeName);
     }
 
     public void createType(String identification, String typeSpec)
             throws SchemaException, IOException {
         Utilities.ensureNonNull("typeSpec", typeSpec);
         Utilities.ensureNonNull("identification", identification);
-        final Lock lock = rwLock.writeLock();
         String typeName = null;
-        try {
-            lock.lock();
-            checkStore();
-            final SimpleFeatureType featureType =
-                    DataUtilities.createType(identification, typeSpec);
-            checkMosaicSchema(featureType);
-            getTileIndexStore().createSchema(featureType);
-            typeName = featureType.getTypeName();
-            if (typeName != null) {
-                addTypeName(typeName, true);
-            }
-            extractBasicProperties(typeName);
-        } finally {
-            lock.unlock();
+        checkStore();
+        final SimpleFeatureType featureType = DataUtilities.createType(identification, typeSpec);
+        checkMosaicSchema(featureType);
+        getTileIndexStore().createSchema(featureType);
+        typeName = featureType.getTypeName();
+        if (typeName != null) {
+            addTypeName(typeName, true);
         }
+        extractBasicProperties(typeName);
     }
 
     @Override
     public SimpleFeatureType getType(String typeName) throws IOException {
-        final Lock lock = rwLock.readLock();
-        try {
-            lock.lock();
-            checkStore();
+        checkStore();
 
-            if (this.getValidTypeNames().isEmpty()
-                    || !this.getValidTypeNames().contains(typeName)) {
-                return null;
-            }
-            return getTileIndexStore().getSchema(typeName);
-        } finally {
-            lock.unlock();
+        if (this.getValidTypeNames().isEmpty() || !this.getValidTypeNames().contains(typeName)) {
+            return null;
         }
+        return getTileIndexStore().getSchema(typeName);
     }
 
     public void computeAggregateFunction(Query query, FeatureCalc function) throws IOException {
         query = mergeHints(query);
-        final Lock lock = rwLock.readLock();
-        try {
-            lock.lock();
-            checkStore();
-            SimpleFeatureSource fs = getTileIndexStore().getFeatureSource(query.getTypeName());
+        checkStore();
+        SimpleFeatureSource fs = getTileIndexStore().getFeatureSource(query.getTypeName());
 
-            if (fs instanceof ContentFeatureSource)
-                ((ContentFeatureSource) fs).accepts(query, function, null);
-            else {
-                final SimpleFeatureCollection collection = fs.getFeatures(query);
-                collection.accepts(function, null);
-            }
-        } finally {
-            lock.unlock();
+        if (fs instanceof ContentFeatureSource)
+            ((ContentFeatureSource) fs).accepts(query, function, null);
+        else {
+            final SimpleFeatureCollection collection = fs.getFeatures(query);
+            collection.accepts(function, null);
         }
     }
 
     @Override
     public QueryCapabilities getQueryCapabilities(String typeName) {
-        final Lock lock = rwLock.readLock();
         try {
-            lock.lock();
             checkStore();
             return getTileIndexStore().getFeatureSource(typeName).getQueryCapabilities();
         } catch (IOException e) {
             if (LOGGER.isLoggable(Level.INFO))
                 LOGGER.log(Level.INFO, "Unable to collect QueryCapabilities", e);
             return null;
-        } finally {
-            lock.unlock();
         }
     }
 
@@ -748,44 +664,30 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
         Utilities.ensureNonNull("query", q);
         q = mergeHints(q);
         String typeName = q.getTypeName();
-        final Lock lock = rwLock.readLock();
-        try {
-            lock.lock();
-            checkStore();
+        checkStore();
 
-            //
-            // Load tiles informations, especially the bounds, which will be
-            // reused
-            //
-            final SimpleFeatureSource featureSource =
-                    getTileIndexStore().getFeatureSource(typeName);
-            if (featureSource == null) {
-                throw new NullPointerException(
-                        "The provided SimpleFeatureSource is null, it's impossible to create an index!");
-            }
-            int count = featureSource.getCount(q);
-            if (count == -1) {
-                return featureSource.getFeatures(q).size();
-            }
-            return count;
-
-        } catch (Throwable e) {
-            final IOException ioe = new IOException();
-            ioe.initCause(e);
-            throw ioe;
-        } finally {
-            lock.unlock();
+        //
+        // Load tiles informations, especially the bounds, which will be
+        // reused
+        //
+        final SimpleFeatureSource featureSource = getTileIndexStore().getFeatureSource(typeName);
+        if (featureSource == null) {
+            throw new NullPointerException(
+                    "The provided SimpleFeatureSource is null, it's impossible to create an index!");
         }
+        int count = featureSource.getCount(q);
+        if (count == -1) {
+            return featureSource.getFeatures(q).size();
+        }
+        return count;
     }
 
     @Override
     public void drop() throws IOException {
-
         // drop a datastore. Right now, only postGIS drop is supported
-
         final Map<?, ?> params = Utils.filterDataStoreParams(this.params, spi);
-        // Use reflection to invoke dropDatabase on postGis factory DB
 
+        // Use reflection to invoke dropDatabase on postGis factory DB
         final Method[] methods = spi.getClass().getMethods();
         boolean dropped = false;
         for (Method method : methods) {

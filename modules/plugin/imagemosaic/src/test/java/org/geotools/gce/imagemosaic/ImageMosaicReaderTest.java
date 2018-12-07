@@ -24,6 +24,7 @@ import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.arrayWithSize;
+import static org.hamcrest.Matchers.hasSize;
 
 import it.geosolutions.imageio.pam.PAMDataset;
 import it.geosolutions.imageio.pam.PAMDataset.PAMRasterBand;
@@ -72,6 +73,11 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.TimeZone;
 import java.util.TreeSet;
+import java.util.concurrent.Callable;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.logging.Logger;
@@ -5495,5 +5501,143 @@ public class ImageMosaicReaderTest extends Assert {
         File[] existingFilesPastCleanup = directory.listFiles(fileFilter);
         assertThat(existingFilesPastCleanup, Matchers.emptyArray());
         assertEquals(otherFilesCount, directory.listFiles(notFileFilter).length);
+    }
+
+    @Test
+    @Ignore(
+            "Does not work due to limitations in ContentDataStore transaction handling, not even with rw locking")
+    public void testConcurrentHarvestAndRemoveShapefile() throws Exception {
+        testConcurrentHarvestAndRemove(f -> {}, 20);
+    }
+
+    @Test
+    public void testConcurrentHarvestAndRemoveH2() throws Exception {
+        testConcurrentHarvestAndRemove(
+                f -> {
+                    // place H2 file in the dir
+                    try (FileWriter out = new FileWriter(new File(f, "datastore.properties"))) {
+                        out.write("database=imagemosaic\n");
+                        out.write(H2_SAMPLE_PROPERTIES);
+                        out.flush();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                },
+                100);
+    }
+
+    public void testConcurrentHarvestAndRemove(Consumer<File> mosaicCustomizer, int loops)
+            throws Exception {
+        File source = URLs.urlToFile(timeURL);
+        File testDataDir = TestData.file(this, ".");
+        File directory1 = new File(testDataDir, "harvest1-concurrent");
+        File directory2 = new File(testDataDir, "harvest2-concurrent");
+        if (directory1.exists()) {
+            FileUtils.deleteDirectory(directory1);
+        }
+        FileUtils.copyDirectory(source, directory1);
+        if (directory2.exists()) {
+            FileUtils.deleteDirectory(directory2);
+        }
+        directory2.mkdirs();
+        // Creation of a File Collection
+        Collection<File> files = new ArrayList<File>();
+
+        // move all files besides month 2 and 5 to the second directory and store them into a
+        // Collection
+        for (File file :
+                FileUtils.listFiles(
+                        directory1, new RegexFileFilter("world\\.20040[^25].*\\.tiff"), null)) {
+            File renamed = new File(directory2, file.getName());
+            assertTrue(file.renameTo(renamed));
+            files.add(renamed);
+        }
+        // remove all mosaic related files
+        for (File file :
+                FileUtils.listFiles(directory1, new RegexFileFilter("time_geotiff.*"), null)) {
+            assertTrue(file.delete());
+        }
+
+        // customize mosaic creation
+        mosaicCustomizer.accept(directory1);
+
+        // ok, let's create a mosaic with the two original granules
+        URL harvestSingleURL = fileToUrl(directory1);
+        final AbstractGridFormat format = TestUtils.getFormat(harvestSingleURL);
+        ImageMosaicReader reader = getReader(harvestSingleURL, format);
+        final ExecutorService executor = Executors.newFixedThreadPool(2);
+        try {
+            String[] metadataNames = reader.getMetadataNames();
+            assertNotNull(metadataNames);
+            assertEquals("true", reader.getMetadataValue("HAS_TIME_DOMAIN"));
+            assertEquals(
+                    "2004-02-01T00:00:00.000Z,2004-05-01T00:00:00.000Z",
+                    reader.getMetadataValue(metadataNames[0]));
+
+            // create a thread for each outstanding file that will remove and then add back
+            // the file, thus creating a concurrent load on the catalog index
+            final String coverageName = reader.getGridCoverageNames()[0];
+
+            List<Future<Integer>> futures = new ArrayList<>();
+            CountDownLatch latch = new CountDownLatch(1);
+            for (File file : files) {
+                Filter filter =
+                        FF.equal(
+                                FF.property("location"),
+                                FF.literal("../harvest2-concurrent/" + file.getName()),
+                                false);
+                Callable callable =
+                        (Callable<Integer>)
+                                () -> {
+                                    // make all callables start toghether
+                                    latch.await();
+                                    int removedCount = 0;
+
+                                    // remove if necessary
+                                    GranuleStore store =
+                                            (GranuleStore) reader.getGranules(coverageName, false);
+
+                                    for (int i = 0; i < loops; i++) {
+                                        final Query query = new Query(null, filter);
+                                        if (store.getCount(query) > 0) {
+                                            store.removeGranules(filter);
+                                            removedCount++;
+                                        }
+                                        // and harvest back
+                                        final List<HarvestedSource> harvested =
+                                                reader.harvest(coverageName, file, null);
+                                        assertThat(harvested, hasSize(1));
+                                        assertTrue(
+                                                "Feature not found after successful harvest?",
+                                                store.getCount(query) > 0);
+                                    }
+                                    return removedCount;
+                                };
+                final Future<Integer> future = executor.submit(callable);
+                futures.add(future);
+            }
+            // let the callables do their job
+            latch.countDown();
+
+            // make sure nothing threw an exception
+            for (Future<Integer> future : futures) {
+                final Integer removedCount = future.get();
+                assertEquals(loops - 1, removedCount.intValue());
+            }
+
+            // check the files are there as execpted by checking the times
+            assertEquals(1, reader.getGridCoverageNames().length);
+            metadataNames = reader.getMetadataNames();
+            assertNotNull(metadataNames);
+            assertEquals("true", reader.getMetadataValue("HAS_TIME_DOMAIN"));
+            assertEquals(
+                    "2004-02-01T00:00:00.000Z,2004-03-01T00:00:00.000Z,2004-04-01T00:00:00.000Z,2004-05-01T00:00:00.000Z",
+                    reader.getMetadataValue(metadataNames[0]));
+        } finally {
+            // close up shop
+            executor.shutdown();
+
+            reader.dispose();
+        }
     }
 }

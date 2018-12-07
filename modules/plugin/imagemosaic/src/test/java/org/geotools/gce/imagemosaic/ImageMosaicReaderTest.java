@@ -5523,12 +5523,12 @@ public class ImageMosaicReaderTest extends Assert {
                         throw new RuntimeException(e);
                     }
                 },
-                100);
+                10);
     }
 
     public void testConcurrentHarvestAndRemove(Consumer<File> mosaicCustomizer, int loops)
             throws Exception {
-        File source = URLs.urlToFile(timeURL);
+        File source = URLs.urlToFile(rgbURL);
         File testDataDir = TestData.file(this, ".");
         File directory1 = new File(testDataDir, "harvest1-concurrent");
         File directory2 = new File(testDataDir, "harvest2-concurrent");
@@ -5543,18 +5543,19 @@ public class ImageMosaicReaderTest extends Assert {
         // Creation of a File Collection
         Collection<File> files = new ArrayList<File>();
 
-        // move all files besides month 2 and 5 to the second directory and store them into a
+        // move all files besides month 2 into the second directory and store them into a
         // Collection
         for (File file :
                 FileUtils.listFiles(
-                        directory1, new RegexFileFilter("world\\.20040[^25].*\\.tiff"), null)) {
+                        directory1, new RegexFileFilter("global_mosaic_[^0].*"), null)) {
             File renamed = new File(directory2, file.getName());
             assertTrue(file.renameTo(renamed));
-            files.add(renamed);
+            if (file.getName().endsWith("png")) {
+                files.add(renamed);
+            }
         }
         // remove all mosaic related files
-        for (File file :
-                FileUtils.listFiles(directory1, new RegexFileFilter("time_geotiff.*"), null)) {
+        for (File file : FileUtils.listFiles(directory1, new RegexFileFilter("rgb.*"), null)) {
             assertTrue(file.delete());
         }
 
@@ -5565,14 +5566,10 @@ public class ImageMosaicReaderTest extends Assert {
         URL harvestSingleURL = fileToUrl(directory1);
         final AbstractGridFormat format = TestUtils.getFormat(harvestSingleURL);
         ImageMosaicReader reader = getReader(harvestSingleURL, format);
-        final ExecutorService executor = Executors.newFixedThreadPool(2);
+        final ExecutorService executor = Executors.newFixedThreadPool(8);
         try {
             String[] metadataNames = reader.getMetadataNames();
             assertNotNull(metadataNames);
-            assertEquals("true", reader.getMetadataValue("HAS_TIME_DOMAIN"));
-            assertEquals(
-                    "2004-02-01T00:00:00.000Z,2004-05-01T00:00:00.000Z",
-                    reader.getMetadataValue(metadataNames[0]));
 
             // create a thread for each outstanding file that will remove and then add back
             // the file, thus creating a concurrent load on the catalog index
@@ -5625,14 +5622,9 @@ public class ImageMosaicReaderTest extends Assert {
                 assertEquals(loops - 1, removedCount.intValue());
             }
 
-            // check the files are there as execpted by checking the times
-            assertEquals(1, reader.getGridCoverageNames().length);
-            metadataNames = reader.getMetadataNames();
-            assertNotNull(metadataNames);
-            assertEquals("true", reader.getMetadataValue("HAS_TIME_DOMAIN"));
+            // check that all the files are there
             assertEquals(
-                    "2004-02-01T00:00:00.000Z,2004-03-01T00:00:00.000Z,2004-04-01T00:00:00.000Z,2004-05-01T00:00:00.000Z",
-                    reader.getMetadataValue(metadataNames[0]));
+                    files.size() + 1, reader.getGranules(coverageName, true).getCount(Query.ALL));
         } finally {
             // close up shop
             executor.shutdown();

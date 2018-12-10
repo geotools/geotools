@@ -5579,10 +5579,7 @@ public class ImageMosaicReaderTest extends Assert {
             List<Future<Integer>> futures = new ArrayList<>();
             CountDownLatch latch = new CountDownLatch(1);
             for (File file : files) {
-                Filter filter =
-                        FF.like(
-                                FF.property("location"),
-                                "*" + file.getName() + "*");
+                Filter filter = FF.like(FF.property("location"), "*" + file.getName() + "*");
                 Callable callable =
                         (Callable<Integer>)
                                 () -> {

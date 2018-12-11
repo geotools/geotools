@@ -29,24 +29,49 @@ import java.sql.Statement;
 /** @author Stefan Uhrig, SAP SE */
 public final class MetadataImport {
 
+    public interface IPasswordReader {
+        char[] readPassword();
+    }
+
+    private static class ConsolePasswordReader implements IPasswordReader {
+
+        public ConsolePasswordReader(Console console) {
+            if (console == null) {
+                throw new NullPointerException("console must not be null");
+            }
+            this.console = console;
+        }
+
+        private Console console;
+
+        @Override
+        public char[] readPassword() {
+            return console.readPassword("Password: ");
+        }
+    }
+
     public static void main(String[] args) {
         try {
-            MetadataImport instance = new MetadataImport();
-            System.exit(instance.run(args));
+            System.exit(execute(args, new ConsolePasswordReader(System.console())));
         } catch (Throwable e) {
             e.printStackTrace();
             System.exit(1);
         }
     }
 
+    public static int execute(String[] args, IPasswordReader passwordReader) throws Exception {
+        MetadataImport instance = new MetadataImport();
+        return instance.run(args, passwordReader);
+    }
+
     private MetadataImport() {}
 
-    private int run(String[] args) throws Exception {
+    private int run(String[] args, IPasswordReader passwordReader) throws Exception {
         CommandLineArguments cla = CommandLineArguments.parse(args);
         if (cla == null) {
             return -1;
         }
-        String password = requestPassword();
+        String password = new String(passwordReader.readPassword());
         Connection conn =
                 DriverManager.getConnection(
                         cla.getConnectionParameters().buildUrl(), cla.getUser(), password);
@@ -123,16 +148,5 @@ public final class MetadataImport {
             int count = rs.getInt(1);
             return count > 0;
         }
-    }
-
-    private String requestPassword() {
-        String password;
-        Console console = System.console();
-        if (console == null) {
-            password = "dummy";
-        } else {
-            password = new String(console.readPassword("Password: "));
-        }
-        return password;
     }
 }

@@ -113,12 +113,18 @@ public class HanaFilterToSQL extends PreparedFilterToSQL {
         UNITS_MAP.put("in", 0.0254);
     };
 
-    public HanaFilterToSQL(PreparedStatementSQLDialect dialect, boolean functionEncodingEnabled) {
+    public HanaFilterToSQL(
+            PreparedStatementSQLDialect dialect,
+            boolean functionEncodingEnabled,
+            HanaVersion hanaVersion) {
         super(dialect);
         this.functionEncodingEnabled = functionEncodingEnabled;
+        this.hanaVersion = hanaVersion;
     }
 
     private boolean functionEncodingEnabled;
+
+    private HanaVersion hanaVersion;
 
     @Override
     protected FilterCapabilities createFilterCapabilities() {
@@ -241,19 +247,34 @@ public class HanaFilterToSQL extends PreparedFilterToSQL {
         }
     }
 
+    private static final int FLAT_OFFSET = 1000000000;
+
     private Object visitBBOXSpatialOperator(
             BBOX filter, PropertyName property, Literal geometry, Object extraData) {
         try {
             property.accept(this, extraData);
-            out.write(".ST_IntersectsRectPlanar(");
-            BoundingBox bbox = clamp(filter.getBounds());
-            Coordinate ll = new Coordinate(bbox.getMinX(), bbox.getMinY());
-            Coordinate ur = new Coordinate(bbox.getMaxX(), bbox.getMaxY());
-            GeometryFactory factory = new GeometryFactory();
-            visitGeometry(factory.createPoint(ll));
-            out.write(", ");
-            visitGeometry(factory.createPoint(ur));
-            out.write(") = 1");
+            if (hanaVersion.getVersion() > 1) {
+                BoundingBox bbox = clamp(filter.getBounds(), 0.0);
+                writeIntersectsRectArguments("ST_IntersectsRectPlanar", bbox);
+            } else {
+                CoordinateReferenceSystem hcrs = getHorizontalCRS(filter.getBounds());
+                if ((hcrs instanceof GeographicCRS)
+                        && (currentSRID != null)
+                        && (currentSRID <= FLAT_OFFSET)) {
+                    currentSRID += FLAT_OFFSET;
+                    try {
+                        String function =
+                                "ST_SRID(" + Integer.toString(currentSRID) + ").ST_IntersectsRect";
+                        BoundingBox bbox = clamp(filter.getBounds(), 0.5);
+                        writeIntersectsRectArguments(function, bbox);
+                    } finally {
+                        currentSRID -= FLAT_OFFSET;
+                    }
+                } else {
+                    BoundingBox bbox = filter.getBounds();
+                    writeIntersectsRectArguments("ST_IntersectsRect", bbox);
+                }
+            }
             if (filter instanceof BBOX3D) {
                 BBOX3D filter3d = (BBOX3D) filter;
                 BoundingBox3D bbox3d = filter3d.getBounds();
@@ -274,12 +295,35 @@ public class HanaFilterToSQL extends PreparedFilterToSQL {
         return extraData;
     }
 
-    private BoundingBox clamp(BoundingBox bounds) {
-        // In geographic CRS', HANA will reject any points outside the "normalized" range, which is
-        // (in radian) [-PI;PI] for longitude and
-        // [-PI/2;PI/2] for latitude. As GeoTools seems to expect that larger bounding boxes should
-        // be allowed and should not wrap-around, we clamp
-        // the bounding boxes for geographic CRS' here.
+    private CoordinateReferenceSystem getHorizontalCRS(BoundingBox bbox) {
+        CoordinateReferenceSystem crs = bbox.getCoordinateReferenceSystem();
+        CoordinateReferenceSystem hcrs = null;
+        if (crs != null) {
+            hcrs = CRS.getHorizontalCRS(crs);
+        }
+        return hcrs;
+    }
+
+    private void writeIntersectsRectArguments(String function, BoundingBox bbox)
+            throws IOException {
+        out.write('.');
+        out.write(function);
+        out.write("(");
+        Coordinate ll = new Coordinate(bbox.getMinX(), bbox.getMinY());
+        Coordinate ur = new Coordinate(bbox.getMaxX(), bbox.getMaxY());
+        GeometryFactory factory = new GeometryFactory();
+        visitGeometry(factory.createPoint(ll));
+        out.write(", ");
+        visitGeometry(factory.createPoint(ur));
+        out.write(") = 1");
+    }
+
+    private BoundingBox clamp(BoundingBox bounds, double allowedExcessFactor) {
+        // In geographic CRS', HANA will reject any points outside the "normalized"
+        // range, which is (in radian) [-PI;PI] for longitude and [-PI/2;PI/2] for
+        // latitude. As GeoTools seems to expect that larger bounding boxes should
+        // be allowed and should not wrap-around, we clamp the bounding boxes for
+        // geographic CRS' here.
 
         CoordinateReferenceSystem crs = bounds.getCoordinateReferenceSystem();
         if (crs == null) {
@@ -297,6 +341,9 @@ public class HanaFilterToSQL extends PreparedFilterToSQL {
         UnitConverter uc1 = su1.getConverterTo(u1);
         double minx = uc1.convert(-Math.PI);
         double maxx = uc1.convert(Math.PI);
+        double spanx = maxx - minx;
+        minx -= allowedExcessFactor * spanx;
+        maxx += allowedExcessFactor * spanx;
 
         @SuppressWarnings("unchecked")
         Unit<Length> u2 = (Unit<Length>) hcrs.getCoordinateSystem().getAxis(1).getUnit();
@@ -304,6 +351,9 @@ public class HanaFilterToSQL extends PreparedFilterToSQL {
         UnitConverter uc2 = su2.getConverterTo(u2);
         double miny = uc2.convert(-0.5 * Math.PI);
         double maxy = uc2.convert(0.5 * Math.PI);
+        double spany = maxy - miny;
+        miny -= allowedExcessFactor * spany;
+        maxy += allowedExcessFactor * spany;
 
         double x1 = Math.min(maxx, Math.max(minx, bounds.getMinX()));
         double y1 = Math.min(maxy, Math.max(miny, bounds.getMinY()));

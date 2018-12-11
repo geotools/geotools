@@ -122,6 +122,8 @@ public class HanaDialect extends PreparedStatementSQLDialect {
 
     private boolean functionEncodingEnabled;
 
+    private HanaVersion hanaVersion;
+
     private SchemaCache currentSchemaCache = new SchemaCache();
 
     public void setFunctionEncodingEnabled(boolean enabled) {
@@ -131,7 +133,12 @@ public class HanaDialect extends PreparedStatementSQLDialect {
     @Override
     public void initializeConnection(Connection cx) throws SQLException {
         super.initializeConnection(cx);
-        // Probably a good location to retrieve version information
+        if (hanaVersion == null) {
+            hanaVersion = new HanaVersion(cx.getMetaData().getDatabaseProductVersion());
+            if ((hanaVersion.getVersion() == 1) && (hanaVersion.getRevision() < 120)) {
+                throw new SQLException("Only HANA 2 and HANA 1 SPS 12 and later are supported");
+            }
+        }
     }
 
     @Override
@@ -781,7 +788,7 @@ public class HanaDialect extends PreparedStatementSQLDialect {
 
     @Override
     public PreparedFilterToSQL createPreparedFilterToSQL() {
-        return new HanaFilterToSQL(this, functionEncodingEnabled);
+        return new HanaFilterToSQL(this, functionEncodingEnabled, hanaVersion);
     }
 
     private String resolveSchema(String schemaName, Connection cx)

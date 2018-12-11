@@ -84,12 +84,17 @@ public class ReprojectingFilterVisitor extends DuplicatingFilterVisitor {
      * @return
      */
     private CoordinateReferenceSystem findPropertyCRS(PropertyName propertyName) {
+        Object o = propertyName.evaluate(featureType);
+        if (!propertyName.getPropertyName().isEmpty()
+                && !(propertyName.evaluate(featureType) instanceof GeometryDescriptor)) {
+            // not the default geometry or a geometry property
+            return null;
+        }
         if (targetCrs != null) {
             // an explicit target CRS was provided
             return targetCrs;
         }
         // let's try to get the CRS from the provided property name
-        Object o = propertyName.evaluate(featureType);
         if (o instanceof GeometryDescriptor) {
             GeometryDescriptor gat = (GeometryDescriptor) o;
             return gat.getCoordinateReferenceSystem();

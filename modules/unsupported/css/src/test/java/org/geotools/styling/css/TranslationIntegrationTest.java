@@ -17,10 +17,12 @@
 package org.geotools.styling.css;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import org.apache.commons.io.FileUtils;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
@@ -38,13 +40,16 @@ public class TranslationIntegrationTest extends AbstractIntegrationTest {
     }
 
     @Parameters(name = "{0}")
-    public static Collection<Object[]> data() {
+    public static Collection<Object[]> data() throws IOException {
         List<Object[]> result = new ArrayList<>();
         File root = new File("./src/test/resources/css/integration");
         for (File file : root.listFiles()) {
             if (file.getName().endsWith(".css")) {
                 result.add(new Object[] {file.getName(), file, true});
-                result.add(new Object[] {file.getName() + "-first", file, false});
+                final String css = FileUtils.readFileToString(file, "UTF-8");
+                if (!css.contains("@mode 'Flat'") && !css.contains("@mode \"Flat\"")) {
+                    result.add(new Object[] {file.getName() + "-first", file, false});
+                }
             }
         }
         Collections.sort(result, (a, b) -> ((String) a[0]).compareTo((String) b[0]));

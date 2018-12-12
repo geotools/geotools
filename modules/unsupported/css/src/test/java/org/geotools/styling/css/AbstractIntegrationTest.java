@@ -69,7 +69,7 @@ public abstract class AbstractIntegrationTest extends CssBaseTest {
     @Test
     public void translateTest() throws Exception {
         String css = FileUtils.readFileToString(file);
-        if (!exclusiveRulesEnabled) {
+        if (!exclusiveRulesEnabled && !css.contains("@mode")) {
             css = "@mode \"Simple\";\n" + css;
         }
 

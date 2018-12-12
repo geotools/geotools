@@ -294,6 +294,7 @@ class DomainCoverage {
 
             if (!reducedCoverage.isEmpty()) {
                 List<CssRule> derivedRules = new ArrayList<>();
+                reducedCoverage = combineSLDSelectors(reducedCoverage);
                 for (SLDSelector rc : reducedCoverage) {
                     derivedRules.add(
                             new CssRule(
@@ -305,30 +306,44 @@ class DomainCoverage {
                 elements.addAll(reducedCoverage);
 
                 // so far, this sorting done just for the sake of readability during debugging
-                Collections.sort(elements, new SLDSelectorComparator());
-                List<SLDSelector> combined = new ArrayList<>();
-                SLDSelector prev = null;
-                for (SLDSelector ss : elements) {
-                    if (prev == null) {
-                        prev = ss;
-                    } else if (prev.scaleRange.equals(ss.scaleRange)) {
-                        org.opengis.filter.Or or = FF.or(ss.filter, prev.filter);
-                        Filter simplified = simplify(or);
-                        prev = new SLDSelector(prev.scaleRange, simplified);
-                    } else {
-                        combined.add(prev);
-                        prev = ss;
-                    }
-                }
-                if (prev != null) {
-                    combined.add(prev);
-                }
-                this.elements = combined;
+                elements = combineSLDSelectors(elements);
                 return derivedRules;
             } else {
                 return Collections.emptyList();
             }
         }
+    }
+
+    private List<SLDSelector> combineSLDSelectors(List<SLDSelector> elements) {
+        Collections.sort(elements, new SLDSelectorComparator());
+        List<SLDSelector> combined = new ArrayList<>();
+        SLDSelector prev = null;
+        for (SLDSelector ss : elements) {
+            if (prev == null) {
+                prev = ss;
+            } else if (prev.scaleRange.equals(ss.scaleRange)) {
+                org.opengis.filter.Or or = FF.or(ss.filter, prev.filter);
+                Filter simplified = simplify(or);
+                prev = new SLDSelector(prev.scaleRange, simplified);
+            } else if (prev.scaleRange.getMaximum() == ss.scaleRange.getMinimum()
+                    && prev.filter.equals(ss.filter)) {
+                NumberRange combinedRange =
+                        new NumberRange(
+                                Double.class,
+                                prev.scaleRange.getMinimum(),
+                                prev.scaleRange.isMinIncluded(),
+                                ss.scaleRange.getMaximum(),
+                                ss.scaleRange.isMaxIncluded());
+                prev = new SLDSelector(combinedRange, prev.filter);
+            } else {
+                combined.add(prev);
+                prev = ss;
+            }
+        }
+        if (prev != null) {
+            combined.add(prev);
+        }
+        return combined;
     }
 
     private int getTotalComplexity() {

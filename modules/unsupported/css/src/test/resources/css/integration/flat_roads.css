@@ -1,0 +1,126 @@
+@mode 'Flat';
+
+[class = 'highway' and type = 'motorway'][@sd < 15M],  [class = 'highway' and type = 'motorway_link'][@sd < 1M]{
+  stroke: #ffffff, #e66e89;
+  z-index: 0, 1;
+  stroke-linecap: butt, round;
+  stroke-width:
+    [categorize(@sd,
+      1.8, 400k,
+      1.4, 800k,
+      0.8, 1.5M,
+      0.4, 3M,
+      0.2, 6M,
+      0.1) * 1.8],
+    categorize(@sd,
+      1.8, 400k,
+      1.4, 800k,
+      0.8, 1.5M,
+      0.4, 3M,
+      0.2, 6M,
+      0.1);
+  [@sd < 200k][@sd > 100k] {
+    stroke: #c24e6b, #e892a2;
+    [type = 'motorway'] {
+      stroke-width:  
+        categorize(@sd,
+          27, 1.5k,
+          21, 3k,
+          18, 6k,
+          10, 25k,
+          7, 35k,
+          7, 50k,
+          6, 100k,
+          3, 200k,
+          2),
+        [categorize(@sd,
+          27 - 2, 1.5k,
+          21 - 2, 3k,
+          18 - 2, 6k,
+          10 - 1, 25k,
+          7 - 1, 35k,
+          7 - 1, 50k,
+          6 - 1, 100k,
+          3 - 1, 200k,
+          2 - 1) * 0.9];
+    };
+    [type = 'motorway_link'] {
+      stroke-width:  
+        categorize(@sd,
+          16, 1.5k,
+          13, 3k,
+          12, 6k,
+          7.4, 25k,
+          3.8, 35k,
+          3.8, 50k,
+          3, 100k,
+          2, 200k,
+          1.2),
+        [categorize(@sd,
+          16 - 2, 1.5k,
+          13 - 2, 3k,
+          12 - 2, 6k,
+          7.4 - 1.4, 25k,
+          3.8 - 1, 35k,
+          3.8 - 1, 50k,
+          3 - 1, 100k,
+          2 - 1, 200k,
+          1.2 - 1) * 0.9];
+    }
+  };
+  [@sd < 100k] {
+      stroke: #dc2a67, #e892a2;
+      [type = 'motorway'] {
+        stroke-width:  
+          categorize(@sd,
+            27, 1.5k,
+            21, 3k,
+            18, 6k,
+            10, 25k,
+            7, 35k,
+            7, 50k,
+            6, 100k,
+            3, 200k,
+            2),
+          [categorize(@sd,
+            27 - 2, 1.5k,
+            21 - 2, 3k,
+            18 - 2, 6k,
+            10 - 1, 25k,
+            7 - 1, 35k,
+            7 - 1, 50k,
+            6 - 1, 100k,
+            3 - 1, 200k,
+            2 - 1) * 0.9];
+        [bridge = 1] {
+          stroke: #000000, #e892a2;
+        };
+      };
+      [type = 'motorway_link'] {
+        stroke-width:  
+          categorize(@sd,
+            16, 1.5k,
+            13, 3k,
+            12, 6k,
+            7.4, 25k,
+            3.8, 35k,
+            3.8, 50k,
+            3, 100k,
+            2, 200k,
+            1.2),
+          [categorize(@sd,
+            16 - 2, 1.5k,
+            13 - 2, 3k,
+            12 - 2, 6k,
+            7.4 - 1.4, 25k,
+            3.8 - 1, 35k,
+            3.8 - 1, 50k,
+            3 - 1, 100k,
+            2 - 1, 200k,
+            1.2 - 1) * 0.9];
+        [bridge = 1]{
+          stroke: #000000, #e892a2;
+        };
+    };
+  };
+}

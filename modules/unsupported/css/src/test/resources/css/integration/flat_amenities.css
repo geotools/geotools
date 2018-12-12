@@ -1,0 +1,32 @@
+@mode 'Flat';
+
+[type = 'aerodrome'][@sd < 800k],
+[type in ('volcano', 'peak', 'alpine_hut', 'wilderness_hut')][@sd <= 400k],
+[@sd < 25k] {
+  z-index: 1;
+  label-geometry: [centroid(geometry)];
+  label-priority: 2150;
+  label: ' ';
+  shield: symbol(cross);
+  :shield {
+    size: 2;
+  };
+
+  [type in ('art',
+    'music',
+    'alcohol',
+    'stationery')] [@sd < 6k] [@sd >= 3k] {
+      shield: symbol(circle);
+      :shield {
+        fill:  #ac39ac;
+        size: 4;
+      };
+    };
+
+  /* Food, beverages  */
+  [type in ('alcohol', 'wine')][@sd < 3k] {
+    label: ' ';
+    shield: symbol('file://symbols/shop/alcohol.svg');
+    :shield { fill: #ac39ac; size : 14 };
+  };
+ }

@@ -22,6 +22,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.data.Parameter;
@@ -729,5 +730,25 @@ public class InterpolateFunction implements Function {
         }
         sb.append(")");
         return sb.toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        InterpolateFunction that = (InterpolateFunction) o;
+        return modeSpecified == that.modeSpecified
+                && methodSpecified == that.methodSpecified
+                && mode == that.mode
+                && method == that.method
+                && Objects.equals(interpPoints, that.interpPoints)
+                && Objects.equals(parameters, that.parameters)
+                && Objects.equals(fallback, that.fallback);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(
+                mode, modeSpecified, method, methodSpecified, interpPoints, parameters, fallback);
     }
 }

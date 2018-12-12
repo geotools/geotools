@@ -21,6 +21,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.FilterAttributeExtractor;
 import org.geotools.filter.capability.FunctionNameImpl;
@@ -280,5 +281,30 @@ public class CategorizeFunction implements Function {
         }
         sb.append(")");
         return sb.toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CategorizeFunction that = (CategorizeFunction) o;
+        return staticTable == that.staticTable
+                && Objects.equals(parameters, that.parameters)
+                && Objects.equals(fallback, that.fallback)
+                && Arrays.equals(thresholds, that.thresholds)
+                && Arrays.equals(values, that.values)
+                && Arrays.equals(convertedValues, that.convertedValues)
+                && Objects.equals(convertedValuesContext, that.convertedValuesContext)
+                && Objects.equals(belongsTo, that.belongsTo);
+    }
+
+    @Override
+    public int hashCode() {
+        int result =
+                Objects.hash(parameters, fallback, staticTable, convertedValuesContext, belongsTo);
+        result = 31 * result + Arrays.hashCode(thresholds);
+        result = 31 * result + Arrays.hashCode(values);
+        result = 31 * result + Arrays.hashCode(convertedValues);
+        return result;
     }
 }

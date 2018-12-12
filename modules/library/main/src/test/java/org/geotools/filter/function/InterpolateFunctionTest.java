@@ -413,4 +413,26 @@ public class InterpolateFunctionTest extends SEFunctionTestBase {
         Object result = fn.evaluate(null, Double.class);
         assertNull(result);
     }
+
+    @Test
+    public void testEqualsHashCode() {
+        setupParameters(data, values);
+        parameters.add(ff2.literal(InterpolateFunction.METHOD_COLOR));
+
+        Function fn1 = finder.findFunction("interpolate", parameters);
+        Function fn2 = finder.findFunction("interpolate", parameters);
+        setupParameters(data, values);
+        parameters.add(ff2.literal(InterpolateFunction.METHOD_NUMERIC));
+        Function fn3 = finder.findFunction("interpolate", parameters);
+
+        // symmetric
+        assertEquals(fn1, fn2);
+        assertEquals(fn2, fn1);
+        // same hashcode
+        assertEquals(fn1.hashCode(), fn2.hashCode());
+
+        // but not equal to fn3
+        assertNotEquals(fn1, fn3);
+        assertNotEquals(fn2, fn3);
+    }
 }

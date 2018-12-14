@@ -88,6 +88,12 @@ public class JenksNaturalBreaksFunction extends ClassificationFunction {
             return null; // if it isn't a number what should we do?
         }
         Collections.sort(data);
+
+        if (data.size() == 1 || data.get(0).equals(data.get(data.size() - 1))) {
+            return new RangedClassifier(
+                    new Comparable[] {data.get(0)}, new Comparable[] {data.get(0)});
+        }
+
         final int k = getClasses();
         final int m = data.size();
         if (k == m) {

@@ -33,7 +33,7 @@ import org.opengis.filter.FilterFactory2;
 /** @author James */
 public abstract class FunctionTestSupport extends TestCase {
 
-    protected SimpleFeatureCollection featureCollection, jenksCollection;
+    protected SimpleFeatureCollection featureCollection, jenksCollection, constantCollection;
 
     FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
 
@@ -94,5 +94,17 @@ public abstract class FunctionTestSupport extends TestCase {
                             "jenks" + i));
         }
         jenksCollection = features;
+
+        SimpleFeatureType constantType =
+                DataUtilities.createType("constant", "id:0,v:double,s:String");
+        ListFeatureCollection constantCollection = new ListFeatureCollection(constantType);
+        for (int i = 0; i < 10; i++) {
+            constantCollection.add(
+                    SimpleFeatureBuilder.build(
+                            constantType,
+                            new Object[] {new Integer(i + 1), new Double(123.123), "abc"},
+                            "constant" + i));
+        }
+        this.constantCollection = constantCollection;
     }
 }

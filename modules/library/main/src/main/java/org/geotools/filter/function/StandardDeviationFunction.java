@@ -61,6 +61,10 @@ public class StandardDeviationFunction extends ClassificationFunction {
                 return null;
             }
             double standardDeviation = calcResult.toDouble();
+            if (standardDeviation == 0) {
+                return new RangedClassifier(
+                        new Comparable[] {sdVisit.getMean()}, new Comparable[] {sdVisit.getMean()});
+            }
 
             // figure out the min and max values
             Double min[] = new Double[classNum];

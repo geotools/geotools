@@ -234,4 +234,13 @@ public class JenksFunctionTest extends FunctionTestSupport {
         assertEquals("0..0", range.getTitle(0));
         assertEquals("0..0", range.getTitle(1));
     }
+
+    public void testConstantValuesNumeric() {
+        Function function = ff.function("jenks", ff.property("v"), ff.literal(12));
+        RangedClassifier classifier = (RangedClassifier) function.evaluate(constantCollection);
+        assertNotNull(classifier);
+        assertEquals(1, classifier.getSize());
+        assertEquals(123.123, (Double) classifier.getMin(0), 0d);
+        assertEquals(123.123, (Double) classifier.getMax(0), 0d);
+    }
 }

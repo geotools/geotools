@@ -139,6 +139,9 @@ public abstract class ClassificationFunction extends DefaultExpression
      * @param slotWidth
      */
     protected int decimalPlaces(double slotWidth) {
+        if (slotWidth == 0) {
+            return 5;
+        }
         String str = Double.toString(slotWidth);
         if (str.indexOf(".") > -1) {
             while (str.endsWith("0")) {

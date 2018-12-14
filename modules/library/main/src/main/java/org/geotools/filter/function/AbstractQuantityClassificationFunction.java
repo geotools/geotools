@@ -1,6 +1,7 @@
 package org.geotools.filter.function;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -56,11 +57,15 @@ public abstract class AbstractQuantityClassificationFunction extends Classificat
         if ((globalMin instanceof Number) && (globalMax instanceof Number)) {
             return calculateNumerical(bin, globalMin, globalMax);
         } else {
-            return calculateNonNumerical(bin);
+            return calculateNonNumerical(bin, globalMin, globalMax);
         }
     }
 
     private Object calculateNumerical(List[] bin, Comparable globalMin, Comparable globalMax) {
+        if (globalMax.equals(globalMin)) {
+            return new RangedClassifier(new Comparable[] {globalMin}, new Comparable[] {globalMax});
+        }
+
         int classNum = bin.length;
         // size arrays
         Comparable[] localMin = new Comparable[classNum];
@@ -118,7 +123,11 @@ public abstract class AbstractQuantityClassificationFunction extends Classificat
         return new RangedClassifier(localMin, localMax);
     }
 
-    private Object calculateNonNumerical(List[] bin) {
+    private Object calculateNonNumerical(List[] bin, Comparable globalMin, Comparable globalMax) {
+        if (globalMax.equals(globalMin)) {
+            return new ExplicitClassifier(new Set[] {Collections.singleton(globalMin)});
+        }
+
         int classNum = bin.length;
         // it's a string.. leave it be (just copy the values)
         Set[] values = new Set[classNum];

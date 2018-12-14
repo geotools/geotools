@@ -219,4 +219,22 @@ public class QuantileFunctionTest extends FunctionTestSupport {
         assertEquals("0..0", range.getTitle(0));
         assertEquals("0..0.25995", range.getTitle(1));
     }
+
+    public void testConstantValuesNumeric() {
+        Function function = ff.function("quantile", ff.property("v"), ff.literal(12));
+        RangedClassifier classifier = (RangedClassifier) function.evaluate(constantCollection);
+        assertNotNull(classifier);
+        assertEquals(1, classifier.getSize());
+        assertEquals(123.123, (Double) classifier.getMin(0), 0d);
+        assertEquals(123.123, (Double) classifier.getMax(0), 0d);
+    }
+
+    public void testConstantValuesString() {
+        Function function = ff.function("quantile", ff.property("s"), ff.literal(12));
+        ExplicitClassifier classifier = (ExplicitClassifier) function.evaluate(constantCollection);
+        assertNotNull(classifier);
+        assertEquals(1, classifier.getSize());
+        assertEquals(1, classifier.getValues(0).size());
+        assertEquals("abc", classifier.getValues(0).iterator().next());
+    }
 }

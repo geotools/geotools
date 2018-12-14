@@ -136,6 +136,34 @@ public class EqualAreaFunctionTest {
                 }
             }
         }
+
+        /** Test a feature collection where the classified attribute always has the same value */
+        @Test
+        public void testConstantValue() throws Exception {
+            // create a feature collection with five features values 1-5
+            SimpleFeatureType dataType =
+                    DataUtilities.createType("singleBin", "id:0,value:int,geom:Polygon");
+            int iVal[] = new int[] {1, 1, 1, 1, 1};
+            SimpleFeature[] myfeatures = new SimpleFeature[iVal.length];
+            Polygon polygon = (Polygon) new WKTReader().read("POLYGON((0 0, 0 1, 1 1, 1 0, 0 0))");
+            for (int i = 0; i < iVal.length; i++) {
+                myfeatures[i] =
+                        SimpleFeatureBuilder.build(
+                                dataType,
+                                new Object[] {new Integer(i + 1), new Integer(iVal[i]), polygon},
+                                "classification.test1" + (i + 1));
+            }
+            SimpleFeatureCollection myFeatureCollection = DataUtilities.collection(myfeatures);
+
+            // run the equal area function
+            org.opengis.filter.expression.Expression function =
+                    FF.function("EqualArea", FF.property("value"), FF.literal(5));
+            RangedClassifier ranged =
+                    assertRangedClassifier(function.evaluate(myFeatureCollection));
+            assertEquals(1, ranged.getSize());
+            assertEquals(1, ranged.getMin(0));
+            assertEquals(1, ranged.getMax(0));
+        }
     }
 
     /**

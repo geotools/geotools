@@ -90,6 +90,11 @@ public class EqualIntervalFunction extends ClassificationFunction {
 
     private RangedClassifier calculateNumerical(
             int classNum, Comparable globalMin, Comparable globalMax) {
+        // handle constant value case
+        if (globalMax.equals(globalMin)) {
+            return new RangedClassifier(new Comparable[] {globalMin}, new Comparable[] {globalMax});
+        }
+
         double slotWidth =
                 (((Number) globalMax).doubleValue() - ((Number) globalMin).doubleValue())
                         / classNum;
@@ -148,6 +153,7 @@ public class EqualIntervalFunction extends ClassificationFunction {
         Comparable[] values = (Comparable[]) result.toArray(new Comparable[result.size()]);
 
         // size arrays
+        classNum = Math.min(classNum, values.length);
         Comparable[] localMin = new Comparable[classNum];
         Comparable[] localMax = new Comparable[classNum];
 

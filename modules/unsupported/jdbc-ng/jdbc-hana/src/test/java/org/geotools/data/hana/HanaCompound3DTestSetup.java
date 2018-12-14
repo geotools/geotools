@@ -134,9 +134,9 @@ public class HanaCompound3DTestSetup extends JDBCCompound3DTestSetup {
                         6377397.155,
                         null,
                         299.1528128,
-                        646.36,
+                        0.0,
                         276050.82,
-                        308975.28,
+                        0.0,
                         636456.31);
         htu.createSrs(srs);
     }

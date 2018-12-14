@@ -327,7 +327,7 @@ public class FilterTransformer extends TransformerBase {
                 Literal literal = (Literal) right;
                 Envelope bbox = literal.evaluate(null, Envelope.class);
                 if (bbox != null) {
-                    encode(bbox);
+                    geometryEncoder.encode(bbox);
                 } else {
                     right.accept(this, extraData);
                 }

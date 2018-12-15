@@ -41,6 +41,7 @@ public class MBTilesMetadata {
     };
 
     public enum t_format {
+        JPG,
         JPEG,
         PNG,
 

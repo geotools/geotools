@@ -5567,7 +5567,7 @@ public class ImageMosaicReaderTest extends Assert {
         URL harvestSingleURL = fileToUrl(directory1);
         final AbstractGridFormat format = TestUtils.getFormat(harvestSingleURL);
         ImageMosaicReader reader = getReader(harvestSingleURL, format);
-        final ExecutorService executor = Executors.newFixedThreadPool(8);
+        final ExecutorService executor = Executors.newFixedThreadPool(2);
         try {
             String[] metadataNames = reader.getMetadataNames();
             assertNotNull(metadataNames);

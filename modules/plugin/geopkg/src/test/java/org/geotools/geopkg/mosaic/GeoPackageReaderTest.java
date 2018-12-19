@@ -16,9 +16,12 @@
  */
 package org.geotools.geopkg.mosaic;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
-import java.awt.Rectangle;
+import java.awt.*;
 import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
@@ -26,6 +29,7 @@ import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
+import org.geotools.coverage.grid.io.OverviewPolicy;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.geopkg.GeoPackageTest;
 import org.geotools.image.test.ImageAssert;
@@ -256,5 +260,24 @@ public class GeoPackageReaderTest {
         File referenceFull = new File("./src/test/resources/org/geotools/geopkg/giantPolyFull.png");
         ImageAssert.assertEquals(referenceFull, img, 1000);
         reader.dispose();
+    }
+
+    @Test
+    public void testNumberOverviews() throws IOException {
+        GeoPackageReader reader =
+                new GeoPackageReader(GeoPackageTest.class.getResource("Blue_Marble.gpkg"), null);
+        assertEquals(4, reader.getNumOverviews());
+
+        // get all
+        final double[][] resolutionLevels = reader.getResolutionLevels();
+        assertArrayEquals(new double[] {0.015, 0.015}, resolutionLevels[0], 0.01);
+        assertArrayEquals(new double[] {0.03, 0.03}, resolutionLevels[1], 0.01);
+        assertArrayEquals(new double[] {0.06, 0.06}, resolutionLevels[2], 0.01);
+        assertArrayEquals(new double[] {0.12, 0.12}, resolutionLevels[3], 0.01);
+        assertArrayEquals(new double[] {0.24, 0.24}, resolutionLevels[4], 0.01);
+
+        final double[] readingResolutions =
+                reader.getReadingResolutions(OverviewPolicy.NEAREST, new double[] {0.03, 0.03});
+        assertArrayEquals(new double[] {0.03, 0.03}, readingResolutions, 0.01);
     }
 }

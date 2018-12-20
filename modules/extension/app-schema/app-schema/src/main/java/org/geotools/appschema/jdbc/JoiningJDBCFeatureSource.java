@@ -36,6 +36,7 @@ import org.geotools.data.Query;
 import org.geotools.data.Transaction;
 import org.geotools.data.complex.AttributeMapping;
 import org.geotools.data.complex.FeatureTypeMapping;
+import org.geotools.data.complex.config.AppSchemaDataAccessConfigurator;
 import org.geotools.data.complex.config.JdbcMultipleValue;
 import org.geotools.data.jdbc.FilterToSQL;
 import org.geotools.data.jdbc.FilterToSQLException;
@@ -686,9 +687,20 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
                                     getDataStore(),
                                     sortBySQL);
                             if (NestedFilterToSQL.isNestedFilter(filter)) {
-                                sortBySQL
-                                        .append(" WHERE ")
-                                        .append(createNestedFilter(filter, query, toSQL));
+                                sortBySQL.append(" WHERE ");
+                                // if it's postgis and replacement is enabled use UNION
+                                boolean replaceOrWithUnion =
+                                        isPostgisDialect() && isOrUnionReplacementEnabled();
+                                // get current select clause
+                                String selectClause =
+                                        sortBySQL.toString().replace(" INNER JOIN ( ", "");
+                                sortBySQL.append(
+                                        createNestedFilter(
+                                                filter,
+                                                query,
+                                                toSQL,
+                                                selectClause,
+                                                replaceOrWithUnion));
                             } else {
                                 sortBySQL.append(" ").append(toSQL.encodeToString(filter));
                             }
@@ -847,6 +859,20 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
             throws FilterToSQLException {
         NestedFilterToSQL nested = new NestedFilterToSQL(query.getRootMapping(), filterToSQL);
         nested.setInline(true);
+        return nested.encodeToString(filter);
+    }
+
+    private Object createNestedFilter(
+            Filter filter,
+            JoiningQuery query,
+            FilterToSQL filterToSQL,
+            String selectClause,
+            boolean replaceOrWithUnion)
+            throws FilterToSQLException {
+        NestedFilterToSQL nested = new NestedFilterToSQL(query.getRootMapping(), filterToSQL);
+        nested.setInline(true);
+        nested.setSelectClause(selectClause);
+        nested.setReplaceOrWithUnion(replaceOrWithUnion);
         return nested.encodeToString(filter);
     }
 
@@ -1285,5 +1311,18 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
         JoinQualifier jq = new JoinQualifier(featureType, alias);
         Filter resultFilter = (Filter) filter.accept(jq, null);
         return resultFilter;
+    }
+
+    protected boolean isPostgisDialect() {
+        String dialectClassName = getDataStore().getSQLDialect().getClass().getName();
+        if ("org.geotools.data.postgis.PostGISDialect".equals(dialectClassName)
+                || "org.geotools.data.postgis.PostGISPSDialect".equals(dialectClassName)) {
+            return true;
+        }
+        return false;
+    }
+
+    protected boolean isOrUnionReplacementEnabled() {
+        return AppSchemaDataAccessConfigurator.isOrUnionReplacementEnabled();
     }
 }

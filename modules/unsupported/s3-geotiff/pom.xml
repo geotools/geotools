@@ -21,7 +21,7 @@
   <parent>
     <artifactId>unsupported</artifactId>
     <groupId>org.geotools</groupId>
-    <version>19-SNAPSHOT</version>
+    <version>19.4</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
 

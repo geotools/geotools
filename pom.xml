@@ -242,8 +242,8 @@
             <artifactId>maven-pmd-plugin</artifactId>
             <version>3.11.0</version>
             <configuration>
-              <failurePriority>2</failurePriority>
-              <minimumPriority>2</minimumPriority>
+              <failurePriority>1</failurePriority>
+	      <minimumPriority>1</minimumPriority>
               <verbose>true</verbose>
               <printFailingErrors>true</printFailingErrors>
             </configuration>

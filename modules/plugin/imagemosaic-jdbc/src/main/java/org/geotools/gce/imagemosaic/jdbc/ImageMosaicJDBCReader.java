@@ -483,7 +483,7 @@ public class ImageMosaicJDBCReader extends AbstractGridCoverage2DReader {
                         state.getRequestedEnvelope());
             }
         } else {
-            imageChoice = new Integer(0);
+            imageChoice = Integer.valueOf(0);
         }
 
         ImageLevelInfo info = jdbcAccess.getLevelInfo(imageChoice.intValue());

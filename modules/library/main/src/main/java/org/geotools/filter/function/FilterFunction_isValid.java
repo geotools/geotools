@@ -46,6 +46,6 @@ public class FilterFunction_isValid extends FunctionExpressionImpl {
                     "Filter Function problem for function isValid argument #0 - expected type Geometry");
         }
 
-        return new Boolean(StaticGeometry.isValid(arg0));
+        return Boolean.valueOf(StaticGeometry.isValid(arg0));
     }
 }

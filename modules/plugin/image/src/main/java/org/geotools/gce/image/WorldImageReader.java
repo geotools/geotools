@@ -415,7 +415,7 @@ public final class WorldImageReader extends AbstractGridCoverage2DReader
         // set params
         //
         // /////////////////////////////////////////////////////////////////////
-        Integer imageChoice = new Integer(0);
+        Integer imageChoice = Integer.valueOf(0);
         final ImageReadParam readP = new ImageReadParam();
         if (!wmsRequest) {
             try {

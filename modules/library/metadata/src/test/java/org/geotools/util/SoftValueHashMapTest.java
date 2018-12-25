@@ -97,8 +97,8 @@ public final class SoftValueHashMapTest {
             strongMap.clear();
             for (int i = 0; i < SAMPLE_SIZE; i++) {
                 // We really want new instances below.
-                Integer key = new Integer(random.nextInt(SAMPLE_SIZE));
-                final Integer value = new Integer(random.nextInt(SAMPLE_SIZE));
+                Integer key = Integer.valueOf(random.nextInt(SAMPLE_SIZE));
+                final Integer value = Integer.valueOf(random.nextInt(SAMPLE_SIZE));
                 if (random.nextBoolean()) // test from time to time with the null key
                 key = null;
 
@@ -232,8 +232,8 @@ public final class SoftValueHashMapTest {
 
         public void run() {
             for (int i = 0; i < THREAD_CYCLES; i++) {
-                final Integer key = new Integer(random.nextInt(SAMPLE_SIZE));
-                final Integer value = new Integer(random.nextInt(SAMPLE_SIZE));
+                final Integer key = Integer.valueOf(random.nextInt(SAMPLE_SIZE));
+                final Integer value = Integer.valueOf(random.nextInt(SAMPLE_SIZE));
                 if (random.nextBoolean()) {
                     Object o = cache.put(key, value);
                     if (o != null) assertTrue("Put in multithread", o instanceof Integer);

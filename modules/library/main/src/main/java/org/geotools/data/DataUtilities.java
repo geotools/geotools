@@ -846,16 +846,16 @@ public class DataUtilities {
             return "";
         }
         if (type == Integer.class) {
-            return new Integer(0);
+            return Integer.valueOf(0);
         }
         if (type == Double.class) {
             return new Double(0);
         }
         if (type == Long.class) {
-            return new Long(0);
+            return Long.valueOf(0);
         }
         if (type == Short.class) {
-            return new Short((short) 0);
+            return Short.valueOf((short) 0);
         }
         if (type == Float.class) {
             return new Float(0.0f);

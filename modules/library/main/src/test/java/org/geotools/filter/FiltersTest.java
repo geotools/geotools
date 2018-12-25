@@ -109,7 +109,7 @@ public class FiltersTest {
 
     @Test
     public void testGets() throws Throwable {
-        assertEquals(new Long(1l), Filters.gets("1.0", Long.class));
+        assertEquals(Long.valueOf(1l), Filters.gets("1.0", Long.class));
     }
 
     @Test

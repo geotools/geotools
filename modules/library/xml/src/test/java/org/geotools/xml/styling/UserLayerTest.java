@@ -132,13 +132,13 @@ public class UserLayerTest extends TestCase {
         final Point g1 = jtsFactory.createPoint(new Coordinate(X_1, Y_1));
         fc.add(
                 SimpleFeatureBuilder.build(
-                        schema, new Object[] {new Integer(1), g1, LABEL_1}, ID_1));
+                        schema, new Object[] {Integer.valueOf(1), g1, LABEL_1}, ID_1));
 
         // create 2nd point
         final Point g2 = jtsFactory.createPoint(new Coordinate(X_2, Y_2));
         fc.add(
                 SimpleFeatureBuilder.build(
-                        schema, new Object[] {new Integer(2), g2, LABEL_2}, ID_2));
+                        schema, new Object[] {Integer.valueOf(2), g2, LABEL_2}, ID_2));
 
         final DataStore ds = DataUtilities.dataStore(fc);
 

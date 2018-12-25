@@ -33,7 +33,7 @@ public class TEST {
         Double dd = new Double(1.0);
         double aa = dd.doubleValue();
         int ii = 1;
-        Integer iii = new Integer(ii);
+        Integer iii = Integer.valueOf(ii);
 
         Rectangle2D r = new Rectangle2D.Double(10.0, 80.0, 10.0, 10.0);
         Point2D pa = new Point2D.Double(0.0, 100.0);

@@ -101,7 +101,7 @@ public class Collection_SumFunction extends FunctionExpressionImpl {
 
     public Object evaluate(Object feature) {
         if (feature == null) {
-            return new Integer(0); // no features were visited in the making of this answer
+            return Integer.valueOf(0); // no features were visited in the making of this answer
         }
         SimpleFeatureCollection featureCollection = (SimpleFeatureCollection) feature;
         Expression expr = (Expression) getExpression(0);

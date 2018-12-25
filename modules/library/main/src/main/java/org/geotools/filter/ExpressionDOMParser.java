@@ -417,7 +417,7 @@ public final class ExpressionDOMParser {
             // see if it's an int
             try {
                 try {
-                    Integer intLiteral = new Integer(nodeValue);
+                    Integer intLiteral = Integer.valueOf(nodeValue);
 
                     return ff.literal(intLiteral);
                 } catch (NumberFormatException e) {

@@ -132,12 +132,12 @@ public class FilterEqualsTest extends TestCase {
         Object[] attributes = new Object[11];
         GeometryFactory gf = new GeometryFactory(new PrecisionModel());
         attributes[0] = gf.createLineString(coords);
-        attributes[1] = new Boolean(true);
+        attributes[1] = Boolean.valueOf(true);
         attributes[2] = new Character('t');
-        attributes[3] = new Byte("10");
-        attributes[4] = new Short("101");
-        attributes[5] = new Integer(1002);
-        attributes[6] = new Long(10003);
+        attributes[3] = Byte.valueOf("10");
+        attributes[4] = Short.valueOf("101");
+        attributes[5] = Integer.valueOf(1002);
+        attributes[6] = Long.valueOf(10003);
         attributes[7] = new Float(10000.4);
         attributes[8] = new Double(100000.5);
         attributes[9] = "test string data";
@@ -158,10 +158,10 @@ public class FilterEqualsTest extends TestCase {
             Literal testOtherString = new LiteralExpressionImpl("not test literal");
             assertFalse(testString1.equals(testOtherString));
 
-            Literal testNumber34 = new LiteralExpressionImpl(new Integer(34));
+            Literal testNumber34 = new LiteralExpressionImpl(Integer.valueOf(34));
             assertFalse(testString1.equals(testNumber34));
 
-            Literal testOtherNumber34 = new LiteralExpressionImpl(new Integer(34));
+            Literal testOtherNumber34 = new LiteralExpressionImpl(Integer.valueOf(34));
             assertTrue(testNumber34.equals(testOtherNumber34));
         } catch (IllegalFilterException e) {
             LOGGER.warning("bad filter " + e.getMessage());
@@ -197,8 +197,8 @@ public class FilterEqualsTest extends TestCase {
             testMath2.setExpression1(testExp2);
             testMath2.setExpression2(testExp1);
             assertTrue(testMath1.equals(testMath2));
-            testExp3 = new LiteralExpressionImpl(new Integer(4));
-            testExp4 = new LiteralExpressionImpl(new Integer(4));
+            testExp3 = new LiteralExpressionImpl(Integer.valueOf(4));
+            testExp4 = new LiteralExpressionImpl(Integer.valueOf(4));
             testMath2.setExpression1(testExp3);
             assertTrue(!testMath1.equals(testMath2));
             testMath1.setExpression1(testExp4);
@@ -235,8 +235,8 @@ public class FilterEqualsTest extends TestCase {
     }
 
     public void testCompareFilter() throws IllegalFilterException {
-        testExp1 = new LiteralExpressionImpl(new Integer(45));
-        testExp2 = new LiteralExpressionImpl(new Integer(45));
+        testExp1 = new LiteralExpressionImpl(Integer.valueOf(45));
+        testExp2 = new LiteralExpressionImpl(Integer.valueOf(45));
         testExp3 = new AttributeExpressionImpl(testSchema, "testInteger");
         testExp4 = new AttributeExpressionImpl(testSchema, "testInteger");
         PropertyIsEqualTo cFilter1 = ff.equals(testExp1, testExp3);
@@ -254,10 +254,10 @@ public class FilterEqualsTest extends TestCase {
     public void testBetweenFilter() throws IllegalFilterException {
         BetweenFilterImpl bFilter1 = new BetweenFilterImpl();
         BetweenFilterImpl bFilter2 = new BetweenFilterImpl();
-        LiteralExpressionImpl testLit1 = new LiteralExpressionImpl(new Integer(55));
-        LiteralExpressionImpl testLit2 = new LiteralExpressionImpl(new Integer(55));
-        testExp1 = new LiteralExpressionImpl(new Integer(45));
-        testExp2 = new LiteralExpressionImpl(new Integer(45));
+        LiteralExpressionImpl testLit1 = new LiteralExpressionImpl(Integer.valueOf(55));
+        LiteralExpressionImpl testLit2 = new LiteralExpressionImpl(Integer.valueOf(55));
+        testExp1 = new LiteralExpressionImpl(Integer.valueOf(45));
+        testExp2 = new LiteralExpressionImpl(Integer.valueOf(45));
         testExp3 = new AttributeExpressionImpl(testSchema, "testInteger");
         testExp4 = new AttributeExpressionImpl(testSchema, "testInteger");
         bFilter1.setExpression1(testExp1);
@@ -272,7 +272,7 @@ public class FilterEqualsTest extends TestCase {
                         org.opengis.filter.expression.Expression.NIL,
                         org.opengis.filter.expression.Expression.NIL);
         assertTrue(!bFilter2.equals(tFilter1));
-        bFilter2.setExpression2(new LiteralExpressionImpl(new Integer(65)));
+        bFilter2.setExpression2(new LiteralExpressionImpl(Integer.valueOf(65)));
         assertTrue(!bFilter2.equals(bFilter1));
     }
 
@@ -283,7 +283,7 @@ public class FilterEqualsTest extends TestCase {
         String wcMulti = "!";
         String wcSingle = "_";
         String escape = "#";
-        testExp2 = new LiteralExpressionImpl(new Integer(45));
+        testExp2 = new LiteralExpressionImpl(Integer.valueOf(45));
         testExp3 = new AttributeExpressionImpl(testSchema, "testInteger");
         testExp4 = new AttributeExpressionImpl(testSchema, "testInteger");
         lFilter1.setExpression(testExp3);
@@ -299,8 +299,8 @@ public class FilterEqualsTest extends TestCase {
     }
 
     public void testLogicFilter() throws IllegalFilterException {
-        testExp1 = new LiteralExpressionImpl(new Integer(45));
-        testExp2 = new LiteralExpressionImpl(new Integer(45));
+        testExp1 = new LiteralExpressionImpl(Integer.valueOf(45));
+        testExp2 = new LiteralExpressionImpl(Integer.valueOf(45));
         testExp3 = new AttributeExpressionImpl(testSchema, "testInteger");
         testExp4 = new AttributeExpressionImpl(testSchema, "testInteger");
         PropertyIsEqualTo cFilter1 = ff.equals(testExp1, testExp2);

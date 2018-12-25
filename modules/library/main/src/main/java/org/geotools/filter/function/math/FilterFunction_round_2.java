@@ -47,6 +47,6 @@ public class FilterFunction_round_2 extends FunctionExpressionImpl {
                     "Filter Function problem for function round argument #0 - expected type double");
         }
 
-        return new Long(Math.round(arg0));
+        return Long.valueOf(Math.round(arg0));
     }
 }

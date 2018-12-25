@@ -850,7 +850,7 @@ public abstract class AbstractTest extends TestCase {
         Integer port = null;
 
         if (portString != null) {
-            port = new Integer(portString);
+            port = Integer.valueOf(portString);
         }
 
         String dbName = fixture.getProperty("dbname");

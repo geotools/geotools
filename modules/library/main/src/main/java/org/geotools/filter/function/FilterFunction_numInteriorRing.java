@@ -47,6 +47,6 @@ public class FilterFunction_numInteriorRing extends FunctionExpressionImpl {
                     "Filter Function problem for function numInteriorRing argument #0 - expected type Geometry");
         }
 
-        return new Integer(StaticGeometry.numInteriorRing(arg0));
+        return Integer.valueOf(StaticGeometry.numInteriorRing(arg0));
     }
 }

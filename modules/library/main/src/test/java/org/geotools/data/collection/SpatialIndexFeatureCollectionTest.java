@@ -127,7 +127,7 @@ public class SpatialIndexFeatureCollectionTest extends FeatureCollectionWrapperT
         for (String text : wkt) {
             Polygon poly = (Polygon) reader.read(text);
             builder.add(poly);
-            builder.add(new Integer(i++));
+            builder.add(Integer.valueOf(i++));
             SimpleFeature feature = builder.buildFeature(null);
 
             indexedCollection.add(feature);

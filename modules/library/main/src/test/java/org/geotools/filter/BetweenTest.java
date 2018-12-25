@@ -82,27 +82,27 @@ public class BetweenTest extends TestCase {
         SimpleFeature f1 =
                 SimpleFeatureBuilder.build(
                         schema,
-                        new Object[] {new Integer(12), gf.createPoint(new Coordinate(12, 12))},
+                        new Object[] {Integer.valueOf(12), gf.createPoint(new Coordinate(12, 12))},
                         null);
         SimpleFeature f2 =
                 SimpleFeatureBuilder.build(
                         schema,
-                        new Object[] {new Integer(3), gf.createPoint(new Coordinate(3, 3))},
+                        new Object[] {Integer.valueOf(3), gf.createPoint(new Coordinate(3, 3))},
                         null);
         SimpleFeature f3 =
                 SimpleFeatureBuilder.build(
                         schema,
-                        new Object[] {new Integer(15), gf.createPoint(new Coordinate(15, 15))},
+                        new Object[] {Integer.valueOf(15), gf.createPoint(new Coordinate(15, 15))},
                         null);
         SimpleFeature f4 =
                 SimpleFeatureBuilder.build(
                         schema,
-                        new Object[] {new Integer(5), gf.createPoint(new Coordinate(5, 5))},
+                        new Object[] {Integer.valueOf(5), gf.createPoint(new Coordinate(5, 5))},
                         null);
         SimpleFeature f5 =
                 SimpleFeatureBuilder.build(
                         schema,
-                        new Object[] {new Integer(30), gf.createPoint(new Coordinate(30, 30))},
+                        new Object[] {Integer.valueOf(30), gf.createPoint(new Coordinate(30, 30))},
                         null);
 
         assertEquals(true, a.evaluate(f1)); // in between

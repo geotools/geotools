@@ -347,7 +347,7 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
         // Default image index 0
         //
         // //
-        Integer imageChoice = new Integer(0);
+        Integer imageChoice = Integer.valueOf(0);
 
         // //
         //

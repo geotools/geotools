@@ -409,7 +409,7 @@ public class XmlDataStoreTest extends TestCase {
             wsParams.put(
                     "WSDataStoreFactory:GET_CONNECTION_URL",
                     "http://d00109:8080/xaware/XADocSoapServlet");
-            wsParams.put("WSDataStoreFactory:TIMEOUT", new Integer(30000));
+            wsParams.put("WSDataStoreFactory:TIMEOUT", Integer.valueOf(30000));
             wsParams.put(
                     "WSDataStoreFactory:TEMPLATE_DIRECTORY", getClass().getResource(schemaBase));
             wsParams.put("WSDataStoreFactory:TEMPLATE_NAME", "request.ftl");
@@ -540,7 +540,7 @@ public class XmlDataStoreTest extends TestCase {
         FeatureSource fSource = (FeatureSource) mappingDataStore.getFeatureSource(typeName);
         FeatureCollection features =
                 (FeatureCollection)
-                        fSource.getFeatures(namedQuery(inputFilter, new Integer(maxFeatures)));
+                        fSource.getFeatures(namedQuery(inputFilter, Integer.valueOf(maxFeatures)));
         return features;
     }
 }

@@ -711,7 +711,7 @@ public class JDBCAccessPGRaster extends JDBCAccessCustom {
         String[] crsComponents = crsStr.split(":");
         if (crsComponents.length == 2) {
             try {
-                return new Integer(crsComponents[1]);
+                return Integer.valueOf(crsComponents[1]);
             } catch (Exception e) {
                 return null;
             }

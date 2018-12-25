@@ -339,8 +339,8 @@ public class InProcessViewSupportTestData {
                         insert.setWriteMode(true);
                         SeRow row = insert.getRowToSet();
 
-                        row.setInteger(0, new Integer(7));
-                        row.setInteger(1, new Integer(3));
+                        row.setInteger(0, Integer.valueOf(7));
+                        row.setInteger(1, Integer.valueOf(3));
                         row.setString(2, "child6");
                         row.setString(3, "description7");
                         insert.execute();

@@ -1028,12 +1028,12 @@ public class Schemas {
 
                         if (decl == fElement) {
                             if (particle.isSetMinOccurs()) {
-                                minOccurs.add(new Integer(particle.getMinOccurs()));
+                                minOccurs.add(Integer.valueOf(particle.getMinOccurs()));
                             } else if (particle.getContainer() instanceof XSDModelGroup
                                     && particle.getContainer().getContainer()
                                             instanceof XSDParticle) {
                                 particle = (XSDParticle) particle.getContainer().getContainer();
-                                minOccurs.add(new Integer(particle.getMinOccurs()));
+                                minOccurs.add(Integer.valueOf(particle.getMinOccurs()));
                             } else {
                                 minOccurs.add(1);
                             }
@@ -1076,12 +1076,12 @@ public class Schemas {
 
                         if (decl == fElement) {
                             if (particle.isSetMaxOccurs()) {
-                                maxOccurs.add(new Integer(particle.getMaxOccurs()));
+                                maxOccurs.add(Integer.valueOf(particle.getMaxOccurs()));
                             } else if (particle.getContainer() instanceof XSDModelGroup
                                     && particle.getContainer().getContainer()
                                             instanceof XSDParticle) {
                                 particle = (XSDParticle) particle.getContainer().getContainer();
-                                maxOccurs.add(new Integer(particle.getMaxOccurs()));
+                                maxOccurs.add(Integer.valueOf(particle.getMaxOccurs()));
                             } else {
                                 maxOccurs.add(1);
                             }

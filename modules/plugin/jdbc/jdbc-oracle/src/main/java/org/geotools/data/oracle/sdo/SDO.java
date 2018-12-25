@@ -448,12 +448,12 @@ public final class SDO {
      */
     private static void addInts(List list, int[] array) {
         for (int i = 0; i < array.length; i++) {
-            list.add(new Integer(array[i]));
+            list.add(Integer.valueOf(array[i]));
         }
     }
 
     private static void addInt(List list, int i) {
-        list.add(new Integer(i));
+        list.add(Integer.valueOf(i));
     }
 
     /**
@@ -1729,7 +1729,9 @@ public final class SDO {
             String msg =
                     MessageFormat.format(
                             condition,
-                            new Object[] {new Integer(min), new Integer(actual), new Integer(max)});
+                            new Object[] {
+                                Integer.valueOf(min), Integer.valueOf(actual), Integer.valueOf(max)
+                            });
             throw new IllegalArgumentException(msg);
         }
     }
@@ -1762,7 +1764,7 @@ public final class SDO {
                 array.append(",");
             }
         }
-        String msg = MessageFormat.format(condition, new Object[] {new Integer(actual), array});
+        String msg = MessageFormat.format(condition, new Object[] {Integer.valueOf(actual), array});
         throw new IllegalArgumentException(msg);
     }
     /**

@@ -70,6 +70,6 @@ public class FilterFunction_greaterEqualThan extends FunctionExpressionImpl {
                     "Filter Function problem for function greaterEqualThan argument #1 - expected type Object");
         }
 
-        return new Boolean(StaticGeometry.greaterEqualThan(arg0, arg1));
+        return Boolean.valueOf(StaticGeometry.greaterEqualThan(arg0, arg1));
     }
 }

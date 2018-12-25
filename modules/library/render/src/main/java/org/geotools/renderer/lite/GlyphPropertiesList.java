@@ -112,7 +112,7 @@ public class GlyphPropertiesList {
     }
 
     public void setPropertyValue(String name, int value) {
-        setPropertyValue(name, new Integer(value));
+        setPropertyValue(name, Integer.valueOf(value));
     }
 
     public void setPropertyValue(String name, double value) {

@@ -23,7 +23,7 @@ public class DB23DOnlineTest extends JDBC3DOnlineTest {
 
     @Override
     protected Integer getNativeSRID() {
-        return new Integer(DB2TestUtil.SRID);
+        return Integer.valueOf(DB2TestUtil.SRID);
     }
 
     @Override

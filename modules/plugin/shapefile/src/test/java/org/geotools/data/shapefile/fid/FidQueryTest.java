@@ -95,8 +95,8 @@ public class FidQueryTest extends FIDTestCase {
         SimpleFeatureBuilder build = new SimpleFeatureBuilder(schema);
         GeometryFactory gf = new GeometryFactory();
         build.add(gf.createPoint((new Coordinate(0, 0))));
-        build.add(new Long(0));
-        build.add(new Long(0));
+        build.add(Long.valueOf(0));
+        build.add(Long.valueOf(0));
         build.add("Hey");
         SimpleFeature newFeature = build.buildFeature(null);
         DefaultFeatureCollection collection = new DefaultFeatureCollection();
@@ -137,7 +137,7 @@ public class FidQueryTest extends FIDTestCase {
 
         SimpleFeatureType schema = feature.getFeatureType();
         featureStore.modifyFeatures(
-                schema.getDescriptor("ID"), new Integer(newId), createFidFilter);
+                schema.getDescriptor("ID"), Integer.valueOf(newId), createFidFilter);
 
         SimpleFeatureIterator features = featureStore.getFeatures(createFidFilter).features();
         try {
@@ -147,7 +147,7 @@ public class FidQueryTest extends FIDTestCase {
                 features.close();
             }
         }
-        feature.setAttribute("ID", new Integer(newId));
+        feature.setAttribute("ID", Integer.valueOf(newId));
         this.assertFidsMatch();
     }
 

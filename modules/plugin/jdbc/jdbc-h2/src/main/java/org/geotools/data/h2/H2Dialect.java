@@ -357,7 +357,7 @@ public class H2Dialect extends SQLDialect {
 
             try {
                 if (rs.next()) {
-                    return new Integer(rs.getInt(1));
+                    return Integer.valueOf(rs.getInt(1));
                 } else {
                     // could not find o
                     return null;
@@ -527,7 +527,7 @@ public class H2Dialect extends SQLDialect {
 
                 int value = rs.getInt(1);
 
-                return new Integer(value + 1);
+                return Integer.valueOf(value + 1);
             } finally {
                 dataStore.closeSafe(rs);
             }

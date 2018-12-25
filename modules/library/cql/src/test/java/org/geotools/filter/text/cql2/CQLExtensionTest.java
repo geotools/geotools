@@ -158,12 +158,12 @@ public class CQLExtensionTest {
 
         PropertyIsGreaterThan gt = (PropertyIsGreaterThan) filters.get(0);
         Assert.assertEquals("attr1", ((PropertyName) gt.getExpression1()).getPropertyName());
-        Assert.assertEquals(new Long(5), ((Literal) gt.getExpression2()).getValue());
+        Assert.assertEquals(Long.valueOf(5), ((Literal) gt.getExpression2()).getValue());
 
         PropertyIsBetween btw = (PropertyIsBetween) filters.get(1);
         Assert.assertEquals("attr2", ((PropertyName) btw.getExpression()).getPropertyName());
-        Assert.assertEquals(new Long(1), ((Literal) btw.getLowerBoundary()).getValue());
-        Assert.assertEquals(new Long(7), ((Literal) btw.getUpperBoundary()).getValue());
+        Assert.assertEquals(Long.valueOf(1), ((Literal) btw.getLowerBoundary()).getValue());
+        Assert.assertEquals(Long.valueOf(7), ((Literal) btw.getUpperBoundary()).getValue());
 
         PropertyIsEqualTo equals = (PropertyIsEqualTo) filters.get(2);
         Assert.assertEquals("attr3", ((PropertyName) equals.getExpression1()).getPropertyName());
@@ -197,7 +197,7 @@ public class CQLExtensionTest {
 
         PropertyIsGreaterThan gt = (PropertyIsGreaterThan) filters.get(0);
         Assert.assertEquals("attr1", ((PropertyName) gt.getExpression1()).getPropertyName());
-        Assert.assertEquals(new Long(5), ((Literal) gt.getExpression2()).getValue());
+        Assert.assertEquals(Long.valueOf(5), ((Literal) gt.getExpression2()).getValue());
 
         PropertyIsEqualTo equals = (PropertyIsEqualTo) filters.get(2);
         Assert.assertEquals("attr3", ((PropertyName) equals.getExpression1()).getPropertyName());

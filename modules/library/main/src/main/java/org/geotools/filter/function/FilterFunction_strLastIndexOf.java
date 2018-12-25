@@ -63,6 +63,6 @@ public class FilterFunction_strLastIndexOf extends FunctionExpressionImpl {
                     "Filter Function problem for function strLastIndexOf argument #1 - expected type String");
         }
 
-        return new Integer(StaticGeometry.strLastIndexOf(arg0, arg1));
+        return Integer.valueOf(StaticGeometry.strLastIndexOf(arg0, arg1));
     }
 }

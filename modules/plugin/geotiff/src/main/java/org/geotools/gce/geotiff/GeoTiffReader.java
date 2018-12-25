@@ -593,7 +593,7 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
         //
         // set params
         //
-        Integer imageChoice = new Integer(0);
+        Integer imageChoice = Integer.valueOf(0);
         final ImageReadParam readP = new ImageReadParam();
         try {
             imageChoice = setReadParams(overviewPolicy, readP, requestedEnvelope, dim);

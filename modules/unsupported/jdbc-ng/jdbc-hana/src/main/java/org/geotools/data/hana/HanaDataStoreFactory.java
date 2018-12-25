@@ -60,7 +60,7 @@ public class HanaDataStoreFactory extends JDBCDataStoreFactory {
                             + "them in memory, including the SQL failing with errors while the in memory version works fine. "
                             + "However this allows to push more of the filter into the database, increasing performance.",
                     false,
-                    new Boolean(false),
+                    Boolean.valueOf(false),
                     Collections.singletonMap(Param.LEVEL, "advanced"));
 
     private static final String DESCRIPTION = "SAP HANA";

@@ -97,7 +97,7 @@ public class RecyclingTileFactory extends Observable
      *
      * long size; // Size of each bank
      *
-     * Long key = new Long((type &lt;&lt; 56) | (numBanks &lt;&lt; 32) | size);
+     * Long key = Long.valueOf((type &lt;&lt; 56) | (numBanks &lt;&lt; 32) | size);
      * </pre>
      *
      * where the value of <code>type</code> is one of the constants <code>DataBuffer.TYPE_*</code>.
@@ -358,7 +358,7 @@ public class RecyclingTileFactory extends Observable
         DataBuffer db = tile.getDataBuffer();
 
         Long key =
-                new Long(
+                Long.valueOf(
                         ((long) db.getDataType() << 56)
                                 | ((long) db.getNumBanks() << 32)
                                 | (long) db.getSize());
@@ -395,7 +395,7 @@ public class RecyclingTileFactory extends Observable
 
     /** Retrieve an array of the specified type and length. */
     private Object getRecycledArray(int arrayType, long numBanks, long arrayLength) {
-        Long key = new Long(((long) arrayType << 56) | numBanks << 32 | arrayLength);
+        Long key = Long.valueOf(((long) arrayType << 56) | numBanks << 32 | arrayLength);
 
         if (DEBUG) {
             System.out.println(

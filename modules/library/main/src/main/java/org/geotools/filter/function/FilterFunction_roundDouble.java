@@ -49,6 +49,6 @@ public class FilterFunction_roundDouble extends FunctionExpressionImpl {
                     "Filter Function problem for function roundDouble argument #0 - expected type double");
         }
 
-        return new Integer(StaticGeometry.roundDouble(arg0));
+        return Integer.valueOf(StaticGeometry.roundDouble(arg0));
     }
 }

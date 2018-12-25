@@ -303,8 +303,8 @@ public class ReferencedEnvelope extends Envelope
                         Errors.format(
                                 ErrorKeys.MISMATCHED_DIMENSION_$3,
                                 crs.getName().getCode(),
-                                new Integer(dimension),
-                                new Integer(expected)));
+                                Integer.valueOf(dimension),
+                                Integer.valueOf(expected)));
             }
         }
     }
@@ -651,8 +651,8 @@ public class ReferencedEnvelope extends Envelope
                         Errors.format(
                                 ErrorKeys.MISMATCHED_DIMENSION_$3,
                                 crs.getName().getCode(),
-                                new Integer(getDimension()),
-                                new Integer(targetCRS.getCoordinateSystem().getDimension())));
+                                Integer.valueOf(getDimension()),
+                                Integer.valueOf(targetCRS.getCoordinateSystem().getDimension())));
             }
         }
         /*

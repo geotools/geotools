@@ -75,13 +75,13 @@ public class OptDirectedLineGraphGenerator extends OptLineGraphGenerator {
 
         // increment the count of the in coordinate
         if ((count = (Integer) m_in2count.get(line.p0)) == null) {
-            m_in2count.put(line.p0, new Integer(1));
-        } else m_in2count.put(line.p0, new Integer(count.intValue() + 1));
+            m_in2count.put(line.p0, Integer.valueOf(1));
+        } else m_in2count.put(line.p0, Integer.valueOf(count.intValue() + 1));
 
         // increment the count of the out coordinate
         if ((count = (Integer) m_out2count.get(line.p1)) == null) {
-            m_out2count.put(line.p1, new Integer(1));
-        } else m_out2count.put(line.p1, new Integer(count.intValue() + 1));
+            m_out2count.put(line.p1, Integer.valueOf(1));
+        } else m_out2count.put(line.p1, Integer.valueOf(count.intValue() + 1));
 
         getLines().add(line);
 

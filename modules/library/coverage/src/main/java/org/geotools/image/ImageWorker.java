@@ -3531,7 +3531,7 @@ public class ImageWorker {
                         ConstantDescriptor.create(
                                 (float) image.getWidth(),
                                 (float) image.getHeight(),
-                                new Byte[] {new Byte(alpha)},
+                                new Byte[] {Byte.valueOf(alpha)},
                                 new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout));
 
                 ParameterBlock pb = new ParameterBlock();

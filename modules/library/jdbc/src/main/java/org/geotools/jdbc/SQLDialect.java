@@ -262,37 +262,37 @@ public abstract class SQLDialect {
      * mappings:
      */
     public void registerSqlTypeToClassMappings(Map<Integer, Class<?>> mappings) {
-        mappings.put(new Integer(Types.VARCHAR), String.class);
-        mappings.put(new Integer(Types.CHAR), String.class);
-        mappings.put(new Integer(Types.LONGVARCHAR), String.class);
-        mappings.put(new Integer(Types.NVARCHAR), String.class);
-        mappings.put(new Integer(Types.NCHAR), String.class);
+        mappings.put(Integer.valueOf(Types.VARCHAR), String.class);
+        mappings.put(Integer.valueOf(Types.CHAR), String.class);
+        mappings.put(Integer.valueOf(Types.LONGVARCHAR), String.class);
+        mappings.put(Integer.valueOf(Types.NVARCHAR), String.class);
+        mappings.put(Integer.valueOf(Types.NCHAR), String.class);
 
-        mappings.put(new Integer(Types.BIT), Boolean.class);
-        mappings.put(new Integer(Types.BOOLEAN), Boolean.class);
+        mappings.put(Integer.valueOf(Types.BIT), Boolean.class);
+        mappings.put(Integer.valueOf(Types.BOOLEAN), Boolean.class);
 
-        mappings.put(new Integer(Types.TINYINT), Short.class);
-        mappings.put(new Integer(Types.SMALLINT), Short.class);
+        mappings.put(Integer.valueOf(Types.TINYINT), Short.class);
+        mappings.put(Integer.valueOf(Types.SMALLINT), Short.class);
 
-        mappings.put(new Integer(Types.INTEGER), Integer.class);
-        mappings.put(new Integer(Types.BIGINT), Long.class);
+        mappings.put(Integer.valueOf(Types.INTEGER), Integer.class);
+        mappings.put(Integer.valueOf(Types.BIGINT), Long.class);
 
-        mappings.put(new Integer(Types.REAL), Float.class);
-        mappings.put(new Integer(Types.FLOAT), Double.class);
-        mappings.put(new Integer(Types.DOUBLE), Double.class);
+        mappings.put(Integer.valueOf(Types.REAL), Float.class);
+        mappings.put(Integer.valueOf(Types.FLOAT), Double.class);
+        mappings.put(Integer.valueOf(Types.DOUBLE), Double.class);
 
-        mappings.put(new Integer(Types.DECIMAL), BigDecimal.class);
-        mappings.put(new Integer(Types.NUMERIC), BigDecimal.class);
+        mappings.put(Integer.valueOf(Types.DECIMAL), BigDecimal.class);
+        mappings.put(Integer.valueOf(Types.NUMERIC), BigDecimal.class);
 
-        mappings.put(new Integer(Types.DATE), Date.class);
-        mappings.put(new Integer(Types.TIME), Time.class);
-        mappings.put(new Integer(Types.TIMESTAMP), Timestamp.class);
+        mappings.put(Integer.valueOf(Types.DATE), Date.class);
+        mappings.put(Integer.valueOf(Types.TIME), Time.class);
+        mappings.put(Integer.valueOf(Types.TIMESTAMP), Timestamp.class);
 
-        mappings.put(new Integer(Types.BLOB), byte[].class);
-        mappings.put(new Integer(Types.BINARY), byte[].class);
-        mappings.put(new Integer(Types.CLOB), String.class);
+        mappings.put(Integer.valueOf(Types.BLOB), byte[].class);
+        mappings.put(Integer.valueOf(Types.BINARY), byte[].class);
+        mappings.put(Integer.valueOf(Types.CLOB), String.class);
 
-        mappings.put(new Integer(Types.VARBINARY), byte[].class);
+        mappings.put(Integer.valueOf(Types.VARBINARY), byte[].class);
 
         // subclasses should extend to provide additional
     }
@@ -306,32 +306,32 @@ public abstract class SQLDialect {
      * mappings:
      */
     public void registerClassToSqlMappings(Map<Class<?>, Integer> mappings) {
-        mappings.put(String.class, new Integer(Types.VARCHAR));
+        mappings.put(String.class, Integer.valueOf(Types.VARCHAR));
 
-        mappings.put(Boolean.class, new Integer(Types.BOOLEAN));
-        mappings.put(boolean.class, new Integer(Types.BOOLEAN));
+        mappings.put(Boolean.class, Integer.valueOf(Types.BOOLEAN));
+        mappings.put(boolean.class, Integer.valueOf(Types.BOOLEAN));
 
-        mappings.put(Short.class, new Integer(Types.SMALLINT));
-        mappings.put(short.class, new Integer(Types.SMALLINT));
+        mappings.put(Short.class, Integer.valueOf(Types.SMALLINT));
+        mappings.put(short.class, Integer.valueOf(Types.SMALLINT));
 
-        mappings.put(Integer.class, new Integer(Types.INTEGER));
-        mappings.put(int.class, new Integer(Types.INTEGER));
-        mappings.put(Long.class, new Integer(Types.BIGINT));
-        mappings.put(long.class, new Integer(Types.BIGINT));
+        mappings.put(Integer.class, Integer.valueOf(Types.INTEGER));
+        mappings.put(int.class, Integer.valueOf(Types.INTEGER));
+        mappings.put(Long.class, Integer.valueOf(Types.BIGINT));
+        mappings.put(long.class, Integer.valueOf(Types.BIGINT));
 
-        mappings.put(Float.class, new Integer(Types.REAL));
-        mappings.put(float.class, new Integer(Types.REAL));
-        mappings.put(Double.class, new Integer(Types.DOUBLE));
-        mappings.put(double.class, new Integer(Types.DOUBLE));
+        mappings.put(Float.class, Integer.valueOf(Types.REAL));
+        mappings.put(float.class, Integer.valueOf(Types.REAL));
+        mappings.put(Double.class, Integer.valueOf(Types.DOUBLE));
+        mappings.put(double.class, Integer.valueOf(Types.DOUBLE));
 
-        mappings.put(BigDecimal.class, new Integer(Types.NUMERIC));
+        mappings.put(BigDecimal.class, Integer.valueOf(Types.NUMERIC));
 
-        mappings.put(Date.class, new Integer(Types.DATE));
-        mappings.put(Time.class, new Integer(Types.TIME));
-        mappings.put(java.util.Date.class, new Integer(Types.TIMESTAMP));
-        mappings.put(Timestamp.class, new Integer(Types.TIMESTAMP));
+        mappings.put(Date.class, Integer.valueOf(Types.DATE));
+        mappings.put(Time.class, Integer.valueOf(Types.TIME));
+        mappings.put(java.util.Date.class, Integer.valueOf(Types.TIMESTAMP));
+        mappings.put(Timestamp.class, Integer.valueOf(Types.TIMESTAMP));
 
-        mappings.put(byte[].class, new Integer(Types.BLOB));
+        mappings.put(byte[].class, Integer.valueOf(Types.BLOB));
 
         // subclasses should extend and provide additional
     }

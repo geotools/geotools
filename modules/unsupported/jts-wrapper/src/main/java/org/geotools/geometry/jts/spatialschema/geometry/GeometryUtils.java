@@ -882,7 +882,7 @@ public final class GeometryUtils {
             if (actual != expected) {
                 throw new IllegalArgumentException(/*Resources.format(
                  ResourceKeys.ERROR_MISMATCHED_DIMENSION_$3,
-                 name, new Integer(actual), new Integer(expected))*/ "");
+                 name, Integer.valueOf(actual), Integer.valueOf(expected))*/ "");
             }
         }
     }

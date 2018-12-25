@@ -48,6 +48,6 @@ public class FilterFunction_parseInt extends FunctionExpressionImpl {
                     "Filter Function problem for function parseInt argument #0 - expected type String");
         }
 
-        return new Integer(StaticGeometry.parseInt(arg0));
+        return Integer.valueOf(StaticGeometry.parseInt(arg0));
     }
 }

@@ -46,6 +46,6 @@ public class FilterFunction_isEmpty extends FunctionExpressionImpl {
                     "Filter Function problem for function isEmpty argument #0 - expected type Geometry");
         }
 
-        return new Boolean(StaticGeometry.isEmpty(arg0));
+        return Boolean.valueOf(StaticGeometry.isEmpty(arg0));
     }
 }

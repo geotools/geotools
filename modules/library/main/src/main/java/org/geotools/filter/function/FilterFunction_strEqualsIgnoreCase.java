@@ -64,6 +64,6 @@ public class FilterFunction_strEqualsIgnoreCase extends FunctionExpressionImpl {
                     "Filter Function problem for function strEqualsIgnoreCase argument #1 - expected type String");
         }
 
-        return new Boolean(StaticGeometry.strEqualsIgnoreCase(arg0, arg1));
+        return Boolean.valueOf(StaticGeometry.strEqualsIgnoreCase(arg0, arg1));
     }
 }

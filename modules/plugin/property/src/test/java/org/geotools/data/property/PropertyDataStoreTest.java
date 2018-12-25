@@ -373,7 +373,7 @@ public class PropertyDataStoreTest extends TestCase {
         assertFalse(writer.hasNext());
         f = writer.next();
         assertNotNull(f);
-        f.setAttribute(0, new Integer(-1));
+        f.setAttribute(0, Integer.valueOf(-1));
         f.setAttribute(1, "new");
         writer.write();
         writer.close();
@@ -388,7 +388,7 @@ public class PropertyDataStoreTest extends TestCase {
         assertFalse(writer.hasNext());
         f = writer.next();
         assertNotNull(f);
-        f.setAttribute(0, new Integer(-1));
+        f.setAttribute(0, Integer.valueOf(-1));
         f.setAttribute(1, null); // this made the datastore break
         writer.write();
         writer.close();
@@ -437,7 +437,7 @@ public class PropertyDataStoreTest extends TestCase {
         assertFalse(writer.hasNext());
         f = writer.next();
         assertNotNull(f);
-        f.setAttribute(0, new Integer(-1));
+        f.setAttribute(0, Integer.valueOf(-1));
         f.setAttribute(1, "new");
         writer.remove();
         writer.close();
@@ -459,7 +459,7 @@ public class PropertyDataStoreTest extends TestCase {
         assertFalse(writer.hasNext());
         f = writer.next();
         assertNotNull(f);
-        f.setAttribute(0, new Integer(-1));
+        f.setAttribute(0, Integer.valueOf(-1));
         f.setAttribute(1, "new");
         writer.close();
         assertEquals(5, count("road"));
@@ -623,7 +623,7 @@ public class PropertyDataStoreTest extends TestCase {
         SimpleFeature chrisFeature =
                 SimpleFeatureBuilder.build(
                         ROAD,
-                        new Object[] {new Integer(5), "chris", wkt.read("POINT(6 6)")},
+                        new Object[] {Integer.valueOf(5), "chris", wkt.read("POINT(6 6)")},
                         "fid5");
 
         SimpleFeatureStore roadAuto = (SimpleFeatureStore) store.getFeatureSource("road");
@@ -748,7 +748,8 @@ public class PropertyDataStoreTest extends TestCase {
     public void testUseExistingFid() throws Exception {
         SimpleFeatureType ROAD = store.getSchema("road");
         SimpleFeature chrisFeature =
-                SimpleFeatureBuilder.build(ROAD, new Object[] {new Integer(5), "chris"}, "fid5");
+                SimpleFeatureBuilder.build(
+                        ROAD, new Object[] {Integer.valueOf(5), "chris"}, "fid5");
         chrisFeature.getUserData().put(Hints.USE_PROVIDED_FID, Boolean.TRUE);
 
         SimpleFeatureStore roadAuto = (SimpleFeatureStore) store.getFeatureSource("road");

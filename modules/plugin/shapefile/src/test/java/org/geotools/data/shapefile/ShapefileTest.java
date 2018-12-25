@@ -216,7 +216,7 @@ public class ShapefileTest extends TestCaseSupport {
             ArrayList offsets = new ArrayList();
             while (reader.hasNext()) {
                 ShapefileReader.Record record = reader.nextRecord();
-                offsets.add(new Integer(record.offset()));
+                offsets.add(Integer.valueOf(record.offset()));
                 Geometry geom = (Geometry) record.shape();
                 assertEquals(
                         new Envelope(record.minX, record.maxX, record.minY, record.maxY),

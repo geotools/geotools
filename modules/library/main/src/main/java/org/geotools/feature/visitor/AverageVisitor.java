@@ -259,7 +259,7 @@ public class AverageVisitor implements FeatureCalc, FeatureAttributeVisitor {
         }
 
         public Object getSum() {
-            return new Long(number);
+            return Long.valueOf(number);
         }
 
         public int getCount() {
@@ -287,7 +287,7 @@ public class AverageVisitor implements FeatureCalc, FeatureAttributeVisitor {
         }
 
         public Object getSum() {
-            return new Integer(number);
+            return Integer.valueOf(number);
         }
 
         public int getCount() {
@@ -397,7 +397,7 @@ public class AverageVisitor implements FeatureCalc, FeatureAttributeVisitor {
                 Number newSum = CalcUtil.sum(sums);
                 Number newCount =
                         (Number)
-                                new Integer(
+                                Integer.valueOf(
                                         averageStrategy.getCount()
                                                 + moreResults.averageStrategy.getCount());
                 Number[] params = new Number[] {newSum, newCount};

@@ -71,6 +71,6 @@ public class FilterFunction_contains extends FunctionExpressionImpl {
                     "Filter Function problem for function contains argument #1 - expected type Geometry");
         }
 
-        return new Boolean(StaticGeometry.contains(arg0, arg1));
+        return Boolean.valueOf(StaticGeometry.contains(arg0, arg1));
     }
 }

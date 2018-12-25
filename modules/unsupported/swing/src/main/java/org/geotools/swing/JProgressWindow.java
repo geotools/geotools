@@ -262,7 +262,7 @@ public class JProgressWindow implements ProgressListener {
         int p = (int) percent; // round toward 0
         if (p < 0) p = 0;
         if (p > 100) p = 100;
-        set(Caller.PROGRESS, new Integer(p));
+        set(Caller.PROGRESS, Integer.valueOf(p));
     }
 
     public float getProgress() {

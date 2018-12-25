@@ -269,7 +269,7 @@ public class AlgoPoint2D {
             result += AlgoPoint2D.cross(p10, (AlgoPoint2D.subtract(p, p0)));
         }
 
-        return new Boolean(result > 0.0);
+        return Boolean.valueOf(result > 0.0);
     }
 
     /**

@@ -256,7 +256,7 @@ public class AppSchemaDataAccessTest extends AppSchemaTestSupport {
         Filter filterParameter = ff.equals(property, literal);
 
         property = ff.property("sample/measurement[1]/value");
-        literal = ff.literal(new Integer(3));
+        literal = ff.literal(Integer.valueOf(3));
         Filter filterValue = ff.equals(property, literal);
 
         Filter filter = ff.and(filterParameter, filterValue);
@@ -267,7 +267,7 @@ public class AppSchemaDataAccessTest extends AppSchemaTestSupport {
         FeatureIterator<Feature> reader = features.features();
 
         PropertyIsEqualTo equivalentSourceFilter =
-                ff.equals(ff.property("ph"), ff.literal(new Integer(3)));
+                ff.equals(ff.property("ph"), ff.literal(Integer.valueOf(3)));
         FeatureCollection<?, ?> collection =
                 mapping.getSource().getFeatures(equivalentSourceFilter);
 
@@ -275,7 +275,8 @@ public class AppSchemaDataAccessTest extends AppSchemaTestSupport {
         int expectedCount = collection.size();
 
         Filter badFilter =
-                ff.greater(ff.property("sample/measurement[1]/value"), ff.literal(new Integer(3)));
+                ff.greater(
+                        ff.property("sample/measurement[1]/value"), ff.literal(Integer.valueOf(3)));
 
         while (reader.hasNext()) {
             Feature f = (Feature) reader.next();
@@ -432,8 +433,8 @@ public class AppSchemaDataAccessTest extends AppSchemaTestSupport {
             String fid = type.getName().getLocalPart() + "." + i;
 
             fbuilder.add("watersample." + i);
-            fbuilder.add(new Integer(i));
-            fbuilder.add(new Integer(10 + i));
+            fbuilder.add(Integer.valueOf(i));
+            fbuilder.add(Integer.valueOf(10 + i));
             fbuilder.add(new Float(i));
 
             SimpleFeature f = fbuilder.buildFeature(fid);

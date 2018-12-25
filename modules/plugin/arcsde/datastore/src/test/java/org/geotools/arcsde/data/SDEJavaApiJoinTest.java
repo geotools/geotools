@@ -488,13 +488,13 @@ public class SDEJavaApiJoinTest {
         queryInfo.setByClause(" ORDER BY " + InProcessViewSupportTestData.CHILD + ".ID DESC");
 
         final Integer[] expectedChildIds = {
-            new Integer(7),
-            new Integer(6),
-            new Integer(5),
-            new Integer(4),
-            new Integer(3),
-            new Integer(2),
-            new Integer(1)
+            Integer.valueOf(7),
+            Integer.valueOf(6),
+            Integer.valueOf(5),
+            Integer.valueOf(4),
+            Integer.valueOf(3),
+            Integer.valueOf(2),
+            Integer.valueOf(1)
         };
 
         // final int[] expectedShapeIndicators = { SeRow.SE_IS_NOT_NULL_VALUE, // child7

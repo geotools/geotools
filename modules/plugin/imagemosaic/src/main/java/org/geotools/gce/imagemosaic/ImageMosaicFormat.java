@@ -94,10 +94,10 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  *       new Double(1));--- Controls the transparency addition by specifying the treshold to use.
  *   <li>INPUT_IMAGE_THRESHOLD = new DefaultParameterDescriptor( "InputImageROI", Boolean.class,
  *       null, Boolean.FALSE)--- INPUT_IMAGE_THRESHOLD_VALUE = new DefaultParameterDescriptor(
- *       "InputImageROIThreshold", Integer.class, null, new Integer(1));--- These two can be used to
- *       control the application of ROIs on the input images based on tresholding values. Basically
- *       using the threshold you can ask the mosaic plugin to load or not certain pixels of the
- *       original images.
+ *       "InputImageROIThreshold", Integer.class, null, Integer.valueOf(1));--- These two can be
+ *       used to control the application of ROIs on the input images based on tresholding values.
+ *       Basically using the threshold you can ask the mosaic plugin to load or not certain pixels
+ *       of the original images.
  *
  * @author Simone Giannecchini (simboss), GeoSolutions
  * @author Stefan Alfons Krueger (alfonx), Wikisquare.de : Support for

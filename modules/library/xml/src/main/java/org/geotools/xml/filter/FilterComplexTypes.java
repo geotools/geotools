@@ -1243,7 +1243,7 @@ public class FilterComplexTypes {
                     if (string.indexOf('.') != -1) {
                         literal = new Double(Double.parseDouble(string));
                     } else {
-                        literal = new Integer(Integer.parseInt(string));
+                        literal = Integer.valueOf(Integer.parseInt(string));
                     }
                 } catch (NumberFormatException nonNumber) {
                     // ignore

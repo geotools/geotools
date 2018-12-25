@@ -118,7 +118,8 @@ public class EqualIntervalFunctionTest extends FunctionTestSupport {
         Function classify = ff.function("classify", ff.property("foo"), ff.literal(split));
 
         SimpleFeature victim = testFeatures[2]; // foo = 20
-        assertEquals("Feature was placed in wrong bin", new Integer(2), classify.evaluate(victim));
+        assertEquals(
+                "Feature was placed in wrong bin", Integer.valueOf(2), classify.evaluate(victim));
     }
 
     public void testConstantValuesNumeric() {

@@ -66,7 +66,7 @@ public abstract class AbstractFilter extends FilterAbstract implements FilterTyp
      * @return Whether or not this is a logic filter type.
      */
     public static boolean isLogicFilter(short filterType) {
-        LOGGER.entering("AbstractFilter", "isLogicFilter", new Short(filterType));
+        LOGGER.entering("AbstractFilter", "isLogicFilter", Short.valueOf(filterType));
 
         return ((filterType == LOGIC_OR) || (filterType == LOGIC_AND) || (filterType == LOGIC_NOT));
     }

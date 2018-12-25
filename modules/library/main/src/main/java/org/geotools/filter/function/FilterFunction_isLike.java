@@ -64,6 +64,6 @@ public class FilterFunction_isLike extends FunctionExpressionImpl {
                     "Filter Function problem for function isLike argument #1 - expected type String");
         }
 
-        return new Boolean(StaticGeometry.isLike(arg0, arg1));
+        return Boolean.valueOf(StaticGeometry.isLike(arg0, arg1));
     }
 }

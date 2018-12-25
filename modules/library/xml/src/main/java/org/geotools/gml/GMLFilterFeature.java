@@ -247,7 +247,7 @@ public class GMLFilterFeature extends XMLFilterImpl implements GMLHandlerJTS {
             LOGGER.info("raw att = " + rawAttribute);
 
             try {
-                tempValue = new Integer(rawAttribute);
+                tempValue = Integer.valueOf(rawAttribute);
             } catch (NumberFormatException e1) {
                 try {
                     tempValue = new Double(rawAttribute);

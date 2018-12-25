@@ -45,6 +45,6 @@ public class FilterFunction_parseLong extends FunctionExpressionImpl {
                     "Filter Function problem for function parseLong argument #0 - expected type String");
         }
 
-        return new Long(StaticGeometry.parseLong(arg0));
+        return Long.valueOf(StaticGeometry.parseLong(arg0));
     }
 }

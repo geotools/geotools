@@ -41,7 +41,7 @@ public class VersionTest {
             assertTrue(true);
         }
 
-        Integer testInt = new Integer(1234567890);
+        Integer testInt = Integer.valueOf(1234567890);
         Version version = new Version(testInt);
 
         assertNotNull(version.getIndex());

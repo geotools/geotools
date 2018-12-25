@@ -260,8 +260,8 @@ class IndexManager {
                     }
                     try {
                         Data data = new Data(def);
-                        data.addValue(new Integer((int) recno + 1));
-                        data.addValue(new Long(shx.getOffsetInBytes((int) recno)));
+                        data.addValue(Integer.valueOf((int) recno + 1));
+                        data.addValue(Long.valueOf(shx.getOffsetInBytes((int) recno)));
                         if (LOGGER.isLoggable(Level.FINEST)) {
                             LOGGER.finest(
                                     "fid "

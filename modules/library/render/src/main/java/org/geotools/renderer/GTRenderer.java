@@ -40,7 +40,7 @@ import org.locationtech.jts.geom.Envelope;
  *          renderer.setJava2DHints(hints);
  *
  *          Map<Object,Object> rendererParams = new HashMap<Object,Object>();
- *          rendererParams.put("optimizedDataLoadingEnabled",new Boolean(true) );
+ *          rendererParams.put("optimizedDataLoadingEnabled",Boolean.valueOf(true) );
  *
  *          renderer.setRendererHints( renderParams );
  *

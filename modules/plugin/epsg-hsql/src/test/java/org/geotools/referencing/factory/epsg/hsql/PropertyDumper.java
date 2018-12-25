@@ -53,8 +53,8 @@ public class PropertyDumper {
 
                     public int compare(String c1, String c2) {
                         try {
-                            Long n1 = new Long(c1);
-                            Long n2 = new Long(c2);
+                            Long n1 = Long.valueOf(c1);
+                            Long n2 = Long.valueOf(c2);
                             return n1.compareTo(n2);
                         } catch (NumberFormatException e) {
                             return c1.compareTo(c2);

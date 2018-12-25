@@ -64,8 +64,8 @@ public class WFSOnlineTestSupport {
         m.put(WFSDataStoreFactory.URL.key, server);
         m.put(WFSDataStoreFactory.PROTOCOL.key, false);
         m.put(WFSDataStoreFactory.GML_COMPATIBLE_TYPENAMES.key, true);
-        m.put(WFSDataStoreFactory.TIMEOUT.key, new Integer(10000)); // not debug
-        m.put(WFSDataStoreFactory.TIMEOUT.key, new Integer(1000000)); // for debug
+        m.put(WFSDataStoreFactory.TIMEOUT.key, Integer.valueOf(10000)); // not debug
+        m.put(WFSDataStoreFactory.TIMEOUT.key, Integer.valueOf(1000000)); // for debug
 
         if (post != null) {
             m.put(WFSDataStoreFactory.PROTOCOL.key, Boolean.valueOf(post));

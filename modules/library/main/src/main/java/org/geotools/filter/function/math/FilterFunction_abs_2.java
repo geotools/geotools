@@ -47,6 +47,6 @@ public class FilterFunction_abs_2 extends FunctionExpressionImpl {
                     "Filter Function problem for function abs argument #0 - expected type long");
         }
 
-        return new Long(Math.abs(arg0));
+        return Long.valueOf(Math.abs(arg0));
     }
 }

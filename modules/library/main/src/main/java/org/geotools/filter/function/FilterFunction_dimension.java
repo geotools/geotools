@@ -49,6 +49,6 @@ public class FilterFunction_dimension extends FunctionExpressionImpl {
                     "Filter Function problem for function dimension argument #0 - expected type Geometry");
         }
 
-        return new Integer(StaticGeometry.dimension(arg0));
+        return Integer.valueOf(StaticGeometry.dimension(arg0));
     }
 }

@@ -662,7 +662,7 @@ class ArcSDEQuery {
                                             queryInfo,
                                             defaultMaxDistinctValues);
                             int count = tableStats.getCount();
-                            return new Integer(count);
+                            return Integer.valueOf(count);
                         } finally {
                             query.close();
                         }

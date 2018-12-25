@@ -46,6 +46,6 @@ public class FilterFunction_numPoints extends FunctionExpressionImpl {
                     "Filter Function problem for function numPoints argument #0 - expected type Geometry");
         }
 
-        return new Integer(StaticGeometry.numPoints(arg0));
+        return Integer.valueOf(StaticGeometry.numPoints(arg0));
     }
 }

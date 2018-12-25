@@ -66,7 +66,7 @@ public abstract class JDBCConnectionLifecycleOnlineTest extends JDBCTestSupport 
                     new DefaultFeatureCollection(null, featureStore.getSchema());
             featureStore.setTransaction(t);
             for (int i = 3; i < 6; i++) {
-                b.set(aname("intProperty"), new Integer(i));
+                b.set(aname("intProperty"), Integer.valueOf(i));
                 b.set(aname("geometry"), new GeometryFactory().createPoint(new Coordinate(i, i)));
                 collection.add(b.buildFeature(null));
             }

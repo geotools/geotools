@@ -76,7 +76,7 @@ public class CommonsConverterFactory implements ConverterFactory {
             if (source == null) return null;
             String string = (String) source;
             try {
-                Byte parsed = new Byte(string);
+                Byte parsed = Byte.valueOf(string);
                 return target.cast(parsed);
             } catch (Exception e) {
                 return null;
@@ -89,7 +89,7 @@ public class CommonsConverterFactory implements ConverterFactory {
             if (source == null) return null;
             String string = (String) source;
             try {
-                Short parsed = new Short(string);
+                Short parsed = Short.valueOf(string);
                 return target.cast(parsed);
             } catch (Exception e) {
                 return null;
@@ -102,7 +102,7 @@ public class CommonsConverterFactory implements ConverterFactory {
             if (source == null) return null;
             String string = (String) source;
             try {
-                Integer parsed = new Integer(string);
+                Integer parsed = Integer.valueOf(string);
                 return target.cast(parsed);
             } catch (Exception e) {
                 return null;
@@ -115,7 +115,7 @@ public class CommonsConverterFactory implements ConverterFactory {
             if (source == null) return null;
             String string = (String) source;
             try {
-                Long parsed = new Long(string);
+                Long parsed = Long.valueOf(string);
                 return target.cast(parsed);
             } catch (Exception e) {
                 return null;

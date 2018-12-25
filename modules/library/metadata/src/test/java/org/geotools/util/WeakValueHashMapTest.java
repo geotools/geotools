@@ -136,26 +136,26 @@ public final class WeakValueHashMapTest {
         WeakValueHashMap<Integer, Integer> map = new WeakValueHashMap<Integer, Integer>(10);
         List<Integer> values = new ArrayList<Integer>();
         for (int i = 0; i < 7; i++) {
-            Integer v = new Integer(i);
+            Integer v = Integer.valueOf(i);
             values.add(v);
             map.put(v, v);
         }
-        Integer last = new Integer(9);
+        Integer last = Integer.valueOf(9);
         map.put(last, last);
 
         // reduce the size enough that we put the map on its threshold for shrinking
         for (int i = 0; i < 5; i++) {
-            map.remove(new Integer(i));
+            map.remove(Integer.valueOf(i));
         }
 
         // now replace the last element, which will force the map to shrink
-        last = new Integer(9);
+        last = Integer.valueOf(9);
         values.add(last);
         map.put(last, last); // it used to throw the arrays out of bound here
 
         assertEquals(3, map.size());
-        assertTrue(map.containsKey(new Integer(5)));
-        assertTrue(map.containsKey(new Integer(6)));
-        assertTrue(map.containsKey(new Integer(9)));
+        assertTrue(map.containsKey(Integer.valueOf(5)));
+        assertTrue(map.containsKey(Integer.valueOf(6)));
+        assertTrue(map.containsKey(Integer.valueOf(9)));
     }
 }

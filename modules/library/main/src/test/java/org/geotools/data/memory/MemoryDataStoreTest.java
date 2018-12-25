@@ -456,20 +456,20 @@ public class MemoryDataStoreTest extends DataTestCase {
                 SimpleFeatureBuilder.build(
                         roadType,
                         new Object[] {
-                            new Integer(1), line(new int[] {1, 1, 2, 2, 4, 2, 5, 1}), "r1"
+                            Integer.valueOf(1), line(new int[] {1, 1, 2, 2, 4, 2, 5, 1}), "r1"
                         },
                         null);
         dynFeatures[1] =
                 SimpleFeatureBuilder.build(
                         roadType,
                         new Object[] {
-                            new Integer(2), line(new int[] {3, 0, 3, 2, 3, 3, 3, 4}), "r2"
+                            Integer.valueOf(2), line(new int[] {3, 0, 3, 2, 3, 3, 3, 4}), "r2"
                         },
                         null);
         dynFeatures[2] =
                 SimpleFeatureBuilder.build(
                         roadType,
-                        new Object[] {new Integer(3), line(new int[] {3, 2, 4, 2, 5, 3}), "r3"},
+                        new Object[] {Integer.valueOf(3), line(new int[] {3, 2, 4, 2, 5, 3}), "r3"},
                         null);
         assertOrderSame(dynFeatures);
     }

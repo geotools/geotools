@@ -483,11 +483,11 @@ public class SLDInlineFeatureParser {
      */
     private CoordinateReferenceSystem getSRS(int epsg) throws Exception {
         CoordinateReferenceSystem result =
-                (CoordinateReferenceSystem) SRSLookup.get(new Integer(epsg));
+                (CoordinateReferenceSystem) SRSLookup.get(Integer.valueOf(epsg));
         if (result == null) {
             // make and add to hash
             result = CRS.decode("EPSG:" + epsg);
-            SRSLookup.put(new Integer(epsg), result);
+            SRSLookup.put(Integer.valueOf(epsg), result);
         }
         return result;
     }

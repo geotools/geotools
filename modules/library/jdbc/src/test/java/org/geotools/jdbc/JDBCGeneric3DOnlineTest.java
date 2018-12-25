@@ -129,7 +129,7 @@ public abstract class JDBCGeneric3DOnlineTest extends JDBCTestSupport {
     }
 
     protected Integer getNativeSRID() {
-        return new Integer(getEpsgCode());
+        return Integer.valueOf(getEpsgCode());
     }
 
     protected abstract int getEpsgCode();
@@ -138,7 +138,7 @@ public abstract class JDBCGeneric3DOnlineTest extends JDBCTestSupport {
         SimpleFeatureType schema = dataStore.getSchema(tname(getLine3d()));
         CoordinateReferenceSystem crs =
                 schema.getGeometryDescriptor().getCoordinateReferenceSystem();
-        assertEquals(new Integer(getEpsgCode()), CRS.lookupEpsgCode(crs, false));
+        assertEquals(Integer.valueOf(getEpsgCode()), CRS.lookupEpsgCode(crs, false));
         assertEquals(
                 getNativeSRID(),
                 schema.getGeometryDescriptor().getUserData().get(JDBCDataStore.JDBC_NATIVE_SRID));

@@ -86,7 +86,7 @@ public class XSIntBinding implements SimpleBinding {
             text = text.substring(1);
         }
 
-        return new Integer(text);
+        return Integer.valueOf(text);
     }
 
     /**

@@ -242,11 +242,21 @@
             <artifactId>maven-pmd-plugin</artifactId>
             <version>3.11.0</version>
             <configuration>
+              <rulesets>
+                <ruleset>${geotoolsBaseDir}/pmd-ruleset.xml</ruleset>
+              </rulesets>
               <failurePriority>2</failurePriority>
 	      <minimumPriority>2</minimumPriority>
               <verbose>true</verbose>
               <printFailingErrors>true</printFailingErrors>
             </configuration>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>check</goal>
+                </goals>
+              </execution>
+            </executions>
           </plugin>
         </plugins>
       </build>

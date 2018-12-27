@@ -28,4 +28,4 @@ matrix:
     - jdk: oraclejdk11
       env: ARGS="-Dfmt.skip=true"
     - jdk: oraclejdk8
-      env: ARGS="-Dfmt.action=check -Ppmd"
+      env: ARGS="-Dfmt.action=check -Ppmd -DskipTests=true"

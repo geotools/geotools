@@ -21,6 +21,8 @@ import org.opengis.temporal.ClockTime;
 import org.opengis.temporal.IndeterminateValue;
 import org.opengis.temporal.TemporalReferenceSystem;
 
+import java.util.Arrays;
+
 /**
  * A data type that shall be used to identify a temporal position within a day. Because {@linkplain
  * TemporalPosition temporal position} cannot by itself completely identify a single temporal
@@ -73,7 +75,7 @@ public class DefaultClockTime extends DefaultTemporalPosition implements ClockTi
     @Override
     public int hashCode() {
         int hash = 5;
-        hash = 37 * hash + (this.clockTime != null ? this.clockTime.hashCode() : 0);
+        hash = 37 * hash + Arrays.hashCode(this.clockTime);
         return hash;
     }
 
@@ -81,7 +83,7 @@ public class DefaultClockTime extends DefaultTemporalPosition implements ClockTi
     public String toString() {
         StringBuilder s = new StringBuilder("ClockTime:").append('\n');
         if (clockTime != null) {
-            s.append("clockTime:").append(clockTime).append('\n');
+            s.append("clockTime:").append(Arrays.toString(clockTime)).append('\n');
         }
         return s.toString();
     }

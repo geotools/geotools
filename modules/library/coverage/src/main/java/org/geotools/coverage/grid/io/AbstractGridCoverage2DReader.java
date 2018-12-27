@@ -601,11 +601,6 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
         }
     }
 
-    protected final void decimationOnReadingControl(
-            Integer imageChoice, ImageReadParam readP, double[] requestedRes) {
-        decimationOnReadingControl(imageChoice, readP, requestedRes);
-    }
-
     /**
      * This method is responsible for evaluating possible subsampling factors once the best
      * resolution level has been found, in case we have support for overviews, or starting from the

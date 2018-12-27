@@ -23,6 +23,8 @@ import org.opengis.temporal.IndeterminateValue;
 import org.opengis.temporal.TemporalReferenceSystem;
 import org.opengis.util.InternationalString;
 
+import java.util.Arrays;
+
 /**
  * A data type that shall be used to identify temporal position within a calendar.
  *
@@ -95,7 +97,7 @@ public class DefaultCalendarDate extends DefaultTemporalPosition implements Cale
     @Override
     public int hashCode() {
         int hash = 5;
-        hash = 37 * hash + (this.calendarDate != null ? this.calendarDate.hashCode() : 0);
+        hash = 37 * hash + Arrays.hashCode(this.calendarDate);
         hash = 37 * hash + (this.calendarEraName != null ? this.calendarEraName.hashCode() : 0);
         return hash;
     }
@@ -107,7 +109,7 @@ public class DefaultCalendarDate extends DefaultTemporalPosition implements Cale
             s.append("calendarEraName:").append(calendarEraName).append('\n');
         }
         if (calendarDate != null) {
-            s.append("calendarDate:").append(calendarDate).append('\n');
+            s.append("calendarDate:").append(Arrays.toString(calendarDate)).append('\n');
         }
         return s.toString();
     }

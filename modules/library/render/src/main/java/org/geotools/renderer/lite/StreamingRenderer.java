@@ -1257,7 +1257,7 @@ public class StreamingRenderer implements GTRenderer {
             throws FactoryException {
         // now, if a definition query has been established for this layer, be
         // sure to respect it by combining it with the bounding box one.
-        Query definitionQuery = reprojectQuery(currLayer.getQuery(), source);
+        Query definitionQuery = new Query(reprojectQuery(currLayer.getQuery(), source));
         definitionQuery.setCoordinateSystem(featCrs);
 
         return definitionQuery;

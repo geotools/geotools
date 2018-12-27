@@ -2453,7 +2453,7 @@ public class DataUtilities {
      * This method changes the query object by simplifying the filter using SimplifyingFilterVisitor
      */
     public static Query simplifyFilter(Query query) {
-        if (query == null) {
+        if (query == null || query == Query.ALL) {
             return query;
         }
         Filter filter = SimplifyingFilterVisitor.simplify(query.getFilter());

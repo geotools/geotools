@@ -96,7 +96,7 @@ public class SumVisitor implements FeatureCalc, FeatureAttributeVisitor {
     }
 
     public void visit(SimpleFeature feature) {
-        visit(feature);
+        visit((Feature) feature);
     }
 
     public void visit(Feature feature) {

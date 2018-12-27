@@ -189,8 +189,8 @@ public class XMLHandlerHints implements Map<String, Object> {
      *     Hints#ENTITY_RESOLVER}.
      */
     public static EntityResolver toEntityResolver(Map<String, Object> hints) {
-        if (hints != null && hints.containsKey(Hints.ENTITY_RESOLVER)) {
-            Object resolver = hints.get(Hints.ENTITY_RESOLVER);
+        if (hints != null && hints.containsKey(GeoTools.ENTITY_RESOLVER)) {
+            Object resolver = hints.get(GeoTools.ENTITY_RESOLVER);
             if (resolver == null) { // use null instance rather than check each time
                 return NullEntityResolver.INSTANCE;
             } else if (resolver instanceof EntityResolver) {

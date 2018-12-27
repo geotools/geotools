@@ -121,6 +121,7 @@
     <fmt.skip>false</fmt.skip>
     <batik.version>1.10</batik.version>
     <logging-profile>quiet-logging</logging-profile>
+    <ep.javac.version>9+181-r4173-1</ep.javac.version>
   </properties>
 
   <!-- Profiles set on the command-line overwrite default properties. -->
@@ -260,6 +261,31 @@
                 </goals>
               </execution>
             </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    
+    <profile>
+      <id>errorprone</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>3.8.0</version>
+            <configuration>
+              <source>8</source>
+              <target>8</target>
+              <compilerArgument>-XDcompilePolicy=simple -Xplugin:ErrorProne -XepExcludedPaths:${project.build.directory}/generated-sources/.*</compilerArgument>
+              <annotationProcessorPaths>
+                <path>
+                  <groupId>com.google.errorprone</groupId>
+                  <artifactId>error_prone_core</artifactId>
+                  <version>2.3.2</version>
+                </path>
+              </annotationProcessorPaths>
+            </configuration>
           </plugin>
         </plugins>
       </build>

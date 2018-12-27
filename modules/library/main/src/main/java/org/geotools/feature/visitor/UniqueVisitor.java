@@ -101,7 +101,7 @@ public class UniqueVisitor implements FeatureCalc, FeatureAttributeVisitor, Limi
     }
 
     public void visit(SimpleFeature feature) {
-        visit(feature);
+        visit((Feature) feature);
     }
 
     public void visit(Feature feature) {

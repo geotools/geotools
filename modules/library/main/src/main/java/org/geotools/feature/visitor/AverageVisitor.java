@@ -21,6 +21,7 @@ import java.util.List;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.IllegalFilterException;
+import org.opengis.feature.Feature;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -113,7 +114,7 @@ public class AverageVisitor implements FeatureCalc, FeatureAttributeVisitor {
     }
 
     public void visit(SimpleFeature feature) {
-        visit(feature);
+        visit((Feature) feature);
     }
 
     public void visit(org.opengis.feature.Feature feature) {

@@ -377,7 +377,7 @@ public class ImageWorker {
     static {
         ALPHA_LUT = new byte[256];
         for (int i = 1; i < 256; i++) {
-            ALPHA_LUT[i] = (byte) (255 & 0xFF);
+            ALPHA_LUT[i] = (byte) 255;
         }
     }
 

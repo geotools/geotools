@@ -62,6 +62,7 @@ public class JProcessWizard extends JWizard {
         setCurrentPanel("select");
     }
 
+    @SuppressWarnings("PMD.SystemPrintln")
     public static void main(String args[]) {
         JProcessWizard wizard = new JProcessWizard("Test Input Parameter UI");
         int result = wizard.showModalDialog();

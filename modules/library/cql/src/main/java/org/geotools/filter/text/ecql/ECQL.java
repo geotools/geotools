@@ -246,6 +246,7 @@ public class ECQL {
      *
      * @param args
      */
+    @SuppressWarnings("PMD.SystemPrintln")
     public static final void main(String[] args) {
         System.out.println("ECQL Filters Tester");
         System.out.println("Seperate with \";\" or \"quit\" to finish)");

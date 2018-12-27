@@ -255,6 +255,16 @@
           </execution>
         </executions>
       </plugin>
+      <plugin>
+        <!-- Disable PMD in this module, the code is a set of examples, too many System.out -->
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-pmd-plugin</artifactId>
+        <executions>
+            <execution>
+                <phase>none</phase>
+            </execution>
+        </executions>
+    </plugin>
     </plugins>
   </build>
 

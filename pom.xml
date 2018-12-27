@@ -246,7 +246,7 @@
                 <ruleset>${geotoolsBaseDir}/pmd-ruleset.xml</ruleset>
               </rulesets>
               <failurePriority>2</failurePriority>
-	      <minimumPriority>2</minimumPriority>
+              <minimumPriority>2</minimumPriority>
               <verbose>true</verbose>
               <printFailingErrors>true</printFailingErrors>
               <excludeRoots>

@@ -75,6 +75,7 @@ import org.opengis.feature.simple.SimpleFeature;
  *
  * @author mcr
  */
+@SuppressWarnings("PMD.SystemPrintln")
 public class Import extends AbstractCmd {
     class ImageFilter extends Object implements FileFilter {
         public ImageFilter(String extension) {

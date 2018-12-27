@@ -27,6 +27,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 /** @author Stefan Uhrig, SAP SE */
+@SuppressWarnings("PMD.SystemPrintln")
 public final class MetadataImport {
 
     public interface IPasswordReader {

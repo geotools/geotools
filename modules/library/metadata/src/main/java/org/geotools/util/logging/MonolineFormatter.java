@@ -176,6 +176,7 @@ public class MonolineFormatter extends Formatter {
     private final LineWriter writer;
 
     /** Constructs a default {@code MonolineFormatter}. */
+    @SuppressWarnings("PMD.SystemPrintln")
     public MonolineFormatter() {
         this.startMillis = System.currentTimeMillis();
         this.margin = DEFAULT_WIDTH;

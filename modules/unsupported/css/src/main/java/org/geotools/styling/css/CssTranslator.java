@@ -2148,6 +2148,7 @@ public class CssTranslator {
         return max;
     }
 
+    @SuppressWarnings("PMD.SystemPrintln")
     public static void main(String[] args) throws IOException, TransformerException {
         if (args.length != 2) {
             System.err.println("Usage: CssTranslator <input.css> <output.sld>");

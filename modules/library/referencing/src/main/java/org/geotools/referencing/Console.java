@@ -203,6 +203,7 @@ public class Console extends AbstractConsole {
      *
      * @param args the command line arguments
      */
+    @SuppressWarnings("PMD.SystemPrintln")
     public static void main(String[] args) {
         final Arguments arguments = new Arguments(args);
         final String load = arguments.getOptionalString("-load");

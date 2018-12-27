@@ -28,6 +28,7 @@ import java.util.logging.Logger;
  *
  * @author mcr
  */
+@SuppressWarnings("PMD.SystemPrintln")
 class DDLGenerator extends AbstractCmd {
     private static final int DefaultPyramids = 0;
 

@@ -25,6 +25,7 @@ import org.geotools.util.IndexedResourceCompiler;
  * @version $Id$
  * @author Simone Giannecchini
  */
+@SuppressWarnings("PMD.SystemPrintln")
 public final class Compiler {
     /**
      * The base directory for {@code "java"} {@code "resources"} sub-directories. The directory

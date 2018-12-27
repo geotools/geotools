@@ -17,7 +17,7 @@
 package org.geotools.coverage.grid.io.imageio;
 
 import com.sun.media.jai.util.DataBufferUtils;
-import java.awt.Point;
+import java.awt.*;
 import java.awt.image.ComponentSampleModel;
 import java.awt.image.DataBuffer;
 import java.awt.image.DataBufferByte;
@@ -34,10 +34,13 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.media.jai.CachedTile;
 import javax.media.jai.TileCache;
 import javax.media.jai.TileFactory;
 import javax.media.jai.TileRecycler;
+import org.geotools.util.logging.Logging;
 
 /**
  * A simple implementation of <code>TileFactory</code> wherein the tiles returned from <code>
@@ -84,7 +87,7 @@ import javax.media.jai.TileRecycler;
 public class RecyclingTileFactory extends Observable
         implements TileFactory, TileRecycler, Observer {
 
-    private static final boolean DEBUG = false;
+    static final Logger LOGGER = Logging.getLogger(RecyclingTileFactory.class);
 
     /**
      * Cache of recycled arrays. The key in this mapping is a <code>Long</code> which is formed for
@@ -323,12 +326,11 @@ public class RecyclingTileFactory extends Observable
                         throw new IllegalArgumentException("");
                 }
 
-                if (DEBUG) {
-                    System.out.println(getClass().getName() + " Using a recycled array"); // XXX
-                    // (new Throwable()).printStackTrace(); // XXX
+                if (LOGGER.isLoggable(Level.FINE)) {
+                    LOGGER.fine(getClass().getName() + " Using a recycled array");
                 }
-            } else if (DEBUG) {
-                System.out.println(
+            } else if (LOGGER.isLoggable(Level.FINE)) {
+                LOGGER.fine(
                         getClass().getName()
                                 + " No type "
                                 + type
@@ -338,13 +340,13 @@ public class RecyclingTileFactory extends Observable
                                 + size
                                 + "] available");
             }
-        } else if (DEBUG) {
-            System.out.println(getClass().getName() + " Size is zero");
+        } else if (LOGGER.isLoggable(Level.FINE)) {
+            LOGGER.fine(getClass().getName() + " Size is zero");
         }
 
         if (db == null) {
-            if (DEBUG) {
-                System.out.println(getClass().getName() + " Creating new DataBuffer"); // XXX
+            if (LOGGER.isLoggable(Level.FINE)) {
+                LOGGER.fine(getClass().getName() + " Creating new DataBuffer"); // XXX
             }
             // (new Throwable()).printStackTrace(); // XXX
             db = sampleModel.createDataBuffer();
@@ -363,15 +365,15 @@ public class RecyclingTileFactory extends Observable
                                 | ((long) db.getNumBanks() << 32)
                                 | (long) db.getSize());
 
-        if (DEBUG) {
-            System.out.println(
+        if (LOGGER.isLoggable(Level.FINE)) {
+            LOGGER.fine(
                     "Recycling array for: "
                             + db.getDataType()
                             + " "
                             + db.getNumBanks()
                             + " "
                             + db.getSize());
-            System.out.println("recycleTile(); key = " + key);
+            LOGGER.fine("recycleTile(); key = " + key);
         }
 
         synchronized (recycledArrays) {
@@ -397,15 +399,15 @@ public class RecyclingTileFactory extends Observable
     private Object getRecycledArray(int arrayType, long numBanks, long arrayLength) {
         Long key = Long.valueOf(((long) arrayType << 56) | numBanks << 32 | arrayLength);
 
-        if (DEBUG) {
-            System.out.println(
+        if (LOGGER.isLoggable(Level.FINE)) {
+            LOGGER.fine(
                     "Attempting to get array for: "
                             + arrayType
                             + " "
                             + numBanks
                             + " "
                             + arrayLength);
-            System.out.println("Attempting to get array for key " + key);
+            LOGGER.fine("Attempting to get array for key " + key);
         }
 
         synchronized (recycledArrays) {
@@ -421,16 +423,14 @@ public class RecyclingTileFactory extends Observable
                     }
 
                     if (array != null) {
-                        if (DEBUG) System.out.println("good reference");
+                        if (LOGGER.isLoggable(Level.FINE)) LOGGER.fine("good reference");
                         return array;
                     }
 
-                    if (DEBUG) System.out.println("null reference");
+                    if (LOGGER.isLoggable(Level.FINE)) LOGGER.fine("null reference");
                 }
             }
         }
-
-        // if(DEBUG) System.out.println("getRecycledArray() returning "+array);
 
         return null;
     }

@@ -151,6 +151,7 @@ public class IndexedDbaseFileReader extends DbaseFileReader {
         return this.randomAccessEnabled;
     }
 
+    @SuppressWarnings("PMD.SystemPrintln")
     public static void main(String[] args) throws Exception {
         IndexedDbaseFileReader reader = new IndexedDbaseFileReader(new ShpFiles(args[0]), false);
         System.out.println(reader.getHeader());

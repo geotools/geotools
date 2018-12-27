@@ -138,12 +138,12 @@ public final class GridCoverageRenderer {
             final File tempDir = new File(System.getProperty("user.home"), "gt-renderer");
             if (!tempDir.exists()) {
                 if (!tempDir.mkdir())
-                    System.out.println("Unable to create debug dir, exiting application!!!");
+                    LOGGER.severe("Unable to create debug dir, exiting application!!!");
                 DEBUG = false;
                 DUMP_DIRECTORY = null;
             } else {
                 DUMP_DIRECTORY = tempDir.getAbsolutePath();
-                System.out.println("Rendering debug dir " + DUMP_DIRECTORY);
+                LOGGER.info("Rendering debug dir " + DUMP_DIRECTORY);
             }
         }
     }

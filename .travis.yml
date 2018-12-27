@@ -12,15 +12,20 @@ env:
   global:
     - MAVEN_OPTS=-Xmx512m
 script:
-  - mvn -B -fae -Dall clean install -Dfmt.action=check
+  - mvn -B -fae -Dall clean install $ARGS
 notifications:
   email: false
   on_failure: never
-jdk: 
-  - oraclejdk8
-  - oraclejdk11
 addons:
   apt:
     packages:
       - python-sphinx
       - libgdal1h
+matrix:
+  include:
+    - jdk: oraclejdk8
+      env: ARGS="-Dfmt.skip=true"
+    - jdk: oraclejdk11
+      env: ARGS="-Dfmt.skip=true"
+    - jdk: oraclejdk8
+      env: ARGS="-Dfmt.action=check -Ppmd"

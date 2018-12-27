@@ -16,7 +16,7 @@
  */
 package org.geotools.gce.imagemosaic;
 
-import java.awt.Color;
+import java.awt.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FilenameFilter;
@@ -524,7 +524,9 @@ public final class ImageMosaicFormat extends AbstractGridFormat implements Forma
                 }
 
                 final SimpleFeatureType schema = featureSource.getSchema();
-                if (schema == null) return false;
+                if (schema == null) {
+                    return false;
+                }
 
                 crs =
                         featureSource
@@ -534,9 +536,13 @@ public final class ImageMosaicFormat extends AbstractGridFormat implements Forma
                 if (crs == null) return false;
                 // looking for the location attribute
                 final String locationAttributeName = catalogBean.getLocationAttribute();
-                if (schema.getDescriptor(locationAttributeName) == null
-                        && schema.getDescriptor(locationAttributeName.toUpperCase()) == null)
+                if (locationAttributeName != null
+                        && schema != null
+                        && (schema.getDescriptor(locationAttributeName) == null
+                                && schema.getDescriptor(locationAttributeName.toUpperCase())
+                                        == null)) {
                     return false;
+                }
 
                 return true;
 

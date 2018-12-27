@@ -1499,7 +1499,7 @@ public class ArgHelper {
                 throw new NullPointerException("The string passed in was null");
             }
 
-            return new String(ReaderUtils.getElementText(elem));
+            return ReaderUtils.getElementText(elem);
         }
 
         public Object getInstance(String value) {
@@ -1507,7 +1507,7 @@ public class ArgHelper {
                 throw new NullPointerException("The string passed in was null");
             }
 
-            return new String(value);
+            return value;
         }
 
         /**

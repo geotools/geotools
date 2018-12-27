@@ -179,7 +179,7 @@ public class GMLFilterFeature extends XMLFilterImpl implements GMLHandlerJTS {
 
                 if (name.equalsIgnoreCase("fid")) {
                     // currentFeature.setTypeName(localName);
-                    typeName = new String(localName);
+                    typeName = localName;
 
                     // _log.debug("set type name " + localName);
                     fid = atts.getValue(i);

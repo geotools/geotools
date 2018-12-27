@@ -249,6 +249,9 @@
 	      <minimumPriority>2</minimumPriority>
               <verbose>true</verbose>
               <printFailingErrors>true</printFailingErrors>
+              <excludeRoots>
+                <excludeRoot>target/generated-sources</excludeRoot>
+              </excludeRoots>
             </configuration>
             <executions>
               <execution>

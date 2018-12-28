@@ -16,14 +16,13 @@
  */
 package org.geotools.temporal.object;
 
+import java.util.Arrays;
 import org.geotools.util.Utilities;
 import org.opengis.temporal.CalendarDate;
 import org.opengis.temporal.CalendarEra;
 import org.opengis.temporal.IndeterminateValue;
 import org.opengis.temporal.TemporalReferenceSystem;
 import org.opengis.util.InternationalString;
-
-import java.util.Arrays;
 
 /**
  * A data type that shall be used to identify temporal position within a calendar.

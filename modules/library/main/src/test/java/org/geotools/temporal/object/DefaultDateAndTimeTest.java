@@ -18,7 +18,6 @@ package org.geotools.temporal.object;
 
 import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.*;
-
 import static wiremock.org.hamcrest.CoreMatchers.equalTo;
 
 import org.geotools.metadata.iso.citation.Citations;

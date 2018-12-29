@@ -712,6 +712,7 @@ public final class NetCDFBasicTest extends Assert {
         }
     }
 
+    @Test
     public void testReadRegularNetCDF() throws IOException {
         NetCDFImageReaderSpi readerSpi = new NetCDFImageReaderSpi();
         File file = null;

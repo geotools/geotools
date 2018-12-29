@@ -77,7 +77,6 @@ public class LazySearchIterator implements CloseableIterator<Data> {
         this.bounds = bounds;
         this.closed = false;
         this.next = null;
-        this.indexfile = indexfile;
     }
 
     public boolean hasNext() {

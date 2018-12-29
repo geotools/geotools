@@ -81,7 +81,7 @@ public class WMSMapLayer extends MapLayer {
      */
     public InputStream getFeatureInfo(DirectPosition2D pos, String infoFormat, int featureCount)
             throws IOException {
-        return getFeatureInfo(pos, infoFormat, featureCount);
+        return wmsLayer.getFeatureInfo(pos, infoFormat, featureCount);
     }
 
     /**

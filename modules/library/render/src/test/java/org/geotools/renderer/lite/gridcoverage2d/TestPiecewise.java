@@ -139,6 +139,7 @@ public class TestPiecewise {
      * @throws it.geosolutions.jaiext.piecewise.NoninvertibleTransformException
      */
     @Test
+    @SuppressWarnings("SelfEquals")
     public void constantTransform()
             throws IOException, TransformException,
                     it.geosolutions.jaiext.piecewise.NoninvertibleTransformException,

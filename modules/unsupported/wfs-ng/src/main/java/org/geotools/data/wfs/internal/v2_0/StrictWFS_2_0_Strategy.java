@@ -213,6 +213,7 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
     }
 
     @Override
+    @SuppressWarnings("CollectionIncompatibleType")
     protected Map<String, String> buildGetFeatureParametersForGET(GetFeatureRequest query) {
         Map<String, String> kvp = null;
         if (query.isStoredQuery()) {
@@ -287,6 +288,7 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
     }
 
     @Override
+    @SuppressWarnings("CollectionIncompatibleType")
     protected EObject createGetFeatureRequestPost(GetFeatureRequest query) throws IOException {
         final QName typeName = query.getTypeName();
         final FeatureTypeInfoImpl featureTypeInfo =

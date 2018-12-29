@@ -3873,7 +3873,7 @@ public class StreamingRenderer implements GTRenderer {
 
         @Override
         public int remainingCapacity() {
-            return remainingCapacity();
+            return delegate.remainingCapacity();
         }
 
         @Override

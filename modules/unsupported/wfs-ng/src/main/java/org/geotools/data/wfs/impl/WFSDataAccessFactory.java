@@ -649,7 +649,7 @@ public class WFSDataAccessFactory implements DataAccessFactory {
         }
 
         if (params.containsKey(GML_COMPATIBLE_TYPENAMES.getName())
-                && (Boolean) params.get(GML_COMPATIBLE_TYPENAMES)) {}
+                && (Boolean) params.get(GML_COMPATIBLE_TYPENAMES.getName())) {}
 
         return dataAccess;
     }

@@ -745,6 +745,7 @@ public class GridCoverageRendererTest {
         ImageAssert.assertEquals(reference, image, 0);
     }
 
+    @Test
     public void testCrashOutsideValidArea() throws Exception {
         ReferencedEnvelope mapExtent =
                 new ReferencedEnvelope(
@@ -1852,6 +1853,7 @@ public class GridCoverageRendererTest {
                 1000);
     }
 
+    @Test
     public void testHarvestSpatialTwoReaders() throws Exception {
         File source = TestData.file(GridCoverageReaderHelperTest.class, "red_footprint_test");
         File testDataDir = org.geotools.test.TestData.file(this, ".");

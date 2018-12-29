@@ -25,6 +25,7 @@ public class LayerTest {
         world.setSrs(BBOXES.keySet());
     }
 
+    @Test
     public void cacheTest() {
         Layer parent = new Layer("parent");
         Layer child = new Layer("child");

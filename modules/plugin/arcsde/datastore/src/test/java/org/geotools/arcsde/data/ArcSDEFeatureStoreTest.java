@@ -1494,6 +1494,7 @@ public class ArcSDEFeatureStoreTest {
         }
     }
 
+    @Test
     public void testEditVersionedTableTransactionConcurrently() throws Exception {
         try {
             final String tableName;

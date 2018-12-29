@@ -372,7 +372,7 @@ public class ImageMosaicRepositoryTest {
 
         @Override
         public FeatureSource getFeatureSource(Name typeName) throws IOException {
-            if (this.name.equals(name)) {
+            if (this.name.equals(typeName)) {
                 return delegate.getFeatureSource(name.getLocalPart());
             }
             return null;

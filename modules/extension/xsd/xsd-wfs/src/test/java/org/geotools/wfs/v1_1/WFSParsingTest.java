@@ -67,6 +67,7 @@ import org.geotools.xsd.Parser;
 import org.geotools.xsd.Schemas;
 import org.geotools.xsd.StreamingParser;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.locationtech.jts.geom.Point;
 import org.opengis.feature.simple.SimpleFeature;
@@ -107,7 +108,9 @@ public class WFSParsingTest {
      *
      * @throws Exception
      */
-    public void _testParseGetCapabilitiesDeegree() throws Exception {
+    @Test
+    @Ignore
+    public void testParseGetCapabilitiesDeegree() throws Exception {
         Parser parser = new Parser(configuration);
         WFSCapabilitiesType caps =
                 (WFSCapabilitiesType)

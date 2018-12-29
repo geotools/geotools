@@ -84,7 +84,7 @@ public class LonLatEnvelopeBaseTypeBinding extends AbstractComplexBinding {
 
             GeneralEnvelope envelope = new GeneralEnvelope(p1, p2);
 
-            if (p1.getDimension() == 2 && p1.getDimension() == 2) {
+            if (p1.getDimension() == 2 && p2.getDimension() == 2) {
                 envelope.setCoordinateReferenceSystem(DefaultGeographicCRS.WGS84);
 
                 return envelope;

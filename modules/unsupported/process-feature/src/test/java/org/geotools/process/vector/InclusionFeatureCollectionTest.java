@@ -91,6 +91,7 @@ public class InclusionFeatureCollectionTest {
         assertTrue(expected.equals((Geometry) sf.getDefaultGeometry()));
     }
 
+    @Test
     public void testExecute1() throws Exception {
         SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
         tb.setName("featureType");

@@ -68,7 +68,7 @@ public class DivideBuilder implements Builder<Divide> {
     }
 
     public ChildExpressionBuilder<DivideBuilder> expr1() {
-        return expr1();
+        return expr1;
     }
 
     public DivideBuilder expr1(Object literal) {

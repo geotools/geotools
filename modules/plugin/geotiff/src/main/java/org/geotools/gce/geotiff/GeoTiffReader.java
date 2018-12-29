@@ -598,7 +598,7 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
         try {
             imageChoice = setReadParams(overviewPolicy, readP, requestedEnvelope, dim);
         } catch (TransformException e) {
-            new DataSourceException(e);
+            throw new DataSourceException(e);
         }
 
         //

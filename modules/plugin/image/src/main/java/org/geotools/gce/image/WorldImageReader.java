@@ -421,7 +421,7 @@ public final class WorldImageReader extends AbstractGridCoverage2DReader
             try {
                 imageChoice = setReadParams(overviewPolicy, readP, requestedEnvelope, dim);
             } catch (TransformException e) {
-                new DataSourceException(e);
+                throw new DataSourceException(e);
             }
         }
         // /////////////////////////////////////////////////////////////////////

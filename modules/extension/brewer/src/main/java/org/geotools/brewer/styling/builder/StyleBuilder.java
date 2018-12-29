@@ -59,7 +59,7 @@ public class StyleBuilder extends AbstractStyleBuilder<Style> {
     }
 
     public FeatureTypeStyleBuilder featureTypeStyle() {
-        this.unset = unset;
+        this.unset = false;
         FeatureTypeStyleBuilder ftsBuilder = new FeatureTypeStyleBuilder(this);
         fts.add(ftsBuilder);
 

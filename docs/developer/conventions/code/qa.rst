@@ -23,7 +23,7 @@ https://github.com/geotools/geotools/blob/qa/pmd-ruleset.xml
 In order to activate the PMD checks, use the "-Ppmd" profile.
 
 PMD will fail the build in case of violation, reporting the specific errors before the build
-error message, and a reference to a XML file with the same information after it:
+error message, and a reference to a XML file with the same information after it::
 
     7322 [INFO] --- maven-pmd-plugin:3.11.0:check (default) @ gt-main ---
     17336 [INFO] PMD Failure: org.geotools.data.DataStoreAdaptor:98 Rule:SystemPrintln Priority:2 System.out.println is used.
@@ -42,7 +42,7 @@ XML file reference wil be at end end, just search for "PMD Failure" in the build
 
 Occasionally PMD will report a false positive failure, for those it's possible to annotate the method
 or the class in question with a SuppressWarnings using ``PMD.<RuleName``, e.g. if the above error
-was actually a legit use of ``System.out.println`` it could have been annotated with:
+was actually a legit use of ``System.out.println`` it could have been annotated with::
 
     @SuppressWarnings("PMD.SystemPrintln")
     public void methodDoingPrintln(...) {
@@ -56,7 +56,7 @@ Mind, running the profile with a JDK8 will result in a generic compile error!
 
 In order to activate the Error Prone checks, use the "-Perrorprone" profile.
 
-Any failure to comply with the "Error Prone" rules will show up as a compile error in the build output, e.g.:
+Any failure to comply with the "Error Prone" rules will show up as a compile error in the build output, e.g.::
 
         9476 [ERROR] Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.8.0:compile (default-compile) on project gt-coverage: Compilation failure
         9476 [ERROR] /home/user/devel/git-gt/modules/library/coverage/src/main/java/org/geotools/image/ImageWorker.java:[380,39] error: [IdentityBinaryExpression] A binary expression where both operands are the same is usually incorrect; the value of this expression is equivalent to `255`.
@@ -68,6 +68,6 @@ Any failure to comply with the "Error Prone" rules will show up as a compile err
         (see https://errorprone.info/bugpattern/IdentityBinaryExpression)
 
 In case Error Prone is reporting an invalid error, the method or class in question can be annotated
-with SuppressWarnings with the name of the rule, e.g., to get rid of the above the following annotation could be used:
+with SuppressWarnings with the name of the rule, e.g., to get rid of the above the following annotation could be used::
 
    @SuppressWarnings("IdentityBinaryExpression")

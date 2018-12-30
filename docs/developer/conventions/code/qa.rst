@@ -6,9 +6,13 @@ The GeoTools builds on Travis and `https://build.geoserver.org/ <https://build.g
 and will fail the build in case of rule violation.
 
 In case you want to just run the build with the full checks locally, use the following command
-using a JDK 11 (won't work on JDK 8, see the Error Prone section):
+if you are using a JDK 8::
 
-mvn clean install -Ppmd,errorprone -Dall
+    mvn clean install -Ppmd,errorprone8 -Dall
+
+or the following if using JDK 11::
+
+    mvn clean install -Ppmd,errorprone -Dall
 
 Add extra parameters as you see fit, like ``-T1C -nsu`` to speed up the build, or ``-Dfmt.skip=true -DskipTests``
 to avoid running tests and code formatting.
@@ -54,7 +58,7 @@ The `Error Prone <https://errorprone.info/>`_ checker runs a compiler plugin, re
 JDK 9 to run (hence the suggestion to use JDK 11, as the supported JDKs are currently only JDK 8 and JDK 11).
 Mind, running the profile with a JDK8 will result in a generic compile error!
 
-In order to activate the Error Prone checks, use the "-Perrorprone" profile.
+In order to activate the Error Prone checks, use the "-Perrorprone" for JDK 11 builds, or "Perrorprone8" for JDK 8 builds.
 
 Any failure to comply with the "Error Prone" rules will show up as a compile error in the build output, e.g.::
 

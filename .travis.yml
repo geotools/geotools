@@ -29,3 +29,4 @@ matrix:
       env: ARGS="-Dfmt.skip=true"
     - jdk: oraclejdk11
       env: ARGS="-Dfmt.action=check -Ppmd -Perrorprone -DskipTests=true"
+      global: MAVEN_OPTS=-Xmx756m

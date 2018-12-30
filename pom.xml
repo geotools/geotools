@@ -108,7 +108,7 @@
     <jvm.opts></jvm.opts>
     <maven.build.timestamp.format>dd-MMM-yyyy HH:mm</maven.build.timestamp.format>
     <build.timestamp>${maven.build.timestamp}</build.timestamp>
-    <fork.javac>true</fork.javac>
+    <fork.javac>false</fork.javac>
     <javac.maxHeapSize>256M</javac.maxHeapSize>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <postgresql.jdbc.version>42.2.5</postgresql.jdbc.version>
@@ -1611,6 +1611,7 @@
           <target>1.8</target>  <!-- The -target argument for the Java compiler. -->
           <debug>true</debug>   <!-- Whether to include debugging information.   -->
           <encoding>UTF-8</encoding> <!-- The -encoding argument for the Java compiler. -->
+          <fork>${fork.javac}</fork>
           <maxmem>${javac.maxHeapSize}</maxmem>
         </configuration>
       </plugin>

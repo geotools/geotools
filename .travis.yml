@@ -10,7 +10,7 @@ before_install:
 install: true
 env:
   global:
-    - MAVEN_OPTS=-Xmx512m
+    - MAVEN_OPTS=-Xmx756m
 script:
   - mvn -B -fae -Dall clean install -T2 $ARGS
 notifications:
@@ -29,4 +29,4 @@ matrix:
       env: ARGS="-Dfmt.skip=true"
     - jdk: oraclejdk11
       env: ARGS="-Dfmt.action=check -Ppmd -Perrorprone -DskipTests=true"
-      global: MAVEN_OPTS=-Xmx756m
+

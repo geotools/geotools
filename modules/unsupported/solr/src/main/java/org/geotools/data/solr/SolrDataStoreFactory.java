@@ -21,6 +21,7 @@ import java.awt.RenderingHints.Key;
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.Map;
 import org.geotools.data.AbstractDataStoreFactory;
 import org.geotools.data.DataStore;
@@ -47,7 +48,7 @@ public class SolrDataStoreFactory extends AbstractDataStoreFactory {
                     "layer_mapper",
                     String.class,
                     "Controls how documents in the solr index are mapped to layers"
-                            + SolrLayerMapper.Type.values(),
+                            + Arrays.toString(SolrLayerMapper.Type.values()),
                     false,
                     Type.FIELD.name(),
                     new KVP(Param.LEVEL, "user", Param.DEPRECATED, true));

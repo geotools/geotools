@@ -66,15 +66,10 @@
     </plugins>
   </build>
   
-  <profiles>
-    <profile>
-      <!-- disable errorprone in these modules, their code is generated -->
-      <id>errorprone</id>
-      <properties>
-        <errorProneFlags>-XepDisableAllChecks</errorProneFlags>
-      </properties>
-    </profile>
-  </profiles>
+  <!-- disable errorprone in these modules, their code is generated -->
+  <properties>
+    <errorProneFlags>-XepDisableAllChecks</errorProneFlags>
+  </properties>
 
 
   <modules>

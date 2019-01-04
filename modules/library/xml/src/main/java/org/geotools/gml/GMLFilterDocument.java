@@ -184,7 +184,7 @@ public class GMLFilterDocument extends org.xml.sax.helpers.XMLFilterImpl {
         LOGGER.entering(
                 "GMLFilterDocument",
                 "characters",
-                new Object[] {ch, new Integer(start), new Integer(length)});
+                new Object[] {ch, Integer.valueOf(start), Integer.valueOf(length)});
 
         /* the methods here read in both coordinates and coords and
          * take the grunt-work out of this task for geometry handlers

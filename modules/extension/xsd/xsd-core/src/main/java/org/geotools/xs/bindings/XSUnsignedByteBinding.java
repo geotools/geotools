@@ -80,7 +80,7 @@ public class XSUnsignedByteBinding implements SimpleBinding {
      * @generated modifiable
      */
     public Object parse(InstanceComponent instance, Object value) throws Exception {
-        return new Short(((Number) value).shortValue());
+        return Short.valueOf(((Number) value).shortValue());
     }
 
     /**

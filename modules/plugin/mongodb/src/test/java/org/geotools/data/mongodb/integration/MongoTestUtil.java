@@ -61,6 +61,7 @@ public class MongoTestUtil {
         // System.out.println("EmbedMongo Port is " + PORT);
     }
 
+    @Test
     public void testConnect() throws UnknownHostException {
         MongoClient mc = new MongoClient("localhost", PORT);
         try {

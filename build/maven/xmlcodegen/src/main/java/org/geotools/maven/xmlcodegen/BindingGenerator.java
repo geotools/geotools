@@ -53,6 +53,7 @@ import org.geotools.xsd.Schemas;
  * @author Justin Deoliveira, The Open Planning Project, jdeolive@openplans.org
  *
  */
+@SuppressWarnings("PMD.SystemPrintln")
 public class BindingGenerator extends AbstractGenerator {
     static Logger logger = org.geotools.util.logging.Logging.getLogger(BindingGenerator.class);
     boolean generateXsd = true;

@@ -66,6 +66,7 @@ class CommandLineArguments {
         return connectionParameters;
     }
 
+    @SuppressWarnings("PMD.SystemPrintln")
     private static void showUsage() {
         System.out.println("HANA Metadata Importer");
         System.out.println();

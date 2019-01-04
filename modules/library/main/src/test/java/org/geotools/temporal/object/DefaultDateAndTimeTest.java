@@ -16,7 +16,9 @@
  */
 package org.geotools.temporal.object;
 
+import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.*;
+import static wiremock.org.hamcrest.CoreMatchers.equalTo;
 
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.NamedIdentifier;
@@ -58,7 +60,7 @@ public class DefaultDateAndTimeTest {
     @Test
     public void testGetClockTime() {
         Number[] result = dateAndTime1.getClockTime();
-        assertFalse(dateAndTime2.getClockTime().equals(result));
+        assertThat(dateAndTime2.getClockTime(), not(equalTo(result)));
     }
 
     /** Test of getCalendarEraName method, of class DefaultDateAndTime. */
@@ -72,7 +74,7 @@ public class DefaultDateAndTimeTest {
     @Test
     public void testGetCalendarDate() {
         int[] result = dateAndTime1.getCalendarDate();
-        assertFalse(dateAndTime2.getCalendarDate().equals(result));
+        assertThat(dateAndTime2.getCalendarDate(), not(equalTo(result)));
     }
 
     /** Test of setCalendarEraName method, of class DefaultDateAndTime. */
@@ -90,7 +92,7 @@ public class DefaultDateAndTimeTest {
         int[] result = dateAndTime1.getCalendarDate();
         int[] caldate = {1990, 3, 6};
         ((DefaultDateAndTime) dateAndTime1).setCalendarDate(caldate);
-        assertFalse(dateAndTime1.getCalendarDate().equals(result));
+        assertThat(dateAndTime1.getCalendarDate(), not(equalTo(result)));
     }
 
     /** Test of setClockTime method, of class DefaultDateAndTime. */
@@ -99,7 +101,7 @@ public class DefaultDateAndTimeTest {
         Number[] result = dateAndTime1.getClockTime();
         Number[] clk = {15, 23, 5.7};
         ((DefaultDateAndTime) dateAndTime1).setClockTime(clk);
-        assertFalse(dateAndTime1.getClockTime().equals(result));
+        assertThat(dateAndTime1.getClockTime(), not(equalTo(result)));
     }
 
     /** Test of equals method, of class DefaultDateAndTime. */

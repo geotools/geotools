@@ -138,7 +138,7 @@ public class FilterFunction_in9 extends FunctionExpressionImpl {
                     "Filter Function problem for function in9 argument #9 - expected type Object");
         }
 
-        return new Boolean(
+        return Boolean.valueOf(
                 StaticGeometry.in9(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9));
     }
 }

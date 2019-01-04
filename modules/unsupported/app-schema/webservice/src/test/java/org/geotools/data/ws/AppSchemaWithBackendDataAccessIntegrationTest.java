@@ -129,7 +129,7 @@ public class AppSchemaWithBackendDataAccessIntegrationTest extends TestCase {
         FeatureSource<FeatureType, Feature> fSource =
                 newGuDataAccess.getFeatureSourceByName(typeName);
         FeatureCollection<FeatureType, Feature> features =
-                fSource.getFeatures(namedQuery(inputFilter, new Integer(maxFeatures)));
+                fSource.getFeatures(namedQuery(inputFilter, Integer.valueOf(maxFeatures)));
         return features;
     }
 

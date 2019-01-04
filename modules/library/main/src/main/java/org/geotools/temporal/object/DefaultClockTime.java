@@ -16,6 +16,7 @@
  */
 package org.geotools.temporal.object;
 
+import java.util.Arrays;
 import org.geotools.util.Utilities;
 import org.opengis.temporal.ClockTime;
 import org.opengis.temporal.IndeterminateValue;
@@ -73,7 +74,7 @@ public class DefaultClockTime extends DefaultTemporalPosition implements ClockTi
     @Override
     public int hashCode() {
         int hash = 5;
-        hash = 37 * hash + (this.clockTime != null ? this.clockTime.hashCode() : 0);
+        hash = 37 * hash + Arrays.hashCode(this.clockTime);
         return hash;
     }
 
@@ -81,7 +82,7 @@ public class DefaultClockTime extends DefaultTemporalPosition implements ClockTi
     public String toString() {
         StringBuilder s = new StringBuilder("ClockTime:").append('\n');
         if (clockTime != null) {
-            s.append("clockTime:").append(clockTime).append('\n');
+            s.append("clockTime:").append(Arrays.toString(clockTime)).append('\n');
         }
         return s.toString();
     }

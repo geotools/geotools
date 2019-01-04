@@ -737,12 +737,13 @@ public class ProjectionHandlerTest {
         assertEquals(ProjectionHandlerFinder.WRAP_LIMIT * 2 + 1, mls.getNumGeometries());
     }
 
+    @Test
     public void testCutGeometryUTM() throws Exception {
         ReferencedEnvelope wgs84Envelope = new ReferencedEnvelope(8, 10, 40, 45, WGS84);
         ReferencedEnvelope utmEnvelope = wgs84Envelope.transform(UTM32N, true);
 
         // a geometry that will definitely go outside of the UTM32N valid area
-        Geometry g = new WKTReader().read("LINESTRING(-170 -40, 170, 40)");
+        Geometry g = new WKTReader().read("LINESTRING(-170 -40, 170 40)");
 
         ProjectionHandler handler = ProjectionHandlerFinder.getHandler(utmEnvelope, WGS84, true);
         assertTrue(handler.requiresProcessing(g));

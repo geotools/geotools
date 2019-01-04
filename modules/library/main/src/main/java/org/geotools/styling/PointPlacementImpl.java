@@ -50,7 +50,7 @@ public class PointPlacementImpl implements PointPlacement, Cloneable {
     public PointPlacementImpl(FilterFactory factory) {
         filterFactory = factory;
         try {
-            rotation = filterFactory.literal(new Integer(0));
+            rotation = filterFactory.literal(Integer.valueOf(0));
         } catch (org.geotools.filter.IllegalFilterException ife) {
             LOGGER.severe("Failed to build defaultPointPlacement: " + ife);
         }

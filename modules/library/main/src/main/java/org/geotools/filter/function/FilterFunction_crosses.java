@@ -59,6 +59,6 @@ public class FilterFunction_crosses extends FunctionExpressionImpl {
                     "Filter Function problem for function crosses argument #1 - expected type Geometry");
         }
 
-        return new Boolean(StaticGeometry.crosses(arg0, arg1));
+        return Boolean.valueOf(StaticGeometry.crosses(arg0, arg1));
     }
 }

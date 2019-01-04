@@ -89,7 +89,7 @@ public class DefaultWSStrategy implements WSStrategy {
         Filter filter = query.getFilter();
         Integer maxfeatures = query.getMaxFeatures();
         if (maxfeatures == null) {
-            maxfeatures = new Integer(0);
+            maxfeatures = Integer.valueOf(0);
         }
         // provide a variety of ways to express the data sent to a webservice
         // more can be added, and referenced in the template via by the name added to root.

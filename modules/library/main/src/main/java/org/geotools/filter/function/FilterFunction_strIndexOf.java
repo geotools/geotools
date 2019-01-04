@@ -64,6 +64,6 @@ public class FilterFunction_strIndexOf extends FunctionExpressionImpl {
                     "Filter Function problem for function strIndexOf argument #1 - expected type String");
         }
 
-        return new Integer(StaticGeometry.strIndexOf(arg0, arg1));
+        return Integer.valueOf(StaticGeometry.strIndexOf(arg0, arg1));
     }
 }

@@ -72,7 +72,7 @@ public abstract class JDBCFeatureStoreOnlineTest extends JDBCTestSupport {
         FeatureEventWatcher watcher = new FeatureEventWatcher();
 
         for (int i = 3; i < 6; i++) {
-            b.set(aname("intProperty"), new Integer(i));
+            b.set(aname("intProperty"), Integer.valueOf(i));
             b.set(aname("geometry"), new GeometryFactory().createPoint(new Coordinate(i, i)));
             collection.add(b.buildFeature(null));
         }
@@ -122,7 +122,7 @@ public abstract class JDBCFeatureStoreOnlineTest extends JDBCTestSupport {
             final int LOOPS = 32;
             for (int i = 0; i < LOOPS; i++) {
                 final String theProperty = aname("intProperty");
-                final Integer theValue = new Integer(i + 3);
+                final Integer theValue = Integer.valueOf(i + 3);
                 b.set(theProperty, theValue);
                 SimpleFeature feature = b.buildFeature(null);
                 cs.submit(
@@ -160,7 +160,7 @@ public abstract class JDBCFeatureStoreOnlineTest extends JDBCTestSupport {
 
         String typeName = b.getFeatureType().getTypeName();
         for (int i = 3; i < 6; i++) {
-            b.set(aname("intProperty"), new Integer(i));
+            b.set(aname("intProperty"), Integer.valueOf(i));
             b.set(aname("geometry"), new GeometryFactory().createPoint(new Coordinate(i, i)));
             b.featureUserData(Hints.USE_PROVIDED_FID, Boolean.TRUE);
             collection.add(b.buildFeature(typeName + "." + (i * 10)));
@@ -198,7 +198,7 @@ public abstract class JDBCFeatureStoreOnlineTest extends JDBCTestSupport {
         DefaultFeatureCollection collection =
                 new DefaultFeatureCollection(null, featureStore.getSchema());
 
-        b.set(aname("intProperty"), new Integer(3));
+        b.set(aname("intProperty"), Integer.valueOf(3));
         b.set(aname("geometry"), new GeometryFactory().createPoint(new Coordinate(3, 3)));
         collection.add(b.buildFeature(null));
 
@@ -230,7 +230,7 @@ public abstract class JDBCFeatureStoreOnlineTest extends JDBCTestSupport {
         DefaultFeatureCollection collection =
                 new DefaultFeatureCollection(null, featureStore.getSchema());
 
-        b.set(aname("intProperty"), new Integer(3));
+        b.set(aname("intProperty"), Integer.valueOf(3));
         b.set(aname("geometry"), new GeometryFactory().createPoint(new Coordinate(3, 3)));
         collection.add(b.buildFeature(null));
 
@@ -302,7 +302,7 @@ public abstract class JDBCFeatureStoreOnlineTest extends JDBCTestSupport {
                 new DefaultFeatureCollection(null, featureStore.getSchema());
 
         for (int i = 3; i < 6; i++) {
-            b.set(aname("intProperty"), new Integer(i));
+            b.set(aname("intProperty"), Integer.valueOf(i));
             b.set(aname("geometry"), new GeometryFactory().createPoint(new Coordinate(i, i)));
             collection.add(b.buildFeature(null));
         }
@@ -318,9 +318,9 @@ public abstract class JDBCFeatureStoreOnlineTest extends JDBCTestSupport {
 
         try (SimpleFeatureIterator iterator = features.features()) {
             HashSet<Integer> numbers = new HashSet<Integer>();
-            numbers.add(new Integer(3));
-            numbers.add(new Integer(4));
-            numbers.add(new Integer(5));
+            numbers.add(Integer.valueOf(3));
+            numbers.add(Integer.valueOf(4));
+            numbers.add(Integer.valueOf(5));
 
             for (int i = 3; iterator.hasNext(); i++) {
                 SimpleFeature feature = (SimpleFeature) iterator.next();

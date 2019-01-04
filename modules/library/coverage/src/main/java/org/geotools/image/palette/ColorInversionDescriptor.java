@@ -100,8 +100,8 @@ public class ColorInversionDescriptor extends OperationDescriptorImpl {
                 // classes
                 new Object[] {
                     buildDefaultPalette(),
-                    new Integer(InverseColorMapRasterOp.DEFAULT_QUANTIZATION_COLORS),
-                    new Integer(1),
+                    Integer.valueOf(InverseColorMapRasterOp.DEFAULT_QUANTIZATION_COLORS),
+                    Integer.valueOf(1),
                 }, // Default
                 // values
                 null // Valid parameter values

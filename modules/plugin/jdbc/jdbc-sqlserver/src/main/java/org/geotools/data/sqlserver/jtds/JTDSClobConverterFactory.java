@@ -83,7 +83,7 @@ public class JTDSClobConverterFactory implements ConverterFactory {
         public <T> T convert(Object source, Class<T> target) throws Exception {
             int length = ((Long) JTDS_LENGTH.invoke(source)).intValue();
             String buffer = (String) JTDS_GET_CHARS.invoke(source, 1l, length);
-            return (T) new String(buffer);
+            return (T) buffer;
         }
     }
 }

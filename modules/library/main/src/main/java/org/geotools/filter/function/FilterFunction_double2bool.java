@@ -45,6 +45,6 @@ public class FilterFunction_double2bool extends FunctionExpressionImpl {
                     "Filter Function problem for function double2bool argument #0 - expected type double");
         }
 
-        return new Boolean(StaticGeometry.double2bool(arg0));
+        return Boolean.valueOf(StaticGeometry.double2bool(arg0));
     }
 }

@@ -66,7 +66,7 @@ public class TeradataDataStoreOnlineTest extends JDBCDataStoreOnlineTest {
                                                 w.next();
                                             }
                                             SimpleFeature f = (SimpleFeature) w.next();
-                                            f.setAttribute(1, new Integer((id * 100) + j));
+                                            f.setAttribute(1, Integer.valueOf((id * 100) + j));
                                             f.setAttribute(2, "one");
                                             w.write();
                                             w.close();
@@ -104,7 +104,7 @@ public class TeradataDataStoreOnlineTest extends JDBCDataStoreOnlineTest {
         w.hasNext();
 
         SimpleFeature f = (SimpleFeature) w.next();
-        f.setAttribute(1, new Integer(0));
+        f.setAttribute(1, Integer.valueOf(0));
         f.setAttribute(2, "one");
         w.write();
         w.close();

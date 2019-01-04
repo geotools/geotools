@@ -208,24 +208,24 @@ public class ECQLComparisonPredicateTest extends CQLComparisonPredicateTest {
     public void testPositiveNegativeConsistent() throws Exception {
         BinaryComparisonOperator f =
                 (BinaryComparisonOperator) CompilerUtil.parseFilter(this.language, "foo > -1");
-        assertEquals(new Long(-1), f.getExpression2().evaluate(null));
+        assertEquals(Long.valueOf(-1), f.getExpression2().evaluate(null));
         f = (BinaryComparisonOperator) CompilerUtil.parseFilter(this.language, "foo > 1");
-        assertEquals(new Long(1), f.getExpression2().evaluate(null));
+        assertEquals(Long.valueOf(1), f.getExpression2().evaluate(null));
 
         f = (BinaryComparisonOperator) CompilerUtil.parseFilter(this.language, "-1 > foo");
-        assertEquals(new Long(-1), f.getExpression1().evaluate(null));
+        assertEquals(Long.valueOf(-1), f.getExpression1().evaluate(null));
         f = (BinaryComparisonOperator) CompilerUtil.parseFilter(this.language, "1 > foo");
-        assertEquals(new Long(1), f.getExpression1().evaluate(null));
+        assertEquals(Long.valueOf(1), f.getExpression1().evaluate(null));
 
         PropertyIsBetween between =
                 (PropertyIsBetween) CompilerUtil.parseFilter(this.language, "foo between -1 and 1");
-        assertEquals(new Long(-1), between.getLowerBoundary().evaluate(null));
-        assertEquals(new Long(1), between.getUpperBoundary().evaluate(null));
+        assertEquals(Long.valueOf(-1), between.getLowerBoundary().evaluate(null));
+        assertEquals(Long.valueOf(1), between.getUpperBoundary().evaluate(null));
 
         between =
                 (PropertyIsBetween)
                         CompilerUtil.parseFilter(this.language, "-1 between foo and bar");
-        assertEquals(new Long(-1), between.getExpression().evaluate(null));
+        assertEquals(Long.valueOf(-1), between.getExpression().evaluate(null));
     }
 
     private Date date(

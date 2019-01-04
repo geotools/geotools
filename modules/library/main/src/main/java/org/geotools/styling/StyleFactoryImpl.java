@@ -612,13 +612,13 @@ public class StyleFactoryImpl extends AbstractStyleFactory
             Stroke stroke =
                     createStroke(
                             filterFactory.literal("#000000"),
-                            filterFactory.literal(new Integer(1)));
+                            filterFactory.literal(Integer.valueOf(1)));
 
-            stroke.setDashOffset(filterFactory.literal(new Integer(0)));
+            stroke.setDashOffset(filterFactory.literal(Integer.valueOf(0)));
             stroke.setDashArray(Stroke.DEFAULT.getDashArray());
             stroke.setLineCap(filterFactory.literal("butt"));
             stroke.setLineJoin(filterFactory.literal("miter"));
-            stroke.setOpacity(filterFactory.literal(new Integer(1)));
+            stroke.setOpacity(filterFactory.literal(Integer.valueOf(1)));
 
             return stroke;
         } catch (org.geotools.filter.IllegalFilterException ife) {

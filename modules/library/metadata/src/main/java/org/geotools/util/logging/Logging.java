@@ -51,6 +51,7 @@ import org.geotools.util.XArray;
  * @version $Id$
  * @author Martin Desruisseaux
  */
+@SuppressWarnings("PMD.SystemPrintln")
 public final class Logging {
     /** Compares {@link Logging} or {@link String} objects for alphabetical order. */
     private static final Comparator<Object> COMPARATOR =

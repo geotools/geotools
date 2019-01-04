@@ -21,9 +21,14 @@ import static org.custommonkey.xmlunit.XMLAssert.assertXpathExists;
 import static org.custommonkey.xmlunit.XMLAssert.assertXpathNotExists;
 import static org.custommonkey.xmlunit.XMLUnit.buildTestDocument;
 import static org.custommonkey.xmlunit.XMLUnit.setXpathNamespaceContext;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
-import java.awt.Color;
+import java.awt.*;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -1235,30 +1240,36 @@ public class SLDTransformerTest {
                 doc);
     }
 
+    @Test
     public void testLocalizedAbstract() throws Exception {
         RuleImpl rule = (RuleImpl) CommonFactoryFinder.getStyleFactory().createRule();
-        GrowableInternationalString intString = new GrowableInternationalString("title");
+        GrowableInternationalString intString =
+                new GrowableInternationalString("title") {
+
+                    @Override
+                    public String toString() {
+                        return super.toString(null);
+                    }
+                };
         intString.add(Locale.ITALIAN, "titolo");
         intString.add(Locale.FRENCH, "titre");
         intString.add(Locale.CANADA_FRENCH, "titre");
         rule.getDescription().setAbstract(intString);
         String xml = transformer.transform(rule);
-        assertTrue(xml.contains("<sld:Abstract>title"));
-        assertTrue(
-                xml.contains(
-                        "<sld:Localized lang=\""
-                                + Locale.ITALIAN.toString()
-                                + "\">titolo</sld:Localized>"));
-        assertTrue(
-                xml.contains(
-                        "<sld:Localized lang=\""
-                                + Locale.FRENCH.toString()
-                                + "\">titre</sld:Localized>"));
-        assertTrue(
-                xml.contains(
-                        "<sld:Localized lang=\""
-                                + Locale.CANADA_FRENCH.toString()
-                                + "\">titre</sld:Localized>"));
+        Document doc = buildTestDocument(xml);
+        assertXpathEvaluatesTo("title", "normalize-space(//sld:Abstract/text()[1])", doc);
+        assertXpathEvaluatesTo(
+                "titolo",
+                "//sld:Abstract/sld:Localized[@lang='" + Locale.ITALIAN.toString() + "']",
+                doc);
+        assertXpathEvaluatesTo(
+                "titre",
+                "//sld:Abstract/sld:Localized[@lang='" + Locale.FRENCH.toString() + "']",
+                doc);
+        assertXpathEvaluatesTo(
+                "titre",
+                "//sld:Abstract/sld:Localized[@lang='" + Locale.CANADA_FRENCH.toString() + "']",
+                doc);
     }
 
     @Test

@@ -46,6 +46,6 @@ public class FilterFunction_abs extends FunctionExpressionImpl {
                     "Filter Function problem for function abs argument #0 - expected type int");
         }
 
-        return new Integer(Math.abs(arg0));
+        return Integer.valueOf(Math.abs(arg0));
     }
 }

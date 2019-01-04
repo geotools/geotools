@@ -128,18 +128,18 @@ public class SLDStyleFactory {
     public static final int DEFAULT_MARK_SIZE = 16;
 
     static { // static block to populate the lookups
-        JOIN_LOOKUP.put("miter", new Integer(BasicStroke.JOIN_MITER));
-        JOIN_LOOKUP.put("bevel", new Integer(BasicStroke.JOIN_BEVEL));
-        JOIN_LOOKUP.put("round", new Integer(BasicStroke.JOIN_ROUND));
+        JOIN_LOOKUP.put("miter", Integer.valueOf(BasicStroke.JOIN_MITER));
+        JOIN_LOOKUP.put("bevel", Integer.valueOf(BasicStroke.JOIN_BEVEL));
+        JOIN_LOOKUP.put("round", Integer.valueOf(BasicStroke.JOIN_ROUND));
 
-        CAP_LOOKUP.put("butt", new Integer(BasicStroke.CAP_BUTT));
-        CAP_LOOKUP.put("round", new Integer(BasicStroke.CAP_ROUND));
-        CAP_LOOKUP.put("square", new Integer(BasicStroke.CAP_SQUARE));
+        CAP_LOOKUP.put("butt", Integer.valueOf(BasicStroke.CAP_BUTT));
+        CAP_LOOKUP.put("round", Integer.valueOf(BasicStroke.CAP_ROUND));
+        CAP_LOOKUP.put("square", Integer.valueOf(BasicStroke.CAP_SQUARE));
 
-        FONT_STYLE_LOOKUP.put("normal", new Integer(java.awt.Font.PLAIN));
-        FONT_STYLE_LOOKUP.put("italic", new Integer(java.awt.Font.ITALIC));
-        FONT_STYLE_LOOKUP.put("oblique", new Integer(java.awt.Font.ITALIC));
-        FONT_STYLE_LOOKUP.put("bold", new Integer(java.awt.Font.BOLD));
+        FONT_STYLE_LOOKUP.put("normal", Integer.valueOf(java.awt.Font.PLAIN));
+        FONT_STYLE_LOOKUP.put("italic", Integer.valueOf(java.awt.Font.ITALIC));
+        FONT_STYLE_LOOKUP.put("oblique", Integer.valueOf(java.awt.Font.ITALIC));
+        FONT_STYLE_LOOKUP.put("bold", Integer.valueOf(java.awt.Font.BOLD));
 
         ALPHA_COMPOSITE_LOOKUP.put("copy", AlphaComposite.SRC);
         ALPHA_COMPOSITE_LOOKUP.put("destination", AlphaComposite.DST);

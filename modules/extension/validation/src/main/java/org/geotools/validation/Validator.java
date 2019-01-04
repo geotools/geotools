@@ -29,6 +29,7 @@ import org.geotools.data.DefaultRepository;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.Repository;
 import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.feature.NameImpl;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.type.Name;
@@ -185,10 +186,11 @@ public class Validator {
              * button, there will be no feature stores already loaded and thus we always hit the
              * 'else' statement.
              */
-            if (featureStores.containsKey(typeRef)) // if it was passed in through stores
+            Name name = name(typeRef);
+            if (featureStores.containsKey(name)) // if it was passed in through stores
             {
                 LOGGER.finer(" found required typeRef: " + typeRef + " (it was already loaded)");
-                sources.put(typeRef, featureStores.get(typeRef));
+                sources.put(typeRef, featureStores.get(name));
             } else // if we have to go get it (ie. it is a dependant for a test)
             {
                 // These will be using Transaction.AUTO_COMMIT
@@ -249,6 +251,17 @@ public class Validator {
     /** Convert a Name to a type reference (namespace ":" name) */
     protected String typeRef(Name name) {
         return name.getNamespaceURI() + ":" + name.getLocalPart();
+    }
+
+    protected Name name(String typeref) {
+        final String[] split = typeref.split(":");
+        if (split.length == 2) {
+            return new NameImpl(split[0], split[1]);
+        } else if (split.length == 1) {
+            return new NameImpl(split[1]);
+        }
+        throw new IllegalArgumentException(
+                "Invalid typeref, should contain : once or none, but was '" + typeref + "'");
     }
 
     /**

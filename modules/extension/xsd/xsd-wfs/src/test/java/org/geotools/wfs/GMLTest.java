@@ -46,6 +46,7 @@ import org.geotools.geometry.jts.WKTReader2;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.test.TestData;
 import org.geotools.wfs.GML.Version;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.locationtech.jts.geom.Point;
 import org.opengis.feature.simple.SimpleFeature;
@@ -96,6 +97,8 @@ public class GMLTest {
         assertTrue(gml.indexOf("<gml:Point>") != -1);
     }
 
+    @Test
+    @Ignore
     public void testEncodeGML2() throws Exception {
         // step one write out xsd file
         SimpleFeatureType TYPE = DataUtilities.createType("location", "geom:Point,name:String");

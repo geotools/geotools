@@ -150,7 +150,7 @@ public class Circle {
         // testsuite-suite to be certain we have three distinct points passed
         double smallNumber = 0.01;
         if ((Math.abs(a13) < smallNumber && Math.abs(b13) < smallNumber)
-                || (Math.abs(a13) < smallNumber && Math.abs(b13) < smallNumber)) {
+                || (Math.abs(a23) < smallNumber && Math.abs(b23) < smallNumber)) {
             // // points too close so set to default circle
             x = 0;
             y = 0;

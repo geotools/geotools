@@ -55,7 +55,7 @@ public class LiteralExpressionImpl extends DefaultExpression implements Literal 
      */
     protected LiteralExpressionImpl(int value) {
         try {
-            this.setValue(new Integer(value));
+            this.setValue(Integer.valueOf(value));
         } catch (IllegalFilterException ile) {
             // this is imposible as this is only thrown for
             // invalid types, and Integer is a valid type
@@ -65,7 +65,7 @@ public class LiteralExpressionImpl extends DefaultExpression implements Literal 
 
     protected LiteralExpressionImpl(long value) {
         try {
-            this.setValue(new Long(value));
+            this.setValue(Long.valueOf(value));
         } catch (IllegalFilterException ile) {
             // this is imposible as this is only thrown for
             // invalid types, and Double is a valid type

@@ -692,19 +692,15 @@ public class JGrassUtilities {
         printImage(renderedImage);
     }
 
+    @SuppressWarnings("PMD.SystemPrintln")
     public static void printImage(RenderedImage renderedImage) {
         RectIter rectIter = RectIterFactory.create(renderedImage, null);
-        int y = 0;
         do {
-            int x = 0;
             do {
                 double value = rectIter.getSampleDouble();
                 System.out.print(value + " ");
-                x++;
             } while (!rectIter.nextPixelDone());
             rectIter.startPixels();
-            y++;
-            // System.out.println();
         } while (!rectIter.nextLineDone());
     }
 }

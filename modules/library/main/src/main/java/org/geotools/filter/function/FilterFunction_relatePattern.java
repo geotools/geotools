@@ -71,6 +71,6 @@ public class FilterFunction_relatePattern extends FunctionExpressionImpl {
                     "Filter Function problem for function relatePattern argument #2 - expected type String");
         }
 
-        return new Boolean(StaticGeometry.relatePattern(arg0, arg1, arg2));
+        return Boolean.valueOf(StaticGeometry.relatePattern(arg0, arg1, arg2));
     }
 }

@@ -95,16 +95,16 @@ public class ArcSDEAdapter {
         sde2JavaTypes.put(Integer.valueOf(SeColumnDefinition.TYPE_FLOAT64), Double.class);
         sde2JavaTypes.put(Integer.valueOf(SeColumnDefinition.TYPE_DATE), Date.class);
         // @TODO: not at all, only for capable open table with GeoServer
-        // sde2JavaTypes.put(new Integer(SeColumnDefinition.TYPE_BLOB),
+        // sde2JavaTypes.put(Integer.valueOf(SeColumnDefinition.TYPE_BLOB),
         // byte[].class);
         sde2JavaTypes.put(Integer.valueOf(SeColumnDefinition.TYPE_CLOB), String.class);
         sde2JavaTypes.put(Integer.valueOf(SeColumnDefinition.TYPE_NCLOB), String.class);
 
-        // @TODO sde2JavaTypes.put(new Integer(SeColumnDefinition.TYPE_CLOB),
+        // @TODO sde2JavaTypes.put(Integer.valueOf(SeColumnDefinition.TYPE_CLOB),
         // String.class);
         // @Tested for view
         sde2JavaTypes.put(Integer.valueOf(SeColumnDefinition.TYPE_UUID), String.class);
-        // @TODO sde2JavaTypes.put(new Integer(SeColumnDefinition.TYPE_XML),
+        // @TODO sde2JavaTypes.put(Integer.valueOf(SeColumnDefinition.TYPE_XML),
         // org.w3c.dom.Document.class);
 
         // deprecated codes as for ArcSDE 9.0+. Adding them to maintain < 9.0
@@ -274,7 +274,7 @@ public class ArcSDEAdapter {
                                 @Override
                                 public Integer execute(ISession session, SeConnection connection)
                                         throws SeException, IOException {
-                                    return new Integer(table.getPermissions());
+                                    return Integer.valueOf(table.getPermissions());
                                 }
                             });
             final boolean hasWritePermissions = userHasWritePermissions(permMask.intValue());

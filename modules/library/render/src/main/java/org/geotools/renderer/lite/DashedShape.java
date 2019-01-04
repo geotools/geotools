@@ -274,6 +274,7 @@ public class DashedShape implements Shape {
     }
 
     // a small main useful for interactive testing
+    @SuppressWarnings("PMD.SystemPrintln")
     public static void main(String[] args) throws Exception {
         BufferedImage image = new BufferedImage(800, 600, BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D graphics = image.createGraphics();

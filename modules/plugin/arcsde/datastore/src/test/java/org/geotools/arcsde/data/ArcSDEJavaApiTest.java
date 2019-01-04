@@ -210,7 +210,7 @@ public class ArcSDEJavaApiTest {
 
                         rowQuery.close();
                         countQuery.close();
-                        return new Integer(resultCount);
+                        return Integer.valueOf(resultCount);
                     }
                 };
         final Integer resultCount = session.issue(countCmd);
@@ -267,7 +267,7 @@ public class ArcSDEJavaApiTest {
 
                         int actualCount = tableStats.getCount();
                         query.close();
-                        return new Integer(actualCount);
+                        return Integer.valueOf(actualCount);
                     }
                 };
 

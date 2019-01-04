@@ -102,7 +102,7 @@ public class Rendering2DTest extends TestCase {
     protected static final FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory(null);
 
     {
-        rendererHints.put("optimizedDataLoadingEnabled", new Boolean(true));
+        rendererHints.put("optimizedDataLoadingEnabled", Boolean.valueOf(true));
     }
 
     public Rendering2DTest(java.lang.String testName) {
@@ -169,7 +169,7 @@ public class Rendering2DTest extends TestCase {
         LineSymbolizer linesym = sFac.createLineSymbolizer();
         Stroke myStroke = sFac.getDefaultStroke();
         myStroke.setColor(filterFactory.literal("#0000ff"));
-        myStroke.setWidth(filterFactory.literal(new Integer(5)));
+        myStroke.setWidth(filterFactory.literal(Integer.valueOf(5)));
         LOGGER.fine("got new Stroke " + myStroke);
         linesym.setStroke(myStroke);
         return linesym;
@@ -183,7 +183,7 @@ public class Rendering2DTest extends TestCase {
         polysym.setFill(myFill);
         myStroke = sFac.getDefaultStroke();
         myStroke.setColor(filterFactory.literal("#0000ff"));
-        myStroke.setWidth(filterFactory.literal(new Integer(2)));
+        myStroke.setWidth(filterFactory.literal(Integer.valueOf(2)));
         polysym.setStroke(myStroke);
         return polysym;
     }
@@ -196,7 +196,7 @@ public class Rendering2DTest extends TestCase {
         polysym.setFill(myFill);
         myStroke = sFac.getDefaultStroke();
         myStroke.setColor(filterFactory.literal("#00ff00"));
-        myStroke.setWidth(filterFactory.literal(new Integer(2)));
+        myStroke.setWidth(filterFactory.literal(Integer.valueOf(2)));
         polysym.setStroke(myStroke);
         return polysym;
     }
@@ -906,7 +906,7 @@ public class Rendering2DTest extends TestCase {
 
         Stroke myStroke = sFac.getDefaultStroke();
         myStroke.setColor(filterFactory.literal("#0000ff"));
-        myStroke.setWidth(filterFactory.literal(new Integer(3)));
+        myStroke.setWidth(filterFactory.literal(Integer.valueOf(3)));
         LOGGER.info("got new Stroke " + myStroke);
         linesym.setStroke(myStroke);
 

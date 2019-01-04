@@ -142,7 +142,9 @@ public class ValidationPlugInTester extends DataTestCase {
                     SimpleFeatureBuilder.build(
                             this.roadType,
                             new Object[] {
-                                new Integer(2), line(new int[] {3, 6, 3, 8, 5, 8, 5, 7, 2, 7}), "r4"
+                                Integer.valueOf(2),
+                                line(new int[] {3, 6, 3, 8, 5, 8, 5, 7, 2, 7}),
+                                "r4"
                             },
                             "road.rd4");
         } catch (IllegalAttributeException e) {
@@ -220,7 +222,7 @@ public class ValidationPlugInTester extends DataTestCase {
                     SimpleFeatureBuilder.build(
                             this.roadType,
                             (new Object[] {
-                                new Integer(2),
+                                Integer.valueOf(2),
                                 line(new int[] {7, 7, 8, 7, 9, 7, 9, 6, 8, 6, 8, 7, 7, 7}),
                                 "r4"
                             }),

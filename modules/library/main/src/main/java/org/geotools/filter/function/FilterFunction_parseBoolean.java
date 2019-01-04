@@ -48,6 +48,6 @@ public class FilterFunction_parseBoolean extends FunctionExpressionImpl {
                     "Filter Function problem for function parseBoolean argument #0 - expected type String");
         }
 
-        return new Boolean(StaticGeometry.parseBoolean(arg0));
+        return Boolean.valueOf(StaticGeometry.parseBoolean(arg0));
     }
 }

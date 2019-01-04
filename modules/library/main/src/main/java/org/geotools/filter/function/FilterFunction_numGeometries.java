@@ -47,6 +47,6 @@ public class FilterFunction_numGeometries extends FunctionExpressionImpl {
                     "Filter Function problem for function numGeometries argument #0 - expected type Geometry");
         }
 
-        return new Integer(StaticGeometry.numGeometries(arg0));
+        return Integer.valueOf(StaticGeometry.numGeometries(arg0));
     }
 }

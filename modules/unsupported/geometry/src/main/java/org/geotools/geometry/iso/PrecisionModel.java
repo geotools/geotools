@@ -254,7 +254,7 @@ public class PrecisionModel implements Serializable, Precision {
         if (other == null) return 0;
         int sigDigits = getMaximumSignificantDigits();
         int otherSigDigits = other.getMaximumSignificantDigits();
-        return (new Integer(sigDigits)).compareTo(new Integer(otherSigDigits));
+        return (Integer.valueOf(sigDigits)).compareTo(Integer.valueOf(otherSigDigits));
         // if (sigDigits > otherSigDigits)
         // return 1;
         // else if
@@ -279,7 +279,7 @@ public class PrecisionModel implements Serializable, Precision {
 
         int sigDigits = getMaximumSignificantDigits();
         int otherSigDigits = ((PrecisionModel) precision).getMaximumSignificantDigits();
-        return (new Integer(sigDigits)).compareTo(new Integer(otherSigDigits));
+        return (Integer.valueOf(sigDigits)).compareTo(Integer.valueOf(otherSigDigits));
     }
 
     public void round(DirectPosition position) {

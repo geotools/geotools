@@ -47,7 +47,7 @@ public class OracleDialectEpsgMediatorOnlineStressTest extends OracleOnlineTestC
     protected void connect() throws Exception {
         super.connect();
         hints = new Hints(Hints.CACHE_POLICY, "none");
-        hints.put(Hints.AUTHORITY_MAX_ACTIVE, new Integer(MAX_WORKERS));
+        hints.put(Hints.AUTHORITY_MAX_ACTIVE, Integer.valueOf(MAX_WORKERS));
         if (datasource == null) {
             fail("no datasource available");
         }
@@ -92,7 +92,7 @@ public class OracleDialectEpsgMediatorOnlineStressTest extends OracleOnlineTestC
             System.out.println("Overall Time: " + timeElapsed);
             System.out.println(
                     "Throughput: "
-                            + (1000 * totalRuns / new Long(totalTime).doubleValue())
+                            + (1000 * totalRuns / Long.valueOf(totalTime).doubleValue())
                             + " Hz");
             System.out.println("Min: " + minTime);
             System.out.println("Max: " + maxTime);
@@ -114,7 +114,7 @@ public class OracleDialectEpsgMediatorOnlineStressTest extends OracleOnlineTestC
             sb.append(", ");
             sb.append(totalRuns);
             sb.append(", ");
-            sb.append((1000 * totalRuns / new Long(totalTime).doubleValue()));
+            sb.append((1000 * totalRuns / Long.valueOf(totalTime).doubleValue()));
             sb.append(", ");
             sb.append(minTime);
             sb.append(", ");

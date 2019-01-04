@@ -59,6 +59,6 @@ public class FilterFunction_equalsExact extends FunctionExpressionImpl {
                     "Filter Function problem for function equalsExact argument #1 - expected type Geometry");
         }
 
-        return new Boolean(StaticGeometry.equalsExact(arg0, arg1));
+        return Boolean.valueOf(StaticGeometry.equalsExact(arg0, arg1));
     }
 }

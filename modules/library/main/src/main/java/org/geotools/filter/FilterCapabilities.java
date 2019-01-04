@@ -161,34 +161,35 @@ public class FilterCapabilities {
         LOGICAL_OPENGIS.addType(Not.class);
         LOGICAL_OPENGIS.addType(Or.class);
 
-        intTypeToOpenGisTypeMap.put(new Long(SPATIAL_BBOX), BBOX.class);
-        intTypeToOpenGisTypeMap.put(new Long(SPATIAL_EQUALS), Equals.class);
-        intTypeToOpenGisTypeMap.put(new Long(SPATIAL_DISJOINT), Disjoint.class);
-        intTypeToOpenGisTypeMap.put(new Long(SPATIAL_INTERSECT), Intersects.class);
-        intTypeToOpenGisTypeMap.put(new Long(SPATIAL_TOUCHES), Touches.class);
-        intTypeToOpenGisTypeMap.put(new Long(SPATIAL_CROSSES), Crosses.class);
-        intTypeToOpenGisTypeMap.put(new Long(SPATIAL_WITHIN), Within.class);
-        intTypeToOpenGisTypeMap.put(new Long(SPATIAL_CONTAINS), Contains.class);
-        intTypeToOpenGisTypeMap.put(new Long(SPATIAL_OVERLAPS), Overlaps.class);
-        intTypeToOpenGisTypeMap.put(new Long(SPATIAL_BEYOND), Beyond.class);
-        intTypeToOpenGisTypeMap.put(new Long(SPATIAL_DWITHIN), DWithin.class);
+        intTypeToOpenGisTypeMap.put(Long.valueOf(SPATIAL_BBOX), BBOX.class);
+        intTypeToOpenGisTypeMap.put(Long.valueOf(SPATIAL_EQUALS), Equals.class);
+        intTypeToOpenGisTypeMap.put(Long.valueOf(SPATIAL_DISJOINT), Disjoint.class);
+        intTypeToOpenGisTypeMap.put(Long.valueOf(SPATIAL_INTERSECT), Intersects.class);
+        intTypeToOpenGisTypeMap.put(Long.valueOf(SPATIAL_TOUCHES), Touches.class);
+        intTypeToOpenGisTypeMap.put(Long.valueOf(SPATIAL_CROSSES), Crosses.class);
+        intTypeToOpenGisTypeMap.put(Long.valueOf(SPATIAL_WITHIN), Within.class);
+        intTypeToOpenGisTypeMap.put(Long.valueOf(SPATIAL_CONTAINS), Contains.class);
+        intTypeToOpenGisTypeMap.put(Long.valueOf(SPATIAL_OVERLAPS), Overlaps.class);
+        intTypeToOpenGisTypeMap.put(Long.valueOf(SPATIAL_BEYOND), Beyond.class);
+        intTypeToOpenGisTypeMap.put(Long.valueOf(SPATIAL_DWITHIN), DWithin.class);
         intTypeToOpenGisTypeMap.put(
-                new Long(SIMPLE_ARITHMETIC),
+                Long.valueOf(SIMPLE_ARITHMETIC),
                 new Class[] {Add.class, Subtract.class, Multiply.class, Divide.class});
-        intTypeToOpenGisTypeMap.put(new Long(COMPARE_EQUALS), PropertyIsEqualTo.class);
-        intTypeToOpenGisTypeMap.put(new Long(COMPARE_NOT_EQUALS), PropertyIsNotEqualTo.class);
-        intTypeToOpenGisTypeMap.put(new Long(COMPARE_GREATER_THAN), PropertyIsGreaterThan.class);
+        intTypeToOpenGisTypeMap.put(Long.valueOf(COMPARE_EQUALS), PropertyIsEqualTo.class);
+        intTypeToOpenGisTypeMap.put(Long.valueOf(COMPARE_NOT_EQUALS), PropertyIsNotEqualTo.class);
         intTypeToOpenGisTypeMap.put(
-                new Long(COMPARE_GREATER_THAN_EQUAL), PropertyIsGreaterThanOrEqualTo.class);
-        intTypeToOpenGisTypeMap.put(new Long(COMPARE_LESS_THAN), PropertyIsLessThan.class);
+                Long.valueOf(COMPARE_GREATER_THAN), PropertyIsGreaterThan.class);
         intTypeToOpenGisTypeMap.put(
-                new Long(COMPARE_LESS_THAN_EQUAL), PropertyIsLessThanOrEqualTo.class);
-        intTypeToOpenGisTypeMap.put(new Long(NULL_CHECK), PropertyIsNull.class);
-        intTypeToOpenGisTypeMap.put(new Long(LIKE), PropertyIsLike.class);
-        intTypeToOpenGisTypeMap.put(new Long(BETWEEN), PropertyIsBetween.class);
-        intTypeToOpenGisTypeMap.put(new Long(LOGIC_AND), And.class);
-        intTypeToOpenGisTypeMap.put(new Long(LOGIC_OR), Or.class);
-        intTypeToOpenGisTypeMap.put(new Long(LOGIC_NOT), Not.class);
+                Long.valueOf(COMPARE_GREATER_THAN_EQUAL), PropertyIsGreaterThanOrEqualTo.class);
+        intTypeToOpenGisTypeMap.put(Long.valueOf(COMPARE_LESS_THAN), PropertyIsLessThan.class);
+        intTypeToOpenGisTypeMap.put(
+                Long.valueOf(COMPARE_LESS_THAN_EQUAL), PropertyIsLessThanOrEqualTo.class);
+        intTypeToOpenGisTypeMap.put(Long.valueOf(NULL_CHECK), PropertyIsNull.class);
+        intTypeToOpenGisTypeMap.put(Long.valueOf(LIKE), PropertyIsLike.class);
+        intTypeToOpenGisTypeMap.put(Long.valueOf(BETWEEN), PropertyIsBetween.class);
+        intTypeToOpenGisTypeMap.put(Long.valueOf(LOGIC_AND), And.class);
+        intTypeToOpenGisTypeMap.put(Long.valueOf(LOGIC_OR), Or.class);
+        intTypeToOpenGisTypeMap.put(Long.valueOf(LOGIC_NOT), Not.class);
     }
 
     private long ops = NO_OP;
@@ -297,7 +298,7 @@ public class FilterCapabilities {
         if (type == FilterType.ALL) return FilterNameTypeMapping.NO_OP_CAPS;
         if (type == FilterType.NONE) return FilterNameTypeMapping.ALL_CAPS;
         Object object =
-                FilterNameTypeMapping.filterTypeToFilterCapabilitiesMap.get(new Short(type));
+                FilterNameTypeMapping.filterTypeToFilterCapabilitiesMap.get(Short.valueOf(type));
         return (FilterCapabilities) object;
     }
 

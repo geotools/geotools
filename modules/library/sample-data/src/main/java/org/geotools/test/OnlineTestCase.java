@@ -119,6 +119,7 @@ public abstract class OnlineTestCase extends TestCase {
      *
      * @return true if fixture is available for use
      */
+    @SuppressWarnings("PMD.SystemPrintln")
     boolean checkAvailable() {
         configureFixture();
         if (fixture == null) {

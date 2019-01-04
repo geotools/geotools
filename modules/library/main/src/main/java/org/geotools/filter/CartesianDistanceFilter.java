@@ -129,7 +129,8 @@ public abstract class CartesianDistanceFilter extends GeometryFilterImpl
      * @return True if the objects are equal.
      */
     public boolean equals(Object oFilter) {
-        return super.equals(oFilter) && (distance == distance);
+        return super.equals(oFilter)
+                && (this.distance == ((CartesianDistanceFilter) oFilter).distance);
     }
 
     /**

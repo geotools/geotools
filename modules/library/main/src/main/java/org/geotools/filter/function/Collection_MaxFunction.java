@@ -102,7 +102,7 @@ public class Collection_MaxFunction extends FunctionExpressionImpl {
 
     public Object evaluate(Object feature) {
         if (feature == null) {
-            return new Integer(0); // no features were visited in the making of this answer
+            return Integer.valueOf(0); // no features were visited in the making of this answer
         }
         Expression expr = (Expression) getExpression(0);
         SimpleFeatureCollection featureCollection = (SimpleFeatureCollection) feature;

@@ -91,7 +91,7 @@ public class RangeFeatureValidationTest extends TestCase {
         return SimpleFeatureBuilder.build(
                 type,
                 new Object[] {
-                    new Integer(id), gf.createLineString(coords), name,
+                    Integer.valueOf(id), gf.createLineString(coords), name,
                 },
                 type.getTypeName() + "." + road);
     }

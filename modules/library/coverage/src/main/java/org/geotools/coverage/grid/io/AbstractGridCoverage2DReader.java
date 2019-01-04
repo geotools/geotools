@@ -347,7 +347,7 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
         // Default image index 0
         //
         // //
-        Integer imageChoice = new Integer(0);
+        Integer imageChoice = Integer.valueOf(0);
 
         // //
         //
@@ -599,11 +599,6 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
         public String toString() {
             return "Resolution[Choice=" + imageChoice + ",scaleFactor=" + scaleFactor + "]";
         }
-    }
-
-    protected final void decimationOnReadingControl(
-            Integer imageChoice, ImageReadParam readP, double[] requestedRes) {
-        decimationOnReadingControl(imageChoice, readP, requestedRes);
     }
 
     /**

@@ -347,8 +347,8 @@ public class IngresDialect extends PreparedStatementSQLDialect {
     @Override
     public void registerSqlTypeToClassMappings(Map<Integer, Class<?>> mappings) {
         super.registerSqlTypeToClassMappings(mappings);
-        mappings.put(new Integer(Types.LONGVARBINARY), byte[].class);
-        mappings.put(new Integer(Types.CLOB), String.class);
+        mappings.put(Integer.valueOf(Types.LONGVARBINARY), byte[].class);
+        mappings.put(Integer.valueOf(Types.CLOB), String.class);
     }
         	
     @Override

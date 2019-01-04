@@ -986,7 +986,7 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
 
         // FilterFactory factory = FilterFactoryFinder.createFilterFactory();
         // rd1Filter = factory.createFidFilter( roadFeatures[0].getID() );
-        Object changed = new Integer(5);
+        Object changed = Integer.valueOf(5);
         AttributeDescriptor name = td.roadType.getDescriptor(aname("id"));
         road.modifyFeatures(name, changed, td.rd1Filter);
 

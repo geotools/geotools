@@ -202,7 +202,7 @@ public class VocabFunctionsTest extends AppSchemaTestSupport {
         try {
             function.evaluate(null);
             fail("Should not be able to get this far");
-        } catch (Throwable expected) {
+        } catch (Exception expected) {
 
         }
     }

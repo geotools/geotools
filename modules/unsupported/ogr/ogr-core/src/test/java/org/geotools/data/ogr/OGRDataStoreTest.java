@@ -354,7 +354,7 @@ public abstract class OGRDataStoreTest extends TestCaseSupport {
                     SimpleFeatureBuilder.build(
                             schema,
                             new Object[] {
-                                gf.createPoint(new Coordinate(i, i)), new Integer(i), "" + i
+                                gf.createPoint(new Coordinate(i, i)), Integer.valueOf(i), "" + i
                             },
                             null);
         }
@@ -843,15 +843,15 @@ public abstract class OGRDataStoreTest extends TestCaseSupport {
                             null,
                             new Object[] {
                                 new GeometryFactory().createPoint(new Coordinate(1, -1)),
-                                new Byte((byte) i),
-                                new Short((short) i),
+                                Byte.valueOf((byte) i),
+                                Short.valueOf((short) i),
                                 new Double(i),
                                 new Float(i),
                                 new String(i + " "),
                                 new Date(i),
-                                new Boolean(true),
-                                new Integer(22),
-                                new Long(1234567890123456789L),
+                                Boolean.valueOf(true),
+                                Integer.valueOf(22),
+                                Long.valueOf(1234567890123456789L),
                                 new BigDecimal(new BigInteger("12345678901234567890123456789"), 2),
                                 new BigInteger("12345678901234567890123456789")
                             }));

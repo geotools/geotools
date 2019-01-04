@@ -56,7 +56,9 @@ public class DefaultViewTest extends TestCase {
         GeometryFactory fac = new GeometryFactory();
         return SimpleFeatureBuilder.build(
                 ft,
-                new Object[] {fac.createPoint(new Coordinate(i, i)), "name" + i, new Integer(i)},
+                new Object[] {
+                    fac.createPoint(new Coordinate(i, i)), "name" + i, Integer.valueOf(i)
+                },
                 null);
     }
 

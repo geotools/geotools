@@ -67,37 +67,37 @@ public final class FilterDOMParser {
     private static java.util.Map logical = new java.util.HashMap();
 
     static {
-        comparisions.put("PropertyIsEqualTo", new Integer(FilterType.COMPARE_EQUALS));
-        comparisions.put("PropertyIsNotEqualTo", new Integer(FilterType.COMPARE_NOT_EQUALS));
-        comparisions.put("PropertyIsGreaterThan", new Integer(FilterType.COMPARE_GREATER_THAN));
+        comparisions.put("PropertyIsEqualTo", Integer.valueOf(FilterType.COMPARE_EQUALS));
+        comparisions.put("PropertyIsNotEqualTo", Integer.valueOf(FilterType.COMPARE_NOT_EQUALS));
+        comparisions.put("PropertyIsGreaterThan", Integer.valueOf(FilterType.COMPARE_GREATER_THAN));
         comparisions.put(
                 "PropertyIsGreaterThanOrEqualTo",
-                new Integer(FilterType.COMPARE_GREATER_THAN_EQUAL));
-        comparisions.put("PropertyIsLessThan", new Integer(FilterType.COMPARE_LESS_THAN));
+                Integer.valueOf(FilterType.COMPARE_GREATER_THAN_EQUAL));
+        comparisions.put("PropertyIsLessThan", Integer.valueOf(FilterType.COMPARE_LESS_THAN));
         comparisions.put(
-                "PropertyIsLessThanOrEqualTo", new Integer(FilterType.COMPARE_LESS_THAN_EQUAL));
-        comparisions.put("PropertyIsLike", new Integer(AbstractFilter.LIKE));
-        comparisions.put("PropertyIsNull", new Integer(AbstractFilter.NULL));
-        comparisions.put("PropertyIsBetween", new Integer(FilterType.BETWEEN));
-        comparisions.put("FeatureId", new Integer(AbstractFilter.FID));
+                "PropertyIsLessThanOrEqualTo", Integer.valueOf(FilterType.COMPARE_LESS_THAN_EQUAL));
+        comparisions.put("PropertyIsLike", Integer.valueOf(AbstractFilter.LIKE));
+        comparisions.put("PropertyIsNull", Integer.valueOf(AbstractFilter.NULL));
+        comparisions.put("PropertyIsBetween", Integer.valueOf(FilterType.BETWEEN));
+        comparisions.put("FeatureId", Integer.valueOf(AbstractFilter.FID));
 
-        spatial.put("Equals", new Integer(AbstractFilter.GEOMETRY_EQUALS));
-        spatial.put("Disjoint", new Integer(AbstractFilter.GEOMETRY_DISJOINT));
-        spatial.put("Intersects", new Integer(FilterType.GEOMETRY_INTERSECTS));
-        spatial.put("Touches", new Integer(AbstractFilter.GEOMETRY_TOUCHES));
-        spatial.put("Crosses", new Integer(AbstractFilter.GEOMETRY_CROSSES));
-        spatial.put("Within", new Integer(AbstractFilter.GEOMETRY_WITHIN));
-        spatial.put("Contains", new Integer(AbstractFilter.GEOMETRY_CONTAINS));
-        spatial.put("Overlaps", new Integer(AbstractFilter.GEOMETRY_OVERLAPS));
-        spatial.put("BBOX", new Integer(AbstractFilter.GEOMETRY_BBOX));
+        spatial.put("Equals", Integer.valueOf(AbstractFilter.GEOMETRY_EQUALS));
+        spatial.put("Disjoint", Integer.valueOf(AbstractFilter.GEOMETRY_DISJOINT));
+        spatial.put("Intersects", Integer.valueOf(FilterType.GEOMETRY_INTERSECTS));
+        spatial.put("Touches", Integer.valueOf(AbstractFilter.GEOMETRY_TOUCHES));
+        spatial.put("Crosses", Integer.valueOf(AbstractFilter.GEOMETRY_CROSSES));
+        spatial.put("Within", Integer.valueOf(AbstractFilter.GEOMETRY_WITHIN));
+        spatial.put("Contains", Integer.valueOf(AbstractFilter.GEOMETRY_CONTAINS));
+        spatial.put("Overlaps", Integer.valueOf(AbstractFilter.GEOMETRY_OVERLAPS));
+        spatial.put("BBOX", Integer.valueOf(AbstractFilter.GEOMETRY_BBOX));
 
         // Beyond and DWithin not handled well
-        spatial.put("Beyond", new Integer(AbstractFilter.GEOMETRY_BEYOND));
-        spatial.put("DWithin", new Integer(AbstractFilter.GEOMETRY_DWITHIN));
+        spatial.put("Beyond", Integer.valueOf(AbstractFilter.GEOMETRY_BEYOND));
+        spatial.put("DWithin", Integer.valueOf(AbstractFilter.GEOMETRY_DWITHIN));
 
-        logical.put("And", new Integer(AbstractFilter.LOGIC_AND));
-        logical.put("Or", new Integer(AbstractFilter.LOGIC_OR));
-        logical.put("Not", new Integer(AbstractFilter.LOGIC_NOT));
+        logical.put("And", Integer.valueOf(AbstractFilter.LOGIC_AND));
+        logical.put("Or", Integer.valueOf(AbstractFilter.LOGIC_OR));
+        logical.put("Not", Integer.valueOf(AbstractFilter.LOGIC_NOT));
     }
 
     /** Creates a new instance of FilterXMLParser */

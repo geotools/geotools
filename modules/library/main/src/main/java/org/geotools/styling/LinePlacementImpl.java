@@ -196,9 +196,9 @@ public class LinePlacementImpl implements LinePlacement, Cloneable {
             result = (result * PRIME) + initialGap.hashCode();
         }
 
-        result = (result * PRIME) + new Boolean(generalized).hashCode();
-        result = (result * PRIME) + new Boolean(aligned).hashCode();
-        result = (result * PRIME) + new Boolean(repeated).hashCode();
+        result = (result * PRIME) + Boolean.valueOf(generalized).hashCode();
+        result = (result * PRIME) + Boolean.valueOf(aligned).hashCode();
+        result = (result * PRIME) + Boolean.valueOf(repeated).hashCode();
 
         return result;
     }

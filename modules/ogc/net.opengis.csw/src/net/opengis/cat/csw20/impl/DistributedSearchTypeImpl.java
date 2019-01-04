@@ -40,7 +40,7 @@ public class DistributedSearchTypeImpl extends EObjectImpl implements Distribute
      * @generated
      * @ordered
      */
-    protected static final Integer HOP_COUNT_EDEFAULT = new Integer(2);
+    protected static final Integer HOP_COUNT_EDEFAULT = Integer.valueOf(2);
 
     /**
      * The cached value of the '{@link #getHopCount() <em>Hop Count</em>}' attribute.

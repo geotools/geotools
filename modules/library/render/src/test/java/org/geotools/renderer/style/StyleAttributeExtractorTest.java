@@ -99,6 +99,7 @@ public class StyleAttributeExtractorTest {
         }
     }
 
+    @Test
     public void testGraphicAnchor() {
         Graphic g = sb.createGraphic();
         g.setAnchorPoint(sb.createAnchorPoint(ff.property("ax"), ff.property("ay")));

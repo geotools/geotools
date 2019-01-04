@@ -64,10 +64,10 @@ public class BooleanConverterFactory implements ConverterFactory {
                 return new Converter() {
 
                     public Object convert(Object source, Class target) throws Exception {
-                        if (new Integer(1).equals(source)) {
+                        if (Integer.valueOf(1).equals(source)) {
                             return Boolean.TRUE;
                         }
-                        if (new Integer(0).equals(source)) {
+                        if (Integer.valueOf(0).equals(source)) {
                             return Boolean.FALSE;
                         }
 

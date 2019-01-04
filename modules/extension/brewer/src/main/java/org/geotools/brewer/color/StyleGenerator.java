@@ -278,7 +278,7 @@ public class StyleGenerator {
      */
     private static Object chopInteger(Object value) {
         if ((value instanceof Number) && (value.toString().endsWith(".0"))) {
-            return new Integer(((Number) value).intValue());
+            return Integer.valueOf(((Number) value).intValue());
         } else {
             return value;
         }
@@ -290,7 +290,7 @@ public class StyleGenerator {
      * @param count
      */
     private static String getRuleName(int count) {
-        String strVal = new Integer(count).toString();
+        String strVal = Integer.valueOf(count).toString();
 
         if (strVal.length() == 1) {
             return "rule0" + strVal;

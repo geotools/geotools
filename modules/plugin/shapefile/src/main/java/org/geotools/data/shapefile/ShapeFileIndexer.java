@@ -52,6 +52,7 @@ import org.opengis.util.ProgressListener;
  *
  * @author Tommaso Nolli
  */
+@SuppressWarnings("PMD.SystemPrintln")
 class ShapeFileIndexer implements FileWriter {
     private static final Logger LOGGER = Logging.getLogger(ShapeFileIndexer.class);
 

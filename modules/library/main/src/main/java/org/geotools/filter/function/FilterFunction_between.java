@@ -72,6 +72,6 @@ public class FilterFunction_between extends FunctionExpressionImpl {
                     "Filter Function problem for function between argument #2 - expected type Object");
         }
 
-        return new Boolean(StaticGeometry.between(value, low, high));
+        return Boolean.valueOf(StaticGeometry.between(value, low, high));
     }
 }

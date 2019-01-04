@@ -311,7 +311,7 @@ public class ExpressionSAXParser {
                 // expensive and bad code practice.
                 if (convertToNumber) {
                     try {
-                        Object temp = new Integer(message);
+                        Object temp = Integer.valueOf(message);
                         ((LiteralExpressionImpl) curExprssn).setValue(temp);
                         currentState = "complete";
                     } catch (NumberFormatException nfe1) {

@@ -237,7 +237,7 @@ public class FontImpl implements Font, Cloneable {
     static Font createDefault(FilterFactory filterFactory) {
         Font font = new FontImpl();
         try {
-            font.setSize(filterFactory.literal(new Integer(10)));
+            font.setSize(filterFactory.literal(Integer.valueOf(10)));
             font.setStyle(filterFactory.literal("normal"));
             font.setWeight(filterFactory.literal("normal"));
             font.setFontFamily(filterFactory.literal("Serif"));

@@ -104,7 +104,7 @@ public class QuantileFunctionTest extends FunctionTestSupport {
             myfeatures[i] =
                     SimpleFeatureBuilder.build(
                             dataType,
-                            new Object[] {new Integer(i + 1), new Integer(iVal[i])},
+                            new Object[] {Integer.valueOf(i + 1), Integer.valueOf(iVal[i])},
                             "classification.test1" + (i + 1));
         }
         SimpleFeatureCollection myFeatureCollection = DataUtilities.collection(myfeatures);
@@ -142,7 +142,7 @@ public class QuantileFunctionTest extends FunctionTestSupport {
             myfeatures[i] =
                     SimpleFeatureBuilder.build(
                             dataType,
-                            new Object[] {new Integer(i + 1), new Integer(iVal[i])},
+                            new Object[] {Integer.valueOf(i + 1), Integer.valueOf(iVal[i])},
                             "classification.t" + (i + 1));
         }
         SimpleFeatureCollection myFeatureCollection = DataUtilities.collection(myfeatures);
@@ -174,12 +174,12 @@ public class QuantileFunctionTest extends FunctionTestSupport {
                 DataUtilities.createType("classification.nullnan", "id:0,foo:int,bar:double");
         Integer iVal[] =
                 new Integer[] {
-                    new Integer(0),
-                    new Integer(0),
-                    new Integer(0),
-                    new Integer(13),
-                    new Integer(13),
-                    new Integer(13),
+                    Integer.valueOf(0),
+                    Integer.valueOf(0),
+                    Integer.valueOf(0),
+                    Integer.valueOf(13),
+                    Integer.valueOf(13),
+                    Integer.valueOf(13),
                     null,
                     null,
                     null
@@ -204,7 +204,7 @@ public class QuantileFunctionTest extends FunctionTestSupport {
                     SimpleFeatureBuilder.build(
                             ft,
                             new Object[] {
-                                new Integer(i + 1), iVal[i], dVal[i],
+                                Integer.valueOf(i + 1), iVal[i], dVal[i],
                             },
                             "nantest.t" + (i + 1));
         }

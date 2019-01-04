@@ -64,6 +64,6 @@ public class FilterFunction_intersects3D extends FunctionExpressionImpl {
          * Use the fact that two geometries intersect if and only if the distance between them is
          * zero.
          */
-        return new Boolean(Distance3DOp.distance(arg0, arg1) == 0.0);
+        return Boolean.valueOf(Distance3DOp.distance(arg0, arg1) == 0.0);
     }
 }

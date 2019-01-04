@@ -68,7 +68,7 @@ public class SubtractBuilder implements Builder<Subtract> {
     }
 
     public ChildExpressionBuilder<SubtractBuilder> expr1() {
-        return expr1();
+        return expr1;
     }
 
     public SubtractBuilder expr1(Object literal) {

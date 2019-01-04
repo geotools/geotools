@@ -33,7 +33,7 @@ public class GeometryFunctionTest extends FunctionTestSupport {
 
     public void testNonFeature() {
         Function geometry = ff.function("geometry");
-        assertNull(geometry.evaluate(new Integer(10)));
+        assertNull(geometry.evaluate(Integer.valueOf(10)));
     }
 
     public void testSimpleFeature() throws ParseException {

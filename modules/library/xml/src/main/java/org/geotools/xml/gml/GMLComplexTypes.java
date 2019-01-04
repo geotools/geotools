@@ -410,7 +410,7 @@ public class GMLComplexTypes {
         ai.addAttribute("", "X", "", "decimal", "" + coord.x);
         ai.addAttribute("", "Y", "", "decimal", "" + coord.y);
 
-        if (coord.z != Double.NaN) {
+        if (!Double.isNaN(coord.z)) {
             ai.addAttribute("", "Z", "", "decimal", "" + coord.z);
         }
 
@@ -3547,7 +3547,7 @@ public class GMLComplexTypes {
 
                     try {
                         if (!dec.equals(".")) {
-                            dec = dec.replaceAll("\\", "\\");
+                            // dec = dec.replaceAll("\\", "\\");
                             t = points[j].replaceAll(dec, ".");
                         } else {
                             t = points[j];

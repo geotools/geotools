@@ -33,7 +33,7 @@ public class BufferTest extends TestCase {
         thread.start();
 
         for (int i = 0; i < 1000; i++) {
-            buffer.put(new Integer(i));
+            buffer.put(Integer.valueOf(i));
         }
 
         thread.join();

@@ -91,7 +91,7 @@ public class ImageComparator {
         }
 
         double getHue() {
-            if (hue == Double.NaN) {
+            if (Double.isNaN(hue)) {
                 double r = this.r / 255d;
                 double g = this.g / 255d;
                 double b = this.b / 255d;

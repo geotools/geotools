@@ -834,7 +834,7 @@ public class MBObjectParser {
                             returnArray[i] = (T) new Double(((Number) value).doubleValue());
                             continue;
                         } else if (type == Integer.class) {
-                            returnArray[i] = (T) new Integer(((Number) value).intValue());
+                            returnArray[i] = (T) Integer.valueOf(((Number) value).intValue());
                             continue;
                         }
                     }

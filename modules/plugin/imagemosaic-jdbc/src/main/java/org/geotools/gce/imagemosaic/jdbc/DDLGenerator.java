@@ -28,6 +28,7 @@ import java.util.logging.Logger;
  *
  * @author mcr
  */
+@SuppressWarnings("PMD.SystemPrintln")
 class DDLGenerator extends AbstractCmd {
     private static final int DefaultPyramids = 0;
 
@@ -136,7 +137,7 @@ class DDLGenerator extends AbstractCmd {
                 i++;
 
             } else if (args[i].equals("-pyramids")) {
-                pyramids = new Integer(args[i + 1]);
+                pyramids = Integer.valueOf(args[i + 1]);
                 i++;
             } else if (args[i].equals("-targetDir")) {
                 targetDir = args[i + 1];

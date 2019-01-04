@@ -45,6 +45,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
  *
  * @author Chrisitan Mueller
  */
+@SuppressWarnings("PMD.SystemPrintln")
 public class Toolbox {
     /**
      * read args and delegate jobs

@@ -64,6 +64,6 @@ public class FilterFunction_strEndsWith extends FunctionExpressionImpl {
                     "Filter Function problem for function strEndsWith argument #1 - expected type String");
         }
 
-        return new Boolean(StaticGeometry.strEndsWith(arg0, arg1));
+        return Boolean.valueOf(StaticGeometry.strEndsWith(arg0, arg1));
     }
 }

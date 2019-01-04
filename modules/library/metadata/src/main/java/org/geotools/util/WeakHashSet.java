@@ -330,6 +330,7 @@ public class WeakHashSet<E> extends AbstractSet<E> implements CheckedCollection<
      *
      * </blockquote>
      */
+    @SuppressWarnings("SelfEquals")
     final <T extends E> T intern(final T obj, final int operation) {
         assert Thread.holdsLock(this);
         assert WeakCollectionCleaner.DEFAULT.isAlive();

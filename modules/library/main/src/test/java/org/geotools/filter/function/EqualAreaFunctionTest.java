@@ -113,7 +113,9 @@ public class EqualAreaFunctionTest {
                 myfeatures[i] =
                         SimpleFeatureBuilder.build(
                                 dataType,
-                                new Object[] {new Integer(i + 1), new Integer(iVal[i]), polygon},
+                                new Object[] {
+                                    Integer.valueOf(i + 1), Integer.valueOf(iVal[i]), polygon
+                                },
                                 "classification.test1" + (i + 1));
             }
             SimpleFeatureCollection myFeatureCollection = DataUtilities.collection(myfeatures);
@@ -150,7 +152,9 @@ public class EqualAreaFunctionTest {
                 myfeatures[i] =
                         SimpleFeatureBuilder.build(
                                 dataType,
-                                new Object[] {new Integer(i + 1), new Integer(iVal[i]), polygon},
+                                new Object[] {
+                                    Integer.valueOf(i + 1), Integer.valueOf(iVal[i]), polygon
+                                },
                                 "classification.test1" + (i + 1));
             }
             SimpleFeatureCollection myFeatureCollection = DataUtilities.collection(myfeatures);

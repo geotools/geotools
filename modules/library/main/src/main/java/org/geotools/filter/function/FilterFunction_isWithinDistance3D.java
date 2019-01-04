@@ -70,6 +70,6 @@ public class FilterFunction_isWithinDistance3D extends FunctionExpressionImpl {
                     "Filter Function problem for function isWithinDisatnce3D argument #2 - expected type double");
         }
 
-        return new Boolean(Distance3DOp.isWithinDistance(arg0, arg1, arg2));
+        return Boolean.valueOf(Distance3DOp.isWithinDistance(arg0, arg1, arg2));
     }
 }

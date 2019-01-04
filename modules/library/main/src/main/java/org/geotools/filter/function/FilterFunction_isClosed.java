@@ -46,6 +46,6 @@ public class FilterFunction_isClosed extends FunctionExpressionImpl {
                     "Filter Function problem for function isClosed argument #0 - expected type Geometry");
         }
 
-        return new Boolean(StaticGeometry.isClosed(arg0));
+        return Boolean.valueOf(StaticGeometry.isClosed(arg0));
     }
 }

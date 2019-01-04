@@ -1005,8 +1005,8 @@ public class ReferencedEnvelope3D extends ReferencedEnvelope implements Bounding
                         Errors.format(
                                 ErrorKeys.MISMATCHED_DIMENSION_$3,
                                 crs.getName().getCode(),
-                                new Integer(getDimension()),
-                                new Integer(targetCRS.getCoordinateSystem().getDimension())));
+                                Integer.valueOf(getDimension()),
+                                Integer.valueOf(targetCRS.getCoordinateSystem().getDimension())));
             }
         }
         // Gets a first estimation using an algorithm capable to take singularity in account

@@ -70,6 +70,6 @@ public class FilterFunction_equalTo extends FunctionExpressionImpl {
                     "Filter Function problem for function equalTo argument #1 - expected type Object");
         }
 
-        return new Boolean(StaticGeometry.equalTo(arg0, arg1));
+        return Boolean.valueOf(StaticGeometry.equalTo(arg0, arg1));
     }
 }

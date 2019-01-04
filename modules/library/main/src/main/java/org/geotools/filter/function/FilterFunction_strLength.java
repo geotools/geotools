@@ -51,6 +51,6 @@ public class FilterFunction_strLength extends FunctionExpressionImpl {
                     "Filter Function problem for function strLength argument #0 - expected type String");
         }
 
-        return new Integer(StaticGeometry.strLength(arg0));
+        return Integer.valueOf(StaticGeometry.strLength(arg0));
     }
 }

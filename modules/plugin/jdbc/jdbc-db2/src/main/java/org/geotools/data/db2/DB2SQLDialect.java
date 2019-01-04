@@ -546,7 +546,7 @@ public class DB2SQLDialect extends SQLDialect {
                             gDescr.getCoordinateReferenceSystem().getIdentifiers()) {
                         PreparedStatement ps1 = cx.prepareStatement(SELECT_SRS_NAME_FROM_ORG);
                         ps1.setString(1, ident.getCodeSpace());
-                        ps1.setInt(2, new Integer(ident.getCode()));
+                        ps1.setInt(2, Integer.valueOf(ident.getCode()));
                         ResultSet rs = ps1.executeQuery();
                         if (rs.next()) {
                             srsName = rs.getString(1);

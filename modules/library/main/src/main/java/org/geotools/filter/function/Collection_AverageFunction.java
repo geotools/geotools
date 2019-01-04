@@ -106,7 +106,7 @@ public class Collection_AverageFunction extends FunctionExpressionImpl {
     @SuppressWarnings("unchecked")
     public Object evaluate(Object feature) {
         if (feature == null) {
-            return new Integer(0); // no features were visited in the making of this answer
+            return Integer.valueOf(0); // no features were visited in the making of this answer
         }
         FeatureCollection<FeatureType, Feature> featureCollection =
                 (FeatureCollection<FeatureType, Feature>) feature;

@@ -685,7 +685,7 @@ public class UnmappingFilterVisitorTest extends AppSchemaTestSupport {
 
     @Test
     public void testLiteralExpression() throws Exception {
-        Expression literal = ff.literal(new Integer(0));
+        Expression literal = ff.literal(Integer.valueOf(0));
         List unrolledExpressions = (List) literal.accept(visitor, null);
         assertEquals(1, unrolledExpressions.size());
         assertSame(literal, unrolledExpressions.get(0));
@@ -700,7 +700,7 @@ public class UnmappingFilterVisitorTest extends AppSchemaTestSupport {
     private void testLogicFilter(Class<?> filterType) throws Exception {
         BinaryLogicOperator complexLogicFilter;
         PropertyIsGreaterThan resultFilter =
-                ff.greater(ff.property("measurement/result"), ff.literal(new Integer(5)));
+                ff.greater(ff.property("measurement/result"), ff.literal(Integer.valueOf(5)));
 
         PropertyIsBetween determFilter =
                 ff.between(
@@ -733,7 +733,7 @@ public class UnmappingFilterVisitorTest extends AppSchemaTestSupport {
                 "results_value",
                 ((PropertyName) unmappedResult.getExpression1()).getPropertyName());
 
-        assertEquals(new Integer(5), ((Literal) unmappedResult.getExpression2()).getValue());
+        assertEquals(Integer.valueOf(5), ((Literal) unmappedResult.getExpression2()).getValue());
 
         assertEquals(
                 "determinand_description",
@@ -748,7 +748,7 @@ public class UnmappingFilterVisitorTest extends AppSchemaTestSupport {
 
     @Test
     public void testMathExpression() throws Exception {
-        Literal literal = ff.literal(new Integer(2));
+        Literal literal = ff.literal(Integer.valueOf(2));
         Multiply mathExp = ff.multiply(ff.property("measurement/result"), literal);
 
         List unrolledExpressions = (List) mathExp.accept(visitor, null);

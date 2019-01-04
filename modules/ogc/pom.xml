@@ -65,6 +65,12 @@
       </plugin>
     </plugins>
   </build>
+  
+  <!-- disable errorprone in these modules, their code is generated -->
+  <properties>
+    <errorProneFlags>-XepDisableAllChecks</errorProneFlags>
+  </properties>
+
 
   <modules>
     <module>org.w3.xlink</module>

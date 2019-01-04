@@ -51,12 +51,12 @@ public class BindingFilterVisitorTest {
         // forward
         PropertyIsEqualTo source = ff.equal(ff.property("i"), ff.literal("10"), true);
         PropertyIsEqualTo bound = (PropertyIsEqualTo) source.accept(visitor, null);
-        assertEquals(new Integer(10), ((Literal) bound.getExpression2()).getValue());
+        assertEquals(Integer.valueOf(10), ((Literal) bound.getExpression2()).getValue());
 
         // flip it
         source = ff.equal(ff.literal("10"), ff.property("i"), true);
         bound = (PropertyIsEqualTo) source.accept(visitor, null);
-        assertEquals(new Integer(10), ((Literal) bound.getExpression1()).getValue());
+        assertEquals(Integer.valueOf(10), ((Literal) bound.getExpression1()).getValue());
     }
 
     @Test
@@ -64,12 +64,12 @@ public class BindingFilterVisitorTest {
         // forward
         PropertyIsNotEqualTo source = ff.notEqual(ff.property("i"), ff.literal("10"), true);
         PropertyIsNotEqualTo bound = (PropertyIsNotEqualTo) source.accept(visitor, null);
-        assertEquals(new Integer(10), ((Literal) bound.getExpression2()).getValue());
+        assertEquals(Integer.valueOf(10), ((Literal) bound.getExpression2()).getValue());
 
         // flip it
         source = ff.notEqual(ff.literal("10"), ff.property("i"), true);
         bound = (PropertyIsNotEqualTo) source.accept(visitor, null);
-        assertEquals(new Integer(10), ((Literal) bound.getExpression1()).getValue());
+        assertEquals(Integer.valueOf(10), ((Literal) bound.getExpression1()).getValue());
     }
 
     @Test
@@ -77,13 +77,13 @@ public class BindingFilterVisitorTest {
         // among two literals
         PropertyIsBetween source = ff.between(ff.property("i"), ff.literal("10"), ff.literal("20"));
         PropertyIsBetween bound = (PropertyIsBetween) source.accept(visitor, null);
-        assertEquals(new Integer(10), ((Literal) bound.getLowerBoundary()).getValue());
-        assertEquals(new Integer(20), ((Literal) bound.getUpperBoundary()).getValue());
+        assertEquals(Integer.valueOf(10), ((Literal) bound.getLowerBoundary()).getValue());
+        assertEquals(Integer.valueOf(20), ((Literal) bound.getUpperBoundary()).getValue());
 
         // among two expression
         source = ff.between(ff.literal("10"), ff.property("i"), ff.property("i"));
         bound = (PropertyIsBetween) source.accept(visitor, null);
-        assertEquals(new Integer(10), ((Literal) bound.getExpression()).getValue());
+        assertEquals(Integer.valueOf(10), ((Literal) bound.getExpression()).getValue());
 
         // among two inconsistent expressions, cannot optimize
         source = ff.between(ff.literal("10"), ff.property("i"), ff.property("d"));

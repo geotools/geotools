@@ -34,7 +34,7 @@ public class MemoryDataStoreConcurrencyTest extends DataTestCase {
                                     SimpleFeatureBuilder.build(
                                             roadType,
                                             new Object[] {
-                                                new Integer(i),
+                                                Integer.valueOf(i),
                                                 line(new int[] {10, 10, 20, 10}),
                                                 "r" + i
                                             },

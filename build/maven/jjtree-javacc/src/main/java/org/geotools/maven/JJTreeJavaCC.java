@@ -143,6 +143,7 @@ public class JJTreeJavaCC extends AbstractMojo {
      *
      * @throws MojoExecutionException if the plugin execution failed.
      */
+    @SuppressWarnings("PMD.SystemPrintln")
     public void execute() throws MojoExecutionException, MojoFailureException {
         // if not windows, don't rewrite file
         final boolean windowsOs = System.getProperty("os.name").indexOf("Windows") != -1;

@@ -44,7 +44,7 @@ public final class GTopo30WriteParams extends GeoToolsWriteParams {
     }
 
     public void setCompressionType(String ct) {
-        compressionType = new String(ct);
+        compressionType = ct;
     }
 
     /** Default constructor. */

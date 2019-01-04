@@ -60,6 +60,6 @@ public class FilterFunction_max_4 extends FunctionExpressionImpl {
                     "Filter Function problem for function max argument #1 - expected type double");
         }
 
-        return new Integer(Math.max(arg0, arg1));
+        return Integer.valueOf(Math.max(arg0, arg1));
     }
 }

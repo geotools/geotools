@@ -619,6 +619,7 @@ public class DbaseFileReader implements FileReader {
         return new String(chars);
     }
 
+    @SuppressWarnings("PMD.SystemPrintln")
     public static void main(final String[] args) throws Exception {
         final DbaseFileReader reader =
                 new DbaseFileReader(

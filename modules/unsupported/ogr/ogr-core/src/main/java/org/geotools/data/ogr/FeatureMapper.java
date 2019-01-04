@@ -254,7 +254,7 @@ class FeatureMapper {
             return ogr.FeatureGetFieldAsInteger(ogrFeature, idx);
         } else if (clazz.equals(Long.class)) {
             String value = ogr.FeatureGetFieldAsString(ogrFeature, idx);
-            return new Long(value);
+            return Long.valueOf(value);
         } else if (clazz.equals(BigInteger.class)) {
             String value = ogr.FeatureGetFieldAsString(ogrFeature, idx);
             return new BigInteger(value);

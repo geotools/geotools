@@ -271,7 +271,7 @@ public class SEExampleTest extends SETestSupport {
 
         Stroke s = sym.getStroke();
         assertEquals(255, s.getColor().evaluate(null, Color.class).getBlue());
-        assertEquals(new Integer(2), s.getWidth().evaluate(null, Integer.class));
+        assertEquals(Integer.valueOf(2), s.getWidth().evaluate(null, Integer.class));
     }
 
     public void testParsePolygonSymbolizer() throws Exception {

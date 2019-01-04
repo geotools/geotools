@@ -16,7 +16,7 @@
  */
 package org.geotools.gce.imagemosaic;
 
-import java.awt.Color;
+import java.awt.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FilenameFilter;
@@ -94,10 +94,10 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  *       new Double(1));--- Controls the transparency addition by specifying the treshold to use.
  *   <li>INPUT_IMAGE_THRESHOLD = new DefaultParameterDescriptor( "InputImageROI", Boolean.class,
  *       null, Boolean.FALSE)--- INPUT_IMAGE_THRESHOLD_VALUE = new DefaultParameterDescriptor(
- *       "InputImageROIThreshold", Integer.class, null, new Integer(1));--- These two can be used to
- *       control the application of ROIs on the input images based on tresholding values. Basically
- *       using the threshold you can ask the mosaic plugin to load or not certain pixels of the
- *       original images.
+ *       "InputImageROIThreshold", Integer.class, null, Integer.valueOf(1));--- These two can be
+ *       used to control the application of ROIs on the input images based on tresholding values.
+ *       Basically using the threshold you can ask the mosaic plugin to load or not certain pixels
+ *       of the original images.
  *
  * @author Simone Giannecchini (simboss), GeoSolutions
  * @author Stefan Alfons Krueger (alfonx), Wikisquare.de : Support for
@@ -524,7 +524,9 @@ public final class ImageMosaicFormat extends AbstractGridFormat implements Forma
                 }
 
                 final SimpleFeatureType schema = featureSource.getSchema();
-                if (schema == null) return false;
+                if (schema == null) {
+                    return false;
+                }
 
                 crs =
                         featureSource
@@ -534,9 +536,13 @@ public final class ImageMosaicFormat extends AbstractGridFormat implements Forma
                 if (crs == null) return false;
                 // looking for the location attribute
                 final String locationAttributeName = catalogBean.getLocationAttribute();
-                if (schema.getDescriptor(locationAttributeName) == null
-                        && schema.getDescriptor(locationAttributeName.toUpperCase()) == null)
+                if (locationAttributeName != null
+                        && schema != null
+                        && (schema.getDescriptor(locationAttributeName) == null
+                                && schema.getDescriptor(locationAttributeName.toUpperCase())
+                                        == null)) {
                     return false;
+                }
 
                 return true;
 

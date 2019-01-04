@@ -129,6 +129,7 @@ public final class Calendar {
      * d'intérêt en heure universelle (UTC). Si cet argument est omis, la date et heure actuelles
      * seront utilisées.
      */
+    @SuppressWarnings("PMD.SystemPrintln")
     public static final void main(final String[] args) throws ParseException {
         final DateFormat format = DateFormat.getDateInstance(DateFormat.SHORT);
         format.setTimeZone(TimeZone.getTimeZone("UTC"));

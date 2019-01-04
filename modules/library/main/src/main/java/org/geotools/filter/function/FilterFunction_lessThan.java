@@ -58,6 +58,6 @@ public class FilterFunction_lessThan extends FunctionExpressionImpl {
                     "Filter Function problem for function lessThan argument #1 - expected type Object");
         }
 
-        return new Boolean(StaticGeometry.lessThan(arg0, arg1));
+        return Boolean.valueOf(StaticGeometry.lessThan(arg0, arg1));
     }
 }

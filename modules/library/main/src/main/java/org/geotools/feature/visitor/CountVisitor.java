@@ -74,7 +74,7 @@ public class CountVisitor implements FeatureCalc {
         }
 
         public Object getValue() {
-            return new Integer(count);
+            return Integer.valueOf(count);
         }
 
         public boolean isCompatible(CalcResult targetResults) {

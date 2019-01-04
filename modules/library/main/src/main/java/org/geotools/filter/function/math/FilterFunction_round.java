@@ -48,6 +48,6 @@ public class FilterFunction_round extends FunctionExpressionImpl {
                     "Filter Function problem for function round argument #0 - expected type float");
         }
 
-        return new Integer(Math.round(arg0));
+        return Integer.valueOf(Math.round(arg0));
     }
 }

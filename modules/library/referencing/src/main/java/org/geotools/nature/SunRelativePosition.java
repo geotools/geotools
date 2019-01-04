@@ -619,6 +619,7 @@ public class SunRelativePosition {
      * où <var>date</var> est un argument optionel spécifiant la date et l'heure. Si cet argument
      * est omis, la date et heure actuelles seront utilisées.
      */
+    @SuppressWarnings("PMD.SystemPrintln")
     public static void main(final String[] args) throws ParseException {
         final DateFormat format =
                 DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT);

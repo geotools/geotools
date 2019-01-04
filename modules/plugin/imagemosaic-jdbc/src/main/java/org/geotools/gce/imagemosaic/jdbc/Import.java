@@ -75,6 +75,7 @@ import org.opengis.feature.simple.SimpleFeature;
  *
  * @author mcr
  */
+@SuppressWarnings("PMD.SystemPrintln")
 public class Import extends AbstractCmd {
     class ImageFilter extends Object implements FileFilter {
         public ImageFilter(String extension) {
@@ -268,7 +269,7 @@ public class Import extends AbstractCmd {
                 tileTablePrefix = args[i + 1];
                 i++;
             } else if (args[i].equals("-commitCount")) {
-                commitCount = new Integer(args[i + 1]);
+                commitCount = Integer.valueOf(args[i + 1]);
                 i++;
             } else if (args[i].equals("-shape")) {
                 shapeUrl = getURLFromString(args[i + 1]);

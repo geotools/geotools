@@ -507,7 +507,7 @@ public class Layer implements Comparable<Layer> {
     }
 
     public void setQueryable(boolean queryable) {
-        this.queryable = new Boolean(queryable);
+        this.queryable = Boolean.valueOf(queryable);
     }
 
     /*

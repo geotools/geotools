@@ -49,7 +49,7 @@ public class WS_DataStoreTest {
         properties.put(
                 "WSDataStoreFactory:GET_CONNECTION_URL",
                 "http://d00109:8080/xaware/XADocSoapServlet");
-        properties.put("WSDataStoreFactory:TIMEOUT", new Integer(30000));
+        properties.put("WSDataStoreFactory:TIMEOUT", Integer.valueOf(30000));
         properties.put("WSDataStoreFactory:TEMPLATE_DIRECTORY", TEST_DIRECTORY);
         properties.put("WSDataStoreFactory:TEMPLATE_NAME", "request.ftl");
         properties.put(

@@ -64,6 +64,6 @@ public class FilterFunction_strMatches extends FunctionExpressionImpl {
                     "Filter Function problem for function strMatches argument #1 - expected type String");
         }
 
-        return new Boolean(StaticGeometry.strMatches(arg0, arg1));
+        return Boolean.valueOf(StaticGeometry.strMatches(arg0, arg1));
     }
 }

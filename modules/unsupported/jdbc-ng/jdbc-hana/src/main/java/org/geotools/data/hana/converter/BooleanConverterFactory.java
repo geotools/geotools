@@ -40,9 +40,9 @@ public class BooleanConverterFactory implements ConverterFactory {
                     }
                     Short s = (Short) source;
                     if (s.shortValue() == 0) {
-                        return target.cast(new Boolean(false));
+                        return target.cast(Boolean.FALSE);
                     } else if (s.shortValue() == 1) {
-                        return target.cast(new Boolean(true));
+                        return target.cast(Boolean.TRUE);
                     } else {
                         return null;
                     }

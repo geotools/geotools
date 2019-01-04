@@ -1,5 +1,6 @@
 package org.geotools.renderer;
 
+import java.util.Arrays;
 import java.util.Map;
 import org.geotools.styling.Symbolizer;
 import org.geotools.styling.TextSymbolizer.DisplacementMode;
@@ -177,7 +178,7 @@ public class VendorOptionParser {
                     throw new IllegalArgumentException(
                             values[i]
                                     + " is not legal. The values of displacement mode must be one of the following: "
-                                    + DisplacementMode.values());
+                                    + Arrays.toString(DisplacementMode.values()));
                 }
             }
             return parsed;

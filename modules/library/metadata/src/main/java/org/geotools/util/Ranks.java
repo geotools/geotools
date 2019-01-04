@@ -51,6 +51,7 @@ import java.util.Arrays;
  * @version $Id$
  * @author Martin Desruisseaux
  */
+@SuppressWarnings("PMD")
 public class Ranks {
     /** The index in the array before it has been sorted. */
     private final int index;

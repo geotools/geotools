@@ -50,7 +50,7 @@ public class SQLServerDataStoreFactory extends JDBCDataStoreFactory {
                     Boolean.class,
                     "Login as current windows user account. Works only in windows. Ignores user and password settings.",
                     false,
-                    new Boolean(false));
+                    Boolean.FALSE);
 
     /** parameter for using Native Paging */
     public static final Param NATIVE_PAGING =

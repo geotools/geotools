@@ -32,6 +32,7 @@ public class NameImplTest {
     }
 
     @Test
+    @SuppressWarnings("SelfComparison")
     public void testCompare() {
         NameImpl scoped1 = new NameImpl("hello", "world");
         NameImpl scoped2 = new NameImpl("hello", "fred");

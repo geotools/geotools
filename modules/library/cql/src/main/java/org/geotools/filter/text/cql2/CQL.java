@@ -239,6 +239,7 @@ public class CQL {
      *
      * @param args
      */
+    @SuppressWarnings("PMD.SystemPrintln")
     public static final void main(String[] args) {
         System.out.println("CQL Filter Tester");
         System.out.println("(\"quit\" to finish)");

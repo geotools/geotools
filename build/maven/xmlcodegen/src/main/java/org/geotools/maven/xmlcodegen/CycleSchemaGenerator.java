@@ -54,6 +54,7 @@ import org.opengis.feature.type.PropertyDescriptor;
  * @author Justin Deoliveira
  * 
  */
+@SuppressWarnings("PMD.SystemPrintln")
 public class CycleSchemaGenerator extends SchemaGenerator {
 
     /**

@@ -244,6 +244,7 @@ public class Polynom implements Serializable {
      *
      * @param c The coefficients for the polynomial equation.
      */
+    @SuppressWarnings("PMD.SystemPrintln")
     public static void main(final String[] c) {
         final double[] r = new double[c.length];
         for (int i = 0; i < c.length; i++) {

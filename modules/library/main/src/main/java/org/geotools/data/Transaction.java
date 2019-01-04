@@ -35,7 +35,7 @@ import java.util.Set;
  *
  * <pre><code>
  * Transaction t = new DefaultTransaction("handle");
- * t.putProperty( "hint", new Integer(7) );
+ * t.putProperty( "hint", Integer.valueOf(7) );
  * try {
  *     SimpleFeatureStore road = (SimpleFeatureStore) store.getFeatureSource("road");
  *     FeatureStore river = (SimpleFeatureStore) store.getFeatureSource("river");

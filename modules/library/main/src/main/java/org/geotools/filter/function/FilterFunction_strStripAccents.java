@@ -25,15 +25,15 @@ import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.opengis.filter.capability.FunctionName;
 
-public class FilterFunction_strCapitalize extends FunctionExpressionImpl {
+public class FilterFunction_strStripAccents extends FunctionExpressionImpl {
 
     public static FunctionName NAME =
             new FunctionNameImpl(
-                    "strCapitalize",
+                    "strStripAccents",
                     parameter("string", String.class),
                     parameter("string", String.class));
 
-    public FilterFunction_strCapitalize() {
+    public FilterFunction_strStripAccents() {
         super(NAME);
     }
 
@@ -48,9 +48,9 @@ public class FilterFunction_strCapitalize extends FunctionExpressionImpl {
         } catch (Exception e) // probably a type error
         {
             throw new IllegalArgumentException(
-                    "Filter Function problem for function strCapitalize argument #0 - expected type String");
+                    "Filter Function problem for function strStripAccents argument #0 - expected type String");
         }
 
-        return StaticGeometry.strCapitalize(arg0);
+        return StaticGeometry.strStripAccents(arg0);
     }
 }

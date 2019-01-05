@@ -18,7 +18,7 @@ Add extra parameters as you see fit, like ``-T1C -nsu`` to speed up the build, o
 to avoid running tests and code formatting.
 
 PMD checks
-----------
+^^^^^^^^^^
 
 The `PMD <https://pmd.github.io/>`_ checks are based on the basic PMD validation, but limited to priority 2 checks:
 
@@ -52,7 +52,7 @@ was actually a legit use of ``System.out.println`` it could have been annotated 
     public void methodDoingPrintln(...) {
 
 Error Prone
------------
+^^^^^^^^^^^
 
 The `Error Prone <https://errorprone.info/>`_ checker runs a compiler plugin, requiring at least a 
 JDK 9 to run (hence the suggestion to use JDK 11, as the supported JDKs are currently only JDK 8 and JDK 11).

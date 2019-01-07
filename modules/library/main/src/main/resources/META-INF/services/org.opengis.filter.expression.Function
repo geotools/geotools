@@ -81,6 +81,9 @@ org.geotools.filter.function.FilterFunction_strConcat
 org.geotools.filter.function.FilterFunction_strEndsWith
 org.geotools.filter.function.FilterFunction_strStartsWith
 org.geotools.filter.function.FilterFunction_strCapitalize
+org.geotools.filter.function.FilterFunction_strAbbreviate
+org.geotools.filter.function.FilterFunction_strDefaultIfBlank
+org.geotools.filter.function.FilterFunction_strStripAccents
 org.geotools.filter.function.FilterFunction_strEqualsIgnoreCase
 org.geotools.filter.function.FilterFunction_strIndexOf
 org.geotools.filter.function.FilterFunction_strLastIndexOf

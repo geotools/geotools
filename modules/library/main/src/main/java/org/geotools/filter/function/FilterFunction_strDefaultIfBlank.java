@@ -25,32 +25,39 @@ import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.opengis.filter.capability.FunctionName;
 
-public class FilterFunction_strCapitalize extends FunctionExpressionImpl {
+public class FilterFunction_strDefaultIfBlank extends FunctionExpressionImpl {
 
     public static FunctionName NAME =
             new FunctionNameImpl(
-                    "strCapitalize",
+                    "strDefaultIfBlank",
                     parameter("string", String.class),
-                    parameter("string", String.class));
+                    parameter("string", String.class),
+                    parameter("default", String.class));
 
-    public FilterFunction_strCapitalize() {
+    public FilterFunction_strDefaultIfBlank() {
         super(NAME);
     }
 
     public Object evaluate(Object feature) {
         String arg0;
+        String arg1;
 
         try { // attempt to get value and perform conversion
             arg0 = (String) getExpression(0).evaluate(feature, String.class); // extra
-            // protection
-            // for
-            // strings
         } catch (Exception e) // probably a type error
         {
             throw new IllegalArgumentException(
-                    "Filter Function problem for function strCapitalize argument #0 - expected type String");
+                    "Filter Function problem for function strDefaultIfBlank argument #0 - expected type String");
         }
 
-        return StaticGeometry.strCapitalize(arg0);
+        try { // attempt to get value and perform conversion
+            arg1 = (String) getExpression(1).evaluate(feature, String.class); // extra
+        } catch (Exception e) // probably a type error
+        {
+            throw new IllegalArgumentException(
+                    "Filter Function problem for function strDefaultIfBlank argument #1 - expected type String");
+        }
+
+        return StaticGeometry.strDefaultIfBlank(arg0, arg1);
     }
 }

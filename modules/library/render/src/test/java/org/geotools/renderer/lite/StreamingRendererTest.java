@@ -224,7 +224,7 @@ public class StreamingRendererTest {
         layer.getUserData()
                 .put(
                         StreamingRenderer.BYLAYER_INTERPOLATION,
-                        Interpolation.getInstance(Interpolation.INTERP_BICUBIC));
+                        Interpolation.getInstance(Interpolation.INTERP_BICUBIC_2));
         mc.addLayer(layer);
 
         BufferedImage image = new BufferedImage(200, 200, BufferedImage.TYPE_4BYTE_ABGR);
@@ -238,19 +238,9 @@ public class StreamingRendererTest {
         // test right interpolation hint is set on Graphics2D
         assertEquals(
                 graphics.getRenderingHint(JAI.KEY_INTERPOLATION),
-                Interpolation.getInstance(Interpolation.INTERP_BICUBIC));
+                Interpolation.getInstance(Interpolation.INTERP_BICUBIC_2));
 
-        layer.getUserData()
-                .put(
-                        StreamingRenderer.BYLAYER_INTERPOLATION,
-                        Interpolation.getInstance(Interpolation.INTERP_NEAREST));
-
-        sr.paint(graphics, new Rectangle(200, 200), reWgs);
         mc.dispose();
-        // test right interpolation hint is set on Graphics2D
-        assertEquals(
-                graphics.getRenderingHint(JAI.KEY_INTERPOLATION),
-                Interpolation.getInstance(Interpolation.INTERP_NEAREST));
     }
 
     @Test

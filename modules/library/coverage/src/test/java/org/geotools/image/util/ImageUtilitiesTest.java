@@ -17,12 +17,13 @@
  */
 package org.geotools.image.util;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import com.sun.media.jai.operator.ImageReadDescriptor;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.Base64;
 import java.util.Iterator;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -33,6 +34,7 @@ import javax.imageio.ImageTypeSpecifier;
 import javax.imageio.metadata.IIOMetadata;
 import javax.imageio.stream.MemoryCacheImageInputStream;
 import javax.media.jai.RenderedOp;
+import javax.media.jai.WritableRenderedImageAdapter;
 import org.junit.Test;
 
 public class ImageUtilitiesTest {
@@ -109,5 +111,24 @@ public class ImageUtilitiesTest {
         ImageUtilities.disposePlanarImageChain(image);
         assertTrue(streamDisposed.get());
         assertTrue(readerDisposed.get());
+    }
+
+    @Test
+    public void testDisposeWritableRenderedImage()
+            throws NoSuchFieldException, SecurityException, IllegalArgumentException,
+                    IllegalAccessException {
+        BufferedImage bi = new BufferedImage(256, 256, BufferedImage.TYPE_BYTE_GRAY);
+        WritableRenderedImageAdapter wria = new WritableRenderedImageAdapter(bi);
+        ImageUtilities.disposeSinglePlanarImage(wria);
+        // Without the fix, both fields would have been NOT null
+        Class<? extends Object> theClass = wria.getClass();
+        Field f = theClass.getSuperclass().getDeclaredField("theImage");
+        f.setAccessible(true);
+        Object image = f.get(wria);
+        assertNull(image);
+        f = theClass.getDeclaredField("theWritableImage");
+        f.setAccessible(true);
+        image = f.get(wria);
+        assertNull(image);
     }
 }

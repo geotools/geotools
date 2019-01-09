@@ -1224,8 +1224,17 @@ public final class ImageUtilities {
                     }
                 } else {
                     // Trying disposing the reader
-                    Object imageReader =
-                            inputImage.getProperty(ImageReadDescriptor.PROPERTY_NAME_IMAGE_READER);
+                    Object imageReader = null;
+
+                    try {
+                        imageReader =
+                                inputImage.getProperty(
+                                        ImageReadDescriptor.PROPERTY_NAME_IMAGE_READER);
+                    } catch (NullPointerException npe) {
+                        // for some reason, chained cleanup may have already cleaned (and null) some
+                        // underlying images. let's ignore it
+                    }
+
                     if ((imageReader != null) && (imageReader instanceof ImageReader)) {
                         final ImageReader reader = (ImageReader) imageReader;
                         final ImageInputStream stream = (ImageInputStream) reader.getInput();
@@ -1257,7 +1266,13 @@ public final class ImageUtilities {
      */
     public static void disposeSinglePlanarImage(PlanarImage planarImage) {
         // Looking for an ROI image and disposing it too
-        final Object roi = planarImage.getProperty("ROI");
+        Object roi = null;
+        try {
+            roi = planarImage.getProperty("ROI");
+        } catch (NullPointerException npe) {
+            // for some reason, chained cleanup may have already cleaned (and null) some images
+            // let's ignore it
+        }
         if ((roi != null)
                 && ((ROI.class.equals(roi.getClass()) || (roi instanceof RenderedImage)))) {
             if (roi instanceof ROI) {
@@ -1276,11 +1291,12 @@ public final class ImageUtilities {
         }
 
         try {
-            if (planarImage instanceof RenderedImageAdapter) {
-                cleanField(planarImage, "theImage");
-            }
+            // Check extended class first
             if (planarImage instanceof WritableRenderedImageAdapter) {
                 cleanField(planarImage, "theWritableImage");
+                cleanField(planarImage, "theImage", true);
+            } else if (planarImage instanceof RenderedImageAdapter) {
+                cleanField(planarImage, "theImage");
             }
         } catch (NoSuchFieldException | IllegalAccessException e) {
             // fine, we tried
@@ -1303,10 +1319,30 @@ public final class ImageUtilities {
      */
     private static void cleanField(Object theObject, String fieldName)
             throws NoSuchFieldException, IllegalAccessException {
-        Field f = theObject.getClass().getDeclaredField(fieldName);
+        cleanField(theObject, fieldName, false);
+    }
+
+    /**
+     * Helper that cleans up a field
+     *
+     * @param theObject
+     * @param fieldName
+     * @throws NoSuchFieldException
+     * @throws IllegalAccessException
+     */
+    private static void cleanField(Object theObject, String fieldName, boolean superClass)
+            throws NoSuchFieldException, IllegalAccessException {
+        // getDeclaredField only provides access to current class,
+        // not superclass.
+        Class<? extends Object> theClass = theObject.getClass();
+        if (superClass) {
+            theClass = theClass.getSuperclass();
+        }
+        Field f = theClass.getDeclaredField(fieldName);
         f.setAccessible(true);
         f.set(theObject, null);
     }
+
     /**
      * Transform a data type into a representative {@link String}.
      *

@@ -450,7 +450,6 @@ public abstract class AbstractMapPane extends JPanel
                                 afterImageMoved();
                                 clearLabelCache.set(true);
                                 drawLayers(false);
-                                repaint();
                             }
                         },
                         paintDelay,

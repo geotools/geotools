@@ -115,6 +115,8 @@ public class AppSchemaDataAccessConfigurator {
 
     public static String PROPERTY_ENCODE_NESTED_FILTERS = "app-schema.encodeNestedFilters";
 
+    public static final String PROPERTY_REPLACE_OR_UNION = "app-schema.orUnionReplace";
+
     /** DOCUMENT ME! */
     private AppSchemaDataAccessDTO config;
 
@@ -147,6 +149,13 @@ public class AppSchemaDataAccessConfigurator {
         String s =
                 AppSchemaDataAccessRegistry.getAppSchemaProperties().getProperty(PROPERTY_JOINING);
         return s != null;
+    }
+
+    public static boolean isOrUnionReplacementEnabled() {
+        final String orUnionReplacement =
+                AppSchemaDataAccessRegistry.getAppSchemaProperties()
+                        .getProperty(PROPERTY_REPLACE_OR_UNION);
+        return "true".equalsIgnoreCase(orUnionReplacement);
     }
 
     /**

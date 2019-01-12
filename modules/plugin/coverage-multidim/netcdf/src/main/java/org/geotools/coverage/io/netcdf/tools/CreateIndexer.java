@@ -13,7 +13,8 @@
  *    but WITHOUT ANY WARRANTY; without even the implied warranty of
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
- */ package org.geotools.coverage.io.netcdf;
+ */
+package org.geotools.coverage.io.netcdf.tools;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -64,12 +65,13 @@ public class CreateIndexer {
 
     static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(CreateIndexer.class);
 
+    @SuppressWarnings("PMD.SystemPrintln")
     public static void main(String[] args) throws JDOMException, IOException, TransformerException {
         if (args.length < 1) {
             System.out.println(
                     "Usage: java -jar CreateIndexer"
                             + " /path/to/sampleFile.nc "
-                            + "/path/to/netcdfprojectionsfile "
+                            + "-P /path/to/netcdfprojectionsfile "
                             + "[/path/to/optional/outputFolder]\n");
             System.exit(1);
         }
@@ -137,6 +139,7 @@ public class CreateIndexer {
         System.out.println("DONE!!");
     }
 
+    @SuppressWarnings("PMD.SystemPrintln")
     private static String setOuputFolder(String[] args, File sampleFile) {
         String outputPath = FilenameUtils.getFullPathNoEndSeparator(sampleFile.getAbsolutePath());
         if (args.length > 3) {
@@ -155,6 +158,7 @@ public class CreateIndexer {
         return outputPath;
     }
 
+    @SuppressWarnings("PMD.SystemPrintln")
     private static void writeIndexer(String xml, String indexerFilePath)
             throws FileNotFoundException {
         System.out.println("Writing the indexer.xml: " + indexerFilePath);

@@ -496,14 +496,8 @@ public class StyleFactoryImpl2 implements org.opengis.style.StyleFactory {
             return RasterSymbolizerImpl.cast(symbolizer);
         } else if (symbolizer instanceof org.opengis.style.TextSymbolizer) {
             return TextSymbolizerImpl.cast(symbolizer);
-        } else if (symbolizer instanceof org.opengis.style.ExtensionSymbolizer) {
-            // here is where we can hook up experimental symbolizers
-            ExtensionSymbolizer extensionSymbolizer = (ExtensionSymbolizer) symbolizer;
-            String name = extensionSymbolizer.getExtensionName();
-            // use name to look up implementation
-
-            return null;
         }
+        // the day there is any implementation, handle org.opengis.style.ExtensionSymbolizer
         return null; // must be some new extension?
     }
 

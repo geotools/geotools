@@ -281,7 +281,7 @@ public class Schema {
 
         List result = new ArrayList();
         for (int i = 0; i < filters.size(); i++) {
-            Filter f = override((Filter) filters.get(i), (Filter) overrides.get(i));
+            override((Filter) filters.get(i), (Filter) overrides.get(i));
         }
 
         return result;

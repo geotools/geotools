@@ -633,8 +633,6 @@ public class Schemas {
                                 resolver.resolveSchemaLocation(null, namespace, location);
                         if (resolvedSchemaLocation != null) {
                             return resolvedSchemaLocation;
-                        } else {
-                            // should not happen, but just continue
                         }
                     }
                 }

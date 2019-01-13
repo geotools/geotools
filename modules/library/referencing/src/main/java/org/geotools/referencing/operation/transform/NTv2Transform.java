@@ -117,7 +117,6 @@ public class NTv2Transform extends AbstractMathTransform implements MathTransfor
                 return result;
             }
         }
-        ;
 
         return null;
     }

@@ -384,7 +384,6 @@ public class ComplexSupportXSAnyTypeBinding extends XSAnyTypeBinding {
                 att.setValue(Collections.emptyList());
             }
         }
-        return;
     }
 
     /**

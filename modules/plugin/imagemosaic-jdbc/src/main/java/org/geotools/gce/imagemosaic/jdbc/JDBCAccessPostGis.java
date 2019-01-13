@@ -96,17 +96,14 @@ class JDBCAccessPostGis extends JDBCAccessBase {
                 if (rs != null) rs.close();
             } catch (SQLException ex) {
             }
-            ;
             try {
                 if (ps != null) ps.close();
             } catch (SQLException ex) {
             }
-            ;
             try {
                 if (con != null) ps.close();
             } catch (SQLException ex) {
             }
-            ;
         }
     }
 

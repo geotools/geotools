@@ -183,6 +183,7 @@ public class DefaultVerticalDatum extends AbstractDatum implements VerticalDatum
      *     versions of this class.
      */
     @Override
+    @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int hashCode() {
         return super.hashCode() ^ type.hashCode();
     }

@@ -37,7 +37,6 @@ import org.geotools.referencing.factory.gridshift.GridShiftLocator;
 import org.geotools.referencing.factory.gridshift.NADCONGridShiftFactory;
 import org.geotools.referencing.factory.gridshift.NADConGridShift;
 import org.geotools.referencing.operation.MathTransformProvider;
-import org.geotools.referencing.operation.builder.LocalizationGrid;
 import org.geotools.util.Arguments;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.ParameterDescriptor;
@@ -145,12 +144,6 @@ public class NADCONTransform extends AbstractMathTransform
     private final URI longGridName;
 
     /**
-     * Longitude and latitude grid shift values. Values are organized from low to high longitude
-     * (low x index to high) and low to high latitude (low y index to high).
-     */
-    private LocalizationGrid gridShift;
-
-    /**
      * The {@link #gridShift} values as a {@code LocalizationGridTransform2D}. Used for
      * interpolating shift values.
      */
@@ -201,7 +194,6 @@ public class NADCONTransform extends AbstractMathTransform
                 return result;
             }
         }
-        ;
 
         throw new FactoryException("Could not locate grid file " + grid);
     }

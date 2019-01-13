@@ -30,6 +30,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  *
  * @author Jackson Roehrig & Sanjay Jena
  */
+@SuppressWarnings("PMD.UnusedPrivateField")
 public class SolidBoundaryImpl extends PrimitiveBoundaryImpl implements SolidBoundary {
     private static final long serialVersionUID = 113485181749545137L;
 

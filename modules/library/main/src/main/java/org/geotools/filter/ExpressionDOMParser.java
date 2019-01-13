@@ -60,18 +60,6 @@ public final class ExpressionDOMParser {
     /** Factory for creating geometry objects */
     private static GeometryFactory gfac = new GeometryFactory();
 
-    /** int representation of a box */
-    private static final int GML_BOX = 1;
-
-    /** int representation of a polygon */
-    private static final int GML_POLYGON = 2;
-
-    /** int representation of a linestring */
-    private static final int GML_LINESTRING = 3;
-
-    /** int representation of a point */
-    private static final int GML_POINT = 4;
-
     /** number of coordinates in a box */
     private static final int NUM_BOX_COORDS = 5;
 
@@ -485,7 +473,6 @@ public final class ExpressionDOMParser {
         LOGGER.finer("processing gml " + root);
 
         List coordList;
-        int type = 0;
         Node child = root;
 
         // Jesus I hate DOM.  I have no idea why this was checking for localname
@@ -502,7 +489,6 @@ public final class ExpressionDOMParser {
         }
 
         if (childName.equalsIgnoreCase("gml:box")) {
-            type = GML_BOX;
             coordList = parseCoords(child);
 
             org.locationtech.jts.geom.Envelope env = new org.locationtech.jts.geom.Envelope();
@@ -552,7 +538,6 @@ public final class ExpressionDOMParser {
 
         if (childName.equalsIgnoreCase("gml:polygon")) {
             LOGGER.finer("polygon");
-            type = GML_POLYGON;
 
             LinearRing outer = null;
             List inner = new ArrayList();
@@ -614,7 +599,6 @@ public final class ExpressionDOMParser {
 
         if (childName.equalsIgnoreCase("gml:linestring")) {
             LOGGER.finer("linestring");
-            type = GML_LINESTRING;
             coordList = parseCoords(child);
 
             org.locationtech.jts.geom.LineString line = null;
@@ -625,7 +609,6 @@ public final class ExpressionDOMParser {
 
         if (childName.equalsIgnoreCase("gml:point")) {
             LOGGER.finer("point");
-            type = GML_POINT;
             coordList = parseCoords(child);
 
             org.locationtech.jts.geom.Point point = null;

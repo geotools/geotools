@@ -35,17 +35,6 @@ public final class XMath {
      */
     public static final double LN10 = 2.3025850929940456840179914546844;
 
-    /**
-     * Table of some integer powers of 10. Used for fast computation of {@link #pow10(int)}.
-     *
-     * @deprecated Moved to {@link org.geotools.metadata.math.XMath}.
-     */
-    private static final double[] POW10 = {
-        1E+00, 1E+01, 1E+02, 1E+03, 1E+04, 1E+05, 1E+06, 1E+07, 1E+08, 1E+09,
-        1E+10, 1E+11, 1E+12, 1E+13, 1E+14, 1E+15, 1E+16, 1E+17, 1E+18, 1E+19,
-        1E+20, 1E+21, 1E+22
-    };
-
     /** Do not allow instantiation of this class. */
     private XMath() {}
 

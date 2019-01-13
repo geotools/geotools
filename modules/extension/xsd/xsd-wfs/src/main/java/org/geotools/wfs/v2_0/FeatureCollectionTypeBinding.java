@@ -125,9 +125,8 @@ public class FeatureCollectionTypeBinding extends AbstractComplexEMFBinding {
 
     @Override
     protected void setProperty(EObject eObject, String property, Object value, boolean lax) {
-        if ("member".equalsIgnoreCase(property)) {
-            // ignore feature, handled in parse()
-        } else {
+        // ignore feature, handled in parse()
+        if (!"member".equalsIgnoreCase(property)) {
             super.setProperty(eObject, property, value, lax);
         }
     }

@@ -31,7 +31,9 @@ import org.opengis.geometry.primitive.SurfacePatch;
  */
 public abstract class SurfacePatchImpl extends GenericSurfaceImpl
         implements SurfacePatch, JTSGeometry {
+    @SuppressWarnings("PMD.UnusedPrivateField")
     private Surface surface;
+
     private SurfaceInterpolation interpolation;
     private SurfaceBoundary boundary;
     private org.locationtech.jts.geom.Geometry jtsPeer;

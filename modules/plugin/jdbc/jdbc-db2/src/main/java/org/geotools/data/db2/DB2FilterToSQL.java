@@ -415,7 +415,6 @@ public class DB2FilterToSQL extends PreparedFilterToSQL {
             out.write("1=0");
         } catch (java.io.IOException ioe) {
         }
-        ;
         return extraData;
     }
 
@@ -430,7 +429,6 @@ public class DB2FilterToSQL extends PreparedFilterToSQL {
             out.write("1=1");
         } catch (java.io.IOException ioe) {
         }
-        ;
         return extraData;
     }
 

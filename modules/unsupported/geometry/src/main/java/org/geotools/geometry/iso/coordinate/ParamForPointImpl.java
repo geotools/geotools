@@ -27,6 +27,7 @@ public class ParamForPointImpl extends ArrayList<Double> implements ParamForPoin
     /** */
     private static final long serialVersionUID = -1875728979337736219L;
 
+    @SuppressWarnings("PMD.UnusedPrivateField")
     private GenericCurve genericCurve;
 
     /** @param genericCurve */

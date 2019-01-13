@@ -46,6 +46,7 @@ public class SequenceHandler extends ElementGroupingHandler {
     private DefaultSequence cache = null;
 
     /** @see java.lang.Object#hashCode() */
+    @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int hashCode() {
         return (LOCALNAME.hashCode() * ((id == null) ? 1 : id.hashCode()))
                 + ((children == null) ? 2 : children.hashCode());

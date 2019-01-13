@@ -100,7 +100,6 @@ public class TimePositionUnionBinding extends AbstractSimpleBinding {
             } catch (Exception e) {
                 java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             }
-            ;
         }
 
         if (date == null) {

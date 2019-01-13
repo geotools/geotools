@@ -82,7 +82,6 @@ public class DirectedEdgeStar extends EdgeEndStar {
             // is non-horizontal
             // Assert.isTrue(de0.getDy() != 0, "should never return horizontal
             // edge!");
-            DirectedEdge nonHorizontalEdge = null;
             if (de0.getDy() != 0) return de0;
             else if (deLast.getDy() != 0) return deLast;
         }
@@ -315,7 +314,6 @@ public class DirectedEdgeStar extends EdgeEndStar {
 
     public void computeDepths(DirectedEdge de) {
         int edgeIndex = findIndex(de);
-        Label label = de.getLabel();
         int startDepth = de.getDepth(Position.LEFT);
         int targetLastDepth = de.getDepth(Position.RIGHT);
         // compute the depths from this edge up to the end of the edge array
@@ -340,7 +338,6 @@ public class DirectedEdgeStar extends EdgeEndStar {
         int currDepth = startDepth;
         for (int i = startIndex; i < endIndex; i++) {
             DirectedEdge nextDe = (DirectedEdge) edgeList.get(i);
-            Label label = nextDe.getLabel();
             nextDe.setEdgeDepths(Position.RIGHT, currDepth);
             currDepth = nextDe.getDepth(Position.LEFT);
         }

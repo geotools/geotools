@@ -109,8 +109,6 @@ public class TimePositionTypeBinding extends AbstractComplexBinding {
     }
 
     public Object getProperty(Object object, QName name) {
-        Position value = (Position) object;
-
         if (name.getLocalPart().equals("frame")) {
             return "ISO-8601";
         }

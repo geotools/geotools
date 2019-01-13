@@ -50,11 +50,9 @@ import org.geotools.xsd.Node;
  * @generated
  */
 public class TransactionSummaryTypeBinding extends AbstractComplexEMFBinding {
-    private WfsFactory factory;
 
     public TransactionSummaryTypeBinding(WfsFactory factory) {
         super(factory);
-        this.factory = factory;
     }
 
     /** @generated */

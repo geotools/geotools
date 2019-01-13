@@ -177,8 +177,6 @@ public class FeaturePropertyTypeBinding extends AbstractComplexBinding {
             // make sure the value is not encoded
             att.setValue(Collections.emptyList());
         }
-
-        return;
     }
 
     /**

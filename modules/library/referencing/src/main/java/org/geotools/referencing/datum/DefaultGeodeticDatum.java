@@ -381,6 +381,7 @@ public class DefaultGeodeticDatum extends AbstractDatum implements GeodeticDatum
      *     versions of this class.
      */
     @Override
+    @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int hashCode() {
         int code =
                 (int) serialVersionUID

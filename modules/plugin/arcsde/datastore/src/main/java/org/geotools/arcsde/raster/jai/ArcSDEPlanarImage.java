@@ -14,6 +14,7 @@ import java.awt.image.Raster;
 import java.awt.image.SampleModel;
 import java.io.IOException;
 import java.math.BigInteger;
+import java.util.Objects;
 import java.util.Observable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -143,6 +144,18 @@ public class ArcSDEPlanarImage extends PlanarImage {
     @Override
     public int hashCode() {
         return hashCode;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ArcSDEPlanarImage that = (ArcSDEPlanarImage) o;
+        return hashCode == that.hashCode
+                && Objects.equals(tileReader, that.tileReader)
+                && Objects.equals(tileSampleModel, that.tileSampleModel)
+                && Objects.equals(UID, that.UID)
+                && Objects.equals(tileCache, that.tileCache);
     }
 
     @Override

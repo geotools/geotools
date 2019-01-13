@@ -63,8 +63,6 @@ public class FillMBLayer extends MBLayer {
 
     private JSONObject paint;
 
-    private JSONObject layout;
-
     private static String TYPE = "fill";
 
     /** Controls the translation reference point. */
@@ -79,7 +77,6 @@ public class FillMBLayer extends MBLayer {
         super(json, new MBObjectParser(FillMBLayer.class));
 
         paint = paint();
-        layout = layout();
     }
 
     @Override

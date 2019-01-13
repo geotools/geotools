@@ -155,17 +155,6 @@ public class EquidistantConic extends MapProjection {
         return values;
     }
 
-    /** Compares the specified object with this map projection for equality. */
-    @Override
-    public boolean equals(final Object object) {
-        if (object == this) {
-            // Slight optimization
-            return true;
-        }
-        // Relevant parameters are already compared in MapProjection
-        return super.equals(object);
-    }
-
     /**
      * Transforms the specified (<var>&lambda;</var>,<var>&phi;</var>) coordinates (units in
      * radians) and stores the result in {@code ptDst} (linear distance on a unit sphere).

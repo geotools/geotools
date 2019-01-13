@@ -453,9 +453,11 @@ abstract class KeysFetcher {
             try {
                 ResultSet rs = st.executeQuery(sql.toString());
                 try {
-                    rs.next();
-                    next = rs.getObject(1);
-
+                    if (rs.next()) {
+                        next = rs.getObject(1);
+                    } else {
+                        next = 1;
+                    }
                     if (next == null) {
                         // this probably means there was no data in the table, set to 1
                         // TODO: probably better to do a count to check... but if this

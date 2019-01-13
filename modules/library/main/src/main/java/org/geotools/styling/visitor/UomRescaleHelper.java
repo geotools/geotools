@@ -17,10 +17,7 @@ class UomRescaleHelper {
 
     private FilterFactory ff;
 
-    private boolean rescaleRealWorldUnits;
-
     public UomRescaleHelper(FilterFactory ff, double mapScale, boolean rescaleRealWorldUnits) {
-        this.rescaleRealWorldUnits = rescaleRealWorldUnits;
         this.ff = ff;
         this.mapScale = mapScale;
     }

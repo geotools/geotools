@@ -18,6 +18,7 @@
 package org.geotools.geometry.iso;
 
 import java.io.Serializable;
+import java.util.Objects;
 import org.geotools.geometry.iso.topograph2D.Coordinate;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.Geometry;
@@ -228,6 +229,11 @@ public class PrecisionModel implements Serializable, Precision {
             description = "Fixed (Scale=" + getScale() + ")";
         }
         return description;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(modelType, scale);
     }
 
     public boolean equals(Object other) {

@@ -113,7 +113,6 @@ public class DoubleBits {
      */
     public int numCommonMantissaBits(DoubleBits db) {
         for (int i = 0; i < 52; i++) {
-            int bitIndex = i + 12;
             if (getBit(i) != db.getBit(i)) return i;
         }
         return 52;

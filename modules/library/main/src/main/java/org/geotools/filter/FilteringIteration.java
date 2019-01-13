@@ -66,12 +66,7 @@ public class FilteringIteration extends FeatureCollectionIteration {
 
         public void handleAttribute(PropertyDescriptor type, Object value) {}
 
-        public void handleFeature(Feature f) {
-            if (!filter.evaluate(f)) {
-                // iterator.remove();
-                // this shoudl not occur
-            }
-        }
+        public void handleFeature(Feature f) {}
 
         public void handleFeatureCollection(FeatureCollection<?, ?> fc) {}
     }

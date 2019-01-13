@@ -27,6 +27,7 @@ package org.geotools.gml3;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.PrecisionModel;
 
@@ -331,6 +332,11 @@ public class Circle {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(center, radius, precisionModel);
     }
 
     public String toString() {

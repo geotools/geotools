@@ -1376,7 +1376,9 @@ public class OracleDialect extends PreparedStatementSQLDialect {
                                     + encodeNextSequenceValue(schemaName, sequenceName)
                                     + " FROM DUAL");
             try {
-                rs.next();
+                if (!rs.next()) {
+                    throw new SQLException("Could not find next sequence value");
+                }
                 return rs.getInt(1);
             } finally {
                 dataStore.closeSafe(rs);

@@ -147,8 +147,6 @@ public class AlgoPoint2D {
         double ya = y0; // swap coordinates
         double xb = x1; // swap coordinates
         double yb = y1; // swap coordinates
-        double max_x = Math.max(x0, x1); // maximum x coordinate
-        double min_x = Math.min(x0, x1); // minimum x coordinate
         double max_y = Math.max(y0, y1); // maximum y coordinate
         double min_y = Math.min(y0, y1); // minimum y coordinate
 
@@ -261,8 +259,6 @@ public class AlgoPoint2D {
         Point2D p1 = (Point2D) it.next();
 
         Point2D p10 = AlgoPoint2D.subtract(p1, p0);
-
-        double sum = 0.0;
 
         while (it.hasNext()) {
             Point2D p = (Point2D) it.next();

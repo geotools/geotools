@@ -180,13 +180,13 @@ public abstract class LineIntersector {
     // + WKTWriter.toLineString(inputLines[1][0], inputLines[1][1])
     // + getTopologySummary();
     // }
-    private String getTopologySummary() {
-        StringBuffer catBuf = new StringBuffer();
-        if (isEndPoint()) catBuf.append(" endpoint");
-        if (isProper) catBuf.append(" proper");
-        if (isCollinear()) catBuf.append(" collinear");
-        return catBuf.toString();
-    }
+    //    private String getTopologySummary() {
+    //        StringBuffer catBuf = new StringBuffer();
+    //        if (isEndPoint()) catBuf.append(" endpoint");
+    //        if (isProper) catBuf.append(" proper");
+    //        if (isCollinear()) catBuf.append(" collinear");
+    //        return catBuf.toString();
+    //    }
 
     protected boolean isEndPoint() {
         return hasIntersection() && !isProper;

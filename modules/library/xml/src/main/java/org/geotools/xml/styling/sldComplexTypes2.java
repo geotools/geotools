@@ -126,8 +126,6 @@ public class sldComplexTypes2 {
                             Element.UNBOUNDED)
                 };
 
-        private static int FEATURETYPOECONSTRAINT = 0;
-
         private static ElementGrouping child =
                 new SequenceGT(
                         null,
@@ -917,10 +915,6 @@ public class sldComplexTypes2 {
                             "Parameter", _Parameter.getInstance(), null, 0, Element.UNBOUNDED)
                 };
 
-        // array spots
-        private static int ALGORITHM = 0;
-        private static int PARAMETER = 1;
-
         private static ElementGrouping child =
                 new SequenceGT(
                         null,
@@ -1096,11 +1090,6 @@ public class sldComplexTypes2 {
                     new sldElement("RANDOM", _RANDOM.getInstance(), null, 1, 1)
                 };
 
-        private static int LATESTONTOP = 0;
-        private static int EARLIESTONTOP = 1;
-        private static int AVERAGE = 2;
-        private static int RANDOM = 3;
-
         private static ElementGrouping child = new ChoiceGT(elems);
 
         private _OverlapBehavior() {
@@ -1189,10 +1178,6 @@ public class sldComplexTypes2 {
                         },
                         1,
                         1);
-
-        private static int ANCHOROINT = 0;
-        private static int DISPLACEMENT = 1;
-        private static int ROTATION = 2;
 
         private _PointPlacement() {
             super(null, child, attrs, elems, null, false, false);
@@ -1665,9 +1650,6 @@ public class sldComplexTypes2 {
                     new sldElement("OnlineResource", _OnlineResource.getInstance(), null, 1, 1)
                 };
 
-        private static int SERVICE = 0;
-        private static int ONLINERESOURCE = 1;
-
         private static ElementGrouping child =
                 new SequenceGT(
                         null,
@@ -1796,16 +1778,6 @@ public class sldComplexTypes2 {
                             "Symbolizer", SymbolizerType.getInstance(), null, 1, Element.UNBOUNDED)
                 };
 
-        private static int NAME = 0;
-        private static int TITLE = 1;
-        private static int ABSTRACT = 2;
-        private static int LEGENDGRAPHIC = 3;
-        private static int FILTER = 4;
-        private static int ELSEFILTER = 5;
-        private static int MINSCALEDENOMINATOR = 6;
-        private static int MAXSCALEDENOMINATOR = 7;
-        private static int SYMBOLIZER = 8;
-
         private static ElementGrouping child =
                 new SequenceGT(
                         new ElementGrouping[] {
@@ -1905,9 +1877,6 @@ public class sldComplexTypes2 {
                             0,
                             1)
                 };
-
-        private static int BRIGHNESSONLY = 0;
-        private static int RELEIFFACTOR = 1;
 
         private static ElementGrouping child =
                 new SequenceGT(
@@ -2019,7 +1988,6 @@ public class sldComplexTypes2 {
 
         private static int GRAPHICFILL = 0;
         private static int GRAPHICSTROKE = 1;
-        private static int CSSPARAMETER = 2;
 
         private static ElementGrouping child =
                 new SequenceGT(
@@ -2094,10 +2062,9 @@ public class sldComplexTypes2 {
                 if (elems[GRAPHICSTROKE].getName().equals(e.getName()))
                     symbol.setGraphicStroke((Graphic) value[i].getValue());
 
-                if (elems[CSSPARAMETER].getName().equals(e.getName())) {
-                    Expression css = (Expression) value[i].getValue();
-                    // TODO apply the css
-                }
+                //                if (elems[CSSPARAMETER].getName().equals(e.getName())) {
+                //                    // TODO apply the css
+                //                }
             }
 
             return symbol;
@@ -2528,12 +2495,6 @@ public class sldComplexTypes2 {
                             1,
                             Element.UNBOUNDED)
                 };
-
-        private static int NAME = 0;
-        private static int TITLE = 1;
-        private static int ABSTRACT = 2;
-        private static int ISDEFAULT = 3;
-        private static int FEATURETYPESTYLE = 4;
 
         private static ElementGrouping child = new SequenceGT(elems);
 

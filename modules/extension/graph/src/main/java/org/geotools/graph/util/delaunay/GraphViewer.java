@@ -110,7 +110,6 @@ public class GraphViewer extends JPanel {
     }
 
     public void paintComponent(Graphics g) {
-        int i = 0;
         xOffset = (int) Math.round(xScaling - minX * xScaling);
         yOffset = (int) Math.round(yScaling - minY * yScaling);
         // System.out.println("xOffset is " + xOffset);

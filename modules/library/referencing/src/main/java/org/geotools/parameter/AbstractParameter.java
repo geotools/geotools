@@ -260,10 +260,6 @@ public abstract class AbstractParameter extends Formattable
             if (inner != null) {
                 inner.flush();
             }
-        } else {
-            /*
-             * No know parameter value for this default implementation.
-             */
         }
         table.nextLine();
     }

@@ -22,7 +22,6 @@ import java.io.Writer;
 import org.geotools.data.complex.FeatureTypeMapping;
 import org.geotools.data.jdbc.FilterToSQL;
 import org.geotools.data.jdbc.FilterToSQLException;
-import org.geotools.jdbc.JDBCDataStore;
 import org.opengis.filter.Filter;
 import org.opengis.filter.expression.Expression;
 
@@ -32,12 +31,10 @@ public final class WrappedFilterToSql {
     private final StringWriter out = new StringWriter();
 
     private final FeatureTypeMapping featureMapping;
-    private final JDBCDataStore store;
     private final FilterToSQL filterToSql;
 
     public WrappedFilterToSql(FeatureTypeMapping featureMapping, FilterToSQL filterToSql) {
         this.featureMapping = featureMapping;
-        this.store = (JDBCDataStore) featureMapping.getSource().getDataStore();
         this.filterToSql = filterToSql;
         filterToSql.setWriter(out);
     }

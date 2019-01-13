@@ -41,8 +41,6 @@ public class BlendComposite implements Composite {
 
     private static final int UBYTE_MAX_VALUE = 255;
 
-    private static final double D_UBYTE_MAX_VALUE = UBYTE_MAX_VALUE;
-
     static final int RED = 0;
 
     static final int GREEN = 1;

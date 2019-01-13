@@ -23,6 +23,7 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.RenderedImage;
 import java.util.Locale;
+import java.util.Objects;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.PixelTranslation;
@@ -1214,6 +1215,22 @@ public class GridGeometry2D extends GeneralGridGeometry {
             // and should be strictly derived from gridToCRS2D anyway.
         }
         return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(
+                super.hashCode(),
+                crs2D,
+                gridDimensionX,
+                gridDimensionY,
+                axisDimensionX,
+                axisDimensionY,
+                gridToCRS2D,
+                gridFromCRS2D,
+                cornerToCRS2D,
+                crsToCorner2D,
+                arbitraryToInternal);
     }
 
     /**

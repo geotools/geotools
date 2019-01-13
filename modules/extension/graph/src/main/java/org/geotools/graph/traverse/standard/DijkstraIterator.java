@@ -187,15 +187,6 @@ public class DijkstraIterator extends SourceGraphIterator {
                 // calculate cost from current node to related node
                 double cost = weighter.getWeight(currdn.node.getEdge(related)) + currdn.cost;
 
-                // calculate the cost of going through the node
-                if (nweighter != null) {
-                    double ncost = 0d;
-                    if (currdn.parent != null) {
-                        Edge e1 = currdn.parent.node.getEdge(currdn.node);
-                        Edge e2 = currdn.node.getEdge(related);
-                        ncost = nweighter.getWeight(currdn.node, e1, e2);
-                    }
-                }
                 // if cost less than current cost of related node, update
                 if (cost < reldn.cost) {
                     reldn.cost = cost;

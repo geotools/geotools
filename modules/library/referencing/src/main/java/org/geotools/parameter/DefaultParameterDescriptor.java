@@ -536,6 +536,7 @@ public class DefaultParameterDescriptor<T> extends AbstractParameterDescriptor
      *     versions of this class.
      */
     @Override
+    @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int hashCode() {
         int code = super.hashCode() * 37 + valueClass.hashCode();
         if (defaultValue != null) code += (37) * defaultValue.hashCode();

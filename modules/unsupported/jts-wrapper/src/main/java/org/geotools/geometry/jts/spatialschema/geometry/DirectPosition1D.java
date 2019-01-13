@@ -22,6 +22,7 @@
 package org.geotools.geometry.jts.spatialschema.geometry;
 
 import java.io.Serializable;
+import java.util.Objects;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -177,6 +178,14 @@ public class DirectPosition1D implements DirectPosition, Serializable, Cloneable
     @Override
     public String toString() {
         return DirectPosition2D.toString(this, getCoordinates());
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        DirectPosition1D that = (DirectPosition1D) o;
+        return Double.compare(that.ordinate, ordinate) == 0 && Objects.equals(crs, that.crs);
     }
 
     /**

@@ -1524,7 +1524,7 @@ public class RasterManager implements Cloneable {
                             reader.removeCoverage(coverageName, false);
                         }
                     } else if (deleteData) {
-                        final boolean removed = FileUtils.deleteQuietly(URLs.urlToFile(rasterPath));
+                        FileUtils.deleteQuietly(URLs.urlToFile(rasterPath));
                     }
                 } finally {
                     if (coverageReader != null) {

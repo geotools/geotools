@@ -22,6 +22,7 @@ package org.geotools.referencing.operation.projection;
 
 import static java.lang.Math.*;
 
+import java.util.Objects;
 import org.geotools.metadata.i18n.Vocabulary;
 import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.metadata.iso.citation.Citations;
@@ -179,6 +180,11 @@ public abstract class Stereographic extends MapProjection {
             return Utilities.equals(this.descriptor, that.descriptor);
         }
         return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), descriptor);
     }
 
     //////////////////////////////////////////////////////////////////////////////////////////

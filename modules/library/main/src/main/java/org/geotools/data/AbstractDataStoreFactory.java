@@ -162,7 +162,6 @@ public abstract class AbstractDataStoreFactory implements DataStoreFactorySpi {
         Param params[] = getParametersInfo();
         DefaultParameterDescriptor parameters[] = new DefaultParameterDescriptor[params.length];
         for (int i = 0; i < params.length; i++) {
-            Param param = params[i];
             parameters[i] = new ParamDescriptor(params[i]);
         }
         Map properties = new HashMap();
@@ -202,4 +201,4 @@ class ParamDescriptor extends DefaultParameterDescriptor {
             }
         };
     }
-};
+}

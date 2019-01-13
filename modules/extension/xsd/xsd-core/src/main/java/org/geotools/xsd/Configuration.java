@@ -329,7 +329,6 @@ public abstract class Configuration {
                  * http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6268068
                  */
                 q.removeAll(Collections.singletonList(i));
-                ;
                 q.add(i);
             }
         }

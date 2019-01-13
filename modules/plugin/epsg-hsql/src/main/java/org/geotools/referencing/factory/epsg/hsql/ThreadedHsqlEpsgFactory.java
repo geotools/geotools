@@ -74,6 +74,7 @@ public class ThreadedHsqlEpsgFactory extends ThreadedEpsgFactory {
      * version number if there is some changes related to the EPSG-HSQL plugin rather then the EPSG
      * database itself (for example additional database index).
      */
+    @SuppressWarnings("PMD.AvoidUsingHardCodedIP")
     public static final Version VERSION = new Version("8.6.0.1");
 
     /**

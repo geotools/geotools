@@ -251,6 +251,7 @@ public class XmlComplexFeatureParser extends XmlFeatureParser<FeatureType, Featu
      * @throws XmlPullParserException
      * @throws IOException
      */
+    @SuppressWarnings("PMD.EmptyWhileStmt")
     private ReturnAttribute parseNextAttribute(ComplexType complexType)
             throws XmlPullParserException, IOException {
 

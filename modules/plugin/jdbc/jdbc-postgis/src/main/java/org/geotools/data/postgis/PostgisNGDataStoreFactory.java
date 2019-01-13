@@ -199,8 +199,7 @@ public class PostgisNGDataStoreFactory extends JDBCDataStoreFactory {
         if (largeGeometriesOptimized != null) {
             encodeBBOXAsEnvelope = largeGeometriesOptimized.toLowerCase().equals("true");
         }
-        dialect.setEncodeBBOXFilterAsEnvelope(
-                encodeBBOXAsEnvelope != null && Boolean.TRUE.equals(encodeBBOXAsEnvelope));
+        dialect.setEncodeBBOXFilterAsEnvelope(Boolean.TRUE.equals(encodeBBOXAsEnvelope));
 
         return dataStore;
     }

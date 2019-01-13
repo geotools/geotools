@@ -152,7 +152,6 @@ public class IsSimpleOp {
         Map endPoints = new TreeMap();
         for (Iterator i = graph.getEdgeIterator(); i.hasNext(); ) {
             Edge e = (Edge) i.next();
-            int maxSegmentIndex = e.getMaximumSegmentIndex();
             boolean isClosed = e.isClosed();
             Coordinate p0 = e.getCoordinate(0);
             addEndpoint(endPoints, p0, isClosed);

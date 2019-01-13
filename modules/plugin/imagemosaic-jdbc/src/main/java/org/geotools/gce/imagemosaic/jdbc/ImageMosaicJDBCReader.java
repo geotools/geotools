@@ -383,9 +383,7 @@ public class ImageMosaicJDBCReader extends AbstractGridCoverage2DReader {
                                     state.getRequestEnvelopeTransformed().getSpan(0));
                     state.setRequestEnvelopeTransformed(new GeneralEnvelope(tmp));
                     state.getRequestEnvelopeTransformed().setCoordinateReferenceSystem(crs);
-                } else if (indexX == indexRequestedX && indexY == indexRequestedY) {
-                    // everything is fine
-                } else {
+                } else if (indexX != indexRequestedX || indexY != indexRequestedY) {
                     throw new DataSourceException("Unable to resolve the X Axis problem");
                 }
             }

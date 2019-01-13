@@ -24,7 +24,6 @@ import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.awt.image.RenderedImage;
 import java.io.IOException;
-import java.util.logging.Logger;
 import javax.media.jai.Interpolation;
 import javax.media.jai.JAI;
 import org.geotools.coverage.grid.GridCoverage2D;
@@ -68,10 +67,6 @@ import org.opengis.referencing.operation.TransformException;
  * RenderedImage}
  */
 public abstract class RenderingTransformationHelper {
-
-    /** The logger for the rendering module. */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(RenderingTransformationHelper.class);
 
     private static final FilterFactory2 filterFactory = CommonFactoryFinder.getFilterFactory2(null);
 

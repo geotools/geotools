@@ -50,8 +50,6 @@ public class AsyncTileLayer extends TileLayer {
             ReferencedEnvelope viewportExtent,
             AffineTransform worldToImageTransform) {
 
-        long t = System.currentTimeMillis();
-
         this.countDownLatch = new CountDownLatch(tiles.size());
 
         localRenderTiles(tiles, g2d, viewportExtent, worldToImageTransform);

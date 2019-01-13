@@ -298,17 +298,6 @@ final class LocalizationGridTransform2D extends AbstractMathTransform
             }
             srcOff += postIncrement;
             dstOff += postIncrement;
-            if (false) {
-                final java.io.PrintStream out = System.out;
-                out.print("TD  ==> xi : ");
-                out.print(xi);
-                out.print(" / yi : ");
-                out.print(yi);
-                out.print("  --->  xo : ");
-                out.print(xf);
-                out.print(" / yo : ");
-                out.println(yf);
-            }
         }
     }
 

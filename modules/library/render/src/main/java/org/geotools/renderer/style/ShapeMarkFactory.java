@@ -24,7 +24,6 @@ import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Logger;
 import org.geotools.renderer.util.ExplicitBoundsShape;
 import org.opengis.feature.Feature;
 import org.opengis.filter.expression.Expression;
@@ -32,10 +31,6 @@ import org.opengis.filter.expression.Expression;
 public class ShapeMarkFactory implements MarkFactory {
 
     private static final String SHAPE_PREFIX = "shape://";
-
-    /** The logger for the rendering module. */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(ShapeMarkFactory.class);
 
     static Map<String, Shape> shapes = new HashMap<String, Shape>();
 

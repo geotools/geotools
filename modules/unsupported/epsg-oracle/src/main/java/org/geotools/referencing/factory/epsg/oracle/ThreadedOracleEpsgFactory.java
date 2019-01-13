@@ -165,18 +165,19 @@ public class ThreadedOracleEpsgFactory extends ThreadedEpsgFactory {
             return source;
         }
         final Properties p = load();
-        int portNumber;
-        try {
-            portNumber = Integer.parseInt(p.getProperty("portNumber", "5432"));
-        } catch (NumberFormatException exception) {
-            portNumber = 5432;
-            Logging.unexpectedException(
-                    "org.geotools.referencing.factory", DataSource.class, "<init>", exception);
-        }
-        String serverName = p.getProperty("serverName", "localhost");
-        String databaseName = p.getProperty("databaseName", "EPSG");
-        String user = p.getProperty("user", "Geotools");
-        String password = p.getProperty("password", "Geotools");
+        //        int portNumber;
+        //        try {
+        //            portNumber = Integer.parseInt(p.getProperty("portNumber", "5432"));
+        //        } catch (NumberFormatException exception) {
+        //            portNumber = 5432;
+        //            Logging.unexpectedException(
+        //                    "org.geotools.referencing.factory", DataSource.class, "<init>",
+        // exception);
+        //        }
+        //        String serverName = p.getProperty("serverName", "localhost");
+        //        String databaseName = p.getProperty("databaseName", "EPSG");
+        //        String user = p.getProperty("user", "Geotools");
+        //        String password = p.getProperty("password", "Geotools");
         schema = p.getProperty("schema", null);
 
         return source;

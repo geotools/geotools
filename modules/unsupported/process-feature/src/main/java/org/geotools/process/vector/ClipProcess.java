@@ -425,7 +425,7 @@ public class ClipProcess implements VectorProcess {
                 double z = sum / weights;
                 // apply safe rounding to avoid numerical issues with the above calculation due
                 // to the weights being, often, very small numbers
-                BigDecimal bd = new BigDecimal(z);
+                BigDecimal bd = BigDecimal.valueOf(z);
                 double rz = bd.setScale(scale, BigDecimal.ROUND_HALF_EVEN).doubleValue();
                 seq.setOrdinate(i, 2, rz);
             }

@@ -205,12 +205,10 @@ public class FeatureTypes {
         tb.setNamespaceURI(schema.getName().getNamespaceURI());
         tb.setAbstract(schema.isAbstract());
 
-        GeometryDescriptor defaultGeometryType = null;
         for (int i = 0; i < schema.getAttributeCount(); i++) {
             AttributeDescriptor attributeType = schema.getDescriptor(i);
             if (attributeType instanceof GeometryDescriptor) {
                 GeometryDescriptor geometryType = (GeometryDescriptor) attributeType;
-                AttributeDescriptor forced;
 
                 tb.descriptor(geometryType);
                 if (!forceOnlyMissing || geometryType.getCoordinateReferenceSystem() == null) {

@@ -268,7 +268,6 @@ public class GeobufGeometry {
         if (numberOfLengths == 0) {
             listOfCoordinates.add(getAllCoordinates(g));
         } else {
-            int c = 0;
             int start = 0;
             for (int i = 0; i < numberOfLengths; i++) {
                 int len = g.getLengths(i);

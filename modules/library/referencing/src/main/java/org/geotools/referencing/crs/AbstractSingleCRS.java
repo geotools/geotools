@@ -158,6 +158,7 @@ public class AbstractSingleCRS extends AbstractCRS implements SingleCRS {
      *     versions of this class.
      */
     @Override
+    @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int hashCode() {
         return super.hashCode() ^ datum.hashCode();
     }

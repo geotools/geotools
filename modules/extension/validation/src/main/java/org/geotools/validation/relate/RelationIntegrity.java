@@ -86,7 +86,7 @@ public abstract class RelationIntegrity extends DefaultIntegrityValidation {
      * @param typeRefB A String with the restrictedPolygonTypeRef to set.
      */
     public final void setGeomTypeRefB(String typeRefB) {
-        if (typeRefB.equals("") || typeRefB == null) typeRefB = EMPTY;
+        if (typeRefB == null || typeRefB.equals("")) this.geomTypeRefB = EMPTY;
         else this.geomTypeRefB = typeRefB;
     }
 

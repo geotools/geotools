@@ -404,8 +404,6 @@ public class GML {
         } else if (prefix != null && namespace != null) {
             // ignore namespace URI in feature type
             transform.getFeatureTypeNamespaces().declareNamespace(TYPE, prefix, namespace);
-        } else {
-            // hopefully that works out for you then
         }
 
         // we probably need to do a wfs feaure collection here?

@@ -92,7 +92,7 @@ public class GeoJSONDataStoreFactory implements DataStoreFactorySpi {
     public synchronized boolean isAvailable() {
         if (isAvailable == null) {
             try {
-                Class geoJSONReaderType = Class.forName("org.geotools.geojson.feature.FeatureJSON");
+                Class.forName("org.geotools.geojson.feature.FeatureJSON");
                 isAvailable = true;
             } catch (ClassNotFoundException e) {
                 isAvailable = false;

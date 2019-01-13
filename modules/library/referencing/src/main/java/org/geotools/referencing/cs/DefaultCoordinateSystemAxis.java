@@ -1301,6 +1301,7 @@ public class DefaultCoordinateSystemAxis extends AbstractIdentifiedObject
      * versions of this class.
      */
     @Override
+    @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int hashCode() {
         int code = (int) serialVersionUID;
         code = code * 37 + abbreviation.hashCode();

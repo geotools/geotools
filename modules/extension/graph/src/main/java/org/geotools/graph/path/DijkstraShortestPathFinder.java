@@ -35,9 +35,6 @@ import org.geotools.graph.traverse.standard.DijkstraIterator.NodeWeighter;
  */
 public class DijkstraShortestPathFinder implements GraphWalker {
 
-    /** Graphs to calculate paths for * */
-    private Graph m_graph;
-
     /** Graph traversal used for the dijkstra iteration * */
     private GraphTraversal m_traversal;
 
@@ -51,7 +48,6 @@ public class DijkstraShortestPathFinder implements GraphWalker {
      * @param iterator The dijsktra iterator to used to calculate shortest paths.
      */
     public DijkstraShortestPathFinder(Graph graph, DijkstraIterator iterator) {
-        m_graph = graph;
         m_iterator = iterator;
         m_traversal = new BasicGraphTraversal(graph, this, iterator);
     }
@@ -77,7 +73,6 @@ public class DijkstraShortestPathFinder implements GraphWalker {
      */
     public DijkstraShortestPathFinder(
             Graph graph, Graphable source, EdgeWeighter weighter, NodeWeighter nweighter) {
-        m_graph = graph;
         m_iterator = new DijkstraIterator(weighter, nweighter);
         m_iterator.setSource(source);
         m_traversal = new BasicGraphTraversal(graph, this, m_iterator);

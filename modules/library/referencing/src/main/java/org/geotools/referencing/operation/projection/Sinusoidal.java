@@ -130,16 +130,6 @@ public class Sinusoidal extends MapProjection {
         }
     }
 
-    /** Compares the specified object with this map projection for equality. */
-    @Override
-    public boolean equals(final Object object) {
-        if (object == this) {
-            // Slight optimization
-            return true;
-        }
-        return super.equals(object);
-    }
-
     //////////////////////////////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////////////////////
     ////////                                                                          ////////

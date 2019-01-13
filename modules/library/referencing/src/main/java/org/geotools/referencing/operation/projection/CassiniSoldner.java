@@ -43,9 +43,6 @@ import org.opengis.referencing.operation.MathTransform;
  */
 public class CassiniSoldner extends MapProjection {
 
-    /** Maximum number of iterations for iterative computations. */
-    private static final int MAXIMUM_ITERATIONS = 15;
-
     /**
      * Meridian distance at the {@code latitudeOfOrigin}. Used for calculations for the ellipsoid.
      */

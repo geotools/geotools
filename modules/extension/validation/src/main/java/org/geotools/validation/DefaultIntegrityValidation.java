@@ -17,7 +17,6 @@
 package org.geotools.validation;
 
 import java.util.Map;
-import java.util.logging.Logger;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 
 /**
@@ -31,10 +30,6 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
  * @version $Id$
  */
 public class DefaultIntegrityValidation implements IntegrityValidation {
-    /** The logger for the validation module. */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(DefaultIntegrityValidation.class);
-
     /** User's Name of this integrity test. */
     private String name;
 

@@ -111,7 +111,6 @@ public class VectorZonalStatistics implements VectorProcess {
                 }
                 tb.add("z_" + att.getLocalName(), att.getType().getBinding());
             }
-            AttributeDescriptor dataDescriptor = data.getSchema().getDescriptor(dataAttribute);
             tb.add("count", Long.class);
             tb.add("min", Double.class);
             tb.add("max", Double.class);

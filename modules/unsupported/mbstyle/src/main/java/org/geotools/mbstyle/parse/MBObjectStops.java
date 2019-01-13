@@ -204,8 +204,6 @@ public class MBObjectStops {
     }
 
     LayerStops containsStops(JSONObject jsonObject, LayerStops ls) {
-        Boolean hasStops = false;
-
         Set<?> keySet = jsonObject.keySet();
         Iterator<?> keys = keySet.iterator();
         while (keys.hasNext()) {

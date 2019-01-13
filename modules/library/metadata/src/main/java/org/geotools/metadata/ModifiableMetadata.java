@@ -222,10 +222,9 @@ public abstract class ModifiableMetadata extends AbstractMetadata implements Clo
                 collection = UnmodifiableArrayList.wrap(array);
                 if (collection instanceof Set) {
                     collection = Collections.unmodifiableSet(new LinkedHashSet<Object>(collection));
-                } else {
-                    // Conservatively assumes a List if we are not sure to have a Set,
-                    // since the list is less destructive (no removal of duplicated).
                 }
+                // Conservatively assumes a List if we are not sure to have a Set,
+                // since the list is less destructive (no removal of duplicated).
             }
             return collection;
         }

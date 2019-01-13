@@ -541,7 +541,9 @@ public class MBTilesFile implements AutoCloseable {
         try {
             Statement st = cx.createStatement();
             ResultSet rs = st.executeQuery("SELECT COUNT(*) FROM " + TABLE_TILES + ";");
-            rs.next();
+            if (!rs.next()) {
+                throw new SQLException("Tiles count did not return any row");
+            }
             size = rs.getInt(1);
             rs.close();
             st.close();
@@ -560,7 +562,9 @@ public class MBTilesFile implements AutoCloseable {
                             .set(zoomLevel)
                             .statement();
             ResultSet rs = ps.executeQuery();
-            rs.next();
+            if (!rs.next()) {
+                throw new SQLException("Zoom level count did not return any row");
+            }
             size = rs.getInt(1);
             rs.close();
             ps.close();
@@ -689,7 +693,6 @@ public class MBTilesFile implements AutoCloseable {
                             .set(zoomLevel)
                             .statement();
             ResultSet rs = ps.executeQuery();
-            rs.next();
             if (rs.next()) {
                 size = rs.getLong(1);
             }
@@ -714,8 +717,9 @@ public class MBTilesFile implements AutoCloseable {
                             .set(zoomLevel)
                             .statement();
             ResultSet rs = ps.executeQuery();
-            rs.next();
-            size = rs.getLong(1);
+            if (rs.next()) {
+                size = rs.getLong(1);
+            }
             rs.close();
             ps.close();
         } finally {

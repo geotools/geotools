@@ -26,7 +26,6 @@ import org.geotools.xsd.Node;
 import org.opengis.filter.BinaryComparisonOperator;
 import org.opengis.filter.BinaryLogicOperator;
 import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory;
 import org.opengis.filter.Id;
 import org.opengis.filter.Not;
 import org.opengis.filter.PropertyIsBetween;
@@ -63,11 +62,6 @@ import org.picocontainer.MutablePicoContainer;
  * @generated
  */
 public class OGCBinaryLogicOpTypeBinding extends AbstractComplexBinding {
-    private FilterFactory factory;
-
-    public OGCBinaryLogicOpTypeBinding(FilterFactory factory) {
-        this.factory = factory;
-    }
 
     /** @generated */
     public QName getTarget() {

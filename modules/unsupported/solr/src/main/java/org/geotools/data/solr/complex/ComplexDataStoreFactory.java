@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 import org.apache.commons.digester.Digester;
 import org.geotools.appschema.filter.FilterFactoryImplReportInvalidProperty;
 import org.geotools.data.DataAccess;
@@ -313,51 +312,6 @@ public final class ComplexDataStoreFactory implements CustomSourceDataStore {
     //
     //        return attributes;
     //    }
-
-    private Set<String> parseSourceModeAttributes(TypeMapping mapping) {
-        Set<String> attributes = new HashSet<>();
-        ((List<AttributeMapping>) mapping.getAttributeMappings())
-                .forEach(
-                        attributeMapping -> {
-                            // mapped attributes
-                            Expression expression =
-                                    parseExpression(attributeMapping.getSourceExpression());
-                            attributes.addAll(extractAttributesNames(expression));
-                            if (attributeMapping.getMultipleValue() instanceof SolrMultipleValue) {
-                                expression =
-                                        ((SolrMultipleValue) attributeMapping.getMultipleValue())
-                                                .getExpression();
-                                attributes.addAll(extractAttributesNames(expression));
-                            }
-                            // mapped identifiers
-                            expression =
-                                    parseExpression(attributeMapping.getIdentifierExpression());
-                            attributes.addAll(extractAttributesNames(expression));
-                            // mapped client properties
-                            attributes.addAll(
-                                    (Set<String>)
-                                            attributeMapping
-                                                    .getClientProperties()
-                                                    .values()
-                                                    .stream()
-                                                    .flatMap(
-                                                            value ->
-                                                                    extractAttributesNames(
-                                                                                    parseExpression(
-                                                                                            value))
-                                                                            .stream())
-                                                    .collect(Collectors.toSet()));
-                        });
-        return attributes;
-    }
-
-    private Set<String> parseAttributeNames(TypeMapping mapping, SourceDataStore dataStoreConfig) {
-        // if mapping index points to dataStore: is index use case
-        //        if (dataStoreConfig.getId().equals(mapping.getIndexDataStore())) {
-        //            return parseIndexModeAttributes(mapping);
-        //        }
-        return parseSourceModeAttributes(mapping);
-    }
 
     private String getTypeName(TypeMapping mapping, SourceDataStore dataStoreConfig) {
         if (dataStoreConfig.getId().equals(mapping.getIndexDataStore())) {

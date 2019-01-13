@@ -38,6 +38,7 @@ import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.operation.projection.PolarStereographic;
 import org.geotools.referencing.operation.transform.IdentityTransform;
+import org.hamcrest.CoreMatchers;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
@@ -612,7 +613,7 @@ public class ProjectionHandlerTest {
         // post process, this should wrap the geometry, make sure it's valid, and avoid large jumps
         // in its border
         Geometry postProcessed = handler.postProcess(prepared, reprojected);
-        assertTrue(postProcessed instanceof MultiPolygon);
+        assertThat(postProcessed, CoreMatchers.instanceOf(MultiPolygon.class));
         assertEquals(2, postProcessed.getNumGeometries());
     }
 

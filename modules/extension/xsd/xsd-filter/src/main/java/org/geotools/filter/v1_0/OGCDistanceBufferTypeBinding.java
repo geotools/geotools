@@ -20,7 +20,6 @@ import javax.xml.namespace.QName;
 import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
-import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.spatial.DistanceBufferOperator;
 import org.picocontainer.MutablePicoContainer;
 
@@ -49,11 +48,6 @@ import org.picocontainer.MutablePicoContainer;
  * @generated
  */
 public class OGCDistanceBufferTypeBinding extends AbstractComplexBinding {
-    private FilterFactory2 factory;
-
-    public OGCDistanceBufferTypeBinding(FilterFactory2 factory) {
-        this.factory = factory;
-    }
 
     /** @generated */
     public QName getTarget() {

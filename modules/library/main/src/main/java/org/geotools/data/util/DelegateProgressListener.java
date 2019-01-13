@@ -21,8 +21,6 @@ import org.opengis.util.InternationalString;
 /** Base class for progress listeners that delegate to other progress listeners */
 public class DelegateProgressListener implements org.opengis.util.ProgressListener {
     protected org.opengis.util.ProgressListener delegate;
-    private InternationalString task;
-    private boolean isCanceled;
 
     public DelegateProgressListener(org.opengis.util.ProgressListener progress) {
         if (progress == null) progress = new NullProgressListener();

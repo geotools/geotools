@@ -305,7 +305,6 @@ public class StyleFactoryImpl extends AbstractStyleFactory
 
         if (opacity == null) {
             opacity = Stroke.DEFAULT.getOpacity();
-            ;
         }
         stroke.setOpacity(opacity);
 

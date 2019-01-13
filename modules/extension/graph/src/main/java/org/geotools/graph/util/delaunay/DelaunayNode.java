@@ -16,6 +16,7 @@
  */
 package org.geotools.graph.util.delaunay;
 
+import java.util.Objects;
 import org.geotools.graph.structure.line.BasicXYNode;
 import org.opengis.feature.simple.SimpleFeature;
 
@@ -39,6 +40,11 @@ public class DelaunayNode extends BasicXYNode {
         return ((o instanceof DelaunayNode)
                 && (this.getCoordinate().x == ((DelaunayNode) o).getCoordinate().x)
                 && (this.getCoordinate().y == ((DelaunayNode) o).getCoordinate().y));
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getCoordinate().x, getCoordinate().y);
     }
 
     /*    waiting until we use 1.5 and Math.log10 becomes available!

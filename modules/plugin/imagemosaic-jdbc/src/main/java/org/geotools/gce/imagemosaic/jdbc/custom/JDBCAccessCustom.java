@@ -212,8 +212,6 @@ public abstract class JDBCAccessCustom implements JDBCAccess {
         } catch (Exception e) {
             LOGGER.severe("Cannot parse Decode CRS from Config File " + e.getMessage());
             throw new RuntimeException(e);
-        } finally {
-
         }
 
         LOGGER.fine("Returning CRS Result");

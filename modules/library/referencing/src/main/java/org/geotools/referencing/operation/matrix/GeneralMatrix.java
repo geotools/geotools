@@ -959,9 +959,7 @@ public class GeneralMatrix implements XMatrix, Serializable {
      * @param numCols The new number of columns in the matrix.
      */
     public void setSize(int numRows, int numCols) {
-        if (numRows == mat.numCols && numCols == mat.numCols) {
-            // do nothing
-        } else {
+        if (numRows != mat.numCols || numCols != mat.numCols) {
             // grow or shrink
             DMatrixRMaj ret = new DMatrixRMaj(numRows, numCols);
             CommonOps_DDRM.extract(mat, 0, numRows, 0, numCols, ret, 0, 0);

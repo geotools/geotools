@@ -85,7 +85,10 @@ public class GraphPartitioner implements GraphWalker {
 
                 // find a node that hasn't been visited and set as source of traversal
                 Node source = null;
-                while (sources.hasNext() && (source = (Node) sources.next()).isVisited()) ;
+                while (sources.hasNext()) {
+                    source = (Node) sources.next();
+                    if (!source.isVisited()) break;
+                }
 
                 // if we could not find a source, return false
                 if (source == null || source.isVisited()) return (false);

@@ -16,7 +16,6 @@
  */
 package org.geotools.ows.wmts.client;
 
-import java.io.File;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -84,8 +83,6 @@ public class WMTSTileService extends TileService {
     private WMTSServiceType type = WMTSServiceType.REST;
 
     private String format = "image/png";
-
-    private File cachedGetCapabilities = null;
 
     private Map<String, String> dimensions = new HashMap<>();
 

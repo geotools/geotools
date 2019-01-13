@@ -694,14 +694,12 @@ public class LabelCacheImpl implements LabelCache {
         // ... use at least a 8 pixel step (curved processing is quite expensive), no matter what
         // the label length is
         final double step = painter.getLineHeight() > 8 ? painter.getLineHeight() : 8;
-        int space = labelItem.getSpaceAround();
         // repetition distance, if any
         int labelDistance = labelItem.getRepeat();
         if (labelDistance > 0 && labelItem.isFollowLineEnabled()) {
             labelDistance += textBounds.getWidth();
         }
         // min distance, if any
-        int minDistance = labelItem.getMinGroupDistance();
         LabelIndex groupLabels = new LabelIndex();
         // Max displacement for the current label
         double labelOffset = labelItem.getMaxDisplacement();

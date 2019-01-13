@@ -156,39 +156,6 @@ public class HeatmapSurface {
     }
 
     /**
-     * DON'T USE This method is too simplistic to determine normalization factor. Would need to use
-     * a full 2D grid and smooth it to get correct value
-     *
-     * @param baseBoxKernelRadius
-     * @param radiusIncBreak
-     */
-    private void testNormalizeFactor(int baseBoxKernelRadius, int radiusIncBreak) {
-        double val = 1.0;
-        for (int count = 0; count < GAUSSIAN_APPROX_ITER; count++) {
-            int boxKernelRadius = baseBoxKernelRadius;
-            /** If required, increment radius to ensure sum of radii equals total kernel radius */
-            if (count < radiusIncBreak) boxKernelRadius++;
-
-            int dia = 2 * boxKernelRadius + 1;
-            float kernelVal = kernelVal(boxKernelRadius);
-            // System.out.println(boxKernelRadius + " kernel val = " + kernelVal);
-
-            if (count == 0) {
-                val = val * 1 * kernelVal;
-            } else {
-                val = val * dia * kernelVal;
-            }
-            // System.out.println("norm val = " + val);
-            if (count == 0) {
-                val = val * 1 * kernelVal;
-            } else {
-                val = val * dia * kernelVal;
-            }
-        }
-        // System.out.println("norm factor = " + val);
-    }
-
-    /**
      * Normalizes grid values to range [0,1]
      *
      * @param grid

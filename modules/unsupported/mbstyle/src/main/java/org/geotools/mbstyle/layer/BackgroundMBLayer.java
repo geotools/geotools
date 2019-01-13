@@ -56,14 +56,11 @@ public class BackgroundMBLayer extends MBLayer {
 
     private JSONObject paint;
 
-    private JSONObject layout;
-
     private static String TYPE = "background";
 
     public BackgroundMBLayer(JSONObject json) {
         super(json, new MBObjectParser(BackgroundMBLayer.class));
         paint = paint();
-        layout = layout();
     }
 
     @Override

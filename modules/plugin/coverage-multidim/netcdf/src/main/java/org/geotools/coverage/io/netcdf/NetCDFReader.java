@@ -841,7 +841,7 @@ public class NetCDFReader extends AbstractGridCoverage2DReader
     public int getNumOverviews(String coverageName) {
         coverageName = checkUnspecifiedCoverage(coverageName);
         try {
-            final CoverageSource source = getGridCoverageSource(coverageName);
+            getGridCoverageSource(coverageName);
             // Make sure that coverageName exists
             return 0;
         } catch (IOException e) {

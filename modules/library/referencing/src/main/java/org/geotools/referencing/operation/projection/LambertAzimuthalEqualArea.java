@@ -279,18 +279,16 @@ public class LambertAzimuthalEqualArea extends MapProjection {
                         lambda = 0.0;
                         phi = latitudeOfOrigin;
                     } else {
-                        double sCe, cCe, q, ab;
+                        double sCe, cCe, ab;
                         sCe = 2.0 * asin(0.5 * rho / rq);
                         cCe = cos(sCe);
                         sCe = sin(sCe);
                         x *= sCe;
                         if (mode == OBLIQUE) {
                             ab = cCe * sinb1 + y * sCe * cosb1 / rho;
-                            q = qp * ab;
                             y = rho * cosb1 * cCe - y * sinb1 * sCe;
                         } else {
                             ab = y * sCe / rho;
-                            q = qp * ab;
                             y = rho * cCe;
                         }
                         lambda = atan2(x, y);

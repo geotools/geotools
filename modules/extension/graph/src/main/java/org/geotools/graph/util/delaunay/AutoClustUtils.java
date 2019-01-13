@@ -19,7 +19,6 @@ package org.geotools.graph.util.delaunay;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Vector;
-import java.util.logging.Logger;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.graph.structure.Edge;
@@ -32,9 +31,6 @@ import org.opengis.feature.simple.SimpleFeature;
 
 /** @author jfc173 */
 public class AutoClustUtils {
-
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(AutoClustUtils.class);
 
     /** Creates a new instance of AutoClustUtils */
     public AutoClustUtils() {}
@@ -64,10 +60,7 @@ public class AutoClustUtils {
             final Collection edges,
             final Collection componentNodes,
             final Collection componentEdges) {
-        if (componentNodes.contains(node)) {
-            // base case.  I've already expanded on node, so no need to repeat the process.
-            //            LOGGER.fine("I've already expanded from " + node);
-        } else {
+        if (!componentNodes.contains(node)) {
             componentNodes.add(node);
             //            LOGGER.finer("Adding " + node + " to component");
             Vector adjacentEdges =

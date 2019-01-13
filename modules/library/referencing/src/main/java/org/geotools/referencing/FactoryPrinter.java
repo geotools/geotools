@@ -50,18 +50,8 @@ final class FactoryPrinter implements Comparator<Class<?>> {
      * display them.
      */
     public int compare(final Class<?> factory1, final Class<?> factory2) {
-        if (false) {
-            // Sort authority factory last
-            final boolean isAuthority1 = AuthorityFactory.class.isAssignableFrom(factory1);
-            final boolean isAuthority2 = AuthorityFactory.class.isAssignableFrom(factory2);
-            if (isAuthority1 && !isAuthority2) return +1;
-            if (isAuthority2 && !isAuthority1) return -1;
-            return 0;
-        } else {
-            // Or sort by name
-            return Classes.getShortName(factory1)
-                    .compareToIgnoreCase(Classes.getShortName(factory2));
-        }
+        // Or sort by name
+        return Classes.getShortName(factory1).compareToIgnoreCase(Classes.getShortName(factory2));
     }
 
     /**

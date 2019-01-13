@@ -81,21 +81,15 @@ public class GMLCoordTypeBinding extends AbstractComplexBinding {
      * @generated modifiable
      */
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
-        int dimension = 1;
-        double x;
-        double y;
-        double z;
-        x = y = z = Double.NaN;
-
-        x = ((BigDecimal) node.getChild("X").getValue()).doubleValue();
+        double x = ((BigDecimal) node.getChild("X").getValue()).doubleValue();
+        double y = Double.NaN;
+        double z = Double.NaN;
 
         if (!node.getChildren("Y").isEmpty()) {
-            dimension++;
             y = ((BigDecimal) node.getChild("Y").getValue()).doubleValue();
         }
 
         if (!node.getChildren("Z").isEmpty()) {
-            dimension++;
             z = ((BigDecimal) node.getChild("Z").getValue()).doubleValue();
         }
 

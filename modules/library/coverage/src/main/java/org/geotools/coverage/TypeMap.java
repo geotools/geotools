@@ -72,9 +72,6 @@ public final class TypeMap {
         new TypeMap(REAL_64BITS, DataBuffer.TYPE_DOUBLE, (byte) 64, true, true, M2, P2, pool);
     };
 
-    /** One of {@link SampleDimensionType} code list. */
-    private final SampleDimensionType code;
-
     /**
      * The {@link DataBuffer} type. Must be one of the following constants: {@link
      * DataBuffer#TYPE_BYTE}, {@link DataBuffer#TYPE_USHORT}, {@link DataBuffer#TYPE_SHORT}, {@link
@@ -166,7 +163,6 @@ public final class TypeMap {
         }
         assert ((Comparable) lower).compareTo(upper) < 0 : upper;
         final Class<? extends Number> c = upper.getClass();
-        this.code = code;
         this.type = type;
         this.size = size;
         this.signed = signed;

@@ -832,7 +832,6 @@ public class FilterOpsComplexTypes {
                         return;
                 }
             } else if (value instanceof Not) {
-                Not lf = (Not) value;
                 UnaryLogicOpType.getInstance()
                         .encode(
                                 new FilterElement("Not", UnaryLogicOpType.getInstance(), element),
@@ -2617,14 +2616,9 @@ public class FilterOpsComplexTypes {
                 throws SAXException {
             FilterFactory2 factory = FilterSchema.filterFactory(hints);
             String name = element.getName();
-            short type;
-            if ("and".equalsIgnoreCase(name)) {
-                type = FilterType.LOGIC_AND;
-            } else if ("or".equalsIgnoreCase(name)) {
-                type = FilterType.LOGIC_OR;
-            } else if ("not".equalsIgnoreCase(name)) {
-                type = FilterType.LOGIC_NOT;
-            } else {
+            if (!"and".equalsIgnoreCase(name)
+                    && !"or".equalsIgnoreCase(name)
+                    && !"not".equalsIgnoreCase(name)) {
                 throw new SAXException("Expected AND or OR logic filter");
             }
             if (value == null || value.length != 1) {

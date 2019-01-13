@@ -62,6 +62,7 @@ public class FilterSAXParser {
     private short filterType;
 
     /** factory for creating filters. */
+    @SuppressWarnings("PMD.UnusedPrivateField")
     private FilterFactory2 ff;
 
     /** the Attributes of the filter (only applicable to LIKE filters, I think) */

@@ -106,9 +106,7 @@ public class JDataStorePage extends JPage {
                 if (check == null) {
                     check = "user";
                 }
-                if (level.equals(check)) {
-                    // we are good this is the one we want
-                } else {
+                if (!level.equals(check)) {
                     continue; // skip since it is not the one we want
                 }
             }
@@ -178,7 +176,6 @@ public class JDataStorePage extends JPage {
             if (!entry.getValue().validate()) {
                 return false; // not validate
             }
-            if (entry.getKey().required && entry.getValue().getValue() == null) {}
         }
         return true;
     }

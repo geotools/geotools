@@ -53,9 +53,6 @@ public class ScaleZoomLevelMatcher {
     /** the extent that should be drawn in TileCrs */
     private ReferencedEnvelope mapExtentTileCrs;
 
-    /** the extent that should be drawn in MapCrs */
-    private ReferencedEnvelope mapExtentMapCrs;
-
     /** the current map-scale */
     private double scale;
 
@@ -84,7 +81,6 @@ public class ScaleZoomLevelMatcher {
         this.transformMapToTileCrs = transformMapToTileCrs;
         this.transformTileCrsToMap = transformTileCrsToMap;
         this.mapExtentTileCrs = mapExtentTileCrs;
-        this.mapExtentMapCrs = mapExtentMapCrs;
         this.scale = scale;
     }
 

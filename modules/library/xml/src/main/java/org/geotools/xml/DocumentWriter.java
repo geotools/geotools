@@ -789,11 +789,6 @@ public class DocumentWriter {
 
     private static void writeSimpleType(
             SimpleType simpleType, Schema schema, PrintHandler ph, Map hints) throws IOException {
-        if (XSISimpleTypes.NAMESPACE.equals(simpleType.getNamespace())) {
-            // error - not sure what to do
-            // TODO log the type error - throw an exception?
-        }
-
         AttributesImpl ai = new AttributesImpl();
 
         if ((simpleType.getId() != null) && (simpleType.getId() != "")) {

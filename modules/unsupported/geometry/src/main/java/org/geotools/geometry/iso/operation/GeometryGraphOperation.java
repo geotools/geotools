@@ -76,7 +76,6 @@ public abstract class GeometryGraphOperation {
 
         arg = new GeometryGraph[1];
         arg[0] = new GeometryGraph(0, g0);
-        ;
     }
 
     public GeometryImpl getArgGeometry(int i) {

@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ServiceLoader;
-import java.util.logging.Logger;
 import org.geotools.map.Layer;
 
 /**
@@ -32,8 +31,6 @@ import org.geotools.map.Layer;
  * @version $URL$
  */
 class InfoToolHelperLookup {
-    private static final Logger LOGGER = Logger.getLogger("org.geotools.swing");
-
     private static List<InfoToolHelper> cachedInstances;
 
     public static InfoToolHelper getHelper(Layer layer) {
@@ -55,8 +52,6 @@ class InfoToolHelperLookup {
 
     /** Caches available classes which implement the InfoToolHelper SPI. */
     private static void loadProviders() {
-        List<Class> providers = null;
-
         if (cachedInstances == null) {
             cachedInstances = new ArrayList<InfoToolHelper>();
 

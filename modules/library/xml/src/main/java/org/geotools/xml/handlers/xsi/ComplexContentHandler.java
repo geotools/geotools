@@ -35,6 +35,7 @@ public class ComplexContentHandler extends XSIElementHandler {
     private Object child;
 
     /** @see java.lang.Object#hashCode() */
+    @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int hashCode() {
         return LOCALNAME.hashCode()
                 * ((id == null) ? 1 : id.hashCode())

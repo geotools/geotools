@@ -897,10 +897,9 @@ public class DefaultCoordinateOperationFactory extends AbstractCoordinateOperati
                                     identifier, normSourceCRS, normTargetCRS, parameters);
                     step3 = createOperationStep(normTargetCRS, targetCRS);
                     return concatenate(step1, step2, step3);
-                } else {
-                    // TODO: Need some way to pass 'targetDim' to Molodenski.
-                    //       Fallback on geocentric transformations for now.
                 }
+                // TODO: Need some way to pass 'targetDim' to Molodenski.
+                //       Fallback on geocentric transformations for now.
             }
         }
         /*
@@ -1577,7 +1576,10 @@ public class DefaultCoordinateOperationFactory extends AbstractCoordinateOperati
          * for any target coordinates.
          */
         assert count == targets.size() : count;
-        while (count != 0 && steps[--count].getMathTransform().isIdentity()) ;
+        count--;
+        while (count != 0 && steps[count].getMathTransform().isIdentity()) {
+            count--;
+        }
         final ReferencingFactoryContainer factories = getFactoryContainer();
         CoordinateOperation operation = null;
         CoordinateReferenceSystem sourceStepCRS = sourceCRS;

@@ -467,25 +467,6 @@ public class StrokeImpl implements Stroke, Cloneable {
         return result;
     }
 
-    /*
-     * Helper method to compute the hashCode of float arrays.
-     */
-    private int hashCodeDashArray(float[] a) {
-        final int PRIME = 1000003;
-
-        if (a == null) {
-            return 0;
-        }
-
-        int result = 0;
-
-        for (int i = 0; i < a.length; i++) {
-            result = (PRIME * result) + Float.floatToIntBits(a[i]);
-        }
-
-        return result;
-    }
-
     /**
      * Compares this stroke with another stroke for equality.
      *

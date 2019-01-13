@@ -486,7 +486,6 @@ public class PointStackerProcess implements VectorProcess {
          * @param weightClusterPosition
          */
         public void add(Coordinate pt, boolean weightClusterPosition) {
-            GeometryFactory factory = new GeometryFactory(new PackedCoordinateSequenceFactory());
             count++;
             /**
              * Only create set if this is the second point seen (and assum the first pt is in
@@ -569,20 +568,6 @@ public class PointStackerProcess implements VectorProcess {
                 return;
             }
             location = centerPt;
-        }
-
-        /**
-         * Picks the first location encountered as the cell location. This is sub-optimal, since if
-         * the first point is near the cell boundary it is likely to collide with neighbouring
-         * points.
-         *
-         * @param pt
-         */
-        private void pickFirstLocation(Coordinate pt) {
-            // strategy - pick first point
-            if (location == null) {
-                location = new Coordinate(pt);
-            }
         }
 
         private static Coordinate average(Coordinate p1, Coordinate p2) {

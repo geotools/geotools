@@ -183,7 +183,6 @@ public class SimpleFeatureTypeImpl extends FeatureTypeImpl implements SimpleFeat
     static Map<String, AttributeDescriptor> buildDescriptorIndex(SimpleFeatureType featureType) {
         // build an index of attribute name to index
         Map<String, AttributeDescriptor> index = new HashMap<>();
-        int i = 0;
         for (AttributeDescriptor ad : featureType.getAttributeDescriptors()) {
             index.put(ad.getLocalName(), ad);
         }

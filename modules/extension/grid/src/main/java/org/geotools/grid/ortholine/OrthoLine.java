@@ -34,7 +34,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * @version $Id$
  */
 public class OrthoLine implements LineElement {
-    private static final double TOL = 1.0e-8;
     private static final GeometryFactory geomFactory = JTSFactoryFinder.getGeometryFactory(null);
 
     private final LineOrientation orientation;

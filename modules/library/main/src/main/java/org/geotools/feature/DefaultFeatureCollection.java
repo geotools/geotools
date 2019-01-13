@@ -576,8 +576,6 @@ public class DefaultFeatureCollection
     public SimpleFeatureCollection sort(SortBy order) {
         if (order == SortBy.NATURAL_ORDER) {
             return this;
-        } else if (order == SortBy.REVERSE_ORDER) {
-            // backwards
         }
         return null; // new OrderedFeatureList( order, compare );
     }

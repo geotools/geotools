@@ -46,6 +46,7 @@ public class IncludeHandler extends XSIElementHandler {
     }
 
     /** @see java.lang.Object#hashCode() */
+    @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int hashCode() {
         return (LOCALNAME.hashCode() * ((schemaLocation == null) ? 1 : schemaLocation.hashCode()))
                 + hashCodeOffset;

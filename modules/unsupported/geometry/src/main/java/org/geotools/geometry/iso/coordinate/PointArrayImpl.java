@@ -394,6 +394,8 @@ public class PointArrayImpl extends ArrayList<Position> implements PointArray {
      *
      * @param maxSpacing
      */
+    // unsure of suppression, someone understanding this code should verify
+    @SuppressWarnings("PMD.JumbledIncrementer")
     public void split(double maxSpacing) {
         // TODO Test
         // TODO Documentation

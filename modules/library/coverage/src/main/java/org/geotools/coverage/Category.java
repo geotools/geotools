@@ -373,9 +373,8 @@ public class Category implements Serializable {
                 final Color color = colors[i];
                 if (color != null) {
                     ARGB[i] = color.getRGB();
-                } else {
-                    // Left ARGB[i] to its default value (0), which is the transparent color.
                 }
+                // Else leave ARGB[i] to its default value (0), which is the transparent color.
             }
         } else {
             ARGB = DEFAULT;

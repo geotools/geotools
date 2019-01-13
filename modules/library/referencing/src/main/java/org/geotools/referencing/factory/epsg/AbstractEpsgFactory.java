@@ -16,7 +16,7 @@
  */
 package org.geotools.referencing.factory.epsg;
 
-import java.awt.RenderingHints;
+import java.awt.*;
 import java.io.File;
 import java.io.ObjectStreamException;
 import java.io.Serializable;
@@ -786,6 +786,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
      * @throws FactoryException if some other kind of failure occured in the backing store. This
      *     exception usually have {@link SQLException} as its cause.
      */
+    @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public synchronized IdentifiedObject generateObject(final String code) throws FactoryException {
         ensureNonNull("code", code);
         final String KEY = "IdentifiedObject";
@@ -842,19 +843,19 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
                  * in all tables since duplicate names exist.
                  */
                 stmt.setString(1, epsg);
-                final ResultSet result = stmt.executeQuery();
-                final boolean present = result.next();
-                result.close();
-                if (present) {
-                    if (index >= 0) {
-                        throw new FactoryException(
-                                Errors.format(ErrorKeys.DUPLICATED_VALUES_$1, code));
-                    }
-                    index = (i < 0) ? lastObjectType : i;
-                    if (isPrimaryKey) {
-                        // Don't scan other tables, since primary keys should be unique.
-                        // Note that names may be duplicated, so we don't stop for names.
-                        break;
+                try (final ResultSet result = stmt.executeQuery()) {
+                    final boolean present = result.next();
+                    if (present) {
+                        if (index >= 0) {
+                            throw new FactoryException(
+                                    Errors.format(ErrorKeys.DUPLICATED_VALUES_$1, code));
+                        }
+                        index = (i < 0) ? lastObjectType : i;
+                        if (isPrimaryKey) {
+                            // Don't scan other tables, since primary keys should be unique.
+                            // Note that names may be duplicated, so we don't stop for names.
+                            break;
+                        }
                     }
                 }
                 if (isPrimaryKey) {
@@ -940,13 +941,14 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
                     throw noSuchAuthorityCode(Unit.class, String.valueOf(target));
                 }
                 Unit unit = getUnit(source);
-                if (unit != null) {
+                if (unit == null) {
                     // TODO: check unit consistency here.
-                } else if (b != 0 && c != 0) {
-                    unit = (b == c) ? base : base.multiply(b / c);
-                } else {
-                    // TODO: provide a localized message.
-                    throw new FactoryException("Unsupported unit: " + code);
+                    if (b != 0 && c != 0) {
+                        unit = (b == c) ? base : base.multiply(b / c);
+                    } else {
+                        // TODO: provide a localized message.
+                        throw new FactoryException("Unsupported unit: " + code);
+                    }
                 }
                 returnValue = ensureSingleton(unit, returnValue, code);
             }
@@ -1480,7 +1482,6 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
         ensureNonNull("code", code);
         CoordinateSystemAxis returnValue = null;
         try {
-            final String primaryKey = trimAuthority(code);
             final PreparedStatement stmt;
             stmt =
                     prepareStatement(

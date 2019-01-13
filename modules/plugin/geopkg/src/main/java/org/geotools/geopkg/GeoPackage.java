@@ -1523,7 +1523,10 @@ public class GeoPackage {
                 try {
                     ResultSet rs = st.executeQuery(sql.toString());
                     try {
-                        rs.next();
+                        if (!rs.next()) {
+                            throw new SQLException(
+                                    "Could not compute tile bounds, query did not return any record");
+                        }
                         tileBounds = rs.getInt(1);
                     } finally {
                         close(rs);

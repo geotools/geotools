@@ -811,8 +811,7 @@ public class Layer implements Comparable<Layer> {
         for (String srsName : identifiers) {
             // Locate an exact bounding box if we can (searches all bounding boxes associated with
             // layer)
-            Map<String, CRSEnvelope> boxes =
-                    Layer.this.getBoundingBoxes(); // extents for layer and parents
+            Map<String, CRSEnvelope> boxes = getBoundingBoxes(); // extents for layer and parents
             tempBBox = (CRSEnvelope) boxes.get(srsName);
             if (tempBBox != null) {
                 break;
@@ -820,13 +819,13 @@ public class Layer implements Comparable<Layer> {
             // Otherwise, locate a LatLon bounding box ... if applicable
             if ("CRS:84".equals(srsName.toUpperCase())
                     || "EPSG:4326".equals(srsName.toUpperCase())) {
-                tempBBox = Layer.this.getLatLonBoundingBox(); // checks parents
+                tempBBox = getLatLonBoundingBox(); // checks parents
                 break;
             }
         }
         // second pass just get a latLonBoundingox (and we will transform it)
         if (tempBBox == null) {
-            tempBBox = Layer.this.getLatLonBoundingBox(); // checks parents
+            tempBBox = getLatLonBoundingBox(); // checks parents
         }
         // TODO Attempt to figure out the valid area of the CRS and use that.
 

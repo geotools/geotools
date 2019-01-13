@@ -17,7 +17,6 @@
 package org.geotools.mbstyle.function;
 
 import java.util.List;
-import java.util.logging.Logger;
 import org.geotools.data.Parameter;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.FunctionImpl;
@@ -42,8 +41,6 @@ import org.opengis.filter.expression.Expression;
 public class StringTransformFunction extends FunctionImpl {
 
     public static final FunctionName NAME;
-
-    private static final Logger LOGGER = Logger.getLogger(StringTransformFunction.class.getName());
 
     private static final FilterFactory2 ff2 = CommonFactoryFinder.getFilterFactory2(null);
 

@@ -18,7 +18,6 @@ import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.store.EmptyFeatureCollection;
 import org.geotools.data.store.ReTypingFeatureCollection;
 import org.geotools.data.store.ReprojectingFeatureCollection;
-import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.collection.MaxSimpleFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -29,7 +28,6 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.And;
 import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
@@ -58,8 +56,6 @@ import org.opengis.filter.spatial.Within;
  */
 public class SpatialIndexFeatureSource implements SimpleFeatureSource {
     SpatialIndexFeatureCollection contents;
-
-    private static FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
 
     private static final Set<Class> supportedFilterTypes =
             new HashSet<Class>(
@@ -217,16 +213,6 @@ public class SpatialIndexFeatureSource implements SimpleFeatureSource {
             }
         }
         return result;
-    }
-
-    private BBOX bboxFilter(Envelope bbox) {
-        return ff.bbox(
-                contents.getSchema().getGeometryDescriptor().getLocalName(),
-                bbox.getMinX(),
-                bbox.getMinY(),
-                bbox.getMaxX(),
-                bbox.getMaxY(),
-                null);
     }
 
     public ResourceInfo getInfo() {

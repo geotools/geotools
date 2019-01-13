@@ -193,10 +193,6 @@ public abstract class AbstractWPS<C extends WPSCapabilitiesType, R extends Objec
 
     protected abstract ResourceInfo createInfo(R resource);
 
-    private void syncrhonized(Capabilities capabilities2) {
-        // TODO Auto-generated method stub
-    }
-
     /** Sets up the specifications/versions that this server is capable of communicating with. */
     protected abstract void setupSpecifications();
 

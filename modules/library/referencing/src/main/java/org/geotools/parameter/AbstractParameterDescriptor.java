@@ -134,6 +134,7 @@ public abstract class AbstractParameterDescriptor extends AbstractIdentifiedObje
      *     versions of this class.
      */
     @Override
+    @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int hashCode() {
         return (int) serialVersionUID ^ minimumOccurs;
     }

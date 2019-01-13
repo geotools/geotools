@@ -53,7 +53,7 @@ public class JXPathStreamingParserHandler extends StreamingParserHandler {
 
         Iterator itr = jxpContext.iterate(xpath);
 
-        for (; itr.hasNext(); ) {
+        while (itr.hasNext()) {
             Object obj = itr.next();
 
             if (handler.getParseNode().equals(obj)) {

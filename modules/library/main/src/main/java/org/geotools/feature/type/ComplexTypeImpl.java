@@ -112,6 +112,7 @@ public class ComplexTypeImpl extends AttributeTypeImpl implements ComplexType {
         return false;
     }
 
+    @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public boolean equals(Object o) {
         if (this == o) {
             return true;

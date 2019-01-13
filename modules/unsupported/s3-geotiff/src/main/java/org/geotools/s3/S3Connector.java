@@ -111,7 +111,6 @@ public class S3Connector {
                         "Following this style: s3Alias://bucket/filename");
             }
             String s3Alias = url.split("://")[0];
-            String pahtToFile = url.split("://")[1];
 
             Properties prop = readProperties(s3Alias);
 

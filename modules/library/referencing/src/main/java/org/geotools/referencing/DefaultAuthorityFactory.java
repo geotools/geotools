@@ -75,14 +75,14 @@ final class DefaultAuthorityFactory extends ThreadedAuthorityFactory
         final Hints hints = GeoTools.getDefaultHints();
         if (longitudeFirst) {
             hints.put(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.TRUE);
-        } else {
             /*
-             * Do NOT set the hint to false. If 'longitudeFirst' is false, this means
+             * Otherwise do NOT set the hint to false. If 'longitudeFirst' is false, this means
              * "use the system default", not "latitude first". The longitude may or may
              * not be first depending the value of "org.geotools.referencing.forcexy"
              * system property. This state is included in GeoTools.getDefaultHints().
              */
         }
+
         Collection<CRSAuthorityFactory> factories =
                 ReferencingFactoryFinder.getCRSAuthorityFactories(hints);
         if (Boolean.TRUE.equals(hints.put(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.FALSE))) {

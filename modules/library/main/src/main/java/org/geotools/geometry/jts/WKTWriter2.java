@@ -93,8 +93,6 @@ public class WKTWriter2 extends WKTWriter {
         return "LINESTRING ( " + p0.x + " " + p0.y + ", " + p1.x + " " + p1.y + " )";
     }
 
-    private static int INDENT = 2;
-
     /**
      * Creates the <code>DecimalFormat</code> used to write <code>double</code>s with a sufficient
      * number of decimal places.
@@ -137,8 +135,6 @@ public class WKTWriter2 extends WKTWriter {
     private boolean isFormatted = false;
 
     private boolean useFormatting = false;
-
-    private int level = 0;
 
     private int coordsPerLine = -1;
 
@@ -446,24 +442,6 @@ public class WKTWriter2 extends WKTWriter {
     }
 
     /**
-     * Appends the i'th coordinate from the sequence to the writer
-     *
-     * @param seq the <code>CoordinateSequence</code> to process
-     * @param i the index of the coordinate to write
-     * @param writer the output writer to append to
-     */
-    private void appendCoordinate(CoordinateSequence seq, int i, Writer writer) throws IOException {
-        writer.write(writeNumber(seq.getX(i)) + " " + writeNumber(seq.getY(i)));
-        if (outputDimension >= 3 && seq.getDimension() >= 3) {
-            double z = seq.getOrdinate(i, 3);
-            if (!Double.isNaN(z)) {
-                writer.write(" ");
-                writer.write(writeNumber(z));
-            }
-        }
-    }
-
-    /**
      * Converts a <code>Coordinate</code> to <code>&lt;Point&gt;</code> format, then appends it to
      * the writer.
      *
@@ -497,33 +475,6 @@ public class WKTWriter2 extends WKTWriter {
      */
     private String writeNumber(double d) {
         return formatter.format(d);
-    }
-
-    /**
-     * Converts a <code>LineString</code> to &lt;LineString Text&gt; format, then appends it to the
-     * writer.
-     *
-     * @param lineString the <code>LineString</code> to process
-     * @param writer the output writer to append to
-     */
-    private void appendSequenceText(
-            CoordinateSequence seq, int level, boolean doIndent, Writer writer) throws IOException {
-        if (seq.size() == 0) {
-            writer.write("EMPTY");
-        } else {
-            if (doIndent) indent(level, writer);
-            writer.write("(");
-            for (int i = 0; i < seq.size(); i++) {
-                if (i > 0) {
-                    writer.write(", ");
-                    if (coordsPerLine > 0 && i % coordsPerLine == 0) {
-                        indent(level + 1, writer);
-                    }
-                }
-                appendCoordinate(seq, i, writer);
-            }
-            writer.write(")");
-        }
     }
 
     /**

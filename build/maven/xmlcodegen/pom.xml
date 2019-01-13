@@ -57,6 +57,12 @@
 		</dependency>
 
 	</dependencies>
+  
+  <!-- disable pmd -->
+  <properties>
+    <pmd.skip>true</pmd.skip>
+  </properties>
+
 
   <build> 
     <plugins>

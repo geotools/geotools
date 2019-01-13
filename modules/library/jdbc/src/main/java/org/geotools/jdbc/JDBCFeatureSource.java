@@ -198,14 +198,11 @@ public class JDBCFeatureSource extends ContentFeatureSource {
                 String name = column.name;
 
                 // do not include primary key in the type if not exposing primary key columns
-                boolean pkColumn = false;
                 for (PrimaryKeyColumn pkeycol : pkey.getColumns()) {
                     if (name.equals(pkeycol.getName())) {
                         if (!state.isExposePrimaryKeyColumns()) {
                             name = null;
                             break;
-                        } else {
-                            pkColumn = true;
                         }
                     }
                     // in views we don't know the pk type, grab it now

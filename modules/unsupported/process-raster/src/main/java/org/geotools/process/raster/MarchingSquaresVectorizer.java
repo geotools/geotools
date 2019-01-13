@@ -518,8 +518,6 @@ public final class MarchingSquaresVectorizer {
 
                 LinearTransform translation = ProjectiveTransform.createTranslation(2, 1);
                 transform = ConcatenatedTransform.create(translation, transform);
-            } else {
-                // transform = ProjectiveTransform.create(new AffineTransform(1,0,0,1,1,-1));
             }
 
             double area = 0;

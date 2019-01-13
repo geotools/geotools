@@ -449,19 +449,6 @@ public abstract class AbstractFilterBuilder {
     }
 
     /**
-     * Remove the ":". The Z format is [sign]hhmm
-     *
-     * @param cqlTimeZone [sign]hh:mm
-     * @return [sign]hhmm
-     */
-    private String toTimeZone(final String cqlTimeZone) {
-
-        String[] str = cqlTimeZone.split(":");
-        assert str.length == 2;
-        return str[0].concat(str[1]);
-    }
-
-    /**
      * Extracts the time
      *
      * @param cqlDateTime

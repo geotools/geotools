@@ -26,7 +26,7 @@ public class EsriLookupTest {
     @BeforeClass
     public static void setup() {
         System.setProperty("org.geotools.referencing.forceXY", "true");
-        Hints.putSystemDefault(Hints.COMPARISON_TOLERANCE, 1e-8);
+        Hints.putSystemDefault(Hints.COMPARISON_TOLERANCE, 1e-7);
         CRS.getAuthorityFactory(true);
     }
 
@@ -74,7 +74,9 @@ public class EsriLookupTest {
                         + "\nsource wkt:\n"
                         + wkt
                         + "\nparsed wkt:\n"
-                        + crs.toWKT(),
+                        + crs.toWKT()
+                        + "\nExpected code wkt:\n"
+                        + CRS.decode("EPSG:" + expectedCode),
                 actualCode);
         assertEquals(expectedCode, actualCode);
     }

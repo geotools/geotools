@@ -116,7 +116,6 @@ import org.geotools.util.factory.Hints.Key;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.TopologyException;
 import org.locationtech.jts.operation.overlay.snap.GeometrySnapper;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -138,8 +137,6 @@ import org.opengis.referencing.operation.TransformException;
 public class Utils {
 
     public static final FilterFactory2 FF = CommonFactoryFinder.getFilterFactory2();
-
-    private static GeometryFactory GEOM_FACTORY = new GeometryFactory();
 
     private static final String DATABASE_KEY = "database";
 
@@ -1536,10 +1533,6 @@ public class Utils {
                                     ? URLs.fileToUrl(dataStoreProperties)
                                     : URLs.fileToUrl(shapeFile);
             }
-        } else {
-            // SK: We don't set SourceURL to null now, just because it doesn't
-            // point to a file
-            // sourceURL=null;
         }
         return sourceURL;
     }

@@ -23,7 +23,6 @@ package org.geotools.referencing;
 
 import java.awt.Shape;
 import java.awt.geom.GeneralPath;
-import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.text.Format;
 import java.util.ArrayList;
@@ -312,21 +311,6 @@ public class GeodeticCalculator {
         if (!(Math.abs(distance) <= Double.MAX_VALUE)) {
             throw new IllegalArgumentException(
                     Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "distance", distance));
-        }
-    }
-
-    /**
-     * Checks the number of vertices in a curve. Arguments {@code numberOfPoints} should be not
-     * negative.
-     *
-     * @param numberOfPoints The number of vertices in a curve.
-     * @throws IllegalArgumentException if {@code numberOfPoints} is negative.
-     */
-    private static void checkNumberOfPoints(final int numberOfPoints)
-            throws IllegalArgumentException {
-        if (numberOfPoints < 0) {
-            throw new IllegalArgumentException(
-                    Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "numberOfPoints", numberOfPoints));
         }
     }
 
@@ -699,7 +683,6 @@ public class GeodeticCalculator {
         azimuth = g.azi1;
         distance = g.s12;
         directionValid = true;
-        return;
     }
 
     /**
@@ -792,134 +775,6 @@ public class GeodeticCalculator {
         return points;
     }
 
-    /**
-     * Calculates the loxodromic curve between two points in the referenced ellipsoid. The
-     * loxodromic curve between two points is a path that links together the two points with a
-     * constant azimuth. The azimuth from every points of the loxodromic curve and the second point
-     * is constant.
-     *
-     * @return The path that represents the loxodromic curve from the {@linkplain
-     *     #getStartingGeographicPoint starting point} to the {@linkplain
-     *     #getDestinationGeographicPoint destination point}.
-     */
-    private Shape getLoxodromicCurve() {
-        if (true) {
-            throw new UnsupportedOperationException();
-        }
-        /**
-         * *********************************************************************************** * THE
-         * FOLLOWING IS CHECKED FOR COMPILER ERROR, BUT EXCLUDED FROM THE .class FILE. ** * THIS
-         * CODE IS WRONG: LOXODROMIC CURVES ARE STRAIGHT LINES IN MERCATOR PROJECTION, ** * NOT IT
-         * PLAIN (longitude,latitude) SPACE. FURTHERMORE, THE "OUT OF BOUNDS" CHECK ** * IS
-         * UNFINISHED: WHEN THE PATH CROSS THE 180° LONGITUDE, A +360° ADDITION NEED TO ** * BE
-         * PERFORMED ON ONE OF THE SOURCE OR TARGET POINT BEFORE TO COMPUTE THE LINEAR ** *
-         * INTERPOLATION (OTHERWISE, THE SLOPE VALUE IS WRONG). FORMULAS FOR COMPUTING MID- ** *
-         * POINT ON A LOXODROMIC CURVE ARE AVAILABLE THERE: ** * ** *
-         * http://mathforum.org/discuss/sci.math/a/t/180912 ** * ** * LatM = (Lat0+Lat1)/2 ** * ** *
-         * (Lon1-Lon0)log(f(LatM)) + Lon0 log(f(Lat1)) - Lon1 log(f(Lat0)) ** * LonM =
-         * --------------------------------------------------------------- ** * log(f(Lat1)/f(Lat0))
-         * ** * ** * where log(f(x)) == log(sec(x)+tan(x)) is the inverse Gudermannian function. **
-         * ***********************************************************************************
-         */
-        if (!directionValid) {
-            computeDirection();
-        }
-        if (!destinationValid) {
-            computeDestinationPoint();
-        }
-        final double x1 = long1;
-        final double y1 = lat1;
-        final double x2 = long2;
-        final double y2 = lat2;
-        /*
-         * Check if the azimuth is heading from P1 to P2 (TRUE) or in the opposite direction
-         * (FALSE). Horizontal (X) and vertical (Y) components are checked separatly. A null
-         * value means "don't know", because the path is perfectly vertical or horizontal or
-         * because a coordinate is NaN.  If both components are not null (unknow), then they
-         * must be consistent.
-         */
-        final Boolean xDirect =
-                (x2 > x1)
-                        ? Boolean.valueOf(azimuth >= 0)
-                        : (x2 < x1) ? Boolean.valueOf(azimuth <= 0) : null;
-        final Boolean yDirect =
-                (y2 > y1)
-                        ? Boolean.valueOf(azimuth >= -90 && azimuth <= +90)
-                        : (y2 < y1) ? Boolean.valueOf(azimuth <= -90 || azimuth >= +90) : null;
-        assert xDirect == null || yDirect == null || xDirect.equals(yDirect) : this;
-        if (!Boolean.FALSE.equals(xDirect) && !Boolean.FALSE.equals(yDirect)) {
-            return new Line2D.Double(x1, y1, x2, y2);
-        }
-        if (Boolean.FALSE.equals(yDirect)) {
-            /*
-             * Crossing North or South pole is more complicated than what we do for now: If we
-             * follow the 0° longitude toward North, then we have to follow the 180° longitude
-             * from North to South pole and follow the 0° longitude again toward North up to
-             * the destination point.
-             */
-            throw new UnsupportedOperationException("Crossing pole is not yet implemented");
-        }
-        /*
-         * The azimuth is heading in the opposite direction of the path from P1 to P2. Computes
-         * the intersection points at the 90°N / 90°S boundaries, or the 180°E / 180°W boundaries.
-         * (xout,yout) is the point where the path goes out (initialized to the corner where the
-         * azimuth is heading); (xin,yin) is the point where the path come back in the opposite
-         * hemisphere.
-         */
-        double xout = (x2 >= x1) ? -180 : +180;
-        double yout = (y2 >= y1) ? -90 : +90;
-        double xin = -xout;
-        double yin = -yout;
-        final double dx = x2 - x1;
-        final double dy = y2 - y1;
-        if (dx == 0) {
-            xin = xout = x1; // Vertical line.
-        } else if (dy == 0) {
-            yin = yout = y1; // Horizontal line.
-        } else {
-            /*
-             * The path is diagonal (neither horizontal or vertical). The following loop
-             * is executed exactly twice:  the first pass computes the "out" point,  and
-             * the second pass computes the "in" point.  Each pass computes actually two
-             * points: the intersection point against the 180°W or 180°E boundary, and
-             * the intersection point against the 90°N or 90°S boundary. Usually one of
-             * those points will be out of range and the other one is selected.
-             */
-            boolean in = false;
-            do {
-                final double meridX, meridY; // The point where the path cross the +/-180° meridian.
-                final double zonalX, zonalY; // The point where the path cross the +/- 90° parallel.
-                meridX = in ? xin : xout;
-                meridY = dy / dx * (meridX - x1) + y1;
-                zonalY = in ? yin : yout;
-                zonalX = dx / dy * (zonalY - y1) + x1;
-                if (Math.abs(meridY) < Math.abs(zonalX) * 0.5) {
-                    if (in) {
-                        xin = meridX;
-                        yin = meridY;
-                    } else {
-                        xout = meridX;
-                        yout = meridY;
-                    }
-                } else {
-                    if (in) {
-                        xin = zonalX;
-                        yin = zonalY;
-                    } else {
-                        xout = zonalX;
-                        yout = zonalY;
-                    }
-                }
-            } while ((in = !in) == false);
-        }
-        final GeneralPath path = new GeneralPath(GeneralPath.WIND_EVEN_ODD, 4);
-        path.moveTo((float) x1, (float) y1);
-        path.lineTo((float) xout, (float) yout);
-        path.moveTo((float) xin, (float) yin);
-        path.lineTo((float) x2, (float) y2);
-        return path;
-    }
-
     /** Returns a string representation of the current state of this calculator. */
     @Override
     public String toString() {
@@ -939,12 +794,10 @@ public class GeodeticCalculator {
         }
         final CoordinateFormat cf = new CoordinateFormat();
         final Format nf = cf.getFormat(0);
-        if (true) {
-            buffer.write(resources.getLabel(VocabularyKeys.SOURCE_POINT));
-            buffer.nextColumn();
-            buffer.write(format(cf, long1, lat1));
-            buffer.nextLine();
-        }
+        buffer.write(resources.getLabel(VocabularyKeys.SOURCE_POINT));
+        buffer.nextColumn();
+        buffer.write(format(cf, long1, lat1));
+        buffer.nextLine();
         if (destinationValid) {
             buffer.write(resources.getLabel(VocabularyKeys.TARGET_POINT));
             buffer.nextColumn();

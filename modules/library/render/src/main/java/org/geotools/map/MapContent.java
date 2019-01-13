@@ -87,8 +87,6 @@ public class MapContent {
      */
     protected MapViewport viewport;
 
-    private MapViewport defaultViewport;
-
     /** Listener used to watch individual layers and report changes to MapLayerListListeners */
     private MapLayerListener layerListener;
 

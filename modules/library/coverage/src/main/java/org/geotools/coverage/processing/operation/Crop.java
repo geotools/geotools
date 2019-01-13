@@ -391,9 +391,7 @@ public class Crop extends Operation2D {
                             destinationCRS.getName().getCode()));
         }
 
-        if (cropRoi != null) {
-            // TODO: check ROI SRID
-        }
+        // TODO: check ROI SRID
 
         // //
         //

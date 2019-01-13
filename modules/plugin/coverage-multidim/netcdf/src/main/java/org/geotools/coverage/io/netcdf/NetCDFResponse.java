@@ -93,8 +93,6 @@ class NetCDFResponse extends CoverageResponse {
 
     private static final double EPS = 1E-6;
 
-    private static final double[] DEFAULT_BACKGROUND_VALUES = new double[] {0d};
-
     /** Logger. */
     private static final Logger LOGGER =
             org.geotools.util.logging.Logging.getLogger(NetCDFResponse.class);
@@ -210,11 +208,9 @@ class NetCDFResponse extends CoverageResponse {
 
         // when calculating the sample dimensions we need to take in account the bands parameter
         GridSampleDimension[] sampleDimensions =
-                sampleDimensions =
-                        sampleDims != null
-                                ? sampleDims.toArray(new GridSampleDimension[sampleDims.size()])
-                                : new GridSampleDimension[0];
-        ;
+                sampleDims != null
+                        ? sampleDims.toArray(new GridSampleDimension[sampleDims.size()])
+                        : new GridSampleDimension[0];
         int[] bands = readRequest.getBands();
         if (bands != null) {
             int maxBandIndex = Arrays.stream(bands).max().getAsInt();
@@ -913,19 +909,6 @@ class NetCDFResponse extends CoverageResponse {
                         e);
             }
             return null;
-
-        } finally {
-            //            try {
-            //                if (request.getReadType() != ReadType.JAI_IMAGEREAD && inStream !=
-            // null) {
-            //                    inStream.close();
-            //                }
-            //            } finally {
-            //                if (request.getReadType() != ReadType.JAI_IMAGEREAD && reader != null)
-            // {
-            //                    reader.dispose();
-            //                }
-            //            }
         }
     }
 

@@ -36,7 +36,6 @@ public class FileSystemNode extends Node {
     static final int[] ZERO = new int[0];
 
     private ScrollingBuffer buffer;
-    private ByteOrder order;
     private int subNodeStartByte;
     private int subNodesLength;
     private int numSubNodes;

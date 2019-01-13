@@ -351,6 +351,11 @@ public class VariableAdapter extends CoverageSourceDescriptor {
                             public boolean equals(Object o) {
                                 return false;
                             }
+
+                            @Override
+                            public int hashCode() {
+                                return System.identityHashCode(this);
+                            }
                         });
 
         /** The domain name */
@@ -448,8 +453,6 @@ public class VariableAdapter extends CoverageSourceDescriptor {
     private CoordinateReferenceSystem coordinateReferenceSystem;
 
     private Name coverageName;
-
-    private SimpleFeatureType indexSchema;
 
     private int[] nDimensionIndex;
 
@@ -555,7 +558,6 @@ public class VariableAdapter extends CoverageSourceDescriptor {
                         if (schemaType != null) {
                             // Schema found: proceed with remapping attributes
                             updateMapping(schemaType, dimensionDescriptors);
-                            indexSchema = schemaType;
                             break;
                         }
                         throw new IllegalStateException(

@@ -237,14 +237,5 @@ public class CoverageClassStats implements RasterProcess {
         ZonalStats getZonalStats() {
             return zonalStats;
         }
-
-        public void print() {
-            for (int i = 0; i < size(); i++) {
-                // System.out.println(range(i));
-                for (Statistic stat : stats) {
-                    // System.out.println(stat + " = " + value(i, stat));
-                }
-            }
-        }
     }
 }

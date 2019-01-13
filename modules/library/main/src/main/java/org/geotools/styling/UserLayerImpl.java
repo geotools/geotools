@@ -22,6 +22,7 @@ package org.geotools.styling;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import org.geotools.data.DataStore;
 import org.geotools.util.Utilities;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -152,5 +153,11 @@ public class UserLayerImpl extends StyledLayerImpl implements UserLayer {
         }
 
         return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(
+                inlineFeatureDatastore, inlineFeatureType, remoteOWS, styles, constraints);
     }
 }

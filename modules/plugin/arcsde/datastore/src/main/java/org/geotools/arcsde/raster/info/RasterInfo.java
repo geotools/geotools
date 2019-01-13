@@ -97,12 +97,7 @@ public final class RasterInfo {
 
             skipLevelone = rasterAttributes.skipLevelOne();
 
-            int internalPyramidLevel = 0;
             for (int arcsdePyramidLevel = 0; arcsdePyramidLevel < numLevels; arcsdePyramidLevel++) {
-                if (arcsdePyramidLevel == 1 && skipLevelone) {
-                    // continue;
-                }
-
                 final int numTilesWide = rasterAttributes.getTilesPerRowByLevel(arcsdePyramidLevel);
                 final int numTilesHigh = rasterAttributes.getTilesPerColByLevel(arcsdePyramidLevel);
                 final GridEnvelope actualImageGridEnvelope;
@@ -120,8 +115,6 @@ public final class RasterInfo {
                         numTilesHigh,
                         actualImageGridEnvelope,
                         actualImageSpatialExtent);
-
-                internalPyramidLevel++;
             }
 
         } catch (SeException se) {

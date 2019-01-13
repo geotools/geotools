@@ -16,8 +16,6 @@
  */
 package org.geotools.xs.facets;
 
-import java.lang.reflect.Array;
-import java.util.Collection;
 import org.eclipse.xsd.XSDLengthFacet;
 import org.eclipse.xsd.XSDSimpleTypeDefinition;
 import org.eclipse.xsd.XSDTypeDefinition;
@@ -105,20 +103,6 @@ public abstract class Length {
 
                 public void validate(XSDTypeDefinition definition, Object value)
                         throws IllegalArgumentException {
-                    int length = Integer.MIN_VALUE;
-
-                    if (value instanceof Collection) {
-                        length = ((Collection) value).size();
-                    }
-
-                    if (value.getClass().isArray()) {
-                        length = Array.getLength(value);
-                    }
-
-                    if (value instanceof Integer) {
-                        length = ((Integer) value).intValue();
-                    }
-
                     String text = (String) value;
 
                     if (text.getBytes().length > length(definition)) {

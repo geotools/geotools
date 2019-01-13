@@ -33,8 +33,6 @@ import org.geotools.graph.traverse.standard.AStarIterator.AStarFunctions;
  * @author Germán E. Trouillet, Francisco G. Malbrán. Universidad Nacional de Córdoba (UNC)
  */
 public class AStarShortestPathFinder implements GraphWalker {
-    /** Graphs to calculate paths for * */
-    private Graph m_graph;
 
     /** Graph traversal used for the A Star iteration * */
     private GraphTraversal m_traversal;
@@ -54,7 +52,6 @@ public class AStarShortestPathFinder implements GraphWalker {
      * @param weighter Associates weights with edges in the graph.
      */
     public AStarShortestPathFinder(Graph graph, Node source, Node target, AStarFunctions afuncs) {
-        m_graph = graph;
         m_target = target;
         m_iterator = new AStarIterator(source, afuncs);
         m_traversal = new BasicGraphTraversal(graph, this, m_iterator);

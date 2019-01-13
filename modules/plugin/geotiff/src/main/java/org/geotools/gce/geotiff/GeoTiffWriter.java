@@ -284,15 +284,15 @@ public class GeoTiffWriter extends AbstractGridCoverageWriter implements GridCov
         final String name = destFile.getName();
         final File tfw = new File(parentFile, name.replace("tif", "tfw"));
         final File prj = new File(parentFile, name.replace("tif", "prj"));
-        final WorldFileWriter writer = new WorldFileWriter(tfw, tr);
         final BufferedWriter outW = new BufferedWriter(new FileWriter(prj));
+        new WorldFileWriter(tfw, tr); // side effect of creation writes the file
         try {
             outW.write(gc.getCoordinateReferenceSystem().toWKT());
         } finally {
             try {
                 outW.close();
             } catch (Exception e) {
-                // ssshhh :)
+                LOGGER.log(Level.FINER, "Failed to close output writer", e);
             }
         }
     }
@@ -331,7 +331,6 @@ public class GeoTiffWriter extends AbstractGridCoverageWriter implements GridCov
         final AffineTransform modifiedRasterToModel = new AffineTransform(rasterToModel);
         // move the internal grid to world to corner from center
         modifiedRasterToModel.concatenate(CoverageUtilities.CENTER_TO_CORNER);
-        ;
         int minx = range.getLow(0), miny = range.getLow(1);
         if (minx != 0 || miny != 0) {
             // //

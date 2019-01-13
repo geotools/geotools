@@ -354,14 +354,12 @@ public class ImagingParameterDescriptors extends DefaultParameterDescriptorGroup
                 final CitationImpl citation = new CitationImpl(authority);
                 final Collection<ResponsibleParty> parties = citation.getCitedResponsibleParties();
                 final ResponsibleParty oldParty;
-                if (true) {
-                    final Iterator<ResponsibleParty> it = parties.iterator();
-                    if (it.hasNext()) {
-                        oldParty = it.next();
-                        it.remove(); // This party will be re-injected with a new URI below.
-                    } else {
-                        oldParty = null;
-                    }
+                final Iterator<ResponsibleParty> it = parties.iterator();
+                if (it.hasNext()) {
+                    oldParty = it.next();
+                    it.remove(); // This party will be re-injected with a new URI below.
+                } else {
+                    oldParty = null;
                 }
                 final ResponsiblePartyImpl party = new ResponsiblePartyImpl(oldParty);
                 party.setRole(Role.RESOURCE_PROVIDER);
@@ -579,6 +577,7 @@ public class ImagingParameterDescriptors extends DefaultParameterDescriptorGroup
      * future versions of this class.
      */
     @Override
+    @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int hashCode() {
         return super.hashCode() ^ descriptor.hashCode();
     }

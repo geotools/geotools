@@ -50,13 +50,6 @@ public class NetCDFImageReaderSpi extends ImageReaderSpi {
 
     public static final String VENDOR_NAME = "GeoTools";
 
-    /**
-     * Number of bytes at the start of a file to search for a GRIB signature. Some GRIB files have
-     * WMO headers prepended by a telecommunications gateway. NetCDF-Java Grib{1,2}RecordScanner
-     * look for the header in this many bytes.
-     */
-    private static final int GRIB_SEARCH_BYTES = 16000;
-
     /** Default Logger * */
     private static final Logger LOGGER = Logging.getLogger(NetCDFImageReaderSpi.class);
 

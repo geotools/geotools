@@ -872,7 +872,6 @@ public class GrassBinaryRasterReadHandler {
                 readUncompressedIntegerRowByNumber(rowdata, currentrow);
             }
         }
-        return;
     }
 
     /**

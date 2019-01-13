@@ -613,7 +613,9 @@ public class DB2SQLDialect extends SQLDialect {
         try {
             ResultSet rs = st.executeQuery(sql.toString());
             try {
-                rs.next();
+                if (!rs.next()) {
+                    throw new SQLException("Could not get next value for sequence");
+                }
                 return rs.getInt(1);
             } finally {
                 dataStore.closeSafe(rs);
@@ -748,17 +750,14 @@ public class DB2SQLDialect extends SQLDialect {
                 if (rs != null) rs.close();
             } catch (SQLException ex1) {
             }
-            ;
             try {
                 if (ps != null) ps.close();
             } catch (SQLException ex1) {
             }
-            ;
             try {
                 if (con != null) con.close();
             } catch (SQLException ex1) {
             }
-            ;
         }
     }
 
@@ -780,17 +779,14 @@ public class DB2SQLDialect extends SQLDialect {
                 if (rs != null) rs.close();
             } catch (SQLException ex1) {
             }
-            ;
             try {
                 if (ps != null) ps.close();
             } catch (SQLException ex1) {
             }
-            ;
             try {
                 if (con != null) con.close();
             } catch (SQLException ex1) {
             }
-            ;
         }
     }
 

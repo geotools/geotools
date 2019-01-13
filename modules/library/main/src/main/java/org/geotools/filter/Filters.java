@@ -180,21 +180,17 @@ public class Filters {
      */
     public static Filter and(org.opengis.filter.FilterFactory ff, Filter filter1, Filter filter2) {
         ArrayList<Filter> list = new ArrayList<Filter>(2);
-        if (filter1 == null) {
-            // ignore
-        } else if (filter1 instanceof And) {
+        if (filter1 instanceof And) {
             And some = (And) filter1;
             list.addAll(some.getChildren());
-        } else {
+        } else if (filter1 != null) {
             list.add(filter1);
         }
 
-        if (filter2 == null) {
-            // ignore
-        } else if (filter2 instanceof And) {
+        if (filter2 instanceof And) {
             And more = (And) filter2;
             list.addAll(more.getChildren());
-        } else {
+        } else if (filter2 != null) {
             list.add(filter2);
         }
 
@@ -237,21 +233,17 @@ public class Filters {
      */
     public static Filter or(org.opengis.filter.FilterFactory ff, Filter filter1, Filter filter2) {
         ArrayList<Filter> list = new ArrayList<Filter>();
-        if (filter1 == null) {
-            // ignore
-        } else if (filter1 instanceof Or) {
+        if (filter1 instanceof Or) {
             Or some = (Or) filter1;
             list.addAll(some.getChildren());
-        } else {
+        } else if (filter1 != null) {
             list.add(filter1);
         }
 
-        if (filter2 == null) {
-            // ignore
-        } else if (filter2 instanceof Or) {
+        if (filter2 instanceof Or) {
             Or more = (Or) filter2;
             list.addAll(more.getChildren());
-        } else {
+        } else if (filter2 != null) {
             list.add(filter2);
         }
 

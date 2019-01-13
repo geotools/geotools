@@ -719,8 +719,6 @@ public class XmlSimpleFeatureParser implements GetFeatureParser {
         if (srsName.startsWith("http://") && srsName.indexOf('#') != -1) {
             // forceXY = true;
             srsName = "EPSG:" + srsName.substring(1 + srsName.lastIndexOf('#'));
-        } else if (srsName.startsWith("EPSG:")) {
-            // forceXY = true;
         }
         CoordinateReferenceSystem crs = CRS.decode(srsName); // , forceXY);
         return crs;

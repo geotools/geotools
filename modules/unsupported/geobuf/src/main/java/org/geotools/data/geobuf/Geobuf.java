@@ -1692,7 +1692,6 @@ public final class Geobuf {
                                         new com.google.protobuf.InvalidProtocolBufferException(
                                                         e.getMessage())
                                                 .setUnfinishedMessage(this));
-                            } finally {
                             }
                         }
                         // fall through
@@ -3215,7 +3214,6 @@ public final class Geobuf {
                                         new com.google.protobuf.InvalidProtocolBufferException(
                                                         e.getMessage())
                                                 .setUnfinishedMessage(this));
-                            } finally {
                             }
                         }
                         // fall through
@@ -3929,9 +3927,6 @@ public final class Geobuf {
                             customProperties_ =
                                     visitor.visitIntList(
                                             customProperties_, other.customProperties_);
-                            if (visitor
-                                    == com.google.protobuf.GeneratedMessageLite.MergeFromVisitor
-                                            .INSTANCE) {}
                             return this;
                         }
                     case MERGE_FROM_STREAM:
@@ -4018,7 +4013,6 @@ public final class Geobuf {
                                         new com.google.protobuf.InvalidProtocolBufferException(
                                                         e.getMessage())
                                                 .setUnfinishedMessage(this));
-                            } finally {
                             }
                         }
                         // fall through
@@ -4783,8 +4777,6 @@ public final class Geobuf {
                         {
                             com.google.protobuf.CodedInputStream input =
                                     (com.google.protobuf.CodedInputStream) arg0;
-                            com.google.protobuf.ExtensionRegistryLite extensionRegistry =
-                                    (com.google.protobuf.ExtensionRegistryLite) arg1;
                             try {
                                 boolean done = false;
                                 while (!done) {
@@ -4847,7 +4839,6 @@ public final class Geobuf {
                                         new com.google.protobuf.InvalidProtocolBufferException(
                                                         e.getMessage())
                                                 .setUnfinishedMessage(this));
-                            } finally {
                             }
                         }
                         // fall through
@@ -6116,7 +6107,6 @@ public final class Geobuf {
                                     new com.google.protobuf.InvalidProtocolBufferException(
                                                     e.getMessage())
                                             .setUnfinishedMessage(this));
-                        } finally {
                         }
                     }
                     // fall through
@@ -6156,9 +6146,6 @@ public final class Geobuf {
         public static com.google.protobuf.Parser<Data> parser() {
             return DEFAULT_INSTANCE.getParserForType();
         }
-    }
-
-    static {
     }
 
     // @@protoc_insertion_point(outer_class_scope)

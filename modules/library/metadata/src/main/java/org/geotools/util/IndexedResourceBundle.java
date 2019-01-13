@@ -344,15 +344,19 @@ public class IndexedResourceBundle extends ResourceBundle {
         int break2 = length - maxLength;
         for (final int lower = (maxLength >> 1); break1 >= lower; break1--) {
             if (!Character.isUnicodeIdentifierPart(text.charAt(break1))) {
-                while (--break1 >= lower && !Character.isUnicodeIdentifierPart(text.charAt(break1)))
-                    ;
+                break1--;
+                while (break1 >= lower && !Character.isUnicodeIdentifierPart(text.charAt(break1))) {
+                    break1--;
+                }
                 break;
             }
         }
         for (final int upper = length - (maxLength >> 1); break2 < upper; break2++) {
             if (!Character.isUnicodeIdentifierPart(text.charAt(break2))) {
-                while (++break2 < upper && !Character.isUnicodeIdentifierPart(text.charAt(break2)))
-                    ;
+                break2++;
+                while (break2 < upper && !Character.isUnicodeIdentifierPart(text.charAt(break2))) {
+                    break2++;
+                }
                 break;
             }
         }

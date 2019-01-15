@@ -186,9 +186,6 @@ public class SLDParser {
 
     protected StyleFactory factory;
 
-    /** useful for detecting relative onlineresources */
-    private URL sourceUrl;
-
     /** provides complete control for detecting relative onlineresources */
     private ResourceLocator onlineResourceLocator;
 
@@ -351,7 +348,6 @@ public class SLDParser {
 
     /** Internal setter for source url. */
     void setSourceUrl(URL sourceUrl) {
-        this.sourceUrl = sourceUrl;
         if (onlineResourceLocator instanceof DefaultResourceLocator) {
             ((DefaultResourceLocator) onlineResourceLocator).setSourceUrl(sourceUrl);
         }
@@ -1307,7 +1303,6 @@ public class SLDParser {
             }
             if (childName.equalsIgnoreCase(opacityString)) {
                 try {
-                    final String opacityString = getFirstChildValue(child);
                     Expression opacity = parseParameterValueExpression(child, false);
                     symbol.setOpacity(opacity);
                 } catch (Throwable e) {

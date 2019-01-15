@@ -145,8 +145,6 @@ public class OptDirectedNode extends OptGraphable implements DirectedNode {
 
     /** @see DirectedNode#getOutEdge(DirectedNode) */
     public Edge getOutEdge(DirectedNode other) {
-        ArrayList edges = new ArrayList();
-
         for (int i = 0; i < m_out.length; i++) {
             if (m_out[i].getOutNode().equals(other)) return (m_out[i]);
         }

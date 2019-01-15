@@ -38,8 +38,6 @@ class IndexedShapefileFeatureReader extends ShapefileFeatureReader {
 
     private Data next;
 
-    private IndexedFidReader fidReader;
-
     /**
      * Create the shape reader
      *

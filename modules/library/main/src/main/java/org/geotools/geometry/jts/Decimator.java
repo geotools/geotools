@@ -346,12 +346,12 @@ public final class Decimator {
         if (elementType == null) {
             elementType = geometryType;
         } else if (elementType != geometryType && elementType != Geometry.class) {
-            if (elementType.isAssignableFrom(geometryType)) {
-                // nothing to do
-            } else if (geometryType.isAssignableFrom(elementType)) {
-                elementType = geometryType;
-            } else {
-                elementType = Geometry.class;
+            if (!elementType.isAssignableFrom(geometryType)) {
+                if (geometryType.isAssignableFrom(elementType)) {
+                    elementType = geometryType;
+                } else {
+                    elementType = Geometry.class;
+                }
             }
         }
         return elementType;
@@ -529,9 +529,7 @@ public final class Decimator {
         actualCoords++;
 
         // DO THE XFORM
-        if ((transform == null) || (transform.isIdentity())) {
-            // no actual xform
-        } else {
+        if (transform != null && !transform.isIdentity()) {
             transform.transform(coords, 0, coords, 0, actualCoords);
         }
 

@@ -21,7 +21,6 @@ import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
 import org.opengis.filter.BinaryComparisonOperator;
-import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Expression;
 import org.picocontainer.MutablePicoContainer;
 
@@ -48,11 +47,6 @@ import org.picocontainer.MutablePicoContainer;
  * @generated
  */
 public class OGCBinaryComparisonOpTypeBinding extends AbstractComplexBinding {
-    private FilterFactory factory;
-
-    public OGCBinaryComparisonOpTypeBinding(FilterFactory factory) {
-        this.factory = factory;
-    }
 
     /** @generated */
     public QName getTarget() {

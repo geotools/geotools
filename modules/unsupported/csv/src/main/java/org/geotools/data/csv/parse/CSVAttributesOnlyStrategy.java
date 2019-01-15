@@ -69,9 +69,8 @@ public class CSVAttributesOnlyStrategy extends CSVStrategy {
             Object value = property.getValue();
             if (value == null) {
                 csvRecord.add("");
-            } else if (Geometry.class.isAssignableFrom(value.getClass())) {
+            } else if (!Geometry.class.isAssignableFrom(value.getClass())) {
                 // skip geometries
-            } else {
                 String txt = value.toString();
                 csvRecord.add(txt);
             }

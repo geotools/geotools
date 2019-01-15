@@ -363,6 +363,7 @@ public class FeatureTypeMapping {
         return expressions;
     }
 
+    @SuppressWarnings("PMD.UnusedPrivateMethod")
     private List<Expression> getClientPropertyExpressions(
             final List attributeMappings, final Name clientPropertyName, StepList parentPath) {
         List<Expression> clientPropertyExpressions =

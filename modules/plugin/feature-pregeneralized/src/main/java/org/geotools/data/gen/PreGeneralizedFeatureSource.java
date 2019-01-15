@@ -414,7 +414,6 @@ public class PreGeneralizedFeatureSource implements SimpleFeatureSource {
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
-        ;
 
         hints.add(Hints.GEOMETRY_DISTANCE); // always supported
         supportedHints = Collections.unmodifiableSet(hints);

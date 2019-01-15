@@ -70,8 +70,6 @@ public class XmlFeatureTypeMapping extends FeatureTypeMapping {
 
     AttributeMapping rootAttribute;
 
-    private int index = 1;
-
     private FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
     /** Attributes that don't have their own label, therefore are children of another node. */
     List<AttributeMapping> setterAttributes = new ArrayList<AttributeMapping>();
@@ -237,7 +235,6 @@ public class XmlFeatureTypeMapping extends FeatureTypeMapping {
         addComplexAttributes(elements, it);
         addSetterAttributes(elements);
 
-        index++;
         removeAllRelativePaths();
     }
 
@@ -465,7 +462,6 @@ public class XmlFeatureTypeMapping extends FeatureTypeMapping {
         final Map<Name, Object> targetAttributes = new HashMap<Name, Object>();
         for (Map.Entry<Name, Expression> entry : clientProperties.entrySet()) {
             Name propName = entry.getKey();
-            Expression propExpr = entry.getValue();
             Object propValue = null; // getValue(propExpr, source);
             if (propValue != null) {
                 List<String> ls = (List<String>) propValue;

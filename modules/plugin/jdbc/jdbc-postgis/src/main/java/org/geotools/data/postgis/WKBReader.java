@@ -127,8 +127,6 @@ public class WKBReader {
 
     private boolean hasSRID = false;
 
-    private int SRID = 0;
-
     /**
      * true if structurally invalid input should be reported rather than repaired. At some point
      * this could be made client-controllable.

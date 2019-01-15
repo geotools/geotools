@@ -18,7 +18,6 @@ package org.geotools.renderer.style;
 
 import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
-import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Graphics2D;
@@ -30,7 +29,6 @@ import java.awt.TexturePaint;
 import java.awt.font.TextAttribute;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
-import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
@@ -71,13 +69,11 @@ import org.geotools.styling.TextSymbolizer2;
 import org.geotools.util.Range;
 import org.geotools.util.SoftValueHashMap;
 import org.geotools.util.factory.Hints;
-import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.Feature;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
-import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.sort.SortBy;
 import org.opengis.filter.sort.SortOrder;
 import org.opengis.style.GraphicalSymbol;
@@ -117,9 +113,6 @@ public class SLDStyleFactory {
             new java.util.LinkedHashMap<String, Integer>();
 
     private static final FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
-
-    /** This one is used as the observer object in image tracks */
-    private static final Canvas obs = new Canvas();
 
     /**
      * The default size for Marks when a mark is used, but no size is provided (got from the default
@@ -560,16 +553,7 @@ public class SLDStyleFactory {
         if (symbols == null || symbols.isEmpty()) {
             return null;
         }
-        final int length = symbols.size();
         ExternalGraphic eg;
-        BufferedImage img = null;
-        double dsize;
-        AffineTransform scaleTx;
-        AffineTransformOp ato;
-        BufferedImage scaledImage;
-        Mark mark;
-        Shape shape;
-        MarkStyle2D ms2d;
         for (GraphicalSymbol symbol : symbols) {
             if (LOGGER.isLoggable(Level.FINER)) {
                 LOGGER.finer("trying to render symbol " + symbol);
@@ -763,7 +747,6 @@ public class SLDStyleFactory {
             if (p.getDisplacement() != null) {
                 dispX = evalToDouble(p.getDisplacement().getDisplacementX(), feature, 0);
                 dispY = evalToDouble(p.getDisplacement().getDisplacementY(), feature, 0);
-                ;
             }
 
             // rotation
@@ -818,25 +801,6 @@ public class SLDStyleFactory {
         }
 
         return ts2d;
-    }
-
-    /**
-     * Extracts the named geometry from feature. If geomName is null then the feature's default
-     * geometry is used. If geomName cannot be found in feature then null is returned.
-     *
-     * @param feature The feature to find the geometry in
-     * @param geomName The name of the geometry to find: null if the default geometry should be
-     *     used.
-     * @return The geometry extracted from feature or null if this proved impossible.
-     */
-    private Geometry findGeometry(final Object feature, String geomName) {
-        Geometry geom = null;
-
-        if (geomName == null) {
-            geomName = ""; // ie default geometry
-        }
-        PropertyName property = ff.property(geomName);
-        return property.evaluate(feature, Geometry.class);
     }
 
     /**

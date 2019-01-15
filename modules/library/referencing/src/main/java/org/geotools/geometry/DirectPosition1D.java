@@ -17,6 +17,7 @@
 package org.geotools.geometry;
 
 import java.io.Serializable;
+import java.util.Objects;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -169,6 +170,15 @@ public class DirectPosition1D extends AbstractDirectPosition implements Serializ
         }
         assert code == super.hashCode();
         return code;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        DirectPosition1D that = (DirectPosition1D) o;
+        return Double.compare(that.ordinate, ordinate) == 0 && Objects.equals(crs, that.crs);
     }
 
     /** Returns a copy of this position. */

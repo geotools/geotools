@@ -58,7 +58,6 @@ import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.GeometryDescriptor;
-import org.opengis.filter.expression.Expression;
 
 /**
  * A dialog to prompt the user for feature style choices. It has a number of static {@code
@@ -790,8 +789,6 @@ public class JSimpleStyleDialog extends JDialog {
      * @param sym a {@code Symbolizer}
      */
     private void initControls(FeatureTypeStyle fts, Rule rule, Symbolizer sym) {
-        Expression exp = null;
-
         switch (geomType) {
             case POLYGON:
             case MULTIPOLYGON:

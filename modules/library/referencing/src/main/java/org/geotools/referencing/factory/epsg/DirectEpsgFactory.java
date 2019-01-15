@@ -16,7 +16,7 @@
  */
 package org.geotools.referencing.factory.epsg;
 
-import java.awt.RenderingHints;
+import java.awt.*;
 import java.io.File;
 import java.lang.ref.Reference;
 import java.lang.ref.SoftReference;
@@ -1151,19 +1151,19 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
                  * in all tables since duplicate names exist.
                  */
                 stmt.setString(1, epsg);
-                final ResultSet result = stmt.executeQuery();
-                final boolean present = result.next();
-                result.close();
-                if (present) {
-                    if (index >= 0) {
-                        throw new FactoryException(
-                                Errors.format(ErrorKeys.DUPLICATED_VALUES_$1, code));
-                    }
-                    index = (i < 0) ? lastObjectType : i;
-                    if (isPrimaryKey) {
-                        // Don't scan other tables, since primary keys should be unique.
-                        // Note that names may be duplicated, so we don't stop for names.
-                        break;
+                try (final ResultSet result = stmt.executeQuery()) {
+                    final boolean present = result.next();
+                    if (present) {
+                        if (index >= 0) {
+                            throw new FactoryException(
+                                    Errors.format(ErrorKeys.DUPLICATED_VALUES_$1, code));
+                        }
+                        index = (i < 0) ? lastObjectType : i;
+                        if (isPrimaryKey) {
+                            // Don't scan other tables, since primary keys should be unique.
+                            // Note that names may be duplicated, so we don't stop for names.
+                            break;
+                        }
                     }
                 }
                 if (isPrimaryKey) {
@@ -1250,14 +1250,15 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
                     throw noSuchAuthorityCode(Unit.class, String.valueOf(target));
                 }
                 Unit<?> unit = getUnit(source);
-                if (unit != null) {
+                if (unit == null) {
                     // TODO: check unit consistency here.
-                } else if (b != 0 && c != 0) {
-                    unit = (b == c) ? base : base.multiply(b / c);
-                    unit = Units.autoCorrect(unit); // auto-correct DEGREE_ANGLE and FOOT_SURVEY
-                } else {
-                    // TODO: provide a localized message.
-                    throw new FactoryException("Unsupported unit: " + code);
+                    if (b != 0 && c != 0) {
+                        unit = (b == c) ? base : base.multiply(b / c);
+                        unit = Units.autoCorrect(unit); // auto-correct DEGREE_ANGLE and FOOT_SURVEY
+                    } else {
+                        // TODO: provide a localized message.
+                        throw new FactoryException("Unsupported unit: " + code);
+                    }
                 }
                 returnValue = ensureSingleton(unit, returnValue, code);
             }

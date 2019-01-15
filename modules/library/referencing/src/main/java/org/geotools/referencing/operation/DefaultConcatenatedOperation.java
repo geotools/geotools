@@ -320,6 +320,7 @@ public class DefaultConcatenatedOperation extends AbstractCoordinateOperation
 
     /** Returns a hash code value for this concatenated operation. */
     @Override
+    @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int hashCode() {
         return operations.hashCode() ^ (int) serialVersionUID;
     }

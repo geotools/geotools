@@ -233,9 +233,7 @@ public class Drawer {
 
         Graphics graphics = bi.getGraphics();
 
-        if (symbolizer instanceof RasterSymbolizer) {
-            // TODO
-        } else {
+        if (!(symbolizer instanceof RasterSymbolizer)) {
             Geometry g = findGeometry(feature, symbolizer);
             if (g == null) return;
             if (mathTransform != null) {

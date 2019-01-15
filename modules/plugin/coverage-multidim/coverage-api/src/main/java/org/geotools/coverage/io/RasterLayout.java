@@ -18,6 +18,7 @@ package org.geotools.coverage.io;
 
 import java.awt.Rectangle;
 import java.awt.image.RenderedImage;
+import java.util.Objects;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
 
@@ -409,5 +410,11 @@ public class RasterLayout {
                 && (tileWidth == il.tileWidth)
                 && (tileGridXOffset == il.tileGridXOffset)
                 && (tileGridYOffset == il.tileGridYOffset);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(
+                minX, minY, width, height, tileGridXOffset, tileGridYOffset, tileWidth, tileHeight);
     }
 }

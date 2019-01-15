@@ -256,9 +256,7 @@ public class PostPreProcessFilterSplittingVisitor implements FilterVisitor, Expr
      * @see FilterVisitor#visit(IncludeFilter, Object)
      * @param filter the {@link Filter} to visit
      */
-    public void visit(IncludeFilter filter) {
-        return;
-    }
+    public void visit(IncludeFilter filter) {}
 
     /**
      * @see FilterVisitor#visit(ExcludeFilter, Object)

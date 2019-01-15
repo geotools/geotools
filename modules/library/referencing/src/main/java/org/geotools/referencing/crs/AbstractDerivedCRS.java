@@ -341,6 +341,7 @@ public class AbstractDerivedCRS extends AbstractSingleCRS implements GeneralDeri
      *     versions of this class.
      */
     @Override
+    @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int hashCode() {
         /*
          * Do not invoke 'conversionFromBase.hashCode()' in order to avoid a never-ending loop.

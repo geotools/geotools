@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.Objects;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -210,6 +211,15 @@ public class DirectPosition2D extends Point2D.Double implements DirectPosition, 
      */
     public String toString() {
         return toString(this, getCoordinates());
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        DirectPosition2D that = (DirectPosition2D) o;
+        return Objects.equals(crs, that.crs);
     }
 
     /**

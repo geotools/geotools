@@ -23,7 +23,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.logging.Logger;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.NameImpl;
 import org.geotools.util.factory.Hints;
@@ -47,9 +46,6 @@ import org.opengis.filter.expression.Literal;
  * @author Jody Garnett
  */
 public class FunctionFinder {
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(FunctionFinder.class);
-
     private volatile Map<Name, FunctionFactory> functionFactoryCache;
 
     public FunctionFinder(Hints hints) {

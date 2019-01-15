@@ -252,13 +252,15 @@ public final class XMath {
         final int exp = asText.indexOf('E');
         int upper, power;
         if (exp >= 0) {
-            upper = exp;
+            upper = exp - 1;
             power = Integer.parseInt(asText.substring(exp + 1));
         } else {
-            upper = asText.length();
+            upper = asText.length() - 1;
             power = 0;
         }
-        while ((asText.charAt(--upper)) == '0') ;
+        while ((asText.charAt(upper)) == '0') {
+            upper--;
+        }
         return Math.max(upper - asText.indexOf('.') - power, 0);
     }
 

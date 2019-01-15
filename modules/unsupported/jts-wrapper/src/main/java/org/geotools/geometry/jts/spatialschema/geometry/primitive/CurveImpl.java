@@ -176,7 +176,6 @@ public class CurveImpl extends GeometryImpl implements Curve {
         } else if (count > 0) {
             boolean allLineString = true;
             LineStringImpl lsi = new LineStringImpl();
-            LineString ls = null;
             List retList = lsi.getControlPoints();
             Object lastPoint = null;
             List segList = null;

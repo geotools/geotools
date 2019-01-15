@@ -81,9 +81,6 @@ public class GMLFilterFeature extends XMLFilterImpl implements GMLHandlerJTS {
 
     private String attName = "";
 
-    /** The current namespace we're in. */
-    private String NAMESPACE;
-
     /** Some sort of feature name. */
 
     // private String FEATURE_MEMBER_NAME = "featureMember";
@@ -153,9 +150,6 @@ public class GMLFilterFeature extends XMLFilterImpl implements GMLHandlerJTS {
         characters.setLength(0);
 
         if (localName.endsWith("Collection")) {
-            // if we scan the scema this can be done better.
-            NAMESPACE = namespaceURI;
-
             // _log.debug("starting a collection with namespace " + NAMESPACE + " and Name " +
             // localName);
             return;
@@ -204,9 +198,7 @@ public class GMLFilterFeature extends XMLFilterImpl implements GMLHandlerJTS {
             insideAttribute = true;
 
             return;
-        } else if (insideAttribute) {
-            // _log.debug("inside attribute");
-        } else {
+        } else if (!insideAttribute) {
             parent.startElement(namespaceURI, localName, qName, atts);
         }
     }

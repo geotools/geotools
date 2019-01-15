@@ -99,10 +99,6 @@ public class StyleAttributeExtractor extends FilterAttributeExtractor implements
                 symbolizer.accept(this);
             }
         }
-
-        Graphic[] legendGraphics = rule.getLegendGraphic();
-
-        if (legendGraphics != null) {}
     }
 
     /** @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.FeatureTypeStyle) */

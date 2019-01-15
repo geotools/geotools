@@ -107,4 +107,4 @@ abstract class ConstantDisplacement implements Displacement {
     public void accept(StyleVisitor visitor) {
         cannotModifyConstant();
     }
-};
+}

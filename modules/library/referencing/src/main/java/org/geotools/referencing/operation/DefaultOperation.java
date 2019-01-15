@@ -276,6 +276,7 @@ public class DefaultOperation extends DefaultSingleOperation implements Operatio
 
     /** Returns a hash code value for this operation method. */
     @Override
+    @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int hashCode() {
         return super.hashCode() ^ method.hashCode();
     }

@@ -238,4 +238,4 @@ abstract class ConstantFill implements Fill {
         cannotModifyConstant();
         return null;
     }
-};
+}

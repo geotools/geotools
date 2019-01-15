@@ -534,18 +534,16 @@ public class RangeSet<T extends Comparable<? super T>> extends AbstractSet<Range
             if (((i1 = ~i1) & 1) != 0) { // Attention: c'est ~ et non -
                 modCount++;
                 Array.set(array, --i1, upper);
-            } else {
-                /*
-                 * Si la date de fin ne tombe pas dans une plage déjà existante, il
-                 * faudra (plus tard) supprimer les éventuelles plages qui le précède.
-                 *
-                 *   0   1     2      3        4     5        6         7
-                 *   #####     ########        #######        ###########
-                 *                    ^                  ^
-                 *            lower(i=3)         upper(i=6)
-                 */
-                // nothing to do
             }
+            /*
+             * Si la date de fin ne tombe pas dans une plage déjà existante, il
+             * faudra (plus tard) supprimer les éventuelles plages qui le précède.
+             *
+             *   0   1     2      3        4     5        6         7
+             *   #####     ########        #######        ###########
+             *                    ^                  ^
+             *            lower(i=3)         upper(i=6)
+             */
         } else {
             i1 &= ~1;
         }

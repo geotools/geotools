@@ -52,7 +52,6 @@ import javax.media.jai.InterpolationNearest;
 import javax.media.jai.JAI;
 import javax.media.jai.PlanarImage;
 import javax.media.jai.ROI;
-import javax.media.jai.operator.ConstantDescriptor;
 import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.TypeMap;
@@ -1015,13 +1014,11 @@ public final class GridCoverageRenderer {
 
         // symbolize each bit (done here to make sure we can perform the warp/affine reduction)
         List<GridCoverage2D> symbolizedCoverages = new ArrayList<>();
-        int ii = 0;
         for (GridCoverage2D displaced : displacedCoverages) {
             GridCoverage2D symbolized = symbolize(displaced, finalSymbolizer, bgValues);
             if (symbolized != null) {
                 symbolizedCoverages.add(symbolized);
             }
-            ii++;
         }
 
         // Parameters used for taking into account an optional removal of the alpha band
@@ -1108,47 +1105,6 @@ public final class GridCoverageRenderer {
         } else {
             return coverage;
         }
-    }
-
-    /**
-     * Method for creating an alpha band to use for mosaiking
-     *
-     * @param coverage
-     * @return a new GridCoverage containing a single band with the same size of the input Coverage
-     */
-    private GridCoverage2D createAlphaBand(GridCoverage2D coverage) {
-        // Getting input image
-        RenderedImage input = coverage.getRenderedImage();
-        // Define image layout
-        ImageLayout layout = new ImageLayout();
-        layout.setMinX(input.getMinX());
-        layout.setMinY(input.getMinY());
-        layout.setWidth(input.getWidth());
-        layout.setHeight(input.getHeight());
-        layout.setTileHeight(input.getTileHeight());
-        layout.setTileWidth(input.getTileWidth());
-        // Define rendering hints
-        RenderingHints renderHints = new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout);
-        // Create an image with all 255
-        RenderedImage alpha =
-                ConstantDescriptor.create(
-                        Float.valueOf(input.getWidth()),
-                        Float.valueOf(input.getHeight()),
-                        new Byte[] {(byte) 255},
-                        renderHints);
-        // Format Image
-        ImageWorker w = new ImageWorker(alpha).format(input.getSampleModel().getDataType());
-
-        // Create the GridCoverage
-        GridCoverage2D newCoverage =
-                gridCoverageFactory.create(
-                        coverage.getName() + "Alpha",
-                        w.getRenderedImage(),
-                        coverage.getGridGeometry(),
-                        null,
-                        new GridCoverage2D[] {coverage},
-                        coverage.getProperties());
-        return newCoverage;
     }
 
     private double[] getTranslationFactors(Polygon reference, Polygon displaced) {

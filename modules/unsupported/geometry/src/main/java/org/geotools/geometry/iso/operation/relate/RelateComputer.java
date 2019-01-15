@@ -239,28 +239,6 @@ public class RelateComputer {
     }
 
     /**
-     * For all intersections on the edges of a Geometry, label the corresponding node IF it doesn't
-     * already have a label. This allows nodes created by either self-intersections or mutual
-     * intersections to be labelled. Endpoint nodes will already be labelled from when they were
-     * inserted.
-     */
-    private void labelIntersectionNodes(int argIndex) {
-        for (Iterator i = arg[argIndex].getEdgeIterator(); i.hasNext(); ) {
-            Edge e = (Edge) i.next();
-            int eLoc = e.getLabel().getLocation(argIndex);
-            for (Iterator eiIt = e.getEdgeIntersectionList().iterator(); eiIt.hasNext(); ) {
-                EdgeIntersection ei = (EdgeIntersection) eiIt.next();
-                RelateNode n = (RelateNode) nodes.find(ei.coord);
-                if (n.getLabel().isNull(argIndex)) {
-                    if (eLoc == Location.BOUNDARY) n.setLabelBoundary(argIndex);
-                    else n.setLabel(argIndex, Location.INTERIOR);
-                }
-                // n.print(System.out);
-            }
-        }
-    }
-
-    /**
      * If the Geometries are disjoint, we need to enter their dimension and boundary dimension in
      * the EXTERIOR rows in the IM
      */

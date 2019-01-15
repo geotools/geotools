@@ -66,9 +66,10 @@
     </plugins>
   </build>
   
-  <!-- disable errorprone in these modules, their code is generated -->
+  <!-- disable pmd and errorprone in these modules, their code is generated -->
   <properties>
     <errorProneFlags>-XepDisableAllChecks</errorProneFlags>
+    <pmd.skip>true</pmd.skip>
   </properties>
 
 

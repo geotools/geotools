@@ -37,6 +37,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.media.jai.PlanarImage;
 import org.geotools.coverage.grid.GridCoverageFactory;
@@ -228,7 +229,9 @@ public class JDBCAccessOracleGeoRaster extends JDBCAccessCustom {
             s = con.prepareStatement(extentSelectLBX);
             s.setString(1, getConfig().getCoverageName());
             r = s.executeQuery();
-            r.next();
+            if (r.next()) {
+                throw new SQLException("Did not get any result from the database bounds query");
+            }
             byte[] wkb = r.getBytes(1);
             Geometry geom = new WKBReader().read(wkb);
             extent = geom.getEnvelopeInternal();
@@ -317,7 +320,10 @@ public class JDBCAccessOracleGeoRaster extends JDBCAccessCustom {
             stmt = con.prepareStatement(sqlSpatialResolution);
             stmt.setString(1, getConfig().getCoverageName());
             rs = stmt.executeQuery();
-            rs.next();
+            if (!rs.next()) {
+                throw new SQLException(
+                        "Query to get returned spatial resolutions did not return any result");
+            }
             Array array = rs.getArray(1);
             BigDecimal[] javaArray = (BigDecimal[]) array.getArray();
             spatialResolution[1] = javaArray[0].doubleValue();
@@ -325,7 +331,7 @@ public class JDBCAccessOracleGeoRaster extends JDBCAccessCustom {
             LOGGER.fine("Assigned X Value: " + spatialResolution[0]);
             LOGGER.fine("Assigned Y Value: " + spatialResolution[1]);
         } catch (Exception ex) {
-            LOGGER.severe("Failure getting spatial resolution");
+            LOGGER.log(Level.SEVERE, "Failure getting spatial resolution", ex);
         } finally {
             closeResultSet(rs);
             closePreparedStmt(stmt);

@@ -23,10 +23,7 @@ import java.awt.image.ComponentColorModel;
 import java.awt.image.DataBuffer;
 import java.util.Arrays;
 import java.util.Map;
-import javax.media.jai.FloatDoubleColorModel;
-import javax.media.jai.RasterFactory;
 import org.geotools.image.util.ColorUtilities;
-import org.geotools.image.util.ComponentColorModelJAI;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
 import org.geotools.util.WeakValueHashMap;
@@ -160,31 +157,11 @@ final class ColorModelFactory {
             // fallback on a generic (but very slow!) color model.
             final int transparency = Transparency.OPAQUE;
             final ColorSpace colors = new ScaledColorSpace(visibleBand, numBands, minimum, maximum);
-            if (true) {
-                // This is the J2SE implementation of color model. It should be our preferred one.
-                // In JAI 1.1 we had to use JAI implementation instead of J2SE's one because
-                // javax.media.jai.iterator.RectIter didn't work with J2SE's DataBuffer
-                // when the data type is float or double.
-                return new ComponentColorModel(colors, false, false, transparency, type);
-            }
-            if (false) {
-                // This is the JAI implementation of color model. This implementation work with
-                // JAI's RectIter and should in theory support float and double data buffer.
-                // Unfortunatly, it seems to completly ignore our custom ColorSpace. We end
-                // up basically with all-black or all-white images.
-                return new FloatDoubleColorModel(colors, false, false, transparency, type);
-            }
-            if (false) {
-                // Our patched color model extends J2SE's ComponentColorModel (which work correctly
-                // with our custom ColorSpace), but create JAI's SampleModel instead of J2SE's one.
-                // It make RectIter happy and display colors correctly.
-                return new ComponentColorModelJAI(colors, false, false, transparency, type);
-            }
-            // This factory is not really different from a direct construction of
-            // FloatDoubleColorModel. We provide it here just because we must end
-            // with something.
-            return RasterFactory.createComponentColorModel(
-                    type, colors, false, false, transparency);
+            // This is the J2SE implementation of color model. It should be our preferred one.
+            // In JAI 1.1 we had to use JAI implementation instead of J2SE's one because
+            // javax.media.jai.iterator.RectIter didn't work with J2SE's DataBuffer
+            // when the data type is float or double.
+            return new ComponentColorModel(colors, false, false, transparency, type);
         }
         if (numBands == 1 && categoryCount == 0) {
             // Construct a gray scale palette.

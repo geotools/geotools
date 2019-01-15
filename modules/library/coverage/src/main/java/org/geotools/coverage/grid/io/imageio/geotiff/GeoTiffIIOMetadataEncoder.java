@@ -330,9 +330,7 @@ public class GeoTiffIIOMetadataEncoder {
             newValue.append(value).append(ASCII_SEPARATOR);
 
             // now add to the geoascii metatag
-            GeoKeyEntry newEntry =
-                    updateGeoAsciiParamsRef(
-                            keyID, newValue.length(), currentEntry.getValueOffset());
+            updateGeoAsciiParamsRef(keyID, newValue.length(), currentEntry.getValueOffset());
 
             // +1 for the '|' character to be appended
             replaceAsciiParam(

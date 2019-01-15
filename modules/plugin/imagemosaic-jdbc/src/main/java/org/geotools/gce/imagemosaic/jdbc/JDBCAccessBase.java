@@ -566,7 +566,6 @@ abstract class JDBCAccessBase implements JDBCAccess {
                 pool.execute(thread);
             }
 
-            ;
             r.close();
             s.close();
 
@@ -659,7 +658,9 @@ abstract class JDBCAccessBase implements JDBCAccess {
     private int getRowCount(String tableName, Connection con) throws SQLException {
         PreparedStatement s = con.prepareStatement("select count(*) from " + tableName);
         ResultSet res = s.executeQuery();
-        res.next();
+        if (!res.next()) {
+            throw new SQLException("Cannot get a count");
+        }
 
         int count = res.getInt(1);
         res.close();

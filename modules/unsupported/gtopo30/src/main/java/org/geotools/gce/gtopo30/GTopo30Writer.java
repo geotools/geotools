@@ -931,9 +931,9 @@ public final class GTopo30Writer extends AbstractGridCoverageWriter implements G
             outZ.write(" ".getBytes());
             outZ.write(Integer.valueOf((int) Max[0]).toString().getBytes());
             outZ.write(" ".getBytes());
-            outZ.write(new Double(hist.getMean()[0]).toString().getBytes());
+            outZ.write(String.valueOf(hist.getMean()[0]).getBytes());
             outZ.write(" ".getBytes());
-            outZ.write(new Double(hist.getStandardDeviation()[0]).toString().getBytes());
+            outZ.write(String.valueOf(hist.getStandardDeviation()[0]).getBytes());
             ((ZipOutputStream) dest).closeEntry();
         }
         histogramImage.dispose();

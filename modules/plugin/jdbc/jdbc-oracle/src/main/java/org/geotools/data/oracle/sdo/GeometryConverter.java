@@ -117,7 +117,6 @@ public class GeometryConverter {
         final double POINT[] = asDoubleArray((STRUCT) data[2], Double.NaN);
         final int ELEMINFO[] = asIntArray((ARRAY) data[3], 0);
         final double ORDINATES[] = asDoubleArray((ARRAY) data[4], Double.NaN);
-        ;
 
         return SDO.create(geometryFactory, GTYPE, SRID, POINT, ELEMINFO, ORDINATES);
     }

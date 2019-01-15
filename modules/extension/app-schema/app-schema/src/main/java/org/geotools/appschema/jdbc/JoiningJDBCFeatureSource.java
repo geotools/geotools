@@ -829,7 +829,6 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
             String rootTableName,
             JDBCDataStore store,
             StringBuffer sql) {
-        List<JdbcMultipleValue> multipleValues = new ArrayList<>();
         for (AttributeMapping attributeMapping : rootMapping.getAttributeMappings()) {
             if (!(attributeMapping.getMultipleValue() instanceof JdbcMultipleValue)) {
                 continue;
@@ -1181,13 +1180,6 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
         } else {
             querySchema = SimpleFeatureTypeBuilder.retype(getSchema(), query.getPropertyNames());
         }
-        // rebuild and add primary key column if there's no idExpression pointing to a database
-        // column
-        // this is so we can retrieve the PK later to use for feature chaining grouping
-        SimpleFeatureType fullSchema =
-                (query.hasIdColumn() && query.getQueryJoins() == null)
-                        ? querySchema
-                        : getFeatureType(querySchema, query);
 
         // grab connection
         Connection cx = getDataStore().getConnection(getState().getTransaction());

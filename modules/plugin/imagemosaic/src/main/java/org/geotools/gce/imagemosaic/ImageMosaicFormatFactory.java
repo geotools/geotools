@@ -182,7 +182,7 @@ public final class ImageMosaicFormatFactory implements GridFormatFactorySpi {
 
     private static boolean hasJP2Kakadu() {
         try {
-            Class<?> cl = Class.forName(KAKADU_SPI);
+            Class.forName(KAKADU_SPI);
             Class<?> utilityClass = Class.forName("it.geosolutions.util.KakaduUtilities");
             final Method method =
                     utilityClass.getDeclaredMethod("isKakaduAvailable", (Class[]) null);

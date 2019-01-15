@@ -84,7 +84,6 @@ public class LayerBinding extends AbstractSimpleBinding {
         for (Node c : children) {
             layer.getFormat().add((String) c.getValue());
         }
-        ;
         children = node.getChildren("InfoFormat");
         for (Node c : children) {
             layer.getInfoFormat().add((String) c.getValue());

@@ -18,13 +18,11 @@ package org.geotools.renderer.crs;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryCollection;
-import org.locationtech.jts.geom.GeometryComponentFilter;
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
@@ -144,10 +142,8 @@ public class WrappingProjectionHandler extends ProjectionHandler {
         geomType = accumulate(geoms, geometry, geomType);
         while (curr <= highLimit) {
             double offset = curr - base;
-            if (Math.abs(offset) < radius) {
-                // in this case we can keep the original geometry, which is already in
-            } else {
-                // in all other cases we make a copy and offset it
+            if (Math.abs(offset) >= radius) {
+                // we make a copy and offset it
                 Geometry offseted = geometry.copy();
                 offseted.apply(new OffsetOrdinateFilter(northEast ? 1 : 0, offset));
                 offseted.geometryChanged();
@@ -183,26 +179,6 @@ public class WrappingProjectionHandler extends ProjectionHandler {
         }
     }
 
-    private boolean isUnwrapped(final Geometry geometry) {
-        if (geometry instanceof GeometryCollection) {
-            final AtomicBoolean unwrapped = new AtomicBoolean(true);
-            geometry.apply(
-                    new GeometryComponentFilter() {
-
-                        @Override
-                        public void filter(Geometry geom) {
-                            if (geom != geometry
-                                    && geom.getEnvelopeInternal().getWidth() > radius) {
-                                unwrapped.set(false);
-                            }
-                        }
-                    });
-            return unwrapped.get();
-        } else {
-            return geometry.getEnvelopeInternal().getWidth() <= radius;
-        }
-    }
-
     /**
      * Adds the geometries into the collection by recursively splitting apart geometry collections,
      * so that geoms will contains only simple geometries.
@@ -214,9 +190,10 @@ public class WrappingProjectionHandler extends ProjectionHandler {
      *     it's going to be Geometry.class
      */
     private Class accumulate(List<Geometry> geoms, Geometry geometry, Class geomType) {
+        Class gtype = null;
         for (int i = 0; i < geometry.getNumGeometries(); i++) {
             Geometry g = geometry.getGeometryN(i);
-            Class gtype = null;
+
             if (g instanceof GeometryCollection) {
                 gtype = accumulate(geoms, g, geomType);
             } else {
@@ -226,13 +203,13 @@ public class WrappingProjectionHandler extends ProjectionHandler {
                 }
             }
 
-            if (geomType == null) {
-                geomType = g.getClass();
-            } else if (!g.getClass().equals(geomType)) {
-                geomType = Geometry.class;
+            if (gtype == null) {
+                gtype = g.getClass();
+            } else if (geomType != null && !g.getClass().equals(geomType)) {
+                gtype = Geometry.class;
             }
         }
-        return geomType;
+        return gtype;
     }
 
     @Override

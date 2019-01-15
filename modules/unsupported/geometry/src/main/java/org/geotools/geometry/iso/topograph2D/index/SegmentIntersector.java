@@ -53,11 +53,6 @@ public class SegmentIntersector {
 
     private boolean recordIsolated;
 
-    private boolean isSelfIntersection;
-
-    // private boolean intersectionFound;
-    private int numIntersections = 0;
-
     // testing only
     public int numTests = 0;
 
@@ -152,7 +147,6 @@ public class SegmentIntersector {
                 e1.setIsolated(false);
             }
             // intersectionFound = true;
-            numIntersections++;
             // if the segments are adjacent they have at least one trivial
             // intersection,
             // the shared endpoint. Don't bother adding it if it is the

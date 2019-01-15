@@ -124,6 +124,7 @@
     <errorProneFlags></errorProneFlags>
     <errorProne.version>2.3.2</errorProne.version>
     <javac.version>9+181-r4173-1</javac.version>
+    <pmd.skip>false</pmd.skip>
   </properties>
 
   <!-- Profiles set on the command-line overwrite default properties. -->
@@ -245,16 +246,18 @@
             <artifactId>maven-pmd-plugin</artifactId>
             <version>3.11.0</version>
             <configuration>
+              <skip>${pmd.skip}</skip>
               <rulesets>
                 <ruleset>${geotoolsBaseDir}/pmd-ruleset.xml</ruleset>
               </rulesets>
-              <failurePriority>2</failurePriority>
-              <minimumPriority>2</minimumPriority>
+              <failurePriority>3</failurePriority>
+              <minimumPriority>3</minimumPriority>
               <verbose>true</verbose>
               <printFailingErrors>true</printFailingErrors>
               <excludeRoots>
                 <excludeRoot>target/generated-sources</excludeRoot>
               </excludeRoots>
+
             </configuration>
             <executions>
               <execution>

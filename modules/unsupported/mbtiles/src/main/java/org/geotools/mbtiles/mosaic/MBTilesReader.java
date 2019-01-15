@@ -129,7 +129,6 @@ public class MBTilesReader extends AbstractGridCoverage2DReader {
                                 ReferencedEnvelope.create(
                                                 gg.getEnvelope(), gg.getCoordinateReferenceSystem())
                                         .transform(SPHERICAL_MERCATOR, true);
-                        ;
                     } catch (Exception e) {
                         requestedEnvelope = null;
                     }

@@ -504,10 +504,6 @@ public class RasterLayerResponse {
 
     private MathTransform baseGridToWorld;
 
-    private Interpolation interpolation;
-
-    private boolean needsReprojection;
-
     private double[] virtualNativeResolution;
 
     private Geometry geometryMask;
@@ -554,8 +550,6 @@ public class RasterLayerResponse {
         multithreadingAllowed = request.isMultithreadingAllowed();
         footprintBehavior = request.getFootprintBehavior();
         backgroundValues = request.getBackgroundValues();
-        interpolation = request.getInterpolation();
-        needsReprojection = request.spatialRequestHelper.isNeedsReprojection();
         defaultArtifactsFilterThreshold = request.getDefaultArtifactsFilterThreshold();
         artifactsFilterPTileThreshold = request.getArtifactsFilterPTileThreshold();
         virtualNativeResolution = request.getVirtualNativeResolution();

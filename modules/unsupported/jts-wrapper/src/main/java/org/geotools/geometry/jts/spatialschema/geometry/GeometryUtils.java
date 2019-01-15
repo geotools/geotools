@@ -411,8 +411,6 @@ public final class GeometryUtils {
      */
     public static DirectPosition ensureWGS84(DirectPosition dp) {
         CoordinateReferenceSystem crs = dp.getCoordinateReferenceSystem();
-        int dim = crs.getCoordinateSystem().getDimension();
-        boolean isProjectedCRS = crs instanceof ProjectedCRS;
         CoordinateReferenceSystem bcrs =
                 crs instanceof ProjectedCRS ? ((ProjectedCRS) crs).getBaseCRS() : crs;
 

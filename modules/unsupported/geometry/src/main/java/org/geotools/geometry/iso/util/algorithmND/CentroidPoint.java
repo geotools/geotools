@@ -36,7 +36,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 public class CentroidPoint {
 
     // private FeatGeomFactoryImpl factory = null;
-    private CoordinateReferenceSystem crs = null;
     private int ptCount = 0;
     DirectPositionImpl centSum = null;
 
@@ -46,7 +45,6 @@ public class CentroidPoint {
      * @param crs
      */
     public CentroidPoint(CoordinateReferenceSystem crs) {
-        this.crs = crs;
         this.centSum =
                 new DirectPositionImpl(
                         crs); // this.factory.getGeometryFactoryImpl().createDirectPosition();

@@ -267,7 +267,6 @@ public class NestedFilterToSQL extends FilterToSQL {
         NestedAttributeMapping nestedFeatureAttr = parentStep.getNestedFeatureAttribute();
         FeatureTypeMapping nestedFeature = nestedFeatureAttr.getFeatureTypeMapping(null);
 
-        SimpleFeatureType parentSource = (SimpleFeatureType) parentFeature.getSource().getSchema();
         String parentTableName = parentFeature.getSource().getSchema().getName().getLocalPart();
         String parentTableAlias = parentStep.getAlias();
         WrappedFilterToSql parentToSQL = createFilterToSQL(parentFeature);
@@ -276,7 +275,6 @@ public class NestedFilterToSQL extends FilterToSQL {
         Expression parentExpression = nestedFeatureAttr.getSourceExpression();
         String parentTableColumn = parentToSQL.encodeToString(parentExpression);
 
-        SimpleFeatureType nestedSource = (SimpleFeatureType) parentFeature.getSource().getSchema();
         String nestedTableAlias = nestedStep.getAlias();
         WrappedFilterToSql nestedFilterToSQL = createFilterToSQL(parentFeature);
         // don't escape, as it will be done by the encodeColumn methods
@@ -339,7 +337,6 @@ public class NestedFilterToSQL extends FilterToSQL {
         JDBCDataStore store = (JDBCDataStore) featureMapping.getSource().getDataStore();
         FeatureTypeMapping featureMappingForUnrolling =
                 nestedAttrDescr.getFeatureTypeOwningAttribute();
-        SimpleFeatureType sourceType = (SimpleFeatureType) featureMapping.getSource().getSchema();
 
         NamespaceAwareAttributeRenameVisitor duplicate =
                 new NamespaceAwareAttributeRenameVisitor(nestedProperty, simpleProperty);

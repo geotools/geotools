@@ -49,8 +49,6 @@ public class S3ImageInputStreamImplSpi extends ImageInputStreamSpi {
 
     private static final Class<String> inputClass = String.class;
 
-    private static volatile boolean useFileChannel;
-
     /**
      * Constructs a blank {@link ImageInputStreamSpi}. It is up to the subclass to initialize
      * instance variables and/or override method implementations in order to provide working

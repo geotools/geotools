@@ -55,9 +55,9 @@ public class Polynom implements Serializable {
      * @param c The coefficients. This array is copied.
      */
     public Polynom(final double[] c) {
-        int n = c.length;
-        while (n != 0 && c[--n] == 0) {
-            // Empty on purpose.
+        int n = c.length - 1;
+        while (n != 0 && c[n] == 0) {
+            n--;
         }
         if (n == 0) {
             this.c = NO_REAL_ROOT;
@@ -205,9 +205,9 @@ public class Polynom implements Serializable {
      *     handle.
      */
     public static double[] roots(final double[] c) {
-        int n = c.length;
-        while (n != 0 && c[--n] == 0) {
-            // Empty on purpose.
+        int n = c.length - 1;
+        while (n != 0 && c[n] == 0) {
+            n--;
         }
         switch (n) {
             case 0:

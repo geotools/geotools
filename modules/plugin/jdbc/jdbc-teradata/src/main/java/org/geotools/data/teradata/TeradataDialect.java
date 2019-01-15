@@ -787,7 +787,9 @@ public class TeradataDialect extends PreparedStatementSQLDialect {
                             dataStore.escapeNamePattern(metaData, schemaName),
                             dataStore.escapeNamePattern(metaData, tableName),
                             dataStore.escapeNamePattern(metaData, columnName));
-            columns.next();
+            if (!columns.next()) {
+                throw new SQLException("Could not find column metadata");
+            }
 
             return columns.getString("TYPE_NAME");
         } finally {

@@ -9,10 +9,7 @@
  *************************************************************************************************/
 package org.geotools.geometry.jts.spatialschema.geometry.primitive;
 
-import java.util.Collections;
 import java.util.HashSet;
-import java.util.Set;
-import org.opengis.geometry.complex.Complex;
 import org.opengis.geometry.primitive.CurveBoundary;
 import org.opengis.geometry.primitive.Point;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -27,18 +24,10 @@ public class CurveBoundaryImpl extends PrimitiveBoundaryImpl implements CurveBou
     // *************************************************************************
     //
     // *************************************************************************
-    /** Comment for {@code EMPTY_COMPLEX_ARRAY}. */
-    private static final Complex[] EMPTY_COMPLEX_ARRAY = new Complex[0];
-
-    // *************************************************************************
-    //
-    // *************************************************************************
 
     private Point startPoint;
 
     private Point endPoint;
-
-    private Set pointSet;
 
     // *************************************************************************
     //
@@ -57,7 +46,6 @@ public class CurveBoundaryImpl extends PrimitiveBoundaryImpl implements CurveBou
         if (endPoint != null) {
             tempSet.add(endPoint);
         }
-        this.pointSet = Collections.unmodifiableSet(tempSet);
     }
 
     // *************************************************************************

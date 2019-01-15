@@ -548,6 +548,7 @@ public class AbstractCoordinateOperation extends AbstractIdentifiedObject
 
     /** Returns a hash code value for this coordinate operation. */
     @Override
+    @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int hashCode() {
         int code = (int) serialVersionUID;
         if (sourceCRS != null) code ^= sourceCRS.hashCode();

@@ -16,7 +16,6 @@
  */
 package org.geotools.validation.attributes;
 
-import java.util.logging.Logger;
 import org.geotools.validation.DefaultFeatureValidation;
 import org.geotools.validation.ValidationResults;
 import org.opengis.feature.simple.SimpleFeature;
@@ -34,10 +33,6 @@ import org.opengis.filter.Filter;
  * @version $Id$
  */
 public class EqualityValidation extends DefaultFeatureValidation {
-    /** The logger for the validation module. */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(EqualityValidation.class);
-
     private String attributeName;
 
     /** Expected value that attribute are supposed to equal */

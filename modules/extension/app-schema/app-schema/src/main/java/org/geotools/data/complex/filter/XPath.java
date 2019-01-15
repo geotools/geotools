@@ -209,7 +209,7 @@ public class XPath extends XPathUtil {
 
         Iterator stepsIterator = steps.iterator();
 
-        for (; stepsIterator.hasNext(); ) {
+        while (stepsIterator.hasNext()) {
             final XPath.Step currStep = (Step) stepsIterator.next();
             AttributeDescriptor currStepDescriptor = null;
             final boolean isLastStep = !stepsIterator.hasNext();
@@ -412,6 +412,7 @@ public class XPath extends XPathUtil {
         }
     }
 
+    @SuppressWarnings("PMD.UnusedPrivateMethod")
     private Attribute setLeafAttribute(
             AttributeDescriptor currStepDescriptor,
             Step currStep,

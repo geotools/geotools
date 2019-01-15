@@ -397,7 +397,7 @@ public class Parser extends MathTransformParser {
         final Element element = parent.pullElement("UNIT");
         final String name = element.pullString("name");
         final double factor = element.pullDouble("factor");
-        final Map<String, ?> properties = parseAuthority(element, name);
+        parseAuthority(element, name);
         element.close();
         Unit<T> finalUnit = (factor != 1) ? unit.multiply(factor) : unit;
         return Units.autoCorrect(finalUnit);
@@ -615,7 +615,7 @@ public class Parser extends MathTransformParser {
             throws ParseException {
         final Element element = parent.pullElement("PROJECTION");
         final String classification = element.pullString("name");
-        final Map<String, ?> properties = parseAuthority(element, classification);
+        parseAuthority(element, classification);
         element.close();
         /*
          * Set the list of parameters.  NOTE: Parameters are defined in
@@ -764,7 +764,7 @@ public class Parser extends MathTransformParser {
     private EngineeringDatum parseLocalDatum(final Element parent) throws ParseException {
         final Element element = parent.pullElement("LOCAL_DATUM");
         final String name = element.pullString("name");
-        final int datum = element.pullInteger("datum");
+        element.pullInteger("datum");
         final Map<String, ?> properties = parseAuthority(element, name);
         element.close();
         try {

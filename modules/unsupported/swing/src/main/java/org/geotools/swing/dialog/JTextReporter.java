@@ -345,8 +345,8 @@ public class JTextReporter {
 
             } finally {
                 updateLock.readLock().unlock();
-                return rtnText[0];
             }
+            return rtnText[0];
         }
 
         /**
@@ -749,8 +749,6 @@ public class JTextReporter {
          * @param indent indent width as number of spaces
          */
         private void append(final String text, final int indent) {
-            int startLine = textArea.getLineCount();
-
             String appendText;
             if (indent > 0) {
                 char[] c = new char[indent];

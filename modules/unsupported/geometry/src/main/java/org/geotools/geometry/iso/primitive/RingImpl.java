@@ -40,8 +40,6 @@ import org.opengis.geometry.primitive.Ring;
  */
 public class RingImpl extends RingImplUnsafe implements Ring {
 
-    private SurfaceBoundaryImpl surfaceBoundary;
-
     /**
      * Creates a Ring
      *

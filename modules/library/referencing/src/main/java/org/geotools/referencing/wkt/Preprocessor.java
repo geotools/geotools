@@ -336,7 +336,7 @@ public class Preprocessor extends Format {
         }
         value = substitute(value);
         final Definition newDef = new Definition(value, forwardParse(value));
-        final Definition oldDef = (Definition) definitions.put(name, newDef);
+        definitions.put(name, newDef);
     }
 
     /**

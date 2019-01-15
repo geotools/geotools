@@ -1569,12 +1569,6 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
         } else {
             try {
                 List<Expression> parameters = function.getParameters();
-                List contexts = null;
-                // check context, if a list which patches parameter size list assume its context
-                // to pass along to each Expression for encoding
-                if (extraData instanceof List && ((List) extraData).size() == parameters.size()) {
-                    contexts = (List) extraData;
-                }
 
                 // set the encoding function flag to signal we are inside a function
                 encodingFunction = true;

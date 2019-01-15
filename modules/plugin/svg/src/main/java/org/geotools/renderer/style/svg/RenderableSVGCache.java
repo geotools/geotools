@@ -40,7 +40,6 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.xml.sax.EntityResolver;
 
 /** Cache for RenderableSVG instances */
 public class RenderableSVGCache {
@@ -59,8 +58,6 @@ public class RenderableSVGCache {
         formats.add("image/svg-xml");
         formats.add("image/svg+xml");
     }
-
-    private EntityResolver resolver;
 
     public RenderableSVGCache() {
         this(null);

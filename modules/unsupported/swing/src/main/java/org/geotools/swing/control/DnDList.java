@@ -277,12 +277,8 @@ public class DnDList<T> extends JList
              */
             DnDListModel<T> model = getModel();
             model.moveItems(overIndex, dragIndices);
-
-        } else {
-
-            // @todo stuff dragged from other list
-
         }
+        // @todo stuff dragged from other list
 
         overIndex = -1;
         movingItems = false;

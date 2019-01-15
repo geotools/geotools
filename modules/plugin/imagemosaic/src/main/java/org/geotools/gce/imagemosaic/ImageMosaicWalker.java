@@ -20,7 +20,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -58,8 +57,6 @@ abstract class ImageMosaicWalker implements Runnable {
     /** Default Logger * */
     static final Logger LOGGER =
             org.geotools.util.logging.Logging.getLogger(ImageMosaicWalker.class);
-
-    private List<GranuleAcceptor> granuleAcceptors;
 
     private DefaultTransaction transaction;
 
@@ -101,7 +98,6 @@ abstract class ImageMosaicWalker implements Runnable {
         Utilities.ensureNonNull("event handler", eventHandler);
         this.configHandler = configHandler;
         this.eventHandler = eventHandler;
-        this.granuleAcceptors = configHandler.getGranuleAcceptors();
     }
 
     public boolean getStop() {

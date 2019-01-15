@@ -96,12 +96,6 @@ public class SymbolizerTypeBinding extends AbstractComplexBinding {
         if (node.hasChild("Description")) {
             sym.setDescription((Description) node.getChildValue("Description"));
         }
-        if (node.hasChild("BaseSymbolizer")) {
-            // throw new IllegalArgumentException("BaseSymbolizer not supported");
-        }
-        if (node.hasAttribute("version")) {
-            // throw new IllegalArgumentException("version not supported");
-        }
         if (node.hasAttribute("uom")) {
             String uom = ((URI) node.getAttributeValue("uom")).toString();
             if (UomOgcMapping.get(uom) == null) {

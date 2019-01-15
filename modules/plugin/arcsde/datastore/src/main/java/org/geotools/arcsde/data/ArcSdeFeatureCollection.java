@@ -132,9 +132,7 @@ public class ArcSdeFeatureCollection extends DataFeatureCollection {
      */
     @Override
     protected void closeIterator(Iterator<SimpleFeature> close) throws IOException {
-        if (close == null) {
-            // iterator probably failed during consturction !
-        } else if (close instanceof FeatureReaderIterator) {
+        if (close instanceof FeatureReaderIterator) {
             FeatureReaderIterator<SimpleFeature> iterator =
                     (FeatureReaderIterator<SimpleFeature>) close;
             iterator.close(); // only needs package visability

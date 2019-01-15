@@ -68,7 +68,6 @@ import org.geotools.data.store.ContentDataStore;
 import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.data.store.ContentState;
-import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.visitor.CountVisitor;
@@ -91,7 +90,6 @@ import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.Id;
 import org.opengis.filter.PropertyIsLessThanOrEqualTo;
 import org.opengis.filter.expression.BinaryExpression;
@@ -151,8 +149,6 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
     /** Caches the "setValue" method in various aggregate visitors */
     private static SoftValueHashMap<Class, Method> AGGREGATE_SETVALUE_CACHE =
             new SoftValueHashMap<>(1000);
-
-    private static final FilterFactory2 FF2 = CommonFactoryFinder.getFilterFactory2();
 
     /**
      * When true, record a stack trace documenting who disposed the JDBCDataStore. If dispose() is
@@ -1254,7 +1250,9 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
                             escapeNamePattern(metaData, databaseSchema),
                             escapeNamePattern(metaData, tableName),
                             escapeNamePattern(metaData, columnName));
-            columns.next();
+            if (!columns.next()) {
+                throw new SQLException("Could not find metadata for column");
+            }
 
             int binding = columns.getInt("DATA_TYPE");
             Class columnType = getMapping(binding);
@@ -2231,7 +2229,6 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
         // more than one
         List<Object> keyValues = new ArrayList<Object>();
         for (int i = 0; i < columns.size(); i++) {
-            PrimaryKeyColumn column = columns.get(i);
             String o = dialect.getPkColumnValue(rs, columns.get(0), offset + i + 1);
             keyValues.add(o);
         }
@@ -3494,7 +3491,6 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
         try {
             // grab the full feature type, as we might be encoding a filter
             // that uses attributes that aren't returned in the results
-            SimpleFeatureType fullSchema = getSchema(featureType.getTypeName());
             toSQL.setInline(true);
             String filterSql = toSQL.encodeToString(filter);
             int whereClauseIndex = sql.indexOf(WHERE_CLAUSE_PLACE_HOLDER);
@@ -3898,10 +3894,6 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
         StringBuffer sql = new StringBuffer();
         doSelectAggregateSQL(function, att, groupByExpressions, featureType, query, visitor, sql);
         return sql.toString();
-    }
-
-    private Expression expressionFromAttribute(AttributeDescriptor att) {
-        return FF2.property(att.getName());
     }
 
     protected PreparedStatement selectAggregateSQLPS(

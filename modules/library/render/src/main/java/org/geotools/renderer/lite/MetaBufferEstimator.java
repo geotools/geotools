@@ -153,10 +153,6 @@ public class MetaBufferEstimator extends FilterAttributeExtractor implements Sty
                 symbolizer.accept(this);
             }
         }
-
-        Graphic[] legendGraphics = rule.getLegendGraphic();
-
-        if (legendGraphics != null) {}
     }
 
     public void visit(FeatureTypeStyle fts) {

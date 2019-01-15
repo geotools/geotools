@@ -76,7 +76,6 @@ public abstract class AbstractGetFeatureInfoRequest extends AbstractWMSRequest
                         queryLayerString
                                 + URLEncoder.encode(layer.getName(), "UTF-8")
                                         .replaceAll("\\+", "%20");
-                ; // $NON-NLS-1$
             } catch (UnsupportedEncodingException | NullPointerException e) {
                 queryLayerString = queryLayerString + layer.getName();
             }

@@ -43,7 +43,6 @@ public class RasterSymbolizerImpl extends AbstractSymbolizer implements RasterSy
     private ColorMapImpl colorMap = new ColorMapImpl();
     private ContrastEnhancementImpl contrastEnhancement = new ContrastEnhancementImpl();
     private ShadedReliefImpl shadedRelief;
-    private String geometryName;
     private Symbolizer symbolizer;
     private Expression opacity;
 

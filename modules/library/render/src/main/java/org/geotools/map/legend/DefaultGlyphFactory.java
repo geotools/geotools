@@ -76,10 +76,6 @@ public class DefaultGlyphFactory implements GlyphFactory {
         return true;
     }
 
-    private boolean isGeometry(Class<?> type) {
-        return isPolygon(type) || isPoint(type) || isLine(type);
-    }
-
     public Icon polygon(Rule rule) {
         // TODO Auto-generated method stub
         return null;

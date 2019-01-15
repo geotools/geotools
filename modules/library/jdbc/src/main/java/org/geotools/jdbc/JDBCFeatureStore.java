@@ -54,8 +54,6 @@ import org.opengis.filter.Filter;
  */
 public final class JDBCFeatureStore extends ContentFeatureStore {
 
-    private static final Query QUERY_NONE = new Query(null, Filter.EXCLUDE);
-
     /**
      * jdbc feature source to delegate to, we do this b/c we can't inherit from both
      * ContentFeatureStore and JDBCFeatureSource at the same time

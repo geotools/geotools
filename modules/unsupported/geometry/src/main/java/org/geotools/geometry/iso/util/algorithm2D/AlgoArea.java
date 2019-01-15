@@ -146,8 +146,7 @@ public class AlgoArea {
         ArrayList<Point2D> points = new ArrayList<Point2D>(segments.size() + 1);
 
         for (Iterator<Line2D> it = segments.iterator(); it.hasNext(); ) {
-            Line2D edge = it.next();
-            points.add(((Line2D) it.next()).getP1());
+            points.add((it.next()).getP1());
         }
 
         return AlgoPoint2D.pointsOrientation(points).booleanValue();
@@ -174,8 +173,6 @@ public class AlgoArea {
         pointsArray = (Point2D[]) points.toArray(pointsArray);
 
         int n = pointsArray.length;
-        double x[] = new double[n];
-        double y[] = new double[n];
 
         GeneralPath path = new GeneralPath(GeneralPath.WIND_NON_ZERO, n);
 

@@ -29,7 +29,6 @@ public class WorldVanDerGrintenI extends MapProjection {
 
     private static final double TOL = 1.e-10;
     private static final double THIRD = .33333333333333333333;
-    private static final double TWO_THRD = .66666666666666666666;
     private static final double C2_27 = .07407407407407407407;
     private static final double PI4_3 = 4.18879020478639098458;
     private static final double PISQ = 9.86960440108935861869;

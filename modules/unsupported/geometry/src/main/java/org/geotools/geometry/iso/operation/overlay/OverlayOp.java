@@ -526,16 +526,7 @@ public class OverlayOp extends GeometryGraphOperation {
             List<Point> resultPointList,
             List<OrientableCurve> resultLineList,
             List<OrientableSurface> resultPolyList) {
-
-        List geomList = new ArrayList();
-
-        // element geometries of the result are always in the order P,L,A
-        //		geomList.addAll(resultPointList);
-        //		geomList.addAll(resultLineList);
-        //		geomList.addAll(resultPolyList);
-
         // build the most specific geometry possible
-        // FeatGeomFactoryImpl gf = new FeatGeomFactoryImpl(crs);
         return createGeometry(resultPolyList, resultLineList, resultPointList);
     }
 

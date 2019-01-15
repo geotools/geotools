@@ -1544,31 +1544,6 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
     }
 
     /**
-     * Returns first matching attribute from provided root and xPath.
-     *
-     * @param root The root attribute to start searching from
-     * @param xpath The xPath matching the attribute
-     * @return The first matching attribute
-     */
-    private Property getProperty(Attribute root, StepList xpath) {
-        Property property = root;
-
-        final StepList steps = new StepList(xpath);
-
-        Iterator<Step> stepsIterator = steps.iterator();
-
-        while (stepsIterator.hasNext()) {
-            assert property instanceof ComplexAttribute;
-            Step step = stepsIterator.next();
-            property = ((ComplexAttribute) property).getProperty(Types.toTypeName(step.getName()));
-            if (property == null) {
-                return null;
-            }
-        }
-        return property;
-    }
-
-    /**
      * Return all matching properties from provided root attribute and xPath.
      *
      * @param root The root attribute to start searching from

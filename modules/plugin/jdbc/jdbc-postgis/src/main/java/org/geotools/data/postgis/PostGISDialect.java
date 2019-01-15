@@ -569,7 +569,6 @@ public class PostGISDialect extends BasicSQLDialect {
         String schemaName = columnMetaData.getString("TABLE_SCHEM");
 
         // first attempt, try with the geometry metadata
-        Connection conn = null;
         Statement statement = null;
         ResultSet result = null;
 

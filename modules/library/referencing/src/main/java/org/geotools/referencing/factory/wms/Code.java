@@ -61,7 +61,6 @@ final class Code {
     public Code(final String text, final Class type) throws NoSuchAuthorityCodeException {
         String authority = "AUTO";
         int code = 0;
-        int unit = 9001;
         double longitude = Double.NaN;
         double latitude = Double.NaN;
 
@@ -90,7 +89,6 @@ final class Code {
             } else {
                 // code,unit,lon,lat
                 code = Integer.parseInt(parts[0]);
-                unit = Integer.parseInt(parts[1]);
                 longitude = Double.parseDouble(parts[2]);
                 latitude = Double.parseDouble(parts[3]);
             }

@@ -39,7 +39,7 @@ public class RecordBinding extends ComplexEMFBinding {
             }
             if (declaration != null) {
                 XSDParticle particle;
-                if (previousName != null && sl.getName().equals(previousName)) {
+                if (previousName != null && previousName.equals(sl.getName())) {
                     particle = previous;
                 } else {
                     particle = buildParticle(declaration);

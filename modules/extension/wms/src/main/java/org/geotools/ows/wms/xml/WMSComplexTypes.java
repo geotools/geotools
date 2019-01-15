@@ -4480,13 +4480,13 @@ public class WMSComplexTypes {
                     legendURLS.add((String) value[i].getValue());
                 }
 
-                if (sameName(elems[4], value[i])) {
-                    // TODO Implement StyleSheet URL
-                }
-
-                if (sameName(elems[5], value[i])) {
-                    // TODO implement StyleURL
-                }
+                //                if (sameName(elems[4], value[i])) {
+                //                    // TODO Implement StyleSheet URL
+                //                }
+                //
+                //                if (sameName(elems[5], value[i])) {
+                //                    // TODO implement StyleURL
+                //                }
             }
             style.setLegendURLs(legendURLS);
             return style;

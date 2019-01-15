@@ -69,7 +69,6 @@ public class GmlFeatureTypeRegistryConfiguration implements FeatureTypeRegistryC
         schemas.add(new SMIL20Schema());
         schemas.add(new SMIL20LANGSchema());
         schemas.add(new GMLSchema());
-        ;
         schemas.add(new org.geotools.gml3.v3_2.GMLSchema());
         schemas.add(new org.geotools.gml3.v3_2.gco.GCOSchema());
         schemas.add(new org.geotools.gml3.v3_2.gmd.GMDSchema());

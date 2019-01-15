@@ -17,7 +17,6 @@
  */
 package org.geotools.process.vector;
 
-import javax.measure.Unit;
 import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
@@ -45,8 +44,6 @@ import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.util.ProgressListener;
-import si.uom.NonSI;
-import si.uom.SI;
 
 /**
  * A Process that uses a {@link HeatmapSurface} to compute a heatmap surface over a set of irregular
@@ -237,28 +234,6 @@ public class HeatmapProcess implements VectorProcess {
         return gridCov;
     }
 
-    /*
-     * An approximate value for the length of a degree at the equator in meters. This doesn't have
-     * to be precise, since it is only used to convert values which are themselves rough
-     * approximations.
-     */
-    private static final double METRES_PER_DEGREE = 111320;
-
-    private static double distanceConversionFactor(
-            CoordinateReferenceSystem srcCRS, CoordinateReferenceSystem dstCRS) {
-        Unit<?> srcUnit = srcCRS.getCoordinateSystem().getAxis(0).getUnit();
-        Unit<?> dstUnit = dstCRS.getCoordinateSystem().getAxis(0).getUnit();
-        if (srcUnit == dstUnit) {
-            return 1;
-        } else if (srcUnit == NonSI.DEGREE_ANGLE && dstUnit == SI.METRE) {
-            return METRES_PER_DEGREE;
-        } else if (srcUnit == SI.METRE && dstUnit == NonSI.DEGREE_ANGLE) {
-            return 1.0 / METRES_PER_DEGREE;
-        }
-        throw new IllegalStateException(
-                "Unable to convert distances from " + srcUnit + " to " + dstUnit);
-    }
-
     /**
      * Flips an XY matrix along the X=Y axis, and inverts the Y axis. Used to convert from "map
      * orientation" into the "image orientation" used by GridCoverageFactory. The surface
@@ -391,7 +366,6 @@ public class HeatmapProcess implements VectorProcess {
         double[] srcPt = new double[2];
         double[] dstPt = new double[2];
 
-        int i = 0;
         try {
             while (obsIt.hasNext()) {
                 SimpleFeature feature = obsIt.next();

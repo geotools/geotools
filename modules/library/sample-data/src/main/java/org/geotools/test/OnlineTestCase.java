@@ -257,11 +257,10 @@ public abstract class OnlineTestCase extends TestCase {
             try {
                 disconnect();
             } catch (Exception e) {
-                if (skipOnFailure) {
-                    // do nothing
-                } else {
+                if (!skipOnFailure) {
                     throw e;
                 }
+                // otherwise do nothing
             }
         }
     }

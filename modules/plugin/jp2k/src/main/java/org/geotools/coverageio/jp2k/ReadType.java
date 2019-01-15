@@ -336,4 +336,4 @@ enum ReadType {
             final Dimension tileDimension,
             final ImageReaderSpi spi)
             throws IOException;
-};
+}

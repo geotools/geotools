@@ -16,8 +16,6 @@
  */
 package org.geotools.xml.filter;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Set;
 import javax.xml.transform.TransformerException;
 import org.geotools.gml.producer.GeometryTransformer;
@@ -90,15 +88,6 @@ public class FilterTransformer extends TransformerBase {
 
     /** The namespace to use if none is provided. */
     private static String defaultNamespace = "http://www.opengis.net/ogc";
-
-    /** Map of comparison types to sql representation */
-    private static Map comparisions = new HashMap();
-
-    /** Map of spatial types to sql representation */
-    private static Map spatial = new HashMap();
-
-    /** Map of logical types to sql representation */
-    private static Map logical = new HashMap();
 
     /** A typed convenience method for converting a Filter into XML. */
     public String transform(Filter f) throws TransformerException {

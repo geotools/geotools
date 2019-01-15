@@ -48,14 +48,6 @@ import org.geotools.util.factory.Hints;
 class TemporalConverterFactoryHack implements ConverterFactory {
 
     public Converter createConverter(Class source, Class target, Hints hints) {
-        boolean isSafeOnly = false;
-
-        if (hints != null) {
-            Object safe = hints.get(ConverterFactory.SAFE_CONVERSION);
-            if (safe instanceof Boolean && ((Boolean) safe).booleanValue()) {
-                isSafeOnly = true;
-            }
-        }
 
         if (Date.class.isAssignableFrom(source)) {
 

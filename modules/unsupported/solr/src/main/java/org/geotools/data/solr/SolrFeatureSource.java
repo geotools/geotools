@@ -246,7 +246,6 @@ public class SolrFeatureSource extends ContentFeatureSource {
             SolrDataStore store = getDataStore();
             Filter[] split = splitFilter(query.getFilter(), this);
             Filter preFilter = split[0];
-            Filter postFilter = split[1];
             Query preQuery = new Query(query);
             preQuery.setFilter(preFilter);
             // set start and maz results in query
@@ -410,7 +409,6 @@ public class SolrFeatureSource extends ContentFeatureSource {
         Filter[] split = new Filter[2];
         if (original != null) {
             SolrFeatureSource featureSource = (SolrFeatureSource) source;
-            ;
             PostPreProcessFilterSplittingVisitor splitter =
                     new PostPreProcessFilterSplittingVisitor(
                             getDataStore().getFilterCapabilities(),

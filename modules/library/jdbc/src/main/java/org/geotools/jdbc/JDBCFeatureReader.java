@@ -505,8 +505,6 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
             dataStore.closeSafe(st);
 
             dataStore.releaseConnection(cx, featureSource.getState());
-        } else {
-            // means we are already closed... should we throw an exception?
         }
 
         cleanup();

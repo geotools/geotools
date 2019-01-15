@@ -16,6 +16,7 @@
  */
 package org.geotools.util;
 
+import java.util.Objects;
 import javax.measure.IncommensurableException;
 import javax.measure.UnconvertibleException;
 import javax.measure.Unit;
@@ -326,5 +327,10 @@ public class MeasurementRange<T extends Number & Comparable<? super T>> extends 
             return true;
         }
         return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), units);
     }
 }

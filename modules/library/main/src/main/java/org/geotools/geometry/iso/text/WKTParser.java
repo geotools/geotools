@@ -78,8 +78,9 @@ public class WKTParser {
 
     private GeometryFactory geometryFactory;
     private PrimitiveFactory primitiveFactory;
+
+    @SuppressWarnings("PMD.UnusedPrivateField")
     private PositionFactory positionFactory;
-    private AggregateFactory aggregateFactory;
 
     public WKTParser(GeometryBuilder builder) {
         this(
@@ -110,7 +111,6 @@ public class WKTParser {
         this.geometryFactory = geometryFactory;
         this.primitiveFactory = primitiveFactory;
         this.positionFactory = positionFactory;
-        this.aggregateFactory = aggregateFactory;
     }
     /**
      * Provide a GeometryFactory for the parser.
@@ -481,21 +481,6 @@ public class WKTParser {
         return curve;
         // List curveList = Collections.singletonList(curve);
         // return primitiveFactory.createRing(curveList);
-    }
-
-    /**
-     * Creates an array of <code>Point</code>s having the given <code>Coordinate</code>s.
-     *
-     * @param coordinates the <code>Coordinate</code>s with which to create the <code>Point</code>s
-     * @return <code>Point</code>s created using this <code>WKTReader</code> s <code>GeometryFactory
-     *     </code>
-     */
-    private List toPoints(List coordinates) {
-        List points = new ArrayList();
-        for (int i = 0; i < coordinates.size(); i++) {
-            points.add(positionFactory.createPosition((Point) coordinates.get(i)));
-        }
-        return points;
     }
 
     /**

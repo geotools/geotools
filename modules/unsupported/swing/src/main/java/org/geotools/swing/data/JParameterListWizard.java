@@ -157,21 +157,6 @@ public class JParameterListWizard extends JWizard {
         return list;
     }
 
-    private int countParamsAtLevel(List<Parameter<?>> contents, String level) {
-        if (contents == null) return 0;
-        int count = 0;
-        if (level == null) {
-            return contents.size();
-        }
-        for (Parameter<?> param : contents) {
-            String check = param.getLevel();
-            if (level.equals(check)) {
-                count++;
-            }
-        }
-        return count;
-    }
-
     /**
      * Retrieve the connection parameters entered
      *

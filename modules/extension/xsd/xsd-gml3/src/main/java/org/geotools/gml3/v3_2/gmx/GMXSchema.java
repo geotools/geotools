@@ -3,7 +3,6 @@ package org.geotools.gml3.v3_2.gmx;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.TreeMap;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.type.AbstractLazyAttributeTypeImpl;
 import org.geotools.feature.type.AbstractLazyComplexTypeImpl;
@@ -16,9 +15,7 @@ import org.geotools.xlink.XLINKSchema;
 import org.geotools.xs.XSSchema;
 import org.opengis.feature.type.AttributeType;
 import org.opengis.feature.type.ComplexType;
-import org.opengis.feature.type.Name;
 import org.opengis.feature.type.PropertyDescriptor;
-import org.opengis.feature.type.Schema;
 
 public class GMXSchema extends SchemaImpl {
 
@@ -14167,23 +14164,5 @@ public class GMXSchema extends SchemaImpl {
             ((ComplexType) type).getDescriptors();
         }
         put(type.getName(), type);
-    }
-
-    /** Test that this class can be loaded. */
-    public static void main(String[] args) {
-        Schema schema = new GMXSchema();
-        for (Entry<Name, AttributeType> entry :
-                new TreeMap<Name, AttributeType>(schema).entrySet()) {
-            // System.out.println("Type: " + entry.getValue().getName());
-            // System.out.println("    Super type: " + entry.getValue().getSuper().getName());
-            if (entry.getValue() instanceof ComplexType) {
-                for (PropertyDescriptor descriptor :
-                        ((ComplexType) entry.getValue()).getDescriptors()) {
-                    // System.out.println("    Property descriptor: " + descriptor.getName());
-                    // System.out.println("        Property type: " +
-                    // descriptor.getType().getName());
-                }
-            }
-        }
     }
 }

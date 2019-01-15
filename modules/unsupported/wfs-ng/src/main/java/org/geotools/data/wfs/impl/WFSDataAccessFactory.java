@@ -648,9 +648,6 @@ public class WFSDataAccessFactory implements DataAccessFactory {
             dataAccess.setCacheLocation(new File(cacheLocation));
         }
 
-        if (params.containsKey(GML_COMPATIBLE_TYPENAMES.getName())
-                && (Boolean) params.get(GML_COMPATIBLE_TYPENAMES.getName())) {}
-
         return dataAccess;
     }
 

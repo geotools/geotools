@@ -128,12 +128,9 @@ public class OverlapsIntegrity extends RelationIntegrity {
             ReferencedEnvelope bBox)
             throws Exception {
         boolean success = true;
-        int errors = 0;
         int countInterval = 100;
         int counter = 0;
         SimpleFeatureType ft = featureSourceA.getSchema();
-
-        Filter filter = filterBBox(bBox, ft);
 
         // SimpleFeatureCollection featureCollection = featureSourceA.getFeatures(filter);
         SimpleFeatureCollection collectionA = featureSourceA.getFeatures();
@@ -187,7 +184,6 @@ public class OverlapsIntegrity extends RelationIntegrity {
                                                     + f2.getID()
                                                     + ")");
                                     success = false;
-                                    errors++;
                                 }
                             }
                         }
@@ -240,8 +236,6 @@ public class OverlapsIntegrity extends RelationIntegrity {
         boolean success = true;
         int errors = 0;
         Date date1 = new Date();
-        int countInterval = 100;
-        int counter = 0;
         SimpleFeatureType ft = featureSourceA.getSchema();
 
         if (LOGGER.isLoggable(Level.INFO)) {
@@ -262,7 +256,6 @@ public class OverlapsIntegrity extends RelationIntegrity {
             if (fr1 == null) return success;
 
             while (fr1.hasNext()) {
-                counter++;
                 SimpleFeature f1 = fr1.next();
 
                 Geometry g1 = (Geometry) f1.getDefaultGeometry();

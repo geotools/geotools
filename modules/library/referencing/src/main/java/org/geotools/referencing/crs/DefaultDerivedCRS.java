@@ -175,6 +175,7 @@ public class DefaultDerivedCRS extends AbstractDerivedCRS implements DerivedCRS 
      *     versions of this class.
      */
     @Override
+    @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int hashCode() {
         return (int) serialVersionUID ^ super.hashCode();
     }

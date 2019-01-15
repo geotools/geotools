@@ -339,7 +339,6 @@ abstract class ConstantStroke implements Stroke {
 
     public void setWidth(Expression width) {
         cannotModifyConstant();
-        ;
     }
 
     public void setOpacity(Expression opacity) {

@@ -29,9 +29,7 @@ import org.geotools.data.DataStore;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.DefaultQuery;
 import org.geotools.data.FeatureListener;
-import org.geotools.data.FeatureLocking;
 import org.geotools.data.FeatureSource;
-import org.geotools.data.FeatureStore;
 import org.geotools.data.Query;
 import org.geotools.data.QueryCapabilities;
 import org.geotools.data.ResourceInfo;
@@ -134,14 +132,6 @@ public class DefaultView implements SimpleFeatureSource {
      */
     public static SimpleFeatureSource create(SimpleFeatureSource source, Query query)
             throws SchemaException {
-        if (source instanceof FeatureLocking) {
-            //  return new GeoServerFeatureLocking((FeatureLocking<SimpleFeatureType,
-            // SimpleFeature>) source,
-            // schema, definitionQuery);
-        } else if (source instanceof FeatureStore) {
-            // return new GeoServerFeatureStore((SimpleFeatureStore) source, schema,
-            // definitionQuery);
-        }
         return new DefaultView(source, query);
     }
 

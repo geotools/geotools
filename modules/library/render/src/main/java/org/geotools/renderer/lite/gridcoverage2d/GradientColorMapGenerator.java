@@ -252,10 +252,8 @@ public class GradientColorMapGenerator {
                 || colorValues.startsWith(RGBA_INLINEVALUE_MARKER)
                 || colorValues.startsWith(HEX_INLINEVALUE_MARKER)
                 || colorValues.startsWith(HEX2_INLINEVALUE_MARKER)) {
-            String rampType = "ramp";
             if (colorValues.contains(":")) {
                 final int rampTypeIndex = colorValues.indexOf(":");
-                rampType = colorValues.substring(rampTypeIndex + 1);
                 colorValues = colorValues.substring(0, rampTypeIndex);
             }
             String colors[] = colorValues.split(";");

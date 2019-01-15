@@ -210,4 +210,4 @@ public enum ReadType {
             final ImageReader reader,
             final Hints hints,
             final boolean closeElements);
-};
+}

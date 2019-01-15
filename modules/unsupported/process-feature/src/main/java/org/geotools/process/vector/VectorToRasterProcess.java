@@ -115,7 +115,6 @@ public class VectorToRasterProcess implements VectorProcess {
     GridCoverage2D result;
     private Number minAttValue;
     private Number maxAttValue;
-    private float nodataValue;
 
     private ReferencedEnvelope extent;
     private Geometry extentGeometry;
@@ -126,7 +125,6 @@ public class VectorToRasterProcess implements VectorProcess {
 
     private int[] coordGridX = new int[COORD_GRID_CHUNK_SIZE];
     private int[] coordGridY = new int[COORD_GRID_CHUNK_SIZE];
-    // private double cellsize;
 
     TiledImage image;
     Graphics2D graphics;
@@ -637,18 +635,14 @@ public class VectorToRasterProcess implements VectorProcess {
     }
 
     private void drawGeometry(Geometries geomType, Geometry geometry) throws TransformException {
-        Geometry workingGeometry;
         if (transformFeatures) {
             try {
-                workingGeometry = JTS.transform(geometry, featureToRasterTransform);
+                JTS.transform(geometry, featureToRasterTransform);
             } catch (TransformException ex) {
                 throw ex;
             } catch (MismatchedDimensionException ex) {
                 throw new RuntimeException(ex);
             }
-
-        } else {
-            workingGeometry = geometry;
         }
 
         Coordinate[] coords = geometry.getCoordinates();

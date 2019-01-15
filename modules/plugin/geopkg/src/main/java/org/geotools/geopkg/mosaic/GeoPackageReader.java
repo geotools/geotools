@@ -216,7 +216,6 @@ public class GeoPackageReader extends AbstractGridCoverage2DReader {
                                 ReferencedEnvelope.create(
                                                 gg.getEnvelope(), gg.getCoordinateReferenceSystem())
                                         .transform(crs, true);
-                        ;
                     } catch (Exception e) {
                         requestedEnvelope = null;
                     }

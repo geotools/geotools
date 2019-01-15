@@ -69,7 +69,6 @@ public class YsldValidator {
                     h.alias((AliasEvent) evt, context);
                 }
             }
-            ;
         } catch (MarkedYAMLException e) {
             context.error(e);
         } catch (EmptyStackException e) {

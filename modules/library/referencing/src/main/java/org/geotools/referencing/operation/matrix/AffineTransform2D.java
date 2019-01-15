@@ -213,6 +213,7 @@ public class AffineTransform2D extends AffineTransform implements Matrix {
     }
 
     @Override
+    @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public boolean equals(Object obj) {
         if (!(obj instanceof AffineTransform)) {
             return false;

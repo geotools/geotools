@@ -227,16 +227,6 @@ public class Robinson extends MapProjection {
         }
     }
 
-    /** Compares the specified object with this map projection for equality. */
-    @Override
-    public boolean equals(final Object object) {
-        if (object == this) {
-            // Slight optimization
-            return true;
-        }
-        return super.equals(object);
-    }
-
     @Override
     protected double getToleranceForAssertions(double longitude, double latitude) {
         // the Robinson projection is meant for world-wide displays, don't be picky

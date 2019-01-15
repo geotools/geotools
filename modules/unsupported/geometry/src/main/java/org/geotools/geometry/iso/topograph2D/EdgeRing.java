@@ -315,7 +315,7 @@ public abstract class EdgeRing {
      * been assigned.
      */
     public boolean containsPoint(Coordinate p) {
-        Ring shell = this.getRing();
+        // Ring shell = this.getRing();
 
         // TODO: auskommentiert; anpassen!
         // Envelope env = shell.getEnvelopeInternal();

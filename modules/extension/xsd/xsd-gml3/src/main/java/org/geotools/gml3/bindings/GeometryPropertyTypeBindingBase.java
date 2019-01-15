@@ -83,6 +83,5 @@ public abstract class GeometryPropertyTypeBindingBase extends AbstractComplexBin
                 idSet.add(id);
             }
         }
-        return;
     }
 }

@@ -255,14 +255,13 @@ public class HsqlEpsgDatabase {
      */
     static boolean dataExists(final Connection connection) throws SQLException {
         final DatabaseMetaData metaData = connection.getMetaData();
-        final ResultSet tables =
+        try (final ResultSet tables =
                 metaData.getTables(
                         null,
                         null,
                         "EPSG" + metaData.getSearchStringEscape() + "_%",
-                        new String[] {"TABLE"});
-        final boolean exists = tables.next();
-        tables.close();
-        return exists;
+                        new String[] {"TABLE"})) {
+            return tables.next();
+        }
     }
 }

@@ -9,6 +9,7 @@
  *************************************************************************************************/
 package org.geotools.geometry.jts.spatialschema.geometry;
 
+import java.util.Objects;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.Envelope;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -148,6 +149,11 @@ public class EnvelopeImpl implements Envelope {
             returnable.append(",").append(bbox[i]);
         }
         return returnable.append("]").toString();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(lowerCorner, upperCorner);
     }
 
     /**

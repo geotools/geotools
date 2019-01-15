@@ -159,6 +159,7 @@ public abstract class AbstractCRS extends AbstractReferenceSystem
      *     versions of this class.
      */
     @Override
+    @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int hashCode() {
         return (int) serialVersionUID ^ coordinateSystem.hashCode();
     }

@@ -672,8 +672,6 @@ public class SLDTransformer extends TransformerBase {
                     end("BlueChannel");
 
                     end("ChannelSelection");
-                } else {
-                    // we have an invalid ChannelSelection ?
                 }
             }
 
@@ -868,9 +866,7 @@ public class SLDTransformer extends TransformerBase {
             }
 
             Filter filter = rule.getFilter();
-            if (filter == null || filter == Filter.INCLUDE) {
-                // no filter
-            } else {
+            if (filter != null && filter != Filter.INCLUDE) {
                 visit(filter);
             }
 
@@ -1224,9 +1220,7 @@ public class SLDTransformer extends TransformerBase {
 
             String[] sti = fts.getSemanticTypeIdentifiers();
 
-            if (sti.length == 1 && sti[0].equals(SemanticType.ANY.toString())) {
-                // skip, it's the default
-            } else {
+            if (sti.length != 1 || !sti[0].equals(SemanticType.ANY.toString())) {
                 for (int i = 0; i < sti.length; i++) {
                     element("SemanticTypeIdentifier", sti[i]);
                 }

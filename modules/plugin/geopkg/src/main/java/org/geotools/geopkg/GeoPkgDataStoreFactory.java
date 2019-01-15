@@ -177,7 +177,6 @@ public class GeoPkgDataStoreFactory extends JDBCDataStoreFactory {
         SQLiteConfig config = new SQLiteConfig();
         config.setSharedCache(true);
         config.enableLoadExtension(true);
-        String password = (String) PASSWD.lookUp(params);
         // support for encrypted databases has been ddded after 3.20.1, we'll have to
         // wait for a future release of sqlite-jdbc
         // if(password != null) {

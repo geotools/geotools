@@ -342,8 +342,6 @@ public class FilterCapabilities {
                     "Null filters can not be " + "unpacked, did you mean " + "Filter.INCLUDE?");
         }
 
-        short filterType = Filters.getFilterType(filter);
-
         if (filter instanceof BinaryLogicOperator) {
             BinaryLogicOperator lf = (BinaryLogicOperator) filter;
             for (Filter testFilter : lf.getChildren()) {

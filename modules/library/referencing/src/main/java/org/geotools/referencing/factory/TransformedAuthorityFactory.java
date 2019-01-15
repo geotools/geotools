@@ -167,6 +167,7 @@ public class TransformedAuthorityFactory extends AuthorityFactoryAdapter {
      * @throws FactoryException if an error occured while creating the new coordinate system axis.
      */
     @Override
+    @SuppressWarnings("PMD.JumbledIncrementer")
     protected CoordinateSystemAxis replace(CoordinateSystemAxis axis) throws FactoryException {
         final AxisDirection oldDirection = axis.getDirection();
         final AxisDirection newDirection = replace(oldDirection);

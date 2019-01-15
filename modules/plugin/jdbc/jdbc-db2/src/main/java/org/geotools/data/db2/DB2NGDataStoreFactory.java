@@ -152,6 +152,7 @@ public class DB2NGDataStoreFactory extends JDBCDataStoreFactory {
     }
 
     @Override
+    @SuppressWarnings("PMD.CheckResultSet")
     protected JDBCDataStore createDataStoreInternal(JDBCDataStore dataStore, Map params)
             throws IOException {
         Connection con = null;

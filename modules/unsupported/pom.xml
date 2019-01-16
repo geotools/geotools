@@ -217,6 +217,7 @@
 				<module>geojsonstore</module>
         <module>s3-geotiff</module>
         <module>gtopo30</module>
+        <module>vpf</module>
 			</modules>
 		</profile>
 
@@ -231,6 +232,7 @@
 
 	<!-- Modules included in a normal build -->
 	<modules>
+		<module>vpf</module>
 		<module>swing</module>
 		<module>process</module>
 		<module>process-geometry</module>

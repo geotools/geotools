@@ -279,7 +279,9 @@ public class ShapefileDataStoreFactory implements FileDataStoreFactorySpi {
                 Object fileType = FILE_TYPE.lookUp(params);
                 File dir = URLs.urlToFile(url);
                 // check for null fileType for backwards compatibility
-                return dir.isDirectory() && (fileType == null || "shapefile".equals(fileType));
+                return dir != null
+                        && dir.isDirectory()
+                        && (fileType == null || "shapefile".equals(fileType));
             }
         } catch (IOException e) {
             return false;

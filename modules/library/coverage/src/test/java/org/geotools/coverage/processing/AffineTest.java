@@ -48,7 +48,6 @@ public class AffineTest extends GridProcessingTestBase {
     /** Set up common objects used for all tests. */
     @Before
     public void setUp() {
-        JAIExt.initJAIEXT();
         processor = CoverageProcessor.getInstance(null);
     }
 

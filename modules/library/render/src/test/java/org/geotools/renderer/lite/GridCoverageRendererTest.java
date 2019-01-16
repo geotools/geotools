@@ -24,7 +24,6 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import it.geosolutions.jaiext.JAIExt;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -166,17 +165,6 @@ public class GridCoverageRendererTest {
     private GeoTiffReader multiPixelPacked;
 
     private static double DELTA = 1E-6;
-
-    //     @BeforeClass
-    //     public static void enableJaiExt() {
-    //     final String JAIEXT_ENABLED_KEY = "org.geotools.coverage.jaiext.enabled";
-    //     System.setProperty(JAIEXT_ENABLED_KEY, "true");
-    //     }
-
-    @Before
-    public void disableJaiExt() {
-        JAIExt.initJAIEXT(false);
-    }
 
     @Before
     public void getData() throws IOException {
@@ -1124,7 +1112,6 @@ public class GridCoverageRendererTest {
 
     @Test
     public void testAfricaEquidistantConicRoi() throws Exception {
-        JAIExt.initJAIEXT(true);
         CoordinateReferenceSystem crs = CRS.parseWKT(AFRICA_EQUIDISTANT_CONIC_WKT);
         // across the dateline
         ReferencedEnvelope mapExtent =
@@ -1259,6 +1246,7 @@ public class GridCoverageRendererTest {
 
     /** Test rendering of sampleGrib.tif on its native longitude bounds (302,308). */
     @Test
+    // background == nodata assumption
     public void testSampleGrib() throws Exception {
         CoordinateReferenceSystem crs = CRS.decode("EPSG:4326", true);
         ReferencedEnvelope mapExtent = new ReferencedEnvelope(302, 308, 2, 10, crs);

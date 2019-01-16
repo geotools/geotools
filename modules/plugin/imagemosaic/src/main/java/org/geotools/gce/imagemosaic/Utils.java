@@ -74,6 +74,7 @@ import javax.media.jai.TileScheduler;
 import javax.media.jai.remote.SerializableRenderedImage;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.Element;
@@ -2071,6 +2072,19 @@ public class Utils {
             indexer = (Indexer) unmarshaller.unmarshal(indexerFile);
         }
         return indexer;
+    }
+
+    /**
+     * Marshals the Indexer object to the specified file
+     *
+     * @param indexerFile
+     * @return
+     * @throws JAXBException
+     */
+    public static void marshal(Indexer indexer, File indexerFile) throws JAXBException {
+        Marshaller marshaller = CONTEXT.createMarshaller();
+        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+        marshaller.marshal(indexer, indexerFile);
     }
 
     /**

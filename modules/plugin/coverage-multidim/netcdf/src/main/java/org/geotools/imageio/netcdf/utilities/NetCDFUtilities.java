@@ -140,7 +140,7 @@ public class NetCDFUtilities {
 
     public static final String EXTERNAL_DATA_DIR;
 
-    private static final String NETCDF_DATA_DIR = "NETCDF_DATA_DIR";
+    public static final String NETCDF_DATA_DIR = "NETCDF_DATA_DIR";
 
     public static final String FILL_VALUE = "_FillValue";
 

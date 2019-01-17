@@ -83,6 +83,78 @@ public class ComplexAttributeConverterFactory implements ConverterFactory {
                 }
             };
         }
+
+        // gets the value of an attribute and tries to convert it to a string
+        if (Attribute.class.isAssignableFrom(source)) {
+            return new Converter() {
+                public Object convert(Object source, Class target) {
+                    if (source instanceof Attribute) {
+                        // get the attribute value
+                        Attribute attribute = (Attribute) source;
+                        Object value = attribute.getValue();
+                        // let the available converters do their job
+                        return Converters.convert(value, target);
+                    }
+                    // this should not happen, anyway we can only handle attributes
+                    return null;
+                }
+            };
+        }
+
+        // handles the conversion of a list of attributes to string
+        if (Collection.class.isAssignableFrom(source) && target == String.class) {
+            return new Converter() {
+                public Object convert(Object source, Class target) {
+                    if (!isCollectionOf(source, Attribute.class)) {
+                        // not a collection of attributes, we are done
+                        return null;
+                    }
+                    // all attributes values will be concatenated and separated by a coma
+                    StringBuilder builder = new StringBuilder();
+                    Collection<?> collection = (Collection<?>) source;
+                    for (Object element : collection) {
+                        if (element == null) {
+                            // well we got a NULL element, let's keep track of it
+                            builder.append("NULL, ");
+                        } else {
+                            // we delegate the conversion to converters since we may be dealing wih
+                            // a subtype of attribute
+                            builder.append(Converters.convert(element, String.class));
+                            builder.append(", ");
+                        }
+                    }
+                    if (builder.length() == 0) {
+                        // no attributes added, we are done
+                        return "";
+                    }
+                    // remove the extra coma and space
+                    builder.delete(builder.length() - 2, builder.length());
+                    return builder.toString();
+                }
+            };
+        }
+
         return null;
+    }
+
+    /**
+     * Helper method that just checks if the provided source is a collection of objects and that all
+     * the objects are either NULL or that the expected type is assignable from them.
+     */
+    private boolean isCollectionOf(Object source, Class<?> expected) {
+        if (!(source instanceof Collection<?>)) {
+            // not a collection, we are done
+            return false;
+        }
+        // let's check all the elements
+        Collection<?> collection = (Collection<?>) source;
+        for (Object element : collection) {
+            if (!(element != null && expected.isAssignableFrom(element.getClass()))) {
+                // non NULL element and not compatible with he expected type
+                return false;
+            }
+        }
+        // all non NULL elements are compatible with he expected type
+        return true;
     }
 }

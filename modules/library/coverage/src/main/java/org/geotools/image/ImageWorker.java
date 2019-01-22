@@ -206,7 +206,7 @@ public class ImageWorker {
 
     /** Registration of the JAI-EXT operations */
     static {
-        JAIEXT_ENABLED = Boolean.getBoolean(JAIEXT_ENABLED_KEY);
+        JAIEXT_ENABLED = Boolean.valueOf(System.getProperty(JAIEXT_ENABLED_KEY, "true"));
         JAIExt.initJAIEXT(JAIEXT_ENABLED);
         USE_JAI_SCALE2 = Boolean.getBoolean(USE_JAI_SCALE2_KEY) && JAIEXT_ENABLED;
         SCALE_OP_NAME = USE_JAI_SCALE2 ? SCALE2_NAME : SCALE_NAME;

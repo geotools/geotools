@@ -58,7 +58,7 @@ copyright = u'2017, GeoTools'
 # built documents.
 #
 # The full version, including alpha/beta/rc tags.
-release = '21-SNAPSHOT'
+release = '21-RC'
 
 # The short X.Y version.
 version = release

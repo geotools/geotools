@@ -6,7 +6,7 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>unsupported</artifactId>
-    <version>21-SNAPSHOT</version>
+    <version>21-RC</version>
   </parent>
   <groupId>org.geotools</groupId>
   <artifactId>gt-arcgisrest</artifactId>

@@ -15,34 +15,32 @@
  *    Lesser General Public License for more details.
  */
 package org.geotools.data.vpf.readers;
+
 import java.io.IOException;
 import java.sql.SQLException;
-
 import org.geotools.data.vpf.VPFFeatureType;
 import org.geotools.feature.IllegalAttributeException;
+import org.locationtech.jts.geom.GeometryFactory;
 import org.opengis.feature.simple.SimpleFeature;
-
-import com.vividsolutions.jts.geom.GeometryFactory;
 
 /**
  * DOCUMENT ME!
  *
  * @author <a href="mailto:jeff@ionicenterprise.com">Jeff Yutzler</a>
- *
- *
- *
  * @source $URL$
  */
 public abstract class VPFGeometryFactory {
-	private static final GeometryFactory m_GeometryFactory = new GeometryFactory();
+    private static final GeometryFactory m_GeometryFactory = new GeometryFactory();
     /**
-     * Constructs a geometry for the appropriate feature type based on values currently on the object,
-     * retrieving values as needed from the various VPFFile objects
+     * Constructs a geometry for the appropriate feature type based on values currently on the
+     * object, retrieving values as needed from the various VPFFile objects
+     *
      * @param featureType the VPFFeatureType to use
      * @param values the current feature
      * @throws SQLException
      * @throws IOException
      * @throws IllegalAttributeException
      */
-	public abstract void createGeometry(VPFFeatureType featureType, SimpleFeature values) throws SQLException, IOException, IllegalAttributeException;
+    public abstract void createGeometry(VPFFeatureType featureType, SimpleFeature values)
+            throws SQLException, IOException, IllegalAttributeException;
 }

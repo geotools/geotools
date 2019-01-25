@@ -20,18 +20,13 @@ package org.geotools.data.vpf.exc;
  * VPFRowDataException.java Created: Mon Jan 27 21:29:00 2003
  *
  * @author <a href="mailto:kobit@users.sourceforge.net">Artur Hefczyc</a>
- *
- *
- *
  * @source $URL$
  */
 public class VPFRowDataException extends VPFDataException {
     /** serialVersionUID */
     private static final long serialVersionUID = 8181515081697144676L;
 
-    /**
-     * Creates a new VPFRowDataException object.
-     */
+    /** Creates a new VPFRowDataException object. */
     public VPFRowDataException() {
         super();
     }

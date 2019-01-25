@@ -18,22 +18,15 @@ package org.geotools.data.vpf.io;
 
 import org.geotools.data.vpf.ifc.VPFHeader;
 
-
 /**
  * VariableIndexHeader.java Created: Tue Mar 11 23:41:57 2003
  *
  * @author <a href="mailto:kobit@users.sourceforge.net">Artur Hefczyc</a>
- *
- *
- *
  * @source $URL$
  * @version $Id$
  */
 public class VariableIndexHeader implements VPFHeader {
-    /**
-     * Variable constant <code>VARIABLE_INDEX_HEADER_LENGTH</code> keeps value
-     * of
-     */
+    /** Variable constant <code>VARIABLE_INDEX_HEADER_LENGTH</code> keeps value of */
     public static final int VARIABLE_INDEX_HEADER_LENGTH = 8;
 
     /** Variable constant <code>VARIABLE_INDEX_ROW_SIZE</code> keeps value of */
@@ -68,9 +61,9 @@ public class VariableIndexHeader implements VPFHeader {
     }
 
     /**
-     * Method <code><code>getRecordSize</code></code> is used to return size in
-     * bytes of records stored in this table. If table keeps variable length
-     * records <code>-1</code> should be returned.
+     * Method <code><code>getRecordSize</code></code> is used to return size in bytes of records
+     * stored in this table. If table keeps variable length records <code>-1</code> should be
+     * returned.
      *
      * @return an <code><code>int</code></code> value
      */

@@ -21,27 +21,27 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Defines constants related to FACC Code processing.  
+ * Defines constants related to FACC Code processing.
  *
  * @author John Meagher
- *
  * @source $URL$
  * @version $Id$
  */
 public interface FCode {
 
     /**
-     * Array of attributes the FACC Code information is allowed to be stored under.
-     * The default allowed attribute names are "f_code" and "facc".  This can be
-     * be overridden using the system property "gt.vpf.allowedFCodeAttributes"
-     * with a comma separated list of the desired values.  
-     **/
+     * Array of attributes the FACC Code information is allowed to be stored under. The default
+     * allowed attribute names are "f_code" and "facc". This can be be overridden using the system
+     * property "gt.vpf.allowedFCodeAttributes" with a comma separated list of the desired values.
+     */
     public static final String[] ALLOWED_FCODE_ATTRIBUTES =
-        System.getProperty( "gt.vpf.allowedFCodeAttributes", "f_code,facc" ).split( "," );
+            System.getProperty("gt.vpf.allowedFCodeAttributes", "f_code,facc").split(",");
 
     /**
      * The ALLOWED_FCODE_ATTRIBUTES array in list form.
+     *
      * @see #ALLOWED_FCODE_ATTRIBUTES
-     **/
-    public static final List<String> ALLOWED_FCODE_ATTRIBUTES_LIST = Collections.unmodifiableList(Arrays.asList( ALLOWED_FCODE_ATTRIBUTES ));
+     */
+    public static final List<String> ALLOWED_FCODE_ATTRIBUTES_LIST =
+            Collections.unmodifiableList(Arrays.asList(ALLOWED_FCODE_ATTRIBUTES));
 }

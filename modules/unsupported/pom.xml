@@ -215,9 +215,8 @@
 				<module>solr</module>
 				<module>css</module>
 				<module>geojsonstore</module>
-        <module>s3-geotiff</module>
-        <module>gtopo30</module>
-        <module>vpf</module>
+        		<module>s3-geotiff</module>
+        		<module>gtopo30</module>
 			</modules>
 		</profile>
 

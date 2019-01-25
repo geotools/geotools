@@ -18,14 +18,10 @@ package org.geotools.data.vpf.io;
 
 import org.geotools.data.vpf.ifc.DataTypesDefinition;
 
-
 /**
  * RowField.java Created: Mon Jan 27 13:58:34 2003
  *
  * @author <a href="mailto:kobit@users.sourceforge.net">Artur Hefczyc</a>
- *
- *
- *
  * @source $URL$
  * @version $Id$
  */
@@ -33,16 +29,10 @@ public class RowField extends Number implements DataTypesDefinition {
     /** serialVersionUID */
     private static final long serialVersionUID = -4223958125941532737L;
 
-    /**
-     * Describe variable <code>value</code> here.
-     *
-     */
+    /** Describe variable <code>value</code> here. */
     private Object value = null;
 
-    /**
-     * Describe variable <code>type</code> here.
-     *
-     */
+    /** Describe variable <code>type</code> here. */
     private char type = CHAR_NULL_VALUE;
 
     /**
@@ -57,7 +47,7 @@ public class RowField extends Number implements DataTypesDefinition {
     }
 
     /**
-     * Method <code>toString</code> is used to perform 
+     * Method <code>toString</code> is used to perform
      *
      * @return a <code><code>String</code></code> value
      */
@@ -70,7 +60,7 @@ public class RowField extends Number implements DataTypesDefinition {
     }
 
     /**
-     * Method <code>equals</code> is used to perform 
+     * Method <code>equals</code> is used to perform
      *
      * @param obj an <code><code>Object</code></code> value
      * @return a <code><code>boolean</code></code> value
@@ -87,7 +77,7 @@ public class RowField extends Number implements DataTypesDefinition {
     }
 
     /**
-     * Method <code>getType</code> is used to perform 
+     * Method <code>getType</code> is used to perform
      *
      * @return a <code><code>char</code></code> value
      */
@@ -96,15 +86,13 @@ public class RowField extends Number implements DataTypesDefinition {
     }
 
     /**
-     * Method <code>getValue</code> is used to perform 
+     * Method <code>getValue</code> is used to perform
      *
      * @return an <code><code>Object</code></code> value
      */
     public Object getValue() {
         return value;
     }
-
-    
 
     /* (non-Javadoc)
      * @see java.lang.Number#intValue()
@@ -146,5 +134,4 @@ public class RowField extends Number implements DataTypesDefinition {
     public double doubleValue() {
         return ((Number) value).doubleValue();
     }
-    
 }

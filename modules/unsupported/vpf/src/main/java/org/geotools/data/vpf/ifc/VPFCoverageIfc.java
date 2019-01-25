@@ -29,21 +29,12 @@ package org.geotools.data.vpf.ifc;
  * @source $URL$
  */
 public interface VPFCoverageIfc {
-    /**
-     * Describe constant <code>FIELD_XMIN</code> here.
-     *
-     */
+    /** Describe constant <code>FIELD_XMIN</code> here. */
     public static final String FIELD_COVERAGE_NAME = "coverage_name";
 
-    /**
-     * Describe constant <code>FIELD_YMIN</code> here.
-     *
-     */
+    /** Describe constant <code>FIELD_YMIN</code> here. */
     public static final String FIELD_DESCRIPTION = "description";
 
-    /**
-     * Describe constant <code>FIELD_XMAX</code> here.
-     *
-     */
+    /** Describe constant <code>FIELD_XMAX</code> here. */
     public static final String FIELD_LEVEL = "level";
 }

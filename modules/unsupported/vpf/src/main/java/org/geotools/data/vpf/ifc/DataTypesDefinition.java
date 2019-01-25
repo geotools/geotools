@@ -18,14 +18,9 @@ package org.geotools.data.vpf.ifc;
 
 /**
  * Data type definition constants for VPF files.
- * 
- * 
+ *
  * @since Thu Jan 02 17:26:02 2003
- *
  * @author <a href="mailto:kobit@users.sourceforge.net">Artur Hefczyc</a>
- *
- *
- *
  * @source $URL$
  * @version $Id$
  */
@@ -33,10 +28,9 @@ public interface DataTypesDefinition {
     // Byte order codes
 
     /**
-     * <code>LEAST_SIGNIF_FIRST</code> stores code for indicator of byte order
-     * <code>least-significant-byte-first</code> used during creating table.
-     * It is little-endian byte order used on Intel x86 based PCs but not in
-     * JVM.
+     * <code>LEAST_SIGNIF_FIRST</code> stores code for indicator of byte order <code>
+     * least-significant-byte-first</code> used during creating table. It is little-endian byte
+     * order used on Intel x86 based PCs but not in JVM.
      */
     public static final char LEAST_SIGNIF_FIRST = 'L';
 
@@ -44,10 +38,9 @@ public interface DataTypesDefinition {
     public static final char LITTLE_ENDIAN_ORDER = LEAST_SIGNIF_FIRST;
 
     /**
-     * <code>MOST_SIGNIF_FIRST</code> stores code for indicator of byte order
-     * <code>most-significant-byte-first</code> used during creating table. It
-     * is big-endian byte order used on Motorola CPU based machines and in
-     * JVM.
+     * <code>MOST_SIGNIF_FIRST</code> stores code for indicator of byte order <code>
+     * most-significant-byte-first</code> used during creating table. It is big-endian byte order
+     * used on Motorola CPU based machines and in JVM.
      */
     public static final char MOST_SIGNIF_FIRST = 'M';
 
@@ -138,7 +131,7 @@ public interface DataTypesDefinition {
     public static final String STRING_NULL_VALUE = "-";
 
     /** Variable constant <code>STRING_NULL_VALUES</code> keeps value of */
-    public static final String[] STRING_NULL_VALUES = { "-", "--", "N/A" };
+    public static final String[] STRING_NULL_VALUES = {"-", "--", "N/A"};
 
     /** Variable constant <code>CHAR_NULL_VALUE</code> keeps value of */
     public static final char CHAR_NULL_VALUE = '-';

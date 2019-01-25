@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.LinkedList;
 import java.util.List;
-
 import org.geotools.data.vpf.ifc.DataTypesDefinition;
 import org.geotools.data.vpf.ifc.FileConstants;
 import org.geotools.data.vpf.ifc.VPFHeader;
@@ -35,54 +34,29 @@ import org.opengis.geometry.DirectPosition;
  *
  * @author <a href="mailto:kobit@users.sourceforge.net">Artur Hefczyc</a>
  * @author <a href="mailto:knuterik@onemap.org">Knut-Erik Johnsen</a>, Project OneMap
- *
- *
- *
  * @source $URL$
  * @version $Id$
  */
-public abstract class VPFInputStream implements FileConstants,
-                                                DataTypesDefinition {
-    /**
-     * Describe variable <code>input</code> here.
-     *
-     */
+public abstract class VPFInputStream implements FileConstants, DataTypesDefinition {
+    /** Describe variable <code>input</code> here. */
     protected RandomAccessFile input = null;
 
-    /**
-     * Describe variable <code>header</code> here.
-     *
-     */
+    /** Describe variable <code>header</code> here. */
     protected VPFHeader header = null;
 
-    /**
-     * Describe variable <code>streamFile</code> here.
-     *
-     */
+    /** Describe variable <code>streamFile</code> here. */
     protected String streamFile = null;
 
-    /**
-     * Describe variable <code>rowsReadAhead</code> here.
-     *
-     */
+    /** Describe variable <code>rowsReadAhead</code> here. */
     private List rowsReadAhead = new LinkedList();
 
-    /**
-     * Describe variable <code>variableIndex</code> here.
-     *
-     */
+    /** Describe variable <code>variableIndex</code> here. */
     private VPFInputStream variableIndex = null;
 
-    /**
-     * Describe variable <code>byteOrder</code> here.
-     *
-     */
+    /** Describe variable <code>byteOrder</code> here. */
     private char byteOrder = LITTLE_ENDIAN_ORDER;
 
-    /**
-     * Describe variable <code>accessMode</code> here.
-     *
-     */
+    /** Describe variable <code>accessMode</code> here. */
     private String accessMode = "r";
 
     /**
@@ -99,8 +73,8 @@ public abstract class VPFInputStream implements FileConstants,
         //     condeb("("+streamFile+
         //            ") header.getRecordSize()="+header.getRecordSize());
         if (header.getRecordSize() < 0) {
-            variableIndex = new VariableIndexInputStream(
-                                    getVariableIndexFileName(), getByteOrder());
+            variableIndex =
+                    new VariableIndexInputStream(getVariableIndexFileName(), getByteOrder());
         }
 
         // end of if (header.getRecordSize() == -1)
@@ -113,8 +87,7 @@ public abstract class VPFInputStream implements FileConstants,
      * @param byteOrder a <code>char</code> value
      * @exception IOException if an error occurs
      */
-    public VPFInputStream(String file, char byteOrder)
-                   throws IOException {
+    public VPFInputStream(String file, char byteOrder) throws IOException {
         this.streamFile = file;
         this.byteOrder = byteOrder;
         input = new RandomAccessFile(streamFile, accessMode);
@@ -153,10 +126,10 @@ public abstract class VPFInputStream implements FileConstants,
      * @return a <code>String</code> value
      */
     public String getVariableIndexFileName() {
-        if (streamFile.equals("fcs")) {
-            return "fcz";
+        if (streamFile.equals("FCS")) {
+            return "FCZ";
         } else {
-            return streamFile.substring(0, streamFile.length() - 1) + "x";
+            return streamFile.substring(0, streamFile.length() - 1) + "X";
         }
     }
 
@@ -211,16 +184,13 @@ public abstract class VPFInputStream implements FileConstants,
      * DOCUMENT ME!
      *
      * @param pos DOCUMENT ME!
-     *
      * @throws IOException DOCUMENT ME!
      */
     public void setPosition(long pos) throws IOException {
         //     condeb("setPosition: "+pos);
         //     condeb("header.getRecordSize(): "+header.getRecordSize());
         if (header.getRecordSize() < 0) {
-            VariableIndexRow varRow = (VariableIndexRow) variableIndex.readRow(
-                                              (int) pos);
-
+            VariableIndexRow varRow = (VariableIndexRow) variableIndex.readRow((int) pos);
 
             //       condeb("Variable index info:\noffset="+varRow.getOffset()+
             //              "\nsize="+varRow.getSize());
@@ -238,9 +208,7 @@ public abstract class VPFInputStream implements FileConstants,
      * Method <code>readRow</code> is used to perform
      *
      * @param index an <code><code>int</code></code> value
-     *
      * @return a <code><code>VPFRow</code></code> value
-     *
      * @exception IOException if an error occurs
      */
     public VPFRow readRow(int index) throws IOException {
@@ -277,9 +245,7 @@ public abstract class VPFInputStream implements FileConstants,
      * Method <code>readRows</code> is used to perform
      *
      * @param rows a <code><code>VPFRow[]</code></code> value
-     *
      * @return an <code><code>int</code></code> value
-     *
      * @exception IOException if an error occurs
      */
     public int readRows(VPFRow[] rows) throws IOException {
@@ -356,8 +322,7 @@ public abstract class VPFInputStream implements FileConstants,
      * @return an <code>Object</code> value
      * @exception IOException if an error occurs
      */
-    protected Object readVariableSizeData(char dataType)
-                                   throws IOException {
+    protected Object readVariableSizeData(char dataType) throws IOException {
         int instances = readInteger();
 
         return readFixedSizeData(dataType, instances);
@@ -371,75 +336,72 @@ public abstract class VPFInputStream implements FileConstants,
      * @return an <code>Object</code> value
      * @exception IOException if an error occurs
      */
-    protected Object readFixedSizeData(char dataType, int instancesCount)
-                                throws IOException {
+    protected Object readFixedSizeData(char dataType, int instancesCount) throws IOException {
         Object result = null;
 
         switch (dataType) {
-        case DATA_TEXT:
-        case DATA_LEVEL1_TEXT:
-        case DATA_LEVEL2_TEXT:
-        case DATA_LEVEL3_TEXT:
+            case DATA_TEXT:
+            case DATA_LEVEL1_TEXT:
+            case DATA_LEVEL2_TEXT:
+            case DATA_LEVEL3_TEXT:
+                byte[] dataBytes = new byte[instancesCount * DataUtils.getDataTypeSize(dataType)];
+                input.readFully(dataBytes);
+                result = DataUtils.decodeData(dataBytes, dataType);
 
-            byte[] dataBytes = new byte[instancesCount * DataUtils.getDataTypeSize(
-                                                                 dataType)];
-            input.readFully(dataBytes);
-            result = DataUtils.decodeData(dataBytes, dataType);
+                break;
 
-            break;
+            case DATA_SHORT_FLOAT:
+                result = new Float(readFloat());
 
-        case DATA_SHORT_FLOAT:
-            result = new Float(readFloat());
+                break;
 
-            break;
+            case DATA_LONG_FLOAT:
+                result = new Double(readDouble());
 
-        case DATA_LONG_FLOAT:
-            result = new Double(readDouble());
+                break;
 
-            break;
+            case DATA_SHORT_INTEGER:
+                result = new Short(readShort());
 
-        case DATA_SHORT_INTEGER:
-            result = new Short(readShort());
+                break;
 
-            break;
+            case DATA_LONG_INTEGER:
+                result = new Integer(readInteger());
 
-        case DATA_LONG_INTEGER:
-            result = new Integer(readInteger());
+                break;
 
-            break;
+            case DATA_NULL_FIELD:
+                result = "NULL";
 
-        case DATA_NULL_FIELD:
-            result = "NULL";
+                break;
 
-            break;
+            case DATA_TRIPLET_ID:
+                result = readTripletId();
 
-        case DATA_TRIPLET_ID:
-            result = readTripletId();
+                break;
 
-            break;
+            case DATA_2_COORD_F:
+                result = readCoord2DFloat(instancesCount);
 
-        case DATA_2_COORD_F:
-            result = readCoord2DFloat(instancesCount);
+                break;
 
-            break;
+            case DATA_2_COORD_R:
+                result = readCoord2DDouble(instancesCount);
 
-        case DATA_2_COORD_R:
-            result = readCoord2DDouble(instancesCount);
+                break;
 
-            break;
+            case DATA_3_COORD_F:
+                result = readCoord3DFloat(instancesCount);
 
-        case DATA_3_COORD_F:
-            result = readCoord3DFloat(instancesCount);
+                break;
 
-            break;
+            case DATA_3_COORD_R:
+                result = readCoord3DDouble(instancesCount);
 
-        case DATA_3_COORD_R:
-            result = readCoord3DDouble(instancesCount);
+                break;
 
-            break;
-
-        default:
-            break;
+            default:
+                break;
         } // end of switch (dataType)
 
         return result;
@@ -515,20 +477,17 @@ public abstract class VPFInputStream implements FileConstants,
         return new TripletId(tripletData);
     }
 
-    protected DirectPosition[] readCoord3DFloat(int instancesCount)
-        throws IOException {
+    protected DirectPosition[] readCoord3DFloat(int instancesCount) throws IOException {
         DirectPosition[] result = new DirectPosition[instancesCount];
 
         for (int inx = 0; inx < instancesCount; inx++) {
-            result[inx] = new GeneralDirectPosition(readFloat(), readFloat(),
-                    readFloat());
+            result[inx] = new GeneralDirectPosition(readFloat(), readFloat(), readFloat());
         }
 
         return result;
     }
 
-    protected DirectPosition[] readCoord2DFloat(int instancesCount)
-        throws IOException {
+    protected DirectPosition[] readCoord2DFloat(int instancesCount) throws IOException {
         DirectPosition[] result = new DirectPosition[instancesCount];
 
         for (int inx = 0; inx < instancesCount; inx++) {
@@ -538,8 +497,7 @@ public abstract class VPFInputStream implements FileConstants,
         return result;
     }
 
-    protected DirectPosition[] readCoord2DDouble(int instancesCount)
-        throws IOException {
+    protected DirectPosition[] readCoord2DDouble(int instancesCount) throws IOException {
         DirectPosition[] result = null;
         result = new DirectPosition[instancesCount];
 
@@ -550,14 +508,12 @@ public abstract class VPFInputStream implements FileConstants,
         return result;
     }
 
-    protected DirectPosition[] readCoord3DDouble(int instancesCount)
-        throws IOException {
+    protected DirectPosition[] readCoord3DDouble(int instancesCount) throws IOException {
         DirectPosition[] result = null;
         result = new DirectPosition[instancesCount];
 
         for (int inx = 0; inx < instancesCount; inx++) {
-            result[inx] = new GeneralDirectPosition(readDouble(), readDouble(),
-                    readDouble());
+            result[inx] = new GeneralDirectPosition(readDouble(), readDouble(), readDouble());
         }
 
         return result;

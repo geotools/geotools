@@ -18,27 +18,19 @@ package org.geotools.data.vpf.io;
 
 import org.geotools.data.vpf.exc.VPFDataFormatException;
 
-
 /**
  * Class TripletId.java is responsible for
  *
  * @author <a href="mailto:kobit@users.sourceforge.net">Artur Hefczyc</a>
- * @author <a href="mailto:knuterik@onemap.org">Knut-Erik Johnsen</a>, Project
- *         OneMap
+ * @author <a href="mailto:knuterik@onemap.org">Knut-Erik Johnsen</a>, Project OneMap
  * @version 1.0.0
  * @author <a href="mailto:jeff@ionicenterprise.com">Jeff Yutzler</a>
- *
- *
- *
  * @source $URL$
  */
 public class TripletId extends Number {
     /** serialVersionUID */
     private static final long serialVersionUID = -3584133713173893007L;
-    /**
-     * The raw data that can be decomposed into as many as three separate
-     * numbers
-     */
+    /** The raw data that can be decomposed into as many as three separate numbers */
     private byte[] rawData = null;
 
     /**
@@ -63,15 +55,11 @@ public class TripletId extends Number {
             }
 
             if (getTileIdLength() > 0) {
-                result = result.concat("%")
-                               .concat(new Integer(getTileId()).toString())
-                               .trim();
+                result = result.concat("%").concat(new Integer(getTileId()).toString()).trim();
             }
 
             if (getNextIdLength() > 0) {
-                result = result.concat("%")
-                               .concat(new Integer(getNextId()).toString())
-                               .trim();
+                result = result.concat("%").concat(new Integer(getNextId()).toString()).trim();
             }
         } catch (RuntimeException exp) {
             throw new VPFDataFormatException("This triplet is invalid.", exp);
@@ -140,6 +128,7 @@ public class TripletId extends Number {
 
     /**
      * Returns the Tile ID
+     *
      * @return Returns the Tile ID, the second number of the triplet
      */
     public int getTileId() {
@@ -171,6 +160,7 @@ public class TripletId extends Number {
 
     /**
      * Returns the Next ID
+     *
      * @return Returns the Next ID, the third number of the triplet
      */
     public int getNextId() {
@@ -204,7 +194,6 @@ public class TripletId extends Number {
      * Describe <code>calculateDataSize</code> method here.
      *
      * @param definition a <code>byte</code> value indicating the details of the bytes
-     *
      * @return an <code>int</code> value
      */
     public static int calculateDataSize(byte definition) {
@@ -217,32 +206,32 @@ public class TripletId extends Number {
 
         for (int i = 0; i < pieces.length; i++) {
             switch (pieces[i]) {
-            case 0:
-                break;
+                case 0:
+                    break;
 
-            case 1:
-                size++;
+                case 1:
+                    size++;
 
-                break;
+                    break;
 
-            case 2:
-                size += 2;
+                case 2:
+                    size += 2;
 
-                break;
+                    break;
 
-            case 3:
-                size += 4;
+                case 3:
+                    size += 4;
 
-                break;
+                    break;
 
-            default:
-                System.out.println("Tripled id size decoding error");
-                System.out.println("tripled definition: " + definition);
-                System.out.println("piece 0: " + pieces[0]);
-                System.out.println("piece 1: " + pieces[1]);
-                System.out.println("piece 2: " + pieces[2]);
+                default:
+                    System.out.println("Tripled id size decoding error");
+                    System.out.println("tripled definition: " + definition);
+                    System.out.println("piece 0: " + pieces[0]);
+                    System.out.println("piece 1: " + pieces[1]);
+                    System.out.println("piece 2: " + pieces[2]);
 
-                break;
+                    break;
             }
         }
 

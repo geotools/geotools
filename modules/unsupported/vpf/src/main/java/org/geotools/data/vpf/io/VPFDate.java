@@ -22,28 +22,17 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 
-
 /**
  * VPFDate.java Created: Tue Jan 28 20:50:51 2003
  *
  * @author <a href="mailto:kobit@users.sourceforge.net">Artur Hefczyc</a>
- *
- *
- *
  * @source $URL$
- * 
  */
 public class VPFDate {
-    /**
-     * Describe variable <code>sdf</code> here.
-     *
-     */
+    /** Describe variable <code>sdf</code> here. */
     private SimpleDateFormat sdf = null;
 
-    /**
-     * Describe variable <code>dateBin</code> here.
-     *
-     */
+    /** Describe variable <code>dateBin</code> here. */
     private byte[] dateBin = null;
 
     /**
@@ -71,10 +60,7 @@ public class VPFDate {
         initialize();
     }
 
-    /**
-     * Describe <code>initialize</code> method here.
-     *
-     */
+    /** Describe <code>initialize</code> method here. */
     private void initialize() {
         for (int i = 0; i < dateBin.length; i++) {
             if ((char) dateBin[i] == ' ') {

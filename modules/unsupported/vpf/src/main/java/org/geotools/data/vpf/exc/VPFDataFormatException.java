@@ -19,14 +19,9 @@ package org.geotools.data.vpf.exc;
 /**
  * Class VPFDataFormatException.java is responsible for
  *
- * <p>
- * Created: Wed Jan 29 10:28:53 2003
- * </p>
+ * <p>Created: Wed Jan 29 10:28:53 2003
  *
  * @author <a href="mailto:kobit@users.sourceforge.net">Artur Hefczyc</a>
- *
- *
- *
  * @source $URL$
  * @version $Id$
  */
@@ -34,9 +29,7 @@ public class VPFDataFormatException extends RuntimeException {
     /** serialVersionUID */
     private static final long serialVersionUID = -604863532883311799L;
 
-    /**
-     * Creates a new VPFDataFormatException object.
-     */
+    /** Creates a new VPFDataFormatException object. */
     public VPFDataFormatException() {
         super();
     }

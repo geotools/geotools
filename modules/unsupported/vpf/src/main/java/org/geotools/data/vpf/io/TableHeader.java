@@ -18,62 +18,49 @@ package org.geotools.data.vpf.io;
 
 import java.util.Collections;
 import java.util.List;
-
 import org.geotools.data.vpf.ifc.DataTypesDefinition;
 import org.geotools.data.vpf.ifc.VPFHeader;
 
-
 /**
- * This class contains definition of VPF standard table header according to
- * specification found in: "Interface Standard for Vector Product Format."
- * Objects of this type are immutable.  Created: Thu Jan 02 22:50:59 2003
+ * This class contains definition of VPF standard table header according to specification found in:
+ * "Interface Standard for Vector Product Format." Objects of this type are immutable. Created: Thu
+ * Jan 02 22:50:59 2003
  *
  * @author <a href="mailto:kobit@users.fs.net">Artur Hefczyc</a>
- *
- *
- *
  * @source $URL$
  * @version 1.0
  */
 public class TableHeader implements VPFHeader, DataTypesDefinition {
     /**
-     * Variable <code>length</code> keeps value of length of ASCII header
-     * string (i.e., the remaining information after this field)
+     * Variable <code>length</code> keeps value of length of ASCII header string (i.e., the
+     * remaining information after this field)
      */
     private int headerLength = -0;
 
     /**
-     * Variable <code>byteOrder</code> keeps value of  byte order in which
-     * table is written:
-     * 
+     * Variable <code>byteOrder</code> keeps value of byte order in which table is written:
+     *
      * <ul>
-     * <li>
-     * <b>L</b> - least-significant-first
-     * </li>
-     * <li>
-     * <b>M</b> - most-significant-first
-     * </li>
+     *   <li><b>L</b> - least-significant-first
+     *   <li><b>M</b> - most-significant-first
      * </ul>
      */
     private char byteOrder = LEAST_SIGNIF_FIRST;
 
     /**
-     * Variable <code>description</code> keeps value of text description of the
-     * table's contents.
+     * Variable <code>description</code> keeps value of text description of the table's contents.
      */
     private String description = null;
 
     /**
-     * Variable <code>narrativeTable</code> keeps value of  an optional
-     * narrative file which contains miscellaneous information about the
-     * table.
+     * Variable <code>narrativeTable</code> keeps value of an optional narrative file which contains
+     * miscellaneous information about the table.
      */
     private String narrativeTable = null;
 
     /**
-     * Variable <code>columnDefs</code> keeps value of list of all column
-     * definitions found in table header. This list keeps objects of type
-     * <code>TableColumnDef</code> class.
+     * Variable <code>columnDefs</code> keeps value of list of all column definitions found in table
+     * header. This list keeps objects of type <code>TableColumnDef</code> class.
      */
     private List<TableColumnDef> columnDefs = null;
 
@@ -81,17 +68,18 @@ public class TableHeader implements VPFHeader, DataTypesDefinition {
      * Creates a new <code>TableHeader</code> instance.
      *
      * @param length an <code>int</code> value of table header length.
-     * @param byteOrder a <code>char</code> value byte order used in table
-     *        file.
-     * @param description a <code>String</code> value text description of found
-     *        in header of this table.
-     * @param narrativeTable a <code>String</code> value file name of narrative
-     *        table.
-     * @param columnDefs a <code>List</code> value of all column definitions
-     *        for this table.
+     * @param byteOrder a <code>char</code> value byte order used in table file.
+     * @param description a <code>String</code> value text description of found in header of this
+     *     table.
+     * @param narrativeTable a <code>String</code> value file name of narrative table.
+     * @param columnDefs a <code>List</code> value of all column definitions for this table.
      */
-    public TableHeader(int length, char byteOrder, String description, 
-                       String narrativeTable, List<TableColumnDef> columnDefs) {
+    public TableHeader(
+            int length,
+            char byteOrder,
+            String description,
+            String narrativeTable,
+            List<TableColumnDef> columnDefs) {
         this.headerLength = length;
         this.byteOrder = byteOrder;
         this.description = description;
@@ -100,8 +88,8 @@ public class TableHeader implements VPFHeader, DataTypesDefinition {
     }
 
     /**
-     * Method <code>toString</code> returns content of all fields values. Used
-     * only for test and debug purpose.
+     * Method <code>toString</code> returns content of all fields values. Used only for test and
+     * debug purpose.
      *
      * @return a <code>String</code> value
      */
@@ -128,8 +116,8 @@ public class TableHeader implements VPFHeader, DataTypesDefinition {
     }
 
     /**
-     * Gets the value of full length of ASCII header string including
-     * <code>headerLength</code> field.
+     * Gets the value of full length of ASCII header string including <code>headerLength</code>
+     * field.
      *
      * @return the value of headerLength
      */
@@ -138,9 +126,9 @@ public class TableHeader implements VPFHeader, DataTypesDefinition {
     }
 
     /**
-     * Method <code><code>getRecordSize</code></code> is used to return size in
-     * bytes of records stored in this table. If table keeps variable length
-     * records <code>-1</code> should be returned.
+     * Method <code><code>getRecordSize</code></code> is used to return size in bytes of records
+     * stored in this table. If table keeps variable length records <code>-1</code> should be
+     * returned.
      *
      * @return an <code><code>int</code></code> value
      */
@@ -163,18 +151,12 @@ public class TableHeader implements VPFHeader, DataTypesDefinition {
     }
 
     /**
-     * Gets the value of byteOrder variable. Byte order in which table is
-     * written:
-     * 
+     * Gets the value of byteOrder variable. Byte order in which table is written:
+     *
      * <ul>
-     * <li>
-     * <b>L</b> - least-significant-first
-     * </li>
-     * <li>
-     * <b>M</b> - most-significant-first
-     * </li>
+     *   <li><b>L</b> - least-significant-first
+     *   <li><b>M</b> - most-significant-first
      * </ul>
-     * 
      *
      * @return the value of byteOrder
      */
@@ -201,8 +183,7 @@ public class TableHeader implements VPFHeader, DataTypesDefinition {
     }
 
     /**
-     * Gets the value of columnDefs variable keeping definitions of all columns
-     * in this table.
+     * Gets the value of columnDefs variable keeping definitions of all columns in this table.
      *
      * @return the value of columnDefs
      */

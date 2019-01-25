@@ -17,18 +17,13 @@
 package org.geotools.data.vpf.io;
 
 import java.io.IOException;
-
 import org.geotools.data.vpf.ifc.VPFHeader;
 import org.geotools.data.vpf.ifc.VPFRow;
-
 
 /**
  * SpatialIndexInputStream.java Created: Mon Feb 24 22:25:15 2003
  *
  * @author <a href="mailto:kobit@users.sourceforge.net">Artur Hefczyc</a>
- *
- *
- *
  * @source $URL$
  * @version $Id$
  */
@@ -41,11 +36,9 @@ public class SpatialIndexInputStream extends VPFInputStream {
      *
      * @param file a <code>String</code> value
      * @param byteOrder a <code>char</code> value
-     *
      * @exception IOException if an error occurs
      */
-    public SpatialIndexInputStream(String file, char byteOrder)
-                            throws IOException {
+    public SpatialIndexInputStream(String file, char byteOrder) throws IOException {
         super(file, byteOrder);
     }
 
@@ -62,19 +55,17 @@ public class SpatialIndexInputStream extends VPFInputStream {
      * Describe <code>readHeader</code> method here.
      *
      * @return a <code>VPFHeader</code> value
-     *
      * @exception IOException if an error occurs
      */
     public VPFHeader readHeader() throws IOException {
-        return new SpatialIndexHeader(readInteger(), readFloat(), readFloat(), 
-                                      readFloat(), readFloat(), readInteger());
+        return new SpatialIndexHeader(
+                readInteger(), readFloat(), readFloat(), readFloat(), readFloat(), readInteger());
     }
 
     /**
      * Describe <code>readRow</code> method here.
      *
      * @return a <code>VPFRow</code> value
-     *
      * @exception IOException if an error occurs
      */
     public VPFRow readRow() throws IOException {
@@ -85,7 +76,6 @@ public class SpatialIndexInputStream extends VPFInputStream {
      * Describe <code>setPosition</code> method here.
      *
      * @param pos a <code>long</code> value
-     *
      * @exception IOException if an error occurs
      */
     public void setPosition(long pos) throws IOException {

@@ -18,24 +18,18 @@ package org.geotools.data.vpf.util;
 
 import java.util.HashMap;
 import java.util.StringTokenizer;
-
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.GeometryFactory;
-
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.GeometryFactory;
 
 /*
  * AreaData.java
  *
- * Created on July 4, 2004, 5:35 PM 
+ * Created on July 4, 2004, 5:35 PM
  *
  * @author  <a href="mailto:knuterik@onemap.org">Knut-Erik Johnsen</a>, Project OneMap
  * @source $URL$
  */
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class PointData extends HashMap {
     public Object put(Object key, Object value) {
         if (key instanceof String) {
@@ -47,10 +41,11 @@ public class PointData extends HashMap {
                 int i = 0;
 
                 while (st.hasMoreTokens()) {
-                    StringTokenizer st2 = new StringTokenizer(st.nextToken(), 
-                                                              ",");
-                    c[i] = new Coordinate(Double.parseDouble(st2.nextToken()), 
-                                          Double.parseDouble(st2.nextToken()));
+                    StringTokenizer st2 = new StringTokenizer(st.nextToken(), ",");
+                    c[i] =
+                            new Coordinate(
+                                    Double.parseDouble(st2.nextToken()),
+                                    Double.parseDouble(st2.nextToken()));
                     i++;
                 }
 

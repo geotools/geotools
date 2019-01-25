@@ -17,18 +17,13 @@
 package org.geotools.data.vpf.io;
 
 import java.io.IOException;
-
 import org.geotools.data.vpf.ifc.VPFHeader;
 import org.geotools.data.vpf.ifc.VPFRow;
-
 
 /**
  * VariableIndexInputStream.java Created: Mon Feb 24 22:23:58 2003
  *
  * @author <a href="mailto:kobit@users.sourceforge.net">Artur Hefczyc</a>
- *
- *
- *
  * @source $URL$
  * @version $Id$
  */
@@ -40,8 +35,7 @@ public class VariableIndexInputStream extends VPFInputStream {
      * @param byteOrder a <code>char</code> value
      * @exception IOException if an error occurs
      */
-    public VariableIndexInputStream(String file, char byteOrder)
-                             throws IOException {
+    public VariableIndexInputStream(String file, char byteOrder) throws IOException {
         super(file, byteOrder);
     }
 

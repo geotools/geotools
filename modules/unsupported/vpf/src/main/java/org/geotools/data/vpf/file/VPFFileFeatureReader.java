@@ -18,30 +18,48 @@ package org.geotools.data.vpf.file;
 
 import java.io.IOException;
 import java.util.NoSuchElementException;
-
 import org.geotools.data.FeatureReader;
+import org.geotools.data.Query;
+import org.geotools.data.store.ContentState;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
-
 
 /**
  * A feature reader for the VPFFile object
  *
  * @author <a href="mailto:jeff@ionicenterprise.com">Jeff Yutzler</a>
- *
- *
- *
  * @source $URL$
  */
 public class VPFFileFeatureReader implements FeatureReader<SimpleFeatureType, SimpleFeature> {
     private final VPFFile file;
     private SimpleFeature currentFeature;
 
+    /** State used when reading file */
+    protected ContentState state;
+
     public VPFFileFeatureReader(VPFFile type) {
         file = type;
         currentFeature = null;
 
         file.reset();
+    }
+
+    public VPFFileFeatureReader(ContentState contentState, Query query) throws IOException {
+        this.state = contentState;
+        VPFFileStore vpf = (VPFFileStore) contentState.getEntry().getDataStore();
+        this.file = vpf.getDefaultFile();
+        this.currentFeature = null;
+        this.file.reset();
+        /*
+        reader = csv.read(); // this may throw an IOException if it could not connect
+        boolean header = reader.readHeaders();
+        if (!header) {
+            throw new IOException("Unable to read csv header");
+        }
+        builder = new SimpleFeatureBuilder(state.getFeatureType());
+        geometryFactory = JTSFactoryFinder.getGeometryFactory(null);
+        row = 0;
+        */
     }
 
     /* (non-Javadoc)
@@ -54,8 +72,7 @@ public class VPFFileFeatureReader implements FeatureReader<SimpleFeatureType, Si
     /* (non-Javadoc)
      * @see org.geotools.data.FeatureReader#next()
      */
-    public SimpleFeature next()
-        throws IOException, NoSuchElementException {
+    public SimpleFeature next() throws IOException, NoSuchElementException {
         if (!hasNext()) {
             throw new NoSuchElementException();
         }
@@ -80,5 +97,6 @@ public class VPFFileFeatureReader implements FeatureReader<SimpleFeatureType, Si
      */
     public void close() throws IOException {
         // TODO Auto-generated method stub
+        this.file.close();
     }
 }

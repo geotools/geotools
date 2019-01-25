@@ -16,27 +16,22 @@
  */
 package org.geotools.data.vpf;
 
-import org.opengis.feature.type.AttributeDescriptor;
-
 /**
- * This class encapsulates a join between two columns. It was originally intended to
- * join two VPFColumn types, but there should not be anything about it which
- * constrains it to those two types.
- * @author <a href="mailto:jeff@ionicenterprise.com">Jeff Yutzler</a>
+ * This class encapsulates a join between two columns. It was originally intended to join two
+ * VPFColumn types, but there should not be anything about it which constrains it to those two
+ * types.
  *
+ * @author <a href="mailto:jeff@ionicenterprise.com">Jeff Yutzler</a>
  * @source $URL$
  */
 class ColumnPair {
-    /**
-     * The first column to join
-     */
+    /** The first column to join */
     public VPFColumn column1;
-    /**
-     * The second column to join
-     */
+    /** The second column to join */
     public VPFColumn column2;
     /**
      * The only constructor
+     *
      * @param c1 the first column
      * @param c2 the second column
      */
@@ -50,8 +45,8 @@ class ColumnPair {
      */
     public int hashCode() {
         int result = 78236951;
-        if (column1 !=null)   result = result * 37 + column1.hashCode();
-        if (column2 !=null)   result ^= result *37 + column2.hashCode();
+        if (column1 != null) result = result * 37 + column1.hashCode();
+        if (column2 != null) result ^= result * 37 + column2.hashCode();
 
         return result;
     }
@@ -67,7 +62,8 @@ class ColumnPair {
         } else {
             ColumnPair columnPair = (ColumnPair) arg0;
 
-            if ((columnPair != null) && columnPair.column1.equals(this.column1)
+            if ((columnPair != null)
+                    && columnPair.column1.equals(this.column1)
                     && columnPair.column2.equals(this.column2)) {
                 result = true;
             }

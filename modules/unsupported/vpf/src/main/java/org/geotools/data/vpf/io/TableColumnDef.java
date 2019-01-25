@@ -19,17 +19,12 @@ package org.geotools.data.vpf.io;
 import org.geotools.data.vpf.ifc.DataTypesDefinition;
 import org.geotools.data.vpf.util.DataUtils;
 
-
 /**
- * This class contains definition of VPF standard table column definition
- * according to specification found in: "Interface Standard for Vector Product
- * Format." Objects of this type are immutable. Created: Thu Jan 02 23:11:27
- * 2003
+ * This class contains definition of VPF standard table column definition according to specification
+ * found in: "Interface Standard for Vector Product Format." Objects of this type are immutable.
+ * Created: Thu Jan 02 23:11:27 2003
  *
  * @author <a href="mailto:kobit@users.fs.net">Artur Hefczyc</a>
- *
- *
- *
  * @source $URL$
  * @version 1.0
  */
@@ -70,9 +65,15 @@ public class TableColumnDef implements DataTypesDefinition {
      * @param thematicIdx a <code>String</code> value
      * @param narrTable a <code>String</code> value
      */
-    public TableColumnDef(String name, char type, int elementsNumber, 
-                          char keyType, String colDesc, String valDescTableName, 
-                          String thematicIdx, String narrTable) {
+    public TableColumnDef(
+            String name,
+            char type,
+            int elementsNumber,
+            char keyType,
+            String colDesc,
+            String valDescTableName,
+            String thematicIdx,
+            String narrTable) {
         this.name = name;
         this.type = type;
         this.elementsNumber = elementsNumber;

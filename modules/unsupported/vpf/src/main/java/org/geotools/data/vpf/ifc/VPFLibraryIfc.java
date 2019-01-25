@@ -19,45 +19,26 @@ package org.geotools.data.vpf.ifc;
 /**
  * VPFLibraryIfc.java
  *
- *
- * Created: Fri Apr 04 14:06:29 2003
+ * <p>Created: Fri Apr 04 14:06:29 2003
  *
  * @author <a href="mailto:kobit@users.sourceforge.net">Artur Hefczyc</a>
- *
- *
- *
  * @source $URL$
  * @version $Id$
  */
 public interface VPFLibraryIfc {
-    /**
-     * Describe constant <code>FIELD_XMIN</code> here.
-     *
-     */
+    /** Describe constant <code>FIELD_XMIN</code> here. */
     public static final String FIELD_XMIN = "xmin";
 
-    /**
-     * Describe constant <code>FIELD_YMIN</code> here.
-     *
-     */
+    /** Describe constant <code>FIELD_YMIN</code> here. */
     public static final String FIELD_YMIN = "ymin";
 
-    /**
-     * Describe constant <code>FIELD_XMAX</code> here.
-     *
-     */
+    /** Describe constant <code>FIELD_XMAX</code> here. */
     public static final String FIELD_XMAX = "xmax";
 
-    /**
-     * Describe constant <code>FIELD_YMAX</code> here.
-     *
-     */
+    /** Describe constant <code>FIELD_YMAX</code> here. */
     public static final String FIELD_YMAX = "ymax";
 
-    /**
-     * Describe constant <code>FIELD_LIB_NAME</code> here.
-     *
-     */
+    /** Describe constant <code>FIELD_LIB_NAME</code> here. */
     public static final String FIELD_LIB_NAME = "library_name";
 
     public static final String FIELD_TILE_NAME = "tile_name";

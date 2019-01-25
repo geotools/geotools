@@ -27,25 +27,22 @@
 package org.geotools.data.vpf.io;
 
 import java.util.Calendar;
-
 import junit.framework.TestCase;
 
 /**
  * Test VPF Date handling
- * 
+ *
  * @source $URL$
  */
 public class VPFDateTest extends TestCase {
-    /**
-     * Instance of tested class.
-     */
+    /** Instance of tested class. */
     protected VPFDate varVPFDate;
 
     protected String date = "20030129161055.00000";
 
     /**
-     * This method is called every time before particular test execution. It creates new instance of tested class and it can perform some more actions
-     * which are necessary for performs tests.
+     * This method is called every time before particular test execution. It creates new instance of
+     * tested class and it can perform some more actions which are necessary for performs tests.
      */
     protected void setUp() {
         byte[] bytes = new byte[date.length()];
@@ -55,19 +52,19 @@ public class VPFDateTest extends TestCase {
         varVPFDate = new VPFDate(bytes);
     }
 
-    /**
-     * Method for testing original source method: java.util.Date getDate() from tested class
-     */
+    /** Method for testing original source method: java.util.Date getDate() from tested class */
     public void testGetDate() {
-        assertNotNull("Check if it is possible to parse date, corretness is "
-                + "checked in getCalendar method", varVPFDate.getDate());
+        assertNotNull(
+                "Check if it is possible to parse date, corretness is "
+                        + "checked in getCalendar method",
+                varVPFDate.getDate());
     } // end of testGetDate()
 
     public void testGetCalendar() {
         Calendar cal = varVPFDate.getCalendar();
         assertEquals("Checking year", 2003, cal.get(Calendar.YEAR));
-        assertEquals("Checking month (Calendar numvers months from 0)", 1,
-                cal.get(Calendar.MONTH) + 1);
+        assertEquals(
+                "Checking month (Calendar numvers months from 0)", 1, cal.get(Calendar.MONTH) + 1);
         assertEquals("Checking day of month", 29, cal.get(Calendar.DAY_OF_MONTH));
         assertEquals("Checking hour", 16, cal.get(Calendar.HOUR_OF_DAY));
         assertEquals("Checking minute", 10, cal.get(Calendar.MINUTE));
@@ -75,11 +72,8 @@ public class VPFDateTest extends TestCase {
         assertEquals("Checking zone", 0, cal.get(Calendar.ZONE_OFFSET));
     }
 
-    /**
-     * Method for testing original source method: java.lang.String toString() from tested class
-     */
+    /** Method for testing original source method: java.lang.String toString() from tested class */
     public void testToString() {
         assertEquals("Conversion to string", varVPFDate.toString(), date);
     } // end of testToString()
-
 } // end of VPFDateTest

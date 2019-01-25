@@ -19,14 +19,9 @@ package org.geotools.data.vpf.exc;
 /**
  * Class VPFHeaderFormatException.java is responsible for
  *
- * <p>
- * Created: Tue Jan 21 15:12:10 2003
- * </p>
+ * <p>Created: Tue Jan 21 15:12:10 2003
  *
  * @author <a href="mailto:kobit@users.sourceforge.net">Artur Hefczyc</a>
- *
- *
- *
  * @source $URL$
  * @version 1.0.0
  */
@@ -34,9 +29,7 @@ public class VPFHeaderFormatException extends VPFDataException {
     /** serialVersionUID */
     private static final long serialVersionUID = 4680952037855445222L;
 
-    /**
-     * Creates a new VPFHeaderFormatException object.
-     */
+    /** Creates a new VPFHeaderFormatException object. */
     public VPFHeaderFormatException() {
         super();
     }

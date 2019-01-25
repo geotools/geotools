@@ -18,14 +18,10 @@ package org.geotools.data.vpf.io;
 
 import org.geotools.data.vpf.ifc.VPFRow;
 
-
 /**
  * VariableIndexRow.java Created: Sun Mar 16 23:28:11 2003
  *
  * @author <a href="mailto:kobit@users.sourceforge.net">Artur Hefczyc</a>
- *
- *
- *
  * @source $URL$
  * @version $Id$
  */

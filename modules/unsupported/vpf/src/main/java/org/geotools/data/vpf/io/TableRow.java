@@ -17,32 +17,21 @@
 package org.geotools.data.vpf.io;
 
 import java.util.Map;
-
 import org.geotools.data.vpf.ifc.VPFRow;
-
 
 /**
  * TableRow.java Created: Thu Jan 02 23:58:39 2003
  *
  * @author <a href="mailto:kobit@users.fs.net">Artur Hefczyc</a>
- *
- *
- *
  * @source $URL$
  * @version 1.0
  */
 public class TableRow implements VPFRow {
-    /**
-     * Describe variable <code>fieldsArr</code> here.
-     *
-     */
+    /** Describe variable <code>fieldsArr</code> here. */
     private RowField[] fieldsArr = null;
 
-    /**
-     * Describe variable <code>fieldsMap</code> here.
-     *
-     */
-    private Map<String,RowField> fieldsMap = null;
+    /** Describe variable <code>fieldsMap</code> here. */
+    private Map<String, RowField> fieldsMap = null;
 
     /**
      * Creates a new <code>TableRow</code> instance.
@@ -50,7 +39,7 @@ public class TableRow implements VPFRow {
      * @param fieldsArr a <code>RowField[]</code> value
      * @param fieldsMap a <code>HashMap</code> value
      */
-    public TableRow(RowField[] fieldsArr, Map<String,RowField> fieldsMap) {
+    public TableRow(RowField[] fieldsArr, Map<String, RowField> fieldsMap) {
         this.fieldsArr = fieldsArr;
         this.fieldsMap = fieldsMap;
     }

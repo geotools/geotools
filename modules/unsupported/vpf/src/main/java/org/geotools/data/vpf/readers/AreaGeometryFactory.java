@@ -22,39 +22,32 @@ import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Vector;
-
 import org.geotools.data.vpf.VPFFeatureType;
 import org.geotools.data.vpf.file.VPFFile;
 import org.geotools.data.vpf.file.VPFFileFactory;
 import org.geotools.data.vpf.ifc.FileConstants;
 import org.geotools.data.vpf.io.TripletId;
 import org.geotools.feature.IllegalAttributeException;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.LinearRing;
+import org.locationtech.jts.geom.Polygon;
 import org.opengis.feature.simple.SimpleFeature;
-
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.LinearRing;
-import com.vividsolutions.jts.geom.Polygon;
-
 
 /**
  * Creates Geometries for area objects
  *
  * @author <a href="mailto:jeff@ionicenterprise.com">Jeff Yutzler</a>
- *
- *
- *
  * @source $URL$
  */
-public class AreaGeometryFactory extends VPFGeometryFactory
-    implements FileConstants {
+public class AreaGeometryFactory extends VPFGeometryFactory implements FileConstants {
     /* (non-Javadoc)
      * @see com.ionicsoft.wfs.jdbc.geojdbc.module.vpf.VPFGeometryFactory#createGeometry(java.lang.String, int, int)
      */
     public void createGeometry(VPFFeatureType featureType, SimpleFeature values)
-        throws SQLException, IOException, IllegalAttributeException {
-        
+            throws SQLException, IOException, IllegalAttributeException {
+
         int tempEdgeId;
         boolean isLeft = false;
         Coordinate previousCoordinate = null;
@@ -66,7 +59,7 @@ public class AreaGeometryFactory extends VPFGeometryFactory
         List innerRings = new Vector();
 
         // Get face information
-        //TODO: turn these column names into constants
+        // TODO: turn these column names into constants
         int faceId = Integer.parseInt(values.getAttribute("fac_id").toString());
 
         // Retrieve the tile directory
@@ -74,17 +67,21 @@ public class AreaGeometryFactory extends VPFGeometryFactory
         String tileDirectory = baseDirectory;
 
         // If the primitive table is there, this coverage is not tiled
-        if (!new File(tileDirectory.concat(File.separator).concat(FACE_PRIMITIVE))
-                .exists()) {
-            Short tileId = new Short(Short.parseShort(
-                        values.getAttribute("tile_id").toString()));
-            tileDirectory = tileDirectory.concat(File.separator)
-                                         .concat(featureType.getFeatureClass()
-                                                            .getCoverage()
-                                                            .getLibrary()
-                                                            .getTileMap()
-                                                            .get(tileId)
-                                                            .toString()).trim();
+        if (!new File(tileDirectory.concat(File.separator).concat(FACE_PRIMITIVE)).exists()) {
+            Short tileId = new Short(Short.parseShort(values.getAttribute("tile_id").toString()));
+            tileDirectory =
+                    tileDirectory
+                            .concat(File.separator)
+                            .concat(
+                                    featureType
+                                            .getFeatureClass()
+                                            .getCoverage()
+                                            .getLibrary()
+                                            .getTileMap()
+                                            .get(tileId)
+                                            .toString()
+                                            .toUpperCase())
+                            .trim();
         }
 
         // all edges from this tile that use the face
@@ -106,13 +103,12 @@ public class AreaGeometryFactory extends VPFGeometryFactory
             if (faceFeature.getAttribute("id").equals(new Integer(faceId))) {
                 coordinates = new LinkedList();
 
-                int ringId = Integer.parseInt(faceFeature.getAttribute(
-                            "ring_ptr").toString());
+                int ringId = Integer.parseInt(faceFeature.getAttribute("ring_ptr").toString());
 
                 // Get the starting edge
-                int startEdgeId = ((Number) ringFile.getRowFromId("id", ringId)
-                                                    .getAttribute("start_edge"))
-                    .intValue();
+                int startEdgeId =
+                        ((Number) ringFile.getRowFromId("id", ringId).getAttribute("start_edge"))
+                                .intValue();
                 int nextEdgeId = startEdgeId;
                 int prevNodeId = -1;
 
@@ -120,11 +116,11 @@ public class AreaGeometryFactory extends VPFGeometryFactory
                     SimpleFeature edgeRow = edgeFile.getRowFromId("id", nextEdgeId);
 
                     // Read all the important stuff from the edge row data
-                    int leftFace  = ((TripletId) edgeRow.getAttribute("left_face")).getId();
+                    int leftFace = ((TripletId) edgeRow.getAttribute("left_face")).getId();
                     int rightFace = ((TripletId) edgeRow.getAttribute("right_face")).getId();
                     int startNode = ((Integer) edgeRow.getAttribute("start_node")).intValue();
-                    int endNode   = ((Integer) edgeRow.getAttribute("end_node")).intValue();
-                    int leftEdge  = ((TripletId) edgeRow.getAttribute("left_edge")).getId();
+                    int endNode = ((Integer) edgeRow.getAttribute("end_node")).intValue();
+                    int leftEdge = ((TripletId) edgeRow.getAttribute("left_edge")).getId();
                     int rightEdge = ((TripletId) edgeRow.getAttribute("right_edge")).getId();
                     boolean addPoints = true;
 
@@ -148,17 +144,23 @@ public class AreaGeometryFactory extends VPFGeometryFactory
                             isLeft = true;
                             prevNodeId = startNode;
                         } else if (prevNodeId == -1) {
-                            // This edge is the first one to be encountered.  
+                            // This edge is the first one to be encountered.
                             // This is a messy case where we've got to figure out if
                             // we should start to the left or right.  This peeks ahead
                             // at the left and right edges to see which has a start node
                             // that's the same as this edge's end node.  Hopefully someone
                             // smarter can come up with a better solution.
                             int leftEdgeStartNode =
-                                ((Integer)edgeFile.getRowFromId("id", leftEdge).getAttribute("start_node")).intValue();
+                                    ((Integer)
+                                                    edgeFile.getRowFromId("id", leftEdge)
+                                                            .getAttribute("start_node"))
+                                            .intValue();
                             int rightEdgeStartNode =
-                                ((Integer)edgeFile.getRowFromId("id", rightEdge).getAttribute("start_node")).intValue();
-                            
+                                    ((Integer)
+                                                    edgeFile.getRowFromId("id", rightEdge)
+                                                            .getAttribute("start_node"))
+                                            .intValue();
+
                             if (leftEdgeStartNode == endNode) {
                                 isLeft = true;
                                 prevNodeId = startNode;
@@ -167,13 +169,11 @@ public class AreaGeometryFactory extends VPFGeometryFactory
                                 prevNodeId = endNode;
                             } else {
                                 // Something really bad happened because we should never get here
-                                throw new SQLException(
-                                    "This edge is not part of this face.");
+                                throw new SQLException("This edge is not part of this face.");
                             }
                         } else {
                             // Something really bad happened because we should never get here
-                            throw new SQLException(
-                                "This edge is not part of this face.");
+                            throw new SQLException("This edge is not part of this face.");
                         }
                     } else if (faceId == rightFace) {
                         isLeft = false;
@@ -182,44 +182,45 @@ public class AreaGeometryFactory extends VPFGeometryFactory
                         isLeft = true;
                         prevNodeId = startNode;
                     } else {
-                        throw new SQLException(
-                            "This edge is not part of this face.");
+                        throw new SQLException("This edge is not part of this face.");
                     }
 
                     // Get the geometry of the edge and add it to our line geometry
-                    LineString edgeGeometry = (LineString) edgeRow.getAttribute(
-                                                                 "coordinates");
-                    
-                    if ( addPoints )
-                    {
+                    LineString edgeGeometry = (LineString) edgeRow.getAttribute("coordinates");
+
+                    if (addPoints) {
                         if (isLeft) {
                             // We must take the coordinate values backwards
-                            for (int inx = edgeGeometry.getNumPoints() - 1;
-                                 inx >= 0; inx--) {
-                                coordinate = edgeGeometry.getCoordinateSequence().getCoordinate(inx);
+                            for (int inx = edgeGeometry.getNumPoints() - 1; inx >= 0; inx--) {
+                                coordinate =
+                                        edgeGeometry.getCoordinateSequence().getCoordinate(inx);
 
                                 if ((previousCoordinate == null)
-                                    || (!coordinate.equals3D(previousCoordinate))) {
+                                        || (!coordinate.equals3D(previousCoordinate))) {
                                     coordinates.add(coordinate);
                                     previousCoordinate = coordinate;
                                 }
                             }
                         } else {
                             for (int inx = 0; inx < edgeGeometry.getNumPoints(); inx++) {
-                                coordinate = edgeGeometry.getCoordinateSequence().getCoordinate(inx);
+                                coordinate =
+                                        edgeGeometry.getCoordinateSequence().getCoordinate(inx);
 
                                 if ((previousCoordinate == null)
-                                    || (!coordinate.equals3D(previousCoordinate))) {
+                                        || (!coordinate.equals3D(previousCoordinate))) {
                                     coordinates.add(coordinate);
                                     previousCoordinate = coordinate;
                                 }
                             }
                         }
                     } else {
-                        coordinate = edgeGeometry.getCoordinateSequence().getCoordinate(
-                                           isLeft ? 0 : edgeGeometry.getNumPoints() - 1);
+                        coordinate =
+                                edgeGeometry
+                                        .getCoordinateSequence()
+                                        .getCoordinate(
+                                                isLeft ? 0 : edgeGeometry.getNumPoints() - 1);
                     }
-                    
+
                     tempEdgeId = isLeft ? leftEdge : rightEdge;
 
                     if (tempEdgeId == startEdgeId) {
@@ -248,7 +249,7 @@ public class AreaGeometryFactory extends VPFGeometryFactory
                 if (outerRing == null) {
                     outerRing = ring;
                 } else {
-                    // I haven't found any data to test this yet. 
+                    // I haven't found any data to test this yet.
                     // If you do and it works, remove this comment.
                     innerRings.add(ring);
                 }

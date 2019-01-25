@@ -27,78 +27,83 @@
 package org.geotools.data.vpf.io;
 
 import junit.framework.TestCase;
-
 import org.geotools.data.vpf.ifc.DataTypesDefinition;
 
 /**
  * Test <code>RowField</code>.
- * 
+ *
  * @source $URL$
  */
 public class RowFieldTest extends TestCase implements DataTypesDefinition {
-    /**
-     * Instance of tested class.
-     */
+    /** Instance of tested class. */
     protected RowField varRowField;
 
-    /**
-     * Method for testing original source method: double getAsDouble() from tested class
-     */
+    /** Method for testing original source method: double getAsDouble() from tested class */
     public void testGetAsDouble() {
-        double[] testVals = { Double.MAX_VALUE, Double.MIN_VALUE, Double.NEGATIVE_INFINITY,
-                Double.POSITIVE_INFINITY, 0 };
+        double[] testVals = {
+            Double.MAX_VALUE,
+            Double.MIN_VALUE,
+            Double.NEGATIVE_INFINITY,
+            Double.POSITIVE_INFINITY,
+            0
+        };
         for (int i = 0; i < testVals.length; i++) {
             varRowField = new RowField(new Double(testVals[i]), DATA_LONG_FLOAT);
-            assertEquals("Test RowField for double value: " + testVals[i], testVals[i],
-                    varRowField.doubleValue(), 0);
+            assertEquals(
+                    "Test RowField for double value: " + testVals[i],
+                    testVals[i],
+                    varRowField.doubleValue(),
+                    0);
         } // end of for (int i = 0; i < testVals.length; i++)
     } // end of testGetAsDouble()
 
-    /**
-     * Method for testing original source method: float getAsFloat() from tested class
-     */
+    /** Method for testing original source method: float getAsFloat() from tested class */
     public void testGetAsFloat() {
-        float[] testVals = { Float.MAX_VALUE, Float.MIN_VALUE, Float.NEGATIVE_INFINITY,
-                Float.POSITIVE_INFINITY, 0 };
+        float[] testVals = {
+            Float.MAX_VALUE, Float.MIN_VALUE, Float.NEGATIVE_INFINITY, Float.POSITIVE_INFINITY, 0
+        };
         for (int i = 0; i < testVals.length; i++) {
             varRowField = new RowField(new Float(testVals[i]), DATA_SHORT_FLOAT);
-            assertEquals("Test RowField for float value: " + testVals[i], testVals[i],
-                    varRowField.floatValue(), 0);
+            assertEquals(
+                    "Test RowField for float value: " + testVals[i],
+                    testVals[i],
+                    varRowField.floatValue(),
+                    0);
         } // end of for (int i = 0; i < testVals.length; i++)
     } // end of testGetAsFloat()
 
-    /**
-     * Method for testing original source method: int getAsInt() from tested class
-     */
+    /** Method for testing original source method: int getAsInt() from tested class */
     public void testGetAsInt() {
-        int[] testVals = { Integer.MAX_VALUE, Integer.MIN_VALUE, 0 };
+        int[] testVals = {Integer.MAX_VALUE, Integer.MIN_VALUE, 0};
         for (int i = 0; i < testVals.length; i++) {
             varRowField = new RowField(new Integer(testVals[i]), DATA_LONG_INTEGER);
-            assertEquals("Testing RowField for integer value: " + testVals[i], testVals[i],
+            assertEquals(
+                    "Testing RowField for integer value: " + testVals[i],
+                    testVals[i],
                     varRowField.intValue());
         } // end of for (int i = 0; i < testVals.length; i++)
     } // end of testGetAsInt()
 
-    /**
-     * Method for testing original source method: long getAsLong() from tested class
-     */
+    /** Method for testing original source method: long getAsLong() from tested class */
     public void testGetAsLong() {
-        long[] testVals = { Long.MAX_VALUE, Long.MIN_VALUE, 0 };
+        long[] testVals = {Long.MAX_VALUE, Long.MIN_VALUE, 0};
         for (int i = 0; i < testVals.length; i++) {
             varRowField = new RowField(new Long(testVals[i]), DATA_LONG_INTEGER);
-            assertEquals("Testing RowField for long value: " + testVals[i], testVals[i],
+            assertEquals(
+                    "Testing RowField for long value: " + testVals[i],
+                    testVals[i],
                     varRowField.longValue());
         } // end of for (int i = 0; i < testVals.length; i++)
     } // end of testGetAsLong()
 
-    /**
-     * Method for testing original source method: short getAsShort() from tested class
-     */
+    /** Method for testing original source method: short getAsShort() from tested class */
     public void testGetAsShort() {
-        short[] testVals = { Short.MAX_VALUE, Short.MIN_VALUE, 0 };
+        short[] testVals = {Short.MAX_VALUE, Short.MIN_VALUE, 0};
         for (int i = 0; i < testVals.length; i++) {
             varRowField = new RowField(new Short(testVals[i]), DATA_SHORT_INTEGER);
-            assertEquals("Testing RowField for short value: " + testVals[i], testVals[i],
+            assertEquals(
+                    "Testing RowField for short value: " + testVals[i],
+                    testVals[i],
                     varRowField.shortValue());
         } // end of for (int i = 0; i < testVals.length; i++)
     } // end of testGetAsShort()
@@ -107,35 +112,47 @@ public class RowFieldTest extends TestCase implements DataTypesDefinition {
      * Method for testing original source method: java.lang.String getAsString() from tested class
      */
     public void testGetAsString() {
-        String[] testVals = { null, "" }; // , "\0", "\n", "                       " };
+        String[] testVals = {null, ""}; // , "\0", "\n", "                       " };
         for (int i = 0; i < testVals.length; i++) {
             varRowField = new RowField(testVals[i], DATA_TEXT);
-            assertEquals("Testing RowField for String value: " + testVals[i], testVals[i],
+            assertEquals(
+                    "Testing RowField for String value: " + testVals[i],
+                    testVals[i],
                     varRowField.toString());
         } // end of for (int i = 0; i < testVals.length; i++)
     } // end of testGetAsString()
 
-    public static final char[] TEST_TYPES = { DATA_TEXT, DATA_LEVEL1_TEXT, DATA_LEVEL2_TEXT,
-            DATA_LEVEL3_TEXT, DATA_SHORT_FLOAT, DATA_LONG_FLOAT, DATA_SHORT_INTEGER,
-            DATA_LONG_INTEGER, DATA_2_COORD_F, DATA_2_COORD_R, DATA_3_COORD_F, DATA_3_COORD_R,
-            DATA_DATE_TIME, DATA_NULL_FIELD, DATA_TRIPLET_ID, };
+    public static final char[] TEST_TYPES = {
+        DATA_TEXT,
+        DATA_LEVEL1_TEXT,
+        DATA_LEVEL2_TEXT,
+        DATA_LEVEL3_TEXT,
+        DATA_SHORT_FLOAT,
+        DATA_LONG_FLOAT,
+        DATA_SHORT_INTEGER,
+        DATA_LONG_INTEGER,
+        DATA_2_COORD_F,
+        DATA_2_COORD_R,
+        DATA_3_COORD_F,
+        DATA_3_COORD_R,
+        DATA_DATE_TIME,
+        DATA_NULL_FIELD,
+        DATA_TRIPLET_ID,
+    };
 
-    /**
-     * Method for testing original source method: char getType() from tested class
-     */
+    /** Method for testing original source method: char getType() from tested class */
     public void testGetType() {
         for (int i = 0; i < TEST_TYPES.length; i++) {
-            assertEquals("Cheking type " + TEST_TYPES[i], TEST_TYPES[i], new RowField("1",
-                    TEST_TYPES[i]).getType());
+            assertEquals(
+                    "Cheking type " + TEST_TYPES[i],
+                    TEST_TYPES[i],
+                    new RowField("1", TEST_TYPES[i]).getType());
         } // end of for (int i = 0; i < TEST_TYPES.length; i++)
     } // end of testGetType()
 
-    /**
-     * Method for testing original source method: java.lang.Object getValue() from tested class
-     */
+    /** Method for testing original source method: java.lang.Object getValue() from tested class */
     public void testGetValue() {
         String value = "1";
         assertSame("Cheking value.", value, new RowField(value, DATA_TEXT).getValue());
     } // end of testGetValue()
-
 } // end of RowFieldTest

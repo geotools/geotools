@@ -18,58 +18,33 @@ package org.geotools.data.vpf.io;
 
 import org.geotools.data.vpf.ifc.VPFHeader;
 
-
 /**
  * SpatialIndexHeader.java Created: Tue Mar 11 23:42:48 2003
  *
  * @author <a href="mailto:kobit@users.sourceforge.net">Artur Hefczyc</a>
- *
- *
- *
  * @source $URL$
  * @version $Id$
  */
 public class SpatialIndexHeader implements VPFHeader {
-    /**
-     * Variable constant <code>SPATIAL_INDEX_HEADER_LENGTH</code> keeps value
-     * of
-     */
+    /** Variable constant <code>SPATIAL_INDEX_HEADER_LENGTH</code> keeps value of */
     public static final int SPATIAL_INDEX_HEADER_LENGTH = 24;
 
-    /**
-     * Describe variable <code>numPrims</code> here.
-     *
-     */
+    /** Describe variable <code>numPrims</code> here. */
     private int numPrims = 0;
 
-    /**
-     * Describe variable <code>xmin</code> here.
-     *
-     */
+    /** Describe variable <code>xmin</code> here. */
     private float xmin = 0;
 
-    /**
-     * Describe variable <code>ymin</code> here.
-     *
-     */
+    /** Describe variable <code>ymin</code> here. */
     private float ymin = 0;
 
-    /**
-     * Describe variable <code>xmax</code> here.
-     *
-     */
+    /** Describe variable <code>xmax</code> here. */
     private float xmax = 0;
 
-    /**
-     * Describe variable <code>ymax</code> here.
-     *
-     */
+    /** Describe variable <code>ymax</code> here. */
     private float ymax = 0;
 
-    /**
-     * Describe variable <code>numNodes</code> here.
-     *
-     */
+    /** Describe variable <code>numNodes</code> here. */
     private int numNodes = 0;
 
     /**
@@ -82,8 +57,8 @@ public class SpatialIndexHeader implements VPFHeader {
      * @param ymax a <code>float</code> value
      * @param numNodes an <code>int</code> value
      */
-    public SpatialIndexHeader(int numPrims, float xmin, float ymin, float xmax, 
-                              float ymax, int numNodes) {
+    public SpatialIndexHeader(
+            int numPrims, float xmin, float ymin, float xmax, float ymax, int numNodes) {
         this.numPrims = numPrims;
         this.xmin = xmin;
         this.ymin = ymin;
@@ -103,9 +78,9 @@ public class SpatialIndexHeader implements VPFHeader {
     }
 
     /**
-     * Method <code><code>getRecordSize</code></code> is used to return size in
-     * bytes of records stored in this table. If table keeps variable length
-     * records <code>-1</code> should be returned.
+     * Method <code><code>getRecordSize</code></code> is used to return size in bytes of records
+     * stored in this table. If table keeps variable length records <code>-1</code> should be
+     * returned.
      *
      * @return an <code><code>int</code></code> value
      */
@@ -167,7 +142,7 @@ public class SpatialIndexHeader implements VPFHeader {
     //    */
     //   public void setYmin(float argYmin)
     //   {
-    //this.ymin = argYmin;
+    // this.ymin = argYmin;
     //   }
 
     /**
@@ -186,7 +161,7 @@ public class SpatialIndexHeader implements VPFHeader {
     //    */
     //   public void setXmax(float argXmax)
     //   {
-    //this.xmax = argXmax;
+    // this.xmax = argXmax;
     //   }
 
     /**
@@ -205,7 +180,7 @@ public class SpatialIndexHeader implements VPFHeader {
     //    */
     //   public void setYmax(float argYmax)
     //   {
-    //this.ymax = argYmax;
+    // this.ymax = argYmax;
     //   }
 
     /**
@@ -224,6 +199,6 @@ public class SpatialIndexHeader implements VPFHeader {
     //    */
     //   public void setNumNodes(int argNumNodes)
     //   {
-    //this.numNodes = argNumNodes;
+    // this.numNodes = argNumNodes;
     //   }
 }

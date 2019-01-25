@@ -17,13 +17,12 @@
 package org.geotools.data.vpf.util;
 
 import java.util.HashMap;
-
 import org.geotools.data.vpf.io.RowField;
 import org.geotools.data.vpf.io.TripletId;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.GeometryFactory;
 import org.opengis.geometry.DirectPosition;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.GeometryFactory;
 /*
  * EdgeData.java
  *
@@ -32,11 +31,7 @@ import com.vividsolutions.jts.geom.GeometryFactory;
  * @author  <a href="mailto:knuterik@onemap.org">Knut-Erik Johnsen</a>, Project OneMap
  * @source $URL$
  */
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class EdgeData extends HashMap {
     public Object put(Object key, Object value) {
         if (key instanceof String) {
@@ -45,40 +40,40 @@ public class EdgeData extends HashMap {
 
             if (key_s.equals("coordinates")) {
                 Coordinate[] c = null;
-                if ( value instanceof RowField ) {
-                    value = ((RowField)value).getValue();
-                    if ( value instanceof DirectPosition[] ) {
+                if (value instanceof RowField) {
+                    value = ((RowField) value).getValue();
+                    if (value instanceof DirectPosition[]) {
                         DirectPosition[] coords = (DirectPosition[]) value;
-                        c = new Coordinate[ coords.length ];
-                        double[] c_pair = null;  
-                        for( int i = 0; i < coords.length; i++ ) {
+                        c = new Coordinate[coords.length];
+                        double[] c_pair = null;
+                        for (int i = 0; i < coords.length; i++) {
                             c_pair = coords[i].getCoordinate();
-                            if ( coords[i].getDimension() == 2 ) {
-                                c[i] = new Coordinate( c_pair[0], c_pair[1] );
-                            } else if (coords[i].getDimension() == 3 ) {
-                                c[i] = new Coordinate( c_pair[0], c_pair[1], c_pair[2] );
-                            }                            
+                            if (coords[i].getDimension() == 2) {
+                                c[i] = new Coordinate(c_pair[0], c_pair[1]);
+                            } else if (coords[i].getDimension() == 3) {
+                                c[i] = new Coordinate(c_pair[0], c_pair[1], c_pair[2]);
+                            }
                         }
-                    }                        
+                    }
                 }
-                
+
                 return super.put(key_s, geofactory.createLineString(c));
-            } else if (key_s.equals("right_face") || 
-                           key_s.equals("left_face") || 
-                           key_s.equals("right_edge") || 
-                           key_s.equals("left_edge")) {
+            } else if (key_s.equals("right_face")
+                    || key_s.equals("left_face")
+                    || key_s.equals("right_edge")
+                    || key_s.equals("left_edge")) {
                 if (value != null) {
                     Object tmp = ((RowField) value).getValue();
 
                     if (tmp instanceof TripletId) {
-                        return super.put(key_s, (TripletId) tmp );
-                    } else if ( tmp instanceof Integer ) {
-                        return super.put(key_s, ((Integer) tmp) );
+                        return super.put(key_s, (TripletId) tmp);
+                    } else if (tmp instanceof Integer) {
+                        return super.put(key_s, ((Integer) tmp));
                     } else {
-                        System.out.println( "DYNGE I TRIPLETGENERERING!!!" );
+                        System.out.println("DYNGE I TRIPLETGENERERING!!!");
                     }
                 } else {
-                    return super.put(key_s, null );
+                    return super.put(key_s, null);
                 }
             }
         }

@@ -22,64 +22,100 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
-
-import org.geotools.data.AbstractDataStore;
 import org.geotools.data.FeatureReader;
+import org.geotools.data.Query;
+import org.geotools.data.store.ContentDataStore;
+import org.geotools.data.store.ContentEntry;
+import org.geotools.data.store.ContentFeatureSource;
+import org.geotools.feature.NameImpl;
 import org.geotools.feature.SchemaException;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
-
+import org.opengis.feature.type.Name;
 
 /**
- * A data store for VPF files. Any file can be retrieved from here.
- * If you want joins (for example features with their geometries), 
- * you will have to look elsewhere.
- * Hopefully some one will take advantage of this class to provide 
- * the full functionality.
+ * A data store for VPF files. Any file can be retrieved from here. If you want joins (for example
+ * features with their geometries), you will have to look elsewhere. Hopefully some one will take
+ * advantage of this class to provide the full functionality.
+ *
  * @author <a href="mailto:jeff@ionicenterprise.com">Jeff Yutzler</a>
- *
- *
- *
  * @source $URL$
  */
-public class VPFFileStore extends AbstractDataStore {
-    /**
-     * A collection of files which are available
-     * Don't ask me how/when to close them!
-     */
-    private Map<String,SimpleFeatureType> files;
+public class VPFFileStore extends ContentDataStore {
+    /** A collection of files which are available Don't ask me how/when to close them! */
+    private Map<String, SimpleFeatureType> files;
 
-    /**
-     * Default constructor. Nothing special
-     *
-     */
-    public VPFFileStore() {
-        files = new HashMap<String,SimpleFeatureType>();
+    private String vpfFilePath;
+
+    /** Default constructor. Nothing special */
+    public VPFFileStore(String vpfFilePath) throws IOException {
+        files = new HashMap<String, SimpleFeatureType>();
+        /*
+        Iterator<String> iter = pathNames.iterator();
+        while(iter.hasNext()) {
+            String pathName = iter.next();
+
+            this.getSchema(pathName);
+        }
+        */
+
+        this.vpfFilePath = vpfFilePath;
+        this.getTypeSchema(vpfFilePath);
     }
 
     /* (non-Javadoc)
-     * @see org.geotools.data.AbstractDataStore#getTypeNames()
+     * @see org.geotools.data.ContentDataStore#getNames()
      */
-    public String[] getTypeNames() {
-        String[] result = new String[files.size()];
-        int counter = 0;
+    public List<Name> getNames() {
+        // String[] result = new String[files.size()];
+        ArrayList<Name> result = new ArrayList<Name>();
+        // int counter = 0;
         SimpleFeatureType currentFile;
         Iterator<SimpleFeatureType> iter = files.values().iterator();
 
         while (iter.hasNext()) {
             currentFile = iter.next();
-            result[counter] = currentFile.getTypeName();
+            // result[counter] = currentFile.getTypeName();
+            result.add(new NameImpl(currentFile.getTypeName()));
         }
 
         return result;
     }
 
-    /* (non-Javadoc)
-     * @see org.geotools.data.AbstractDataStore#getSchema(java.lang.String)
-     */
-    public SimpleFeatureType getSchema(String pathName) throws IOException {
+    public SimpleFeatureType getFeatureType(Query query) throws IOException {
+        if (query.equals(Query.ALL)) {
+            String typeNames[] = this.getTypeNames();
+            if (typeNames.length > 0) {
+                return this.getTypeSchema(typeNames[0]);
+            } else return null;
+        } else {
+            String typeName = query.getTypeName();
+            return this.getTypeSchema(typeName);
+        }
+    }
+
+    @Override
+    protected List<Name> createTypeNames() throws IOException {
+        // return Collections.singletonList(getTypeName());
+        return this.getNames();
+    }
+
+    @Override
+    protected ContentFeatureSource createFeatureSource(ContentEntry entry) throws IOException {
+        return new VPFFileFeatureSource(entry, Query.ALL);
+    }
+
+    @Override
+    public ContentFeatureSource getFeatureSource(String typeName) throws IOException {
+        Query query = new Query(typeName);
+        ContentEntry entry = this.entry(new NameImpl(typeName));
+        return new VPFFileFeatureSource(entry, query);
+    }
+
+    public SimpleFeatureType getTypeSchema(String pathName) throws IOException {
         SimpleFeatureType result = null;
 
         if (files.containsKey(pathName)) {
@@ -89,8 +125,8 @@ public class VPFFileStore extends AbstractDataStore {
                 VPFFile file = findFile(pathName);
                 result = file.getFeatureType();
             } catch (SchemaException exc) {
-                throw new IOException("Schema error in path: " + pathName
-                    + "\n" + exc.getMessage());
+                throw new IOException(
+                        "Schema error in path: " + pathName + "\n" + exc.getMessage());
             }
 
             files.put(pathName, result);
@@ -99,23 +135,28 @@ public class VPFFileStore extends AbstractDataStore {
         return result;
     }
 
+    public SimpleFeatureType getDefaultSchema() throws IOException {
+        return this.getSchema(this.vpfFilePath);
+    }
+
+    public VPFFile getDefaultFile() throws IOException {
+        return (VPFFile) getDefaultSchema();
+    }
+
     // How on earth does one get from the query to this method?
     /* (non-Javadoc)
-     * @see org.geotools.data.AbstractDataStore#getFeatureReader(java.lang.String)
+     * @see org.geotools.data.ContentDataStore#getFeatureReader(java.lang.String)
      */
-    protected  FeatureReader<SimpleFeatureType, SimpleFeature> getFeatureReader(String pathName)
-        throws IOException {
+    protected FeatureReader<SimpleFeatureType, SimpleFeature> getFeatureReader(String pathName)
+            throws IOException {
         return new VPFFileFeatureReader((VPFFile) getSchema(pathName));
     }
-    /**
-     * Closes all of the opoen files and removes them from the collection of
-     * open files.
-     *
-     */
-    public void reset(){
+
+    /** Closes all of the opoen files and removes them from the collection of open files. */
+    public void reset() {
         Iterator<SimpleFeatureType> iter = files.values().iterator();
         VPFFile file = null;
-        while(iter.hasNext()){
+        while (iter.hasNext()) {
             try {
                 SimpleFeatureType schema = iter.next();
                 file = (VPFFile) schema.getUserData().get(VPFFile.class);
@@ -129,20 +170,16 @@ public class VPFFileStore extends AbstractDataStore {
     }
 
     /**
-     * This does basically a case independent file search
-     * through the pathName to try to find the file.
-     * This is necessary due to many problems seen with VPF
-     * data disks where the file names specified in the VPF files
-     * do not match the case of the files on disk.  
-     **/
-    private VPFFile findFile(String pathName)
-        throws IOException, SchemaException {
+     * This does basically a case independent file search through the pathName to try to find the
+     * file. This is necessary due to many problems seen with VPF data disks where the file names
+     * specified in the VPF files do not match the case of the files on disk.
+     */
+    private VPFFile findFile(String pathName) throws IOException, SchemaException {
 
-        if (new File(pathName).exists())
-            return new VPFFile(pathName);
+        if (new File(pathName).exists()) return new VPFFile(pathName);
 
         ArrayList<String> matches = new ArrayList<String>();
-        matches.add("");  // Need to start with something in the list
+        matches.add(""); // Need to start with something in the list
         StringTokenizer st = new StringTokenizer(pathName, File.separator);
         while (st.hasMoreTokens() && !matches.isEmpty()) {
             String curr = st.nextToken();
@@ -151,26 +188,23 @@ public class VPFFileStore extends AbstractDataStore {
             boolean useUpper = !curr.equals(currUpper);
             boolean useLower = !curr.equals(currLower);
             ArrayList<String> newMatches = new ArrayList<String>();
-            
-            for(Iterator<String> it = matches.iterator(); it.hasNext(); ) {
-                String match = (String)it.next();
+
+            for (Iterator<String> it = matches.iterator(); it.hasNext(); ) {
+                String match = (String) it.next();
                 String tmp = match + File.separator + curr;
 
-                if (new File(tmp).exists())
-                    newMatches.add(tmp);
+                if (new File(tmp).exists()) newMatches.add(tmp);
                 else {
                     // For performance reasons only do the upper and lower case checks
-                    // if the "as-is" check fails.  
+                    // if the "as-is" check fails.
                     if (useUpper) {
                         tmp = match + File.separator + currUpper;
-                        if (new File(tmp).exists())
-                            newMatches.add(tmp);
+                        if (new File(tmp).exists()) newMatches.add(tmp);
                     }
-                
+
                     if (useLower) {
                         tmp = match + File.separator + currLower;
-                        if (new File(tmp).exists())
-                            newMatches.add(tmp);
+                        if (new File(tmp).exists()) newMatches.add(tmp);
                     }
                 }
             }
@@ -180,7 +214,7 @@ public class VPFFileStore extends AbstractDataStore {
         if (matches.isEmpty()) {
             throw new FileNotFoundException("Could not find file: " + pathName);
         }
-        
-        return new VPFFile((String)matches.get(0));
+
+        return new VPFFile((String) matches.get(0));
     }
 }

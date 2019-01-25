@@ -16,29 +16,25 @@
  */
 package org.geotools.data.vpf;
 
-import java.util.Map;
-
 import static org.geotools.data.vpf.ifc.DataTypesDefinition.*;
+
 import org.geotools.data.vpf.io.TripletId;
 import org.geotools.data.vpf.util.DataUtils;
 import org.geotools.feature.AttributeTypeBuilder;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.GeometryDescriptor;
-import org.opengis.feature.type.Name;
-import org.opengis.feature.type.PropertyType;
-
-import com.vividsolutions.jts.geom.Geometry;
 
 /**
  * A column in a VPF File.
- * 
+ *
  * @author <a href="mailto:jeff@ionicenterprise.com">Jeff Yutzler</a>
- * 
  * @source $URL$
  */
 public class VPFColumn {
     /**
-     * If the value is a short integer, that often means it has an accompanying value in a string lookup table.
+     * If the value is a short integer, that often means it has an accompanying value in a string
+     * lookup table.
      */
     private boolean attemptLookup = false;
 
@@ -61,10 +57,10 @@ public class VPFColumn {
 
     /** Describe variable <code>valDescTableName</code> here. */
     private final String valDescTableName;
-   
+
     /**
      * Constructor with all of the elements of a VPF column
-     * 
+     *
      * @param name
      * @param type
      * @param elementsNumber
@@ -74,8 +70,15 @@ public class VPFColumn {
      * @param thematicIdx
      * @param narrTable
      */
-    public VPFColumn(String name, char type, int elementsNumber, char keyType, String colDesc,
-            String valDescTableName, String thematicIdx, String narrTable) {
+    public VPFColumn(
+            String name,
+            char type,
+            int elementsNumber,
+            char keyType,
+            String colDesc,
+            String valDescTableName,
+            String thematicIdx,
+            String narrTable) {
         this.name = name;
         this.typeChar = type;
         this.elementsNumber = elementsNumber;
@@ -84,8 +87,13 @@ public class VPFColumn {
         this.valDescTableName = valDescTableName;
         this.thematicIdx = thematicIdx;
         this.narrTable = narrTable;
-        descriptor = new AttributeTypeBuilder().length(getColumnSize()).binding(getColumnClass())
-                .nillable(true).buildDescriptor(name);
+        // System.out.println("buildDescriptor: " + name);
+        descriptor =
+                new AttributeTypeBuilder()
+                        .length(getColumnSize())
+                        .binding(getColumnClass())
+                        .nillable(true)
+                        .buildDescriptor(name);
         descriptor.getUserData().put("column", this);
     }
 
@@ -99,55 +107,55 @@ public class VPFColumn {
 
     /**
      * Retrieves the class for the column, based on a char value.
-     * 
+     *
      * @return the class
      */
     public Class<?> getColumnClass() {
         Class<?> columnClass;
 
         switch (typeChar) {
-        case DATA_LONG_INTEGER:
-            columnClass = Integer.class;
+            case DATA_LONG_INTEGER:
+                columnClass = Integer.class;
 
-            break;
+                break;
 
-        case DATA_SHORT_FLOAT:
-            columnClass = Float.class;
+            case DATA_SHORT_FLOAT:
+                columnClass = Float.class;
 
-            break;
+                break;
 
-        case DATA_LONG_FLOAT:
-            columnClass = Double.class;
+            case DATA_LONG_FLOAT:
+                columnClass = Double.class;
 
-            break;
+                break;
 
-        case DATA_2_COORD_F:
-        case DATA_2_COORD_R:
-        case DATA_3_COORD_F:
-        case DATA_3_COORD_R:
-            columnClass = Geometry.class;
+            case DATA_2_COORD_F:
+            case DATA_2_COORD_R:
+            case DATA_3_COORD_F:
+            case DATA_3_COORD_R:
+                columnClass = Geometry.class;
 
-            break;
+                break;
 
-        case DATA_TRIPLET_ID:
-            columnClass = TripletId.class;
+            case DATA_TRIPLET_ID:
+                columnClass = TripletId.class;
 
-            break;
+                break;
 
-        // Short integers are usually coded values
-        case DATA_SHORT_INTEGER:
-            attemptLookup = true;
-            // Fall through
-        case DATA_TEXT:
-        case DATA_NULL_FIELD:
-        case DATA_LEVEL1_TEXT:
-        case DATA_LEVEL2_TEXT:
-        case DATA_LEVEL3_TEXT:
+                // Short integers are usually coded values
+            case DATA_SHORT_INTEGER:
+                attemptLookup = true;
+                // Fall through
+            case DATA_TEXT:
+            case DATA_NULL_FIELD:
+            case DATA_LEVEL1_TEXT:
+            case DATA_LEVEL2_TEXT:
+            case DATA_LEVEL3_TEXT:
 
-        default:
-            columnClass = String.class;
+            default:
+                columnClass = String.class;
 
-            break;
+                break;
         }
 
         return columnClass;
@@ -155,7 +163,7 @@ public class VPFColumn {
 
     /**
      * Gets the size of the column in bytes
-     * 
+     *
      * @return the size
      */
     private int getColumnSize() {
@@ -164,7 +172,7 @@ public class VPFColumn {
 
     /**
      * Gets the value of narrTable
-     * 
+     *
      * @return the value of narrTable
      */
     public String getNarrTable() {
@@ -173,7 +181,7 @@ public class VPFColumn {
 
     /**
      * Gets the value of thematicIdx
-     * 
+     *
      * @return the value of thematicIdx
      */
     public String getThematicIdx() {
@@ -182,7 +190,7 @@ public class VPFColumn {
 
     /**
      * Gets the value of valDescTableName
-     * 
+     *
      * @return the value of valDescTableName
      */
     public String getValDescTableName() {
@@ -191,25 +199,25 @@ public class VPFColumn {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.geotools.feature.AttributeType#isGeometry()
      */
     public boolean isGeometry() {
         switch (typeChar) {
-        case DATA_2_COORD_F:
-        case DATA_2_COORD_R:
-        case DATA_3_COORD_F:
-        case DATA_3_COORD_R:
-            return true;
+            case DATA_2_COORD_F:
+            case DATA_2_COORD_R:
+            case DATA_3_COORD_F:
+            case DATA_3_COORD_R:
+                return true;
 
-        default:
-            return false;
+            default:
+                return false;
         }
     }
 
     /**
      * Returns the typeChar field
-     * 
+     *
      * @return Returns the typeChar.
      */
     public char getTypeChar() {
@@ -218,7 +226,7 @@ public class VPFColumn {
 
     /**
      * Returns the elementsNumber field
-     * 
+     *
      * @return Returns the elementsNumber.
      */
     public int getElementsNumber() {
@@ -227,7 +235,7 @@ public class VPFColumn {
 
     /**
      * Identifies and returns the GeometryAttributeType, or null if none exists.
-     * 
+     *
      * @return The <code>GeometryAttributeType</code> value
      */
     public GeometryDescriptor getGeometryAttributeType() {
@@ -240,9 +248,7 @@ public class VPFColumn {
         return result;
     }
 
-    /**
-     * @return Returns the attemptLookup.
-     */
+    /** @return Returns the attemptLookup. */
     public boolean isAttemptLookup() {
         return attemptLookup;
     }

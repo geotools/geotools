@@ -462,12 +462,12 @@ public class StyleGenerator {
                         "Subfilters or subExpressions in incorrect order");
             }
 
-            if (filter1.getExpression1().toString() != newValue[0]) {
+            if (!filter1.getExpression1().toString().equals(newValue[0])) {
                 // lower bound value has changed, update
                 filter1 = ff.greaterOrEqual(filter1.getExpression1(), ff.literal(newValue[0]));
             }
 
-            if (filter2.getExpression2().toString() != newValue[1]) {
+            if (!filter2.getExpression2().toString().equals(newValue[1])) {
                 // upper bound value has changed, update
                 if (filter2 instanceof PropertyIsLessThan) {
                     filter2 = ff.less(filter1.getExpression1(), ff.literal(newValue[1]));

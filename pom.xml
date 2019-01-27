@@ -125,6 +125,7 @@
     <errorProne.version>2.3.2</errorProne.version>
     <javac.version>9+181-r4173-1</javac.version>
     <pmd.skip>false</pmd.skip>
+    <spotbugs.skip>false</spotbugs.skip>
   </properties>
 
   <!-- Profiles set on the command-line overwrite default properties. -->
@@ -322,6 +323,35 @@
                 </path>
               </annotationProcessorPaths>
             </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>spotbugs</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>com.github.spotbugs</groupId>
+            <artifactId>spotbugs-maven-plugin</artifactId>
+            <version>3.1.10</version>
+            <configuration>
+              <effort>More</effort>
+              <threshold>High</threshold>
+              <xmlOutput>true</xmlOutput>
+              <maxRank>10</maxRank>
+              <skip>${spotbugs.skip}</skip>
+              <excludeFilterFile>${geotoolsBaseDir}/spotbugs-exclude.xml</excludeFilterFile>
+              <jvmArgs>-XX:+TieredCompilation -XX:TieredStopAtLevel=1</jvmArgs>
+            </configuration>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>check</goal>
+                </goals>
+              </execution>
+            </executions>
           </plugin>
         </plugins>
       </build>
@@ -1477,7 +1507,7 @@
       <!-- The version number is specified above. -->
       <scope>test</scope>
     </dependency>
-  </dependencies>
+   </dependencies>
 
 
   <!-- =========================================================== -->
@@ -1958,7 +1988,7 @@
                     </goals>
                 </execution>
             </executions>
-        </plugin>
+      </plugin>
     </plugins>
   </build>
 

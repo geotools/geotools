@@ -32,6 +32,7 @@ import org.geotools.geometry.iso.primitive.RingImpl;
 import org.geotools.geometry.iso.primitive.SurfaceBoundaryImpl;
 import org.geotools.geometry.iso.primitive.SurfaceImpl;
 import org.geotools.geometry.iso.util.AssertionFailedException;
+import org.geotools.util.SuppressFBWarnings;
 import org.opengis.geometry.Geometry;
 import org.opengis.geometry.PositionFactory;
 import org.opengis.geometry.coordinate.LineString;
@@ -396,11 +397,13 @@ public class WKTReader {
      *     holes do not form closed linestrings, or if an unexpected token was encountered.
      * @throws IOException if an I/O error occurs
      */
+    @SuppressFBWarnings("NP_NULL_PARAM_DEREF_NONVIRTUAL")
     private Surface readPolygonText() throws IOException, ParseException {
 
         String nextToken = getNextEmptyOrOpener();
 
         if (nextToken.equals(EMPTY)) {
+            // Suppressing for now, but this is actually guaranteed to NPE
             return new SurfaceImpl(
                     (SurfaceBoundary)
                             null); // this.primitiveFactory.createSurface((SurfaceBoundary) null);

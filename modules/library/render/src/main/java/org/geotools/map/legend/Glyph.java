@@ -415,14 +415,10 @@ public class Glyph {
         Graphics2D gc = (Graphics2D) bi.getGraphics();
         gc.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-        Color c2 = c;
-        if (c == null) c2 = Color.GRAY;
-        else c2 = c;
-
-        final Color color = c2;
+        final Color color = c == null ? Color.GRAY : c;
 
         int saturation = color.getRed() + color.getGreen() + color.getBlue();
-        final Color contrast = saturation < 384 ? c.brighter() : c.darker();
+        final Color contrast = saturation < 384 ? color.brighter() : color.darker();
 
         gc.setColor(color);
         gc.fillRoundRect(0, 0, 14, 14, 2, 2);

@@ -26,6 +26,7 @@ import java.util.logging.Logger;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
 import org.geotools.util.Classes;
+import org.geotools.util.SuppressFBWarnings;
 import org.geotools.util.XArray;
 
 /**
@@ -390,9 +391,9 @@ public final class Logging {
      *
      * @see org.geotools.util.factory.GeoTools#init
      */
+    @SuppressFBWarnings("LG_LOST_LOGGER_DUE_TO_WEAK_REFERENCE")
     public void forceMonolineConsoleOutput(final Level level) {
-        final Logger logger =
-                Logger.getLogger(name); // Really Java logging, not the redirected one.
+        Logger logger = Logger.getLogger(name); // Really Java logging, not the redirected one.
         synchronized (EMPTY) {
             final MonolineFormatter f = MonolineFormatter.configureConsoleHandler(logger, level);
             if (f.getSourceFormat() == null) {

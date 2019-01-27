@@ -84,10 +84,7 @@ public class DefaultConcatenatedOperation extends AbstractCoordinateOperation
      */
     public DefaultConcatenatedOperation(
             final Map<String, ?> properties, final CoordinateOperation[] operations) {
-        this(
-                properties,
-                new ArrayList<SingleOperation>(operations != null ? operations.length : 4),
-                operations);
+        this(properties, new ArrayList<>(operations.length), operations);
     }
 
     /**
@@ -105,11 +102,7 @@ public class DefaultConcatenatedOperation extends AbstractCoordinateOperation
             final CoordinateOperation[] operations,
             final MathTransformFactory factory)
             throws FactoryException {
-        this(
-                properties,
-                new ArrayList<SingleOperation>(operations != null ? operations.length : 4),
-                operations,
-                factory);
+        this(properties, new ArrayList<>(operations.length), operations, factory);
     }
 
     /**

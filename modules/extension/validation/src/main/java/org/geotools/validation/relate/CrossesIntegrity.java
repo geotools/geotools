@@ -160,7 +160,7 @@ public class CrossesIntegrity extends RelationIntegrity {
                 }
             }
         } finally {
-            fr1.close();
+            if (fr1 != null) fr1.close();
             if (fr2 != null) fr2.close();
         }
 
@@ -275,7 +275,7 @@ public class CrossesIntegrity extends RelationIntegrity {
                 usedIDs.add(f1.getID());
             }
         } finally {
-            fr1.close();
+            if (fr1 != null) fr1.close();
             if (fr2 != null) fr2.close();
         }
 

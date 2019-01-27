@@ -96,7 +96,9 @@ public final class GeoTiffException extends IOException {
      * @return Value of property geoKeys.
      */
     public GeoKeyEntry[] getGeoKeys() {
-        return metadata != null ? (GeoKeyEntry[]) metadata.getGeoKeys().toArray() : null;
+        return metadata != null
+                ? metadata.getGeoKeys().toArray(new GeoKeyEntry[metadata.getGeoKeys().size()])
+                : null;
     }
 
     public String getMessage() {

@@ -528,7 +528,7 @@ public class TypeBuilder {
         if (type instanceof ComplexType) {
             ComplexType cType = (ComplexType) type;
 
-            properties = null;
+            properties = newCollection(cType.getDescriptors());
             properties.addAll(cType.getDescriptors());
         }
         if (type instanceof FeatureType) {

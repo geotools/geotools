@@ -76,7 +76,7 @@ public class RingImpl extends CompositeCurveImpl implements Ring {
         int count = coords.length;
         // System.err.println("RingImpl.isValid -- coord count " + count);
         if (count > 2) {
-            if (!coords[0].equals(coords)) {
+            if (!coords[0].equals(coords[count - 1])) {
                 // System.err.println("  Adding closure coord");
                 // Close the set of coordinates for the validation test
                 // if it isn't already closed

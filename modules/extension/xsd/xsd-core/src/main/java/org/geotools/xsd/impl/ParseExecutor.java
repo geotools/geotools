@@ -127,7 +127,6 @@ public class ParseExecutor implements Visitor {
                                     || ((XSDComplexTypeDefinition) type).isMixed())) {
                         result = value;
                     } else if ((value != null) && value instanceof String) {
-                        value = ((String) value);
                         if ("".equals(((String) value).trim())) {
                             result = null;
                         } else {

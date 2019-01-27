@@ -666,11 +666,6 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
                 }
                 granuleCatalog = catalog;
 
-                if (granuleCatalog == null) {
-                    throw new DataSourceException(
-                            "Unable to create index for this URL " + sourceURL);
-                }
-
                 // Creating a RasterManager for each mosaic configuration found on disk
                 for (MosaicConfigurationBean bean : beans) {
                     // Add a RasterManager on top of this Mosaic configuration bean and initialize

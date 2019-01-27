@@ -11,6 +11,7 @@ import org.geotools.data.simple.SimpleFeatureStore;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.geometry.jts.GeometryBuilder;
+import org.geotools.util.SuppressFBWarnings;
 import org.geotools.util.factory.GeoTools;
 import org.opengis.feature.Feature;
 import org.opengis.feature.FeatureVisitor;
@@ -21,6 +22,7 @@ import org.opengis.filter.FilterFactory;
 import org.opengis.filter.identity.FeatureId;
 
 @SuppressWarnings("unused")
+@SuppressFBWarnings("UWF_NULL_FIELD")
 public class SimpleFeatureStoreExamples {
     DataStore dataStore = null;
 

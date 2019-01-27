@@ -47,7 +47,6 @@ import javax.media.jai.ParameterBlockJAI;
 import javax.media.jai.operator.MosaicDescriptor;
 import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.grid.GridCoverage2D;
-import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
@@ -87,8 +86,6 @@ public class GeoPackageReader extends AbstractGridCoverage2DReader {
     protected static final int DEFAULT_TILE_SIZE = 256;
 
     protected static final int ZOOM_LEVEL_BASE = 2;
-
-    protected GridCoverageFactory coverageFactory;
 
     protected File sourceFile;
 

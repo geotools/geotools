@@ -313,7 +313,7 @@ class ShapefileFeatureSource extends ContentFeatureSource {
 
         // grab the target bbox, if any
         Envelope bbox = new ReferencedEnvelope();
-        if (q.getFilter() != null) {
+        if (q != null && q.getFilter() != null) {
             bbox = (Envelope) q.getFilter().accept(ExtractBoundsFilterVisitor.BOUNDS_VISITOR, bbox);
             if (bbox == null) {
                 bbox = new ReferencedEnvelope();

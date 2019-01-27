@@ -118,7 +118,7 @@ public class OGCSchema implements Schema {
         return complexTypes;
     }
     /** TODO comment here */
-    private static Element[] elements = null;
+    private static volatile Element[] elements = null;
 
     public static final int GET_CAPABILITIES = 0;
     public static final int GET_MAP = 1;
@@ -126,23 +126,28 @@ public class OGCSchema implements Schema {
 
     public Element[] getElements() {
         if (elements == null) {
-            elements = new Element[3];
-            elements[GET_CAPABILITIES] =
-                    new ogcElement(
-                            "GetCapabilities",
-                            ogcComplexTypes._GetCapabilities.getInstance(),
-                            null,
-                            1,
-                            1);
-            elements[GET_MAP] =
-                    new ogcElement("GetMap", ogcComplexTypes._GetMap.getInstance(), null, 1, 1);
-            elements[GET_FEATURE_INFO] =
-                    new ogcElement(
-                            "ogc:GetFeatureInfo",
-                            ogcComplexTypes._GetFeatureInfo.getInstance(),
-                            null,
-                            1,
-                            1);
+            synchronized (OGCSchema.class) {
+                if (elements == null) {
+                    elements = new Element[3];
+                    elements[GET_CAPABILITIES] =
+                            new ogcElement(
+                                    "GetCapabilities",
+                                    ogcComplexTypes._GetCapabilities.getInstance(),
+                                    null,
+                                    1,
+                                    1);
+                    elements[GET_MAP] =
+                            new ogcElement(
+                                    "GetMap", ogcComplexTypes._GetMap.getInstance(), null, 1, 1);
+                    elements[GET_FEATURE_INFO] =
+                            new ogcElement(
+                                    "ogc:GetFeatureInfo",
+                                    ogcComplexTypes._GetFeatureInfo.getInstance(),
+                                    null,
+                                    1,
+                                    1);
+                }
+            }
         }
         return elements;
     }

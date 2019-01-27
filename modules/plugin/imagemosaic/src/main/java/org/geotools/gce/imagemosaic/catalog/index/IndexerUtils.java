@@ -612,8 +612,7 @@ public class IndexerUtils {
         Coverage coverage = Utils.OBJECT_FACTORY.createIndexerCoveragesCoverage();
         coverageList.add(coverage);
 
-        indexer.setParameters(params);
-        List<Parameter> parameters = params.getParameter();
+        List<Parameter> parameters = indexer.getParameters().getParameter();
 
         // name
         if (props.containsKey(Utils.Prop.NAME)) {

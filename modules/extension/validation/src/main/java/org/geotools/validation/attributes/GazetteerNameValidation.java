@@ -149,6 +149,7 @@ public class GazetteerNameValidation extends DefaultFeatureValidation {
 
         if (elem == null) {
             results.error(feature, "Invalid DOM tree returned by gazetteer.");
+            return false;
         }
 
         // this number is the number of instances found.

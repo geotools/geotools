@@ -206,7 +206,7 @@ public class Diff {
     }
 
     protected void addToSpatialIndex(SimpleFeature f) {
-        if (f.getDefaultGeometry() != null) {
+        if (f != null && f.getDefaultGeometry() != null) {
             BoundingBox bounds = f.getBounds();
             if (!bounds.isEmpty()) spatialIndex.insert(ReferencedEnvelope.reference(bounds), f);
         }

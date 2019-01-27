@@ -98,7 +98,7 @@ public class MultiRange<T extends Comparable<? super T>> {
         List<Range<T>> overlapping = getOverlappingRanges(range);
 
         if (overlapping != null) {
-            ranges.remove(overlapping);
+            ranges.removeAll(overlapping);
             List<Range<?>> removed = new ArrayList<>();
             for (Range<T> r : overlapping) {
                 Range<?>[] difference = r.subtract(range);

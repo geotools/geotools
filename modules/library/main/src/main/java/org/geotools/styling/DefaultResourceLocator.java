@@ -99,7 +99,7 @@ public class DefaultResourceLocator implements ResourceLocator {
         return null;
     }
 
-    URL makeRelativeURL(String uri, String query) {
+    protected URL makeRelativeURL(String uri, String query) {
         try {
             if (query != null) {
                 return new URL(sourceUrl, uri + "?" + query);

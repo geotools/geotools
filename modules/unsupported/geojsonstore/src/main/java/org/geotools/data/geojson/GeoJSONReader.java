@@ -17,16 +17,34 @@ package org.geotools.data.geojson;
  *    Lesser General Public License for more details.
  */
 
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map.Entry;
+import java.util.NoSuchElementException;
+import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.geotools.data.DataUtilities;
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
-import org.geotools.geojson.feature.FeatureJSON;
+import org.geotools.feature.simple.SimpleFeatureBuilder;
+import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.util.logging.Logging;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.io.ParseException;
 import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.FeatureType;
 
 /**
@@ -35,16 +53,31 @@ import org.opengis.feature.type.FeatureType;
  * @author ian
  */
 public class GeoJSONReader {
-    private static final Logger LOGGER = Logging.getLogger(GeoJSONReader.class);
+    /** GEOMETRY_NAME */
+    public static final String GEOMETRY_NAME = "the_geom";
 
-    private FeatureJSON reader = new FeatureJSON();
+    private static final Logger LOGGER = Logging.getLogger(GeoJSONReader.class);
 
     private InputStream inputStream;
 
     private URL url;
 
-    public GeoJSONReader(URL url) {
+    private JsonParser parser;
+
+    private JsonFactory factory;
+
+    private SimpleFeatureType schema;
+
+    static org.locationtech.jts.io.geojson.GeoJsonReader jReader =
+            new org.locationtech.jts.io.geojson.GeoJsonReader();
+    SimpleFeatureTypeBuilder typeBuilder = null;
+
+    private SimpleFeatureBuilder builder;
+
+    public GeoJSONReader(URL url) throws IOException {
         this.url = url;
+        factory = new JsonFactory();
+        parser = factory.createParser(url);
     }
 
     public boolean isConnected() {
@@ -77,27 +110,179 @@ public class GeoJSONReader {
         if (!isConnected()) {
             throw new IOException("not connected to " + url.toExternalForm());
         }
-        reader = new FeatureJSON();
-        LOGGER.fine("reading features from " + url.toExternalForm() + " inputstream");
-        FeatureCollection collection = reader.readFeatureCollection(inputStream);
-        inputStream.close();
+        ObjectMapper mapper = new ObjectMapper();
+        List<SimpleFeature> features = new ArrayList<>();
+        builder = null;
+        while (!parser.isClosed()) {
+            JsonToken token = parser.nextToken();
+            if (token == null) {
+                break;
+            }
+            if (JsonToken.FIELD_NAME.equals(token)
+                    && "features".equalsIgnoreCase(parser.currentName())) {
+                token = parser.nextToken();
+                if (!JsonToken.START_ARRAY.equals(token) || token == null) {
+                    break;
+                }
+                while (parser.nextToken() == JsonToken.START_OBJECT) {
+                    ObjectNode node = mapper.readTree(parser);
+                    if(node==null) {
+                      System.out.println(parser.nextTextValue() ); 
+                    }
+                    SimpleFeature feature = getNextFeature(node);
+                    features.add(feature);
+                }
+            }
+        }
 
-        return collection;
+        return DataUtilities.collection(features);
+    }
+
+    /**
+     * @param node
+     * @return
+     * @throws IOException
+     */
+    private SimpleFeature getNextFeature(ObjectNode node) throws IOException {
+        JsonNode type = node.get("type");
+        if (!"Feature".equalsIgnoreCase(type.asText())) {
+            throw new RuntimeException(
+                    "Unexpected object type in GeoJSON Parsing, expected Feature got '"
+                            + type.asText()
+                            + "'");
+        }
+        JsonNode props = node.get("properties");
+        if (builder == null) {
+            builder = getBuilder(props);
+        }
+        Iterator<Entry<String, JsonNode>> fields = props.fields();
+        while (fields.hasNext()) {
+            Entry<String, JsonNode> n = fields.next();
+            builder.set(n.getKey(), n.getValue());
+        }
+        JsonNode geom = node.get("geometry");
+        Geometry g;
+        try {
+            String gString = geom.toString();
+            g = jReader.read(gString);
+            builder.set(GEOMETRY_NAME, g);
+        } catch (ParseException e) {
+            LOGGER.log(Level.FINER, e.getMessage(), e);
+            throw new IOException(e);
+        }
+        JsonNode id = node.get("id");
+        if(id!=null && id.isValueNode()) {
+          
+        }
+        SimpleFeature feature = builder.buildFeature(null);
+        // System.out.println(feature);
+        return feature;
+    }
+
+    /**
+     * @param props
+     * @return
+     */
+    private SimpleFeatureBuilder getBuilder(JsonNode props) {
+
+        if (typeBuilder == null) {
+            if (schema == null) {
+                typeBuilder = new SimpleFeatureTypeBuilder();
+
+                typeBuilder.setCRS(DefaultGeographicCRS.WGS84);
+                typeBuilder.setName("geojson");
+                if (typeBuilder.getDefaultGeometry() == null) {
+                    typeBuilder.setDefaultGeometry(GEOMETRY_NAME);
+                    typeBuilder.add(GEOMETRY_NAME, Geometry.class, DefaultGeographicCRS.WGS84);
+                }
+                Iterator<Entry<String, JsonNode>> fields = props.fields();
+                while (fields.hasNext()) {
+                    Entry<String, JsonNode> n = fields.next();
+                    typeBuilder.nillable(true);
+                    typeBuilder.defaultValue("");
+                    typeBuilder.add(n.getKey(), String.class);
+                }
+                schema = typeBuilder.buildFeatureType();
+            }
+        }
+        return new SimpleFeatureBuilder(schema);
     }
 
     public FeatureIterator<SimpleFeature> getIterator() throws IOException {
         if (!isConnected()) {
             return new DefaultFeatureCollection(null, null).features();
         }
-        return reader.streamFeatureCollection(inputStream);
+        return new GeoJsonIterator(parser);
     }
 
     public FeatureType getSchema() throws IOException {
         if (!isConnected()) {
             throw new IOException("not connected to " + url.toExternalForm());
         }
-        FeatureType schema = reader.readFeatureCollection(inputStream).getSchema();
-
         return schema;
+    }
+
+    /** @param schema the schema to set */
+    public void setSchema(SimpleFeatureType schema) {
+        this.schema = schema;
+    }
+
+    private class GeoJsonIterator implements FeatureIterator<SimpleFeature> {
+        /** @throws IOException */
+        ObjectMapper mapper = new ObjectMapper();
+
+        JsonParser parser;
+
+        private SimpleFeature feature;
+
+        public GeoJsonIterator(JsonParser parser) throws IOException {
+            if (!isConnected()) {
+                throw new IOException("not connected to " + url.toExternalForm());
+            }
+            this.parser = parser;
+            builder = null;
+            while (!parser.isClosed()) {
+                JsonToken token = parser.nextToken();
+                if (token == null) {
+                    break;
+                }
+                if (JsonToken.FIELD_NAME.equals(token)
+                        && "features".equalsIgnoreCase(parser.currentName())) {
+                    token = parser.nextToken();
+
+                    if (!JsonToken.START_ARRAY.equals(token) || token == null) {
+                        throw new IOException("No Features found");
+                    }
+                    break;
+                }
+            }
+        }
+
+        @Override
+        public boolean hasNext() {
+            try {
+
+                if (parser.nextToken() == JsonToken.START_OBJECT) {
+                    ObjectNode node = mapper.readTree(parser);
+                    feature = getNextFeature(node);
+                    if (feature != null) return true;
+                }
+            } catch (IOException e) {
+                LOGGER.log(Level.FINER, e.getMessage(), e);
+            }
+            return false;
+        }
+
+        @Override
+        public SimpleFeature next() throws NoSuchElementException {
+
+            if (feature != null) return feature;
+            else throw new NoSuchElementException();
+        }
+
+        @Override
+        public void close() {
+            parser = null;
+        }
     }
 }

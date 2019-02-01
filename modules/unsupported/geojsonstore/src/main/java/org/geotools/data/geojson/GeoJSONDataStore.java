@@ -21,14 +21,22 @@ import java.net.URL;
 import java.util.Collections;
 import java.util.List;
 import org.apache.commons.io.FilenameUtils;
+import org.geotools.data.FeatureReader;
+import org.geotools.data.FeatureWriter;
+import org.geotools.data.FileDataStore;
 import org.geotools.data.Query;
+import org.geotools.data.Transaction;
+import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentFeatureSource;
+import org.geotools.data.store.ContentState;
 import org.geotools.feature.NameImpl;
+import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.Name;
+import org.opengis.filter.Filter;
 
-public class GeoJSONDataStore extends org.geotools.data.store.ContentDataStore {
+public class GeoJSONDataStore extends org.geotools.data.store.ContentDataStore implements FileDataStore{
     URL url;
 
     SimpleFeatureType schema;
@@ -49,7 +57,7 @@ public class GeoJSONDataStore extends org.geotools.data.store.ContentDataStore {
         return Collections.singletonList(typeName);
     }
 
-    GeoJSONReader read() {
+    GeoJSONReader read() throws IOException {
         GeoJSONReader reader = null;
 
         reader = new GeoJSONReader(url);
@@ -75,4 +83,63 @@ public class GeoJSONDataStore extends org.geotools.data.store.ContentDataStore {
     public void createSchema(SimpleFeatureType featureType) throws IOException {
         this.schema = featureType;
     }
+
+    @Override
+    public SimpleFeatureType getSchema() throws IOException {
+      // TODO Auto-generated method stub
+      return this.schema;
+    }
+
+    @Override
+    public void updateSchema(SimpleFeatureType featureType) throws IOException {
+      this.schema=featureType;
+      
+    }
+
+    @Override
+    public SimpleFeatureSource getFeatureSource() throws IOException {
+      // TODO Auto-generated method stub
+      return new GeoJSONFeatureSource(new ContentEntry(this, typeName), Query.ALL);
+    }
+
+    @Override
+    public FeatureReader<SimpleFeatureType, SimpleFeature> getFeatureReader() throws IOException {
+      // TODO Auto-generated method stub
+      return new GeoJSONFeatureReader(new ContentState(new ContentEntry(this, typeName)), Query.ALL);
+    }
+
+    @Override
+    public FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriter(
+        Filter filter, Transaction transaction) throws IOException {
+      Query query = new Query(typeName.getLocalPart(), filter);
+      
+      
+      return new GeoJSONFeatureWriter(new ContentState(new ContentEntry(this, typeName)), query );
+    }
+
+    @Override
+    public FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriter(Transaction transaction)
+        throws IOException {
+      // TODO Auto-generated method stub
+      return null;
+    }
+
+    @Override
+    public FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriterAppend(
+        Transaction transaction) throws IOException {
+      // TODO Auto-generated method stub
+      return null;
+    }
+
+    /**
+     * @return the url
+     */
+    protected URL getUrl() {
+    return url;}
+
+    /**
+     * @param url the url to set
+     */
+    protected void setUrl(URL url) {
+    this.url = url;}
 }

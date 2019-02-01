@@ -37,6 +37,7 @@ public class GeoJSONFeatureSource extends ContentFeatureSource {
     private static final Logger LOGGER = Logging.getLogger(GeoJSONFeatureSource.class);
 
     private FeatureCollection<?, ?> collection = null;
+    private SimpleFeatureType schema = null;
 
     public GeoJSONFeatureSource(ContentEntry entry, Query query) {
         super(entry, query);
@@ -80,6 +81,7 @@ public class GeoJSONFeatureSource extends ContentFeatureSource {
         // Ideally we would cache the features here but then things go badly when using transactions
         LOGGER.fine("fetching reader from datastore");
         GeoJSONReader reader = getDataStore().read();
+        schema = (SimpleFeatureType) reader.getSchema();
         collection = reader.getFeatures();
         LOGGER.fine("Got " + collection.size() + " features");
 

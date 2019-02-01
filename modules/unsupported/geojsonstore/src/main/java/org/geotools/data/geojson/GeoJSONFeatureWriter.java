@@ -57,7 +57,7 @@ public class GeoJSONFeatureWriter implements FeatureWriter<SimpleFeatureType, Si
     public GeoJSONFeatureWriter(ContentState state, Query query) throws IOException {
         this.state = state;
         String typeName = query.getTypeName();
-        URL url = ((GeoJSONDataStore) state.getEntry().getDataStore()).url;
+        URL url = ((GeoJSONDataStore) state.getEntry().getDataStore()).getUrl();
         file = URLs.urlToFile(url);
         File directory = file.getParentFile();
         LOGGER.fine("Opening writer for " + url);
@@ -69,9 +69,12 @@ public class GeoJSONFeatureWriter implements FeatureWriter<SimpleFeatureType, Si
             throw new IOException("Directory " + directory + " is not writable.");
         }
         this.temp =
-                File.createTempFile(typeName + System.currentTimeMillis(), "geojson", directory);
+                File.createTempFile(typeName + System.currentTimeMillis(), ".geojson", directory);
         LOGGER.fine("Writing to " + temp.getAbsolutePath());
         this.geoJSONWriter = new GeoJSONWriter(new FileOutputStream(this.temp));
+         if(!file.exists()) {
+           file.createNewFile();
+         }
         this.delegate = new GeoJSONFeatureReader(state, query);
     }
 

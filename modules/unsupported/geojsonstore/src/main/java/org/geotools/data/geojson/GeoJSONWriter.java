@@ -19,10 +19,12 @@ package org.geotools.data.geojson;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import org.geotools.feature.DefaultFeatureCollection;
-import org.geotools.geojson.feature.FeatureJSON;
+import org.locationtech.jts.geom.Geometry;
+import org.opengis.feature.Property;
 import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.feature.type.GeometryType;
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonGenerator;
 
 /**
  * Wrapper to handle writing GeoJSON FeatureCollections
@@ -30,34 +32,59 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * @author ian
  */
 public class GeoJSONWriter {
-    private FeatureJSON writer = new FeatureJSON();
     private OutputStream out;
-    private DefaultFeatureCollection collection = null;
-
-    public GeoJSONWriter(OutputStream outputStream) {
-        if (outputStream instanceof BufferedOutputStream) {
+   
+    private JsonFactory factory = new JsonFactory();
+    private JsonGenerator generator;
+    static org.locationtech.jts.io.geojson.GeoJsonWriter jWriter =
+        new org.locationtech.jts.io.geojson.GeoJsonWriter();
+    public GeoJSONWriter(OutputStream outputStream) throws IOException {
+      
+      jWriter.setEncodeCRS(false);
+      if (outputStream instanceof BufferedOutputStream) {
             this.out = outputStream;
         } else {
             this.out = new BufferedOutputStream(outputStream);
         }
-        collection = new DefaultFeatureCollection();
-    }
-
-    public void setSchema(SimpleFeatureType schema) throws IOException {
-        writer.setEncodeNullValues(true);
-        writer.setFeatureType(schema);
-        if (schema.getCoordinateReferenceSystem() != null) {
-            writer.writeCRS(schema.getCoordinateReferenceSystem(), out);
-        }
+        generator = factory.createGenerator(outputStream);
+        generator.writeStartObject();
+        generator.writeStringField("type", "FeatureCollection");
+        generator.writeFieldName("features");
+        generator.writeStartArray();
     }
 
     public void write(SimpleFeature currentFeature) throws IOException {
-        collection.add(currentFeature);
-    }
+      //System.out.println("writing "+currentFeature ); 
+      generator.writeStartObject();
+      generator.writeStringField("type", "Feature");     
+      generator.writeFieldName("properties");
+      generator.writeStartObject();
+      for(Property p:currentFeature.getProperties()) {
+        if(p.getType() instanceof GeometryType) {
+          continue;
+        }
+        
+        generator.writeStringField(p.getName().getLocalPart(),p.getValue().toString());
+        
+      }
+      generator.writeEndObject();
+     
+      generator.writeFieldName("geometry");
+      String gString = jWriter.write((Geometry) currentFeature.getDefaultGeometry());
+      
+      generator.writeRawValue(gString);
+      generator.writeStringField("id", currentFeature.getID());
+      generator.writeEndObject();
+      
+      }
 
     public void close() throws IOException {
-        writer.writeFeatureCollection(collection, out);
-        out.close();
-        writer = null;
+
+      generator.writeEndArray();
+      generator.writeEndObject();
+      
+      generator.close();
+      out.close();
+
     }
 }

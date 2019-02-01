@@ -49,7 +49,7 @@ public class GeoJSONFeatureReader implements FeatureReader<SimpleFeatureType, Si
             }
             return schema;
         } catch (IOException e) {
-            // TODO Auto-generated catch block
+
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
         return null;

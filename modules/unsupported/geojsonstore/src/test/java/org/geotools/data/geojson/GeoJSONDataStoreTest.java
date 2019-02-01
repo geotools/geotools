@@ -73,6 +73,7 @@ public class GeoJSONDataStoreTest {
         FeatureReader<SimpleFeatureType, SimpleFeature> reader = ds.getFeatureReader(query, null);
         SimpleFeatureType schema = reader.getFeatureType();
         assertNotNull(schema);
+        System.out.println(schema);
         /*
          * while (reader.hasNext()) {
          * // System.out.println(reader.next().getAttribute("name")); }
@@ -91,7 +92,7 @@ public class GeoJSONDataStoreTest {
         SimpleFeatureType schema = reader.getFeatureType();
         // System.out.println(schema);
         assertEquals(
-                "org.locationtech.jts.geom.Point",
+                "org.locationtech.jts.geom.Geometry",
                 schema.getGeometryDescriptor().getType().getBinding().getCanonicalName());
         assertNotNull(schema);
         int count = 0;
@@ -116,7 +117,7 @@ public class GeoJSONDataStoreTest {
         SimpleFeatureType schema = reader.getFeatureType();
         // System.out.println(schema);
         assertEquals(
-                "org.locationtech.jts.geom.Point",
+                "org.locationtech.jts.geom.Geometry",
                 schema.getGeometryDescriptor().getType().getBinding().getName());
         assertNotNull(schema);
         int count = 0;

@@ -33,8 +33,11 @@ TODO:
 Code Review
 ===========
 
-2019 Updates
-* VPF specification is located here: http://earth-info.nga.mil/publications/specs/printed/2407/2407_VPF.pdf
+2019 January Updates
+-------
+
+VPF specification is located here: http://earth-info.nga.mil/publications/specs/printed/2407/2407_VPF.pdf
+
 * The VPLibrary class has been refactored to implement the abstract methods required by the ContentDataStore model.
 * The table join code for feature classes and geometry has been refactored
 

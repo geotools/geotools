@@ -26,11 +26,14 @@ import static org.geotools.data.vpf.ifc.FileConstants.TEXT_PRIMITIVE;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
-import java.util.AbstractList;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.UUID;
 import java.util.Vector;
 import org.geotools.data.vpf.file.VPFFile;
 import org.geotools.data.vpf.file.VPFFileFactory;
@@ -42,6 +45,7 @@ import org.geotools.data.vpf.readers.TextGeometryFactory;
 import org.geotools.data.vpf.readers.VPFGeometryFactory;
 import org.geotools.feature.AttributeTypeBuilder;
 import org.geotools.feature.SchemaException;
+import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.feature.type.AnnotationFeatureType;
 import org.locationtech.jts.geom.Geometry;
@@ -69,6 +73,9 @@ public class VPFFeatureClass implements SimpleFeatureType {
     /** The columns that are part of this feature class */
     private final List<VPFColumn> columns = new Vector<VPFColumn>();
 
+    private final Map<String, ColumnSet> columnSet = new LinkedHashMap<>();
+    private final Map<String, TableRelation> relations = new LinkedHashMap<>();
+
     /** The coverage this feature class is part of */
     private final VPFCoverage coverage;
 
@@ -76,10 +83,10 @@ public class VPFFeatureClass implements SimpleFeatureType {
     private final String directoryName;
 
     /** A list of files which are read to retrieve data for this feature class */
-    private final AbstractList<VPFFile> fileList = new Vector<VPFFile>();
+    // private final AbstractList<VPFFile> fileList = new Vector<VPFFile>();
 
     /** A list of ColumnPair objects which identify the file joins */
-    private final AbstractList joinList = new Vector();
+    // private final AbstractList joinList = new Vector();
 
     /** The name of the feature class */
     private final String typeName;
@@ -92,6 +99,14 @@ public class VPFFeatureClass implements SimpleFeatureType {
 
     /** Indicator that the feature type is a text feature. */
     private boolean textTypeFeature = false;
+
+    private boolean enableFeatureCache = true;
+
+    private final List<SimpleFeature> featureCache = new ArrayList<SimpleFeature>();
+
+    private int cacheRow = 0;
+
+    private boolean debug = false;
 
     /**
      * Constructor
@@ -128,20 +143,46 @@ public class VPFFeatureClass implements SimpleFeatureType {
             namespace = cNamespace;
         }
 
+        /*
+        if (directoryName.equals("/home/ubuntu/alysida/encdata/DNC13/H1316300/LIM")
+                && typeName.equals("limbndya")) {
+            this.debug = true;
+        }
+        */
+
+        if (typeName.equalsIgnoreCase("DQYAREA")) {
+            this.debug = true;
+        }
+
         String fcsFileName = directoryName + File.separator + TABLE_FCS;
 
         try {
             VPFFile fcsFile = (VPFFile) VPFFileFactory.getInstance().getFile(fcsFileName);
+
             Iterator<SimpleFeature> iter = fcsFile.readAllRows().iterator();
+
+            /*
+            if (this.debug) {
+                SimpleFeatureType fcsFeatureType = fcsFile.getFeatureType();
+                VPFFeatureType.debugFeatureType(fcsFeatureType);
+            }
+            */
 
             while (iter.hasNext()) {
                 SimpleFeature feature = (SimpleFeature) iter.next();
                 String featureClassName = feature.getAttribute("feature_class").toString().trim();
 
                 if (typeName.equals(featureClassName)) {
+                    /*
+                    if (this.debug) {
+                        VPFFeatureType.debugFeature(feature);
+                    }
+                    */
                     addFCS(feature);
                 }
             }
+
+            this.assembleColumns();
 
             // Deal with the geometry column
             Iterator<VPFColumn> iter2 = columns.iterator();
@@ -164,6 +205,10 @@ public class VPFFeatureClass implements SimpleFeatureType {
                 superType = AnnotationFeatureType.ANNOTATION;
             }
 
+            if (this.debug) {
+                System.out.println("class col count: " + columns.size());
+            }
+
             SimpleFeatureTypeBuilder b = new SimpleFeatureTypeBuilder();
             b.setName(cName);
             b.setNamespaceURI(namespace);
@@ -175,6 +220,11 @@ public class VPFFeatureClass implements SimpleFeatureType {
             b.setDefaultGeometry(geometryName);
 
             featureType = b.buildFeatureType();
+
+            /*if (this.debug) {
+                this.readFirst();
+            }*/
+
         } catch (IOException exp) {
             // We've already searched the FCS file once successfully
             // So this should never happen
@@ -187,40 +237,93 @@ public class VPFFeatureClass implements SimpleFeatureType {
      *
      * @param row The FCS table row
      */
-    private void addFCS(SimpleFeature row) // throws IOException
+    private synchronized void addFCS(SimpleFeature row) // throws IOException
             {
         String table1 = row.getAttribute("table1").toString().toUpperCase();
         String table1Key = row.getAttribute("table1_key").toString();
         String table2 = row.getAttribute("table2").toString().toUpperCase();
         String table2Key = row.getAttribute("table2_key").toString();
 
+        if (this.debug) {
+            System.out.println("++++++++ addFCS");
+            System.out.println("table1: " + table1 + " key: " + table1Key);
+            System.out.println("table2: " + table2 + " key: " + table2Key);
+        }
+
         try {
             VPFFile vpfFile1 =
                     VPFFileFactory.getInstance()
                             .getFile(directoryName.concat(File.separator).concat(table1));
-            addFileToTable(vpfFile1);
+            // addFileToTable(vpfFile1);
+
+            if (!columnSet.containsKey(table1)) {
+                ColumnSet cs = new ColumnSet();
+                cs.setTable(table1, vpfFile1);
+                columnSet.put(table1, cs);
+            }
+
+            ColumnSet cs1 = columnSet.get(table1);
 
             VPFFile vpfFile2 = null;
             VPFColumn joinColumn1 = vpfFile1.getColumn(table1Key);
-            VPFColumn joinColumn2;
+            VPFColumn joinColumn2 = null;
+            VPFColumn geometryColumn = null;
+            boolean isGeometryTable = false;
 
             try {
-                vpfFile2 =
-                        VPFFileFactory.getInstance()
-                                .getFile(directoryName.concat(File.separator).concat(table2));
-                addFileToTable(vpfFile2);
-                joinColumn2 = vpfFile2.getColumn(table2Key);
+
+                if (table2.equalsIgnoreCase(FACE_PRIMITIVE)) {
+                    geometryColumn = buildGeometryColumn(table2);
+                    joinColumn2 = null;
+                    isGeometryTable = true;
+                } else {
+                    vpfFile2 =
+                            VPFFileFactory.getInstance()
+                                    .getFile(directoryName.concat(File.separator).concat(table2));
+                    // addFileToTable(vpfFile2);
+                    joinColumn2 = vpfFile2.getColumn(table2Key);
+                }
             } catch (IOException exc) {
-                fileList.add(null);
+                vpfFile2 = null;
+                joinColumn2 = null;
+                isGeometryTable = true;
+                // fileList.add(null);
                 // We need to add a geometry column
-                joinColumn2 = buildGeometryColumn(table2);
+                geometryColumn = buildGeometryColumn(table2);
+            }
+
+            if (!columnSet.containsKey(table2)) {
+                ColumnSet cs = new ColumnSet();
+
+                VPFGeometryFactory geometryFactory = isGeometryTable ? this.geometryFactory : null;
+
+                cs.setTable(table2, vpfFile2);
+                cs.setGeometry(isGeometryTable, geometryFactory, geometryColumn);
+
+                columnSet.put(table2, cs);
+            }
+
+            ColumnSet cs2 = columnSet.get(table2);
+
+            String relName = table1 + "_" + table1Key + "_" + table2 + "_" + table2Key;
+            String relName2 = table2 + "_" + table2Key + "_" + table1 + "_" + table1Key;
+
+            if (!relations.containsKey(relName) && !relations.containsKey(relName2)) {
+                TableRelation tr = new TableRelation();
+
+                tr.setTable(table2, cs2, table2Key, joinColumn2);
+                tr.setJoinTable(table1, cs1, table1Key, joinColumn1);
+
+                relations.put(relName, tr);
             }
 
             // FCS's that are the inverse of existing ones are not needed
             // But we should never get this far
+            /*
             if (!joinList.contains(new ColumnPair(joinColumn2, joinColumn1))) {
                 joinList.add(new ColumnPair(joinColumn1, joinColumn2));
             }
+            */
         } catch (IOException exc) {
             // File was not present
             // which means it is for a geometry table
@@ -228,6 +331,274 @@ public class VPFFeatureClass implements SimpleFeatureType {
             //          exc.printStackTrace();
         }
     }
+
+    public synchronized void reset() {
+
+        if (!this.enableFeatureCache || this.featureCache.size() == 0) {
+            Iterator<Map.Entry<String, ColumnSet>> itr = columnSet.entrySet().iterator();
+            Map.Entry<String, ColumnSet> first = itr.next();
+
+            if (first == null) return;
+
+            ColumnSet cs = first.getValue();
+
+            VPFFile rootTable = cs != null ? cs.table : null;
+            if (rootTable == null) return;
+
+            cs.currRow = null;
+            cs.geometry = null;
+
+            while (itr.hasNext()) {
+                Map.Entry<String, ColumnSet> next = itr.next();
+                ColumnSet jcs = next.getValue();
+                jcs.currRow = null;
+                jcs.geometry = null;
+            }
+
+            rootTable.reset();
+        }
+
+        this.cacheRow = 0;
+    }
+
+    private synchronized void closeFiles() {
+        Iterator<Map.Entry<String, ColumnSet>> itr = columnSet.entrySet().iterator();
+        while (itr.hasNext()) {
+            Map.Entry<String, ColumnSet> next = itr.next();
+            ColumnSet cs = next.getValue();
+            try {
+                if (cs.table != null) cs.table.close();
+            } catch (IOException e) {
+                System.out.println("***** Exception when closing file");
+                System.out.println(cs.tableName);
+                System.out.println(cs.table.getPathName());
+            }
+        }
+    }
+
+    public synchronized boolean hasNext() {
+
+        if (this.enableFeatureCache && this.featureCache.size() > 0) {
+            return this.cacheRow < this.featureCache.size();
+        } else {
+            return this.internalHasNext();
+        }
+    }
+
+    private synchronized boolean internalHasNext() {
+        Iterator<Map.Entry<String, ColumnSet>> itr = columnSet.entrySet().iterator();
+        Map.Entry<String, ColumnSet> first = itr.next();
+
+        if (first == null) return false;
+
+        ColumnSet cs = first.getValue();
+        VPFFile rootTable = cs != null ? cs.table : null;
+        if (rootTable == null) return false;
+
+        return rootTable.hasNext();
+    }
+
+    public synchronized List<SimpleFeature> readAllRows(SimpleFeatureType featureType)
+            throws IOException {
+
+        this.enableFeatureCache = true;
+        this.featureCache.clear();
+        this.reset();
+
+        readNext(featureType);
+
+        return this.featureCache;
+    }
+
+    public synchronized SimpleFeature readNext(SimpleFeatureType featureType) {
+
+        SimpleFeature nextFeature = null;
+        if (this.enableFeatureCache && this.featureCache.size() == 0) {
+            this.reset();
+            while (this.internalHasNext()) {
+                SimpleFeature feature = joinRows(featureType);
+
+                this.featureCache.add(feature);
+            }
+            if (this.featureCache.size() > 0) {
+                this.closeFiles();
+            }
+        }
+        if (this.enableFeatureCache) {
+            if (this.cacheRow < this.featureCache.size()) {
+                nextFeature = this.featureCache.get(this.cacheRow);
+                this.cacheRow++;
+            } else {
+                nextFeature = null;
+            }
+        } else nextFeature = joinRows(featureType);
+
+        return nextFeature;
+    }
+
+    private synchronized void assembleColumns() {
+        Iterator<Map.Entry<String, ColumnSet>> itr = columnSet.entrySet().iterator();
+
+        columns.clear();
+
+        while (itr.hasNext()) {
+            Map.Entry<String, ColumnSet> next = itr.next();
+            ColumnSet cs = next.getValue();
+            if (cs.isGeometryTable) {
+                columns.add(cs.geometryColumn);
+            } else {
+                VPFFile vpfFile = cs.table;
+                for (int inx = 0; inx < vpfFile.getAttributeCount(); inx++) {
+                    VPFColumn col = vpfFile.getColumn(inx);
+                    String colName = col.getName();
+                    if (columns.size() > 0 && colName.equalsIgnoreCase("id")) continue;
+                    columns.add(col);
+                }
+            }
+        }
+    }
+
+    private synchronized SimpleFeature joinRows(SimpleFeatureType featureType) {
+
+        Iterator<Map.Entry<String, ColumnSet>> itr = columnSet.entrySet().iterator();
+        Map.Entry<String, ColumnSet> first = itr.next();
+
+        if (first == null) return null;
+
+        ColumnSet cs = first.getValue();
+        VPFFile rootTable = cs != null ? cs.table : null;
+        if (rootTable == null) return null;
+
+        SimpleFeature row = null;
+        try {
+            row = rootTable.readFeature();
+        } catch (Exception e) {
+            row = null;
+        }
+        if (row == null) return null;
+
+        cs.currRow = row;
+
+        Object fid = row.getAttribute("id");
+
+        String featureId = fid != null ? fid.toString() : UUID.randomUUID().toString();
+
+        Iterator<Map.Entry<String, TableRelation>> ritr = relations.entrySet().iterator();
+
+        while (ritr.hasNext()) {
+
+            Map.Entry<String, TableRelation> next = ritr.next();
+
+            TableRelation tr = next.getValue();
+
+            String joinTableName = tr.tableName;
+            String joinTableKeyName = tr.tableKeyName;
+            ColumnSet jcs = tr.colSet;
+            if (jcs == null) continue;
+            VPFFile joinTable = jcs.table;
+
+            jcs.currRow = null;
+
+            String foreignTableName = tr.joinTableName;
+            String foreignTableKeyName = tr.joinTableKeyName;
+            ColumnSet fcs = tr.joinColSet;
+            if (fcs == null || fcs.currRow == null) continue;
+
+            VPFFile foreignTable = fcs.table;
+            if (foreignTable == null) continue;
+
+            Object foreignKeyValue = fcs.currRow.getAttribute(foreignTableKeyName);
+
+            if (foreignKeyValue == null) continue;
+
+            SimpleFeature jrow = null;
+
+            if (jcs.isGeometryTable && jcs.geometryFactory != null) {
+
+                Geometry geometry = null;
+                try {
+                    geometry = jcs.geometryFactory.buildGeometry(this, fcs.currRow);
+                } catch (Exception e) {
+                    geometry = null;
+                    e.printStackTrace();
+                }
+                jcs.geometry = geometry;
+
+            } else if (joinTable != null) {
+
+                joinTable.reset();
+
+                try {
+                    while (joinTable.hasNext()) {
+                        SimpleFeature nrow = joinTable.readFeature();
+                        if (nrow == null) break;
+                        Object joinKeyValue = nrow.getAttribute(joinTableKeyName);
+                        if (joinKeyValue == null) break;
+
+                        if (Objects.equals(foreignKeyValue, joinKeyValue)) {
+                            jrow = nrow;
+                            break;
+                        }
+                    }
+                } catch (Exception e) {
+                    jrow = null;
+                }
+            }
+            jcs.currRow = jrow;
+
+            // if (jrow == null) continue;
+            /*SimpleFeature jrow = null;
+            try {
+                jrow = joinTable.readFeature();
+            } catch (Exception e) {
+                jrow = null;
+            }
+            if (jrow == null) continue; */
+        }
+
+        return combineColumnSets(featureId, featureType);
+    }
+
+    private synchronized SimpleFeature combineColumnSets(
+            String featureId, SimpleFeatureType featureType) {
+
+        Iterator<Map.Entry<String, ColumnSet>> itr = columnSet.entrySet().iterator();
+
+        Geometry geometry = null;
+
+        List<Object> vlist = new ArrayList<Object>();
+
+        List<AttributeDescriptor> attributes = featureType.getAttributeDescriptors();
+
+        while (itr.hasNext()) {
+            Map.Entry<String, ColumnSet> next = itr.next();
+            ColumnSet cs = next.getValue();
+            if (cs.isGeometryTable) {
+                geometry = cs.geometry;
+                vlist.add(null);
+            } else {
+                SimpleFeature row = cs.currRow;
+                Integer attrCount = row != null ? row.getAttributeCount() : null;
+                int colCount = cs.colNames.size();
+                for (int inx = 0; inx < colCount; inx++) {
+                    String colName = cs.colNames.get(inx);
+                    if (vlist.size() > 0 && colName.equalsIgnoreCase("id")) continue;
+                    Object value = row != null ? row.getAttribute(colName) : null;
+                    vlist.add(value);
+                }
+            }
+        }
+
+        // VPFFeatureType.debugFeatureType(this.featureType);
+        // VPFFeatureType.debugFeatureType(featureType);
+
+        SimpleFeature feature = SimpleFeatureBuilder.build(featureType, vlist, featureId);
+        if (geometry != null) {
+            feature.setDefaultGeometry(geometry);
+        }
+        return feature;
+    }
+
     /**
      * Create a geometry column (usually for feature classes that make use of tiles so simple joins
      * can not be used)
@@ -236,11 +607,13 @@ public class VPFFeatureClass implements SimpleFeatureType {
      * @return An <code>AttributeType</code> for the geometry column which is actually a <code>
      *     GeometryAttributeType</code>
      */
-    private VPFColumn buildGeometryColumn(String table) {
+    private synchronized VPFColumn buildGeometryColumn(String table) {
         AttributeDescriptor descriptor = null;
         table = table.trim().toUpperCase();
 
-        // System.out.println("buildGeometryColumn: " + table);
+        if (this.debug) {
+            System.out.println("buildGeometryColumn: " + table);
+        }
 
         // Why would the fileList already contain a null?
         //      if(!fileList.contains(null)){
@@ -260,8 +633,9 @@ public class VPFFeatureClass implements SimpleFeatureType {
                             .nillable(true)
                             .buildDescriptor("GEOMETRY");
         }
-        VPFColumn result = null; // how to construct
-        columns.add(result);
+
+        VPFColumn result = new VPFColumn("GEOMETRY", descriptor); // how to construct
+        // columns.add(result);
         setGeometryFactory(table);
 
         return result;
@@ -272,7 +646,7 @@ public class VPFFeatureClass implements SimpleFeatureType {
      *
      * @param table The name of the geometry table
      */
-    private void setGeometryFactory(String table) {
+    private synchronized void setGeometryFactory(String table) {
         if (table.equalsIgnoreCase(EDGE_PRIMITIVE)) {
             geometryFactory = new LineGeometryFactory();
         } else if (table.equalsIgnoreCase(FACE_PRIMITIVE)) {
@@ -294,6 +668,7 @@ public class VPFFeatureClass implements SimpleFeatureType {
      *
      * @param vpfFile the <code>VPFFile</code> object to use
      */
+    /*
     private void addFileToTable(VPFFile vpfFile) {
         //      Class columnClass;
         boolean addPrimaryKey = fileList.isEmpty();
@@ -302,13 +677,24 @@ public class VPFFeatureClass implements SimpleFeatureType {
         if (!fileList.contains(vpfFile)) {
             fileList.add(vpfFile);
 
+            if (this.debug) {
+                System.out.println("======== add vpf file to class");
+                System.out.println(vpfFile.getPathName());
+            }
+
             // Pull the columns off of the file and add them to our schema
             // Except for the first file, ignore the first column since it is a join column
             for (int inx = addPrimaryKey ? 0 : 1; inx < vpfFile.getAttributeCount(); inx++) {
-                columns.add(vpfFile.getColumn(inx));
+                VPFColumn col = vpfFile.getColumn(inx);
+                if (this.debug) {
+                    String colName = col.getName();
+                    System.out.println(colName);
+                }
+                columns.add(col);
             }
         }
     }
+    */
 
     /**
      * The coverage that owns this feature class
@@ -333,7 +719,15 @@ public class VPFFeatureClass implements SimpleFeatureType {
      *
      * @return a <code>List</code> containing <code>VPFFile</code> objects.
      */
-    public List<VPFFile> getFileList() {
+    public synchronized List<VPFFile> getFileList() {
+        // return fileList;
+
+        List<ColumnSet> csets = new ArrayList<ColumnSet>(columnSet.values());
+        List<VPFFile> fileList = new ArrayList<VPFFile>();
+        for (int i = 0; i < csets.size(); i++) {
+            ColumnSet cs = csets.get(i);
+            fileList.add(cs.table);
+        }
         return fileList;
     }
 
@@ -343,8 +737,14 @@ public class VPFFeatureClass implements SimpleFeatureType {
      * @return a<code>List</code> containing <code>ColumnPair</code> objects which identify the file
      *     joins.
      */
+    /*
     public List getJoinList() {
-        return joinList;
+        return null;
+    }
+    */
+
+    public SimpleFeatureType getFeatureType() {
+        return featureType;
     }
 
     /* (non-Javadoc)
@@ -352,6 +752,10 @@ public class VPFFeatureClass implements SimpleFeatureType {
      */
     public String getTypeName() {
         return featureType.getTypeName();
+    }
+
+    public String getFCTypeName() {
+        return typeName;
     }
 
     /* (non-Javadoc)

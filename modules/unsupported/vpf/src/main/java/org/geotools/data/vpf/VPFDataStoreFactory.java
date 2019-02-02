@@ -114,8 +114,6 @@ public class VPFDataStoreFactory implements DataStoreFactorySpi {
     private DataStore create(Map params) throws IOException {
         DataStore result = null;
 
-        new Exception().printStackTrace();
-
         File file = getLhtFile(params);
         // CH I'd like to check existence here, so that geoserver can get
         // a better error message, but I've spent way too long on this, so
@@ -128,13 +126,17 @@ public class VPFDataStoreFactory implements DataStoreFactorySpi {
         }
         URI namespace = (URI) NAMESPACEP.lookUp(params); // null if not exist
         // LOGGER.finer("creating new vpf datastore with params: " + params);
-        System.out.println("open vpf datastore with params: " + params);
-        System.out.println("vpf datastore path: " + file.getPath());
+
+        boolean debug = true;
 
         String rootDir = file.getParent();
-
         String latTableName = new File(rootDir, LIBRARY_ATTTIBUTE_TABLE).toString();
-        System.out.println("LAT path: " + latTableName);
+
+        if (debug) {
+            System.out.println("open vpf datastore with params: " + params);
+            System.out.println("vpf datastore path: " + file.getPath());
+            System.out.println("LAT path: " + latTableName);
+        }
 
         VPFFile latTable = VPFFileFactory.getInstance().getFile(latTableName);
         Iterator iter = latTable.readAllRows().iterator();
@@ -150,7 +152,9 @@ public class VPFDataStoreFactory implements DataStoreFactorySpi {
 
             if (libraryName.equalsIgnoreCase(folderName)) {
                 libraryFeature = feature;
-                System.out.println("found library feature: " + folderName);
+                if (debug) {
+                    System.out.println("found library feature: " + folderName);
+                }
                 break;
             }
 

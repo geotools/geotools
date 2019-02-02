@@ -25,14 +25,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
-import org.geotools.data.FeatureReader;
 import org.geotools.data.Query;
 import org.geotools.data.store.ContentDataStore;
 import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentFeatureSource;
+import org.geotools.data.vpf.VPFFeatureSource;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.SchemaException;
-import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.Name;
 
@@ -85,16 +84,9 @@ public class VPFFileStore extends ContentDataStore {
         return result;
     }
 
-    public SimpleFeatureType getFeatureType(Query query) throws IOException {
-        if (query.equals(Query.ALL)) {
-            String typeNames[] = this.getTypeNames();
-            if (typeNames.length > 0) {
-                return this.getTypeSchema(typeNames[0]);
-            } else return null;
-        } else {
-            String typeName = query.getTypeName();
-            return this.getTypeSchema(typeName);
-        }
+    public SimpleFeatureType getFeatureType(ContentEntry entry) throws IOException {
+        String typeName = entry.getTypeName();
+        return this.getTypeSchema(typeName);
     }
 
     @Override
@@ -105,14 +97,30 @@ public class VPFFileStore extends ContentDataStore {
 
     @Override
     protected ContentFeatureSource createFeatureSource(ContentEntry entry) throws IOException {
-        return new VPFFileFeatureSource(entry, Query.ALL);
+        String typeName = entry.getTypeName();
+        if (typeName == null) {
+            return null;
+        } else {
+            return getFeatureSource(typeName);
+        }
     }
 
     @Override
     public ContentFeatureSource getFeatureSource(String typeName) throws IOException {
-        Query query = new Query(typeName);
-        ContentEntry entry = this.entry(new NameImpl(typeName));
-        return new VPFFileFeatureSource(entry, query);
+
+        VPFFeatureSource featureSource = VPFFeatureSource.getFeatureSource(typeName);
+        if (featureSource == null) {
+            featureSource = VPFFeatureSource.getFeatureSource(typeName.toUpperCase());
+        }
+
+        if (featureSource == null) {
+            // System.out.println("VPFLibrary.getFeatureSource returned null");
+            // System.out.println(typeName);
+            Query query = new Query(typeName);
+            ContentEntry entry = this.entry(new NameImpl(typeName));
+            featureSource = new VPFFileFeatureSource(entry, query);
+        }
+        return featureSource;
     }
 
     public SimpleFeatureType getTypeSchema(String pathName) throws IOException {
@@ -135,21 +143,11 @@ public class VPFFileStore extends ContentDataStore {
         return result;
     }
 
-    public SimpleFeatureType getDefaultSchema() throws IOException {
-        return this.getSchema(this.vpfFilePath);
-    }
-
-    public VPFFile getDefaultFile() throws IOException {
-        return (VPFFile) getDefaultSchema();
-    }
-
-    // How on earth does one get from the query to this method?
-    /* (non-Javadoc)
-     * @see org.geotools.data.ContentDataStore#getFeatureReader(java.lang.String)
-     */
-    protected FeatureReader<SimpleFeatureType, SimpleFeature> getFeatureReader(String pathName)
-            throws IOException {
-        return new VPFFileFeatureReader((VPFFile) getSchema(pathName));
+    public VPFFile getFile(String pathName) throws IOException {
+        SimpleFeatureType featureType = this.getTypeSchema(pathName);
+        if (featureType == null) return null;
+        VPFFile file = (VPFFile) featureType.getUserData().get(VPFFile.class);
+        return file;
     }
 
     /** Closes all of the opoen files and removes them from the collection of open files. */

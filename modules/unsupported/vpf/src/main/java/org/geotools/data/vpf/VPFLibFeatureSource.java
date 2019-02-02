@@ -1,31 +1,30 @@
-package org.geotools.data.vpf.file;
+package org.geotools.data.vpf;
 
 import java.io.IOException;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.Query;
 import org.geotools.data.store.ContentEntry;
-import org.geotools.data.vpf.VPFFeatureSource;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
 /**
- * VPFFile Feature Source
+ * VPFFeature Source
  *
  * @author James Gambale (Alysida AI)
  */
-public class VPFFileFeatureSource extends VPFFeatureSource {
+public class VPFLibFeatureSource extends VPFFeatureSource {
 
-    public VPFFileFeatureSource(ContentEntry entry, Query query) {
+    public VPFLibFeatureSource(ContentEntry entry, Query query) {
         super(entry, query);
     }
 
     protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query)
             throws IOException {
-        VPFFileStore vpf = (VPFFileStore) this.getDataStore();
-        String typeName = this.entry.getTypeName();
-        VPFFile file = vpf.getFile(typeName);
-        return new VPFFileFeatureReader(getState(), file);
+
+        VPFLibrary vpf = (VPFLibrary) this.getDataStore();
+        VPFFeatureType featureType = vpf.getFeatureType(this.entry);
+        return new VPFFeatureReader(getState(), featureType);
     }
 
     protected int getCountInternal(Query query) throws IOException {
@@ -41,7 +40,7 @@ public class VPFFileFeatureSource extends VPFFeatureSource {
     }
 
     protected SimpleFeatureType buildFeatureType() throws IOException {
-        VPFFileStore vpf = (VPFFileStore) this.getDataStore();
+        VPFLibrary vpf = (VPFLibrary) this.getDataStore();
         return vpf.getFeatureType(this.entry);
     }
 }

@@ -29,6 +29,7 @@ class ColumnPair {
     public VPFColumn column1;
     /** The second column to join */
     public VPFColumn column2;
+
     /**
      * The only constructor
      *

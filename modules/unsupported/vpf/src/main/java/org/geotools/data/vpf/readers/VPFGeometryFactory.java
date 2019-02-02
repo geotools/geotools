@@ -18,8 +18,10 @@ package org.geotools.data.vpf.readers;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import org.geotools.data.vpf.VPFFeatureClass;
 import org.geotools.data.vpf.VPFFeatureType;
 import org.geotools.feature.IllegalAttributeException;
+import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.opengis.feature.simple.SimpleFeature;
 
@@ -42,5 +44,8 @@ public abstract class VPFGeometryFactory {
      * @throws IllegalAttributeException
      */
     public abstract void createGeometry(VPFFeatureType featureType, SimpleFeature values)
+            throws SQLException, IOException, IllegalAttributeException;
+
+    public abstract Geometry buildGeometry(VPFFeatureClass featureClass, SimpleFeature values)
             throws SQLException, IOException, IllegalAttributeException;
 }

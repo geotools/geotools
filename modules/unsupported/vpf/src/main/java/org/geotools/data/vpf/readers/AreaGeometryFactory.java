@@ -22,13 +22,16 @@ import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Vector;
+import org.geotools.data.vpf.VPFFeatureClass;
 import org.geotools.data.vpf.VPFFeatureType;
+import org.geotools.data.vpf.VPFLibrary;
 import org.geotools.data.vpf.file.VPFFile;
 import org.geotools.data.vpf.file.VPFFileFactory;
 import org.geotools.data.vpf.ifc.FileConstants;
 import org.geotools.data.vpf.io.TripletId;
 import org.geotools.feature.IllegalAttributeException;
 import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.LinearRing;
@@ -42,10 +45,22 @@ import org.opengis.feature.simple.SimpleFeature;
  * @source $URL$
  */
 public class AreaGeometryFactory extends VPFGeometryFactory implements FileConstants {
+
     /* (non-Javadoc)
      * @see com.ionicsoft.wfs.jdbc.geojdbc.module.vpf.VPFGeometryFactory#createGeometry(java.lang.String, int, int)
      */
-    public void createGeometry(VPFFeatureType featureType, SimpleFeature values)
+    public synchronized void createGeometry(VPFFeatureType featureType, SimpleFeature values)
+            throws SQLException, IOException, IllegalAttributeException {
+
+        Geometry result = this.buildGeometry(featureType.getFeatureClass(), values);
+
+        values.setDefaultGeometry(result);
+    }
+
+    /* (non-Javadoc)
+     * @see com.ionicsoft.wfs.jdbc.geojdbc.module.vpf.VPFGeometryFactory#buildGeometry(java.lang.String, int, int)
+     */
+    public synchronized Geometry buildGeometry(VPFFeatureClass featureClass, SimpleFeature values)
             throws SQLException, IOException, IllegalAttributeException {
 
         int tempEdgeId;
@@ -63,30 +78,31 @@ public class AreaGeometryFactory extends VPFGeometryFactory implements FileConst
         int faceId = Integer.parseInt(values.getAttribute("fac_id").toString());
 
         // Retrieve the tile directory
-        String baseDirectory = featureType.getFeatureClass().getDirectoryName();
+        String baseDirectory = featureClass.getDirectoryName();
         String tileDirectory = baseDirectory;
 
         // If the primitive table is there, this coverage is not tiled
         if (!new File(tileDirectory.concat(File.separator).concat(FACE_PRIMITIVE)).exists()) {
             Short tileId = new Short(Short.parseShort(values.getAttribute("tile_id").toString()));
-            tileDirectory =
-                    tileDirectory
-                            .concat(File.separator)
-                            .concat(
-                                    featureType
-                                            .getFeatureClass()
-                                            .getCoverage()
-                                            .getLibrary()
-                                            .getTileMap()
-                                            .get(tileId)
-                                            .toString()
-                                            .toUpperCase())
-                            .trim();
+
+            VPFLibrary vpf = featureClass.getCoverage().getLibrary();
+            String tileName = (String) vpf.getTileMap().get(tileId);
+
+            if (tileName != null) {
+
+                tileDirectory =
+                        tileDirectory.concat(File.separator).concat(tileName.toUpperCase()).trim();
+            }
+        }
+
+        if (!new File(tileDirectory.concat(File.separator).concat(FACE_PRIMITIVE)).exists()) {
+            return null;
         }
 
         // all edges from this tile that use the face
         String edgeTableName = tileDirectory.concat(File.separator).concat(EDGE_PRIMITIVE);
         VPFFile edgeFile = VPFFileFactory.getInstance().getFile(edgeTableName);
+        edgeFile.reset();
 
         // Get the rings
         String faceTableName = tileDirectory.concat(File.separator).concat(FACE_PRIMITIVE);
@@ -116,13 +132,25 @@ public class AreaGeometryFactory extends VPFGeometryFactory implements FileConst
                     SimpleFeature edgeRow = edgeFile.getRowFromId("id", nextEdgeId);
 
                     // Read all the important stuff from the edge row data
-                    int leftFace = ((TripletId) edgeRow.getAttribute("left_face")).getId();
-                    int rightFace = ((TripletId) edgeRow.getAttribute("right_face")).getId();
-                    int startNode = ((Integer) edgeRow.getAttribute("start_node")).intValue();
-                    int endNode = ((Integer) edgeRow.getAttribute("end_node")).intValue();
-                    int leftEdge = ((TripletId) edgeRow.getAttribute("left_edge")).getId();
-                    int rightEdge = ((TripletId) edgeRow.getAttribute("right_edge")).getId();
+                    Object attrLeftFace = edgeRow.getAttribute("left_face");
+                    int leftFace, rightFace, startNode, endNode, leftEdge, rightEdge;
                     boolean addPoints = true;
+
+                    if (attrLeftFace instanceof Integer) {
+                        leftFace = ((Integer) edgeRow.getAttribute("left_face")).intValue();
+                        rightFace = ((Integer) edgeRow.getAttribute("right_face")).intValue();
+                        startNode = ((Integer) edgeRow.getAttribute("start_node")).intValue();
+                        endNode = ((Integer) edgeRow.getAttribute("end_node")).intValue();
+                        leftEdge = ((Integer) edgeRow.getAttribute("left_edge")).intValue();
+                        rightEdge = ((Integer) edgeRow.getAttribute("right_edge")).intValue();
+                    } else {
+                        leftFace = ((TripletId) edgeRow.getAttribute("left_face")).getId();
+                        rightFace = ((TripletId) edgeRow.getAttribute("right_face")).getId();
+                        startNode = ((Integer) edgeRow.getAttribute("start_node")).intValue();
+                        endNode = ((Integer) edgeRow.getAttribute("end_node")).intValue();
+                        leftEdge = ((TripletId) edgeRow.getAttribute("left_edge")).getId();
+                        rightEdge = ((TripletId) edgeRow.getAttribute("right_edge")).getId();
+                    }
 
                     // If both faceIds are this faceId then this is a line extending into
                     // the face and not an edge line of the face so don't add it's points
@@ -274,6 +302,6 @@ public class AreaGeometryFactory extends VPFGeometryFactory implements FileConst
             result = geometryFactory.createPolygon(outerRing, ringArray);
         }
 
-        values.setDefaultGeometry(result);
+        return result;
     }
 }

@@ -97,6 +97,20 @@ public class VPFColumn {
         descriptor.getUserData().put("column", this);
     }
 
+    public VPFColumn(String name, AttributeDescriptor descriptor) {
+
+        this.name = name;
+        this.descriptor = descriptor;
+
+        this.typeChar = DATA_2_COORD_F;
+        this.elementsNumber = 0;
+        this.keyType = 0;
+        this.colDesc = "geometry column placeholder";
+        this.thematicIdx = null;
+        this.narrTable = null;
+        this.valDescTableName = null;
+    }
+
     public static VPFColumn toVPFColumn(AttributeDescriptor descriptor) {
         return (VPFColumn) descriptor.getUserData().get("column");
     }

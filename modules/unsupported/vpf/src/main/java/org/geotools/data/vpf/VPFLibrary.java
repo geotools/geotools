@@ -29,8 +29,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
-import org.geotools.data.FeatureReader;
 import org.geotools.data.Query;
+import org.geotools.data.Transaction;
 import org.geotools.data.store.ContentDataStore;
 import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentFeatureSource;
@@ -103,6 +103,8 @@ public class VPFLibrary extends ContentDataStore {
     private CoordinateReferenceSystem crs;
     /** Signals if an error has already been logged for a CRS related exception */
     private boolean loggedCRSException = false;
+
+    private final Map<String, VPFFeatureType> typeMap = new HashMap<>();
 
     static URI DEFAULT_NAMESPACE;
 
@@ -203,29 +205,74 @@ public class VPFLibrary extends ContentDataStore {
      * @throws SchemaException For problems making one of the feature classes as a FeatureType.
      */
     private void setCoverages() throws IOException, SchemaException {
-        System.out.println("+++++++++++++ setCoverages: " + directory);
         VPFCoverage coverage;
         SimpleFeature feature;
         String directoryName;
 
+        boolean debug = false;
+
+        if (debug) {
+            System.out.println("+++++++++++++ setCoverages: " + directory);
+        }
+
         // I'd like to know why this if is here...
         if (!directory.getName().equals("RFERENCE")) {
             String vpfTableName = new File(directory, COVERAGE_ATTRIBUTE_TABLE).toString();
-            System.out.println("vpfTableName: " + vpfTableName);
             VPFFile vpfFile = VPFFileFactory.getInstance().getFile(vpfTableName);
+            if (debug) {
+                System.out.println("vpfTableName: " + vpfTableName);
+                System.out.println("vpfRootPathName: " + vpfFile.getPathName());
+            }
+
             //            TableInputStream vpfTable = new TableInputStream(vpfTableName);
             Iterator iter = vpfFile.readAllRows().iterator();
             while (iter.hasNext()) {
                 feature = (SimpleFeature) iter.next();
                 directoryName = directory.getPath();
-                System.out.println("coverage directoryName: " + directoryName);
                 coverage = new VPFCoverage(this, feature, directoryName, namespace);
                 coverages.add(coverage);
                 String coverageName = coverage.getName();
-                System.out.println("coverageName: " + coverageName);
                 // Find the Tileref coverage, if any
-                if (coverageName.toLowerCase().equals("tileref")) {
+                if (coverageName.equalsIgnoreCase("TILEREF")) {
                     createTilingSchema(coverage);
+                }
+
+                if (debug) {
+                    System.out.println("---------- coverageName: " + coverageName);
+                    System.out.println(coverage.getPathName());
+                    System.out.println(coverage.getDescription());
+                }
+
+                List featureTypes = coverage.getFeatureTypes();
+
+                for (int ift = 0; ift < featureTypes.size(); ift++) {
+                    VPFFeatureType featureType = (VPFFeatureType) featureTypes.get(ift);
+                    VPFFeatureClass featureClass = featureType.getFeatureClass();
+                    String featureTypeName = featureType.getTypeName();
+                    if (false && debug) {
+                        System.out.println(">>>>>featureType: " + featureTypeName);
+                        System.out.println("     directory:   " + featureType.getDirectoryName());
+                        System.out.println("     fc type  :   " + featureClass.getFCTypeName());
+                    }
+
+                    typeMap.put(featureTypeName, featureType);
+
+                    List fileList = featureClass.getFileList();
+
+                    if (false && debug) {
+                        System.out.println("   file count :   " + fileList.size());
+                    }
+
+                    for (int ifl = 0; ifl < fileList.size(); ifl++) {
+                        VPFFile vpfClassFile = (VPFFile) fileList.get(ifl);
+                        if (false && debug) {
+                            if (vpfClassFile == null) {
+                                System.out.println("null");
+                            } else {
+                                System.out.println(vpfClassFile.getPathName());
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -311,8 +358,12 @@ public class VPFLibrary extends ContentDataStore {
         //            File tilefile = new File(directory, "tilereft.tft");
 
         VPFFeatureType tileType = (VPFFeatureType) coverage.getFeatureTypes().get(0);
-        VPFFile tileFile = (VPFFile) tileType.getFeatureClass().getFileList().get(0);
-        Iterator rowsIter = tileFile.readAllRows().iterator();
+
+        // VPFFile tileFile = (VPFFile) tileType.getFeatureClass().getFileList().get(0);
+        // Iterator rowsIter = tileFile.readAllRows().iterator();
+        List<SimpleFeature> allFeatures = tileType.readAllRows();
+        Iterator rowsIter = allFeatures.iterator();
+
         while (rowsIter.hasNext()) {
             SimpleFeature row = (SimpleFeature) rowsIter.next();
             Short rowId = new Short(Short.parseShort(row.getAttribute("id").toString()));
@@ -379,11 +430,11 @@ public class VPFLibrary extends ContentDataStore {
         }
         // result = new String[featureTypesCount];
         for (int inx = 0; inx < coveragesCount; inx++) {
+            VPFCoverage coverage = (VPFCoverage) coverages.get(inx);
             for (int jnx = 0; jnx < coverageTypes[inx].size(); jnx++) {
                 // result[index] = ((SimpleFeatureType) coverageTypes[inx].get(jnx)).getTypeName();
-                NameImpl name =
-                        new NameImpl(
-                                ((SimpleFeatureType) coverageTypes[inx].get(jnx)).getTypeName());
+                SimpleFeatureType featureType = (SimpleFeatureType) coverageTypes[inx].get(jnx);
+                NameImpl name = new NameImpl(featureType.getTypeName());
                 result.add(name);
                 // index++;
             }
@@ -416,16 +467,9 @@ public class VPFLibrary extends ContentDataStore {
     }
     */
 
-    public VPFFeatureType getFeatureType(Query query) throws IOException {
-        if (query.equals(Query.ALL)) {
-            String typeNames[] = this.getTypeNames();
-            if (typeNames.length > 0) {
-                return (VPFFeatureType) this.getTypeSchema(typeNames[0]);
-            } else return null;
-        } else {
-            String typeName = query.getTypeName();
-            return (VPFFeatureType) this.getTypeSchema(typeName);
-        }
+    public VPFFeatureType getFeatureType(ContentEntry entry) throws IOException {
+        String typeName = entry.getTypeName();
+        return (VPFFeatureType) this.getTypeSchema(typeName);
     }
 
     @Override
@@ -436,14 +480,49 @@ public class VPFLibrary extends ContentDataStore {
 
     @Override
     protected ContentFeatureSource createFeatureSource(ContentEntry entry) throws IOException {
-        return new VPFFeatureSource(entry, Query.ALL);
+        String typeName = entry.getTypeName();
+        if (typeName == null) {
+            return null;
+        } else {
+            return getFeatureSource(typeName);
+        }
+    }
+
+    @Override
+    public ContentFeatureSource getFeatureSource(Name typeName, Transaction tx) throws IOException {
+        String localTypeName = typeName.getLocalPart();
+        return super.getFeatureSource(new NameImpl(localTypeName), tx);
     }
 
     @Override
     public ContentFeatureSource getFeatureSource(String typeName) throws IOException {
-        Query query = new Query(typeName);
-        ContentEntry entry = this.entry(new NameImpl(typeName));
-        return new VPFFeatureSource(entry, query);
+
+        VPFFeatureSource featureSource = VPFFeatureSource.getFeatureSource(typeName);
+        if (featureSource == null) {
+            featureSource = VPFFeatureSource.getFeatureSource(typeName.toUpperCase());
+        }
+
+        if (featureSource == null) {
+            VPFFeatureType featureType = typeMap.get(typeName);
+            if (featureType == null) {
+                featureType = typeMap.get(typeName.toUpperCase());
+            }
+            if (featureType != null) {
+                String featureTypeName = featureType.getTypeName();
+                Query query = new Query(Query.ALL);
+                ContentEntry entry = this.entry(new NameImpl(featureTypeName));
+                featureSource = new VPFCovFeatureSource(featureType, entry, query);
+            }
+        }
+
+        if (featureSource == null) {
+            // System.out.println("VPFLibrary.getFeatureSource returned null");
+            // System.out.println(typeName);
+            Query query = new Query(Query.ALL);
+            ContentEntry entry = this.entry(new NameImpl(typeName));
+            featureSource = new VPFLibFeatureSource(entry, query);
+        }
+        return featureSource;
     }
 
     public File getDirectory() {
@@ -468,19 +547,6 @@ public class VPFLibrary extends ContentDataStore {
                 }
             }
         }
-        return result;
-    }
-
-    /* (non-Javadoc)
-     * @see org.geotools.data.ContentDataStore#getFeatureReader(java.lang.String)
-     */
-    protected FeatureReader<SimpleFeatureType, SimpleFeature> getFeatureReader(String typeName)
-            throws IOException {
-        // Find the appropriate feature type, make a reader for it, and reset its stream
-        FeatureReader<SimpleFeatureType, SimpleFeature> result = null;
-        VPFFeatureType featureType = (VPFFeatureType) getSchema(typeName);
-        ((VPFFile) featureType.getFileList().get(0)).reset();
-        result = new VPFFeatureReader(featureType);
         return result;
     }
 

@@ -18,22 +18,13 @@ package org.geotools.data.vpf;
 
 import static org.geotools.data.vpf.ifc.FCode.*;
 
-import java.io.File;
 import java.io.IOException;
-import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 import java.util.NoSuchElementException;
 import org.geotools.data.FeatureReader;
-import org.geotools.data.Query;
 import org.geotools.data.store.ContentState;
 import org.geotools.data.vpf.file.VPFFile;
-import org.geotools.data.vpf.file.VPFFileFactory;
 import org.geotools.feature.IllegalAttributeException;
-import org.geotools.feature.simple.SimpleFeatureBuilder;
-import org.geotools.feature.type.AnnotationFeatureType;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -45,8 +36,9 @@ import org.opengis.feature.type.Name;
  * @source $URL$
  */
 public class VPFFeatureReader implements FeatureReader<SimpleFeatureType, SimpleFeature> {
-    private boolean hasNext = true;
-    private boolean nextCalled = true;
+    // private boolean hasNext = true;
+    // private boolean nextCalled = true;
+    private boolean resetCalled = false;
     private SimpleFeature currentFeature = null;
     private final VPFFeatureType featureType;
 
@@ -58,16 +50,16 @@ public class VPFFeatureReader implements FeatureReader<SimpleFeatureType, Simple
         this.featureType = type;
     }
 
-    public VPFFeatureReader(ContentState contentState, Query query) throws IOException {
+    public VPFFeatureReader(ContentState contentState, VPFFeatureType featureType)
+            throws IOException {
         this.state = contentState;
-        VPFLibrary vpf = (VPFLibrary) contentState.getEntry().getDataStore();
-        this.featureType = vpf.getFeatureType(query);
+        this.featureType = featureType;
     }
 
     /* (non-Javadoc)
      * @see org.geotools.data.FeatureReader#close()
      */
-    public void close() throws IOException {
+    public synchronized void close() throws IOException {
         reset();
     }
 
@@ -77,19 +69,28 @@ public class VPFFeatureReader implements FeatureReader<SimpleFeatureType, Simple
      * @param file
      * @param row
      */
-    private Map generateFileRowMap(VPFFile file, SimpleFeature row) throws IOException {
+    /*
+    private Map<VPFFile, List<Object>> generateFileRowMap(VPFFile file, SimpleFeature row)
+            throws IOException {
         String tileFileName = null;
-        Map rows = new HashMap();
-        rows.put(file, row);
+        Map<VPFFile, List<Object>> rows = new HashMap<>();
+        rows.put(file, Arrays.asList(null, row));
         Iterator joinIter = featureType.getFeatureClass().getJoinList().iterator();
         while (joinIter.hasNext()) {
             ColumnPair columnPair = (ColumnPair) joinIter.next();
             VPFFile primaryFile = getVPFFile(columnPair.column1);
             VPFFile joinFile = null;
+            if (columnPair.column2 == null) {
+                continue;
+            }
             joinFile = getVPFFile(columnPair.column2);
+            if (joinFile == null) {
+                continue;
+            }
 
             if (!rows.containsKey(joinFile) && rows.containsKey(primaryFile)) {
-                SimpleFeature joinRow = (SimpleFeature) rows.get(primaryFile);
+                List<Object> joinData = (List<Object>) rows.get(primaryFile);
+                SimpleFeature joinRow = (SimpleFeature) joinData.get(1);
 
                 try {
                     int joinID =
@@ -97,8 +98,10 @@ public class VPFFeatureReader implements FeatureReader<SimpleFeatureType, Simple
                                     joinRow.getAttribute(columnPair.column1.getName()).toString());
                     rows.put(
                             joinFile,
-                            getVPFFile(columnPair.column2)
-                                    .getRowFromId(columnPair.column2.getName(), joinID));
+                            Arrays.asList(
+                                    columnPair,
+                                    getVPFFile(columnPair.column2)
+                                            .getRowFromId(columnPair.column2.getName(), joinID)));
                 } catch (NullPointerException exc) {
                     // Non-matching joins - just put in a NULL
                     rows.put(joinFile, null);
@@ -111,6 +114,7 @@ public class VPFFeatureReader implements FeatureReader<SimpleFeatureType, Simple
         }
         return rows;
     }
+    */
 
     /* (non-Javadoc)
      * @see org.geotools.data.FeatureReader#getFeatureType()
@@ -122,22 +126,41 @@ public class VPFFeatureReader implements FeatureReader<SimpleFeatureType, Simple
     /* (non-Javadoc)
      * @see org.geotools.data.FeatureReader#hasNext()
      */
-    public boolean hasNext() throws IOException {
+    public synchronized boolean hasNext() throws IOException {
+        VPFFeatureClass featureClass = featureType.getFeatureClass();
+        if (!resetCalled) {
+            this.reset();
+        }
+        return featureClass.hasNext();
+    }
+
+    /*
+    public boolean hasNext0() throws IOException {
         if (nextCalled) {
             while (readNext()) ;
             nextCalled = false;
         }
         return hasNext;
     }
+    */
 
     /* (non-Javadoc)
      * @see org.geotools.data.FeatureReader#next()
      */
-    public SimpleFeature next()
+    public synchronized SimpleFeature next()
+            throws IOException, IllegalAttributeException, NoSuchElementException {
+        readNext();
+        return currentFeature;
+    }
+
+    /*
+    public SimpleFeature next0()
             throws IOException, IllegalAttributeException, NoSuchElementException {
         nextCalled = true;
         return currentFeature;
     }
+    */
+
     /**
      * Read a row and determine if it matches the feature type Three possibilities here: row is null
      * -- hasNext = false, do not try again row matches -- hasNext = true, do not try again row does
@@ -145,7 +168,17 @@ public class VPFFeatureReader implements FeatureReader<SimpleFeatureType, Simple
      *
      * @return Whether we need to read again
      */
-    private boolean readNext() throws IOException {
+    private synchronized boolean readNext() throws IOException {
+        VPFFeatureClass featureClass = featureType.getFeatureClass();
+        if (!resetCalled) {
+            this.reset();
+        }
+        currentFeature = featureClass.readNext(featureType);
+        return currentFeature != null;
+    }
+
+    /*
+    private boolean readNext0() throws IOException {
         boolean result = true;
         VPFFile file = (VPFFile) featureType.getFeatureClass().getFileList().get(0);
         hasNext = false;
@@ -168,12 +201,13 @@ public class VPFFeatureReader implements FeatureReader<SimpleFeatureType, Simple
         // Exclude objects with a different FACC Code
         else if (featureType.getFaccCode() != null) {
             try {
-                Object temp = null;
-                for (int i = 0; temp == null && i < ALLOWED_FCODE_ATTRIBUTES.length; i++) {
-                    temp = row.getAttribute(ALLOWED_FCODE_ATTRIBUTES[i]);
-                }
-                String faccCode = temp.toString().trim();
-                if (featureType.getFaccCode().equals(faccCode)) {
+                //Object temp = null;
+                //for (int i = 0; temp == null && i < ALLOWED_FCODE_ATTRIBUTES.length; i++) {
+                    //temp = row.getAttribute(ALLOWED_FCODE_ATTRIBUTES[i]);
+                //}
+                //String faccCode = temp.toString().trim();
+                //if (featureType.getFaccCode().equals(faccCode))
+                if (true) {
                     retrieveObject(file, row);
                     hasNext = true;
                     result = false;
@@ -184,6 +218,7 @@ public class VPFFeatureReader implements FeatureReader<SimpleFeatureType, Simple
         }
         return result;
     }
+    */
     /**
      * Get the values from all of the columns based on their presence (or absense) in the rows
      *
@@ -192,13 +227,30 @@ public class VPFFeatureReader implements FeatureReader<SimpleFeatureType, Simple
      * @param file the file
      * @param row the row
      */
-    private void retrieveObject(VPFFile file, SimpleFeature row) throws IOException {
+    /*
+    private synchronized void retrieveObject(VPFFile file, SimpleFeature row) throws IOException {
         VPFFile secondFile = null;
         VPFColumn column = null;
-        Map rows = generateFileRowMap(file, row);
-        List<AttributeDescriptor> attributes =
-                featureType.getFeatureClass().getAttributeDescriptors();
-        Object[] values = new Object[featureType.getAttributeCount()];
+
+        VPFFeatureClass featureClass = featureType.getFeatureClass();
+        ;
+        SimpleFeatureType featureClassType = featureClass.getFeatureType();
+
+        // VPFFeatureType.debugFeatureType(featureType);
+        // VPFFeatureType.debugFeatureType(featureClassType);
+        // VPFFeatureType.debugFeature(row);
+
+        Map<VPFFile, List<Object>> rows = generateFileRowMap(file, row);
+
+        // VPFFeatureType.debugRowMap(rows);
+
+        // List<AttributeDescriptor> attributes =
+        // featureType.getFeatureClass().getAttributeDescriptors();
+        // Object[] values = new Object[featureType.getAttributeCount()];
+
+        List<AttributeDescriptor> attributes = featureType.getAttributeDescriptors();
+        Object[] values = new Object[attributes.size()];
+
         Object value = null;
         String featureId = null;
         // Pass 1 - identify the feature identifier
@@ -206,20 +258,32 @@ public class VPFFeatureReader implements FeatureReader<SimpleFeatureType, Simple
             // I am thinking it is probably safer to look this up
             // by column name than by position, but if it breaks,
             // it is easy enough to change
-            if (attributes.get(inx).getLocalName().equals("id")) {
-                value = row.getAttribute(inx);
+            // values[inx] = row.getAttribute(inx);
+            String attrName = attributes.get(inx).getLocalName();
+            values[inx] = row.getAttribute(attrName);
+            if (attrName.equals("id")) {
+                // value = row.getAttribute(inx);
+                value = values[inx];
                 if (value != null) {
                     featureId = value.toString();
                 }
-                break;
+                // break;
             }
         }
         try {
-            currentFeature = SimpleFeatureBuilder.build(featureType, values, featureId);
+            currentFeature =
+                    featureId != null
+                            ? SimpleFeatureBuilder.build(featureType, values, featureId)
+                            : null;
         } catch (IllegalAttributeException exc) {
             // This shouldn't happen since everything should be nillable
             exc.printStackTrace();
+            currentFeature = null;
         }
+
+        if (currentFeature == null) return;
+
+        // VPFFeatureType.debugFeature(currentFeature);
 
         // Pass 2 - get the attributes, including the geometry
         for (int inx = 0; inx < attributes.size(); inx++) {
@@ -237,11 +301,51 @@ public class VPFFeatureReader implements FeatureReader<SimpleFeatureType, Simple
                     }
                     continue;
                 }
-                column = (VPFColumn) attributes.get(inx);
+                AttributeDescriptor colDesc = attributes.get(inx);
+                String colName = colDesc.getLocalName();
+                Object colValue = currentFeature.getAttribute(colName);
+                if (colValue != null) {
+                    continue;
+                }
+
+                SimpleFeature tempRow = null;
+                ColumnPair joinPair = null;
+                String col1Name, col2Name;
+                secondFile = null;
                 value = null;
-                secondFile = getVPFFile(column);
-                SimpleFeature tempRow = (SimpleFeature) rows.get(secondFile);
+                column = null;
+
+                for (Map.Entry<VPFFile, List<Object>> entry : rows.entrySet()) {
+                    VPFFile joinFile = (VPFFile) entry.getKey();
+                    if (joinFile == null) {
+                        continue;
+                    }
+
+                    if (joinFile.getPathName().equals(file.getPathName())) {
+                        continue;
+                    }
+
+                    secondFile = joinFile;
+
+                    List<Object> joinData = (List<Object>) entry.getValue();
+                    joinPair = (ColumnPair) joinData.get(0);
+
+                    col1Name = joinPair.column1.getName();
+                    col2Name = joinPair.column2.getName();
+
+                    if (col1Name.equals(colName)) {
+                        tempRow = (SimpleFeature) joinData.get(1);
+                        column = joinPair.column2;
+                        break;
+                    }
+                }
+
+                // column = (VPFColumn) attributes.get(inx);
+                // secondFile = getVPFFile(column);
+                // SimpleFeature tempRow = (SimpleFeature) rows.get(secondFile);
+
                 if (tempRow != null) {
+                    // value = tempRow.getAttribute(column.getName());
                     value = tempRow.getAttribute(column.getName());
                     if (column.isAttemptLookup()) {
                         try {
@@ -252,7 +356,7 @@ public class VPFFeatureReader implements FeatureReader<SimpleFeatureType, Simple
                                             .getFeatureClass()
                                             .getDirectoryName()
                                             .concat(File.separator)
-                                            .concat("int.vdt");
+                                            .concat("INT.VDT");
                             VPFFile intVdtFile =
                                     VPFFileFactory.getInstance().getFile(intVdtFileName);
                             Iterator intVdtIter = intVdtFile.readAllRows().iterator();
@@ -309,6 +413,8 @@ public class VPFFeatureReader implements FeatureReader<SimpleFeatureType, Simple
             }
         }
     }
+    */
+
     /**
      * Returns the VPFFile for a particular column. It will only find the first match, but that
      * should be okay because duplicate columns will cause even bigger problems elsewhere.
@@ -316,7 +422,7 @@ public class VPFFeatureReader implements FeatureReader<SimpleFeatureType, Simple
      * @param column the column to search for
      * @return the VPFFile that owns this column
      */
-    private VPFFile getVPFFile(VPFColumn column) {
+    private synchronized VPFFile getVPFFile(VPFColumn column) {
         String columnName = column.getName();
         VPFFile result = null;
         VPFFile temp;
@@ -337,7 +443,7 @@ public class VPFFeatureReader implements FeatureReader<SimpleFeatureType, Simple
      * @param column the column to search for
      * @return the VPFFile that owns this column
      */
-    private VPFFile getVPFFile(AttributeDescriptor column) {
+    private synchronized VPFFile getVPFFile(AttributeDescriptor column) {
         Name columnName = column.getName();
         VPFFile result = null;
         VPFFile temp;
@@ -352,9 +458,14 @@ public class VPFFeatureReader implements FeatureReader<SimpleFeatureType, Simple
         return result;
     }
     /** Need to reset the stream for the next time Resets the iterator by resetting the stream. */
-    public void reset() {
+    public synchronized void reset() {
+        VPFFeatureClass featureClass = featureType.getFeatureClass();
+        featureClass.reset();
+        this.resetCalled = true;
+        /*
         VPFFile file = (VPFFile) featureType.getFeatureClass().getFileList().get(0);
         file.reset();
         VPFFileFactory.getInstance().reset();
+        */
     }
 }

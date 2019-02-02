@@ -19,7 +19,9 @@ package org.geotools.data.vpf.readers;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
+import org.geotools.data.vpf.VPFFeatureClass;
 import org.geotools.data.vpf.VPFFeatureType;
+import org.geotools.data.vpf.VPFLibrary;
 import org.geotools.data.vpf.file.VPFFile;
 import org.geotools.data.vpf.file.VPFFileFactory;
 import org.geotools.data.vpf.ifc.FileConstants;
@@ -37,37 +39,47 @@ public class LineGeometryFactory extends VPFGeometryFactory implements FileConst
     /* (non-Javadoc)
      * @see com.ionicsoft.wfs.jdbc.geojdbc.module.vpf.VPFGeometryFactory#createGeometry(com.ionicsoft.wfs.jdbc.geojdbc.module.vpf.VPFIterator)
      */
-    public void createGeometry(VPFFeatureType featureType, SimpleFeature values)
+    public synchronized void createGeometry(VPFFeatureType featureType, SimpleFeature values)
+            throws SQLException, IOException, IllegalAttributeException {
+
+        Geometry result = this.buildGeometry(featureType.getFeatureClass(), values);
+
+        values.setDefaultGeometry(result);
+    }
+
+    /* (non-Javadoc)
+     * @see com.ionicsoft.wfs.jdbc.geojdbc.module.vpf.VPFGeometryFactory#buildGeometry(java.lang.String, int, int)
+     */
+    public synchronized Geometry buildGeometry(VPFFeatureClass featureClass, SimpleFeature values)
             throws SQLException, IOException, IllegalAttributeException {
         Geometry result = null;
         int edgeId = Integer.parseInt(values.getAttribute("edg_id").toString());
         //        VPFFeatureType featureType = (VPFFeatureType) values.getFeatureType();
 
         // Get the right edge table
-        String baseDirectory = featureType.getFeatureClass().getDirectoryName();
+        String baseDirectory = featureClass.getDirectoryName();
         String tileDirectory = baseDirectory;
 
         // If the primitive table is there, this coverage is not tiled
         if (!new File(tileDirectory.concat(File.separator).concat(EDGE_PRIMITIVE)).exists()) {
             Short tileId = new Short(Short.parseShort(values.getAttribute("tile_id").toString()));
-            tileDirectory =
-                    tileDirectory
-                            .concat(File.separator)
-                            .concat(
-                                    featureType
-                                            .getFeatureClass()
-                                            .getCoverage()
-                                            .getLibrary()
-                                            .getTileMap()
-                                            .get(tileId)
-                                            .toString())
-                            .trim();
+            VPFLibrary vpf = featureClass.getCoverage().getLibrary();
+            String tileName = (String) vpf.getTileMap().get(tileId);
+
+            if (tileName != null) {
+
+                tileDirectory =
+                        tileDirectory.concat(File.separator).concat(tileName.toUpperCase()).trim();
+            }
+        }
+        if (!new File(tileDirectory.concat(File.separator).concat(EDGE_PRIMITIVE)).exists()) {
+            return null;
         }
 
         String edgeTableName = tileDirectory.concat(File.separator).concat(EDGE_PRIMITIVE);
         VPFFile edgeFile = VPFFileFactory.getInstance().getFile(edgeTableName);
         SimpleFeature row = edgeFile.getRowFromId("id", edgeId);
         result = (Geometry) row.getAttribute("coordinates");
-        values.setDefaultGeometry(result);
+        return result;
     }
 }

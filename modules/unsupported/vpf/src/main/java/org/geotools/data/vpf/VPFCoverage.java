@@ -16,7 +16,6 @@
  */
 package org.geotools.data.vpf;
 
-import static org.geotools.data.vpf.ifc.FCode.ALLOWED_FCODE_ATTRIBUTES_LIST;
 import static org.geotools.data.vpf.ifc.FileConstants.CHARACTER_VALUE_DESCRIPTION_TABLE;
 import static org.geotools.data.vpf.ifc.FileConstants.TABLE_FCS;
 import static org.geotools.data.vpf.ifc.VPFCoverageIfc.FIELD_COVERAGE_NAME;
@@ -146,21 +145,22 @@ public class VPFCoverage {
             while (charVDTIter.hasNext()) {
                 // Figure out which featureClass owns it
                 SimpleFeature row = (SimpleFeature) charVDTIter.next();
-                String attr = row.getAttribute("attribute").toString().trim().toUpperCase();
+                String attr = row.getAttribute("attribute").toString().trim().toLowerCase();
 
-                if (!ALLOWED_FCODE_ATTRIBUTES_LIST.contains(attr)) continue;
+                // if (!ALLOWED_FCODE_ATTRIBUTES_LIST.contains(attr)) continue;
 
                 String tableFileName = row.getAttribute("table").toString().trim().toUpperCase();
 
                 // We need to go through all of this
                 // so that entries match what is in FCS
-                String featureClassName = tableFileName.substring(0, tableFileName.indexOf("."));
+                String featureClassName =
+                        tableFileName.substring(0, tableFileName.indexOf(".")).toLowerCase();
                 Iterator featureClassIter = featureClasses.iterator();
 
                 while (featureClassIter.hasNext()) {
                     VPFFeatureClass featureClass = (VPFFeatureClass) featureClassIter.next();
 
-                    if (featureClassName.equals(featureClass.getTypeName())) {
+                    if (featureClassName.equalsIgnoreCase(featureClass.getTypeName())) {
                         VPFFeatureType featureType = new VPFFeatureType(featureClass, row);
                         featureTypes.add(featureType);
 
@@ -241,6 +241,10 @@ public class VPFCoverage {
     /** @return Returns the topologyLevel. */
     public int getTopologyLevel() {
         return topologyLevel;
+    }
+
+    public String getDescription() {
+        return this.description;
     }
     /*
      *  (non-Javadoc)

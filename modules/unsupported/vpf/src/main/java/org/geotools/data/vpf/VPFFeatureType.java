@@ -16,10 +16,11 @@
  */
 package org.geotools.data.vpf;
 
+import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import org.geotools.feature.FeatureTypes;
+import org.geotools.data.vpf.file.VPFFile;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -43,11 +44,82 @@ public class VPFFeatureType implements SimpleFeatureType {
     private final String typeName;
     /** The FACC code, a two-letter, 3-number code identifying the feature type */
     private final String faccCode;
+
+    public static void debugRowMap(Map<VPFFile, List<Object>> rows) {
+
+        Integer hashCode = rows.hashCode();
+
+        System.out.println("******** dbug row map " + hashCode);
+        System.out.println("          size: " + rows.size());
+
+        Integer irow = 0;
+        for (Map.Entry<VPFFile, List<Object>> entry : rows.entrySet()) {
+            VPFFile file = (VPFFile) entry.getKey();
+
+            List<Object> joinData = (List<Object>) entry.getValue();
+            ColumnPair joinColumn = (ColumnPair) joinData.get(0);
+            SimpleFeature row = (SimpleFeature) joinData.get(1);
+
+            System.out.println("---------------- " + irow);
+            if (file == null) {
+                System.out.println("null file");
+            } else {
+                System.out.println(file.getPathName());
+
+                if (row == null) System.out.println("null row");
+                else VPFFeatureType.debugFeature(row);
+            }
+
+            System.out.println("---------------- " + irow);
+
+            irow++;
+        }
+        System.out.println("******** end dbug row map " + hashCode);
+    }
+
+    public static void debugFeature(SimpleFeature feature) {
+        String featureName = feature.getName() != null ? feature.getName().getLocalPart() : "";
+        String id = feature.getID();
+        SimpleFeatureType featureType = feature.getFeatureType();
+        String featureTypeName = featureType.getTypeName();
+
+        int attrCount = feature.getAttributeCount();
+        int attrCount2 = featureType.getAttributeCount();
+
+        System.out.println("****** dbug feature: " + id);
+        System.out.println("          name: " + featureName);
+        System.out.println("      typeName: " + featureTypeName);
+        System.out.println("     attrCount: " + attrCount);
+        System.out.println("    attrCount2: " + attrCount2);
+
+        for (int iat = 0; iat < attrCount; iat++) {
+            Object attr = feature.getAttribute(iat);
+            AttributeDescriptor desc = featureType.getDescriptor(iat);
+            String aname = desc != null ? desc.getLocalName() : "null";
+            String avalue = attr != null ? attr.toString() : "null";
+
+            System.out.println(aname + ": " + avalue);
+        }
+    }
+
+    public static void debugFeatureType(SimpleFeatureType featureType) {
+        String featureTypeName = featureType.getTypeName();
+
+        int attrCount = featureType.getAttributeCount();
+        System.out.println("****** dbug featureType: " + featureTypeName);
+        System.out.println("              attrCount: " + attrCount);
+
+        for (int iat = 0; iat < attrCount; iat++) {
+            AttributeDescriptor desc = featureType.getDescriptor(iat);
+            System.out.println(desc.getLocalName());
+        }
+    }
+
     /**
      * Constructor
      *
      * @param cFeatureClass The owning feature class
-     * @param cFeature A <code>Feature</code> from the char.vdt file with more detailed information
+     * @param cFeature A <code>Feature</code> from the CHAR.VDT file with more detailed information
      *     for this feature type
      */
     public VPFFeatureType(VPFFeatureClass cFeatureClass, SimpleFeature cFeature) {
@@ -114,6 +186,11 @@ public class VPFFeatureType implements SimpleFeatureType {
     public VPFFeatureClass getFeatureClass() {
         return featureClass;
     }
+
+    public synchronized List<SimpleFeature> readAllRows() throws IOException {
+        return this.featureClass.readAllRows(this);
+    }
+
     /**
      * Returns a list of file objects
      *
@@ -127,9 +204,11 @@ public class VPFFeatureType implements SimpleFeatureType {
      *     file joins for the <code>VPFFeatureClass</code> that this <code>FeatureType</code>
      *     belongs to.
      */
+    /*
     public List getJoinList() {
         return featureClass.getJoinList();
     }
+    */
 
     /* (non-Javadoc)
      * @see org.geotools.feature.FeatureType#getTypeName()
@@ -155,9 +234,9 @@ public class VPFFeatureType implements SimpleFeatureType {
     }
 
     public boolean equals(Object obj) {
-        if (obj instanceof SimpleFeatureType) {
+        /*if (obj instanceof SimpleFeatureType) {
             return FeatureTypes.equals(this, (SimpleFeatureType) obj);
-        }
+        }*/
         return featureClass.equals(obj);
     }
 

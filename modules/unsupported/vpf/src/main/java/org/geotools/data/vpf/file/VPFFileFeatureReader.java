@@ -19,7 +19,6 @@ package org.geotools.data.vpf.file;
 import java.io.IOException;
 import java.util.NoSuchElementException;
 import org.geotools.data.FeatureReader;
-import org.geotools.data.Query;
 import org.geotools.data.store.ContentState;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -37,19 +36,19 @@ public class VPFFileFeatureReader implements FeatureReader<SimpleFeatureType, Si
     /** State used when reading file */
     protected ContentState state;
 
-    public VPFFileFeatureReader(VPFFile type) {
-        file = type;
+    public VPFFileFeatureReader(VPFFile file) {
+        this.file = file;
         currentFeature = null;
-
-        file.reset();
+        if (this.file != null) this.file.reset();
     }
 
-    public VPFFileFeatureReader(ContentState contentState, Query query) throws IOException {
+    public VPFFileFeatureReader(ContentState contentState, VPFFile file) throws IOException {
         this.state = contentState;
         VPFFileStore vpf = (VPFFileStore) contentState.getEntry().getDataStore();
-        this.file = vpf.getDefaultFile();
+        // this.file = vpf.getDefaultFile();
+        this.file = file;
         this.currentFeature = null;
-        this.file.reset();
+        if (this.file != null) this.file.reset();
         /*
         reader = csv.read(); // this may throw an IOException if it could not connect
         boolean header = reader.readHeaders();
@@ -66,7 +65,7 @@ public class VPFFileFeatureReader implements FeatureReader<SimpleFeatureType, Si
      * @see org.geotools.data.FeatureReader#getFeatureType()
      */
     public SimpleFeatureType getFeatureType() {
-        return file.getFeatureType();
+        return file != null ? file.getFeatureType() : null;
     }
 
     /* (non-Javadoc)
@@ -76,7 +75,7 @@ public class VPFFileFeatureReader implements FeatureReader<SimpleFeatureType, Si
         if (!hasNext()) {
             throw new NoSuchElementException();
         }
-        currentFeature = file.readFeature();
+        currentFeature = file != null ? file.readFeature() : null;
 
         return currentFeature;
     }
@@ -88,7 +87,7 @@ public class VPFFileFeatureReader implements FeatureReader<SimpleFeatureType, Si
         boolean result = false;
 
         // Ask the stream if it has space for another object
-        result = file.hasNext();
+        result = file != null ? file.hasNext() : false;
         return result;
     }
 
@@ -97,6 +96,6 @@ public class VPFFileFeatureReader implements FeatureReader<SimpleFeatureType, Si
      */
     public void close() throws IOException {
         // TODO Auto-generated method stub
-        this.file.close();
+        if (this.file != null) this.file.close();
     }
 }

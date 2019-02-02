@@ -51,6 +51,7 @@ import java.util.AbstractList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Vector;
 import org.geotools.data.vpf.VPFColumn;
 import org.geotools.data.vpf.exc.VPFHeaderFormatException;
@@ -273,7 +274,7 @@ public class VPFFile {
      *
      * @return an <code><code>int</code></code> value
      */
-    protected int getRecordSize() {
+    protected synchronized int getRecordSize() {
         int size = 0;
 
         Iterator<VPFColumn> iter = columns.iterator();
@@ -301,6 +302,32 @@ public class VPFFile {
     public SimpleFeature getRowFromId(String idName, int id) {
         SimpleFeature result = null;
 
+        Integer theId = id;
+
+        try {
+            this.reset();
+
+            while (this.hasNext()) {
+                SimpleFeature row = this.readFeature();
+
+                if (row == null) break;
+
+                Object rowId = row.getAttribute(idName);
+
+                if (Objects.equals(theId, rowId)) {
+                    result = row;
+                    break;
+                }
+            }
+        } catch (Exception e) {
+            result = null;
+        }
+        return result;
+    }
+
+    public SimpleFeature getRowFromId0(String idName, int id) {
+        SimpleFeature result = null;
+
         try {
             // This speeds things up mightily
             String firstColumnName = ((VPFColumn) columns.get(0)).getName();
@@ -318,7 +345,8 @@ public class VPFFile {
             }
 
             if (result == null) {
-                Iterator<SimpleFeature> joinedIter = readAllRows().iterator();
+                AbstractList<SimpleFeature> allRows = readAllRows();
+                Iterator<SimpleFeature> joinedIter = allRows.iterator();
                 result = getRowFromIterator(joinedIter, idName, id);
             }
         } catch (IOException exc) {
@@ -337,7 +365,8 @@ public class VPFFile {
      * @param id The value of the column to check
      * @return a TableRow that matches the other parameters
      */
-    private SimpleFeature getRowFromIterator(Iterator<SimpleFeature> iter, String idName, int id) {
+    private synchronized SimpleFeature getRowFromIterator(
+            Iterator<SimpleFeature> iter, String idName, int id) {
         SimpleFeature result = null;
         SimpleFeature currentFeature;
         int value = -1;
@@ -375,7 +404,7 @@ public class VPFFile {
      *
      * @return a <code>boolean</code>
      */
-    public boolean hasNext() {
+    public synchronized boolean hasNext() {
         boolean result = false;
 
         try {
@@ -398,7 +427,7 @@ public class VPFFile {
      *  (non-Javadoc)
      * @see org.geotools.feature.FeatureType#isAbstract()
      */
-    public boolean isAbstract() {
+    public synchronized boolean isAbstract() {
         return featureType.isAbstract();
     }
 
@@ -408,7 +437,7 @@ public class VPFFile {
      * @return a <code>List</code> value containing Feature objects
      * @exception IOException if an error occurs
      */
-    public AbstractList<SimpleFeature> readAllRows() throws IOException {
+    public synchronized AbstractList<SimpleFeature> readAllRows() throws IOException {
         AbstractList<SimpleFeature> list = new LinkedList<SimpleFeature>();
 
         try {
@@ -442,7 +471,7 @@ public class VPFFile {
      * @return a <code>char</code> value
      * @exception IOException if an error occurs
      */
-    protected char readChar() throws IOException {
+    protected synchronized char readChar() throws IOException {
         return (char) inputStream.read();
     }
 
@@ -454,7 +483,7 @@ public class VPFFile {
      * @exception IOException if an error occurs
      * @exception NumberFormatException if an error occurs
      */
-    private VPFColumn readColumn()
+    private synchronized VPFColumn readColumn()
             throws VPFHeaderFormatException, IOException, NumberFormatException {
         char ctrl = readChar();
 
@@ -503,8 +532,8 @@ public class VPFFile {
      * @throws IOException on any file IO errors
      */
     @SuppressWarnings("unchecked")
-    protected Object readGeometry(int instancesCount, int dimensionality, boolean readDoubles)
-            throws IOException {
+    protected synchronized Object readGeometry(
+            int instancesCount, int dimensionality, boolean readDoubles) throws IOException {
         Object result = null;
         Coordinate coordinate = null;
         CoordinateList coordinates = new CoordinateList();
@@ -561,7 +590,7 @@ public class VPFFile {
      * @return a <code>double</code> value
      * @exception IOException if an error occurs
      */
-    protected double readDouble() throws IOException {
+    protected synchronized double readDouble() throws IOException {
         return DataUtils.decodeDouble(readNumber(DATA_LONG_FLOAT_LEN));
     }
 
@@ -572,7 +601,7 @@ public class VPFFile {
      * @throws IOException on any file IO errors
      * @throws IllegalAttributeException if any of the attributes retrieved are illegal
      */
-    public SimpleFeature readFeature() throws IOException, IllegalAttributeException {
+    public synchronized SimpleFeature readFeature() throws IOException, IllegalAttributeException {
         SimpleFeature result = null;
         // Iterator<VPFColumn> iter = columns.iterator();
         VPFColumn column;
@@ -580,6 +609,8 @@ public class VPFFile {
         int size = columns.size();
         if (textPrimitive) size++;
         Object[] values = new Object[size];
+
+        boolean debug = false;
 
         try {
             for (int inx = 0; inx < columns.size(); inx++) {
@@ -605,6 +636,21 @@ public class VPFFile {
         } catch (EOFException exp) {
             // Should we be throwing an exception instead of eating it?
             exp.printStackTrace();
+
+            debug = true;
+
+            result = null;
+        }
+
+        if (debug) {
+            Integer recordSize = getRecordSize();
+            Long streamLength = inputStream.length();
+            Long filePointer = inputStream.getFilePointer();
+
+            System.out.println("************** EOFException");
+            System.out.println("recordSize: " + recordSize);
+            System.out.println("streamLength: " + streamLength);
+            System.out.println("filePointer: " + filePointer);
         }
 
         return result;
@@ -619,7 +665,8 @@ public class VPFFile {
      * @return an <code>Object</code> value
      * @exception IOException if an error occurs
      */
-    protected Object readFixedSizeData(char dataType, int instancesCount) throws IOException {
+    protected synchronized Object readFixedSizeData(char dataType, int instancesCount)
+            throws IOException {
         Object result = null;
 
         switch (dataType) {
@@ -696,7 +743,7 @@ public class VPFFile {
      * @return a <code>float</code> value
      * @exception IOException if an error occurs
      */
-    protected float readFloat() throws IOException {
+    protected synchronized float readFloat() throws IOException {
         return DataUtils.decodeFloat(readNumber(DATA_SHORT_FLOAT_LEN));
     }
 
@@ -706,7 +753,7 @@ public class VPFFile {
      * @exception VPFHeaderFormatException if an error occurs
      * @exception IOException if an error occurs
      */
-    protected void readHeader() throws VPFHeaderFormatException, IOException {
+    protected synchronized void readHeader() throws VPFHeaderFormatException, IOException {
         byte[] fourBytes = new byte[4];
         inputStream.readFully(fourBytes);
 
@@ -760,7 +807,7 @@ public class VPFFile {
      * @return an <code>int</code> value
      * @exception IOException if an error occurs
      */
-    protected int readInteger() throws IOException {
+    protected synchronized int readInteger() throws IOException {
         return DataUtils.decodeInt(readNumber(DATA_LONG_INTEGER_LEN));
     }
 
@@ -771,12 +818,41 @@ public class VPFFile {
      * @return a <code>byte[]</code> value
      * @throws IOException if an error occurs
      */
-    protected byte[] readNumber(int cnt) throws IOException {
+    protected synchronized byte[] readNumber(int cnt) throws IOException {
         byte[] dataBytes = new byte[cnt];
-        inputStream.readFully(dataBytes);
 
-        if (byteOrder == LITTLE_ENDIAN_ORDER) {
-            dataBytes = DataUtils.toBigEndian(dataBytes);
+        boolean exception = false;
+        boolean debug = false;
+
+        EOFException e2 = null;
+
+        try {
+            inputStream.readFully(dataBytes);
+
+            if (byteOrder == LITTLE_ENDIAN_ORDER) {
+                dataBytes = DataUtils.toBigEndian(dataBytes);
+            }
+        } catch (EOFException e) {
+            exception = true;
+            debug = true;
+            e2 = e;
+        }
+
+        if (debug) {
+            Integer recordSize = getRecordSize();
+            Long streamLength = inputStream.length();
+            Long filePointer = inputStream.getFilePointer();
+            Integer icnt = cnt;
+
+            System.out.println("************** EOFException");
+            System.out.println("cnt: " + icnt);
+            System.out.println("recordSize: " + recordSize);
+            System.out.println("streamLength: " + streamLength);
+            System.out.println("filePointer: " + filePointer);
+        }
+
+        if (exception) {
+            throw e2;
         }
 
         return dataBytes;
@@ -788,7 +864,7 @@ public class VPFFile {
      * @return a <code>short</code> value
      * @exception IOException if an error occurs
      */
-    protected short readShort() throws IOException {
+    protected synchronized short readShort() throws IOException {
         return DataUtils.decodeShort(readNumber(DATA_SHORT_INTEGER_LEN));
     }
 
@@ -799,7 +875,7 @@ public class VPFFile {
      * @return a <code>String</code> value
      * @exception IOException if an error occurs
      */
-    protected String readString(String terminators) throws IOException {
+    protected synchronized String readString(String terminators) throws IOException {
         StringBuffer text = new StringBuffer();
         char ctrl = readChar();
 
@@ -829,7 +905,7 @@ public class VPFFile {
      * @return a <code>TripletId</code> value
      * @throws IOException on any IO errors
      */
-    protected TripletId readTripletId() throws IOException {
+    protected synchronized TripletId readTripletId() throws IOException {
         // TODO: does this take into account byte order properly?
         byte tripletDef = (byte) inputStream.read();
         int dataSize = TripletId.calculateDataSize(tripletDef);
@@ -851,14 +927,20 @@ public class VPFFile {
      * @return an <code>Object</code> value
      * @exception IOException if an error occurs
      */
-    protected Object readVariableSizeData(char dataType) throws IOException {
+    protected synchronized Object readVariableSizeData(char dataType) throws IOException {
         int instances = readInteger();
 
-        return readFixedSizeData(dataType, instances);
+        try {
+            return readFixedSizeData(dataType, instances);
+        } catch (EOFException e) {
+            System.out.println("************ readVariableSizeData error");
+            System.out.println("instance count: " + instances);
+            throw e;
+        }
     }
 
     /** Resets the file stream by setting its pointer to the first position after the header. */
-    public void reset() {
+    public synchronized void reset() {
         try {
             setPosition(1);
         } catch (IOException exc) {
@@ -870,7 +952,7 @@ public class VPFFile {
      *
      * @throws IOException in some unlikely situation
      */
-    public void close() throws IOException {
+    public synchronized void close() throws IOException {
         inputStream.close();
         if (variableIndex != null) {
             variableIndex.close();
@@ -882,7 +964,7 @@ public class VPFFile {
      * @param pos A 1-indexed position
      * @throws IOException on any IO failures
      */
-    protected void setPosition(long pos) throws IOException {
+    protected synchronized void setPosition(long pos) throws IOException {
         if (getRecordSize() < 0) {
             VariableIndexRow varRow = (VariableIndexRow) variableIndex.readRow((int) pos);
             inputStream.seek(varRow.getOffset());
@@ -904,7 +986,7 @@ public class VPFFile {
      * @param bytes a <code>long</code> value
      * @exception IOException if an error occurs
      */
-    protected void unread(long bytes) throws IOException {
+    protected synchronized void unread(long bytes) throws IOException {
         inputStream.seek(inputStream.getFilePointer() - bytes);
     }
 
@@ -913,7 +995,7 @@ public class VPFFile {
      *
      * @return a <code>String</code> value
      */
-    private String getVariableIndexFileName() {
+    private synchronized String getVariableIndexFileName() {
         String result = null;
         String fileName = getFileName();
 
@@ -931,6 +1013,10 @@ public class VPFFile {
 
     public VPFColumn getColumn(int index) {
         return columns.get(index);
+    }
+
+    public int getColumnCount() {
+        return columns.size();
     }
 
     public VPFColumn getColumn(String name) {

@@ -125,15 +125,15 @@ public class ElasticFeatureReader implements FeatureReader<SimpleFeatureType, Si
                 values = parserUtil.readField(source, sourceName);
             }
 
-            if (values == null && name.equals("_id")) {
+            if (values == null && sourceName.equals("_id")) {
                 builder.set(name, hit.getId());
-            } else if (values == null && name.equals("_index")) {
+            } else if (values == null && sourceName.equals("_index")) {
                 builder.set(name, hit.getIndex());
-            } else if (values == null && name.equals("_type")) {
+            } else if (values == null && sourceName.equals("_type")) {
                 builder.set(name, hit.getType());
-            } else if (values == null && name.equals("_score")) {
+            } else if (values == null && sourceName.equals("_score")) {
                 builder.set(name, score);
-            } else if (values == null && name.equals("_relative_score")) {
+            } else if (values == null && sourceName.equals("_relative_score")) {
                 builder.set(name, relativeScore);
             } else if (values == null) {
                 // skip missing attribute

@@ -130,15 +130,19 @@ public class ElasticDataStoreFactory implements DataStoreFactorySpi {
 
     @Override
     public DataStore createDataStore(Map<String, Serializable> params) throws IOException {
-        final String indexName = (String) INDEX_NAME.lookUp(params);
-        final String arrayEncoding = (String) getValue(ARRAY_ENCODING, params);
+        return createDataStore(createRestClient(params), null, params);
+    }
 
-        final ElasticDataStore dataStore = new ElasticDataStore(createRestClient(params), indexName);
-        dataStore.setDefaultMaxFeatures((Integer) getValue(DEFAULT_MAX_FEATURES, params));
-        dataStore.setSourceFilteringEnabled((Boolean) getValue(SOURCE_FILTERING_ENABLED, params));
-        dataStore.setScrollEnabled((Boolean)getValue(SCROLL_ENABLED, params));
+    protected DataStore createDataStore(RestClient adminClient, RestClient proxyClient, Map<String, Serializable> params) throws IOException {
+        final String indexName = (String) INDEX_NAME.lookUp(params);
+        final String arrayEncoding = getValue(ARRAY_ENCODING, params);
+
+        final ElasticDataStore dataStore = new ElasticDataStore(adminClient, proxyClient, indexName);
+        dataStore.setDefaultMaxFeatures(getValue(DEFAULT_MAX_FEATURES, params));
+        dataStore.setSourceFilteringEnabled(getValue(SOURCE_FILTERING_ENABLED, params));
+        dataStore.setScrollEnabled(getValue(SCROLL_ENABLED, params));
         dataStore.setScrollSize(((Number)getValue(SCROLL_SIZE, params)).longValue());
-        dataStore.setScrollTime((Integer)getValue(SCROLL_TIME_SECONDS, params));
+        dataStore.setScrollTime(getValue(SCROLL_TIME_SECONDS, params));
         dataStore.setArrayEncoding(ArrayEncoding.valueOf(arrayEncoding.toUpperCase()));
         dataStore.setGridSize((Long) GRID_SIZE.lookUp(params));
         dataStore.setGridThreshold((Double) GRID_THRESHOLD.lookUp(params));
@@ -147,9 +151,9 @@ public class ElasticDataStoreFactory implements DataStoreFactorySpi {
 
     protected RestClient createRestClient(Map<String, Serializable> params) throws IOException {
         final String[] hosts = ((String) getValue(HOSTNAME, params)).split(",");
-        final Integer defaultPort = (Integer) getValue(HOSTPORT, params);
-        Boolean sslEnabled = (Boolean) getValue(SSL_ENABLED, params);
-        final Boolean sslRejectUnauthorized = (Boolean) getValue(SSL_REJECT_UNAUTHORIZED, params);
+        final Integer defaultPort = getValue(HOSTPORT, params);
+        Boolean sslEnabled = getValue(SSL_ENABLED, params);
+        final Boolean sslRejectUnauthorized = getValue(SSL_REJECT_UNAUTHORIZED, params);
 
         final String defaultScheme = sslEnabled ? "https" : "http";
         final Pattern pattern = Pattern.compile("(?<scheme>https?)?(://)?(?<host>[^:]+):?(?<port>\\d+)?");
@@ -195,14 +199,14 @@ public class ElasticDataStoreFactory implements DataStoreFactorySpi {
         return null;
     }
 
-    private Object getValue(Param param, Map<String, Serializable> params) throws IOException {
+    @SuppressWarnings({ "javadoc", "unchecked" })
+    protected static <T> T getValue(Param param, Map<String, Serializable> params) throws IOException {
         final Object value;
         if (param.lookUp(params) != null) {
             value = param.lookUp(params);
         } else {
             value = param.sample;
         }
-        return value;
+        return (T) value;
     }
-
 }

@@ -6,6 +6,7 @@ package mil.nga.giat.data.elasticsearch;
 
 import java.io.Serializable;
 import java.util.Objects;
+import java.util.regex.Pattern;
 
 /**
  * Class describing and Elasticsearch attribute including name, type and
@@ -14,13 +15,15 @@ import java.util.Objects;
  * the feature type and backend Elasticsearch queries.
  *
  */
-public class ElasticAttribute implements Serializable {
+public class ElasticAttribute implements Serializable, Comparable<ElasticAttribute> {
 
     public enum ElasticGeometryType {
         GEO_POINT,
         GEO_SHAPE
     }
 
+    private static Pattern beginLetters = Pattern.compile("^[A-Za-z_].*");
+    
     private static final long serialVersionUID = 8839579461838862328L;
 
     private final String name;
@@ -47,6 +50,10 @@ public class ElasticAttribute implements Serializable {
 
     private boolean nested;
 
+    private Integer order;
+
+    private String customName;
+
     public ElasticAttribute(String name) {
         super();
         this.name = name;
@@ -70,6 +77,8 @@ public class ElasticAttribute implements Serializable {
         this.analyzed = other.analyzed;
         this.stored = other.stored;
         this.nested = other.nested;
+        this.order = other.order;
+        this.customName = other.customName;        
     }
 
     public String getName() {
@@ -163,7 +172,23 @@ public class ElasticAttribute implements Serializable {
     public void setNested(boolean nested) {
         this.nested = nested;
     }
-
+    
+    public void setOrder(Integer order) {
+        this.order = order;
+    }
+    
+    public Integer getOrder() {
+        return this.order;
+    }
+ 
+    public void setCustomName(String name) {
+        this.customName = normalizeName(name);
+    }
+    
+    public String getCustomName() {
+        return this.customName;
+    }
+    
     public String getDisplayName() {
         final String displayName;
         if (useShortName) {
@@ -177,7 +202,7 @@ public class ElasticAttribute implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(name, type, use, defaultGeometry, srid, dateFormat,
-                useShortName, geometryType, analyzed, stored, nested);
+                useShortName, geometryType, analyzed, stored, nested, order, customName);
     }
 
     @Override
@@ -198,8 +223,51 @@ public class ElasticAttribute implements Serializable {
             equal &= Objects.equals(analyzed, other.analyzed);
             equal &= Objects.equals(stored, other.stored);
             equal &= Objects.equals(nested, other.nested);
+            equal &= Objects.equals(order, other.order);
+            equal &= Objects.equals(customName, other.customName);
         }
         return equal;
     }
+    
+    /**
+     * Implement comparison logic
+     * @param o is a non-null ElasticAttribute
+     * @return negative for before, zero for same, positive after 
+     */
+    @Override
+    public int compareTo(ElasticAttribute o) {
+        if (this.order == null) {
+            return o.order == null ? this.name.compareTo(o.name) : 1;
+        }
+        if (o.order == null) {
+            return -1;
+        }
+        int i = this.order.compareTo(o.order);
+        return i == 0 ? this.name.compareTo(o.name) : i;
+    }  
 
+    /**
+     * Perform basic update to the given name to make it XML namespace
+     * compliant.
+     * 
+     * @param name
+     * @return Name that is XML safe
+     */
+    private static String normalizeName (String name) {
+        
+        String normalName = name;
+        
+        /* XML element naming rules:
+         * 1. Element names must start with a letter or underscore
+         * 2. Element names cannot start with the letters xml
+         * 3. Element names cannot contain spaces
+         */
+        if (normalName.toLowerCase().startsWith("xml")) {
+            normalName = "_".concat(normalName);
+        } else if (! beginLetters.matcher(normalName).matches()) {
+            normalName = "_".concat(normalName);
+        }         
+        /* Simply replace all spaces in the name with "_". */
+        return normalName.replaceAll(" ", "_");
+    }
 }

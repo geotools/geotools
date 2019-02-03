@@ -17,9 +17,15 @@ public class ElasticAttributeTest {
 
     private ElasticAttribute attr;
 
+    private ElasticAttribute other;
+    
     private String name;
 
     private String shortName;
+
+    private String customName;
+
+    private String normalizedName;
 
     private boolean useShortName;
 
@@ -32,6 +38,8 @@ public class ElasticAttributeTest {
     private boolean defaultGeometry;
 
     private int srid;
+
+    private int order;
 
     private String dateFormat;
 
@@ -47,11 +55,14 @@ public class ElasticAttributeTest {
         attr = new ElasticAttribute(name);
         shortName = "name";
         useShortName = true;
+        customName = "XML Custom Name";
+        normalizedName = "_XML_Custom_Name";
         type = Map.class;
         geometryType = ElasticGeometryType.GEO_SHAPE;
         use = true;
         defaultGeometry = true;
         srid = 10;
+        order = 1;
         dateFormat = "yyyy-mm-dd";
         analyzed = true;
         stored = true;
@@ -62,11 +73,13 @@ public class ElasticAttributeTest {
     public void testAttributes() {
         attr.setShortName(shortName);
         attr.setUseShortName(useShortName);
+        attr.setCustomName(customName);
         attr.setType(type);
         attr.setGeometryType(geometryType);
         attr.setUse(use);
         attr.setDefaultGeometry(defaultGeometry);
         attr.setSrid(srid);
+        attr.setOrder(order);
         attr.setDateFormat(dateFormat);
         attr.setAnalyzed(analyzed);
         attr.setStored(stored);
@@ -74,11 +87,13 @@ public class ElasticAttributeTest {
         assertEquals(attr.getName(), name);
         assertEquals(attr.getShortName(), shortName);
         assertEquals(attr.getUseShortName(), useShortName);
+        assertEquals(attr.getCustomName(), normalizedName);
         assertEquals(attr.getType(), type);
         assertEquals(attr.getGeometryType(), geometryType);
         assertEquals(attr.isUse(), use);
         assertEquals(attr.isDefaultGeometry(), defaultGeometry);
         assertEquals(attr.getSrid(), srid, 1e-10);
+        assertEquals(attr.getOrder(), Integer.valueOf(order));
         assertEquals(attr.getDateFormat(), dateFormat);
         assertEquals(attr.getAnalyzed(), analyzed);
         assertEquals(attr.isStored(), stored);
@@ -111,4 +126,28 @@ public class ElasticAttributeTest {
         assertEquals(attr, new ElasticAttribute(attr));
     }
 
+    @Test
+    public void testCompare() {     
+      other = new ElasticAttribute("other");     
+      attr.setOrder(1);
+      other.setOrder(2);
+      assertEquals(-1, attr.compareTo(other));
+      attr.setOrder(3);
+      other.setOrder(2);
+      assertEquals(1, attr.compareTo(other));
+      attr.setOrder(null);
+      other.setOrder(1);
+      assertEquals(1, attr.compareTo(other));
+      attr.setOrder(1);
+      other.setOrder(null);
+      assertEquals(-1, attr.compareTo(other));
+      other = new ElasticAttribute("zAfter");
+      attr.setOrder(null);
+      other.setOrder(null);
+      assertTrue(attr.compareTo(other) < 0);
+      other = new ElasticAttribute("before");
+      attr.setOrder(1);
+      other.setOrder(1);
+      assertTrue(attr.compareTo(other) > 0); 
+    }
 }

@@ -704,24 +704,6 @@ public class ElasticFilterTest {
     }
 
     @Test
-    public void testGeometryDecimalPlaces() throws CQLException {
-        double coord = 1.23456789101112;
-        Intersects filter = (Intersects) ECQL.toFilter(String.format("INTERSECTS(\"geom\", POINT(%.14f %.14f))", coord, coord));
-        List<Double> coords = new ArrayList<>();
-        coords.add(coord);
-        coords.add(coord);
-        Map<String,Object> expected = ImmutableMap.of("bool",
-                ImmutableMap.of("must", MATCH_ALL, "filter", ImmutableMap.of("geo_shape",
-                        ImmutableMap.of("geom", ImmutableMap.of("shape",
-                                ImmutableMap.of("coordinates", coords, "type", "Point"),
-                                "relation", "INTERSECTS")))));
-
-        builder.encode(filter);
-        assertTrue(builder.createCapabilities().fullySupports(filter));
-        assertEquals(expected.toString(), builder.getQueryBuilder().toString());
-    }
-
-    @Test
     public void testCompoundFilter() throws CQLException, IOException {
         Filter filter = ECQL.toFilter("time > \"1970-01-01\" and INTERSECTS(\"geom\", LINESTRING(0 0,1.1 1.1))");
         List<List<Double>> coords = new ArrayList<>();

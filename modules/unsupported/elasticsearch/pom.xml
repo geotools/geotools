@@ -16,6 +16,18 @@
   </properties>
   <dependencies>
     <dependency>
+      <groupId>org.springframework.security</groupId>
+      <artifactId>spring-security-core</artifactId>
+      <version>4.2.7.RELEASE</version>
+      <exclusions>
+        <exclusion>
+          <groupId>aopalliance</groupId>
+          <artifactId>aopalliance</artifactId>
+        </exclusion>
+      </exclusions>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
       <groupId>mil.nga.giat</groupId>
       <artifactId>joda-shaded</artifactId>
       <version>${project.version}</version>

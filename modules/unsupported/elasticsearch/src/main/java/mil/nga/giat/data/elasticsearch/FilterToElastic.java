@@ -42,7 +42,6 @@ import org.locationtech.jts.geom.CoordinateSequence;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LinearRing;
-import org.locationtech.jts.geom.PrecisionModel;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.filter.And;
@@ -958,7 +957,12 @@ public class FilterToElastic implements FilterVisitor, ExpressionVisitor {
 
         String encodedField; 
         if ( attType != null ) {
-            encodedField = attType.getLocalName();
+            Map<Object, Object> userData = attType.getUserData();
+            if( userData != null && userData.containsKey("full_name") ) {
+                encodedField = userData.get("full_name").toString();
+            } else {
+                encodedField = attType.getLocalName();
+            }
             if(target != null && target.isAssignableFrom(attType.getType().getBinding())) {
                 // no need for casting, it's already the right type
                 target = null;
@@ -1153,9 +1157,8 @@ public class FilterToElastic implements FilterVisitor, ExpressionVisitor {
             coordinates = linearRing.getCoordinateSequence();
             currentGeometry = factory.createLineString(coordinates);
         }
-        final PrecisionModel precisionModel = new PrecisionModel(PrecisionModel.FLOATING);
-        final int decimalPlaces = precisionModel.getMaximumSignificantDigits();
-        final String geoJson = new GeometryJSON(decimalPlaces).toString(currentGeometry);
+
+        final String geoJson = new GeometryJSON().toString(currentGeometry);
         currentShapeBuilder = mapReader.readValue(geoJson);
     }
 

@@ -9,9 +9,11 @@ import org.geotools.data.ServiceInfo;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.feature.NameImpl;
 import org.geotools.filter.text.cql2.CQL;
+import org.geotools.util.SuppressFBWarnings;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.Name;
 
+@SuppressFBWarnings("UWF_NULL_FIELD")
 public class DataStoreExamples {
 
     DataStore dataStore = null;

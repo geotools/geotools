@@ -310,7 +310,7 @@ public class ImageIOExt {
         for (int i = 0; i < bands; i++) {
             bits += image.getSampleModel().getSampleSize(i);
         }
-        return (long) Math.ceil(bits / 8) * image.getWidth() * image.getHeight();
+        return (long) Math.ceil(bits / 8d) * image.getWidth() * image.getHeight();
     }
 
     /**

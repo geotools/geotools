@@ -136,7 +136,7 @@ public class IntersectsIntegrity extends RelationIntegrity {
                 }
             }
         } finally {
-            fr1.close();
+            if (fr1 != null) fr1.close();
             if (fr2 != null) fr2.close();
         }
 
@@ -214,7 +214,7 @@ public class IntersectsIntegrity extends RelationIntegrity {
                 }
             }
         } finally {
-            fr1.close();
+            if (fr1 != null) fr1.close();
             if (fr2 != null) fr2.close();
         }
 

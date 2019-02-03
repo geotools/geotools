@@ -25,6 +25,7 @@ import static java.lang.Math.*;
 import java.awt.geom.Point2D;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.NamedIdentifier;
+import org.geotools.util.SuppressFBWarnings;
 import org.opengis.parameter.ParameterDescriptor;
 import org.opengis.parameter.ParameterDescriptorGroup;
 import org.opengis.parameter.ParameterNotFoundException;
@@ -93,6 +94,7 @@ public class Mollweide extends MapProjection {
     }
 
     /** {@inheritDoc} */
+    @SuppressFBWarnings("UR_UNINIT_READ_CALLED_FROM_SUPER_CONSTRUCTOR")
     public ParameterDescriptorGroup getParameterDescriptors() {
         return descriptors;
     }

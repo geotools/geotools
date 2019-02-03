@@ -182,7 +182,7 @@ public class H2DataStoreFactory extends JDBCDataStoreFactory {
 
         if (host != null && !host.equals("")) {
             Integer port = (Integer) PORT.lookUp(params);
-            if (port != null && !port.equals("")) {
+            if (port != null) {
                 return "jdbc:h2:tcp://" + host + ":" + port + "/" + database;
             } else {
                 return "jdbc:h2:tcp://" + host + "/" + database;

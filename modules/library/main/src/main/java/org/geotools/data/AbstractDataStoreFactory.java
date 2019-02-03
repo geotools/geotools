@@ -189,16 +189,8 @@ class ParamDescriptor extends DefaultParameterDescriptor {
 
     public ParameterValue createValue() {
         if (Double.TYPE.equals(getValueClass())) {
-            return new FloatParameter(this) {
-                protected Object valueOf(String text) throws IOException {
-                    return param.handle(text);
-                }
-            };
+            return new FloatParameter(this);
         }
-        return new Parameter(this) {
-            protected Object valueOf(String text) throws IOException {
-                return param.handle(text);
-            }
-        };
+        return new Parameter(this);
     }
 }

@@ -304,7 +304,7 @@ public class SchemaFactory {
             }
 
             Schema schema = contentHandler.getSchema();
-            if ((targetNamespace == null) || "".equals(targetNamespace)) {
+            if ((targetNamespace == null) || "".equals(targetNamespace.toString())) {
                 targetNamespace = schema.getTargetNamespace();
             }
 
@@ -359,7 +359,7 @@ public class SchemaFactory {
         if ((targetNamespace == null) || (schemas.get(targetNamespace) == null)) {
             XSISAXHandler contentHandler = parseSchema(is1, level);
 
-            if ((targetNamespace == null) || "".equals(targetNamespace)) {
+            if ((targetNamespace == null) || "".equals(targetNamespace.toString())) {
                 targetNamespace = contentHandler.getSchema().getTargetNamespace();
             }
 
@@ -492,7 +492,7 @@ public class SchemaFactory {
                 version = s1.getVersion();
             }
 
-            if ((s1.getTargetNamespace() == null) || s1.getTargetNamespace().equals("")) {
+            if ((s1.getTargetNamespace() == null) || s1.getTargetNamespace().toString().isEmpty()) {
                 targetNamespace = s2.getTargetNamespace();
             } else {
                 if ((s2.getTargetNamespace() != null)

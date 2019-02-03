@@ -21,6 +21,7 @@ package org.geotools.metadata.iso.citation;
 
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.Objects;
 import org.geotools.util.SimpleInternationalString;
 import org.opengis.metadata.Identifier;
 import org.opengis.metadata.citation.Citation;
@@ -486,7 +487,7 @@ public final class Citations {
                 return true;
             }
             final String asLocalized = candidate.toString();
-            if (asLocalized != asString && titleMatches(c1, asLocalized)) {
+            if (!Objects.equals(asLocalized, asString) && titleMatches(c1, asLocalized)) {
                 return true;
             }
             if (iterator == null) {
@@ -524,7 +525,8 @@ public final class Citations {
                 return true;
             }
             final String asLocalized = candidate.toString();
-            if (asLocalized != asString && asLocalized.trim().equalsIgnoreCase(title)) {
+            if (!Objects.equals(asLocalized, asString)
+                    && asLocalized.trim().equalsIgnoreCase(title)) {
                 return true;
             }
             if (iterator == null) {

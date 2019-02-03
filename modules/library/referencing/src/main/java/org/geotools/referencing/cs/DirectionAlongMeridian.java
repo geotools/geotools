@@ -159,7 +159,7 @@ public final class DirectionAlongMeridian implements Comparable, Serializable {
         AxisDirection candidate = findDirection(values, direction);
         if (candidate == null) {
             String modified = direction.replace('-', '_');
-            if (modified != direction) {
+            if (!modified.equals(direction)) {
                 direction = modified;
                 candidate = findDirection(values, modified);
             }

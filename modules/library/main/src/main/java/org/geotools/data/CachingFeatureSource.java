@@ -349,7 +349,7 @@ public class CachingFeatureSource implements SimpleFeatureSource {
         private SimpleFeatureType sourceSchema;
         private SimpleFeatureType targetSchema;
         private Query query;
-        private ReferencedEnvelope queryBounds = null;
+        private Envelope queryBounds;
 
         protected CachingFeatureCollection(
                 Envelope queryBounds,
@@ -357,6 +357,7 @@ public class CachingFeatureSource implements SimpleFeatureSource {
                 SimpleFeatureType targetSchema,
                 Query query) {
             super(targetSchema);
+            this.queryBounds = queryBounds;
             this.sourceSchema = sourceSchema;
             this.targetSchema = targetSchema;
             this.query = query;

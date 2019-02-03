@@ -16,7 +16,6 @@
  */
 package org.geotools.styling;
 
-import org.opengis.style.FeatureTypeStyle;
 import org.opengis.style.StyleVisitor;
 
 /**
@@ -121,7 +120,7 @@ public class NamedStyleImpl extends StyleImpl implements NamedStyle {
      * @param types DOCUMENT ME!
      * @throws UnsupportedOperationException DOCUMENT ME!
      */
-    public void setFeatureTypeStyles(FeatureTypeStyle[] types) {
+    public void setFeatureTypeStyles(org.geotools.styling.FeatureTypeStyle[] types) {
         throw new UnsupportedOperationException();
     }
 
@@ -131,7 +130,7 @@ public class NamedStyleImpl extends StyleImpl implements NamedStyle {
      * @param type DOCUMENT ME!
      * @throws UnsupportedOperationException DOCUMENT ME!
      */
-    public void addFeatureTypeStyle(FeatureTypeStyle type) {
+    public void addFeatureTypeStyle(org.geotools.styling.FeatureTypeStyle type) {
         throw new UnsupportedOperationException();
     }
 

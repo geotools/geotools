@@ -86,20 +86,20 @@ public class DirectPositionTypeBinding extends AbstractComplexBinding {
             value.appendChild(
                     document.createElementNS(
                             GML.NAMESPACE, org.geotools.gml3.GML.Null.getLocalPart()));
-        }
+        } else {
+            double[] coordinates = dp.getCoordinate();
+            StringBuilder sb = new StringBuilder();
 
-        double[] coordinates = dp.getCoordinate();
-        StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < coordinates.length; i++) {
+                sb.append(String.valueOf(coordinates[i]));
 
-        for (int i = 0; i < coordinates.length; i++) {
-            sb.append(String.valueOf(coordinates[i]));
-
-            if (i != (coordinates.length - 1)) {
-                sb.append(" ");
+                if (i != (coordinates.length - 1)) {
+                    sb.append(" ");
+                }
             }
-        }
 
-        value.appendChild(document.createTextNode(sb.toString()));
+            value.appendChild(document.createTextNode(sb.toString()));
+        }
         return null;
     }
 

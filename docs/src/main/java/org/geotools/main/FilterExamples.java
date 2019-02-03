@@ -26,6 +26,7 @@ import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.swing.JMapFrame;
 import org.geotools.swing.event.MapMouseEvent;
+import org.geotools.util.SuppressFBWarnings;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
@@ -283,6 +284,7 @@ public class FilterExamples {
 
     // distance end
 
+    @SuppressFBWarnings
     // polygonInteraction start
     void polygonInteraction() {
         SimpleFeatureCollection polygonCollection = null;

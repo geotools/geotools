@@ -111,7 +111,7 @@ public class SchemaHandler extends XSIElementHandler {
                 }
         } else {
             // we have already started
-            if (targetNamespace.equals(uri1.toString())) {
+            if (targetNamespace.toString().equals(uri1)) {
                 prefix = pref;
             }
         }
@@ -1544,9 +1544,7 @@ public class SchemaHandler extends XSIElementHandler {
             if (i != 0) return i;
 
             Attribute[] a0 = arg0.getAttributes();
-            Arrays.sort(a0, this);
             Attribute[] a1 = arg1.getAttributes();
-            Arrays.sort(a1, this);
 
             if (a0 == a1) return 0;
             if (a0 == null) return 1;
@@ -1555,6 +1553,8 @@ public class SchemaHandler extends XSIElementHandler {
             if (a0.length < a1.length) return -1;
             if (a0.length > a1.length) return 1;
 
+            Arrays.sort(a0, this);
+            Arrays.sort(a1, this);
             for (int j = 0; j < a0.length && i == 0; j++) i = compareAttribute(a0[j], a1[j]);
 
             return i;
@@ -1648,11 +1648,13 @@ public class SchemaHandler extends XSIElementHandler {
                     Choice c1 = (Choice) arg1;
                     eg0 = c0.getChildren();
                     eg1 = c1.getChildren();
+                    break;
                 case ElementGrouping.SEQUENCE:
                     Sequence s0 = (Sequence) arg0;
                     Sequence s1 = (Sequence) arg1;
                     eg0 = s0.getChildren();
                     eg1 = s1.getChildren();
+                    break;
                 case ElementGrouping.ALL:
                     All a0 = (All) arg0;
                     All a1 = (All) arg1;
@@ -1722,9 +1724,7 @@ public class SchemaHandler extends XSIElementHandler {
             if (i != 0) return i;
 
             SimpleType[] a0 = arg0.getParents();
-            Arrays.sort(a0, this);
             SimpleType[] a1 = arg1.getParents();
-            Arrays.sort(a1, this);
 
             if (a0 == a1) return 0;
             if (a0 == null) return 1;
@@ -1733,13 +1733,12 @@ public class SchemaHandler extends XSIElementHandler {
             if (a0.length < a1.length) return -1;
             if (a0.length > a1.length) return 1;
 
+            Arrays.sort(a0, this);
+            Arrays.sort(a1, this);
             for (int j = 0; j < a0.length && i == 0; j++) i = compareSimpleType(a0[j], a1[j]);
 
             Facet[] a01 = arg0.getFacets();
-            Arrays.sort(a0, this);
             Facet[] a11 = arg1.getFacets();
-            Arrays.sort(a1, this);
-
             if (a01 == a11) return 0;
             if (a01 == null) return 1;
             if (a11 == null) return -1;
@@ -1747,6 +1746,8 @@ public class SchemaHandler extends XSIElementHandler {
             if (a01.length < a11.length) return -1;
             if (a01.length > a11.length) return 1;
 
+            Arrays.sort(a0, this);
+            Arrays.sort(a1, this);
             for (int j = 0; j < a01.length && i == 0; j++) i = compareFacet(a01[j], a11[j]);
 
             return i;
@@ -1801,9 +1802,7 @@ public class SchemaHandler extends XSIElementHandler {
             if (i != 0) return i;
 
             Attribute[] a10 = arg0.getAttributes();
-            Arrays.sort(a10, this);
             Attribute[] a11 = arg1.getAttributes();
-            Arrays.sort(a11, this);
 
             if (a10 == a11) return 0;
             if (a10 == null) return 1;
@@ -1812,13 +1811,13 @@ public class SchemaHandler extends XSIElementHandler {
             if (a10.length < a11.length) return -1;
             if (a10.length > a11.length) return 1;
 
+            Arrays.sort(a10, this);
+            Arrays.sort(a11, this);
             for (int j = 0; j < a10.length && i == 0; j++) i = compareAttribute(a10[j], a11[j]);
             if (i != 0) return i;
 
             Element[] a0 = arg0.getChildElements();
-            Arrays.sort(a0, this);
             Element[] a1 = arg1.getChildElements();
-            Arrays.sort(a1, this);
 
             if (a0 == a1) return 0;
             if (a0 == null) return 1;
@@ -1827,6 +1826,8 @@ public class SchemaHandler extends XSIElementHandler {
             if (a0.length < a1.length) return -1;
             if (a0.length > a1.length) return 1;
 
+            Arrays.sort(a0, this);
+            Arrays.sort(a1, this);
             for (int j = 0; j < a0.length && i == 0; j++) i = compareElement(a0[j], a1[j]);
 
             return i;

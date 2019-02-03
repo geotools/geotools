@@ -305,7 +305,7 @@ class Utils {
                         e);
                 return null;
             } finally {
-                pw.close();
+                if (pw != null) pw.close();
             }
         }
 

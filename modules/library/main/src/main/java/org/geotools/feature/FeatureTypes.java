@@ -76,7 +76,7 @@ public class FeatureTypes {
         try {
             uri = new URI("http://www.opengis.net/gml");
         } catch (URISyntaxException e) {
-            uri = null; // will never happen
+            throw new RuntimeException("Unexpected URI syntax exception", e);
         }
         DEFAULT_NAMESPACE = uri;
     }

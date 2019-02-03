@@ -737,8 +737,8 @@ public class DataUtilitiesTest extends DataTestCase {
         Filter filter = ff.and(Filter.INCLUDE, Filter.INCLUDE);
         Query query = new Query(Query.ALL);
         query.setFilter(filter);
-        DataUtilities.simplifyFilter(query);
-        assertEquals(Filter.INCLUDE, query.getFilter());
+        final Query result = DataUtilities.simplifyFilter(query);
+        assertEquals(Filter.INCLUDE, result.getFilter());
     }
 
     public void testSpecNoCRS() throws Exception {

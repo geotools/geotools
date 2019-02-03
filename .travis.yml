@@ -34,5 +34,5 @@ matrix:
     - jdk: oraclejdk11
       env: ARGS="-Dfmt.skip=true"
     - jdk: oraclejdk11
-      env: ARGS="-Dfmt.action=check -Ppmd -Perrorprone -DskipTests=true"
+      env: ARGS="-Dfmt.action=check -Ppmd -Perrorprone -Pspotbugs -DskipTests=true"
 

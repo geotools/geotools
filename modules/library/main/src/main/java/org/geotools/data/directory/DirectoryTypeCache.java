@@ -363,9 +363,11 @@ class DirectoryTypeCache {
         }
 
         void dispose() {
-            DataStore store = ref != null ? ref.get() : null;
-            if (store != null) store.dispose();
-            ref.clear();
+            if (ref != null) {
+                DataStore store = ref.get();
+                if (store != null) store.dispose();
+                ref.clear();
+            }
         }
     }
 }

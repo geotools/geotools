@@ -103,7 +103,7 @@ public final class IndexQueryUtils {
             FeatureTypeMapping mapping, AttributeMapping attMapping, String xpath) {
         StepList simplifiedSteps =
                 XPath.steps(mapping.getTargetFeature(), xpath, mapping.getNamespaces());
-        return Objects.equals(attMapping, simplifiedSteps);
+        return Objects.equals(attMapping.getTargetXPath(), simplifiedSteps);
     }
 
     /**

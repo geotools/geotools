@@ -431,10 +431,10 @@ public class SLDParser {
 
         // for our next trick do something with the dom.
         NodeList nodes = findElements(document, "UserStyle");
-        final int length = nodes.getLength();
 
         if (nodes == null) return new Style[0];
 
+        final int length = nodes.getLength();
         Style[] styles = new Style[length];
 
         for (int i = 0; i < length; i++) {

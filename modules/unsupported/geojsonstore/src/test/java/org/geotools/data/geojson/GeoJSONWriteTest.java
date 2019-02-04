@@ -134,7 +134,7 @@ public class GeoJSONWriteTest {
         Transaction t2 = new DefaultTransaction("transactoin 2");
 
         SimpleFeatureType type = store.getSchema("locations");
-        SimpleFeatureStore auto = (SimpleFeatureStore) store.getFeatureSource("locations");
+        SimpleFeatureStore auto =          (SimpleFeatureStore) store.getFeatureSource("locations");
         SimpleFeatureStore featureStore1 = (SimpleFeatureStore) store.getFeatureSource("locations");
         SimpleFeatureStore featureStore2 = (SimpleFeatureStore) store.getFeatureSource("locations");
 
@@ -144,17 +144,15 @@ public class GeoJSONWriteTest {
         // Before we edit everything should be the same
         assertEquals("featureStore1 before", 9, featureStore1.getFeatures().size());
         assertEquals("featureStore2 before", 9, featureStore2.getFeatures().size());
-        SimpleFeature first = DataUtilities.first(featureStore1.getFeatures());
-        // System.out.println(first);
+
         // select feature to remove
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
 
-        // Filter filter1 = ff.id(Collections.singleton(ff.featureId(first.getID())));
         Filter filter1 = ff.equal(ff.property("CITY"), ff.literal("Trento"), false);
 
         featureStore1.removeFeatures(filter1); // removes "Trento" from fs1
 
-        // Tests after removal
+        // Tests after removal only featureStore1 is affected
         assertEquals("auto after featureStore1 removes fid1", 9, auto.getFeatures().size());
         assertEquals(
                 "featureStore1 after featureStore1 removes fid1",
@@ -172,12 +170,16 @@ public class GeoJSONWriteTest {
         SimpleFeature feature =
                 SimpleFeatureBuilder.build(
                         type,
-                        new Object[] {45.52, -122.681944, "Portland", 800, 2014, point},
+                        new Object[] {point,45.52, -122.681944, "Portland", 800, 2014},
                         "feature-10");
-        // System.out.println(feature);
+        System.out.println("adding "+feature);
         SimpleFeatureCollection collection = DataUtilities.collection(feature);
 
         featureStore2.addFeatures(collection);
+        System.out.println("before add" ); 
+        printFeatures("auto ",auto.getFeatures());
+        printFeatures("fs1",featureStore1.getFeatures());
+        printFeatures("fs2", featureStore2.getFeatures());
         // Tests after adding the feature
         assertEquals(
                 "auto after featureStore1 removes Trento and featureStore2 adds Portland",
@@ -193,8 +195,12 @@ public class GeoJSONWriteTest {
                 featureStore2.getFeatures().size());
 
         // commit transaction one
+        System.out.println("t1 - commit" ); 
         t1.commit();
-
+        System.out.println("after t1 - commit to fs2" ); 
+        printFeatures("auto ",auto.getFeatures());
+        printFeatures("fs1",featureStore1.getFeatures());
+        printFeatures("fs2", featureStore2.getFeatures());
         // Tests after first commit
 
         assertEquals(
@@ -213,7 +219,9 @@ public class GeoJSONWriteTest {
 
         // commit transaction two
         t2.commit();
-
+        printFeatures("auto ",auto.getFeatures());
+        printFeatures("fs1",featureStore1.getFeatures());
+        printFeatures("fs2", featureStore2.getFeatures());
         // Tests after 2nd commit
 
         assertEquals(
@@ -233,6 +241,20 @@ public class GeoJSONWriteTest {
         t1.close();
         t2.close();
         store.dispose(); // clear out any listeners
+    }
+
+    /**
+     * @param features
+     */
+    private void printFeatures(String label,SimpleFeatureCollection features) {
+      System.out.println(label); 
+      try (SimpleFeatureIterator it = features.features()){
+        while (it.hasNext()) {
+          SimpleFeature feature = (SimpleFeature) it.next();
+          System.out.println(feature ); 
+        }
+      }
+      
     }
 
     @Test
@@ -269,6 +291,8 @@ public class GeoJSONWriteTest {
             store.dispose();
         }
     }
+    
+
 
     @Test
     public void replaceAll() throws Exception {
@@ -320,9 +344,10 @@ public class GeoJSONWriteTest {
                 "featureStore should only have the one feature we created",
                 1,
                 featureStore.getFeatures().size());
-        final String newline = System.lineSeparator();
         String contents =
-                "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"properties\":{\"LAT\":45.52,\"LON\":-122.681944,\"CITY\":\"Portland\",\"NUMBER\":800,\"YEAR\":2014},\"geometry\":{\"type\":\"Point\",\"coordinates\":[45.52,-122.6819]},\"id\":\"locations.0\"}]}";
+                "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"properties\""
+                + ":{\"LAT\":45.52,\"LON\":-122.681944,\"CITY\":\"Portland\",\"NUMBER\":800,\"YEAR\":2014},"
+                + "\"geometry\":{\"type\":\"Point\",\"coordinates\":[45.52,-122.681944]},\"id\":\"locations.0\"}]}";
         assertEquals(
                 "Ensure the file has only the one feature we created",
                 contents.trim(),
@@ -382,6 +407,8 @@ public class GeoJSONWriteTest {
             while (original.hasNext() && dups.hasNext()) {
                 SimpleFeature o = original.next();
                 SimpleFeature d = dups.next();
+                System.out.println(o );
+                System.out.println(d );
                 for (int i = 0; i < o.getAttributeCount(); i++) {
                     assertTrue(""+o.getAttribute(i)+" doesn't equal "+d.getAttribute(i),DataUtilities.attributesEqual(o.getAttribute(i), d.getAttribute(i)));
                 }

@@ -24,7 +24,7 @@ import java.util.Map;
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.store.ContentFeatureCollection;
-import org.geotools.factory.Hints;
+import org.geotools.util.factory.Hints;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -36,12 +36,12 @@ import com.google.common.collect.ImmutableMap;
 
 public class ElasticViewParametersFilterIT extends ElasticTestSupport {
 
-    private ObjectMapper mapper = new ObjectMapper();
+    private final ObjectMapper mapper = new ObjectMapper();
 
     @Test
     public void testNativeTermQuery() throws Exception {
         init("not-active");
-        Map<String, String> vparams = new HashMap<String, String>();
+        Map<String, String> vparams = new HashMap<>();
         Map<String,Object> query = ImmutableMap.of("term", ImmutableMap.of("security_ss", "WPA"));
         vparams.put("q", mapper.writeValueAsString(query));
         Hints hints = new Hints(Hints.VIRTUAL_TABLE_PARAMETERS, vparams);
@@ -60,7 +60,7 @@ public class ElasticViewParametersFilterIT extends ElasticTestSupport {
     @Test
     public void testEncodedNativeTermQuery() throws Exception {
         init("not-active");
-        Map<String, String> vparams = new HashMap<String, String>();
+        Map<String, String> vparams = new HashMap<>();
         Map<String,Object> query = ImmutableMap.of("term", ImmutableMap.of("security_ss", "WPA"));
         vparams.put("q", URLEncoder.encode(mapper.writeValueAsString(query), "UTF-8"));
         Hints hints = new Hints(Hints.VIRTUAL_TABLE_PARAMETERS, vparams);
@@ -79,7 +79,7 @@ public class ElasticViewParametersFilterIT extends ElasticTestSupport {
     @Test
     public void testNativeBooleanQuery() throws Exception {
         init();
-        Map<String, String> vparams = new HashMap<String, String>();
+        Map<String, String> vparams = new HashMap<>();
         Map<String,Object> query = ImmutableMap.of("bool", ImmutableMap.of("must", 
                 ImmutableMap.of("term", ImmutableMap.of("security_ss", "WPA")),
                 "must_not", ImmutableMap.of("term", ImmutableMap.of("modem_b", true))));
@@ -102,7 +102,7 @@ public class ElasticViewParametersFilterIT extends ElasticTestSupport {
     @Test
     public void testNativeAggregation() throws Exception {
         init();
-        Map<String, String> vparams = new HashMap<String, String>();
+        Map<String, String> vparams = new HashMap<>();
         Map<String,Object> query = ImmutableMap.of("agg", ImmutableMap.of("geohash_grid", 
                 ImmutableMap.of("field", "geo", "precision", 3)));
         vparams.put("a", mapper.writeValueAsString(query));

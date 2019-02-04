@@ -30,7 +30,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.TimeZone;
-import java.util.logging.Logger;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
@@ -50,10 +49,7 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.temporal.Instant;
 import org.opengis.temporal.Period;
 
-public class ElasticTestSupport {
-
-    protected static final Logger LOGGER = org.geotools.util.logging.Logging
-            .getLogger(ElasticTestSupport.class);
+class ElasticTestSupport {
 
     private static final String TEST_FILE = "wifiAccessPoint.json";
 
@@ -67,7 +63,7 @@ public class ElasticTestSupport {
 
     private static final int numReplicas = 0;
 
-    protected static final String TYPE_NAME = "active";
+    static final String TYPE_NAME = "active";
 
     private static final boolean SCROLL_ENABLED = false;
 
@@ -77,25 +73,21 @@ public class ElasticTestSupport {
 
     private static final ObjectReader mapReader = mapper.readerWithView(Map.class).forType(HashMap.class);
 
-    protected static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-dd-MM HH:mm:ss");
+    static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-dd-MM HH:mm:ss");
 
-    protected static final int PORT = 9200;
+    static final int PORT = 9200;
 
-    protected int SOURCE_SRID = 4326;
+    final int SOURCE_SRID = 4326;
 
-    protected String indexName;
+    String indexName;
 
-    protected int activeNumShards;
+    ElasticFeatureSource featureSource;
 
-    protected ElasticFeatureSource featureSource;
+    static ElasticDataStore dataStore;
 
-    protected static ElasticDataStore dataStore;
+    ElasticLayerConfiguration config;
 
-    protected ElasticLayerConfiguration config;
-
-    protected List<ElasticAttribute> attributes;
-
-    protected RestElasticClient client;
+    ElasticClient client;
 
     @Before
     public void beforeTest() throws Exception {
@@ -109,17 +101,15 @@ public class ElasticTestSupport {
 
     @After
     public void afterTest() throws Exception {
-        client.performRequest("DELETE", "/" + indexName, null);
+        performRequest("DELETE", "/" + indexName, null);
         dataStore.dispose();
         client.close();
     }
 
-    protected void createIndices() throws IOException {
+    private void createIndices() throws IOException {
         // create index and add mappings
         Map<String,Object> settings = new HashMap<>();
         settings.put("settings", ImmutableMap.of("number_of_shards", numShards, "number_of_replicas", numReplicas));
-        Map<String,Object> mappings = new HashMap<>();
-        settings.put("mappings", mappings);
         final String filename;
         if (client.getVersion() < 5) {
             filename = LEGACY_ACTIVE_MAPPINGS_FILE;
@@ -128,44 +118,61 @@ public class ElasticTestSupport {
         } else {
             filename = ACTIVE_MAPPINGS_FILE;
         }
-        try (Scanner s = new Scanner(ClassLoader.getSystemResourceAsStream(filename))) {
-            s.useDelimiter("\\A");
-            Map<String,Object> source = mapReader.readValue(s.next());
-            mappings.put(TYPE_NAME, source);
+        final InputStream resource = ClassLoader.getSystemResourceAsStream(filename);
+        if (resource != null) {
+            try (Scanner s = new Scanner(resource)) {
+                s.useDelimiter("\\A");
+                Map<String, Object> source = mapReader.readValue(s.next());
+                if (client.getVersion() < 7) {
+                    Map<String,Object> mappings = new HashMap<>();
+                    mappings.put(TYPE_NAME, source);
+                    settings.put("mappings", mappings);
+                } else {
+                    settings.put("mappings", source);
+                }
+            }
         }
-        client.performRequest("PUT", "/" + indexName, settings);
+        performRequest("PUT", "/" + indexName, settings);
 
         // add alias
-        Map<String,Object> aliases = ImmutableMap.of("actions", ImmutableList.of(ImmutableMap.of("index", indexName, "alias", indexName + "_alias")));
-        client.performRequest("PUT", "/_alias", aliases);
+        Map<String,Object> aliases = ImmutableMap.of("actions",
+                ImmutableList.of(ImmutableMap.of("index", indexName, "alias", indexName + "_alias")));
+        performRequest("PUT", "/_alias", aliases);
     }
 
     private void indexDocuments(String status) throws IOException {
-        try (InputStream inputStream = ClassLoader.getSystemResourceAsStream(TEST_FILE); Scanner scanner = new Scanner(inputStream)) {
-            scanner.useDelimiter(System.lineSeparator());
-            final StringBuilder builder = new StringBuilder();
-            while (scanner.hasNext()) {
-                final String line = scanner.next();
-                if (!line.startsWith("#")) {
-                    builder.append(line);
+        final InputStream inputStream = ClassLoader.getSystemResourceAsStream(TEST_FILE);
+        if (inputStream != null) {
+            try (Scanner scanner = new Scanner(inputStream)) {
+                scanner.useDelimiter(System.lineSeparator());
+                final StringBuilder builder = new StringBuilder();
+                while (scanner.hasNext()) {
+                    final String line = scanner.next();
+                    if (!line.startsWith("#")) {
+                        builder.append(line);
+                    }
                 }
-            }
-            final Map<String,Object> content = mapReader.readValue(builder.toString());
-            @SuppressWarnings("unchecked")
-            final List<Map<String,Object>> features = (List<Map<String,Object>>) content.get("features");
-            for (final Map<String,Object> featureSource : features) {
-                if (featureSource.containsKey("status_s") && featureSource.get("status_s").equals(status)) {
-                    final String id = featureSource.containsKey("id") ? (String) featureSource.get("id") : null;
-                    client.performRequest("POST", "/" + indexName + "/" + TYPE_NAME + "/" + id, featureSource);
+                final Map<String, Object> content = mapReader.readValue(builder.toString());
+                @SuppressWarnings("unchecked")
+                final List<Map<String, Object>> features = (List<Map<String, Object>>) content.get("features");
+                for (final Map<String, Object> featureSource : features) {
+                    if (featureSource.containsKey("status_s") && featureSource.get("status_s").equals(status)) {
+                        final String id = featureSource.containsKey("id") ? (String) featureSource.get("id") : null;
+                        final String typeName = client.getVersion() < 7 ? TYPE_NAME : "_doc";
+                        performRequest("POST", "/" + indexName + "/" + typeName + "/" + id, featureSource);
+                    }
                 }
-            }
 
-            client.performRequest("POST", "/" + indexName + "/_refresh", null);
+                performRequest("POST", "/" + indexName + "/_refresh", null);
+            } finally {
+                inputStream.close();
+            }
         }
     }
 
-    protected Map<String,Serializable> createConnectionParams() {
+    Map<String,Serializable> createConnectionParams() {
         Map<String,Serializable> params = new HashMap<>();
+        params.put(ElasticDataStoreFactory.HOSTNAME.key, "localhost");
         params.put(ElasticDataStoreFactory.HOSTPORT.key, PORT);
         params.put(ElasticDataStoreFactory.INDEX_NAME.key, indexName);
         params.put(ElasticDataStoreFactory.SCROLL_ENABLED.key, SCROLL_ENABLED);
@@ -173,18 +180,18 @@ public class ElasticTestSupport {
         return params;
     }
 
-    protected void init() throws Exception {
+    void init() throws Exception {
         DATE_FORMAT.setTimeZone(TimeZone.getTimeZone("UTC"));
         init("active");
     }
 
-    protected void init(String layerName) throws Exception {
+    void init(String layerName) throws Exception {
         init(layerName, "geo");
     }
 
-    protected void init(String status, String geometryField) throws Exception {
+    void init(String status, String geometryField) throws Exception {
         indexDocuments(status);
-        attributes = dataStore.getElasticAttributes(new NameImpl(TYPE_NAME));
+        List<ElasticAttribute> attributes = dataStore.getElasticAttributes(new NameImpl(TYPE_NAME));
         config = new ElasticLayerConfiguration(TYPE_NAME);
         List<ElasticAttribute> layerAttributes = new ArrayList<>();
         for (ElasticAttribute attribute : attributes) {
@@ -203,19 +210,23 @@ public class ElasticTestSupport {
         featureSource = (ElasticFeatureSource) dataStore.getFeatureSource(TYPE_NAME);
     }
 
-    protected Date date(String date) throws ParseException {
+    private void performRequest(String method, String endpoint, Map<String, Object> body) throws IOException {
+        ((RestElasticClient) client).performRequest(method, endpoint, body);
+    }
+
+    private Date date(String date) throws ParseException {
         return DATE_FORMAT.parse(date);
     }
 
-    protected Instant instant(String d) throws ParseException {
+    private Instant instant(String d) throws ParseException {
         return new DefaultInstant(new DefaultPosition(date(d)));
     }
 
-    protected Period period(String d1, String d2) throws ParseException {
+    Period period(String d1, String d2) throws ParseException {
         return new DefaultPeriod(instant(d1), instant(d2));
     }
 
-    protected List<SimpleFeature> readFeatures(SimpleFeatureIterator iterator) {
+    List<SimpleFeature> readFeatures(SimpleFeatureIterator iterator) {
         final List<SimpleFeature> features = new ArrayList<>();
         try {
             while (iterator.hasNext()) {
@@ -226,5 +237,4 @@ public class ElasticTestSupport {
         }
         return features;
     }
-
 }

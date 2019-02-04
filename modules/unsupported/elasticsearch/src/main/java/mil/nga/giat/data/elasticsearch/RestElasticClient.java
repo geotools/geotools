@@ -1,4 +1,4 @@
-/**
+/*
  * This file is hereby placed into the Public Domain. This means anyone is
  * free to do whatever they wish with this file.
  */
@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -21,15 +22,14 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 import mil.nga.giat.data.elasticsearch.ElasticMappings.Mapping;
 
-import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.entity.ContentType;
-import org.apache.http.message.BasicHeader;
+import org.elasticsearch.client.Request;
+import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.Response;
 import org.elasticsearch.client.ResponseException;
 import org.elasticsearch.client.RestClient;
@@ -41,36 +41,36 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-@SuppressWarnings("javadoc")
 public class RestElasticClient implements ElasticClient {
+
+    final static double DEFAULT_VERSION = 7.0;
 
     private final static Logger LOGGER = Logging.getLogger(RestElasticClient.class);
 
     private final static DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 
-    private final static double DEFAULT_VERSION = 6.0;
+    private final RestClient client;
 
-    private RestClient adminClient;
+    private final RestClient proxyClient;
 
-    private RestClient proxyClient;
-    
-    private ObjectMapper mapper;
+    private final boolean enableRunAs;
+
+    private final ObjectMapper mapper;
 
     private Double version;
 
     public RestElasticClient(RestClient client) {
-        this.adminClient = client;
-        this.mapper = new ObjectMapper();
-        this.mapper.setDateFormat(DATE_FORMAT);
+        this(client, null, false);
     }
 
-    public RestElasticClient(RestClient client, RestClient proxyClient) {
-        this.adminClient = client;
+    public RestElasticClient(RestClient client, RestClient proxyClient, boolean enableRunAs) {
+        this.client = client;
         this.proxyClient = proxyClient;
         this.mapper = new ObjectMapper();
         this.mapper.setDateFormat(DATE_FORMAT);
+        this.enableRunAs = enableRunAs;
     }
-    
+
     @Override
     public double getVersion() {
         if (version != null) {
@@ -79,7 +79,7 @@ public class RestElasticClient implements ElasticClient {
 
         final Pattern pattern = Pattern.compile("(\\d+\\.\\d+)\\.\\d+");
         try {
-            final Response response = performRequest("GET", "/", null, this.adminClient);
+            final Response response = performRequest("GET", "/", null, true);
             try (final InputStream inputStream = response.getEntity().getContent()) {
                 Map<String,Object> info = mapper.readValue(inputStream, new TypeReference<Map<String, Object>>() {});
                 @SuppressWarnings("unchecked")
@@ -101,15 +101,18 @@ public class RestElasticClient implements ElasticClient {
 
     @Override
     public List<String> getTypes(String indexName) throws IOException {
-        return getMappings(indexName, null).keySet().stream().collect(Collectors.toList());
+        return new ArrayList<>(getMappings(indexName, null).keySet());
     }
 
     @Override
     public Map<String, Object> getMapping(String indexName, String type) throws IOException {
         final Map<String, Mapping> mappings = getMappings(indexName, type);
         final Map<String,Object> properties;
-        if (mappings.containsKey(type)) {
+        if (getVersion() < 7 && mappings.containsKey(type)) {
             properties = mappings.get(type).getProperties();
+        } else if (getVersion() >= 7) {
+            final Mapping mapping = mappings.values().stream().findFirst().orElse(null);
+            properties = mapping != null ? mapping.getProperties() : null;
         } else {
             properties = null;
         }
@@ -120,10 +123,10 @@ public class RestElasticClient implements ElasticClient {
         final Response response;
         try {
             final StringBuilder path = new StringBuilder("/").append(indexName).append("/_mapping");
-            if (type != null) {
+            if (type != null && getVersion() < 7) {
                 path.append("/").append(type);
             }
-            response = this.adminClient.performRequest("GET", path.toString());
+            response = performRequest("GET", path.toString(), null, true);
         } catch (ResponseException e) {
             if (e.getResponse().getStatusLine().getStatusCode() == 404) {
                 return Collections.emptyMap();
@@ -131,14 +134,34 @@ public class RestElasticClient implements ElasticClient {
             throw e;
         }
 
+        final String aliasedIndex = getIndices(indexName).stream().findFirst().orElse(null);
+
         try (final InputStream inputStream = response.getEntity().getContent()) {
             final Map<String,ElasticMappings> values;
-            values = this.mapper.readValue(inputStream, new TypeReference<Map<String, ElasticMappings>>() {});
+            if (getVersion() < 7) {
+                values = this.mapper.readValue(inputStream, new TypeReference<Map<String, ElasticMappings>>() {
+                });
+            } else {
+                final Map<String, ElasticMappings.Untyped> res;
+                res = this.mapper.readValue(inputStream, new TypeReference<Map<String, ElasticMappings.Untyped>>() {
+                });
+                values = new HashMap<>();
+                for (final Entry<String, ElasticMappings.Untyped> entry : res.entrySet()) {
+                    final ElasticMappings mappings = new ElasticMappings();
+                    mappings.setMappings(new HashMap<>());
+                    if (aliasedIndex != null && aliasedIndex.equals(entry.getKey())) {
+                        mappings.getMappings().put(aliasedIndex, entry.getValue().getMappings());
+                        values.put(aliasedIndex, mappings);
+                    } else {
+                        mappings.getMappings().put(indexName, entry.getValue().getMappings());
+                        values.put(entry.getKey(), mappings);
+                    }
+                }
+            }
             final Map<String, Mapping> mappings;
             if (values.containsKey(indexName)) {
                 mappings = values.get(indexName).getMappings();
             } else {
-                final String aliasedIndex = getIndices(indexName).stream().findFirst().orElse(null);
                 if (values.containsKey(aliasedIndex)) {
                     mappings = values.get(aliasedIndex).getMappings();
                 } else if (!values.isEmpty()) {
@@ -154,7 +177,11 @@ public class RestElasticClient implements ElasticClient {
 
     @Override
     public ElasticResponse search(String searchIndices, String type, ElasticRequest request) throws IOException {
-        final StringBuilder pathBuilder = new StringBuilder("/" + searchIndices + "/" + type + "/_search");
+        final StringBuilder pathBuilder = new StringBuilder("/" + searchIndices);
+        if (getVersion() < 7) {
+            pathBuilder.append("/" + type);
+        }
+        pathBuilder.append("/_search");
 
         final Map<String,Object> requestBody = new HashMap<>();
 
@@ -167,7 +194,7 @@ public class RestElasticClient implements ElasticClient {
         }
 
         if (request.getScroll() != null) {
-            pathBuilder.append("?scroll=" + request.getScroll() + "s");
+            pathBuilder.append("?scroll=").append(request.getScroll()).append("s");
         }
 
         final List<String> sourceIncludes = request.getSourceIncludes();
@@ -194,39 +221,46 @@ public class RestElasticClient implements ElasticClient {
             requestBody.put("aggregations", request.getAggregations());
         }
 
-        if (LOGGER.isLoggable(Level.FINE)) {
-            LOGGER.fine("Elasticsearch request:\n" + this.mapper.writerWithDefaultPrettyPrinter().writeValueAsString(requestBody));
-        }
-
         return parseResponse(performRequest("POST", pathBuilder.toString(), requestBody));
     }
 
-    Response performRequest(String method, String path, Map<String,Object> requestBody, RestClient rc) throws IOException {
-        final byte[] data = this.mapper.writeValueAsBytes(requestBody);
-        final HttpEntity entity = new ByteArrayEntity(data, ContentType.APPLICATION_JSON);
+    private Response performRequest(String method, String path, Map<String, Object> requestBody, boolean isAdmin) throws IOException {
+        final HttpEntity entity;
+        if (requestBody != null) {
+            final byte[] data = this.mapper.writeValueAsBytes(requestBody);
+            entity = new ByteArrayEntity(data, ContentType.APPLICATION_JSON);
+        } else {
+            entity = null;
+        }
         if (LOGGER.isLoggable(Level.FINE)) {
             LOGGER.fine("Method: " + method);
             LOGGER.fine("Path: " + path);
-            LOGGER.fine("RequestBody: " + requestBody);
+            final String requestString = this.mapper.writerWithDefaultPrettyPrinter().writeValueAsString(requestBody);
+            LOGGER.fine("RequestBody: " + requestString);
         }
 
-        Response response = null;
-        if (rc == this.proxyClient) {
+        final RestClient client = isAdmin || this.proxyClient == null ? this.client : this.proxyClient;
+
+        final Request request = new Request(method, path);
+        request.setEntity(entity);
+
+        if (!isAdmin && enableRunAs) {
             final SecurityContext ctx = SecurityContextHolder.getContext();
             final Authentication auth = ctx.getAuthentication();
             if (auth == null) {
-                throw new IllegalStateException(String.format("Authentication could not be determined!"));
+                throw new IllegalStateException("Authentication could not be determined!");
             }
             if (!auth.isAuthenticated()) {
                 throw new IllegalStateException(String.format("User is not authenticated: %s", auth.getName()));
             }
-            final Header proxy = new BasicHeader(RUN_AS, auth.getName());
-            LOGGER.fine("Performing proxy request for: " + auth.getName());
-            response = rc.performRequest(method, path, Collections.<String, String> emptyMap(), entity, proxy);
+            final RequestOptions.Builder optionsBuilder = RequestOptions.DEFAULT.toBuilder();
+            optionsBuilder.addHeader(RUN_AS, auth.getName());
+            request.setOptions(optionsBuilder);
+            LOGGER.fine(String.format("Performing request on behalf of user %s", auth.getName()));
         } else {
-            LOGGER.fine("Performing admin request.");
-            response = rc.performRequest(method, path, Collections.<String, String> emptyMap(), entity);
+            LOGGER.fine(String.format("Performing request with %s credentials", isAdmin ? "user" : "proxy"));
         }
+        final Response response = client.performRequest(request);
         if (response.getStatusLine().getStatusCode() >= 400) {
             throw new IOException("Error executing request: " + response.getStatusLine().getReasonPhrase());
         }
@@ -234,9 +268,9 @@ public class RestElasticClient implements ElasticClient {
     }
 
     Response performRequest(String method, String path, Map<String,Object> requestBody) throws IOException {
-        return performRequest(method, path, requestBody, this.proxyClient != null ? this.proxyClient : this.adminClient);
+        return performRequest(method, path, requestBody, false);
     }
-    
+
     private ElasticResponse parseResponse(final Response response) throws IOException {
         try (final InputStream inputStream = response.getEntity().getContent()) {
             return this.mapper.readValue(inputStream, ElasticResponse.class);
@@ -265,11 +299,14 @@ public class RestElasticClient implements ElasticClient {
 
     @Override
     public void close() throws IOException {
-        LOGGER.fine("Closing client: " + this.adminClient);
-        this.adminClient.close();
-        if (this.proxyClient != null) {
-            LOGGER.fine("Closing proxyClient: " + this.proxyClient);
-            this.proxyClient.close();
+        LOGGER.fine("Closing proxyClient: " + this.client);
+        try {
+            this.client.close();
+        } finally {
+            if (this.proxyClient != null) {
+                LOGGER.fine("Closing proxyClient: " + this.proxyClient);
+                this.proxyClient.close();
+            }
         }
     }
 
@@ -284,18 +321,19 @@ public class RestElasticClient implements ElasticClient {
                 removeMapping(parent, key, (Map<String,Object>) entry.getValue(), entry.getKey());
             } else if (entry.getValue() instanceof List) {
                 ((List<Object>) entry.getValue()).stream()
-                .filter(item -> item instanceof Map)
-                .forEach(item -> removeMapping(parent, key, (Map<String,Object>) item, currentParent));
+                    .filter(item -> item instanceof Map)
+                    .forEach(item -> removeMapping(parent, key, (Map<String,Object>) item, currentParent));
             }
         }
     }
 
     private Set<String> getIndices(String alias) {
-        Set<String> indices = null;
+        Set<String> indices;
         try {
-            final Response response = performRequest("GET", "/_alias/" + alias, null, this.adminClient);
+            final Response response = performRequest("GET", "/_alias/" + alias, null, true);
             try (final InputStream inputStream = response.getEntity().getContent()) {
-                final Map<String,Object> result = this.mapper.readValue(inputStream, new TypeReference<Map<String, Object>>() {});
+                final Map<String,Object> result;
+                result = this.mapper.readValue(inputStream, new TypeReference<Map<String, Object>>() {});
                 indices = result.keySet();
             }
         } catch (IOException e) {

@@ -1,4 +1,4 @@
-/**
+/*
  * This file is hereby placed into the Public Domain. This means anyone is
  * free to do whatever they wish with this file.
  */
@@ -8,7 +8,8 @@ import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-public class ElasticMappings {
+@SuppressWarnings("unused")
+class ElasticMappings {
 
     private Map<String,Mapping> mappings;
 
@@ -28,9 +29,14 @@ public class ElasticMappings {
         public Map<String, Object> getProperties() {
             return properties;
         }
+    }
 
-        public void setProperties(Map<String, Object> properties) {
-            this.properties = properties;
+    public static class Untyped {
+
+        private Mapping mappings;
+
+        public Mapping getMappings() {
+            return mappings;
         }
     }
 

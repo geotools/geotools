@@ -1,4 +1,4 @@
-/**
+/*
  * This file is hereby placed into the Public Domain. This means anyone is
  * free to do whatever they wish with this file.
  */
@@ -9,11 +9,11 @@ import java.util.Map;
 
 public class MetricGeoHashGrid extends GeoHashGrid {
 
-    public final static int METRIC_KEY_INDEX = 0;
-
-    public final static int VALUE_KEY_INDEX = 1;
-
     public final static String DEFAULT_METRIC_KEY = "metric";
+
+    private final static int METRIC_KEY_INDEX = 0;
+
+    private final static int VALUE_KEY_INDEX = 1;
 
     private String metricKey = DEFAULT_METRIC_KEY;
 

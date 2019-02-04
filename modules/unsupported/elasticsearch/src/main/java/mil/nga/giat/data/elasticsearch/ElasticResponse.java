@@ -1,4 +1,4 @@
-/**
+/*
  * This file is hereby placed into the Public Domain. This means anyone is
  * free to do whatever they wish with this file.
  */
@@ -12,12 +12,14 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+@SuppressWarnings("unused")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ElasticResponse {
 
     @JsonProperty("hits")
     private ElasticResults results;
 
+    @JsonProperty("aggregations")
     private Map<String,ElasticAggregation> aggregations;
 
     @JsonProperty("_scroll_id")
@@ -27,24 +29,12 @@ public class ElasticResponse {
         return results;
     }
 
-    public void setResults(ElasticResults results) {
-        this.results = results;
-    }
-
     public Map<String,ElasticAggregation> getAggregations() {
         return aggregations;
     }
 
-    public void setAggregations(Map<String,ElasticAggregation> aggregations) {
-        this.aggregations = aggregations;
-    }
-
     public String getScrollId() {
         return scrollId;
-    }
-
-    public void setScrollId(String scrollId) {
-        this.scrollId = scrollId;
     }
 
     @JsonIgnore
@@ -73,7 +63,7 @@ public class ElasticResponse {
         if (results != null && results.getTotal() != null) {
             total = results.getTotal();
         } else {
-            total = 0l;
+            total = 0L;
         }
         return total;
     }
@@ -90,13 +80,13 @@ public class ElasticResponse {
 
     @Override
     public String toString() {
-        return new StringBuilder("ElasticResponse[total=")
-                .append(getTotalNumHits())
-                .append(", hits=").append(getNumHits())
-                .append(", aggregations=").append(aggregations)
-                .append(", scrollId=").append(scrollId)
-                .append(", maxScore=").append(getMaxScore())
-                .append("]").toString();
+        return "ElasticResponse[total=" +
+                getTotalNumHits() +
+                ", hits=" + getNumHits() +
+                ", aggregations=" + aggregations +
+                ", scrollId=" + scrollId +
+                ", maxScore=" + getMaxScore() +
+                "]";
     }
 
 }

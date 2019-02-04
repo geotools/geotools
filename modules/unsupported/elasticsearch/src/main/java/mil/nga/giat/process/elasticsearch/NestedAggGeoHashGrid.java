@@ -1,4 +1,4 @@
-/**
+/*
  * This file is hereby placed into the Public Domain. This means anyone is
  * free to do whatever they wish with this file.
  */
@@ -15,29 +15,29 @@ public class NestedAggGeoHashGrid extends GeoHashGrid {
 
     private final static Logger LOGGER = Logging.getLogger(NestedAggGeoHashGrid.class);
 
-    public final static int NESTED_KEY_INDEX = 0;
+    private final static int NESTED_KEY_INDEX = 0;
 
-    public final static int METRIC_KEY_INDEX = 1;
+    private final static int METRIC_KEY_INDEX = 1;
 
-    public final static int VALUE_KEY_INDEX = 2;
+    private final static int VALUE_KEY_INDEX = 2;
 
-    public final static int SELECTION_STRATEGY_INDEX = 3;
+    private final static int SELECTION_STRATEGY_INDEX = 3;
 
-    public final static int RASTER_STRATEGY_INDEX = 4;
+    private final static int RASTER_STRATEGY_INDEX = 4;
 
-    public final static int TERMS_MAP_INDEX = 5;
+    private final static int TERMS_MAP_INDEX = 5;
 
-    public final static String SELECT_LARGEST = "largest";
+    final static String SELECT_LARGEST = "largest";
 
-    public final static String SELECT_SMALLEST = "smallest";
+    final static String SELECT_SMALLEST = "smallest";
 
-    public final static String RASTER_FROM_VALUE = "value";
+    final static String RASTER_FROM_VALUE = "value";
 
-    public final static String RASTER_FROM_KEY = "key";
+    final static String RASTER_FROM_KEY = "key";
 
-    public final static String DEFAULT_AGG_KEY = "nested";
+    final static String DEFAULT_AGG_KEY = "nested";
 
-    public final static String DEFAULT_METRIC_KEY = "";
+    final static String DEFAULT_METRIC_KEY = "";
 
     private String nestedAggKey = DEFAULT_AGG_KEY;
 
@@ -82,12 +82,12 @@ public class NestedAggGeoHashGrid extends GeoHashGrid {
                 LOGGER.warning("Unexpected raster strategy parameter; you provided " + params.get(RASTER_STRATEGY_INDEX) + ", defaulting to: " + rasterStrategy);
             }
             if (rasterStrategy.equals(RASTER_FROM_KEY) && params.size() >= 6) {
-                termsMap = new HashMap<String, Integer>();
+                termsMap = new HashMap<>();
                 String[] terms = params.get(TERMS_MAP_INDEX).split(";");
-                for (int i=0; i<terms.length; i++) {
-                    String[] keyValueSplit = terms[i].split(":");
+                for (String term : terms) {
+                    String[] keyValueSplit = term.split(":");
                     if (keyValueSplit.length != 2) {
-                        LOGGER.warning("Term " + terms[i] + " does not contain required format <key>:<value>");
+                        LOGGER.warning("Term " + term + " does not contain required format <key>:<value>");
                         throw new IllegalArgumentException();
                     }
                     termsMap.put(keyValueSplit[0], new Integer(keyValueSplit[1]));
@@ -111,7 +111,7 @@ public class NestedAggGeoHashGrid extends GeoHashGrid {
         return rasterValue;
     }
 
-    protected Number selectLargest(List<Map<String,Object>> buckets) {
+    Number selectLargest(List<Map<String, Object>> buckets) {
         String largestKey = pluckBucketName(buckets.get(0));
         Number largestValue = super.pluckMetricValue(buckets.get(0), metricKey, valueKey);
         for (Map<String,Object> bucket : buckets) {
@@ -124,7 +124,7 @@ public class NestedAggGeoHashGrid extends GeoHashGrid {
         return bucketToRaster(largestKey, largestValue);
     }
 
-    protected Number selectSmallest(List<Map<String,Object>> buckets) {
+    Number selectSmallest(List<Map<String, Object>> buckets) {
         String smallestKey = pluckBucketName(buckets.get(0));
         Number smallestValue = super.pluckMetricValue(buckets.get(0), metricKey, valueKey);
         for (Map<String,Object> bucket : buckets) {
@@ -137,7 +137,7 @@ public class NestedAggGeoHashGrid extends GeoHashGrid {
         return bucketToRaster(smallestKey, smallestValue);
     }
 
-    protected Number bucketToRaster(String key, Number value) {
+    Number bucketToRaster(String key, Number value) {
         Number rasterValue = value;
         if (rasterStrategy.equals(RASTER_FROM_KEY)) {
             if (null != termsMap) {

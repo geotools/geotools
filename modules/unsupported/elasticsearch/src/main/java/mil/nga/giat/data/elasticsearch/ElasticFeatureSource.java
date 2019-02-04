@@ -1,4 +1,4 @@
-/**
+/*
  * This file is hereby placed into the Public Domain. This means anyone is
  * free to do whatever they wish with this file.
  */
@@ -31,7 +31,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * by the associated data store.
  *
  */
-public class ElasticFeatureSource extends ContentFeatureSource {
+class ElasticFeatureSource extends ContentFeatureSource {
 
     private final static Logger LOGGER = Logging.getLogger(ElasticFeatureSource.class);
 
@@ -108,7 +108,7 @@ public class ElasticFeatureSource extends ContentFeatureSource {
     @Override
     protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query) throws IOException {
         LOGGER.fine("getReaderInternal");
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader = null;
+        FeatureReader<SimpleFeatureType, SimpleFeature> reader;
         try {
             final ElasticDataStore dataStore = getDataStore();
             final String docType = dataStore.getDocType(entry.getName());
@@ -124,7 +124,7 @@ public class ElasticFeatureSource extends ContentFeatureSource {
                 reader = new ElasticFeatureReaderScroll(getState(), sr, getSize(query));
             }
             if (!filterFullySupported) {
-                reader = new FilteringFeatureReader<SimpleFeatureType, SimpleFeature>(reader, query.getFilter());
+                reader = new FilteringFeatureReader<>(reader, query.getFilter());
             }
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
@@ -192,7 +192,8 @@ public class ElasticFeatureSource extends ContentFeatureSource {
         searchRequest.setQuery(queryBuilder);
 
         if (isSort(query) && nativeQueryBuilder.equals(ElasticConstants.MATCH_ALL)) {
-            searchRequest.addSort("_uid", naturalSortOrder);
+            final String sortKey = dataStore.getClient().getVersion() < 7 ? "_uid" : "_id";
+            searchRequest.addSort(sortKey, naturalSortOrder);
         }
 
         if (filterToElastic.getAggregations() != null) {
@@ -263,7 +264,7 @@ public class ElasticFeatureSource extends ContentFeatureSource {
     }
 
     @Override
-    protected SimpleFeatureType buildFeatureType() throws IOException {
+    protected SimpleFeatureType buildFeatureType() {
         final ElasticDataStore ds = getDataStore();
         final ElasticLayerConfiguration layerConfig;
         layerConfig = ds.getLayerConfigurations().get(entry.getTypeName());

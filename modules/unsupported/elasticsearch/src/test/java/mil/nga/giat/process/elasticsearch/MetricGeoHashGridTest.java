@@ -1,4 +1,4 @@
-/**
+/*
  * This file is hereby placed into the Public Domain. This means anyone is
  * free to do whatever they wish with this file.
  */
@@ -33,7 +33,7 @@ public class MetricGeoHashGridTest {
     public void testSetParams() {
         String metricKey = "mymetric";
         String valueKey = "myvalue";
-        List<String> params = new ArrayList<String>();
+        List<String> params = new ArrayList<>();
         params.add(metricKey);
         params.add(valueKey);
         geohashGrid.setParams(params);
@@ -44,7 +44,7 @@ public class MetricGeoHashGridTest {
     @Test
     public void testSetParams_justMetric() {
         String metricKey = "mymetric";
-        List<String> params = new ArrayList<String>();
+        List<String> params = new ArrayList<>();
         params.add(metricKey);
         geohashGrid.setParams(params);
         assertEquals(metricKey, geohashGrid.getMetricKey());

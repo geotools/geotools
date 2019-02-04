@@ -1,4 +1,4 @@
-/**
+/*
  * This file is hereby placed into the Public Domain. This means anyone is
  * free to do whatever they wish with this file.
  */
@@ -20,7 +20,7 @@ public class ElasticLayerConfiguration implements Serializable {
      */
     public static final String KEY = "ElasticLayerConfiguration";
 
-    private String docType;
+    private final String docType;
 
     private String layerName;
 

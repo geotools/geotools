@@ -1,4 +1,4 @@
-/**
+/*
  * This file is hereby placed into the Public Domain. This means anyone is
  * free to do whatever they wish with this file.
  */
@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ElasticAggregation {
+class ElasticAggregation {
 
     private List<Map<String,Object>> buckets;
 
@@ -24,9 +24,9 @@ public class ElasticAggregation {
 
     @Override
     public String toString() {
-        return new StringBuilder("ElasticAggregation[numBuckets=")
-                .append(buckets != null ? buckets.size() : 0)
-                .append("]").toString();
+        return "ElasticAggregation[numBuckets=" +
+                (buckets != null ? buckets.size() : 0) +
+                "]";
     }
 
 }

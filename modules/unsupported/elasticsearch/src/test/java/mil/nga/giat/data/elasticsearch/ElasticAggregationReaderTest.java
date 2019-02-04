@@ -89,7 +89,6 @@ public class ElasticAggregationReaderTest {
     }
 
     private Map<String,Object> byteArrayToMap(Object bytes) throws IOException {
-        final Map<String,Object> data = mapper.readValue((byte[]) bytes, new TypeReference<Map<String,Object>>() {});
-        return data;
+        return mapper.readValue((byte[]) bytes, new TypeReference<Map<String,Object>>() {});
     }
 }

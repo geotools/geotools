@@ -1,4 +1,4 @@
-/**
+/*
  * This file is hereby placed into the Public Domain. This means anyone is
  * free to do whatever they wish with this file.
  */
@@ -30,10 +30,9 @@ import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.github.davidmoten.geo.GeoHash;
 
+@SuppressWarnings({"rawtypes", "unchecked"})
 public class ElasticParserUtilTest {
 
     private ElasticParserUtil parserUtil;
@@ -47,11 +46,11 @@ public class ElasticParserUtilTest {
     private RandomGeometryBuilder rgb;
 
     @Before
-    public void setUp() throws ReflectiveOperationException {
+    public void setUp() {
         parserUtil = new ElasticParserUtil();
         geometryFactory = new GeometryFactory();
         properties = new LinkedHashMap<>();
-        rand = new Random(123456789l);
+        rand = new Random(123456789L);
         rgb = new RandomGeometryBuilder();
     }
 
@@ -120,7 +119,7 @@ public class ElasticParserUtilTest {
         properties.put("lat", true);
         properties.put("lon", true);
         final Geometry geometry = parserUtil.createGeometry(properties);
-        assertTrue(geometry == null);
+        assertNull(geometry);
     }
 
     @Test
@@ -130,29 +129,28 @@ public class ElasticParserUtilTest {
         properties.put("latD", lat);
         properties.put("lonD", lon);
         final Geometry geometry = parserUtil.createGeometry(properties);
-        assertTrue(geometry == null);
+        assertNull(geometry);
     }
 
     @Test
     public void testGeoPointAsStringArray() {
         final double lat = rand.nextDouble() * 90 - 90;
         final double lon = rand.nextDouble() * 180 - 180;
-        final Geometry geometry = parserUtil.createGeometry(Arrays.asList(new String[]{
-            String.valueOf(lon), String.valueOf(lat)}));
+        final Geometry geometry = parserUtil.createGeometry(Arrays.asList(String.valueOf(lon), String.valueOf(lat)));
         assertTrue(geometry.equals(geometryFactory.createPoint(new Coordinate(lon, lat))));
     }
 
     @Test
     public void testGeoPointAsInvalidArray() {
-        final Geometry geometry = parserUtil.createGeometry(Arrays.asList(new Boolean[]{true, true}));
-        assertTrue(geometry == null);
+        final Geometry geometry = parserUtil.createGeometry(Arrays.asList(true, true));
+        assertNull(geometry);
     }
 
     @Test
     public void testGeoPointAsDoubleArray() {
         final double lat = rand.nextDouble() * 90 - 90;
         final double lon = rand.nextDouble() * 180 - 180;
-        final Geometry geometry = parserUtil.createGeometry(Arrays.asList(new Double[]{lon, lat}));
+        final Geometry geometry = parserUtil.createGeometry(Arrays.asList(lon, lat));
         assertTrue(geometry.equals(geometryFactory.createPoint(new Coordinate(lon, lat))));
     }
 
@@ -170,19 +168,19 @@ public class ElasticParserUtilTest {
     public void testInvalidStringGeometry() {
         final double lat = rand.nextDouble() * 90 - 90;
         final double lon = rand.nextDouble() * 180 - 180;
-        assertTrue(parserUtil.createGeometry(String.valueOf(lat)) == null);
-        assertTrue(parserUtil.createGeometry(lat + "," + lon + "," + 0) == null);
-        assertTrue(parserUtil.createGeometry("x:" + lat + "," + lon) == null);
+        assertNull(parserUtil.createGeometry(String.valueOf(lat)));
+        assertNull(parserUtil.createGeometry(lat + "," + lon + "," + 0));
+        assertNull(parserUtil.createGeometry("x:" + lat + "," + lon));
     }
 
     @Test
-    public void testGeoShapePoint() throws JsonParseException, JsonMappingException, IOException {
+    public void testGeoShapePoint() throws IOException {
         Point geom = rgb.createRandomPoint();
         assertTrue(parserUtil.createGeometry(rgb.toMap(geom)).equalsExact(geom, 1e-9));
     }
 
     @Test
-    public void testGeoShapePointString() throws JsonParseException, JsonMappingException, IOException {
+    public void testGeoShapePointString() {
         Point geom = rgb.createRandomPoint();
         final Map<String, Object> map = new HashMap<>();
         final List<String> coords = new ArrayList<>();
@@ -194,31 +192,31 @@ public class ElasticParserUtilTest {
     }
 
     @Test
-    public void testGeoShapePointWkt() throws JsonParseException, JsonMappingException, IOException {
+    public void testGeoShapePointWkt() {
         Point geom = rgb.createRandomPoint();
         assertTrue(parserUtil.createGeometry(rgb.toWkt(geom)).equalsExact(geom, 1e-9));
     }
 
     @Test
-    public void testGeoShapeLineString() throws JsonParseException, JsonMappingException, IOException {
+    public void testGeoShapeLineString() throws IOException {
         LineString geom = rgb.createRandomLineString();
         assertTrue(parserUtil.createGeometry(rgb.toMap(geom)).equalsExact(geom, 1e-9));
     }
 
     @Test
-    public void testGeoShapeLineStringWkt() throws JsonParseException, JsonMappingException, IOException {
+    public void testGeoShapeLineStringWkt() {
         LineString geom = rgb.createRandomLineString();
         assertTrue(parserUtil.createGeometry(rgb.toWkt(geom)).equalsExact(geom, 1e-9));
     }
 
     @Test
-    public void testGeoShapePolygon() throws JsonParseException, JsonMappingException, IOException {
+    public void testGeoShapePolygon() throws IOException {
         Polygon geom = rgb.createRandomPolygon();
         assertTrue(parserUtil.createGeometry(rgb.toMap(geom)).equalsExact(geom, 1e-9));
     }
 
     @Test
-    public void testGeoShapeCircle() throws JsonParseException, JsonMappingException, IOException {
+    public void testGeoShapeCircle() {
         Map<String, Object> inputMap = new HashMap<>();
         inputMap.put("type", "circle");
         inputMap.put("radius", "5nmi");
@@ -231,63 +229,115 @@ public class ElasticParserUtilTest {
         assertNotNull(geometry);
     }
 
-    public void testGeoShapePolygonWkt() throws JsonParseException, JsonMappingException, IOException {
+    @Test
+    public void testGeoShapeCircleWithMissingCenter() {
+        Map<String, Object> inputMap = new HashMap<>();
+        inputMap.put("type", "circle");
+        inputMap.put("radius", "5nmi");
+        Geometry geometry = parserUtil.createGeometry(inputMap);
+
+        assertNull(geometry);
+    }
+
+    @Test
+    public void testGeoShapeCircleWithInvalidRadii() {
+        Map<String, Object> inputMap = new HashMap<>();
+        inputMap.put("type", "circle");
+        inputMap.put("radius", "5qx");
+        List<String> posList = new ArrayList<>();
+        posList.add("8.0");
+        posList.add("35.0");
+        inputMap.put("coordinates", posList);
+        Geometry geometry = parserUtil.createGeometry(inputMap);
+
+        assertNull(geometry);
+    }
+
+    @Test
+    public void testGeoShapeCircleWithSmallRadii() {
+        Map<String, Object> inputMap = new HashMap<>();
+        inputMap.put("type", "circle");
+        inputMap.put("radius", "0.0000000000001m");
+        List<String> posList = new ArrayList<>();
+        posList.add("8.0");
+        posList.add("35.0");
+        inputMap.put("coordinates", posList);
+        Geometry geometry = parserUtil.createGeometry(inputMap);
+
+        assertNull(geometry);
+    }
+
+    @Test
+    public void testGeoShapeCircleWithMissingRadii() {
+        Map<String, Object> inputMap = new HashMap<>();
+        inputMap.put("type", "circle");
+        List<String> posList = new ArrayList<>();
+        posList.add("8.0");
+        posList.add("35.0");
+        inputMap.put("coordinates", posList);
+        Geometry geometry = parserUtil.createGeometry(inputMap);
+
+        assertNull(geometry);
+    }
+
+    @Test
+    public void testGeoShapePolygonWkt() {
         Polygon geom = rgb.createRandomPolygon();
         assertTrue(parserUtil.createGeometry(rgb.toWkt(geom)).equalsExact(geom, 1e-9));
     }
 
     @Test
-    public void testGeoShapeMultiPoint() throws JsonParseException, JsonMappingException, IOException {
+    public void testGeoShapeMultiPoint() throws IOException {
         MultiPoint geom = rgb.createRandomMultiPoint();
         assertTrue(parserUtil.createGeometry(rgb.toMap(geom)).equalsExact(geom, 1e-9));
     }
 
     @Test
-    public void testGeoShapeMultiPointWkt() throws JsonParseException, JsonMappingException, IOException {
+    public void testGeoShapeMultiPointWkt() {
         MultiPoint geom = rgb.createRandomMultiPoint();
         assertTrue(parserUtil.createGeometry(rgb.toWkt(geom)).equalsExact(geom, 1e-9));
     }
 
     @Test
-    public void testGeoShapeMultiLineString() throws JsonParseException, JsonMappingException, IOException {
+    public void testGeoShapeMultiLineString() throws IOException {
         MultiLineString geom = rgb.createRandomMultiLineString();
         assertTrue(parserUtil.createGeometry(rgb.toMap(geom)).equalsExact(geom, 1e-9));
     }
 
     @Test
-    public void testGeoShapeMultiLineStringWkt() throws JsonParseException, JsonMappingException, IOException {
+    public void testGeoShapeMultiLineStringWkt() {
         MultiLineString geom = rgb.createRandomMultiLineString();
         assertTrue(parserUtil.createGeometry(rgb.toWkt(geom)).equalsExact(geom, 1e-9));
     }
 
     @Test
-    public void testGeoShapeMultiPolygon() throws JsonParseException, JsonMappingException, IOException {
+    public void testGeoShapeMultiPolygon() throws IOException {
         MultiPolygon geom = rgb.createRandomMultiPolygon();
         assertTrue(parserUtil.createGeometry(rgb.toMap(geom)).equalsExact(geom, 1e-9));
     }
 
     @Test
-    public void testGeoShapeMultiPolygonWkt() throws JsonParseException, JsonMappingException, IOException {
+    public void testGeoShapeMultiPolygonWkt() {
         MultiPolygon geom = rgb.createRandomMultiPolygon();
         assertTrue(parserUtil.createGeometry(rgb.toWkt(geom)).equalsExact(geom, 1e-9));
     }
 
     @Test
-    public void testGeoShapeGeometryCollection() throws JsonParseException, JsonMappingException, IOException {
+    public void testGeoShapeGeometryCollection() throws IOException {
         rgb.setNumGeometries(5);
         GeometryCollection geom = rgb.createRandomGeometryCollection();
         assertTrue(parserUtil.createGeometry(rgb.toMap(geom)).equalsExact(geom, 1e-9));
     }
 
     @Test
-    public void testGeoShapeGeometryCollectionWkt() throws JsonParseException, JsonMappingException, IOException {
+    public void testGeoShapeGeometryCollectionWkt() {
         rgb.setNumGeometries(5);
         GeometryCollection geom = rgb.createRandomGeometryCollection();
         assertTrue(parserUtil.createGeometry(rgb.toWkt(geom)).equalsExact(geom, 1e-9));
     }
 
     @Test
-    public void testGeoShapeEnvelope() throws JsonParseException, JsonMappingException, IOException {
+    public void testGeoShapeEnvelope() {
         Envelope envelope = rgb.createRandomEnvelope();
         Geometry expected = geometryFactory.toGeometry(envelope);
         assertTrue(parserUtil.createGeometry(rgb.toMap(envelope)).equalsExact(expected, 1e-9));
@@ -296,23 +346,23 @@ public class ElasticParserUtilTest {
     @Test
     public void testUnrecognizedGeometry() {
         final Geometry geom = parserUtil.createGeometry(3.0);
-        assertTrue(geom == null);
+        assertNull(geom);
     }
 
     @Test
     public void testReadStringField() {
         properties.put("attr", "value");
         List<Object> values = parserUtil.readField(properties, "attr");
-        assertTrue(values.size() == 1);
-        assertTrue(values.get(0).equals("value"));
+        assertEquals(1, values.size());
+        assertEquals("value", values.get(0));
     }
 
     @Test
     public void testReadNumericField() {
         properties.put("attr", 2.3);
         List<Object> values = parserUtil.readField(properties, "attr");
-        assertTrue(values.size() == 1);
-        assertTrue(values.get(0).equals(2.3));
+        assertEquals(1, values.size());
+        assertEquals(2.3, values.get(0));
     }
 
     @Test
@@ -323,8 +373,8 @@ public class ElasticParserUtilTest {
         properties.put("parent2", new LinkedHashMap<String, Object>());
         ((Map) properties.get("parent2")).put("attr", "value3");
         List<Object> values = parserUtil.readField(properties, "attr");
-        assertTrue(values.size() == 1);
-        assertTrue(values.get(0).equals("value"));
+        assertEquals(1, values.size());
+        assertEquals("value", values.get(0));
     }
 
     @Test
@@ -332,18 +382,18 @@ public class ElasticParserUtilTest {
         properties.put("parent", new LinkedHashMap<String, Object>());
         ((Map) properties.get("parent")).put("attr", "value");
         List<Object> values = parserUtil.readField(properties, "parent.attr");
-        assertTrue(values.size() == 1);
-        assertTrue(values.get(0).equals("value"));
+        assertEquals(1, values.size());
+        assertEquals("value", values.get(0));
     }
 
     @Test
     public void testReadInnerStringArray() {
         properties.put("parent", new LinkedHashMap<String, Object>());
-        ((Map) properties.get("parent")).put("attr", Arrays.asList(new String[]{"value1", "value2"}));
+        ((Map) properties.get("parent")).put("attr", Arrays.asList("value1", "value2"));
         List<Object> values = parserUtil.readField(properties, "parent.attr");
-        assertTrue(values.size() == 2);
-        assertTrue(values.get(0).equals("value1"));
-        assertTrue(values.get(1).equals("value2"));
+        assertEquals(2, values.size());
+        assertEquals("value1", values.get(0));
+        assertEquals("value2", values.get(1));
     }
 
     @Test
@@ -354,9 +404,9 @@ public class ElasticParserUtilTest {
         ((List) properties.get("parent")).add(new LinkedHashMap<String, Object>());
         ((Map) ((List) properties.get("parent")).get(1)).put("attr", "value2");
         List<Object> values = parserUtil.readField(properties, "parent.attr");
-        assertTrue(values.size() == 2);
-        assertTrue(values.get(0).equals("value1"));
-        assertTrue(values.get(1).equals("value2"));
+        assertEquals(2, values.size());
+        assertEquals("value1", values.get(0));
+        assertEquals("value2", values.get(1));
     }
 
     @Test
@@ -369,20 +419,20 @@ public class ElasticParserUtilTest {
         ((Map) ((List) properties.get("parent")).get(1)).put("child", new LinkedHashMap<String, Object>());
         ((Map) ((Map) ((List) properties.get("parent")).get(1)).get("child")).put("attr", "value2");
         List<Object> values = parserUtil.readField(properties, "parent.child.attr");
-        assertTrue(values.size() == 2);
-        assertTrue(values.get(0).equals("value1"));
-        assertTrue(values.get(1).equals("value2"));
+        assertEquals(2, values.size());
+        assertEquals("value1", values.get(0));
+        assertEquals("value2", values.get(1));
     }
 
     @Test
     public void testReadMapField() {
-        final Map<String, Object> map = new LinkedHashMap<String, Object>();
+        final Map<String, Object> map = new LinkedHashMap<>();
         properties.put("attr", map);
         map.put("attr2", "value2");
         map.put("attr3", "value3");
         List<Object> values = parserUtil.readField(properties, "attr");
-        assertTrue(values.size() == 1);
-        assertTrue(values.get(0).equals(map));
+        assertEquals(1, values.size());
+        assertEquals(values.get(0), map);
     }
 
     @Test
@@ -396,31 +446,31 @@ public class ElasticParserUtilTest {
         distance = ElasticParserUtil.convertToMeters("0.12cm");
         assertEquals(0.0012, distance, 0.0000000001);
         try {
-            distance = ElasticParserUtil.convertToMeters("999xyz");
+            ElasticParserUtil.convertToMeters("999xyz");
             fail("Shouldn't get here");
         }
-        catch(IllegalArgumentException iae) {
+        catch(IllegalArgumentException ignored) {
             
         }
          try {
-            distance = ElasticParserUtil.convertToMeters("mm1.2");
+            ElasticParserUtil.convertToMeters("mm1.2");
             fail("Shouldn't get here");
         }
-        catch(IllegalArgumentException iae) {
+        catch(IllegalArgumentException ignored) {
             
         }
         try {
-            distance = ElasticParserUtil.convertToMeters(".2");
+            ElasticParserUtil.convertToMeters(".2");
             fail("Shouldn't get here");
         }
-        catch(IllegalArgumentException iae) {
+        catch(IllegalArgumentException ignored) {
             
         }
         try {
-            distance = ElasticParserUtil.convertToMeters(".2m");
+            ElasticParserUtil.convertToMeters(".2m");
             fail("Shouldn't get here");
         }
-        catch(IllegalArgumentException iae) {
+        catch(IllegalArgumentException ignored) {
             
         }
     }

@@ -1,4 +1,4 @@
-/**
+/*
  * This file is hereby placed into the Public Domain. This means anyone is
  * free to do whatever they wish with this file.
  */
@@ -33,7 +33,7 @@ import java.util.logging.Logger;
 /**
  * FeatureReader access to the Elasticsearch index.
  */
-public class ElasticFeatureReader implements FeatureReader<SimpleFeatureType, SimpleFeature> {
+class ElasticFeatureReader implements FeatureReader<SimpleFeatureType, SimpleFeature> {
 
     private final static Logger LOGGER = Logging.getLogger(ElasticFeatureReader.class);
 
@@ -53,7 +53,7 @@ public class ElasticFeatureReader implements FeatureReader<SimpleFeatureType, Si
 
     private Iterator<Map<String,Object>> aggregationIterator;
 
-    private ElasticParserUtil parserUtil;
+    private final ElasticParserUtil parserUtil;
 
     public ElasticFeatureReader(ContentState contentState, ElasticResponse response) {
         this(contentState, response.getHits(), response.getAggregations(), response.getMaxScore());
@@ -96,7 +96,13 @@ public class ElasticFeatureReader implements FeatureReader<SimpleFeatureType, Si
 
     @Override
     public SimpleFeature next() {
-        String id = searchHitIterator.hasNext() ? nextHit() : nextAggregation();
+        final String id;
+        if (searchHitIterator.hasNext()) {
+            id = nextHit();
+        } else {
+            nextAggregation();
+            id = null;
+        }
         return builder.buildFeature(id);
     }
 
@@ -135,15 +141,13 @@ public class ElasticFeatureReader implements FeatureReader<SimpleFeatureType, Si
                 builder.set(name, score);
             } else if (values == null && sourceName.equals("_relative_score")) {
                 builder.set(name, relativeScore);
-            } else if (values == null) {
-                // skip missing attribute
-            } else if (Geometry.class.isAssignableFrom(descriptor.getType().getBinding())) {
+            } else if (values != null && Geometry.class.isAssignableFrom(descriptor.getType().getBinding())) {
                 if (values.size() == 1) {
                     builder.set(name, parserUtil.createGeometry(values.get(0)));
                 } else {
                     builder.set(name, parserUtil.createGeometry(values));
                 }
-            } else if (Date.class.isAssignableFrom(descriptor.getType().getBinding())) {
+            } else if (values != null && Date.class.isAssignableFrom(descriptor.getType().getBinding())) {
                 Object dataVal = values.get(0);
                 if (dataVal instanceof Double) {
                     builder.set(name, new Date(Math.round((Double) dataVal)));
@@ -158,17 +162,15 @@ public class ElasticFeatureReader implements FeatureReader<SimpleFeatureType, Si
                     Date date = dateFormatter.parseDateTime((String) dataVal).toDate();
                     builder.set(name, date);
                 }
-            } else if (values.size() == 1) {
+            } else if (values != null && values.size() == 1) {
                 builder.set(name, values.get(0));
-            } else if (!name.equals("_aggregation")) {
+            } else if (values != null && !name.equals("_aggregation")) {
                 final Object value;
-                switch (arrayEncoding) {
-                    case CSV:
-                        // only include first array element when using CSV array encoding
-                        value = values.get(0);
-                        break;
-                    default:
-                        value = values;
+                if (arrayEncoding == ArrayEncoding.CSV) {
+                    // only include first array element when using CSV array encoding
+                    value = values.get(0);
+                } else {
+                    value = values;
                 }
                 builder.set(name, value);
             }
@@ -177,7 +179,7 @@ public class ElasticFeatureReader implements FeatureReader<SimpleFeatureType, Si
         return state.getEntry().getTypeName() + "." + hit.getId();
     }
 
-    private String nextAggregation() {
+    private void nextAggregation() {
         final Map<String, Object> aggregation = aggregationIterator.next();
         try {
             final byte[] data = mapper.writeValueAsBytes(aggregation);
@@ -185,7 +187,6 @@ public class ElasticFeatureReader implements FeatureReader<SimpleFeatureType, Si
         } catch (IOException e) {
             LOGGER.warning("Unable to set aggregation. Try reloading layer.");
         }
-        return null;
     }
 
     @Override

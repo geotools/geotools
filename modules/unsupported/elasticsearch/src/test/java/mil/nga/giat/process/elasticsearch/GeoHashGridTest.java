@@ -1,4 +1,4 @@
-/**
+/*
  * This file is hereby placed into the Public Domain. This means anyone is
  * free to do whatever they wish with this file.
  */
@@ -6,7 +6,6 @@ package mil.nga.giat.process.elasticsearch;
 
 import static org.junit.Assert.*;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -101,7 +100,7 @@ public class GeoHashGridTest {
         expected[ny-1][0] = 10;
         assertEquals(ny, geohashGrid.getGrid().length);
         assertEquals(nx, geohashGrid.getGrid()[0].length);
-        IntStream.range(0, ny).forEach(i->assertTrue(Arrays.equals(expected[i], geohashGrid.getGrid()[i])));
+        IntStream.range(0, ny).forEach(i-> assertArrayEquals(expected[i], geohashGrid.getGrid()[i], 0.0f));
     }
 
     @Test
@@ -123,7 +122,7 @@ public class GeoHashGridTest {
         float[][] expected = new float[ny][nx];
         expected[0][7] = 10;
         expected[ny-1][0] = 5;
-        IntStream.range(0, ny).forEach(i->assertTrue(Arrays.equals(geohashGrid.getGrid()[i], expected[i])));
+        IntStream.range(0, ny).forEach(i-> assertArrayEquals(geohashGrid.getGrid()[i], expected[i], 0.0f));
     }
 
     @Test
@@ -142,7 +141,7 @@ public class GeoHashGridTest {
         features = new DefaultFeatureCollection();
         ReferencedEnvelope envelope = new ReferencedEnvelope(-180,180,-90,90,CRS.decode("EPSG:4326"));
         geohashGrid.initalize(envelope, features);
-        IntStream.range(0, geohashGrid.getGrid().length).forEach(i->assertTrue(Arrays.equals(new float[geohashGrid.getGrid()[i].length], geohashGrid.getGrid()[i])));
+        IntStream.range(0, geohashGrid.getGrid().length).forEach(i-> assertArrayEquals(new float[geohashGrid.getGrid()[i].length], geohashGrid.getGrid()[i], 0.0f));
     }
 
     @Test
@@ -152,11 +151,7 @@ public class GeoHashGridTest {
         ReferencedEnvelope envelope = new ReferencedEnvelope(-180,180,-90,90,CRS.decode("EPSG:4326"));
         geohashGrid.setEmptyCellValue(emptyCellValue);
         geohashGrid.initalize(envelope, features);
-        IntStream.range(0, geohashGrid.getGrid().length).forEach(row-> {
-            IntStream.range(0, geohashGrid.getGrid()[row].length).forEach(column-> {
-                assertEquals(emptyCellValue, geohashGrid.getGrid()[row][column], 0.0);
-            });
-        });
+        IntStream.range(0, geohashGrid.getGrid().length).forEach(row-> IntStream.range(0, geohashGrid.getGrid()[row].length).forEach(column-> assertEquals(emptyCellValue, geohashGrid.getGrid()[row][column], 0.0)));
     }
 
     @Test
@@ -165,11 +160,7 @@ public class GeoHashGridTest {
         ReferencedEnvelope envelope = new ReferencedEnvelope(-180,180,-90,90,CRS.decode("EPSG:4326"));
         geohashGrid.setEmptyCellValue(null);
         geohashGrid.initalize(envelope, features);
-        IntStream.range(0, geohashGrid.getGrid().length).forEach(row-> {
-            IntStream.range(0, geohashGrid.getGrid()[row].length).forEach(column-> {
-                assertEquals(0.0, geohashGrid.getGrid()[row][column], 0.0);
-            });
-        });
+        IntStream.range(0, geohashGrid.getGrid().length).forEach(row-> IntStream.range(0, geohashGrid.getGrid()[row].length).forEach(column-> assertEquals(0.0, geohashGrid.getGrid()[row][column], 0.0)));
     }
 
     @Test
@@ -179,7 +170,7 @@ public class GeoHashGridTest {
                 ));
         ReferencedEnvelope envelope = new ReferencedEnvelope(-180,180,-90,90,CRS.decode("EPSG:4326"));
         geohashGrid.initalize(envelope, features);
-        IntStream.range(0, geohashGrid.getGrid().length).forEach(i->assertTrue(Arrays.equals(new float[geohashGrid.getGrid()[i].length], geohashGrid.getGrid()[i])));
+        IntStream.range(0, geohashGrid.getGrid().length).forEach(i-> assertArrayEquals(new float[geohashGrid.getGrid()[i].length], geohashGrid.getGrid()[i], 0.0f));
     }
 
     @Test(expected=IllegalArgumentException.class)
@@ -189,7 +180,7 @@ public class GeoHashGridTest {
                 ));
         ReferencedEnvelope envelope = new ReferencedEnvelope(-180,180,-90,90,CRS.decode("EPSG:4326"));
         geohashGrid.initalize(envelope, features);
-        IntStream.range(0, geohashGrid.getGrid().length).forEach(i->assertTrue(Arrays.equals(new float[geohashGrid.getGrid()[i].length], geohashGrid.getGrid()[i])));
+        IntStream.range(0, geohashGrid.getGrid().length).forEach(i-> assertArrayEquals(new float[geohashGrid.getGrid()[i].length], geohashGrid.getGrid()[i], 0.0f));
     }
 
     @Test
@@ -199,7 +190,7 @@ public class GeoHashGridTest {
                 ));
         ReferencedEnvelope envelope = new ReferencedEnvelope(-180,180,-90,90,CRS.decode("EPSG:4326"));
         geohashGrid.initalize(envelope, features);
-        IntStream.range(0, geohashGrid.getGrid().length).forEach(i->assertTrue(Arrays.equals(new float[geohashGrid.getGrid()[i].length], geohashGrid.getGrid()[i])));
+        IntStream.range(0, geohashGrid.getGrid().length).forEach(i-> assertArrayEquals(new float[geohashGrid.getGrid()[i].length], geohashGrid.getGrid()[i], 0.0f));
     }
 
     @Test

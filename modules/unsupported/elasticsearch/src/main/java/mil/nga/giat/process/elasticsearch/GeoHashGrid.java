@@ -1,4 +1,4 @@
-/**
+/*
  * This file is hereby placed into the Public Domain. This means anyone is
  * free to do whatever they wish with this file.
  */
@@ -16,14 +16,13 @@ import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
-import org.geotools.factory.GeoTools;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.geotools.util.factory.GeoTools;
 import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.Envelope;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.operation.TransformException;
 
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -31,7 +30,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.davidmoten.geo.GeoHash;
 import com.github.davidmoten.geo.LatLong;
 
-public abstract class GeoHashGrid {
+abstract class GeoHashGrid {
 
     private final static Logger LOGGER = Logging.getLogger(GeoHashGrid.class);
 
@@ -55,25 +54,23 @@ public abstract class GeoHashGrid {
 
     private ReferencedEnvelope boundingBox;
 
-    private List<Map<String, Object>> buckets;
-
     private float emptyCellValue;
 
     private float[][] grid;
 
     private RasterScale scale;
 
-    public GeoHashGrid() {
+    GeoHashGrid() {
         this.emptyCellValue = 0;
         this.scale = new RasterScale();
     }
 
-    public GeoHashGrid initalize(ReferencedEnvelope srcEnvelope, SimpleFeatureCollection features) throws NoSuchAuthorityCodeException, TransformException, FactoryException {
-        this.buckets = readFeatures(features);
+    public void initalize(ReferencedEnvelope srcEnvelope, SimpleFeatureCollection features) throws TransformException, FactoryException {
+        final List<Map<String, Object>> buckets = readFeatures(features);
 
         final String firstGeohash = buckets.isEmpty() ? null : (String) buckets.get(0).get("key");
         final int precision;
-        if (firstGeohash == null || !isValid(firstGeohash)) {
+        if (!isValid(firstGeohash)) {
             LOGGER.fine("No aggregations found or missing/invalid geohash key");
             precision = DEFAULT_PRECISION;
         } else {
@@ -102,19 +99,18 @@ public abstract class GeoHashGrid {
                 Arrays.fill(row, emptyCellValue);
         }
         List<GridCell> cells = new ArrayList<>();
-        buckets.stream().forEach(bucket -> {
+        buckets.forEach(bucket -> {
             Number rasterValue =  computeCellValue(bucket);
             cells.add(new GridCell((String) bucket.get("key"), rasterValue));
             scale.prepareScale(rasterValue.floatValue());
         });
-        cells.stream().forEach(cell -> updateGrid(cell.getGeohash(), cell.getValue()));
+        cells.forEach(cell -> updateGrid(cell.getGeohash(), cell.getValue()));
         LOGGER.fine("Read " + cells.size() + " aggregation buckets");
-        return this;
     }
 
-    public abstract Number computeCellValue(Map<String,Object> bucket);
+    protected abstract Number computeCellValue(Map<String, Object> bucket);
 
-    protected void updateGrid(String geohash, Number value) {
+    private void updateGrid(String geohash, Number value) {
         if (geohash != null && value != null) {
             final LatLong latLon = GeoHash.decodeHash(geohash);
             final double lat = latLon.getLat();
@@ -159,7 +155,7 @@ public abstract class GeoHashGrid {
         return buckets;
     }
 
-    private Envelope computeEnvelope(ReferencedEnvelope outEnvelope, int precision) throws NoSuchAuthorityCodeException, TransformException, FactoryException {
+    private Envelope computeEnvelope(ReferencedEnvelope outEnvelope, int precision) {
         final String minHash = GeoHash.encodeHash(Math.max(-90,outEnvelope.getMinY()), outEnvelope.getMinX(), precision);
         final LatLong minLatLon = GeoHash.decodeHash(minHash);
         final double minLon = minLatLon.getLon() + lonOffset;
@@ -195,7 +191,7 @@ public abstract class GeoHashGrid {
         return geohash != null && GeoHash.encodeHash(GeoHash.decodeHash(geohash), geohash.length()).equals(geohash);
     }
 
-    protected String pluckBucketName(Map<String,Object> bucket) {
+    String pluckBucketName(Map<String, Object> bucket) {
         if (!bucket.containsKey(BUCKET_NAME_KEY)) {
             LOGGER.warning("Unable to pluck key, bucket does not contain required field:" + BUCKET_NAME_KEY);
             throw new IllegalArgumentException();
@@ -203,7 +199,7 @@ public abstract class GeoHashGrid {
         return bucket.get(BUCKET_NAME_KEY) + "";
     }
 
-    protected Number pluckDocCount(Map<String,Object> bucket) {
+    Number pluckDocCount(Map<String, Object> bucket) {
         if (!bucket.containsKey(DOC_COUNT_KEY)) {
             LOGGER.warning("Unable to pluck document count, bucket does not contain required key:" + DOC_COUNT_KEY);
             throw new IllegalArgumentException();
@@ -211,7 +207,7 @@ public abstract class GeoHashGrid {
         return (Number) bucket.get(DOC_COUNT_KEY);
     }
 
-    protected Number pluckMetricValue(Map<String,Object> bucket, String metricKey, String valueKey) {
+    Number pluckMetricValue(Map<String, Object> bucket, String metricKey, String valueKey) {
         Number value;
         if (null == metricKey || metricKey.trim().length() == 0) {
             value = pluckDocCount(bucket);
@@ -232,7 +228,7 @@ public abstract class GeoHashGrid {
     }
 
     @SuppressWarnings("unchecked")
-    protected List<Map<String,Object>> pluckAggBuckets(Map<String,Object> parentBucket, String aggKey) {
+    List<Map<String,Object>> pluckAggBuckets(Map<String, Object> parentBucket, String aggKey) {
         if (!parentBucket.containsKey(aggKey)) {
             LOGGER.warning("Unable to pluck aggregation results, parent bucket does not contain required key:" + aggKey);
             throw new IllegalArgumentException();

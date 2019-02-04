@@ -32,10 +32,11 @@ public class GeohashUtilTest {
 
     @Test
     public void updatePrecision() {
-        final Map<String,Object> geohashGridAgg = new HashMap<>();
-        geohashGridAgg.putAll(ImmutableMap.of("field","name","precision",0));
-        final Map<String,Map<String,Map<String,Object>>> aggregations = ImmutableMap.of("first",ImmutableMap.of("geohash_grid",geohashGridAgg));
-        final Map<String,Object> expected = ImmutableMap.of("first",ImmutableMap.of("geohash_grid",ImmutableMap.of("field","name","precision",2)));
+        final Map<String, Object> geohashGridAgg = new HashMap<>(ImmutableMap.of("field", "name", "precision", 0));
+        final Map<String,Map<String,Map<String,Object>>> aggregations;
+        aggregations = ImmutableMap.of("first",ImmutableMap.of("geohash_grid",geohashGridAgg));
+        final Map<String,Object> expected = ImmutableMap.of("first",
+                ImmutableMap.of("geohash_grid",ImmutableMap.of("field","name","precision",2)));
         GeohashUtil.updateGridAggregationPrecision(aggregations, 2);
         assertEquals(expected, aggregations);
     }

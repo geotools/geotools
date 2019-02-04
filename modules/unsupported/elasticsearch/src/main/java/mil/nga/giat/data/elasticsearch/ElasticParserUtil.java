@@ -1,4 +1,4 @@
-/**
+/*
  * This file is hereby placed into the Public Domain. This means anyone is
  * free to do whatever they wish with this file.
  */
@@ -6,7 +6,6 @@ package mil.nga.giat.data.elasticsearch;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.logging.Logger;
@@ -35,14 +34,14 @@ import org.geotools.referencing.datum.DefaultEllipsoid;
  * extract values and create geometries.
  *
  */
-public class ElasticParserUtil {
+class ElasticParserUtil {
 
     private final static Logger LOGGER = Logging.getLogger(ElasticParserUtil.class);
 
     private static final Pattern GEO_POINT_PATTERN;
 
     static {
-        GEO_POINT_PATTERN = Pattern.compile("\\s*([-+]?\\d*\\.?\\d*)[^-+\\d\\.]+([-+]?\\d*\\.?\\d*)\\s*");
+        GEO_POINT_PATTERN = Pattern.compile("\\s*([-+]?\\d*\\.?\\d*)[^-+\\d.]+([-+]?\\d*\\.?\\d*)\\s*");
     }
 
     private static final Pattern GEO_HASH_PATTERN;
@@ -73,11 +72,8 @@ public class ElasticParserUtil {
 
     private final WKTReader wktReader;
 
-    private boolean unsupportedEncodingMessage;
-
     public ElasticParserUtil() {
         this.geometryFactory = new GeometryFactory();
-        this.unsupportedEncodingMessage = false;
         this.geodeticCalculator = new GeodeticCalculator(DefaultEllipsoid.WGS84);
         this.wktReader = new WKTReader();
     }
@@ -178,7 +174,7 @@ public class ElasticParserUtil {
             final List<List<Object>> posList;
             posList = (List) properties.get("coordinates");
             final Coordinate[] coordinates = createCoordinates(posList);
-            geometry = geometryFactory.createMultiPoint(coordinates);
+            geometry = geometryFactory.createMultiPointFromCoords(coordinates);
             break;
         }
         case "MULTILINESTRING": {
@@ -284,6 +280,10 @@ public class ElasticParserUtil {
     }
 
     private Coordinate createCoordinate(final List<Object> posList) {
+        if (posList == null) {
+            return null;
+        }
+
         final double x;
         final double y;
         if (Number.class.isAssignableFrom(posList.get(0).getClass())) {
@@ -311,7 +311,7 @@ public class ElasticParserUtil {
             final Object entry = source.get(keys.get(0));
 
             if (entry == null) {
-                readField(source.get(name), Collections.EMPTY_LIST, values);;
+                readField(source.get(name), new ArrayList<>(), values);
             } else {
                 readField(entry, keys.subList(1, keys.size()), values);
             }
@@ -327,12 +327,11 @@ public class ElasticParserUtil {
     }
 
     private void readField(Object entry, List<String> keys, List<Object> values) {
-        if (entry == null) {
-        } else if (List.class.isAssignableFrom(entry.getClass())) {
+        if (entry != null && List.class.isAssignableFrom(entry.getClass())) {
             for (Object object : (List<?>) entry) {
                 readField(object, keys, values);
             }
-        } else if (!keys.isEmpty() && Map.class.isAssignableFrom(entry.getClass())) {
+        } else if (entry != null && !keys.isEmpty() && Map.class.isAssignableFrom(entry.getClass())) {
             final Object nextEntry = ((Map<?, ?>) entry).get(keys.get(0));
             final List<String> newKeys = keys.subList(1, keys.size());
             readField(nextEntry, newKeys, values);
@@ -347,22 +346,10 @@ public class ElasticParserUtil {
         if (map.size() == 2 && map.containsKey("coordinates")) {
             try {
                 result = "geo_point".equals(((Map) map.get("coordinates")).get("type"));
-            } catch (Exception e) {
+            } catch (Exception ignored) {
             }
         }
         return result;
-    }
-
-    public String urlEncode(String value) {
-        try {
-            value = URLEncoder.encode(value, StandardCharsets.UTF_8.toString());
-        } catch (UnsupportedEncodingException e) {
-            if (!unsupportedEncodingMessage) {
-                LOGGER.warning("Unable to encode value(s): " + e);
-                unsupportedEncodingMessage = true;
-            }
-        }
-        return value;
     }
 
     public static String urlDecode(String value) {
@@ -431,9 +418,9 @@ public class ElasticParserUtil {
      * {@link FilterToElasticHelper#UNITS_MAP}. If the unit string is missing
      * then the number is assumed to be metres.
      * @return distance in metres.
-     * @throws IllegalArgumentException
+     * @throws IllegalArgumentException For invalid unit or format
      */
-    static final double convertToMeters(String distanceWithUnit) throws IllegalArgumentException {
+    static double convertToMeters(String distanceWithUnit) throws IllegalArgumentException {
         if (distanceWithUnit == null || distanceWithUnit.isEmpty()) {
             throw new IllegalArgumentException("Null of zero length distance string argument");
         }
@@ -446,7 +433,7 @@ public class ElasticParserUtil {
                 if (unit != null && ! unit.isEmpty()) {
                     throw new IllegalArgumentException("Illegal unit: " + unit);
                 } else {
-                    conversion = new Double(1.0);
+                    conversion = 1.0;
                 }
             }
             return distance * conversion;

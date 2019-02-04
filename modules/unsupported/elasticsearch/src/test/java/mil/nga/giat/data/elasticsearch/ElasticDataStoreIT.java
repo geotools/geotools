@@ -22,7 +22,14 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpHost;
+import org.apache.http.StatusLine;
+import org.elasticsearch.client.Request;
+import org.elasticsearch.client.Response;
+import org.elasticsearch.client.RestClient;
 import org.geotools.data.DataStore;
 import org.geotools.data.store.ContentFeatureSource;
 import org.junit.Test;
@@ -31,8 +38,90 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import com.google.common.collect.ImmutableMap;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class ElasticDataStoreIT extends ElasticTestSupport {
+
+    @Test
+    public void testConstructionWithHostAndPortAndIndex() throws IOException {
+        Map<String,Serializable> params = createConnectionParams();
+        String host = ElasticDataStoreFactory.getValue(ElasticDataStoreFactory.HOSTNAME, params);
+        Integer port = ElasticDataStoreFactory.getValue(ElasticDataStoreFactory.HOSTPORT, params);
+        String indexName = ElasticDataStoreFactory.getValue(ElasticDataStoreFactory.INDEX_NAME, params);
+
+        DataStore dataStore = new ElasticDataStore(host, port, indexName);
+        String[] typeNames = dataStore.getTypeNames();
+        assertTrue(typeNames.length > 0);
+    }
+
+    @Test
+    public void testConstructionWithClientAndIndex() throws IOException {
+        Map<String,Serializable> params = createConnectionParams();
+        String host = ElasticDataStoreFactory.getValue(ElasticDataStoreFactory.HOSTNAME, params);
+        Integer port = ElasticDataStoreFactory.getValue(ElasticDataStoreFactory.HOSTPORT, params);
+        String indexName = ElasticDataStoreFactory.getValue(ElasticDataStoreFactory.INDEX_NAME, params);
+
+        HttpHost httpHost = new HttpHost(host, port, "http");
+        RestClient client = RestClient.builder(httpHost).build();
+
+        DataStore dataStore = new ElasticDataStore(client, indexName);
+        String[] typeNames = dataStore.getTypeNames();
+        assertTrue(typeNames.length > 0);
+    }
+
+    @Test
+    public void testConstructionWithProxyClientAndIndex() throws IOException {
+        Map<String,Serializable> params = createConnectionParams();
+        String host = ElasticDataStoreFactory.getValue(ElasticDataStoreFactory.HOSTNAME, params);
+        Integer port = ElasticDataStoreFactory.getValue(ElasticDataStoreFactory.HOSTPORT, params);
+        String indexName = ElasticDataStoreFactory.getValue(ElasticDataStoreFactory.INDEX_NAME, params);
+
+        HttpHost httpHost = new HttpHost(host, port, "http");
+        RestClient client = RestClient.builder(httpHost).build();
+
+        DataStore dataStore = new ElasticDataStore(client, client, indexName, false);
+        String[] typeNames = dataStore.getTypeNames();
+        assertTrue(typeNames.length > 0);
+    }
+
+    @Test(expected=IOException.class)
+    public void testConstructionWithBadClient() throws IOException {
+        Map<String,Serializable> params = createConnectionParams();
+        String indexName = ElasticDataStoreFactory.getValue(ElasticDataStoreFactory.INDEX_NAME, params);
+
+        RestClient mockClient = mock(RestClient.class);
+        Response mockResponse = mock(Response.class);
+        HttpEntity mockEntity = mock(HttpEntity.class);
+        StatusLine mockStatusLine = mock(StatusLine.class);
+        when(mockResponse.getEntity()).thenReturn(mockEntity);
+        when(mockResponse.getStatusLine()).thenReturn(mockStatusLine);
+        when(mockStatusLine.getStatusCode()).thenReturn(400);
+        when(mockClient.performRequest(any(Request.class))).thenReturn(mockResponse);
+
+        new ElasticDataStore(mockClient, indexName);
+    }
+
+    @Test(expected=IOException.class)
+    public void testConstructionWithBadProxyClient() throws IOException {
+        Map<String,Serializable> params = createConnectionParams();
+        String indexName = ElasticDataStoreFactory.getValue(ElasticDataStoreFactory.INDEX_NAME, params);
+
+        RestClient mockClient = mock(RestClient.class);
+        Response mockResponse = mock(Response.class);
+        HttpEntity mockEntity = mock(HttpEntity.class);
+        StatusLine mockStatusLine = mock(StatusLine.class);
+        when(mockResponse.getEntity()).thenReturn(mockEntity);
+        when(mockResponse.getStatusLine()).thenReturn(mockStatusLine);
+        when(mockClient.performRequest(any(Request.class))).thenReturn(mockResponse);
+
+        final AtomicInteger count = new AtomicInteger(0);
+        when(mockStatusLine.getStatusCode()).thenAnswer((invocation) ->
+            count.getAndIncrement() == 0 ? 200 : 400
+        );
+        new ElasticDataStore(mockClient, mockClient, indexName, false);
+    }
 
     @Test
     public void testGetNames() throws IOException {
@@ -41,7 +130,7 @@ public class ElasticDataStoreIT extends ElasticTestSupport {
         ElasticDataStoreFactory factory = new ElasticDataStoreFactory();
         DataStore dataStore = factory.createDataStore(params);
         String[] typeNames = dataStore.getTypeNames();
-        assertTrue(new HashSet<String>(Arrays.asList(typeNames)).contains(("active")));
+        assertTrue(typeNames.length > 0);
     }
 
     @Test
@@ -52,7 +141,7 @@ public class ElasticDataStoreIT extends ElasticTestSupport {
         ElasticDataStoreFactory factory = new ElasticDataStoreFactory();
         DataStore dataStore = factory.createDataStore(params);
         String[] typeNames = dataStore.getTypeNames();
-        assertTrue(new HashSet<String>(Arrays.asList(typeNames)).contains(("active")));
+        assertTrue(typeNames.length > 0);
     }
 
     @Test
@@ -62,9 +151,9 @@ public class ElasticDataStoreIT extends ElasticTestSupport {
         layerConfig.getAttributes().add(new ElasticAttribute("a1"));
 
         ElasticLayerConfiguration layerConfig2 = new ElasticLayerConfiguration(layerConfig);
-        assertTrue(layerConfig.getDocType().equals(layerConfig2.getDocType()));
-        assertTrue(layerConfig.getLayerName().equals(layerConfig2.getLayerName()));
-        assertTrue(layerConfig.getAttributes().equals(layerConfig2.getAttributes()));
+        assertEquals(layerConfig.getDocType(), layerConfig2.getDocType());
+        assertEquals(layerConfig.getLayerName(), layerConfig2.getLayerName());
+        assertEquals(layerConfig.getAttributes(), layerConfig2.getAttributes());
     }
 
     @Test
@@ -72,7 +161,7 @@ public class ElasticDataStoreIT extends ElasticTestSupport {
         Map<String,Serializable> params = createConnectionParams();
         ElasticDataStoreFactory factory = new ElasticDataStoreFactory();
         ElasticDataStore dataStore = (ElasticDataStore) factory.createDataStore(params);
-        ContentFeatureSource featureSource = dataStore.getFeatureSource("active");
+        ContentFeatureSource featureSource = dataStore.getFeatureSource(dataStore.getTypeNames()[0]);
         SimpleFeatureType schema = featureSource.getSchema();
         assertTrue(schema.getAttributeCount() > 0);
         assertNotNull(schema.getDescriptor("speed_is"));

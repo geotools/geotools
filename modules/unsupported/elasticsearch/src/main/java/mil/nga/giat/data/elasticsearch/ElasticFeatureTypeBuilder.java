@@ -1,4 +1,4 @@
-/**
+/*
  * This file is hereby placed into the Public Domain. This means anyone is
  * free to do whatever they wish with this file.
  */
@@ -28,11 +28,11 @@ import org.opengis.feature.type.Name;
  * {@link ElasticLayerConfiguration}.
  *
  */
-public class ElasticFeatureTypeBuilder extends SimpleFeatureTypeBuilder {
+class ElasticFeatureTypeBuilder extends SimpleFeatureTypeBuilder {
 
     private final static Logger LOGGER = Logging.getLogger(ElasticFeatureTypeBuilder.class);
 
-    private List<ElasticAttribute> attributes;
+    private final List<ElasticAttribute> attributes;
 
     public ElasticFeatureTypeBuilder(List<ElasticAttribute> attributes, Name name) {
         setName(name);

@@ -1,4 +1,4 @@
-/**
+/*
  * This file is hereby placed into the Public Domain. This means anyone is
  * free to do whatever they wish with this file.
  */
@@ -10,7 +10,7 @@ import org.locationtech.jts.geom.Envelope;
 
 import com.github.davidmoten.geo.GeoHash;
 
-public class GeohashUtil {
+class GeohashUtil {
 
     public static int computePrecision(Envelope envelope, long size, double threshold) {
         return computePrecision(envelope, size, threshold, 1);
@@ -26,9 +26,8 @@ public class GeohashUtil {
     }
 
     public static void updateGridAggregationPrecision(Map<String,Map<String,Map<String,Object>>> aggregations, int precision) {
-        aggregations.values().stream().filter(a->a.containsKey("geohash_grid")).forEach(a -> {
-            a.get("geohash_grid").put("precision", precision);
-        });
+        aggregations.values().stream().filter(a -> a.containsKey("geohash_grid")).forEach(a ->
+                a.get("geohash_grid").put("precision", precision));
     }
 
 }

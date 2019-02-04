@@ -51,16 +51,11 @@ import org.opengis.filter.spatial.Within;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import org.opengis.geometry.BoundingBox;
 
 class FilterToElasticHelper {
 
-    private double lat, lon, distance;
-
     private String key;
-
-    private Literal geometry;
-
-    private SpatialRelation shapeRelation;
 
     private Map<String,Object> shapeBuilder;
 
@@ -92,17 +87,17 @@ class FilterToElasticHelper {
         }
     };
 
-    protected static final Envelope WORLD = new Envelope(-180, 180, -90, 90);
+    private static final Envelope WORLD = new Envelope(-180, 180, -90, 90);
 
-    FilterToElastic delegate;
+    private final FilterToElastic delegate;
 
     public FilterToElasticHelper(FilterToElastic delegate) {
         this.delegate = delegate;
     }
 
-    protected Object visitBinarySpatialOperator(BinarySpatialOperator filter,
-            PropertyName property, Literal geometry, boolean swapped,
-            Object extraData) {
+    Object visitBinarySpatialOperator(BinarySpatialOperator filter,
+                                      PropertyName property, Literal geometry, boolean swapped,
+                                      Object extraData) {
 
         if (filter instanceof DistanceBufferOperator) {
             visitDistanceSpatialOperator((DistanceBufferOperator) filter,
@@ -114,30 +109,30 @@ class FilterToElasticHelper {
         return extraData;
     }
 
-    protected Object visitBinarySpatialOperator(BinarySpatialOperator filter, Expression e1, Expression e2,
-            Object extraData) {
+    Object visitBinarySpatialOperator(BinarySpatialOperator filter, Expression e1,
+                                      Expression e2, Object extraData) {
 
         visitBinarySpatialOperator(filter, e1, e2, false, extraData);
         return extraData;
     }
 
-    protected void visitDistanceSpatialOperator(DistanceBufferOperator filter,
-            PropertyName property, Literal geometry, boolean swapped,
-            Object extraData) {
+    private void visitDistanceSpatialOperator(DistanceBufferOperator filter,
+                                              PropertyName property, Literal geometry, boolean swapped,
+                                              Object extraData) {
 
         property.accept(delegate, extraData);
         key = (String) delegate.field;
         geometry.accept(delegate, extraData);
         final Geometry geo = delegate.currentGeometry;
-        lat = geo.getCentroid().getY();
-        lon = geo.getCentroid().getX();
+        double lat = geo.getCentroid().getY();
+        double lon = geo.getCentroid().getX();
         final double inputDistance = filter.getDistance();
         final String inputUnits = filter.getDistanceUnits();
-        distance = Double.valueOf(toMeters(inputDistance, inputUnits));
+        double distance = Double.valueOf(toMeters(inputDistance, inputUnits));
 
         delegate.queryBuilder = ImmutableMap.of("bool", ImmutableMap.of("must", MATCH_ALL,
                 "filter", ImmutableMap.of("geo_distance", 
-                        ImmutableMap.of("distance", distance+"m", key, ImmutableList.of(lon,lat)))));
+                        ImmutableMap.of("distance", distance +"m", key, ImmutableList.of(lon, lat)))));
 
         if ((filter instanceof DWithin && swapped)
                 || (filter instanceof Beyond && !swapped)) {
@@ -147,49 +142,44 @@ class FilterToElasticHelper {
 
     private String toMeters(double distance, String unit) {
         // only geography uses metric units
-        if (isCurrentGeography()) {
-            Double conversion = UNITS_MAP.get(unit);
-            if (conversion != null) {
-                return String.valueOf(distance * conversion);
-            }
+        Double conversion = UNITS_MAP.get(unit);
+        if(conversion != null) {
+            return String.valueOf(distance * conversion);
         }
 
         // in case unknown unit or not geography, use as-is
         return String.valueOf(distance);
     }
 
-    void visitComparisonSpatialOperator(BinarySpatialOperator filter, PropertyName property, Literal geometry,
-            boolean swapped, Object extraData) throws IOException {
+    private void visitComparisonSpatialOperator(BinarySpatialOperator filter, PropertyName property, Literal geometry,
+                                                boolean swapped, Object extraData) {
 
         // if geography case, sanitize geometry first
-        this.geometry = geometry;
-        if(isCurrentGeography()) {
-            this.geometry = clipToWorld(geometry);
-        }
+        Literal geometry1 = clipToWorld(geometry);
 
-        visitBinarySpatialOperator(filter, (Expression)property, (Expression)this.geometry, swapped, extraData);
+        //noinspection RedundantCast
+        visitBinarySpatialOperator(filter, (Expression)property, (Expression) geometry1, swapped, extraData);
 
         // if geography case, sanitize geometry first
-        if(isCurrentGeography()) {
-            if(isWorld(this.geometry)) {
-                // nothing to filter in this case
+        if(isWorld(geometry1)) {
+            // nothing to filter in this case
+            delegate.queryBuilder = MATCH_ALL;
+            return;
+        } else if(isEmpty(geometry1)) {
+            if(!(filter instanceof Disjoint)) {
+                delegate.queryBuilder = ImmutableMap.of("bool", ImmutableMap.of("must_not", MATCH_ALL));
+            } else {
                 delegate.queryBuilder = MATCH_ALL;
-                return;
-            } else if(isEmpty(this.geometry)) {
-                if(!(filter instanceof Disjoint)) {
-                    delegate.queryBuilder = ImmutableMap.of("bool", ImmutableMap.of("must_not", MATCH_ALL));
-                } else {
-                    delegate.queryBuilder = MATCH_ALL;
-                }
-                return;
             }
+            return;
         }
 
-        visitBinarySpatialOperator(filter, (Expression)property, (Expression)this.geometry, swapped, extraData);
+        //noinspection RedundantCast
+        visitBinarySpatialOperator(filter, (Expression)property, (Expression) geometry1, swapped, extraData);
     }
 
-    void visitBinarySpatialOperator(BinarySpatialOperator filter, Expression e1, Expression e2, boolean swapped,
-            Object extraData) throws IOException {
+    private void visitBinarySpatialOperator(BinarySpatialOperator filter, Expression e1, Expression e2,
+                                            boolean swapped, Object extraData) {
 
         AttributeDescriptor attType;
         attType = (AttributeDescriptor)e1.evaluate(delegate.featureType);
@@ -203,9 +193,10 @@ class FilterToElasticHelper {
         }
     }
 
-    void visitGeoShapeBinarySpatialOperator(BinarySpatialOperator filter, Expression e1, Expression e2, boolean swapped,
-            Object extraData) throws IOException {
+    private void visitGeoShapeBinarySpatialOperator(BinarySpatialOperator filter, Expression e1, Expression e2,
+                                                    boolean swapped, Object extraData) {
 
+        SpatialRelation shapeRelation;
         if (filter instanceof Disjoint) {
             shapeRelation = SpatialRelation.DISJOINT;
         } else if ((!swapped && filter instanceof Within) || (swapped && filter instanceof Contains)) {
@@ -226,16 +217,16 @@ class FilterToElasticHelper {
         }
 
         if (shapeRelation != null && shapeBuilder != null) {
-            delegate.queryBuilder = ImmutableMap.of("bool", ImmutableMap.of("must", MATCH_ALL,
-                    "filter", ImmutableMap.of("geo_shape", 
-                            ImmutableMap.of(key, ImmutableMap.of("shape", shapeBuilder, "relation", shapeRelation)))));
+            delegate.queryBuilder = ImmutableMap.of("bool", ImmutableMap.of("must", MATCH_ALL, "filter",
+                    ImmutableMap.of("geo_shape", ImmutableMap.of(key,
+                            ImmutableMap.of("shape", shapeBuilder, "relation", shapeRelation)))));
         } else {
             delegate.queryBuilder = MATCH_ALL;
         }
     }
 
-    void visitGeoPointBinarySpatialOperator(BinarySpatialOperator filter, Expression e1, Expression e2, boolean swapped,
-            Object extraData) throws IOException {
+    private void visitGeoPointBinarySpatialOperator(BinarySpatialOperator filter, Expression e1, Expression e2,
+                                                    boolean swapped, Object extraData) {
 
         e1.accept(delegate, extraData);
         key = (String) delegate.field;
@@ -256,7 +247,7 @@ class FilterToElasticHelper {
                     "filter", ImmutableMap.of("geo_polygon", 
                             ImmutableMap.of(key, ImmutableMap.of("points", points)))));
         } else if (filter instanceof BBOX) {
-            final Envelope envelope = geometry.getEnvelopeInternal();
+            final BoundingBox envelope = ((BBOX) filter).getBounds();
             final double minY = clipLat(envelope.getMinY());
             final double maxY = clipLat(envelope.getMaxY());
             final double minX, maxX;
@@ -279,25 +270,13 @@ class FilterToElasticHelper {
         }
     }
 
-    boolean isCurrentGeography() {
-        return true;
-    }
-
-    protected Literal clipToWorld(Literal geometry) {
+    private Literal clipToWorld(Literal geometry) {
         if(geometry != null) {
             Geometry g = geometry.evaluate(null, Geometry.class);
             if(g != null) {
-                g.apply(new GeometryComponentFilter() {
-                    @Override
-                    public void filter(Geometry geom) {
-                        geom.apply(new CoordinateFilter() {
-                            @Override
-                            public void filter(Coordinate coord) {
-                                coord.setCoordinate(new Coordinate(clipLon(coord.x),clipLat(coord.y)));
-                            }
-                        });
-                    }
-                });
+                g.apply((GeometryComponentFilter) geom -> geom.apply((CoordinateFilter) coord -> {
+                    coord.setCoordinate(new Coordinate(clipLon(coord.x), clipLat(coord.y)));
+                }));
                 geometry = CommonFactoryFinder.getFilterFactory(null).literal(g);
 
             }
@@ -306,22 +285,21 @@ class FilterToElasticHelper {
         return geometry;
     }
 
-    protected double clipLon(double lon) {
+    private double clipLon(double lon) {
         double x = Math.signum(lon)*(Math.abs(lon)%360);
-        return x = x>180 ? x-360 : (x<-180 ? x+360 : x);
+        return x>180 ? x-360 : (x<-180 ? x+360 : x);
     }
 
-    protected double clipLat(double lat) {
+    private double clipLat(double lat) {
         return Math.min(90, Math.max(-90, lat));
     }
 
     /**
      * Returns true if the geometry covers the entire world
-     * 
-     * @param geometry
-     * @return
+     * @param geometry Geometry
+     * @return Flag indicating geometry is the world
      */
-    protected boolean isWorld(Literal geometry) {
+    private boolean isWorld(Literal geometry) {
         boolean result = false;
         if(geometry != null) {
             Geometry g = geometry.evaluate(null, Geometry.class);
@@ -334,11 +312,10 @@ class FilterToElasticHelper {
 
     /**
      * Returns true if the geometry is fully empty
-     * 
-     * @param geometry
-     * @return
+     * @param geometry Geometry
+     * @return Flag indicating whether geometry is empty
      */
-    protected boolean isEmpty(Literal geometry) {
+    private boolean isEmpty(Literal geometry) {
         boolean result = false;
         if(geometry != null) {
             Geometry g = geometry.evaluate(null, Geometry.class);

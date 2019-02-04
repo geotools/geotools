@@ -1,4 +1,4 @@
-/**
+/*
  * This file is hereby placed into the Public Domain. This means anyone is
  * free to do whatever they wish with this file.
  */
@@ -40,7 +40,7 @@ public class NestedAggGeoHashGridTest {
         String aggKey = "myagg";
         String metricKey = "mymetric";
         String valueKey = "myvalue";
-        List<String> params = new ArrayList<String>();
+        List<String> params = new ArrayList<>();
         params.add(aggKey);
         params.add(metricKey);
         params.add(valueKey);
@@ -55,8 +55,8 @@ public class NestedAggGeoHashGridTest {
         assertEquals(NestedAggGeoHashGrid.RASTER_FROM_KEY, geohashGrid.getRasterStrategy());
         Map<String, Integer> termsMap = geohashGrid.getTermsMap();
         assertEquals(2, termsMap.size());
-        assertEquals(new Integer(1), (Integer) termsMap.get("key1"));
-        assertEquals(new Integer(2), (Integer) termsMap.get("key2"));
+        assertEquals(new Integer(1), termsMap.get("key1"));
+        assertEquals(new Integer(2), termsMap.get("key2"));
     }
 
     @Test
@@ -64,7 +64,7 @@ public class NestedAggGeoHashGridTest {
         String aggKey = "myagg";
         String metricKey = "mymetric";
         String valueKey = "myvalue";
-        List<String> params = new ArrayList<String>();
+        List<String> params = new ArrayList<>();
         params.add(aggKey);
         params.add(metricKey);
         params.add(valueKey);
@@ -81,7 +81,7 @@ public class NestedAggGeoHashGridTest {
 
     @Test(expected=IllegalArgumentException.class)
     public void testSetParams_notEnoughParameters() {
-        geohashGrid.setParams(new ArrayList<String>());
+        geohashGrid.setParams(new ArrayList<>());
     }
 
     @Test
@@ -111,7 +111,7 @@ public class NestedAggGeoHashGridTest {
 
     @Test
     public void testBucketToRaster_rasterFromNumericKey() {
-        List<String> params = new ArrayList<String>();
+        List<String> params = new ArrayList<>();
         params.add("aggKey");
         params.add("metricKey");
         params.add("valueKey");
@@ -124,7 +124,7 @@ public class NestedAggGeoHashGridTest {
 
     @Test(expected=IllegalArgumentException.class)
     public void testBucketToRaster_rasterFromNumericKey_keyIsString() {
-        List<String> params = new ArrayList<String>();
+        List<String> params = new ArrayList<>();
         params.add("aggKey");
         params.add("metricKey");
         params.add("valueKey");
@@ -136,7 +136,7 @@ public class NestedAggGeoHashGridTest {
 
     @Test
     public void testBucketToRaster_rasterFromStringKey() {
-        List<String> params = new ArrayList<String>();
+        List<String> params = new ArrayList<>();
         params.add("aggKey");
         params.add("metricKey");
         params.add("valueKey");
@@ -150,7 +150,7 @@ public class NestedAggGeoHashGridTest {
 
     @Test(expected=IllegalArgumentException.class)
     public void testBucketToRaster_rasterFromStringKey_keyNotInMap() {
-        List<String> params = new ArrayList<String>();
+        List<String> params = new ArrayList<>();
         params.add("aggKey");
         params.add("metricKey");
         params.add("valueKey");

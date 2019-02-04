@@ -1,4 +1,4 @@
-/**
+/*
  * This file is hereby placed into the Public Domain. This means anyone is
  * free to do whatever they wish with this file.
  */
@@ -9,7 +9,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-public class ElasticRequest {
+class ElasticRequest {
 
     private Map<String,Object> query;
 
@@ -21,11 +21,11 @@ public class ElasticRequest {
 
     private Integer scroll;
 
-    private List<Map<String,Object>> sorts;
+    private final List<Map<String,Object>> sorts;
 
-    private List<String> sourceIncludes;
+    private final List<String> sourceIncludes;
 
-    private List<String> fields;
+    private final List<String> fields;
 
     public ElasticRequest() {
         this.sorts = new ArrayList<>();

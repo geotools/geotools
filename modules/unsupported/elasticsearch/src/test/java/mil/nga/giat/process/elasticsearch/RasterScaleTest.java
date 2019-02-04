@@ -1,4 +1,4 @@
-/**
+/*
  * This file is hereby placed into the Public Domain. This means anyone is
  * free to do whatever they wish with this file.
  */
@@ -11,13 +11,13 @@ import org.junit.Test;
 public class RasterScaleTest {
 
     @Test
-    public void testRasterScale_noScale() throws Exception {
+    public void testRasterScale_noScale() {
         RasterScale scale = new RasterScale();
         assertFalse(scale.isScaleSet());
     }
 
     @Test
-    public void testRasterScale_maxProvided() throws Exception {
+    public void testRasterScale_maxProvided() {
         float scaleMax = 10.0f;
         RasterScale scale = new RasterScale(scaleMax);
         assertTrue(scale.isScaleSet());
@@ -26,7 +26,7 @@ public class RasterScaleTest {
     }
 
     @Test
-    public void testRasterScale_minMaxProvided() throws Exception {
+    public void testRasterScale_minMaxProvided() {
         float scaleMax = 10.0f;
         float scaleMin = 1.0f;
         RasterScale scale = new RasterScale(scaleMin, scaleMax);
@@ -36,14 +36,13 @@ public class RasterScaleTest {
     }
 
     @Test(expected=IllegalArgumentException.class)
-    public void testRasterScale_minMaxSame() throws Exception {
+    public void testRasterScale_minMaxSame() {
         float scaleMax = 10.0f;
-        float scaleMin = scaleMax;
-        new RasterScale(scaleMin, scaleMax);
+        new RasterScale(scaleMax, scaleMax);
     }
 
     @Test
-    public void testRasterScale_scaleValue() throws Exception {
+    public void testRasterScale_scaleValue() {
         float scaleMax = 10.0f;
         float scaleMin = 0.0f;
         RasterScale scale = new RasterScale(scaleMin, scaleMax);
@@ -57,7 +56,7 @@ public class RasterScaleTest {
     }
 
     @Test
-    public void testRasterScale_scaleValue_emptyScale() throws Exception {
+    public void testRasterScale_scaleValue_emptyScale() {
         RasterScale scale = new RasterScale();
         scale.prepareScale(30);
         scale.prepareScale(20);
@@ -68,7 +67,7 @@ public class RasterScaleTest {
     }
 
     @Test
-    public void testRasterScale_scaleValue_dataMinAndDataMaxAreTheSame() throws Exception {
+    public void testRasterScale_scaleValue_dataMinAndDataMaxAreTheSame() {
         float scaleMax = 10.0f;
         float scaleMin = 1.0f;
         RasterScale scale = new RasterScale(scaleMin, scaleMax);
@@ -77,14 +76,14 @@ public class RasterScaleTest {
     }
 
     @Test
-    public void testRasterScale_log() throws Exception {
+    public void testRasterScale_log() {
         RasterScale scale = new RasterScale(true);
         assertEquals(1, scale.scaleValue(10), 0.0);
         assertEquals(0, scale.scaleValue(1), 0.0);
     }
 
     @Test
-    public void testRasterScale_logAndScale() throws Exception {
+    public void testRasterScale_logAndScale() {
         float scaleMax = 10.0f;
         float scaleMin = 0.0f;
         RasterScale scale = new RasterScale(scaleMin, scaleMax, true);

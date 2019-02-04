@@ -1,4 +1,4 @@
-/**
+/*
  * This file is hereby placed into the Public Domain. This means anyone is
  * free to do whatever they wish with this file.
  */
@@ -7,7 +7,6 @@ package mil.nga.giat.process.elasticsearch;
 import static org.junit.Assert.*;
 
 import java.awt.geom.Point2D;
-import java.util.List;
 
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.data.Query;
@@ -21,11 +20,8 @@ import org.junit.Test;
 import org.locationtech.jts.geom.Envelope;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CRSAuthorityFactory;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.operation.TransformException;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -58,78 +54,62 @@ public class GeoHashGridProcessTest {
     }
 
     @Test
-    public void testBasic() throws NoSuchAuthorityCodeException, TransformException, FactoryException {
+    public void testBasic() {
         ReferencedEnvelope envelope = new ReferencedEnvelope(-180,180,-90,90,DefaultGeographicCRS.WGS84);
         int width = 8;
         int height = 4;
         int pixelsPerCell = 1;
         String strategy = "Basic";
-        List<String> strategyArgs = null;
-        Float emptyCellValue = null;
         Float scaleMin = 0f;
-        Float scaleMax = null;
-        boolean useLog = false;
 
-        GridCoverage2D coverage = process.execute(features, pixelsPerCell, strategy, strategyArgs, emptyCellValue, scaleMin, scaleMax, useLog, envelope, width, height, null);
+        GridCoverage2D coverage = process.execute(features, pixelsPerCell, strategy, null, null, scaleMin, null, false, envelope, width, height, null);
         checkInternal(coverage, fineDelta);
         checkEdge(coverage, envelope, fineDelta);
     }
 
     @Test
-    public void testScaled() throws NoSuchAuthorityCodeException, TransformException, FactoryException {
+    public void testScaled() {
         ReferencedEnvelope envelope = new ReferencedEnvelope(-180,180,-90,90,DefaultGeographicCRS.WGS84);
         int width = 16;
         int height = 8;
         int pixelsPerCell = 1;
         String strategy = "Basic";
-        List<String> strategyArgs = null;
-        Float emptyCellValue = null;
         Float scaleMin = 0f;
-        Float scaleMax = null;
-        boolean useLog = false;
 
-        GridCoverage2D coverage = process.execute(features, pixelsPerCell, strategy, strategyArgs, emptyCellValue, scaleMin, scaleMax, useLog, envelope, width, height, null);
+        GridCoverage2D coverage = process.execute(features, pixelsPerCell, strategy, null, null, scaleMin, null, false, envelope, width, height, null);
         checkInternal(coverage, fineDelta);
         checkEdge(coverage, envelope, fineDelta);
     }
 
     @Test
-    public void testSubCellCrop() throws NoSuchAuthorityCodeException, TransformException, FactoryException {
+    public void testSubCellCrop() {
         ReferencedEnvelope envelope = new ReferencedEnvelope(-168.75,168.75,-78.75,78.75,DefaultGeographicCRS.WGS84);
         int width = 16;
         int height = 8;
         int pixelsPerCell = 1;
         String strategy = "Basic";
-        List<String> strategyArgs = null;
-        Float emptyCellValue = null;
         Float scaleMin = 0f;
-        Float scaleMax = null;
-        boolean useLog = false;
 
-        GridCoverage2D coverage = process.execute(features, pixelsPerCell, strategy, strategyArgs, emptyCellValue, scaleMin, scaleMax, useLog, envelope, width, height, null);
+        GridCoverage2D coverage = process.execute(features, pixelsPerCell, strategy, null, null, scaleMin, null, false, envelope, width, height, null);
         checkInternal(coverage, fineDelta);
         checkEdge(coverage, envelope, fineDelta);
     }
 
     @Test
-    public void testSubCellCropWithSheer() throws NoSuchAuthorityCodeException, TransformException, FactoryException {
+    public void testSubCellCropWithSheer() {
         ReferencedEnvelope envelope = new ReferencedEnvelope(-168.75,168.75,-78.75,78.75,DefaultGeographicCRS.WGS84);
         int width = 900;
         int height = 600;
         int pixelsPerCell = 1;
         String strategy = "Basic";
-        List<String> strategyArgs = null;
-        Float emptyCellValue = null;
         Float scaleMin = 0f;
-        Float scaleMax = null;
-        boolean useLog = false;
 
-        GridCoverage2D coverage = process.execute(features, pixelsPerCell, strategy, strategyArgs, emptyCellValue, scaleMin, scaleMax, useLog, envelope, width, height, null);
+        GridCoverage2D coverage = process.execute(features, pixelsPerCell, strategy, null, null, scaleMin, null, false, envelope, width, height, null);
         checkInternal(coverage, fineDelta);
     }
 
     @Test
-    public void testInvertQuery() throws Exception {
+    public void testInvertQuery() {
         Filter filter = ff.bbox("geom", 0, 0, 0, 0, "EPSG:4326");
         ReferencedEnvelope env = new ReferencedEnvelope(0,1,2,3,DefaultGeographicCRS.WGS84);
         Query query = new Query();
@@ -139,7 +119,7 @@ public class GeoHashGridProcessTest {
     }
 
     @Test
-    public void testInvertQueryAcrossDateline() throws Exception {
+    public void testInvertQueryAcrossDateline() {
         Filter filter = ff.bbox("geom", 0, 0, 0, 0, "EPSG:4326");
         ReferencedEnvelope env = new ReferencedEnvelope(-179,179,2,3,DefaultGeographicCRS.WGS84);
         Query query = new Query();

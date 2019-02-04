@@ -1,4 +1,4 @@
-/**
+/*
  * This file is hereby placed into the Public Domain. This means anyone is
  * free to do whatever they wish with this file.
  */
@@ -10,8 +10,9 @@ import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+@SuppressWarnings("unused")
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ElasticHit {
+class ElasticHit {
 
     @JsonProperty("_index")
     private String index;
@@ -28,50 +29,31 @@ public class ElasticHit {
     @JsonProperty("_source")
     private Map<String,Object> source;
 
+    @JsonProperty("fields")
     private Map<String,List<Object>> fields;
 
     public String getIndex() {
         return index;
     }
 
-    public void setIndex(String index) {
-        this.index = index;
-    }
-
     public String getType() {
         return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
     }
 
     public String getId() {
         return id;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
     public Float getScore() {
         return score;
-    }
-
-    public void setScore(Float score) {
-        this.score = score;
     }
 
     public Map<String, Object> getSource() {
         return source;
     }
 
-    public void setSource(Map<String, Object> source) {
-        this.source = source;
-    }
-
-    public void setFields(Map<String, List<Object>> fields) {
-        this.fields = fields;
+    public Map<String, List<Object>> getFields() {
+        return fields;
     }
 
     public List<Object> field(String name) {

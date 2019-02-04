@@ -1,17 +1,20 @@
-/**
+/*
  * This file is hereby placed into the Public Domain. This means anyone is
  * free to do whatever they wish with this file.
  */
 package mil.nga.giat.data.elasticsearch;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+@SuppressWarnings("unused")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ElasticResults {
 
+    @JsonDeserialize(using = TotalDeserializer.class)
     private Long total;
 
     @JsonProperty("max_score")
@@ -23,24 +26,12 @@ public class ElasticResults {
         return total;
     }
 
-    public void setTotal(Long total) {
-        this.total = total;
-    }
-
     public Float getMaxScore() {
         return maxScore;
     }
 
-    public void setMaxScore(Float maxScore) {
-        this.maxScore = maxScore;
-    }
-
     public List<ElasticHit> getHits() {
         return hits;
-    }
-
-    public void setHits(List<ElasticHit> hits) {
-        this.hits = hits;
     }
 
 }

@@ -1,4 +1,4 @@
-/**
+/*
  * This file is hereby placed into the Public Domain. This means anyone is
  * free to do whatever they wish with this file.
  */
@@ -10,23 +10,23 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public interface ElasticClient extends Closeable {
+interface ElasticClient extends Closeable {
 
-    static final String RUN_AS = "es-security-runas-user";
+    String RUN_AS = "es-security-runas-user";
 
-    public double getVersion();
+    double getVersion();
 
-    public List<String> getTypes(String indexName) throws IOException;
+    List<String> getTypes(String indexName) throws IOException;
 
-    public Map<String,Object> getMapping(String indexName, String type) throws IOException;
+    Map<String,Object> getMapping(String indexName, String type) throws IOException;
 
-    public ElasticResponse search(String searchIndices, String type, ElasticRequest request) throws IOException;
+    ElasticResponse search(String searchIndices, String type, ElasticRequest request) throws IOException;
 
-    public ElasticResponse scroll(String scrollId, Integer scrollTime) throws IOException;
+    ElasticResponse scroll(String scrollId, Integer scrollTime) throws IOException;
 
     @Override
-    public void close() throws IOException;
+    void close() throws IOException;
 
-    public void clearScroll(Set<String> scrollIds) throws IOException;
+    void clearScroll(Set<String> scrollIds) throws IOException;
 
 }

@@ -19,6 +19,7 @@ package mil.nga.giat.data.elasticsearch;
 
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LineString;
@@ -304,7 +305,7 @@ public class ElasticGeometryFilterIT extends ElasticTestSupport {
     public void testBBOXCoveringDateline() throws Exception {
         init("not-active","geo");
         FilterFactory ff = dataStore.getFilterFactory();
-        BBOX bbox = ff.bbox("geo", 178, -98, 182, 98, "EPSG:" + SOURCE_SRID);
+        BBOX bbox = ff.bbox("geo", 178, -90, 182, 90, "EPSG:" + SOURCE_SRID);
         SimpleFeatureCollection features = featureSource.getFeatures(bbox);
         assertEquals(2, features.size());
     }
@@ -313,7 +314,7 @@ public class ElasticGeometryFilterIT extends ElasticTestSupport {
     public void testBBOXBeyondDateline() throws Exception {
         init("not-active","geo");
         FilterFactory ff = dataStore.getFilterFactory();
-        BBOX bbox = ff.bbox("geo", 180.5, -98, 182, 98, "EPSG:" + SOURCE_SRID);
+        BBOX bbox = ff.bbox("geo", 180.5, -90, 182, 90, "EPSG:" + SOURCE_SRID);
         SimpleFeatureCollection features = featureSource.getFeatures(bbox);
         assertEquals(1, features.size());
     }

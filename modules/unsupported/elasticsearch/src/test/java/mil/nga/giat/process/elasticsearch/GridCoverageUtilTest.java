@@ -1,4 +1,4 @@
-/**
+/*
  * This file is hereby placed into the Public Domain. This means anyone is
  * free to do whatever they wish with this file.
  */
@@ -12,12 +12,10 @@ import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.grid.GridCoordinates2D;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
-import org.geotools.factory.GeoTools;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.util.factory.GeoTools;
 import org.junit.Test;
 import org.opengis.geometry.MismatchedDimensionException;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.NoSuchAuthorityCodeException;
 
 import static org.junit.Assert.*;
 
@@ -89,7 +87,7 @@ public class GridCoverageUtilTest {
     }
 
     @Test
-    public void testCrop() throws MismatchedDimensionException, NoSuchAuthorityCodeException, FactoryException {
+    public void testCrop() throws MismatchedDimensionException {
         float[][] grid = new float[][] {{3,4},{1,2}};
         final GridCoverageFactory coverageFactory = CoverageFactoryFinder.getGridCoverageFactory(GeoTools.getDefaultHints());
         final GridCoverage2D coverage = coverageFactory.create("geohashGridAgg", grid, new ReferencedEnvelope(0,20,0,20,null));

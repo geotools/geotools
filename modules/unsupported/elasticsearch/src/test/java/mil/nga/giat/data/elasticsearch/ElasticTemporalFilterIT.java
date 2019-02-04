@@ -33,7 +33,7 @@ public class ElasticTemporalFilterIT extends ElasticTestSupport {
     @Test
     public void testLessDateFilterLong() throws Exception {
         init();
-        Date testDate = new Date(1005912798000l);
+        Date testDate = new Date(1005912798000L);
         FilterFactory ff = dataStore.getFilterFactory();
 
         Filter f = ff.lessOrEqual(ff.property("installed_td"), ff.literal(testDate.getTime()));
@@ -52,7 +52,7 @@ public class ElasticTemporalFilterIT extends ElasticTestSupport {
     @Test
     public void testGreaterDateFilterLong() throws Exception {
         init();
-        Date testDate = new Date(1005912798000l);
+        Date testDate = new Date(1005912798000L);
         FilterFactory ff = dataStore.getFilterFactory();
 
         Filter f = ff.greaterOrEqual(ff.property("installed_td"), ff.literal(testDate.getTime()));

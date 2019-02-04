@@ -1,4 +1,4 @@
-/**
+/*
  * This file is hereby placed into the Public Domain. This means anyone is
  * free to do whatever they wish with this file.
  */
@@ -14,7 +14,7 @@ import org.geotools.geometry.GeneralEnvelope;
 import org.opengis.geometry.Envelope;
 import org.opengis.parameter.ParameterValueGroup;
 
-public class GridCoverageUtil {
+class GridCoverageUtil {
 
     public static GridCoverage2D scale(GridCoverage2D coverage, float width, float height) {
         final RenderedImage renderedImage = coverage.getRenderedImage();

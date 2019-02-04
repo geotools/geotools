@@ -1,4 +1,4 @@
-/**
+/*
  * This file is hereby placed into the Public Domain. This means anyone is
  * free to do whatever they wish with this file.
  */
@@ -93,7 +93,8 @@ public class ElasticResponseTest {
 
     @Test
     public void testHitFields() throws IOException {
-        ElasticResponse response = mapper.readValue("{\"hits\":{\"hits\":[{\"fields\": {\"tags\":[\"red\"]}}]}}", ElasticResponse.class);
+        String content = "{\"hits\":{\"hits\":[{\"fields\": {\"tags\":[\"red\"]}}]}}";
+        ElasticResponse response = mapper.readValue(content, ElasticResponse.class);
         assertEquals(1, response.getResults().getHits().size());
         assertNotNull(response.getResults().getHits().get(0).field("tags"));
         assertEquals(ImmutableList.of("red"), response.getResults().getHits().get(0).field("tags"));
@@ -104,7 +105,8 @@ public class ElasticResponseTest {
 
     @Test
     public void testHitSource() throws IOException {
-        ElasticResponse response = mapper.readValue("{\"hits\":{\"hits\":[{\"_source\": {\"tags\":[\"red\"]}}]}}", ElasticResponse.class);
+        String content = "{\"hits\":{\"hits\":[{\"_source\": {\"tags\":[\"red\"]}}]}}";
+        ElasticResponse response = mapper.readValue(content, ElasticResponse.class);
         assertEquals(1, response.getResults().getHits().size());
         assertNotNull(response.getResults().getHits().get(0).getSource());
         assertEquals(ImmutableList.of("red"), response.getResults().getHits().get(0).getSource().get("tags"));
@@ -112,11 +114,14 @@ public class ElasticResponseTest {
 
     @Test
     public void testAggregations() throws IOException {
-        ElasticResponse response = mapper.readValue("{\"aggregations\":{\"first\":{\"buckets\": [{\"key\":\"0\",\"doc_count\":10}]}}}", ElasticResponse.class);
+        String content = "{\"aggregations\":{\"first\":{\"buckets\": [{\"key\":\"0\",\"doc_count\":10}]}}}";
+        ElasticResponse response = mapper.readValue(content, ElasticResponse.class);
         assertEquals(1, response.getAggregations().size());
         assertEquals(1, response.getAggregations().size());
-        assertEquals(1, response.getAggregations().values().stream().findFirst().orElse(null).getBuckets().size());
-        assertEquals(ImmutableMap.of("key","0","doc_count",10), response.getAggregations().values().stream().findFirst().orElse(null).getBuckets().get(0));
+        ElasticAggregation aggregations = response.getAggregations().values().stream().findFirst().orElse(null);
+        assertNotNull(aggregations);
+        assertEquals(1, aggregations.getBuckets().size());
+        assertEquals(ImmutableMap.of("key","0","doc_count",10), aggregations.getBuckets().get(0));
     }
 
     @Test
@@ -127,8 +132,9 @@ public class ElasticResponseTest {
 
     @Test
     public void testToString() throws IOException {
-        ElasticResponse response = mapper.readValue("{\"hits\":{\"hits\":[{\"_source\": {\"tags\":[\"red\"]}}]}, " + 
-                "\"aggregations\":{\"first\":{\"buckets\": [{\"key\":\"0\",\"doc_count\":10}]}}}", ElasticResponse.class);
+        String content = "{\"hits\":{\"hits\":[{\"_source\": {\"tags\":[\"red\"]}}]}, " +
+                "\"aggregations\":{\"first\":{\"buckets\": [{\"key\":\"0\",\"doc_count\":10}]}}}";
+        ElasticResponse response = mapper.readValue(content, ElasticResponse.class);
         String responseStr = response.toString();
         assertTrue(responseStr.contains("hits=1"));
         assertTrue(responseStr.contains("numBuckets=1"));

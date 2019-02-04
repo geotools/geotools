@@ -1,4 +1,4 @@
-/**
+/*
  * This file is hereby placed into the Public Domain. This means anyone is
  * free to do whatever they wish with this file.
  */
@@ -11,7 +11,7 @@ import com.google.common.collect.ImmutableMap;
 
 import mil.nga.giat.data.elasticsearch.ElasticAttribute.ElasticGeometryType;
 
-public final class ElasticConstants {
+final class ElasticConstants {
 
     public static final Map<String,Object> MATCH_ALL = ImmutableMap.of("match_all", Collections.EMPTY_MAP);
 

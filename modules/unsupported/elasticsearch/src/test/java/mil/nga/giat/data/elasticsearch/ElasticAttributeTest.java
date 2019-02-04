@@ -1,4 +1,4 @@
-/**
+/*
  * This file is hereby placed into the Public Domain. This means anyone is
  * free to do whatever they wish with this file.
  */
@@ -17,8 +17,6 @@ public class ElasticAttributeTest {
 
     private ElasticAttribute attr;
 
-    private ElasticAttribute other;
-    
     private String name;
 
     private String shortName;
@@ -102,22 +100,21 @@ public class ElasticAttributeTest {
 
     @Test
     public void testDisplayName() {
-        assertTrue(attr.getDisplayName().equals(name));
+        assertEquals(attr.getDisplayName(), name);
         attr.setShortName("name");
         attr.setUseShortName(true);
-        assertTrue(attr.getDisplayName().equals("name"));        
+        assertEquals("name", attr.getDisplayName());
     }
 
     @Test
     public void testHashCode() {
-        assertTrue(attr.hashCode()==(new ElasticAttribute("theName")).hashCode());
+        assertEquals(attr.hashCode(), (new ElasticAttribute("theName")).hashCode());
         assertTrue(attr.hashCode()!=(new ElasticAttribute("name")).hashCode());
     }
 
     @Test
     public void testEquals() {
-        assertTrue(!attr.equals("name"));
-        assertTrue(attr.equals(new ElasticAttribute("theName")));
+        assertEquals(attr, new ElasticAttribute("theName"));
         assertTrue(!attr.equals(new ElasticAttribute("name")));
     }
 
@@ -127,8 +124,8 @@ public class ElasticAttributeTest {
     }
 
     @Test
-    public void testCompare() {     
-      other = new ElasticAttribute("other");     
+    public void testCompare() {
+      ElasticAttribute other = new ElasticAttribute("other");
       attr.setOrder(1);
       other.setOrder(2);
       assertEquals(-1, attr.compareTo(other));
@@ -148,6 +145,6 @@ public class ElasticAttributeTest {
       other = new ElasticAttribute("before");
       attr.setOrder(1);
       other.setOrder(1);
-      assertTrue(attr.compareTo(other) > 0); 
+      assertTrue(attr.compareTo(other) > 0);
     }
 }

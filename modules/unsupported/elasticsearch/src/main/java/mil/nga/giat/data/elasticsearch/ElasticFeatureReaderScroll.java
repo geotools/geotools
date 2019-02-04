@@ -1,4 +1,4 @@
-/**
+/*
  * This file is hereby placed into the Public Domain. This means anyone is
  * free to do whatever they wish with this file.
  */
@@ -17,7 +17,7 @@ import org.geotools.util.logging.Logging;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
-public class ElasticFeatureReaderScroll implements FeatureReader<SimpleFeatureType, SimpleFeature> {
+class ElasticFeatureReaderScroll implements FeatureReader<SimpleFeatureType, SimpleFeature> {
 
     private final static Logger LOGGER = Logging.getLogger(ElasticFeatureReaderScroll.class);
 
@@ -33,7 +33,7 @@ public class ElasticFeatureReaderScroll implements FeatureReader<SimpleFeatureTy
 
     private boolean lastScroll;
 
-    private Set<String> scrollIds;
+    private final Set<String> scrollIds;
 
     public ElasticFeatureReaderScroll(ContentState contentState, ElasticResponse searchResponse, int maxFeatures) {
         this.contentState = contentState;

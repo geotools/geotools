@@ -1,4 +1,4 @@
-/**
+/*
  * This file is hereby placed into the Public Domain. This means anyone is
  * free to do whatever they wish with this file.
  */
@@ -6,7 +6,6 @@ package mil.nga.giat.data.elasticsearch;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -16,6 +15,7 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import org.apache.http.HttpHost;
+import org.elasticsearch.client.Request;
 import org.elasticsearch.client.Response;
 import org.elasticsearch.client.RestClient;
 import org.geotools.data.Query;
@@ -61,7 +61,7 @@ public class ElasticDataStore extends ContentDataStore {
 
     private Integer scrollTime;
 
-    protected ArrayEncoding arrayEncoding;
+    private ArrayEncoding arrayEncoding;
 
     private Long gridSize;
 
@@ -80,25 +80,25 @@ public class ElasticDataStore extends ContentDataStore {
         CSV
     }
 
-    public ElasticDataStore(String searchHost, Integer hostPort,  String indexName) throws IOException {
+    public ElasticDataStore(String searchHost, Integer hostPort, String indexName) throws IOException {
         this(RestClient.builder(new HttpHost(searchHost, hostPort, "http")).build(), indexName);
     }
 
     public ElasticDataStore(RestClient restClient, String indexName) throws IOException {
-        this(restClient, null, indexName);
+        this(restClient, null, indexName, false);
     }
-   
-    public ElasticDataStore(RestClient adminRestClient, RestClient proxyRestClient, String indexName) throws IOException {
+
+    public ElasticDataStore(RestClient restClient, RestClient proxyRestClient, String indexName, boolean enableRunAs) throws IOException {
         LOGGER.fine("Initializing data store for " + indexName);
 
         this.indexName = indexName;
 
         try {
-            final Response response = adminRestClient.performRequest("GET", "/", Collections.<String, String>emptyMap());
-            if (response.getStatusLine().getStatusCode() >= 400) {
-                throw new IOException();
+            checkRestClient(restClient);
+            if (proxyRestClient != null) {
+                checkRestClient(proxyRestClient);
             }
-            client = new RestElasticClient(adminRestClient, proxyRestClient);           
+            client = new RestElasticClient(restClient, proxyRestClient, enableRunAs);
         } catch (Exception e) {
             throw new IOException("Unable to create REST client", e);
         }
@@ -106,7 +106,7 @@ public class ElasticDataStore extends ContentDataStore {
 
         final List<String> types = getClient().getTypes(indexName);
         if (!types.isEmpty()) {
-            baseTypeNames = types.stream().map(name -> new NameImpl(name)).collect(Collectors.toList());
+            baseTypeNames = types.stream().map(NameImpl::new).collect(Collectors.toList());
         } else {
             baseTypeNames = new ArrayList<>();
         }
@@ -149,15 +149,9 @@ public class ElasticDataStore extends ContentDataStore {
         final ElasticLayerConfiguration layerConfig = layerConfigurations.get(localPart);
         final List<ElasticAttribute> elasticAttributes;
         if (layerConfig == null || layerConfig.getAttributes().isEmpty()) {
-            final String docType;
-            if (docTypes.containsKey(layerName)) {
-                docType = docTypes.get(layerName);
-            } else {
-                docType = localPart;
-            }
-
+            final String docType = docTypes.getOrDefault(layerName, localPart);
             final Map<String,Object> mapping = getClient().getMapping(indexName, docType);
-            elasticAttributes = new ArrayList<ElasticAttribute>();
+            elasticAttributes = new ArrayList<>();
             if (mapping != null) {
                 add(elasticAttributes, "_id", "string", mapping, false);
                 add(elasticAttributes, "_index", "string", mapping, false);
@@ -199,20 +193,15 @@ public class ElasticDataStore extends ContentDataStore {
         return elasticAttributes;
     }
 
-    @Override
-    public void dispose() {
-        super.dispose();
-    }
-
-    public String getIndexName() {
+    String getIndexName() {
         return indexName;
     }
 
-    public ElasticClient getClient() {
+    ElasticClient getClient() {
         return client;
     }
 
-    public boolean isSourceFilteringEnabled() {
+    boolean isSourceFilteringEnabled() {
         return sourceFilteringEnabled;
     }
 
@@ -408,10 +397,19 @@ public class ElasticDataStore extends ContentDataStore {
         }
     }
 
+    private static void checkRestClient(RestClient client) throws IOException {
+        final Response response = client.performRequest(new Request("GET", "/"));
+        final int status = response.getStatusLine().getStatusCode();
+        if (status >= 400) {
+            final String reason = response.getStatusLine().getReasonPhrase();
+            throw new IOException(String.format("Unexpected response from Elasticsearch: %d %s", status, reason));
+        }
+    }
+
     static boolean isAnalyzed(Map<String, Object> map) {
         boolean analyzed = false;
         Object value = map.get("type");
-        if (value != null && value instanceof String && ((String) value).equals("text")) {
+        if (value instanceof String && value.equals("text")) {
             analyzed = true;
         }
         return analyzed;

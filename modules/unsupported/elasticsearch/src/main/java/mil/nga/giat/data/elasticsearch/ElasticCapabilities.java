@@ -1,4 +1,4 @@
-/**
+/*
  * This file is hereby placed into the Public Domain. This means anyone is
  * free to do whatever they wish with this file.
  */
@@ -49,8 +49,8 @@ import org.opengis.filter.temporal.TOverlaps;
  * to enable support for {@link IncludeFilter}, {@link ExcludeFilter} and {@link BegunBy}.
  *
  */
-public class ElasticCapabilities extends Capabilities {
-    private static Map<Class<?>,String> temporalNames;
+class ElasticCapabilities extends Capabilities {
+    private static final Map<Class<?>,String> temporalNames;
     static {
         temporalNames = new HashMap<>();
         temporalNames.put(After.class, After.NAME );
@@ -151,7 +151,7 @@ public class ElasticCapabilities extends Capabilities {
 
     private class ElasticIsFullySupportedFilterVisitor extends IsFullySupportedFilterVisitor {
 
-        public ElasticIsFullySupportedFilterVisitor() {
+        ElasticIsFullySupportedFilterVisitor() {
             super(getContents());
         }
 

@@ -1,4 +1,4 @@
-/**
+/*
  * This file is hereby placed into the Public Domain. This means anyone is
  * free to do whatever they wish with this file.
  */
@@ -27,6 +27,7 @@ import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.spatial.BBOX;
 import org.opengis.util.ProgressListener;
 
+@SuppressWarnings("unused")
 @DescribeProcess(title = "geoHashGridAgg", description = "Computes a grid from GeoHash grid aggregation buckets with values corresponding to doc_count values.")
 public class GeoHashGridProcess implements VectorProcess {
 
@@ -38,19 +39,19 @@ public class GeoHashGridProcess implements VectorProcess {
         METRIC(MetricGeoHashGrid.class),
         NESTED_AGG(NestedAggGeoHashGrid.class);
 
-        private Class<? extends GeoHashGrid> clazz;
+        private final Class<? extends GeoHashGrid> clazz;
 
-        private Strategy(Class<? extends GeoHashGrid> clazz) {
+        Strategy(Class<? extends GeoHashGrid> clazz) {
             this.clazz = clazz;
         }
 
-        public GeoHashGrid createNewInstance() throws ReflectiveOperationException {
+        GeoHashGrid createNewInstance() throws ReflectiveOperationException {
             return clazz.getConstructor().newInstance();
         }
 
     }
 
-    @DescribeResult(name = "result", description = "Output raster")
+    @DescribeResult(description = "Output raster")
     public GridCoverage2D execute(
 
             // process data

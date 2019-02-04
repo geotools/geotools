@@ -131,7 +131,6 @@ public class VPFFileFactory implements DataStoreFactorySpi {
     }
 
     public VPFFile getFile(String pathName) throws IOException {
-        // System.out.println(pathName);
         if (this.store == null) {
             this.store = new VPFFileStore(pathName);
         }

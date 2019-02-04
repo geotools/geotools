@@ -35,6 +35,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.Vector;
+import java.util.logging.Level;
 import org.geotools.data.vpf.file.VPFFile;
 import org.geotools.data.vpf.file.VPFFileFactory;
 import org.geotools.data.vpf.readers.AreaGeometryFactory;
@@ -143,15 +144,10 @@ public class VPFFeatureClass implements SimpleFeatureType {
             namespace = cNamespace;
         }
 
-        /*
-        if (directoryName.equals("/home/ubuntu/alysida/encdata/DNC13/H1316300/LIM")
-                && typeName.equals("limbndya")) {
-            this.debug = true;
-        }
-        */
-
-        if (typeName.equalsIgnoreCase("DQYAREA")) {
-            this.debug = true;
+        if (VPFDataStoreFactory.isLoggable(Level.FINEST)) {
+            if (typeName.equalsIgnoreCase("VPFFEATURETYPE")) {
+                this.debug = true;
+            }
         }
 
         String fcsFileName = directoryName + File.separator + TABLE_FCS;
@@ -161,23 +157,19 @@ public class VPFFeatureClass implements SimpleFeatureType {
 
             Iterator<SimpleFeature> iter = fcsFile.readAllRows().iterator();
 
-            /*
             if (this.debug) {
                 SimpleFeatureType fcsFeatureType = fcsFile.getFeatureType();
                 VPFFeatureType.debugFeatureType(fcsFeatureType);
             }
-            */
 
             while (iter.hasNext()) {
                 SimpleFeature feature = (SimpleFeature) iter.next();
                 String featureClassName = feature.getAttribute("feature_class").toString().trim();
 
                 if (typeName.equals(featureClassName)) {
-                    /*
                     if (this.debug) {
                         VPFFeatureType.debugFeature(feature);
                     }
-                    */
                     addFCS(feature);
                 }
             }
@@ -221,14 +213,10 @@ public class VPFFeatureClass implements SimpleFeatureType {
 
             featureType = b.buildFeatureType();
 
-            /*if (this.debug) {
-                this.readFirst();
-            }*/
-
         } catch (IOException exp) {
             // We've already searched the FCS file once successfully
             // So this should never happen
-            exp.printStackTrace();
+            // exp.printStackTrace();
         }
     }
 
@@ -317,18 +305,8 @@ public class VPFFeatureClass implements SimpleFeatureType {
                 relations.put(relName, tr);
             }
 
-            // FCS's that are the inverse of existing ones are not needed
-            // But we should never get this far
-            /*
-            if (!joinList.contains(new ColumnPair(joinColumn2, joinColumn1))) {
-                joinList.add(new ColumnPair(joinColumn1, joinColumn2));
-            }
-            */
         } catch (IOException exc) {
-            // File was not present
-            // which means it is for a geometry table
-            // we can safely ignore it for now
-            //          exc.printStackTrace();
+            // exc.printStackTrace();
         }
     }
 
@@ -545,15 +523,6 @@ public class VPFFeatureClass implements SimpleFeatureType {
                 }
             }
             jcs.currRow = jrow;
-
-            // if (jrow == null) continue;
-            /*SimpleFeature jrow = null;
-            try {
-                jrow = joinTable.readFeature();
-            } catch (Exception e) {
-                jrow = null;
-            }
-            if (jrow == null) continue; */
         }
 
         return combineColumnSets(featureId, featureType);
@@ -589,8 +558,10 @@ public class VPFFeatureClass implements SimpleFeatureType {
             }
         }
 
-        // VPFFeatureType.debugFeatureType(this.featureType);
-        // VPFFeatureType.debugFeatureType(featureType);
+        if (this.debug) {
+            VPFFeatureType.debugFeatureType(this.featureType);
+            VPFFeatureType.debugFeatureType(featureType);
+        }
 
         SimpleFeature feature = SimpleFeatureBuilder.build(featureType, vlist, featureId);
         if (geometry != null) {
@@ -615,8 +586,6 @@ public class VPFFeatureClass implements SimpleFeatureType {
             System.out.println("buildGeometryColumn: " + table);
         }
 
-        // Why would the fileList already contain a null?
-        //      if(!fileList.contains(null)){
         CoordinateReferenceSystem crs = getCoverage().getLibrary().getCoordinateReferenceSystem();
         if (crs != null) {
             descriptor =
@@ -635,7 +604,6 @@ public class VPFFeatureClass implements SimpleFeatureType {
         }
 
         VPFColumn result = new VPFColumn("GEOMETRY", descriptor); // how to construct
-        // columns.add(result);
         setGeometryFactory(table);
 
         return result;
@@ -662,39 +630,6 @@ public class VPFFeatureClass implements SimpleFeatureType {
 
         // if an invalid string is returned, there will be no geometry
     }
-    /**
-     * Adds all of the columns from a VPF file into the table. Note: This does not handle columns
-     * with the same name particularly well. Perhaps the xpath mechanism can be used to help here.
-     *
-     * @param vpfFile the <code>VPFFile</code> object to use
-     */
-    /*
-    private void addFileToTable(VPFFile vpfFile) {
-        //      Class columnClass;
-        boolean addPrimaryKey = fileList.isEmpty();
-
-        // Check to see if we have already grabbed this file
-        if (!fileList.contains(vpfFile)) {
-            fileList.add(vpfFile);
-
-            if (this.debug) {
-                System.out.println("======== add vpf file to class");
-                System.out.println(vpfFile.getPathName());
-            }
-
-            // Pull the columns off of the file and add them to our schema
-            // Except for the first file, ignore the first column since it is a join column
-            for (int inx = addPrimaryKey ? 0 : 1; inx < vpfFile.getAttributeCount(); inx++) {
-                VPFColumn col = vpfFile.getColumn(inx);
-                if (this.debug) {
-                    String colName = col.getName();
-                    System.out.println(colName);
-                }
-                columns.add(col);
-            }
-        }
-    }
-    */
 
     /**
      * The coverage that owns this feature class
@@ -730,18 +665,6 @@ public class VPFFeatureClass implements SimpleFeatureType {
         }
         return fileList;
     }
-
-    /**
-     * DOCUMENT ME!
-     *
-     * @return a<code>List</code> containing <code>ColumnPair</code> objects which identify the file
-     *     joins.
-     */
-    /*
-    public List getJoinList() {
-        return null;
-    }
-    */
 
     public SimpleFeatureType getFeatureType() {
         return featureType;

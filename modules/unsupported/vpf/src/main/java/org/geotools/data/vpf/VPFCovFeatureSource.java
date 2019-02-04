@@ -51,13 +51,6 @@ public class VPFCovFeatureSource extends VPFFeatureSource {
 
                 if (bounds == null) bounds = new ReferencedEnvelope(bb);
                 else bounds.expandToInclude(ReferencedEnvelope.reference(bb));
-
-                /*Object g = feature.getDefaultGeometry();
-                if(g != null) {
-                    System.out.println("++++++++++++++++++++++++++ found geom");
-                    System.out.println(g.toString());
-                }*/
-
             }
         }
 

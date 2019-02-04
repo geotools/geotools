@@ -28,6 +28,7 @@ import java.net.URL;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFactorySpi;
@@ -35,6 +36,7 @@ import org.geotools.data.vpf.file.VPFFile;
 import org.geotools.data.vpf.file.VPFFileFactory;
 import org.geotools.data.vpf.ifc.FileConstants;
 import org.geotools.feature.SchemaException;
+import org.geotools.util.KVP;
 import org.opengis.feature.simple.SimpleFeature;
 
 /**
@@ -60,6 +62,10 @@ public class VPFDataStoreFactory implements DataStoreFactorySpi {
     /** The logger for the vpf module. */
     protected static final Logger LOGGER =
             org.geotools.util.logging.Logging.getLogger("org.geotools.data.vpf");
+
+    protected static Level loggerLevel = Level.INFO;
+
+    protected static boolean levelSet = false;
 
     /** Default Constructor */
     public VPFDataStoreFactory() {}
@@ -96,13 +102,48 @@ public class VPFDataStoreFactory implements DataStoreFactorySpi {
         return result;
     }
 
+    public static Logger getLogger() {
+        Logger log = VPFDataStoreFactory.LOGGER;
+        if (!VPFDataStoreFactory.levelSet) {
+            log.setLevel(VPFDataStoreFactory.loggerLevel);
+            VPFDataStoreFactory.levelSet = true;
+        }
+
+        return log;
+    }
+
+    public static Level getLoggerLevel() {
+        return VPFDataStoreFactory.loggerLevel;
+    }
+
+    public static void setLoggerLevel(Level level) {
+        VPFDataStoreFactory.loggerLevel = level;
+        VPFDataStoreFactory.LOGGER.setLevel(level);
+        VPFDataStoreFactory.levelSet = true;
+    }
+
+    public static void log(String msg) {
+        Logger log = VPFDataStoreFactory.getLogger();
+        Level level = VPFDataStoreFactory.getLoggerLevel();
+        log.log(level, msg);
+    }
+
+    public static boolean isLoggable(Level level) {
+        return level.intValue() >= VPFDataStoreFactory.loggerLevel.intValue();
+    }
+
     /*
      *  (non-Javadoc)
      * @see org.geotools.data.DataStoreFactorySpi#createDataStore(java.util.Map)
      */
+    @Override
     public DataStore createDataStore(Map params) throws IOException {
-
         return create(params);
+    }
+
+    public DataStore createDataStore(URL url) throws IOException {
+        Map<String, Object> params = new KVP("url", url);
+        return createDataStore(params);
     }
 
     /**
@@ -127,7 +168,7 @@ public class VPFDataStoreFactory implements DataStoreFactorySpi {
         URI namespace = (URI) NAMESPACEP.lookUp(params); // null if not exist
         // LOGGER.finer("creating new vpf datastore with params: " + params);
 
-        boolean debug = true;
+        boolean debug = VPFDataStoreFactory.isLoggable(Level.FINEST);
 
         String rootDir = file.getParent();
         String latTableName = new File(rootDir, LIBRARY_ATTTIBUTE_TABLE).toString();
@@ -158,25 +199,10 @@ public class VPFDataStoreFactory implements DataStoreFactorySpi {
                 break;
             }
 
-            /*
-            System.out.println("----------- LAT feature: " + feature.getID());
-
-            SimpleFeatureType ftype = feature.getFeatureType();
-            System.out.println("featureTypeName: " + ftype.getTypeName());
-
-            int attrCount = feature.getAttributeCount();
-            for (int iattr = 0; iattr < attrCount; iattr++) {
-                Object attr = feature.getAttribute(iattr);
-                AttributeDescriptor desc = ftype.getDescriptor(iattr);
-                System.out.print(
-                        String.format(
-                                "%d,%s,%s\n",
-                                iattr,
-                                desc.getLocalName(),
-                                // desc.getType().toString(),
-                                attr.toString()));
+            if (VPFDataStoreFactory.isLoggable(Level.FINEST)) {
+                System.out.println("----------- LAT feature: " + feature.getID());
+                VPFFeatureType.debugFeature(feature);
             }
-            */
 
             feature = iter.hasNext() ? (SimpleFeature) iter.next() : null;
         }

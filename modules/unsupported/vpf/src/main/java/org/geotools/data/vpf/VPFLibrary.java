@@ -29,6 +29,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
+import java.util.logging.Level;
 import org.geotools.data.Query;
 import org.geotools.data.Transaction;
 import org.geotools.data.store.ContentDataStore;
@@ -209,7 +210,7 @@ public class VPFLibrary extends ContentDataStore {
         SimpleFeature feature;
         String directoryName;
 
-        boolean debug = false;
+        boolean debug = VPFDataStoreFactory.isLoggable(Level.FINEST);
 
         if (debug) {
             System.out.println("+++++++++++++ setCoverages: " + directory);
@@ -434,7 +435,9 @@ public class VPFLibrary extends ContentDataStore {
             for (int jnx = 0; jnx < coverageTypes[inx].size(); jnx++) {
                 // result[index] = ((SimpleFeatureType) coverageTypes[inx].get(jnx)).getTypeName();
                 SimpleFeatureType featureType = (SimpleFeatureType) coverageTypes[inx].get(jnx);
-                NameImpl name = new NameImpl(featureType.getTypeName());
+                // String featureTypeName = this.libraryName + "_" + featureType.getTypeName();
+                String featureTypeName = featureType.getTypeName();
+                NameImpl name = new NameImpl(featureTypeName);
                 result.add(name);
                 // index++;
             }
@@ -516,8 +519,10 @@ public class VPFLibrary extends ContentDataStore {
         }
 
         if (featureSource == null) {
-            // System.out.println("VPFLibrary.getFeatureSource returned null");
-            // System.out.println(typeName);
+            if (VPFDataStoreFactory.isLoggable(Level.FINEST)) {
+                System.out.println("VPFLibrary.getFeatureSource returned null");
+                System.out.println(typeName);
+            }
             Query query = new Query(Query.ALL);
             ContentEntry entry = this.entry(new NameImpl(typeName));
             featureSource = new VPFLibFeatureSource(entry, query);

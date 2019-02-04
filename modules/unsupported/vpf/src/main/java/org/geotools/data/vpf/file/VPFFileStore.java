@@ -25,10 +25,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
+import java.util.logging.Level;
 import org.geotools.data.Query;
 import org.geotools.data.store.ContentDataStore;
 import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentFeatureSource;
+import org.geotools.data.vpf.VPFDataStoreFactory;
 import org.geotools.data.vpf.VPFFeatureSource;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.SchemaException;
@@ -114,8 +116,9 @@ public class VPFFileStore extends ContentDataStore {
         }
 
         if (featureSource == null) {
-            // System.out.println("VPFLibrary.getFeatureSource returned null");
-            // System.out.println(typeName);
+            if (VPFDataStoreFactory.isLoggable(Level.FINEST)) {
+                System.out.println("VPFFileStore.getFeatureSource returned null: " + typeName);
+            }
             Query query = new Query(typeName);
             ContentEntry entry = this.entry(new NameImpl(typeName));
             featureSource = new VPFFileFeatureSource(entry, query);

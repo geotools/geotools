@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import org.geotools.data.vpf.file.VPFFile;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -44,38 +43,6 @@ public class VPFFeatureType implements SimpleFeatureType {
     private final String typeName;
     /** The FACC code, a two-letter, 3-number code identifying the feature type */
     private final String faccCode;
-
-    public static void debugRowMap(Map<VPFFile, List<Object>> rows) {
-
-        Integer hashCode = rows.hashCode();
-
-        System.out.println("******** dbug row map " + hashCode);
-        System.out.println("          size: " + rows.size());
-
-        Integer irow = 0;
-        for (Map.Entry<VPFFile, List<Object>> entry : rows.entrySet()) {
-            VPFFile file = (VPFFile) entry.getKey();
-
-            List<Object> joinData = (List<Object>) entry.getValue();
-            ColumnPair joinColumn = (ColumnPair) joinData.get(0);
-            SimpleFeature row = (SimpleFeature) joinData.get(1);
-
-            System.out.println("---------------- " + irow);
-            if (file == null) {
-                System.out.println("null file");
-            } else {
-                System.out.println(file.getPathName());
-
-                if (row == null) System.out.println("null row");
-                else VPFFeatureType.debugFeature(row);
-            }
-
-            System.out.println("---------------- " + irow);
-
-            irow++;
-        }
-        System.out.println("******** end dbug row map " + hashCode);
-    }
 
     public static void debugFeature(SimpleFeature feature) {
         String featureName = feature.getName() != null ? feature.getName().getLocalPart() : "";

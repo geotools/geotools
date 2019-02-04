@@ -53,7 +53,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Vector;
+import java.util.logging.Level;
 import org.geotools.data.vpf.VPFColumn;
+import org.geotools.data.vpf.VPFDataStoreFactory;
 import org.geotools.data.vpf.exc.VPFHeaderFormatException;
 import org.geotools.data.vpf.io.TripletId;
 import org.geotools.data.vpf.io.VPFInputStream;
@@ -136,7 +138,6 @@ public class VPFFile {
      * @throws SchemaException if the contained feature type can not be constructed
      */
     public VPFFile(String cPathName) throws IOException, SchemaException {
-        // System.out.println(cPathName);
         pathName = cPathName;
         inputStream = new RandomAccessFile(cPathName, ACCESS_MODE);
         readHeader();
@@ -610,7 +611,7 @@ public class VPFFile {
         if (textPrimitive) size++;
         Object[] values = new Object[size];
 
-        boolean debug = false;
+        boolean debug = VPFDataStoreFactory.isLoggable(Level.FINEST);
 
         try {
             for (int inx = 0; inx < columns.size(); inx++) {

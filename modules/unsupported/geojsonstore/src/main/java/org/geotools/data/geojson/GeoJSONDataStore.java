@@ -36,110 +36,109 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
 
-public class GeoJSONDataStore extends org.geotools.data.store.ContentDataStore implements FileDataStore{
-    URL url;
+public class GeoJSONDataStore extends org.geotools.data.store.ContentDataStore
+    implements FileDataStore {
+  URL url;
 
-    SimpleFeatureType schema;
+  SimpleFeatureType schema;
 
-    protected Name typeName;
+  protected Name typeName;
 
-    public GeoJSONDataStore(URL url) throws IOException {
-        this.url = url;
+  public GeoJSONDataStore(URL url) throws IOException {
+    this.url = url;
+  }
+
+  @Override
+  protected List<Name> createTypeNames() throws IOException {
+
+    String name = FilenameUtils.getBaseName(url.toExternalForm());
+    // could hard code features in here?
+    typeName = new NameImpl(name);
+
+    return Collections.singletonList(typeName);
+  }
+
+  GeoJSONReader read() throws IOException {
+    GeoJSONReader reader = null;
+
+    reader = new GeoJSONReader(url);
+
+    return reader;
+  }
+
+  @Override
+  protected ContentFeatureSource createFeatureSource(ContentEntry entry) throws IOException {
+    // We can only really write to local files
+    String scheme = url.getProtocol();
+    String host = url.getHost();
+    if ("file".equalsIgnoreCase(scheme) && (host == null || host.isEmpty())) {
+      GeoJSONFeatureStore geoJSONFeatureStore = new GeoJSONFeatureStore(entry, Query.ALL);
+      return geoJSONFeatureStore;
+    } else {
+      GeoJSONFeatureSource geoJSONFeatureSource = new GeoJSONFeatureSource(entry, Query.ALL);
+      return geoJSONFeatureSource;
     }
+  }
 
-    @Override
-    protected List<Name> createTypeNames() throws IOException {
+  @Override
+  public void createSchema(SimpleFeatureType featureType) throws IOException {
+    this.schema = featureType;
+  }
 
-        String name = FilenameUtils.getBaseName(url.toExternalForm());
-        // could hard code features in here?
-        typeName = new NameImpl(name);
+  @Override
+  public SimpleFeatureType getSchema() throws IOException {
+    // TODO Auto-generated method stub
+    return this.schema;
+  }
 
-        return Collections.singletonList(typeName);
-    }
+  @Override
+  public void updateSchema(SimpleFeatureType featureType) throws IOException {
+    this.schema = featureType;
+  }
 
-    GeoJSONReader read() throws IOException {
-        GeoJSONReader reader = null;
+  @Override
+  public SimpleFeatureSource getFeatureSource() throws IOException {
+    // TODO Auto-generated method stub
+    return new GeoJSONFeatureSource(new ContentEntry(this, typeName), Query.ALL);
+  }
 
-        reader = new GeoJSONReader(url);
+  @Override
+  public FeatureReader<SimpleFeatureType, SimpleFeature> getFeatureReader() throws IOException {
+    // TODO Auto-generated method stub
+    return new GeoJSONFeatureReader(new ContentState(new ContentEntry(this, typeName)), Query.ALL);
+  }
 
-        return reader;
-    }
+  @Override
+  public FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriter(
+      Filter filter, Transaction transaction) throws IOException {
 
-    @Override
-    protected ContentFeatureSource createFeatureSource(ContentEntry entry) throws IOException {
-        // We can only really write to local files
-        String scheme = url.getProtocol();
-        String host = url.getHost();
-        if ("file".equalsIgnoreCase(scheme) && (host == null || host.isEmpty())) {
-            GeoJSONFeatureStore geoJSONFeatureStore = new GeoJSONFeatureStore(entry, Query.ALL);
-            return geoJSONFeatureStore;
-        } else {
-            GeoJSONFeatureSource geoJSONFeatureSource = new GeoJSONFeatureSource(entry, Query.ALL);
-            return geoJSONFeatureSource;
-        }
-    }
+    return super.getFeatureWriter(getTypeName(), filter, transaction);
+  }
 
-    @Override
-    public void createSchema(SimpleFeatureType featureType) throws IOException {
-        this.schema = featureType;
-    }
+  /** @return */
+  private String getTypeName() {
+    return typeName.getLocalPart();
+  }
 
-    @Override
-    public SimpleFeatureType getSchema() throws IOException {
-      // TODO Auto-generated method stub
-      return this.schema;
-    }
+  @Override
+  public FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriter(Transaction transaction)
+      throws IOException {
+    return super.getFeatureWriter(getTypeName(), transaction);
+  }
 
-    @Override
-    public void updateSchema(SimpleFeatureType featureType) throws IOException {
-      this.schema=featureType;
-      
-    }
+  @Override
+  public FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriterAppend(
+      Transaction transaction) throws IOException {
+    return super.getFeatureWriterAppend(getTypeName(), transaction);
+  }
 
-    @Override
-    public SimpleFeatureSource getFeatureSource() throws IOException {
-      // TODO Auto-generated method stub
-      return new GeoJSONFeatureSource(new ContentEntry(this, typeName), Query.ALL);
-    }
+  /** @return the url */
+  protected URL getUrl() {
+    return url;
+  }
 
-    @Override
-    public FeatureReader<SimpleFeatureType, SimpleFeature> getFeatureReader() throws IOException {
-      // TODO Auto-generated method stub
-      return new GeoJSONFeatureReader(new ContentState(new ContentEntry(this, typeName)), Query.ALL);
-    }
-
-    @Override
-    public FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriter(
-        Filter filter, Transaction transaction) throws IOException {
-      Query query = new Query(typeName.getLocalPart(), filter);
-      
-      
-      return new GeoJSONFeatureWriter(new ContentState(new ContentEntry(this, typeName)), query );
-    }
-
-    @Override
-    public FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriter(Transaction transaction)
-        throws IOException {
-      // TODO Auto-generated method stub
-      return null;
-    }
-
-    @Override
-    public FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriterAppend(
-        Transaction transaction) throws IOException {
-      // TODO Auto-generated method stub
-      return null;
-    }
-
-    /**
-     * @return the url
-     */
-    protected URL getUrl() {
-    return url;}
-
-    /**
-     * @param url the url to set
-     */
-    protected void setUrl(URL url) {
-    this.url = url;}
+  /** @param url the url to set */
+  protected void setUrl(URL url) {
+    this.url = url;
+  }
 }

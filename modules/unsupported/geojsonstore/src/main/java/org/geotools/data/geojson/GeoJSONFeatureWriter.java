@@ -94,6 +94,7 @@ public class GeoJSONFeatureWriter implements FeatureWriter<SimpleFeatureType, Si
             if (!appending) {
                 if (delegate.reader != null && delegate.hasNext()) {
                     this.currentFeature = delegate.next();
+                    System.out.println("returning existing feature "+currentFeature );; 
                     return this.currentFeature;
                 } else {
                     this.appending = true;
@@ -102,8 +103,9 @@ public class GeoJSONFeatureWriter implements FeatureWriter<SimpleFeatureType, Si
             SimpleFeatureType featureType = state.getFeatureType();
             String fid = featureType.getTypeName() + "." + nextID;
             Object values[] = DataUtilities.defaultValues(featureType);
-
+            //this generates an "empty" feature
             this.currentFeature = SimpleFeatureBuilder.build(featureType, values, fid);
+            System.out.println("returning new feature "+currentFeature );;
             return this.currentFeature;
         } catch (IllegalArgumentException invalid) {
             throw new IOException("Unable to create feature:" + invalid.getMessage(), invalid);

@@ -35,7 +35,9 @@ public abstract class JDBCPrimaryKeyFinderOnlineTest extends JDBCTestSupport {
     @Override
     protected void connect() throws Exception {
         super.connect();
-        dataStore.setDatabaseSchema(null);
+        if (setup.canResetSchema()) {
+            dataStore.setDatabaseSchema(null);
+        }
     }
 
     public void testSequencedPrimaryKey() throws Exception {

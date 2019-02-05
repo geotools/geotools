@@ -228,4 +228,12 @@ public abstract class JDBCTestSetup {
     public boolean shouldRunTests(Connection cx) throws SQLException {
         return true;
     }
+
+    /**
+     * Returns true if making the test run without a target schema is safe (normally is, but for
+     * Oracle Enterprise for example, it is not)
+     */
+    public boolean canResetSchema() {
+        return true;
+    }
 }

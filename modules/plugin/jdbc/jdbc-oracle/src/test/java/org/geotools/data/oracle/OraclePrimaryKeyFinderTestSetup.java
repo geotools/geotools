@@ -16,6 +16,8 @@
  */
 package org.geotools.data.oracle;
 
+import java.util.Optional;
+import org.geotools.jdbc.JDBCDataStoreFactory;
 import org.geotools.jdbc.JDBCPrimaryKeyFinderTestSetup;
 
 /** @source $URL$ */
@@ -46,6 +48,7 @@ public class OraclePrimaryKeyFinderTestSetup extends JDBCPrimaryKeyFinderTestSet
 
     @Override
     protected void createSequencedPrimaryKeyTable() throws Exception {
+
         run(
                 "CREATE TABLE seqtable ( key integer PRIMARY KEY, "
                         + "name VARCHAR(256), geom MDSYS.SDO_GEOMETRY)");
@@ -61,7 +64,15 @@ public class OraclePrimaryKeyFinderTestSetup extends JDBCPrimaryKeyFinderTestSet
 
         run(
                 "INSERT INTO gt_pk_metadata VALUES"
-                        + "(NULL, 'SEQTABLE', 'KEY', 0, 'sequence', 'PKSEQUENCE')");
+                        + "("
+                        + getSchemaForInsert()
+                        + ", 'SEQTABLE', 'KEY', 0, 'sequence', 'PKSEQUENCE')");
+    }
+
+    private String getSchemaForInsert() {
+        return Optional.ofNullable(fixture.get(JDBCDataStoreFactory.SCHEMA.key))
+                .map(s -> "'" + s.toString() + "'")
+                .orElse("NULL");
     }
 
     @Override
@@ -97,7 +108,9 @@ public class OraclePrimaryKeyFinderTestSetup extends JDBCPrimaryKeyFinderTestSet
         run("CREATE VIEW assignedsinglepk AS SELECT * FROM plaintable");
         run(
                 "INSERT INTO gt_pk_metadata VALUES"
-                        + "(NULL, 'ASSIGNEDSINGLEPK', 'KEY1', 0, 'assigned', NULL)");
+                        + "("
+                        + getSchemaForInsert()
+                        + ", 'ASSIGNEDSINGLEPK', 'KEY1', 0, 'assigned', NULL)");
     }
 
     @Override
@@ -110,10 +123,14 @@ public class OraclePrimaryKeyFinderTestSetup extends JDBCPrimaryKeyFinderTestSet
         run("CREATE VIEW assignedmultipk AS SELECT * FROM plaintable");
         run(
                 "INSERT INTO gt_pk_metadata VALUES"
-                        + "(NULL, 'ASSIGNEDMULTIPK', 'KEY1', 0, 'assigned', NULL)");
+                        + "("
+                        + getSchemaForInsert()
+                        + ", 'ASSIGNEDMULTIPK', 'KEY1', 0, 'assigned', NULL)");
         run(
                 "INSERT INTO gt_pk_metadata VALUES"
-                        + "(NULL, 'ASSIGNEDMULTIPK', 'KEY2', 1, 'assigned', NULL)");
+                        + "("
+                        + getSchemaForInsert()
+                        + ", 'ASSIGNEDMULTIPK', 'KEY2', 1, 'assigned', NULL)");
     }
 
     @Override

@@ -110,7 +110,7 @@ public class DefaultCalendarEra implements CalendarEra {
 
     @Override
     public boolean equals(final Object object) {
-        if (object instanceof CalendarEra) {
+        if (object instanceof DefaultCalendarEra) {
             final DefaultCalendarEra that = (DefaultCalendarEra) object;
 
             return Utilities.equals(this.datingSystem, that.datingSystem)

@@ -49,14 +49,17 @@ public final class OracleNativeFilterTestSetup extends JDBCNativeFilterTestSetup
                         + "GT_JDBC_TEST_MEASUREMENTS(location) INDEXTYPE IS MDSYS.SPATIAL_INDEX");
         // insert the needed records
         run(
-                "INSERT ALL"
-                        + "  INTO GT_JDBC_TEST_MEASUREMENTS VALUES (1, '#1', 'temperature', 15.0, SDO_GEOMETRY('POINT (1.0 2.0)', 4326))"
-                        + "  INTO GT_JDBC_TEST_MEASUREMENTS VALUES (2, '#2', 'temperature', 18.5, SDO_GEOMETRY('POINT (1.0 4.0)', 4326))"
-                        + "  INTO GT_JDBC_TEST_MEASUREMENTS VALUES (3, '#3', 'wind', 8.5, SDO_GEOMETRY('POINT (2.0 4.0)', 4326))"
-                        + "  INTO GT_JDBC_TEST_MEASUREMENTS VALUES (4, '#4', 'wind', 4.5, SDO_GEOMETRY('POINT (2.0 2.0)', 4326))"
-                        + "  INTO GT_JDBC_TEST_MEASUREMENTS VALUES (5, '#5', 'humidity', 0.7, SDO_GEOMETRY('POINT (1.0 4.0)', 4326))"
-                        + "  INTO GT_JDBC_TEST_MEASUREMENTS VALUES (6, '#6', 'humidity', 0.5, SDO_GEOMETRY('POINT (5.0 4.0)', 4326))"
-                        + "SELECT * FROM dual");
+                "INSERT INTO GT_JDBC_TEST_MEASUREMENTS VALUES (1, '#1', 'temperature', 15.0, SDO_GEOMETRY('POINT (1.0 2.0)', 4326))");
+        run(
+                "INSERT INTO GT_JDBC_TEST_MEASUREMENTS VALUES (2, '#2', 'temperature', 18.5, SDO_GEOMETRY('POINT (1.0 4.0)', 4326))");
+        run(
+                "INSERT INTO GT_JDBC_TEST_MEASUREMENTS VALUES (3, '#3', 'wind', 8.5, SDO_GEOMETRY('POINT (2.0 4.0)', 4326))");
+        run(
+                "INSERT INTO GT_JDBC_TEST_MEASUREMENTS VALUES (4, '#4', 'wind', 4.5, SDO_GEOMETRY('POINT (2.0 2.0)', 4326))");
+        run(
+                "INSERT INTO GT_JDBC_TEST_MEASUREMENTS VALUES (5, '#5', 'humidity', 0.7, SDO_GEOMETRY('POINT (1.0 4.0)', 4326))");
+        run(
+                "INSERT INTO GT_JDBC_TEST_MEASUREMENTS VALUES (6, '#6', 'humidity', 0.5, SDO_GEOMETRY('POINT (5.0 4.0)', 4326))");
     }
 
     @Override

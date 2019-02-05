@@ -4584,10 +4584,11 @@ public class ImageWorker {
             alphaChannel = JAI.create(SCALE_OP_NAME, pb2, hints);
 
             // Now, re-attach the scaled alpha to the scaled image
-            ImageLayout newImageLayout = null;
-            if (hints.containsKey(JAI.KEY_IMAGE_LAYOUT)) {
-                ImageLayout layout = (ImageLayout) hints.get(JAI.KEY_IMAGE_LAYOUT);
-                newImageLayout =
+            ImageWorker merged = new ImageWorker(scaledImage);
+            Object candidate = hints.get(JAI.KEY_IMAGE_LAYOUT);
+            if (candidate instanceof ImageLayout) {
+                ImageLayout layout = (ImageLayout) candidate;
+                ImageLayout layout2 =
                         new ImageLayout2(
                                 layout.getTileGridXOffset(null),
                                 layout.getTileGridYOffset(null),
@@ -4595,13 +4596,9 @@ public class ImageWorker {
                                 layout.getTileHeight(null),
                                 sm,
                                 cm);
-                RenderingHints hints2 = new RenderingHints(JAI.KEY_IMAGE_LAYOUT, newImageLayout);
-                ImageWorker merging =
-                        new ImageWorker(scaledImage)
-                                .setRenderingHints(hints2)
-                                .addBand(alphaChannel, false, true, null);
-                image = merging.getRenderedImage();
+                merged.setRenderingHints(new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout2));
             }
+            image = merged.addBand(alphaChannel, false, true, null).getRenderedImage();
         }
     }
 

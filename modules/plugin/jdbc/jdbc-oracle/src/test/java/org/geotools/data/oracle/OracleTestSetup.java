@@ -29,6 +29,11 @@ public class OracleTestSetup extends JDBCTestSetup {
     }
 
     @Override
+    public boolean canResetSchema() {
+        return false;
+    }
+
+    @Override
     protected String attributeName(String raw) {
         return raw.toUpperCase();
     }
@@ -43,7 +48,7 @@ public class OracleTestSetup extends JDBCTestSetup {
         // tests do assume the dialect is working in non loose mode
         ((OracleDialect) dataStore.getSQLDialect()).setLooseBBOXEnabled(false);
         ((OracleDialect) dataStore.getSQLDialect()).setEstimatedExtentsEnabled(false);
-        dataStore.setDatabaseSchema(fixture.getProperty("user").toUpperCase());
+        dataStore.setDatabaseSchema(fixture.getProperty("schema").toUpperCase());
     }
 
     @Override

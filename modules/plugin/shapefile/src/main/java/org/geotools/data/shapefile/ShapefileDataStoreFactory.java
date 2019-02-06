@@ -278,16 +278,15 @@ public class ShapefileDataStoreFactory implements FileDataStoreFactorySpi {
                 // maybe it's a directory?
                 Object fileType = FILE_TYPE.lookUp(params);
                 File dir = URLs.urlToFile(url);
-                
+
                 // check for null fileType for backwards compatibility
-                
+
                 // This breaks VPF support for Geoserver
                 // Causes Geoserver to process VPF folders as Shapefiles
-                //return dir != null
-                        //&& dir.isDirectory()
-                        //&& (fileType == null || "shapefile".equals(fileType));
-                        
-                        
+                // return dir != null
+                // && dir.isDirectory()
+                // && (fileType == null || "shapefile".equals(fileType));
+
                 return dir != null && dir.isDirectory() && "shapefile".equals(fileType);
             }
         } catch (IOException e) {

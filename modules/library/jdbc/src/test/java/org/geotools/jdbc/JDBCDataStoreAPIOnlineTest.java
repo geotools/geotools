@@ -89,7 +89,9 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
             td.build();
         }
 
-        dataStore.setDatabaseSchema(null);
+        if (setup.canResetSchema()) {
+            dataStore.setDatabaseSchema(null);
+        }
     }
 
     protected abstract JDBCDataStoreAPITestSetup createTestSetup();

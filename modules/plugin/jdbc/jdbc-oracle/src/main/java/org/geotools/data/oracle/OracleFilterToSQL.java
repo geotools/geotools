@@ -288,6 +288,7 @@ public class OracleFilterToSQL extends PreparedFilterToSQL {
             Geometry geomValue = (Geometry) evaluateLiteral((Literal) geometryExp, Geometry.class);
             sb.append("?");
             literalValues.add(clipToWorldFeatureTypeGeometry(geomValue));
+            descriptors.add(null);
             literalTypes.add(Geometry.class);
             SRIDs.add(getFeatureTypeGeometrySRID());
             dimensions.add(getFeatureTypeGeometryDimension());

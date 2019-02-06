@@ -208,16 +208,7 @@ public final class JTSUtils {
             org.locationtech.jts.geom.Coordinate c, DirectPosition result) {
         // Get the CRS so we can figure out the dimension of the result.
         CoordinateReferenceSystem crs = result.getCoordinateReferenceSystem();
-        int d;
-
-        if (crs != null) {
-            d = crs.getCoordinateSystem().getDimension();
-        } else {
-            // If the result DP has no CRS, then we just assume 2 dimensions.
-            // This could result in IndexOutOfBounds exceptions if the DP has
-            // fewer than 2 coordinates.
-            d = 2;
-        }
+        int d = crs.getCoordinateSystem().getDimension();
         final CoordinateSystem cs = crs.getCoordinateSystem();
 
         if (d >= 1) {

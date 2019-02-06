@@ -128,7 +128,7 @@ public abstract class GranuleCatalogFactory {
             File parentDirectory = URLs.urlToFile(sourceURL);
             if (parentDirectory.isFile()) parentDirectory = parentDirectory.getParentFile();
             params.put(Utils.Prop.PARENT_LOCATION, URLs.fileToUrl(parentDirectory).toString());
-        } else params.put(Utils.Prop.PARENT_LOCATION, null);
+        }
         // add typename
         String typeName = catalogConfigurationBean.getTypeName();
         if (typeName != null) {

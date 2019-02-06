@@ -105,7 +105,8 @@ public class FeatureTransformer extends TransformerBase {
     private static final Logger LOGGER =
             org.geotools.util.logging.Logging.getLogger(FeatureTransformer.class);
 
-    private static Set gmlAtts;
+    private Set gmlAtts;
+
     private String collectionPrefix = "wfs";
     private String collectionNamespace = "http://www.opengis.net/wfs";
     private NamespaceSupport nsLookup = new NamespaceSupport();
@@ -353,7 +354,7 @@ public class FeatureTransformer extends TransformerBase {
     }
 
     /** Outputs gml without any fancy indents or newlines. */
-    public static class FeatureTranslator extends TranslatorSupport
+    public class FeatureTranslator extends TranslatorSupport
             implements FeatureCollectionIteration.Handler {
         String fc = "FeatureCollection";
         protected GeometryTransformer.GeometryTranslator geometryTranslator;

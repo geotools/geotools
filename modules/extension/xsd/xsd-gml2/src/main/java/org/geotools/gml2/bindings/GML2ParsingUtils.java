@@ -207,14 +207,14 @@ public class GML2ParsingUtils {
         for (Iterator c = node.getChildren().iterator(); c.hasNext(); ) {
             Node child = (Node) c.next();
             String name = child.getComponent().getName();
-            Object valu = child.getValue();
+            Object value = child.getValue();
 
             // if the next property is of type geometry, let's set its CRS
-            if (Geometry.class.isAssignableFrom(valu.getClass()) && crs != null) {
+            if (value != null && Geometry.class.isAssignableFrom(value.getClass()) && crs != null) {
                 ftBuilder.crs(crs);
             }
 
-            ftBuilder.add(name, (valu != null) ? valu.getClass() : Object.class);
+            ftBuilder.add(name, (value != null) ? value.getClass() : Object.class);
         }
         ftBuilder.userData(PARSED_FROM_SCHEMA_KEY, false);
 

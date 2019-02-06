@@ -347,15 +347,6 @@ public class VariableAdapter extends CoverageSourceDescriptor {
                                                 + " is not the same as "
                                                 + o2.getClass());
                             }
-
-                            public boolean equals(Object o) {
-                                return false;
-                            }
-
-                            @Override
-                            public int hashCode() {
-                                return System.identityHashCode(this);
-                            }
                         });
 
         /** The domain name */

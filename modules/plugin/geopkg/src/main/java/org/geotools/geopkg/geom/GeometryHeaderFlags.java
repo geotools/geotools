@@ -83,11 +83,15 @@ public class GeometryHeaderFlags {
     }
 
     public boolean isEmpty() {
-        return (b & MASK_EMPTY) == 1;
+        return (b & MASK_EMPTY) == MASK_EMPTY;
     }
 
     public void setEmpty(boolean empty) {
-        b |= ((byte) (empty ? 1 : 0) & MASK_EMPTY);
+        if (empty) {
+            b |= MASK_EMPTY;
+        } else {
+            b &= ~MASK_EMPTY;
+        }
     }
 
     public GeopackageBinaryType getBinaryType() {

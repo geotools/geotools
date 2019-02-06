@@ -2454,8 +2454,12 @@ public class DataUtilities {
             return query;
         }
         Filter filter = SimplifyingFilterVisitor.simplify(query.getFilter());
-        query.setFilter(filter);
-        return query;
+        if (filter.equals(query.getFilter())) {
+            return query;
+        }
+        Query result = new Query(query);
+        result.setFilter(filter);
+        return result;
     }
 
     /**

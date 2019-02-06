@@ -1011,8 +1011,7 @@ public class RasterManager implements Cloneable {
         // granuleCatalog = new HintedGranuleCatalog(parentReader.granuleCatalog, hints);
         granuleCatalog = parentReader.granuleCatalog;
         this.coverageFactory = parentReader.getGridCoverageFactory();
-        this.coverageIdentifier =
-                configuration != null ? configuration.getName() : ImageMosaicReader.UNSPECIFIED;
+        this.coverageIdentifier = configuration.getName();
         pathType = configuration.getCatalogConfigurationBean().getPathType();
 
         extractOverviewPolicy();

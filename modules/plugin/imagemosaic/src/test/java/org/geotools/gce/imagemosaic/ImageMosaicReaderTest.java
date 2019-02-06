@@ -30,7 +30,6 @@ import it.geosolutions.imageio.pam.PAMDataset;
 import it.geosolutions.imageio.pam.PAMDataset.PAMRasterBand;
 import it.geosolutions.imageio.pam.PAMParser;
 import it.geosolutions.imageio.utilities.ImageIOUtilities;
-import it.geosolutions.jaiext.JAIExt;
 import it.geosolutions.jaiext.range.NoDataContainer;
 import java.awt.*;
 import java.awt.color.ColorSpace;
@@ -253,16 +252,6 @@ public class ImageMosaicReaderTest extends Assert {
     private URL oneBitURL;
 
     @Rule public TemporaryFolder tempFolder = new TemporaryFolder();
-
-    @Before
-    public void setup() {
-        JAIExt.initJAIEXT(true, true);
-    }
-
-    @After
-    public void cleanup() {
-        JAIExt.initJAIEXT(false, true);
-    }
 
     /**
      * Testing crop capabilities.

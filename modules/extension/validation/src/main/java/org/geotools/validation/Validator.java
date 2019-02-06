@@ -138,7 +138,7 @@ public class Validator {
         // Grab from the provided stores - so we check against
         // the transaction
         //
-        Map sources = new HashMap();
+        Map<String, FeatureSource> sources = new HashMap<>();
 
         for (Iterator i = typeRefs.iterator(); i.hasNext(); ) {
             String typeRef = (String) i.next();

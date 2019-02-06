@@ -22,6 +22,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.util.factory.Hints;
 import org.opengis.filter.Filter;
@@ -921,7 +922,7 @@ public class Query {
                         ? (other.getCoordinateSystemReproject() == null)
                         : getCoordinateSystemReproject()
                                 .equals(other.getCoordinateSystemReproject()))
-                && (getStartIndex() == other.getStartIndex())
+                && Objects.equals(getStartIndex(), other.getStartIndex())
                 && (getHints() == null
                         ? (other.getHints() == null)
                         : getHints().equals(other.getHints()));

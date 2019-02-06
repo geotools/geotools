@@ -141,7 +141,7 @@ public class TouchesIntegrity extends RelationIntegrity {
                 }
             }
         } finally {
-            fr1.close();
+            if (fr1 != null) fr1.close();
         }
 
         return success;
@@ -222,7 +222,7 @@ public class TouchesIntegrity extends RelationIntegrity {
                 }
             }
         } finally {
-            fr1.close();
+            if (fr1 != null) fr1.close();
         }
 
         return success;

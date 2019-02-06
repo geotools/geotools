@@ -41,6 +41,7 @@ import org.geotools.data.wfs.internal.v1_x.StrictWFS_1_x_Strategy;
 import org.geotools.data.wfs.internal.v2_0.StrictWFS_2_0_Strategy;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.ows.ServiceException;
+import org.geotools.util.SuppressFBWarnings;
 import org.geotools.util.Version;
 import org.geotools.util.logging.Logging;
 import org.geotools.xml.XMLHandlerHints;
@@ -105,6 +106,9 @@ public class WFSClient extends AbstractOpenWebService<WFSGetCapabilities, QName>
     }
 
     @Override
+    @SuppressFBWarnings(
+            "UR_UNINIT_READ_CALLED_FROM_SUPER_CONSTRUCTOR") // actual issue, but don't know how to
+    // fix it!
     protected void setupSpecifications() {
         specs = new Specification[3];
         WFSStrategy strictWFS_1_0_0_Strategy = new StrictWFS_1_x_Strategy(Versions.v1_0_0);

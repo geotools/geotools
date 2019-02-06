@@ -17,7 +17,6 @@
 package org.geotools.renderer.lite.gridcoverage2d;
 
 import it.geosolutions.imageio.utilities.ImageIOUtilities;
-import it.geosolutions.jaiext.JAIExt;
 import it.geosolutions.jaiext.range.RangeFactory;
 import java.awt.Color;
 import java.awt.Rectangle;
@@ -79,9 +78,7 @@ import org.geotools.test.TestData;
 import org.geotools.util.factory.FactoryRegistryException;
 import org.geotools.util.factory.GeoTools;
 import org.geotools.xml.styling.SLDParser;
-import org.junit.After;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.opengis.filter.expression.Expression;
 import org.opengis.referencing.datum.PixelInCell;
@@ -95,15 +92,6 @@ public class RasterSymbolizerTest extends org.junit.Assert {
 
     private static final double DELTA = 1E-7d;
 
-    @Before
-    public void setup() {
-        JAIExt.initJAIEXT(true, true);
-    }
-
-    @After
-    public void cleanup() {
-        JAIExt.initJAIEXT(false, true);
-    }
     /**
      * Creates a simple 500x500 {@link RenderedImage} for testing purposes.
      *

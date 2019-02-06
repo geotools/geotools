@@ -44,6 +44,7 @@ import org.geotools.data.complex.feature.type.Types;
 import org.geotools.data.complex.filter.UnmappingFilterVisitor;
 import org.geotools.data.complex.filter.UnmappingFilterVisitorFactory;
 import org.geotools.data.complex.filter.XPath;
+import org.geotools.data.complex.spi.CustomSourceDataStore;
 import org.geotools.data.complex.util.XPathUtil.StepList;
 import org.geotools.data.joining.JoiningQuery;
 import org.geotools.factory.CommonFactoryFinder;
@@ -432,7 +433,7 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
      * @param targetXPath target x-path
      * @return whether they match, i.e. when one of them is completely contained in the other
      */
-    protected static boolean matchProperty(StepList requestedProperty, StepList target) {
+    public static boolean matchProperty(StepList requestedProperty, StepList target) {
         // NC - include all parent and children paths of the requested property
         // i.e.: requested "measurement", found mapping of "measurement/result".
         // "result" must be included to create "measurement"
@@ -459,7 +460,7 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
      * @param targetXPath target x-path
      * @return whether they match, i.e. when one of them is completely contained in the other
      */
-    protected static boolean matchProperty(String requestedProperty, StepList target) {
+    public static boolean matchProperty(String requestedProperty, StepList target) {
         // requested Properties are top level nodes, so get all mappings inside node
         return target.get(0).getName().getLocalPart().equals(requestedProperty);
     }
@@ -475,11 +476,21 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
             List<PropertyName> requestedProperties,
             FeatureTypeMapping mapping,
             boolean includeMandatory) {
-        List<PropertyName> propNames = null;
+        List<PropertyName> propNames = new ArrayList<>();
         final AttributeDescriptor targetDescriptor = mapping.getTargetFeature();
         if (requestedProperties != null && requestedProperties.size() > 0) {
             requestedProperties = new ArrayList<PropertyName>(requestedProperties);
             Set<PropertyName> requestedSurrogateProperties = new HashSet<PropertyName>();
+            // extension point allowing stores to contribute properties
+            for (CustomSourceDataStore extension : CustomSourceDataStore.loadExtensions()) {
+                // ask the extension for surrogate properties
+                List<PropertyName> contributedProperties =
+                        extension.getSurrogatePropertyNames(requestedProperties, mapping);
+                if (contributedProperties != null) {
+                    // we got some surrogate properties, let's store them
+                    propNames.addAll(contributedProperties);
+                }
+            }
             // add all surrogate attributes involved in mapping of the requested
             // target schema attributes
             List<AttributeMapping> attMappings = mapping.getAttributeMappings();
@@ -592,9 +603,10 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
                 }
             }
 
-            propNames = new ArrayList<PropertyName>(requestedSurrogateProperties);
+            propNames.addAll(requestedSurrogateProperties);
         }
-        return propNames;
+        // App-Schema business code expects a NULL if no properties
+        return propNames.isEmpty() ? null : propNames;
     }
 
     private List<Expression> unrollProperty(

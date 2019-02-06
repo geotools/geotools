@@ -1365,7 +1365,7 @@ public class GeoPackage {
     }
 
     public void addRange(String attribute, Integer low, Integer high, List<String> q) {
-        if (low != null && high != null && low == high) {
+        if (low != null && high != null && low.equals(high)) {
             q.add(attribute + " = " + low);
         } else {
             if (low != null) {

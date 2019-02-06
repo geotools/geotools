@@ -197,7 +197,7 @@ public class OverlapsIntegrity extends RelationIntegrity {
                 }
             } // end while 1
         } finally {
-            fr1.close();
+            if (fr1 != null) fr1.close();
         }
 
         return success;
@@ -320,7 +320,7 @@ public class OverlapsIntegrity extends RelationIntegrity {
                 LOGGER.info("########## Validation duration: " + dt);
                 LOGGER.info("########## Validation errors: " + errors);
             }
-            fr1.close();
+            if (fr1 != null) fr1.close();
         }
 
         return success;

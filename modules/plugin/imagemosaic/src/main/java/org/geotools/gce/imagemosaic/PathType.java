@@ -37,7 +37,7 @@ public enum PathType {
     RELATIVE {
 
         @Override
-        URL resolvePath(final String parentLocation, final String location) {
+        public URL resolvePath(final String parentLocation, final String location) {
             // initial checks
             Utilities.ensureNonNull("parentLocation", parentLocation);
             Utilities.ensureNonNull("location", location);
@@ -68,7 +68,7 @@ public enum PathType {
     ABSOLUTE {
 
         @Override
-        URL resolvePath(final String parentLocation, final String location) {
+        public URL resolvePath(final String parentLocation, final String location) {
 
             Utilities.ensureNonNull("location", location);
             if (LOGGER.isLoggable(Level.FINE)) {
@@ -105,7 +105,7 @@ public enum PathType {
 
     URL {
         @Override
-        URL resolvePath(final String parentLocation, final String location) {
+        public URL resolvePath(final String parentLocation, final String location) {
             Utilities.ensureNonNull("location", location);
             if (LOGGER.isLoggable(Level.FINE)) {
                 final StringBuilder builder = new StringBuilder();
@@ -137,5 +137,5 @@ public enum PathType {
      *     depending on the flavor of the enum where this method is applied. This method might
      *     return <code>null</code> in case something bad happens.
      */
-    abstract URL resolvePath(final String parentLocation, final String location);
+    public abstract URL resolvePath(final String parentLocation, final String location);
 }

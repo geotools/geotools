@@ -386,7 +386,6 @@ public class SunRelativePosition {
         // the end of this method, local variables are always in
         // radians. Output variables ('azimuth' and 'elevation')
         // will still computed in degrees.
-        longitude = Math.toRadians(longitude);
         latitude = Math.toRadians(latitude);
         solarDec = Math.toRadians(solarDec);
 

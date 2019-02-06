@@ -133,8 +133,8 @@ public class DisjointIntegrity extends RelationIntegrity {
                 }
             }
         } finally {
-            fr1.close();
-            fr2.close();
+            if (fr1 != null) fr1.close();
+            if (fr2 != null) fr2.close();
         }
 
         return success;
@@ -212,8 +212,8 @@ public class DisjointIntegrity extends RelationIntegrity {
                 }
             }
         } finally {
-            fr1.close();
-            fr2.close();
+            if (fr1 != null) fr1.close();
+            if (fr2 != null) fr2.close();
         }
 
         return success;

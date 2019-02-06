@@ -237,10 +237,9 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
             Map<String, String> viewParams = null;
             if (query.getRequestHints() != null) {
                 viewParams =
-                        (Map<String, String>)
-                                query.getRequestHints().get(Hints.VIRTUAL_TABLE_PARAMETERS);
+                        (Map<String, String>) query.getHints().get(Hints.VIRTUAL_TABLE_PARAMETERS);
 
-                config = (StoredQueryConfiguration) query.getRequestHints().get(CONFIG_KEY);
+                config = (StoredQueryConfiguration) query.getHints().get(CONFIG_KEY);
             }
 
             List<ParameterType> params =
@@ -330,10 +329,9 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
 
             if (query.getRequestHints() != null) {
                 viewParams =
-                        (Map<String, String>)
-                                query.getRequestHints().get(Hints.VIRTUAL_TABLE_PARAMETERS);
+                        (Map<String, String>) query.getHints().get(Hints.VIRTUAL_TABLE_PARAMETERS);
 
-                config = (StoredQueryConfiguration) query.getRequestHints().get(CONFIG_KEY);
+                config = (StoredQueryConfiguration) query.getHints().get(CONFIG_KEY);
             }
 
             List<ParameterType> params =

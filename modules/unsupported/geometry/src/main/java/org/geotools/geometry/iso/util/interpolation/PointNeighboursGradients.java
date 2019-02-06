@@ -40,6 +40,7 @@ public class PointNeighboursGradients {
 
     public PointNeighboursGradients(Point3d p, Point3d[] nbrs) {
         this.mP = p;
+        this.mNbrs = new Point3d[nbrs.length];
         System.arraycopy(nbrs, 0, this.mNbrs, 0, nbrs.length);
         this.mGradXY = null;
     }

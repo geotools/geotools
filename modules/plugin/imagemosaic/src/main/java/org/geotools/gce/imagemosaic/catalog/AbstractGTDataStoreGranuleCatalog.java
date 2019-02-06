@@ -389,13 +389,15 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
         try {
             // create a writer that appends this features
             fs = (SimpleFeatureStore) getTileIndexStore().getFeatureSource(typeName);
-            Transaction t = new DefaultTransaction();
-            fs.setTransaction(t);
             boolean rollback = true;
+            Transaction t = new DefaultTransaction();
             try {
                 final int retVal = fs.getFeatures(query).size(); // ensures we get a value
-                fs.removeFeatures(query.getFilter());
-                t.commit();
+                if (retVal > 0) {
+                    fs.setTransaction(t);
+                    fs.removeFeatures(query.getFilter());
+                    t.commit();
+                }
                 rollback = false;
 
                 return retVal;

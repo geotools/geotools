@@ -11,17 +11,14 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
-import java.util.Map;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReadParam;
 import javax.imageio.ImageReader;
 import javax.imageio.stream.ImageInputStream;
 import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.grid.GridCoverage2D;
-import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
@@ -61,8 +58,6 @@ public class MBTilesReader extends AbstractGridCoverage2DReader {
     protected static final int DEFAULT_TILE_SIZE = 256;
 
     protected static final int ZOOM_LEVEL_BASE = 2;
-
-    protected GridCoverageFactory coverageFactory;
 
     protected MBTilesMetadata metadata;
 
@@ -286,10 +281,10 @@ public class MBTilesReader extends AbstractGridCoverage2DReader {
     }
 
     protected BufferedImage getStartImage(BufferedImage copyFrom, int width, int height) {
-        Map<String, Object> properties = null;
+        Hashtable<String, Object> properties = null;
 
         if (copyFrom.getPropertyNames() != null) {
-            properties = new HashMap<String, Object>();
+            properties = new Hashtable<>();
             for (String name : copyFrom.getPropertyNames()) {
                 properties.put(name, copyFrom.getProperty(name));
             }
@@ -303,7 +298,7 @@ public class MBTilesReader extends AbstractGridCoverage2DReader {
                         copyFrom.getColorModel(),
                         raster,
                         copyFrom.isAlphaPremultiplied(),
-                        (Hashtable<?, ?>) properties);
+                        properties);
 
         // white background
         Graphics2D g2D = (Graphics2D) image.getGraphics();

@@ -93,7 +93,7 @@ class STRTreeGranuleCatalog extends GranuleCatalog {
         public JTSIndexVisitorAdapter(final GranuleCatalogVisitor adaptee, Query q) {
             this.adaptee = adaptee;
             this.filter = q == null ? Query.ALL.getFilter() : q.getFilter();
-            this.maxGranules = q.getMaxFeatures();
+            this.maxGranules = q == null ? -1 : q.getMaxFeatures();
         }
 
         /** @param indexLocation */

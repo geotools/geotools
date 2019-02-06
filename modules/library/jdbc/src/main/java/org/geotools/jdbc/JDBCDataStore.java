@@ -2127,7 +2127,9 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
         if (t == Transaction.AUTO_COMMIT) {
             Connection cx = createConnection();
             try {
-                cx.setAutoCommit(true);
+                if (!cx.getAutoCommit()) {
+                    cx.setAutoCommit(true);
+                }
             } catch (SQLException e) {
                 throw (IOException) new IOException().initCause(e);
             }

@@ -57,6 +57,17 @@
 		<!-- but have not passed our QA and Doc requirements -->
 		<!-- so you may/should consider them risky -->
 		<profile>
+			<id>vpf</id>
+			<activation>
+				<property>
+					<name>all</name>
+				</property>
+			</activation>
+			<modules>
+				<module>vpf</module>
+			</modules>
+		</profile>
+		<profile>
 			<id>gtopo30</id>
 			<activation>
 				<property>
@@ -217,6 +228,7 @@
 				<module>geojsonstore</module>
         		<module>s3-geotiff</module>
         		<module>gtopo30</module>
+        		<module>vpf</module>
 			</modules>
 		</profile>
 

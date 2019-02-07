@@ -127,6 +127,7 @@
     <pmd.skip>false</pmd.skip>
     <spotbugs.skip>false</spotbugs.skip>
     <pmd.version>6.11.0</pmd.version>
+    <jackson2.version>2.9.7</jackson2.version>
   </properties>
 
   <!-- Profiles set on the command-line overwrite default properties. -->
@@ -1513,6 +1514,11 @@
             <artifactId>slf4j-api</artifactId>
           </exclusion>
         </exclusions>
+      </dependency>
+      <dependency>
+       <groupId>com.fasterxml.jackson.core</groupId>
+       <artifactId>jackson-core</artifactId>
+        <version>${jackson2.version}</version>
       </dependency>
     </dependencies>
 

@@ -189,3 +189,4 @@ org.geotools.filter.function.color.GrayscaleFunction
 org.geotools.filter.function.color.ConstrastFunction
 org.geotools.filter.function.BoundedByFunction
 org.geotools.filter.function.DateDifferenceFunction
+org.geotools.filter.function.JsonPointerFunction

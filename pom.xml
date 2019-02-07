@@ -125,6 +125,7 @@
     <errorProne.version>2.3.2</errorProne.version>
     <javac.version>9+181-r4173-1</javac.version>
     <pmd.skip>false</pmd.skip>
+    <jackson2.version>2.9.7</jackson2.version>
   </properties>
 
   <!-- Profiles set on the command-line overwrite default properties. -->
@@ -1461,6 +1462,11 @@
             <artifactId>slf4j-api</artifactId>
           </exclusion>
         </exclusions>
+      </dependency>
+      <dependency>
+       <groupId>com.fasterxml.jackson.core</groupId>
+       <artifactId>jackson-core</artifactId>
+        <version>${jackson2.version}</version>
       </dependency>
     </dependencies>
 

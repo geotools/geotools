@@ -31,7 +31,7 @@ Unless `S3_USE_ANON` is set to true the
 [default AWS client credential chain](http://docs.aws.amazon.com/sdk-for-java/v1/developer-guide/credentials.html#using-the-default-credential-provider-chain) is used.
 
 ## GeoTiffs hosted on other Amazon S3 compatible services
-Access geotiffs on S3 servers not hosted on Amazon,  e.g. https://www.minio.io/ or other. There are 2 steps to access the geofiff files. configure the server in the s3.properties file and then you can use the prefix as an alias to access the file in the S3GeoTiff module for geoserver.
+Access geotiffs on S3 servers not hosted on Amazon,  e.g. https://www.minio.io/ or other. There are 2 steps to access the geotiff files. Define the path of the s3.properties file within your java system properties (e.g. with -D flag in the docker build of GeoServer, `-Ds3.properties.location=/opt/geoserver_data/s3.properties`). Then configure the server in the s3.properties file and then you can use the prefix as an alias to access the file in the S3GeoTiff module for geoserver.
 ### Configuration
 The S3 endpoints are configured in the s3.properties file. The following properties are needed for each endpoint. The prefix `alias` can be any value you choose in order to configure  multiple endpoints.
 

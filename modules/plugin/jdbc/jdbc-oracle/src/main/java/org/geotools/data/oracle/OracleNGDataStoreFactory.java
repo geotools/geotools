@@ -171,6 +171,7 @@ public class OracleNGDataStoreFactory extends JDBCDataStoreFactory {
         Connection cx = dataStore.getConnection(Transaction.AUTO_COMMIT);
         try {
             dialect.unwrapConnection(cx);
+            dialect.initVersion(cx);
         } catch (SQLException e) {
             throw new IOException(
                     "Unable to obtain Oracle Connection require for SDO Geometry access)."

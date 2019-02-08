@@ -63,7 +63,8 @@ public class EntityNodeGeometryFactory extends VPFGeometryFactory implements Fil
         // If the primitive table is there, this coverage is not tiled
         if (!new File(tileDirectory.concat(File.separator).concat(ENTITY_NODE_PRIMITIVE))
                 .exists()) {
-            Short tileId = new Short(Short.parseShort(values.getAttribute("tile_id").toString()));
+            Short tileId =
+                    Short.valueOf(Short.parseShort(values.getAttribute("tile_id").toString()));
             VPFLibrary vpf = featureClass.getCoverage().getLibrary();
             String tileName = (String) vpf.getTileMap().get(tileId);
 

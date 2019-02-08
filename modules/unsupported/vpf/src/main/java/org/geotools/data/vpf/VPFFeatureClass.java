@@ -144,7 +144,7 @@ public class VPFFeatureClass implements SimpleFeatureType {
             namespace = cNamespace;
         }
 
-        if (VPFDataStoreFactory.isLoggable(Level.FINEST)) {
+        if (VPFLogger.isLoggable(Level.FINEST)) {
             if (typeName.equalsIgnoreCase("VPFFEATURETYPE")) {
                 this.debug = true;
             }
@@ -180,7 +180,6 @@ public class VPFFeatureClass implements SimpleFeatureType {
             Iterator<VPFColumn> iter2 = columns.iterator();
             VPFColumn column;
             String geometryName = null;
-            AttributeDescriptor geometryColumn = null;
 
             while (iter2.hasNext()) {
                 column = (VPFColumn) iter2.next();
@@ -198,7 +197,7 @@ public class VPFFeatureClass implements SimpleFeatureType {
             }
 
             if (this.debug) {
-                System.out.println("class col count: " + columns.size());
+                VPFLogger.log("class col count: " + columns.size());
             }
 
             SimpleFeatureTypeBuilder b = new SimpleFeatureTypeBuilder();
@@ -233,9 +232,9 @@ public class VPFFeatureClass implements SimpleFeatureType {
         String table2Key = row.getAttribute("table2_key").toString();
 
         if (this.debug) {
-            System.out.println("++++++++ addFCS");
-            System.out.println("table1: " + table1 + " key: " + table1Key);
-            System.out.println("table2: " + table2 + " key: " + table2Key);
+            VPFLogger.log("++++++++ addFCS");
+            VPFLogger.log("table1: " + table1 + " key: " + table1Key);
+            VPFLogger.log("table2: " + table2 + " key: " + table2Key);
         }
 
         try {
@@ -347,9 +346,9 @@ public class VPFFeatureClass implements SimpleFeatureType {
             try {
                 if (cs.table != null) cs.table.close();
             } catch (IOException e) {
-                System.out.println("***** Exception when closing file");
-                System.out.println(cs.tableName);
-                System.out.println(cs.table.getPathName());
+                VPFLogger.log("***** Exception when closing file");
+                VPFLogger.log(cs.tableName);
+                VPFLogger.log(cs.table.getPathName());
             }
         }
     }
@@ -469,7 +468,7 @@ public class VPFFeatureClass implements SimpleFeatureType {
 
             TableRelation tr = next.getValue();
 
-            String joinTableName = tr.tableName;
+            // String joinTableName = tr.tableName;
             String joinTableKeyName = tr.tableKeyName;
             ColumnSet jcs = tr.colSet;
             if (jcs == null) continue;
@@ -477,7 +476,7 @@ public class VPFFeatureClass implements SimpleFeatureType {
 
             jcs.currRow = null;
 
-            String foreignTableName = tr.joinTableName;
+            // String foreignTableName = tr.joinTableName;
             String foreignTableKeyName = tr.joinTableKeyName;
             ColumnSet fcs = tr.joinColSet;
             if (fcs == null || fcs.currRow == null) continue;
@@ -537,7 +536,7 @@ public class VPFFeatureClass implements SimpleFeatureType {
 
         List<Object> vlist = new ArrayList<Object>();
 
-        List<AttributeDescriptor> attributes = featureType.getAttributeDescriptors();
+        // List<AttributeDescriptor> attributes = featureType.getAttributeDescriptors();
 
         while (itr.hasNext()) {
             Map.Entry<String, ColumnSet> next = itr.next();
@@ -547,7 +546,7 @@ public class VPFFeatureClass implements SimpleFeatureType {
                 vlist.add(null);
             } else {
                 SimpleFeature row = cs.currRow;
-                Integer attrCount = row != null ? row.getAttributeCount() : null;
+                // Integer attrCount = row != null ? row.getAttributeCount() : null;
                 int colCount = cs.colNames.size();
                 for (int inx = 0; inx < colCount; inx++) {
                     String colName = cs.colNames.get(inx);
@@ -583,7 +582,7 @@ public class VPFFeatureClass implements SimpleFeatureType {
         table = table.trim().toUpperCase();
 
         if (this.debug) {
-            System.out.println("buildGeometryColumn: " + table);
+            VPFLogger.log("buildGeometryColumn: " + table);
         }
 
         CoordinateReferenceSystem crs = getCoverage().getLibrary().getCoordinateReferenceSystem();

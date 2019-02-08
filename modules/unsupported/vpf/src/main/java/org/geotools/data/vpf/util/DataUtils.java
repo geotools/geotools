@@ -95,12 +95,12 @@ public class DataUtils implements DataTypesDefinition {
                 break;
 
             case DATA_SHORT_INTEGER:
-                result = new Short(decodeShort(bytes));
+                result = Short.valueOf(decodeShort(bytes));
 
                 break;
 
             case DATA_LONG_INTEGER:
-                result = new Integer(decodeInt(bytes));
+                result = Integer.valueOf(decodeInt(bytes));
 
                 break;
 

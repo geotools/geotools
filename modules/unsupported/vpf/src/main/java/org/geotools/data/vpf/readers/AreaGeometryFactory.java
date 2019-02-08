@@ -83,7 +83,8 @@ public class AreaGeometryFactory extends VPFGeometryFactory implements FileConst
 
         // If the primitive table is there, this coverage is not tiled
         if (!new File(tileDirectory.concat(File.separator).concat(FACE_PRIMITIVE)).exists()) {
-            Short tileId = new Short(Short.parseShort(values.getAttribute("tile_id").toString()));
+            Short tileId =
+                    Short.valueOf(Short.parseShort(values.getAttribute("tile_id").toString()));
 
             VPFLibrary vpf = featureClass.getCoverage().getLibrary();
             String tileName = (String) vpf.getTileMap().get(tileId);
@@ -116,7 +117,7 @@ public class AreaGeometryFactory extends VPFGeometryFactory implements FileConst
         SimpleFeature faceFeature = faceFile.readFeature();
 
         while (faceFeature != null) {
-            if (faceFeature.getAttribute("id").equals(new Integer(faceId))) {
+            if (faceFeature.getAttribute("id").equals(Integer.valueOf(faceId))) {
                 coordinates = new LinkedList();
 
                 int ringId = Integer.parseInt(faceFeature.getAttribute("ring_ptr").toString());

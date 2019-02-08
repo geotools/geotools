@@ -17,6 +17,7 @@
 package org.geotools.data.vpf.util;
 
 import java.util.HashMap;
+import org.geotools.data.vpf.VPFLogger;
 import org.geotools.data.vpf.io.RowField;
 import org.geotools.data.vpf.io.TripletId;
 import org.locationtech.jts.geom.Coordinate;
@@ -70,7 +71,7 @@ public class EdgeData extends HashMap {
                     } else if (tmp instanceof Integer) {
                         return super.put(key_s, ((Integer) tmp));
                     } else {
-                        System.out.println("DYNGE I TRIPLETGENERERING!!!");
+                        VPFLogger.log("DYNGE I TRIPLETGENERERING!!!");
                     }
                 } else {
                     return super.put(key_s, null);

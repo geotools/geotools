@@ -55,7 +55,7 @@ import java.util.Objects;
 import java.util.Vector;
 import java.util.logging.Level;
 import org.geotools.data.vpf.VPFColumn;
-import org.geotools.data.vpf.VPFDataStoreFactory;
+import org.geotools.data.vpf.VPFLogger;
 import org.geotools.data.vpf.exc.VPFHeaderFormatException;
 import org.geotools.data.vpf.io.TripletId;
 import org.geotools.data.vpf.io.VPFInputStream;
@@ -229,7 +229,7 @@ public class VPFFile {
      * @return the directory name for this file
      */
     public String getDirectoryName() {
-        String result = new String();
+        String result = "";
         int index = pathName.lastIndexOf(File.separator);
 
         if (index >= 0) {
@@ -500,7 +500,7 @@ public class VPFFile {
             throw new VPFHeaderFormatException("Header format does not fit VPF file definition.");
         }
 
-        String elemStr = readString(new String() + VPF_ELEMENT_SEPARATOR).trim();
+        String elemStr = readString(String.valueOf(VPF_ELEMENT_SEPARATOR)).trim();
 
         if (elemStr.equals("*")) {
             elemStr = "-1";
@@ -514,11 +514,11 @@ public class VPFFile {
             throw new VPFHeaderFormatException("Header format does not fit VPF file definition.");
         }
 
-        String colDesc = readString(new String() + VPF_ELEMENT_SEPARATOR + VPF_FIELD_SEPARATOR);
+        String colDesc = readString(String.valueOf(VPF_ELEMENT_SEPARATOR) + VPF_FIELD_SEPARATOR);
         String descTableName =
-                readString(new String() + VPF_ELEMENT_SEPARATOR + VPF_FIELD_SEPARATOR);
-        String indexFile = readString(new String() + VPF_ELEMENT_SEPARATOR + VPF_FIELD_SEPARATOR);
-        String narrTable = readString(new String() + VPF_ELEMENT_SEPARATOR + VPF_FIELD_SEPARATOR);
+                readString(String.valueOf(VPF_ELEMENT_SEPARATOR) + VPF_FIELD_SEPARATOR);
+        String indexFile = readString(String.valueOf(VPF_ELEMENT_SEPARATOR) + VPF_FIELD_SEPARATOR);
+        String narrTable = readString(String.valueOf(VPF_ELEMENT_SEPARATOR) + VPF_FIELD_SEPARATOR);
 
         return new VPFColumn(
                 name, type, elements, key, colDesc, descTableName, indexFile, narrTable);
@@ -611,7 +611,7 @@ public class VPFFile {
         if (textPrimitive) size++;
         Object[] values = new Object[size];
 
-        boolean debug = VPFDataStoreFactory.isLoggable(Level.FINEST);
+        boolean debug = VPFLogger.isLoggable(Level.FINEST);
 
         try {
             for (int inx = 0; inx < columns.size(); inx++) {
@@ -648,10 +648,10 @@ public class VPFFile {
             Long streamLength = inputStream.length();
             Long filePointer = inputStream.getFilePointer();
 
-            System.out.println("************** EOFException");
-            System.out.println("recordSize: " + recordSize);
-            System.out.println("streamLength: " + streamLength);
-            System.out.println("filePointer: " + filePointer);
+            VPFLogger.log("************** EOFException");
+            VPFLogger.log("recordSize: " + recordSize);
+            VPFLogger.log("streamLength: " + streamLength);
+            VPFLogger.log("filePointer: " + filePointer);
         }
 
         return result;
@@ -692,12 +692,12 @@ public class VPFFile {
                 break;
 
             case DATA_SHORT_INTEGER:
-                result = new Short(readShort());
+                result = Short.valueOf(readShort());
 
                 break;
 
             case DATA_LONG_INTEGER:
-                result = new Integer(readInteger());
+                result = Integer.valueOf(readInteger());
 
                 break;
 
@@ -778,8 +778,8 @@ public class VPFFile {
             throw new VPFHeaderFormatException("Header format does not fit VPF file definition.");
         }
 
-        description = readString(new String() + VPF_RECORD_SEPARATOR);
-        narrativeTable = readString(new String() + VPF_RECORD_SEPARATOR);
+        description = readString(String.valueOf(VPF_RECORD_SEPARATOR));
+        narrativeTable = readString(String.valueOf(VPF_RECORD_SEPARATOR));
 
         VPFColumn column = readColumn();
 
@@ -845,11 +845,11 @@ public class VPFFile {
             Long filePointer = inputStream.getFilePointer();
             Integer icnt = cnt;
 
-            System.out.println("************** EOFException");
-            System.out.println("cnt: " + icnt);
-            System.out.println("recordSize: " + recordSize);
-            System.out.println("streamLength: " + streamLength);
-            System.out.println("filePointer: " + filePointer);
+            VPFLogger.log("************** EOFException");
+            VPFLogger.log("cnt: " + icnt);
+            VPFLogger.log("recordSize: " + recordSize);
+            VPFLogger.log("streamLength: " + streamLength);
+            VPFLogger.log("filePointer: " + filePointer);
         }
 
         if (exception) {
@@ -934,8 +934,8 @@ public class VPFFile {
         try {
             return readFixedSizeData(dataType, instances);
         } catch (EOFException e) {
-            System.out.println("************ readVariableSizeData error");
-            System.out.println("instance count: " + instances);
+            VPFLogger.log("************ readVariableSizeData error");
+            VPFLogger.log("instance count: " + instances);
             throw e;
         }
     }

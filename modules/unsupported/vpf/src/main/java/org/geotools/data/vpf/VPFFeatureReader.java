@@ -111,7 +111,7 @@ public class VPFFeatureReader implements FeatureReader<SimpleFeatureType, Simple
      * @param column the column to search for
      * @return the VPFFile that owns this column
      */
-    private synchronized VPFFile getVPFFile(VPFColumn column) {
+    public synchronized VPFFile getVPFFile(VPFColumn column) {
         String columnName = column.getName();
         VPFFile result = null;
         VPFFile temp;
@@ -132,7 +132,7 @@ public class VPFFeatureReader implements FeatureReader<SimpleFeatureType, Simple
      * @param column the column to search for
      * @return the VPFFile that owns this column
      */
-    private synchronized VPFFile getVPFFile(AttributeDescriptor column) {
+    public synchronized VPFFile getVPFFile(AttributeDescriptor column) {
         Name columnName = column.getName();
         VPFFile result = null;
         VPFFile temp;

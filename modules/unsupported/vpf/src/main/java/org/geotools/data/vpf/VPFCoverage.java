@@ -25,8 +25,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.sql.SQLException;
-import java.util.AbstractSet;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
@@ -108,9 +106,9 @@ public class VPFCoverage {
      */
     private void discoverFeatureClasses() throws IOException, SchemaException {
         VPFFeatureClass featureClass = null;
-        boolean hasFeatureClass;
+        // boolean hasFeatureClass;
         String fcsFileName = pathName + File.separator + TABLE_FCS;
-        AbstractSet featureClassNames = new HashSet();
+        // AbstractSet featureClassNames = new HashSet();
         String featureClassName;
 
         // We need to record all of the possible files
@@ -145,7 +143,7 @@ public class VPFCoverage {
             while (charVDTIter.hasNext()) {
                 // Figure out which featureClass owns it
                 SimpleFeature row = (SimpleFeature) charVDTIter.next();
-                String attr = row.getAttribute("attribute").toString().trim().toLowerCase();
+                // String attr = row.getAttribute("attribute").toString().trim().toLowerCase();
 
                 // if (!ALLOWED_FCODE_ATTRIBUTES_LIST.contains(attr)) continue;
 

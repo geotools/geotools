@@ -210,10 +210,10 @@ public class VPFLibrary extends ContentDataStore {
         SimpleFeature feature;
         String directoryName;
 
-        boolean debug = VPFDataStoreFactory.isLoggable(Level.FINEST);
+        boolean debug = VPFLogger.isLoggable(Level.FINEST);
 
         if (debug) {
-            System.out.println("+++++++++++++ setCoverages: " + directory);
+            VPFLogger.log("+++++++++++++ setCoverages: " + directory);
         }
 
         // I'd like to know why this if is here...
@@ -221,8 +221,8 @@ public class VPFLibrary extends ContentDataStore {
             String vpfTableName = new File(directory, COVERAGE_ATTRIBUTE_TABLE).toString();
             VPFFile vpfFile = VPFFileFactory.getInstance().getFile(vpfTableName);
             if (debug) {
-                System.out.println("vpfTableName: " + vpfTableName);
-                System.out.println("vpfRootPathName: " + vpfFile.getPathName());
+                VPFLogger.log("vpfTableName: " + vpfTableName);
+                VPFLogger.log("vpfRootPathName: " + vpfFile.getPathName());
             }
 
             //            TableInputStream vpfTable = new TableInputStream(vpfTableName);
@@ -239,9 +239,9 @@ public class VPFLibrary extends ContentDataStore {
                 }
 
                 if (debug) {
-                    System.out.println("---------- coverageName: " + coverageName);
-                    System.out.println(coverage.getPathName());
-                    System.out.println(coverage.getDescription());
+                    VPFLogger.log("---------- coverageName: " + coverageName);
+                    VPFLogger.log(coverage.getPathName());
+                    VPFLogger.log(coverage.getDescription());
                 }
 
                 List featureTypes = coverage.getFeatureTypes();
@@ -251,9 +251,9 @@ public class VPFLibrary extends ContentDataStore {
                     VPFFeatureClass featureClass = featureType.getFeatureClass();
                     String featureTypeName = featureType.getTypeName();
                     if (debug) {
-                        System.out.println(">>>>>featureType: " + featureTypeName);
-                        System.out.println("     directory:   " + featureType.getDirectoryName());
-                        System.out.println("     fc type  :   " + featureClass.getFCTypeName());
+                        VPFLogger.log(">>>>>featureType: " + featureTypeName);
+                        VPFLogger.log("     directory:   " + featureType.getDirectoryName());
+                        VPFLogger.log("     fc type  :   " + featureClass.getFCTypeName());
                     }
 
                     typeMap.put(featureTypeName, featureType);
@@ -261,16 +261,16 @@ public class VPFLibrary extends ContentDataStore {
                     List fileList = featureClass.getFileList();
 
                     if (debug) {
-                        System.out.println("   file count :   " + fileList.size());
+                        VPFLogger.log("   file count :   " + fileList.size());
                     }
 
                     for (int ifl = 0; ifl < fileList.size(); ifl++) {
                         VPFFile vpfClassFile = (VPFFile) fileList.get(ifl);
                         if (debug) {
                             if (vpfClassFile == null) {
-                                System.out.println("null");
+                                VPFLogger.log("null");
                             } else {
-                                System.out.println(vpfClassFile.getPathName());
+                                VPFLogger.log(vpfClassFile.getPathName());
                             }
                         }
                     }
@@ -367,7 +367,7 @@ public class VPFLibrary extends ContentDataStore {
 
         while (rowsIter.hasNext()) {
             SimpleFeature row = (SimpleFeature) rowsIter.next();
-            Short rowId = new Short(Short.parseShort(row.getAttribute("id").toString()));
+            Short rowId = Short.valueOf(Short.parseShort(row.getAttribute("id").toString()));
             String value = row.getAttribute(FIELD_TILE_NAME).toString();
 
             // Mangle tile directory from DOS style directory splits to a system
@@ -405,7 +405,7 @@ public class VPFLibrary extends ContentDataStore {
     //                           buff.toString());
     //
     //
-    //                    //System.out.println( new File( coverage, tmp.charAt(0) + File.separator +
+    //                    //VPFLogger.log( new File( coverage, tmp.charAt(0) + File.separator +
     // tmp.charAt(1) ).getAbsolutePath() );
     //                    row = (TableRow) testInput.readRow();
     //                }
@@ -431,7 +431,7 @@ public class VPFLibrary extends ContentDataStore {
         }
         // result = new String[featureTypesCount];
         for (int inx = 0; inx < coveragesCount; inx++) {
-            VPFCoverage coverage = (VPFCoverage) coverages.get(inx);
+            // VPFCoverage coverage = (VPFCoverage) coverages.get(inx);
             for (int jnx = 0; jnx < coverageTypes[inx].size(); jnx++) {
                 // result[index] = ((SimpleFeatureType) coverageTypes[inx].get(jnx)).getTypeName();
                 SimpleFeatureType featureType = (SimpleFeatureType) coverageTypes[inx].get(jnx);
@@ -519,9 +519,9 @@ public class VPFLibrary extends ContentDataStore {
         }
 
         if (featureSource == null) {
-            if (VPFDataStoreFactory.isLoggable(Level.FINEST)) {
-                System.out.println("VPFLibrary.getFeatureSource returned null");
-                System.out.println(typeName);
+            if (VPFLogger.isLoggable(Level.FINEST)) {
+                VPFLogger.log("VPFLibrary.getFeatureSource returned null");
+                VPFLogger.log(typeName);
             }
             Query query = new Query(Query.ALL);
             ContentEntry entry = this.entry(new NameImpl(typeName));

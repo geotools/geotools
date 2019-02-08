@@ -49,7 +49,7 @@ public class PointData extends HashMap {
                     i++;
                 }
 
-                // System.out.println( "Antall koordinater: " + c.length);
+                // VPFLogger.log( "Antall koordinater: " + c.length);
                 GeometryFactory geofactory = new GeometryFactory();
 
                 return super.put("coordinate", geofactory.createPoint(c[0]));

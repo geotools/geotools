@@ -29,7 +29,6 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFactorySpi;
 import org.geotools.data.vpf.file.VPFFile;
@@ -59,14 +58,6 @@ import org.opengis.feature.simple.SimpleFeature;
  * @version 2.1.0
  */
 public class VPFDataStoreFactory implements DataStoreFactorySpi {
-    /** The logger for the vpf module. */
-    protected static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.data.vpf");
-
-    protected static Level loggerLevel = Level.INFO;
-
-    protected static boolean levelSet = false;
-
     /** Default Constructor */
     public VPFDataStoreFactory() {}
     /*
@@ -92,7 +83,7 @@ public class VPFDataStoreFactory implements DataStoreFactorySpi {
         boolean result = false;
         try {
 
-            File file = getLhtFile(params);
+            getLhtFile(params);
             // if getLhtFile didn't throw an exception then we're good.
             result = true;
 
@@ -100,36 +91,6 @@ public class VPFDataStoreFactory implements DataStoreFactorySpi {
             // catch io exception, false will return
         }
         return result;
-    }
-
-    public static Logger getLogger() {
-        Logger log = VPFDataStoreFactory.LOGGER;
-        if (!VPFDataStoreFactory.levelSet) {
-            log.setLevel(VPFDataStoreFactory.loggerLevel);
-            VPFDataStoreFactory.levelSet = true;
-        }
-
-        return log;
-    }
-
-    public static Level getLoggerLevel() {
-        return VPFDataStoreFactory.loggerLevel;
-    }
-
-    public static void setLoggerLevel(Level level) {
-        VPFDataStoreFactory.loggerLevel = level;
-        VPFDataStoreFactory.LOGGER.setLevel(level);
-        VPFDataStoreFactory.levelSet = true;
-    }
-
-    public static void log(String msg) {
-        Logger log = VPFDataStoreFactory.getLogger();
-        Level level = VPFDataStoreFactory.getLoggerLevel();
-        log.log(level, msg);
-    }
-
-    public static boolean isLoggable(Level level) {
-        return level.intValue() >= VPFDataStoreFactory.loggerLevel.intValue();
     }
 
     /*
@@ -168,15 +129,15 @@ public class VPFDataStoreFactory implements DataStoreFactorySpi {
         URI namespace = (URI) NAMESPACEP.lookUp(params); // null if not exist
         // LOGGER.finer("creating new vpf datastore with params: " + params);
 
-        boolean debug = VPFDataStoreFactory.isLoggable(Level.FINEST);
+        boolean debug = VPFLogger.isLoggable(Level.FINEST);
 
         String rootDir = file.getParent();
         String latTableName = new File(rootDir, LIBRARY_ATTTIBUTE_TABLE).toString();
 
         if (debug) {
-            System.out.println("open vpf datastore with params: " + params);
-            System.out.println("vpf datastore path: " + file.getPath());
-            System.out.println("LAT path: " + latTableName);
+            VPFLogger.log("open vpf datastore with params: " + params);
+            VPFLogger.log("vpf datastore path: " + file.getPath());
+            VPFLogger.log("LAT path: " + latTableName);
         }
 
         VPFFile latTable = VPFFileFactory.getInstance().getFile(latTableName);
@@ -194,13 +155,13 @@ public class VPFDataStoreFactory implements DataStoreFactorySpi {
             if (libraryName.equalsIgnoreCase(folderName)) {
                 libraryFeature = feature;
                 if (debug) {
-                    System.out.println("found library feature: " + folderName);
+                    VPFLogger.log("found library feature: " + folderName);
                 }
                 break;
             }
 
-            if (VPFDataStoreFactory.isLoggable(Level.FINEST)) {
-                System.out.println("----------- LAT feature: " + feature.getID());
+            if (VPFLogger.isLoggable(Level.FINEST)) {
+                VPFLogger.log("----------- LAT feature: " + feature.getID());
                 VPFFeatureType.debugFeature(feature);
             }
 

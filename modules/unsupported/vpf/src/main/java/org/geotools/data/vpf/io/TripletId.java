@@ -16,6 +16,7 @@
  */
 package org.geotools.data.vpf.io;
 
+import org.geotools.data.vpf.VPFLogger;
 import org.geotools.data.vpf.exc.VPFDataFormatException;
 
 /**
@@ -47,19 +48,19 @@ public class TripletId extends Number {
      * @see java.lang.Object#toString()
      */
     public String toString() {
-        String result = new String();
+        String result = "";
 
         try {
             if (getIdLength() > 0) {
-                result = new Integer(getId()).toString();
+                result = Integer.valueOf(getId()).toString();
             }
 
             if (getTileIdLength() > 0) {
-                result = result.concat("%").concat(new Integer(getTileId()).toString()).trim();
+                result = result.concat("%").concat(Integer.valueOf(getTileId()).toString()).trim();
             }
 
             if (getNextIdLength() > 0) {
-                result = result.concat("%").concat(new Integer(getNextId()).toString()).trim();
+                result = result.concat("%").concat(Integer.valueOf(getNextId()).toString()).trim();
             }
         } catch (RuntimeException exp) {
             throw new VPFDataFormatException("This triplet is invalid.", exp);
@@ -225,11 +226,11 @@ public class TripletId extends Number {
                     break;
 
                 default:
-                    System.out.println("Tripled id size decoding error");
-                    System.out.println("tripled definition: " + definition);
-                    System.out.println("piece 0: " + pieces[0]);
-                    System.out.println("piece 1: " + pieces[1]);
-                    System.out.println("piece 2: " + pieces[2]);
+                    VPFLogger.log("Tripled id size decoding error");
+                    VPFLogger.log("tripled definition: " + definition);
+                    VPFLogger.log("piece 0: " + pieces[0]);
+                    VPFLogger.log("piece 1: " + pieces[1]);
+                    VPFLogger.log("piece 2: " + pieces[2]);
 
                     break;
             }
@@ -242,14 +243,14 @@ public class TripletId extends Number {
      * @see java.lang.Number#doubleValue()
      */
     public double doubleValue() {
-        return new Integer(getId()).doubleValue();
+        return Integer.valueOf(getId()).doubleValue();
     }
 
     /* (non-Javadoc)
      * @see java.lang.Number#floatValue()
      */
     public float floatValue() {
-        return new Integer(getId()).floatValue();
+        return Integer.valueOf(getId()).floatValue();
     }
 
     /* (non-Javadoc)
@@ -263,20 +264,20 @@ public class TripletId extends Number {
      * @see java.lang.Number#longValue()
      */
     public long longValue() {
-        return new Integer(getId()).longValue();
+        return Integer.valueOf(getId()).longValue();
     }
 
     /* (non-Javadoc)
      * @see java.lang.Number#byteValue()
      */
     public byte byteValue() {
-        return new Integer(getId()).byteValue();
+        return Integer.valueOf(getId()).byteValue();
     }
 
     /* (non-Javadoc)
      * @see java.lang.Number#shortValue()
      */
     public short shortValue() {
-        return new Integer(getId()).shortValue();
+        return Integer.valueOf(getId()).shortValue();
     }
 }

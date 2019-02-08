@@ -22,7 +22,6 @@ import org.geotools.data.vpf.VPFFeatureClass;
 import org.geotools.data.vpf.VPFFeatureType;
 import org.geotools.feature.IllegalAttributeException;
 import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryFactory;
 import org.opengis.feature.simple.SimpleFeature;
 
 /**
@@ -32,7 +31,7 @@ import org.opengis.feature.simple.SimpleFeature;
  * @source $URL$
  */
 public abstract class VPFGeometryFactory {
-    private static final GeometryFactory m_GeometryFactory = new GeometryFactory();
+    // private static final GeometryFactory m_GeometryFactory = new GeometryFactory();
     /**
      * Constructs a geometry for the appropriate feature type based on values currently on the
      * object, retrieving values as needed from the various VPFFile objects

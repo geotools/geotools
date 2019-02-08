@@ -53,11 +53,11 @@ public class VPFFeatureType implements SimpleFeatureType {
         int attrCount = feature.getAttributeCount();
         int attrCount2 = featureType.getAttributeCount();
 
-        System.out.println("****** dbug feature: " + id);
-        System.out.println("          name: " + featureName);
-        System.out.println("      typeName: " + featureTypeName);
-        System.out.println("     attrCount: " + attrCount);
-        System.out.println("    attrCount2: " + attrCount2);
+        VPFLogger.log("****** dbug feature: " + id);
+        VPFLogger.log("          name: " + featureName);
+        VPFLogger.log("      typeName: " + featureTypeName);
+        VPFLogger.log("     attrCount: " + attrCount);
+        VPFLogger.log("    attrCount2: " + attrCount2);
 
         for (int iat = 0; iat < attrCount; iat++) {
             Object attr = feature.getAttribute(iat);
@@ -65,7 +65,7 @@ public class VPFFeatureType implements SimpleFeatureType {
             String aname = desc != null ? desc.getLocalName() : "null";
             String avalue = attr != null ? attr.toString() : "null";
 
-            System.out.println(aname + ": " + avalue);
+            VPFLogger.log(aname + ": " + avalue);
         }
     }
 
@@ -73,12 +73,12 @@ public class VPFFeatureType implements SimpleFeatureType {
         String featureTypeName = featureType.getTypeName();
 
         int attrCount = featureType.getAttributeCount();
-        System.out.println("****** dbug featureType: " + featureTypeName);
-        System.out.println("              attrCount: " + attrCount);
+        VPFLogger.log("****** dbug featureType: " + featureTypeName);
+        VPFLogger.log("              attrCount: " + attrCount);
 
         for (int iat = 0; iat < attrCount; iat++) {
             AttributeDescriptor desc = featureType.getDescriptor(iat);
-            System.out.println(desc.getLocalName());
+            VPFLogger.log(desc.getLocalName());
         }
     }
 

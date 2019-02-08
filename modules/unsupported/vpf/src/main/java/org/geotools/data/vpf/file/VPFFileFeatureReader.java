@@ -44,21 +44,9 @@ public class VPFFileFeatureReader implements FeatureReader<SimpleFeatureType, Si
 
     public VPFFileFeatureReader(ContentState contentState, VPFFile file) throws IOException {
         this.state = contentState;
-        VPFFileStore vpf = (VPFFileStore) contentState.getEntry().getDataStore();
-        // this.file = vpf.getDefaultFile();
         this.file = file;
         this.currentFeature = null;
         if (this.file != null) this.file.reset();
-        /*
-        reader = csv.read(); // this may throw an IOException if it could not connect
-        boolean header = reader.readHeaders();
-        if (!header) {
-            throw new IOException("Unable to read csv header");
-        }
-        builder = new SimpleFeatureBuilder(state.getFeatureType());
-        geometryFactory = JTSFactoryFinder.getGeometryFactory(null);
-        row = 0;
-        */
     }
 
     /* (non-Javadoc)

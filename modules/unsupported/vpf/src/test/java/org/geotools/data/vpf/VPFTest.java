@@ -85,7 +85,7 @@ public class VPFTest extends OnlineTestCase {
         List<Name> names = vpf.getNames();
         assertFalse("content check", names.isEmpty());
 
-        System.out.println(names);
+        VPFLogger.log(names.toString());
     }
 
     public void testSchema() throws Exception {
@@ -112,7 +112,7 @@ public class VPFTest extends OnlineTestCase {
             System.out.print(attribute.getName());
             System.out.print(",");
         }
-        System.out.println();
+        VPFLogger.log("");
     }
 
     public void testFeatureReader() throws Exception {
@@ -140,8 +140,8 @@ public class VPFTest extends OnlineTestCase {
                 reader.close();
             }
         }
-        System.out.println("count:" + count);
-        System.out.println("bounds:" + bounds);
+        VPFLogger.log("count:" + count);
+        VPFLogger.log("bounds:" + bounds);
     }
 
     public void testFeatureSource() throws Exception {
@@ -156,7 +156,7 @@ public class VPFTest extends OnlineTestCase {
         SimpleFeatureSource source = store.getFeatureSource(name);
         ReferencedEnvelope extent = source.getBounds();
         // assertNotNull( "extent", extent ); // should be from header
-        System.out.println("extent:" + extent);
+        VPFLogger.log("extent:" + extent);
 
         SimpleFeatureCollection features = source.getFeatures();
         SimpleFeatureIterator iterator = null;
@@ -174,7 +174,7 @@ public class VPFTest extends OnlineTestCase {
                 iterator.close();
             }
         }
-        System.out.println("count:" + count);
-        System.out.println("bounds:" + bounds);
+        VPFLogger.log("count:" + count);
+        VPFLogger.log("bounds:" + bounds);
     }
 }

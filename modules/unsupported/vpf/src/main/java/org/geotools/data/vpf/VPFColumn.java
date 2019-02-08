@@ -87,7 +87,7 @@ public class VPFColumn {
         this.valDescTableName = valDescTableName;
         this.thematicIdx = thematicIdx;
         this.narrTable = narrTable;
-        // System.out.println("buildDescriptor: " + name);
+        // VPFLogger.log("buildDescriptor: " + name);
         descriptor =
                 new AttributeTypeBuilder()
                         .length(getColumnSize())
@@ -269,5 +269,13 @@ public class VPFColumn {
 
     public String getName() {
         return name;
+    }
+
+    public char getKeyType() {
+        return keyType;
+    }
+
+    public String getColDesc() {
+        return colDesc;
     }
 }

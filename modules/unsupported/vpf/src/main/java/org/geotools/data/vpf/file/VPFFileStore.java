@@ -30,8 +30,8 @@ import org.geotools.data.Query;
 import org.geotools.data.store.ContentDataStore;
 import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentFeatureSource;
-import org.geotools.data.vpf.VPFDataStoreFactory;
 import org.geotools.data.vpf.VPFFeatureSource;
+import org.geotools.data.vpf.VPFLogger;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.SchemaException;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -54,17 +54,13 @@ public class VPFFileStore extends ContentDataStore {
     /** Default constructor. Nothing special */
     public VPFFileStore(String vpfFilePath) throws IOException {
         files = new HashMap<String, SimpleFeatureType>();
-        /*
-        Iterator<String> iter = pathNames.iterator();
-        while(iter.hasNext()) {
-            String pathName = iter.next();
-
-            this.getSchema(pathName);
-        }
-        */
 
         this.vpfFilePath = vpfFilePath;
         this.getTypeSchema(vpfFilePath);
+    }
+
+    public String getVpfFilePath() {
+        return this.vpfFilePath;
     }
 
     /* (non-Javadoc)
@@ -116,8 +112,8 @@ public class VPFFileStore extends ContentDataStore {
         }
 
         if (featureSource == null) {
-            if (VPFDataStoreFactory.isLoggable(Level.FINEST)) {
-                System.out.println("VPFFileStore.getFeatureSource returned null: " + typeName);
+            if (VPFLogger.isLoggable(Level.FINEST)) {
+                VPFLogger.log("VPFFileStore.getFeatureSource returned null: " + typeName);
             }
             Query query = new Query(typeName);
             ContentEntry entry = this.entry(new NameImpl(typeName));

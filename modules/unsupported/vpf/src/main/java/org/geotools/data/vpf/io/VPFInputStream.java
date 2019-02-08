@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.LinkedList;
 import java.util.List;
+import org.geotools.data.vpf.VPFLogger;
 import org.geotools.data.vpf.ifc.DataTypesDefinition;
 import org.geotools.data.vpf.ifc.FileConstants;
 import org.geotools.data.vpf.ifc.VPFHeader;
@@ -361,12 +362,12 @@ public abstract class VPFInputStream implements FileConstants, DataTypesDefiniti
                 break;
 
             case DATA_SHORT_INTEGER:
-                result = new Short(readShort());
+                result = Short.valueOf(readShort());
 
                 break;
 
             case DATA_LONG_INTEGER:
-                result = new Integer(readInteger());
+                result = Integer.valueOf(readInteger());
 
                 break;
 
@@ -549,7 +550,7 @@ public abstract class VPFInputStream implements FileConstants, DataTypesDefiniti
      * @param msg a <code>String</code> value
      */
     protected void condeb(String msg) {
-        System.out.println(msg);
+        VPFLogger.log(msg);
     }
 }
 

@@ -20,6 +20,8 @@ import javax.xml.namespace.QName;
 import org.geotools.filter.v1_0.OGCPropertyIsNullTypeBinding;
 import org.geotools.filter.v2_0.FES;
 import org.opengis.filter.FilterFactory;
+import org.opengis.filter.PropertyIsNull;
+import org.opengis.filter.expression.PropertyName;
 
 /**
  * Binding object for the type http://www.opengis.net/fes/2.0:PropertyIsNullType.
@@ -51,5 +53,14 @@ public class PropertyIsNullTypeBinding extends OGCPropertyIsNullTypeBinding {
 
     public QName getTarget() {
         return FES.PropertyIsNullType;
+    }
+
+    @Override
+    public Object getProperty(Object object, QName name) throws Exception {
+        PropertyIsNull isNull = (PropertyIsNull) object;
+        if (FES.expression.equals(name) && isNull.getExpression() instanceof PropertyName) {
+            return isNull.getExpression();
+        }
+        return super.getProperty(object, name);
     }
 }

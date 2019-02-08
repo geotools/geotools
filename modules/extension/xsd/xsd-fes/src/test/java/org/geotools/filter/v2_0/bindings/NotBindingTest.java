@@ -15,16 +15,14 @@ import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.w3c.dom.Document;
 
-/** Tests for checking {@link PropertyIsNullTypeBinding} on FES 2.0 configuration. */
-public class PropertyIsNullTypeBindingTest {
+/** Tests for checking {@link NotBinding} encoding. */
+public class NotBindingTest {
 
-    private static final String PROP = "prop";
-
-    /** Test checking correct encoding for isNull filter and its property name. */
+    /** Test checking correct encoding for Not operator */
     @Test
-    public void testPropertyIsNullEncoding() throws Exception {
+    public void testNotOperatorEncoding() throws Exception {
         FilterFactory2 ff = new FilterFactoryImpl();
-        Filter filter = ff.isNull(ff.property(PROP));
+        Filter filter = ff.not(ff.isNull(ff.property("prop")));
         Configuration configuration = new org.geotools.filter.v2_0.FESConfiguration();
         Encoder encoder = new Encoder(configuration);
         encoder.setIndenting(true);
@@ -32,8 +30,9 @@ public class PropertyIsNullTypeBindingTest {
         XPath xpath = XPathFactory.newInstance().newXPath();
         defaultNamespaceContext(xpath);
         String prop =
-                xpath.evaluate("/fes:Filter/fes:PropertyIsNull/fes:ValueReference", encodedDoc);
-        assertEquals(PROP, prop);
+                xpath.evaluate(
+                        "/fes:Filter/fes:Not/fes:PropertyIsNull/fes:ValueReference", encodedDoc);
+        assertEquals("prop", prop);
     }
 
     private void defaultNamespaceContext(XPath xpath) {

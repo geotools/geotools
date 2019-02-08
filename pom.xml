@@ -134,9 +134,7 @@
     <profile>
       <id>docs</id>
       <activation>
-         <property>
-           <name>enableDocs</name>
-        </property>
+         <property><name>all</name></property>
        </activation>
       <modules>
         <module>docs</module>

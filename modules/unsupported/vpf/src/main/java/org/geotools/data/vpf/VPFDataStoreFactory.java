@@ -25,6 +25,8 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.net.URI;
 import java.net.URL;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.Map;
@@ -131,7 +133,11 @@ public class VPFDataStoreFactory implements DataStoreFactorySpi {
 
         boolean debug = VPFLogger.isLoggable(Level.FINEST);
 
-        String rootDir = file.getParent();
+        Path lhtPath = Paths.get(file.getPath());
+        Path lhtRealPath = lhtPath.toRealPath();
+        Path lhtParentPath = lhtRealPath.getParent();
+
+        String rootDir = lhtParentPath.toString();
         String latTableName = new File(rootDir, LIBRARY_ATTTIBUTE_TABLE).toString();
 
         if (debug) {

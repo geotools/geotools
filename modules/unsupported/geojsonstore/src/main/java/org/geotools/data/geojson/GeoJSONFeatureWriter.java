@@ -72,9 +72,9 @@ public class GeoJSONFeatureWriter implements FeatureWriter<SimpleFeatureType, Si
                 File.createTempFile(typeName + System.currentTimeMillis(), ".geojson", directory);
         LOGGER.fine("Writing to " + temp.getAbsolutePath());
         this.geoJSONWriter = new GeoJSONWriter(new FileOutputStream(this.temp));
-         if(!file.exists()) {
-           file.createNewFile();
-         }
+        if (!file.exists()) {
+            file.createNewFile();
+        }
         this.delegate = new GeoJSONFeatureReader(state, query);
     }
 
@@ -94,7 +94,6 @@ public class GeoJSONFeatureWriter implements FeatureWriter<SimpleFeatureType, Si
             if (!appending) {
                 if (delegate.reader != null && delegate.hasNext()) {
                     this.currentFeature = delegate.next();
-                    System.out.println("returning existing feature "+currentFeature );; 
                     return this.currentFeature;
                 } else {
                     this.appending = true;
@@ -103,9 +102,8 @@ public class GeoJSONFeatureWriter implements FeatureWriter<SimpleFeatureType, Si
             SimpleFeatureType featureType = state.getFeatureType();
             String fid = featureType.getTypeName() + "." + nextID;
             Object values[] = DataUtilities.defaultValues(featureType);
-            //this generates an "empty" feature
+            // this generates an "empty" feature
             this.currentFeature = SimpleFeatureBuilder.build(featureType, values, fid);
-            System.out.println("returning new feature "+currentFeature );;
             return this.currentFeature;
         } catch (IllegalArgumentException invalid) {
             throw new IOException("Unable to create feature:" + invalid.getMessage(), invalid);

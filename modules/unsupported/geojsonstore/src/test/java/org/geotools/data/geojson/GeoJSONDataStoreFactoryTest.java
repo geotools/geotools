@@ -24,11 +24,8 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.net.URL;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import org.geotools.data.DataStore;
-import org.geotools.data.DataStoreFactorySpi;
-import org.geotools.data.DataStoreFinder;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.Query;
 import org.geotools.test.TestData;
@@ -51,7 +48,6 @@ public class GeoJSONDataStoreFactoryTest {
         params.put(GeoJSONDataStoreFactory.URLP.key, url);
         store = fac.createDataStore(params);
         assertNotNull("didn't create store", store);
-        
     }
 
     @Test

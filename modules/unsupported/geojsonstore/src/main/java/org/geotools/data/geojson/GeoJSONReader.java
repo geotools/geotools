@@ -131,9 +131,7 @@ public class GeoJSONReader {
         }
         while (parser.nextToken() == JsonToken.START_OBJECT) {
           ObjectNode node = mapper.readTree(parser);
-          if (node == null) {
-            System.out.println(parser.nextTextValue());
-          }
+          
           SimpleFeature feature = getNextFeature(node);
           features.add(feature);
         }
@@ -190,7 +188,6 @@ public class GeoJSONReader {
     if (id != null && id.isValueNode()) {}
 
     SimpleFeature feature = builder.buildFeature(baseName+"."+nextID++);
-    // System.out.println(feature);
     return feature;
   }
 
@@ -283,11 +280,14 @@ public class GeoJSONReader {
 
     @Override
     public boolean hasNext() {
+      if(feature!=null) {
+        return true;
+      }
       try {
 
         if (parser.nextToken() == JsonToken.START_OBJECT) {
           ObjectNode node = mapper.readTree(parser);
-          feature = getNextFeature(node);
+          feature = getNextFeature(node); 
           if (feature != null) return true;
         }
       } catch (IOException e) {
@@ -299,8 +299,13 @@ public class GeoJSONReader {
     @Override
     public SimpleFeature next() throws NoSuchElementException {
 
-      if (feature != null) return feature;
-      else throw new NoSuchElementException();
+      if (feature != null) {
+        SimpleFeature ret = feature;
+        feature = null;
+        return ret;
+      } else  {
+        throw new NoSuchElementException();
+      }
     }
 
     @Override

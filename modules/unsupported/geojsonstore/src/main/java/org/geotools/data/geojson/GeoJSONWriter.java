@@ -16,6 +16,8 @@ package org.geotools.data.geojson;
  *    Lesser General Public License for more details.
  */
 
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonGenerator;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -24,8 +26,6 @@ import org.opengis.feature.Property;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.type.GeometryType;
 import org.opengis.feature.type.PropertyType;
-import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.core.JsonGenerator;
 
 /**
  * Wrapper to handle writing GeoJSON FeatureCollections
@@ -33,76 +33,75 @@ import com.fasterxml.jackson.core.JsonGenerator;
  * @author ian
  */
 public class GeoJSONWriter implements AutoCloseable {
-  private OutputStream out;
+    private OutputStream out;
 
-  private JsonFactory factory = new JsonFactory();
-  private JsonGenerator generator;
-  static org.locationtech.jts.io.geojson.GeoJsonWriter jWriter =
-      new org.locationtech.jts.io.geojson.GeoJsonWriter();
+    private JsonFactory factory = new JsonFactory();
+    private JsonGenerator generator;
 
-  public GeoJSONWriter(OutputStream outputStream) throws IOException {
+    static org.locationtech.jts.io.geojson.GeoJsonWriter jWriter =
+            new org.locationtech.jts.io.geojson.GeoJsonWriter();
 
-    jWriter.setEncodeCRS(false);
-    if (outputStream instanceof BufferedOutputStream) {
-      this.out = outputStream;
-    } else {
-      this.out = new BufferedOutputStream(outputStream);
+    public GeoJSONWriter(OutputStream outputStream) throws IOException {
+
+        jWriter.setEncodeCRS(false);
+        if (outputStream instanceof BufferedOutputStream) {
+            this.out = outputStream;
+        } else {
+            this.out = new BufferedOutputStream(outputStream);
+        }
+        generator = factory.createGenerator(outputStream);
+        generator.writeStartObject();
+        generator.writeStringField("type", "FeatureCollection");
+        generator.writeFieldName("features");
+        generator.writeStartArray();
     }
-    generator = factory.createGenerator(outputStream);
-    generator.writeStartObject();
-    generator.writeStringField("type", "FeatureCollection");
-    generator.writeFieldName("features");
-    generator.writeStartArray();
-  }
 
-  public void write(SimpleFeature currentFeature) throws IOException {
-    System.out.println("writing " + currentFeature);
-    generator.writeStartObject();
-    generator.writeStringField("type", "Feature");
-    generator.writeFieldName("properties");
-    generator.writeStartObject();
-    for (Property p : currentFeature.getProperties()) {
-      PropertyType type = p.getType();
-      if (type instanceof GeometryType) {
-        continue;
-      }
-      Object value = p.getValue();
-      String name = p.getName().getLocalPart();
-      if (value == null) {
-        generator.writeNullField(name);
-        continue;
-      }
-      Class<?> binding = p.getType().getBinding();
-      if (binding == Integer.class) {
-        generator.writeNumberField(name, (int) value);
-      } else if (binding == Double.class) {
-        generator.writeNumberField(name, (double) value);
-      } else {
-        generator.writeFieldName(name);
-        generator.writeString(value.toString());
-      }
+    public void write(SimpleFeature currentFeature) throws IOException {
+        generator.writeStartObject();
+        generator.writeStringField("type", "Feature");
+        generator.writeFieldName("properties");
+        generator.writeStartObject();
+        for (Property p : currentFeature.getProperties()) {
+            PropertyType type = p.getType();
+            if (type instanceof GeometryType) {
+                continue;
+            }
+            Object value = p.getValue();
+            String name = p.getName().getLocalPart();
+            if (value == null) {
+                generator.writeNullField(name);
+                continue;
+            }
+            Class<?> binding = p.getType().getBinding();
+            if (binding == Integer.class) {
+                generator.writeNumberField(name, (int) value);
+            } else if (binding == Double.class) {
+                generator.writeNumberField(name, (double) value);
+            } else {
+                generator.writeFieldName(name);
+                generator.writeString(value.toString());
+            }
+        }
+        generator.writeEndObject();
+
+        generator.writeFieldName("geometry");
+        Geometry defaultGeometry = (Geometry) currentFeature.getDefaultGeometry();
+        if (defaultGeometry != null) {
+            String gString = jWriter.write(defaultGeometry);
+
+            generator.writeRawValue(gString);
+            generator.writeStringField("id", currentFeature.getID());
+        } else {
+            generator.writeNull();
+        }
+        generator.writeEndObject();
     }
-    generator.writeEndObject();
 
-    generator.writeFieldName("geometry");
-    Geometry defaultGeometry = (Geometry) currentFeature.getDefaultGeometry();
-    if (defaultGeometry != null) {
-      String gString = jWriter.write(defaultGeometry);
+    public void close() throws IOException {
+        generator.writeEndArray();
+        generator.writeEndObject();
 
-      generator.writeRawValue(gString);
-      generator.writeStringField("id", currentFeature.getID());
-    } else {
-      generator.writeNull();
+        generator.close();
+        out.close();
     }
-    generator.writeEndObject();
-  }
-
-  public void close() throws IOException {
-
-    generator.writeEndArray();
-    generator.writeEndObject();
-
-    generator.close();
-    out.close();
-  }
 }

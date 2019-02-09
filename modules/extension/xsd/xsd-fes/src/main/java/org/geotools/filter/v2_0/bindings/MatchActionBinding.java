@@ -2,7 +2,7 @@ package org.geotools.filter.v2_0.bindings;
 
 import org.apache.commons.lang3.StringUtils;
 import org.geotools.filter.v2_0.FES;
-import org.geotools.xsd.EnumSimpleBinding;
+import org.geotools.xml.EnumSimpleBinding;
 import org.opengis.filter.MultiValuedFilter.MatchAction;
 
 /** Binding for encoding {@link MatchAction} enum values. */

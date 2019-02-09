@@ -67,10 +67,20 @@ public class EnumSimpleBinding extends AbstractSimpleBinding {
     }
 
     Object get(String value) throws Exception {
-        if (get != null) {
-            return get.invoke(null, value);
+        try {
+            if (get != null) {
+                return get.invoke(null, value);
+            }
+        } catch (Exception e1) {
+            try {
+                if (valueOf != null) {
+                    return valueOf.invoke(null, value);
+                }
+            } catch (Exception e2) {
+                return null;
+            }
         }
 
-        return valueOf.invoke(null, value);
+        return null;
     }
 }

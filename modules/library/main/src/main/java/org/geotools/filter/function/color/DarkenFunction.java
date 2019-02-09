@@ -27,7 +27,7 @@ public class DarkenFunction extends AbstractHSLFunction {
         super("darken");
     }
 
-    protected void adjstRelative(float amount, HSLColor hsl) {
+    protected void adjustRelative(float amount, HSLColor hsl) {
         hsl.setLightness(hsl.getLightness() * (1 - amount));
     }
 

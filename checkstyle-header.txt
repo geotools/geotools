@@ -1,0 +1,5 @@
+^/\*\s*$
+^ \*\s+GeoTools - The Open Source Java GIS Toolkit$
+^ \*\s+http://geotools.org$
+^ \*\s*$
+^ \*\s+\(C\) (\d{4}|\d{4}\s*-\s*\d{4}),? Open Source Geospatial Foundation \(OSGeo\)$

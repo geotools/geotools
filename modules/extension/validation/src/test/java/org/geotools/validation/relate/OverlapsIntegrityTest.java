@@ -32,9 +32,6 @@ import org.opengis.filter.Filter;
  *     Created Apr 29, 2004<br>
  * @version <br>
  *     <b>Puropse:</b><br>
- *     <p>DOCUMENT ME!! <b>Description:</b><br>
- *     <p>DOCUMENT ME!! <b>Usage:</b><br>
- *     <p>DOCUMENT ME!!
  */
 public class OverlapsIntegrityTest extends SpatialTestCase {
 

@@ -847,7 +847,6 @@ public class GranuleDescriptor {
      *     a relative or an absolute path.
      * @param locationAttribute the attribute containing the granule location.
      * @param parentLocation the location of the parent of that granule.
-     * @param inclusionGeometry the footprint of that granule (if any). It may be null.
      */
     public GranuleDescriptor(
             SimpleFeature feature,
@@ -881,7 +880,6 @@ public class GranuleDescriptor {
      *     a relative or an absolute path.
      * @param locationAttribute the attribute containing the granule location.
      * @param parentLocation the location of the parent of that granule.
-     * @param inclusionGeometry the footprint of that granule (if any). It may be null.
      * @param heterogeneousGranules if {@code true}, this granule belongs to a set of heterogeneous
      *     granules
      */

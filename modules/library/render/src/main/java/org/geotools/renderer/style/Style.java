@@ -55,7 +55,6 @@ public abstract class Style implements Cloneable {
      *
      * @param minScale
      * @param maxScale
-     * @throws IllegalArgumentException DOCUMENT ME!
      */
     public void setMinMaxScale(double minScale, double maxScale) {
         if (minScale > maxScale) {

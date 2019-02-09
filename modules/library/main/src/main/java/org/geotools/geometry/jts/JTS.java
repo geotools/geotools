@@ -931,8 +931,8 @@ public final class JTS {
      * @throws IllegalArgumentException if {@code env} is {@code null}
      * @since 2.4
      */
-    public static Polygon toGeometry(Envelope env) {
-        return toGeometry(env, new GeometryFactory());
+    public static Polygon toGeometry(Envelope envelope) {
+        return toGeometry(envelope, new GeometryFactory());
     }
 
     /**
@@ -946,8 +946,8 @@ public final class JTS {
      * @since 2.8
      * @throws IllegalArgumentException if either {@code env} or {@code factory} is {@code null}
      */
-    public static Polygon toGeometry(final Envelope env, GeometryFactory factory) {
-        ensureNonNull("env", env);
+    public static Polygon toGeometry(final Envelope envelope, GeometryFactory factory) {
+        ensureNonNull("env", envelope);
         if (factory == null) {
             factory = new GeometryFactory();
         }
@@ -955,15 +955,15 @@ public final class JTS {
                 factory.createPolygon(
                         factory.createLinearRing(
                                 new Coordinate[] {
-                                    new Coordinate(env.getMinX(), env.getMinY()),
-                                    new Coordinate(env.getMaxX(), env.getMinY()),
-                                    new Coordinate(env.getMaxX(), env.getMaxY()),
-                                    new Coordinate(env.getMinX(), env.getMaxY()),
-                                    new Coordinate(env.getMinX(), env.getMinY())
+                                    new Coordinate(envelope.getMinX(), envelope.getMinY()),
+                                    new Coordinate(envelope.getMaxX(), envelope.getMinY()),
+                                    new Coordinate(envelope.getMaxX(), envelope.getMaxY()),
+                                    new Coordinate(envelope.getMinX(), envelope.getMaxY()),
+                                    new Coordinate(envelope.getMinX(), envelope.getMinY())
                                 }),
                         null);
-        if (env instanceof ReferencedEnvelope) {
-            ReferencedEnvelope refEnv = (ReferencedEnvelope) env;
+        if (envelope instanceof ReferencedEnvelope) {
+            ReferencedEnvelope refEnv = (ReferencedEnvelope) envelope;
             polygon.setUserData(refEnv.getCoordinateReferenceSystem());
         }
         return polygon;
@@ -1008,7 +1008,7 @@ public final class JTS {
      * <p>The resulting polygon contains an outer ring with vertices:
      * (x1,y1),(x2,y1),(x2,y2),(x1,y2),(x1,y1)
      *
-     * @param envelope The original envelope.
+     * @param bbox The original envelope.
      * @return The envelope as a polygon.
      * @throws IllegalArgumentException if {@code bbox} is {@code null}
      * @since 2.4
@@ -1106,7 +1106,7 @@ public final class JTS {
      * <p>The resulting polygon contains an outer ring with vertices:
      * (x1,y1),(x2,y1),(x2,y2),(x1,y2),(x1,y1)
      *
-     * @param envelope The original envelope.
+     * @param bbox The original envelope.
      * @return The envelope as a polygon.
      * @throws IllegalArgumentException if {@code bbox} is {@code null}
      * @since 2.4
@@ -1121,7 +1121,7 @@ public final class JTS {
      * <p>The resulting polygon contains an outer ring with vertices:
      * (x1,y1),(x2,y1),(x2,y2),(x1,y2),(x1,y1)
      *
-     * @param envelope The original envelope.
+     * @param bbox The original envelope.
      * @return The envelope as a polygon.
      * @since 2.8
      * @throws IllegalArgumentException if either {@code bbox} or {@code factory} is {@code null}
@@ -1151,7 +1151,7 @@ public final class JTS {
      * PointOutsideEnvelopeException} is thrown
      *
      * @param geom the geometry to check
-     * @param the crs that defines the are of validity (must not be null)
+     * @param crs the crs that defines the are of validity (must not be null)
      * @throws PointOutsideEnvelopeException
      * @since 2.4
      */

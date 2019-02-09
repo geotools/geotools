@@ -43,7 +43,6 @@ public class AlgoPoint2D {
     /**
      * Compares coodinates of Direct Positions
      *
-     * @param Direct Position to compare with
      * @return TRUE, if coordinates accord, FALSE if they dont.
      */
     public static boolean equals(Point2D p0, Point2D p1, double tol) {
@@ -65,7 +64,6 @@ public class AlgoPoint2D {
     /**
      * Adds a DirectPosition to the position
      *
-     * @param DirectPosition to add
      * @return new Position
      */
     public static Point2D createAdd(Point2D p0, Point2D p1) {
@@ -79,7 +77,6 @@ public class AlgoPoint2D {
     /**
      * Subtracts a direct position from the position
      *
-     * @param DirectPosition to subtract
      * @return new Position
      */
     public static Point2D subtract(Point2D p0, Point2D p1) {
@@ -106,7 +103,6 @@ public class AlgoPoint2D {
     /**
      * Builds the scalar product
      *
-     * @param DirectPosition to multiply with
      * @return Scalar product
      */
     public static double scalar(Point2D p0, Point2D p1) {

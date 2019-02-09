@@ -209,8 +209,7 @@ public class ReferencedEnvelope3D extends ReferencedEnvelope implements Bounding
     /**
      * Gets the volume of this envelope.
      *
-     * @return the volume of the envelope
-     * @return 0.0 if the envelope is null
+     * @return the volume of the envelope, 0.0 if the envelope is null
      */
     public double getVolume() {
         return getWidth() * getHeight() * getDepth();

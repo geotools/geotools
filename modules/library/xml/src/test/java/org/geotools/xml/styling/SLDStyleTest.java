@@ -96,31 +96,19 @@ public class SLDStyleTest extends TestCase {
     FilterFactory ff = CommonFactoryFinder.getFilterFactory(GeoTools.getDefaultHints());
     StyleBuilder sb = new StyleBuilder(sf, ff);
 
-    /**
-     * Creates a new SLDStyleTest object.
-     *
-     * @param testName DOCUMENT ME!
-     */
+    /** Creates a new SLDStyleTest object. */
     public SLDStyleTest(java.lang.String testName) {
         super(testName);
     }
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @return DOCUMENT ME!
-     */
+    /** */
     public static Test suite() {
         TestSuite suite = new TestSuite(SLDStyleTest.class);
 
         return suite;
     }
 
-    /**
-     * Test of parseStyle method, of class org.geotools.styling.SLDStyle.
-     *
-     * @throws Exception DOCUMENT ME!
-     */
+    /** Test of parseStyle method, of class org.geotools.styling.SLDStyle. */
     public void testParseStyle() throws Exception {
         // java.net.URL base = getClass().getResource("testData/");
         // base = getClass().getResource("testData");

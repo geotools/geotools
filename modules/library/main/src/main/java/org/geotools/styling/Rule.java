@@ -208,7 +208,6 @@ public interface Rule extends org.opengis.style.Rule {
      *
      * @return An array of symbolizers to be applied, in sequence, to all of the features addressed
      *     by the FeatureTypeStyler which contains this rule.
-     * @param Please use symbolizers().toArray( new Symbolizer[0] )
      */
     Symbolizer[] getSymbolizers();
 
@@ -240,7 +239,7 @@ public interface Rule extends org.opengis.style.Rule {
     public OnLineResource getOnlineResource();
 
     /** @param resource Indicates where this style is defined */
-    void setOnlineResource(OnLineResource online);
+    void setOnlineResource(OnLineResource resource);
 
     /**
      * Used to traverse the style data structure.

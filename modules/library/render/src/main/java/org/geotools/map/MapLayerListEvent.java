@@ -38,14 +38,7 @@ public class MapLayerListEvent extends EventObject {
     /** Holds value of property mapLayerEvent. */
     private MapLayerEvent mapLayerEvent;
 
-    /**
-     * Creates a new instance of MapLayerListEvent
-     *
-     * @param source DOCUMENT ME!
-     * @param layer DOCUMENT ME!
-     * @param fromIndex DOCUMENT ME!
-     * @param toIndex DOCUMENT ME!
-     */
+    /** Creates a new instance of MapLayerListEvent */
     public MapLayerListEvent(MapContext source, MapLayer layer, int fromIndex, int toIndex) {
         super(source);
         this.mapLayer = layer;

@@ -147,7 +147,7 @@ public class DefaultMapContext extends MapContext {
      *
      * @param index the position at which to insert the layer in the list of layers held by this
      *     context
-     * @param layer the map layer to add
+     * @param mapLayer the map layer to add
      * @return true if the layer was added; false otherwise (layer was already present)
      */
     @SuppressWarnings("deprecation")
@@ -164,7 +164,7 @@ public class DefaultMapContext extends MapContext {
      * been set for the context an attempt is made to retrieve one from the new layer and use that
      * as the context's CRS.
      *
-     * @param layer the map layer to add
+     * @param mapLayer the map layer to add
      * @return true if the layer was added; false otherwise (layer was already present)
      */
     @SuppressWarnings("deprecation")
@@ -255,7 +255,7 @@ public class DefaultMapContext extends MapContext {
      * context and trigger a {@linkplain MapLayerListEvent}. This is a convenience method equivalent
      * to {@linkplain #addLayer}(new DefaultMapLayer(collection, style).
      *
-     * @param collection the collection of features for the new layer
+     * @param featureCollection the collection of features for the new layer
      * @param style a Style object to be used in rendering this layer
      */
     public void addLayer(FeatureCollection featureCollection, Style style) {
@@ -391,11 +391,11 @@ public class DefaultMapContext extends MapContext {
      *     array if some layers were already present)
      */
     @SuppressWarnings("deprecation")
-    public int addLayers(MapLayer[] array) {
-        if ((array == null) || (array.length == 0)) {
+    public int addLayers(MapLayer[] layers) {
+        if ((layers == null) || (layers.length == 0)) {
             return 0;
         }
-        return super.addLayers(toLayerList(array));
+        return super.addLayers(toLayerList(layers));
     }
 
     /**
@@ -403,11 +403,11 @@ public class DefaultMapContext extends MapContext {
      *
      * @param layers The layers that are to be removed.
      */
-    public void removeLayers(MapLayer[] array) {
-        if ((array == null) || (array.length == 0) || layers().isEmpty()) {
+    public void removeLayers(MapLayer[] layers) {
+        if ((layers == null) || (layers.length == 0) || layers().isEmpty()) {
             return;
         }
-        List<Layer> layersToRemove = toLayerList(array);
+        List<Layer> layersToRemove = toLayerList(layers);
         layers().removeAll(layersToRemove);
     }
 

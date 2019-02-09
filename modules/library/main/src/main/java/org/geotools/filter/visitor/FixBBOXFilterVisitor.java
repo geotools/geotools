@@ -47,10 +47,10 @@ public class FixBBOXFilterVisitor extends DuplicatingFilterVisitor {
     /**
      * Visitor used to "clean up" any BBOX expressions.
      *
-     * @param max Max bounding box used to clip any BBox expressions to ensure they are vaild
+     * @param maxbbox Max bounding box used to clip any BBox expressions to ensure they are vaild
      */
-    public FixBBOXFilterVisitor(ReferencedEnvelope fsd) {
-        maxbbox = fsd;
+    public FixBBOXFilterVisitor(ReferencedEnvelope maxbbox) {
+        this.maxbbox = maxbbox;
     }
 
     @SuppressWarnings("deprecation")

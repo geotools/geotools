@@ -453,8 +453,8 @@ class CategoryList extends AbstractList<Category> implements Comparator<Category
      * Format the specified value using the specified locale convention.
      *
      * @param value The value to format.
-     * @param writeUnit {@code true} if unit symbol should be formatted after the number. Ignored if
-     *     this category list has no unit.
+     * @param writeUnits {@code true} if unit symbol should be formatted after the number. Ignored
+     *     if this category list has no unit.
      * @param locale The locale, or {@code null} for a default one.
      * @param buffer The buffer where to format.
      * @return The buffer {@code buffer} for convenience.

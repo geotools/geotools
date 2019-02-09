@@ -1285,7 +1285,7 @@ public class Schemas {
      * Returns a list of all attribute declarations declared in the type (or any base type) of the
      * specified element.
      *
-     * @param element The element.
+     * @param type The type definition
      * @return A list of @link XSDAttributeDeclaration objects, one for each attribute of the
      *     element.
      */
@@ -1297,7 +1297,7 @@ public class Schemas {
      * Returns a list of all attribute declarations declared in the type (and optionally any base
      * type) of the specified element.
      *
-     * @param element The element.
+     * @param type The element type
      * @param includeParents Wether to include parent types.
      * @return A list of @link XSDAttributeDeclaration objects, one for each attribute of the
      *     element.

@@ -132,7 +132,6 @@ public class ReprojectFeatureReader
      *
      * <p>Description ...
      *
-     * @throws IllegalStateException DOCUMENT ME!
      * @see org.geotools.data.FeatureReader#getFeatureType()
      */
     public SimpleFeatureType getFeatureType() {
@@ -151,8 +150,6 @@ public class ReprojectFeatureReader
      * @throws IOException
      * @throws IllegalAttributeException
      * @throws NoSuchElementException
-     * @throws IllegalStateException DOCUMENT ME!
-     * @throws DataSourceException DOCUMENT ME!
      * @see org.geotools.data.FeatureReader#next()
      */
     public SimpleFeature next()
@@ -187,7 +184,6 @@ public class ReprojectFeatureReader
      * <p>Description ...
      *
      * @throws IOException
-     * @throws IllegalStateException DOCUMENT ME!
      * @see org.geotools.data.FeatureReader#hasNext()
      */
     public boolean hasNext() throws IOException {
@@ -204,7 +200,6 @@ public class ReprojectFeatureReader
      * <p>Description ...
      *
      * @throws IOException
-     * @throws IllegalStateException DOCUMENT ME!
      * @see org.geotools.data.FeatureReader#close()
      */
     public void close() throws IOException {

@@ -2,8 +2,8 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2001-2006  Vivid Solutions
  *    (C) 2001-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2001-2006  Vivid Solutions
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -50,9 +50,8 @@ public class CGAlgorithms {
      * @param p1 the origin point of the vector
      * @param p2 the final point of the vector
      * @param q the point to compute the direction to
-     * @return 1 if q is counter-clockwise (left) from p1-p2
-     * @return -1 if q is clockwise (right) from p1-p2
-     * @return 0 if q is collinear with p1-p2
+     * @return 1 if q is counter-clockwise (left) from p1-p2, -1 if q is clockwise (right) from
+     *     p1-p2, 0 if q is collinear with p1-p2
      */
     public static int orientationIndex(Coordinate p1, Coordinate p2, Coordinate q) {
         // travelling along p1->p2, turn counter clockwise to get to q return 1,
@@ -235,9 +234,8 @@ public class CGAlgorithms {
      * a point relative to a directed line segment indicates which way you turn to get to q after
      * travelling from p1 to p2.
      *
-     * @return 1 if q is counter-clockwise from p1-p2
-     * @return -1 if q is clockwise from p1-p2
-     * @return 0 if q is collinear with p1-p2
+     * @return 1 if q is counter-clockwise from p1-p2, -1 if q is clockwise from p1-p2, 0 if q is
+     *     collinear with p1-p2
      */
     public static int computeOrientation(Coordinate p1, Coordinate p2, Coordinate q) {
         return orientationIndex(p1, p2, q);

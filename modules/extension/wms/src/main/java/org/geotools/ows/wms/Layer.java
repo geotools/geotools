@@ -523,11 +523,7 @@ public class Layer implements Comparable<Layer> {
         return this.getTitle().compareTo(layer.getTitle());
     }
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @return Returns the parent.
-     */
+    /** @return Returns the parent. */
     public Layer getParent() {
         return parent;
     }
@@ -535,7 +531,7 @@ public class Layer implements Comparable<Layer> {
     /**
      * Set the parent; child will be added to the parents list of children (if it is not already).
      *
-     * @param parent The parent to set.
+     * @param parentLayer The parent to set.
      */
     public void setParent(Layer parentLayer) {
         this.parent = parentLayer;
@@ -678,7 +674,7 @@ public class Layer implements Comparable<Layer> {
      * <p>Scale denominator is calculated based on the bounding box of the central pixel in a
      * request (ie not a scale based on real world size of the entire layer).
      *
-     * @param Max scale denominator for which it is approprirate to draw this layer
+     * @param scaleDenominatorMax scale denominator for which it is approprirate to draw this layer
      */
     public void setScaleDenominatorMax(double scaleDenominatorMax) {
         this.scaleDenominatorMax = scaleDenominatorMax;
@@ -705,7 +701,7 @@ public class Layer implements Comparable<Layer> {
      * <p>Scale denominator is calculated based on the bounding box of the central pixel in a
      * request (ie not a scale based on real world size of the entire layer).
      *
-     * @param Min scale denominator for which it is appropriate to draw this layer
+     * @param scaleDenominatorMin scale denominator for which it is appropriate to draw this layer
      */
     public void setScaleDenominatorMin(double scaleDenominatorMin) {
         this.scaleDenominatorMin = scaleDenominatorMin;
@@ -749,7 +745,7 @@ public class Layer implements Comparable<Layer> {
      *
      * <p>
      *
-     * @param The second scale hint value (understood to mean the max value)
+     * @param scaleHintMax The second scale hint value (understood to mean the max value)
      * @deprecated Use setScaleDenomiatorMax() as there is less confusion over meaning
      */
     public void setScaleHintMax(double scaleHintMax) {

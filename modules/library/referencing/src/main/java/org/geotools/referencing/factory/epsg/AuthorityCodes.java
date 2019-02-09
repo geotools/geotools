@@ -103,7 +103,6 @@ public final class AuthorityCodes extends AbstractSet<String> implements Seriali
     /**
      * Creates a new set of authority codes for the specified type.
      *
-     * @param connection The provider of connection to the EPSG database.
      * @param table The table to query.
      * @param type The type to query.
      * @param factory The factory originator.

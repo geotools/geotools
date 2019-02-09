@@ -18,11 +18,7 @@ package org.geotools.gce.image;
 
 import junit.framework.TestCase;
 
-/**
- * DOCUMENT ME!
- *
- * @author rgoulds
- */
+/** @author rgoulds */
 public class WorldImageFormatTest extends TestCase {
     private WorldImageFormatTest format;
 

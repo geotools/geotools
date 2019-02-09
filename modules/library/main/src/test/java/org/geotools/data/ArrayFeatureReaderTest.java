@@ -95,11 +95,7 @@ public class ArrayFeatureReaderTest extends TestCase {
         assertEquals(features[5], featureCollectionReader.next());
     }
 
-    /**
-     * Test method for 'org.geotools.data.ArrayFeatureReader.hasNext()'
-     *
-     * @throws Exception DOCUMENT ME!
-     */
+    /** Test method for 'org.geotools.data.ArrayFeatureReader.hasNext()' */
     public void testHasNext() throws Exception {
         testHasNext(arrayReader);
         testHasNext(collectionReader);
@@ -123,11 +119,7 @@ public class ArrayFeatureReaderTest extends TestCase {
         assertFalse(arrayReader.hasNext());
     }
 
-    /**
-     * Test method for 'org.geotools.data.ArrayFeatureReader.close()'
-     *
-     * @throws Exception DOCUMENT ME!
-     */
+    /** Test method for 'org.geotools.data.ArrayFeatureReader.close()' */
     public void testClose() throws Exception {
         arrayReader.close();
         assertFalse(arrayReader.hasNext());

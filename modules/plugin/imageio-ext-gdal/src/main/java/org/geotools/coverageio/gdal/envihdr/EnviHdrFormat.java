@@ -38,8 +38,6 @@ public final class EnviHdrFormat extends BaseGDALGridFormat implements Format {
     /**
      * Constructor for the {@code BaseGDALGridFormat}. It is invoked by the underlying
      * implementations.
-     *
-     * @param spi the format specific {@code ImageReaderSpi} instance
      */
     public EnviHdrFormat() {
         super(new ENVIHdrImageReaderSpi());

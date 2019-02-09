@@ -122,7 +122,7 @@ public class AnsiDialectEpsgFactory extends AbstractEpsgFactory {
     /**
      * Constructs an authority factory using the specified connection.
      *
-     * @param userHints The underlying factories used for objects creation.
+     * @param hints The underlying factories used for objects creation.
      * @param connection The connection to the underlying EPSG database.
      * @throws FactoryException
      */
@@ -135,7 +135,7 @@ public class AnsiDialectEpsgFactory extends AbstractEpsgFactory {
     /**
      * Constructs an authority factory using the specified connection.
      *
-     * @param userHints The underlying factories used for objects creation.
+     * @param hints The underlying factories used for objects creation.
      * @param dataSource Used to create a connection to the underlying EPSG database
      * @throws FactoryException
      */

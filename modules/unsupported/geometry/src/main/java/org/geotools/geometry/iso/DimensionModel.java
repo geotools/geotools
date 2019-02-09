@@ -117,8 +117,8 @@ public class DimensionModel {
     /**
      * Tests whether the Dimension Model is of two dimensional type
      *
-     * @return TRUE if the Dimension Model is of two dimensional type
-     * @return FALSE if the Dimension Model is not of two dimensional type
+     * @return TRUE if the Dimension Model is of two dimensional type, FALSE if the Dimension Model
+     *     is not of two dimensional type
      */
     public boolean is2D() {
         return (this.dimensionModelType == DimensionModel.TWO_DIMENSIONIAL);
@@ -127,8 +127,8 @@ public class DimensionModel {
     /**
      * Tests whether the Dimension Model is of 2.5 dimensional type
      *
-     * @return TRUE if the Dimension Model is of 2.5 dimensional type
-     * @return FALSE if the Dimension Model is not of 2.5 dimensional type
+     * @return TRUE if the Dimension Model is of 2.5 dimensional type, FALSE if the Dimension Model
+     *     is not of 2.5 dimensional type
      */
     public boolean is2o5D() {
         return (this.dimensionModelType == DimensionModel.TWOoFIVE_DIMENSIONIAL);
@@ -137,8 +137,8 @@ public class DimensionModel {
     /**
      * Tests whether the Dimension Model is of three dimensional type
      *
-     * @return TRUE if the Dimension Model is of three dimensional type
-     * @return FALSE if the Dimension Model is not of three dimensional type
+     * @return TRUE if the Dimension Model is of three dimensional type, FALSE if the Dimension
+     *     Model is not of three dimensional type
      */
     public boolean is3D() {
         return (this.dimensionModelType == DimensionModel.THREE_DIMENSIONIAL);

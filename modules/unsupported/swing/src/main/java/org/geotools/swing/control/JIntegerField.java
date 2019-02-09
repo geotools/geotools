@@ -55,7 +55,7 @@ public class JIntegerField extends JValueField {
     /**
      * Creates a new text field with an initial value of 0.
      *
-     * @param allowNegative true if this field should allow negative values to be entered; false if
+     * @param allowsNegative true if this field should allow negative values to be entered; false if
      *     only positive values are allowed
      */
     public JIntegerField(boolean allowsNegative) {

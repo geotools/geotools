@@ -337,7 +337,6 @@ public class GraphicImpl implements Graphic, Cloneable {
      * Creates a deep copy clone.
      *
      * @return The deep copy clone.
-     * @throws RuntimeException DOCUMENT ME!
      */
     public Object clone() {
         GraphicImpl clone;

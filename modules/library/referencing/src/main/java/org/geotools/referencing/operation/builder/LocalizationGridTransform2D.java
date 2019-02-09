@@ -319,8 +319,8 @@ final class LocalizationGridTransform2D extends AbstractMathTransform
     /**
      * Retourne une approximation de la transformation affine à la position indiquée.
      *
-     * @param col Coordonnee <var>x</var> du point.
-     * @param row Coordonnee <var>y</var> du point.
+     * @param x Coordonnee <var>x</var> du point.
+     * @param y Coordonnee <var>y</var> du point.
      * @param dest Matrice dans laquelle écrire la transformation affine.
      */
     private void getAffineTransform(double x, double y, final AffineTransform dest) {

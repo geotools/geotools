@@ -54,8 +54,8 @@ final class Code {
      * format is {@code AUTO:code,lon0,lat0} where {@code AUTO} is optional.
      *
      * @param text The code in the {@code AUTO:code,lon0,lat0} format.
-     * @param The type of the CRS to be constructed (e.g. {@code GeographicCRS.class}). Used only in
-     *     case of failure for constructing an error message.
+     * @param type The type of the CRS to be constructed (e.g. {@code GeographicCRS.class}). Used
+     *     only in case of failure for constructing an error message.
      * @throws NoSuchAuthorityCodeException if the specified code can't be parsed.
      */
     public Code(final String text, final Class type) throws NoSuchAuthorityCodeException {

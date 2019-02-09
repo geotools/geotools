@@ -596,8 +596,8 @@ public final class ImageUtilities {
      * Returns the interpolation name for the specified interpolation object. This method tries to
      * infer the name from the object's class name.
      *
-     * @param Interpolation The interpolation object, or {@code null} for "nearest" (which is an
-     *     other way to say "no interpolation").
+     * @param interp The interpolation object, or {@code null} for "nearest" (which is an other way
+     *     to say "no interpolation").
      */
     public static String getInterpolationName(Interpolation interp) {
         if (interp == null) {

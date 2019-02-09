@@ -89,11 +89,7 @@ public class SimpleContentHandler extends XSIElementHandler {
         return LOCALNAME;
     }
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @return the Child element
-     */
+    /** @return the Child element */
     public Object getChild() {
         return child;
     }

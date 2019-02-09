@@ -126,7 +126,7 @@ public class ImageIOExt {
      * Sets the directory where cache files are to be created. If set to null (the default value)
      * {@link ImageIO#getCacheDirectory()} will be used as the value
      *
-     * @param cacheDirectory a <code>File</code> specifying a directory.
+     * @param cache a <code>File</code> specifying a directory.
      */
     public static void setCacheDirectory(File cache) {
         ImageIOExt.cacheDirectory = cache;

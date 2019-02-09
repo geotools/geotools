@@ -134,7 +134,6 @@ public class HaloImpl implements Halo, Cloneable {
      * Creates a deep copy clone of the Halo.
      *
      * @return The clone.
-     * @throws RuntimeException DOCUMENT ME!
      */
     public Object clone() {
         try {

@@ -31,7 +31,7 @@ class FidComparator implements Comparator<SimpleFeature> {
     /**
      * Builds a new comparator
      *
-     * @param inverse If true the comparator will force an ascending order (descending otherwise)
+     * @param ascending If true the comparator will force an ascending order (descending otherwise)
      */
     public FidComparator(boolean ascending) {
         this.ascending = ascending;

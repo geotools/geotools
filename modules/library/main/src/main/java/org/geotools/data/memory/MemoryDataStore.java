@@ -67,7 +67,8 @@ public class MemoryDataStore extends ContentDataStore {
     /**
      * Construct an MemoryDataStore around an empty collection of the provided SimpleFeatureType
      *
-     * @param schema An empty feature collection of this type will be made available
+     * @param featureType The initial feature type for the memory data store, an empty feature
+     *     collection of this type will be made available
      */
     public MemoryDataStore(SimpleFeatureType featureType) {
         try {

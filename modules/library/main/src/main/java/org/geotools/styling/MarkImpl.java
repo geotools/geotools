@@ -71,13 +71,7 @@ public class MarkImpl implements Mark, Cloneable {
         this.external = ExternalMarkImpl.cast(external);
     }
 
-    /**
-     * Convenience method for logging a message with an exception.
-     *
-     * @param method DOCUMENT ME!
-     * @param message DOCUMENT ME!
-     * @param exception DOCUMENT ME!
-     */
+    /** Convenience method for logging a message with an exception. */
     private static void severe(
             final String method, final String message, final Exception exception) {
         final java.util.logging.LogRecord record =

@@ -37,7 +37,6 @@ import org.opengis.filter.Filter;
  *     <p>Tests to see if a Geometry intersects with another Geometry. <b>Description:</b><br>
  *     <p>If only one Geometry is given, then this test checks to see if it intersects part of
  *     itself. <b>Usage:</b><br>
- *     <p>DOCUMENT ME!!
  */
 public class RelateIntegrity extends RelationIntegrity {
     private static final Logger LOGGER =

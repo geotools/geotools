@@ -79,8 +79,6 @@ class NetCDFRequest extends CoverageReadRequest {
     /**
      * Build a new {@code CoverageRequest} given a set of input parameters.
      *
-     * @param params The {@code GeneralParameterValue}s to initialize this request
-     * @param baseGridCoverage2DReader
      * @throws IOException
      */
     public NetCDFRequest(NetCDFSource source, CoverageReadRequest request) throws IOException {

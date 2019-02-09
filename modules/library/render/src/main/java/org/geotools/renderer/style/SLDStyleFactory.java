@@ -313,14 +313,7 @@ public class SLDStyleFactory {
         return style;
     }
 
-    /**
-     * Really creates the symbolizer
-     *
-     * @param drawMe DOCUMENT ME!
-     * @param symbolizer DOCUMENT ME!
-     * @param scaleRange DOCUMENT ME!
-     * @return DOCUMENT ME!
-     */
+    /** Really creates the symbolizer */
     private Style2D createStyleInternal(Object drawMe, Symbolizer symbolizer, Range scaleRange) {
         Style2D style = null;
 
@@ -1446,12 +1439,7 @@ public class SLDStyleFactory {
         }
     }
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @param joinType DOCUMENT ME!
-     * @return DOCUMENT ME!
-     */
+    /** */
     public static int lookUpJoin(String joinType) {
         if (SLDStyleFactory.JOIN_LOOKUP.containsKey(joinType)) {
             return ((Integer) JOIN_LOOKUP.get(joinType)).intValue();
@@ -1460,12 +1448,7 @@ public class SLDStyleFactory {
         }
     }
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @param capType DOCUMENT ME!
-     * @return DOCUMENT ME!
-     */
+    /** */
     public static int lookUpCap(String capType) {
         if (SLDStyleFactory.CAP_LOOKUP.containsKey(capType)) {
             return ((Integer) CAP_LOOKUP.get(capType)).intValue();

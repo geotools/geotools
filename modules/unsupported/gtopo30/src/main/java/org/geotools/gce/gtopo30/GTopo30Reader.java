@@ -144,7 +144,6 @@ public final class GTopo30Reader extends AbstractGridCoverage2DReader
      * @throws MalformedURLException if the URL does not correspond to one of the GTopo30 files
      * @throws IOException
      * @throws DataSourceException if the given url points to an unrecognized file
-     * @throws IllegalArgumentException DOCUMENT ME!
      */
     public GTopo30Reader(final Object source) throws IOException {
         this(source, null);
@@ -158,7 +157,6 @@ public final class GTopo30Reader extends AbstractGridCoverage2DReader
      * @throws MalformedURLException if the URL does not correspond to one of the GTopo30 files
      * @throws IOException
      * @throws DataSourceException if the given url points to an unrecognized file
-     * @throws IllegalArgumentException DOCUMENT ME!
      */
     public GTopo30Reader(final Object source, final Hints hints) throws IOException {
         super(source, hints);

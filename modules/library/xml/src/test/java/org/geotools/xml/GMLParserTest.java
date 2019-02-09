@@ -32,11 +32,7 @@ import org.geotools.xml.schema.Schema;
 import org.opengis.feature.simple.SimpleFeature;
 import org.xml.sax.SAXException;
 
-/**
- * DOCUMENT ME! @
- *
- * @author dzwiers www.refractions.net
- */
+/** @author dzwiers www.refractions.net */
 public class GMLParserTest extends TestCase {
     public void testSchema() {
         Schema s = SchemaFactory.getInstance(GMLSchema.NAMESPACE);

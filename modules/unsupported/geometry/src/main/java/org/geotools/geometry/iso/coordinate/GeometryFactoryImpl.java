@@ -313,8 +313,8 @@ public class GeometryFactoryImpl implements Factory, GeometryFactory {
     /**
      * Creates an Envelope with the given coordinates.
      *
-     * @param Coordinate c of a point p. The created envelope will have this coordinate as lower and
-     *     upper corner
+     * @param c Coordinate c of a point p. The created envelope will have this coordinate as lower
+     *     and upper corner
      * @return EnvelopeImpl The created envelope will have the coordinate as lower and upper corner.
      */
     public EnvelopeImpl createEnvelope(double[] c) {

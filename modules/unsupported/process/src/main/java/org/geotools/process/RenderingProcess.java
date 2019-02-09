@@ -53,7 +53,7 @@ public interface RenderingProcess extends Process {
      *
      * @param input The process inputs
      * @param targetQuery The query against the transformation outputs
-     * @param gridGeometry The grid geometry desired for the outputs of the transformation
+     * @param targetGridGeometry The grid geometry desired for the outputs of the transformation
      * @return The transformed query, or null if no inversion is possible/meaningful
      */
     GridGeometry invertGridGeometry(

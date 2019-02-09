@@ -229,8 +229,6 @@ public class LRSMeasureProcess implements VectorProcess {
      *
      * @param feature the source feature
      * @param targetFeatureType the modified feature type
-     * @param nearestDistance the snap distance
-     * @param nearestBearing the snap bearing
      * @return the modified feature
      * @throws ProcessException error
      */

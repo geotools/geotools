@@ -206,7 +206,6 @@ public class OptLineGraphGenerator implements LineGraphGenerator {
         return (edge);
     }
 
-    // TODO DOCUMENT ME!
     public Node getNode(Coordinate c) {
         return ((Node) m_coord2count.get(c));
     }

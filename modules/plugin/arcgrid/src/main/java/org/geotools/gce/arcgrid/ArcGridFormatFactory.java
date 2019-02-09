@@ -70,11 +70,7 @@ public final class ArcGridFormatFactory implements GridFormatFactorySpi {
         return new ArcGridFormat();
     }
 
-    /**
-     * Returns the implementation hints. The default implementation returns en empty map.
-     *
-     * @return DOCUMENT ME!
-     */
+    /** Returns the implementation hints. The default implementation returns en empty map. */
     public Map<RenderingHints.Key, ?> getImplementationHints() {
         return Collections.emptyMap();
     }

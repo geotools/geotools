@@ -31,7 +31,6 @@ public class Path extends Walk {
         super();
     }
 
-    // TODO: DOCUMENT ME!
     public Path(Collection nodes) {
         super(nodes);
     }

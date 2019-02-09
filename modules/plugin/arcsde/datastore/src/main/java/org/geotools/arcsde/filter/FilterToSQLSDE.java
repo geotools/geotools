@@ -88,8 +88,6 @@ public class FilterToSQLSDE extends FilterToSQL implements FilterVisitor {
      * @param layerFidColName name of the column that holds fids
      * @param ft
      * @param definitionQuery
-     * @param conn2 only used to encode date literals in a RDBMS specific format according to {@link
-     *     SeDate#toWhereStr(SeConnection)}
      */
     public FilterToSQLSDE(
             String layerQName,
@@ -315,7 +313,7 @@ public class FilterToSQLSDE extends FilterToSQL implements FilterVisitor {
     /**
      * @see {@link FilterVisitor#visit(ExcludeFilter, Object)} Writes the SQL for the IncludeFilter
      *     by writing "FALSE".
-     * @param the filter to be visited
+     * @param filter the filter to be visited
      */
     @Override
     public Object visit(ExcludeFilter filter, Object extraData) {
@@ -330,7 +328,7 @@ public class FilterToSQLSDE extends FilterToSQL implements FilterVisitor {
     /**
      * @see {@link FilterVisitor#visit(IncludeFilter, Object)} Writes the SQL for the IncludeFilter
      *     by writing "TRUE".
-     * @param the filter to be visited
+     * @param filter the filter to be visited
      */
     @Override
     public Object visit(IncludeFilter filter, Object extraData) {

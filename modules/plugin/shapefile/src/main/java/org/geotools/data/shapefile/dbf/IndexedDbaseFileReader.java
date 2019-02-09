@@ -1,5 +1,6 @@
 /*
- *    Geotools - OpenSource mapping toolkit
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
  *
  *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
  *
@@ -75,7 +76,6 @@ public class IndexedDbaseFileReader extends DbaseFileReader {
     /**
      * Creates a new instance of DBaseFileReader
      *
-     * @param channel The readable channel to use.
      * @param useMemoryMappedBuffer Wether or not map the file in memory
      * @throws IOException If an error occurs while initializing.
      */

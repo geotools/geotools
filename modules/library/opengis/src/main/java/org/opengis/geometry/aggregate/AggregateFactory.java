@@ -34,7 +34,7 @@ public interface AggregateFactory {
      * primitive, e.g. changes in the primitive instances will have consequences in the geometric
      * behaviour of the {@code MultiPrimitive} and vice versa.
      *
-     * @param points A set of primitives.
+     * @param primitives A set of primitives.
      * @return the resulting multi primitive.
      */
     MultiPrimitive createMultiPrimitive(Set<Primitive> primitives);

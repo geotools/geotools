@@ -130,9 +130,6 @@ class NetCDFResponse extends CoverageResponse {
      * used for instantiating an Image Reader for a read operation,
      *
      * @param request a {@link RasterLayerRequest} originating this response.
-     * @param COVERAGE_FACTORY a {@code GridCoverageFactory} to produce a {@code GridCoverage} when
-     *     calling the {@link #createResponse()} method.
-     * @param readerSpi the Image Reader Service provider interface.
      */
     public NetCDFResponse(final NetCDFRequest request) {
         this.request = request;
@@ -150,11 +147,6 @@ class NetCDFResponse extends CoverageResponse {
      * This method creates the GridCoverage2D from the underlying file given a specified envelope,
      * and a requested dimension.
      *
-     * @param iUseJAI specify if the underlying read process should leverage on a JAI ImageRead
-     *     operation or a simple direct call to the {@code read} method of a proper {@code
-     *     ImageReader}.
-     * @param overviewPolicy the overview policy which need to be adopted
-     * @return a {@code GridCoverage}
      * @throws java.io.IOException
      */
     private void processRequest() throws IOException {
@@ -619,9 +611,7 @@ class NetCDFResponse extends CoverageResponse {
      * @param index the index to use for the {@link ImageReader}.
      * @param cropBBox the bbox to use for cropping.
      * @param mosaicWorldToGrid the cropping grid to world transform.
-     * @param request the incoming request to satisfy.
      * @param hints {@link Hints} to be used for creating this raster.
-     * @param noData
      * @return a specified a raster as a portion of the granule describe by this {@link
      *     DefaultGranuleDescriptor}.
      * @throws IOException in case an error occurs.

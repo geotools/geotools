@@ -1003,7 +1003,6 @@ public class Utils {
      * or an {@link IllegalArgumentException} will be thrown.
      *
      * @param imageIndex the index of the image to get the dimensions for.
-     * @param inStream the {@link ImageInputStream} to use as an input
      * @param reader the {@link ImageReader} to decode the image dimensions.
      * @return a {@link Rectangle} that contains the dimensions for the image at index <code>
      *     imageIndex</code>

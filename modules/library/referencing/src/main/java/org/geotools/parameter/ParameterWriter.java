@@ -173,7 +173,7 @@ public class ParameterWriter extends FilterWriter {
      * Implementation of public {@code format} methods.
      *
      * @param name The group name, usually {@code descriptor.getCode().getName()}.
-     * @param descriptor The parameter descriptor. Should be equals to {@code
+     * @param group The parameter descriptor group. Should be equals to {@code
      *     values.getDescriptor()} if {@code values} is non null.
      * @param values The parameter values, or {@code null} if none.
      * @throws IOException if an error occured will writing to the stream.

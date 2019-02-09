@@ -203,7 +203,7 @@ public class FeatureEvent extends EventObject {
      * Constructs a new FeatureEvent.
      *
      * @param source The writer or feature store that fired the event
-     * @param eventType One of FEATURE_CHANGED, FEATURE_REMOVED or FEATURE_ADDED
+     * @param type One of FEATURE_CHANGED, FEATURE_REMOVED or FEATURE_ADDED
      * @param bounds The area modified by this change
      */
     @SuppressWarnings("rawtypes")
@@ -220,7 +220,7 @@ public class FeatureEvent extends EventObject {
     /**
      * Constructs a new FeatureEvent.
      *
-     * @param SimpleFeatureSource The DataStore that fired the event
+     * @param featureSource The DataStore that fired the event
      * @param eventType One of FEATURE_CHANGED, FEATURE_REMOVED or FEATURE_ADDED
      * @param bounds The area modified by this change
      * @deprecated Please use FeatureEvent( FeatureSource, Type, Envelope )

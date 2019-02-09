@@ -288,7 +288,7 @@ public abstract class AbstractGridFormat implements Format {
     /**
      * Tells me if this {@link Format} can read the provided <code>input</code>.
      *
-     * @param input The input object to test for suitability.
+     * @param source The input object to test for suitability.
      * @return True if this format can read this object, False otherwise.
      */
     public boolean accepts(Object source) {
@@ -298,7 +298,7 @@ public abstract class AbstractGridFormat implements Format {
     /**
      * Tells me if this {@link Format} can read the provided <code>input</code>.
      *
-     * @param input The input object to test for suitability.
+     * @param source The input object to test for suitability.
      * @param hints {@link Hints} to control the accepts internal machinery.
      * @return True if this format can read this object, False otherwise.
      */

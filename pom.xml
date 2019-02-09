@@ -127,6 +127,7 @@
     <pmd.skip>false</pmd.skip>
     <spotbugs.skip>false</spotbugs.skip>
     <pmd.version>6.11.0</pmd.version>
+    <checkstyle.skip>false</checkstyle.skip>
     <jackson2.version>2.9.7</jackson2.version>
   </properties>
 
@@ -379,7 +380,33 @@
         </plugins>
       </build>
     </profile>
-
+    
+    <profile>
+      <id>checkstyle</id>
+      <build>
+        <plugins>
+           <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-checkstyle-plugin</artifactId>
+              <version>3.0.0</version>
+              <configuration>
+                    <logViolationsToConsole>true</logViolationsToConsole>
+                    <!-- ignore generated classes, e.g., javacc ones -->
+                    <excludes>**/generated/**/*</excludes>
+                    <skip>${checkstyle.skip}</skip>
+                    <configLocation>${geotoolsBaseDir}/checkstyle.xml</configLocation>
+                  </configuration>
+              <executions>
+                <execution>
+                  <goals>
+                    <goal>check</goal>
+                  </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>  
+    </profile>
 </profiles>
 
 

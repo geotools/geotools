@@ -1,14 +1,3 @@
-package org.geotools.data.geojson;
-
-import java.io.IOException;
-import java.util.NoSuchElementException;
-import org.geotools.data.FeatureReader;
-import org.geotools.data.Query;
-import org.geotools.data.store.ContentState;
-import org.geotools.feature.FeatureIterator;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
-
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
@@ -25,6 +14,17 @@ import org.opengis.feature.simple.SimpleFeatureType;
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
+package org.geotools.data.geojson;
+
+import java.io.IOException;
+import java.util.NoSuchElementException;
+import org.geotools.data.FeatureReader;
+import org.geotools.data.Query;
+import org.geotools.data.store.ContentState;
+import org.geotools.feature.FeatureIterator;
+import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.feature.simple.SimpleFeatureType;
+
 public class GeoJSONFeatureReader implements FeatureReader<SimpleFeatureType, SimpleFeature> {
 
     private ContentState state;

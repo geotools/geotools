@@ -163,44 +163,22 @@ public class SdeRow {
         }
     }
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @param index DOCUMENT ME!
-     * @return DOCUMENT ME!
-     * @throws IOException DOCUMENT ME!
-     */
+    /** */
     public Object getObject(int index) throws IOException {
         return values[index];
     }
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @return DOCUMENT ME!
-     */
+    /** */
     public Object[] getAll() {
         return values;
     }
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @param index DOCUMENT ME!
-     * @return DOCUMENT ME!
-     * @throws IOException DOCUMENT ME!
-     */
+    /** */
     public Long getLong(int index) throws IOException {
         return (Long) getObject(index);
     }
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @param index DOCUMENT ME!
-     * @return DOCUMENT ME!
-     * @throws IOException DOCUMENT ME!
-     */
+    /** */
     public SeShape getShape(int index) throws IOException {
         return (SeShape) getObject(index);
     }

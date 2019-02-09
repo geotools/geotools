@@ -87,7 +87,7 @@ public class ECQL {
      * Parses the input string in ECQL format into a Filter, using the systems default FilterFactory
      * implementation.
      *
-     * @param ECQLPredicate a string containing a query predicate in ECQL format.
+     * @param ecqlPredicate a string containing a query predicate in ECQL format.
      * @return a {@link Filter} equivalent to the constraint specified in <code>ecqlPredicate</code>
      *     .
      */

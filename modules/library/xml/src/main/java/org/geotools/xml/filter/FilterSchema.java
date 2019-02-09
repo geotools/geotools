@@ -364,8 +364,6 @@ public class FilterSchema implements Schema {
 
     static class FilterAttribute extends AttributeGT {
         /**
-         * DOCUMENT ME!
-         *
          * @param name
          * @param type
          */
@@ -374,8 +372,6 @@ public class FilterSchema implements Schema {
         }
 
         /**
-         * DOCUMENT ME!
-         *
          * @param name
          * @param type
          * @param use
@@ -385,8 +381,6 @@ public class FilterSchema implements Schema {
         }
 
         /**
-         * DOCUMENT ME!
-         *
          * @param name
          * @param type
          * @param use

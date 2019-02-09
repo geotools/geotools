@@ -21,11 +21,7 @@ import org.geotools.xml.schema.Any;
 import org.geotools.xml.schema.Element;
 import org.geotools.xml.schema.ElementGrouping;
 
-/**
- * DOCUMENT ME!
- *
- * @author dzwiers
- */
+/** @author dzwiers */
 public class AnyGT implements Any {
     private String id = null;
     private int min = 1;

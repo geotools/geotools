@@ -106,8 +106,8 @@ public class SLDColorMapBuilder {
      * <p>In case one would want to unset the default color, he should simply call this method with
      * a <code>null</code> value.
      *
-     * @param the default {@link Color} to use when a value falls outside the provided color map
-     *     elements.
+     * @param defaultColor The default {@link Color} to use when a value falls outside the provided
+     *     color map elements.
      * @uml.property name="gapsColor"
      */
     public void setGapsColor(final Color defaultColor) {

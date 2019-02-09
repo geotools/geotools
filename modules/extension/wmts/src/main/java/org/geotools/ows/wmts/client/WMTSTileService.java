@@ -91,11 +91,11 @@ public class WMTSTileService extends TileService {
     /**
      * create a service directly with out parsing the capabilties again.
      *
-     * @param requestURL - where to ask for tiles
+     * @param templateURL - where to ask for tiles
      * @param type - KVP or REST
-     * @param layerName - name of the layer to request
+     * @param layer - the layer to request
      * @param styleName - name of the style to use?
-     * @param tileMatrixSetName - matrixset name
+     * @param tileMatrixSet - the tile matrix set to use
      */
     public WMTSTileService(
             String templateURL,

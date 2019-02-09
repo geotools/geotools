@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (c) 2014 - 2015 Open Source Geospatial Foundation - all rights reserved
+ *    (C) 2014 - 2015, Open Source Geospatial Foundation (OSGeo)
  *    (c) 2001 - 2013 OpenPlans
  *
  *    This library is free software; you can redistribute it and/or

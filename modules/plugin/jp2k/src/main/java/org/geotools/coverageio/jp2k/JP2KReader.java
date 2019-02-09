@@ -184,7 +184,7 @@ public final class JP2KReader extends AbstractGridCoverage2DReader implements Gr
         // Additional settings due to "final" methods getOriginalXXX
     }
 
-    /** @param nativeEnvelope the nativeEnvelope to set */
+    /** @param coverageEnvelope the envelope to set */
     protected void setCoverageEnvelope(GeneralEnvelope coverageEnvelope) {
         this.nativeEnvelope = coverageEnvelope;
     }
@@ -194,7 +194,7 @@ public final class JP2KReader extends AbstractGridCoverage2DReader implements Gr
         return nativeEnvelope;
     }
 
-    /** @param nativeGridRange the nativeGridRange to set */
+    /** @param coverageGridRange the coverage grid range to set */
     protected void setCoverageGridRange(GridEnvelope2D coverageGridRange) {
         this.nativeGridRange = coverageGridRange;
     }

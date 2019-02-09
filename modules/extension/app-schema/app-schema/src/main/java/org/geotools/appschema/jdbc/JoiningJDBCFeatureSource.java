@@ -387,10 +387,8 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
      *
      * @param featureType the feature type that the query must return (may contain less attributes
      *     than the native one)
-     * @param attributes the properties queried, or {@link Query#ALL_NAMES} to gather all of them
      * @param query the query to be run. The type name and property will be ignored, as they are
      *     supposed to have been already embedded into the provided feature type
-     * @param cx The database connection to be used to create the prepared statement
      * @throws SQLException
      * @throws IOException
      * @throws FilterToSQLException
@@ -987,7 +985,6 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
      *
      * @param featureType the feature type that the query must return (may contain less attributes
      *     than the native one)
-     * @param attributes the properties queried, or {@link Query#ALL_NAMES} to gather all of them
      * @param query the query to be run. The type name and property will be ignored, as they are
      *     supposed to have been already embedded into the provided feature type
      * @param cx The database connection to be used to create the prepared statement

@@ -38,7 +38,6 @@ public interface MultiLevelROIProvider {
     /**
      * Returns the footprint file used to load the footprint, or none if there was no file involved
      *
-     * @param pathNoExtension The base path plus the file name, but no extension
      * @return The files used to load the footprints, or an empty list otherwise
      */
     default List<File> getFootprintFiles(SimpleFeature sf) throws IOException {

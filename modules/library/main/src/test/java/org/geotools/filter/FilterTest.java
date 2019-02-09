@@ -106,11 +106,7 @@ public class FilterTest extends TestCase {
     private Calendar calTime;
     private Calendar calDate;
 
-    /**
-     * Constructor with test name.
-     *
-     * @param testName DOCUMENT ME!
-     */
+    /** Constructor with test name. */
     public FilterTest(String testName) {
         super(testName);
 
@@ -119,11 +115,7 @@ public class FilterTest extends TestCase {
         // LOGGER.getLoggerRepository().setThreshold(Level.INFO);
     }
 
-    /**
-     * Main for test runner.
-     *
-     * @param args DOCUMENT ME!
-     */
+    /** Main for test runner. */
     public static void main(String[] args) {
         junit.textui.TestRunner.run(suite());
     }
@@ -335,11 +327,6 @@ public class FilterTest extends TestCase {
     /**
      * Helper class for the integer compare operators.
      *
-     * @param testAttribute DOCUMENT ME!
-     * @param filterType DOCUMENT ME!
-     * @param test1 DOCUMENT ME!
-     * @param test2 DOCUMENT ME!
-     * @param test3 DOCUMENT ME!
      * @throws IllegalFilterException If the constructed filter is not valid.
      */
     public void compareNumberRunner(
@@ -432,11 +419,6 @@ public class FilterTest extends TestCase {
     /**
      * Helper class for the integer compare operators.
      *
-     * @param testAttribute DOCUMENT ME!
-     * @param filterType DOCUMENT ME!
-     * @param test1 DOCUMENT ME!
-     * @param test2 DOCUMENT ME!
-     * @param test3 DOCUMENT ME!
      * @throws IllegalFilterException If the constructed filter is not valid.
      */
     public void compareSqlDateRunner(
@@ -506,11 +488,6 @@ public class FilterTest extends TestCase {
     /**
      * Helper class for the integer compare operators.
      *
-     * @param testAttribute DOCUMENT ME!
-     * @param filterType DOCUMENT ME!
-     * @param test1 DOCUMENT ME!
-     * @param test2 DOCUMENT ME!
-     * @param test3 DOCUMENT ME!
      * @throws IllegalFilterException If the constructed filter is not valid.
      */
     public void compareSqlTimeRunner(

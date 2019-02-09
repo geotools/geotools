@@ -39,7 +39,6 @@ public class SingleFeatureTypeAttributeIterator implements NodeIterator {
      * Creates the iteartor.
      *
      * @param pointer The pointer to the feature.
-     * @param index The index of the property to iterate over
      */
     public SingleFeatureTypeAttributeIterator(
             NodePointer pointer, ComplexType featureType, Name name) {

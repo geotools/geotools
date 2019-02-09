@@ -84,9 +84,6 @@ public class Collection_SumFunction extends FunctionExpressionImpl {
      * featureMember content.
      *
      * <p>To refer to all 'X': <code>featureMember/asterisk/X</code>
-     *
-     * @param args DOCUMENT ME!
-     * @throws IllegalArgumentException DOCUMENT ME!
      */
     public void setParameters(List args) {
         // if we see "featureMembers/*/ATTRIBUTE" change to "ATTRIBUTE"

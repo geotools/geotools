@@ -443,8 +443,6 @@ public class GML {
      * </ul>
      *
      * @param simpleFeatureType To be encoded as an XSD document
-     * @param prefix Prefix to use for for target namespace
-     * @param namespace Target namespace
      */
     public void encode(OutputStream out, SimpleFeatureType simpleFeatureType) throws IOException {
         XSDSchema xsd = xsd(simpleFeatureType);
@@ -681,8 +679,8 @@ public class GML {
      * docuemnt.
      *
      * @param in InputStream used as a source of SimpleFeature content
-     * @param xpath Optional xpath used to indicate simple feature element; the schema will be
-     *     checked for an entry that extends AbstratFeatureType
+     * @param elementName The simple feature element; the schema will be checked for an entry that
+     *     extends AbstratFeatureType
      * @return
      * @throws SAXException
      * @throws ParserConfigurationException
@@ -934,7 +932,7 @@ public class GML {
      *
      * @param xsd The XSDSchema being worked on
      * @param type ComplexType to capture as an encoding, usually a SimpleFeatureType
-     * @param L_TYPE definition to use as the base type, or null
+     * @param BASE_TYPE definition to use as the base type, or null
      * @return XSDComplexTypeDefinition generated for the provided type
      */
     @SuppressWarnings("unchecked")

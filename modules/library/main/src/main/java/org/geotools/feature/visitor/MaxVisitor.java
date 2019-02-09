@@ -108,7 +108,6 @@ public class MaxVisitor implements FeatureCalc, FeatureAttributeVisitor {
      * Get the max value.
      *
      * @return Max value
-     * @throws IllegalStateException DOCUMENT ME!
      */
     public Comparable getMax() {
         if (!visited) {

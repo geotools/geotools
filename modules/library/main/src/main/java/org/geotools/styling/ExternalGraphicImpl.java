@@ -35,8 +35,6 @@ import org.opengis.style.StyleVisitor;
 import org.opengis.util.Cloneable;
 
 /**
- * DOCUMENT ME!
- *
  * @author Ian Turton, CCG
  * @version $Id$
  */

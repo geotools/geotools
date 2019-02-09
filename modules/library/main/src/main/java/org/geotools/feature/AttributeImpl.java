@@ -80,7 +80,7 @@ public class AttributeImpl extends PropertyImpl implements Attribute {
     /**
      * Override of equals.
      *
-     * @param other the object to be tested for equality.
+     * @param obj the object to be tested for equality.
      * @return whether other is equal to this attribute Type.
      */
     public boolean equals(Object obj) {

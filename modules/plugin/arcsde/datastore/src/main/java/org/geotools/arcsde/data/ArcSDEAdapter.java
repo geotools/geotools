@@ -764,7 +764,7 @@ public class ArcSDEAdapter {
      * Returns the numeric identifier of a FeatureId, given by the full qualified name of the
      * featureclass prepended to the ArcSDE feature id. ej: SDE.SDE.SOME_LAYER.1
      *
-     * @param id a geotools FeatureID
+     * @param fid a geotools FeatureID
      * @return an ArcSDE feature ID
      * @throws IllegalArgumentException If the given string is not properly formatted
      *     [anystring].[long value]

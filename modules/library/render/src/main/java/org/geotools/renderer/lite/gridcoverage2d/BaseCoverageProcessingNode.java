@@ -547,7 +547,7 @@ public abstract class BaseCoverageProcessingNode implements CoverageProcessingNo
      * IllegalArgumentException} exception.
      *
      * @param source the object to check.
-     * @param node the operation we are trying to run.
+     * @param name the operation we are trying to run.
      */
     protected static void ensureSourceNotNull(final Object source, final String name) {
         if (source == null)
@@ -560,7 +560,7 @@ public abstract class BaseCoverageProcessingNode implements CoverageProcessingNo
      * IllegalArgumentException} exception.
      *
      * @param source the object to check.
-     * @param node the operation we are trying to run.
+     * @param name the operation we are trying to run.
      */
     protected static void ensureNotNull(final Object source, final String name) {
         if (source == null)

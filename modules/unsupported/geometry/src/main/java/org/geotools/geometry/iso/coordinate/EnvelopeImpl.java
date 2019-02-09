@@ -62,11 +62,10 @@ public class EnvelopeImpl implements Envelope, Serializable {
         this.setValues(p0, p1);
     }
 
-    /** @param p0 */
     public EnvelopeImpl(Position position) {
         this(position.getDirectPosition());
     }
-    /** @param p0 */
+
     public EnvelopeImpl(DirectPosition position) {
         this.pMin = new DirectPositionImpl(position);
         this.pMax = new DirectPositionImpl(position);

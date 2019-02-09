@@ -210,7 +210,6 @@ public class DefaultRepository implements Repository {
      * <p>Description ...
      *
      * @see org.geotools.data.Catalog#registerDataStore(org.geotools.data.DataStore)
-     * @param String namespace Namespace to
      * @param dataStore
      * @throws IOException
      */

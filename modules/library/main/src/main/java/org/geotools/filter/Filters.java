@@ -472,26 +472,26 @@ public class Filters {
      * </code></pre>
      *
      * @param expr This only really works for down casting literals to a value
-     * @param Target type
+     * @param type Target type
      * @return expr smunched into indicated type
      * @deprecated This is not a good idea; use expr.evaulate( null, TYPE )
      */
-    public static <T> T asType(Expression expr, Class<T> TYPE) {
+    public static <T> T asType(Expression expr, Class<T> type) {
         if (expr == null) {
             return null;
         }
         if (STRICT) {
-            return expr.evaluate(null, TYPE);
+            return expr.evaluate(null, type);
         } else if (expr instanceof Literal) {
             Literal literal = (Literal) expr;
-            return (T) literal.evaluate(null, TYPE);
+            return (T) literal.evaluate(null, type);
         } else if (expr instanceof Function) {
             Function function = (Function) expr;
             List<Expression> params = function.getParameters();
             if (params != null && params.size() != 0) {
                 for (int i = 0; i < params.size(); i++) {
                     Expression e = (Expression) params.get(i);
-                    T value = asType(e, TYPE);
+                    T value = asType(e, type);
 
                     if (value != null) {
                         return value;
@@ -500,9 +500,9 @@ public class Filters {
             }
         } else {
             try { // this is a bad idea, not expected to work much
-                T value = expr.evaluate(null, TYPE);
+                T value = expr.evaluate(null, type);
 
-                if (TYPE.isInstance(value)) {
+                if (type.isInstance(value)) {
                     return value;
                 }
             } catch (NullPointerException expected) {
@@ -945,7 +945,7 @@ public class Filters {
      * attributeNames( filter ).contains( name )</code>
      *
      * @param filter
-     * @param property - name of the property to look for
+     * @param propertyName - name of the property to look for
      * @return
      */
     static boolean uses(Filter filter, final String propertyName) {
@@ -1111,7 +1111,7 @@ public class Filters {
      *
      * @param filter
      * @param filterType - class of the filter to look for
-     * @param property - name of the property to look for
+     * @param propertyName - name of the property to look for
      * @return
      */
     public static <T extends Filter> T search(

@@ -36,8 +36,8 @@ import org.opengis.feature.type.AttributeDescriptor;
 public class GeoJSONFeatureSource extends ContentFeatureSource {
     private static final Logger LOGGER = Logging.getLogger(GeoJSONFeatureSource.class);
 
-    private FeatureCollection<?, ?> collection = null;
-    private SimpleFeatureType schema = null;
+    private FeatureCollection<SimpleFeatureType, SimpleFeature> collection;
+    private SimpleFeatureType schema;
 
     public GeoJSONFeatureSource(ContentEntry entry, Query query) {
         super(entry, query);
@@ -76,7 +76,7 @@ public class GeoJSONFeatureSource extends ContentFeatureSource {
      * @return
      * @throws IOException
      */
-    private FeatureCollection<?, ?> fetchFeatures() throws IOException {
+    private FeatureCollection<SimpleFeatureType, SimpleFeature> fetchFeatures() throws IOException {
         // Ideally we would cache the features here but then things go badly when using transactions
         LOGGER.fine("fetching reader from datastore");
         GeoJSONReader reader = getDataStore().read();

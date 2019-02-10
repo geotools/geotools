@@ -18,10 +18,10 @@ package org.geotools.data.geojson;
  */
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.NoSuchElementException;
 import java.util.logging.Logger;
@@ -56,8 +56,8 @@ public class GeoJSONFeatureWriter implements FeatureWriter<SimpleFeatureType, Si
 
     public GeoJSONFeatureWriter(ContentState state, Query query) throws IOException {
         this.state = state;
-        String typeName = query.getTypeName();
-        URL url = ((GeoJSONDataStore) state.getEntry().getDataStore()).getUrl();
+        final String typeName = query.getTypeName();
+        final URL url = ((GeoJSONDataStore) state.getEntry().getDataStore()).getUrl();
         file = URLs.urlToFile(url);
         File directory = file.getParentFile();
         LOGGER.fine("Opening writer for " + url);
@@ -71,7 +71,8 @@ public class GeoJSONFeatureWriter implements FeatureWriter<SimpleFeatureType, Si
         this.temp =
                 File.createTempFile(typeName + System.currentTimeMillis(), ".geojson", directory);
         LOGGER.fine("Writing to " + temp.getAbsolutePath());
-        this.geoJSONWriter = new GeoJSONWriter(new FileOutputStream(this.temp));
+        this.geoJSONWriter =
+                new GeoJSONWriter(Files.newOutputStream(Paths.get(this.temp.getPath())));
         if (!file.exists()) {
             file.createNewFile();
         }

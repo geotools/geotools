@@ -142,9 +142,7 @@ class ChannelSelectionNode extends SubchainStyleVisitorCoverageProcessingAdapter
             if (sc != null
                     && ((sc.length == 1 && sc[0] != null)
                             || (sc.length == 3
-                                    && sc[0] != null
-                                    && sc[1] != null
-                                    && sc[2] != null))) {
+                                    && (sc[0] != null || sc[1] != null || sc[2] != null)))) {
                 // //
                 //
                 // Note that we can either select 1 (GRAY) or 3 (RGB) bands.
@@ -161,35 +159,43 @@ class ChannelSelectionNode extends SubchainStyleVisitorCoverageProcessingAdapter
                     if (LOGGER.isLoggable(Level.FINE))
                         LOGGER.fine("Channel " + i + " was " + channel.getChannelName());
 
-                    // //
-                    //
-                    // BAND SELECTION
+                    if (channel == null) {
+                        ZeroImageNode zero = new ZeroImageNode(getHints());
+                        zero.addSource(chainSource);
+                        subChainSink.addSource(zero);
+                        zero.addSink(subChainSink);
+                    } else {
 
-                    //
-                    // //
-                    final BandSelectionNode bandSelectionNode = new BandSelectionNode();
-                    bandSelectionNode.addSource(chainSource);
-                    bandSelectionNode.visit(channel);
+                        // //
+                        //
+                        // BAND SELECTION
 
-                    // //
-                    //
-                    // CONTRAST ENHANCEMENT
-                    //
-                    // //
-                    final ContrastEnhancementNode contrastenhancementNode =
-                            new ContrastEnhancementNode();
-                    contrastenhancementNode.addSource(bandSelectionNode);
-                    bandSelectionNode.addSink(contrastenhancementNode);
-                    contrastenhancementNode.visit(
-                            channel != null ? channel.getContrastEnhancement() : null);
+                        //
+                        // //
+                        final BandSelectionNode bandSelectionNode = new BandSelectionNode();
+                        bandSelectionNode.addSource(chainSource);
+                        bandSelectionNode.visit(channel);
 
-                    // //
-                    //
-                    // BAND MERGE
-                    //
-                    // //
-                    contrastenhancementNode.addSink(subChainSink);
-                    subChainSink.addSource(contrastenhancementNode);
+                        // //
+                        //
+                        // CONTRAST ENHANCEMENT
+                        //
+                        // //
+                        final ContrastEnhancementNode contrastenhancementNode =
+                                new ContrastEnhancementNode();
+                        contrastenhancementNode.addSource(bandSelectionNode);
+                        bandSelectionNode.addSink(contrastenhancementNode);
+                        contrastenhancementNode.visit(
+                                channel != null ? channel.getContrastEnhancement() : null);
+
+                        // //
+                        //
+                        // BAND MERGE
+                        //
+                        // //
+                        contrastenhancementNode.addSink(subChainSink);
+                        subChainSink.addSource(contrastenhancementNode);
+                    }
                 }
                 return;
             }

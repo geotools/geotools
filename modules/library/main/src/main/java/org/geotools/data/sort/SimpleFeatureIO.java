@@ -24,6 +24,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.RandomAccessFile;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
@@ -41,6 +43,9 @@ import org.opengis.feature.type.AttributeDescriptor;
  * @author Andrea Aime - GeoSolutions
  */
 public class SimpleFeatureIO {
+
+    public static final int MAX_BYTES_LENGTH = 65535;
+    public static final String BIG_STRING = "bigString";
 
     RandomAccessFile raf;
 
@@ -104,7 +109,26 @@ public class SimpleFeatureIO {
             } else if (binding == Double.class || binding == double.class) {
                 raf.writeDouble((Double) value);
             } else if (binding == String.class) {
-                raf.writeUTF((String) value);
+                if (isBigString(ad)) {
+                    // if attribute descriptor marked as Big String
+                    String strVal = (String) value;
+                    List<String> values = new ArrayList<>();
+                    // if bytes length is over the maximum allowed, calculate parts
+                    if (strVal.getBytes().length >= MAX_BYTES_LENGTH) {
+                        values.addAll(split(strVal, 32767));
+                    } else {
+                        values.add(strVal);
+                    }
+                    // write total parts
+                    raf.writeInt(values.size());
+                    // write every string chunk
+                    for (String evalue : values) {
+                        raf.writeUTF(evalue);
+                    }
+                } else {
+                    // normal string encoding
+                    raf.writeUTF((String) value);
+                }
             } else if (binding == java.sql.Date.class
                     || binding == java.sql.Time.class
                     || binding == java.sql.Timestamp.class
@@ -128,6 +152,13 @@ public class SimpleFeatureIO {
                 raf.write(bytes);
             }
         }
+    }
+
+    private boolean isBigString(AttributeDescriptor ad) {
+        return ad.getUserData() != null
+                && ad.getUserData().containsKey(BIG_STRING)
+                && ad.getUserData().get(BIG_STRING) instanceof Boolean
+                && ((Boolean) ad.getUserData().get(BIG_STRING));
     }
 
     /**
@@ -179,7 +210,18 @@ public class SimpleFeatureIO {
             } else if (binding == Double.class || binding == double.class) {
                 return raf.readDouble();
             } else if (binding == String.class) {
-                return raf.readUTF();
+                if (isBigString(ad)) {
+                    // read total parts
+                    int parts = raf.readInt();
+                    // read every part
+                    StringBuilder sb = new StringBuilder();
+                    for (int i = 0; i < parts; i++) {
+                        sb.append(raf.readUTF());
+                    }
+                    return sb.toString();
+                } else {
+                    return raf.readUTF();
+                }
             } else if (binding == java.sql.Date.class) {
                 return new java.sql.Date(raf.readLong());
             } else if (binding == java.sql.Time.class) {
@@ -199,17 +241,21 @@ public class SimpleFeatureIO {
                     throw new IOException("Failed to parse the geometry WKB", e);
                 }
             } else {
-                int length = raf.readInt();
-                byte[] buffer = new byte[length];
-                raf.read(buffer);
-                ByteArrayInputStream bis = new ByteArrayInputStream(buffer);
-                ObjectInputStream ois = new ObjectInputStream(bis);
-                try {
-                    return ois.readObject();
-                } catch (ClassNotFoundException e) {
-                    throw new IOException("Could not read back object", e);
-                }
+                return readObject();
             }
+        }
+    }
+
+    private Object readObject() throws IOException {
+        int length = raf.readInt();
+        byte[] buffer = new byte[length];
+        raf.read(buffer);
+        ByteArrayInputStream bis = new ByteArrayInputStream(buffer);
+        ObjectInputStream ois = new ObjectInputStream(bis);
+        try {
+            return ois.readObject();
+        } catch (ClassNotFoundException e) {
+            throw new IOException("Could not read back object", e);
         }
     }
 
@@ -267,5 +313,15 @@ public class SimpleFeatureIO {
     @Override
     public String toString() {
         return "SimpleFeatureIO [schema=" + schema + ", file=" + file + "]";
+    }
+
+    private Collection<String> split(String value, int charSize) {
+        List<String> strings = new ArrayList<String>();
+        int index = 0;
+        while (index < value.length()) {
+            strings.add(value.substring(index, Math.min(index + charSize, value.length())));
+            index += charSize;
+        }
+        return strings;
     }
 }

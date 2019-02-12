@@ -41,6 +41,8 @@ public class RulesHandler extends SldTransformHandler {
         } else if ("Abstract".equals(name)) {
             context.scalar("abstract");
             context.scalar(xml.getElementText());
+        } else if ("LegendGraphic".equals(name)) {
+            context.scalar("legend").push(new GraphicHandler());
         } else if (name.equals("MinScaleDenominator")) {
             minScale = xml.getElementText();
         } else if (name.equals("MaxScaleDenominator")) {

@@ -156,6 +156,52 @@ public class YsldEncodeCookbookTest {
     }
 
     @Test
+    public void testPointWithLegend() throws Exception {
+        // <UserStyle>
+        //   <Title>Simple Point With Legend Graphic</Title>
+        //   <FeatureTypeStyle>
+        //     <Rule>
+        //       <LegendGraphic>
+        //         <Graphic>
+        //           <ExternalGraphic>
+        //             <OnlineResource xlink:href="smileyface.png" />
+        //             <Format>image/png</Format>
+        //           </ExternalGraphic>
+        //           <Size>32</Size>
+        //         </Graphic>
+        //       </LegendGraphic>
+        //       <PointSymbolizer>
+        //         <Graphic>
+        //           <Mark>
+        //             <WellKnownName>circle</WellKnownName>
+        //             <Fill>
+        //               <CssParameter name="fill">#FF0000</CssParameter>
+        //             </Fill>
+        //           </Mark>
+        //           <Size>6</Size>
+        //         </Graphic>
+        //       </PointSymbolizer>
+        //     </Rule>
+        //   </FeatureTypeStyle>
+        // </UserStyle>
+        YamlMap style = encode("point", "legend.sld");
+        assertEquals("Simple Point With Legend Graphic", style.str("title"));
+
+        YamlMap rule = style.seq("feature-styles").map(0).seq("rules").map(0);
+
+        YamlMap eg = rule.map("legend").seq("symbols").map(0).map("external");
+        assertEquals("image/png", eg.str("format"));
+        assertEquals("smileyface.png", eg.str("url"));
+
+        YamlMap point = rule.seq("symbolizers").map(0).map("point");
+        assertEquals(6, point.integer("size").intValue());
+
+        YamlMap mark = point.seq("symbols").map(0).map("mark");
+        assertEquals("circle", mark.str("shape"));
+        assertThat(mark.get("fill-color"), isColor("FF0000"));
+    }
+
+    @Test
     public void testPointWithScale() throws Exception {
         //    <UserStyle>
         //      <Title>GeoServer SLD Cook Book: Zoom-based point</Title>

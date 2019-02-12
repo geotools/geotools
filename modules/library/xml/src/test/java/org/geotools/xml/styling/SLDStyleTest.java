@@ -1055,6 +1055,25 @@ public class SLDStyleTest extends TestCase {
                 options.get(FeatureTypeStyle.KEY_EVALUATION_MODE));
     }
 
+    public void testGreenBandSelection() throws Exception {
+        StyleFactory factory = CommonFactoryFinder.getStyleFactory(null);
+        java.net.URL surl = TestData.getResource(this, "greenChannelSelection.sld");
+        SLDParser stylereader = new SLDParser(factory, surl);
+
+        // basic checks
+        Style[] styles = stylereader.readXML();
+        assertEquals(1, styles.length);
+        assertEquals(1, styles[0].featureTypeStyles().size());
+        final FeatureTypeStyle fts = styles[0].featureTypeStyles().get(0);
+        assertEquals(1, fts.rules().size());
+        RasterSymbolizer symbolizer = (RasterSymbolizer) fts.rules().get(0).symbolizers().get(0);
+        final SelectedChannelType[] rgbChannels = symbolizer.getChannelSelection().getRGBChannels();
+        assertNotNull(rgbChannels);
+        assertNull(rgbChannels[0]);
+        assertNotNull(rgbChannels[1]);
+        assertNull(rgbChannels[2]);
+    }
+
     public void testMultipleFonts() throws Exception {
         StyleFactory factory = CommonFactoryFinder.getStyleFactory(null);
         java.net.URL surl = TestData.getResource(this, "multifont.sld");

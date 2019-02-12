@@ -2347,12 +2347,7 @@ public class ImageWorker {
         for (RenderedImage band : bands) {
             pb.addSource(band);
         }
-        Range[] newRange = new Range[bands.length + 1];
-        newRange[0] = nodata;
-        if (nodata2 != null) {
-            System.arraycopy(nodata2, 0, newRange, 1, nodata2.length);
-        }
-        pb.set(newRange, 0);
+        pb.set(nodata2, 0);
         if (isNoDataNeeded()) {
             if (background != null && background.length > 0) {
                 double dest = background[0];

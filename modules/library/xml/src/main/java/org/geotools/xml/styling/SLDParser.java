@@ -1504,9 +1504,12 @@ public class SLDParser {
 
     /** Internal parse method - made protected for unit testing */
     protected ChannelSelection parseChannelSelection(Node root) {
-        List<SelectedChannelType> channels = new ArrayList<SelectedChannelType>();
-
         NodeList children = root.getChildNodes();
+        boolean isGray = isGray(children);
+        List<SelectedChannelType> channels = new ArrayList<>();
+        for (int i = 0; i < (isGray ? 1 : 3); i++) {
+            channels.add(null);
+        }
         final int length = children.getLength();
         for (int i = 0; i < length; i++) {
             Node child = children.item(i);
@@ -1515,16 +1518,16 @@ public class SLDParser {
                 continue;
             }
             String childName = child.getLocalName();
-            if (childName == null) {
-                childName = child.getNodeName();
-            } else if (childName.equalsIgnoreCase("GrayChannel")) {
-                channels.add(parseSelectedChannel(child));
-            } else if (childName.equalsIgnoreCase("RedChannel")) {
-                channels.add(parseSelectedChannel(child));
-            } else if (childName.equalsIgnoreCase("GreenChannel")) {
-                channels.add(parseSelectedChannel(child));
-            } else if (childName.equalsIgnoreCase("BlueChannel")) {
-                channels.add(parseSelectedChannel(child));
+            if (childName != null) {
+                if (childName.equalsIgnoreCase("GrayChannel")) {
+                    channels.set(0, parseSelectedChannel(child));
+                } else if (childName.equalsIgnoreCase("RedChannel")) {
+                    channels.set(0, parseSelectedChannel(child));
+                } else if (childName.equalsIgnoreCase("GreenChannel")) {
+                    channels.set(1, parseSelectedChannel(child));
+                } else if (childName.equalsIgnoreCase("BlueChannel")) {
+                    channels.set(2, parseSelectedChannel(child));
+                }
             }
         }
 
@@ -1533,6 +1536,29 @@ public class SLDParser {
                         channels.toArray(new SelectedChannelType[channels.size()]));
 
         return dap;
+    }
+
+    private boolean isGray(NodeList children) {
+        final int length = children.getLength();
+        for (int i = 0; i < length; i++) {
+            Node child = children.item(i);
+
+            if ((child == null) || (child.getNodeType() != Node.ELEMENT_NODE)) {
+                continue;
+            }
+            String childName = child.getLocalName();
+            if (childName != null) {
+                if (childName.equalsIgnoreCase("GrayChannel")) {
+                    return true;
+                } else if (childName.equalsIgnoreCase("RedChannel")
+                        || childName.equalsIgnoreCase("GreenChannel")
+                        || childName.equalsIgnoreCase("BlueChannel")) {
+                    return false;
+                }
+            }
+        }
+
+        return false;
     }
 
     /** Internal parse method - made protected for unit testing */

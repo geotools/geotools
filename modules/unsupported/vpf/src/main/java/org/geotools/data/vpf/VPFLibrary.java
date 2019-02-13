@@ -327,17 +327,15 @@ public class VPFLibrary extends ContentDataStore {
      * @see java.lang.Object#toString()
      */
     public String toString() {
-        return "Dette er library : "
-                + libraryName
-                + " with extensions:\n"
-                + getXmin()
-                + " "
-                + getYmin()
-                + " - "
-                + getXmax()
-                + " "
-                + getYmax()
-                + "\n";
+        return String.format(
+                "{"
+                        + "library: \"%s\","
+                        + "xmin: %f,"
+                        + "xmax: %f,"
+                        + "ymin: %f,"
+                        + "ymax: %f"
+                        + "}",
+                libraryName, getXmin(), getXmax(), getYmin(), getYmax());
     }
     /** A map containing the tiles used by this library */
     private final Map tileMap = new HashMap();

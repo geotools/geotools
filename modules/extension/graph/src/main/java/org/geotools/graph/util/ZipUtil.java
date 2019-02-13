@@ -100,6 +100,9 @@ public class ZipUtil {
 
         while (entries.hasMoreElements()) {
             ZipEntry entry = (ZipEntry) entries.nextElement();
+			if(entry.getName().indexOf("..")!=-1){
+				System.out.println("非法的zip文件！");
+			}else{
             byte[] buffer = new byte[1024];
             int len;
 
@@ -112,6 +115,7 @@ public class ZipUtil {
             zipin.close();
             fileout.flush();
             fileout.close();
+			}
         }
     }
 }

@@ -135,8 +135,6 @@ public class WKBReader {
 
     private ByteOrderDataInStream dis = new ByteOrderDataInStream();
 
-    private double[] ordValues;
-
     public WKBReader() {
         this(new GeometryFactory());
     }
@@ -207,10 +205,6 @@ public class WKBReader {
         if (hasSRID) {
             SRID = dis.readInt();
         }
-
-        // only allocate ordValues buffer if necessary
-        if (ordValues == null || ordValues.length < inputDimension)
-            ordValues = new double[inputDimension];
 
         Geometry geom = readGeometry(geometryType);
         setSRID(geom, SRID);
@@ -413,9 +407,13 @@ public class WKBReader {
         int targetDim = seq.getDimension();
         if (targetDim > inputDimension) targetDim = inputDimension;
         for (int i = 0; i < size; i++) {
-            readCoordinate();
             for (int j = 0; j < targetDim; j++) {
-                seq.setOrdinate(i, j, ordValues[j]);
+                seq.setOrdinate(i, j, readCoordinate(j));
+            }
+            if (targetDim < inputDimension) {
+                for (int j = targetDim; j < inputDimension; j++) {
+                    readCoordinate(j);
+                }
             }
         }
         return seq;
@@ -446,13 +444,11 @@ public class WKBReader {
      * Reads a coordinate value with the specified dimensionality. Makes the X and Y ordinates
      * precise according to the precision model in use.
      */
-    private void readCoordinate() throws IOException {
-        for (int i = 0; i < inputDimension; i++) {
-            if (i <= 1) {
-                ordValues[i] = precisionModel.makePrecise(dis.readDouble());
-            } else {
-                ordValues[i] = dis.readDouble();
-            }
+    private double readCoordinate(int i) throws IOException {
+        if (i <= 1) {
+            return precisionModel.makePrecise(dis.readDouble());
+        } else {
+            return dis.readDouble();
         }
     }
 

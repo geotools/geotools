@@ -46,10 +46,14 @@ public class WKBAttributeIO {
 
     public WKBAttributeIO(GeometryFactory gf) {
         wkbr = new WKBReader(gf);
+        this.gf = gf;
     }
 
     public void setGeometryFactory(GeometryFactory gf) {
-        wkbr = new WKBReader(gf);
+        if (gf != this.gf) {
+            this.gf = gf;
+            wkbr = new WKBReader(gf);
+        }
     }
 
     /**

@@ -9,6 +9,7 @@ import java.util.logging.Logger;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.filter.LengthFunction;
 import org.geotools.filter.function.FilterFunction_strConcat;
 import org.geotools.filter.function.FilterFunction_strEndsWith;
 import org.geotools.filter.function.FilterFunction_strEqualsIgnoreCase;
@@ -150,6 +151,17 @@ public abstract class JDBCFunctionOnlineTest extends JDBCTestSupport {
         }
 
         Function func = ff.function("strLength", ff.property(aname("stringProperty")));
+        Filter filter = ff.equals(func, ff.literal(4));
+
+        assertFeatures(fs, filter, tname("ft1") + ".0");
+    }
+
+    public void testLength() throws IOException {
+        if (skipTests(LengthFunction.class)) {
+            return;
+        }
+
+        Function func = ff.function("length", ff.property(aname("stringProperty")));
         Filter filter = ff.equals(func, ff.literal(4));
 
         assertFeatures(fs, filter, tname("ft1") + ".0");

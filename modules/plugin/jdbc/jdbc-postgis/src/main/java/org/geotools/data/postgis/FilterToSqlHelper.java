@@ -31,6 +31,7 @@ import org.geotools.data.jdbc.FilterToSQL;
 import org.geotools.data.postgis.filter.FilterFunction_pgNearest;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.FilterCapabilities;
+import org.geotools.filter.LengthFunction;
 import org.geotools.filter.function.DateDifferenceFunction;
 import org.geotools.filter.function.FilterFunction_area;
 import org.geotools.filter.function.FilterFunction_strConcat;
@@ -157,6 +158,7 @@ class FilterToSqlHelper {
             caps.addType(FilterFunction_strEqualsIgnoreCase.class);
             caps.addType(FilterFunction_strIndexOf.class);
             caps.addType(FilterFunction_strLength.class);
+            caps.addType(LengthFunction.class);
             caps.addType(FilterFunction_strToLowerCase.class);
             caps.addType(FilterFunction_strToUpperCase.class);
             caps.addType(FilterFunction_strReplace.class);
@@ -502,7 +504,7 @@ class FilterToSqlHelper {
      * @return
      */
     public String getFunctionName(Function function) {
-        if (function instanceof FilterFunction_strLength) {
+        if (function instanceof FilterFunction_strLength || function instanceof LengthFunction) {
             return "char_length";
         } else if (function instanceof FilterFunction_strToLowerCase) {
             return "lower";

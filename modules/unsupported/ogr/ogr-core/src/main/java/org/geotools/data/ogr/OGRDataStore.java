@@ -19,6 +19,7 @@ package org.geotools.data.ogr;
 import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -272,7 +273,7 @@ public class OGRDataStore extends ContentDataStore {
 
             // create fields
             Map<String, String> nameMap = new HashMap<String, String>();
-            for (int i = 0, j = 0; i < schema.getAttributeCount(); i++) {
+            for (int i = 0; i < schema.getAttributeCount(); i++) {
                 AttributeDescriptor ad = schema.getDescriptor(i);
                 if (ad == schema.getGeometryDescriptor()) {
                     continue;
@@ -283,7 +284,6 @@ public class OGRDataStore extends ContentDataStore {
                 // the data source might have changed the name of the field, map them
                 String newName = ogr.FieldGetName(fieldDefinition);
                 nameMap.put(newName, ad.getLocalName());
-                j++;
             }
 
             // get back the feature definition
@@ -391,7 +391,7 @@ public class OGRDataStore extends ContentDataStore {
                             "Could not create OGR data source with driver "
                                     + ogrDriver
                                     + " and options "
-                                    + options);
+                                    + Arrays.toString(options));
             } else {
                 throw new DataSourceException(
                         "Driver not provided, and could not " + "open data source neither");

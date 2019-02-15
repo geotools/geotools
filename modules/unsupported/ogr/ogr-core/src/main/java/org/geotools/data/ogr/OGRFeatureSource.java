@@ -185,7 +185,6 @@ class OGRFeatureSource extends ContentFeatureSource {
         boolean cleanup = false;
         try {
             // grab the data source
-            String typeName = getEntry().getTypeName();
             if (dataSource == null) {
                 dataSource = getDataStore().openOGRDataSource(false);
                 cleanup = true;

@@ -31,7 +31,6 @@ import static org.gdal.ogr.ogrConstants.wkbLinearRing;
 import static org.gdal.ogr.ogrConstants.wkbMultiLineString;
 import static org.gdal.ogr.ogrConstants.wkbMultiLineString25D;
 import static org.gdal.ogr.ogrConstants.wkbMultiPoint;
-import static org.gdal.ogr.ogrConstants.wkbMultiPoint25D;
 import static org.gdal.ogr.ogrConstants.wkbMultiPolygon;
 import static org.gdal.ogr.ogrConstants.wkbMultiPolygon25D;
 import static org.gdal.ogr.ogrConstants.wkbNone;
@@ -684,15 +683,5 @@ public class JniOGR implements OGR {
     @Override
     public Object NewSpatialRef(String wkt) {
         return new SpatialReference(wkt);
-    }
-
-    public static void main(String[] args) throws Exception {
-        ogr.RegisterAll();
-        DataSource ds =
-                ogr.Open(
-                        "/Users/jdeolive/Projects/geotools/git/modules/library/sample-data/src/main/resources/org/geotools/test-data/shapes/statepop.shp");
-
-        double[] d = ds.GetLayer(0).GetExtent();
-        System.out.println(d);
     }
 }

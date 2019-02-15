@@ -252,7 +252,7 @@
 		<module>geojson</module>
 		<module>mbtiles</module>
 		<module>wfs-ng</module>
-
+		<module>ogr</module>
 	</modules>
 
 </project>

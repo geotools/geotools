@@ -128,6 +128,7 @@
     <spotbugs.skip>false</spotbugs.skip>
     <pmd.version>6.11.0</pmd.version>
     <checkstyle.skip>false</checkstyle.skip>
+    <qa>false</qa>
     <jackson2.version>2.9.7</jackson2.version>
   </properties>
 
@@ -227,7 +228,7 @@
             <version>3.2.1</version>
             <configuration>
               <failBuildOnCVSS>8</failBuildOnCVSS>
-              <suppressionFile>${geotoolsBaseDir}/dependency-check-suppression.xml</suppressionFile>
+              <suppressionFile>${geotoolsBaseDir}/build/qa/dependency-check-suppression.xml</suppressionFile>
             </configuration>
             <executions>
               <execution>
@@ -243,6 +244,11 @@
     
     <profile>
       <id>pmd</id>
+      <activation>
+        <property>
+          <name>qa</name>
+        </property>
+      </activation>
       <build>
         <plugins>
           <plugin>
@@ -274,7 +280,7 @@
             <configuration>
               <skip>${pmd.skip}</skip>
               <rulesets>
-                <ruleset>${geotoolsBaseDir}/pmd-ruleset.xml</ruleset>
+                <ruleset>${geotoolsBaseDir}/build/qa/pmd-ruleset.xml</ruleset>
               </rulesets>
               <failurePriority>3</failurePriority>
               <minimumPriority>3</minimumPriority>
@@ -299,6 +305,11 @@
     <!-- for those using JDK 11 -->
     <profile>
       <id>errorprone</id>
+      <activation>
+        <property>
+          <name>qa</name>
+        </property>
+      </activation>
       <build>
         <plugins>
           <plugin>
@@ -326,6 +337,11 @@
     <!-- using github.com/google/error-prone-javac is required when running on JDK 8 -->
     <profile>
       <id>errorprone8</id>
+      <activation>
+        <property>
+          <name>qa</name>
+        </property>
+      </activation>
       <build>
         <plugins>
           <plugin>
@@ -354,6 +370,11 @@
 
     <profile>
       <id>spotbugs</id>
+      <activation>
+        <property>
+          <name>qa</name>
+        </property>
+      </activation>
       <build>
         <plugins>
           <plugin>
@@ -366,7 +387,7 @@
               <xmlOutput>true</xmlOutput>
               <maxRank>10</maxRank>
               <skip>${spotbugs.skip}</skip>
-              <excludeFilterFile>${geotoolsBaseDir}/spotbugs-exclude.xml</excludeFilterFile>
+              <excludeFilterFile>${geotoolsBaseDir}/build/qa/spotbugs-exclude.xml</excludeFilterFile>
               <jvmArgs>-XX:+TieredCompilation -XX:TieredStopAtLevel=1</jvmArgs>
             </configuration>
             <executions>
@@ -383,6 +404,11 @@
     
     <profile>
       <id>checkstyle</id>
+      <activation>
+        <property>
+          <name>qa</name>
+        </property>
+      </activation>
       <build>
         <plugins>
            <plugin>
@@ -394,7 +420,7 @@
                     <!-- ignore generated classes, e.g., javacc ones -->
                     <excludes>**/generated/**/*</excludes>
                     <skip>${checkstyle.skip}</skip>
-                    <configLocation>${geotoolsBaseDir}/checkstyle.xml</configLocation>
+                    <configLocation>${geotoolsBaseDir}/build/qa/checkstyle.xml</configLocation>
                   </configuration>
               <executions>
                 <execution>

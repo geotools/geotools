@@ -309,6 +309,7 @@
         <property>
           <name>qa</name>
         </property>
+        <jdk>(1.8,)</jdk>
       </activation>
       <build>
         <plugins>
@@ -341,6 +342,7 @@
         <property>
           <name>qa</name>
         </property>
+        <jdk>1.8</jdk>
       </activation>
       <build>
         <plugins>

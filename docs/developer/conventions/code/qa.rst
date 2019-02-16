@@ -2,17 +2,15 @@ Automatic Quality Assurance checks
 ----------------------------------
 
 The GeoTools builds on Travis and `https://build.geoserver.org/ <https://build.geoserver.org/>`_ apply
-`PMD <https://pmd.github.io/>`_ and `Error Prone <https://errorprone.info/>`_ checks on the code base
-and will fail the build in case of rule violation.
+`PMD <https://pmd.github.io/>`_, `Error Prone <https://errorprone.info/>`_, `Spotbugs <https://spotbugs.github.io/>`_
+and `CheckStyle <http://checkstyle.sourceforge.net/>`_ on build servers and will fail the build in case of rule violation.
+Each tool is setup to run on high priority checks in order to limit the number of false positives,
+but some might still happen, the rest of this document shows how errors are reported and what
+can be done to selectively turn off the checks.
 
-In case you want to just run the build with the full checks locally, use the following command
-if you are using a JDK 8::
+In case you want to just run the build with the full checks locally, use the following command::
 
-    mvn clean install -Ppmd,errorprone8 -Dall
-
-or the following if using JDK 11::
-
-    mvn clean install -Ppmd,errorprone -Dall
+    mvn clean install -Dqa -Dall
 
 Add extra parameters as you see fit, like ``-T1C -nsu`` to speed up the build, or ``-Dfmt.skip=true -DskipTests``
 to avoid running tests and code formatting.
@@ -91,4 +89,17 @@ In case an invalid report is given, an annotation on the class/method/variable c
 
    @SuppressFBWarnings("NP_GUARANTEED_DEREF")
 
-or if it's a general one that should be ignored, the ``${geotoolsBaseDir}/spotbugs-exclude.xml`` file can be modified. 
+or if it's a general one that should be ignored, the ``${geotoolsBaseDir}/spotbugs-exclude.xml`` file can be modified.
+
+Checkstyle
+^^^^^^^^^^
+
+Google Format is already in use to keep the code formatted, so Checkstyle is used mainly to verify javadocs errors
+and presence of copyright headers, which none of the other tools can cover.
+
+Any failure to comply with the rules will show up as a compiler error in the build output, e.g.::
+
+        14610 [INFO] --- maven-checkstyle-plugin:3.0.0:check (default) @ gt-jdbc ---
+        15563 [INFO] There is 1 error reported by Checkstyle 6.18 with /home/aaime/devel/git-gt/build/qa/checkstyle.xml ruleset.
+        15572 [ERROR] src/main/java/org/geotools/jdbc/JDBCDataStore.java:[325,8] (javadoc) JavadocMethod: Unused @param tag for 'foobar'.
+

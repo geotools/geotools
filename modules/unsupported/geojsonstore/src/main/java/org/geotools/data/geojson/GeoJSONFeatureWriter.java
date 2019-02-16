@@ -57,13 +57,13 @@ public class GeoJSONFeatureWriter implements FeatureWriter<SimpleFeatureType, Si
     public GeoJSONFeatureWriter(ContentState state, Query query) throws IOException {
         this.state = state;
         final String typeName = query.getTypeName();
-        final URL url = ((GeoJSONDataStore) state.getEntry().getDataStore()).getUrl();
-        file = URLs.urlToFile(url);
+        GeoJSONFileState gState = ((GeoJSONDataStore) state.getEntry().getDataStore()).getState();
+        file = gState.getFile();
         File directory = file.getParentFile();
-        LOGGER.fine("Opening writer for " + url);
+        LOGGER.fine("Opening writer for " + file);
         if (directory == null) {
             throw new IOException(
-                    "Unable to find parent direcotry of file " + file + " from url " + url);
+                    "Unable to find parent direcotry of file " + file + " from url " + gState.getUrl());
         }
         if (!directory.canWrite()) {
             throw new IOException("Directory " + directory + " is not writable.");
@@ -145,6 +145,7 @@ public class GeoJSONFeatureWriter implements FeatureWriter<SimpleFeatureType, Si
         LOGGER.fine("Copyting " + temp + " to " + file);
         // now copy over the new file onto the old one
         Files.copy(temp.toPath(), file.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        temp.delete();
     }
 
     @Override

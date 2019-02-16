@@ -64,8 +64,6 @@ public class GeoJSONReader {
 
     private InputStream inputStream;
 
-    private URL url;
-
     private JsonParser parser;
 
     private JsonFactory factory;
@@ -82,18 +80,21 @@ public class GeoJSONReader {
 
     private boolean schemaChanged = false;
 
-    public GeoJSONReader(URL url) throws IOException {
-        this.url = url;
+    private GeoJSONFileState state;
+
+    public GeoJSONReader(GeoJSONFileState state) throws IOException {
+        this.state = state;
         factory = new JsonFactory();
-        parser = factory.createParser(url);
-        baseName = FilenameUtils.getBaseName(url.getPath());
+        parser = factory.createParser(state.getUrl());
+        baseName = FilenameUtils.getBaseName(state.getUrl().getPath());
     }
 
     public boolean isConnected() {
+        URL url;
         try {
-            inputStream = url.openStream();
+            inputStream = state.getUrl().openStream();
             if (inputStream == null) {
-                url = new URL(url.toExternalForm());
+                url = new URL(state.getUrl().toExternalForm());
                 inputStream = url.openStream();
             }
         } catch (IOException e) {
@@ -102,7 +103,7 @@ public class GeoJSONReader {
         }
         try {
             if (inputStream.available() == 0) {
-                url = new URL(url.toExternalForm());
+                url = new URL(state.getUrl().toExternalForm());
                 inputStream = url.openStream();
             }
 
@@ -117,7 +118,7 @@ public class GeoJSONReader {
 
     public FeatureCollection getFeatures() throws IOException {
         if (!isConnected()) {
-            throw new IOException("not connected to " + url.toExternalForm());
+            throw new IOException("not connected to " + state.getUrl().toExternalForm());
         }
         ObjectMapper mapper = new ObjectMapper();
         List<SimpleFeature> features = new ArrayList<>();
@@ -267,7 +268,7 @@ public class GeoJSONReader {
 
     public FeatureType getSchema() throws IOException {
         if (!isConnected()) {
-            throw new IOException("not connected to " + url.toExternalForm());
+            throw new IOException("not connected to " + state.getUrl().toExternalForm());
         }
         return schema;
     }
@@ -297,7 +298,7 @@ public class GeoJSONReader {
 
         public GeoJsonIterator(JsonParser parser) throws IOException {
             if (!isConnected()) {
-                throw new IOException("not connected to " + url.toExternalForm());
+                throw new IOException("not connected to " + state.getUrl().toExternalForm());
             }
             this.parser = parser;
             builder = null;

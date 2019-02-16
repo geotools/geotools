@@ -38,20 +38,22 @@ import org.opengis.filter.Filter;
 
 public class GeoJSONDataStore extends org.geotools.data.store.ContentDataStore
         implements FileDataStore {
-    URL url;
+    
 
     SimpleFeatureType schema;
 
     protected Name typeName;
 
-    public GeoJSONDataStore(URL url) throws IOException {
-        this.url = url;
+    private GeoJSONFileState state;
+
+    public GeoJSONDataStore(GeoJSONFileState state) throws IOException {
+        this.state = state;
     }
 
     @Override
     protected List<Name> createTypeNames() throws IOException {
 
-        String name = FilenameUtils.getBaseName(url.toExternalForm());
+        String name = FilenameUtils.getBaseName(state.getUrl().toExternalForm());
         // could hard code features in here?
         typeName = new NameImpl(name);
 
@@ -61,7 +63,7 @@ public class GeoJSONDataStore extends org.geotools.data.store.ContentDataStore
     GeoJSONReader read() throws IOException {
         GeoJSONReader reader = null;
 
-        reader = new GeoJSONReader(url);
+        reader = new GeoJSONReader(state);
 
         return reader;
     }
@@ -69,8 +71,8 @@ public class GeoJSONDataStore extends org.geotools.data.store.ContentDataStore
     @Override
     protected ContentFeatureSource createFeatureSource(ContentEntry entry) throws IOException {
         // We can only really write to local files
-        String scheme = url.getProtocol();
-        String host = url.getHost();
+        String scheme = state.getUrl().getProtocol();
+        String host = state.getUrl().getHost();
         if ("file".equalsIgnoreCase(scheme) && (host == null || host.isEmpty())) {
             GeoJSONFeatureStore geoJSONFeatureStore = new GeoJSONFeatureStore(entry, Query.ALL);
             return geoJSONFeatureStore;
@@ -87,7 +89,7 @@ public class GeoJSONDataStore extends org.geotools.data.store.ContentDataStore
 
     @Override
     public SimpleFeatureType getSchema() throws IOException {
-        // TODO Auto-generated method stub
+        
         return this.schema;
     }
 
@@ -98,13 +100,13 @@ public class GeoJSONDataStore extends org.geotools.data.store.ContentDataStore
 
     @Override
     public SimpleFeatureSource getFeatureSource() throws IOException {
-        // TODO Auto-generated method stub
+        
         return new GeoJSONFeatureSource(new ContentEntry(this, typeName), Query.ALL);
     }
 
     @Override
     public FeatureReader<SimpleFeatureType, SimpleFeature> getFeatureReader() throws IOException {
-        // TODO Auto-generated method stub
+        
         return new GeoJSONFeatureReader(
                 new ContentState(new ContentEntry(this, typeName)), Query.ALL);
     }
@@ -133,13 +135,10 @@ public class GeoJSONDataStore extends org.geotools.data.store.ContentDataStore
         return super.getFeatureWriterAppend(getTypeName(), transaction);
     }
 
-    /** @return the url */
-    protected URL getUrl() {
-        return url;
-    }
+    /**
+     * @return the state
+     */
+    public GeoJSONFileState getState() {
+    return state;}
 
-    /** @param url the url to set */
-    protected void setUrl(URL url) {
-        this.url = url;
-    }
 }

@@ -45,7 +45,8 @@ public class GeoJSONReaderTest {
     @Test
     public void testGetFeatures() throws IOException, ParseException {
         URL url = TestData.url(GeoJSONDataStore.class, "locations.json");
-        GeoJSONReader reader = new GeoJSONReader(url);
+        GeoJSONFileState state = new GeoJSONFileState(url);
+        GeoJSONReader reader = new GeoJSONReader(state);
         FeatureCollection features = reader.getFeatures();
         assertEquals("wrong number of features read", 9, features.size());
     }
@@ -53,7 +54,8 @@ public class GeoJSONReaderTest {
     @Test
     public void testGetChangingSchema() throws IOException, ParseException {
         URL url = TestData.url(GeoJSONDataStore.class, "locations-changable.json");
-        GeoJSONReader reader = new GeoJSONReader(url);
+        GeoJSONFileState state = new GeoJSONFileState(url);
+        GeoJSONReader reader = new GeoJSONReader(state);
         FeatureCollection features = reader.getFeatures();
         assertEquals("wrong number of features read", 9, features.size());
 

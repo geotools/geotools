@@ -40,7 +40,8 @@ public class GeoJSONDataStoreTest {
         URL url = TestData.url(GeoJSONDataStore.class, "ne_110m_admin_1_states_provinces.geojson");
         // URL url = new
         // URL("http://geojson.xyz/naturalearth-3.3.0/ne_110m_admin_1_states_provinces.geojson");
-        ds = new GeoJSONDataStore(url);
+        GeoJSONFileState state = new GeoJSONFileState(url);
+        ds = new GeoJSONDataStore(state);
     }
 
     @Test
@@ -85,7 +86,8 @@ public class GeoJSONDataStoreTest {
         URL url = TestData.url(GeoJSONDataStore.class, "featureCollection.json");
         // URL url = new
         // URL("http://geojson.xyz/naturalearth-3.3.0/ne_110m_admin_1_states_provinces.geojson");
-        GeoJSONDataStore fds = new GeoJSONDataStore(url);
+        GeoJSONFileState state = new GeoJSONFileState(url);
+        GeoJSONDataStore fds = new GeoJSONDataStore(state);
         String type = fds.getNames().get(0).getLocalPart();
         DefaultQuery query = new DefaultQuery(type);
         FeatureReader<SimpleFeatureType, SimpleFeature> reader = fds.getFeatureReader(query, null);
@@ -107,8 +109,8 @@ public class GeoJSONDataStoreTest {
     @Test
     public void testLocations() throws IOException {
         URL url = TestData.url(GeoJSONDataStore.class, "locations.json");
-
-        GeoJSONDataStore fds = new GeoJSONDataStore(url);
+        GeoJSONFileState state = new GeoJSONFileState(url);
+        GeoJSONDataStore fds = new GeoJSONDataStore(state);
         String type = fds.getNames().get(0).getLocalPart();
         // System.out.println(type);
         DefaultQuery query = new DefaultQuery(type);

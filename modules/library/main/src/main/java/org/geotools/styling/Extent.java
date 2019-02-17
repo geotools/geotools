@@ -41,31 +41,15 @@ package org.geotools.styling;
  * @author Justin Deoliveira, The Open Planning Project
  */
 public interface Extent {
-    /**
-     * DOCUMENT ME!
-     *
-     * @return The name of the extent.
-     */
+    /** @return The name of the extent. */
     String getName();
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @param name Thw new name of the extent.
-     */
+    /** @param name Thw new name of the extent. */
     void setName(String name);
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @return The value of the exent.
-     */
+    /** @return The value of the exent. */
     String getValue();
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @param value The new value of the exent.
-     */
+    /** @param value The new value of the exent. */
     void setValue(String value);
 }

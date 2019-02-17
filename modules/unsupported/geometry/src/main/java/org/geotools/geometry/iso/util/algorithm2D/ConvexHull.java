@@ -2,8 +2,8 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2001-2006  Vivid Solutions
  *    (C) 2001-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2001-2006  Vivid Solutions
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -434,7 +434,7 @@ public class ConvexHull {
     }
 
     /**
-     * @param vertices the vertices of a linear ring, which may or may not be flattened (i.e.
+     * @param coordinates the vertices of a linear ring, which may or may not be flattened (i.e.
      *     vertices collinear)
      * @return a 2-vertex <code>LineString</code> if the vertices are collinear; otherwise, a <code>
      *     Polygon</code> with unnecessary (collinear) vertices removed
@@ -472,7 +472,7 @@ public class ConvexHull {
     }
 
     /**
-     * @param vertices the vertices of a linear ring, which may or may not be flattened (i.e.
+     * @param original the vertices of a linear ring, which may or may not be flattened (i.e.
      *     vertices collinear)
      * @return the coordinates with unnecessary (collinear) vertices removed
      */

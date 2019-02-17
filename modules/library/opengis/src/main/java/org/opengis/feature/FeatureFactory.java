@@ -55,7 +55,7 @@ public interface FeatureFactory {
      *
      * <p><code>descriptor.getType()</code> must be an instance of {@link GeometryType}.
      *
-     * @param value The value of the attribute, may be <code>null</code>.
+     * @param geometry The value of the attribute, may be <code>null</code>.
      * @param descriptor The attribute descriptor.
      * @param id The id of the attribute, may be <code>null</code>.
      * @param crs The coordinate reference system of the attribute, may be <code>null</code>.
@@ -128,5 +128,5 @@ public interface FeatureFactory {
      * @param descriptor The attribute descriptor.
      * @param id The id of the feature.
      */
-    SimpleFeature createSimpleFeautre(Object[] array, AttributeDescriptor decsriptor, String id);
+    SimpleFeature createSimpleFeautre(Object[] array, AttributeDescriptor descriptor, String id);
 }

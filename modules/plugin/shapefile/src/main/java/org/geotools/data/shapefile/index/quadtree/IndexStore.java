@@ -18,11 +18,7 @@ package org.geotools.data.shapefile.index.quadtree;
 
 import org.geotools.data.shapefile.shp.IndexFile;
 
-/**
- * DOCUMENT ME!
- *
- * @author Tommaso Nolli
- */
+/** @author Tommaso Nolli */
 public interface IndexStore {
     /**
      * Stores a <code>QuadTree</code>

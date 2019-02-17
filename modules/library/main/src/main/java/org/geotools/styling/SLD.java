@@ -279,7 +279,7 @@ public class SLD {
     /**
      * Retrieve the opacity from a RasterSymbolizer object.
      *
-     * @param symbolizer raster symbolizer information.
+     * @param rasterSymbolizer raster symbolizer information.
      * @return double of the raster symbolizer's opacity, or 1.0 if unavailable.
      */
     public static double opacity(RasterSymbolizer rasterSymbolizer) {
@@ -1156,8 +1156,8 @@ public class SLD {
      * @param symbolizer Text symbolizer information.
      * @return the label's text, or null if unavailable.
      */
-    public static String textLabelString(TextSymbolizer sym) {
-        Expression exp = textLabel(sym);
+    public static String textLabelString(TextSymbolizer symbolizer) {
+        Expression exp = textLabel(symbolizer);
 
         return (exp == null) ? null : exp.toString();
     }
@@ -1877,8 +1877,7 @@ public class SLD {
     /**
      * Create a minimal style to render features of type {@code type}
      *
-     * @param store the data store containing the features
-     * @param typeName the feature type to create the style for
+     * @param type the feature type to create the style for
      * @param color single color to use for all components of the Style
      * @return a new Style instance
      * @throws java.io.IOException if the data store cannot be accessed

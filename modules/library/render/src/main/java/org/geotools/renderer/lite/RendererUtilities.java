@@ -486,7 +486,7 @@ public final class RendererUtilities {
      * This method performs the computation using the methods suggested by the OGC SLD
      * specification, page 26.
      *
-     * @param CRS the coordinate reference system. Used to check if we are operating in degrees or
+     * @param crs the coordinate reference system. Used to check if we are operating in degrees or
      *     meters.
      * @param worldToScreen the transformation mapping world coordinates to screen coordinates.
      *     Might specify a rotation in addition to translation and scaling.

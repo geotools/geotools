@@ -22,8 +22,6 @@ import java.util.Map;
 import org.geotools.coverage.grid.io.GridFormatFactorySpi;
 
 /**
- * DOCUMENT ME!
- *
  * @author rgould TODO To change the template for this generated type comment go to Window -
  *     Preferences - Java - Code Style - Code Templates
  */

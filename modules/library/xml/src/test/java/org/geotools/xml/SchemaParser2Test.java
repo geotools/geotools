@@ -24,11 +24,7 @@ import junit.framework.TestCase;
 import org.geotools.TestData;
 import org.geotools.xml.schema.Schema;
 
-/**
- * DOCUMENT ME! @
- *
- * @author dzwiers www.refractions.net
- */
+/** @author dzwiers www.refractions.net */
 public class SchemaParser2Test extends TestCase {
     //	public void testMail(){
     //		runit("","test/mails.xsd");

@@ -40,7 +40,6 @@ public class MaxFeatureReader<T extends FeatureType, F extends Feature>
      * Creates a new instance of MaxFeatureReader
      *
      * @param featureReader FeatureReader being maxed
-     * @param maxFeatures DOCUMENT ME!
      */
     public MaxFeatureReader(FeatureReader<T, F> featureReader, int maxFeatures) {
         this.featureReader = featureReader;

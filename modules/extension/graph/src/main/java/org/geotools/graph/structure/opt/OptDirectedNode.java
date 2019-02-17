@@ -308,7 +308,7 @@ public class OptDirectedNode extends OptGraphable implements DirectedNode {
      * to the object stream as well. Since the edge list is not written out, and the node does not
      * store its degree explicitly, it must be written to the output stream.
      *
-     * @param in Object output stream containing serialized objects.
+     * @param out Object output stream containing serialized objects.
      * @throws IOException
      * @throws ClassNotFoundException
      */

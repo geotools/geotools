@@ -229,7 +229,7 @@ public interface StyleVisitor {
     /**
      * Called when accept is called on a raster {@link OverlapBehavior} element
      *
-     * @param cs the {@link OverlapBehavior} to visit.
+     * @param ob the {@link OverlapBehavior} to visit.
      */
     @SuppressWarnings("deprecation")
     void visit(OverlapBehavior ob);
@@ -237,14 +237,14 @@ public interface StyleVisitor {
     /**
      * Called when accept is called on a raster {@link SelectedChannelType} element
      *
-     * @param cs the {@link SelectedChannelType} to visit.
+     * @param sct the {@link SelectedChannelType} to visit.
      */
     void visit(SelectedChannelType sct);
 
     /**
      * Called when accept is called on a raster {@link ShadedRelief} element
      *
-     * @param cs the {@link ShadedRelief} to visit.
+     * @param sr the {@link ShadedRelief} to visit.
      */
     void visit(ShadedRelief sr);
 }

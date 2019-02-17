@@ -50,7 +50,6 @@ public class ComplexFeatureTypeImpl extends UniqueNameFeatureTypeImpl {
      * @param restrictions List of restrictions
      * @param superType Super type
      * @param description Feature description
-     * @param featureLink System attribute used to link between features
      */
     public ComplexFeatureTypeImpl(
             Name name,

@@ -109,7 +109,7 @@ public abstract class OGRDataStoreFactory implements DataStoreFactorySpi {
      *
      * @param params
      * @throws IOException
-     * @throws IOException DOCUMENT ME!
+
      * @throws UnsupportedOperationException
      */
     public DataStore createNewDataStore(Map params) throws IOException {

@@ -928,7 +928,6 @@ public class DataUtilities {
      * @param features Array of features
      * @return FeatureReader<SimpleFeatureType, SimpleFeature> spaning provided feature array
      * @throws IOException If provided features Are null or empty
-     * @throws NoSuchElementException DOCUMENT ME!
      */
     public static FeatureReader<SimpleFeatureType, SimpleFeature> reader(
             final SimpleFeature[] features) throws IOException {
@@ -1136,7 +1135,7 @@ public class DataUtilities {
      *
      * <p>Often used when gathering a SimpleFeatureCollection into memory.
      *
-     * @param SimpleFeatureCollection the features to add to a new feature collection.
+     * @param featureCollection the features to add to a new feature collection.
      * @return FeatureCollection
      */
     public static DefaultFeatureCollection collection(
@@ -2359,8 +2358,6 @@ public class DataUtilities {
      * </ul>
      *
      * @param firstQuery Query against this DataStore
-     * @param secondQuery DOCUMENT ME!
-     * @param handle DOCUMENT ME!
      * @return Query restricted to the limits of definitionQuery
      * @throws NullPointerException if some of the queries is null
      * @throws IllegalArgumentException if the type names of both queries do not match
@@ -2526,7 +2523,7 @@ public class DataUtilities {
      * list, and all mandatory (minoccurs > 0) added.
      *
      * @param type feature type
-     * @param propNames given list of properties
+     * @param oldProps given list of properties
      * @return list of properties including all mandatory properties
      * @throws IOException
      */
@@ -2774,9 +2771,6 @@ public class DataUtilities {
      * <p>This method is intended to assist FeatureCollection implementors, and used to verify
      * test-case results. Client code should always call {@link
      * FeatureCollection#accepts(FeatureVisitor, ProgressListener)}
-     *
-     * @param collection
-     * @return bounds of features in feature collection
      */
     public static void visit(
             FeatureCollection<?, ?> collection, FeatureVisitor visitor, ProgressListener progress)
@@ -2870,7 +2864,7 @@ public class DataUtilities {
      * followed by the separator char if missing ({@code '/'} On UNIX systems; {@code '\\} on
      * Microsoft Windows systems.
      *
-     * @param directoryPath the input directory path. Must not be null.
+     * @param file the input file. Must not be null.
      * @return the re-formatted directory path.
      * @throws IllegalArgumentException in case the specified path doesn't rely on a
      *     existing/readable directory.

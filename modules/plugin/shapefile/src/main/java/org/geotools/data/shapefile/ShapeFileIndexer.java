@@ -133,12 +133,10 @@ class ShapeFileIndexer implements FileWriter {
      * indexing; in this case <b>zero</b> is reurned as result of the indexing process.
      *
      * @param verbose enable/disable printing of dots every 500 indexed records
-     * @param listener DOCUMENT ME!
      * @return The number of indexed records (or zero)
      * @throws MalformedURLException
      * @throws IOException
      * @throws TreeException
-     * @throws StoreException DOCUMENT ME!
      * @throws LockTimeoutException
      */
     public int index(boolean verbose, ProgressListener listener)
@@ -390,20 +388,12 @@ class ShapeFileIndexer implements FileWriter {
         max = i;
     }
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @param shpFiles
-     */
+    /** @param shpFiles */
     public void setShapeFileName(ShpFiles shpFiles) {
         this.shpFiles = shpFiles;
     }
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @param byteOrder The byteOrder to set.
-     */
+    /** @param byteOrder The byteOrder to set. */
     public void setByteOrder(String byteOrder) {
         this.byteOrder = byteOrder;
     }

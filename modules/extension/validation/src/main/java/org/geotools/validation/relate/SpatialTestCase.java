@@ -37,9 +37,6 @@ import org.opengis.filter.FilterFactory;
  *     Created Apr 29, 2004<br>
  * @version <br>
  *     <b>Puropse:</b><br>
- *     <p>DOCUMENT ME!! <b>Description:</b><br>
- *     <p>DOCUMENT ME!! <b>Usage:</b><br>
- *     <p>DOCUMENT ME!!
  */
 public class SpatialTestCase extends TestCase {
     protected GeometryFactory gf;

@@ -58,7 +58,7 @@ import org.xml.sax.helpers.AttributesImpl;
  * @author dzwiers
  */
 public class DocumentWriter {
-    /** DOCUMENT ME! */
+
     public static final Logger logger =
             org.geotools.util.logging.Logging.getLogger(DocumentWriter.class);
 
@@ -271,14 +271,7 @@ public class DocumentWriter {
         }
     }
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @param schema DOCUMENT ME!
-     * @param w DOCUMENT ME!
-     * @param hints DOCUMENT ME!
-     * @throws IOException
-     */
+    /** @throws IOException */
     public static void writeSchema(Schema schema, Writer w, Map hints) throws IOException {
         WriterContentHandler wch =
                 new WriterContentHandler(schema, w, hints); // should deal with xmlns declarations

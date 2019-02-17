@@ -58,7 +58,6 @@ public class NestedAttributeExpression extends AttributeExpressionImpl {
      * First constructor
      *
      * @param xpath Attribute XPath
-     * @param expressions List of broken up expressions
      */
     public NestedAttributeExpression(StepList xpath, NestedAttributeMapping nestedMapping) {
         super(xpath.toString());
@@ -318,10 +317,8 @@ public class NestedAttributeExpression extends AttributeExpressionImpl {
     /**
      * Find the source expression if the step is a client property.
      *
-     * @param nextRootStep the step
-     * @param fMapping feature type mapping to get namespaces from
      * @param mapping attribute mapping
-     * @param targetXPath the full target xpath
+     * @param lastStep the last step
      * @return
      */
     private Expression getClientPropertyExpression(AttributeMapping mapping, Step lastStep) {

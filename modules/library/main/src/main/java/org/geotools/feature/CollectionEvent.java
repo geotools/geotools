@@ -79,8 +79,6 @@ public class CollectionEvent extends EventObject {
      * Constructs a new CollectionEvent.
      *
      * @param source the collection which triggered the event
-     * @param involvedFeatures DOCUMENT ME!
-     * @param type DOCUMENT ME!
      */
     public CollectionEvent(
             FeatureCollection<? extends FeatureType, ? extends Feature> source,

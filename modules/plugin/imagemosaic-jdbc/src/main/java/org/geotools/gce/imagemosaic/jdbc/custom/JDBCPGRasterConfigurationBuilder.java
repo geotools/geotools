@@ -1001,7 +1001,6 @@ public class JDBCPGRasterConfigurationBuilder {
      * Create the configuration file containing the information to configure the ImageMosaic
      *
      * @param configFile the file where to store the configuration
-     * @param configBean the bean with configuration parameters
      * @return
      * @throws IOException
      */

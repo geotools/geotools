@@ -127,9 +127,6 @@ public class WFSClient extends AbstractOpenWebService<WFSGetCapabilities, QName>
     /**
      * Determine correct WFSStrategy based on capabilities document.
      *
-     * @param getCapabilitiesRequest
-     * @param capabilitiesDoc
-     * @param override optional override provided by user
      * @return WFSStrategy to use
      */
     private WFSStrategy determineCorrectStrategy() {

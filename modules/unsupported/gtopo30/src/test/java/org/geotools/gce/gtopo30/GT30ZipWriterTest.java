@@ -37,11 +37,7 @@ import org.opengis.parameter.ParameterValueGroup;
  * @author Simone Giannecchini
  */
 public class GT30ZipWriterTest extends GT30TestBase {
-    /**
-     * DOCUMENT ME!
-     *
-     * @param name
-     */
+    /** @param name */
     public GT30ZipWriterTest(String name) {
         super(name);
     }

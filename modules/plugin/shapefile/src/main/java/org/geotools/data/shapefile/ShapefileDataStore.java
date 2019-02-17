@@ -348,11 +348,6 @@ public class ShapefileDataStore extends ContentDataStore implements FileDataStor
     /**
      * Attempt to create a DbaseFileHeader for the FeatureType. Note, we cannot set the number of
      * records until the write has completed.
-     *
-     * @param featureType DOCUMENT ME!
-     * @return DOCUMENT ME!
-     * @throws IOException DOCUMENT ME!
-     * @throws DbaseFileException DOCUMENT ME!
      */
     protected static DbaseFileHeader createDbaseHeader(SimpleFeatureType featureType)
             throws IOException, DbaseFileException {

@@ -95,8 +95,6 @@ public abstract class Operation2D extends AbstractOperation {
      * @param sourceNames Names of the sources to extract from {@link ParameterValueGroup}.
      * @param sources On input, an array with the same length than {@code sourceNames}. On output,
      *     the {@link GridCoverage2D} to be used as sources for this operation.
-     * @return The type of the {@linkplain #PRIMARY_SOURCE_INDEX primary source}, or {@code null} if
-     *     unknow or if the type should not be changed.
      * @throws IllegalArgumentException if an argument is {@code null}, or if {@code sources} and
      *     {@code sourceNames} doesn't have length.
      * @throws ParameterNotFoundException if a required source has not been found.

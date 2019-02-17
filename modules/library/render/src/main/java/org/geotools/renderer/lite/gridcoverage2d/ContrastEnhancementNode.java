@@ -501,7 +501,7 @@ class ContrastEnhancementNode extends StyleVisitorCoverageProcessingNodeAdapter
      * enhancement operations have been implemented in a way that is generic enough o handle all
      * data types.
      *
-     * @param inputImage the input {@link RenderedImage} to work on.
+     * @param inputWorker the input {@link ImageWorker} to work on.
      * @param hints {@link Hints} to control the contrast enhancement process.
      * @return a {@link RenderedImage} on which a contrast enhancement has been performed.
      */
@@ -523,7 +523,7 @@ class ContrastEnhancementNode extends StyleVisitorCoverageProcessingNodeAdapter
     /**
      * Performs a gamma correction operation on the input image.
      *
-     * @param inputImage the input {@link RenderedImage} to work on.
+     * @param worker the input {@link ImageWorker} to work on.
      * @param hints {@link Hints} to control the contrast enhancement process.
      * @return a {@link RenderedImage} on which a gamma correction has been performed.
      */

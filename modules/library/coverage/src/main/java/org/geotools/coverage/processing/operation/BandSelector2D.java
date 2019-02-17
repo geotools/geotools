@@ -93,7 +93,7 @@ final class BandSelector2D extends GridCoverage2D {
      * Applies the band select operation to a grid coverage.
      *
      * @param parameters List of name value pairs for the parameters.
-     * @param A set of rendering hints, or {@code null} if none.
+     * @param hints A set of rendering hints, or {@code null} if none.
      * @return The result as a grid coverage.
      */
     static GridCoverage2D create(final ParameterValueGroup parameters, Hints hints) {

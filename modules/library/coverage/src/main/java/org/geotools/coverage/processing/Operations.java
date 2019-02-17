@@ -450,22 +450,22 @@ public class Operations {
      * @see org.geotools.coverage.processing.operation.Crop
      * @since 2.3
      */
-    public Coverage crop(final Coverage Source, final Envelope envelope)
+    public Coverage crop(final Coverage source, final Envelope envelope)
             throws CoverageProcessingException {
-        return doOperation("CoverageCrop", Source, "Envelope", envelope);
+        return doOperation("CoverageCrop", source, "Envelope", envelope);
     }
 
     /**
      * Crops the image to a specified clipping area
      *
      * @param source The source coverage.
-     * @param envelope The cutting geometr
+     * @param roi The cutting geometry
      * @throws CoverageProcessingException if the operation can't be applied.
      * @see org.geotools.coverage.processing.operation.Crop
      */
-    public Coverage crop(final Coverage Source, final Geometry roi)
+    public Coverage crop(final Coverage source, final Geometry roi)
             throws CoverageProcessingException {
-        return doOperation("CoverageCrop", Source, Crop.CROP_ROI.getName().getCode(), roi);
+        return doOperation("CoverageCrop", source, Crop.CROP_ROI.getName().getCode(), roi);
     }
 
     /**
@@ -580,7 +580,6 @@ public class Operations {
      *
      * @param source The source coverage.
      * @param warp The scale factor along the <var>x</var> axis.
-     * @param interpolation The scale factor along the <var>y</var> axis.
      * @param interpolation The interpolation to use, or {@code null} for the default.
      * @throws CoverageProcessingException if the operation can't be applied.
      * @see org.geotools.coverage.processing.operation.Scale

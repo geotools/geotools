@@ -46,7 +46,6 @@ import org.opengis.feature.type.Name;
  *     validation test specific to them in the validation processor passed in.<br>
  *     Integrity validation will iterate over all data stores passed in through the stores map and
  *     run the tests associated with each store. <b>Usage:</b><br>
- *     <p>DOCUMENT ME!!
  */
 public class Validator {
     /** Standard logging instance for class */
@@ -65,8 +64,6 @@ public class Validator {
 
     /**
      * <b>featureValidation Purpose:</b> <br>
-     *
-     * <p>DOCUMENT ME!! <b>Description:</b><br>
      *
      * <p>Feature validation will iterate over a feature features and test all features that have a
      * validation test specific to them in the validation processor passed in. Author: bowens<br>

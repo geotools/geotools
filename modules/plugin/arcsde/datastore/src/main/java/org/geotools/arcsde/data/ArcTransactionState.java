@@ -71,7 +71,7 @@ final class ArcTransactionState implements Transaction.State {
      * Creates a new ArcTransactionState object.
      *
      * @param listenerManager
-     * @param arcSDEDataStore connection pool where to grab a connection and hold it while there's a
+     * @param dataStore connection pool where to grab a connection and hold it while there's a
      *     transaction open (signaled by any use of {@link #getConnection()}
      */
     ArcTransactionState(ArcSDEDataStore dataStore, final FeatureListenerManager listenerManager) {
@@ -89,8 +89,7 @@ final class ArcTransactionState implements Transaction.State {
     }
 
     /**
-     * @param versioName the name of the version to work against
-     * @return
+     * @param versionName the name of the version to work against
      * @throws IOException
      */
     public ArcSdeVersionHandler getVersionHandler(

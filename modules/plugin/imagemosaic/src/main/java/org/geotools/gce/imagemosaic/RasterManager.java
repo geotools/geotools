@@ -693,13 +693,7 @@ public class RasterManager implements Cloneable {
             return domainName;
         }
 
-        /**
-         * Add a domain to the manager
-         *
-         * @param domain the name of the domain
-         * @param propertyName
-         * @param featureType
-         */
+        /** Add a domain to the manager */
         private DimensionDescriptor addDomain(
                 String name,
                 String propertyName,

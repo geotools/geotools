@@ -121,7 +121,6 @@ public class InterpolationProperties {
      * <p>It is an error for interpolated properties to not exist. A {@link RuntimeException} is
      * thrown if the value of a referenced property is null.
      *
-     * @param properties properties to be interpolated
      * @param input string on which interpolation is to be performed
      * @return string with all properties expanded
      */

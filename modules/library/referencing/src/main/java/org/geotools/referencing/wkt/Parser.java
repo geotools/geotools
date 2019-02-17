@@ -217,8 +217,7 @@ public class Parser extends MathTransformParser {
     /**
      * Parses a coordinate reference system element.
      *
-     * @param parent The parent element.
-     * @return The next element as a {@link CoordinateReferenceSystem} object.
+     * @return element The next element as a {@link CoordinateReferenceSystem} object.
      * @throws ParseException if the next element can't be parsed.
      */
     private CoordinateReferenceSystem parseCoordinateReferenceSystem(final Element element)

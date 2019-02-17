@@ -484,7 +484,7 @@ public class Crop extends Operation2D {
      * @param destnodata value used for defining NoData
      * @param cropEnvelope the target envelope; always not null
      * @param cropROI the target ROI shape; nullable
-     * @param roiTolerance; as read from op's params
+     * @param roiTolerance tolerance as read from op's params
      * @param sourceCoverage is the source {@link GridCoverage2D} that we want to crop.
      * @param hints A set of rendering hints, or {@code null} if none.
      * @param sourceGridToWorldTransform is the 2d grid-to-world transform for the source coverage.

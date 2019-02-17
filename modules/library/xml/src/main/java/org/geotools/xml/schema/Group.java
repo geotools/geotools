@@ -46,6 +46,5 @@ public interface Group extends ElementGrouping {
     /** The group's name in the Schema document */
     public String getName();
 
-    /** DOCUMENT ME! */
     public URI getNamespace();
 }

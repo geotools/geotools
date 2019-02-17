@@ -16,15 +16,10 @@
  */
 package org.geotools.xml.schema;
 
-/**
- * DOCUMENT ME!
- *
- * @author dzwiers
- */
+/** @author dzwiers */
 public interface AttributeValue {
-    /** DOCUMENT ME! */
+
     public String getValue();
 
-    /** DOCUMENT ME! */
     public Attribute getAttribute();
 }

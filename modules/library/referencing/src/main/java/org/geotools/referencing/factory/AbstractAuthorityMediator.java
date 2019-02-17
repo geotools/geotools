@@ -142,28 +142,17 @@ public abstract class AbstractAuthorityMediator extends AbstractAuthorityFactory
         this(PRIORITY);
     }
 
-    /**
-     * Constructs an instance based on the provided Hints
-     *
-     * @param factory The factory to cache. Can not be {@code null}.
-     */
+    /** Constructs an instance based on the provided Hints */
     protected AbstractAuthorityMediator(Hints hints) {
         this(PRIORITY, hints);
     }
-    /**
-     * Constructs an instance making use of the default cache.
-     *
-     * @param factory The factory to cache. Can not be {@code null}.
-     */
+
+    /** Constructs an instance making use of the default cache. */
     protected AbstractAuthorityMediator(int priority) {
         this(priority, ObjectCaches.create("weak", 50), ReferencingFactoryContainer.instance(null));
     }
 
-    /**
-     * Constructs an instance making use of the default cache.
-     *
-     * @param factory The factory to cache. Can not be {@code null}.
-     */
+    /** Constructs an instance making use of the default cache. */
     protected AbstractAuthorityMediator(int priority, Hints hints) {
         this(priority, ObjectCaches.create(hints), ReferencingFactoryContainer.instance(hints));
         // configurable behaviour
@@ -188,8 +177,7 @@ public abstract class AbstractAuthorityMediator extends AbstractAuthorityFactory
      * DatumAuthorityFactory}, {@link CSAuthorityFactory}, {@link CRSAuthorityFactory} and {@link
      * CoordinateOperationAuthorityFactory} interfaces they choose to implement.
      *
-     * @param factory The factory to cache. Can not be {@code null}.
-     * @param maxStrongReferences The maximum number of objects to keep by strong reference.
+     * @param cache The cache to use
      */
     protected AbstractAuthorityMediator(
             int priority, ObjectCache cache, ReferencingFactoryContainer container) {

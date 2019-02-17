@@ -31,7 +31,6 @@ public abstract class AbstractFilter extends FilterAbstract implements FilterTyp
     protected static final Logger LOGGER =
             org.geotools.util.logging.Logging.getLogger(AbstractFilter.class);
 
-    /** @param factory */
     protected AbstractFilter() {}
 
     /**

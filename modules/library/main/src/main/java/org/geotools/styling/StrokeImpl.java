@@ -84,7 +84,6 @@ public class StrokeImpl implements Stroke, Cloneable {
      *
      * @param color The color of the stroke encoded as a hexidecimal RGB value. This must not be
      *     null.
-     * @throws IllegalArgumentException DOCUMENT ME!
      */
     public void setColor(Expression color) {
         if (this.color == color) {

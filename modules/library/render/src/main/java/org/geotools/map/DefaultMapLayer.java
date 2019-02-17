@@ -51,7 +51,6 @@ public class DefaultMapLayer extends MapLayer {
      * @param featureSource the data source for this layer
      * @param style the style used to represent this layer
      * @param title the layer title
-     * @throws NullPointerException DOCUMENT ME!
      */
     @SuppressWarnings("unchecked")
     public DefaultMapLayer(FeatureSource featureSource, Style style, String title) {

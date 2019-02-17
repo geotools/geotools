@@ -157,7 +157,6 @@ public class PriorityQueue implements Collection, Queue {
         m_values = resized;
     }
 
-    /** TODO: DOCUMENT ME! Note that this method should be used cautiously * */
     public void swap(int i, int j) {
         Object tmp = m_obj2index.get(m_values[i]);
         m_obj2index.put(m_values[i], m_obj2index.get(m_values[j]));

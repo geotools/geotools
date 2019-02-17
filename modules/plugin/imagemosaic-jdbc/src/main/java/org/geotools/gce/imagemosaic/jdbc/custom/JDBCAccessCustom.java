@@ -1,5 +1,5 @@
 /*
- *    GeoTools+ - The Open Source Java GIS Toolkit
+ *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
  *    (C) 2008, Open Source Geospatial Foundation (OSGeo)
@@ -112,11 +112,7 @@ public abstract class JDBCAccessCustom implements JDBCAccess {
         return con;
     }
 
-    /**
-     * closeConnection
-     *
-     * @param conn Connection Object passed to be closed
-     */
+    /** closeConnection */
     protected void closeConnection(Connection con) {
         try {
 

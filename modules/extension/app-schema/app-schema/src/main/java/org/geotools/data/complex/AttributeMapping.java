@@ -71,12 +71,7 @@ public class AttributeMapping {
      */
     private String indexField;
 
-    /**
-     * Creates a new AttributeMapping object.
-     *
-     * @param sourceExpression DOCUMENT ME!
-     * @param targetXPath DOCUMENT ME!
-     */
+    /** Creates a new AttributeMapping object. */
     public AttributeMapping(
             Expression idExpression, Expression sourceExpression, StepList targetXPath) {
         this(idExpression, sourceExpression, null, targetXPath, null, false, null);

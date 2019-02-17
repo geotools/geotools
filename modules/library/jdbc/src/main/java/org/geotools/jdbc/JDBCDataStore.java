@@ -3343,10 +3343,8 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
      *
      * @param featureType the feature type that the query must return (may contain less attributes
      *     than the native one)
-     * @param attributes the properties queried, or {@link Query#ALL_NAMES} to gather all of them
      * @param query the query to be run. The type name and property will be ignored, as they are
      *     supposed to have been already embedded into the provided feature type
-     * @param sort sort conditions
      */
     protected String selectSQL(SimpleFeatureType featureType, Query query)
             throws IOException, SQLException {
@@ -3568,7 +3566,6 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
      *
      * @param featureType the feature type that the query must return (may contain less attributes
      *     than the native one)
-     * @param attributes the properties queried, or {@link Query#ALL_NAMES} to gather all of them
      * @param query the query to be run. The type name and property will be ignored, as they are
      *     supposed to have been already embedded into the provided feature type
      * @param cx The database connection to be used to create the prepared statement
@@ -4094,7 +4091,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
      * Helper method that adds a group by statement to the SQL query. If the list of group by
      * attributes is empty or NULL no group by statement is add.
      *
-     * @param attributes the group by attributes to be encoded
+     * @param groupByExpressions the group by attributes to be encoded
      * @param sql the sql query buffer
      */
     protected void encodeGroupByStatement(
@@ -4768,7 +4765,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
      * supports them
      *
      * @param sql The sql to be modified
-     * @param the query that holds the limit and offset parameters
+     * @param query the query that holds the limit and offset parameters
      */
     public void applyLimitOffset(StringBuffer sql, Query query) {
         applyLimitOffset(sql, query.getStartIndex(), query.getMaxFeatures());
@@ -4973,7 +4970,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
      * Transaction#close()} will not result in corresponding calls to the provided {@link
      * Connection} object.
      *
-     * @param conn The externally managed connection
+     * @param cx The externally managed connection
      */
     public Transaction buildTransaction(Connection cx) {
         DefaultTransaction tx = new DefaultTransaction();

@@ -315,7 +315,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
     /**
      * Performs the encoding, sends the encoded sql to the writer passed in.
      *
-     * @param filter the Filter to be encoded.
+     * @param expression the Expression to be encoded.
      * @throws FilterToSQLException If filter type not supported, or if there were io problems.
      */
     public void encode(Expression expression) throws FilterToSQLException {
@@ -463,7 +463,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
     /**
      * @see {@link FilterVisitor#visit(ExcludeFilter, Object)}
      *     <p>Writes the SQL for the IncludeFilter by writing "FALSE".
-     * @param the filter to be visited
+     * @param filter the filter to be visited
      */
     public Object visit(ExcludeFilter filter, Object extraData) {
         try {
@@ -477,7 +477,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
     /**
      * @see {@link FilterVisitor#visit(IncludeFilter, Object)}
      *     <p>Writes the SQL for the IncludeFilter by writing "TRUE".
-     * @param the filter to be visited
+     * @param filter the filter to be visited
      */
     public Object visit(IncludeFilter filter, Object extraData) {
         try {
@@ -1502,8 +1502,6 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
      * specific database implementation
      *
      * @param expression
-     * @throws IOException DOCUMENT ME!
-     * @throws RuntimeException DOCUMENT ME!
      */
     protected void visitLiteralGeometry(Literal expression) throws IOException {
         throw new RuntimeException(
@@ -1566,7 +1564,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
      * arguments provided to the GeoTools function, subclasses should override on a case by case
      * basis if this behavior is not the desired one.
      *
-     * @param expression a function expression
+     * @param function a function expression
      * @throws RuntimeException If an IO error occurs.
      * @see #getFunctionName(Function)
      */
@@ -1802,7 +1800,6 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
      * Surrounds a name with the SQL escape character.
      *
      * @param name
-     * @return DOCUMENT ME!
      */
     public String escapeName(String name) {
         return sqlNameEscape + name + sqlNameEscape;

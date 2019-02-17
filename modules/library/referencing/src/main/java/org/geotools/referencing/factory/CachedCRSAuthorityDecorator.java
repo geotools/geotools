@@ -101,7 +101,7 @@ public final class CachedCRSAuthorityDecorator extends AbstractAuthorityFactory
      * choose to implement.
      *
      * @param factory The factory to cache. Can not be {@code null}.
-     * @param maxStrongReferences The maximum number of objects to keep by strong reference.
+     * @param cache The underlying cache
      */
     protected CachedCRSAuthorityDecorator(CRSAuthorityFactory factory, ObjectCache cache) {
         super(((ReferencingFactory) factory).getPriority()); // TODO

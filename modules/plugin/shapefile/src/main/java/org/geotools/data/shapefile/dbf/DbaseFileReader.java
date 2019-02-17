@@ -130,7 +130,7 @@ public class DbaseFileReader implements FileReader {
     /**
      * Creates a new instance of DBaseFileReader
      *
-     * @param shapefileFiles. The readable channel to use.
+     * @param shapefileFiles The readable channel to use.
      * @throws IOException If an error occurs while initializing.
      */
     public DbaseFileReader(

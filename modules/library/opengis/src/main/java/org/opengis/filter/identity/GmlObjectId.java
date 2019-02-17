@@ -28,9 +28,9 @@ public interface GmlObjectId extends Identifier {
     String getID();
 
     /**
-     * Evaluates the identifer value against the given GML3 construct.
+     * Evaluates the identifer value against the given object.
      *
-     * @param feature The GML3 construct to be tested.
+     * @param object The construct to be tested.
      * @return {@code true} if a match, otherwise {@code false}.
      */
     boolean matches(Object object);

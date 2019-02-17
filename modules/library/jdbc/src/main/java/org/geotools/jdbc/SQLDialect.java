@@ -228,7 +228,7 @@ public abstract class SQLDialect {
      * {@link DatabaseMetaData#getColumns(String, String, String, String)}.
      * </p>
      * @param columnMetaData The column metadata
-     * @param The connection used to retrieve the metadata
+     * @param cx The connection used to retrieve the metadata
      * @return The class mapped to the to column, or <code>null</code>.
      */
     public Class<?> getMapping(ResultSet columnMetaData, Connection cx) throws SQLException {
@@ -661,7 +661,7 @@ public abstract class SQLDialect {
      *
      * @param rs A result set
      * @param column Index into the result set which points at the spatial extent value.
-     * @param The database connection.
+     * @param cx The database connection.
      */
     public abstract Envelope decodeGeometryEnvelope(ResultSet rs, int column, Connection cx)
             throws SQLException, IOException;

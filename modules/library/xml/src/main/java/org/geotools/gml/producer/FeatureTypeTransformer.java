@@ -181,7 +181,6 @@ public class FeatureTypeTransformer extends TransformerBase {
      * fragment.
      *
      * @param handler the content handler to use
-     * @return DOCUMENT ME!
      */
     public Translator createTranslator(ContentHandler handler) {
         FeatureTypeTranslator translator = new FeatureTypeTranslator(handler);
@@ -209,7 +208,6 @@ public class FeatureTypeTransformer extends TransformerBase {
          * Encode object o, which must be an instance of FeatureType. If it is not an
          * IllegalArgumentException will be thrown.
          *
-         * @param o DOCUMENT ME!
          * @throws IllegalArgumentException if supplied object is not an instance of FeatureType
          * @see org.geotools.xml.transform.Translator#encode(java.lang.Object)
          */
@@ -226,7 +224,6 @@ public class FeatureTypeTransformer extends TransformerBase {
          * Encode the supplied feature type.
          *
          * @param type the feature type to encode
-         * @throws RuntimeException DOCUMENT ME!
          */
         protected void encode(SimpleFeatureType type) {
             List attributes = type.getAttributeDescriptors();
@@ -248,7 +245,6 @@ public class FeatureTypeTransformer extends TransformerBase {
          * Start the schema fragment for a feature type.
          *
          * @param name
-         * @param namespace DOCUMENT ME!
          * @throws SAXException
          */
         protected final void startSchemaType(String name, String namespace) throws SAXException {
@@ -290,7 +286,6 @@ public class FeatureTypeTransformer extends TransformerBase {
          *
          * @param attribute
          * @throws SAXException
-         * @throws RuntimeException DOCUMENT ME!
          */
         protected void encode(AttributeDescriptor attribute) throws SAXException {
             Class type = attribute.getType().getBinding();
@@ -407,7 +402,6 @@ public class FeatureTypeTransformer extends TransformerBase {
          *
          * @param attribute
          * @throws SAXException
-         * @throws RuntimeException DOCUMENT ME!
          */
         protected void encodeNumber(AttributeDescriptor attribute) throws SAXException {
             AttributesImpl atts = createStandardAttributes(attribute);
@@ -471,7 +465,6 @@ public class FeatureTypeTransformer extends TransformerBase {
          *
          * @param attribute
          * @throws SAXException
-         * @throws RuntimeException DOCUMENT ME!
          */
         protected void encodeGeometry(AttributeDescriptor attribute) throws SAXException {
             AttributesImpl atts = createStandardAttributes(attribute);

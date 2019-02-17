@@ -459,8 +459,8 @@ public final class GTopo30Writer extends AbstractGridCoverageWriter implements G
     /**
      * Writing down the header file for the gtopo30 format:
      *
-     * @param coverage The GridCoverage to write
-     * @param file The destination object (can be a File or ZipOutputStream)
+     * @param gc The GridCoverage to write
+     * @param dest The destination object (can be a File or ZipOutputStream)
      * @throws IOException If the file could not be written
      */
     private void writeHDR(final GridCoverage2D gc, final String name, final Object dest)
@@ -662,8 +662,7 @@ public final class GTopo30Writer extends AbstractGridCoverageWriter implements G
      * Writes the source file (.SRC). The default byte order is BIG_ENDIAN.
      *
      * @param gc The GridCoverage to write
-     * @param file The destination object (can be a File or ZipOutputStream)
-     * @param dest
+     * @param dest The destination object (can be a File or ZipOutputStream)
      * @throws FileNotFoundException If the destination file could not be found
      * @throws IOException If the file could not be written
      */
@@ -721,8 +720,7 @@ public final class GTopo30Writer extends AbstractGridCoverageWriter implements G
      * Writing a gif file as an overview for this GTopo30.
      *
      * @param gc The GridCoverage to write
-     * @param file The destination object (can be a File or ZipOutputStream)
-     * @param dest
+     * @param dest The destination object (can be a File or ZipOutputStream)
      * @throws IOException If the file could not be written
      */
     private void writeGIF(final GridCoverage2D gc, final String name, Object dest)
@@ -834,8 +832,7 @@ public final class GTopo30Writer extends AbstractGridCoverageWriter implements G
      * Write a projection file (.PRJ) using wkt
      *
      * @param gc The GridCoverage to write
-     * @param file The destination object (can be a File or ZipOutputStream)
-     * @param dest
+     * @param dest The destination object (can be a File or ZipOutputStream)
      * @throws IOException If the file could not be written
      */
     private void writePRJ(final GridCoverage2D gc, String name, Object dest) throws IOException {
@@ -866,8 +863,7 @@ public final class GTopo30Writer extends AbstractGridCoverageWriter implements G
      * Writes the stats file (.STX).
      *
      * @param image The GridCoverage to write
-     * @param file The destination object (can be a File or ZipOutputStream)
-     * @param gc DOCUMENT ME!
+     * @param dest The destination object (can be a File or ZipOutputStream)
      * @throws IOException If the file could not be written
      */
     private void writeStats(
@@ -943,7 +939,7 @@ public final class GTopo30Writer extends AbstractGridCoverageWriter implements G
      * Writes the world file (.DMW)
      *
      * @param gc The GridCoverage to write
-     * @param worldFile The destination world file (can be a file or a ZipOutputStream)
+     * @param dest The destination world file (can be a file or a ZipOutputStream)
      * @throws IOException if the file could not be written
      */
     private void writeWorldFile(final GridCoverage2D gc, String name, Object dest)
@@ -1017,7 +1013,6 @@ public final class GTopo30Writer extends AbstractGridCoverageWriter implements G
      * Writes the digital elevation model file (.DEM). The default byte order is BIG_ENDIAN.
      *
      * @param image The GridCoverage object to write
-     * @param name DOCUMENT ME!
      * @param dest The destination object (can be a File or a ZipOutputStream)
      * @throws FileNotFoundException If the destination file could not be found
      * @throws IOException If the file could not be written

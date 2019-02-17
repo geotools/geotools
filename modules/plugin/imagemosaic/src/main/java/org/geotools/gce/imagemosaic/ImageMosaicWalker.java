@@ -87,11 +87,7 @@ abstract class ImageMosaicWalker implements Runnable {
 
     protected final ImageMosaicEventHandlers eventHandler;
 
-    /**
-     * @param updateFeatures if true update catalog with loaded granules
-     * @param imageMosaicConfigHandler configuration handler being used
-     * @param granuleAcceptors list of acceptors to deterrmine granule inclusion
-     */
+    /** @param configHandler configuration handler being used */
     public ImageMosaicWalker(
             ImageMosaicConfigHandler configHandler, ImageMosaicEventHandlers eventHandler) {
         Utilities.ensureNonNull("config handler", configHandler);

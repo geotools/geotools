@@ -2,8 +2,8 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2001-2006  Vivid Solutions
  *    (C) 2001-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2001-2006  Vivid Solutions
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -132,7 +132,7 @@ public class Envelope implements Serializable {
     /**
      * Creates an <code>Envelope</code> for a region defined by a single Coordinate.
      *
-     * @param p1 the Coordinate
+     * @param p the Coordinate
      */
     public Envelope(Coordinate p) {
         init(p);
@@ -190,8 +190,7 @@ public class Envelope implements Serializable {
     /**
      * Initialize an <code>Envelope</code> to a region defined by a single Coordinate.
      *
-     * @param p1 the first Coordinate
-     * @param p2 the second Coordinate
+     * @param p the first Coordinate
      */
     public void init(Coordinate p) {
         init(p.x, p.x, p.y, p.y);
@@ -298,8 +297,7 @@ public class Envelope implements Serializable {
      * Enlarges the boundary of the <code>Envelope</code> so that it contains (x,y). Does nothing if
      * (x,y) is already on or within the boundaries.
      *
-     * @param x the value to lower the minimum x to or to raise the maximum x to
-     * @param y the value to lower the minimum y to or to raise the maximum y to
+     * @param p the point to include
      */
     public void expandToInclude(Coordinate p) {
         expandToInclude(p.x, p.y);
@@ -310,7 +308,6 @@ public class Envelope implements Serializable {
      * distances are supported.
      *
      * @param distance the distance to expand the envelope
-     * @return this envelope
      */
     public void expandBy(double distance) {
         expandBy(distance, distance);
@@ -488,7 +485,7 @@ public class Envelope implements Serializable {
      * Check if the point <code>p</code> overlaps (lies inside) the region of this <code>Envelope
      * </code>.
      *
-     * @param other the <code>Coordinate</code> to be tested
+     * @param p the <code>Coordinate</code> to be tested
      * @return <code>true</code> if the point overlaps this <code>Envelope</code>
      */
     public boolean intersects(Coordinate p) {

@@ -29,10 +29,10 @@ public class EdigeoFileFactoryTest extends TestCase {
     private File f = null;
 
     /**
-     * DOCUMENT ME!
+
      *
-     * @param args DOCUMENT ME!
-     * @throws Exception DOCUMENT ME!
+
+
      */
     public static void main(java.lang.String[] args) throws Exception {
         junit.textui.TestRunner.run(new TestSuite(EdigeoFileFactoryTest.class));

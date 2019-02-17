@@ -673,7 +673,7 @@ public class NetCDFProjection {
      * Adjust the mappingName if needed. This may happen for some projections where different
      * standard parallels may require _1SP or _2SP suffix.
      *
-     * @param the input netCDF mappingName
+     * @param mappingName the input netCDF mappingName
      * @param var the gridMapping variable
      * @return
      */

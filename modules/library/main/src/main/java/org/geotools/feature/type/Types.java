@@ -277,7 +277,6 @@ public class Types {
      *
      * @param expected Expected FeatureType being used to compare against
      * @param actual Actual FeatureType
-     * @return true if actual is equal to or a subset of the expected feature type.
      */
     public static void assertNameAssignable(FeatureType expected, FeatureType actual) {
         // check feature type name
@@ -643,7 +642,7 @@ public class Types {
      * Converts content into a format which is used to store it internally within an attribute of a
      * specific type.
      *
-     * @param value the object to attempt parsing of.
+     * @param content the object to attempt parsing of.
      * @throws IllegalArgumentException if parsing is attempted and is unsuccessful.
      */
     public static Object parse(AttributeType type, Object content) throws IllegalArgumentException {

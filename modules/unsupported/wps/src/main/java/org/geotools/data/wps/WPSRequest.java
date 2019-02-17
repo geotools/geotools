@@ -28,20 +28,12 @@ public class WPSRequest {
     private OperationType describeProcess;
     private OperationType executeProcess;
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @return Returns the getCapabilities.
-     */
+    /** @return Returns the getCapabilities. */
     public OperationType getGetCapabilities() {
         return getCapabilities;
     }
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @param getCapabilities The getCapabilities to set.
-     */
+    /** @param getCapabilities The getCapabilities to set. */
     public void setGetCapabilities(OperationType getCapabilities) {
         this.getCapabilities = getCapabilities;
     }

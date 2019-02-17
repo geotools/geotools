@@ -238,8 +238,8 @@ public class GradientColorMapGenerator {
     /**
      * Get an SVG ColorMap generator for the specified file
      *
-     * @param a ";" separated list of colors in the form c1;c2;c3;... where each color can use
-     *     syntaxes as rgb(r0,g0,b0), rgba(r0,g0,b0,alpha_0_to_1), #RRGGBB or 0xRRGGBB
+     * @param colorValues ";" separated list of colors in the form c1;c2;c3;... where each color can
+     *     use syntaxes as rgb(r0,g0,b0), rgba(r0,g0,b0,alpha_0_to_1), #RRGGBB or 0xRRGGBB
      * @return
      * @throws SAXException
      * @throws IOException
@@ -320,7 +320,7 @@ public class GradientColorMapGenerator {
      * Create a {@link Color} from a color String which may be an SVG color: rgb(R0,G0,B0),
      * rgba(R0,G0,B0,Alpha) or hex color: #RRGGBB
      *
-     * @param the String color representation
+     * @param color The String color representation
      * @return the {@link Color} instance related to that string definition
      */
     private static Color createColor(String color) {

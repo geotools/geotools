@@ -18,11 +18,7 @@ package org.geotools.xml.schema.impl;
 
 import org.geotools.xml.schema.Facet;
 
-/**
- * DOCUMENT ME!
- *
- * @author dzwiers
- */
+/** @author dzwiers */
 public class FacetGT implements Facet {
     private int type;
     private String value;
@@ -31,12 +27,7 @@ public class FacetGT implements Facet {
         // do nothing
     }
 
-    /**
-     * Creates a new FacetGT object.
-     *
-     * @param type DOCUMENT ME!
-     * @param value DOCUMENT ME!
-     */
+    /** Creates a new FacetGT object. */
     public FacetGT(int type, String value) {
         this.type = type;
         this.value = value;

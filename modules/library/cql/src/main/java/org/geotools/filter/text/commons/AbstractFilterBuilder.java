@@ -124,13 +124,8 @@ public abstract class AbstractFilterBuilder {
     protected final String getStatement() {
         return this.cqlSource;
     }
-    /**
-     * Adds in the result stack the partial result associated to node.
-     *
-     * @param built partial result
-     * @param token
-     * @param type node associated to partial result
-     */
+
+    /** Adds in the result stack the partial result associated to node. */
     public void pushResult(final Result result) {
 
         this.resultStack.push(result);

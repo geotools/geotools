@@ -1,4 +1,3 @@
-package org.geotools.xsd;
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
@@ -15,6 +14,7 @@ package org.geotools.xsd;
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
+package org.geotools.xsd;
 
 import java.lang.reflect.Method;
 import javax.xml.namespace.QName;

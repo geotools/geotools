@@ -115,7 +115,8 @@ public abstract class AbstractCachedAuthorityFactory extends AbstractAuthorityFa
     /**
      * Constructs an instance making use of the default cache.
      *
-     * @param factory The factory to cache. Can not be {@code null}.
+     * @param priority The priority for this factory, as a number between {@link #MINIMUM_PRIORITY *
+     *     MINIMUM_PRIORITY} and {@link #MAXIMUM_PRIORITY MAXIMUM_PRIORITY} inclusive.
      */
     protected AbstractCachedAuthorityFactory(int priority) {
         this(priority, ObjectCaches.create("weak", 50), ReferencingFactoryContainer.instance(null));
@@ -124,7 +125,8 @@ public abstract class AbstractCachedAuthorityFactory extends AbstractAuthorityFa
     /**
      * Constructs an instance making use of the default cache.
      *
-     * @param factory The factory to cache. Can not be {@code null}.
+     * @param priority The priority for this factory, as a number between {@link * #MINIMUM_PRIORITY
+     *     MINIMUM_PRIORITY} and {@link #MAXIMUM_PRIORITY MAXIMUM_PRIORITY} * inclusive.
      */
     protected AbstractCachedAuthorityFactory(int priority, Hints hints) {
         this(priority, ObjectCaches.create(hints), ReferencingFactoryContainer.instance(hints));
@@ -137,8 +139,9 @@ public abstract class AbstractCachedAuthorityFactory extends AbstractAuthorityFa
      * DatumAuthorityFactory}, {@link CSAuthorityFactory}, {@link CRSAuthorityFactory} and {@link
      * CoordinateOperationAuthorityFactory} interfaces they choose to implement.
      *
-     * @param factory The factory to cache. Can not be {@code null}.
-     * @param maxStrongReferences The maximum number of objects to keep by strong reference.
+     * @param priority The priority for this factory, as a number between {@link * #MINIMUM_PRIORITY
+     *     MINIMUM_PRIORITY} and {@link #MAXIMUM_PRIORITY MAXIMUM_PRIORITY} * inclusive.
+     * @param cache The cache to use
      */
     protected AbstractCachedAuthorityFactory(
             int priority, ObjectCache cache, ReferencingFactoryContainer container) {

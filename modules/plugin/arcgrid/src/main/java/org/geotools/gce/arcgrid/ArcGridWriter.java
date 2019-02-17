@@ -175,7 +175,6 @@ public final class ArcGridWriter extends AbstractGridCoverageWriter implements G
      *
      * @param gc the grid coverage that will be written to the destination
      * @param parameters to control this writing process
-     * @param grass tells me whether to write this coverage in the grass format.
      * @throws DataSourceException indicates an unexpected exception
      */
     private void writeGridCoverage(GridCoverage2D gc, GeneralParameterValue[] parameters)

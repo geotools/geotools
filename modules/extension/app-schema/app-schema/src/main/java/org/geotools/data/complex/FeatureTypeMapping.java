@@ -220,7 +220,7 @@ public class FeatureTypeMapping {
     /**
      * Finds the attribute mapping for the target expression <code>exactPath</code>.
      *
-     * @param exactPath the xpath expression on the target schema to find the mapping for
+     * @param xpathExpression the xpath expression on the target schema to find the mapping for
      * @return the attribute mapping that match 1:1 with <code>exactPath</code> or <code>null</code>
      */
     public AttributeMapping getAttributeMapping(final String xpathExpression) {

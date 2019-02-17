@@ -205,7 +205,6 @@ public class FontImpl implements Font, Cloneable {
      * Compares this font with another for equality. Two fonts are equal if their family, style,
      * weight and size are equal.
      *
-     * @param oth DOCUMENT ME!
      * @return True if this and oth are equal.
      */
     public boolean equals(Object oth) {

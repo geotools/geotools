@@ -16,14 +16,9 @@
  */
 package org.geotools.geometry.iso.util.elem2D;
 
-/**
- * @author roehrig
- *     <p>TODO To change the template for this generated type comment go to Window - Preferences -
- *     Java - Code Style - Code Templates
- */
+/** @author roehrig */
 public class Quadrilateral2D extends Simplex2D {
 
-    /** @param p */
     protected Quadrilateral2D(Node2D p0, Node2D p1, Node2D p2, Node2D p3) {
         super(new Node2D[] {p0, p1, p2, p3});
     }

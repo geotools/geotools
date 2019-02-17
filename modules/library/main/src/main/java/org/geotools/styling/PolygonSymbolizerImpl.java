@@ -134,7 +134,6 @@ public class PolygonSymbolizerImpl extends AbstractSymbolizer
      * Creates a deep copy clone. TODO: Need to complete the deep copy, currently only shallow copy.
      *
      * @return The deep copy clone.
-     * @throws RuntimeException DOCUMENT ME!
      */
     public Object clone() {
         PolygonSymbolizerImpl clone;

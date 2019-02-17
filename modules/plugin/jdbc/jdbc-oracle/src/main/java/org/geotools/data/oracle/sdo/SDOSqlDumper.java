@@ -47,7 +47,6 @@ public class SDOSqlDumper {
      * <p>TODO: Multi eometries
      *
      * @param geometry The JTS Geometry to convert.
-     * @param srid DOCUMENT ME!
      * @return A String representation of the SDO Geometry.
      */
     public static String toSDOGeom(Geometry geometry, int srid) {
@@ -104,7 +103,6 @@ public class SDOSqlDumper {
      * encoded as a 2D geometry.
      *
      * @param line The line to encode.
-     * @param srid DOCUMENT ME!
      * @return An SDO SQL geometry object construction statement
      */
     private static String toSDOGeom(LineString line, int srid) {
@@ -157,7 +155,6 @@ public class SDOSqlDumper {
      * encoded as a 2D geometry.
      *
      * @param point The point to encode.
-     * @param srid DOCUMENT ME!
      * @return An SDO SQL geometry object construction statement
      */
     private static String toSDOGeom(Point point, int srid) {
@@ -199,7 +196,6 @@ public class SDOSqlDumper {
      * encoded as a 2D geometry.
      *
      * @param polygon The polygon to encode.
-     * @param srid DOCUMENT ME!
      * @return An SDO SQL geometry object construction statement
      */
     private static String toSDOGeom(Polygon polygon, int srid) {
@@ -279,7 +275,6 @@ public class SDOSqlDumper {
      * Converts an Envelope in an SDO SQL geometry construction statement.
      *
      * @param envelope The envelope to encode.
-     * @param srid DOCUMENT ME!
      * @return An SDO SQL geometry object construction statement
      */
     private static String toSDOGeom(Envelope envelope, int srid) {

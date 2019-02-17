@@ -223,7 +223,7 @@ public final class Logging {
      * specified name and {@code create} is {@code true}, then a new instance will be created.
      * Otherwise the nearest parent is returned.
      *
-     * @param root The root logger name.
+     * @param base The root logger name.
      * @param create {@code true} if this method is allowed to create new {@code Logging} instance.
      */
     private static Logging getLogging(final String base, final boolean create) {

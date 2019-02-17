@@ -219,13 +219,7 @@ public class MemoryDataStoreTest extends DataTestCase {
         return false;
     }
 
-    /**
-     * Like contain but based on match rather than equals
-     *
-     * @param array DOCUMENT ME!
-     * @param expected DOCUMENT ME!
-     * @return DOCUMENT ME!
-     */
+    /** Like contain but based on match rather than equals */
     boolean containsLax(SimpleFeature[] array, SimpleFeature expected) {
         if ((array == null) || (array.length == 0)) {
             return false;
@@ -240,13 +234,7 @@ public class MemoryDataStoreTest extends DataTestCase {
         return false;
     }
 
-    /**
-     * Compare based on attributes not getID allows comparison of Diff contents
-     *
-     * @param expected DOCUMENT ME!
-     * @param actual DOCUMENT ME!
-     * @return DOCUMENT ME!
-     */
+    /** Compare based on attributes not getID allows comparison of Diff contents */
     boolean match(SimpleFeature expected, SimpleFeature actual) {
         SimpleFeatureType type = expected.getFeatureType();
 
@@ -523,13 +511,6 @@ public class MemoryDataStoreTest extends DataTestCase {
     /**
      * Ensure that FeatureReader<SimpleFeatureType, SimpleFeature> reader contains extactly the
      * contents of array.
-     *
-     * @param reader DOCUMENT ME!
-     * @param array DOCUMENT ME!
-     * @return DOCUMENT ME!
-     * @throws NoSuchElementException DOCUMENT ME!
-     * @throws IOException DOCUMENT ME!
-     * @throws IllegalAttributeException DOCUMENT ME!
      */
     boolean covers(FeatureReader<SimpleFeatureType, SimpleFeature> reader, SimpleFeature[] array)
             throws NoSuchElementException, IOException {
@@ -742,11 +723,7 @@ public class MemoryDataStoreTest extends DataTestCase {
         assertEquals(1, count(writer));
     }
 
-    /**
-     * Test two transactions one removing feature, and one adding a feature.
-     *
-     * @throws Exception DOCUMENT ME!
-     */
+    /** Test two transactions one removing feature, and one adding a feature. */
     public void testGetFeatureWriterTransaction() throws Exception {
         Transaction t1 = new DefaultTransaction();
         Transaction t2 = new DefaultTransaction();

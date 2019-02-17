@@ -332,11 +332,7 @@ public class StyleBuilder {
         return sf.createFill(color, backgroundColor, opacity, fill);
     }
 
-    /**
-     * Returns the array of all the well known mark names
-     *
-     * @return DOCUMENT ME!
-     */
+    /** Returns the array of all the well known mark names */
     public String[] getWellKnownMarkNames() {
         return new String[] {
             MARK_SQUARE, MARK_CIRCLE, MARK_TRIANGLE, MARK_STAR, MARK_CROSS, MARK_ARROW, MARK_X
@@ -1539,7 +1535,6 @@ public class StyleBuilder {
      *
      * @param value the value to be encoded
      * @return the expression
-     * @throws IllegalFilterException DOCUMENT ME!
      */
     public Expression literalExpression(Object value) throws IllegalFilterException {
         Expression result = null;
@@ -1566,13 +1561,6 @@ public class StyleBuilder {
     /**
      * given a feature collection and an array of colours build a style with the given number of
      * classes on the named column
-     *
-     * @param fc DOCUMENT ME!
-     * @param name DOCUMENT ME!
-     * @param colors DOCUMENT ME!
-     * @param schema DOCUMENT ME!
-     * @return DOCUMENT ME!
-     * @throws IllegalFilterException DOCUMENT ME!
      */
     public Style buildClassifiedStyle(
             SimpleFeatureCollection fc, String name, String[] colors, SimpleFeatureType schema)

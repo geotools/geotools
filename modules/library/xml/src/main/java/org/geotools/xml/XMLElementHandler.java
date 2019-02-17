@@ -66,7 +66,6 @@ public abstract class XMLElementHandler implements Serializable {
      *
      * @param namespaceURI
      * @param localName
-     * @param hints DOCUMENT ME!
      * @throws SAXException
      * @throws OperationNotSupportedException
      * @see SchemaContentHandler#endElement
@@ -96,7 +95,6 @@ public abstract class XMLElementHandler implements Serializable {
      *
      * @param namespaceURI
      * @param localName
-     * @param hints DOCUMENT ME!
      * @return XMLElementHandler, or null
      * @throws SAXException
      */

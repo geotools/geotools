@@ -240,8 +240,7 @@ public class CoordinateSequences extends org.locationtech.jts.geom.CoordinateSeq
         /**
          * Gets the coordinate sequence found (if any).
          *
-         * @return the sequence found
-         * @return null if no sequence could be found
+         * @return the sequence found, or null if no sequence could be found
          */
         public CoordinateSequence getSeq() {
             return firstSeqFound;

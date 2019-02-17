@@ -2,8 +2,8 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2001-2006  Vivid Solutions
  *    (C) 2001-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2001-2006  Vivid Solutions
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -81,7 +81,7 @@ public abstract class NodeBase {
     /**
      * Removes a single item from this subtree.
      *
-     * @param searchEnv the envelope containing the item
+     * @param itemEnv the envelope containing the item
      * @param item the item to remove
      * @return <code>true</code> if the item was found and removed
      */

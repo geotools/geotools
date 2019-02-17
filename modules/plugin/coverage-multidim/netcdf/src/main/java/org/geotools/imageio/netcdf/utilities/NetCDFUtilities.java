@@ -1181,7 +1181,7 @@ public class NetCDFUtilities {
     /**
      * Transcode a DataBuffer type into a NetCDF DataType .
      *
-     * @param type the beam {@link ProductData} type to transcode.
+     * @param dataType the beam {@link ProductData} type to transcode.
      * @return an NetCDF DataType type.
      */
     public static DataType transcodeImageDataType(final int dataType) {

@@ -325,14 +325,14 @@ public class Query {
             URI namespace,
             Filter filter,
             int maxFeatures,
-            List<PropertyName> propNames,
+            List<PropertyName> properties,
             String handle) {
         this.typeName = typeName;
         this.filter = filter;
         this.namespace = namespace;
         this.maxFeatures = maxFeatures;
         this.handle = handle;
-        this.properties = propNames == null ? null : new ArrayList<PropertyName>(propNames);
+        this.properties = properties == null ? null : new ArrayList<PropertyName>(properties);
     }
 
     /**
@@ -636,11 +636,7 @@ public class Query {
         return namespace;
     }
 
-    /**
-     * Set the namespace of the feature type to be queried.
-     *
-     * @return the gml namespace of the feature type to be returned with this query
-     */
+    /** Set the namespace of the feature type to be queried. */
     public void setNamespace(URI namespace) {
         this.namespace = namespace;
     }
@@ -782,8 +778,6 @@ public class Query {
      *
      * <p>If used in conjunction with {@link #setCoordinateSystem(CoordinateReferenceSystem)} the
      * reprojection will occur from the overridden coordinate system to the system specified here.
-     *
-     * @return the coordinate system that features should be reprojected into
      */
     public void setCoordinateSystemReproject(CoordinateReferenceSystem system) {
         coordinateSystemReproject = system;

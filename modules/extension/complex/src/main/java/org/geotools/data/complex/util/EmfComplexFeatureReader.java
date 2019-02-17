@@ -1,5 +1,3 @@
-package org.geotools.data.complex.util;
-
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
@@ -16,6 +14,7 @@ package org.geotools.data.complex.util;
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
+package org.geotools.data.complex.util;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -94,8 +93,8 @@ public class EmfComplexFeatureReader {
      * Parses the schema referenced by <code>location</code> into a {@link SchemaIndex}
      *
      * @param nameSpace the location namespace
-     * @param location the physical location of the root xsd schema that comprises the application
-     *     schema to parse.
+     * @param schemaLocation the physical location of the root xsd schema that comprises the
+     *     application schema to parse.
      * @throws IOException if any non recoverable problem occurs while parsing the application
      *     schema pointed out by <code>location</code> or one of its dependencies.
      */

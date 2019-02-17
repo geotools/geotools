@@ -117,7 +117,7 @@ final class GridCoverageRendererUtilities {
      * IllegalArgumentException} exception.
      *
      * @param source the object to check.
-     * @param node the operation we are trying to run.
+     * @param name the operation we are trying to run.
      */
     static void ensureNotNull(final Object source, final String name) {
         if (source == null)
@@ -129,7 +129,7 @@ final class GridCoverageRendererUtilities {
      * IllegalArgumentException} exception.
      *
      * @param source the object to check.
-     * @param node the operation we are trying to run.
+     * @param name the operation we are trying to run.
      */
     static void ensureSourceNotNull(final Object source, final String name) {
         if (source == null)

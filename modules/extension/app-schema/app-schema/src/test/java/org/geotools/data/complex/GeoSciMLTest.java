@@ -51,8 +51,6 @@ import org.opengis.feature.type.FeatureType;
 import org.opengis.feature.type.Name;
 
 /**
- * DOCUMENT ME!
- *
  * @author Rob Atkinson
  * @since 2.4
  */

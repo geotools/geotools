@@ -293,7 +293,7 @@ public class AttributeBuilder {
      * <p>This method uses the type supplied in {@link #setType(AttributeType)} in order to
      * determine the association type.
      *
-     * @param value The value of the association, an attribute.
+     * @param attribute The value of the association, an attribute.
      * @param name The name of the association.
      * @param namespaceURI The namespace of the association
      */
@@ -322,7 +322,6 @@ public class AttributeBuilder {
      *
      * @param value The value of the association, an attribute.
      * @param name The name of the association.
-     * @param namespaceURI The namespace of the association
      */
     public void associate(Attribute value, Name name) {
         AssociationDescriptor descriptor = associationDescriptor(name);

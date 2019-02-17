@@ -69,8 +69,6 @@ import org.opengis.filter.expression.PropertyName;
 import org.xml.sax.helpers.NamespaceSupport;
 
 /**
- * DOCUMENT ME!
- *
  * @author Gabriel Roldan (Axios Engineering)
  * @version $Id$
  * @since 2.4

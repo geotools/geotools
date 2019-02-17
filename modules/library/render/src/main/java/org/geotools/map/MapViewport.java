@@ -410,11 +410,7 @@ public class MapViewport {
         }
     }
 
-    /**
-     * Notifies MapBoundsListeners about a change to the bounds or crs.
-     *
-     * @param event The event to be fired
-     */
+    /** Notifies MapBoundsListeners about a change to the bounds or crs. */
     protected void fireMapBoundsListenerMapBoundsChanged(
             Type type, ReferencedEnvelope oldBounds, ReferencedEnvelope newBounds) {
 

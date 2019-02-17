@@ -91,20 +91,12 @@ public class UnionHandler extends XSIElementHandler {
         return LOCALNAME;
     }
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @return memberTypes attribute value
-     */
+    /** @return memberTypes attribute value */
     public String getMemberTypes() {
         return memberTypes;
     }
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @return list of simpleTypeHandlers representing the nested simpleTypes
-     */
+    /** @return list of simpleTypeHandlers representing the nested simpleTypes */
     public List getSimpleTypes() {
         return simpleTypes;
     }

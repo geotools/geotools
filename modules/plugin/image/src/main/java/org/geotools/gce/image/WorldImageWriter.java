@@ -142,8 +142,6 @@ public final class WorldImageWriter extends AbstractGridCoverageWriter
      *
      * @param coverage the GridCoverage to write.
      * @param parameters no parameters are accepted. Currently ignored.
-     * @throws IllegalArgumentException DOCUMENT ME!
-     * @throws IOException DOCUMENT ME!
      * @see org.opengis.coverage.grid.GridCoverageWriter#write(org.geotools.gc.GridCoverage,
      *     org.opengis.parameter.GeneralParameterValue[])
      */
@@ -288,7 +286,6 @@ public final class WorldImageWriter extends AbstractGridCoverageWriter
      * @param outstream OutputStream
      * @throws IOException
      * @throws IOException
-     * @throws IllegalArgumentException DOCUMENT ME!
      */
     private static void encode(
             final GridCoverage2D sourceCoverage,

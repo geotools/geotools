@@ -893,9 +893,6 @@ public class RasterLayerRequest {
      * Check the type of read operation which will be performed and return {@code true} if a JAI
      * imageRead operation need to be performed or {@code false} if a simple read operation is
      * needed.
-     *
-     * @return {@code true} if the read operation will use a JAI ImageRead operation instead of a
-     *     simple {@code ImageReader.read(...)} call.
      */
     private void checkReadType() {
         // //

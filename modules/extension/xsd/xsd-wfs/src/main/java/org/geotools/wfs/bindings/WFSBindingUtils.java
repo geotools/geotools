@@ -1,4 +1,5 @@
-/*    GeoTools - The Open Source Java GIS Toolkit
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
  *    (C) 2012, Open Source Geospatial Foundation (OSGeo)
@@ -92,7 +93,7 @@ public class WFSBindingUtils {
     }
 
     /**
-     * @param value A number
+     * @param number A number
      * @return The number as a {@link BigInteger}.
      */
     public static BigInteger asBigInteger(Number number) {

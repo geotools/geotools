@@ -63,10 +63,6 @@ public class ApplicationSchemaXSD extends XSD {
      * <p>This way, application schemas splitted over multiple files can be resolved based on the
      * relative location of a given import or include.
      *
-     * @param schema the schema being resolved
-     * @param uri not used as it might be an empty string when location refers to an include
-     * @param location the xsd location, either of <code>schema</code>, an import or an include, for
-     *     which to try resolving it as a relative path of the <code>schema</code> location.
      * @return a file: style uri with the resolved schema location for the given one, or <code>null
      *     </code> if <code>location</code> can't be resolved as a relative path of the <code>schema
      *     </code> location.

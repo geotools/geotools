@@ -42,7 +42,7 @@ class TransformedIcon implements Icon {
      * Builds a new transformed icon
      *
      * @param icon The icon to be rescaled
-     * @param transformation The icon transformation
+     * @param at The icon transformation
      */
     public TransformedIcon(Icon icon, AffineTransform at) {
         this.icon = icon;

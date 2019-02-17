@@ -57,6 +57,17 @@
 		<!-- but have not passed our QA and Doc requirements -->
 		<!-- so you may/should consider them risky -->
 		<profile>
+			<id>vpf</id>
+			<activation>
+				<property>
+					<name>all</name>
+				</property>
+			</activation>
+			<modules>
+				<module>vpf</module>
+			</modules>
+		</profile>
+		<profile>
 			<id>gtopo30</id>
 			<activation>
 				<property>
@@ -215,8 +226,9 @@
 				<module>solr</module>
 				<module>css</module>
 				<module>geojsonstore</module>
-        <module>s3-geotiff</module>
-        <module>gtopo30</module>
+        		<module>s3-geotiff</module>
+        		<module>gtopo30</module>
+        		<module>vpf</module>
 			</modules>
 		</profile>
 
@@ -231,6 +243,7 @@
 
 	<!-- Modules included in a normal build -->
 	<modules>
+		<module>vpf</module>
 		<module>swing</module>
 		<module>process</module>
 		<module>process-geometry</module>

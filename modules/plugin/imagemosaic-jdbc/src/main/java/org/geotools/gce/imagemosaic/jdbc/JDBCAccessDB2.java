@@ -181,26 +181,26 @@ class JDBCAccessDB2 extends JDBCAccessBase {
             schema = getSchemaFromSpatialTable(li.getSpatialTableName());
 
             PreparedStatement s = null;
+            try {
+                if (schema == null) {
+                    s = con.prepareStatement(SRSSelectCurrentSchema);
+                    s.setString(1, li.getSpatialTableName());
+                    s.setString(2, config.getGeomAttributeNameInSpatialTable());
+                } else {
+                    s = con.prepareStatement(SRSSelect);
+                    s.setString(1, schema);
+                    s.setString(2, li.getSpatialTableName());
+                    s.setString(3, config.getGeomAttributeNameInSpatialTable());
+                }
 
-            if (schema == null) {
-                s = con.prepareStatement(SRSSelectCurrentSchema);
-                s.setString(1, li.getSpatialTableName());
-                s.setString(2, config.getGeomAttributeNameInSpatialTable());
-            } else {
-                s = con.prepareStatement(SRSSelect);
-                s.setString(1, schema);
-                s.setString(2, li.getSpatialTableName());
-                s.setString(3, config.getGeomAttributeNameInSpatialTable());
+                try (ResultSet r = s.executeQuery()) {
+                    if (r.next()) {
+                        result = (Integer) r.getObject(1);
+                    }
+                }
+            } finally {
+                if (s != null) s.close();
             }
-
-            ResultSet r = s.executeQuery();
-
-            if (r.next()) {
-                result = (Integer) r.getObject(1);
-            }
-
-            r.close();
-            s.close();
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new IOException(e);
@@ -233,19 +233,15 @@ class JDBCAccessDB2 extends JDBCAccessBase {
             throws IOException {
         CoordinateReferenceSystem result = null;
 
-        try {
-            PreparedStatement s = con.prepareStatement(CRSSelect);
+        try (PreparedStatement s = con.prepareStatement(CRSSelect)) {
             s.setInt(1, li.getSrsId());
 
-            ResultSet r = s.executeQuery();
-
-            if (r.next()) {
-                String definition = r.getString(1);
-                result = CRS.parseWKT(definition);
+            try (ResultSet r = s.executeQuery()) {
+                if (r.next()) {
+                    String definition = r.getString(1);
+                    result = CRS.parseWKT(definition);
+                }
             }
-
-            r.close();
-            s.close();
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new IOException(e);

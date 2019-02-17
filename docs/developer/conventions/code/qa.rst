@@ -42,12 +42,37 @@ error message, and a reference to a XML file with the same information after it:
 In case of parallel build, the specific error messages will be in the body of the build, while the
 XML file reference wil be at end end, just search for "PMD Failure" in the build logs to find the specific code issues.
 
+PMD false positive suppression
+""""""""""""""""""""""""""""""
+
 Occasionally PMD will report a false positive failure, for those it's possible to annotate the method
 or the class in question with a SuppressWarnings using ``PMD.<RuleName``, e.g. if the above error
 was actually a legit use of ``System.out.println`` it could have been annotated with::
 
     @SuppressWarnings("PMD.SystemPrintln")
     public void methodDoingPrintln(...) {
+    
+PMD CloseResource checks
+""""""""""""""""""""""""
+
+PMD can check for Closeable that are not getting property closed by the code, and report about it.
+PMD by default only checks for SQL related closeables, like "Connection,ResultSet,Statement", but it
+can be instructed to check for more by configuration (do check the PMD configuration in 
+``build/qa/pmd-ruleset.xml``.
+
+The check is a bit fragile, in that there are multiple ways to close an object between direct calls,
+utilities and delegate methods. The configuration lists the type of methods, and the eventual
+prefix, that will be used to perform the close, for example::
+
+    <rule ref="category/java/errorprone.xml/CloseResource" >
+        <properties>
+            <property name="closeTargets" value="releaseConnection,store.releaseConnection,closeQuietly,closeConnection,closeSafe,store.closeSafe,dataStore.closeSafe,getDataStore().closeSafe,close,closeResultSet,closeStmt"/>
+        </properties>
+    </rule>
+
+For closing delegates that use an instance object instead of a class static method, the variable
+name is included in the prefix, so some uninformity in variable names is required.
+
 
 Error Prone
 ^^^^^^^^^^^

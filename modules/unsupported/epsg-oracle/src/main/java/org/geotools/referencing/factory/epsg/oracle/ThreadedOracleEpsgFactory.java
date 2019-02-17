@@ -179,7 +179,6 @@ public class ThreadedOracleEpsgFactory extends ThreadedEpsgFactory {
         //        String user = p.getProperty("user", "Geotools");
         //        String password = p.getProperty("password", "Geotools");
         schema = p.getProperty("schema", null);
-
         return source;
     }
 
@@ -191,11 +190,12 @@ public class ThreadedOracleEpsgFactory extends ThreadedEpsgFactory {
      * @throws SQLException if connection to the database failed.
      */
     protected AbstractAuthorityFactory createBackingStore(final Hints hints) throws SQLException {
-        final Connection connection = getDataSource().getConnection();
-        final FactoryUsingOracleSQL factory = new FactoryUsingOracleSQL(hints, connection);
-        if (schema != null) {
-            factory.setSchema(schema);
+        try (Connection connection = getDataSource().getConnection()) {
+            final FactoryUsingOracleSQL factory = new FactoryUsingOracleSQL(hints, connection);
+            if (schema != null) {
+                factory.setSchema(schema);
+            }
+            return factory;
         }
-        return factory;
     }
 }

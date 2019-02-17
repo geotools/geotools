@@ -164,31 +164,29 @@ class JDBCAccessMySql extends JDBCAccessBase {
         String statementString =
                 MessageFormat.format(extentSelect, new Object[] {li.getSpatialTableName()});
         Envelope extent = null;
-        PreparedStatement s = con.prepareStatement(statementString);
-        ResultSet r = s.executeQuery();
+        try (PreparedStatement s = con.prepareStatement(statementString);
+                ResultSet r = s.executeQuery()) {
 
-        WKBReader reader = new WKBReader();
+            WKBReader reader = new WKBReader();
 
-        while (r.next()) {
-            byte[] bytes = r.getBytes(1);
-            Geometry g;
+            while (r.next()) {
+                byte[] bytes = r.getBytes(1);
+                Geometry g;
 
-            try {
-                g = reader.read(bytes);
-            } catch (ParseException e) {
-                LOGGER.log(Level.SEVERE, e.getMessage(), e);
-                throw new IOException(e);
-            }
+                try {
+                    g = reader.read(bytes);
+                } catch (ParseException e) {
+                    LOGGER.log(Level.SEVERE, e.getMessage(), e);
+                    throw new IOException(e);
+                }
 
-            if (extent == null) {
-                extent = g.getEnvelopeInternal();
-            } else {
-                extent.expandToInclude(g.getEnvelopeInternal());
+                if (extent == null) {
+                    extent = g.getEnvelopeInternal();
+                } else {
+                    extent.expandToInclude(g.getEnvelopeInternal());
+                }
             }
         }
-
-        r.close();
-        s.close();
 
         return extent;
     }

@@ -1021,11 +1021,10 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
                             escapeNamePattern(metaData, databaseSchema),
                             "%",
                             queryTypes.toArray(new String[0]));
-            if (fetchSize > 1) {
-                tables.setFetchSize(fetchSize);
-            }
-
             try {
+                if (fetchSize > 1) {
+                    tables.setFetchSize(fetchSize);
+                }
                 while (tables.next()) {
                     String schemaName = tables.getString("TABLE_SCHEM");
                     String tableName = tables.getString("TABLE_NAME");

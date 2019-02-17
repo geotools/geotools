@@ -642,6 +642,7 @@ public class OracleDialect extends PreparedStatementSQLDialect {
     }
 
     /** Obtains the native oracle connection object given a database connecetion. */
+    @SuppressWarnings("PMD.CloseResource")
     OracleConnection unwrapConnection(Connection cx) throws SQLException {
         if (cx == null) {
             return null;

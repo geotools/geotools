@@ -241,6 +241,7 @@ public final class JDBCFeatureStore extends ContentFeatureStore {
     //     features.update(type, value);
     // }
 
+    @SuppressWarnings("PMD.CloseResource") // the cx is passed to the reader which will close it
     protected FeatureWriter<SimpleFeatureType, SimpleFeature> getWriterInternal(
             Query query, int flags) throws IOException {
 

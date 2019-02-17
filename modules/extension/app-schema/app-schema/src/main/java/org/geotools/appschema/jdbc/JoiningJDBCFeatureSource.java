@@ -1088,6 +1088,7 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
         return builder.buildFeatureType();
     }
 
+    @SuppressWarnings("PMD.CloseResource") // PMD complains about cx, which is closed by the reader
     protected FeatureReader<SimpleFeatureType, SimpleFeature> getJoiningReaderInternal(
             JoiningQuery query) throws IOException {
         // split the filter
@@ -1120,31 +1121,31 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
                         ? querySchema
                         : getFeatureType(querySchema, query);
 
-        // grab connection
-        Connection cx = getDataStore().getConnection(getState().getTransaction());
-
         // create the reader
         FeatureReader<SimpleFeatureType, SimpleFeature> reader;
 
+        // grab connection
+        JDBCDataStore store = getDataStore();
+        Connection cx = store.getConnection(getState().getTransaction());
         try {
             // this allows PostGIS to page the results and respect the fetch size
             if (getState().getTransaction() == Transaction.AUTO_COMMIT) {
                 cx.setAutoCommit(false);
             }
 
-            SQLDialect dialect = getDataStore().getSQLDialect();
+            SQLDialect dialect = store.getSQLDialect();
             if (dialect instanceof PreparedStatementSQLDialect) {
                 PreparedStatement ps = selectSQLPS(querySchema, preQuery, cx);
                 reader = new JDBCFeatureReader(ps, cx, this, fullSchema, query);
             } else {
                 // build up a statement for the content
                 String sql = selectSQL(querySchema, preQuery, null);
-                getDataStore().getLogger().fine(sql);
+                store.getLogger().fine(sql);
                 reader = new JDBCFeatureReader(sql, cx, this, fullSchema, query);
             }
         } catch (Exception e) {
             // close the connection
-            getDataStore().closeSafe(cx);
+            store.closeSafe(cx);
             // safely rethrow
             throw (IOException) new IOException().initCause(e);
         }
@@ -1153,6 +1154,7 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
     }
 
     /** Gets a feature reader for a JDBC multivalued mapping. */
+    @SuppressWarnings("PMD.CloseResource") // PMD complains about cx, which is closed by the reader
     public FeatureReader<SimpleFeatureType, SimpleFeature> getJoiningReaderInternal(
             JdbcMultipleValue mv, JoiningQuery query) throws IOException {
         // split the filter
@@ -1179,11 +1181,12 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
         }
 
         // grab connection
-        Connection cx = getDataStore().getConnection(getState().getTransaction());
+        JDBCDataStore store = getDataStore();
 
         // create the reader
         FeatureReader<SimpleFeatureType, SimpleFeature> reader;
 
+        Connection cx = store.getConnection(getState().getTransaction());
         try {
             // this allows PostGIS to page the results and respect the fetch size
             if (getState().getTransaction() == Transaction.AUTO_COMMIT) {
@@ -1192,12 +1195,12 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
 
             // build up a statement for the content
             String sql = selectSQL(querySchema, preQuery, null);
-            getDataStore().getLogger().fine(sql);
+            store.getLogger().fine(sql);
 
             StringBuffer finalSql = new StringBuffer();
             finalSql.append("SELECT ");
-            SimpleFeatureType featureType = getDataStore().getSchema(mv.getTargetTable());
-            PrimaryKey primaryKeys = getDataStore().getPrimaryKey(featureType);
+            SimpleFeatureType featureType = store.getSchema(mv.getTargetTable());
+            PrimaryKey primaryKeys = store.getPrimaryKey(featureType);
             for (PrimaryKeyColumn primaryKey : primaryKeys.getColumns()) {
                 encodeColumnName(finalSql, mv.getTargetTable(), primaryKey.getName());
                 finalSql.append(", ");
@@ -1208,27 +1211,27 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
             }
             finalSql.delete(finalSql.length() - 2, finalSql.length());
             // encode value expression
-            FilterToSQL cfToSql = createFilterToSQL(getDataStore().getSchema(mv.getTargetTable()));
+            FilterToSQL cfToSql = createFilterToSQL(store.getSchema(mv.getTargetTable()));
             cfToSql.setFieldEncoder(
                     field -> {
                         StringBuffer fieldSql = new StringBuffer();
-                        getDataStore().dialect.encodeTableName(mv.getTargetTable(), fieldSql);
+                        store.dialect.encodeTableName(mv.getTargetTable(), fieldSql);
                         fieldSql.append(".");
                         fieldSql.append(field);
                         return fieldSql.toString();
                     });
             finalSql.append(" FROM ");
-            getDataStore().encodeTableName(mv.getTargetTable(), finalSql, null);
+            store.encodeTableName(mv.getTargetTable(), finalSql, null);
             finalSql.append(" INNER JOIN (").append(sql).append(") AS ");
-            getDataStore().dialect.encodeTableName("mv", finalSql);
+            store.dialect.encodeTableName("mv", finalSql);
             finalSql.append(" ON ");
-            getDataStore().dialect.encodeTableName("mv", finalSql);
+            store.dialect.encodeTableName("mv", finalSql);
             finalSql.append(".");
-            getDataStore().dialect.encodeColumnName(null, mv.getSourceColumn(), finalSql);
+            store.dialect.encodeColumnName(null, mv.getSourceColumn(), finalSql);
             finalSql.append(" = ");
-            getDataStore().encodeTableName(mv.getTargetTable(), finalSql, null);
+            store.encodeTableName(mv.getTargetTable(), finalSql, null);
             finalSql.append(".");
-            getDataStore().dialect.encodeColumnName(null, mv.getTargetColumn(), finalSql);
+            store.dialect.encodeColumnName(null, mv.getTargetColumn(), finalSql);
             SimpleFeatureTypeBuilder b = new SimpleFeatureTypeBuilder();
             b.setName(new NameImpl(null, mv.getTargetTable()));
             b.add("id", Object.class);
@@ -1236,12 +1239,11 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
             query.setPropertyNames(mv.getProperties());
             SimpleFeatureType featrueType =
                     SimpleFeatureTypeBuilder.retype(
-                            getDataStore().getSchema(mv.getTargetTable()),
-                            query.getPropertyNames());
+                            store.getSchema(mv.getTargetTable()), query.getPropertyNames());
             reader = new JDBCFeatureReader(finalSql.toString(), cx, this, featrueType, query);
         } catch (Exception e) {
             // close the connection
-            getDataStore().closeSafe(cx);
+            store.closeSafe(cx);
             // safely rethrow
             throw (IOException) new IOException().initCause(e);
         }

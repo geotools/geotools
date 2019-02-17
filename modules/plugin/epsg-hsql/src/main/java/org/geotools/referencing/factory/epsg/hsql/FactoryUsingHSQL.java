@@ -94,9 +94,9 @@ class FactoryUsingHSQL extends FactoryUsingAnsiSQL {
      */
     protected void shutdown(final boolean active) throws SQLException {
         if (active) {
-            final Statement statement = getConnection().createStatement();
-            statement.execute("SHUTDOWN");
-            statement.close();
+            try (Statement statement = getConnection().createStatement()) {
+                statement.execute("SHUTDOWN");
+            }
         }
         super.shutdown(active);
     }

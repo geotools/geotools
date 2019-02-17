@@ -526,6 +526,7 @@ public class MySQLDialect extends SQLDialect {
                 cx.commit();
             }
         } finally {
+            dataStore.closeSafe(st);
             dataStore.closeSafe(cx);
         }
     }

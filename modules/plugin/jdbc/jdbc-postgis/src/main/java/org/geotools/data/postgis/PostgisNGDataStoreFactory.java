@@ -237,7 +237,7 @@ public class PostgisNGDataStoreFactory extends JDBCDataStoreFactory {
 
     protected DataSource createDataSource(Map params, SQLDialect dialect) throws IOException {
         DataSource ds = super.createDataSource(params, dialect);
-        JDBCDataStore closer = new JDBCDataStore();
+        JDBCDataStore store = new JDBCDataStore();
 
         if (Boolean.TRUE.equals(CREATE_DB_IF_MISSING.lookUp(params))) {
             // verify we can connect
@@ -248,7 +248,7 @@ public class PostgisNGDataStoreFactory extends JDBCDataStoreFactory {
             } catch (SQLException e) {
                 canConnect = false;
             } finally {
-                closer.closeSafe(cx);
+                store.closeSafe(cx);
             }
 
             if (!canConnect) {
@@ -278,8 +278,8 @@ public class PostgisNGDataStoreFactory extends JDBCDataStoreFactory {
                 } catch (SQLException e) {
                     throw new IOException("Failed to create the target database", e);
                 } finally {
-                    closer.closeSafe(st);
-                    closer.closeSafe(cx);
+                    store.closeSafe(st);
+                    store.closeSafe(cx);
                 }
 
                 // if we got here the database has been created, now verify it has the postgis
@@ -294,16 +294,17 @@ public class PostgisNGDataStoreFactory extends JDBCDataStoreFactory {
                     st = cx.createStatement();
                     try {
                         rs = st.executeQuery("select PostGIS_version()");
-                        rs.close();
                     } catch (SQLException e) {
                         // not available eh? create it
                         st.execute("create extension postgis");
+                    } finally {
+                        store.closeSafe(rs);
                     }
                 } catch (SQLException e) {
                     throw new IOException("Failed to create the target database", e);
                 } finally {
-                    closer.closeSafe(st);
-                    closer.closeSafe(cx);
+                    store.closeSafe(st);
+                    store.closeSafe(cx);
                 }
 
                 // and finally re-create the connection pool
@@ -332,7 +333,7 @@ public class PostgisNGDataStoreFactory extends JDBCDataStoreFactory {
      * @throws IOException
      */
     public void dropDatabase(Map<String, Object> params) throws IOException {
-        JDBCDataStore closer = new JDBCDataStore();
+        JDBCDataStore store = new JDBCDataStore();
         // get the connection params
         String host = (String) HOST.lookUp(params);
         int port = (Integer) PORT.lookUp(params);
@@ -354,8 +355,8 @@ public class PostgisNGDataStoreFactory extends JDBCDataStoreFactory {
         } catch (SQLException e) {
             throw new IOException("Failed to drop the target database", e);
         } finally {
-            closer.closeSafe(st);
-            closer.closeSafe(cx);
+            store.closeSafe(st);
+            store.closeSafe(cx);
         }
     }
 }

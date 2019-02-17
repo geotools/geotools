@@ -394,7 +394,7 @@ public class JDBCFeatureSource extends ContentFeatureSource {
     }
 
     protected int getCountInternal(Query query) throws IOException {
-        JDBCDataStore dataStore = getDataStore();
+        JDBCDataStore store = getDataStore();
 
         // split the filter
         Filter[] split = splitFilter(query.getFilter());
@@ -436,14 +436,14 @@ public class JDBCFeatureSource extends ContentFeatureSource {
         } else {
             // no post filter, we have a preFilter, or preFilter is null..
             // either way we can use the datastore optimization
-            Connection cx = dataStore.getConnection(getState());
+            Connection cx = store.getConnection(getState());
             try {
                 DefaultQuery q = new DefaultQuery(query);
                 q.setFilter(preFilter);
-                int count = dataStore.getCount(getSchema(), q, cx);
+                int count = store.getCount(getSchema(), q, cx);
                 // if native support for limit and offset is not implemented, we have to ajust the
                 // result
-                if (!dataStore.getSQLDialect().isLimitOffsetSupported()) {
+                if (!store.getSQLDialect().isLimitOffsetSupported()) {
                     if (query.getStartIndex() != null && query.getStartIndex() > 0) {
                         if (query.getStartIndex() > count) count = 0;
                         else count -= query.getStartIndex();
@@ -453,7 +453,7 @@ public class JDBCFeatureSource extends ContentFeatureSource {
                 }
                 return count;
             } finally {
-                dataStore.releaseConnection(cx, getState());
+                store.releaseConnection(cx, getState());
             }
         }
     }
@@ -544,6 +544,7 @@ public class JDBCFeatureSource extends ContentFeatureSource {
         return true;
     }
 
+    @SuppressWarnings("PMD.CloseResource") // the cx is passed to the reader which will close it
     protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query)
             throws IOException {
         // split the filter
@@ -811,11 +812,10 @@ public class JDBCFeatureSource extends ContentFeatureSource {
                         getDataStore().escapeNamePattern(metaData, databaseSchema),
                         getDataStore().escapeNamePattern(metaData, tableName),
                         "%");
-        if (getDataStore().getFetchSize() > 0) {
-            columns.setFetchSize(getDataStore().getFetchSize());
-        }
-
         try {
+            if (getDataStore().getFetchSize() > 0) {
+                columns.setFetchSize(getDataStore().getFetchSize());
+            }
             while (columns.next()) {
                 ColumnMetadata column = new ColumnMetadata();
                 column.name = columns.getString("COLUMN_NAME");

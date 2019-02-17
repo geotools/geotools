@@ -73,11 +73,12 @@ public final class MetadataImport {
             return -1;
         }
         String password = new String(passwordReader.readPassword());
-        Connection conn =
+        try (Connection conn =
                 DriverManager.getConnection(
-                        cla.getConnectionParameters().buildUrl(), cla.getUser(), password);
-        importUom(conn);
-        importSrs(conn);
+                        cla.getConnectionParameters().buildUrl(), cla.getUser(), password)) {
+            importUom(conn);
+            importSrs(conn);
+        }
         return 0;
     }
 

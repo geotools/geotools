@@ -225,6 +225,8 @@ public class Import extends AbstractCmd {
         }
     }
 
+    // won't close cleanly in all cases, but the app exists anyways
+    @SuppressWarnings("PMD.CloseResource")
     public static void start(String[] args) {
         Config config = null;
         String spatialTableName = null;
@@ -417,7 +419,6 @@ public class Import extends AbstractCmd {
                 imp.fillSpatialTable();
                 con.commit();
             }
-            con.close();
         } catch (Exception e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             System.exit(1);
@@ -639,34 +640,31 @@ public class Import extends AbstractCmd {
             return;
         }
 
-        PreparedStatement ps = con.prepareStatement(srsSelect);
+        try (PreparedStatement ps = con.prepareStatement(srsSelect)) {
+            if (schema != null) {
+                ps.setString(1, schema);
+                ps.setString(2, spatialTableName);
+                ps.setString(3, config.getGeomAttributeNameInSpatialTable());
+            } else {
+                ps.setString(1, spatialTableName);
+                ps.setString(2, config.getGeomAttributeNameInSpatialTable());
+            }
 
-        if (schema != null) {
-            ps.setString(1, schema);
-            ps.setString(2, spatialTableName);
-            ps.setString(3, config.getGeomAttributeNameInSpatialTable());
-        } else {
-            ps.setString(1, spatialTableName);
-            ps.setString(2, config.getGeomAttributeNameInSpatialTable());
+            try (ResultSet resultSet = ps.executeQuery()) {
+                if (resultSet.next()) {
+                    srs = resultSet.getInt(1);
+                } else {
+                    String msg =
+                            srsSelect
+                                    + " has no result for "
+                                    + ((schema != null) ? (schema + ",") : "")
+                                    + spatialTableName
+                                    + ","
+                                    + config.getGeomAttributeNameInSpatialTable();
+                    throw new IOException(msg);
+                }
+            }
         }
-
-        ResultSet resultSet = ps.executeQuery();
-
-        if (resultSet.next()) {
-            srs = resultSet.getInt(1);
-        } else {
-            String msg =
-                    srsSelect
-                            + " has no result for "
-                            + ((schema != null) ? (schema + ",") : "")
-                            + spatialTableName
-                            + ","
-                            + config.getGeomAttributeNameInSpatialTable();
-            throw new IOException(msg);
-        }
-
-        resultSet.close();
-        ps.close();
     }
 
     private boolean isJoined() {
@@ -721,14 +719,14 @@ public class Import extends AbstractCmd {
                         + " and "
                         + config.getSpatialTableNameAtribute()
                         + " = ? ";
-        PreparedStatement ps = con.prepareStatement(statmentString);
-        ps.setString(1, config.getCoverageName());
-        ps.setString(2, tileTableName);
-        ps.setString(3, spatialTableName);
-        ResultSet rs = ps.executeQuery();
-        if (rs.next()) count = rs.getInt(1);
-        rs.close();
-        ps.close();
+        try (PreparedStatement ps = con.prepareStatement(statmentString)) {
+            ps.setString(1, config.getCoverageName());
+            ps.setString(2, tileTableName);
+            ps.setString(3, spatialTableName);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) count = rs.getInt(1);
+            }
+        }
 
         if (count == 0) return; // no existing master Record
 
@@ -744,12 +742,12 @@ public class Import extends AbstractCmd {
                         + " and "
                         + config.getSpatialTableNameAtribute()
                         + " = ? ";
-        ps = con.prepareStatement(statmentString);
-        ps.setString(1, config.getCoverageName());
-        ps.setString(2, tileTableName);
-        ps.setString(3, spatialTableName);
-        ps.execute();
-        ps.close();
+        try (PreparedStatement ps = con.prepareStatement(statmentString)) {
+            ps.setString(1, config.getCoverageName());
+            ps.setString(2, tileTableName);
+            ps.setString(3, spatialTableName);
+            ps.execute();
+        }
     }
 
     private byte[] getImageBytes(URL url) throws IOException {

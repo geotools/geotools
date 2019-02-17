@@ -32,11 +32,13 @@ import java.util.Iterator;
  */
 public class TileReader implements Iterator<Tile>, Closeable {
 
+    Statement st;
     ResultSet rs;
     Connection cx;
     Boolean next;
 
-    public TileReader(ResultSet rs, Connection cx) {
+    public TileReader(ResultSet rs, Statement st, Connection cx) {
+        this.st = st;
         this.rs = rs;
         this.cx = cx;
     }
@@ -76,17 +78,18 @@ public class TileReader implements Iterator<Tile>, Closeable {
     }
 
     @Override
+    @SuppressWarnings("PMD.CloseResource") // actually closes everything
     public void close() throws IOException {
-        Statement st;
         try {
-            st = rs.getStatement();
-
-            rs.close();
-            if (st != null && !st.isClosed()) {
-                st.close();
+            try {
+                rs.close();
+            } finally {
+                try {
+                    st.close();
+                } finally {
+                    cx.close();
+                }
             }
-
-            cx.close();
         } catch (SQLException e) {
             throw new IOException(e);
         }

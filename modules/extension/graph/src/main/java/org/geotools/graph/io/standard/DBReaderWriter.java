@@ -78,22 +78,16 @@ public abstract class DBReaderWriter extends AbstractReaderWriter {
         // get underlying generator
         GraphGenerator generator = (GraphGenerator) getProperty(GENERATOR);
 
-        // create database connection
-        Connection conn = getConnection();
-
         // query database to obtain graph information
-        Statement st = conn.createStatement();
-        ResultSet rs = st.executeQuery(getQuery());
-        //    System.out.println(getQuery());
+        try (Connection conn = getConnection();
+                Statement st = conn.createStatement();
+                ResultSet rs = st.executeQuery(getQuery())) {
+            //    System.out.println(getQuery());
 
-        while (rs.next()) {
-            generator.add(readInternal(rs));
+            while (rs.next()) {
+                generator.add(readInternal(rs));
+            }
         }
-
-        // close database connection
-        rs.close();
-        st.close();
-        conn.close();
 
         return (generator.getGraph());
     }
@@ -107,26 +101,23 @@ public abstract class DBReaderWriter extends AbstractReaderWriter {
      */
     public void write(Graph g) throws Exception {
         // get database connection
-        Connection conn = getConnection();
-        Statement st = conn.createStatement();
+        try (Connection conn = getConnection();
+                Statement st = conn.createStatement()) {
 
-        // write nodes if property set
-        if (getProperty(NODES) != null) {
-            for (Iterator itr = g.getNodes().iterator(); itr.hasNext(); ) {
-                writeNode(st, (Node) itr.next());
+            // write nodes if property set
+            if (getProperty(NODES) != null) {
+                for (Iterator itr = g.getNodes().iterator(); itr.hasNext(); ) {
+                    writeNode(st, (Node) itr.next());
+                }
+            }
+
+            // write edges if property set
+            if (getProperty(EDGES) != null) {
+                for (Iterator itr = g.getEdges().iterator(); itr.hasNext(); ) {
+                    writeEdge(st, (Edge) itr.next());
+                }
             }
         }
-
-        // write edges if property set
-        if (getProperty(EDGES) != null) {
-            for (Iterator itr = g.getEdges().iterator(); itr.hasNext(); ) {
-                writeEdge(st, (Edge) itr.next());
-            }
-        }
-
-        // close database connection
-        st.close();
-        conn.close();
     }
 
     /**

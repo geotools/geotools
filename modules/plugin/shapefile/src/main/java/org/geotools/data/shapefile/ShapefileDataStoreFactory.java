@@ -284,17 +284,18 @@ public class ShapefileDataStoreFactory implements FileDataStoreFactorySpi {
                 // Return false if this is a VPF directory
                 if (dir != null && dir.isDirectory() && fileType == null) {
                     String dirPath = dir.getPath();
-                    String pathLAT = dirPath.concat(File.separator).concat("LAT");
-                    String pathLHT = dirPath.concat(File.separator).concat("LHT");
-                    String pathDHT = dirPath.concat(File.separator).concat("DHT");
 
-                    if (new File(pathLAT).exists()
-                            || new File(pathLHT).exists()
-                            || new File(pathDHT).exists()
-                            || new File(pathLAT.toLowerCase()).exists()
-                            || new File(pathLHT.toLowerCase()).exists()
-                            || new File(pathDHT.toLowerCase()).exists()) {
-                        return false;
+                    String[] vpfTables = {"LAT", "LHT", "DHT", "lat", "lht", "dht"};
+
+                    for (int itab = 0; itab < vpfTables.length; itab++) {
+
+                        String tabFilename = vpfTables[itab];
+
+                        String pathTab = dirPath.concat(File.separator).concat(tabFilename);
+
+                        if (new File(pathTab).exists()) {
+                            return false;
+                        }
                     }
                 }
 

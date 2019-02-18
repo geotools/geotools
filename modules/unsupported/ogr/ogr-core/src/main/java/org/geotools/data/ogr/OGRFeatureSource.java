@@ -81,7 +81,7 @@ class OGRFeatureSource extends ContentFeatureSource {
             return null;
         } else {
             // encodable, we then encode and get the bounds
-            Object dataSource = null;
+            OGRDataSource dataSource = null;
             Object layer = null;
 
             try {
@@ -104,7 +104,7 @@ class OGRFeatureSource extends ContentFeatureSource {
                     ogr.LayerRelease(layer);
                 }
                 if (dataSource != null) {
-                    ogr.DataSourceRelease(dataSource);
+                    dataSource.close();
                 }
             }
         }
@@ -124,11 +124,15 @@ class OGRFeatureSource extends ContentFeatureSource {
                     new GeometryMapper.WKB(new GeometryFactory(), ogr)
                             .parseGTGeometry(spatialFilter);
             ogr.LayerSetSpatialFilter(layer, ogrGeometry);
+        } else {
+            ogr.LayerSetSpatialFilter(layer, null);
         }
 
         String attFilter = filterTx.getAttributeFilter();
         if (attFilter != null) {
             ogr.LayerSetAttributeFilter(layer, attFilter);
+        } else {
+            ogr.LayerSetAttributeFilter(layer, null);
         }
     }
 
@@ -143,7 +147,7 @@ class OGRFeatureSource extends ContentFeatureSource {
             return -1;
         } else {
             // encode and count
-            Object dataSource = null;
+            OGRDataSource dataSource = null;
             Object layer = null;
 
             try {
@@ -161,7 +165,7 @@ class OGRFeatureSource extends ContentFeatureSource {
                     ogr.LayerRelease(layer);
                 }
                 if (dataSource != null) {
-                    ogr.DataSourceRelease(dataSource);
+                    dataSource.close();
                 }
             }
         }
@@ -174,7 +178,7 @@ class OGRFeatureSource extends ContentFeatureSource {
     }
 
     protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(
-            Object dataSource, Object layer, Query query) throws IOException {
+            OGRDataSource dataSource, Object layer, Query query) throws IOException {
         // check how much we can encode
         OGRFilterTranslator filterTx = new OGRFilterTranslator(getSchema(), query.getFilter());
         if (Filter.EXCLUDE.equals(filterTx.getFilter())) {
@@ -238,12 +242,12 @@ class OGRFeatureSource extends ContentFeatureSource {
             if (layer == null) {
                 // We only need ExecuteSQL if the user specified sorting
                 if (query.getSortBy() == null || query.getSortBy().length == 0) {
-                    layer = ogr.DataSourceGetLayerByName(dataSource, getSchema().getTypeName());
+                    layer = dataSource.getLayerByName(getSchema().getTypeName());
                     setLayerFilters(layer, filterTx);
                 }
                 // build the layer query and execute it
                 else {
-                    Object driver = ogr.DataSourceGetDriver(dataSource);
+                    Object driver = dataSource.getDriver();
                     String driverName = ogr.DriverGetName(driver);
                     ogr.DriverRelease(driver);
                     boolean isNonOgrSql = doesDriverUseNonOgrSql(driverName);
@@ -259,9 +263,7 @@ class OGRFeatureSource extends ContentFeatureSource {
                             }
                         }
                         if (needsFid) {
-                            layer =
-                                    ogr.DataSourceGetLayerByName(
-                                            dataSource, getSchema().getTypeName());
+                            layer = dataSource.getLayerByName(getSchema().getTypeName());
                             fidColumnName = ogr.LayerGetFIDColumnName(layer);
                             ogr.LayerRelease(layer);
                             if (fidColumnName == null) {
@@ -285,7 +287,7 @@ class OGRFeatureSource extends ContentFeatureSource {
                                 new GeometryMapper.WKB(new GeometryFactory(), ogr)
                                         .parseGTGeometry(spatialFilter);
                     }
-                    layer = ogr.DataSourceExecuteSQL(dataSource, sql, spatialFilterPtr);
+                    layer = dataSource.executeSQL(sql, spatialFilterPtr);
                     if (layer == null) {
                         throw new IOException("Failed to query the source layer with SQL: " + sql);
                     }
@@ -321,7 +323,7 @@ class OGRFeatureSource extends ContentFeatureSource {
                     ogr.LayerRelease(layer);
                 }
                 if (dataSource != null) {
-                    ogr.DataSourceRelease(dataSource);
+                    dataSource.close();
                 }
             }
         }
@@ -460,7 +462,7 @@ class OGRFeatureSource extends ContentFeatureSource {
         String typeName = getEntry().getTypeName();
         String namespaceURI = getDataStore().getNamespaceURI();
 
-        Object dataSource = null;
+        OGRDataSource dataSource = null;
         Object layer = null;
         try {
             // grab the layer definition
@@ -474,7 +476,7 @@ class OGRFeatureSource extends ContentFeatureSource {
                 ogr.LayerRelease(layer);
             }
             if (dataSource != null) {
-                ogr.DataSourceRelease(dataSource);
+                dataSource.close();
             }
         }
     }

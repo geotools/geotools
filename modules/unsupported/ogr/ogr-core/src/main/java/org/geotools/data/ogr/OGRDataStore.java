@@ -19,7 +19,6 @@ package org.geotools.data.ogr;
 import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -50,32 +49,50 @@ import org.opengis.feature.type.Name;
 @SuppressWarnings("rawtypes")
 public class OGRDataStore extends ContentDataStore {
 
+    OGRDataSourcePool dataSourcePool;
+
     OGR ogr;
 
     String ogrSourceName;
 
     String ogrDriver;
 
-    public OGRDataStore(String ogrName, String ogrDriver, URI namespace, OGR ogr) {
+    public OGRDataStore(
+            String ogrName,
+            String ogrDriver,
+            URI namespace,
+            OGR ogr,
+            OGRDataSourcePool dataSourcePool) {
         if (namespace != null) {
             setNamespaceURI(namespace.toString());
         }
         this.ogrSourceName = ogrName;
         this.ogrDriver = ogrDriver;
         this.ogr = ogr;
+        this.dataSourcePool = dataSourcePool;
+    }
+
+    public OGRDataStore(String ogrName, String ogrDriver, URI namespace, OGR ogr)
+            throws IOException {
+        this(
+                ogrName,
+                ogrDriver,
+                namespace,
+                ogr,
+                new OGRDataSourcePool(ogr, ogrName, ogrDriver, Collections.emptyMap()));
     }
 
     @Override
     protected List<Name> createTypeNames() throws IOException {
-        Object dataSource = null;
+        OGRDataSource dataSource = null;
         Object layer = null;
         try {
             dataSource = openOGRDataSource(false);
 
-            List<Name> result = new ArrayList<Name>();
-            int count = ogr.DataSourceGetLayerCount(dataSource);
+            List<Name> result = new ArrayList<>();
+            int count = dataSource.getLayerCount();
             for (int i = 0; i < count; i++) {
-                layer = ogr.DataSourceGetLayer(dataSource, i);
+                layer = dataSource.getLayer(i);
                 String name = ogr.LayerGetName(layer);
                 if (name != null) {
                     result.add(new NameImpl(getNamespaceURI(), name));
@@ -87,51 +104,21 @@ public class OGRDataStore extends ContentDataStore {
             LOGGER.log(Level.FINE, "Error looking up type names", e);
             return Collections.emptyList();
         } finally {
-            if (dataSource != null) {
-                ogr.DataSourceRelease(dataSource);
-            }
             if (layer != null) {
                 ogr.LayerRelease(layer);
             }
+            if (dataSource != null) {
+                dataSource.close();
+            }
         }
     }
 
-    Object openOGRDataSource(boolean update) throws IOException {
-        Object ds = null;
-
-        int mode = update ? 1 : 0;
-        if (ogrDriver != null) {
-            Object driver = ogr.GetDriverByName(ogrDriver);
-            if (driver == null) {
-                throw new IOException("Could not find a driver named " + driver);
-            }
-            ds = ogr.DriverOpen(driver, ogrSourceName, mode);
-            if (ds == null) {
-                throw new IOException(
-                        "OGR could not open '"
-                                + ogrSourceName
-                                + "' in "
-                                + (update ? "read-write" : "read-only")
-                                + " mode with driver "
-                                + ogrDriver);
-            }
-        } else {
-            ds = ogr.OpenShared(ogrSourceName, mode);
-            if (ds == null) {
-                throw new IOException(
-                        "OGR could not open '"
-                                + ogrSourceName
-                                + "' in "
-                                + (update ? "read-write" : "read-only")
-                                + " mode");
-            }
-        }
-
-        return ds;
+    OGRDataSource openOGRDataSource(boolean update) throws IOException {
+        return this.dataSourcePool.getDataSource(update);
     }
 
-    Object openOGRLayer(Object dataSource, String layerName) throws IOException {
-        Object layer = ogr.DataSourceGetLayerByName(dataSource, layerName);
+    Object openOGRLayer(OGRDataSource dataSource, String layerName) throws IOException {
+        Object layer = dataSource.getLayerByName(layerName);
         if (layer == null) {
             throw new IOException("OGR could not find layer '" + layerName + "'");
         }
@@ -148,14 +135,15 @@ public class OGRDataStore extends ContentDataStore {
     }
 
     public boolean supportsInPlaceWrite(String typeName) throws IOException {
-        Object ds = null;
+        OGRDataSource ds = null;
         Object l = null;
         try {
             // try opening in update mode
-            ds = ogr.Open(ogrSourceName, 1);
-            if (ds == null) {
+            Object rawDs = ogr.Open(ogrSourceName, 1);
+            if (rawDs == null) {
                 return false;
             }
+            ds = new OGRDataSource(ogr, null, rawDs, true);
             l = openOGRLayer(ds, typeName);
 
             // for the moment we support working only with random writers
@@ -165,7 +153,7 @@ public class OGRDataStore extends ContentDataStore {
             return canDelete && canWriteRandom && canWriteSequential;
         } finally {
             if (l != null) ogr.LayerRelease(l);
-            if (ds != null) ogr.DataSourceRelease(ds);
+            if (ds != null) ds.close();
         }
     }
 
@@ -185,19 +173,19 @@ public class OGRDataStore extends ContentDataStore {
      */
     public void createSchema(SimpleFeatureType schema, boolean approximateFields, String[] options)
             throws IOException {
-        Object dataSource = null;
+        OGRDataSource dataSource = null;
         Object layer = null;
 
         try {
             // either open datasource, or try creating one
-            dataSource = openOrCreateDataSource(options, dataSource);
+            dataSource = dataSourcePool.openOrCreateDataSource(options);
 
             FeatureTypeMapper mapper = new FeatureTypeMapper(ogr);
 
             layer = createNewLayer(schema, dataSource, options, mapper);
 
             // check the ability to create fields
-            Object driver = ogr.DataSourceGetDriver(dataSource);
+            Object driver = dataSource.getDriver();
             String driverName = ogr.DriverGetName(driver);
             ogr.DriverRelease(driver);
             if (!driverName.equalsIgnoreCase("georss")
@@ -223,7 +211,7 @@ public class OGRDataStore extends ContentDataStore {
                 ogr.LayerRelease(layer);
             }
             if (dataSource != null) {
-                ogr.DataSourceRelease(dataSource);
+                dataSource.close();
             }
         }
     }
@@ -245,13 +233,13 @@ public class OGRDataStore extends ContentDataStore {
     public void createSchema(
             SimpleFeatureCollection data, boolean approximateFields, String[] options)
             throws IOException {
-        Object dataSource = null;
+        OGRDataSource dataSource = null;
         Object layer = null;
         SimpleFeatureType schema = data.getSchema();
         SimpleFeatureIterator features;
         try {
             // either open datasource, or try creating one
-            dataSource = openOrCreateDataSource(options, dataSource);
+            dataSource = dataSourcePool.openOrCreateDataSource(options);
 
             FeatureTypeMapper mapper = new FeatureTypeMapper(ogr);
 
@@ -259,7 +247,7 @@ public class OGRDataStore extends ContentDataStore {
             layer = createNewLayer(schema, dataSource, options, mapper);
 
             // check the ability to create fields
-            Object driver = ogr.DataSourceGetDriver(dataSource);
+            Object driver = dataSource.getDriver();
             String driverName = ogr.DriverGetName(driver);
             ogr.DriverRelease(driver);
             if (!driverName.equalsIgnoreCase("georss")
@@ -349,13 +337,16 @@ public class OGRDataStore extends ContentDataStore {
                 ogr.LayerRelease(layer);
             }
             if (dataSource != null) {
-                ogr.DataSourceRelease(dataSource);
+                dataSource.close();
             }
         }
     }
 
     private Object createNewLayer(
-            SimpleFeatureType schema, Object dataSource, String[] options, FeatureTypeMapper mapper)
+            SimpleFeatureType schema,
+            OGRDataSource dataSource,
+            String[] options,
+            FeatureTypeMapper mapper)
             throws IOException, DataSourceException {
         Object layer;
         // get the spatial reference corresponding to the default geometry
@@ -366,8 +357,8 @@ public class OGRDataStore extends ContentDataStore {
 
         // create the layer
         layer =
-                ogr.DataSourceCreateLayer(
-                        dataSource, schema.getTypeName(), spatialReference, ogrGeomType, options);
+                dataSource.createLayer(
+                        schema.getTypeName(), spatialReference, ogrGeomType, options);
         if (layer == null) {
             throw new DataSourceException(
                     "Could not create the OGR layer: " + ogr.GetLastErrorMsg());
@@ -375,28 +366,12 @@ public class OGRDataStore extends ContentDataStore {
         return layer;
     }
 
-    private Object openOrCreateDataSource(String[] options, Object dataSource)
-            throws IOException, DataSourceException {
+    @Override
+    public void dispose() {
         try {
-            dataSource = openOGRDataSource(true);
-        } catch (IOException e) {
-            if (ogrDriver != null) {
-                Object driver = ogr.GetDriverByName(ogrDriver);
-                if (driver != null) {
-                    dataSource = ogr.DriverCreateDataSource(driver, ogrSourceName, options);
-                    ogr.DriverRelease(driver);
-                }
-                if (dataSource == null)
-                    throw new IOException(
-                            "Could not create OGR data source with driver "
-                                    + ogrDriver
-                                    + " and options "
-                                    + Arrays.toString(options));
-            } else {
-                throw new DataSourceException(
-                        "Driver not provided, and could not " + "open data source neither");
-            }
+            super.dispose();
+        } finally {
+            dataSourcePool.close();
         }
-        return dataSource;
     }
 }

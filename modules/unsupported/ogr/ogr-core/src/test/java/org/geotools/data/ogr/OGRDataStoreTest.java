@@ -22,7 +22,9 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import org.geotools.TestData;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataUtilities;
@@ -63,21 +65,30 @@ import org.opengis.filter.FilterFactory;
  */
 public abstract class OGRDataStoreTest extends TestCaseSupport {
 
+    private List<OGRDataStore> stores = new ArrayList<>();
+
     protected OGRDataStoreTest(Class<? extends OGRDataStoreFactory> dataStoreFactoryClass) {
         super(dataStoreFactoryClass);
     }
 
+    @Override
+    protected void tearDown() throws Exception {
+        for (OGRDataStore store : stores) {
+            store.dispose();
+        }
+    }
+
     public void testGetTypeNames() throws FileNotFoundException, IOException {
-        OGRDataStore store = new OGRDataStore(getAbsolutePath(STATE_POP), null, null, ogr);
+        OGRDataStore store = createDataStore(getAbsolutePath(STATE_POP), null);
         assertEquals(1, store.getTypeNames().length);
         assertEquals("statepop", store.getTypeNames()[0]);
-        store = new OGRDataStore(getAbsolutePath(MIXED), null, null, ogr);
+        store = createDataStore(getAbsolutePath(MIXED), null);
         assertEquals(1, store.getTypeNames().length);
         assertEquals("mixed", store.getTypeNames()[0]);
     }
 
     public void testSchemaPop() throws Exception {
-        OGRDataStore s = new OGRDataStore(getAbsolutePath(STATE_POP), null, null, ogr);
+        OGRDataStore s = createDataStore(getAbsolutePath(STATE_POP), null);
         SimpleFeatureType schema = s.getSchema(s.getTypeNames()[0]);
         assertEquals("Number of Attributes", 253, schema.getAttributeCount());
         assertTrue(
@@ -87,7 +98,7 @@ public abstract class OGRDataStoreTest extends TestCaseSupport {
     }
 
     public void testSchemaMix() throws Exception {
-        OGRDataStore s = new OGRDataStore(getAbsolutePath(MIXED), null, null, ogr);
+        OGRDataStore s = createDataStore(getAbsolutePath(MIXED), null);
         SimpleFeatureType schema = s.getSchema(s.getTypeNames()[0]);
         assertEquals("Number of Attributes", 11, schema.getAttributeCount());
         // mixed geometry types, only way is to use Geometry as geom type
@@ -108,7 +119,7 @@ public abstract class OGRDataStoreTest extends TestCaseSupport {
     public void testOptimizedEnvelope() throws Exception {
         URL url = TestData.url(STATE_POP);
         ShapefileDataStore sds = new ShapefileDataStore(url);
-        OGRDataStore s = new OGRDataStore(getAbsolutePath(STATE_POP), null, null, ogr);
+        OGRDataStore s = createDataStore(getAbsolutePath(STATE_POP), null);
         String typeName = s.getTypeNames()[0];
 
         ReferencedEnvelope expectedBounds = sds.getFeatureSource().getBounds();
@@ -119,7 +130,7 @@ public abstract class OGRDataStoreTest extends TestCaseSupport {
 
     /** Test count with query startIndex and maxFeatures */
     public void testCountWithOffsetLimit() throws Exception {
-        OGRDataStore s = new OGRDataStore(getAbsolutePath(STATE_POP), null, null, ogr);
+        OGRDataStore s = createDataStore(getAbsolutePath(STATE_POP), null);
         String typeName = s.getTypeNames()[0];
         SimpleFeatureSource featureSource = s.getFeatureSource(typeName);
         Query query = new Query();
@@ -132,7 +143,7 @@ public abstract class OGRDataStoreTest extends TestCaseSupport {
     public void testOptimizedCount() throws Exception {
         URL url = TestData.url(STATE_POP);
         ShapefileDataStore sds = new ShapefileDataStore(url);
-        OGRDataStore s = new OGRDataStore(getAbsolutePath(STATE_POP), null, null, ogr);
+        OGRDataStore s = createDataStore(getAbsolutePath(STATE_POP), null);
         String typeName = s.getTypeNames()[0];
 
         assertEquals(sds.getCount(Query.ALL), s.getFeatureSource(typeName).getCount(Query.ALL));
@@ -169,7 +180,7 @@ public abstract class OGRDataStoreTest extends TestCaseSupport {
     public void testShapefileComparison() throws Exception {
         URL url = TestData.url(STATE_POP);
         ShapefileDataStore sds = new ShapefileDataStore(url);
-        OGRDataStore ods = new OGRDataStore(getAbsolutePath(STATE_POP), null, null, ogr);
+        OGRDataStore ods = createDataStore(getAbsolutePath(STATE_POP), null);
 
         assertFeatureTypeEquals(sds.getSchema(), ods.getSchema(sds.getSchema().getTypeName()));
 
@@ -199,7 +210,7 @@ public abstract class OGRDataStoreTest extends TestCaseSupport {
 
     public void testLoadGeometry() throws Exception {
         // load up the store and source
-        OGRDataStore ods = new OGRDataStore(getAbsolutePath(STATE_POP), null, null, ogr);
+        OGRDataStore ods = createDataStore(getAbsolutePath(STATE_POP), null);
         SimpleFeatureSource fs = ods.getFeatureSource("statepop");
 
         // query just the geometry field, check the collection returned
@@ -287,9 +298,7 @@ public abstract class OGRDataStoreTest extends TestCaseSupport {
         while (idx > 0) {
             FeatureWriter writer = null;
             try {
-                writer =
-                        sds.getFeatureWriter(
-                                sds.getTypeNames()[0], Filter.INCLUDE, Transaction.AUTO_COMMIT);
+                writer = sds.getFeatureWriter(typeName, Filter.INCLUDE, Transaction.AUTO_COMMIT);
                 while (writer.hasNext()) {
                     writer.next();
                 }
@@ -297,7 +306,6 @@ public abstract class OGRDataStoreTest extends TestCaseSupport {
             } finally {
                 if (writer != null) {
                     writer.close();
-                    writer = null;
                 }
             }
             assertEquals(--idx, countFeatures(loadFeatures(sds, typeName)));
@@ -308,7 +316,7 @@ public abstract class OGRDataStoreTest extends TestCaseSupport {
         String[] fileNames = shapeFileNames("test");
         cleanFiles(fileNames);
         String absolutePath = new File(fileNames[0]).getAbsolutePath();
-        OGRDataStore ds = new OGRDataStore(absolutePath, "ESRI shapefile", null, ogr);
+        OGRDataStore ds = createDataStore(absolutePath, "ESRI shapefile");
         SimpleFeatureType schema =
                 DataUtilities.createType(
                         "test",
@@ -340,7 +348,7 @@ public abstract class OGRDataStoreTest extends TestCaseSupport {
         cleanFiles(files);
 
         File file = new File(files[0]);
-        OGRDataStore ds = new OGRDataStore(file.getAbsolutePath(), "ESRI shapefile", null, ogr);
+        OGRDataStore ds = createDataStore(file.getAbsolutePath(), "ESRI shapefile");
         SimpleFeatureType schema =
                 DataUtilities.createType(typeName, "geom:Point,cat:int,name:string");
         ds.createSchema(schema);
@@ -392,7 +400,7 @@ public abstract class OGRDataStoreTest extends TestCaseSupport {
         FeatureCollection features = createFeatureCollection();
         File tmpFile = getTempFile("test-shp", ".shp");
         tmpFile.delete();
-        OGRDataStore s = new OGRDataStore(tmpFile.getAbsolutePath(), "ESRI shapefile", null, ogr);
+        OGRDataStore s = createDataStore(tmpFile.getAbsolutePath(), "ESRI shapefile");
         writeFeatures(s, features);
     }
 
@@ -404,7 +412,7 @@ public abstract class OGRDataStoreTest extends TestCaseSupport {
         SimpleFeatureCollection features = createFeatureCollection();
         File tmpFile = getTempFile("test-geojson", ".json");
         tmpFile.delete();
-        OGRDataStore s = new OGRDataStore(tmpFile.getAbsolutePath(), "GeoJSON", null, ogr);
+        OGRDataStore s = createDataStore(tmpFile.getAbsolutePath(), "GeoJSON");
         s.createSchema(features, true, null);
         assertEquals(1, s.getTypeNames().length);
         // OGR GeoJSON layer name is "OGRGeoJSON" in GDAL up to 2.1 and "junk" (set from feature
@@ -434,7 +442,7 @@ public abstract class OGRDataStoreTest extends TestCaseSupport {
         SimpleFeatureCollection features = createFeatureCollection();
         File tmpFile = getTempFile("test-csv", ".csv");
         tmpFile.delete();
-        OGRDataStore s = new OGRDataStore(tmpFile.getAbsolutePath(), "CSV", null, ogr);
+        OGRDataStore s = createDataStore(tmpFile.getAbsolutePath(), "CSV");
         s.createSchema(features, true, new String[] {"GEOMETRY=AS_WKT"});
         assertEquals(1, s.getTypeNames().length);
         String typeName = tmpFile.getName().substring(0, tmpFile.getName().lastIndexOf(".csv"));
@@ -463,7 +471,7 @@ public abstract class OGRDataStoreTest extends TestCaseSupport {
         SimpleFeatureCollection features = createFeatureCollection();
         File tmpFile = getTempFile("test-gmt", ".gmt");
         tmpFile.delete();
-        OGRDataStore s = new OGRDataStore(tmpFile.getAbsolutePath(), "GMT", null, ogr);
+        OGRDataStore s = createDataStore(tmpFile.getAbsolutePath(), "GMT");
         s.createSchema(features, true, null);
         assertEquals(1, s.getTypeNames().length);
         String typeName = tmpFile.getName().substring(0, tmpFile.getName().lastIndexOf(".gmt"));
@@ -492,7 +500,7 @@ public abstract class OGRDataStoreTest extends TestCaseSupport {
         SimpleFeatureCollection features = createFeatureCollection();
         File tmpFile = getTempFile("test-gpx", ".gpx");
         tmpFile.delete();
-        OGRDataStore s = new OGRDataStore(tmpFile.getAbsolutePath(), "GPX", null, ogr);
+        OGRDataStore s = createDataStore(tmpFile.getAbsolutePath(), "GPX");
         s.createSchema(features, true, new String[] {"GPX_USE_EXTENSIONS=YES"});
         // waypoints, routes, tracks, route_points, track_points
         assertEquals(5, s.getTypeNames().length);
@@ -521,7 +529,7 @@ public abstract class OGRDataStoreTest extends TestCaseSupport {
         SimpleFeatureCollection features = createFeatureCollection();
         File tmpFile = getTempFile("test-gml", ".gml");
         tmpFile.delete();
-        OGRDataStore s = new OGRDataStore(tmpFile.getAbsolutePath(), "GML", null, ogr);
+        OGRDataStore s = createDataStore(tmpFile.getAbsolutePath(), "GML");
         s.createSchema(features, true, null);
         assertEquals(1, s.getTypeNames().length);
         SimpleFeatureCollection fc = s.getFeatureSource("junk").getFeatures();
@@ -549,7 +557,7 @@ public abstract class OGRDataStoreTest extends TestCaseSupport {
         SimpleFeatureCollection features = createFeatureCollection();
         File tmpFile = getTempFile("test-kml", ".kml");
         tmpFile.delete();
-        OGRDataStore s = new OGRDataStore(tmpFile.getAbsolutePath(), "KML", null, ogr);
+        OGRDataStore s = createDataStore(tmpFile.getAbsolutePath(), "KML");
         s.createSchema(features, true, null);
         assertEquals(1, s.getTypeNames().length);
         SimpleFeatureCollection fc = s.getFeatureSource("junk").getFeatures();
@@ -579,7 +587,7 @@ public abstract class OGRDataStoreTest extends TestCaseSupport {
         SimpleFeatureCollection features = createFeatureCollection();
         File tmpFile = getTempFile("test-georss", ".rss");
         tmpFile.delete();
-        OGRDataStore s = new OGRDataStore(tmpFile.getAbsolutePath(), "GeoRSS", null, ogr);
+        OGRDataStore s = createDataStore(tmpFile.getAbsolutePath(), "GeoRSS");
         s.createSchema(
                 features,
                 true,
@@ -610,7 +618,7 @@ public abstract class OGRDataStoreTest extends TestCaseSupport {
     }
 
     public void testAttributeFilters() throws Exception {
-        OGRDataStore s = new OGRDataStore(getAbsolutePath(STATE_POP), null, null, ogr);
+        OGRDataStore s = createDataStore(getAbsolutePath(STATE_POP), null);
         FeatureSource fs = s.getFeatureSource(s.getTypeNames()[0]);
 
         // equality filter
@@ -635,7 +643,7 @@ public abstract class OGRDataStoreTest extends TestCaseSupport {
         SimpleFeatureCollection features = createFeatureCollection();
         File tmpFile = getTempFile("test-sql", ".sqlite");
         tmpFile.delete();
-        OGRDataStore s = new OGRDataStore(tmpFile.getAbsolutePath(), "SQLite", null, ogr);
+        OGRDataStore s = createDataStore(tmpFile.getAbsolutePath(), "SQLite");
         s.createSchema(features, true, null);
         assertEquals(1, s.getTypeNames().length);
         SimpleFeatureCollection fc = s.getFeatureSource("junk").getFeatures();
@@ -664,7 +672,7 @@ public abstract class OGRDataStoreTest extends TestCaseSupport {
         SimpleFeatureCollection features = createFeatureCollection();
         File tmpFile = getTempFile("test-sql", ".sqlite");
         tmpFile.delete();
-        OGRDataStore s = new OGRDataStore(tmpFile.getAbsolutePath(), "SQLite", null, ogr);
+        OGRDataStore s = createDataStore(tmpFile.getAbsolutePath(), "SQLite");
         s.createSchema(features, true, null);
         assertEquals(1, s.getTypeNames().length);
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
@@ -699,7 +707,7 @@ public abstract class OGRDataStoreTest extends TestCaseSupport {
         SimpleFeatureCollection features = createFeatureCollectionWithUpperCaseAttributes();
         File tmpFile = getTempFile("test-sqlite", ".db");
         tmpFile.delete();
-        OGRDataStore s = new OGRDataStore(tmpFile.getAbsolutePath(), "SQLite", null, ogr);
+        OGRDataStore s = createDataStore(tmpFile.getAbsolutePath(), "SQLite");
         s.createSchema(features, true, null);
         assertEquals(1, s.getTypeNames().length);
         SimpleFeatureCollection fc = s.getFeatureSource("points").getFeatures();
@@ -743,7 +751,7 @@ public abstract class OGRDataStoreTest extends TestCaseSupport {
     }
 
     public void testGeometryFilters() throws Exception {
-        OGRDataStore s = new OGRDataStore(getAbsolutePath(STATE_POP), null, null, ogr);
+        OGRDataStore s = createDataStore(getAbsolutePath(STATE_POP), null);
         FeatureSource fs = s.getFeatureSource(s.getTypeNames()[0]);
 
         // from one of the GeoServer demo requests
@@ -771,7 +779,7 @@ public abstract class OGRDataStoreTest extends TestCaseSupport {
         //     int_field_0 Integer ;
 
         String tabFile = getAbsolutePath("geot5588/geot5588a.tab");
-        OGRDataStore s = new OGRDataStore(tabFile, "MapInfo File", null, ogr);
+        OGRDataStore s = createDataStore(tabFile, "MapInfo File");
 
         SimpleFeatureType schema = s.getSchema("geot5588a");
         assertEquals(Short.class, schema.getDescriptor("byte_field").getType().getBinding());
@@ -793,16 +801,23 @@ public abstract class OGRDataStoreTest extends TestCaseSupport {
         }
     }
 
+    public OGRDataStore createDataStore(String tabFile, String s) throws IOException {
+        OGRDataStore store = new OGRDataStore(tabFile, s, null, ogr);
+        stores.add(store);
+        return store;
+    }
+
     // ---------------------------------------------------------------------------------------
     // SUPPORT METHODS
     // ---------------------------------------------------------------------------------------
 
     private int countFeatures(SimpleFeatureCollection features) {
         int count = 0;
-        SimpleFeatureIterator fi = features.features();
-        while (fi.hasNext()) {
-            fi.next();
-            count++;
+        try (SimpleFeatureIterator fi = features.features()) {
+            while (fi.hasNext()) {
+                fi.next();
+                count++;
+            }
         }
         return count;
     }
@@ -815,7 +830,7 @@ public abstract class OGRDataStoreTest extends TestCaseSupport {
     private SimpleFeatureSource loadSource(String resource, Query query) throws IOException {
         assertNotNull(query);
 
-        OGRDataStore s = new OGRDataStore(getAbsolutePath(resource), null, null, ogr);
+        OGRDataStore s = createDataStore(getAbsolutePath(resource), null);
         return s.getFeatureSource(s.getTypeNames()[0]);
     }
 
@@ -883,7 +898,7 @@ public abstract class OGRDataStoreTest extends TestCaseSupport {
     private OGRDataStore createDataStore(File f) throws Exception {
         FeatureCollection fc = createFeatureCollection();
         f.delete();
-        OGRDataStore sds = new OGRDataStore(f.getAbsolutePath(), "ESRI shapefile", null, ogr);
+        OGRDataStore sds = createDataStore(f.getAbsolutePath(), "ESRI shapefile");
         writeFeatures(sds, fc);
         return sds;
     }

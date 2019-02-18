@@ -36,7 +36,6 @@ import org.geotools.util.logging.Logging;
  * Implementation of the DataStore service provider interface for OGR.
  *
  * @author Andrea Aime, GeoSolution
-
  * @version $Id$
  */
 @SuppressWarnings("rawtypes")
@@ -109,7 +108,6 @@ public abstract class OGRDataStoreFactory implements DataStoreFactorySpi {
      *
      * @param params
      * @throws IOException
-
      * @throws UnsupportedOperationException
      */
     public DataStore createNewDataStore(Map params) throws IOException {

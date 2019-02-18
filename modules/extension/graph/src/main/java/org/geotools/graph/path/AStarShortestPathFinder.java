@@ -49,7 +49,6 @@ public class AStarShortestPathFinder implements GraphWalker {
      * @param graph Graph where we will perform the search.
      * @param source Node to calculate path from.
      * @param target Node to calculate path to.
-     * @param weighter Associates weights with edges in the graph.
      */
     public AStarShortestPathFinder(Graph graph, Node source, Node target, AStarFunctions afuncs) {
         m_target = target;

@@ -70,8 +70,6 @@ import org.xml.sax.Attributes;
 import org.xml.sax.helpers.NamespaceSupport;
 
 /**
- * DOCUMENT ME!
- *
  * @author Rob Atkinson
  * @version $Id$
  * @since 2.4
@@ -101,11 +99,7 @@ public class TimeSeriesTest extends AppSchemaTestSupport {
 
     private FeatureSource<FeatureType, Feature> source;
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @throws Exception DOCUMENT ME!
-     */
+    /** */
     @Before
     public void setUp() throws Exception {
         reader = EmfComplexFeatureReader.newInstance();
@@ -114,11 +108,8 @@ public class TimeSeriesTest extends AppSchemaTestSupport {
     }
 
     /**
-     * DOCUMENT ME!
-     *
      * @param location schema location path discoverable through getClass().getResource()
      * @return
-     * @throws IOException DOCUMENT ME!
      */
     private SchemaIndex loadSchema(URL location) throws IOException {
         URL catalogLocation = getClass().getResource(schemaBase + "observations.oasis.xml");

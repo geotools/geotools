@@ -666,7 +666,6 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
      * Test two transactions one removing feature, and one adding a feature.
      *
      * @throws IllegalAttributeException
-     * @throws Exception DOCUMENT ME!
      */
     public void testTransactionIsolation() throws Exception {
         try (Transaction t1 = new DefaultTransaction();
@@ -1256,15 +1255,7 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
         return count;
     }
 
-    /**
-     * Ensure readers contents equal those in the feature array
-     *
-     * @param features DOCUMENT ME!
-     * @param reader DOCUMENT ME!
-     * @throws NoSuchElementException DOCUMENT ME!
-     * @throws IOException DOCUMENT ME!
-     * @throws IllegalAttributeException DOCUMENT ME!
-     */
+    /** Ensure readers contents equal those in the feature array */
     void assertCovered(
             SimpleFeature[] features, FeatureReader<SimpleFeatureType, SimpleFeature> reader)
             throws NoSuchElementException, IOException, IllegalAttributeException {
@@ -1423,13 +1414,6 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
     /**
      * Ensure that FeatureReader<SimpleFeatureType, SimpleFeature> reader contains exactly the
      * contents of array.
-     *
-     * @param reader DOCUMENT ME!
-     * @param array DOCUMENT ME!
-     * @return DOCUMENT ME!
-     * @throws NoSuchElementException DOCUMENT ME!
-     * @throws IOException DOCUMENT ME!
-     * @throws IllegalAttributeException DOCUMENT ME!
      */
     boolean covers(FeatureReader<SimpleFeatureType, SimpleFeature> reader, SimpleFeature[] array)
             throws NoSuchElementException, IOException, IllegalAttributeException {
@@ -1475,13 +1459,7 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
         return count == array.length;
     }
 
-    /**
-     * Like contain but based on match rather than equals
-     *
-     * @param array DOCUMENT ME!
-     * @param expected DOCUMENT ME!
-     * @return DOCUMENT ME!
-     */
+    /** Like contain but based on match rather than equals */
     boolean containsLax(SimpleFeature[] array, SimpleFeature expected) {
         if ((array == null) || (array.length == 0)) {
             return false;
@@ -1553,10 +1531,6 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
      * Ensure readers contents match those in the feature array
      *
      * <p>Implemented using match on attribute types, not feature id
-     *
-     * @param array DOCUMENT ME!
-     * @param reader DOCUMENT ME!
-     * @throws Exception DOCUMENT ME!
      */
     void assertMatched(
             SimpleFeature[] array, FeatureReader<SimpleFeatureType, SimpleFeature> reader)
@@ -1602,13 +1576,7 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
         fail("array has no match for " + feature);
     }
 
-    /**
-     * Compare based on attributes not getID allows comparison of Diff contents
-     *
-     * @param expected DOCUMENT ME!
-     * @param actual DOCUMENT ME!
-     * @return DOCUMENT ME!
-     */
+    /** Compare based on attributes not getID allows comparison of Diff contents */
     boolean match(SimpleFeature expected, SimpleFeature actual) {
         SimpleFeatureType type = expected.getFeatureType();
 

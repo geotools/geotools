@@ -231,8 +231,8 @@ public class ImageMosaicFileResourceInfo extends DefaultResourceInfo implements 
          * <p>The method also look for supportFiles.
          *
          * @param file
-         * @paran aggregate, whether aggregation queries should be invoked to extract domains
-         * @param firstFeature, sample feature to be used when no aggregation is needed
+         * @paran aggregate whether aggregation queries should be invoked to extract domains
+         * @param firstFeature sample feature to be used when no aggregation is needed
          * @return
          */
         private FileGroup buildFileGroup(File file, boolean aggregate, SimpleFeature firstFeature) {

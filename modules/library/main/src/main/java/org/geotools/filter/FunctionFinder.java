@@ -161,7 +161,7 @@ public class FunctionFinder {
      *
      * @param name Function name; this will need to be an exact match
      * @param parameters Set of Expressions to use as function parameters
-     * @param fallbackValue Literal to use if an implementation could not be found
+     * @param fallback Literal to use if an implementation could not be found
      * @return Function for the provided name, may be a FallbackFunction if an implementation could
      *     not be found
      */
@@ -182,7 +182,7 @@ public class FunctionFinder {
      *
      * @param name Function name; this will need to be an exact match
      * @param parameters Set of Expressions to use as function parameters
-     * @param fallbackValue Literal to use if an implementation could not be found
+     * @param fallback Literal to use if an implementation could not be found
      * @return Function for the provided name, may be a FallbackFunction if an implementation could
      *     not be found
      */

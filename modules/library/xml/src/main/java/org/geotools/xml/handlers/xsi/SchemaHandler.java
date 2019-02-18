@@ -1320,11 +1320,7 @@ public class SchemaHandler extends XSIElementHandler {
         }
     }
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @return Returns the targetNamespace.
-     */
+    /** @return Returns the targetNamespace. */
     public URI getTargetNamespace() {
         return targetNamespace;
     }

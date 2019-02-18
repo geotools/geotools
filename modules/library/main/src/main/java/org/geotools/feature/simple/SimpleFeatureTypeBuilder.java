@@ -549,7 +549,7 @@ public class SimpleFeatureTypeBuilder {
      * <p>If not such binding exists then an attribute type is created on the fly.
      *
      * @param name The name of the attribute.
-     * @param bind The class the attribute is bound to.
+     * @param binding The class the attribute is bound to.
      */
     public void add(String name, Class<?> binding) {
 

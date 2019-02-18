@@ -235,7 +235,7 @@ public class MeasurementRange<T extends Number & Comparable<? super T>> extends 
      *
      * @param type The class to cast to. Must be one of {@link Byte}, {@link Short}, {@link
      *     Integer}, {@link Long}, {@link Float} or {@link Double}.
-     * @param targetUnit the target units.
+     * @param targetUnits the target units.
      * @return The casted range, or {@code this}.
      * @throws IllegalArgumentException if the target units are not compatible with this {@linkplain
      *     #getUnits range units}.

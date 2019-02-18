@@ -46,30 +46,6 @@ You can also evaluate the coverage at a specific point in order to determine wha
    :start-after: // exampleGridCoverageDirect start
    :end-before: // exampleGridCoverageDirect end
 
-
-Views
-'''''
-
-There are several 'views' of a GridCoverage2D object. Views are themselves GridCoverage2D objects but they privilege a particular numerical representation.
-
-The GridCoverage2D can present its values as they were in the original data source; such values are considered to be the 'NATIVE' values. Under a different view, the GridCoverage2D can present the values as transformed by the Category defined for each SampleDimension which are the 'GEOPHYSICAL' values. Under the ViewType.RENDERED view, the values obtained from the GridCoverage2d will be the same as under the 'NATIVE' view unless those values cannot be rendered by the rendering system in which case the GeoTools module will change the values into renderable numbers. The 'PHOTOGRAPHIC' view type will convert the original values first to their geophysical realization and then using the default color table of each Category into some coloured pixel value.
-
-To change the view on a GridCoverage2D called myGridCov, we can::
-  
-  GridCoverage2D scicov = myGridCov.getView(ViewType.GEOPHYSICS);
-
-Similarly we can get a GridCoverage2D view of one of the other kind even going back to the original view.::
-  
-  evaluate(..)
-
-Once armed with the appropriate view, we can use the evaluate(DirectPosition dp) method to obtain a nearest-neighbor interpolated value for any DirectPosition within the extent of the GridCoverage.
-
-As a trivial example, we could evaluate the scientific value of the 'GEOPHYSICS' view created above at a particular DirectPosition with::
-  
-  Object result = scicov.evaluate(somedp);
-
-The return value is dependent on the contents of our grid coverage. There are a series of such evaluate methods which return values in more useful formats.
-
 RenderedImage
 '''''''''''''
 

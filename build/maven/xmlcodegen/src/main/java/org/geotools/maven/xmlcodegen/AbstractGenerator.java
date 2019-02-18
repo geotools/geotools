@@ -104,7 +104,7 @@ public abstract class AbstractGenerator {
     /**
      * Sets the location to write out generated source files.
      *
-     * @param location A file path.
+     * @param sourceLocation A file path.
      */
     public void setSourceLocation(String sourceLocation) {
         this.sourceLocation = sourceLocation;

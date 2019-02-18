@@ -140,8 +140,7 @@ public class VectorToRasterProcess implements VectorProcess {
      * @param attribute source of values for the output grid: either a {@code String} for the name
      *     of a numeric feature property or an {@code org.opengis.filter.expression.Expression} that
      *     evaluates to a numeric value
-     * @param gridWidthInCells width (cell) of the output raster
-     * @param gridHeightInCells height (cell) of the output raster
+     * @param gridDim size of the output raster
      * @param bounds bounds (world coordinates) of the output raster
      * @param covName a name for the output raster
      * @param monitor an optional {@code ProgressListener} (may be {@code null}
@@ -229,7 +228,6 @@ public class VectorToRasterProcess implements VectorProcess {
      * This method is called by {@linkplain #execute} to rasterize an individual feature.
      *
      * @param feature the feature to be rasterized
-     * @param input the intput parameters (ignored in this implementation)
      * @throws java.lang.Exception
      */
     protected void processFeature(SimpleFeature feature, Object attribute) throws Exception {

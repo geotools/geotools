@@ -2,8 +2,8 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *   (C) 2015, Open Source Geospatial Foundation (OSGeo)
- *   (C) 2001, Vivid Solutions
+ *    (C) 2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2001, Vivid Solutions
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -320,7 +320,7 @@ public class WKTWriter2 extends WKTWriter {
      * Converts a <code>CircularString</code> to &lt;CircularString Tagged Text&gt; format, then
      * appends it to the writer.
      *
-     * @param lineString the <code>LineString</code> to process
+     * @param circularString the <code>SingleCurvedGeometry</code></code> to process
      * @param writer the output writer to append to
      */
     private void appendCircularStringTaggedText(
@@ -445,7 +445,8 @@ public class WKTWriter2 extends WKTWriter {
      * Converts a <code>Coordinate</code> to <code>&lt;Point&gt;</code> format, then appends it to
      * the writer.
      *
-     * @param coordinate the <code>Coordinate</code> to process
+     * @param x the x ordinate to process
+     * @param y the x ordinate to process
      * @param writer the output writer to append to
      */
     private void appendControlPoint(double x, double y, Writer writer) throws IOException {

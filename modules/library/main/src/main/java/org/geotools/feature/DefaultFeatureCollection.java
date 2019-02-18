@@ -112,7 +112,7 @@ public class DefaultFeatureCollection
      * Used to create a feature collection to stage content in memory.
      *
      * @param id may be null ... feature id
-     * @param featureType optional, may be null
+     * @param memberType optional, may be null
      */
     public DefaultFeatureCollection(String id, SimpleFeatureType memberType) {
         this.id = id == null ? "featureCollection" : id;

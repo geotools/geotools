@@ -500,13 +500,7 @@ public class NADCONTransform extends AbstractMathTransform
             return (MathTransform2D) super.inverse();
         }
 
-        /**
-         * Restore reference to this object after deserialization.
-         *
-         * @param in DOCUMENT ME!
-         * @throws IOException DOCUMENT ME!
-         * @throws ClassNotFoundException DOCUMENT ME!
-         */
+        /** Restore reference to this object after deserialization. */
         private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
             in.defaultReadObject();
             NADCONTransform.this.inverse = this;

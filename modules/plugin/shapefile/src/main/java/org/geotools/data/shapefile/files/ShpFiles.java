@@ -117,7 +117,7 @@ public class ShpFiles {
     /**
      * Searches for all the files and adds then to the map of files.
      *
-     * @param file any one of the shapefile files
+     * @param url any one of the shapefile files
      */
     public ShpFiles(URL url) throws IllegalArgumentException {
         init(url);

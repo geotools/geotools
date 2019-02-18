@@ -2033,7 +2033,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
      *
      * @param method The EPSG code for the operation method.
      * @param operation The EPSG code for the operation (conversion or transformation).
-     * @param value The parameter values to fill.
+     * @param parameters The parameter values to fill.
      * @throws SQLException if a SQL statement failed.
      */
     private void fillParameterValues(
@@ -3242,10 +3242,8 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
         /**
          * Creates a new set of authority codes for the specified type.
          *
-         * @param connection The connection to the EPSG database.
          * @param table The table to query.
          * @param type The type to query.
-         * @param factory The factory originator.
          */
         public AuthorityCodeSet(final TableInfo table, final Class type) {
             final StringBuilder buffer = new StringBuilder("SELECT ");

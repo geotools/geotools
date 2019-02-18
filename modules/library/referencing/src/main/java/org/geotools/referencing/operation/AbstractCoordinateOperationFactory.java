@@ -520,8 +520,8 @@ public abstract class AbstractCoordinateOperationFactory extends ReferencingFact
      * ConcatenatedOperation}. If a concatenated operation is created, it will get an automatically
      * generated name.
      *
-     * @param step1 The first step, or {@code null} for the identity operation.
-     * @param step2 The second step, or {@code null} for the identity operation.
+     * @param candidatesStep1 The first step, or {@code null} for the identity operation.
+     * @param candidatesStep2 The second step, or {@code null} for the identity operation.
      * @return A concatenated operation, or {@code null} if all arguments was nul.
      * @throws FactoryException if the operation can't be constructed.
      */

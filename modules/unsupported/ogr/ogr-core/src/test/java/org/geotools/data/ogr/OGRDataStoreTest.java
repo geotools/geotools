@@ -671,7 +671,7 @@ public abstract class OGRDataStoreTest extends TestCaseSupport {
         Query query = new Query();
         query.setSortBy(
                 new org.opengis.filter.sort.SortBy[] {
-                    ff.sort("f", org.opengis.filter.sort.SortOrder.ASCENDING)
+                    ff.sort("float", org.opengis.filter.sort.SortOrder.ASCENDING)
                 });
         SimpleFeatureCollection fc = s.getFeatureSource("junk").getFeatures(query);
         assertEquals(features.size(), fc.size());
@@ -749,7 +749,13 @@ public abstract class OGRDataStoreTest extends TestCaseSupport {
         // from one of the GeoServer demo requests
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         Filter f = ff.bbox("the_geom", -75.102613, 40.212597, -72.361859, 41.512517, null);
-        assertEquals(4, fs.getFeatures(f).size());
+
+        int numberOfFeatures = fs.getFeatures(f).size();
+        // If GDAL is compiled with GEOS,
+        // the actual geometries are compared and the result will be 4
+        // If GDAL is NOT compiled with GEOS,
+        // only the bounding boxes are compared the result will be 5
+        assertEquals(s.ogr.IsGEOSEnabled() ? 4 : 5, numberOfFeatures);
 
         // mix in an attribute filter
         f = ff.and(f, ff.greater(ff.property("PERSONS"), ff.literal("10000000")));
@@ -822,18 +828,18 @@ public abstract class OGRDataStoreTest extends TestCaseSupport {
     protected ListFeatureCollection createFeatureCollection() throws Exception {
         SimpleFeatureTypeBuilder tbuilder = new SimpleFeatureTypeBuilder();
         tbuilder.setName("junk");
-        tbuilder.add("a", Point.class);
-        tbuilder.add("b", Byte.class);
-        tbuilder.add("c", Short.class);
-        tbuilder.add("d", Double.class);
-        tbuilder.add("e", Float.class);
-        tbuilder.add("f", String.class);
-        tbuilder.add("g", Date.class);
-        tbuilder.add("h", Boolean.class);
-        tbuilder.add("i", Number.class);
-        tbuilder.add("j", Long.class);
-        tbuilder.add("k", BigDecimal.class);
-        tbuilder.add("l", BigInteger.class);
+        tbuilder.add("point", Point.class);
+        tbuilder.add("byte", Byte.class);
+        tbuilder.add("short", Short.class);
+        tbuilder.add("double", Double.class);
+        tbuilder.add("float", Float.class);
+        tbuilder.add("string", String.class);
+        tbuilder.add("date", Date.class);
+        tbuilder.add("boolean", Boolean.class);
+        tbuilder.add("number", Number.class);
+        tbuilder.add("long", Long.class);
+        tbuilder.add("bigdecimal", BigDecimal.class);
+        tbuilder.add("biginteger", BigInteger.class);
         SimpleFeatureType type = tbuilder.buildFeatureType();
         SimpleFeatureBuilder fb = new SimpleFeatureBuilder(type);
         ListFeatureCollection features = new ListFeatureCollection(type);

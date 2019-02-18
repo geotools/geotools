@@ -252,7 +252,7 @@ public class JGrassRegion {
     /**
      * Sets the extent of this window using another window.
      *
-     * @param win another window object
+     * @param region another window object
      */
     public void setExtent(JGrassRegion region) {
         west = region.getWest();

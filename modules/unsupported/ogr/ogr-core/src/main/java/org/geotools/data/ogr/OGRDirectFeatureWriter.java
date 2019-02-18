@@ -130,19 +130,19 @@ class OGRDirectFeatureWriter implements FeatureWriter<SimpleFeatureType, SimpleF
 
         // this will return true only in update mode, otherwise original is null
         boolean changed = !live.equals(original);
-        if (!changed && original != null) {
-            // nothing to do, just skip
-        } else if (original != null) {
-            // not equals, we're updating an existing one
-            Object ogrFeature = mapper.convertGTFeature(layerDefinition, live);
-            ogr.CheckError(ogr.LayerSetFeature(layer, ogrFeature));
-        } else {
-            Object ogrFeature = mapper.convertGTFeature(layerDefinition, live);
+        if (changed || original == null) {
+            if (original != null) {
+                // not equals, we're updating an existing one
+                Object ogrFeature = mapper.convertGTFeature(layerDefinition, live);
+                ogr.CheckError(ogr.LayerSetFeature(layer, ogrFeature));
+            } else {
+                Object ogrFeature = mapper.convertGTFeature(layerDefinition, live);
 
-            ogr.CheckError(ogr.LayerCreateFeature(layer, ogrFeature));
-            String geotoolsId = mapper.convertOGRFID(featureType, ogrFeature);
-            ((FeatureIdImpl) live.getIdentifier()).setID(geotoolsId);
-            ogr.FeatureDestroy(ogrFeature);
+                ogr.CheckError(ogr.LayerCreateFeature(layer, ogrFeature));
+                String geotoolsId = mapper.convertOGRFID(featureType, ogrFeature);
+                ((FeatureIdImpl) live.getIdentifier()).setID(geotoolsId);
+                ogr.FeatureDestroy(ogrFeature);
+            }
         }
 
         // reset state

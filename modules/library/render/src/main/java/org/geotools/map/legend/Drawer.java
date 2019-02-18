@@ -98,8 +98,7 @@ public class Drawer {
      * <p>You may call this method multiple times to draw several features onto the same Image (say
      * for glyph creation).
      *
-     * @param image Image to render on to
-     * @param display Needed to create Colors for image
+     * @param bi Image to render on to
      * @param feature Feature to be rendered
      * @param style Style to render feature with
      */
@@ -388,7 +387,6 @@ public class Drawer {
      *
      * @param f The victim
      * @param s The symbolizer
-     * @param style the resolved style for the specified victim
      * @return The geometry requested in the symbolizer, or the default geometry if none is
      *     specified
      */

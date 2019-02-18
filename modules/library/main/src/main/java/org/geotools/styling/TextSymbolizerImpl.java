@@ -247,7 +247,6 @@ public class TextSymbolizerImpl extends AbstractSymbolizer implements TextSymbol
      * Creates a deep copy clone. TODO: Need to complete the deep copy, currently only shallow copy.
      *
      * @return The deep copy clone.
-     * @throws AssertionError DOCUMENT ME!
      */
     public Object clone() {
         try {

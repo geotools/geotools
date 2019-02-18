@@ -76,8 +76,6 @@ public class ForceCoordinateSystemIterator
      * @param reader
      * @param cs
      * @throws SchemaException
-     * @throws NullPointerException DOCUMENT ME!
-     * @throws IllegalArgumentException DOCUMENT ME!
      */
     public ForceCoordinateSystemIterator(
             FeatureIterator<SimpleFeature> reader,

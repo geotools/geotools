@@ -57,11 +57,7 @@ public interface FIDMapper extends Serializable {
      */
     public void initSupportStructures();
 
-    /**
-     * Returns the FID given the values of the prymary key attributes
-     *
-     * @param attributes DOCUMENT ME!
-     */
+    /** Returns the FID given the values of the prymary key attributes */
     public String getID(Object[] attributes);
 
     /**

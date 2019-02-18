@@ -373,8 +373,6 @@ public final class WorldImageReader extends AbstractGridCoverage2DReader
      *
      * @param params WorldImageReader supports no parameters, it just ignores them.
      * @return a new GridCoverage read from the source.
-     * @throws IllegalArgumentException DOCUMENT ME!
-     * @throws IOException DOCUMENT ME!
      */
     public GridCoverage2D read(GeneralParameterValue[] params)
             throws IllegalArgumentException, IOException {

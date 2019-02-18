@@ -135,7 +135,7 @@ public class ImagingParameters extends AbstractParameter implements ParameterVal
      *     ever by the caller for efficienty.
      * @param types The array returned by {@code listDescriptor.getParamClasses()}, obtained once
      *     for ever by the caller for efficienty.
-     * @param names The array returned by {@code listDescriptor.getEnumeratedParameterNames()},
+     * @param enumerated The array returned by {@code listDescriptor.getEnumeratedParameterNames()},
      *     obtained once for ever by the caller for efficienty.
      */
     private static boolean compatible(

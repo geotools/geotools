@@ -90,7 +90,7 @@ public class Collection_AverageFunction extends FunctionExpressionImpl {
      *
      * <p>To refer to all 'X': <code>featureMember/asterisk/X</code>
      *
-     * @param args function paremeters
+     * @param params function parameters
      * @throws IllegalArgumentException
      */
     public void setParameters(List params) {

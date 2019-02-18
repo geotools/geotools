@@ -69,7 +69,7 @@ public class ResourceIdImpl extends FeatureIdVersionedImpl implements ResourceId
      * @param fid feature id, non null;
      * @param start lower end of the time range, inclusive, or {@code null} only if {@code end !=
      *     null}
-     * @param start upper end of the time range, inclusive, or {@code null} only if {@code start !=
+     * @param end upper end of the time range, inclusive, or {@code null} only if {@code start !=
      *     null}
      */
     public ResourceIdImpl(String fid, Date start, Date end) {

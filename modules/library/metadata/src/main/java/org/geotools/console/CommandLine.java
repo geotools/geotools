@@ -221,7 +221,7 @@ public class CommandLine {
      * Gets the arguments for the given class. The arguments are added in the given set.
      *
      * @param classe The class to parse for arguments.
-     * @param mantatory The set where to put mandatory arguments.
+     * @param mandatory The set where to put mandatory arguments.
      * @param optional The set where to put optional arguments.
      */
     private void getArguments(

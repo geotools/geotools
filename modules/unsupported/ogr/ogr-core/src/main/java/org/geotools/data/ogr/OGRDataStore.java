@@ -19,6 +19,7 @@ package org.geotools.data.ogr;
 import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -235,7 +236,7 @@ public class OGRDataStore extends ContentDataStore {
      * only so as long as it's empty, it's not possible to write against an existing GML file for
      * example.
      *
-     * @param schema the geotools schema
+     * @param data The data to fill into the newly created layer
      * @param approximateFields if true, OGR will try to create fields that are approximations of
      *     the required ones when an exact match cannt be provided
      * @param options OGR data source/layer creation options
@@ -264,6 +265,7 @@ public class OGRDataStore extends ContentDataStore {
             if (!driverName.equalsIgnoreCase("georss")
                     && !driverName.equalsIgnoreCase("gpx")
                     && !driverName.equalsIgnoreCase("sosi")
+                    && !driverName.equalsIgnoreCase("geojson")
                     && !ogr.LayerCanCreateField(layer)) {
                 throw new DataSourceException(
                         "OGR reports it's not possible to create fields on this layer");
@@ -271,7 +273,7 @@ public class OGRDataStore extends ContentDataStore {
 
             // create fields
             Map<String, String> nameMap = new HashMap<String, String>();
-            for (int i = 0, j = 0; i < schema.getAttributeCount(); i++) {
+            for (int i = 0; i < schema.getAttributeCount(); i++) {
                 AttributeDescriptor ad = schema.getDescriptor(i);
                 if (ad == schema.getGeometryDescriptor()) {
                     continue;
@@ -282,7 +284,6 @@ public class OGRDataStore extends ContentDataStore {
                 // the data source might have changed the name of the field, map them
                 String newName = ogr.FieldGetName(fieldDefinition);
                 nameMap.put(newName, ad.getLocalName());
-                j++;
             }
 
             // get back the feature definition
@@ -390,7 +391,7 @@ public class OGRDataStore extends ContentDataStore {
                             "Could not create OGR data source with driver "
                                     + ogrDriver
                                     + " and options "
-                                    + options);
+                                    + Arrays.toString(options));
             } else {
                 throw new DataSourceException(
                         "Driver not provided, and could not " + "open data source neither");

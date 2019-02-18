@@ -56,7 +56,7 @@ public interface ComplexBinding extends Binding {
      * called, the <param>node</param> parse tree will contain different, ie child nodes for those
      * previous elements parsed.
      *
-     * @param childinstance The child element instance
+     * @param childInstance The child element instance
      * @param node The parse node for the parent element.
      * @param context the context in which the child element will be parsed.
      */

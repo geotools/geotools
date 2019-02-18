@@ -536,7 +536,7 @@ public class SimpleFeatureImpl implements SimpleFeature {
         /**
          * Override of equals.
          *
-         * @param other the object to be tested for equality.
+         * @param obj the object to be tested for equality.
          * @return whether other is equal to this attribute Type.
          */
         public boolean equals(Object obj) {

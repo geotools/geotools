@@ -146,7 +146,6 @@ public class StyleImpl implements org.geotools.styling.Style, Cloneable {
      * Clones the Style. Creates deep copy clone of the style.
      *
      * @return the Clone of the style.
-     * @throws RuntimeException DOCUMENT ME!
      * @see org.geotools.styling.Style#clone()
      */
     public Object clone() {

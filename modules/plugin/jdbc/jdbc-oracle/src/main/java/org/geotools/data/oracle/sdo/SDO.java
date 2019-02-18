@@ -915,7 +915,7 @@ public final class SDO {
      * <p>
      *
      * @param list List to add coordiantes to
-     * @param polygon Polygon to be encoded
+     * @param poly Polygon to be encoded
      */
     private static void addCoordinatesInterpretation3(List list, Polygon poly) {
         Envelope e = poly.getEnvelopeInternal();
@@ -1610,32 +1610,17 @@ public final class SDO {
         return array;
     }
 
-    /**
-     * Access D (for dimension) as encoded in GTYPE
-     *
-     * @param GTYPE DOCUMENT ME!
-     * @return DOCUMENT ME!
-     */
+    /** Access D (for dimension) as encoded in GTYPE */
     public static int D(final int GTYPE) {
         return GTYPE / 1000;
     }
 
-    /**
-     * Access L (for LRS) as encoded in GTYPE
-     *
-     * @param GTYPE DOCUMENT ME!
-     * @return DOCUMENT ME!
-     */
+    /** Access L (for LRS) as encoded in GTYPE */
     public static int L(final int GTYPE) {
         return (GTYPE - (D(GTYPE) * 1000)) / 100;
     }
 
-    /**
-     * Access TT (for geometry type) as encoded in GTYPE
-     *
-     * @param GTYPE DOCUMENT ME!
-     * @return DOCUMENT ME!
-     */
+    /** Access TT (for geometry type) as encoded in GTYPE */
     public static int TT(final int GTYPE) {
         return GTYPE - (D(GTYPE) * 1000) - (L(GTYPE) * 100);
     }
@@ -1644,10 +1629,6 @@ public final class SDO {
      * Access STARTING_OFFSET from elemInfo, or -1 if not available.
      *
      * <p>
-     *
-     * @param elemInfo DOCUMENT ME!
-     * @param triplet DOCUMENT ME!
-     * @return DOCUMENT ME!
      */
     private static int STARTING_OFFSET(int[] elemInfo, int triplet) {
         if (((triplet * 3) + 0) >= elemInfo.length) {
@@ -1771,23 +1752,12 @@ public final class SDO {
         return elemInfo[(triplet * 3) + 2];
     }
 
-    /**
-     * Coordinates from <code>(x,y,x2,y2,...)</code> ordinates.
-     *
-     * @param ordinates DOCUMENT ME!
-     * @return DOCUMENT ME!
-     */
+    /** Coordinates from <code>(x,y,x2,y2,...)</code> ordinates. */
     public static Coordinate[] asCoordinates(double[] ordinates) {
         return asCoordinates(ordinates, 2);
     }
 
-    /**
-     * Coordinates from a <code>(x,y,i3..,id,x2,y2...)</code> ordinates.
-     *
-     * @param ordinates DOCUMENT ME!
-     * @param d DOCUMENT ME!
-     * @return DOCUMENT ME!
-     */
+    /** Coordinates from a <code>(x,y,i3..,id,x2,y2...)</code> ordinates. */
     public static Coordinate[] asCoordinates(double[] ordinates, int d) {
         int length = ordinates.length / d;
         Coordinate[] coords = new Coordinate[length];
@@ -1821,7 +1791,6 @@ public final class SDO {
      * @param f CoordinateSequenceFactory used to encode ordiantes for JTS
      * @param GTYPE Encoding of <b>D</b>imension, <b>L</b>RS and <b>TT</b>ype
      * @param ordinates
-     * @throws IllegalArgumentException DOCUMENT ME!
      */
     public static CoordinateSequence coordinates(
             CoordinateSequenceFactory f, final int GTYPE, double[] ordinates) {
@@ -1898,12 +1867,6 @@ public final class SDO {
      * Construct CoordinateSequence with no LRS measures.
      *
      * <p>To produce two dimension Coordinates pass in <code>null</code> for z
-     *
-     * @param f DOCUMENT ME!
-     * @param x DOCUMENT ME!
-     * @param y DOCUMENT ME!
-     * @param z DOCUMENT ME!
-     * @return DOCUMENT ME!
      */
     public static CoordinateSequence coordiantes(
             CoordinateSequenceFactory f, OrdinateList x, OrdinateList y, OrdinateList z) {
@@ -1931,12 +1894,6 @@ public final class SDO {
      * Construct CoordinateSequence with no LRS measures.
      *
      * <p>To produce two dimension Coordinates pass in <code>null</code> for z
-     *
-     * @param f DOCUMENT ME!
-     * @param x DOCUMENT ME!
-     * @param y DOCUMENT ME!
-     * @param z DOCUMENT ME!
-     * @return DOCUMENT ME!
      */
     public static CoordinateSequence coordiantes(
             CoordinateSequenceFactory f, AttributeList x, AttributeList y, AttributeList z) {
@@ -2005,12 +1962,10 @@ public final class SDO {
      *     OrdinateList) coordiantes() with just a OrdinateList of measures}! Construct
      *     SpatialCoordinates, with LRS measure information.
      *     <p>To produce two dimension Coordinates pass in <code>null</code> for z
-     * @param f DOCUMENT ME!
      * @param x x-ordinates
      * @param y y-ordinates
      * @param z z-ordinates, <code>null</code> for 2D
      * @param m column major measure information
-     * @return DOCUMENT ME!
      */
     @Deprecated
     public static CoordinateSequence coordiantes(
@@ -2050,12 +2005,10 @@ public final class SDO {
      *     OrdinateList) coordiantes() with just a OrdinateList of measures}! Construct
      *     SpatialCoordinates, with LRS measure information.
      *     <p>To produce two dimension Coordinates pass in <code>null</code> for z
-     * @param f DOCUMENT ME!
      * @param x x-ordinates
      * @param y y-ordinates
      * @param z z-ordinates, <code>null</code> for 2D
      * @param m column major measure information
-     * @return DOCUMENT ME!
      */
     @Deprecated
     public static CoordinateSequence coordiantes(
@@ -2161,7 +2114,6 @@ public final class SDO {
      * @param GTYPE Encoding of <b>D</b>imension, <b>L</b>RS and <b>TT</b>ype
      * @param SRID
      * @param elemInfo
-     * @param triplet DOCUMENT ME!
      * @param coords
      * @param N Number of triplets (-1 for unknown/don't care)
      * @return Geometry as encoded, or null w/ log if it cannot be represented via JTS

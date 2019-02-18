@@ -84,7 +84,6 @@ public final class BursaWolfTransformBuilderTest {
      * points are calculated using generated parameters. Then the parameters are computed by the
      * builder and compared against original.
      *
-     * @throws FactoryException DOCUMENT ME!
      * @throws TransformException
      */
     @Test

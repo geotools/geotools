@@ -91,7 +91,7 @@ public class SubFeatureList extends SubFeatureCollection implements RandomFeatur
     /**
      * item at the specified index.
      *
-     * @param index index of item
+     * @param position index of item
      * @return the item at the specified index.
      * @throws IndexOutOfBoundsException if index is not between 0 and size
      */

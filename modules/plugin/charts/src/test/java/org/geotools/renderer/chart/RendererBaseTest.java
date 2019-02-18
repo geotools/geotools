@@ -37,24 +37,12 @@ import org.geotools.styling.StyleFactory;
 import org.geotools.test.TestData;
 import org.geotools.xml.styling.SLDParser;
 
-/**
- * DOCUMENT ME!
- *
- * @author Simone Giannecchini
- */
+/** @author Simone Giannecchini */
 public abstract class RendererBaseTest {
 
     public RendererBaseTest() {}
 
-    /**
-     * bounds may be null
-     *
-     * @param testName DOCUMENT ME!
-     * @param renderer DOCUMENT ME!
-     * @param timeOut DOCUMENT ME!
-     * @param bounds DOCUMENT ME!
-     * @throws Exception DOCUMENT ME!
-     */
+    /** bounds may be null */
     protected static void showRender(
             String testName,
             Object renderer,
@@ -123,9 +111,7 @@ public abstract class RendererBaseTest {
     /**
      * responsible for actually rendering.
      *
-     * @param obj DOCUMENT ME!
      * @param g
-     * @param rect DOCUMENT ME!
      * @param bounds
      */
     private static void render(Object obj, Graphics g, Rectangle rect, ReferencedEnvelope bounds) {

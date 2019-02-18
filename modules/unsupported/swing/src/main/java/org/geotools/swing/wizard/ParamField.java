@@ -61,7 +61,7 @@ public abstract class ParamField {
     /**
      * Sets the value of the widget.
      *
-     * @param Object an object containing the value to set for the widget
+     * @param value an object containing the value to set for the widget
      */
     public abstract void setValue(Object value);
 

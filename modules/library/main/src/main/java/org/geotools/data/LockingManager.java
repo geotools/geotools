@@ -46,7 +46,6 @@ public interface LockingManager {
      * @param authID Authorization for lock
      * @param transaction Transaction with authorization for lockID
      * @return <code>true</code> if lock was found and released
-     * @throws IOException DOCUMENT ME!
      */
     boolean release(String authID, Transaction transaction) throws IOException;
 
@@ -61,7 +60,6 @@ public interface LockingManager {
      * @param authID Authorization for lock
      * @param transaction Transaction with authorization for lockID
      * @return <code>true</code> if lock was found and refreshed
-     * @throws IOException DOCUMENT ME!
      */
     boolean refresh(String authID, Transaction transaction) throws IOException;
 
@@ -72,7 +70,6 @@ public interface LockingManager {
      * @param authID
      * @param transaction
      * @param featureLock
-     * @throws IOException DOCUMENT ME!
      */
     void unLockFeatureID(
             String typeName, String authID, Transaction transaction, FeatureLock featureLock)
@@ -85,7 +82,6 @@ public interface LockingManager {
      * @param authID
      * @param transaction
      * @param featureLock
-     * @throws IOException DOCUMENT ME!
      */
     void lockFeatureID(
             String typeName, String authID, Transaction transaction, FeatureLock featureLock)

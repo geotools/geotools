@@ -53,7 +53,6 @@ public class AngleSizeValidation extends DefaultIntegrityValidation {
      * @param envelope The bounding box that encloses the unvalidated data
      * @param results Used to coallate results information
      * @return <code>true</code> if all the features pass this test.
-     * @throws Exception DOCUMENT ME!
      */
     public boolean validate(Map layers, Envelope envelope, ValidationResults results)
             throws Exception {

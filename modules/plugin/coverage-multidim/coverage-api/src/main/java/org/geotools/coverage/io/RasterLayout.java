@@ -78,8 +78,6 @@ public class RasterLayout {
      * @param tileGridYOffset the Y coordinate of tile (0, 0).
      * @param tileWidth the width of a tile.
      * @param tileHeight the height of a tile.
-     * @param sampleModel the image's <code>SampleModel</code>.
-     * @param colorModel the image's <code>ColorModel</code>.
      */
     public RasterLayout(
             int minX,
@@ -151,7 +149,6 @@ public class RasterLayout {
      * the supplied <code>RenderedImage</code>. If <code>minX</code> is not valid and fallback is
      * null, 0 is returned.
      *
-     * @param fallback the <code>RenderedImage</code> fallback.
      * @return the appropriate value of minX.
      */
     public int getMinX() {
@@ -174,7 +171,6 @@ public class RasterLayout {
      * the supplied <code>RenderedImage</code>. If <code>minY</code> is not valid and fallback is
      * null, 0 is returned.
      *
-     * @param fallback the <code>RenderedImage</code> fallback.
      * @return the appropriate value of minY.
      */
     public int getMinY() {
@@ -197,7 +193,6 @@ public class RasterLayout {
      * the supplied <code>RenderedImage</code>. If <code>width</code> is not valid and fallback is
      * null, 0 is returned.
      *
-     * @param fallback the <code>RenderedImage</code> fallback.
      * @return the appropriate value of width.
      */
     public int getWidth() {
@@ -223,7 +218,6 @@ public class RasterLayout {
      * Returns the value of height if it is valid, and otherwise returns the value from the supplied
      * <code>RenderedImage</code>. If height is not valid and fallback is null, 0 is returned.
      *
-     * @param fallback the <code>RenderedImage</code> fallback.
      * @return the appropriate value of height.
      */
     public int getHeight() {
@@ -250,7 +244,6 @@ public class RasterLayout {
      * value from the supplied <code>RenderedImage</code>. If <code>tileGridXOffset</code> is not
      * valid and fallback is null, 0 is returned.
      *
-     * @param fallback the <code>RenderedImage</code> fallback.
      * @return the appropriate value of tileGridXOffset.
      */
     public int getTileGridXOffset() {
@@ -273,7 +266,6 @@ public class RasterLayout {
      * value from the supplied <code>RenderedImage</code>. If <code>tileGridYOffset</code> is not
      * valid and fallback is null, 0 is returned.
      *
-     * @param fallback the <code>RenderedImage</code> fallback.
      * @return the appropriate value of tileGridYOffset.
      */
     public int getTileGridYOffset() {
@@ -296,7 +288,6 @@ public class RasterLayout {
      * from the supplied <code>RenderedImage</code>. If <code>tileWidth</code> is not valid and
      * fallback is null, 0 is returned.
      *
-     * @param fallback the <code>RenderedImage</code> fallback.
      * @return the appropriate value of tileWidth.
      */
     public int getTileWidth() {
@@ -323,7 +314,6 @@ public class RasterLayout {
      * supplied <code>RenderedImage</code>. If tileHeight is not valid and fallback is null, 0 is
      * returned.
      *
-     * @param fallback the <code>RenderedImage</code> fallback.
      * @return the appropriate value of tileHeight.
      */
     public int getTileHeight() {

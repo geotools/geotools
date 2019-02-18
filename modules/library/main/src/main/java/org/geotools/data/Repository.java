@@ -38,7 +38,7 @@ public interface Repository {
     /**
      * Search for the DataStore by name.
      *
-     * @param Name The typeName (namespace and name) to search for
+     * @param name The typeName (namespace and name) to search for
      * @return DataAccess api providing access to the indicatedTypeName (or null if not found)
      */
     DataStore dataStore(Name name);

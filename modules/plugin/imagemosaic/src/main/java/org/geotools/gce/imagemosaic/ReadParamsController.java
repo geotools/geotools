@@ -25,7 +25,6 @@ import org.geotools.coverage.grid.io.DecimationPolicy;
 import org.geotools.coverage.grid.io.OverviewPolicy;
 import org.geotools.gce.imagemosaic.OverviewsController.OverviewLevel;
 import org.geotools.gce.imagemosaic.RasterManager.SpatialDomainManager;
-import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.util.Utilities;
 import org.geotools.util.factory.Hints;
 import org.opengis.referencing.operation.TransformException;
@@ -155,8 +154,6 @@ public class ReadParamsController {
      *     {@link Hints#VALUE_OVERVIEW_POLICY_SPEED}. It specifies the policy to compute the
      *     overviews level upon request.
      * @param readParams an instance of {@link ImageReadParam} for setting the subsampling factors.
-     * @param requestedEnvelope the {@link GeneralEnvelope} we are requesting.
-     * @param requestedDim the requested dimensions.
      * @return the index of the raster to read in the underlying data source.
      * @throws IOException
      * @throws TransformException

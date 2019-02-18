@@ -638,8 +638,7 @@ public class DbaseFileHeader {
     /**
      * Read the header data from the DBF file.
      *
-     * @param channel A readable byte channel. If you have an InputStream you need to use, you can
-     *     call java.nio.Channels.getChannel(InputStream in).
+     * @param in The ByteBuffer to read the header from
      * @throws IOException If errors occur while reading.
      */
     public void readHeader(ByteBuffer in) throws IOException {

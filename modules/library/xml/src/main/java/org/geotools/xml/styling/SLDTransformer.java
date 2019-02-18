@@ -195,12 +195,7 @@ public class SLDTransformer extends TransformerBase {
         return result;
     }
 
-    /**
-     * Currently does nothing.
-     *
-     * @param args DOCUMENT ME!
-     * @throws Exception DOCUMENT ME!
-     */
+    /** Currently does nothing. */
     public static final void main(String[] args) throws Exception {
         java.net.URL url = new java.io.File(args[0]).toURI().toURL();
         SLDParser s = new SLDParser(CommonFactoryFinder.getStyleFactory(null), url);

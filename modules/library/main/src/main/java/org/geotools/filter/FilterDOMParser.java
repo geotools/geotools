@@ -107,7 +107,6 @@ public final class FilterDOMParser {
      * Parses the filter using DOM.
      *
      * @param root a dom node containing FILTER as the root element.
-     * @return DOCUMENT ME!
      * @task TODO: split up this insanely long method.
      */
     public static org.opengis.filter.Filter parseFilter(Node root) {
@@ -574,7 +573,6 @@ public final class FilterDOMParser {
      *
      * @param nullNode the PropertyIsNull node.
      * @return a null filter of the expression contained in null node.
-     * @throws IllegalFilterException DOCUMENT ME!
      */
     private static PropertyIsNull parseNullFilter(Node nullNode) throws IllegalFilterException {
 

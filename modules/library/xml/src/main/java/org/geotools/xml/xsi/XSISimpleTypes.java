@@ -51,7 +51,6 @@ import org.xml.sax.SAXException;
 public class XSISimpleTypes {
     private static Map m;
 
-    /** DOCUMENT ME! */
     public static final URI NAMESPACE = makeURI("http://www.w3.org/2001/XMLSchema");
 
     // convinience method to deal with the URISyntaxException
@@ -80,12 +79,7 @@ public class XSISimpleTypes {
         return r;
     }
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @param type DOCUMENT ME!
-     * @return SimpleType
-     */
+    /** @return SimpleType */
     public static SimpleType find(Class type) {
         // assuming strings and class values will not conflict
         if (m == null) {

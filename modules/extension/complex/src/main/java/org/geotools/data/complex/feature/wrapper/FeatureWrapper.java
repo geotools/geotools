@@ -56,7 +56,7 @@ public abstract class FeatureWrapper {
     /**
      * Attempt to wrap the feature in a FeatureWrapper class.
      *
-     * @param feature The feature to wrap.
+     * @param complexAttribute The feature to wrap.
      * @param clazz The class you want the feature to be wrapped as. (This will be the type that is
      *     returned).
      * @return An object of T which is the wrapped feature.

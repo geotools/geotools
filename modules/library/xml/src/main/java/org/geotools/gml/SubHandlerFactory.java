@@ -46,7 +46,6 @@ public class SubHandlerFactory {
      * types are aggregated into a generic 'multi' type.
      *
      * @param type Type of SubHandler to return.
-     * @return DOCUMENT ME!
      * @task TODO: throw an exception, not return a null
      */
     public SubHandler create(String type) {

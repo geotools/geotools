@@ -23,9 +23,9 @@ import org.geotools.test.TestData;
 public class EdigeoTestUtils {
 
     /**
-     * DOCUMENT ME!
+
      *
-     * @return DOCUMENT ME!
+
      */
     private static File getDataPath() {
         try {

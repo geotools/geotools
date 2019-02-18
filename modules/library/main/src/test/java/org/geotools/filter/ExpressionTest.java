@@ -66,11 +66,7 @@ public class ExpressionTest extends TestCase {
     /** Test suite for this test case */
     TestSuite suite = null;
 
-    /**
-     * Constructor with test name.
-     *
-     * @param testName DOCUMENT ME!
-     */
+    /** Constructor with test name. */
     public ExpressionTest(String testName) {
         super(testName);
     }

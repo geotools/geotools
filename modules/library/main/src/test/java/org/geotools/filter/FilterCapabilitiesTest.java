@@ -53,11 +53,7 @@ public class FilterCapabilitiesTest extends TestCase {
         super(testName);
     }
 
-    /**
-     * Main for test runner.
-     *
-     * @param args DOCUMENT ME!
-     */
+    /** Main for test runner. */
     public static void main(String[] args) {
         junit.textui.TestRunner.run(suite());
     }

@@ -45,7 +45,6 @@ public class GraphicStyle2D extends Style2D implements PointStyle2D {
      *
      * @param image The image that will be used to depict the centroid/point/...
      * @param rotation The image rotation
-     * @param opacity The image opacity
      */
     public GraphicStyle2D(BufferedImage image, float rotation) {
         this.image = image;

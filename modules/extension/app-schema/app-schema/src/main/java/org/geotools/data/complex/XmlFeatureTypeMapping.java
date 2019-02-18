@@ -522,8 +522,6 @@ public class XmlFeatureTypeMapping extends FeatureTypeMapping {
      * <code>gml:name[1]</code>, <code>gml:name[2]</code> and <code>gml:name[3]</code>, but
      * propertyName is just <code>gml:name</code>, all three mappings apply.
      *
-     * @param mappings Feature type mapping to search for
-     * @param simplifiedSteps
      * @return
      */
     @Override

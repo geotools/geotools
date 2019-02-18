@@ -41,9 +41,9 @@ public class Circle2D {
     /**
      * Constructs a circle from three points
      *
-     * @param First node
-     * @param Second node
-     * @param Thirs node
+     * @param pt1 First node
+     * @param pt2 Second node
+     * @param pt3 Third node
      */
     public Circle2D(Point2D pt1, Point2D pt2, Point2D pt3) {
 

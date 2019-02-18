@@ -94,7 +94,6 @@ public class MinVisitor implements FeatureCalc, FeatureAttributeVisitor {
      * Get the min value.
      *
      * @return Minimum value
-     * @throws IllegalStateException DOCUMENT ME!
      */
     public Comparable getMin() {
         /** Return the minimum value derived from the collection */

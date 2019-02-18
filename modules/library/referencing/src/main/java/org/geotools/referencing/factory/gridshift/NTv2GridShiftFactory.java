@@ -75,7 +75,7 @@ public class NTv2GridShiftFactory extends ReferencingFactory implements Buffered
     /**
      * Performs a NTv2 grid file lookup given its name, and checks for file format correctness.
      *
-     * @param name The NTv2 grid file name
+     * @param location The NTv2 grid file location
      * @return {@code true} if file exists and is valid, {@code false} otherwise
      */
     public boolean isNTv2Grid(URL location) {
@@ -89,7 +89,7 @@ public class NTv2GridShiftFactory extends ReferencingFactory implements Buffered
     /**
      * Creates a NTv2 Grid.
      *
-     * @param name The NTv2 grid name
+     * @param gridLocation The NTv2 grid file location
      * @return the grid
      * @throws FactoryException if grid cannot be created
      */
@@ -120,7 +120,7 @@ public class NTv2GridShiftFactory extends ReferencingFactory implements Buffered
      *
      * <p>If file is not valid, the cause is logged at {@link Level#WARNING warning level}.
      *
-     * @param location the NTv2 file absolute path
+     * @param url the NTv2 file absolute path
      * @return true if file has NTv2 format, false otherwise
      */
     protected boolean isNTv2GridFileValid(URL url) {

@@ -134,8 +134,8 @@ public class MeteosatSG extends MapProjection {
      * Transforms the specified (<var>&lambda;</var>,<var>&phi;</var>) coordinates (units in
      * radians) and stores the result in {@code ptDst} (pixel coordinates).
      *
-     * @param lon The longitude of the coordinate, in <strong>radians</strong>.
-     * @param lat The latitude of the coordinate, in <strong>radians</strong>.
+     * @param x The longitude of the coordinate, in <strong>radians</strong>.
+     * @param y The latitude of the coordinate, in <strong>radians</strong>.
      */
     protected Point2D transformNormalized(double x, double y, Point2D ptDst)
             throws ProjectionException {

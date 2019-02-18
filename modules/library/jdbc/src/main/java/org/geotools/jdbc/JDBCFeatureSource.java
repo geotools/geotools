@@ -711,7 +711,6 @@ public class JDBCFeatureSource extends ContentFeatureSource {
      *
      * @param query
      * @param visitor
-     * @param nearest value, or null if not supported
      * @throws IOException
      */
     private boolean handleNearestVisitor(Query query, FeatureVisitor visitor) throws IOException {

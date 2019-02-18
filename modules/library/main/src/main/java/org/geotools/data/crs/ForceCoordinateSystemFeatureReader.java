@@ -76,8 +76,6 @@ public class ForceCoordinateSystemFeatureReader
      * @param reader
      * @param cs
      * @throws SchemaException
-     * @throws NullPointerException DOCUMENT ME!
-     * @throws IllegalArgumentException DOCUMENT ME!
      */
     public ForceCoordinateSystemFeatureReader(
             FeatureReader<SimpleFeatureType, SimpleFeature> reader, CoordinateReferenceSystem cs)
@@ -91,8 +89,6 @@ public class ForceCoordinateSystemFeatureReader
      * @param reader
      * @param cs
      * @throws SchemaException
-     * @throws NullPointerException DOCUMENT ME!
-     * @throws IllegalArgumentException DOCUMENT ME!
      */
     public ForceCoordinateSystemFeatureReader(
             FeatureReader<SimpleFeatureType, SimpleFeature> reader,

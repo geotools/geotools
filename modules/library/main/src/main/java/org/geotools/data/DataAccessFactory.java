@@ -307,7 +307,7 @@ public interface DataAccessFactory extends Factory {
          * @param description User description of Param (40 chars or less)
          * @param required <code>true</code> is param is required
          * @param sample Sample value as an example for user input
-         * @param extra metadata information, preferably keyed by known identifiers like {@link
+         * @param metadata metadata information, preferably keyed by known identifiers like {@link
          *     Parameter#IS_PASSWORD}
          */
         public Param(
@@ -338,7 +338,7 @@ public interface DataAccessFactory extends Factory {
          * @param description User description of Param (40 chars or less)
          * @param required <code>true</code> is param is required
          * @param sample Sample value as an example for user input
-         * @param extra metadata information, preferably keyed by known identifiers like {@link
+         * @param metadata metadata information, preferably keyed by known identifiers like {@link
          *     Parameter#IS_PASSWORD}
          */
         public Param(
@@ -433,12 +433,7 @@ public interface DataAccessFactory extends Factory {
             return value;
         }
 
-        /**
-         * Convert value to text representation for this Parameter
-         *
-         * @param value DOCUMENT ME!
-         * @return DOCUMENT ME!
-         */
+        /** Convert value to text representation for this Parameter */
         public String text(Object value) {
             return value.toString();
         }
@@ -527,9 +522,7 @@ public interface DataAccessFactory extends Factory {
          *
          * @param text Text representation of type should not be null or empty
          * @return Object converted from text representation
-         * @throws Throwable DOCUMENT ME!
          * @throws IOException If text could not be parsed
-         * @throws DataSourceException DOCUMENT ME!
          */
         public Object parse(String text) throws Throwable {
             Constructor<?> constructor;

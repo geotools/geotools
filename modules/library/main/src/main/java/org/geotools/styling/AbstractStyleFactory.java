@@ -253,8 +253,6 @@ public abstract class AbstractStyleFactory implements StyleFactory {
     /**
      * Returns implementation hints for this factory. The default implementation returns an empty
      * map.
-     *
-     * @return DOCUMENT ME!
      */
     public Map<RenderingHints.Key, ?> getImplementationHints() {
         return Collections.emptyMap();

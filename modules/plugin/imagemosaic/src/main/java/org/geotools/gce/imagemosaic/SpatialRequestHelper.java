@@ -354,9 +354,6 @@ public class SpatialRequestHelper {
      * Return a crop region from a specified envelope, leveraging on the grid to world
      * transformation.
      *
-     * @param refinedRequestedBBox the crop envelope
-     * @return a {@code Rectangle} representing the crop region.
-     * @throws TransformException in case a problem occurs when going back to raster space.
      * @throws DataSourceException
      */
     private void computeRasterArea() throws DataSourceException {

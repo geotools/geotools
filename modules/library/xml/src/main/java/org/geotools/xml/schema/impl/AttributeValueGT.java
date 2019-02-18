@@ -19,11 +19,7 @@ package org.geotools.xml.schema.impl;
 import org.geotools.xml.schema.Attribute;
 import org.geotools.xml.schema.AttributeValue;
 
-/**
- * DOCUMENT ME!
- *
- * @author dzwiers
- */
+/** @author dzwiers */
 public class AttributeValueGT implements AttributeValue {
     private String value;
     private Attribute attribute;
@@ -32,12 +28,7 @@ public class AttributeValueGT implements AttributeValue {
         // do nothing
     }
 
-    /**
-     * Creates a new AttributeValueGT object.
-     *
-     * @param attribute DOCUMENT ME!
-     * @param value DOCUMENT ME!
-     */
+    /** Creates a new AttributeValueGT object. */
     public AttributeValueGT(Attribute attribute, String value) {
         this.attribute = attribute;
         this.value = value;

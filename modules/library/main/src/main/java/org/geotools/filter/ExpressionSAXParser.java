@@ -36,8 +36,6 @@ import org.opengis.filter.expression.PropertyName;
 import org.xml.sax.Attributes;
 
 /**
- * DOCUMENT ME!
- *
  * @author Rob Hranac, TOPP<br>
  * @author Chris Holmes, TOPP
  * @version $Id$

@@ -238,7 +238,6 @@ class GeometrySmoother {
      * Coordinates}.
      *
      * @param coords input vertices
-     * @param N number of coordinates in {@coords} to use
      * @param alpha tightness of fit
      * @return 2D array of {@code Coordinates} for positions of each pair of control points per
      *     input vertex

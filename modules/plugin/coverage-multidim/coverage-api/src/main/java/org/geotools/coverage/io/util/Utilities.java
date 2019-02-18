@@ -845,16 +845,11 @@ public class Utilities {
      * This method creates the GridCoverage2D from the underlying file given a specified envelope,
      * and a requested dimension.
      *
-     * @param imageIndex
-     * @param coordinateReferenceSystem
-     * @param generalEnvelope
-     * @param mathTransform
-     * @param iUseJAI specify if the underlying read process should leverage on a JAI ImageRead
+     * @param useJAI specify if the underlying read process should leverage on a JAI ImageRead
      *     operation or a simple direct call to the {@code read} method of a proper {@code
      *     ImageReader}.
      * @param useMultithreading specify if the underlying read process should use multithreading
      *     when a JAI ImageRead operation is requested
-     * @param overviewPolicy the overview policy which need to be adopted
      * @return a {@code GridCoverage}
      * @throws java.io.IOException
      */
@@ -943,8 +938,7 @@ public class Utilities {
      * to be performed.
      *
      * @param imageIndex
-     * @param new FileImageInputStreamExtImplinput the input {@code ImageInputStream} to be used for
-     *     reading the image.
+     * @param input the input to be used for reading the image.
      * @param useJAI {@code true} if we need to use a JAI ImageRead operation, {@code false} if we
      *     need a simple direct {@code ImageReader.read(...)} call.
      * @param imageReadParam an {@code ImageReadParam} specifying the read parameters

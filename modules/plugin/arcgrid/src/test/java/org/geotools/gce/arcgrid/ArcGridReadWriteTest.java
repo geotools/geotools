@@ -43,11 +43,7 @@ import org.opengis.parameter.ParameterValueGroup;
 public class ArcGridReadWriteTest extends ArcGridBaseTestCase {
     private final Random generator = new Random();
 
-    /**
-     * Creates a new instance of ArcGridReadWriteTest
-     *
-     * @param name DOCUMENT ME!
-     */
+    /** Creates a new instance of ArcGridReadWriteTest */
     public ArcGridReadWriteTest(String name) {
         super(name);
     }

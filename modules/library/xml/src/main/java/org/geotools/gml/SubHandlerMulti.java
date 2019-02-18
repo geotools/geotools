@@ -116,7 +116,6 @@ public class SubHandlerMulti extends SubHandler {
      * Determines whether or not it is time to return this geometry.
      *
      * @param message The geometry element that prompted this check.
-     * @return DOCUMENT ME!
      */
     public boolean isComplete(String message) {
         if (message.equals("Multi" + internalType)) {

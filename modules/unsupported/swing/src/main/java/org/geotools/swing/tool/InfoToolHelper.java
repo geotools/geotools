@@ -90,7 +90,7 @@ public abstract class InfoToolHelper implements MapBoundsListener {
     /**
      * Sets the map content for this helper.
      *
-     * @param layer the map content
+     * @param content the map content
      * @throws IllegalArgumentException if {@code content} is {@code null}
      */
     public void setMapContent(MapContent content) {

@@ -184,7 +184,7 @@ public class ProcessSelectionPage extends JPage {
     /**
      * Populates an array of strings with the process factory titles based on the factory set
      *
-     * @param processFactories2 the string array to populate
+     * @param factories the string array to populate
      * @return
      */
     private TreeModel createFactoryTitleArray(Set<ProcessFactory> factories) {
@@ -294,12 +294,7 @@ public class ProcessSelectionPage extends JPage {
         };
     }
 
-    /**
-     * Update the process description based on the selected process
-     *
-     * @param selection title of selected process
-     * @param name
-     */
+    /** Update the process description based on the selected process */
     private void updateProcessDesc(ProcessFactory factory, Name name) {
         if (name == null || factory == null) {
             return;

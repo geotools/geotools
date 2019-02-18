@@ -16,13 +16,17 @@
  */
 package org.geotools.data.jdbc;
 
-import static org.geotools.util.Converters.*;
+import static org.geotools.util.Converters.convert;
 
 import java.io.IOException;
 import java.io.StringWriter;
 import java.sql.Connection;
 import java.sql.Statement;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.LinkedHashSet;
+import java.util.Locale;
+import java.util.Set;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -435,5 +439,27 @@ public class FilterToSQLTest extends TestCase {
         Stream<PropertyName> property = Stream.of(filterFac.property("testAttr"));
         Expression[] literals = Stream.concat(property, values).toArray(i -> new Expression[i]);
         return filterFac.function(functionName, literals);
+    }
+
+    public void testNestedMath1() throws Exception {
+        FilterFactory ff = filterFac;
+        final Filter filter =
+                ff.equals(
+                        ff.multiply(
+                                ff.subtract(ff.property("PROP1"), ff.literal(10)), ff.literal(20)),
+                        ff.literal(50));
+        FilterToSQL encoder = new FilterToSQL(output);
+        assertEquals("WHERE (PROP1 - 10) * 20 = 50", encoder.encodeToString(filter));
+    }
+
+    public void testNestedMath2() throws Exception {
+        FilterFactory ff = filterFac;
+        final Filter filter =
+                ff.equals(
+                        ff.subtract(
+                                ff.property("PROP1"), ff.multiply(ff.literal(10), ff.literal(20))),
+                        ff.literal(50));
+        FilterToSQL encoder = new FilterToSQL(output);
+        assertEquals("WHERE PROP1 - (10 * 20) = 50", encoder.encodeToString(filter));
     }
 }

@@ -86,7 +86,6 @@ public class FootprintExtractionProcess implements RasterProcess {
      *     supported to return a simplified version of the biggest polygon.
      * @param simplifierFactor the simplifier factor to be applied to compute the simplified version
      *     of the biggest polygon.
-     * @param imageLoadingType the type of imageLoading (DEFERRED vs IMMEDIATE).
      * @param removeCollinear specifies whether the collinear vertices of the retrieved polygon
      *     should be removed (Default is true)
      * @param forceValid specifies whether polygons should be forced to be valid (also removing

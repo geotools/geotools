@@ -205,7 +205,7 @@ public class AuthorityBackedFactory extends DefaultCoordinateOperationFactory
      * which is a valid transformation from the sourceCRS to targetCRs and that is accepted by this
      * authority.
      *
-     * @param operations A set of candidate operations
+     * @param candidate A set of candidate operations
      * @param sourceCRS Source CRS
      * @param targetCRS Target CRS
      * @param inverse whether the inverse operation has to be applied

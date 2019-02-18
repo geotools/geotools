@@ -306,8 +306,6 @@ public class OperationJAI extends Operation2D {
      * Post processing on the coverage resulting from JAI operation.
      *
      * @param coverage {@link GridCoverage2D} resulting from the operation.
-     * @param primarySourceType Tells if we have to change the "geo-view" for the provided {@link
-     *     GridCoverage2D}.
      * @return the prepared {@link GridCoverage2D}.
      */
     private static GridCoverage2D postProcessResult(GridCoverage2D coverage) {

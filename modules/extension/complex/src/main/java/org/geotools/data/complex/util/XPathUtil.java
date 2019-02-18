@@ -381,7 +381,8 @@ public class XPathUtil {
     /**
      * Returns the list of steps in an x-path expression that represents the root element.
      *
-     * @param root non null descriptor of the root attribute, generally the Feature descriptor.
+     * @param rootElement non null descriptor of the root attribute, generally the Feature
+     *     descriptor.
      * @param namespaces namespace support for generating qnames from namespaces.
      * @return A list of unique of steps in an xpath expression.
      * @throws IllegalArgumentException if <code>root</code> is undefined.

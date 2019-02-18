@@ -151,7 +151,7 @@ public class BarnesSurfaceInterpolator {
      * data is provided as an array of {@link Coordinate} values, where the X,Y ordinates are the
      * observation location, and the Z ordinate contains the observation value.
      *
-     * @param data the observed data values
+     * @param observationData the observed data values
      */
     public BarnesSurfaceInterpolator(Coordinate[] observationData) {
         this.inputObs = observationData;

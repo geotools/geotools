@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suppressions xmlns="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.1.xsd">
+    <suppress>
+        <notes><![CDATA[file name: gt-coverage.jar]]></notes>
+        <gav regex="true">^org\.geotools:gt-coverage:.*$</gav>
+        <cpe>cpe:/a:image_processing_software:image_processing_software</cpe>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[file name: gt-swing.jar]]></notes>
+        <gav regex="true">^org\.geotools:gt-swing:.*$</gav>
+        <cve>CVE-2015-6737</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[file name: imageio-ext-arcgrid.jar]]></notes>
+        <gav regex="true">^it\.geosolutions\.imageio-ext:imageio-ext-arcgrid:.*$</gav>
+        <cpe>cpe:/a:arc:arc</cpe>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[file name: imageio-ext-gdalarcbinarygrid.jar]]></notes>
+        <gav regex="true">^it\.geosolutions\.imageio-ext:imageio-ext-gdalarcbinarygrid:.*$</gav>
+        <cpe>cpe:/a:arc:arc</cpe>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[file name: gt-sde-dummy.jar]]></notes>
+        <gav regex="true">^org\.geotools:gt-sde-dummy:.*$</gav>
+        <cpe>cpe:/a:arc:arc</cpe>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[file name: gt-app-schema-resolver.jar]]></notes>
+        <gav regex="true">^org\.geotools:gt-app-schema-resolver:.*$</gav>
+        <cve>CVE-2018-13661</cve>
+    </suppress>
+</suppressions>

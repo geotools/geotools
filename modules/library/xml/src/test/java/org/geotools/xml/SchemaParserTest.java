@@ -25,11 +25,7 @@ import javax.xml.parsers.SAXParserFactory;
 import junit.framework.TestCase;
 import org.geotools.TestData;
 
-/**
- * DOCUMENT ME! @
- *
- * @author dzwiers www.refractions.net
- */
+/** @author dzwiers www.refractions.net */
 public class SchemaParserTest extends TestCase {
     protected SAXParser parser;
 

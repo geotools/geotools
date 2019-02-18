@@ -45,6 +45,5 @@ public interface AttributeGroup {
     /** The name of this Attribute Group declaration within the XML Schema */
     public String getName();
 
-    /** DOCUMENT ME! */
     public URI getNamespace();
 }

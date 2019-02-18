@@ -81,7 +81,6 @@ public class ReprojectFeatureResults extends AbstractFeatureCollection {
      * @throws NoSuchElementException
      * @throws OperationNotFoundException
      * @throws CannotCreateTransformException
-     * @throws NullPointerException DOCUMENT ME!
      * @throws IllegalArgumentException
      */
     public ReprojectFeatureResults(

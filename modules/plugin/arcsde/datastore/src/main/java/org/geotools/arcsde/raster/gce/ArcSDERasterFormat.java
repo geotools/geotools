@@ -230,8 +230,7 @@ public final class ArcSDERasterFormat extends AbstractGridFormat implements Form
     }
 
     /**
-     * @param source either a {@link String} or {@link File} instance representing the connection
-     *     URL
+     * @param input either a {@link String} or {@link File} instance representing the connection URL
      * @see AbstractGridFormat#accepts(Object input)
      */
     @Override
@@ -334,8 +333,6 @@ public final class ArcSDERasterFormat extends AbstractGridFormat implements Form
      * Checks the input provided to this {@link ArcSDERasterGridCoverage2DReader} and sets all the
      * other objects and flags accordingly.
      *
-     * @param sdeUrl a url representing the connection parameters to an arcsde server instance
-     *     provied to this {@link ArcSDERasterGridCoverage2DReader}.
      * @throws IOException
      */
     private ISessionPool setupConnectionPool(ArcSDEConnectionConfig sdeConfig) throws IOException {

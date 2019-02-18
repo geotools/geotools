@@ -158,7 +158,7 @@ public class FeatureSetDescription {
     }
 
     /**
-     * DOCUMENT ME!
+
      *
      * @return Returns the abstracT.
      */
@@ -167,7 +167,7 @@ public class FeatureSetDescription {
     }
 
     /**
-     * DOCUMENT ME!
+
      *
      * @param _abstract The abstracT to set.
      */
@@ -176,7 +176,7 @@ public class FeatureSetDescription {
     }
 
     /**
-     * DOCUMENT ME!
+
      *
      * @return Returns the keywords.
      */
@@ -185,7 +185,7 @@ public class FeatureSetDescription {
     }
 
     /**
-     * DOCUMENT ME!
+
      *
      * @param keywords The keywords to set.
      */
@@ -194,7 +194,7 @@ public class FeatureSetDescription {
     }
 
     /**
-     * DOCUMENT ME!
+
      *
      * @return Returns the latLongBoundingBox.
      */
@@ -203,7 +203,7 @@ public class FeatureSetDescription {
     }
 
     /**
-     * DOCUMENT ME!
+
      *
      * @param latLongBoundingBox The latLongBoundingBox to set.
      */
@@ -212,7 +212,7 @@ public class FeatureSetDescription {
     }
 
     /**
-     * DOCUMENT ME!
+
      *
      * @return Returns the name.
      */
@@ -221,7 +221,7 @@ public class FeatureSetDescription {
     }
 
     /**
-     * DOCUMENT ME!
+
      *
      * @param name The name to set.
      */
@@ -230,7 +230,7 @@ public class FeatureSetDescription {
     }
 
     /**
-     * DOCUMENT ME!
+
      *
      * @return Returns the operations.
      */
@@ -239,7 +239,7 @@ public class FeatureSetDescription {
     }
 
     /**
-     * DOCUMENT ME!
+
      *
      * @param operations The operations to set.
      */
@@ -248,7 +248,7 @@ public class FeatureSetDescription {
     }
 
     /**
-     * DOCUMENT ME!
+
      *
      * @return Returns the sRS.
      */
@@ -257,7 +257,7 @@ public class FeatureSetDescription {
     }
 
     /**
-     * DOCUMENT ME!
+
      *
      * @param srs The sRS to set.
      */
@@ -266,7 +266,7 @@ public class FeatureSetDescription {
     }
 
     /**
-     * DOCUMENT ME!
+
      *
      * @return Returns the title.
      */
@@ -275,7 +275,7 @@ public class FeatureSetDescription {
     }
 
     /**
-     * DOCUMENT ME!
+
      *
      * @param title The title to set.
      */

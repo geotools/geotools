@@ -396,7 +396,7 @@ public class GridCoverage2DRIA extends GeometricOpImage {
      *
      * </pre>
      *
-     * @param sourceRect the <code>Rectangle</code> in source coordinates.
+     * @param pxRect the <code>Rectangle</code> in source coordinates.
      * @param sourceIndex the index of the source image.
      * @return a <code>Rectangle</code> indicating the destination bounding box, or <code>null
      *     </code> if the bounding box is unknown.
@@ -405,7 +405,7 @@ public class GridCoverage2DRIA extends GeometricOpImage {
      * @throws IllegalArgumentException if <code>sourceRect</code> is <code>null</code>.
      */
     @Override
-    protected Rectangle forwardMapRect(Rectangle pxRect, int i) {
+    protected Rectangle forwardMapRect(Rectangle pxRect, int sourceIndex) {
         // transformation from out target coverage toward the source one.
         // note that source/target names from OpImage are reversed with respect to our
         // definitions

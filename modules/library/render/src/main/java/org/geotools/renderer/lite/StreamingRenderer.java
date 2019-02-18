@@ -991,7 +991,6 @@ public class StreamingRenderer implements GTRenderer {
      * @param schema
      * @param source
      * @param envelope the spatial extent which is the target area of the rendering process
-     * @param destinationCRS DOCUMENT ME!
      * @param sourceCrs
      * @param screenSize
      * @param geometryAttribute
@@ -1588,7 +1587,7 @@ public class StreamingRenderer implements GTRenderer {
      * Inspects the <code>MapLayer</code>'s style and retrieves it's needed attribute names,
      * returning at least the default geometry attribute name.
      *
-     * @param layer the <code>MapLayer</code> to determine the needed attributes from
+     * @param styles the <code>styles</code> to determine the needed attributes from
      * @param schema the <code>layer</code>'s FeatureSource<SimpleFeatureType, SimpleFeature> schema
      * @return the minimum set of attribute names needed to render <code>layer</code>
      */
@@ -1689,7 +1688,7 @@ public class StreamingRenderer implements GTRenderer {
      *
      * @param schema the layer's feature source schema
      * @param attributes set of needed attributes
-     * @param bbox the expression holding the target rendering bounding box
+     * @param bboxes the rendering bounding boxes
      * @return an or'ed list of bbox filters, one for each geometric attribute in <code>attributes
      *     </code>. If there are just one geometric attribute, just returns its corresponding <code>
      *     GeometryFilter</code>.
@@ -2881,9 +2880,6 @@ public class StreamingRenderer implements GTRenderer {
     /**
      * Finds the geometric attribute requested by the symbolizer
      *
-     * @param drawMe The feature
-     * @param s
-     *     <p>/** Finds the geometric attribute requested by the symbolizer
      * @param drawMe The feature
      * @param s The symbolizer
      * @return The geometry requested in the symbolizer, or the default geometry if none is

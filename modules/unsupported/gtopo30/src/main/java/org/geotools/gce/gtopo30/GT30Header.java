@@ -250,11 +250,7 @@ final class GT30Header {
         return (Double) this.propertyMap.get(YDIM);
     }
 
-    /**
-     * Initializes the map with the known properties, makes it easier to parse the file
-     *
-     * @return the initialized map
-     */
+    /** Initializes the map with the known properties, makes it easier to parse the file */
     private void initMap() {
         propertyMap.put(BYTEORDER, "M");
         propertyMap.put(LAYOUT, "BIL");
@@ -275,7 +271,6 @@ final class GT30Header {
     /**
      * Parses the reader for the known properties
      *
-     * @param properties the map to be filled in
      * @param reader the source data
      * @throws IOException for reading errors
      * @throws DataSourceException for unrecoverable data format violations

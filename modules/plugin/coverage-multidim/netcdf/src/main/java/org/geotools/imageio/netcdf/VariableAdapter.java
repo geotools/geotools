@@ -458,7 +458,6 @@ public class VariableAdapter extends CoverageSourceDescriptor {
     /**
      * Extracts the compound {@link CoordinateReferenceSystem} from the unidata variable.
      *
-     * @return the compound {@link CoordinateReferenceSystem}.
      * @throws Exception
      */
     private void init() throws Exception {
@@ -1234,12 +1233,10 @@ public class VariableAdapter extends CoverageSourceDescriptor {
     /**
      * Create a SimpleFeature on top of the variable and indexes.
      *
-     * @param tIndex the time index
-     * @param zIndex the zeta index
+     * @param index the dimension indexes
      * @param cs the {@link CoordinateSystem} associated with that variable
      * @param imageIndex the index to be associated to the feature in the index
      * @param indexSchema the schema to be used to create the feature
-     * @param geometry the geometry to be attached to the feature
      * @return the created {@link SimpleFeature} TODO move to variable wrapper
      */
     private SimpleFeature createFeature(

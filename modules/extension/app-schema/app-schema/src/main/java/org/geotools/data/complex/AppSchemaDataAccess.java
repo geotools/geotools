@@ -430,7 +430,7 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
      * target x-path
      *
      * @param requestedProperty requested property x-path
-     * @param targetXPath target x-path
+     * @param target target x-path steps
      * @return whether they match, i.e. when one of them is completely contained in the other
      */
     public static boolean matchProperty(StepList requestedProperty, StepList target) {
@@ -457,7 +457,7 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
      * target x-path, ignoring namespaces
      *
      * @param requestedProperty requested property x-path
-     * @param targetXPath target x-path
+     * @param target target x-path steps
      * @return whether they match, i.e. when one of them is completely contained in the other
      */
     public static boolean matchProperty(String requestedProperty, StepList target) {

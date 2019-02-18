@@ -55,6 +55,26 @@ public class BridjOGR implements OGR {
     }
 
     @Override
+    public boolean IsGEOSEnabled() {
+        boolean isGEOSEnabled = false;
+        Pointer g1 = OGR_G_CreateGeometry(OGRwkbGeometryType.wkbPoint);
+        OGR_G_AddPoint(g1, 1.0, 1.0, Double.NaN);
+        Pointer g2 = OGR_G_CreateGeometry(OGRwkbGeometryType.wkbPoint);
+        OGR_G_AddPoint(g2, 2.0, 2.0, Double.NaN);
+        try {
+            OGR_G_Touches(g1, g2);
+            if (!GetLastErrorMsg()
+                    .toLowerCase()
+                    .contains("GEOS support not enabled".toLowerCase())) {
+                isGEOSEnabled = true;
+            }
+        } catch (Exception ex) {
+            // Do nothing
+        }
+        return isGEOSEnabled;
+    }
+
+    @Override
     public int GetDriverCount() {
         return OGRGetDriverCount();
     }
@@ -666,8 +686,8 @@ public class BridjOGR implements OGR {
 
     @Override
     public String SpatialRefGetAuthorityCode(Object spatialRef, String authority) {
-        return getCString(
-                OSRGetAuthorityCode((Pointer<?>) spatialRef, pointerToCString(authority)));
+        Pointer<Byte> b = pointerToCString(authority);
+        return getCString(OSRGetAuthorityCode((Pointer<?>) spatialRef, b));
     }
 
     @Override

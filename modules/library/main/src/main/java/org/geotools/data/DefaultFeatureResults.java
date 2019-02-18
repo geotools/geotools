@@ -167,10 +167,6 @@ public class DefaultFeatureResults extends DataFeatureCollection {
      *
      * <p>If query.getPropertyNames() is used to limit the result of the Query a sub type will be
      * returned based on FeatureSource.getSchema().
-     *
-     * @return DOCUMENT ME!
-     * @throws IOException DOCUMENT ME!
-     * @throws DataSourceException DOCUMENT ME!
      */
     public SimpleFeatureType getSchema() {
         return super.getSchema();

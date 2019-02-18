@@ -288,7 +288,7 @@ public class DirectPositionImpl implements DirectPosition, Cloneable, Serializab
      * DirectPosition (not DirectPositionImpl), so that the equals method is found for
      * DirectPosition´s and DirectPositionImpl´s
      *
-     * @param p DirectPosition
+     * @param o DirectPosition
      * @return TRUE, if the two DirectPositions describe the same point in the Euclidian Space
      */
 

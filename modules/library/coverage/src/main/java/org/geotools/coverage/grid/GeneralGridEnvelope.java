@@ -339,9 +339,6 @@ public class GeneralGridEnvelope implements GridEnvelope, Serializable {
      *     often zero, but this is not mandatory.
      * @param high The valid maximum grid coordinate. The array contains a maximum value for each
      *     dimension of the grid coverage.
-     * @param isHighIncluded {@code true} if the {@code high} values are inclusive (as in ISO 19123
-     *     specification), or {@code false} if they are exclusive (as in Java usage). This argument
-     *     does not apply to low values, which are always inclusive.
      * @see #getLow
      * @see #getHigh
      */

@@ -24,7 +24,7 @@ import org.geotools.data.ows.OperationType;
 import org.geotools.filter.FilterCapabilities;
 
 /**
- * DOCUMENT ME!
+
  *
  * @author rpetty
  */
@@ -72,7 +72,7 @@ public class WSCapabilities extends Capabilities {
     }
 
     /**
-     * DOCUMENT ME!
+
      *
      * @return Returns the featureTypes.
      */
@@ -81,7 +81,7 @@ public class WSCapabilities extends Capabilities {
     }
 
     /**
-     * DOCUMENT ME!
+
      *
      * @param featureTypes The featureTypes to set.
      */
@@ -90,7 +90,7 @@ public class WSCapabilities extends Capabilities {
     }
 
     /**
-     * DOCUMENT ME!
+
      *
      * @return Returns the filterCapabilities.
      */
@@ -99,7 +99,7 @@ public class WSCapabilities extends Capabilities {
     }
 
     /**
-     * DOCUMENT ME!
+
      *
      * @param filterCapabilities The filterCapabilities to set.
      */
@@ -108,7 +108,7 @@ public class WSCapabilities extends Capabilities {
     }
 
     /**
-     * DOCUMENT ME!
+
      *
      * @return Returns the vendorSpecificCapabilities.
      */
@@ -117,7 +117,7 @@ public class WSCapabilities extends Capabilities {
     }
 
     /**
-     * DOCUMENT ME!
+
      *
      * @param vendorSpecificCapabilities The vendorSpecificCapabilities to set.
      */
@@ -126,7 +126,7 @@ public class WSCapabilities extends Capabilities {
     }
 
     /**
-     * DOCUMENT ME!
+
      *
      * @return Returns the describeFeatureType.
      */
@@ -135,7 +135,7 @@ public class WSCapabilities extends Capabilities {
     }
 
     /**
-     * DOCUMENT ME!
+
      *
      * @param describeFeatureType The describeFeatureType to set.
      */
@@ -144,7 +144,7 @@ public class WSCapabilities extends Capabilities {
     }
 
     /**
-     * DOCUMENT ME!
+
      *
      * @return Returns the getCapabilities.
      */
@@ -153,7 +153,7 @@ public class WSCapabilities extends Capabilities {
     }
 
     /**
-     * DOCUMENT ME!
+
      *
      * @param getCapabilities The getCapabilities to set.
      */
@@ -162,7 +162,7 @@ public class WSCapabilities extends Capabilities {
     }
 
     /**
-     * DOCUMENT ME!
+
      *
      * @return Returns the getFeature.
      */
@@ -171,7 +171,7 @@ public class WSCapabilities extends Capabilities {
     }
 
     /**
-     * DOCUMENT ME!
+
      *
      * @param getFeature The getFeature to set.
      */
@@ -180,7 +180,7 @@ public class WSCapabilities extends Capabilities {
     }
 
     /**
-     * DOCUMENT ME!
+
      *
      * @return Returns the getFeatureWithLock.
      */
@@ -189,7 +189,7 @@ public class WSCapabilities extends Capabilities {
     }
 
     /**
-     * DOCUMENT ME!
+
      *
      * @param getFeatureWithLock The getFeatureWithLock to set.
      */
@@ -198,7 +198,7 @@ public class WSCapabilities extends Capabilities {
     }
 
     /**
-     * DOCUMENT ME!
+
      *
      * @return Returns the transaction.
      */
@@ -207,7 +207,7 @@ public class WSCapabilities extends Capabilities {
     }
 
     /**
-     * DOCUMENT ME!
+
      *
      * @param transaction The transaction to set.
      */
@@ -216,7 +216,7 @@ public class WSCapabilities extends Capabilities {
     }
 
     /**
-     * DOCUMENT ME!
+
      *
      * @return Returns the lockFeature.
      */
@@ -225,7 +225,7 @@ public class WSCapabilities extends Capabilities {
     }
 
     /**
-     * DOCUMENT ME!
+
      *
      * @param lockFeature The lockFeature to set.
      */

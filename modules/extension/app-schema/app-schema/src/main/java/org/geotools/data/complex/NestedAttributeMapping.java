@@ -96,7 +96,6 @@ public class NestedAttributeMapping extends AttributeMapping {
      * @param clientProperties
      * @param sourceElement parent feature element type
      * @param sourcePath XPath link to nested feature
-     * @param parentSource parent feature source
      * @throws IOException
      */
     public NestedAttributeMapping(

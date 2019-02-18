@@ -238,7 +238,7 @@ public abstract class AbstractMapPane extends JPanel
      * DefaultRenderingExecutor} will be set on the next call to {@linkplain
      * #getRenderingExecutor()}.
      *
-     * @param newExecutor the rendering executor
+     * @param executor the rendering executor
      */
     public void setRenderingExecutor(RenderingExecutor executor) {
         doSetRenderingExecutor(executor);
@@ -332,8 +332,8 @@ public abstract class AbstractMapPane extends JPanel
      * myMapPane.repaint();
      * }</pre>
      *
-     * @param repaint if true, paint requests will be handled normally; if false, paint requests
-     *     will be deferred.
+     * @param ignoreRepaint if false, paint requests will be handled normally; if true, paint
+     *     requests will be deferred.
      * @see #isAcceptingRepaints()
      */
     @Override
@@ -450,7 +450,6 @@ public abstract class AbstractMapPane extends JPanel
                                 afterImageMoved();
                                 clearLabelCache.set(true);
                                 drawLayers(false);
-                                repaint();
                             }
                         },
                         paintDelay,

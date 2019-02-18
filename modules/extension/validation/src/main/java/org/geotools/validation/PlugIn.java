@@ -115,8 +115,6 @@ public class PlugIn {
      * using this plugIn's defaults.
      *
      * @param name Map defining User's test.
-     * @param description DOCUMENT ME!
-     * @param args DOCUMENT ME!
      * @return Validation ready for use by the ValidationProcessor
      * @throws ValidationException when an error occurs
      */

@@ -96,31 +96,19 @@ public class SLDStyleTest extends TestCase {
     FilterFactory ff = CommonFactoryFinder.getFilterFactory(GeoTools.getDefaultHints());
     StyleBuilder sb = new StyleBuilder(sf, ff);
 
-    /**
-     * Creates a new SLDStyleTest object.
-     *
-     * @param testName DOCUMENT ME!
-     */
+    /** Creates a new SLDStyleTest object. */
     public SLDStyleTest(java.lang.String testName) {
         super(testName);
     }
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @return DOCUMENT ME!
-     */
+    /** */
     public static Test suite() {
         TestSuite suite = new TestSuite(SLDStyleTest.class);
 
         return suite;
     }
 
-    /**
-     * Test of parseStyle method, of class org.geotools.styling.SLDStyle.
-     *
-     * @throws Exception DOCUMENT ME!
-     */
+    /** Test of parseStyle method, of class org.geotools.styling.SLDStyle. */
     public void testParseStyle() throws Exception {
         // java.net.URL base = getClass().getResource("testData/");
         // base = getClass().getResource("testData");
@@ -1053,6 +1041,25 @@ public class SLDStyleTest extends TestCase {
         assertEquals(
                 FeatureTypeStyle.VALUE_EVALUATION_MODE_FIRST,
                 options.get(FeatureTypeStyle.KEY_EVALUATION_MODE));
+    }
+
+    public void testGreenBandSelection() throws Exception {
+        StyleFactory factory = CommonFactoryFinder.getStyleFactory(null);
+        java.net.URL surl = TestData.getResource(this, "greenChannelSelection.sld");
+        SLDParser stylereader = new SLDParser(factory, surl);
+
+        // basic checks
+        Style[] styles = stylereader.readXML();
+        assertEquals(1, styles.length);
+        assertEquals(1, styles[0].featureTypeStyles().size());
+        final FeatureTypeStyle fts = styles[0].featureTypeStyles().get(0);
+        assertEquals(1, fts.rules().size());
+        RasterSymbolizer symbolizer = (RasterSymbolizer) fts.rules().get(0).symbolizers().get(0);
+        final SelectedChannelType[] rgbChannels = symbolizer.getChannelSelection().getRGBChannels();
+        assertNotNull(rgbChannels);
+        assertNull(rgbChannels[0]);
+        assertNotNull(rgbChannels[1]);
+        assertNull(rgbChannels[2]);
     }
 
     public void testMultipleFonts() throws Exception {

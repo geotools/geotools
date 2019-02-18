@@ -2361,7 +2361,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
      *
      * @param method The EPSG code for the operation method.
      * @param operation The EPSG code for the operation (conversion or transformation).
-     * @param value The parameter values to fill.
+     * @param parameters The parameter values to fill.
      * @throws SQLException if a SQL statement failed.
      */
     private void fillParameterValues(

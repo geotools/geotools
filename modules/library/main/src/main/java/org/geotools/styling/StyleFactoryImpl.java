@@ -276,7 +276,6 @@ public class StyleFactoryImpl extends AbstractStyleFactory
      * @param graphicFill - a graphic object to fill the line with
      * @param graphicStroke - a graphic object to draw the line with
      * @return The completed stroke.
-     * @throws IllegalArgumentException DOCUMENT ME!
      * @see org.geotools.stroke
      */
     public Stroke createStroke(
@@ -654,7 +653,6 @@ public class StyleFactoryImpl extends AbstractStyleFactory
      * Weight normal and uses a serif font.
      *
      * @return the default Font
-     * @throws RuntimeException DOCUMENT ME!
      */
     public Font getDefaultFont() {
         return FontImpl.createDefault(filterFactory);

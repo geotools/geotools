@@ -236,7 +236,7 @@ public class OGRDataStore extends ContentDataStore {
      * only so as long as it's empty, it's not possible to write against an existing GML file for
      * example.
      *
-     * @param schema the geotools schema
+     * @param data The data to fill into the newly created layer
      * @param approximateFields if true, OGR will try to create fields that are approximations of
      *     the required ones when an exact match cannt be provided
      * @param options OGR data source/layer creation options

@@ -863,7 +863,7 @@ public class TeradataDialect extends PreparedStatementSQLDialect {
                                 LOGGER.warning("EPSG Code " + epsg + " does not map to SRID");
                             }
                         } finally {
-                            dataStore.closeSafe(ps);
+                            dataStore.closeSafe(rs);
                         }
                     } finally {
                         dataStore.closeSafe(ps);
@@ -1252,11 +1252,11 @@ public class TeradataDialect extends PreparedStatementSQLDialect {
         sql = sql + "FOR EACH STATEMENT BEGIN ATOMIC (\n";
         sql = sql + triggerStmt + "\n) END;";
         Statement s = cx.createStatement();
-        LOGGER.fine("trigger SQL : " + sql);
         try {
+            LOGGER.fine("trigger SQL : " + sql);
             s.execute(sql);
         } finally {
-            s.close();
+            dataStore.closeSafe(s);
         }
     }
 

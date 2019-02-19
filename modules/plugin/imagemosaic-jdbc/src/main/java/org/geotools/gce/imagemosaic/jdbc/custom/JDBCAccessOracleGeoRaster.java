@@ -225,7 +225,6 @@ public class JDBCAccessOracleGeoRaster extends JDBCAccessCustom {
         Envelope extent = null;
 
         try {
-
             s = con.prepareStatement(extentSelectLBX);
             s.setString(1, getConfig().getCoverageName());
             r = s.executeQuery();
@@ -406,12 +405,13 @@ public class JDBCAccessOracleGeoRaster extends JDBCAccessCustom {
         long start = System.currentTimeMillis();
         LOGGER.fine("Starting GeoRaster Tile Decoder");
 
-        Connection con = null;
-
-        con = getConnection();
-        TileQueueElement tqe = getSingleTQElement(requestEnvelope, info, con);
-        tileQueue.add(tqe);
-        closeConnection(con);
+        Connection con = getConnection();
+        try {
+            TileQueueElement tqe = getSingleTQElement(requestEnvelope, info, con);
+            tileQueue.add(tqe);
+        } finally {
+            closeConnection(con);
+        }
         tileQueue.add(TileQueueElement.ENDELEMENT);
 
         LOGGER.fine("Finished GeoRaster Tile Decoder");

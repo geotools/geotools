@@ -885,6 +885,7 @@ public class SQLServerDialect extends BasicSQLDialect {
                 cx.commit();
             }
         } finally {
+            dataStore.closeSafe(st);
             dataStore.closeSafe(cx);
         }
     }
@@ -1044,10 +1045,14 @@ public class SQLServerDialect extends BasicSQLDialect {
             String schemaName, String tableName, String columnName, Connection cx, Statement st)
             throws SQLException {
         ResultSet rs = st.getGeneratedKeys();
-        Object result = null;
-        if (rs.next()) {
-            result = rs.getObject(1);
+        try {
+            Object result = null;
+            if (rs.next()) {
+                result = rs.getObject(1);
+            }
+            return result;
+        } finally {
+            dataStore.closeSafe(rs);
         }
-        return result;
     }
 }

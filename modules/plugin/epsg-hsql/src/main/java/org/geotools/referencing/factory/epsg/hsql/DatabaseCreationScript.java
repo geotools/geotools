@@ -78,7 +78,6 @@ public class DatabaseCreationScript {
         source.setDatabase(url.toString());
         source.setUser("SA");
 
-        Connection connection = source.getConnection();
         /*
          * HSQL has created automatically an empty database. We need to populate it. Executes
          * the SQL scripts bundled in the JAR. In theory, each line contains a full SQL
@@ -86,8 +85,8 @@ public class DatabaseCreationScript {
          * Compactor class in this package.
          */
         System.out.println("Creating the EPSG database");
-        final Statement statement = connection.createStatement();
-        try {
+        try (Connection connection = source.getConnection();
+                Statement statement = connection.createStatement()) {
             // read and execute the scripts that make up the database
             executeScript(new File(directory, "EPSG_Tables.sql"), statement);
             executeScript(new File(directory, "EPSG_Data.sql"), statement);
@@ -104,9 +103,6 @@ public class DatabaseCreationScript {
                                     + "the EPSG database creation scripts");
             e.initCause(exception);
             throw e;
-        } finally {
-            statement.close();
-            connection.close();
         }
         System.out.println("EPSG database created");
 

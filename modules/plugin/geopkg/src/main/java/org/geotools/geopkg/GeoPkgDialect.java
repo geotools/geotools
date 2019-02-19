@@ -261,15 +261,17 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
             ps.setString(2, col);
 
             ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                String t = rs.getString(1);
-                Geometries g = Geometries.getForName(t);
-                if (g != null) {
-                    return g.getBinding();
+            try {
+                if (rs.next()) {
+                    String t = rs.getString(1);
+                    Geometries g = Geometries.getForName(t);
+                    if (g != null) {
+                        return g.getBinding();
+                    }
                 }
+            } finally {
+                dataStore.closeSafe(rs);
             }
-
-            rs.close();
         } finally {
             dataStore.closeSafe(ps);
         }

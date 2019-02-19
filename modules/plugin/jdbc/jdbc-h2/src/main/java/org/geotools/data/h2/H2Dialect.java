@@ -174,10 +174,9 @@ public class H2Dialect extends SQLDialect {
             throws SQLException {
 
         Statement st = cx.createStatement();
-        String tableName = featureType.getTypeName();
-        schemaName = schemaName != null ? schemaName : "PUBLIC";
-
         try {
+            String tableName = featureType.getTypeName();
+            schemaName = schemaName != null ? schemaName : "PUBLIC";
             // post process the feature type and set up constraints based on geometry type
             for (PropertyDescriptor ad : featureType.getDescriptors()) {
                 if (ad instanceof GeometryDescriptor) {

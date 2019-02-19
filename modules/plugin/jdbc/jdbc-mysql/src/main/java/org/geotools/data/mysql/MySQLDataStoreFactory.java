@@ -154,7 +154,7 @@ public class MySQLDataStoreFactory extends JDBCDataStoreFactory {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         } finally {
             try {
-                if (con != null && !con.isClosed()) {
+                if (con != null) {
                     con.close();
                 }
             } catch (SQLException e) {

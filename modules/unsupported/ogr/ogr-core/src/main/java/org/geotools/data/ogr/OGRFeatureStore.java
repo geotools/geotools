@@ -53,7 +53,7 @@ class OGRFeatureStore extends ContentFeatureStore {
     @Override
     protected FeatureWriter<SimpleFeatureType, SimpleFeature> getWriterInternal(
             Query query, int flags) throws IOException {
-        Object dataSource = null;
+        OGRDataSource dataSource = null;
         Object layer = null;
         boolean cleanup = true;
         try {
@@ -72,7 +72,7 @@ class OGRFeatureStore extends ContentFeatureStore {
         } finally {
             if (cleanup) {
                 ogr.LayerRelease(layer);
-                ogr.DataSourceRelease(dataSource);
+                dataSource.close();
             }
         }
     }

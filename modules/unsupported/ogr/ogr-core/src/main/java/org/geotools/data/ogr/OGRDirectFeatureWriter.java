@@ -43,7 +43,7 @@ class OGRDirectFeatureWriter implements FeatureWriter<SimpleFeatureType, SimpleF
 
     private Object layer;
 
-    private Object dataSource;
+    private OGRDataSource dataSource;
 
     private FeatureMapper mapper;
 
@@ -61,7 +61,7 @@ class OGRDirectFeatureWriter implements FeatureWriter<SimpleFeatureType, SimpleF
      * @param layer
      */
     public OGRDirectFeatureWriter(
-            Object dataSource,
+            OGRDataSource dataSource,
             Object layer,
             FeatureReader<SimpleFeatureType, SimpleFeature> reader,
             SimpleFeatureType originalSchema,
@@ -79,17 +79,20 @@ class OGRDirectFeatureWriter implements FeatureWriter<SimpleFeatureType, SimpleF
 
     public void close() throws IOException {
         if (reader != null) {
-            original = null;
-            live = null;
-            Object driver = ogr.DataSourceGetDriver(dataSource);
-            String driverName = ogr.DriverGetName(driver);
+            try {
+                original = null;
+                live = null;
+                Object driver = dataSource.getDriver();
+                String driverName = ogr.DriverGetName(driver);
 
-            if ("ESRI Shapefile".equals(driverName) && deletedFeatures) {
-                String layerName = ogr.LayerGetName(layer);
-                ogr.DataSourceExecuteSQL(dataSource, "REPACK " + layerName, null);
+                if ("ESRI Shapefile".equals(driverName) && deletedFeatures) {
+                    String layerName = ogr.LayerGetName(layer);
+                    dataSource.executeSQL("REPACK " + layerName, null);
+                }
+                ogr.LayerSyncToDisk(layer);
+            } finally {
+                reader.close();
             }
-            ogr.LayerSyncToDisk(layer);
-            reader.close();
         }
     }
 

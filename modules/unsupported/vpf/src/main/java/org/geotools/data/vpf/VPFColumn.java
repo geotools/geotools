@@ -91,6 +91,7 @@ public class VPFColumn {
         descriptor =
                 new AttributeTypeBuilder()
                         .length(getColumnSize())
+                        .description(colDesc)
                         .binding(getColumnClass())
                         .nillable(true)
                         .buildDescriptor(name);

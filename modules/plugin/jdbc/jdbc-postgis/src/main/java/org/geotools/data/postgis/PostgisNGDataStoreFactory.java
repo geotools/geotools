@@ -16,14 +16,13 @@
  */
 package org.geotools.data.postgis;
 
-import static org.geotools.data.postgis.PostgisNGDataStoreFactory.SIMPLIFY;
-
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Map;
 import javax.sql.DataSource;
@@ -32,6 +31,7 @@ import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCDataStoreFactory;
 import org.geotools.jdbc.SQLDialect;
 import org.geotools.util.KVP;
+import org.postgresql.jdbc.SslMode;
 
 public class PostgisNGDataStoreFactory extends JDBCDataStoreFactory {
 
@@ -122,6 +122,15 @@ public class PostgisNGDataStoreFactory extends JDBCDataStoreFactory {
                     "When enabled, operations such as map rendering will pass a hint that will enable the usage of ST_Simplify",
                     false,
                     Boolean.TRUE);
+
+    public static final Param SSL_MODE =
+            new Param(
+                    "SSL mode",
+                    SslMode.class,
+                    "The connectin SSL mode",
+                    false,
+                    SslMode.DISABLE,
+                    new KVP(Param.OPTIONS, Arrays.asList(SslMode.values())));
 
     @Override
     protected SQLDialect createSQLDialect(JDBCDataStore dataStore) {
@@ -214,6 +223,7 @@ public class PostgisNGDataStoreFactory extends JDBCDataStoreFactory {
         parameters.put(LOOSEBBOX.key, LOOSEBBOX);
         parameters.put(ESTIMATED_EXTENTS.key, ESTIMATED_EXTENTS);
         parameters.put(PORT.key, PORT);
+        parameters.put(SSL_MODE.key, SSL_MODE);
         parameters.put(PREPARED_STATEMENTS.key, PREPARED_STATEMENTS);
         parameters.put(MAX_OPEN_PREPARED_STATEMENTS.key, MAX_OPEN_PREPARED_STATEMENTS);
         parameters.put(ENCODE_FUNCTIONS.key, ENCODE_FUNCTIONS);
@@ -232,7 +242,13 @@ public class PostgisNGDataStoreFactory extends JDBCDataStoreFactory {
         String host = (String) HOST.lookUp(params);
         String db = (String) DATABASE.lookUp(params);
         int port = (Integer) PORT.lookUp(params);
-        return "jdbc:postgresql" + "://" + host + ":" + port + "/" + db;
+        String url = "jdbc:postgresql" + "://" + host + ":" + port + "/" + db;
+        SslMode mode = (SslMode) SSL_MODE.lookUp(params);
+        if (mode != null) {
+            url = url + "?sslmode=" + mode;
+        }
+
+        return url;
     }
 
     protected DataSource createDataSource(Map params, SQLDialect dialect) throws IOException {

@@ -47,6 +47,7 @@ public class PostgisJNDIDataSourceOnlineTest extends JDBCJNDIDataSourceOnlineTes
         standardParams.remove(JDBCDataStoreFactory.MAX_OPEN_PREPARED_STATEMENTS.key);
         standardParams.remove(PostgisNGDataStoreFactory.CREATE_DB_IF_MISSING.key);
         standardParams.remove(PostgisNGDataStoreFactory.CREATE_PARAMS.key);
+        standardParams.remove(PostgisNGDataStoreFactory.SSL_MODE.key);
         standardParams.removeAll(baseParams);
         List<String> baseJndiParams = getBaseJNDIParams();
         List<String> jndiParams = getParamKeys(getJNDIStoreFactory());

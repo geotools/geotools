@@ -19,6 +19,7 @@ package org.geotools.renderer.lite;
 import static java.lang.Math.abs;
 
 import com.conversantmedia.util.concurrent.PushPullBlockingQueue;
+import com.conversantmedia.util.concurrent.SpinPolicy;
 import java.awt.AlphaComposite;
 import java.awt.Composite;
 import java.awt.Graphics2D;
@@ -3804,7 +3805,7 @@ public class StreamingRenderer implements GTRenderer {
         PushPullBlockingQueue<RenderingRequest> delegate;
 
         public RenderingBlockingQueue(int capacity) {
-            this.delegate = new PushPullBlockingQueue<>(capacity);
+            this.delegate = new PushPullBlockingQueue<>(capacity, SpinPolicy.BLOCKING);
         }
 
         @Override

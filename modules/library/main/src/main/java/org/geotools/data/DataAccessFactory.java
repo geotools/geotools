@@ -527,6 +527,17 @@ public interface DataAccessFactory extends Factory {
         public Object parse(String text) throws Throwable {
             Constructor<?> constructor;
 
+            if (type.isEnum()) {
+                if (text == null || text.isEmpty()) {
+                    return null;
+                }
+                for (Object constant : type.getEnumConstants()) {
+                    if (constant.toString().equalsIgnoreCase(text)) {
+                        return constant;
+                    }
+                }
+            }
+
             try {
                 constructor = type.getConstructor(new Class[] {String.class});
             } catch (SecurityException e) {

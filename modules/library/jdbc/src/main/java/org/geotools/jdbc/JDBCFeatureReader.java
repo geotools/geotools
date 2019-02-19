@@ -122,6 +122,7 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
     protected int offset = 0;
 
     protected JDBCReaderCallback callback = JDBCReaderCallback.NULL;
+    private int[] attributeRsIndex;
 
     public JDBCFeatureReader(
             String sql,
@@ -231,6 +232,8 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
             throw new RuntimeException(e);
         }
 
+        this.attributeRsIndex = buildAttributeRsIndex();
+
         callback = dataStore.getCallbackFactory().createReaderCallback();
         callback.init(this);
     }
@@ -335,7 +338,6 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
 
         // round up attributes
         final int attributeCount = featureType.getAttributeCount();
-        int[] attributeRsIndex = buildAttributeRsIndex();
         for (int i = 0; i < attributeCount; i++) {
             AttributeDescriptor type = featureType.getDescriptor(i);
 

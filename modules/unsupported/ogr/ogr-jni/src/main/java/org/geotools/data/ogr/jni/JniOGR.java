@@ -58,6 +58,7 @@ import static org.gdal.ogr.ogrConstants.wkbUnknown;
 import static org.gdal.ogr.ogrConstants.wkbXDR;
 
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Vector;
 import org.gdal.gdal.gdal;
@@ -72,15 +73,29 @@ import org.gdal.ogr.ogr;
 import org.gdal.osr.SpatialReference;
 import org.geotools.data.ogr.OGR;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.util.Version;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 public class JniOGR implements OGR {
+
+    private static final Method GET_FIELD_METHOD;
+
+    private static final boolean USE_FLOAT_SECONDS;
 
     static {
         // perform OGR format registration once
         if (ogr.GetDriverCount() == 0) {
             ogr.RegisterAll();
         }
+        Method getFieldAsDateTime = null;
+        for (Method method : Feature.class.getDeclaredMethods()) {
+            if (method.getName().equals("GetFieldAsDateTime")) {
+                getFieldAsDateTime = method;
+            }
+        }
+        GET_FIELD_METHOD = getFieldAsDateTime;
+        USE_FLOAT_SECONDS =
+                new Version(gdal.VersionInfo("RELEASE_NAME")).compareTo(new Version("2.0.0")) >= 0;
     }
 
     Vector<String> vector(String[] opts) {
@@ -103,6 +118,10 @@ public class JniOGR implements OGR {
             // Do nothing
         }
         return isGEOSEnabled;
+    }
+
+    public String getVersion() {
+        return gdal.VersionInfo("RELEASE_NAME");
     }
 
     @Override
@@ -558,11 +577,21 @@ public class JniOGR implements OGR {
             int[] minute,
             int[] second,
             int[] tzFlag) {
-        float[] secondFloat = new float[second.length];
-        ((Feature) feature)
-                .GetFieldAsDateTime(i, year, month, day, hour, minute, secondFloat, tzFlag);
-        for (int j = 0; j < second.length; j++) {
-            second[j] = (int) secondFloat[j];
+        try {
+            if (USE_FLOAT_SECONDS) {
+                float[] secondFloat = new float[second.length];
+                GET_FIELD_METHOD.invoke(
+                        feature, i, year, month, day, hour, minute, secondFloat, tzFlag);
+                for (int j = 0; j < second.length; j++) {
+                    second[j] = (int) secondFloat[j];
+                }
+            } else {
+
+                GET_FIELD_METHOD.invoke(feature, i, year, month, day, hour, minute, second, tzFlag);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(
+                    "Unexpected exception found while retrieving a datetime field ", e);
         }
     }
 

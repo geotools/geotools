@@ -112,6 +112,8 @@ public abstract class OGRDataStoreFactory implements DataStoreFactorySpi {
                     false,
                     DEFAULT_EVICTOR_TESTS_PER_RUN);
 
+    static Boolean AVAILABLE = null;
+
     protected abstract OGR createOGR();
 
     public boolean canProcess(Map params) {
@@ -191,16 +193,20 @@ public abstract class OGRDataStoreFactory implements DataStoreFactorySpi {
      * logged, and return false
      */
     public final boolean isAvailable(boolean handleError) {
-        try {
-            return doIsAvailable();
-        } catch (Throwable t) {
-            if (handleError) {
-                LOGGER.log(Level.FINE, "Error initializing GDAL/OGR library", t);
-                return false;
-            } else {
-                throw new RuntimeException(t);
+        if (AVAILABLE == null) {
+            try {
+                AVAILABLE = doIsAvailable();
+            } catch (Throwable t) {
+                if (handleError) {
+                    LOGGER.log(Level.WARNING, "Error initializing GDAL/OGR library", t);
+                    return false;
+                } else {
+                    throw new RuntimeException(t);
+                }
             }
         }
+
+        return AVAILABLE;
     }
 
     /**

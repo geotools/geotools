@@ -335,6 +335,7 @@ public class FilterToCQLTest {
     public void testFunctionOr() throws Exception {
         // this is a contrived example, but it's a function that's available in this modules
         ecqlReparseTest("PropertyExists('name') = true OR PropertyExists('name') = false");
+        ecqlReparseTest("PropertyExists('name') IN (true, false)");
     }
 
     protected void cqlTest(String cql) throws Exception {

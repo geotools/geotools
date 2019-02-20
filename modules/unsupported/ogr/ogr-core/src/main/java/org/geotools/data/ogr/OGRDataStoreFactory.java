@@ -17,17 +17,13 @@
 package org.geotools.data.ogr;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URI;
-import java.net.URL;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.geotools.data.DataSourceException;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFactorySpi;
 import org.geotools.util.logging.Logging;
@@ -55,7 +51,8 @@ public abstract class OGRDataStoreFactory implements DataStoreFactorySpi {
                     "DriverName",
                     String.class,
                     "Name of the OGR driver to be used. Required to create a new data source, optional when opening an existing one",
-                    false);
+                    false,
+                    null);
 
     public static final Param NAMESPACEP =
             new Param("namespace", URI.class, "uri to a the namespace", false); // not required
@@ -115,13 +112,6 @@ public abstract class OGRDataStoreFactory implements DataStoreFactorySpi {
                     false,
                     DEFAULT_EVICTOR_TESTS_PER_RUN);
 
-    /**
-     * Caches opened data stores. TODO: is this beneficial or problematic? It's a static cache, so
-     * opening a lot of datastore (thousands, hundreds of thousands...) may become a memory problem.
-     * Plus OGR is not designed to be thread safe.
-     */
-    private Map liveStores = new HashMap();
-
     protected abstract OGR createOGR();
 
     public boolean canProcess(Map params) {
@@ -144,18 +134,7 @@ public abstract class OGRDataStoreFactory implements DataStoreFactorySpi {
     }
 
     public DataStore createDataStore(Map params) throws IOException {
-        DataStore ds = null;
-        if (!liveStores.containsKey(params)) {
-
-            URL url = null;
-            try {
-                ds = createNewDataStore(params);
-                liveStores.put(params, ds);
-            } catch (MalformedURLException mue) {
-                throw new DataSourceException("Unable to attatch datastore to " + url, mue);
-            }
-        } else ds = (DataStore) liveStores.get(params);
-        return ds;
+        return createNewDataStore(params);
     }
 
     /**
@@ -167,7 +146,7 @@ public abstract class OGRDataStoreFactory implements DataStoreFactorySpi {
      */
     public DataStore createNewDataStore(Map params) throws IOException {
 
-        DataStore ds = null;
+        DataStore ds;
 
         String ogrName = (String) OGR_NAME.lookUp(params);
         String ogrDriver = (String) OGR_DRIVER_NAME.lookUp(params);

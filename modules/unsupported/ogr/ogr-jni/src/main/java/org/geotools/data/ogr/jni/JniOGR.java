@@ -89,9 +89,15 @@ public class JniOGR implements OGR {
         }
         Method getFieldAsDateTime = null;
         for (Method method : Feature.class.getDeclaredMethods()) {
-            if (method.getName().equals("GetFieldAsDateTime")) {
+            if (method.getName().equals("GetFieldAsDateTime")
+                    && method.getParameterTypes().length == 8
+                    && int.class.equals(method.getParameterTypes()[0])) {
                 getFieldAsDateTime = method;
             }
+        }
+        if (getFieldAsDateTime == null) {
+            throw new RuntimeException(
+                    "Could not locate the desired GetFieldAsDateTime method from Feature");
         }
         GET_FIELD_METHOD = getFieldAsDateTime;
         USE_FLOAT_SECONDS =
@@ -586,12 +592,15 @@ public class JniOGR implements OGR {
                     second[j] = (int) secondFloat[j];
                 }
             } else {
-
                 GET_FIELD_METHOD.invoke(feature, i, year, month, day, hour, minute, second, tzFlag);
             }
         } catch (Exception e) {
             throw new RuntimeException(
-                    "Unexpected exception found while retrieving a datetime field ", e);
+                    "Unexpected exception found while retrieving a datetime field, using float seconds: "
+                            + USE_FLOAT_SECONDS
+                            + " and method "
+                            + GET_FIELD_METHOD,
+                    e);
         }
     }
 

@@ -83,7 +83,12 @@ class OGRDataSource {
 
         // return to the pool or destroy
         if (pool != null) {
-            pool.returnObject(this);
+            try {
+                pool.returnObject(this);
+            } catch (Exception e) {
+                // in case returning to the pool fails, destroy the source
+                destroy();
+            }
         } else {
             destroy();
         }

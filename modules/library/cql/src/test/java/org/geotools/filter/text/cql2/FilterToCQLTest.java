@@ -21,6 +21,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.Hints;
+import org.geotools.filter.text.ecql.ECQL;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -330,6 +331,12 @@ public class FilterToCQLTest {
         cqlTest("foo = true");
     }
 
+    @Test
+    public void testFunctionOr() throws Exception {
+        // this is a contrived example, but it's a function that's available in this modules
+        ecqlReparseTest("PropertyExists('name') = true OR PropertyExists('name') = false");
+    }
+
     protected void cqlTest(String cql) throws Exception {
         Filter filter = CQL.toFilter(cql);
         Assert.assertNotNull(filter);
@@ -337,5 +344,11 @@ public class FilterToCQLTest {
         FilterToCQL toCQL = new FilterToCQL();
         String output = filter.accept(toCQL, null).toString();
         Assert.assertEquals(cql, output);
+    }
+
+    protected void ecqlReparseTest(String cql) throws Exception {
+        Filter filter = ECQL.toFilter(cql);
+        Assert.assertNotNull(filter);
+        Assert.assertEquals(ECQL.toFilter(ECQL.toCQL(filter)), filter);
     }
 }

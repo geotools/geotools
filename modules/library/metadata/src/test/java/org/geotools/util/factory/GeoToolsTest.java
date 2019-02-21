@@ -164,7 +164,7 @@ public final class GeoToolsTest {
 
         version = GeoTools.getVersion(Geometry.class);
         assertNotNull(version);
-        assertTrue(version.toString().startsWith("1.16"));
+        assertTrue(version.toString().equals("1.16.0"));
     }
     /** Tests the use of system properties. */
     @Test

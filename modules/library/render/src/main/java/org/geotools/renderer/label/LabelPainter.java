@@ -184,7 +184,17 @@ public class LabelPainter {
      * @return
      */
     public double getLineHeight() {
+        //        return lines.get(getLineCount()-1).getLineHeight();
         return lines.get(0).getLineHeight();
+    }
+
+    /**
+     * Returns the line height for last line for this label in pixels
+     *
+     * @return
+     */
+    public double getLastLineHeight() {
+        return lines.get(getLineCount() - 1).getLineHeight();
     }
 
     /**

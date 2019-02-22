@@ -23,11 +23,7 @@ import org.geotools.data.ows.Capabilities;
 import org.geotools.data.ows.OperationType;
 import org.geotools.filter.FilterCapabilities;
 
-/**
-
- *
- * @author rpetty
- */
+/** @author rpetty */
 public class WSCapabilities extends Capabilities {
     private List<FeatureSetDescription> featureTypes; // FeatureSetDescriptions
     private OperationType describeFeatureType;
@@ -71,164 +67,92 @@ public class WSCapabilities extends Capabilities {
         return null;
     }
 
-    /**
-
-     *
-     * @return Returns the featureTypes.
-     */
+    /** @return Returns the featureTypes. */
     public List<FeatureSetDescription> getFeatureTypes() {
         return featureTypes;
     }
 
-    /**
-
-     *
-     * @param featureTypes The featureTypes to set.
-     */
+    /** @param featureTypes The featureTypes to set. */
     public void setFeatureTypes(List featureTypes) {
         this.featureTypes = featureTypes;
     }
 
-    /**
-
-     *
-     * @return Returns the filterCapabilities.
-     */
+    /** @return Returns the filterCapabilities. */
     public FilterCapabilities getFilterCapabilities() {
         return filterCapabilities;
     }
 
-    /**
-
-     *
-     * @param filterCapabilities The filterCapabilities to set.
-     */
+    /** @param filterCapabilities The filterCapabilities to set. */
     public void setFilterCapabilities(FilterCapabilities filterCapabilities) {
         this.filterCapabilities = filterCapabilities;
     }
 
-    /**
-
-     *
-     * @return Returns the vendorSpecificCapabilities.
-     */
+    /** @return Returns the vendorSpecificCapabilities. */
     public String getVendorSpecificCapabilities() {
         return vendorSpecificCapabilities;
     }
 
-    /**
-
-     *
-     * @param vendorSpecificCapabilities The vendorSpecificCapabilities to set.
-     */
+    /** @param vendorSpecificCapabilities The vendorSpecificCapabilities to set. */
     public void setVendorSpecificCapabilities(String vendorSpecificCapabilities) {
         this.vendorSpecificCapabilities = vendorSpecificCapabilities;
     }
 
-    /**
-
-     *
-     * @return Returns the describeFeatureType.
-     */
+    /** @return Returns the describeFeatureType. */
     public OperationType getDescribeFeatureType() {
         return describeFeatureType;
     }
 
-    /**
-
-     *
-     * @param describeFeatureType The describeFeatureType to set.
-     */
+    /** @param describeFeatureType The describeFeatureType to set. */
     public void setDescribeFeatureType(OperationType describeFeatureType) {
         this.describeFeatureType = describeFeatureType;
     }
 
-    /**
-
-     *
-     * @return Returns the getCapabilities.
-     */
+    /** @return Returns the getCapabilities. */
     public OperationType getGetCapabilities() {
         return getCapabilities;
     }
 
-    /**
-
-     *
-     * @param getCapabilities The getCapabilities to set.
-     */
+    /** @param getCapabilities The getCapabilities to set. */
     public void setGetCapabilities(OperationType getCapabilities) {
         this.getCapabilities = getCapabilities;
     }
 
-    /**
-
-     *
-     * @return Returns the getFeature.
-     */
+    /** @return Returns the getFeature. */
     public OperationType getGetFeature() {
         return getFeature;
     }
 
-    /**
-
-     *
-     * @param getFeature The getFeature to set.
-     */
+    /** @param getFeature The getFeature to set. */
     public void setGetFeature(OperationType getFeature) {
         this.getFeature = getFeature;
     }
 
-    /**
-
-     *
-     * @return Returns the getFeatureWithLock.
-     */
+    /** @return Returns the getFeatureWithLock. */
     public OperationType getGetFeatureWithLock() {
         return getFeatureWithLock;
     }
 
-    /**
-
-     *
-     * @param getFeatureWithLock The getFeatureWithLock to set.
-     */
+    /** @param getFeatureWithLock The getFeatureWithLock to set. */
     public void setGetFeatureWithLock(OperationType getFeatureWithLock) {
         this.getFeatureWithLock = getFeatureWithLock;
     }
 
-    /**
-
-     *
-     * @return Returns the transaction.
-     */
+    /** @return Returns the transaction. */
     public OperationType getTransaction() {
         return transaction;
     }
 
-    /**
-
-     *
-     * @param transaction The transaction to set.
-     */
+    /** @param transaction The transaction to set. */
     public void setTransaction(OperationType transaction) {
         this.transaction = transaction;
     }
 
-    /**
-
-     *
-     * @return Returns the lockFeature.
-     */
+    /** @return Returns the lockFeature. */
     public OperationType getLockFeature() {
         return lockFeature;
     }
 
-    /**
-
-     *
-     * @param lockFeature The lockFeature to set.
-     */
+    /** @param lockFeature The lockFeature to set. */
     public void setLockFeature(OperationType lockFeature) {
         this.lockFeature = lockFeature;
     }

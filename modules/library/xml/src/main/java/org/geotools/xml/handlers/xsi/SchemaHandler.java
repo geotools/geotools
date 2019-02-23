@@ -100,7 +100,7 @@ public class SchemaHandler extends XSIElementHandler {
                 prefixCache = new HashMap();
             }
 
-            if (!pref.trim().equals("") || !prefixCache.containsKey(uri1))
+            if ((pref != null && !pref.trim().equals("")) || !prefixCache.containsKey(uri1))
                 prefixCache.put(uri1, pref);
 
             if (this.uri == null && (pref == null || "".equals(pref)))
@@ -360,7 +360,8 @@ public class SchemaHandler extends XSIElementHandler {
 
             while (it.hasNext()) {
                 IncludeHandler inc = (IncludeHandler) it.next();
-                logger.finest("compressing include " + inc.getSchemaLocation());
+                logger.finest(
+                        "compressing include " + (inc != null ? inc.getSchemaLocation() : null));
 
                 if (inc != null && inc.getSchemaLocation() != null) {
                     Schema cs;
@@ -1656,6 +1657,9 @@ public class SchemaHandler extends XSIElementHandler {
                     All a1 = (All) arg1;
                     eg0 = a0.getElements();
                     eg1 = a1.getElements();
+                    break;
+                default:
+                    throw new IllegalArgumentException("Unknown grouping " + arg0.getGrouping());
             }
 
             if (eg0.length < eg1.length) return -1;

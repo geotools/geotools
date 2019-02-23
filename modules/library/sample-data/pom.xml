@@ -69,6 +69,11 @@
       <artifactId>junit</artifactId>
       <scope>provided</scope>
     </dependency>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-metadata</artifactId>
+      <version>${project.version}</version>
+    </dependency>
   </dependencies>
 
 

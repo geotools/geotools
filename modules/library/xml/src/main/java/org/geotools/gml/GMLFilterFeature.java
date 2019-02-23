@@ -21,6 +21,7 @@ import java.util.logging.Logger;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.locationtech.jts.geom.Geometry;
+import org.opengis.feature.IllegalAttributeException;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.xml.sax.Attributes;
@@ -310,7 +311,7 @@ public class GMLFilterFeature extends XMLFilterImpl implements GMLHandlerJTS {
             try {
                 SimpleFeature feature = SimpleFeatureBuilder.build(featureType, attributes, fid);
                 parent.feature(feature);
-            } catch (org.geotools.feature.IllegalAttributeException ife) {
+            } catch (IllegalAttributeException ife) {
                 // TODO: work out what to do in this case!
                 // _log.error("Unable to build feature",ife);
                 // UNBELIEVABLE !!!!!!!!!!!!!!!!!!!!!!!!!!! - IanS

@@ -950,7 +950,7 @@ public class SLDStyleFactory {
         // Simple optimization: let java2d use the fast drawing path if the line
         // width
         // is small enough...
-        if (width < 1.5 & lineOptimizationEnabled) {
+        if (width < 1.5 && lineOptimizationEnabled) {
             width = 0;
         }
 

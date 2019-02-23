@@ -63,7 +63,7 @@ public class OGCSchema implements Schema {
         return "null";
     }
 
-    private static Schema[] imports = null;
+    private static volatile Schema[] imports = null;
 
     public Schema[] getImports() {
         if (imports == null) {
@@ -109,7 +109,7 @@ public class OGCSchema implements Schema {
         return null;
     }
     /** TODO comment here */
-    private static ComplexType[] complexTypes = null;
+    private static volatile ComplexType[] complexTypes = null;
 
     public ComplexType[] getComplexTypes() {
         if (complexTypes == null) {
@@ -128,24 +128,25 @@ public class OGCSchema implements Schema {
         if (elements == null) {
             synchronized (OGCSchema.class) {
                 if (elements == null) {
-                    elements = new Element[3];
-                    elements[GET_CAPABILITIES] =
+                    Element[] array = new Element[3];
+                    array[GET_CAPABILITIES] =
                             new ogcElement(
                                     "GetCapabilities",
                                     ogcComplexTypes._GetCapabilities.getInstance(),
                                     null,
                                     1,
                                     1);
-                    elements[GET_MAP] =
+                    array[GET_MAP] =
                             new ogcElement(
                                     "GetMap", ogcComplexTypes._GetMap.getInstance(), null, 1, 1);
-                    elements[GET_FEATURE_INFO] =
+                    array[GET_FEATURE_INFO] =
                             new ogcElement(
                                     "ogc:GetFeatureInfo",
                                     ogcComplexTypes._GetFeatureInfo.getInstance(),
                                     null,
                                     1,
                                     1);
+                    elements = array;
                 }
             }
         }
@@ -156,7 +157,7 @@ public class OGCSchema implements Schema {
         return null;
     }
     /** TODO comment here */
-    private static SimpleType[] simpleTypes = null;
+    private static volatile SimpleType[] simpleTypes = null;
 
     public SimpleType[] getSimpleTypes() {
         if (simpleTypes == null) {

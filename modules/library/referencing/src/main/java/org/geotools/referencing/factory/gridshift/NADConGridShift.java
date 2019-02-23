@@ -16,6 +16,7 @@
  */
 package org.geotools.referencing.factory.gridshift;
 
+import java.io.Serializable;
 import org.geotools.referencing.operation.builder.LocalizationGrid;
 
 /**
@@ -24,7 +25,7 @@ import org.geotools.referencing.operation.builder.LocalizationGrid;
  * @author Andrea Aime - GeoSolutions
  * @author Rueben Schulz
  */
-public class NADConGridShift extends LocalizationGrid {
+public class NADConGridShift extends LocalizationGrid implements Serializable {
 
     /** The minimum longitude value covered by this grid (decimal degrees) */
     private double minX;

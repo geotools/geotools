@@ -63,22 +63,22 @@ public class DistributionImpl extends MetadataEntity implements Distribution {
     }
 
     /** Provides a description of the format of the data to be distributed. */
-    public synchronized Collection<Format> getDistributionFormats() {
+    public Collection<Format> getDistributionFormats() {
         return (distributionFormats = nonNullCollection(distributionFormats, Format.class));
     }
 
     /** Set a description of the format of the data to be distributed. */
-    public synchronized void setDistributionFormats(final Collection<? extends Format> newValues) {
+    public void setDistributionFormats(final Collection<? extends Format> newValues) {
         distributionFormats = copyCollection(newValues, distributionFormats, Format.class);
     }
 
     /** Provides information about the distributor. */
-    public synchronized Collection<Distributor> getDistributors() {
+    public Collection<Distributor> getDistributors() {
         return (distributors = nonNullCollection(distributors, Distributor.class));
     }
 
     /** Set information about the distributor. */
-    public synchronized void setDistributors(final Collection<? extends Distributor> newValues) {
+    public void setDistributors(final Collection<? extends Distributor> newValues) {
         distributors = copyCollection(newValues, distributors, Distributor.class);
     }
 
@@ -86,7 +86,7 @@ public class DistributionImpl extends MetadataEntity implements Distribution {
      * Provides information about technical means and media by which a resource is obtained from the
      * distributor.
      */
-    public synchronized Collection<DigitalTransferOptions> getTransferOptions() {
+    public Collection<DigitalTransferOptions> getTransferOptions() {
         return (transferOptions = nonNullCollection(transferOptions, DigitalTransferOptions.class));
     }
 
@@ -94,8 +94,7 @@ public class DistributionImpl extends MetadataEntity implements Distribution {
      * Set information about technical means and media by which a resource is obtained from the
      * distributor.
      */
-    public synchronized void setTransferOptions(
-            final Collection<? extends DigitalTransferOptions> newValues) {
+    public void setTransferOptions(final Collection<? extends DigitalTransferOptions> newValues) {
         transferOptions = copyCollection(newValues, transferOptions, DigitalTransferOptions.class);
     }
 }

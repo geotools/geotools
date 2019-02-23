@@ -118,7 +118,7 @@ public class JDBCAccessPGRaster extends JDBCAccessCustom {
         } finally {
             try {
                 // con.rollback();
-                con.close();
+                if (con != null) con.close();
             } catch (SQLException e1) {
             }
         }
@@ -220,7 +220,7 @@ public class JDBCAccessPGRaster extends JDBCAccessCustom {
             throw new IOException(e);
         } finally {
             try {
-                con.close();
+                if (con != null) con.close();
             } catch (SQLException e1) {
             }
         }

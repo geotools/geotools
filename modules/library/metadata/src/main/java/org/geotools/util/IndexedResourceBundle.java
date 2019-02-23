@@ -47,6 +47,7 @@ import org.opengis.util.InternationalString;
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
+@SuppressFBWarnings("UI_INHERITANCE_UNSAFE_GETRESOURCE")
 public class IndexedResourceBundle extends ResourceBundle {
     /**
      * Maximum string length for text inserted into another text. This parameter is used by {@link

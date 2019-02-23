@@ -73,7 +73,7 @@ public class SecurityConstraintsImpl extends ConstraintsImpl implements Security
     }
 
     /** Set the name of the handling restrictions on the resource. */
-    public synchronized void setClassification(final Classification newValue) {
+    public void setClassification(final Classification newValue) {
         checkWritePermission();
         classification = newValue;
     }
@@ -90,7 +90,7 @@ public class SecurityConstraintsImpl extends ConstraintsImpl implements Security
      * Set the explanation of the application of the legal constraints or other restrictions and
      * legal prerequisites for obtaining and using the resource.
      */
-    public synchronized void setUserNote(final InternationalString newValue) {
+    public void setUserNote(final InternationalString newValue) {
         checkWritePermission();
         userNote = newValue;
     }
@@ -101,7 +101,7 @@ public class SecurityConstraintsImpl extends ConstraintsImpl implements Security
     }
 
     /** Set the name of the classification system. */
-    public synchronized void setClassificationSystem(final InternationalString newValue) {
+    public void setClassificationSystem(final InternationalString newValue) {
         checkWritePermission();
         classificationSystem = newValue;
     }
@@ -112,7 +112,7 @@ public class SecurityConstraintsImpl extends ConstraintsImpl implements Security
     }
 
     /** Set the additional information about the restrictions on handling the resource. */
-    public synchronized void setHandlingDescription(final InternationalString newValue) {
+    public void setHandlingDescription(final InternationalString newValue) {
         checkWritePermission();
         handlingDescription = newValue;
     }

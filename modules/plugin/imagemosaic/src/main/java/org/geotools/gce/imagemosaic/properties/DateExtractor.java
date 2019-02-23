@@ -30,8 +30,6 @@ import org.opengis.feature.simple.SimpleFeature;
 /** @author Niels Charlier */
 class DateExtractor extends PropertiesCollector {
 
-    private static final SimpleDateFormat FORMAT = new SimpleDateFormat("yyyy:mm:dd hh:mm:ss");
-
     private static final Logger LOGGER = Logging.getLogger(DateExtractor.class);
 
     public DateExtractor(PropertiesCollectorSPI spi, List<String> propertyNames) {
@@ -56,7 +54,7 @@ class DateExtractor extends PropertiesCollector {
         String dateStr = getMatches().size() > 0 ? getMatches().get(0) : null;
         if (dateStr != null && !dateStr.isEmpty()) {
             try {
-                return FORMAT.parse(getMatches().get(0));
+                return new SimpleDateFormat("yyyy:mm:dd hh:mm:ss").parse(getMatches().get(0));
             } catch (ParseException e) {
                 LOGGER.log(Level.WARNING, "Failed to parse date: " + dateStr, e);
             }

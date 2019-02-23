@@ -176,7 +176,7 @@ public class CollectionFeatureSource implements SimpleFeatureSource {
     public SimpleFeatureCollection getFeatures(Query query) {
         query = DataUtilities.resolvePropertyNames(query, getSchema());
         final int offset = query.getStartIndex() != null ? query.getStartIndex() : 0;
-        if (offset > 0 & query.getSortBy() == null) {
+        if (offset > 0 && query.getSortBy() == null) {
             if (!getQueryCapabilities().supportsSorting(query.getSortBy())) {
                 throw new IllegalStateException(
                         "Feature source does not support this sorting "

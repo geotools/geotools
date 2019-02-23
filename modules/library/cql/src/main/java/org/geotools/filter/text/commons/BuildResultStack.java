@@ -23,6 +23,7 @@ import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.temporal.object.DefaultInstant;
 import org.geotools.temporal.object.DefaultPeriod;
 import org.geotools.temporal.object.DefaultPosition;
+import org.geotools.util.SuppressFBWarnings;
 import org.locationtech.jts.geom.Geometry;
 import org.opengis.filter.Filter;
 import org.opengis.filter.expression.Literal;
@@ -41,6 +42,7 @@ import org.opengis.temporal.Position;
  * @version $Id$
  * @since 2.4
  */
+@SuppressFBWarnings("NP_NULL_ON_SOME_PATH_EXCEPTION")
 public final class BuildResultStack {
 
     private final Stack<Result> stack = new Stack<Result>();

@@ -96,7 +96,7 @@ public final class WorldImageWriter extends AbstractGridCoverageWriter
         // we have to separate the handling of a file from the handling of an
         // output stream due to the fact that the latter requires no world file.
         if (this.destination instanceof String) {
-            destination = new File((String) destination);
+            this.destination = new File((String) destination);
         } else if (this.destination instanceof URL) {
             final URL url = ((URL) destination);
             if (url.getProtocol().equalsIgnoreCase("file")) {
@@ -106,7 +106,7 @@ public final class WorldImageWriter extends AbstractGridCoverageWriter
                     path = "//" + auth + path;
                 }
 
-                destination = new File(path);
+                this.destination = new File(path);
             } else {
                 throw new RuntimeException(
                         "WorldImageWriter::write:It is not possible writing to an URL!");

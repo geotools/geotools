@@ -172,7 +172,9 @@ public abstract class BaseFeatureCollection<T extends FeatureType, F extends Fea
             for (int i = 0; e.hasNext(); i++) result[i] = e.next();
             return result;
         } finally {
-            e.close();
+            if (e != null) {
+                e.close();
+            }
         }
     }
 

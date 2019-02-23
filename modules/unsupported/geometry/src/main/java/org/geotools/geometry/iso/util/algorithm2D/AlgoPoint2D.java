@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import org.geotools.util.SuppressFBWarnings;
 
 /**
  * @author roehrig
@@ -244,6 +245,7 @@ public class AlgoPoint2D {
         return pointList;
     }
 
+    @SuppressFBWarnings("NP_BOOLEAN_RETURN_NULL")
     public static Boolean pointsOrientation(Collection points) {
         double result = 0.0;
         Iterator it = points.iterator();

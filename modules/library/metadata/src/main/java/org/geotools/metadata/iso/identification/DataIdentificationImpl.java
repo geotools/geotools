@@ -98,13 +98,13 @@ public class DataIdentificationImpl extends IdentificationImpl implements DataId
     }
 
     /** Method used to spatially represent geographic information. */
-    public synchronized Collection<SpatialRepresentationType> getSpatialRepresentationTypes() {
+    public Collection<SpatialRepresentationType> getSpatialRepresentationTypes() {
         return (spatialRepresentationTypes =
                 nonNullCollection(spatialRepresentationTypes, SpatialRepresentationType.class));
     }
 
     /** Set the method used to spatially represent geographic information. */
-    public synchronized void setSpatialRepresentationTypes(
+    public void setSpatialRepresentationTypes(
             final Collection<? extends SpatialRepresentationType> newValues) {
         spatialRepresentationTypes =
                 copyCollection(
@@ -114,7 +114,7 @@ public class DataIdentificationImpl extends IdentificationImpl implements DataId
     /**
      * Factor which provides a general understanding of the density of spatial data in the dataset.
      */
-    public synchronized Collection<Resolution> getSpatialResolutions() {
+    public Collection<Resolution> getSpatialResolutions() {
         return (spatialResolutions = nonNullCollection(spatialResolutions, Resolution.class));
     }
 
@@ -122,39 +122,37 @@ public class DataIdentificationImpl extends IdentificationImpl implements DataId
      * Set the factor which provides a general understanding of the density of spatial data in the
      * dataset.
      */
-    public synchronized void setSpatialResolutions(
-            final Collection<? extends Resolution> newValues) {
+    public void setSpatialResolutions(final Collection<? extends Resolution> newValues) {
         spatialResolutions = copyCollection(newValues, spatialResolutions, Resolution.class);
     }
 
     /** Language(s) used within the dataset. */
-    public synchronized Collection<Locale> getLanguage() {
+    public Collection<Locale> getLanguage() {
         return language = nonNullCollection(language, Locale.class);
     }
 
     /** Set the language(s) used within the dataset. */
-    public synchronized void setLanguage(final Collection<? extends Locale> newValues) {
+    public void setLanguage(final Collection<? extends Locale> newValues) {
         language = copyCollection(newValues, language, Locale.class);
     }
 
     /** Full name of the character coding standard used for the dataset. */
-    public synchronized Collection<CharacterSet> getCharacterSets() {
+    public Collection<CharacterSet> getCharacterSets() {
         return (characterSets = nonNullCollection(characterSets, CharacterSet.class));
     }
 
     /** Set the full name of the character coding standard used for the dataset. */
-    public synchronized void setCharacterSets(final Collection<? extends CharacterSet> newValues) {
+    public void setCharacterSets(final Collection<? extends CharacterSet> newValues) {
         characterSets = copyCollection(newValues, characterSets, CharacterSet.class);
     }
 
     /** Main theme(s) of the datset. */
-    public synchronized Collection<TopicCategory> getTopicCategories() {
+    public Collection<TopicCategory> getTopicCategories() {
         return (topicCategories = nonNullCollection(topicCategories, TopicCategory.class));
     }
 
     /** Set the main theme(s) of the datset. */
-    public synchronized void setTopicCategories(
-            final Collection<? extends TopicCategory> newValues) {
+    public void setTopicCategories(final Collection<? extends TopicCategory> newValues) {
         topicCategories = copyCollection(newValues, topicCategories, TopicCategory.class);
     }
 
@@ -167,7 +165,7 @@ public class DataIdentificationImpl extends IdentificationImpl implements DataId
     }
 
     /** Set the description of the dataset in the producers processing environment. */
-    public synchronized void setEnvironmentDescription(final InternationalString newValue) {
+    public void setEnvironmentDescription(final InternationalString newValue) {
         checkWritePermission();
         environmentDescription = newValue;
     }
@@ -176,12 +174,12 @@ public class DataIdentificationImpl extends IdentificationImpl implements DataId
      * Additional extent information including the bounding polygon, vertical, and temporal extent
      * of the dataset.
      */
-    public synchronized Collection<Extent> getExtent() {
+    public Collection<Extent> getExtent() {
         return (extent = nonNullCollection(extent, Extent.class));
     }
 
     /** Set additional extent information. */
-    public synchronized void setExtent(final Collection<? extends Extent> newValues) {
+    public void setExtent(final Collection<? extends Extent> newValues) {
         extent = copyCollection(newValues, extent, Extent.class);
     }
 
@@ -191,7 +189,7 @@ public class DataIdentificationImpl extends IdentificationImpl implements DataId
     }
 
     /** Set any other descriptive information about the dataset. */
-    public synchronized void setSupplementalInformation(final InternationalString newValue) {
+    public void setSupplementalInformation(final InternationalString newValue) {
         checkWritePermission();
         supplementalInformation = newValue;
     }

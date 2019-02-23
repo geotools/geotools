@@ -16,6 +16,7 @@
  */
 package org.geotools.feature;
 
+import org.opengis.feature.IllegalAttributeException;
 import org.opengis.feature.simple.SimpleFeature;
 
 /**

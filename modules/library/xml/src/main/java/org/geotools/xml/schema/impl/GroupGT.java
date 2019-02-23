@@ -38,7 +38,6 @@ public class GroupGT implements Group {
     public GroupGT(String id, String name, URI namespace, ElementGrouping child, int min, int max) {
         this.id = id;
         this.name = name;
-        name.toCharArray();
         this.namespace = namespace;
         this.child = child;
         this.min = min;

@@ -113,7 +113,8 @@ public final class SDO {
      * @return <code>3</code>
      */
     public static int D(Geometry geom) {
-        CoordinateSequenceFactory f = geom.getFactory().getCoordinateSequenceFactory();
+        CoordinateSequenceFactory f =
+                geom != null ? geom.getFactory().getCoordinateSequenceFactory() : null;
 
         if (f instanceof CoordinateAccessFactory) {
             return ((CoordinateAccessFactory) f).getDimension();

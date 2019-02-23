@@ -123,6 +123,7 @@ public class CompositeSurfaceImpl extends CompositeImpl<OrientableSurfaceImpl>
     /* (non-Javadoc)
      * @see org.geotools.geometry.featgeom.root.GeometryImpl#clone()
      */
+    @SuppressWarnings("NP_CLONE_COULD_RETURN_NULL")
     public CompositeSurfaceImpl clone() throws CloneNotSupportedException {
         // TODO Auto-generated method stub
         return null;

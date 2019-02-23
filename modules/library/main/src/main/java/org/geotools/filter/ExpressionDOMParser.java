@@ -115,8 +115,6 @@ public final class ExpressionDOMParser {
      * @return the geotools representation of the expression held in the node.
      */
     public Expression expression(Node root) {
-        LOGGER.finer("parsingExpression " + root.getLocalName());
-
         // NodeList children = root.getChildNodes();
         // LOGGER.finest("children "+children);
         if ((root == null) || (root.getNodeType() != Node.ELEMENT_NODE)) {

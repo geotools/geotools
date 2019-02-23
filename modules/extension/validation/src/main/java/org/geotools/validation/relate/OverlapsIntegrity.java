@@ -63,7 +63,7 @@ import org.opengis.filter.spatial.Disjoint;
 public class OverlapsIntegrity extends RelationIntegrity {
     private static final Logger LOGGER =
             org.geotools.util.logging.Logging.getLogger(OverlapsIntegrity.class);
-    private static HashSet usedIDs;
+    private HashSet usedIDs;
 
     /** OverlapsIntegrity Constructor */
     public OverlapsIntegrity() {
@@ -193,7 +193,7 @@ public class OverlapsIntegrity extends RelationIntegrity {
                         LOGGER.info("count: " + counter);
 
                 } finally {
-                    fr2.close();
+                    if (fr2 != null) fr2.close();
                 }
             } // end while 1
         } finally {
@@ -310,7 +310,7 @@ public class OverlapsIntegrity extends RelationIntegrity {
                     //	System.out.println("count: " + counter);
 
                 } finally {
-                    fr2.close();
+                    if (fr2 != null) fr2.close();
                 }
             } // end while 1
         } finally {

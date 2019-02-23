@@ -391,9 +391,10 @@ public class H2Migrator {
         }
         final DataStore sourceDataStore =
                 config.getDatastoreSpi().createDataStore(config.getParams());
-        final Set<String> typeNames = new HashSet<>(Arrays.asList(sourceDataStore.getTypeNames()));
         Transaction t = new DefaultTransaction();
         try {
+            final Set<String> typeNames =
+                    new HashSet<>(Arrays.asList(sourceDataStore.getTypeNames()));
             // shuffle coverages to avoid all threads accumulating on the same coverage
             List<String> shuffledCoverages = new ArrayList<>(Arrays.asList(coverages));
             Collections.shuffle(shuffledCoverages);
@@ -440,7 +441,11 @@ public class H2Migrator {
     }
 
     private boolean isH2DatabaseFile(String databaseName, Path p) {
-        final String fileName = p.getFileName().toString();
+        Path pfn = p.getFileName();
+        if (pfn == null) {
+            return false;
+        }
+        final String fileName = pfn.toString();
         boolean result = fileName.startsWith(databaseName) && fileName.endsWith(".db");
         return result;
     }

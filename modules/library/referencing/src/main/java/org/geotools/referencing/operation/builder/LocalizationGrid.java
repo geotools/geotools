@@ -22,6 +22,7 @@ import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.image.WritableRaster;
+import java.io.Serializable;
 import java.util.Arrays;
 import javax.media.jai.RasterFactory;
 import javax.media.jai.Warp;
@@ -130,7 +131,7 @@ import org.opengis.referencing.operation.MathTransform2D;
  * @author Alessio Fabiani
  * @see org.opengis.referencing.crs.DerivedCRS
  */
-public class LocalizationGrid {
+public class LocalizationGrid implements Serializable {
     /**
      * <var>x</var> (usually longitude) offset relative to an entry. Points are stored in {@link
      * #grid} as {@code (x,y)} pairs.

@@ -71,18 +71,18 @@ public class FeatureCatalogueDescriptionImpl extends ContentInformationImpl
         return compliant;
     }
     /** Set whether or not the cited feature catalogue complies with ISO 19110. */
-    public synchronized void setCompliant(final Boolean newValue) {
+    public void setCompliant(final Boolean newValue) {
         checkWritePermission();
         compliant = newValue;
     }
 
     /** Returns the language(s) used within the catalogue */
-    public synchronized Collection<Locale> getLanguages() {
+    public Collection<Locale> getLanguages() {
         return (language = nonNullCollection(language, Locale.class));
     }
 
     /** Returns the language(s) used within the catalogue */
-    public synchronized void setLanguages(final Collection<? extends Locale> newValues) {
+    public void setLanguages(final Collection<? extends Locale> newValues) {
         language = copyCollection(newValues, language, Locale.class);
     }
 
@@ -96,7 +96,7 @@ public class FeatureCatalogueDescriptionImpl extends ContentInformationImpl
     }
 
     /** Set whether or not the feature catalogue is included with the dataset. */
-    public synchronized void setIncludedWithDataset(final Boolean newValue) {
+    public void setIncludedWithDataset(final Boolean newValue) {
         checkWritePermission();
         includeWithDataset = newValue;
     }
@@ -105,24 +105,23 @@ public class FeatureCatalogueDescriptionImpl extends ContentInformationImpl
      * Returns the Complete bibliographic reference to one or more external feature
      * catalogues. @TODO: needs to annotate the package org.geotools.util before.
      */
-    public synchronized Collection<GenericName> getFeatureTypes() {
+    public Collection<GenericName> getFeatureTypes() {
         return featureTypes = nonNullCollection(featureTypes, GenericName.class);
     }
 
     /** Returns the Complete bibliographic reference to one or more external feature catalogues. */
-    public synchronized void setFeatureTypes(final Collection<? extends GenericName> newValues) {
+    public void setFeatureTypes(final Collection<? extends GenericName> newValues) {
         featureTypes = copyCollection(newValues, featureTypes, GenericName.class);
     }
 
     /** Returns the Complete bibliographic reference to one or more external feature catalogues. */
-    public synchronized Collection<Citation> getFeatureCatalogueCitations() {
+    public Collection<Citation> getFeatureCatalogueCitations() {
         return (featureCatalogueCitations =
                 nonNullCollection(featureCatalogueCitations, Citation.class));
     }
 
     /** Returns the Complete bibliographic reference to one or more external feature catalogues. */
-    public synchronized void setFeatureCatalogueCitations(
-            final Collection<? extends Citation> newValues) {
+    public void setFeatureCatalogueCitations(final Collection<? extends Citation> newValues) {
         featureCatalogueCitations =
                 copyCollection(newValues, featureCatalogueCitations, Citation.class);
     }

@@ -81,7 +81,7 @@ public class ConformanceResultImpl extends ResultImpl implements ConformanceResu
      * Set the citation of product specification or user requirement against which data is being
      * evaluated.
      */
-    public synchronized void setSpecification(final Citation newValue) {
+    public void setSpecification(final Citation newValue) {
         checkWritePermission();
         specification = newValue;
     }
@@ -92,7 +92,7 @@ public class ConformanceResultImpl extends ResultImpl implements ConformanceResu
     }
 
     /** Set the explanation of the meaning of conformance for this result. */
-    public synchronized void setExplanation(final InternationalString newValue) {
+    public void setExplanation(final InternationalString newValue) {
         checkWritePermission();
         explanation = newValue;
     }
@@ -103,7 +103,7 @@ public class ConformanceResultImpl extends ResultImpl implements ConformanceResu
     }
 
     /** Set the indication of the conformance result. */
-    public synchronized void setPass(final boolean newValue) {
+    public void setPass(final boolean newValue) {
         checkWritePermission();
         pass = newValue;
     }

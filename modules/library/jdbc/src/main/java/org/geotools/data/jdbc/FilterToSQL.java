@@ -1158,9 +1158,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
                         || filter instanceof During
                         || filter instanceof TContains)
                 && period == null) {
-            if (period == null) {
-                throw new IllegalArgumentException("Filter requires a time period");
-            }
+            throw new IllegalArgumentException("Filter requires a time period");
         }
         if (filter instanceof TEquals && period != null) {
             throw new IllegalArgumentException("TEquals filter does not accept time period");

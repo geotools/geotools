@@ -64,11 +64,7 @@ public class ImageComparator {
         public void init(int[] px) {
             if (bands < 2) {
                 r = g = b = px[0];
-                if (bands == 2) {
-                    a = px[1];
-                } else {
-                    a = 255;
-                }
+                a = 255;
             } else {
                 r = px[0];
                 g = px[1];

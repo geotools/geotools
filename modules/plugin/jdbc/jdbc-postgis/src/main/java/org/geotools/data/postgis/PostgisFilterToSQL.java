@@ -72,7 +72,10 @@ public class PostgisFilterToSQL extends FilterToSQL {
             geom = geom.getFactory().createLineString(((LinearRing) geom).getCoordinateSequence());
         }
 
-        Object typename = currentGeometry.getUserData().get(JDBCDataStore.JDBC_NATIVE_TYPENAME);
+        Object typename =
+                currentGeometry != null
+                        ? currentGeometry.getUserData().get(JDBCDataStore.JDBC_NATIVE_TYPENAME)
+                        : null;
         if ("geography".equals(typename)) {
             out.write("ST_GeogFromText('");
             out.write(geom.toText());

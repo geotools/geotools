@@ -253,7 +253,6 @@ public class JGrassColorTable {
         } else if (ruleSplit.length >= 1) {
             String part = ruleSplit[0];
             int alpha = 255;
-            if (ruleSplit.length == 2) alpha = Integer.parseInt(ruleSplit[1]);
 
             String[] partSplit = part.split(":"); // $NON-NLS-1$
 

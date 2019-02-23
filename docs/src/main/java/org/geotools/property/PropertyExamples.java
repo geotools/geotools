@@ -76,11 +76,15 @@ public class PropertyExamples {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            File list[] = tmp.listFiles();
-            for (int i = 0; i < list.length; i++) {
-                list[i].delete();
+            if (tmp != null) {
+                File list[] = tmp.listFiles();
+                if (list != null) {
+                    for (int i = 0; i < list.length; i++) {
+                        list[i].delete();
+                    }
+                }
+                tmp.delete();
             }
-            tmp.delete();
         }
     }
 

@@ -77,7 +77,7 @@ public class DistributorImpl extends MetadataEntity implements Distributor {
     }
 
     /** Set the party from whom the resource may be obtained. This list need not be exhaustive. */
-    public synchronized void setDistributorContact(final ResponsibleParty newValue) {
+    public void setDistributorContact(final ResponsibleParty newValue) {
         checkWritePermission();
         distributorContact = newValue;
     }
@@ -86,7 +86,7 @@ public class DistributorImpl extends MetadataEntity implements Distributor {
      * Provides information about how the resource may be obtained, and related instructions and fee
      * information.
      */
-    public synchronized Collection<StandardOrderProcess> getDistributionOrderProcesses() {
+    public Collection<StandardOrderProcess> getDistributionOrderProcesses() {
         return (distributionOrderProcesses =
                 nonNullCollection(distributionOrderProcesses, StandardOrderProcess.class));
     }
@@ -95,30 +95,30 @@ public class DistributorImpl extends MetadataEntity implements Distributor {
      * Set information about how the resource may be obtained, and related instructions and fee
      * information.
      */
-    public synchronized void setDistributionOrderProcesses(
+    public void setDistributionOrderProcesses(
             final Collection<? extends StandardOrderProcess> newValues) {
         distributionOrderProcesses =
                 copyCollection(newValues, distributionOrderProcesses, StandardOrderProcess.class);
     }
 
     /** Provides information about the format used by the distributor. */
-    public synchronized Collection<Format> getDistributorFormats() {
+    public Collection<Format> getDistributorFormats() {
         return (distributorFormats = nonNullCollection(distributorFormats, Format.class));
     }
 
     /** Set information about the format used by the distributor. */
-    public synchronized void setDistributorFormats(final Collection<? extends Format> newValues) {
+    public void setDistributorFormats(final Collection<? extends Format> newValues) {
         distributorFormats = copyCollection(newValues, distributorFormats, Format.class);
     }
 
     /** Provides information about the technical means and media used by the distributor. */
-    public synchronized Collection<DigitalTransferOptions> getDistributorTransferOptions() {
+    public Collection<DigitalTransferOptions> getDistributorTransferOptions() {
         return (distributorTransferOptions =
                 nonNullCollection(distributorTransferOptions, DigitalTransferOptions.class));
     }
 
     /** Provides information about the technical means and media used by the distributor. */
-    public synchronized void setDistributorTransferOptions(
+    public void setDistributorTransferOptions(
             final Collection<? extends DigitalTransferOptions> newValues) {
         distributorTransferOptions =
                 copyCollection(newValues, distributorTransferOptions, DigitalTransferOptions.class);

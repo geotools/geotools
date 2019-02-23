@@ -793,7 +793,7 @@ public class TeradataDialect extends PreparedStatementSQLDialect {
 
             return columns.getString("TYPE_NAME");
         } finally {
-            columns.close();
+            dataStore.closeSafe(columns);
         }
     }
 

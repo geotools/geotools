@@ -38,12 +38,14 @@ import org.geotools.util.NumberRange;
 import org.geotools.util.Range;
 import org.geotools.util.ResourceInternationalString;
 import org.geotools.util.SimpleInternationalString;
+import org.geotools.util.SuppressFBWarnings;
 import org.geotools.util.Utilities;
 import org.opengis.metadata.citation.Citation;
 import org.opengis.metadata.citation.ResponsibleParty;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.util.InternationalString;
 
+@SuppressFBWarnings("DLS_DEAD_LOCAL_STORE")
 public class MetadataExamples {
 
     public static void main(String args[]) {

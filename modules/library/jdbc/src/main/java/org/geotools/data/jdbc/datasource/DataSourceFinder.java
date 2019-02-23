@@ -49,7 +49,7 @@ public final class DataSourceFinder {
             org.geotools.util.logging.Logging.getLogger(DataSourceFinder.class);
 
     /** The service registry for this manager. Will be initialized only when first needed. */
-    private static FactoryRegistry registry;
+    private static volatile FactoryRegistry registry;
 
     // Singleton pattern
     private DataSourceFinder() {}

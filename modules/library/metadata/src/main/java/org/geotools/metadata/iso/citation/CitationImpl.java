@@ -174,7 +174,7 @@ public class CitationImpl extends MetadataEntity implements Citation {
     }
 
     /** Set the name by which the cited resource is known. */
-    public synchronized void setTitle(final InternationalString newValue) {
+    public void setTitle(final InternationalString newValue) {
         checkWritePermission();
         title = newValue;
     }
@@ -183,23 +183,22 @@ public class CitationImpl extends MetadataEntity implements Citation {
      * Returns the short name or other language name by which the cited information is known.
      * Example: "DCW" as an alternative title for "Digital Chart of the World".
      */
-    public synchronized Collection<InternationalString> getAlternateTitles() {
+    public Collection<InternationalString> getAlternateTitles() {
         return (alternateTitles = nonNullCollection(alternateTitles, InternationalString.class));
     }
 
     /** Set the short name or other language name by which the cited information is known. */
-    public synchronized void setAlternateTitles(
-            final Collection<? extends InternationalString> newValues) {
+    public void setAlternateTitles(final Collection<? extends InternationalString> newValues) {
         alternateTitles = copyCollection(newValues, alternateTitles, InternationalString.class);
     }
 
     /** Returns the reference date for the cited resource. */
-    public synchronized Collection<CitationDate> getDates() {
+    public Collection<CitationDate> getDates() {
         return dates = nonNullCollection(dates, CitationDate.class);
     }
 
     /** Set the reference date for the cited resource. */
-    public synchronized void setDates(final Collection<? extends CitationDate> newValues) {
+    public void setDates(final Collection<? extends CitationDate> newValues) {
         dates = copyCollection(newValues, dates, CitationDate.class);
     }
 
@@ -209,13 +208,13 @@ public class CitationImpl extends MetadataEntity implements Citation {
     }
 
     /** Set the version of the cited resource. */
-    public synchronized void setEdition(final InternationalString newValue) {
+    public void setEdition(final InternationalString newValue) {
         checkWritePermission();
         edition = newValue;
     }
 
     /** Returns the date of the edition, or {@code null} if none. */
-    public synchronized Date getEditionDate() {
+    public Date getEditionDate() {
         return (editionDate != Long.MIN_VALUE) ? new Date(editionDate) : null;
     }
 
@@ -224,7 +223,7 @@ public class CitationImpl extends MetadataEntity implements Citation {
      *
      * @todo Use an unmodifiable {@link Date} here.
      */
-    public synchronized void setEditionDate(final Date newValue) {
+    public void setEditionDate(final Date newValue) {
         checkWritePermission();
         editionDate = (newValue != null) ? newValue.getTime() : Long.MIN_VALUE;
     }
@@ -233,7 +232,7 @@ public class CitationImpl extends MetadataEntity implements Citation {
      * Returns the unique identifier for the resource. Example: Universal Product Code (UPC),
      * National Stock Number (NSN).
      */
-    public synchronized Collection<Identifier> getIdentifiers() {
+    public Collection<Identifier> getIdentifiers() {
         return (identifiers = nonNullCollection(identifiers, Identifier.class));
     }
 
@@ -241,7 +240,7 @@ public class CitationImpl extends MetadataEntity implements Citation {
      * Set the unique identifier for the resource. Example: Universal Product Code (UPC), National
      * Stock Number (NSN).
      */
-    public synchronized void setIdentifiers(final Collection<? extends Identifier> newValues) {
+    public void setIdentifiers(final Collection<? extends Identifier> newValues) {
         identifiers = copyCollection(newValues, identifiers, Identifier.class);
     }
 
@@ -249,7 +248,7 @@ public class CitationImpl extends MetadataEntity implements Citation {
      * Returns the name and position information for an individual or organization that is
      * responsible for the resource. Returns an empty string if there is none.
      */
-    public synchronized Collection<ResponsibleParty> getCitedResponsibleParties() {
+    public Collection<ResponsibleParty> getCitedResponsibleParties() {
         return (citedResponsibleParties =
                 nonNullCollection(citedResponsibleParties, ResponsibleParty.class));
     }
@@ -258,20 +257,18 @@ public class CitationImpl extends MetadataEntity implements Citation {
      * Set the name and position information for an individual or organization that is responsible
      * for the resource. Returns an empty string if there is none.
      */
-    public synchronized void setCitedResponsibleParties(
-            final Collection<? extends ResponsibleParty> newValues) {
+    public void setCitedResponsibleParties(final Collection<? extends ResponsibleParty> newValues) {
         citedResponsibleParties =
                 copyCollection(newValues, citedResponsibleParties, ResponsibleParty.class);
     }
 
     /** Returns the mode in which the resource is represented, or an empty string if none. */
-    public synchronized Collection<PresentationForm> getPresentationForm() {
+    public Collection<PresentationForm> getPresentationForm() {
         return (presentationForm = nonNullCollection(presentationForm, PresentationForm.class));
     }
 
     /** Set the mode in which the resource is represented, or an empty string if none. */
-    public synchronized void setPresentationForm(
-            final Collection<? extends PresentationForm> newValues) {
+    public void setPresentationForm(final Collection<? extends PresentationForm> newValues) {
         presentationForm = copyCollection(newValues, presentationForm, PresentationForm.class);
     }
 
@@ -287,7 +284,7 @@ public class CitationImpl extends MetadataEntity implements Citation {
      * Set the information about the series, or aggregate dataset, of which the dataset is a part.
      * Set to {@code null} if none.
      */
-    public synchronized void setSeries(final Series newValue) {
+    public void setSeries(final Series newValue) {
         checkWritePermission();
         series = newValue;
     }
@@ -304,7 +301,7 @@ public class CitationImpl extends MetadataEntity implements Citation {
      * Set other information required to complete the citation that is not recorded elsewhere. Set
      * to {@code null} if none.
      */
-    public synchronized void setOtherCitationDetails(final InternationalString newValue) {
+    public void setOtherCitationDetails(final InternationalString newValue) {
         checkWritePermission();
         otherCitationDetails = newValue;
     }
@@ -323,7 +320,7 @@ public class CitationImpl extends MetadataEntity implements Citation {
      * collectively, combined with information about what volumes are available at the source cited.
      * Set to {@code null} if there is no title.
      */
-    public synchronized void setCollectiveTitle(final InternationalString newValue) {
+    public void setCollectiveTitle(final InternationalString newValue) {
         checkWritePermission();
         collectiveTitle = newValue;
     }
@@ -334,7 +331,7 @@ public class CitationImpl extends MetadataEntity implements Citation {
     }
 
     /** Set the International Standard Book Number, or {@code null} if none. */
-    public synchronized void setISBN(final String newValue) {
+    public void setISBN(final String newValue) {
         checkWritePermission();
         ISBN = newValue;
     }
@@ -345,7 +342,7 @@ public class CitationImpl extends MetadataEntity implements Citation {
     }
 
     /** Set the International Standard Serial Number, or {@code null} if none. */
-    public synchronized void setISSN(final String newValue) {
+    public void setISSN(final String newValue) {
         checkWritePermission();
         ISSN = newValue;
     }

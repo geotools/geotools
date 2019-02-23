@@ -88,7 +88,7 @@ class OGRFeatureSource extends ContentFeatureSource {
                 // grab the layer
                 String typeName = getEntry().getTypeName();
                 dataSource = getDataStore().openOGRDataSource(false);
-                layer = getDataStore().openOGRLayer(dataSource, typeName);
+                layer = getDataStore().openOGRLayer(dataSource, typeName, true);
 
                 // filter it
                 setLayerFilters(layer, filterTx);
@@ -154,7 +154,7 @@ class OGRFeatureSource extends ContentFeatureSource {
                 // grab the layer
                 String typeName = getEntry().getTypeName();
                 dataSource = getDataStore().openOGRDataSource(false);
-                layer = getDataStore().openOGRLayer(dataSource, typeName);
+                layer = getDataStore().openOGRLayer(dataSource, typeName, true);
 
                 // filter it
                 setLayerFilters(layer, filterTx);
@@ -235,7 +235,7 @@ class OGRFeatureSource extends ContentFeatureSource {
             if (layer == null) {
                 // We only need ExecuteSQL if the user specified sorting
                 if (query.getSortBy() == null || query.getSortBy().length == 0) {
-                    layer = dataSource.getLayerByName(getSchema().getTypeName());
+                    layer = dataSource.getLayerByName(getSchema().getTypeName(), true);
                     setLayerFilters(layer, filterTx);
                     setIgnoredFields(layer, querySchema, sourceSchema);
                 } else {
@@ -256,7 +256,7 @@ class OGRFeatureSource extends ContentFeatureSource {
                             }
                         }
                         if (needsFid) {
-                            layer = dataSource.getLayerByName(getSchema().getTypeName());
+                            layer = dataSource.getLayerByName(getSchema().getTypeName(), false);
                             fidColumnName = ogr.LayerGetFIDColumnName(layer);
                             ogr.LayerRelease(layer);
                             if (fidColumnName == null) {
@@ -469,7 +469,7 @@ class OGRFeatureSource extends ContentFeatureSource {
         try {
             // grab the layer definition
             dataSource = getDataStore().openOGRDataSource(false);
-            layer = getDataStore().openOGRLayer(dataSource, typeName);
+            layer = getDataStore().openOGRLayer(dataSource, typeName, false);
 
             // map to geotools feature type
             return new FeatureTypeMapper(ogr).getFeatureType(layer, typeName, namespaceURI);

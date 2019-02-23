@@ -18,6 +18,8 @@
 
 package org.geotools.data.ogr;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.util.logging.Logging;
@@ -41,6 +43,9 @@ class OGRDataSource {
     final boolean update;
     Exception tracer;
 
+    boolean primeLayersEnabled;
+    private Set<String> primedLayers = new HashSet<>();
+
     public OGRDataSource(OGR ogr, OGRDataSourcePool pool, Object source, boolean update) {
         this.ogr = ogr;
         this.pool = pool;
@@ -58,8 +63,29 @@ class OGRDataSource {
         return ogr.DataSourceGetLayerCount(source);
     }
 
-    public Object getLayer(int i) {
-        return ogr.DataSourceGetLayer(source, i);
+    public Object getLayer(int i, boolean allowPriming) {
+        Object layer = ogr.DataSourceGetLayer(source, i);
+        primeIfRequired(allowPriming, layer);
+
+        return layer;
+    }
+
+    public void primeIfRequired(boolean allowPriming, Object layer) {
+        if (primeLayersEnabled && allowPriming) {
+            String name = ogr.LayerGetName(layer);
+            if (!primedLayers.contains(name)) {
+                // full scan of this layer contents
+                ogr.LayerResetReading(layer);
+                // as suggested by Even on list should never return a feature, but internally it
+                // will be enough to prime the layer
+                ogr.LayerSetAttributeFilter(layer, "0 = 1");
+                Object feature;
+                while ((feature = ogr.LayerGetNextFeature(layer)) != null) {
+                    ogr.FeatureDestroy(feature);
+                }
+                primedLayers.add(name);
+            }
+        }
     }
 
     public Object getDriver() {
@@ -71,8 +97,10 @@ class OGRDataSource {
         return ogr.DataSourceCreateLayer(source, typeName, spatialReference, ogrGeomType, options);
     }
 
-    public Object getLayerByName(String layerName) {
-        return ogr.DataSourceGetLayerByName(source, layerName);
+    public Object getLayerByName(String layerName, boolean allowPriming) {
+        Object layer = ogr.DataSourceGetLayerByName(source, layerName);
+        primeIfRequired(allowPriming, layer);
+        return layer;
     }
 
     public void close() {
@@ -86,7 +114,6 @@ class OGRDataSource {
             try {
                 pool.returnObject(this);
             } catch (Exception e) {
-                // in case returning to the pool fails, destroy the source
                 destroy();
             }
         } else {
@@ -96,6 +123,14 @@ class OGRDataSource {
 
     public Object executeSQL(String sql, Object spatialFilter) {
         return ogr.DataSourceExecuteSQL(source, sql, spatialFilter);
+    }
+
+    public boolean isPrimeLayersEnabled() {
+        return primeLayersEnabled;
+    }
+
+    public void setPrimeLayersEnabled(boolean primeLayersEnabled) {
+        this.primeLayersEnabled = primeLayersEnabled;
     }
 
     @Override
@@ -116,7 +151,9 @@ class OGRDataSource {
     }
 
     void destroy() {
-        ogr.DataSourceRelease(source);
+        if (source != null) {
+            ogr.DataSourceRelease(source);
+        }
 
         // release references
         pool = null;

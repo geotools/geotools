@@ -34,6 +34,7 @@ class OGRDataSourcePool implements AutoCloseable {
     private final String ogrDriver;
     private final OGR ogr;
     private long lastClear;
+    private final boolean primeDataSources;
 
     public OGRDataSourcePool(OGR ogr, String ogrSourceName, String ogrDriver, Map params)
             throws IOException {
@@ -52,6 +53,8 @@ class OGRDataSourcePool implements AutoCloseable {
         config.numTestsPerEvictionRun =
                 (int) lookup(OGRDataStoreFactory.EVICTOR_TESTS_PER_RUN, params);
         this.readOnlyPool = new GenericObjectPool(new PooledDataSourceFactory(), config);
+
+        this.primeDataSources = (boolean) lookup(OGRDataStoreFactory.PRIME_DATASOURCE, params);
     }
 
     private Object lookup(DataAccessFactory.Param param, Map params) throws IOException {
@@ -179,7 +182,9 @@ class OGRDataSourcePool implements AutoCloseable {
         @Override
         public Object makeObject() throws Exception {
             Object source = getRawDataSource(false);
-            return new OGRDataSource(ogr, OGRDataSourcePool.this, source, false);
+            OGRDataSource ds = new OGRDataSource(ogr, OGRDataSourcePool.this, source, false);
+            ds.setPrimeLayersEnabled(primeDataSources);
+            return ds;
         }
 
         @Override

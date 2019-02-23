@@ -91,7 +91,7 @@ public class OGRDataStore extends ContentDataStore {
             List<Name> result = new ArrayList<>();
             int count = dataSource.getLayerCount();
             for (int i = 0; i < count; i++) {
-                layer = dataSource.getLayer(i);
+                layer = dataSource.getLayer(i, false);
                 String name = ogr.LayerGetName(layer);
                 if (name != null) {
                     result.add(new NameImpl(getNamespaceURI(), name));
@@ -113,8 +113,9 @@ public class OGRDataStore extends ContentDataStore {
         return this.dataSourcePool.getDataSource(update);
     }
 
-    Object openOGRLayer(OGRDataSource dataSource, String layerName) throws IOException {
-        Object layer = dataSource.getLayerByName(layerName);
+    Object openOGRLayer(OGRDataSource dataSource, String layerName, boolean allowPriming)
+            throws IOException {
+        Object layer = dataSource.getLayerByName(layerName, allowPriming);
         if (layer == null) {
             throw new IOException("OGR could not find layer '" + layerName + "'");
         }
@@ -140,7 +141,7 @@ public class OGRDataStore extends ContentDataStore {
                 return false;
             }
             ds = new OGRDataSource(ogr, null, rawDs, true);
-            l = openOGRLayer(ds, typeName);
+            l = openOGRLayer(ds, typeName, false);
 
             // for the moment we support working only with random writers
             boolean canDelete = ogr.LayerCanDeleteFeature(l);

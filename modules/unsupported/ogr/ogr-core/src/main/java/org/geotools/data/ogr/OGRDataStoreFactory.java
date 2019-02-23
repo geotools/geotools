@@ -112,6 +112,17 @@ public abstract class OGRDataStoreFactory implements DataStoreFactorySpi {
                     false,
                     DEFAULT_EVICTOR_TESTS_PER_RUN);
 
+    public static final boolean DEFAULT_PRIME_DATASOURCE = false;
+
+    /** Whether to try to initialize a datasource with a full data read before using it* */
+    public static final Param PRIME_DATASOURCE =
+            new Param(
+                    "Prime DataSources",
+                    Boolean.class,
+                    "Performs a full data read on data source creation, in some formats this generates a in memory cache, or a spatial index (check the OGR documentation for details)",
+                    false,
+                    DEFAULT_PRIME_DATASOURCE);
+
     static Boolean AVAILABLE = null;
 
     protected abstract OGR createOGR();
@@ -230,7 +241,8 @@ public abstract class OGRDataStoreFactory implements DataStoreFactorySpi {
             MINCONN,
             MAXWAIT,
             MIN_EVICTABLE_TIME,
-            EVICTOR_TESTS_PER_RUN
+            EVICTOR_TESTS_PER_RUN,
+            PRIME_DATASOURCE
         };
     }
 

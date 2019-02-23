@@ -550,7 +550,6 @@ public class WarpTransform2D extends AbstractMathTransform
             postIncrement = 0;
         }
         final Point2D.Float ptSrc = new PointFloat();
-        final float[] ptDst = new float[2];
         while (--numPts >= 0) {
             ptSrc.x = srcPts[srcOff++] - 0.5f; // See the comment in transform(Point2D...)
             ptSrc.y = srcPts[srcOff++] - 0.5f; // for an explanation about the 0.5 shift.
@@ -576,7 +575,6 @@ public class WarpTransform2D extends AbstractMathTransform
             postIncrement = 0;
         }
         final Point2D.Double ptSrc = new PointDouble();
-        final float[] ptDst = new float[2];
         while (--numPts >= 0) {
             ptSrc.x = srcPts[srcOff++] - 0.5; // See the comment in transform(Point2D...)
             ptSrc.y = srcPts[srcOff++] - 0.5; // for an explanation about the 0.5 shift.

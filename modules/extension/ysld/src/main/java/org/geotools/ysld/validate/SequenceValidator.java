@@ -29,7 +29,7 @@ import org.yaml.snakeyaml.events.SequenceStartEvent;
  *
  * @author Kevin Smith, Boundless
  */
-public class SequenceValidator extends StatefulValidator {
+public class SequenceValidator extends StatefulValidator implements Cloneable {
 
     enum State {
         NEW,

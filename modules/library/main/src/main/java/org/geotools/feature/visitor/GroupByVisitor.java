@@ -278,7 +278,8 @@ public class GroupByVisitor implements FeatureCalc, FeatureAttributeVisitor {
 
         @Override
         public String toString() {
-            return null;
+            // the calculation result as a string (or "" if not applicable)
+            return results != null ? results.toString() : " ";
         }
 
         @Override

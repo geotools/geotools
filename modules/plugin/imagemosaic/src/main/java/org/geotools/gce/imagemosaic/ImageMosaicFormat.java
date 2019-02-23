@@ -16,6 +16,12 @@
  */
 package org.geotools.gce.imagemosaic;
 
+import static org.apache.commons.io.filefilter.FileFilterUtils.and;
+import static org.apache.commons.io.filefilter.FileFilterUtils.makeFileOnly;
+import static org.apache.commons.io.filefilter.FileFilterUtils.nameFileFilter;
+import static org.apache.commons.io.filefilter.FileFilterUtils.notFileFilter;
+import static org.apache.commons.io.filefilter.FileFilterUtils.suffixFileFilter;
+
 import java.awt.*;
 import java.io.File;
 import java.io.FileInputStream;
@@ -32,7 +38,6 @@ import java.util.logging.Logger;
 import javax.media.jai.Interpolation;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.io.filefilter.FileFilterUtils;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.imageio.GeoToolsWriteParams;
 import org.geotools.data.DataAccessFactory.Param;
@@ -475,29 +480,32 @@ public final class ImageMosaicFormat extends AbstractGridFormat implements Forma
                     final File[] properties =
                             parent.listFiles(
                                     (FilenameFilter)
-                                            FileFilterUtils.and(
-                                                    FileFilterUtils.notFileFilter(
-                                                            FileFilterUtils.nameFileFilter(
-                                                                    "indexer.properties")),
-                                                    FileFilterUtils.and(
-                                                            FileFilterUtils.notFileFilter(
-                                                                    FileFilterUtils.nameFileFilter(
+                                            and(
+                                                    notFileFilter(
+                                                            nameFileFilter("indexer.properties")),
+                                                    and(
+                                                            notFileFilter(
+                                                                    nameFileFilter(
                                                                             "datastore.properties")),
-                                                            FileFilterUtils.makeFileOnly(
-                                                                    FileFilterUtils
-                                                                            .suffixFileFilter(
-                                                                                    ".properties")))));
+                                                            makeFileOnly(
+                                                                    suffixFileFilter(
+                                                                            ".properties")))));
 
                     // do we have a valid datastore + mosaic properties pair?
-                    for (File propFile : properties)
-                        if (Utils.checkFileReadable(propFile)
-                                && Utils.loadMosaicProperties(URLs.fileToUrl(propFile)) != null) {
-                            propsUrl = URLs.fileToUrl(propFile);
-                            break;
+                    if (properties != null) {
+                        for (File propFile : properties) {
+                            if (Utils.checkFileReadable(propFile)
+                                    && Utils.loadMosaicProperties(URLs.fileToUrl(propFile))
+                                            != null) {
+                                propsUrl = URLs.fileToUrl(propFile);
+                                break;
+                            }
                         }
+                    }
                 }
 
                 // get the properties file
+                if (propsUrl == null) return false;
                 final MosaicConfigurationBean configuration = Utils.loadMosaicProperties(propsUrl);
                 if (configuration == null) return false;
 

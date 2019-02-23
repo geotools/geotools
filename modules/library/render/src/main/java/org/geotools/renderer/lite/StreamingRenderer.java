@@ -1241,9 +1241,11 @@ public class StreamingRenderer implements GTRenderer {
      * @return
      */
     private SortBy[] getSortByFromLiteStyles(List<LiteFeatureTypeStyle> styles) {
-        for (LiteFeatureTypeStyle fts : styles) {
-            if (fts.sortBy != null) {
-                return fts.sortBy;
+        if (styles != null) {
+            for (LiteFeatureTypeStyle fts : styles) {
+                if (fts.sortBy != null) {
+                    return fts.sortBy;
+                }
             }
         }
 
@@ -1274,17 +1276,19 @@ public class StreamingRenderer implements GTRenderer {
             List<LiteFeatureTypeStyle> styles, ReferencedEnvelope envelope) {
         GeometryTransformationVisitor visitor = new GeometryTransformationVisitor();
         ReferencedEnvelope result = new ReferencedEnvelope(envelope);
-        for (LiteFeatureTypeStyle lts : styles) {
-            List<Rule> rules = new ArrayList<Rule>();
-            rules.addAll(Arrays.asList(lts.ruleList));
-            rules.addAll(Arrays.asList(lts.elseRules));
-            for (Rule r : rules) {
-                for (Symbolizer s : r.symbolizers()) {
-                    if (s.getGeometry() != null) {
-                        ReferencedEnvelope re =
-                                (ReferencedEnvelope) s.getGeometry().accept(visitor, envelope);
-                        if (re != null) {
-                            result.expandToInclude(re);
+        if (styles != null) {
+            for (LiteFeatureTypeStyle lts : styles) {
+                List<Rule> rules = new ArrayList<Rule>();
+                rules.addAll(Arrays.asList(lts.ruleList));
+                rules.addAll(Arrays.asList(lts.elseRules));
+                for (Rule r : rules) {
+                    for (Symbolizer s : r.symbolizers()) {
+                        if (s.getGeometry() != null) {
+                            ReferencedEnvelope re =
+                                    (ReferencedEnvelope) s.getGeometry().accept(visitor, envelope);
+                            if (re != null) {
+                                result.expandToInclude(re);
+                            }
                         }
                     }
                 }

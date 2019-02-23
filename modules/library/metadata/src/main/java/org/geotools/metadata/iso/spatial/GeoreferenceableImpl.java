@@ -93,7 +93,7 @@ public class GeoreferenceableImpl extends GridSpatialRepresentationImpl
     }
 
     /** Set an indication of whether or not control point(s) exists. */
-    public synchronized void setControlPointAvailable(final boolean newValue) {
+    public void setControlPointAvailable(final boolean newValue) {
         checkWritePermission();
         controlPointAvailable = newValue;
     }
@@ -104,7 +104,7 @@ public class GeoreferenceableImpl extends GridSpatialRepresentationImpl
     }
 
     /** Set an indication of whether or not orientation parameters are available. */
-    public synchronized void setOrientationParameterAvailable(final boolean newValue) {
+    public void setOrientationParameterAvailable(final boolean newValue) {
         checkWritePermission();
         orientationParameterAvailable = newValue;
     }
@@ -115,8 +115,7 @@ public class GeoreferenceableImpl extends GridSpatialRepresentationImpl
     }
 
     /** Set a description of parameters used to describe sensor orientation. */
-    public synchronized void setOrientationParameterDescription(
-            final InternationalString newValue) {
+    public void setOrientationParameterDescription(final InternationalString newValue) {
         checkWritePermission();
         orientationParameterDescription = newValue;
     }
@@ -135,18 +134,18 @@ public class GeoreferenceableImpl extends GridSpatialRepresentationImpl
      *
      * @since 2.4
      */
-    public synchronized void setGeoreferencedParameters(final Record newValue) {
+    public void setGeoreferencedParameters(final Record newValue) {
         checkWritePermission();
         georeferencedParameters = newValue;
     }
 
     /** Reference providing description of the parameters. */
-    public synchronized Collection<Citation> getParameterCitation() {
+    public Collection<Citation> getParameterCitation() {
         return (parameterCitation = nonNullCollection(parameterCitation, Citation.class));
     }
 
     /** Set reference providing description of the parameters. */
-    public synchronized void setParameterCitation(final Collection<? extends Citation> newValues) {
+    public void setParameterCitation(final Collection<? extends Citation> newValues) {
         parameterCitation = copyCollection(newValues, parameterCitation, Citation.class);
     }
 }

@@ -209,7 +209,7 @@ public class GeographicBoundingBoxImpl extends GeographicExtentImpl
      *
      * @param newValue The western-most longitude between -180 and +180°.
      */
-    public synchronized void setWestBoundLongitude(final double newValue) {
+    public void setWestBoundLongitude(final double newValue) {
         checkWritePermission();
         westBoundLongitude = newValue;
     }
@@ -230,7 +230,7 @@ public class GeographicBoundingBoxImpl extends GeographicExtentImpl
      *
      * @param newValue The eastern-most longitude between -180 and +180°.
      */
-    public synchronized void setEastBoundLongitude(final double newValue) {
+    public void setEastBoundLongitude(final double newValue) {
         checkWritePermission();
         eastBoundLongitude = newValue;
     }
@@ -251,7 +251,7 @@ public class GeographicBoundingBoxImpl extends GeographicExtentImpl
      *
      * @param newValue The southern-most latitude between -90 and +90°.
      */
-    public synchronized void setSouthBoundLatitude(final double newValue) {
+    public void setSouthBoundLatitude(final double newValue) {
         checkWritePermission();
         southBoundLatitude = newValue;
     }
@@ -272,7 +272,7 @@ public class GeographicBoundingBoxImpl extends GeographicExtentImpl
      *
      * @param newValue The northern-most latitude between -90 and +90°.
      */
-    public synchronized void setNorthBoundLatitude(final double newValue) {
+    public void setNorthBoundLatitude(final double newValue) {
         checkWritePermission();
         northBoundLatitude = newValue;
     }
@@ -291,7 +291,7 @@ public class GeographicBoundingBoxImpl extends GeographicExtentImpl
      * @param northBoundLatitude The maximal <var>y</var> value.
      * @since 2.5
      */
-    public synchronized void setBounds(
+    public void setBounds(
             final double westBoundLongitude,
             final double eastBoundLongitude,
             final double southBoundLatitude,
@@ -328,7 +328,7 @@ public class GeographicBoundingBoxImpl extends GeographicExtentImpl
      * @param box The geographic bounding box to add to this box.
      * @since 2.2
      */
-    public synchronized void add(final GeographicBoundingBox box) {
+    public void add(final GeographicBoundingBox box) {
         checkWritePermission();
         final double xmin = box.getWestBoundLongitude();
         final double xmax = box.getEastBoundLongitude();
@@ -367,7 +367,7 @@ public class GeographicBoundingBoxImpl extends GeographicExtentImpl
      * @param box The geographic bounding box to intersect with this box.
      * @since 2.5
      */
-    public synchronized void intersect(final GeographicBoundingBox box) {
+    public void intersect(final GeographicBoundingBox box) {
         checkWritePermission();
         final Boolean inc1 = getInclusion();
         ensureNonNull("inclusion", inc1);
@@ -413,7 +413,7 @@ public class GeographicBoundingBoxImpl extends GeographicExtentImpl
      * @return {@code true} if the given object is equals to this box.
      */
     @Override
-    public synchronized boolean equals(final Object object) {
+    public boolean equals(final Object object) {
         if (object == this) {
             return true;
         }
@@ -439,7 +439,7 @@ public class GeographicBoundingBoxImpl extends GeographicExtentImpl
      * @todo Consider relying on the default implementation, since it cache the hash code.
      */
     @Override
-    public synchronized int hashCode() {
+    public int hashCode() {
         if (!getClass().equals(GeographicBoundingBoxImpl.class)) {
             return super.hashCode();
         }

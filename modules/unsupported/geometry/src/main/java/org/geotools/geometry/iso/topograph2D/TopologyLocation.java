@@ -66,8 +66,8 @@ public class TopologyLocation {
     }
 
     public TopologyLocation(TopologyLocation gl) {
-        init(gl.location.length);
         if (gl != null) {
+            init(gl.location.length);
             for (int i = 0; i < location.length; i++) {
                 location[i] = gl.location[i];
             }

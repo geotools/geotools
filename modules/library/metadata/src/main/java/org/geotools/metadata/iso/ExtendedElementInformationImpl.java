@@ -133,7 +133,7 @@ public class ExtendedElementInformationImpl extends MetadataEntity
     }
 
     /** Set the name of the extended metadata element. */
-    public synchronized void setName(final String newValue) {
+    public void setName(final String newValue) {
         checkWritePermission();
         name = newValue;
     }
@@ -148,7 +148,7 @@ public class ExtendedElementInformationImpl extends MetadataEntity
     }
 
     /** Set a short form suitable for use in an implementation method such as XML or SGML. */
-    public synchronized void setShortName(final String newValue) {
+    public void setShortName(final String newValue) {
         checkWritePermission();
         shortName = newValue;
     }
@@ -163,7 +163,7 @@ public class ExtendedElementInformationImpl extends MetadataEntity
     }
 
     /** Set a three digit code assigned to the extended element. */
-    public synchronized void setDomainCode(final Integer newValue) {
+    public void setDomainCode(final Integer newValue) {
         checkWritePermission();
         domainCode = newValue;
     }
@@ -174,7 +174,7 @@ public class ExtendedElementInformationImpl extends MetadataEntity
     }
 
     /** Set the definition of the extended element. */
-    public synchronized void setDefinition(final InternationalString newValue) {
+    public void setDefinition(final InternationalString newValue) {
         checkWritePermission();
         definition = newValue;
     }
@@ -185,7 +185,7 @@ public class ExtendedElementInformationImpl extends MetadataEntity
     }
 
     /** Set the obligation of the extended element. */
-    public synchronized void setObligation(final Obligation newValue) {
+    public void setObligation(final Obligation newValue) {
         checkWritePermission();
         obligation = newValue;
     }
@@ -199,7 +199,7 @@ public class ExtendedElementInformationImpl extends MetadataEntity
     }
 
     /** Set the condition under which the extended element is mandatory. */
-    public synchronized void setCondition(final InternationalString newValue) {
+    public void setCondition(final InternationalString newValue) {
         checkWritePermission();
         condition = newValue;
     }
@@ -210,7 +210,7 @@ public class ExtendedElementInformationImpl extends MetadataEntity
     }
 
     /** Set the code which identifies the kind of value provided in the extended element. */
-    public synchronized void setDataType(final Datatype newValue) {
+    public void setDataType(final Datatype newValue) {
         checkWritePermission();
         dataType = newValue;
     }
@@ -226,7 +226,7 @@ public class ExtendedElementInformationImpl extends MetadataEntity
     }
 
     /** Set the maximum occurrence of the extended element. */
-    public synchronized void setMaximumOccurrence(final Integer newValue) {
+    public void setMaximumOccurrence(final Integer newValue) {
         checkWritePermission();
         maximumOccurrence = newValue;
     }
@@ -242,7 +242,7 @@ public class ExtendedElementInformationImpl extends MetadataEntity
     }
 
     /** Set the valid values that can be assigned to the extended element. */
-    public synchronized void setDomainValue(final InternationalString newValue) {
+    public void setDomainValue(final InternationalString newValue) {
         checkWritePermission();
         domainValue = newValue;
     }
@@ -251,14 +251,14 @@ public class ExtendedElementInformationImpl extends MetadataEntity
      * Name of the metadata entity(s) under which this extended metadata element may appear. The
      * name(s) may be standard metadata element(s) or other extended metadata element(s).
      */
-    public synchronized Collection<String> getParentEntity() {
+    public Collection<String> getParentEntity() {
         return parentEntity = nonNullCollection(parentEntity, String.class);
     }
 
     /**
      * Set the name of the metadata entity(s) under which this extended metadata element may appear.
      */
-    public synchronized void setParentEntity(final Collection<? extends String> newValues) {
+    public void setParentEntity(final Collection<? extends String> newValues) {
         parentEntity = copyCollection(newValues, parentEntity, String.class);
     }
 
@@ -268,29 +268,28 @@ public class ExtendedElementInformationImpl extends MetadataEntity
     }
 
     /** Set how the extended element relates to other existing elements and entities. */
-    public synchronized void setRule(final InternationalString newValue) {
+    public void setRule(final InternationalString newValue) {
         checkWritePermission();
         rule = newValue;
     }
 
     /** Reason for creating the extended element. */
-    public synchronized Collection<InternationalString> getRationales() {
+    public Collection<InternationalString> getRationales() {
         return (rationales = nonNullCollection(rationales, InternationalString.class));
     }
 
     /** Set the reason for creating the extended element. */
-    public synchronized void setRationales(
-            final Collection<? extends InternationalString> newValues) {
+    public void setRationales(final Collection<? extends InternationalString> newValues) {
         rationales = copyCollection(newValues, rationales, InternationalString.class);
     }
 
     /** Name of the person or organization creating the extended element. */
-    public synchronized Collection<ResponsibleParty> getSources() {
+    public Collection<ResponsibleParty> getSources() {
         return sources = nonNullCollection(sources, ResponsibleParty.class);
     }
 
     /** Set the name of the person or organization creating the extended element. */
-    public synchronized void setSources(final Collection<? extends ResponsibleParty> newValues) {
+    public void setSources(final Collection<? extends ResponsibleParty> newValues) {
         sources = copyCollection(newValues, sources, ResponsibleParty.class);
     }
 

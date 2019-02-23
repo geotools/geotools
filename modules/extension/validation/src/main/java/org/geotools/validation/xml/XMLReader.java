@@ -117,7 +117,9 @@ public class XMLReader {
                         // error
                     }
 
-                    m.put(adto.getName(), adto);
+                    if (adto != null) {
+                        m.put(adto.getName(), adto);
+                    }
                 }
             }
         } catch (IOException ioe) {
@@ -253,7 +255,7 @@ public class XMLReader {
                     // error
                 }
 
-                if ((adto == null) || !adto.isFinal()) {
+                if ((adto != null) && !adto.isFinal()) {
                     m.put(adto.getName(), adto);
                 }
             }
@@ -332,12 +334,14 @@ public class XMLReader {
             File[] fileList = plugInDir.listFiles();
             r = new HashMap();
 
-            for (int i = 0; i < fileList.length; i++) {
-                if (fileList[i].canWrite() && fileList[i].isFile()) {
-                    FileReader fr = new FileReader(fileList[i]);
-                    PlugInDTO dto = XMLReader.readPlugIn(fr);
-                    r.put(dto.getName(), dto);
-                    fr.close();
+            if (fileList != null) {
+                for (int i = 0; i < fileList.length; i++) {
+                    if (fileList[i].canWrite() && fileList[i].isFile()) {
+                        FileReader fr = new FileReader(fileList[i]);
+                        PlugInDTO dto = XMLReader.readPlugIn(fr);
+                        r.put(dto.getName(), dto);
+                        fr.close();
+                    }
                 }
             }
         } catch (IOException e) {
@@ -366,20 +370,22 @@ public class XMLReader {
         File[] fileList = validationDir.listFiles();
         r = new HashMap();
 
-        for (int i = 0; i < fileList.length; i++) {
-            try {
-                if (fileList[i].canWrite() && fileList[i].isFile()) {
-                    FileReader fr = new FileReader(fileList[i]);
-                    try {
-                        TestSuiteDTO dto =
-                                XMLReader.readTestSuite(fileList[i].getName(), fr, plugInDTOs);
-                        r.put(dto.getName(), dto);
-                    } finally {
-                        fr.close();
+        if (fileList != null) {
+            for (int i = 0; i < fileList.length; i++) {
+                try {
+                    if (fileList[i].canWrite() && fileList[i].isFile()) {
+                        FileReader fr = new FileReader(fileList[i]);
+                        try {
+                            TestSuiteDTO dto =
+                                    XMLReader.readTestSuite(fileList[i].getName(), fr, plugInDTOs);
+                            r.put(dto.getName(), dto);
+                        } finally {
+                            fr.close();
+                        }
                     }
+                } catch (IOException open) {
+                    throw new ValidationException("Could not open " + fileList[i].getName(), open);
                 }
-            } catch (IOException open) {
-                throw new ValidationException("Could not open " + fileList[i].getName(), open);
             }
         }
         return r;

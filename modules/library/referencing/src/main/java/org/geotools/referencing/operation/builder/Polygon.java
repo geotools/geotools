@@ -32,7 +32,7 @@ import org.opengis.geometry.DirectPosition;
  * @version $Id$
  * @author Jan Jezek
  */
-class Polygon {
+class Polygon implements Cloneable {
     /** Vertices of this polygon. */
     private DirectPosition[] vertices;
 

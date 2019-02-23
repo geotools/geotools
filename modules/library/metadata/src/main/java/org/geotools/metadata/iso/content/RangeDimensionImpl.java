@@ -68,7 +68,7 @@ public class RangeDimensionImpl extends MetadataEntity implements RangeDimension
      * Set the number that uniquely identifies instances of bands of wavelengths on which a sensor
      * operates.
      */
-    public synchronized void setSequenceIdentifier(final MemberName newValue) {
+    public void setSequenceIdentifier(final MemberName newValue) {
         checkWritePermission();
         sequenceIdentifier = newValue;
     }
@@ -79,7 +79,7 @@ public class RangeDimensionImpl extends MetadataEntity implements RangeDimension
     }
 
     /** Set the description of the range of a cell measurement value. */
-    public synchronized void setDescriptor(final InternationalString newValue) {
+    public void setDescriptor(final InternationalString newValue) {
         checkWritePermission();
         descriptor = newValue;
     }

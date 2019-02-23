@@ -94,7 +94,8 @@ public class XMLUtils {
                 || (c == 0xA)
                 || (c == 0xD)
                 || ((c >= 0x20) && (c <= 0xD7FF))
-                || ((c >= 0xE000) && (c <= 0xFFFD))
-                || ((c >= 0x10000) && (c <= 0x10FFFF));
+                || ((c >= 0xE000) && (c <= 0xFFFD));
+        // removed as a char cannot get this high
+        // || ((c >= 0x10000) && (c <= 0x10FFFF));
     }
 }

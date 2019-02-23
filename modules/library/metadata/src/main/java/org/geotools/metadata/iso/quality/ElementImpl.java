@@ -95,13 +95,12 @@ public class ElementImpl extends MetadataEntity implements Element {
     }
 
     /** Returns the name of the test applied to the data. */
-    public synchronized Collection<InternationalString> getNamesOfMeasure() {
+    public Collection<InternationalString> getNamesOfMeasure() {
         return namesOfMeasure = nonNullCollection(namesOfMeasure, InternationalString.class);
     }
 
     /** Set the name of the test applied to the data. */
-    public synchronized void setNamesOfMeasure(
-            final Collection<? extends InternationalString> newValues) {
+    public void setNamesOfMeasure(final Collection<? extends InternationalString> newValues) {
         namesOfMeasure = copyCollection(newValues, namesOfMeasure, InternationalString.class);
     }
 
@@ -111,7 +110,7 @@ public class ElementImpl extends MetadataEntity implements Element {
     }
 
     /** Set the code identifying a registered standard procedure. */
-    public synchronized void setMeasureIdentification(final Identifier newValue) {
+    public void setMeasureIdentification(final Identifier newValue) {
         checkWritePermission();
         measureIdentification = newValue;
     }
@@ -122,7 +121,7 @@ public class ElementImpl extends MetadataEntity implements Element {
     }
 
     /** Set the description of the measure being determined. */
-    public synchronized void setMeasureDescription(final InternationalString newValue) {
+    public void setMeasureDescription(final InternationalString newValue) {
         checkWritePermission();
         measureDescription = newValue;
     }
@@ -136,7 +135,7 @@ public class ElementImpl extends MetadataEntity implements Element {
     }
 
     /** Set the ype of method used to evaluate quality of the dataset. */
-    public synchronized void setEvaluationMethodType(final EvaluationMethodType newValue) {
+    public void setEvaluationMethodType(final EvaluationMethodType newValue) {
         checkWritePermission();
         evaluationMethodType = newValue;
     }
@@ -147,7 +146,7 @@ public class ElementImpl extends MetadataEntity implements Element {
     }
 
     /** Set the description of the evaluation method. */
-    public synchronized void setEvaluationMethodDescription(final InternationalString newValue) {
+    public void setEvaluationMethodDescription(final InternationalString newValue) {
         checkWritePermission();
         evaluationMethodDescription = newValue;
     }
@@ -158,7 +157,7 @@ public class ElementImpl extends MetadataEntity implements Element {
     }
 
     /** Set the reference to the procedure information. */
-    public synchronized void setEvaluationProcedure(final Citation newValue) {
+    public void setEvaluationProcedure(final Citation newValue) {
         checkWritePermission();
         evaluationProcedure = newValue;
     }
@@ -170,7 +169,7 @@ public class ElementImpl extends MetadataEntity implements Element {
      *
      * @since 2.4
      */
-    public synchronized Collection<Date> getDates() {
+    public Collection<Date> getDates() {
         if (date1 == Long.MIN_VALUE) {
             return Collections.emptyList();
         }
@@ -209,7 +208,7 @@ public class ElementImpl extends MetadataEntity implements Element {
      *
      * @since 2.4
      */
-    public synchronized Collection<Result> getResults() {
+    public Collection<Result> getResults() {
         return results = nonNullCollection(results, Result.class);
     }
 
@@ -220,7 +219,7 @@ public class ElementImpl extends MetadataEntity implements Element {
      *
      * @since 2.4
      */
-    public synchronized void setResults(final Collection<? extends Result> newValues) {
+    public void setResults(final Collection<? extends Result> newValues) {
         results = copyCollection(newValues, results, Result.class);
     }
 }

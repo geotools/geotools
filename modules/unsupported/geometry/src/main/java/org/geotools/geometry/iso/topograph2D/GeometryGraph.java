@@ -41,6 +41,7 @@ import org.geotools.geometry.iso.topograph2D.index.SimpleMonotoneChainSweepLineI
 import org.geotools.geometry.iso.topograph2D.util.CoordinateArrays;
 import org.geotools.geometry.iso.util.Assert;
 import org.geotools.geometry.iso.util.algorithm2D.LineIntersector;
+import org.geotools.util.SuppressFBWarnings;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.aggregate.MultiPrimitive;
 import org.opengis.geometry.aggregate.MultiSurface;
@@ -59,7 +60,12 @@ public class GeometryGraph extends PlanarGraph {
      * An alternative (and possibly more intuitive) rule would be the "At Most One Rule":
      * isInBoundary = (componentCount == 1)
      */
+    @SuppressFBWarnings("IM_BAD_CHECK_FOR_ODD")
     public static boolean isInBoundary(int boundaryCount) {
+        if (boundaryCount < 0) {
+            throw new IllegalArgumentException(
+                    "boundaryCount must be non negative, but was " + boundaryCount);
+        }
         // the "Mod-2 Rule"
         return boundaryCount % 2 == 1;
     }
@@ -517,6 +523,8 @@ public class GeometryGraph extends PlanarGraph {
      * geometries (Curves/MultiCurves). According to the SFS, an endpoint of a Curve is on the
      * boundary iff if it is in the boundaries of an odd number of Geometries
      */
+    // lbl.setLocation might actually NPE, just ignoring it as the module is generally broken
+    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH")
     private void insertBoundaryPoint(int argIndex, Coordinate coord) {
         Node n = nodes.addNode(coord);
         Label lbl = n.getLabel();

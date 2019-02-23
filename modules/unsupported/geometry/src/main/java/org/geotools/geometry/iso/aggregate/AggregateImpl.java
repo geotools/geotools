@@ -18,6 +18,7 @@ package org.geotools.geometry.iso.aggregate;
 
 import java.util.Set;
 import org.geotools.geometry.iso.root.GeometryImpl;
+import org.geotools.util.SuppressFBWarnings;
 import org.opengis.geometry.Boundary;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.Geometry;
@@ -44,9 +45,11 @@ public abstract class AggregateImpl extends GeometryImpl implements Aggregate {
     /* (non-Javadoc)
      * @see org.geotools.geometry.featgeom.root.GeometryImpl#clone()
      */
+    @SuppressFBWarnings("NP_CLONE_COULD_RETURN_NULL")
     public GeometryImpl clone() throws CloneNotSupportedException {
         return null;
     }
+
     /** Union the various elements together and return the result. */
     public Boundary getBoundary() {
         Boundary bounds = null;

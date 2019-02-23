@@ -36,6 +36,7 @@ import org.geotools.styling.UserLayer;
 import org.geotools.swing.data.JParameterListWizard;
 import org.geotools.swing.wizard.JWizard;
 import org.geotools.util.KVP;
+import org.geotools.util.SuppressFBWarnings;
 import org.geotools.xml.styling.SLDParser;
 import org.geotools.xml.styling.SLDTransformer;
 import org.geotools.xsd.Encoder;
@@ -46,6 +47,7 @@ import org.opengis.style.Style;
  *
  * @author Jody Garnett
  */
+@SuppressFBWarnings("DLS_DEAD_LOCAL_STORE")
 public class StyleConverter extends JFrame {
     private static final String SE_1_1 = "se 1.1";
 

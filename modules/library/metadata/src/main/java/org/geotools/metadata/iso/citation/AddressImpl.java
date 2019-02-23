@@ -72,7 +72,7 @@ public class AddressImpl extends MetadataEntity implements Address {
     }
 
     /** Set the state, province of the location. */
-    public synchronized void setAdministrativeArea(final InternationalString newValue) {
+    public void setAdministrativeArea(final InternationalString newValue) {
         checkWritePermission();
         administrativeArea = newValue;
     }
@@ -83,7 +83,7 @@ public class AddressImpl extends MetadataEntity implements Address {
     }
 
     /** Set the city of the location */
-    public synchronized void setCity(final InternationalString newValue) {
+    public void setCity(final InternationalString newValue) {
         checkWritePermission();
         city = newValue;
     }
@@ -94,31 +94,30 @@ public class AddressImpl extends MetadataEntity implements Address {
     }
 
     /** set the country of the physical address. */
-    public synchronized void setCountry(final InternationalString newValue) {
+    public void setCountry(final InternationalString newValue) {
         checkWritePermission();
         country = newValue;
     }
 
     /** Returns the address line for the location (as described in ISO 11180, Annex A). */
-    public synchronized Collection<String> getDeliveryPoints() {
+    public Collection<String> getDeliveryPoints() {
         return (deliveryPoints = nonNullCollection(deliveryPoints, String.class));
     }
 
     /** Set the address line for the location (as described in ISO 11180, Annex A). */
-    public synchronized void setDeliveryPoints(final Collection<? extends String> newValues) {
+    public void setDeliveryPoints(final Collection<? extends String> newValues) {
         deliveryPoints = copyCollection(newValues, deliveryPoints, String.class);
     }
 
     /**
      * Returns the address of the electronic mailbox of the responsible organization or individual.
      */
-    public synchronized Collection<String> getElectronicMailAddresses() {
+    public Collection<String> getElectronicMailAddresses() {
         return (electronicMailAddresses = nonNullCollection(electronicMailAddresses, String.class));
     }
 
     /** Set the address of the electronic mailbox of the responsible organization or individual. */
-    public synchronized void setElectronicMailAddresses(
-            final Collection<? extends String> newValues) {
+    public void setElectronicMailAddresses(final Collection<? extends String> newValues) {
         electronicMailAddresses = copyCollection(newValues, electronicMailAddresses, String.class);
     }
 
@@ -128,7 +127,7 @@ public class AddressImpl extends MetadataEntity implements Address {
     }
 
     /** Set ZIP or other postal code. */
-    public synchronized void setPostalCode(final String newValue) {
+    public void setPostalCode(final String newValue) {
         checkWritePermission();
         postalCode = newValue;
     }

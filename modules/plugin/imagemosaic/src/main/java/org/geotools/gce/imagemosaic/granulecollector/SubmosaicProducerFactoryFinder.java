@@ -27,7 +27,7 @@ import org.geotools.util.factory.FactoryRegistry;
 /** Helper finder for SubmosaicProducerFactories */
 public class SubmosaicProducerFactoryFinder {
 
-    private static FactoryCreator registry;
+    private static volatile FactoryCreator registry;
 
     public static synchronized Map<String, SubmosaicProducerFactory> getGranuleHandlersSPI() {
         // get all GranuleHandlerFactorySPI implementations

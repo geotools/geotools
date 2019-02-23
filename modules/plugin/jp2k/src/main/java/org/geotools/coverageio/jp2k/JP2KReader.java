@@ -27,7 +27,7 @@ import it.geosolutions.imageio.plugins.jp2k.box.XMLBox;
 import it.geosolutions.imageio.plugins.jp2k.box.XMLBoxMetadataNode;
 import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReader;
 import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReaderSpi;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.io.ByteArrayInputStream;
@@ -711,8 +711,7 @@ public final class JP2KReader extends AbstractGridCoverage2DReader implements Gr
 
             if (crs == null) {
                 throw new DataSourceException(
-                        "Unable to find a CRS for this coverage, using a default one: "
-                                + crs.toWKT());
+                        "Unable to find a CRS for this coverage, using a default one");
             }
         }
         setResolutionInfo(reader);

@@ -86,18 +86,18 @@ public class UsageImpl extends MetadataEntity implements Usage {
     }
 
     /** Set a brief description of the resource and/or resource series usage. */
-    public synchronized void setSpecificUsage(final InternationalString newValue) {
+    public void setSpecificUsage(final InternationalString newValue) {
         checkWritePermission();
         specificUsage = newValue;
     }
 
     /** Date and time of the first use or range of uses of the resource and/or resource series. */
-    public synchronized Date getUsageDate() {
+    public Date getUsageDate() {
         return (usageDate != Long.MIN_VALUE) ? new Date(usageDate) : null;
     }
 
     /** Set the date and time of the first use. */
-    public synchronized void setUsageDate(final Date newValue) {
+    public void setUsageDate(final Date newValue) {
         checkWritePermission();
         usageDate = (newValue != null) ? newValue.getTime() : Long.MIN_VALUE;
     }
@@ -114,7 +114,7 @@ public class UsageImpl extends MetadataEntity implements Usage {
      * Set applications, determined by the user for which the resource and/or resource series is not
      * suitable.
      */
-    public synchronized void setUserDeterminedLimitations(final InternationalString newValue) {
+    public void setUserDeterminedLimitations(final InternationalString newValue) {
         checkWritePermission();
         this.userDeterminedLimitations = newValue;
     }
@@ -123,7 +123,7 @@ public class UsageImpl extends MetadataEntity implements Usage {
      * Identification of and means of communicating with person(s) and organization(s) using the
      * resource(s).
      */
-    public synchronized Collection<ResponsibleParty> getUserContactInfo() {
+    public Collection<ResponsibleParty> getUserContactInfo() {
         return userContactInfo = nonNullCollection(userContactInfo, ResponsibleParty.class);
     }
 
@@ -131,8 +131,7 @@ public class UsageImpl extends MetadataEntity implements Usage {
      * Set identification of and means of communicating with person(s) and organization(s) using the
      * resource(s).
      */
-    public synchronized void setUserContactInfo(
-            final Collection<? extends ResponsibleParty> newValues) {
+    public void setUserContactInfo(final Collection<? extends ResponsibleParty> newValues) {
         userContactInfo = copyCollection(newValues, userContactInfo, ResponsibleParty.class);
     }
 }

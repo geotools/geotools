@@ -30,11 +30,13 @@ import org.geotools.filter.function.Classifier;
 import org.geotools.filter.function.ExplicitClassifier;
 import org.geotools.filter.function.RangedClassifier;
 import org.geotools.styling.FeatureTypeStyle;
+import org.geotools.util.SuppressFBWarnings;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.PropertyName;
 
+@SuppressFBWarnings("DLS_DEAD_LOCAL_STORE")
 public class BrewerExamples {
 
     public void classiferExample() {

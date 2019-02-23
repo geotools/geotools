@@ -17,9 +17,9 @@
 package org.geotools.filter.expression;
 
 import java.util.regex.Pattern;
-import org.geotools.feature.IllegalAttributeException;
 import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.Geometry;
+import org.opengis.feature.IllegalAttributeException;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;

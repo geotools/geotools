@@ -43,9 +43,11 @@ import org.geotools.tile.impl.osm.OSMTile;
 import org.geotools.tile.impl.osm.OSMTileIdentifier;
 import org.geotools.tile.util.AsyncTileLayer;
 import org.geotools.tile.util.TileLayer;
+import org.geotools.util.SuppressFBWarnings;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.operation.TransformException;
 
+@SuppressFBWarnings("DLS_DEAD_LOCAL_STORE")
 public class TileViewer {
 
     private JMapFrame frame;

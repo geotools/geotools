@@ -26,9 +26,7 @@ import it.geosolutions.jaiext.range.NoDataContainer;
 import it.geosolutions.jaiext.vectorbin.ROIGeometry;
 import it.geosolutions.jaiext.vectorbin.VectorBinarizeDescriptor;
 import it.geosolutions.jaiext.vectorbin.VectorBinarizeRIF;
-import java.awt.Dimension;
-import java.awt.Rectangle;
-import java.awt.RenderingHints;
+import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Rectangle2D;
@@ -1574,17 +1572,18 @@ public class GranuleDescriptor {
             final ImageLayout layout = new ImageLayout();
             layout.setTileHeight(tileDimensions.width).setTileWidth(tileDimensions.height);
             localHints = new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout);
-        } else {
-            if (hints != null && hints.containsKey(JAI.KEY_IMAGE_LAYOUT)) {
-                final Object layout = hints.get(JAI.KEY_IMAGE_LAYOUT);
-                if (layout != null && layout instanceof ImageLayout) {
-                    final ImageLayout originalLayout = (ImageLayout) layout;
-                    final ImageLayout localLayout = new ImageLayout();
-                    localLayout.setTileHeight(originalLayout.getTileHeight(null));
-                    localLayout.setTileWidth(originalLayout.getTileWidth(null));
-                    localHints = new RenderingHints(JAI.KEY_IMAGE_LAYOUT, localLayout);
-                }
+        } else if (hints != null && hints.containsKey(JAI.KEY_IMAGE_LAYOUT)) {
+            final Object layout = hints.get(JAI.KEY_IMAGE_LAYOUT);
+            if (layout != null && layout instanceof ImageLayout) {
+                final ImageLayout originalLayout = (ImageLayout) layout;
+                final ImageLayout localLayout = new ImageLayout();
+                localLayout.setTileHeight(originalLayout.getTileHeight(null));
+                localLayout.setTileWidth(originalLayout.getTileWidth(null));
+                localHints = new RenderingHints(JAI.KEY_IMAGE_LAYOUT, localLayout);
             }
+        }
+        if (localHints == null) {
+            localHints = new RenderingHints(null);
         }
         updateLocalHints(hints, localHints);
         localHints.add(ImageUtilities.BORDER_EXTENDER_HINTS);

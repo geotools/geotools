@@ -39,10 +39,10 @@ public final class Converters {
     private static final Logger LOGGER = Logging.getLogger(Converters.class);
 
     /** Cached list of converter factories */
-    static ConverterFactory[] factories;
+    static volatile ConverterFactory[] factories;
 
     /** The service registry for this manager. Will be initialized only when first needed. */
-    private static FactoryRegistry registry;
+    private static volatile FactoryRegistry registry;
 
     /**
      * Returns the service registry. The registry will be created the first time this method is
@@ -186,10 +186,7 @@ public final class Converters {
         if (factories == null) {
             Collection<ConverterFactory> factoryCollection =
                     getConverterFactories(GeoTools.getDefaultHints());
-            factories =
-                    (ConverterFactory[])
-                            factoryCollection.toArray(
-                                    new ConverterFactory[factoryCollection.size()]);
+            factories = factoryCollection.toArray(new ConverterFactory[factoryCollection.size()]);
         }
         return factories;
     }

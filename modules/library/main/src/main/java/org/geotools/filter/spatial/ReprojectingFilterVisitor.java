@@ -84,6 +84,9 @@ public class ReprojectingFilterVisitor extends DuplicatingFilterVisitor {
      * @return
      */
     private CoordinateReferenceSystem findPropertyCRS(PropertyName propertyName) {
+        if (propertyName == null) {
+            return null;
+        }
         Object o = propertyName.evaluate(featureType);
         if (!propertyName.getPropertyName().isEmpty()
                 && !(propertyName.evaluate(featureType) instanceof GeometryDescriptor)) {

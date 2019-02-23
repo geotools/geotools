@@ -78,7 +78,7 @@ public class DataQualityImpl extends MetadataEntity implements DataQuality {
     }
 
     /** Set the specific data to which the data quality information applies. */
-    public synchronized void setScope(final Scope newValue) {
+    public void setScope(final Scope newValue) {
         checkWritePermission();
         scope = newValue;
     }
@@ -88,7 +88,7 @@ public class DataQualityImpl extends MetadataEntity implements DataQuality {
      * if {@linkplain Scope#getLevel scope level} is {@linkplain
      * org.opengis.metadata.maintenance.ScopeCode#DATASET dataset}.
      */
-    public synchronized Collection<Element> getReports() {
+    public Collection<Element> getReports() {
         return reports = nonNullCollection(reports, Element.class);
     }
 
@@ -97,7 +97,7 @@ public class DataQualityImpl extends MetadataEntity implements DataQuality {
      * provided only if {@linkplain Scope#getLevel scope level} is {@linkplain
      * org.opengis.metadata.maintenance.ScopeCode#DATASET dataset}.
      */
-    public synchronized void setReports(final Collection<? extends Element> newValues) {
+    public void setReports(final Collection<? extends Element> newValues) {
         reports = copyCollection(newValues, reports, Element.class);
     }
 
@@ -115,7 +115,7 @@ public class DataQualityImpl extends MetadataEntity implements DataQuality {
      * scope. Should be provided only if {@linkplain Scope#getLevel scope level} is {@linkplain
      * org.opengis.metadata.maintenance.ScopeCode#DATASET dataset}.
      */
-    public synchronized void setLineage(final Lineage newValue) {
+    public void setLineage(final Lineage newValue) {
         checkWritePermission();
         lineage = newValue;
     }

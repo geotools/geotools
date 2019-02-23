@@ -168,10 +168,8 @@ public abstract class AbstractWFSResponseFactory implements WFSResponseFactory {
             List<net.opengis.ows10.ExceptionType> exceptions = report.getException();
 
             StringBuilder msg = new StringBuilder("WFS returned an exception.");
-            if (originatingRequest != null) {
-                msg.append(" Originating Request: ");
-                msg.append(originatingRequest.toString());
-            }
+            msg.append(" Originating Request: ");
+            msg.append(originatingRequest.toString());
             WFSException result = new WFSException(msg.toString());
             for (net.opengis.ows10.ExceptionType ex : exceptions) {
                 @SuppressWarnings("unchecked")
@@ -186,10 +184,8 @@ public abstract class AbstractWFSResponseFactory implements WFSResponseFactory {
             List<net.opengis.ows11.ExceptionType> exceptions = report.getException();
 
             StringBuilder msg = new StringBuilder("WFS returned an exception.");
-            if (originatingRequest != null) {
-                msg.append(" Originating Request: ");
-                msg.append(originatingRequest.toString());
-            }
+            msg.append(" Originating Request: ");
+            msg.append(originatingRequest.toString());
             WFSException result = new WFSException(msg.toString());
             for (net.opengis.ows11.ExceptionType ex : exceptions) {
                 @SuppressWarnings("unchecked")
@@ -203,10 +199,8 @@ public abstract class AbstractWFSResponseFactory implements WFSResponseFactory {
             List<net.opengis.ows20.ExceptionType> exceptions = report.getException();
 
             StringBuilder msg = new StringBuilder("WFS returned an exception.");
-            if (originatingRequest != null) {
-                msg.append(" Originating Request: ");
-                msg.append(originatingRequest.toString());
-            }
+            msg.append(" Originating Request: ");
+            msg.append(originatingRequest.toString());
             WFSException result = new WFSException(msg.toString());
             for (net.opengis.ows20.ExceptionType ex : exceptions) {
                 List<String> text = ex.getExceptionText();

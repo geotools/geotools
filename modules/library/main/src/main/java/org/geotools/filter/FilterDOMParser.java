@@ -113,8 +113,6 @@ public final class FilterDOMParser {
 
         final ExpressionDOMParser expressionDOMParser = new ExpressionDOMParser(FILTER_FACT);
 
-        LOGGER.finer("parsingFilter " + root.getLocalName());
-
         // NodeList children = root.getChildNodes();
         // LOGGER.finest("children "+children);
         if ((root == null) || (root.getNodeType() != Node.ELEMENT_NODE)) {

@@ -54,7 +54,7 @@ public class DataAccessRegistry implements Repository {
     private static final Logger LOGGER = Logging.getLogger(DataAccessRegistry.class);
 
     /** Singleton instance */
-    protected static DataAccessRegistry theRegistry = null;
+    protected static volatile DataAccessRegistry theRegistry = null;
 
     /** Properties for interpolation / configuration settings */
     protected InterpolationProperties properties = null;

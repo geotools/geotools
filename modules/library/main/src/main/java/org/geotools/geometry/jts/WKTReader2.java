@@ -191,7 +191,6 @@ public class WKTReader2 extends WKTReader {
             coordinates.add(getPreciseCoordinate());
             nextToken = getNextCloserOrComma();
         }
-        Coordinate[] array = new Coordinate[coordinates.size()];
         return coordinates;
     }
 

@@ -20,11 +20,11 @@ package org.geotools.appschema.filter.expression;
 import java.util.List;
 import org.geotools.appschema.util.XmlXpathUtilites;
 import org.geotools.data.complex.xml.XmlXpathFilterData;
-import org.geotools.feature.IllegalAttributeException;
 import org.geotools.filter.expression.PropertyAccessor;
 import org.geotools.filter.expression.PropertyAccessorFactory;
 import org.geotools.util.factory.Hints;
 import org.opengis.feature.Feature;
+import org.opengis.feature.IllegalAttributeException;
 import org.xml.sax.helpers.NamespaceSupport;
 
 /**

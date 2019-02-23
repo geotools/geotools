@@ -80,7 +80,7 @@ public class ScopeDescriptionImpl extends MetadataEntity implements ScopeDescrip
      *
      * @since 2.5
      */
-    public synchronized void setAttributes(final Set<? extends AttributeType> newValues) {
+    public void setAttributes(final Set<? extends AttributeType> newValues) {
         attributes =
                 (Set<AttributeType>) copyCollection(newValues, attributes, AttributeType.class);
     }
@@ -95,7 +95,7 @@ public class ScopeDescriptionImpl extends MetadataEntity implements ScopeDescrip
      *
      * @since 2.5
      */
-    public synchronized void setFeatures(final Set<? extends FeatureType> newValues) {
+    public void setFeatures(final Set<? extends FeatureType> newValues) {
         features = (Set<FeatureType>) copyCollection(newValues, features, FeatureType.class);
     }
 
@@ -109,7 +109,7 @@ public class ScopeDescriptionImpl extends MetadataEntity implements ScopeDescrip
      *
      * @since 2.5
      */
-    public synchronized void setFeatureInstances(final Set<? extends FeatureType> newValues) {
+    public void setFeatureInstances(final Set<? extends FeatureType> newValues) {
         featureInstances =
                 (Set<FeatureType>) copyCollection(newValues, featureInstances, FeatureType.class);
     }
@@ -128,7 +128,7 @@ public class ScopeDescriptionImpl extends MetadataEntity implements ScopeDescrip
      *
      * @since 2.5
      */
-    public synchronized void setAttributeInstances(final Set<? extends AttributeType> newValues) {
+    public void setAttributeInstances(final Set<? extends AttributeType> newValues) {
         attributeInstances =
                 (Set<AttributeType>)
                         copyCollection(newValues, attributeInstances, AttributeType.class);
@@ -148,7 +148,7 @@ public class ScopeDescriptionImpl extends MetadataEntity implements ScopeDescrip
      *
      * @since 2.4
      */
-    public synchronized void setDataset(final String newValue) {
+    public void setDataset(final String newValue) {
         checkWritePermission();
         dataset = newValue;
     }
@@ -169,7 +169,7 @@ public class ScopeDescriptionImpl extends MetadataEntity implements ScopeDescrip
      *
      * @since 2.4
      */
-    public synchronized void setOther(final String newValue) {
+    public void setOther(final String newValue) {
         checkWritePermission();
         other = newValue;
     }

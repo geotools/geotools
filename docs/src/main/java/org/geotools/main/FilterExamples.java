@@ -70,6 +70,7 @@ import org.opengis.referencing.operation.MathTransform;
  * @author Jody Garnett
  */
 public class FilterExamples {
+    @SuppressFBWarnings("NP_UNWRITTEN_FIELD")
     SimpleFeatureSource featureSource;
 
     /**
@@ -237,6 +238,7 @@ public class FilterExamples {
 
     // grabFeaturesOnScreen end
 
+    @SuppressFBWarnings("NP_UNWRITTEN_FIELD")
     private JMapFrame mapFrame;
 
     // click1 start

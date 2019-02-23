@@ -822,7 +822,7 @@ public class ReferencedEnvelope3D extends ReferencedEnvelope implements Bounding
      * points within the {@code Envelope}.
      */
     public DirectPosition getUpperCorner() {
-        return new DirectPosition3D(crs, getMaxX(), getMaxY(), getMinZ());
+        return new DirectPosition3D(crs, getMaxX(), getMaxY(), getMaxZ());
     }
 
     /** Returns {@code true} if lengths along all dimension are zero. */
@@ -1062,7 +1062,7 @@ public class ReferencedEnvelope3D extends ReferencedEnvelope implements Bounding
         }
         if (super.equals(other)
                 && minz == otherEnvelope.getMinZ()
-                && minz == otherEnvelope.getMinZ()) {
+                && maxz == otherEnvelope.getMaxZ()) {
             final CoordinateReferenceSystem otherCRS =
                     (other instanceof ReferencedEnvelope3D)
                             ? ((ReferencedEnvelope3D) other).crs
@@ -1092,7 +1092,7 @@ public class ReferencedEnvelope3D extends ReferencedEnvelope implements Bounding
     public boolean boundsEquals3D(final org.opengis.geometry.Envelope other, double eps) {
         eps *= 0.5 * (getWidth() + getHeight());
 
-        double[] delta = new double[4];
+        double[] delta = new double[6];
         delta[0] = getMinimum(0) - other.getMinimum(0);
         delta[1] = getMaximum(0) - other.getMaximum(0);
         delta[2] = getMinimum(1) - other.getMinimum(1);

@@ -72,7 +72,7 @@ public class LineWriter extends FilterWriter {
     public LineWriter(final Writer out, final String lineSeparator) {
         super(out);
         this.lineSeparator = lineSeparator;
-        if (out == null || lineSeparator == null) {
+        if (lineSeparator == null) {
             throw new IllegalArgumentException();
         }
     }

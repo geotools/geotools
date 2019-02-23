@@ -20,8 +20,8 @@ import java.io.IOException;
 import java.sql.SQLException;
 import org.geotools.data.vpf.VPFFeatureClass;
 import org.geotools.data.vpf.VPFFeatureType;
-import org.geotools.feature.IllegalAttributeException;
 import org.locationtech.jts.geom.Geometry;
+import org.opengis.feature.IllegalAttributeException;
 import org.opengis.feature.simple.SimpleFeature;
 
 /**

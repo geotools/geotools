@@ -1263,7 +1263,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
 
             return columnType;
         } finally {
-            columns.close();
+            closeSafe(columns);
         }
     }
 

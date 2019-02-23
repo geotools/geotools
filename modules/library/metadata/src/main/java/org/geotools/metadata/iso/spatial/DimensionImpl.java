@@ -70,7 +70,7 @@ public class DimensionImpl extends MetadataEntity implements Dimension {
     }
 
     /** Set the name of the axis. */
-    public synchronized void setDimensionName(final DimensionNameType newValue) {
+    public void setDimensionName(final DimensionNameType newValue) {
         checkWritePermission();
         dimensionName = newValue;
     }
@@ -81,7 +81,7 @@ public class DimensionImpl extends MetadataEntity implements Dimension {
     }
 
     /** Set the number of elements along the axis. */
-    public synchronized void setDimensionSize(final Integer newValue) {
+    public void setDimensionSize(final Integer newValue) {
         checkWritePermission();
         dimensionSize = newValue;
     }
@@ -92,7 +92,7 @@ public class DimensionImpl extends MetadataEntity implements Dimension {
     }
 
     /** Set the degree of detail in the grid dataset. */
-    public synchronized void setResolution(final Double newValue) {
+    public void setResolution(final Double newValue) {
         checkWritePermission();
         resolution = newValue;
     }

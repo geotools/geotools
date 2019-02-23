@@ -58,7 +58,7 @@ public class ConstraintsImpl extends MetadataEntity implements Constraints {
      * Returns the limitation affecting the fitness for use of the resource. Example, "not to be
      * used for navigation".
      */
-    public synchronized Collection<InternationalString> getUseLimitation() {
+    public Collection<InternationalString> getUseLimitation() {
         return (useLimitation = nonNullCollection(useLimitation, InternationalString.class));
     }
 
@@ -66,8 +66,7 @@ public class ConstraintsImpl extends MetadataEntity implements Constraints {
      * Set the limitation affecting the fitness for use of the resource. Example, "not to be used
      * for navigation".
      */
-    public synchronized void setUseLimitation(
-            final Collection<? extends InternationalString> newValues) {
+    public void setUseLimitation(final Collection<? extends InternationalString> newValues) {
         useLimitation = copyCollection(newValues, useLimitation, InternationalString.class);
     }
 }

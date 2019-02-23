@@ -42,6 +42,7 @@ import org.opengis.filter.identity.FeatureId;
 @SuppressWarnings("unused")
 @SuppressFBWarnings("UWF_NULL_FIELD")
 public class SimpleFeatureStoreExamples {
+    @SuppressFBWarnings("NP_UNWRITTEN_FIELD")
     DataStore dataStore = null;
 
     String typeName;

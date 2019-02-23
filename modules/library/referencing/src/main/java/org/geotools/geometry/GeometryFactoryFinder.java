@@ -38,7 +38,7 @@ import org.opengis.geometry.primitive.PrimitiveFactory;
  */
 public class GeometryFactoryFinder extends FactoryFinder {
     /** The service registry for this manager. Will be initialized only when first needed. */
-    private static FactoryRegistry registry;
+    private static volatile FactoryRegistry registry;
 
     /** Do not allows any instantiation of this class. */
     private GeometryFactoryFinder() {

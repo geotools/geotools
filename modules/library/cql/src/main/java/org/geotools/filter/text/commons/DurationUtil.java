@@ -29,7 +29,6 @@ import java.util.Date;
  * @author Gabriel Roldan - Axios Engineering
  */
 final class DurationUtil {
-    private static final Calendar CALENDAR = Calendar.getInstance();
     private static final int YEARS = 0;
     private static final int MONTHS = 1;
     private static final int DAYS = 2;
@@ -195,24 +194,25 @@ final class DurationUtil {
             return date;
         }
 
-        CALENDAR.setTime(date);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
 
         // years
         if (durationDate[YEARS] >= 0) {
-            CALENDAR.add(Calendar.YEAR, sign * durationDate[YEARS]);
+            calendar.add(Calendar.YEAR, sign * durationDate[YEARS]);
         }
 
         // months
         if (durationDate[MONTHS] >= 0) {
-            CALENDAR.add(Calendar.MONTH, sign * durationDate[MONTHS]);
+            calendar.add(Calendar.MONTH, sign * durationDate[MONTHS]);
         }
 
         // days
         if (durationDate[DAYS] >= 0) {
-            CALENDAR.add(Calendar.DATE, sign * durationDate[DAYS]);
+            calendar.add(Calendar.DATE, sign * durationDate[DAYS]);
         }
 
-        Date lastDate = CALENDAR.getTime();
+        Date lastDate = calendar.getTime();
 
         return lastDate;
     }
@@ -249,24 +249,25 @@ final class DurationUtil {
             return date;
         }
 
-        CALENDAR.setTime(date);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
 
         // hours
         if (DURATION_TIME[HOURS] >= 0) {
-            CALENDAR.add(Calendar.HOUR, sign * DURATION_TIME[HOURS]);
+            calendar.add(Calendar.HOUR, sign * DURATION_TIME[HOURS]);
         }
 
         // minute
         if (DURATION_TIME[MINUTES] >= 0) {
-            CALENDAR.add(Calendar.MINUTE, sign * DURATION_TIME[MINUTES]);
+            calendar.add(Calendar.MINUTE, sign * DURATION_TIME[MINUTES]);
         }
 
         // seconds
         if (DURATION_TIME[SECONDS] >= 0) {
-            CALENDAR.add(Calendar.SECOND, sign * DURATION_TIME[SECONDS]);
+            calendar.add(Calendar.SECOND, sign * DURATION_TIME[SECONDS]);
         }
 
-        Date lastDate = CALENDAR.getTime();
+        Date lastDate = calendar.getTime();
 
         return lastDate;
     }

@@ -613,7 +613,7 @@ public class ArcSDEAdapter {
      * @throws IllegalArgumentException
      */
     public static Class<? extends Geometry> getGeometryTypeFromLayerMask(int seShapeType) {
-        Class<? extends Geometry> clazz = org.locationtech.jts.geom.Geometry.class;
+        Class<? extends Geometry> clazz;
         final int MULTIPART_MASK = SeLayer.SE_MULTIPART_TYPE_MASK;
         final int POINT_MASK = SeLayer.SE_POINT_TYPE_MASK;
         final int SIMPLE_LINE_MASK = SeLayer.SE_SIMPLE_LINE_TYPE_MASK;

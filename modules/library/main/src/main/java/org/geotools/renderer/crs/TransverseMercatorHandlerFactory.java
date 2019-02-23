@@ -39,32 +39,31 @@ public class TransverseMercatorHandlerFactory implements ProjectionHandlerFactor
             boolean wrap,
             int maxWraps)
             throws FactoryException {
+        if (renderingEnvelope == null) return null;
         MapProjection mapProjection =
                 CRS.getMapProjection(renderingEnvelope.getCoordinateReferenceSystem());
-        if (renderingEnvelope != null && mapProjection instanceof TransverseMercator) {
-            double centralMeridian =
-                    mapProjection
-                            .getParameterValues()
-                            .parameter(AbstractProvider.CENTRAL_MERIDIAN.getName().getCode())
-                            .doubleValue();
+        if (!(mapProjection instanceof TransverseMercator)) return null;
 
-            ReferencedEnvelope validArea =
-                    new ReferencedEnvelope(
-                            centralMeridian - 45,
-                            centralMeridian + 45,
-                            -85,
-                            85,
-                            DefaultGeographicCRS.WGS84);
+        double centralMeridian =
+                mapProjection
+                        .getParameterValues()
+                        .parameter(AbstractProvider.CENTRAL_MERIDIAN.getName().getCode())
+                        .doubleValue();
 
-            ProjectionHandler ph = new ProjectionHandler(sourceCrs, validArea, renderingEnvelope);
-            if ((validArea.getMinX() < 180 && validArea.getMaxX() > 180)
-                    || (validArea.getMinX() < -180 && validArea.getMaxX() > -180)) {
-                ph.computeDatelineX();
-            }
+        ReferencedEnvelope validArea =
+                new ReferencedEnvelope(
+                        centralMeridian - 45,
+                        centralMeridian + 45,
+                        -85,
+                        85,
+                        DefaultGeographicCRS.WGS84);
 
-            return ph;
+        ProjectionHandler ph = new ProjectionHandler(sourceCrs, validArea, renderingEnvelope);
+        if ((validArea.getMinX() < 180 && validArea.getMaxX() > 180)
+                || (validArea.getMinX() < -180 && validArea.getMaxX() > -180)) {
+            ph.computeDatelineX();
         }
 
-        return null;
+        return ph;
     }
 }

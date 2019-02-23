@@ -90,7 +90,7 @@ import org.opengis.referencing.operation.MathTransformFactory;
  */
 public final class ReferencingFactoryFinder extends FactoryFinder {
     /** The service registry for this manager. Will be initialized only when first needed. */
-    private static FactoryRegistry registry;
+    private static volatile FactoryRegistry registry;
 
     /** The authority names. Will be created only when first needed. */
     private static Set<String> authorityNames;
@@ -771,7 +771,7 @@ public final class ReferencingFactoryFinder extends FactoryFinder {
      */
     public static void main(String[] args) {
         final Arguments arguments = new Arguments(args);
-        args = arguments.getRemainingArguments(0);
+        arguments.getRemainingArguments(0);
         try {
             listProviders(arguments.out, arguments.locale);
         } catch (Exception exception) {

@@ -948,7 +948,7 @@ public class GML {
             definition.setBaseTypeDefinition(BASE_TYPE);
         }
         List<String> skip = Collections.emptyList();
-        if ("AbstractFeatureType".equals(BASE_TYPE.getName())) {
+        if (BASE_TYPE != null && "AbstractFeatureType".equals(BASE_TYPE.getName())) {
             // should look at ABSTRACT_FEATURE_TYPE to determine contents to skip
             skip = Arrays.asList(new String[] {"nounds", "description", "boundedBy"});
         }

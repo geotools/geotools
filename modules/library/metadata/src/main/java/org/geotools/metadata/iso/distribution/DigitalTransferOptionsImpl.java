@@ -71,7 +71,7 @@ public class DigitalTransferOptionsImpl extends MetadataEntity implements Digita
     }
 
     /** Set tiles, layers, geographic areas, etc., in which data is available. */
-    public synchronized void setUnitsOfDistribution(final InternationalString newValue) {
+    public void setUnitsOfDistribution(final InternationalString newValue) {
         checkWritePermission();
         unitsOfDistribution = newValue;
     }
@@ -88,18 +88,18 @@ public class DigitalTransferOptionsImpl extends MetadataEntity implements Digita
      * Set an estimated size of a unit in the specified transfer format, expressed in megabytes. The
      * transfer size is &gt; 0.0.
      */
-    public synchronized void setTransferSize(final Double newValue) {
+    public void setTransferSize(final Double newValue) {
         checkWritePermission();
         transferSize = newValue;
     }
 
     /** Returns information about online sources from which the resource can be obtained. */
-    public synchronized Collection<OnLineResource> getOnLines() {
+    public Collection<OnLineResource> getOnLines() {
         return (onLines = nonNullCollection(onLines, OnLineResource.class));
     }
 
     /** Set information about online sources from which the resource can be obtained. */
-    public synchronized void setOnLines(final Collection<? extends OnLineResource> newValues) {
+    public void setOnLines(final Collection<? extends OnLineResource> newValues) {
         onLines = copyCollection(newValues, onLines, OnLineResource.class);
     }
 
@@ -109,7 +109,7 @@ public class DigitalTransferOptionsImpl extends MetadataEntity implements Digita
     }
 
     /** Set information about offline media on which the resource can be obtained. */
-    public synchronized void setOffLine(final Medium newValue) {
+    public void setOffLine(final Medium newValue) {
         checkWritePermission();
         offLines = newValue;
     }

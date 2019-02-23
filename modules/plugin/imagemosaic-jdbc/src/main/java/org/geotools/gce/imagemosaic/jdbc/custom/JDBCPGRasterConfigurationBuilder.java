@@ -153,7 +153,7 @@ public class JDBCPGRasterConfigurationBuilder {
 
     private static boolean available;
 
-    private static boolean init = false;
+    private static volatile boolean init = false;
 
     private JDBCPGrasterConfigurationBean configBean;
 
@@ -869,18 +869,20 @@ public class JDBCPGRasterConfigurationBuilder {
 
         final StringBuilder commands = new StringBuilder();
         final File[] files = dataDir.listFiles();
-        for (File file : files) {
-            if (file.isDirectory()) {
-                // scan folders for tiles to be imported
-                final String importCommand =
-                        updateCommand(
-                                file,
-                                mainCommand,
-                                tablePrefix,
-                                fileExtension,
-                                tileTables,
-                                filesToBeDeleted);
-                commands.append(importCommand).append(LINE_SEPARATOR);
+        if (files != null) {
+            for (File file : files) {
+                if (file.isDirectory()) {
+                    // scan folders for tiles to be imported
+                    final String importCommand =
+                            updateCommand(
+                                    file,
+                                    mainCommand,
+                                    tablePrefix,
+                                    fileExtension,
+                                    tileTables,
+                                    filesToBeDeleted);
+                    commands.append(importCommand).append(LINE_SEPARATOR);
+                }
             }
         }
         String importCommand =

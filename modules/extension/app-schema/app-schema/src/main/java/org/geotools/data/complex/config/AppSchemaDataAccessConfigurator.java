@@ -886,20 +886,23 @@ public class AppSchemaDataAccessConfigurator {
             AppSchemaDataAccessConfigurator.LOGGER.fine("looking for datastore " + id);
 
             DataAccess<FeatureType, Feature> dataStore = null;
-            if (dataStoreMap != null && dataStoreMap.containsKey(datastoreParams)) {
-                dataStore = dataStoreMap.get(datastoreParams);
-            } else {
-                // let's check if any data store provided a custom syntax for its configuration
-                List<CustomSourceDataStore> extensions = CustomSourceDataStore.loadExtensions();
-                dataStore = buildDataStore(extensions, dsconfig, config);
-                // if no custom data store handled this configuration let's fallback on the default
-                // constructor
-                dataStore =
-                        dataStore == null
-                                ? DataAccessFinder.getDataStore(datastoreParams)
-                                : dataStore;
-                // store the store in the data stores map
-                dataStoreMap.put(datastoreParams, dataStore);
+            if (dataStoreMap != null) {
+                if (dataStoreMap.containsKey(datastoreParams)) {
+                    dataStore = dataStoreMap.get(datastoreParams);
+                } else {
+                    // let's check if any data store provided a custom syntax for its configuration
+                    List<CustomSourceDataStore> extensions = CustomSourceDataStore.loadExtensions();
+                    dataStore = buildDataStore(extensions, dsconfig, config);
+                    // if no custom data store handled this configuration let's fallback on the
+                    // default
+                    // constructor
+                    dataStore =
+                            dataStore == null
+                                    ? DataAccessFinder.getDataStore(datastoreParams)
+                                    : dataStore;
+                    // store the store in the data stores map
+                    dataStoreMap.put(datastoreParams, dataStore);
+                }
             }
 
             if (dataStore == null) {

@@ -304,7 +304,7 @@ final class Resampler2D extends GridCoverage2D {
             // we have been provided with interpolation, let's override hints
             hints.put(JAI.KEY_INTERPOLATION, interpolation);
         }
-        if (!hints.containsKey(JAI.KEY_BORDER_EXTENDER)) {
+        if (hints != null && !hints.containsKey(JAI.KEY_BORDER_EXTENDER)) {
             hints.put(
                     JAI.KEY_BORDER_EXTENDER,
                     BorderExtender.createInstance(BorderExtender.BORDER_COPY));

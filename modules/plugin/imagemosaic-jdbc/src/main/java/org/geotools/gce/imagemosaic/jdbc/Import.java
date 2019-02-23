@@ -1042,7 +1042,7 @@ public class Import extends AbstractCmd {
             }
         }
 
-        if (f.exists() == false)
+        if (f == null || f.exists() == false)
             throw new IOException("Cannot find world file for " + imageFile.getAbsolutePath());
 
         BufferedReader in = new BufferedReader(new FileReader(f));

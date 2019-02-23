@@ -35,15 +35,6 @@ public abstract class AbstractMetadata {
     /** The logger for metadata implementation. */
     protected static final Logger LOGGER = Logging.getLogger(AbstractMetadata.class);
 
-    /**
-     * Hash code value, or 0 if not yet computed. This field is reset to 0 by {@link #invalidate} in
-     * order to account for a change in metadata content.
-     */
-    private transient int hashCode;
-
-    /** A view of this metadata as a map. Will be created only when first needed. */
-    private transient Map<String, Object> asMap;
-
     /** Creates an initially empty metadata. */
     protected AbstractMetadata() {}
 
@@ -102,12 +93,6 @@ public abstract class AbstractMetadata {
         return getStandard().isModifiable(getClass());
     }
 
-    /** Invoked when the metadata changed. Some cached informations will need to be recomputed. */
-    void invalidate() {
-        assert Thread.holdsLock(this);
-        hashCode = 0; // Will recompute when needed.
-    }
-
     /**
      * Returns a view of this metadata object as a {@linkplain Map map}. The map is backed by this
      * metadata object using Java reflection, so changes in the underlying metadata object are
@@ -119,11 +104,8 @@ public abstract class AbstractMetadata {
      *
      * @return A view of this metadata object as a map.
      */
-    public synchronized Map<String, Object> asMap() {
-        if (asMap == null) {
-            asMap = getStandard().asMap(this);
-        }
-        return asMap;
+    public Map<String, Object> asMap() {
+        return getStandard().asMap(this);
     }
 
     /**
@@ -136,7 +118,7 @@ public abstract class AbstractMetadata {
      *
      * @return A view of this metadata object as a tree.
      */
-    public synchronized TreeModel asTree() {
+    public TreeModel asTree() {
         return getStandard().asTree(this);
     }
 
@@ -160,28 +142,7 @@ public abstract class AbstractMetadata {
         if (object == null || !object.getClass().equals(getClass())) {
             return false;
         }
-        /*
-         * Opportunist usage of hash code if they are already computed. If they are not, we will
-         * not compute them - they are not sure to be faster than checking directly for equality,
-         * and hash code could be invalidated later anyway if the object change. Note that we
-         * don't need to synchronize since reading int fields are garanteed to be atomic in Java.
-         */
-        final int c0 = hashCode;
-        if (c0 != 0) {
-            final int c1 = ((AbstractMetadata) object).hashCode;
-            if (c1 != 0 && c0 != c1) {
-                return false;
-            }
-        }
         final MetadataStandard standard = getStandard();
-        /*
-         * DEADLOCK WARNING: A deadlock may occur if the same pair of objects is being compared
-         * in an other thread (see http://jira.codehaus.org/browse/GEOT-1777). Ideally we would
-         * synchronize on 'this' and 'object' atomically (RFE #4210659). Since we can't in Java
-         * a workaround is to always get the locks in the same order. Unfortunatly we have no
-         * garantee that the caller didn't looked the object himself. For now the safest approach
-         * is to not synchronize at all.
-         */
         return standard.shallowEquals(this, object, false);
     }
 
@@ -192,23 +153,13 @@ public abstract class AbstractMetadata {
      * ordering of properties.
      */
     @Override
-    public synchronized int hashCode() {
-        int code = hashCode;
-        if (code == 0) {
-            code = getStandard().hashCode(this);
-            if (!isModifiable()) {
-                // In current implementation, we do not store the hash code if this metadata is
-                // modifiable because we can not track change in dependencies (e.g. a change in
-                // a metadata contained in this metadata).
-                hashCode = code;
-            }
-        }
-        return code;
+    public int hashCode() {
+        return getStandard().hashCode(this);
     }
 
     /** Returns a string representation of this metadata. */
     @Override
-    public synchronized String toString() {
+    public String toString() {
         return getStandard().toString(this);
     }
 }

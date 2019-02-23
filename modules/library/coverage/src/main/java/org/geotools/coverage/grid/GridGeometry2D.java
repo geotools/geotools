@@ -73,7 +73,7 @@ public class GridGeometry2D extends GeneralGridGeometry {
     private static final long serialVersionUID = -3989363771504614419L;
 
     /** Helpers methods for 2D CRS creation. Will be constructed only when first needed. */
-    private static ReferencingFactoryContainer FACTORIES;
+    private static volatile ReferencingFactoryContainer FACTORIES;
 
     /**
      * The two-dimensional part of the coordinate reference system.

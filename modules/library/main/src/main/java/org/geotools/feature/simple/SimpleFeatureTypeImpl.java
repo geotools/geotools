@@ -38,7 +38,7 @@ import org.opengis.util.InternationalString;
 public class SimpleFeatureTypeImpl extends FeatureTypeImpl implements SimpleFeatureType {
 
     // list of types
-    List<AttributeType> types = null;
+    volatile List<AttributeType> types = null;
 
     Map<String, Integer> index;
 

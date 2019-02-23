@@ -89,41 +89,38 @@ public class ExtentImpl extends MetadataEntity implements Extent {
     }
 
     /** Set the spatial and temporal extent for the referring object. */
-    public synchronized void setDescription(final InternationalString newValue) {
+    public void setDescription(final InternationalString newValue) {
         checkWritePermission();
         description = newValue;
     }
 
     /** Provides geographic component of the extent of the referring object */
-    public synchronized Collection<GeographicExtent> getGeographicElements() {
+    public Collection<GeographicExtent> getGeographicElements() {
         return (geographicElements = nonNullCollection(geographicElements, GeographicExtent.class));
     }
 
     /** Set geographic component of the extent of the referring object */
-    public synchronized void setGeographicElements(
-            final Collection<? extends GeographicExtent> newValues) {
+    public void setGeographicElements(final Collection<? extends GeographicExtent> newValues) {
         geographicElements = copyCollection(newValues, geographicElements, GeographicExtent.class);
     }
 
     /** Provides temporal component of the extent of the referring object */
-    public synchronized Collection<TemporalExtent> getTemporalElements() {
+    public Collection<TemporalExtent> getTemporalElements() {
         return (temporalElements = nonNullCollection(temporalElements, TemporalExtent.class));
     }
 
     /** Set temporal component of the extent of the referring object */
-    public synchronized void setTemporalElements(
-            final Collection<? extends TemporalExtent> newValues) {
+    public void setTemporalElements(final Collection<? extends TemporalExtent> newValues) {
         temporalElements = copyCollection(newValues, temporalElements, TemporalExtent.class);
     }
 
     /** Provides vertical component of the extent of the referring object */
-    public synchronized Collection<VerticalExtent> getVerticalElements() {
+    public Collection<VerticalExtent> getVerticalElements() {
         return (verticalElements = nonNullCollection(verticalElements, VerticalExtent.class));
     }
 
     /** Set vertical component of the extent of the referring object */
-    public synchronized void setVerticalElements(
-            final Collection<? extends VerticalExtent> newValues) {
+    public void setVerticalElements(final Collection<? extends VerticalExtent> newValues) {
         verticalElements = copyCollection(newValues, verticalElements, VerticalExtent.class);
     }
 

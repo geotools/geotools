@@ -1612,6 +1612,8 @@ public class SLDParser {
         } else if (EXPONENTIAL.equalsIgnoreCase(name)) {
             met = ContrastMethod.EXPONENTIAL;
             ret = new ExponentialContrastMethodStrategy();
+        } else {
+            throw new IllegalArgumentException("Unknown strategy " + name);
         }
 
         ret.setMethod(met);
@@ -1778,7 +1780,7 @@ public class SLDParser {
     /** Internal parse method - made protected for unit testing */
     protected Expression parseGeometry(Node root) {
         if (LOGGER.isLoggable(Level.FINEST)) {
-            if (LOGGER.isLoggable(Level.FINEST)) LOGGER.finest("parsing GeometryExpression");
+            LOGGER.finest("parsing GeometryExpression");
         }
 
         return parseCssParameter(root);

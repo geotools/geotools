@@ -64,7 +64,7 @@ public class CoverageDescriptionImpl extends ContentInformationImpl implements C
     }
 
     /** Set the description of the attribute described by the measurement value. */
-    public synchronized void setAttributeDescription(final RecordType newValue) {
+    public void setAttributeDescription(final RecordType newValue) {
         checkWritePermission();
         attributeDescription = newValue;
     }
@@ -75,7 +75,7 @@ public class CoverageDescriptionImpl extends ContentInformationImpl implements C
     }
 
     /** Set the type of information represented by the cell value. */
-    public synchronized void setContentType(final CoverageContentType newValue) {
+    public void setContentType(final CoverageContentType newValue) {
         checkWritePermission();
         contentType = newValue;
     }
@@ -85,7 +85,7 @@ public class CoverageDescriptionImpl extends ContentInformationImpl implements C
      *
      * @since 2.4
      */
-    public synchronized Collection<RangeDimension> getDimensions() {
+    public Collection<RangeDimension> getDimensions() {
         return (dimensions = nonNullCollection(dimensions, RangeDimension.class));
     }
 
@@ -94,7 +94,7 @@ public class CoverageDescriptionImpl extends ContentInformationImpl implements C
      *
      * <p>since 2.4
      */
-    public synchronized void setDimensions(final Collection<? extends RangeDimension> newValues) {
+    public void setDimensions(final Collection<? extends RangeDimension> newValues) {
         dimensions = copyCollection(newValues, dimensions, RangeDimension.class);
     }
 }

@@ -60,7 +60,7 @@ class OGRFeatureStore extends ContentFeatureStore {
             // grab the layer
             String typeName = getEntry().getTypeName();
             dataSource = getDataStore().openOGRDataSource(true);
-            layer = getDataStore().openOGRLayer(dataSource, typeName);
+            layer = getDataStore().openOGRLayer(dataSource, typeName, false);
 
             FeatureReader<SimpleFeatureType, SimpleFeature> reader =
                     delegate.getReaderInternal(dataSource, layer, query);

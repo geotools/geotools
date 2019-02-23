@@ -23,6 +23,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import org.geotools.data.Transaction.State;
+import org.geotools.util.SuppressFBWarnings;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
@@ -58,6 +59,7 @@ public class InProcessLockingManager implements LockingManager {
      * @param featureLock FeatureLock describing lock request
      * @throws FeatureLockException Indicates a problem with the lock request
      */
+    @SuppressFBWarnings("UW_UNCOND_WAIT")
     public synchronized void lockFeatureID(
             String typeName, String featureID, Transaction transaction, FeatureLock featureLock)
             throws FeatureLockException {

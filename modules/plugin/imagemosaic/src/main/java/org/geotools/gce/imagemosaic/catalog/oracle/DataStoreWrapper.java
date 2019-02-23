@@ -163,12 +163,15 @@ public abstract class DataStoreWrapper implements DataStore {
         final String parentPath = file.getAbsolutePath();
 
         // Loop over files
-        for (String element : files) {
-            final Properties properties = loadProperties(parentPath + File.separatorChar + element);
-            final FeatureTypeMapper mapper = getFeatureTypeMapper(properties);
-            final Name name = mapper.getName();
-            mapping.put(name, mapper);
-            typeNames.add(name.getLocalPart());
+        if (files != null) {
+            for (String element : files) {
+                final Properties properties =
+                        loadProperties(parentPath + File.separatorChar + element);
+                final FeatureTypeMapper mapper = getFeatureTypeMapper(properties);
+                final Name name = mapper.getName();
+                mapping.put(name, mapper);
+                typeNames.add(name.getLocalPart());
+            }
         }
     }
 

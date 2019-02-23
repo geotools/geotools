@@ -54,6 +54,10 @@ public class PointGridImpl implements PointGrid {
     //  Constructor
     // *************************************************************************
 
+    public PointGridImpl(PointArray[] pointGrid) {
+        this.pointGrid = pointGrid;
+    }
+
     // *************************************************************************
     //  implement the PointGrid interface
     // *************************************************************************

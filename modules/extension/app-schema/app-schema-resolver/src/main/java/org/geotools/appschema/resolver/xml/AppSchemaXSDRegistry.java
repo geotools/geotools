@@ -38,7 +38,7 @@ import org.geotools.xsd.Schemas;
 public final class AppSchemaXSDRegistry implements XSDSchemaLocator {
 
     /** Lazy loaded Singleton */
-    private static AppSchemaXSDRegistry theXSDRegistry;
+    private static volatile AppSchemaXSDRegistry theXSDRegistry;
 
     /** Registry that maps (resolved) locations to schema's */
     private Map<String, XSDSchema> schemaRegistry = new HashMap<String, XSDSchema>();

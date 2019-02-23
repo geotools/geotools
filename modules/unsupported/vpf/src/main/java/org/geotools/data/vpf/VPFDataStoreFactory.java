@@ -137,6 +137,11 @@ public class VPFDataStoreFactory implements DataStoreFactorySpi {
         Path lhtRealPath = lhtPath.toRealPath();
         Path lhtParentPath = lhtRealPath.getParent();
 
+        if (lhtParentPath == null) {
+            throw new IOException(
+                    "Fileparent either doesn't exist or is unreadable : " + lhtRealPath);
+        }
+
         String rootDir = lhtParentPath.toString();
         String latTableName = new File(rootDir, LIBRARY_ATTTIBUTE_TABLE).toString();
 
@@ -202,12 +207,10 @@ public class VPFDataStoreFactory implements DataStoreFactorySpi {
                 // linux
                 file = new File(url.getFile());
             }
-            File lhtFile;
             if (file.isDirectory()) {
-                lhtFile = new File(file, FileConstants.LIBRARY_HEADER_TABLE);
+                file = new File(file, FileConstants.LIBRARY_HEADER_TABLE);
             } else {
-                lhtFile = file;
-                if (!lhtFile.getName().equalsIgnoreCase(FileConstants.LIBRARY_HEADER_TABLE)) {
+                if (!file.getName().equalsIgnoreCase(FileConstants.LIBRARY_HEADER_TABLE)) {
                     throw new IOException("File: " + file + "is not a lht file");
                 }
             }

@@ -35,6 +35,7 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -1002,7 +1003,7 @@ public class NetCDFReader extends AbstractGridCoverage2DReader
         } else {
             return false;
         }
-        if (defaultName == coverageName) {
+        if (Objects.equals(defaultName, coverageName)) {
             Iterator<Name> iterator = names.iterator();
             if (iterator.hasNext()) {
                 defaultName = iterator.next().toString();

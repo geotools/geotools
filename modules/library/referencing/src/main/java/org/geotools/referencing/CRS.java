@@ -1164,7 +1164,7 @@ public final class CRS {
             if (!Citations.identifierMatches(factory.getAuthority(), authority)) {
                 continue;
             }
-            if (factory == null || !(factory instanceof AbstractAuthorityFactory)) {
+            if (!(factory instanceof AbstractAuthorityFactory)) {
                 continue;
             }
             final AbstractAuthorityFactory f = (AbstractAuthorityFactory) factory;

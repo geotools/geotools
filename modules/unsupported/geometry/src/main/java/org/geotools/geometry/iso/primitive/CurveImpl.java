@@ -784,10 +784,8 @@ public class CurveImpl extends OrientableCurveImpl implements Curve {
 
         /* Default-Values */
         if (point1 == null && point2 == null) return this.length();
-        // if (point1 == null)
-        // point1 = new PositionImpl(this.getStartPoint());
-        // if (point2 == null)
-        // point2 = new PositionImpl(this.getEndPoint());
+        if (point1 == null) point1 = new PositionImpl(this.getStartPoint());
+        if (point2 == null) point2 = new PositionImpl(this.getEndPoint());
 
         /* Get all Params for closest points to startposition point1 */
         ParamForPoint startParams = this.getParamForPoint(point1.getDirectPosition());

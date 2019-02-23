@@ -88,7 +88,7 @@ public class BandImpl extends RangeDimensionImpl implements Band {
      * Set the longest wavelength that the sensor is capable of collecting within a designated band.
      * Returns {@code null} if unspecified.
      */
-    public synchronized void setMaxValue(final Double newValue) {
+    public void setMaxValue(final Double newValue) {
         checkWritePermission();
         maxValue = newValue;
     }
@@ -105,7 +105,7 @@ public class BandImpl extends RangeDimensionImpl implements Band {
      * Set the shortest wavelength that the sensor is capable of collecting within a designated
      * band.
      */
-    public synchronized void setMinValue(final Double newValue) {
+    public void setMinValue(final Double newValue) {
         checkWritePermission();
         minValue = newValue;
     }
@@ -122,7 +122,7 @@ public class BandImpl extends RangeDimensionImpl implements Band {
      * Set the units in which sensor wavelengths are expressed. Should be non-null if {@linkplain
      * #getMinValue min value} or {@linkplain #getMaxValue max value} are provided.
      */
-    public synchronized void setUnits(final Unit newValue) {
+    public void setUnits(final Unit newValue) {
         checkWritePermission();
         units = newValue;
     }
@@ -136,7 +136,7 @@ public class BandImpl extends RangeDimensionImpl implements Band {
     }
 
     /** Set the wavelength at which the response is the highest. */
-    public synchronized void setPeakResponse(final Double newValue) {
+    public void setPeakResponse(final Double newValue) {
         checkWritePermission();
         peakResponse = newValue;
     }
@@ -153,7 +153,7 @@ public class BandImpl extends RangeDimensionImpl implements Band {
      * Set the maximum number of significant bits in the uncompressed representation for the value
      * in each band of each pixel.
      */
-    public synchronized void setBitsPerValue(final Integer newValue) {
+    public void setBitsPerValue(final Integer newValue) {
         checkWritePermission();
         bitsPerValue = newValue;
     }
@@ -167,7 +167,7 @@ public class BandImpl extends RangeDimensionImpl implements Band {
     }
 
     /** Set the number of discrete numerical values in the grid data. */
-    public synchronized void setToneGradation(final Integer newValue) {
+    public void setToneGradation(final Integer newValue) {
         checkWritePermission();
         toneGradation = newValue;
     }
@@ -181,7 +181,7 @@ public class BandImpl extends RangeDimensionImpl implements Band {
     }
 
     /** Set the scale factor which has been applied to the cell value. */
-    public synchronized void setScaleFactor(final Double newValue) {
+    public void setScaleFactor(final Double newValue) {
         checkWritePermission();
         scaleFactor = newValue;
     }
@@ -195,7 +195,7 @@ public class BandImpl extends RangeDimensionImpl implements Band {
     }
 
     /** Set the physical value corresponding to a cell value of zero. */
-    public synchronized void setOffset(final Double newValue) {
+    public void setOffset(final Double newValue) {
         checkWritePermission();
         offset = newValue;
     }

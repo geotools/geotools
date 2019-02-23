@@ -256,7 +256,7 @@ public class CQL {
             try {
                 line = reader.readLine();
 
-                if (line.equals("quit")) {
+                if (line == null || line.equals("quit")) {
                     System.out.println("Bye!");
                     break;
                 }

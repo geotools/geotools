@@ -37,10 +37,6 @@ public class AssociationTypeImpl extends PropertyTypeImpl implements Association
             InternationalString description) {
         super(name, referenceType.getBinding(), isAbstract, restrictions, superType, description);
         this.relatedType = referenceType;
-
-        if (relatedType == null) {
-            throw new NullPointerException("relatedType");
-        }
     }
 
     public AttributeType getRelatedType() {

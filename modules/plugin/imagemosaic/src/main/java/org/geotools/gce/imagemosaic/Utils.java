@@ -2009,17 +2009,8 @@ public class Utils {
             final String tempSource = (String) source;
             File tempFile = new File(tempSource);
             if (!tempFile.exists()) {
-                // is it a URL
-                try {
-                    sourceURL = new URL(tempSource);
-                    source = URLs.urlToFile(sourceURL);
-                } catch (MalformedURLException e) {
-                    sourceURL = null;
-                    source = null;
-                }
+                return false;
             } else {
-                sourceURL = URLs.fileToUrl(tempFile);
-
                 // so that we can do our magic here below
                 sourceFile = tempFile;
             }

@@ -178,8 +178,11 @@ public class SchemaCache {
      */
     static void delete(File file) {
         if (file.isDirectory()) {
-            for (File f : file.listFiles()) {
-                delete(f);
+            File[] files = file.listFiles();
+            if (files != null) {
+                for (File f : files) {
+                    delete(f);
+                }
             }
         }
         file.delete();

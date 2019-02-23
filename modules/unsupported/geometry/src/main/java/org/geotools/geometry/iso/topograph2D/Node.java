@@ -19,6 +19,7 @@ package org.geotools.geometry.iso.topograph2D;
 
 import java.io.PrintStream;
 import java.util.Iterator;
+import org.geotools.util.SuppressFBWarnings;
 
 /**
  * A node in a {@link PlanarGraph}is a location where 0 or more {@link Edge}s meet. A node is
@@ -97,6 +98,8 @@ public class Node extends GraphComponent {
     }
 
     /** Updates the label of a node to BOUNDARY, obeying the mod-2 boundaryDetermination rule. */
+    // label.setLocation might actually NPE, just ignoring it as the module is generally broken
+    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH")
     public void setLabelBoundary(int argIndex) {
         // determine the current location for the point (if any)
         int loc = Location.NONE;

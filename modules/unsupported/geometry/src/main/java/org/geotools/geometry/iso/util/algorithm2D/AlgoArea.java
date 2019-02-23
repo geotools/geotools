@@ -123,7 +123,7 @@ public class AlgoArea {
                     } else if (type == PathIterator.SEG_QUADTO) {
                         points.add(new Point2D.Double(coords[0], coords[1]));
                         points.add(new Point2D.Double(coords[2], coords[3]));
-                    } else if (type == PathIterator.SEG_LINETO) {
+                    } else if (type == PathIterator.SEG_CUBICTO) {
                         points.add(new Point2D.Double(coords[0], coords[1]));
                         points.add(new Point2D.Double(coords[2], coords[3]));
                         points.add(new Point2D.Double(coords[4], coords[5]));

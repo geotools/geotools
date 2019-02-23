@@ -19,7 +19,7 @@ package org.geotools.renderer.lite;
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.Icon;
+import javax.swing.*;
 import org.geotools.filter.ConstantExpression;
 import org.geotools.filter.FilterAttributeExtractor;
 import org.geotools.renderer.style.DynamicSymbolFactoryFinder;
@@ -357,13 +357,11 @@ public class MetaBufferEstimator extends FilterAttributeExtractor implements Sty
                     }
                     // evaluate the icon if found, if not SLD asks us to go to the next one
                     if (icon != null) {
-                        if (icon != null) {
-                            int size = Math.max(icon.getIconHeight(), icon.getIconWidth());
-                            if (size > buffer) {
-                                buffer = size;
-                            }
-                            return;
+                        int size = Math.max(icon.getIconHeight(), icon.getIconWidth());
+                        if (size > buffer) {
+                            buffer = size;
                         }
+                        return;
                     }
                 } else if (gs instanceof Mark) {
                     Mark mark = (Mark) gs;

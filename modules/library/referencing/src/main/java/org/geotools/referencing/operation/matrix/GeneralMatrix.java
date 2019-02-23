@@ -836,6 +836,12 @@ public class GeneralMatrix implements XMatrix, Serializable {
     /** Returns a clone of this matrix. */
     @Override
     public GeneralMatrix clone() {
+        try {
+            super.clone();
+        } catch (CloneNotSupportedException e) {
+            // should not happen
+            throw new RuntimeException(e);
+        }
         return new GeneralMatrix(this);
     }
 

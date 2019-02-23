@@ -43,7 +43,7 @@ public class FontCache {
     private static final Logger LOGGER =
             org.geotools.util.logging.Logging.getLogger(FontCache.class);
 
-    static FontCache defaultInstance;
+    static volatile FontCache defaultInstance;
 
     /** Set containing the font families known of this machine */
     Set<String> systemFonts = new HashSet<String>();

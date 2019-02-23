@@ -243,7 +243,7 @@ public class MetadataTablePrimaryKeyFinder extends PrimaryKeyFinder {
                 result.add(rs.getString("COLUMN_NAME"));
             }
         } finally {
-            rs.close();
+            store.closeSafe(rs);
         }
 
         return result;

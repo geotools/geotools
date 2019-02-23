@@ -34,7 +34,10 @@ import org.opengis.feature.type.Name;
 @SuppressFBWarnings("UWF_NULL_FIELD")
 public class DataStoreExamples {
 
+    @SuppressFBWarnings("NP_UNWRITTEN_FIELD")
     DataStore dataStore = null;
+
+    @SuppressFBWarnings("NP_UNWRITTEN_FIELD")
     SimpleFeatureSource featureSource = null;
 
     void exampleInfo() {

@@ -137,7 +137,7 @@ public class WithinIntegrity extends RelationIntegrity {
                         }
                     }
                 } finally {
-                    fr2.close();
+                    if (fr2 != null) fr2.close();
                 }
             }
         } finally {
@@ -218,7 +218,7 @@ public class WithinIntegrity extends RelationIntegrity {
                         }
                     }
                 } finally {
-                    fr2.close();
+                    if (fr2 != null) fr2.close();
                 }
             }
         } finally {

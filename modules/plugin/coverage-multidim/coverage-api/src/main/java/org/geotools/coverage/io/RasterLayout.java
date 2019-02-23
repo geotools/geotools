@@ -37,7 +37,7 @@ import org.geotools.metadata.i18n.Errors;
  * following the change. This allows multiple modifications to be made in a single expression. This
  * provides a way of modifying an <code>RasterLayout</code> within a superclass constructor call.
  */
-public class RasterLayout {
+public class RasterLayout implements Cloneable {
 
     /** The image's minimum X coordinate. */
     int minX = 0;

@@ -83,7 +83,7 @@ public class FormatImpl extends MetadataEntity implements Format {
     }
 
     /** Set the name of the data transfer format(s). */
-    public synchronized void setName(final InternationalString newValue) {
+    public void setName(final InternationalString newValue) {
         checkWritePermission();
         name = newValue;
     }
@@ -94,7 +94,7 @@ public class FormatImpl extends MetadataEntity implements Format {
     }
 
     /** Set the version of the format (date, number, etc.). */
-    public synchronized void setVersion(final InternationalString newValue) {
+    public void setVersion(final InternationalString newValue) {
         checkWritePermission();
         version = newValue;
     }
@@ -105,7 +105,7 @@ public class FormatImpl extends MetadataEntity implements Format {
     }
 
     /** Set the amendment number of the format version. */
-    public synchronized void setAmendmentNumber(final InternationalString newValue) {
+    public void setAmendmentNumber(final InternationalString newValue) {
         checkWritePermission();
         amendmentNumber = newValue;
     }
@@ -116,7 +116,7 @@ public class FormatImpl extends MetadataEntity implements Format {
     }
 
     /** Set the name of a subset, profile, or product specification of the format. */
-    public synchronized void setSpecification(final InternationalString newValue) {
+    public void setSpecification(final InternationalString newValue) {
         checkWritePermission();
         specification = newValue;
     }
@@ -133,19 +133,18 @@ public class FormatImpl extends MetadataEntity implements Format {
      * Set recommendations of algorithms or processes that can be applied to read or expand
      * resources to which compression techniques have been applied.
      */
-    public synchronized void setFileDecompressionTechnique(final InternationalString newValue) {
+    public void setFileDecompressionTechnique(final InternationalString newValue) {
         checkWritePermission();
         fileDecompressionTechnique = newValue;
     }
 
     /** Provides information about the distributors format. */
-    public synchronized Collection<Distributor> getFormatDistributors() {
+    public Collection<Distributor> getFormatDistributors() {
         return (formatDistributors = nonNullCollection(formatDistributors, Distributor.class));
     }
 
     /** Set information about the distributors format. */
-    public synchronized void setFormatDistributors(
-            final Collection<? extends Distributor> newValues) {
+    public void setFormatDistributors(final Collection<? extends Distributor> newValues) {
         formatDistributors = copyCollection(newValues, formatDistributors, Distributor.class);
     }
 

@@ -263,7 +263,7 @@ public class MonolineFormatter extends Formatter {
      *
      * @return The source pattern, or {@code null} if source is not formatted.
      */
-    public String getSourceFormat() {
+    public synchronized String getSourceFormat() {
         return FORMAT_LABELS[sourceFormat];
     }
 

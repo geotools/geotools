@@ -36,6 +36,7 @@ import org.eclipse.xsd.XSDSchema;
 import org.eclipse.xsd.XSDTypeDefinition;
 import org.eclipse.xsd.util.XSDSchemaLocationResolver;
 import org.eclipse.xsd.util.XSDSchemaLocator;
+import org.geotools.util.SuppressFBWarnings;
 import org.geotools.xs.XS;
 import org.geotools.xsd.BindingFactory;
 import org.geotools.xsd.Configuration;
@@ -806,6 +807,7 @@ public class ParserHandler extends DefaultHandler2 {
         }
     }
 
+    @SuppressFBWarnings("NN_NAKED_NOTIFY")
     public void endDocument() throws SAXException {
         validator.endDocument();
 

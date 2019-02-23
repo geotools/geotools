@@ -130,11 +130,11 @@ public abstract class TileService {
     public int getZoomLevelFromMapScale(ScaleZoomLevelMatcher zoomLevelMatcher, int scaleFactor) {
         // fallback scale-list
         double[] scaleList = getScaleList();
+        assert (scaleList != null && scaleList.length > 0);
+
         // during the calculations this list caches already calculated scales
         double[] tempScaleList = new double[scaleList.length];
         Arrays.fill(tempScaleList, Double.NaN);
-
-        assert (scaleList != null && scaleList.length > 0);
 
         int zoomLevel = zoomLevelMatcher.getZoomLevelFromScale(this, tempScaleList);
 

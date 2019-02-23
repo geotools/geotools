@@ -53,8 +53,10 @@ public class FileSystemFileSetManager implements FileSetManager {
                 final File file = new File(filePath);
                 if (file.isDirectory()) {
                     File[] files = file.listFiles();
-                    for (File _file : files) {
-                        deleteFile(_file);
+                    if (files != null) {
+                        for (File _file : files) {
+                            deleteFile(_file);
+                        }
                     }
                 }
                 deleteFile(file);

@@ -166,8 +166,11 @@ public abstract class AbstractOpenWebService<C extends Capabilities, R extends O
      * @return description of this service.
      */
     public ServiceInfo getInfo() {
+        if (capabilities == null) {
+            return null;
+        }
         synchronized (capabilities) {
-            if (info == null && capabilities != null) {
+            if (info == null) {
                 info = createInfo();
             }
             return info;
@@ -181,6 +184,9 @@ public abstract class AbstractOpenWebService<C extends Capabilities, R extends O
     protected abstract ServiceInfo createInfo();
 
     public ResourceInfo getInfo(R resource) {
+        if (capabilities == null) {
+            return null;
+        }
         synchronized (capabilities) {
             if (!resourceInfo.containsKey(resource)) {
                 resourceInfo.put(resource, createInfo(resource));

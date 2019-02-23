@@ -60,9 +60,9 @@ final class Code {
      */
     public Code(final String text, final Class type) throws NoSuchAuthorityCodeException {
         String authority = "AUTO";
-        int code = 0;
-        double longitude = Double.NaN;
-        double latitude = Double.NaN;
+        int code;
+        double longitude;
+        double latitude;
 
         // there are two syntaxes for the AUTO factory:
         // AUTO:code,unit,longitude,latitude (from WMS 1.1 spec)

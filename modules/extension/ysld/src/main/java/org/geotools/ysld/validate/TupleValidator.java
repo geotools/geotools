@@ -19,6 +19,7 @@ package org.geotools.ysld.validate;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.geotools.util.SuppressFBWarnings;
 import org.yaml.snakeyaml.events.AliasEvent;
 import org.yaml.snakeyaml.events.ScalarEvent;
 import org.yaml.snakeyaml.events.SequenceEndEvent;
@@ -31,7 +32,7 @@ import org.yaml.snakeyaml.events.SequenceStartEvent;
  *
  * @author Kevin Smith, Boundless
  */
-public class TupleValidator extends StatefulValidator {
+public class TupleValidator extends StatefulValidator implements Cloneable {
 
     enum State {
         NEW,
@@ -98,6 +99,7 @@ public class TupleValidator extends StatefulValidator {
         }
     }
 
+    @SuppressFBWarnings("CN_IDIOM_NO_SUPER_CALL")
     public TupleValidator clone() {
         return new TupleValidator(this.subValidators);
     }

@@ -71,7 +71,7 @@ public final class Interpolator2D extends GridCoverage2D {
     private static final float ONE_EPSILON = 0.99999994f;
 
     /** Default interpolations, in preference order. Will be constructed only when first needed. */
-    private static Interpolation[] DEFAULTS;
+    private static volatile Interpolation[] DEFAULTS;
 
     /**
      * Transform from "real world" coordinates to grid coordinates. This transform maps coordinates

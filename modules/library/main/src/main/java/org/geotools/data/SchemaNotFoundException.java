@@ -31,7 +31,7 @@ public class SchemaNotFoundException extends IOException {
 
     public SchemaNotFoundException(String typeName) {
         super(NOT_FOUND + typeName);
-        typeName = null;
+        this.typeName = null;
     }
 
     public SchemaNotFoundException(String typeName, Throwable t) {

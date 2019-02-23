@@ -117,7 +117,7 @@ public class RowFieldTest extends TestCase implements DataTypesDefinition {
             varRowField = new RowField(testVals[i], DATA_TEXT);
             assertEquals(
                     "Testing RowField for String value: " + testVals[i],
-                    testVals[i],
+                    testVals[i] == null ? "" : testVals[i],
                     varRowField.toString());
         } // end of for (int i = 0; i < testVals.length; i++)
     } // end of testGetAsString()

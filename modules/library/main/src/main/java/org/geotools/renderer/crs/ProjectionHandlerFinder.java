@@ -74,7 +74,7 @@ public class ProjectionHandlerFinder {
      *
      * @param wrapLimit
      */
-    public void setWrapLimit(int wrapLimit) {
+    public static void setWrapLimit(int wrapLimit) {
         ProjectionHandlerFinder.WRAP_LIMIT = wrapLimit;
     }
 

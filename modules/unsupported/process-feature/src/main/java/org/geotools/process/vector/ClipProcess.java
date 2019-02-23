@@ -171,17 +171,13 @@ public class ClipProcess implements VectorProcess {
 
         @Override
         public int size() {
-            SimpleFeatureIterator fi = null;
-            try {
+            try (SimpleFeatureIterator fi = features()) {
                 int count = 0;
-                fi = features();
                 while (fi.hasNext()) {
                     fi.next();
                     count++;
                 }
                 return count;
-            } finally {
-                fi.close();
             }
         }
     }

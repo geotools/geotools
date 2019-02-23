@@ -1480,7 +1480,7 @@ public class OracleDialect extends PreparedStatementSQLDialect {
             }
         }
 
-        return geodetic;
+        return geodetic != null ? geodetic : false;
     }
 
     @Override

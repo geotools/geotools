@@ -33,7 +33,8 @@ import org.opengis.style.StyleVisitor;
  * @author iant
  * @author Johann Sorel (Geomatys)
  */
-public class RasterSymbolizerImpl extends AbstractSymbolizer implements RasterSymbolizer {
+public class RasterSymbolizerImpl extends AbstractSymbolizer
+        implements RasterSymbolizer, Cloneable {
 
     private OverlapBehavior behavior;
 

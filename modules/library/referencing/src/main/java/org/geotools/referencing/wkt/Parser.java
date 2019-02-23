@@ -1185,7 +1185,7 @@ public class Parser extends MathTransformParser {
         final Arguments arguments = new Arguments(args);
         final Integer indentation = arguments.getOptionalInteger(Formattable.INDENTATION);
         final String authority = arguments.getOptionalString("-authority");
-        args = arguments.getRemainingArguments(0);
+        arguments.getRemainingArguments(0);
         if (indentation != null) {
             Formattable.setIndentation(indentation.intValue());
         }

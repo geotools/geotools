@@ -79,7 +79,7 @@ public class LineageImpl extends MetadataEntity implements Lineage {
     /**
      * Set the general explanation of the data producers knowledge about the lineage of a dataset.
      */
-    public synchronized void setStatement(final InternationalString newValue) {
+    public void setStatement(final InternationalString newValue) {
         checkWritePermission();
         statement = newValue;
     }
@@ -88,24 +88,24 @@ public class LineageImpl extends MetadataEntity implements Lineage {
      * Returns the information about an event in the creation process for the data specified by the
      * scope.
      */
-    public synchronized Collection<ProcessStep> getProcessSteps() {
+    public Collection<ProcessStep> getProcessSteps() {
         return (processSteps = nonNullCollection(processSteps, ProcessStep.class));
     }
 
     /**
      * Set information about an event in the creation process for the data specified by the scope.
      */
-    public synchronized void setProcessSteps(final Collection<? extends ProcessStep> newValues) {
+    public void setProcessSteps(final Collection<? extends ProcessStep> newValues) {
         processSteps = copyCollection(newValues, processSteps, ProcessStep.class);
     }
 
     /** Information about the source data used in creating the data specified by the scope. */
-    public synchronized Collection<Source> getSources() {
+    public Collection<Source> getSources() {
         return (sources = nonNullCollection(sources, Source.class));
     }
 
     /** Information about the source data used in creating the data specified by the scope. */
-    public synchronized void setSources(final Collection<? extends Source> newValues) {
+    public void setSources(final Collection<? extends Source> newValues) {
         sources = copyCollection(newValues, sources, Source.class);
     }
 }

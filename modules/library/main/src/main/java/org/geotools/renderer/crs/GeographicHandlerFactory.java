@@ -37,8 +37,9 @@ public class GeographicHandlerFactory implements ProjectionHandlerFactory {
             boolean wrap,
             int maxWraps)
             throws FactoryException {
-        CoordinateReferenceSystem crs = renderingEnvelope.getCoordinateReferenceSystem();
-        if (renderingEnvelope != null && crs instanceof GeographicCRS) {
+        if (renderingEnvelope != null
+                && renderingEnvelope.getCoordinateReferenceSystem() instanceof GeographicCRS) {
+            CoordinateReferenceSystem crs = renderingEnvelope.getCoordinateReferenceSystem();
             GeographicCRS geogCrs = (GeographicCRS) CRS.getHorizontalCRS(crs);
             CoordinateReferenceSystem horizontalSourceCrs = CRS.getHorizontalCRS(sourceCrs);
 

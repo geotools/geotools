@@ -23,7 +23,6 @@ import org.geotools.xml.schema.ElementGrouping;
 
 /** @author dzwiers */
 public class AnyGT implements Any {
-    private String id = null;
     private int min = 1;
     private int max = 1;
     private URI ns = null;
@@ -44,7 +43,7 @@ public class AnyGT implements Any {
 
     /** @see org.geotools.xml.schema.Any#getId() */
     public String getId() {
-        return id;
+        return null;
     }
 
     /** @see org.geotools.xml.schema.ElementGrouping#getMaxOccurs() */

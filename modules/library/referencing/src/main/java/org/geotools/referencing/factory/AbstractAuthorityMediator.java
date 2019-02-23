@@ -928,12 +928,14 @@ public abstract class AbstractAuthorityMediator extends AbstractAuthorityFactory
                     throw new FactoryException(e);
                 } finally {
                     setProxy(null);
-                    worker.cache = cache;
-                    worker.findCache = findCache;
-                    try {
-                        getPool().returnObject(worker);
-                    } catch (Exception e) {
-                        LOGGER.log(Level.WARNING, "Unable to return worker " + e, e);
+                    if (worker != null) {
+                        worker.cache = cache;
+                        worker.findCache = findCache;
+                        try {
+                            getPool().returnObject(worker);
+                        } catch (Exception e) {
+                            LOGGER.log(Level.WARNING, "Unable to return worker " + e, e);
+                        }
                     }
                 }
                 if (found == null) {

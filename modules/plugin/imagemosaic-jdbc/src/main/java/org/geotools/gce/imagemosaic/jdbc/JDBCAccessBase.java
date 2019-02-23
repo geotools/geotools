@@ -133,7 +133,7 @@ abstract class JDBCAccessBase implements JDBCAccess {
             throw new IOException(e);
         } finally {
             try {
-                con.close();
+                if (con != null) con.close();
             } catch (SQLException e1) {
             }
         }

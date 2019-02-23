@@ -624,7 +624,7 @@ public class SchemaGenerator extends AbstractGenerator {
                                     }
                                 }
                             }
-                            if ( type.getName() == null ) {
+                            if (type == null || type.getName() == null ) {
                             	//TODO: deal with anonymous attribute types
                             	continue;
                             }

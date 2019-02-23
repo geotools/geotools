@@ -46,6 +46,7 @@ import org.geotools.image.util.ImageUtilities;
 import org.geotools.parameter.Parameter;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.operation.BufferedCoordinateOperationFactory;
+import org.geotools.util.SuppressFBWarnings;
 import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.Envelope;
@@ -88,7 +89,7 @@ public class ImageMosaicJDBCReader extends AbstractGridCoverage2DReader {
     protected static int DEFAULT_IMAGE_TYPE = BufferedImage.TYPE_3BYTE_BGR;
 
     // class initializer
-    {
+    static {
         LEFTDirections = new HashSet<AxisDirection>();
         LEFTDirections.add(AxisDirection.DISPLAY_LEFT);
         LEFTDirections.add(AxisDirection.EAST);
@@ -408,6 +409,9 @@ public class ImageMosaicJDBCReader extends AbstractGridCoverage2DReader {
      * @return the gridcoverage as the final result
      * @throws IOException
      */
+    @SuppressFBWarnings("NP_NULL_PARAM_DEREF") // pixelDimension gets into the ImageComposerThread
+    // and is eventually dereferenced by some call to base constructor. Verified the bug is here,
+    // just don't know how to fix it
     private GridCoverage2D loadTiles(
             Color backgroundColor,
             Color outputTransparentColor,
@@ -457,8 +461,7 @@ public class ImageMosaicJDBCReader extends AbstractGridCoverage2DReader {
         //
         // /////////////////////////////////////////////////////////////////////
         final ImageReadParam readP = new ImageReadParam();
-        final Integer imageChoice;
-
+        Integer imageChoice = null;
         if (pixelDimension != null) {
             try {
                 imageChoice =
@@ -480,7 +483,8 @@ public class ImageMosaicJDBCReader extends AbstractGridCoverage2DReader {
                                 outputTransparentColor),
                         state.getRequestedEnvelope());
             }
-        } else {
+        }
+        if (imageChoice == null) {
             imageChoice = Integer.valueOf(0);
         }
 

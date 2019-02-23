@@ -53,7 +53,7 @@ public abstract class XSD {
     protected static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(XSD.class);
 
     /** schema contents */
-    protected XSDSchema schema;
+    protected volatile XSDSchema schema;
 
     /** type schema */
     protected Schema typeSchema;

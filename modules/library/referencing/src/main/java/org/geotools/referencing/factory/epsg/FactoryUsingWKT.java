@@ -402,7 +402,7 @@ public class FactoryUsingWKT extends DeferredAuthorityFactory implements CRSAuth
         Locale.setDefault(arguments.locale);
         final boolean duplicated = arguments.getFlag("-duplicated");
         final boolean instantiate = arguments.getFlag("-test");
-        args = arguments.getRemainingArguments(0);
+        arguments.getRemainingArguments(0);
         final FactoryUsingWKT factory = getFactory(type);
         if (duplicated) {
             factory.reportDuplicatedCodes(arguments.out);

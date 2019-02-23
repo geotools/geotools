@@ -205,10 +205,11 @@ public class CategorizeFunction implements Function {
             if (convertedValues == null) {
                 synchronized (this) {
                     if (convertedValues == null) {
-                        convertedValues = new Object[values.length];
-                        for (int i = 0; i < convertedValues.length; i++) {
-                            convertedValues[i] = values[i].evaluate(object, context);
+                        Object[] converted = new Object[values.length];
+                        for (int i = 0; i < converted.length; i++) {
+                            converted[i] = values[i].evaluate(object, context);
                         }
+                        convertedValues = converted;
                         convertedValuesContext = context;
                     }
                 }

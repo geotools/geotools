@@ -121,7 +121,7 @@ public class GeorectifiedImpl extends GridSpatialRepresentationImpl implements G
      * Set indication of whether or not geographic position points are available to test the
      * accuracy of the georeferenced grid data.
      */
-    public synchronized void setCheckPointAvailable(final boolean newValue) {
+    public void setCheckPointAvailable(final boolean newValue) {
         checkWritePermission();
         checkPointAvailable = newValue;
     }
@@ -138,7 +138,7 @@ public class GeorectifiedImpl extends GridSpatialRepresentationImpl implements G
      * Set the description of geographic position points used to test the accuracy of the
      * georeferenced grid data.
      */
-    public synchronized void setCheckPointDescription(final InternationalString newValue) {
+    public void setCheckPointDescription(final InternationalString newValue) {
         checkWritePermission();
         checkPointDescription = newValue;
     }
@@ -149,12 +149,12 @@ public class GeorectifiedImpl extends GridSpatialRepresentationImpl implements G
      * spatial dimensions. There are four corner points in a georectified grid; at least two corner
      * points along one diagonal are required. @TODO: needs to annotate the geometry module before.
      */
-    public synchronized List<Point> getCornerPoints() {
+    public List<Point> getCornerPoints() {
         return cornerPoints = nonNullList(cornerPoints, Point.class);
     }
 
     /** Set the corner points. */
-    public synchronized void setCornerPoints(final List<? extends Point> newValues) {
+    public void setCornerPoints(final List<? extends Point> newValues) {
         cornerPoints = copyList(newValues, cornerPoints, Point.class);
     }
 
@@ -168,7 +168,7 @@ public class GeorectifiedImpl extends GridSpatialRepresentationImpl implements G
     }
 
     /** Set the center point. */
-    public synchronized void setCenterPoint(final Point newValue) {
+    public void setCenterPoint(final Point newValue) {
         checkWritePermission();
         centerPoint = newValue;
     }
@@ -179,7 +179,7 @@ public class GeorectifiedImpl extends GridSpatialRepresentationImpl implements G
     }
 
     /** Set the point in a pixel corresponding to the Earth location of the pixel. */
-    public synchronized void setPointInPixel(final PixelOrientation newValue) {
+    public void setPointInPixel(final PixelOrientation newValue) {
         checkWritePermission();
         pointInPixel = newValue;
     }
@@ -193,20 +193,19 @@ public class GeorectifiedImpl extends GridSpatialRepresentationImpl implements G
      * Set the description of the information about which grid dimensions are the spatial
      * dimensions.
      */
-    public synchronized void setTransformationDimensionDescription(
-            final InternationalString newValue) {
+    public void setTransformationDimensionDescription(final InternationalString newValue) {
         checkWritePermission();
         transformationDimensionDescription = newValue;
     }
 
     /** Information about which grid dimensions are the spatial dimensions. */
-    public synchronized Collection<InternationalString> getTransformationDimensionMapping() {
+    public Collection<InternationalString> getTransformationDimensionMapping() {
         return (transformationDimensionMapping =
                 nonNullCollection(transformationDimensionMapping, InternationalString.class));
     }
 
     /** Set information about which grid dimensions are the spatial dimensions. */
-    public synchronized void setTransformationDimensionMapping(
+    public void setTransformationDimensionMapping(
             final Collection<? extends InternationalString> newValues) {
         transformationDimensionMapping =
                 copyCollection(

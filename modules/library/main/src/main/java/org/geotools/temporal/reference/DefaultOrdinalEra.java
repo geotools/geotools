@@ -32,7 +32,6 @@ public class DefaultOrdinalEra implements OrdinalEra {
     /** This is the temporal position at which the ordinal era ended. */
     private Date end;
 
-    private Collection<OrdinalEra> composition;
     private DefaultOrdinalEra group;
 
     public DefaultOrdinalEra(InternationalString name, Date beginning, Date end) {
@@ -71,7 +70,7 @@ public class DefaultOrdinalEra implements OrdinalEra {
     }
 
     public Collection<OrdinalEra> getComposition() {
-        return composition;
+        return null;
     }
 
     public void setName(InternationalString name) {
@@ -101,7 +100,6 @@ public class DefaultOrdinalEra implements OrdinalEra {
 
             return Utilities.equals(this.beginning, that.beginning)
                     && Utilities.equals(this.end, that.end)
-                    && Utilities.equals(this.composition, that.composition)
                     && Utilities.equals(this.group, that.group)
                     && Utilities.equals(this.name, that.name);
         }
@@ -113,7 +111,6 @@ public class DefaultOrdinalEra implements OrdinalEra {
         int hash = 5;
         hash = 37 * hash + (this.beginning != null ? this.beginning.hashCode() : 0);
         hash = 37 * hash + (this.end != null ? this.end.hashCode() : 0);
-        hash = 37 * hash + (this.composition != null ? this.composition.hashCode() : 0);
         hash = 37 * hash + (this.group != null ? this.group.hashCode() : 0);
         hash = 37 * hash + (this.name != null ? this.name.hashCode() : 0);
         return hash;
@@ -130,9 +127,6 @@ public class DefaultOrdinalEra implements OrdinalEra {
         }
         if (end != null) {
             s.append("end:").append(end).append('\n');
-        }
-        if (composition != null) {
-            s.append("composition:").append(composition).append('\n');
         }
         if (group != null) {
             s.append("group:").append(group).append('\n');

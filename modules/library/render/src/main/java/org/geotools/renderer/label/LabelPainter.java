@@ -161,9 +161,7 @@ public class LabelPainter {
      * @param bounds
      */
     void normalizeBounds(Rectangle2D bounds) {
-        if (bounds == null) {
-            bounds = new Rectangle2D.Float(-1, -1, 2, 2);
-        } else if (bounds.isEmpty()) {
+        if (bounds != null && bounds.isEmpty()) {
             bounds.setRect(bounds.getCenterX() - 1, bounds.getCenterY() - 1, 2, 2);
         }
     }

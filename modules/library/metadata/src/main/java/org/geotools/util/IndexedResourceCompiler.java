@@ -525,22 +525,24 @@ public final class IndexedResourceCompiler implements Comparator<Object> {
         IndexedResourceCompiler compiler = null;
         final File[] content = srcDir.listFiles();
         File defaultLanguage = null;
-        for (int i = 0; i < content.length; i++) {
-            final File file = content[i];
-            final String filename = file.getName();
-            if (filename.startsWith(classname) && filename.endsWith(PROPERTIES_EXT)) {
-                if (compiler == null) {
-                    compiler =
-                            new IndexedResourceCompiler(
-                                    sourceDirectory, bundleClass, renumber, out);
-                }
-                compiler.processPropertyFile(file);
-                final String noExt =
-                        filename.substring(0, filename.length() - PROPERTIES_EXT.length());
-                final File utfFile = new File(utfDir, noExt + RESOURCES_EXT);
-                compiler.writeUTFFile(utfFile);
-                if (noExt.equals(classname)) {
-                    defaultLanguage = file;
+        if (content != null) {
+            for (int i = 0; i < content.length; i++) {
+                final File file = content[i];
+                final String filename = file.getName();
+                if (filename.startsWith(classname) && filename.endsWith(PROPERTIES_EXT)) {
+                    if (compiler == null) {
+                        compiler =
+                                new IndexedResourceCompiler(
+                                        sourceDirectory, bundleClass, renumber, out);
+                    }
+                    compiler.processPropertyFile(file);
+                    final String noExt =
+                            filename.substring(0, filename.length() - PROPERTIES_EXT.length());
+                    final File utfFile = new File(utfDir, noExt + RESOURCES_EXT);
+                    compiler.writeUTFFile(utfFile);
+                    if (noExt.equals(classname)) {
+                        defaultLanguage = file;
+                    }
                 }
             }
         }
@@ -569,7 +571,7 @@ public final class IndexedResourceCompiler implements Comparator<Object> {
         final Arguments arguments = new Arguments(args);
         final boolean renumber = arguments.getFlag("-renumber");
         final PrintWriter out = arguments.out;
-        args = arguments.getRemainingArguments(0);
+        arguments.getRemainingArguments(0);
         if (!sourceDirectory.isDirectory()) {
             out.print(sourceDirectory);
             out.println(" not found or is not a directory.");

@@ -1001,6 +1001,10 @@ public class Encoder {
                                 XSDElementDeclaration child =
                                         (XSDElementDeclaration) particle.getContent();
 
+                                if (child == null) {
+                                    continue;
+                                }
+
                                 // check for a comment
                                 if ((child != null)
                                         && (COMMENT.getNamespaceURI()

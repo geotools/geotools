@@ -132,14 +132,15 @@ public class RecodeFunction implements Function {
                     synchronized (this) {
                         if (fastLookup == null) {
                             // build the fast lookup map
-                            fastLookup = new HashMap();
+                            Map fl = new HashMap();
                             lastKeyType = lookup.getClass();
                             lastContextType = context;
                             for (int i = 0; i < pairList.size(); i += 2) {
                                 Object key = pairList.get(i).evaluate(object, lastKeyType);
                                 Object value = pairList.get(i + 1).evaluate(object, context);
-                                fastLookup.put(key, value);
+                                fl.put(key, value);
                             }
+                            fastLookup = fl;
                         }
                     }
                 }

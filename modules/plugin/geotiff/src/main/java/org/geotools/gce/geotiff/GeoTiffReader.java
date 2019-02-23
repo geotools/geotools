@@ -38,9 +38,7 @@ import it.geosolutions.imageio.maskband.DatasetLayout;
 import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReaderSpi;
 import it.geosolutions.imageioimpl.plugins.tiff.TiffDatasetLayoutImpl;
 import it.geosolutions.jaiext.range.NoDataContainer;
-import java.awt.Color;
-import java.awt.Rectangle;
-import java.awt.RenderingHints;
+import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.ColorModel;
 import java.awt.image.SampleModel;
@@ -543,49 +541,47 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
         Color inputTransparentColor = null;
         OverviewPolicy overviewPolicy = null;
         int[] suggestedTileSize = null;
-        if (params != null) {
 
-            //
-            // Checking params
-            //
-            if (params != null) {
-                for (int i = 0; i < params.length; i++) {
-                    final ParameterValue param = (ParameterValue) params[i];
-                    final ReferenceIdentifier name = param.getDescriptor().getName();
-                    if (name.equals(AbstractGridFormat.READ_GRIDGEOMETRY2D.getName())) {
-                        final GridGeometry2D gg = (GridGeometry2D) param.getValue();
-                        requestedEnvelope = new GeneralEnvelope((Envelope) gg.getEnvelope2D());
-                        dim = gg.getGridRange2D().getBounds();
-                        continue;
-                    }
-                    if (name.equals(AbstractGridFormat.OVERVIEW_POLICY.getName())) {
-                        overviewPolicy = (OverviewPolicy) param.getValue();
-                        continue;
-                    }
-                    if (name.equals(AbstractGridFormat.INPUT_TRANSPARENT_COLOR.getName())) {
-                        inputTransparentColor = (Color) param.getValue();
-                        continue;
-                    }
-                    if (name.equals(AbstractGridFormat.SUGGESTED_TILE_SIZE.getName())) {
-                        String suggestedTileSize_ = (String) param.getValue();
-                        if (suggestedTileSize_ != null && suggestedTileSize_.length() > 0) {
-                            suggestedTileSize_ = suggestedTileSize_.trim();
-                            int commaPosition = suggestedTileSize_.indexOf(",");
-                            if (commaPosition < 0) {
-                                int tileDim = Integer.parseInt(suggestedTileSize_);
-                                suggestedTileSize = new int[] {tileDim, tileDim};
-                            } else {
-                                int tileW =
-                                        Integer.parseInt(
-                                                suggestedTileSize_.substring(0, commaPosition));
-                                int tileH =
-                                        Integer.parseInt(
-                                                suggestedTileSize_.substring(commaPosition + 1));
-                                suggestedTileSize = new int[] {tileW, tileH};
-                            }
+        //
+        // Checking params
+        //
+        if (params != null) {
+            for (int i = 0; i < params.length; i++) {
+                final ParameterValue param = (ParameterValue) params[i];
+                final ReferenceIdentifier name = param.getDescriptor().getName();
+                if (name.equals(AbstractGridFormat.READ_GRIDGEOMETRY2D.getName())) {
+                    final GridGeometry2D gg = (GridGeometry2D) param.getValue();
+                    requestedEnvelope = new GeneralEnvelope((Envelope) gg.getEnvelope2D());
+                    dim = gg.getGridRange2D().getBounds();
+                    continue;
+                }
+                if (name.equals(AbstractGridFormat.OVERVIEW_POLICY.getName())) {
+                    overviewPolicy = (OverviewPolicy) param.getValue();
+                    continue;
+                }
+                if (name.equals(AbstractGridFormat.INPUT_TRANSPARENT_COLOR.getName())) {
+                    inputTransparentColor = (Color) param.getValue();
+                    continue;
+                }
+                if (name.equals(AbstractGridFormat.SUGGESTED_TILE_SIZE.getName())) {
+                    String suggestedTileSize_ = (String) param.getValue();
+                    if (suggestedTileSize_ != null && suggestedTileSize_.length() > 0) {
+                        suggestedTileSize_ = suggestedTileSize_.trim();
+                        int commaPosition = suggestedTileSize_.indexOf(",");
+                        if (commaPosition < 0) {
+                            int tileDim = Integer.parseInt(suggestedTileSize_);
+                            suggestedTileSize = new int[] {tileDim, tileDim};
+                        } else {
+                            int tileW =
+                                    Integer.parseInt(
+                                            suggestedTileSize_.substring(0, commaPosition));
+                            int tileH =
+                                    Integer.parseInt(
+                                            suggestedTileSize_.substring(commaPosition + 1));
+                            suggestedTileSize = new int[] {tileW, tileH};
                         }
-                        continue;
                     }
+                    continue;
                 }
             }
         }

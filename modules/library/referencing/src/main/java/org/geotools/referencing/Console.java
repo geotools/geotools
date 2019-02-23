@@ -208,7 +208,7 @@ public class Console extends AbstractConsole {
         final Arguments arguments = new Arguments(args);
         final String load = arguments.getOptionalString("-load");
         final String file = arguments.getOptionalString("-file");
-        args = arguments.getRemainingArguments(0);
+        arguments.getRemainingArguments(0);
         Locale.setDefault(arguments.locale);
         final LineNumberReader input;
         final Console console;

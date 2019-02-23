@@ -133,7 +133,7 @@ public class ContainsIntegrity extends RelationIntegrity {
                         }
                     }
                 } finally {
-                    fr2.close();
+                    if (fr2 != null) fr2.close();
                 }
             }
         } finally {

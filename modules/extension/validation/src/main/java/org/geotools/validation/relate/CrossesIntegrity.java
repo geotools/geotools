@@ -52,7 +52,7 @@ import org.opengis.filter.Filter;
 public class CrossesIntegrity extends RelationIntegrity {
     private static final Logger LOGGER =
             org.geotools.util.logging.Logging.getLogger(CrossesIntegrity.class);
-    private static HashSet usedIDs;
+    private HashSet usedIDs;
 
     /** CrossesIntegrity Constructor */
     public CrossesIntegrity() {

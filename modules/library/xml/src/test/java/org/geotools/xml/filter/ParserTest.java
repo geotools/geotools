@@ -21,7 +21,6 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import junit.framework.Test;
 import junit.framework.TestSuite;
-import org.geotools.feature.IllegalAttributeException;
 import org.geotools.feature.SchemaException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
@@ -31,6 +30,7 @@ import org.geotools.test.TestData;
 import org.geotools.xml.ogc.FilterTestSupport;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
+import org.opengis.feature.IllegalAttributeException;
 import org.xml.sax.helpers.ParserAdapter;
 
 /**

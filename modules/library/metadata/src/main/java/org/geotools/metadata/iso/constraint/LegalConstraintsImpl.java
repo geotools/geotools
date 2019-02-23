@@ -72,7 +72,7 @@ public class LegalConstraintsImpl extends ConstraintsImpl implements LegalConstr
      * Returns the access constraints applied to assure the protection of privacy or intellectual
      * property, and any special restrictions or limitations on obtaining the resource.
      */
-    public synchronized Collection<Restriction> getAccessConstraints() {
+    public Collection<Restriction> getAccessConstraints() {
         return (accessConstraints = nonNullCollection(accessConstraints, Restriction.class));
     }
 
@@ -80,8 +80,7 @@ public class LegalConstraintsImpl extends ConstraintsImpl implements LegalConstr
      * Set the access constraints applied to assure the protection of privacy or intellectual
      * property, and any special restrictions or limitations on obtaining the resource.
      */
-    public synchronized void setAccessConstraints(
-            final Collection<? extends Restriction> newValues) {
+    public void setAccessConstraints(final Collection<? extends Restriction> newValues) {
         accessConstraints = copyCollection(newValues, accessConstraints, Restriction.class);
     }
 
@@ -89,7 +88,7 @@ public class LegalConstraintsImpl extends ConstraintsImpl implements LegalConstr
      * Returns the constraints applied to assure the protection of privacy or intellectual property,
      * and any special restrictions or limitations or warnings on using the resource.
      */
-    public synchronized Collection<Restriction> getUseConstraints() {
+    public Collection<Restriction> getUseConstraints() {
         return (useConstraints = nonNullCollection(useConstraints, Restriction.class));
     }
 
@@ -97,7 +96,7 @@ public class LegalConstraintsImpl extends ConstraintsImpl implements LegalConstr
      * Set the constraints applied to assure the protection of privacy or intellectual property, and
      * any special restrictions or limitations or warnings on using the resource.
      */
-    public synchronized void setUseConstraints(final Collection<? extends Restriction> newValues) {
+    public void setUseConstraints(final Collection<? extends Restriction> newValues) {
         useConstraints = copyCollection(newValues, useConstraints, Restriction.class);
     }
 
@@ -107,13 +106,12 @@ public class LegalConstraintsImpl extends ConstraintsImpl implements LegalConstr
      * constraints} or {@linkplain #getUseConstraints use constraints} declares {@linkplain
      * Restriction#OTHER_RESTRICTIONS other restrictions}.
      */
-    public synchronized Collection<InternationalString> getOtherConstraints() {
+    public Collection<InternationalString> getOtherConstraints() {
         return (otherConstraints = nonNullCollection(otherConstraints, InternationalString.class));
     }
 
     /** Set the other restrictions and legal prerequisites for accessing and using the resource. */
-    public synchronized void setOtherConstraints(
-            final Collection<? extends InternationalString> newValues) {
+    public void setOtherConstraints(final Collection<? extends InternationalString> newValues) {
         otherConstraints = copyCollection(newValues, otherConstraints, InternationalString.class);
     }
 }

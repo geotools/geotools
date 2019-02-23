@@ -89,7 +89,7 @@ public class FeatureTypeRegistry {
 
     private boolean includeAttributes;
 
-    private static AttributeType XMLATTRIBUTE_TYPE;
+    private static volatile AttributeType XMLATTRIBUTE_TYPE;
 
     /**
      * stack of currently being built type names, used by {@link #createType(Name,

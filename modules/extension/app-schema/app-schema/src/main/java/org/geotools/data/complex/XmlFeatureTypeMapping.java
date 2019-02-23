@@ -452,29 +452,6 @@ public class XmlFeatureTypeMapping extends FeatureTypeMapping {
         }
     }
 
-    protected void setClientProperties(
-            final Attribute target,
-            final Object source,
-            final Map<Name, Expression> clientProperties) {
-        if (clientProperties.size() == 0) {
-            return;
-        }
-        final Map<Name, Object> targetAttributes = new HashMap<Name, Object>();
-        for (Map.Entry<Name, Expression> entry : clientProperties.entrySet()) {
-            Name propName = entry.getKey();
-            Object propValue = null; // getValue(propExpr, source);
-            if (propValue != null) {
-                List<String> ls = (List<String>) propValue;
-                if (ls.size() != 0) {
-                    propValue = ls.get(0);
-                } else {
-                    propValue = "";
-                }
-            }
-            targetAttributes.put(propName, propValue);
-        }
-    }
-
     private String getFullQueryPath(AttributeMapping attMapping) {
         return attMapping.getTargetXPath().toString();
     }

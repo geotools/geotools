@@ -40,6 +40,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.filefilter.FileFilterUtils;
 import org.geotools.imageio.netcdf.NetCDFImageReaderSpi;
+import org.geotools.util.SuppressFBWarnings;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
@@ -66,6 +67,7 @@ public class CreateIndexer {
     static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(CreateIndexer.class);
 
     @SuppressWarnings("PMD.SystemPrintln")
+    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public static void main(String[] args) throws JDOMException, IOException, TransformerException {
         if (args.length < 1) {
             System.out.println(
@@ -107,6 +109,10 @@ public class CreateIndexer {
         reader.dispose();
 
         File[] files = temp.listFiles((FileFilter) FileFilterUtils.directoryFileFilter());
+        if (files == null) {
+            System.out.println("Could not list files in " + temp);
+            System.exit(2);
+        }
         files = files[0].listFiles((FileFilter) FileFilterUtils.suffixFileFilter("xml"));
 
         final File auxiliaryFile = files[0];

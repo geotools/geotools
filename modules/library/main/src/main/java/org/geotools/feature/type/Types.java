@@ -25,11 +25,11 @@ import java.util.Set;
 import java.util.TreeSet;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
-import org.geotools.feature.IllegalAttributeException;
 import org.geotools.feature.NameImpl;
 import org.geotools.util.Converters;
 import org.opengis.feature.Attribute;
 import org.opengis.feature.ComplexAttribute;
+import org.opengis.feature.IllegalAttributeException;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.AttributeType;
@@ -508,10 +508,7 @@ public class Types {
     }
 
     public static boolean equals(Name name, QName qName) {
-        if (name == null && qName != null) {
-            return false;
-        }
-        if (qName == null && name != null) {
+        if (name == null || qName == null) {
             return false;
         }
         if (XMLConstants.NULL_NS_URI.equals(qName.getNamespaceURI())) {

@@ -53,14 +53,15 @@ class InfoToolHelperLookup {
     /** Caches available classes which implement the InfoToolHelper SPI. */
     private static void loadProviders() {
         if (cachedInstances == null) {
-            cachedInstances = new ArrayList<InfoToolHelper>();
+            List<InfoToolHelper> instances = new ArrayList<InfoToolHelper>();
 
             ServiceLoader<InfoToolHelper> loader = ServiceLoader.load(InfoToolHelper.class);
 
             Iterator<InfoToolHelper> iter = loader.iterator();
             while (iter.hasNext()) {
-                cachedInstances.add(iter.next());
+                instances.add(iter.next());
             }
+            cachedInstances = instances;
         }
     }
 }

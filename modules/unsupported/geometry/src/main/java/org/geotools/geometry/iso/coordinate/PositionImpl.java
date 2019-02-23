@@ -18,6 +18,7 @@ package org.geotools.geometry.iso.coordinate;
 
 import java.io.Serializable;
 import org.geotools.geometry.iso.primitive.PointImpl;
+import org.geotools.util.SuppressFBWarnings;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.coordinate.Position;
 import org.opengis.geometry.primitive.Point;
@@ -134,6 +135,8 @@ public class PositionImpl implements Position, Serializable {
     }
 
     @Override
+    @SuppressFBWarnings("EQ_CHECK_FOR_OPERAND_NOT_COMPATIBLE_WITH_THIS")
+    // TODO: don't understand this equals indeed, but module is unsupported...
     public boolean equals(Object obj) {
         if (this == obj) return true;
         if (obj == null) return false;

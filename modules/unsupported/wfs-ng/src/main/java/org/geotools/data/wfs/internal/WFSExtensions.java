@@ -39,7 +39,7 @@ import org.geotools.util.factory.FactoryNotFoundException;
 @SuppressWarnings("nls")
 public class WFSExtensions {
     /** The service registry for this manager. Will be initialized only when first needed. */
-    private static Set<WFSResponseFactory> registry;
+    private static volatile Set<WFSResponseFactory> registry;
 
     /**
      * Processes the result of a WFS operation and returns the parsed object.
@@ -134,11 +134,12 @@ public class WFSExtensions {
                         Iterator<WFSResponseFactory> providers;
 
                         providers = ServiceLoader.load(WFSResponseFactory.class).iterator();
-                        registry = new HashSet<>();
+                        Set<WFSResponseFactory> tmp = new HashSet<>();
                         while (providers.hasNext()) {
                             WFSResponseFactory provider = providers.next();
-                            registry.add(provider);
+                            tmp.add(provider);
                         }
+                        registry = tmp;
                     } finally {
                         /*
                          * And finally restore the original thread's class loader

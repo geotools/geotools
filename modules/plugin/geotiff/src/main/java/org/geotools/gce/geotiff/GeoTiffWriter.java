@@ -19,7 +19,7 @@ package org.geotools.gce.geotiff;
 import it.geosolutions.imageio.plugins.tiff.TIFFImageWriteParam;
 import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageMetadata;
 import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageWriter;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.RenderedImage;
 import java.io.BufferedWriter;
@@ -178,41 +178,40 @@ public class GeoTiffWriter extends AbstractGridCoverageWriter implements GridCov
         ProgressListener listener = null;
         boolean retainAxesOrder = false;
         boolean writeNodata = GeoTiffFormat.WRITE_NODATA.getDefaultValue();
+        // /////////////////////////////////////////////////////////////////////
+        //
+        // Checking params
+        //
+        // /////////////////////////////////////////////////////////////////////
         if (params != null) {
-            // /////////////////////////////////////////////////////////////////////
-            //
-            // Checking params
-            //
-            // /////////////////////////////////////////////////////////////////////
-            if (params != null) {
-                Parameter<?> param;
-                final int length = params.length;
-                for (int i = 0; i < length; i++) {
-                    param = (Parameter) params[i];
-                    final ReferenceIdentifier name = param.getDescriptor().getName();
-                    if (name.equals(AbstractGridFormat.GEOTOOLS_WRITE_PARAMS.getName())) {
-                        gtParams = (GeoToolsWriteParams) param.getValue();
-                        continue;
-                    }
-                    if (name.equals(GeoTiffFormat.WRITE_TFW.getName())) {
-                        writeTfw = (Boolean) param.getValue();
-                        continue;
-                    }
-                    if (name.equals(GeoTiffFormat.PROGRESS_LISTENER.getName())) {
-                        listener = (ProgressListener) param.getValue();
-                        continue;
-                    }
-                    if (name.equals(GeoTiffFormat.RETAIN_AXES_ORDER.getName())) {
-                        retainAxesOrder = (Boolean) param.getValue();
-                        continue;
-                    }
-                    if (name.equals(GeoTiffFormat.WRITE_NODATA.getName())) {
-                        writeNodata = (Boolean) param.getValue();
-                        continue;
-                    }
+            Parameter<?> param;
+            final int length = params.length;
+            for (int i = 0; i < length; i++) {
+                param = (Parameter) params[i];
+                final ReferenceIdentifier name = param.getDescriptor().getName();
+                if (name.equals(AbstractGridFormat.GEOTOOLS_WRITE_PARAMS.getName())) {
+                    gtParams = (GeoToolsWriteParams) param.getValue();
+                    continue;
+                }
+                if (name.equals(GeoTiffFormat.WRITE_TFW.getName())) {
+                    writeTfw = (Boolean) param.getValue();
+                    continue;
+                }
+                if (name.equals(GeoTiffFormat.PROGRESS_LISTENER.getName())) {
+                    listener = (ProgressListener) param.getValue();
+                    continue;
+                }
+                if (name.equals(GeoTiffFormat.RETAIN_AXES_ORDER.getName())) {
+                    retainAxesOrder = (Boolean) param.getValue();
+                    continue;
+                }
+                if (name.equals(GeoTiffFormat.WRITE_NODATA.getName())) {
+                    writeNodata = (Boolean) param.getValue();
+                    continue;
                 }
             }
         }
+
         if (gtParams == null) gtParams = new GeoTiffWriteParams();
 
         //
@@ -399,14 +398,13 @@ public class GeoTiffWriter extends AbstractGridCoverageWriter implements GridCov
         //
         final TIFFImageWriter writer =
                 (TIFFImageWriter) GeoTiffFormat.IMAGEIO_WRITER_FACTORY.createWriterInstance();
-        final IIOMetadata metadata =
-                createGeoTiffIIOMetadata(
-                        writer,
-                        ImageTypeSpecifier.createFromRenderedImage(image),
-                        geoTIFFMetadata,
-                        params);
-
         try {
+            final IIOMetadata metadata =
+                    createGeoTiffIIOMetadata(
+                            writer,
+                            ImageTypeSpecifier.createFromRenderedImage(image),
+                            geoTIFFMetadata,
+                            params);
 
             //
             // IMAGEWRITE

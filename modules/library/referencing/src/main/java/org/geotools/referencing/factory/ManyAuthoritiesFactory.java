@@ -126,7 +126,7 @@ public class ManyAuthoritiesFactory extends AuthorityFactoryAdapter
      * Returns the factories. This method should not be public since it returns directly the
      * internal instance. This method is to be overriden by {@link AllAuthoritiesFactory} only.
      */
-    Collection<AuthorityFactory> getFactories() {
+    synchronized Collection<AuthorityFactory> getFactories() {
         return factories;
     }
 

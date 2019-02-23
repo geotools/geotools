@@ -159,9 +159,14 @@ class ImageLevelsMapper {
             Integer imageChoice, String coverageName, URL sourceURL, Hints hints)
             throws IOException {
         int imageIndex = getImageReaderIndex(imageChoice);
+        // light check to see if this reader had been disposed, not synching for performance.
+        if (readers == null) {
+            throw new IllegalStateException("This ImagePyramidReader has already been disposed");
+        }
         ImageMosaicReader reader = readers.get(imageIndex);
 
         if (reader == null) {
+
             //
             // we must create the underlying mosaic
             //
@@ -198,11 +203,6 @@ class ImageLevelsMapper {
 
                 // use the other one
                 reader = putByOtherThreadJustNow;
-            }
-            // light check to see if this reader had been disposed, not synching for performance.
-            if (readers == null) {
-                throw new IllegalStateException(
-                        "This ImagePyramidReader has already been disposed");
             }
         }
         return reader;

@@ -122,7 +122,7 @@ public class FilterToMongo implements FilterVisitor, ExpressionVisitor {
     }
 
     protected BasicDBObject asDBObject(Object extraData) {
-        if ((extraData != null) || (extraData instanceof BasicDBObject)) {
+        if (extraData instanceof BasicDBObject) {
             return (BasicDBObject) extraData;
         }
         return new BasicDBObject();

@@ -84,19 +84,18 @@ public class GridSpatialRepresentationImpl extends SpatialRepresentationImpl
     }
 
     /** Set the number of independent spatial-temporal axes. */
-    public synchronized void setNumberOfDimensions(final Integer newValue) {
+    public void setNumberOfDimensions(final Integer newValue) {
         checkWritePermission();
         numberOfDimensions = newValue;
     }
 
     /** Information about spatial-temporal axis properties. */
-    public synchronized List<Dimension> getAxisDimensionsProperties() {
+    public List<Dimension> getAxisDimensionsProperties() {
         return axisDimensionsProperties = nonNullList(axisDimensionsProperties, Dimension.class);
     }
 
     /** Set information about spatial-temporal axis properties. */
-    public synchronized void setAxisDimensionsProperties(
-            final List<? extends Dimension> newValues) {
+    public void setAxisDimensionsProperties(final List<? extends Dimension> newValues) {
         checkWritePermission();
         axisDimensionsProperties =
                 (List<Dimension>)
@@ -109,7 +108,7 @@ public class GridSpatialRepresentationImpl extends SpatialRepresentationImpl
     }
 
     /** Set identification of grid data as point or cell. */
-    public synchronized void setCellGeometry(final CellGeometry newValue) {
+    public void setCellGeometry(final CellGeometry newValue) {
         checkWritePermission();
         cellGeometry = newValue;
     }
@@ -120,7 +119,7 @@ public class GridSpatialRepresentationImpl extends SpatialRepresentationImpl
     }
 
     /** Set indication of whether or not parameters for transformation exists. */
-    public synchronized void setTransformationParameterAvailable(final boolean newValue) {
+    public void setTransformationParameterAvailable(final boolean newValue) {
         checkWritePermission();
         transformationParameterAvailable = newValue;
     }

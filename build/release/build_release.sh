@@ -4,11 +4,12 @@
 set -e
 
 function usage() {
-  echo "$0 [options] <tag> <user> <email>"
+  echo "$0 [options] <tag> <user> <email> <series>"
   echo
   echo " tag :  Release tag (eg: 2.7.5, 8.0-RC1, ...)"
   echo " user:  Git username"
   echo " email: Git email"
+  echo " series: Series (stable, maintenance, latest)"
   echo
   echo "Options:"
   echo " -h          : Print usage"
@@ -46,9 +47,10 @@ shift $(( OPTIND -1 ))
 tag=$1
 git_user=$2
 git_email=$3
+series=$4
 
 # sanity check
-if [ -z $tag ] || [ -z $git_user ] || [ -z $git_email ] || [ ! -z $4 ]; then
+if [ -z $tag ] || [ -z $git_user ] || [ -z $git_email ] || [ ! -z $series ] || [ ! -z $5 ]; then
   usage
   exit 1
 fi
@@ -123,6 +125,7 @@ git checkout -b rel_$tag $rev
 pushd build > /dev/null
 sed -i 's/@VERSION@/'$tag'/g' rename.xml 
 sed -i "s/@RELEASE_DATE@/`date "+%b %d, %Y"`/g" rename.xml 
+sed -i 's/@SERIES@/'$series'/g' rename.xml
 ant -f rename.xml
 popd > /dev/null
 

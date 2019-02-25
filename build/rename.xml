@@ -18,6 +18,7 @@
     <replace file="../README.html">
       <replacefilter token="@RELEASE@" value="@VERSION@"/>
       <replacefilter token="@DATE@" value="@RELEASE_DATE@"/>
+      <replacefilter token="@STABLE@" value="@SERIES@">
     </replace>
   </target>
 

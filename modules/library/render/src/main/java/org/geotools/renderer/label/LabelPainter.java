@@ -184,7 +184,6 @@ public class LabelPainter {
      * @return
      */
     public double getLineHeight() {
-        //        return lines.get(getLineCount()-1).getLineHeight();
         return lines.get(0).getLineHeight();
     }
 
@@ -194,6 +193,8 @@ public class LabelPainter {
      * @return
      */
     public double getLastLineHeight() {
+        if (lines == null) return 0;
+        if (lines.isEmpty()) return 0;
         return lines.get(getLineCount() - 1).getLineHeight();
     }
 

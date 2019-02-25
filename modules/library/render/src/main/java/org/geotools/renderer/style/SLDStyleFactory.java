@@ -713,7 +713,7 @@ public class SLDStyleFactory {
         LabelPlacement placement = symbolizer.getLabelPlacement();
         double anchorX =
                 PointPlacement.DEFAULT_ANCHOR_POINT.getAnchorPointX().evaluate(null, Double.class);
-        double anchorY =                
+        double anchorY =
                 PointPlacement.DEFAULT_ANCHOR_POINT.getAnchorPointY().evaluate(null, Double.class);
         double rotation = 0;
         double dispX = 0;

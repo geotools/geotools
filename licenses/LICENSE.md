@@ -13,7 +13,7 @@
   Some files or portions of files are licensed under a different license as 
   documented in the headers of individual files. A copy of any license which 
   is not designed to be included in the file header itself should be included 
-  along side this file: look for files with names such as GPL+CP.
+  along side this file: look for files with names such as PostgreSQL.
   
   This library is distributed in the hope that it will be useful,
   but WITHOUT ANY WARRANTY; without even the implied warranty of

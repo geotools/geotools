@@ -47,11 +47,16 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # exclude
-exclude_patterns = ['**/.svn']
+exclude_patterns = ['**/.gitignore']
 
 # General information about the project.
 project = u'GeoTools'
-copyright = u'2017, GeoTools'
+
+#Current year
+year = now.year
+
+#Copyright
+copyright = u'{} Open Source Geospatial Foundation'.format(year)
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the

@@ -123,10 +123,7 @@ git checkout -b rel_$tag $rev
 
 # update versions
 pushd build > /dev/null
-sed -i 's/@VERSION@/'$tag'/g' rename.xml 
-sed -i "s/@RELEASE_DATE@/`date "+%b %d, %Y"`/g" rename.xml 
-sed -i 's/@SERIES@/'$series'/g' rename.xml
-ant -f rename.xml
+ant -f rename.xml -Drelease=$tag -Dseries=$series
 popd > /dev/null
 
 # build the release

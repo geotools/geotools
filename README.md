@@ -1,4 +1,4 @@
-![GeoTools logo](/README-geotools-logo.png)
+![GeoTools logo](/geotools-logo.png)
 
 [GeoTools](http://geotools.org) is an open source Java library that provides
  tools for geospatial data. Our Users guide provides an [overview](http://docs.geotools.org/stable/userguide/geotools.html) of the core features, supported formats and standards support.

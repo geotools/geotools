@@ -43,9 +43,9 @@
   </fileSets>
   <files>
     <file>
-      <source>license/CreativeCommonsByAttribute.md</source>
+      <source>licenses/CreativeCommonsByAttribution.md </source>
       <outputDirectory></outputDirectory>
       <destName>LICENSE.md</destName>
     </file>
-  <files>
+  </files>
 </assembly>

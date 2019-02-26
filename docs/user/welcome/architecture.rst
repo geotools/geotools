@@ -19,7 +19,7 @@ and concepts defined in the previous one.
 Each layer of the "stack" is built on the ones below it:
 
 * To use Referencing you need gt-opengis, gt-referencing and gt-metadata
-* To use Data you need gt-api, gt-main, gt-main, jts, gt-opengis, gt-referencing, gt-opengis,
+* To use Data you need gt-main, gt-main, jts, gt-opengis, gt-referencing, gt-opengis,
   gt-metadata
 
 The maven tool can calculate the jars you need, please see the Eclipse or Netbeans quickstart
@@ -33,8 +33,7 @@ gt-jdbc        Implements for accessing spatial database
 gt-main        Implements for accessing spatial data
 gt-xml         Implements of common spatial xml formats
 gt-cql         Implements of Common Query Language for filters
-gt-main        Implements filter, feature, etc...
-gt-api         Definition of interfaces for working with spatial information
+gt-main        Interfaces for working with spatial information. Implements filter, feature, etc...
 jts            Definition and implementation of Geometry
 gt-coverage    Implementation for accessing raster information
 gt-referencing Implementation of co-ordinate location and transformation
@@ -79,8 +78,6 @@ system authorities and so on.
 | gt-cql        |                  |                                      |
 +---------------+------------------+--------------------------------------+
 | gt-main       |                  |                                      |
-+---------------+------------------+--------------------------------------+
-| gt-api        |                  |                                      |
 +---------------+------------------+--------------------------------------+
 | jts           |                  |                                      |
 +---------------+------------------+--------------------------------------+

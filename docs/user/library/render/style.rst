@@ -10,7 +10,7 @@ This page is devoted to examples, to review the concepts consult the references 
 
 References:
 
-* :doc:`gt-api style layer descriptor <../api/sld>` (interfaces)
+* :doc:`gt-main style layer descriptor <../main/sld>` (interfaces)
 * :doc:`gt-opengis symbology encoding <../opengis/se>` (interfaces)
 * http://www.opengeospatial.org/standards/sld (style layer descriptor)
 * http://www.opengeospatial.org/standards/symbol (symbology encoding)
@@ -24,8 +24,8 @@ We have three style factories offering various levels of standards compliance vs
 Module     Class            Capability       Scope    Description
 ========== ================ ================ ======== =======================================
 gt-opengis StyleFactory     get              se       Strictly limited to the SE standard
-gt-api     StyleFactory     get/set          se / sld Supports GeoTools vendor extensions
-gt-api     StyleFactory2    get/set          se / sld Supports text label graphics
+gt-main    StyleFactory     get/set          se / sld Supports GeoTools vendor extensions
+gt-main    StyleFactory2    get/set          se / sld Supports text label graphics
 gt-main    StyleBuilder     get/set/defaults se / sld Shorter methods, does not do everything
 ========== ================ ================ ======== =======================================
 
@@ -44,13 +44,13 @@ Here are some examples of these classes in action:
   
 * StyleFactory2
   
-  This gt-api interface allows one additional non standard trick; it allows us to place
+  This gt-main interface allows one additional non standard trick; it allows us to place
   an icon behind text labels. This is a popular technique used for example to place a
   "label shield" behind hi-way signs.
 
 * StyleFactory
   
-  This gt-api interface allows access to all the GeoTools vendor specific options.
+  This gt-main interface allows access to all the GeoTools vendor specific options.
   
   It has a slightly different style of programming where mutable instances are creating allowing
   you to call both get and set methods.
@@ -96,13 +96,13 @@ Internally we have:
 * StyleFactoryImpl2 that creates the raw objects; this is an implementation
   of the simple **gt-opengis** StyleFactory.
 * StyleFactoryImpl makes use of a aelegate to create the objects; and then allows for a wider
-  range of create methods defined by **gt-api** StyleFactory
+  range of create methods defined by **gt-main** StyleFactory
 * StyleBuilder which as expected uses a FilterFactory and a StyleFactory in order to get the job done.
 
 Style Layer Descriptor
 ^^^^^^^^^^^^^^^^^^^^^^
 
-GeoTools styling is built on the style layer descriptor data model shown below (from :doc:`gt-api <../api/sld>`).
+GeoTools styling is built on the style layer descriptor data model shown below (from :doc:`gt-main <../main/sld>`).
 
 .. image:: /images/sld.PNG
 

@@ -375,7 +375,8 @@ public class LabelDisplacementModeTest extends TestCase {
     }
 
     // https://osgeo-org.atlassian.net/browse/GEOS-8975
-    public void testGEOS8975() throws Exception {
+    // https://osgeo-org.atlassian.net/projects/GEOT/issues/GEOT-6253
+    public void testGEOT6253() throws Exception {
         GeometryFactory gf = new GeometryFactory();
 
         SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
@@ -389,6 +390,7 @@ public class LabelDisplacementModeTest extends TestCase {
         SimpleFeatureType type = builder.buildFeatureType();
 
         // a horizontal line with label with line breaks
+        // Formata-CondensedMedium(windows) ,// Formata-Condensed(other OS) was reported.
         SimpleFeature f11 =
                 SimpleFeatureBuilder.build(
                         type,
@@ -405,8 +407,7 @@ public class LabelDisplacementModeTest extends TestCase {
                                     }),
                             "Espace\nPierrey Betazg", // label with decender and line breaks
                             // ""Campagne-lÃ¨s-Hesdin""
-                            "Verdana", // "Verdana", //Formata-CondensedMedium(windows) ,
-                            // Formata-Condensed(other OS) was reported.
+                            "Bitstream Vera Sans",
                             10,
                             "Bold",
                             0
@@ -423,7 +424,7 @@ public class LabelDisplacementModeTest extends TestCase {
         SimpleFeatureSource fs3 = data.getFeatureSource("geos8975");
 
         BufferedImage image = renderLabels(fs3, style, "GEOS-8975, Multi Line Label Placement");
-        //         ImageIO.write(image, "PNG", new
+        //        ImageIO.write(image, "PNG", new
         //
         // File("./src/test/resources/org/geotools/renderer/lite/test-data/displacementMode/geos-8975.png"));
 

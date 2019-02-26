@@ -54,6 +54,11 @@
       <includes>
         <include>*.jar</include>
       </includes>
+      <excludes>
+        <exclude>*dummy-*</exclude>
+        <exclude>junit*.jar</exclude>
+        <exclude>README.md</exclude>
+      </excludes>
     </fileSet>
   </fileSets>
 </assembly>

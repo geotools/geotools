@@ -25,11 +25,6 @@
         <include>README.html</include>
       </includes>
     </fileSet>
-    <file>
-      <source>license/CreativeCommonsByAttribute.md</source>
-      <outputDirectory></outputDirectory>
-      <destName>LICENSE.md</destName>
-    </file>
     <fileSet>
       <includes>
         <include>geotools-logo.png</include>
@@ -41,16 +36,16 @@
         <include>VERSION*</include>
       </includes>
     </fileSet>
-    <!--fileSet>
-      <outputDirectory></outputDirectory>
-      <directory>licenses</directory>
-      <includes>
-        <include>*</include>
-      </includes>
-    </fileSet-->
     <fileSet>
       <directory>docs/target/user/html</directory>
       <outputDirectory></outputDirectory>
     </fileSet>
   </fileSets>
+  <files>
+    <file>
+      <source>license/CreativeCommonsByAttribute.md</source>
+      <outputDirectory></outputDirectory>
+      <destName>LICENSE.md</destName>
+    </file>
+  <files>
 </assembly>

@@ -131,8 +131,8 @@ popd > /dev/null
 if [ "$SKIP_BUILD" != true ]; then
   echo "building release"
   export MAVEN_OPTS="-Xmx2048m"
-  mvn $MAVEN_FLAGS -DskipTests -Dall clean -Pcollect install
-  mvn $MAVEN_FLAGS -DskipTests assembly:assembly
+  mvn $MAVEN_FLAGS -DskipTests -Dfmt.skip=true -Dall clean -Pcollect install
+  mvn $MAVEN_FLAGS -DskipTests -Dfmt.skip=true assembly:assembly
 fi
 
 # sanitize the bin artifact 

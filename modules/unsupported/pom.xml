@@ -253,6 +253,7 @@
 		<module>mbtiles</module>
 		<module>wfs-ng</module>
 		<module>ogr</module>
+		<module>postgis-raster</module>
 	</modules>
 
 </project>

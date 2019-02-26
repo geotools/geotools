@@ -17,4 +17,7 @@ fi
 if [ ! -z $JAVA_HOME ]; then
   export PATH=$JAVA_HOME/bin:$PATH
 fi
+
+echo build_release.sh $OPTS $VERSION $GIT_USER $GIT_EMAIL $SERIES
+
 ./build_release.sh $OPTS $VERSION $GIT_USER $GIT_EMAIL $SERIES

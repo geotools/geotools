@@ -135,32 +135,6 @@ if [ "$SKIP_BUILD" != true ]; then
   mvn $MAVEN_FLAGS -DskipTests -Dfmt.skip=true assembly:assembly
 fi
 
-# sanitize the bin artifact 
-pushd target > /dev/null
-bin=geotools-$tag-bin.zip
-unzip $bin
-cd geotools-$tag
-rm -f junit*.jar
-rm -f *dummy-*
-cd ..
-rm $bin
-zip -r $bin geotools-$tag
-rm -rf geotools-$tag
-popd > /dev/null
-
-# sanitize the src artifact 
-pushd target > /dev/null
-src=geotools-$tag-project.zip
-unzip $src
-cd geotools-$tag
-rm -rf .git
-cd ..
-rm $src
-zip -r $src geotools-$tag
-rm -rf geotools-$tag
-popd > /dev/null
-
-
 target=`pwd`/target
 
 # build the javadocs

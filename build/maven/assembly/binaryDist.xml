@@ -45,6 +45,7 @@
         <include>*</include>
       </includes>
       <excludes>
+        <exclude>CreativeCommonsByAttribution.md<>/exclude>
         <exclude>README.md</exclude>
       </excludes>
     </fileSet>

@@ -43,7 +43,7 @@
   </fileSets>
   <files>
     <file>
-      <source>licenses/CreativeCommonsByAttribution.md </source>
+      <source>licenses/CreativeCommonsByAttribution.md</source>
       <outputDirectory></outputDirectory>
       <destName>LICENSE.md</destName>
     </file>

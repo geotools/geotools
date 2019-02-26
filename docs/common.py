@@ -13,6 +13,7 @@
 
 import sys, os
 import re
+import datetime
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
@@ -53,6 +54,7 @@ exclude_patterns = ['**/.gitignore']
 project = u'GeoTools'
 
 #Current year
+now = datetime.datetime.now()
 year = now.year
 
 #Copyright
@@ -63,7 +65,7 @@ copyright = u'{} Open Source Geospatial Foundation'.format(year)
 # built documents.
 #
 # The full version, including alpha/beta/rc tags.
-release = '21-SNAPSHOT'
+release = '21.0'
 
 # The short X.Y version.
 version = release

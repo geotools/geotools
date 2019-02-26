@@ -50,7 +50,7 @@ git_email=$3
 series=$4
 
 # sanity check
-if [ -z $tag ] || [ -z $git_user ] || [ -z $git_email ] || [ ! -z $series ] || [ ! -z $5 ]; then
+if [ -z $tag ] || [ -z $git_user ] || [ -z $git_email ] || [ -z $series ] || [ ! -z $5 ]; then
   usage
   exit 1
 fi

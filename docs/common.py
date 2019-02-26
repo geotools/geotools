@@ -65,7 +65,7 @@ copyright = u'{} Open Source Geospatial Foundation'.format(year)
 # built documents.
 #
 # The full version, including alpha/beta/rc tags.
-release = '21.0'
+release = '21-SNAPSHOT'
 
 # The short X.Y version.
 version = release

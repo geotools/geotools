@@ -76,6 +76,7 @@ echo "Building release with following parameters:"
 echo "  branch = $branch"
 echo "  revision = $rev"
 echo "  tag = $tag"
+echo "  series = $series"
 
 mvn -version
 

@@ -8,8 +8,8 @@ These specifications define an XML document you can use to save and load your st
 References:
 
 * :doc:`style </tutorial/map/style>` (tutorial)
-* :doc:`gt-api sld <../api/sld>`
-* :doc:`gt-render style <../render/index>`
+* :doc:`gt-main sld <../main/sld>`
+* :doc:`gt-render style <../render/style>`
 * http://www.opengeospatial.org/standards/sld (style layer descriptor)
 * http://www.opengeospatial.org/standards/symbol (symbology encoding)
 

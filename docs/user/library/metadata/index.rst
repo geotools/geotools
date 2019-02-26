@@ -46,4 +46,5 @@ The gt-metadata module is responsible for:
    geotools
    range
    text
+   convert
    urls

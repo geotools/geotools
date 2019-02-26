@@ -1,7 +1,7 @@
 Style Layer Descriptor
 ----------------------
 
-The **gt-api** module provides interfaces for the style layer descriptor data structure and
+The **gt-main** module provides interfaces for the style layer descriptor data structure and
 offers GeoTools specific extensions to the symbology encoding data structure.
 
 References:

@@ -5,7 +5,7 @@ FeatureSource is probably the reason you came to this party; it let's you access
 
 References:
 
-* :doc:`gt-api <../api/datastore>`
+* :doc:`gt-main <../main/datastore>`
 
 To review a FeatureSource may support the additional interfaces FeatureStore and FeatureLocking if
 the current user has permission to modify or lock features.

@@ -6,7 +6,7 @@ including shapefiles, GML files, databases, Web Feature Servers, and other forma
 
 References:
 
-* :doc:`gt-api <../api/datastore>`
+* :doc:`gt-main <../main/datastore>`
 
 Create
 ^^^^^^

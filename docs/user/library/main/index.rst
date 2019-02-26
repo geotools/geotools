@@ -12,7 +12,6 @@ possible (various builders and utility classes).
 The gt-main module is responsible for:
 
 * Default implementation :doc:`gt-opengis <../opengis/index>` interfaces for Feature, FeatureType and Filter and Style
-* Default set of :doc:`gt-opengis <../api/convert>` Converters supporting basic Java types
 * Default set of :doc:`gt-opengis <../opengis/filter>` Functions for working with spatial data
 * Helper classes for your own application development such as *DataUtilities* and *SimpleFeatureTypeBuilder*
 * Abstract classes to help implementors of :doc:`DataStore <datastore>`

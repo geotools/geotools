@@ -13,7 +13,7 @@ the toolkit to work.
 The gt-main module is the foundation for implementing additional :doc:`DataStore <../main/datastore>`
  formats:
 
-* Abstract classes for :doc:`DataStore <datastore>` implementors to start from such
+* Abstract classes for :doc:`DataStore <../main/datastore>` implementors to start from such
   as **ContentDataStore** and **DirectoryDataStore**
 
 The gt-main module requires plug ins for different formats to be supplied.

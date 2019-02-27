@@ -20,6 +20,7 @@ import static org.hamcrest.Matchers.closeTo;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -29,7 +30,9 @@ import static org.junit.Assert.fail;
 
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.zip.GZIPInputStream;
 import org.geotools.data.Base64;
 import org.geotools.geometry.jts.JTS;
@@ -47,6 +50,7 @@ import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryCollection;
 import org.locationtech.jts.geom.GeometryComponentFilter;
+import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.MultiLineString;
 import org.locationtech.jts.geom.MultiPolygon;
@@ -78,6 +82,8 @@ public class ProjectionHandlerTest {
 
     static CoordinateReferenceSystem OSM;
 
+    static GeometryFactory gf = new GeometryFactory();
+
     @BeforeClass
     public static void setup() throws Exception {
         WGS84 = DefaultGeographicCRS.WGS84;
@@ -103,6 +109,24 @@ public class ProjectionHandlerTest {
         ReferencedEnvelope expected = new ReferencedEnvelope(170, 180, -90, 45, hcrs);
         assertTrue(envelopes.remove(wgs84Envelope));
         assertEquals(expected, envelopes.get(0));
+    }
+
+    @Test
+    public void testDensification() throws Exception {
+        CoordinateReferenceSystem utm32n = CRS.decode("EPSG:32632", true);
+        ReferencedEnvelope wgs84Envelope = new ReferencedEnvelope(-190, 60, -90, 45, WGS84);
+        ProjectionHandler handler = ProjectionHandlerFinder.getHandler(wgs84Envelope, WGS84, true);
+        Geometry line =
+                gf.createLineString(
+                        new Coordinate[] {new Coordinate(40, 45), new Coordinate(40, 88)});
+        LineString notDensified = (LineString) handler.preProcess(line);
+        assertTrue(notDensified.getCoordinates().length == 2);
+
+        Map params = new HashMap();
+        params.put("advancedProjectionDensify", 1.0);
+        handler = ProjectionHandlerFinder.getHandler(wgs84Envelope, WGS84, true, params);
+        LineString densified = (LineString) handler.preProcess(line);
+        assertFalse(densified.getCoordinates().length == 2);
     }
 
     @Test

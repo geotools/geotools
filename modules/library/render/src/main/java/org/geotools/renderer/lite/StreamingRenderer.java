@@ -31,6 +31,7 @@ import java.awt.font.GlyphVector;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
 import java.io.IOException;
@@ -39,6 +40,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.IdentityHashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -104,6 +106,7 @@ import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.geotools.referencing.operation.transform.ConcatenatedTransform;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
+import org.geotools.referencing.operation.transform.WarpBuilder;
 import org.geotools.renderer.GTRenderer;
 import org.geotools.renderer.RenderListener;
 import org.geotools.renderer.crs.ProjectionHandler;
@@ -366,6 +369,21 @@ public class StreamingRenderer implements GTRenderer {
 
     private static boolean VECTOR_RENDERING_ENABLED_DEFAULT = false;
 
+    /**
+     * Boolean flag indicating whether advanced projection densification should be used when needed.
+     */
+    public static final String ADVANCED_PROJECTION_DENSIFICATION_KEY =
+            "advancedProjectionDensificationEnabled";
+
+    private static boolean ADVANCED_PROJECTION_DENSIFICATION_DEFAULT = false;
+
+    /**
+     * Boolean flag indicating whether advanced projection wrapping heuristic should be used or nto.
+     */
+    public static final String DATELINE_WRAPPING_HEURISTIC_KEY = "datelineWrappingCheckEnabled";
+
+    private static boolean DATELINE_WRAPPING_HEURISTIC_DEFAULT = true;
+
     public static final String LABEL_CACHE_KEY = "labelCache";
     public static final String FORCE_EPSG_AXIS_ORDER_KEY = "ForceEPSGAxisOrder";
     public static final String DPI_KEY = "dpi";
@@ -403,6 +421,9 @@ public class StreamingRenderer implements GTRenderer {
     private ExecutorService threadPool;
 
     private PainterThread painterThread;
+
+    private static int MAX_PIXELS_DENSIFY =
+            Integer.valueOf(System.getProperty("ADVANCED_PROJECTION_DENSIFY_MAX_PIXELS", "128"));
 
     /**
      * Creates a new instance of LiteRenderer without a context. Use it only to gain access to
@@ -1067,10 +1088,46 @@ public class StreamingRenderer implements GTRenderer {
             List<ReferencedEnvelope> envelopes = null;
             // enable advanced projection handling with the updated map extent
             if (isAdvancedProjectionHandlingEnabled()) {
+                Map projectionHints = new HashMap();
+                if (isAdvancedProjectionDensificationEnabled()
+                        && !CRS.equalsIgnoreMetadata(featCrs, mapCRS)) {
+                    ReferencedEnvelope targetEnvelope = envelope;
+                    ReferencedEnvelope sourceEnvelope = targetEnvelope.transform(featCrs, true);
+                    AffineTransform at = worldToScreenTransform;
+                    MathTransform2D crsTransform =
+                            (MathTransform2D)
+                                    CRS.findMathTransform(
+                                            CRS.getHorizontalCRS(featCrs),
+                                            CRS.getHorizontalCRS(mapCRS));
+                    MathTransform2D screenTransform = new AffineTransform2D(at);
+                    MathTransform2D fullTranform =
+                            (MathTransform2D)
+                                    ConcatenatedTransform.create(crsTransform, screenTransform);
+                    Rectangle2D.Double sourceDomain =
+                            new Rectangle2D.Double(
+                                    sourceEnvelope.getMinX(),
+                                    sourceEnvelope.getMinY(),
+                                    sourceEnvelope.getWidth(),
+                                    sourceEnvelope.getHeight());
+                    WarpBuilder wb = new WarpBuilder(0.8);
+                    int[] actualSplit = wb.getRowColsSplit(fullTranform, sourceDomain);
+                    if (actualSplit != null && (actualSplit[0] != 1 || actualSplit[1] != 1)) {
+                        double densifyDistance =
+                                Math.min(
+                                        sourceEnvelope.getWidth()
+                                                / Math.min(actualSplit[0], MAX_PIXELS_DENSIFY),
+                                        sourceEnvelope.getHeight()
+                                                / Math.min(actualSplit[1], MAX_PIXELS_DENSIFY));
+                        projectionHints.put("advancedProjectionDensify", densifyDistance);
+                    }
+                }
+                if (!isWrappingHeuristicEnabled()) {
+                    projectionHints.put("datelineWrappingCheckEnabled", false);
+                }
                 // get the projection handler and set a tentative envelope
                 ProjectionHandler projectionHandler =
                         ProjectionHandlerFinder.getHandler(
-                                envelope, featCrs, isMapWrappingEnabled());
+                                envelope, featCrs, isMapWrappingEnabled(), projectionHints);
                 if (projectionHandler != null) {
                     setProjectionHandler(styleList, projectionHandler);
                     envelopes = projectionHandler.getQueryEnvelopes();
@@ -1547,6 +1604,22 @@ public class StreamingRenderer implements GTRenderer {
         if (rendererHints == null) return true;
         Object result = rendererHints.get(VECTOR_RENDERING_KEY);
         if (result == null) return VECTOR_RENDERING_ENABLED_DEFAULT;
+        return ((Boolean) result).booleanValue();
+    }
+
+    /** Checks if advanced projection densification is enabled or not. */
+    private boolean isAdvancedProjectionDensificationEnabled() {
+        if (rendererHints == null) return false;
+        Object result = rendererHints.get(ADVANCED_PROJECTION_DENSIFICATION_KEY);
+        if (result == null) return ADVANCED_PROJECTION_DENSIFICATION_DEFAULT;
+        return ((Boolean) result).booleanValue();
+    }
+
+    /** Checks if advanced projection wrapping heuristic should be enabled. */
+    private boolean isWrappingHeuristicEnabled() {
+        if (rendererHints == null) return true;
+        Object result = rendererHints.get(DATELINE_WRAPPING_HEURISTIC_KEY);
+        if (result == null) return DATELINE_WRAPPING_HEURISTIC_DEFAULT;
         return ((Boolean) result).booleanValue();
     }
 

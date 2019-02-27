@@ -18,6 +18,7 @@ package org.geotools.renderer.crs;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.locationtech.jts.geom.Envelope;
@@ -61,6 +62,21 @@ public class WrappingProjectionHandler extends ProjectionHandler {
         this.queryAcrossDateline = true;
         // this will compute the radius
         setCentralMeridian(centralMeridian);
+    }
+
+    /**
+     * Set one of the supported projection parameters: - datelineWrappingCheckEnabled (boolean) if
+     * false disables the heuristic for dateline wrapping check (true by default)
+     *
+     * @param projectionParameters
+     */
+    @Override
+    public void setProjectionParameters(Map projectionParameters) {
+        super.setProjectionParameters(projectionParameters);
+        if (projectionParameters.containsKey("datelineWrappingCheckEnabled")) {
+            datelineWrappingCheckEnabled =
+                    (Boolean) projectionParameters.get("datelineWrappingCheckEnabled");
+        }
     }
 
     @Override

@@ -21,6 +21,7 @@ import static org.geotools.referencing.crs.DefaultGeographicCRS.WGS84;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -30,6 +31,7 @@ import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.operation.transform.ConcatenatedTransform;
 import org.geotools.referencing.operation.transform.GeocentricTransform;
+import org.locationtech.jts.densify.Densifier;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryCollection;
@@ -92,6 +94,10 @@ public class ProjectionHandler {
     protected SingleCRS geometryCRS;
 
     protected boolean noReprojection;
+
+    protected double densify = 0.0;
+
+    Map projectionParameters;
 
     /**
      * Initializes a projection handler
@@ -157,6 +163,19 @@ public class ProjectionHandler {
             this.validaAreaTester = PreparedGeometryFactory.prepare(validArea);
         }
         checkReprojection();
+    }
+
+    /**
+     * Set one of the supported projection parameters: - advancedProjectionDensify (double) if > 0
+     * enables densification on preprocessing with the given distance between points.
+     *
+     * @param projectionParameters
+     */
+    public void setProjectionParameters(Map projectionParameters) {
+        if (projectionParameters.containsKey("advancedProjectionDensify")) {
+            densify = (Double) projectionParameters.get("advancedProjectionDensify");
+        }
+        this.projectionParameters = projectionParameters;
     }
 
     private void checkReprojection() throws FactoryException {
@@ -364,7 +383,10 @@ public class ProjectionHandler {
             ReferencedEnvelope transformed = envelope.transform(targetCRS, true, 10);
             ProjectionHandler handler =
                     ProjectionHandlerFinder.getHandler(
-                            new ReferencedEnvelope(targetCRS), DefaultGeographicCRS.WGS84, true);
+                            new ReferencedEnvelope(targetCRS),
+                            DefaultGeographicCRS.WGS84,
+                            true,
+                            projectionParameters);
             // does the target CRS have a strict notion of what's possible in terms of
             // valid coordinate ranges?
             if (handler == null || handler instanceof WrappingProjectionHandler) {
@@ -514,11 +536,11 @@ public class ProjectionHandler {
      */
     public Geometry preProcess(Geometry geometry) throws TransformException, FactoryException {
         // if there is no valid area, no cutting is required either
-        if (validAreaBounds == null) return geometry;
+        if (validAreaBounds == null) return densify(geometry);
 
         // if not reprojection is going on, we don't need to cut
         if (noReprojection) {
-            return geometry;
+            return densify(geometry);
         }
 
         Geometry mask;
@@ -534,7 +556,7 @@ public class ProjectionHandler {
             // if the geometry is within the valid area for this projection
             // just skip expensive cutting
             if (validAreaBounds.contains((Envelope) geWGS84)) {
-                return geometry;
+                return densify(geometry);
             }
 
             // we need to cut, first thing, we intersect the geometry envelope
@@ -553,7 +575,7 @@ public class ProjectionHandler {
                     ReferencedEnvelope translated = new ReferencedEnvelope(validAreaBounds);
                     translated.translate(-360, 0);
                     if (translated.contains((Envelope) geWGS84)) {
-                        return geometry;
+                        return densify(geometry);
                     }
                     envIntWgs84 = translated.intersection(geWGS84);
                 } else if (validAreaBounds.contains(
@@ -561,7 +583,7 @@ public class ProjectionHandler {
                     ReferencedEnvelope translated = new ReferencedEnvelope(validAreaBounds);
                     translated.translate(360, 0);
                     if (translated.contains((Envelope) geWGS84)) {
-                        return geometry;
+                        return densify(geometry);
                     }
                     envIntWgs84 = translated.intersection(geWGS84);
                 }
@@ -576,7 +598,7 @@ public class ProjectionHandler {
             // if the geometry is within the valid area for this projection
             // just skip expensive cutting
             if (validaAreaTester.contains(JTS.toGeometry(geWGS84))) {
-                return geometry;
+                return densify(geometry);
             }
 
             // we need to cut, first thing, we intersect the geometry envelope
@@ -600,7 +622,26 @@ public class ProjectionHandler {
             mask = JTS.transform(maskWgs84, CRS.findMathTransform(WGS84, geometryCRS));
         }
 
-        return intersect(geometry, mask, geometryCRS);
+        return densify(intersect(geometry, mask, geometryCRS));
+    }
+
+    /**
+     * Densifies the given geometry using the current densification configuration.
+     *
+     * <p>It returns the original geometry if densification is not enabled.
+     *
+     * @param geometry
+     * @return
+     */
+    protected Geometry densify(Geometry geometry) {
+        if (geometry != null && densify > 0.0) {
+            try {
+                geometry = Densifier.densify(geometry, densify);
+            } catch (Throwable t) {
+                LOGGER.warning("Cannot densify geometry");
+            }
+        }
+        return geometry;
     }
 
     protected Geometry intersect(

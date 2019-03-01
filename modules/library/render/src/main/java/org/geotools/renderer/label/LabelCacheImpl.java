@@ -1213,7 +1213,7 @@ public class LabelCacheImpl implements LabelCache {
                         - textBounds.getHeight()
                         + ((painter.lines.size() == 1)
                                 ? painter.getLineHeight()
-                                : painter.getLastLineHeight());
+                                : painter.getLineHeightForAnchorY(textStyle.getAnchorY()));
         tempTransform.translate(displacementX, displacementY);
     }
 

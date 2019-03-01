@@ -3,11 +3,11 @@
   <NamedLayer>
     <Name>Toponym_annotation_straight_T</Name>
     <UserStyle>
-      <Title>TOPONYM_ANNOTATION_STRAIGHT_25</Title>
+      <Title>MultiLineLabelDisplacementY</Title>
       
       <FeatureTypeStyle>
         <Rule>
-          <Name>Toponyms</Name>          
+          <Name>Test</Name>          
           <TextSymbolizer> <!-- uom="http://www.opengeospatial.org/se/units/metre" -->
             <Geometry>
                 <ogc:Function name="centroid">
@@ -35,7 +35,9 @@
                 <PointPlacement>
                     <AnchorPoint>
                         <AnchorPointX>0.5</AnchorPointX> <!--0.5 -->
-                        <AnchorPointY>0</AnchorPointY>
+                        <AnchorPointY>
+                            <ogc:PropertyName>ANCHORY</ogc:PropertyName>
+                        </AnchorPointY>
                     </AnchorPoint>
                     <Displacement>
                         <DisplacementX>0</DisplacementX>

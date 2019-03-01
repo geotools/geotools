@@ -188,14 +188,25 @@ public class LabelPainter {
     }
 
     /**
-     * Returns the line height for last line for this label in pixels
+     * Returns appropriate line height for the given displacemntY Should give Top line for max
+     * displacementY (1) and Bottom line for min displacemntY (0)
      *
-     * @return
+     * @param displacementY
+     * @return height of appropriate line for passed label displacementY
      */
-    public double getLastLineHeight() {
+    public double getLineHeightForAnchorY(double anchorY) {
+        // null checks
         if (lines == null) return 0;
         if (lines.isEmpty()) return 0;
-        return lines.get(getLineCount() - 1).getLineHeight();
+
+        // validation checks
+        anchorY = (anchorY < 0) ? 0 : anchorY;
+        anchorY = (anchorY > 1) ? 1 : anchorY;
+
+        if (anchorY == 0) return lines.get(getLineCount() - 1).getLineHeight();
+        if (anchorY == 1) return lines.get(0).getLineHeight();
+        // return averge height
+        return getLabelBounds().getHeight() / lines.size();
     }
 
     /**

@@ -105,7 +105,7 @@ public class LabelPainterTest {
         labelItem.setAutoWrap(100);
         painter.setLabel(labelItem);
         // should default to 0 with no lines to paint
-        assertTrue(painter.getLastLineHeight() == 0.0);
+        assertTrue(painter.getLineHeightForAnchorY(0) == 0.0);
     }
 
     @Test
@@ -116,6 +116,14 @@ public class LabelPainterTest {
         labelItem.setAutoWrap(100);
         painter.setLabel(labelItem);
         // should not default to 0
-        assertTrue(painter.getLastLineHeight() > 0.0);
+        assertTrue(painter.getLineHeightForAnchorY(0) > 0.0);
+
+        // should get line height of first line
+        assertTrue(painter.lines.get(0).getLineHeight() == painter.getLineHeightForAnchorY(1));
+
+        // should get line height of last line
+        assertTrue(
+                painter.lines.get(painter.getLineCount() - 1).getLineHeight()
+                        == painter.getLineHeightForAnchorY(1));
     }
 }

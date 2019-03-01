@@ -376,7 +376,7 @@ public class LabelDisplacementModeTest extends TestCase {
 
     // https://osgeo-org.atlassian.net/browse/GEOS-8975
     // https://osgeo-org.atlassian.net/projects/GEOT/issues/GEOT-6253
-    public void testGEOT6253() throws Exception {
+    public void testMultiLineLabelDisplacementY() throws Exception {
         GeometryFactory gf = new GeometryFactory();
 
         SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
@@ -386,6 +386,7 @@ public class LabelDisplacementModeTest extends TestCase {
         builder.add("FONTSIZE", Integer.class);
         builder.add("FONTSTYLE", String.class);
         builder.add("ANGLE", Integer.class);
+        builder.add("ANCHORY", Integer.class);
         builder.setName("geos8975");
         SimpleFeatureType type = builder.buildFeatureType();
 
@@ -405,31 +406,59 @@ public class LabelDisplacementModeTest extends TestCase {
                                         new Coordinate(7, 5),
                                         new Coordinate(8, 5)
                                     }),
-                            "Espace\nPierrey Betazg", // label with decender and line breaks
-                            // ""Campagne-lÃ¨s-Hesdin""
+                            "Espace\nPierrey\nBetazg", // label with decender and line breaks
                             "Bitstream Vera Sans",
                             10,
                             "Bold",
-                            0
+                            0,
+                            0 // anchorY
+                        },
+                        null);
+        SimpleFeature f12 =
+                SimpleFeatureBuilder.build(
+                        type,
+                        new Object[] {
+                            gf.createLineString( // straight line
+                                    new Coordinate[] {
+                                        new Coordinate(2, 3),
+                                        new Coordinate(3, 3),
+                                        new Coordinate(4, 3),
+                                        new Coordinate(5, 3),
+                                        new Coordinate(6, 3),
+                                        new Coordinate(7, 3),
+                                        new Coordinate(8, 3)
+                                    }),
+                            "Liney 1\nLineg", // label with decender and line breaks
+                            "Bitstream Vera Sans",
+                            10,
+                            "Bold",
+                            0,
+                            1 // anchorY
                         },
                         null);
 
-        Style style = RendererBaseTest.loadStyle(this, "displacementMode/geos-8975.sld");
+        Style style =
+                RendererBaseTest.loadStyle(
+                        this, "displacementMode/testMultiLineLabelDisplacementY.sld");
         assertNotNull(style);
 
         MemoryDataStore data = new MemoryDataStore();
 
         data.addFeature(f11);
+        data.addFeature(f12);
 
         SimpleFeatureSource fs3 = data.getFeatureSource("geos8975");
 
         BufferedImage image = renderLabels(fs3, style, "GEOS-8975, Multi Line Label Placement");
-        //        ImageIO.write(image, "PNG", new
+        //        ImageIO.write(
+        //                image,
+        //                "PNG",
+        //                new File(
         //
-        // File("./src/test/resources/org/geotools/renderer/lite/test-data/displacementMode/geos-8975.png"));
+        // "./src/test/resources/org/geotools/renderer/lite/test-data/displacementMode/testMultiLineLabelDisplacementY.png"));
 
         String refPath =
-                "./src/test/resources/org/geotools/renderer/lite/test-data/displacementMode/geos-8975.png";
+                "./src/test/resources/org/geotools/renderer/lite/test-data/displacementMode/testMultiLineLabelDisplacementY.png";
         ImageAssert.assertEquals(new File(refPath), image, 900);
     }
 

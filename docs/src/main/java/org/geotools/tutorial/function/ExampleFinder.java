@@ -30,7 +30,7 @@ import org.opengis.filter.FilterFactory;
 
 public class ExampleFinder extends FactoryFinder {
 
-    private static FactoryCreator registry;
+    private static volatile FactoryCreator registry;
 
     private static FactoryRegistry getServiceRegistry() {
         assert Thread.holdsLock(ExampleFinder.class);

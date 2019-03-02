@@ -77,7 +77,7 @@ public class BrowseGraphicImpl extends MetadataEntity implements BrowseGraphic {
      * Set the name of the file that contains a graphic that provides an illustration of the
      * dataset.
      */
-    public synchronized void setApplicationSchemaInformation(final URI newValue) {
+    public void setApplicationSchemaInformation(final URI newValue) {
         checkWritePermission();
         applicationSchemaInformation = newValue;
     }
@@ -91,7 +91,7 @@ public class BrowseGraphicImpl extends MetadataEntity implements BrowseGraphic {
      * Set the name of the file that contains a graphic that provides an illustration of the
      * dataset.
      */
-    public synchronized void setFileName(final URI newValue) {
+    public void setFileName(final URI newValue) {
         checkWritePermission();
         fileName = newValue;
     }
@@ -102,7 +102,7 @@ public class BrowseGraphicImpl extends MetadataEntity implements BrowseGraphic {
     }
 
     /** Set the text description of the illustration. */
-    public synchronized void setFileDescription(final InternationalString newValue) {
+    public void setFileDescription(final InternationalString newValue) {
         checkWritePermission();
         fileDescription = newValue;
     }
@@ -116,7 +116,7 @@ public class BrowseGraphicImpl extends MetadataEntity implements BrowseGraphic {
     }
 
     /** Set the format in which the illustration is encoded. */
-    public synchronized void setFileType(final String newValue) {
+    public void setFileType(final String newValue) {
         checkWritePermission();
         fileType = newValue;
     }

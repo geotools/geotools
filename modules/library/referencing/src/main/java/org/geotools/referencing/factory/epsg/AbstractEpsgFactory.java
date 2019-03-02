@@ -3092,8 +3092,8 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
         Unit<?> target = unit;
         if (code >= 8605) {
             if (code <= 8607) target = SI.METRE;
-            else if (code <= 8710) target = NonSI.SECOND_ANGLE;
             else if (code == 8611) target = Units.PPM;
+            else if (code <= 8710) target = NonSI.SECOND_ANGLE;
         }
         if (target != unit) {
             value = Units.getConverterToAny(unit, target).convert(value);

@@ -355,10 +355,7 @@ public class MaskOverviewProvider {
                     info.file = URLs.urlToFile(fileURL);
                     info.readerSpi = readerSpi;
                     info.streamSpi = streamSpi;
-                    info.index =
-                            imageIndex != 0
-                                    ? layout.getInternalMaskImageIndex(imageIndex) - 1
-                                    : layout.getInternalMaskImageIndex(imageIndex);
+                    info.index = layout.getInternalMaskImageIndex(imageIndex) - 1;
                 } else if (hasExternalMasks) {
                     if (imageIndex < numExternalMasks) {
                         info.file = URLs.urlToFile(maskURL);

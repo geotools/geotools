@@ -18,9 +18,9 @@ package org.geotools.validation;
 
 import org.geotools.data.DataTestCase;
 import org.geotools.data.memory.MemoryDataStore;
-import org.geotools.feature.IllegalAttributeException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.validation.spatial.IsValidGeometryValidation;
+import org.opengis.feature.IllegalAttributeException;
 
 /**
  * FeatureValidationTest purpose.

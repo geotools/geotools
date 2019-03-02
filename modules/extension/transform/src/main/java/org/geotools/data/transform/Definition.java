@@ -201,8 +201,6 @@ public class Definition {
 
             return ab.buildDescriptor(name);
         } else {
-            // in case no evaluation succeeds
-            Class computedBinding = Object.class;
 
             // see if we are just passing a property trough
             if (expression instanceof PropertyName) {
@@ -219,7 +217,7 @@ public class Definition {
                 }
             } else {
                 // try static analysis
-                computedBinding = (Class) expression.accept(typeEvaluator, null);
+                Class computedBinding = (Class) expression.accept(typeEvaluator, null);
                 if (computedBinding == null) {
                     return null;
                 }
@@ -248,7 +246,7 @@ public class Definition {
             Geometry g = expression.evaluate(originalFeature, Geometry.class);
             if (g != null && g.getUserData() instanceof CoordinateReferenceSystem) {
                 computedCRS = (CoordinateReferenceSystem) g.getUserData();
-            } else {
+            } else if (g != null) {
                 try {
                     computedCRS = CRS.decode("EPSG:" + g.getSRID());
                 } catch (Exception e) {

@@ -16,6 +16,7 @@
  */
 package org.geotools.renderer.lite;
 
+import org.geotools.util.SuppressFBWarnings;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.CoordinateFilter;
 import org.locationtech.jts.geom.CoordinateSequence;
@@ -44,6 +45,7 @@ import org.locationtech.jts.geom.PrecisionModel;
  * @author Andrea Aime
  */
 @SuppressWarnings("serial")
+@SuppressFBWarnings("EQ_CHECK_FOR_OPERAND_NOT_COMPATIBLE_WITH_THIS")
 class SimpleGeometryFactory extends GeometryFactory {
 
     public SimpleGeometryFactory(CoordinateSequenceFactory csFactory) {
@@ -420,6 +422,7 @@ class SimpleGeometryFactory extends GeometryFactory {
             return lineString.equalsTopo(g);
         }
 
+        @SuppressFBWarnings("EQ_CHECK_FOR_OPERAND_NOT_COMPATIBLE_WITH_THIS")
         public boolean equals(Object obj) {
             return lineString.equals(obj);
         }

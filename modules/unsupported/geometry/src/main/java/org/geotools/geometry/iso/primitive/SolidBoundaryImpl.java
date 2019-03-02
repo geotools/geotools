@@ -18,6 +18,7 @@ package org.geotools.geometry.iso.primitive;
 
 import java.util.ArrayList;
 import java.util.Set;
+import org.geotools.util.SuppressFBWarnings;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.Envelope;
 import org.opengis.geometry.complex.Complex;
@@ -64,6 +65,7 @@ public class SolidBoundaryImpl extends PrimitiveBoundaryImpl implements SolidBou
     }
 
     @Override
+    @SuppressFBWarnings("NP_CLONE_COULD_RETURN_NULL")
     public SolidBoundaryImpl clone() throws CloneNotSupportedException {
         // TODO Auto-generated method stub
         return null;

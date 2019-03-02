@@ -126,7 +126,7 @@ public class DefaultOperation extends DefaultSingleOperation implements Operatio
                 final Class<? extends Operation> candidate =
                         ((MathTransformProvider) method).getOperationType();
                 if (candidate != null) {
-                    if (type == null || type.isAssignableFrom(candidate)) {
+                    if (type.isAssignableFrom(candidate)) {
                         type = candidate.asSubclass(type);
                     }
                 }

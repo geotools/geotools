@@ -27,7 +27,7 @@ import org.geotools.util.factory.FactoryRegistry;
 /** Access the {@link CoverageNameCollectorSPI}s */
 public class CoverageNameCollectorSpiFinder {
 
-    private static FactoryCreator registry;
+    private static volatile FactoryCreator registry;
 
     public static synchronized Map<String, CoverageNameCollectorSPI> getCoverageNameCollectorSPI() {
         // get all CoverageNameCollectorSPI implementations

@@ -20,6 +20,7 @@ package org.geotools.geometry.iso.util.algorithm2D;
 import java.util.List;
 import org.geotools.geometry.iso.topograph2D.Coordinate;
 import org.geotools.geometry.iso.topograph2D.util.CoordinateArrays;
+import org.geotools.util.SuppressFBWarnings;
 import org.opengis.geometry.DirectPosition;
 
 /**
@@ -76,6 +77,7 @@ public class CGAlgorithms {
      * @param ring assumed to have first point identical to last point
      * @return <code>true</code> if p is inside ring
      */
+    @SuppressFBWarnings("IM_BAD_CHECK_FOR_ODD")
     public static boolean isPointInRing(Coordinate p, Coordinate[] ring) {
         /*
          * For each segment l = (i-1, i), see if it crosses ray from test point

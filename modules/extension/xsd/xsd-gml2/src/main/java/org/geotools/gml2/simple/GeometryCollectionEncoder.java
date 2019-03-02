@@ -30,12 +30,11 @@ public class GeometryCollectionEncoder extends GeometryEncoder<GeometryCollectio
     static final QualifiedName GEOMETRY_COLLECTION =
             new QualifiedName(GML.NAMESPACE, "GeometryCollection", "gml");
 
-    QualifiedName element;
-    static Encoder encoder;
+    Encoder encoder;
 
     public GeometryCollectionEncoder(Encoder encoder, String gmlPrefix) {
         super(encoder);
-        GeometryCollectionEncoder.encoder = encoder;
+        this.encoder = encoder;
     }
 
     @Override
@@ -45,8 +44,7 @@ public class GeometryCollectionEncoder extends GeometryEncoder<GeometryCollectio
         if (geometry.getNumGeometries() < 1) {
             throw new Exception("More than 1 geometry required!");
         } else {
-            GenericGeometryEncoder gec =
-                    new GenericGeometryEncoder(GeometryCollectionEncoder.encoder);
+            GenericGeometryEncoder gec = new GenericGeometryEncoder(this.encoder);
             // For every geometry within the GeometryCollection call encoder
             for (int i = 0; i < geometry.getNumGeometries(); i++) {
                 gec.encode(geometry.getGeometryN(i), atts, handler);

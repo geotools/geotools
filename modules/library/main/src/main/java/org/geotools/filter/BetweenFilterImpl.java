@@ -165,21 +165,17 @@ public class BetweenFilterImpl extends CompareFilterImpl implements PropertyIsBe
      * @return True if the objects are equal.
      */
     public boolean equals(Object oFilter) {
-        if (oFilter.getClass() == this.getClass()) {
-            BetweenFilterImpl bFilter = (BetweenFilterImpl) oFilter;
-
-            return (expression1 == bFilter.getExpression1()
-                            || (expression1 != null
-                                    && expression1.equals(bFilter.getExpression1())))
-                    && (expression2 == bFilter.getExpression2()
-                            || (expression2 != null
-                                    && expression2.equals(bFilter.getExpression2())))
-                    && (expression1 == bFilter.getExpression()
-                            || (middleValue != null
-                                    && middleValue.equals(bFilter.getExpression())));
-        } else {
+        if (!(oFilter instanceof BetweenFilterImpl)) {
             return false;
         }
+        BetweenFilterImpl bFilter = (BetweenFilterImpl) oFilter;
+
+        return (expression1 == bFilter.getExpression1()
+                        || (expression1 != null && expression1.equals(bFilter.getExpression1())))
+                && (expression2 == bFilter.getExpression2()
+                        || (expression2 != null && expression2.equals(bFilter.getExpression2())))
+                && (expression1 == bFilter.getExpression()
+                        || (middleValue != null && middleValue.equals(bFilter.getExpression())));
     }
 
     /**

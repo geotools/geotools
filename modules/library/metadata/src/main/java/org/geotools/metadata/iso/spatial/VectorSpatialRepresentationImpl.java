@@ -61,19 +61,18 @@ public class VectorSpatialRepresentationImpl extends SpatialRepresentationImpl
     }
 
     /** Set the code which identifies the degree of complexity of the spatial relationships. */
-    public synchronized void setTopologyLevel(final TopologyLevel newValue) {
+    public void setTopologyLevel(final TopologyLevel newValue) {
         checkWritePermission();
         topologyLevel = newValue;
     }
 
     /** Information about the geometric objects used in the dataset. */
-    public synchronized Collection<GeometricObjects> getGeometricObjects() {
+    public Collection<GeometricObjects> getGeometricObjects() {
         return (geometricObjects = nonNullCollection(geometricObjects, GeometricObjects.class));
     }
 
     /** Set information about the geometric objects used in the dataset. */
-    public synchronized void setGeometricObjects(
-            final Collection<? extends GeometricObjects> newValues) {
+    public void setGeometricObjects(final Collection<? extends GeometricObjects> newValues) {
         geometricObjects = copyCollection(newValues, geometricObjects, GeometricObjects.class);
     }
 }

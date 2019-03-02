@@ -4408,7 +4408,7 @@ public class ImageWorker {
                         try {
                             AffineTransform inverse = sTx.createInverse();
                             ROI newROI = this.roi != null ? this.roi.transform(inverse) : null;
-                            this.roi = newROI.intersect(r);
+                            this.roi = newROI != null ? newROI.intersect(r) : null;
                         } catch (NoninvertibleTransformException e) {
                             LOGGER.log(Level.SEVERE, e.getMessage(), e);
                         }
@@ -4837,14 +4837,13 @@ public class ImageWorker {
 
         if (background.length == 3) {
             return new Color((int) background[0], (int) background[1], (int) background[2]);
-        } else if (background.length == 4) {
+        } else {
+            // as per initial exit condition, here we can only have background.length == 4
             return new Color(
                     (int) background[0],
                     (int) background[1],
                     (int) background[2],
                     (int) background[3]);
-        } else {
-            return null;
         }
     }
 

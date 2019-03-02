@@ -31,6 +31,7 @@ import org.geotools.referencing.datum.DefaultGeodeticDatum;
 import org.geotools.referencing.factory.ReferencingFactoryContainer;
 import org.geotools.referencing.operation.DefiningConversion;
 import org.geotools.referencing.wkt.Formattable;
+import org.geotools.util.SuppressFBWarnings;
 import org.geotools.util.factory.GeoTools;
 import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.Coordinate;
@@ -64,6 +65,7 @@ import si.uom.SI;
  *
  * @author Jody Garnett
  */
+@SuppressFBWarnings("DLS_DEAD_LOCAL_STORE")
 public class ReferencingExamples {
 
     @SuppressWarnings("unused")

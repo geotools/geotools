@@ -220,7 +220,7 @@ public class OnLineResourceImpl extends MetadataEntity implements OnLineResource
     }
 
     /** Set the name of an application profile that can be used with the online resource. */
-    public synchronized void setApplicationProfile(final String newValue) {
+    public void setApplicationProfile(final String newValue) {
         checkWritePermission();
         applicationProfile = newValue;
     }
@@ -239,7 +239,7 @@ public class OnLineResourceImpl extends MetadataEntity implements OnLineResource
      *
      * @since 2.4
      */
-    public synchronized void setName(final String newValue) {
+    public void setName(final String newValue) {
         checkWritePermission();
         name = newValue;
     }
@@ -253,7 +253,7 @@ public class OnLineResourceImpl extends MetadataEntity implements OnLineResource
     }
 
     /** Set the detailed text description of what the online resource is/does. */
-    public synchronized void setDescription(final InternationalString newValue) {
+    public void setDescription(final InternationalString newValue) {
         checkWritePermission();
         description = newValue;
     }
@@ -267,7 +267,7 @@ public class OnLineResourceImpl extends MetadataEntity implements OnLineResource
     }
 
     /** Set the code for function performed by the online resource. */
-    public synchronized void setFunction(final OnLineFunction newValue) {
+    public void setFunction(final OnLineFunction newValue) {
         checkWritePermission();
         function = newValue;
     }
@@ -284,7 +284,7 @@ public class OnLineResourceImpl extends MetadataEntity implements OnLineResource
      * Set the location (address) for on-line access using a Uniform Resource Locator address or
      * similar addressing scheme such as http://www.statkart.no/isotc211.
      */
-    public synchronized void setLinkage(final URI newValue) {
+    public void setLinkage(final URI newValue) {
         checkWritePermission();
         linkage = newValue;
     }

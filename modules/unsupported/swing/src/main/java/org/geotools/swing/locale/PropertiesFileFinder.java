@@ -75,11 +75,13 @@ public class PropertiesFileFinder {
         } else { // must be running locally
             File localDir = getAsLocalDir(path);
             File[] children = localDir.listFiles();
-            for (File child : children) {
-                if (child != null && child.isFile()) {
-                    String name = child.getName();
-                    if (name.endsWith(".properties")) {
-                        infoList.add(parseEntry(0, name));
+            if (children != null) {
+                for (File child : children) {
+                    if (child != null && child.isFile()) {
+                        String name = child.getName();
+                        if (name.endsWith(".properties")) {
+                            infoList.add(parseEntry(0, name));
+                        }
                     }
                 }
             }

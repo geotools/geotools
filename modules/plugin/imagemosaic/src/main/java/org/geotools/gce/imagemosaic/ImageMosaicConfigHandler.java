@@ -95,6 +95,7 @@ import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.referencing.CRS;
+import org.geotools.util.SuppressFBWarnings;
 import org.geotools.util.URLs;
 import org.geotools.util.Utilities;
 import org.geotools.util.factory.Hints;
@@ -173,6 +174,7 @@ public class ImageMosaicConfigHandler {
      *
      * @throws IllegalArgumentException
      */
+    @SuppressFBWarnings("NP_NULL_PARAM_DEREF")
     public ImageMosaicConfigHandler(
             final CatalogBuilderConfiguration configuration,
             final ImageMosaicEventHandlers eventHandler) {

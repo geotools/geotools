@@ -61,7 +61,7 @@ public class GeographicDescriptionImpl extends GeographicExtentImpl
     }
 
     /** Set the identifier used to represent a geographic area. */
-    public synchronized void setGeographicIdentifier(final Identifier newValue) {
+    public void setGeographicIdentifier(final Identifier newValue) {
         checkWritePermission();
         geographicIdentifier = newValue;
     }

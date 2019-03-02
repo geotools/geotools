@@ -20,11 +20,7 @@ package org.geotools.gce.gtopo30;
 import com.sun.media.imageio.stream.RawImageInputStream;
 import com.sun.media.imageioimpl.plugins.raw.RawImageReader;
 import com.sun.media.imageioimpl.plugins.raw.RawImageReaderSpi;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Rectangle;
-import java.awt.RenderingHints;
-import java.awt.Transparency;
+import java.awt.*;
 import java.awt.color.ColorSpace;
 import java.awt.image.ColorModel;
 import java.awt.image.ComponentColorModel;
@@ -321,26 +317,24 @@ public final class GTopo30Reader extends AbstractGridCoverage2DReader
         GeneralEnvelope requestedEnvelope = null;
         Rectangle dim = null;
         OverviewPolicy overviewPolicy = null;
+        // /////////////////////////////////////////////////////////////////////
+        //
+        // Checking params
+        //
+        // /////////////////////////////////////////////////////////////////////
         if (params != null) {
-            // /////////////////////////////////////////////////////////////////////
-            //
-            // Checking params
-            //
-            // /////////////////////////////////////////////////////////////////////
-            if (params != null) {
-                for (int i = 0; i < params.length; i++) {
-                    final ParameterValue<?> param = (ParameterValue<?>) params[i];
-                    final String name = param.getDescriptor().getName().getCode();
-                    if (name.equals(AbstractGridFormat.READ_GRIDGEOMETRY2D.getName().toString())) {
-                        final GridGeometry2D gg = (GridGeometry2D) param.getValue();
-                        requestedEnvelope = new GeneralEnvelope((Envelope) gg.getEnvelope2D());
-                        dim = gg.getGridRange2D().getBounds();
-                        continue;
-                    }
-                    if (name.equals(AbstractGridFormat.OVERVIEW_POLICY.getName().toString())) {
-                        overviewPolicy = (OverviewPolicy) param.getValue();
-                        continue;
-                    }
+            for (int i = 0; i < params.length; i++) {
+                final ParameterValue<?> param = (ParameterValue<?>) params[i];
+                final String name = param.getDescriptor().getName().getCode();
+                if (name.equals(AbstractGridFormat.READ_GRIDGEOMETRY2D.getName().toString())) {
+                    final GridGeometry2D gg = (GridGeometry2D) param.getValue();
+                    requestedEnvelope = new GeneralEnvelope((Envelope) gg.getEnvelope2D());
+                    dim = gg.getGridRange2D().getBounds();
+                    continue;
+                }
+                if (name.equals(AbstractGridFormat.OVERVIEW_POLICY.getName().toString())) {
+                    overviewPolicy = (OverviewPolicy) param.getValue();
+                    continue;
                 }
             }
         }

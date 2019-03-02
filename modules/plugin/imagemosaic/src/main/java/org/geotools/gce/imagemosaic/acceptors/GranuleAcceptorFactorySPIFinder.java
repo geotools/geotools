@@ -27,7 +27,7 @@ import org.geotools.util.factory.FactoryRegistry;
 /** Helper to find GranuleFactorySPI instances */
 public class GranuleAcceptorFactorySPIFinder {
 
-    private static FactoryCreator registry;
+    private static volatile FactoryCreator registry;
 
     public static synchronized Map<String, GranuleAcceptorFactorySPI>
             getGranuleAcceptorFactorySPI() {

@@ -38,7 +38,7 @@ public class Angle implements Comparable<Angle>, Serializable {
     private static final long serialVersionUID = 1158747349433104534L;
 
     /** A shared instance of {@link AngleFormat}. */
-    private static Format format;
+    private static volatile Format format;
 
     /** Define how angle can be converted to {@link Number} objects. */
     static {

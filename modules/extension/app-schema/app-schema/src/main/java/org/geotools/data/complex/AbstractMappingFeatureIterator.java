@@ -251,7 +251,7 @@ public abstract class AbstractMappingFeatureIterator implements IMappingFeatureI
         }
 
         // NC - property names
-        if (query != null && query.getProperties() != null) {
+        if (query.getProperties() != null) {
             setPropertyNames(query.getProperties());
         } else {
             setPropertyNames(null); // we need the actual property names (not surrogates) to do

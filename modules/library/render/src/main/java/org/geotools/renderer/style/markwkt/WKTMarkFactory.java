@@ -80,7 +80,7 @@ public class WKTMarkFactory implements MarkFactory {
      *
      * @param root Directory from which the search for WKT libraries starts
      */
-    public void setRoot(URL root) {
+    public static void setRoot(URL root) {
         ROOT_DIRECTORY = root;
     }
 
@@ -113,6 +113,7 @@ public class WKTMarkFactory implements MarkFactory {
                 propLib = this.loadLibrary(urlLib);
             } catch (IOException e) {
                 LOGGER.log(Level.FINER, e.getMessage(), e);
+                return;
             }
             for (Enumeration<String> e = (Enumeration<String>) propLib.propertyNames();
                     e.hasMoreElements(); ) {
@@ -191,6 +192,7 @@ public class WKTMarkFactory implements MarkFactory {
                     Level.WARNING,
                     "Could not parse WKT library URL: " + ROOT_DIRECTORY + "/" + libFile,
                     e);
+            return properties;
         }
 
         InputStream in = null;

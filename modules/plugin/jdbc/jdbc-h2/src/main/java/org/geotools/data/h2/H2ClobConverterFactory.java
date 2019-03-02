@@ -60,7 +60,7 @@ public class H2ClobConverterFactory implements ConverterFactory {
 
                 return (T) sb.toString();
             } finally {
-                r.close();
+                if (r != null) r.close();
             }
         }
     }

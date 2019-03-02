@@ -120,7 +120,7 @@ public class IdentificationImpl extends MetadataEntity implements Identification
     }
 
     /** Set the citation data for the resource(s). */
-    public synchronized void setCitation(final Citation newValue) {
+    public void setCitation(final Citation newValue) {
         checkWritePermission();
         citation = newValue;
     }
@@ -131,7 +131,7 @@ public class IdentificationImpl extends MetadataEntity implements Identification
     }
 
     /** Set a brief narrative summary of the content of the resource(s). */
-    public synchronized void setAbstract(final InternationalString newValue) {
+    public void setAbstract(final InternationalString newValue) {
         checkWritePermission();
         abstracts = newValue;
     }
@@ -142,28 +142,28 @@ public class IdentificationImpl extends MetadataEntity implements Identification
     }
 
     /** Set a summary of the intentions with which the resource(s) was developed. */
-    public synchronized void setPurpose(final InternationalString newValue) {
+    public void setPurpose(final InternationalString newValue) {
         checkWritePermission();
         purpose = newValue;
     }
 
     /** Recognition of those who contributed to the resource(s). */
-    public synchronized Collection<String> getCredits() {
+    public Collection<String> getCredits() {
         return (credits = nonNullCollection(credits, String.class));
     }
 
     /** Set a recognition of those who contributed to the resource(s). */
-    public synchronized void setCredits(final Collection<? extends String> newValues) {
+    public void setCredits(final Collection<? extends String> newValues) {
         credits = copyCollection(newValues, credits, String.class);
     }
 
     /** Status of the resource(s). */
-    public synchronized Collection<Progress> getStatus() {
+    public Collection<Progress> getStatus() {
         return (status = nonNullCollection(status, Progress.class));
     }
 
     /** Set the status of the resource(s). */
-    public synchronized void setStatus(final Collection<? extends Progress> newValues) {
+    public void setStatus(final Collection<? extends Progress> newValues) {
         status = copyCollection(newValues, status, Progress.class);
     }
 
@@ -171,26 +171,25 @@ public class IdentificationImpl extends MetadataEntity implements Identification
      * Identification of, and means of communication with, person(s) and organizations(s) associated
      * with the resource(s).
      */
-    public synchronized Collection<ResponsibleParty> getPointOfContacts() {
+    public Collection<ResponsibleParty> getPointOfContacts() {
         return (pointOfContacts = nonNullCollection(pointOfContacts, ResponsibleParty.class));
     }
 
     /** Set the point of contacts. */
-    public synchronized void setPointOfContacts(
-            final Collection<? extends ResponsibleParty> newValues) {
+    public void setPointOfContacts(final Collection<? extends ResponsibleParty> newValues) {
         pointOfContacts = copyCollection(newValues, pointOfContacts, ResponsibleParty.class);
     }
 
     /**
      * Provides information about the frequency of resource updates, and the scope of those updates.
      */
-    public synchronized Collection<MaintenanceInformation> getResourceMaintenance() {
+    public Collection<MaintenanceInformation> getResourceMaintenance() {
         return (resourceMaintenance =
                 nonNullCollection(resourceMaintenance, MaintenanceInformation.class));
     }
 
     /** Set information about the frequency of resource updates, and the scope of those updates. */
-    public synchronized void setResourceMaintenance(
+    public void setResourceMaintenance(
             final Collection<? extends MaintenanceInformation> newValues) {
         resourceMaintenance =
                 copyCollection(newValues, resourceMaintenance, MaintenanceInformation.class);
@@ -200,34 +199,32 @@ public class IdentificationImpl extends MetadataEntity implements Identification
      * Provides a graphic that illustrates the resource(s) (should include a legend for the
      * graphic).
      */
-    public synchronized Collection<BrowseGraphic> getGraphicOverviews() {
+    public Collection<BrowseGraphic> getGraphicOverviews() {
         return (graphicOverviews = nonNullCollection(graphicOverviews, BrowseGraphic.class));
     }
 
     /** Set a graphic that illustrates the resource(s). */
-    public synchronized void setGraphicOverviews(
-            final Collection<? extends BrowseGraphic> newValues) {
+    public void setGraphicOverviews(final Collection<? extends BrowseGraphic> newValues) {
         graphicOverviews = copyCollection(newValues, graphicOverviews, BrowseGraphic.class);
     }
 
     /** Provides a description of the format of the resource(s). */
-    public synchronized Collection<Format> getResourceFormat() {
+    public Collection<Format> getResourceFormat() {
         return (resourceFormat = nonNullCollection(resourceFormat, Format.class));
     }
 
     /** Set a description of the format of the resource(s). */
-    public synchronized void setResourceFormat(final Collection<? extends Format> newValues) {
+    public void setResourceFormat(final Collection<? extends Format> newValues) {
         resourceFormat = copyCollection(newValues, resourceFormat, Format.class);
     }
 
     /** Provides category keywords, their type, and reference source. */
-    public synchronized Collection<Keywords> getDescriptiveKeywords() {
+    public Collection<Keywords> getDescriptiveKeywords() {
         return (descriptiveKeywords = nonNullCollection(descriptiveKeywords, Keywords.class));
     }
 
     /** Set category keywords, their type, and reference source. */
-    public synchronized void setDescriptiveKeywords(
-            final Collection<? extends Keywords> newValues) {
+    public void setDescriptiveKeywords(final Collection<? extends Keywords> newValues) {
         descriptiveKeywords = copyCollection(newValues, descriptiveKeywords, Keywords.class);
     }
 
@@ -235,24 +232,22 @@ public class IdentificationImpl extends MetadataEntity implements Identification
      * Provides basic information about specific application(s) for which the resource(s) has/have
      * been or is being used by different users.
      */
-    public synchronized Collection<Usage> getResourceSpecificUsages() {
+    public Collection<Usage> getResourceSpecificUsages() {
         return (resourceSpecificUsages = nonNullCollection(resourceSpecificUsages, Usage.class));
     }
 
     /** Set basic information about specific application(s). */
-    public synchronized void setResourceSpecificUsages(
-            final Collection<? extends Usage> newValues) {
+    public void setResourceSpecificUsages(final Collection<? extends Usage> newValues) {
         resourceSpecificUsages = copyCollection(newValues, resourceSpecificUsages, Usage.class);
     }
 
     /** Provides information about constraints which apply to the resource(s). */
-    public synchronized Collection<Constraints> getResourceConstraints() {
+    public Collection<Constraints> getResourceConstraints() {
         return (resourceConstraints = nonNullCollection(resourceConstraints, Constraints.class));
     }
 
     /** Set information about constraints which apply to the resource(s). */
-    public synchronized void setResourceConstraints(
-            final Collection<? extends Constraints> newValues) {
+    public void setResourceConstraints(final Collection<? extends Constraints> newValues) {
         resourceConstraints = copyCollection(newValues, resourceConstraints, Constraints.class);
     }
 
@@ -261,7 +256,7 @@ public class IdentificationImpl extends MetadataEntity implements Identification
      *
      * @since 2.4
      */
-    public synchronized Collection<AggregateInformation> getAggregationInfo() {
+    public Collection<AggregateInformation> getAggregationInfo() {
         return aggregationInfo = nonNullCollection(aggregationInfo, AggregateInformation.class);
     }
 
@@ -270,8 +265,7 @@ public class IdentificationImpl extends MetadataEntity implements Identification
      *
      * @since 2.4
      */
-    public synchronized void setAggregationInfo(
-            final Collection<? extends AggregateInformation> newValues) {
+    public void setAggregationInfo(final Collection<? extends AggregateInformation> newValues) {
         aggregationInfo = copyCollection(newValues, aggregationInfo, AggregateInformation.class);
     }
 }

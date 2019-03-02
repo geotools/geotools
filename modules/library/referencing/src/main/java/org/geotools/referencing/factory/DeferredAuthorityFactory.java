@@ -46,7 +46,7 @@ import org.opengis.referencing.FactoryException;
 public abstract class DeferredAuthorityFactory extends BufferedAuthorityFactory
         implements OptionalFactory {
     /** The timer for {@linkplain AbstractAuthorityFactory#dispose disposing} backing stores. */
-    private static Timer TIMER = new Timer("GT authority factory disposer", true);
+    private static volatile Timer TIMER = new Timer("GT authority factory disposer", true);
 
     /**
      * The task for disposing the backing store, or {@code null} if none. This task will be

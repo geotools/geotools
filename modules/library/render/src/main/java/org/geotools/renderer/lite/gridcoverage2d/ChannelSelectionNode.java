@@ -143,15 +143,6 @@ class ChannelSelectionNode extends SubchainStyleVisitorCoverageProcessingAdapter
                     && ((sc.length == 1 && sc[0] != null)
                             || (sc.length == 3
                                     && (sc[0] != null || sc[1] != null || sc[2] != null)))) {
-                // //
-                //
-                // Note that we can either select 1 (GRAY) or 3 (RGB) bands.
-                //
-                // //
-                if (sc.length != 3 && sc.length != 1)
-                    throw new IllegalArgumentException(
-                            Errors.format(
-                                    ErrorKeys.BAD_BAND_NUMBER_$1, Integer.valueOf(sc.length)));
                 for (int i = 0; i < sc.length; i++) {
 
                     // get the channel element

@@ -70,7 +70,7 @@ public class MetadataExtensionInformationImpl extends MetadataEntity
     }
 
     /** Set information about on-line sources. */
-    public synchronized void setExtensionOnLineResource(final OnLineResource newValue) {
+    public void setExtensionOnLineResource(final OnLineResource newValue) {
         checkWritePermission();
         this.extensionOnLineResource = newValue;
     }
@@ -79,13 +79,13 @@ public class MetadataExtensionInformationImpl extends MetadataEntity
      * Provides information about a new metadata element, not found in ISO 19115, which is required
      * to describe geographic data.
      */
-    public synchronized Collection<ExtendedElementInformation> getExtendedElementInformation() {
+    public Collection<ExtendedElementInformation> getExtendedElementInformation() {
         return (extendedElementInformation =
                 nonNullCollection(extendedElementInformation, ExtendedElementInformation.class));
     }
 
     /** Set information about a new metadata element. */
-    public synchronized void setExtendedElementInformation(
+    public void setExtendedElementInformation(
             final Collection<? extends ExtendedElementInformation> newValues) {
         extendedElementInformation =
                 copyCollection(

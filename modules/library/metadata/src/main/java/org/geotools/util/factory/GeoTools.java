@@ -1087,7 +1087,7 @@ public final class GeoTools {
      */
     public static void main(String[] args) {
         final Arguments arguments = new Arguments(args);
-        args = arguments.getRemainingArguments(0);
+        arguments.getRemainingArguments(0);
         arguments.out.print("GeoTools version ");
         arguments.out.println(getVersion());
         final Hints hints = getDefaultHints();

@@ -82,13 +82,13 @@ public class SourceImpl extends MetadataEntity implements Source {
     }
 
     /** Set a detailed description of the level of the source data. */
-    public synchronized void setDescription(final InternationalString newValue) {
+    public void setDescription(final InternationalString newValue) {
         checkWritePermission();
         description = newValue;
     }
 
     /** Returns the denominator of the representative fraction on a source map. */
-    public synchronized RepresentativeFraction getScaleDenominator() {
+    public RepresentativeFraction getScaleDenominator() {
         return scaleDenominator;
     }
 
@@ -97,7 +97,7 @@ public class SourceImpl extends MetadataEntity implements Source {
      *
      * @since 2.4
      */
-    public synchronized void setScaleDenominator(final RepresentativeFraction newValue) {
+    public void setScaleDenominator(final RepresentativeFraction newValue) {
         checkWritePermission();
         scaleDenominator = newValue;
     }
@@ -111,7 +111,7 @@ public class SourceImpl extends MetadataEntity implements Source {
     }
 
     /** Set the spatial reference system used by the source data. */
-    public synchronized void setSourceReferenceSystem(final ReferenceSystem newValue) {
+    public void setSourceReferenceSystem(final ReferenceSystem newValue) {
         checkWritePermission();
         sourceReferenceSystem = newValue;
     }
@@ -122,28 +122,28 @@ public class SourceImpl extends MetadataEntity implements Source {
     }
 
     /** Set the recommended reference to be used for the source data. */
-    public synchronized void setSourceCitation(final Citation newValue) {
+    public void setSourceCitation(final Citation newValue) {
         checkWritePermission();
         sourceCitation = newValue;
     }
 
     /** Returns tiInformation about the spatial, vertical and temporal extent of the source data. */
-    public synchronized Collection<Extent> getSourceExtents() {
+    public Collection<Extent> getSourceExtents() {
         return (sourceExtents = nonNullCollection(sourceExtents, Extent.class));
     }
 
     /** Information about the spatial, vertical and temporal extent of the source data. */
-    public synchronized void setSourceExtents(final Collection<? extends Extent> newValues) {
+    public void setSourceExtents(final Collection<? extends Extent> newValues) {
         sourceExtents = copyCollection(newValues, sourceExtents, Extent.class);
     }
 
     /** Returns information about an event in the creation process for the source data. */
-    public synchronized Collection<ProcessStep> getSourceSteps() {
+    public Collection<ProcessStep> getSourceSteps() {
         return (sourceSteps = nonNullCollection(sourceSteps, ProcessStep.class));
     }
 
     /** Set information about an event in the creation process for the source data. */
-    public synchronized void setSourceSteps(final Collection<? extends ProcessStep> newValues) {
+    public void setSourceSteps(final Collection<? extends ProcessStep> newValues) {
         sourceSteps = copyCollection(newValues, sourceSteps, ProcessStep.class);
     }
 }

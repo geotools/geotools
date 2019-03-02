@@ -85,6 +85,9 @@ public class ECQLExamples {
                 System.out.print(">");
 
                 String line = reader.readLine();
+                if (line == null) {
+                    return;
+                }
                 int option = Integer.parseInt(line);
                 switch (option) {
                     case 0:

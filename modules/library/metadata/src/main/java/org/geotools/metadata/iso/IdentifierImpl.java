@@ -88,7 +88,7 @@ public class IdentifierImpl extends MetadataEntity implements Identifier {
     }
 
     /** Set the alphanumeric value identifying an instance in the namespace. */
-    public synchronized void setCode(final String newValue) {
+    public void setCode(final String newValue) {
         checkWritePermission();
         code = newValue;
     }
@@ -106,7 +106,7 @@ public class IdentifierImpl extends MetadataEntity implements Identifier {
     }
 
     /** Set an identifier of the version of the associated code. */
-    public synchronized void setVersion(final String newValue) {
+    public void setVersion(final String newValue) {
         checkWritePermission();
         version = newValue;
     }
@@ -125,7 +125,7 @@ public class IdentifierImpl extends MetadataEntity implements Identifier {
      * Set the organization or party responsible for definition and maintenance of the {@linkplain
      * #getCode code}.
      */
-    public synchronized void setAuthority(final Citation newValue) {
+    public void setAuthority(final Citation newValue) {
         checkWritePermission();
         authority = newValue;
     }

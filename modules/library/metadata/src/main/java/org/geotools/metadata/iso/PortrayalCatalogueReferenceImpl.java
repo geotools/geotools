@@ -57,14 +57,13 @@ public class PortrayalCatalogueReferenceImpl extends MetadataEntity
     }
 
     /** Bibliographic reference to the portrayal catalogue cited. */
-    public synchronized Collection<Citation> getPortrayalCatalogueCitations() {
+    public Collection<Citation> getPortrayalCatalogueCitations() {
         return portrayalCatalogueCitations =
                 nonNullCollection(portrayalCatalogueCitations, Citation.class);
     }
 
     /** Set bibliographic reference to the portrayal catalogue cited. */
-    public synchronized void setPortrayalCatalogueCitations(
-            Collection<? extends Citation> newValues) {
+    public void setPortrayalCatalogueCitations(Collection<? extends Citation> newValues) {
         portrayalCatalogueCitations =
                 copyCollection(newValues, portrayalCatalogueCitations, Citation.class);
     }

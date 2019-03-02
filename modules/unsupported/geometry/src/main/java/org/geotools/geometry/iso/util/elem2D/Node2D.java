@@ -20,6 +20,7 @@ import java.awt.geom.Point2D;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Vector;
+import org.geotools.util.SuppressFBWarnings;
 
 /**
  * @author roehrig
@@ -138,6 +139,8 @@ public class Node2D extends Point2D.Double {
         return simplices;
     }
 
+    // simplex might actually go NPE, just ignoring it as the module is generally broken
+    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH")
     private void getSimplices(Simplex2D simplex, HashSet<Simplex2D> simplices) {
 
         if (simplex != null) simplices.add(simplex);

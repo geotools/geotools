@@ -101,7 +101,7 @@ public final class Locales {
      */
     public static void main(String[] args) {
         final Arguments arguments = new Arguments(args);
-        args = arguments.getRemainingArguments(0);
+        arguments.getRemainingArguments(0);
         final String[] locales = getAvailableLocales(arguments.locale);
         for (int i = 0; i < locales.length; i++) {
             arguments.out.println(locales[i]);

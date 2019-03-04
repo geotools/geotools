@@ -44,7 +44,6 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
 import org.opengis.filter.sort.SortBy;
-import org.opengis.geometry.BoundingBox;
 
 /**
  * A basic implementation of SimpleFeatureCollection which use a {@link TreeMap} for its internal
@@ -132,17 +131,7 @@ public class DefaultFeatureCollection
      */
     public ReferencedEnvelope getBounds() {
         if (bounds == null) {
-            bounds = new ReferencedEnvelope();
-
-            for (Iterator i = contents.values().iterator(); i.hasNext(); ) {
-                BoundingBox geomBounds = ((SimpleFeature) i.next()).getBounds();
-                // IanS - as of 1.3, JTS expandToInclude ignores "null" Envelope
-                // and simply adds the new bounds...
-                // This check ensures this behavior does not occur.
-                if (!geomBounds.isEmpty()) {
-                    bounds.include(geomBounds);
-                }
-            }
+            bounds = DataUtilities.bounds(this);
         }
         return bounds;
     }

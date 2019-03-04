@@ -516,10 +516,8 @@ public class DataUtilitiesTest extends DataTestCase {
 
     public void testBounds() {
         SimpleFeatureCollection collection = DataUtilities.collection(roadFeatures);
-
-        ReferencedEnvelope expected = collection.getBounds();
         ReferencedEnvelope actual = DataUtilities.bounds(collection);
-        assertEquals(expected, actual);
+        assertEquals(roadBounds, actual);
     }
 
     public void testCollectionList() {

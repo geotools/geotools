@@ -12,7 +12,6 @@
        https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html
   -->
 <FindBugsFilter>
-
     <!-- Won't use prepared statements, very bad performance for geospatial use cases -->
     <Match>
         <Bug pattern="SQL_NONCONSTANT_STRING_PASSED_TO_EXECUTE"/>
@@ -21,7 +20,7 @@
         <Bug pattern="SQL_PREPARED_STATEMENT_GENERATED_FROM_NONCONSTANT_STRING"/>
     </Match>
     <!-- Returns moslty false positives -->
-     <Match>
+    <Match>
         <Bug pattern="FE_FLOATING_POINT_EQUALITY"/>
     </Match>
     <!-- Too many cases where we have a semi-legit usage of same name -->

@@ -111,6 +111,7 @@ import org.geotools.renderer.GTRenderer;
 import org.geotools.renderer.RenderListener;
 import org.geotools.renderer.crs.ProjectionHandler;
 import org.geotools.renderer.crs.ProjectionHandlerFinder;
+import org.geotools.renderer.crs.WrappingProjectionHandler;
 import org.geotools.renderer.label.LabelCacheImpl;
 import org.geotools.renderer.label.LabelCacheImpl.LabelRenderingMode;
 import org.geotools.renderer.lite.gridcoverage2d.GridCoverageReaderHelper;
@@ -377,6 +378,12 @@ public class StreamingRenderer implements GTRenderer {
 
     private static boolean ADVANCED_PROJECTION_DENSIFICATION_DEFAULT = false;
 
+    /** Densification Tolerance, to be used when densification is enabled. */
+    public static final String ADVANCED_PROJECTION_DENSIFICATION_TOLERANCE_KEY =
+            "advancedProjectionDensificationTolerance";
+
+    private static double ADVANCED_PROJECTION_DENSIFICATION_TOLERANCE_DEFAULT = 0.8;
+
     /**
      * Boolean flag indicating whether advanced projection wrapping heuristic should be used or nto.
      */
@@ -423,7 +430,7 @@ public class StreamingRenderer implements GTRenderer {
     private PainterThread painterThread;
 
     private static int MAX_PIXELS_DENSIFY =
-            Integer.valueOf(System.getProperty("ADVANCED_PROJECTION_DENSIFY_MAX_PIXELS", "128"));
+            Integer.valueOf(System.getProperty("ADVANCED_PROJECTION_DENSIFY_MAX_PIXELS", "5"));
 
     /**
      * Creates a new instance of LiteRenderer without a context. Use it only to gain access to
@@ -1091,38 +1098,60 @@ public class StreamingRenderer implements GTRenderer {
                 Map projectionHints = new HashMap();
                 if (isAdvancedProjectionDensificationEnabled()
                         && !CRS.equalsIgnoreMetadata(featCrs, mapCRS)) {
-                    ReferencedEnvelope targetEnvelope = envelope;
-                    ReferencedEnvelope sourceEnvelope = targetEnvelope.transform(featCrs, true);
-                    AffineTransform at = worldToScreenTransform;
-                    MathTransform2D crsTransform =
-                            (MathTransform2D)
-                                    CRS.findMathTransform(
-                                            CRS.getHorizontalCRS(featCrs),
-                                            CRS.getHorizontalCRS(mapCRS));
-                    MathTransform2D screenTransform = new AffineTransform2D(at);
-                    MathTransform2D fullTranform =
-                            (MathTransform2D)
-                                    ConcatenatedTransform.create(crsTransform, screenTransform);
-                    Rectangle2D.Double sourceDomain =
-                            new Rectangle2D.Double(
-                                    sourceEnvelope.getMinX(),
-                                    sourceEnvelope.getMinY(),
-                                    sourceEnvelope.getWidth(),
-                                    sourceEnvelope.getHeight());
-                    WarpBuilder wb = new WarpBuilder(0.8);
-                    int[] actualSplit = wb.getRowColsSplit(fullTranform, sourceDomain);
-                    if (actualSplit != null && (actualSplit[0] != 1 || actualSplit[1] != 1)) {
-                        double densifyDistance =
-                                Math.min(
-                                        sourceEnvelope.getWidth()
-                                                / Math.min(actualSplit[0], MAX_PIXELS_DENSIFY),
-                                        sourceEnvelope.getHeight()
-                                                / Math.min(actualSplit[1], MAX_PIXELS_DENSIFY));
-                        projectionHints.put("advancedProjectionDensify", densifyDistance);
+                    double tolerance = getAdvancedProjectionDensificationTolerance();
+                    if (tolerance > 0.0) {
+                        ReferencedEnvelope targetEnvelope = envelope;
+                        ReferencedEnvelope sourceEnvelope =
+                                transformEnvelope(targetEnvelope, featCrs);
+                        AffineTransform at = worldToScreenTransform;
+                        AffineTransform screenToWorldTransform = new AffineTransform(at);
+                        screenToWorldTransform.invert();
+                        MathTransform2D crsTransform =
+                                (MathTransform2D)
+                                        CRS.findMathTransform(
+                                                CRS.getHorizontalCRS(featCrs),
+                                                CRS.getHorizontalCRS(mapCRS));
+                        MathTransform2D screenTransform = new AffineTransform2D(at);
+                        MathTransform2D fullTranform =
+                                (MathTransform2D)
+                                        ConcatenatedTransform.create(crsTransform, screenTransform);
+                        MathTransform2D inverseTranform = fullTranform.inverse();
+                        Rectangle2D.Double sourceDomain =
+                                new Rectangle2D.Double(
+                                        sourceEnvelope.getMinX(),
+                                        sourceEnvelope.getMinY(),
+                                        sourceEnvelope.getWidth(),
+                                        sourceEnvelope.getHeight());
+                        WarpBuilder wb = new WarpBuilder(tolerance);
+                        double densifyDistance = 0.0;
+                        int[] actualSplit = wb.getRowColsSplit(fullTranform, sourceDomain);
+                        if (actualSplit == null) {
+                            // alghoritm gave up, we decide to use a fixed distance value
+                            densifyDistance = 5.0;
+                        } else if (actualSplit[0] != 1 || actualSplit[1] != 1) {
+                            Shape shape =
+                                    inverseTranform.createTransformedShape(
+                                            new Rectangle(MAX_PIXELS_DENSIFY, MAX_PIXELS_DENSIFY));
+
+                            Rectangle2D shapeBounds = shape.getBounds2D();
+                            densifyDistance =
+                                    Math.max(
+                                            Math.min(
+                                                    sourceEnvelope.getWidth() / actualSplit[0],
+                                                    sourceEnvelope.getHeight() / actualSplit[1]),
+                                            Math.min(
+                                                    shapeBounds.getWidth(),
+                                                    shapeBounds.getHeight()));
+                        }
+                        if (densifyDistance > 0.0) {
+                            projectionHints.put(
+                                    ProjectionHandler.ADVANCED_PROJECTION_DENSIFY, densifyDistance);
+                        }
                     }
                 }
                 if (!isWrappingHeuristicEnabled()) {
-                    projectionHints.put("datelineWrappingCheckEnabled", false);
+                    projectionHints.put(
+                            WrappingProjectionHandler.DATELINE_WRAPPING_CHECK_ENABLED, false);
                 }
                 // get the projection handler and set a tentative envelope
                 ProjectionHandler projectionHandler =
@@ -1269,6 +1298,18 @@ public class StreamingRenderer implements GTRenderer {
         query.setFilter(simplifiedFilter);
 
         return query;
+    }
+
+    private ReferencedEnvelope transformEnvelope(
+            ReferencedEnvelope envelope, CoordinateReferenceSystem crs)
+            throws TransformException, FactoryException {
+        try {
+            ProjectionHandler projectionHandler =
+                    ProjectionHandlerFinder.getHandler(envelope, crs, isMapWrappingEnabled());
+            return projectionHandler.transformEnvelope(envelope, crs);
+        } catch (FactoryException e) {
+            return envelope.transform(crs, true);
+        }
     }
 
     private void setMetaBuffer(List<LiteFeatureTypeStyle> styleList, int metaBuffer) {
@@ -1613,6 +1654,13 @@ public class StreamingRenderer implements GTRenderer {
         Object result = rendererHints.get(ADVANCED_PROJECTION_DENSIFICATION_KEY);
         if (result == null) return ADVANCED_PROJECTION_DENSIFICATION_DEFAULT;
         return ((Boolean) result).booleanValue();
+    }
+
+    private double getAdvancedProjectionDensificationTolerance() {
+        if (rendererHints == null) return ADVANCED_PROJECTION_DENSIFICATION_TOLERANCE_DEFAULT;
+        Object result = rendererHints.get(ADVANCED_PROJECTION_DENSIFICATION_TOLERANCE_KEY);
+        if (result == null) return ADVANCED_PROJECTION_DENSIFICATION_TOLERANCE_DEFAULT;
+        return ((Double) result).doubleValue();
     }
 
     /** Checks if advanced projection wrapping heuristic should be enabled. */

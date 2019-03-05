@@ -68,6 +68,8 @@ import org.opengis.referencing.operation.TransformException;
  */
 public class ProjectionHandler {
 
+    public static final String ADVANCED_PROJECTION_DENSIFY = "advancedProjectionDensify";
+
     protected static final double EPS = 1e-6;
 
     protected static final Logger LOGGER =
@@ -172,8 +174,8 @@ public class ProjectionHandler {
      * @param projectionParameters
      */
     public void setProjectionParameters(Map projectionParameters) {
-        if (projectionParameters.containsKey("advancedProjectionDensify")) {
-            densify = (Double) projectionParameters.get("advancedProjectionDensify");
+        if (projectionParameters.containsKey(ADVANCED_PROJECTION_DENSIFY)) {
+            densify = (Double) projectionParameters.get(ADVANCED_PROJECTION_DENSIFY);
         }
         this.projectionParameters = projectionParameters;
     }
@@ -364,7 +366,7 @@ public class ProjectionHandler {
         return envelopes.stream().filter(e -> e != null).collect(Collectors.toList());
     }
 
-    protected ReferencedEnvelope transformEnvelope(
+    public ReferencedEnvelope transformEnvelope(
             ReferencedEnvelope envelope, CoordinateReferenceSystem targetCRS)
             throws TransformException, FactoryException {
         if (CRS.equalsIgnoreMetadata(envelope.getCoordinateReferenceSystem(), targetCRS)) {

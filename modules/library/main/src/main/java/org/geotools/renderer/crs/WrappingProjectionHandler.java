@@ -42,6 +42,7 @@ public class WrappingProjectionHandler extends ProjectionHandler {
     private int maxWraps;
 
     private boolean datelineWrappingCheckEnabled = true;
+    public static final String DATELINE_WRAPPING_CHECK_ENABLED = "datelineWrappingCheckEnabled";
 
     /**
      * Provides the strategy with the area we want to render and its CRS (the SPI lookup will do
@@ -73,9 +74,9 @@ public class WrappingProjectionHandler extends ProjectionHandler {
     @Override
     public void setProjectionParameters(Map projectionParameters) {
         super.setProjectionParameters(projectionParameters);
-        if (projectionParameters.containsKey("datelineWrappingCheckEnabled")) {
+        if (projectionParameters.containsKey(DATELINE_WRAPPING_CHECK_ENABLED)) {
             datelineWrappingCheckEnabled =
-                    (Boolean) projectionParameters.get("datelineWrappingCheckEnabled");
+                    (Boolean) projectionParameters.get(DATELINE_WRAPPING_CHECK_ENABLED);
         }
     }
 

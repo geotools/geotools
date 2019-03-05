@@ -133,7 +133,11 @@ public class SchemaFactory {
                             new BufferedReader(new InputStreamReader(res.openStream(), "UTF-8"));
 
                     while (rd.ready()) {
-                        String factoryClassName = rd.readLine().trim();
+
+                        String factoryClassName = rd.readLine();
+                        // null check as per NP_IMMEDIATE_DEREFERENCE_OF_READLINE
+                        if (factoryClassName == null) break;
+                        factoryClassName = factoryClassName.trim();
 
                         try {
                             Schema s =

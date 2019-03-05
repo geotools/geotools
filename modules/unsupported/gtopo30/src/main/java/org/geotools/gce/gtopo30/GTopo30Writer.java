@@ -71,6 +71,7 @@ import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.referencing.operation.transform.LinearTransform1D;
 import org.geotools.util.NumberRange;
 import org.geotools.util.URLs;
+import org.geotools.util.Utilities;
 import org.geotools.util.factory.Hints;
 import org.opengis.coverage.grid.Format;
 import org.opengis.coverage.grid.GridCoverage;
@@ -502,6 +503,8 @@ public final class GTopo30Writer extends AbstractGridCoverageWriter implements G
 
         if (dest instanceof File) {
 
+            Utilities.assertNotZipSlipVulnerable(name);
+
             final PrintWriter out =
                     new PrintWriter(
                             new BufferedOutputStream(
@@ -571,6 +574,8 @@ public final class GTopo30Writer extends AbstractGridCoverageWriter implements G
             out.flush();
             out.close();
         } else {
+            Utilities.assertNotZipSlipVulnerable(gc.getName().toString());
+
             final ZipOutputStream outZ = (ZipOutputStream) dest;
             final ZipEntry e = new ZipEntry(gc.getName().toString() + ".HDR");
             outZ.putNextEntry(e);
@@ -680,6 +685,7 @@ public final class GTopo30Writer extends AbstractGridCoverageWriter implements G
                     new File((File) dest, new StringBuffer(name).append(".SRC").toString());
             out = ImageIOExt.createImageOutputStream(image, file);
         } else {
+            Utilities.assertNotZipSlipVulnerable(gc.getName().toString());
             final ZipOutputStream outZ = (ZipOutputStream) dest;
             final ZipEntry e = new ZipEntry(gc.getName().toString() + ".SRC");
             outZ.putNextEntry(e);
@@ -764,11 +770,15 @@ public final class GTopo30Writer extends AbstractGridCoverageWriter implements G
 
         // get the image out stream
         if (dest instanceof File) {
+            Utilities.assertNotZipSlipVulnerable(name);
+
             // writing gif image
             final File file =
                     new File((File) dest, new StringBuffer(name).append(".GIF").toString());
             out = ImageIOExt.createImageOutputStream(image, file);
         } else {
+            Utilities.assertNotZipSlipVulnerable(gc.getName().toString());
+
             final ZipOutputStream outZ = (ZipOutputStream) dest;
             final ZipEntry e = new ZipEntry(gc.getName().toString() + ".GIF");
             outZ.putNextEntry(e);
@@ -831,6 +841,8 @@ public final class GTopo30Writer extends AbstractGridCoverageWriter implements G
      */
     private void writePRJ(final GridCoverage2D gc, String name, Object dest) throws IOException {
         if (dest instanceof File) {
+            Utilities.assertNotZipSlipVulnerable(name);
+
             // create the file
             final BufferedWriter fileWriter =
                     new BufferedWriter(
@@ -843,6 +855,8 @@ public final class GTopo30Writer extends AbstractGridCoverageWriter implements G
             fileWriter.write(gc.getCoordinateReferenceSystem().toWKT());
             fileWriter.close();
         } else {
+            Utilities.assertNotZipSlipVulnerable(gc.getName().toString());
+
             final ZipOutputStream out = (ZipOutputStream) dest;
             final ZipEntry e =
                     new ZipEntry(
@@ -910,6 +924,7 @@ public final class GTopo30Writer extends AbstractGridCoverageWriter implements G
             p.print(hist.getStandardDeviation()[0]);
             p.close();
         } else {
+            Utilities.assertNotZipSlipVulnerable(name);
             final ZipOutputStream outZ = (ZipOutputStream) dest;
             final ZipEntry e = new ZipEntry(name + ".STX");
             outZ.putNextEntry(e);
@@ -980,6 +995,7 @@ public final class GTopo30Writer extends AbstractGridCoverageWriter implements G
             out.println(yLoc);
             out.close();
         } else {
+            Utilities.assertNotZipSlipVulnerable(gc.getName().toString());
             final ZipOutputStream outZ = (ZipOutputStream) dest;
             final ZipEntry e = new ZipEntry(gc.getName().toString() + ".DMW");
             outZ.putNextEntry(e);
@@ -1013,6 +1029,9 @@ public final class GTopo30Writer extends AbstractGridCoverageWriter implements G
      */
     private void writeDEM(PlanarImage image, final String name, Object dest)
             throws FileNotFoundException, IOException {
+
+        Utilities.assertNotZipSlipVulnerable(name);
+
         ImageOutputStream out;
 
         if (dest instanceof File) {

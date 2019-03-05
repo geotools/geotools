@@ -22,6 +22,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
@@ -113,5 +114,19 @@ public class URLsTest {
         assertURL("file café", "file:file%20caf%C3%A9");
         assertURL("/file café", "file:/file%20caf%C3%A9");
         assertURL("file café", "file://file%20caf%C3%A9");
+    }
+
+    @Test
+    public void zipSlipTest() throws Exception {
+        String validPath = String.format(".%stest_folder", File.separator);
+        String zipSlipPath = String.format("..%s..%stest_folder", File.separator, File.separator);
+        Utilities.assertNotZipSlipVulnerable(validPath); // should not throw exception
+        try {
+            Utilities.assertNotZipSlipVulnerable(zipSlipPath); // should throw exception
+
+        } catch (IOException e) {
+            // should throw exception
+            assertTrue(true);
+        }
     }
 }

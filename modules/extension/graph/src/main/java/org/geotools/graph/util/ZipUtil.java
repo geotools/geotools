@@ -27,6 +27,7 @@ import java.util.Enumeration;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
+import org.geotools.util.Utilities;
 
 public class ZipUtil {
 
@@ -36,6 +37,8 @@ public class ZipUtil {
 
     public static void zip(String zipFilename, String[] filenames, String[] archFilenames)
             throws IOException {
+        // throws exception
+        Utilities.assertNotZipSlipVulnerable(zipFilename);
 
         ZipOutputStream zout =
                 new ZipOutputStream(new BufferedOutputStream(new FileOutputStream(zipFilename)));
@@ -43,8 +46,8 @@ public class ZipUtil {
         byte[] data = new byte[512];
         int bc;
         for (int i = 0; i < filenames.length; i++) {
+            Utilities.assertNotZipSlipVulnerable(filenames[i]);
             InputStream fin = new BufferedInputStream(new FileInputStream(filenames[i]));
-
             ZipEntry entry = new ZipEntry(new File(archFilenames[i]).getName());
             zout.putNextEntry(entry);
 
@@ -100,6 +103,7 @@ public class ZipUtil {
 
         while (entries.hasMoreElements()) {
             ZipEntry entry = (ZipEntry) entries.nextElement();
+            Utilities.assertNotZipSlipVulnerable(entry.getName());
             byte[] buffer = new byte[1024];
             int len;
 

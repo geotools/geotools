@@ -29,6 +29,7 @@ import java.sql.Statement;
 import java.util.Properties;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
+import org.geotools.util.Utilities;
 import org.hsqldb.jdbc.JDBCDataSource;
 
 /** Utility used to create a HSQL zipped version of the official EPSG database */
@@ -129,6 +130,9 @@ public class DatabaseCreationScript {
         ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(zipFile));
         File[] files = new File[] {databaseFile, propertyFile, scriptFile};
         for (File file : files) {
+            // zlip slip check
+            Utilities.assertNotZipSlipVulnerable(file.getName());
+
             FileInputStream in = new FileInputStream(file);
 
             zos.putNextEntry(new ZipEntry(file.getName()));

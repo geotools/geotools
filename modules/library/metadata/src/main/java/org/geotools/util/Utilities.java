@@ -16,6 +16,8 @@
  */
 package org.geotools.util;
 
+import java.io.File;
+import java.io.IOException;
 import java.io.ObjectStreamException;
 import java.io.Serializable;
 import java.util.AbstractQueue;
@@ -91,6 +93,9 @@ public final class Utilities {
 
     /** The singleton instance to be returned by {@link #emptyQueue}. */
     private static final Queue<?> EMPTY_QUEUE = new EmptyQueue<Object>();
+
+    /** expression to detect Zip Slip vulnerability */
+    private static final String ZIP_SLIP_EXPRESSION = String.format("..%s", File.separator);
 
     /**
      * The class for the {@link #EMPTY_QUEUE} instance. Defined as a named class rather than
@@ -754,5 +759,21 @@ public final class Utilities {
                 element -> element.getClass().getName(),
                 Function.identity(),
                 (first, second) -> second);
+    }
+
+    /**
+     * Asserting if the passed string is not prefixed with '..' to allow an attacker to traverse
+     * outside the referenced directory
+     *
+     * @param fileName to checked for zip sip vulnerability
+     * @throws IOException if passed fileName is found to be vulnerable to zlip slip, e.g fileName
+     *     should not be prefixed with '..'
+     */
+    public static void assertNotZipSlipVulnerable(String fileName) throws IOException {
+        File destinationfile = new File(fileName);
+        String canonicalDestinationFile = destinationfile.getCanonicalPath();
+        if (canonicalDestinationFile.startsWith(ZIP_SLIP_EXPRESSION)) {
+            throw new IOException("Vulnerable File Name");
+        }
     }
 }

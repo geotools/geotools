@@ -30,7 +30,7 @@
                 </AnchorPoint>
                 </PointPlacement>
             </LabelPlacement>
-            <VendorOption name="autoWrap">80</VendorOption>
+            <VendorOption name="autoWrap">85</VendorOption>
           </TextSymbolizer>
         </Rule>
 

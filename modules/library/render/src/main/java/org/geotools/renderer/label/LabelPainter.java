@@ -203,8 +203,8 @@ public class LabelPainter {
 
         if (anchorY == 0) return lines.get(getLineCount() - 1).getLineHeight();
         if (anchorY == 1) return lines.get(0).getLineHeight();
-        // return averge height
-        return getLabelBounds().getHeight() / lines.size();
+        // return average height
+        return lines.stream().mapToDouble(l -> l.getLineHeight()).average().orElse(0);
     }
 
     /**

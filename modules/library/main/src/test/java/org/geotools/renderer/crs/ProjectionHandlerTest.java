@@ -20,7 +20,6 @@ import static org.hamcrest.Matchers.closeTo;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -100,7 +99,10 @@ public class ProjectionHandlerTest {
         CoordinateReferenceSystem crs = CRS.decode("EPSG:4939", true);
         SingleCRS hcrs = CRS.getHorizontalCRS(crs);
         ReferencedEnvelope wgs84Envelope = new ReferencedEnvelope(-190, 60, -90, 45, hcrs);
-        ProjectionHandler handler = ProjectionHandlerFinder.getHandler(wgs84Envelope, crs, true);
+        Map params = new HashMap();
+        params.put(ProjectionHandler.ADVANCED_PROJECTION_DENSIFY, 1.0);
+        ProjectionHandler handler =
+                ProjectionHandlerFinder.getHandler(wgs84Envelope, crs, true, params);
 
         assertNull(handler.validAreaBounds);
         List<ReferencedEnvelope> envelopes = handler.getQueryEnvelopes();
@@ -112,6 +114,37 @@ public class ProjectionHandlerTest {
     }
 
     @Test
+    public void testWrappingDisabledHeuristic() throws Exception {
+        ReferencedEnvelope world = new ReferencedEnvelope(-180, 180, -40, 40, WGS84);
+        ReferencedEnvelope mercatorEnvelope = world.transform(MERCATOR, true);
+        // move it so that it crosses the dateline (measures are still accurate for something
+        // crossing the dateline
+        mercatorEnvelope.translate(mercatorEnvelope.getWidth() / 2, 0);
+
+        // a geometry that will cross the dateline and sitting in the same area as the
+        // rendering envelope
+        Geometry g = new WKTReader().read("LINESTRING(-40 20, 190 20)");
+        Map params = new HashMap();
+        params.put(WrappingProjectionHandler.DATELINE_WRAPPING_CHECK_ENABLED, false);
+
+        MathTransform mt = CRS.findMathTransform(WGS84, MERCATOR, true);
+        Geometry reprojected = JTS.transform(g, mt);
+
+        ProjectionHandler handler =
+                ProjectionHandlerFinder.getHandler(mercatorEnvelope, WGS84, true, params);
+        Geometry processed = handler.postProcess(mt, reprojected);
+
+        assertEquals(processed.getGeometryN(0), reprojected);
+
+        params.put(WrappingProjectionHandler.DATELINE_WRAPPING_CHECK_ENABLED, true);
+        handler = ProjectionHandlerFinder.getHandler(mercatorEnvelope, WGS84, true, params);
+
+        processed = handler.postProcess(mt, reprojected);
+
+        assertNotEquals(processed.getGeometryN(0), reprojected);
+    }
+
+    @Test
     public void testDensification() throws Exception {
         CoordinateReferenceSystem utm32n = CRS.decode("EPSG:32632", true);
         ReferencedEnvelope wgs84Envelope = new ReferencedEnvelope(-190, 60, -90, 45, WGS84);
@@ -120,13 +153,13 @@ public class ProjectionHandlerTest {
                 gf.createLineString(
                         new Coordinate[] {new Coordinate(40, 45), new Coordinate(40, 88)});
         LineString notDensified = (LineString) handler.preProcess(line);
-        assertTrue(notDensified.getCoordinates().length == 2);
+        assertEquals(2, notDensified.getCoordinates().length);
 
         Map params = new HashMap();
-        params.put("advancedProjectionDensify", 1.0);
+        params.put(ProjectionHandler.ADVANCED_PROJECTION_DENSIFY, 1.0);
         handler = ProjectionHandlerFinder.getHandler(wgs84Envelope, WGS84, true, params);
         LineString densified = (LineString) handler.preProcess(line);
-        assertFalse(densified.getCoordinates().length == 2);
+        assertEquals(45, densified.getCoordinates().length);
     }
 
     @Test

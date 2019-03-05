@@ -1306,7 +1306,7 @@ public class StreamingRenderer implements GTRenderer {
         try {
             ProjectionHandler projectionHandler =
                     ProjectionHandlerFinder.getHandler(envelope, crs, isMapWrappingEnabled());
-            return projectionHandler.transformEnvelope(envelope, crs);
+            return projectionHandler.getProjectedEnvelope(envelope, crs);
         } catch (FactoryException e) {
             return envelope.transform(crs, true);
         }

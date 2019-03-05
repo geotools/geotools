@@ -366,7 +366,23 @@ public class ProjectionHandler {
         return envelopes.stream().filter(e -> e != null).collect(Collectors.toList());
     }
 
-    public ReferencedEnvelope transformEnvelope(
+    /**
+     * Reprojects the given envelope to the target CRS, taking into account the ProjectionHandler
+     * constraints (valid area bounds, etc.).
+     *
+     * @param envelope envelope to reproject
+     * @param targetCRS target CRS
+     * @return reprojected envelope
+     * @throws TransformException
+     * @throws FactoryException
+     */
+    public ReferencedEnvelope getProjectedEnvelope(
+            ReferencedEnvelope envelope, CoordinateReferenceSystem targetCRS)
+            throws TransformException, FactoryException {
+        return transformEnvelope(envelope, targetCRS);
+    }
+
+    protected ReferencedEnvelope transformEnvelope(
             ReferencedEnvelope envelope, CoordinateReferenceSystem targetCRS)
             throws TransformException, FactoryException {
         if (CRS.equalsIgnoreMetadata(envelope.getCoordinateReferenceSystem(), targetCRS)) {

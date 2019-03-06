@@ -88,6 +88,7 @@ public class OracleTestSetup extends JDBCTestSetup {
                 "CREATE TABLE ft1 ("
                         + "id INT, geometry MDSYS.SDO_GEOMETRY, intProperty INT, "
                         + "doubleProperty FLOAT, stringProperty VARCHAR(255)"
+                        + ",bin_double_property BINARY_DOUBLE, bin_float_property BINARY_FLOAT"
                         + ", PRIMARY KEY(id))";
         run(sql);
         sql = "CREATE SEQUENCE ft1_pkey_seq";
@@ -104,12 +105,12 @@ public class OracleTestSetup extends JDBCTestSetup {
                         + " PARAMETERS ('SDO_INDX_DIMS=2 LAYER_GTYPE=\"POINT\"')";
         run(sql);
 
-        sql = "INSERT INTO ft1 VALUES (0," + pointSql(4326, 0, 0) + ", 0, 0.0,'zero')";
+        sql = "INSERT INTO ft1 VALUES (0," + pointSql(4326, 0, 0) + ", 0, 0.0,'zero',0.0,0.0)";
         run(sql);
-        sql = "INSERT INTO ft1 VALUES (1," + pointSql(4326, 1, 1) + ", 1, 1.1,'one')";
+        sql = "INSERT INTO ft1 VALUES (1," + pointSql(4326, 1, 1) + ", 1, 1.1,'one',1.1,1.1)";
         run(sql);
 
-        sql = "INSERT INTO ft1 VALUES (2," + pointSql(4326, 2, 2) + ", 2, 2.2,'two')";
+        sql = "INSERT INTO ft1 VALUES (2," + pointSql(4326, 2, 2) + ", 2, 2.2,'two',2.2,2.2)";
         run(sql);
     }
 

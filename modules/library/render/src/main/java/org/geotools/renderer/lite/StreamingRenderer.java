@@ -1115,7 +1115,6 @@ public class StreamingRenderer implements GTRenderer {
                         MathTransform2D fullTranform =
                                 (MathTransform2D)
                                         ConcatenatedTransform.create(crsTransform, screenTransform);
-                        MathTransform2D inverseTranform = fullTranform.inverse();
                         Rectangle2D.Double sourceDomain =
                                 new Rectangle2D.Double(
                                         sourceEnvelope.getMinX(),
@@ -1125,23 +1124,25 @@ public class StreamingRenderer implements GTRenderer {
                         WarpBuilder wb = new WarpBuilder(tolerance);
                         double densifyDistance = 0.0;
                         int[] actualSplit = wb.getRowColsSplit(fullTranform, sourceDomain);
+                        double minDistance =
+                                Math.min(
+                                        MAX_PIXELS_DENSIFY
+                                                * sourceEnvelope.getWidth()
+                                                / screenSize.getWidth(),
+                                        MAX_PIXELS_DENSIFY
+                                                * sourceEnvelope.getHeight()
+                                                / screenSize.getHeight());
                         if (actualSplit == null) {
                             // alghoritm gave up, we decide to use a fixed distance value
-                            densifyDistance = 5.0;
+                            densifyDistance = minDistance;
                         } else if (actualSplit[0] != 1 || actualSplit[1] != 1) {
-                            Shape shape =
-                                    inverseTranform.createTransformedShape(
-                                            new Rectangle(MAX_PIXELS_DENSIFY, MAX_PIXELS_DENSIFY));
 
-                            Rectangle2D shapeBounds = shape.getBounds2D();
                             densifyDistance =
                                     Math.max(
                                             Math.min(
                                                     sourceEnvelope.getWidth() / actualSplit[0],
                                                     sourceEnvelope.getHeight() / actualSplit[1]),
-                                            Math.min(
-                                                    shapeBounds.getWidth(),
-                                                    shapeBounds.getHeight()));
+                                            minDistance);
                         }
                         if (densifyDistance > 0.0) {
                             projectionHints.put(

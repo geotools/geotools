@@ -17,6 +17,7 @@
 package org.geotools.renderer.label;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.awt.Font;
 import java.awt.Graphics2D;
@@ -95,5 +96,34 @@ public class LabelPainterTest {
         painter.setLabel(labelItem);
         // emtpy label
         assertEquals(0, painter.getLineCount());
+    }
+
+    @Test
+    public void testGetLastLineHeightOnlyNewLines() {
+        LabelPainter painter = new LabelPainter(graphics, LabelRenderingMode.STRING);
+        LabelCacheItem labelItem = new LabelCacheItem("LAYERID", style, shape, "\n\n", symbolizer);
+        labelItem.setAutoWrap(100);
+        painter.setLabel(labelItem);
+        // should default to 0 with no lines to paint
+        assertTrue(painter.getLineHeightForAnchorY(0) == 0.0);
+    }
+
+    @Test
+    public void testGetLastLineHeightLabelWithAutoWrap() {
+        LabelPainter painter = new LabelPainter(graphics, LabelRenderingMode.STRING);
+        LabelCacheItem labelItem =
+                new LabelCacheItem("LAYERID", style, shape, "line1\n\nline2", symbolizer);
+        labelItem.setAutoWrap(100);
+        painter.setLabel(labelItem);
+        // should not default to 0
+        assertTrue(painter.getLineHeightForAnchorY(0) > 0.0);
+
+        // should get line height of first line
+        assertTrue(painter.lines.get(0).getLineHeight() == painter.getLineHeightForAnchorY(1));
+
+        // should get line height of last line
+        assertTrue(
+                painter.lines.get(painter.getLineCount() - 1).getLineHeight()
+                        == painter.getLineHeightForAnchorY(1));
     }
 }

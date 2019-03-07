@@ -459,7 +459,7 @@ public class LabelDisplacementModeTest extends TestCase {
 
         String refPath =
                 "./src/test/resources/org/geotools/renderer/lite/test-data/displacementMode/testMultiLineLabelDisplacementY.png";
-        ImageAssert.assertEquals(new File(refPath), image, 900);
+        ImageAssert.assertEquals(new File(refPath), image, 1100);
     }
 
     private BufferedImage renderLabels(SimpleFeatureSource fs, Style style, String title)

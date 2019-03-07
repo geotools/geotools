@@ -31,6 +31,7 @@ import java.awt.font.GlyphVector;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
 import java.io.IOException;
@@ -39,6 +40,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.IdentityHashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -104,10 +106,12 @@ import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.geotools.referencing.operation.transform.ConcatenatedTransform;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
+import org.geotools.referencing.operation.transform.WarpBuilder;
 import org.geotools.renderer.GTRenderer;
 import org.geotools.renderer.RenderListener;
 import org.geotools.renderer.crs.ProjectionHandler;
 import org.geotools.renderer.crs.ProjectionHandlerFinder;
+import org.geotools.renderer.crs.WrappingProjectionHandler;
 import org.geotools.renderer.label.LabelCacheImpl;
 import org.geotools.renderer.label.LabelCacheImpl.LabelRenderingMode;
 import org.geotools.renderer.lite.gridcoverage2d.GridCoverageReaderHelper;
@@ -366,6 +370,27 @@ public class StreamingRenderer implements GTRenderer {
 
     private static boolean VECTOR_RENDERING_ENABLED_DEFAULT = false;
 
+    /**
+     * Boolean flag indicating whether advanced projection densification should be used when needed.
+     */
+    public static final String ADVANCED_PROJECTION_DENSIFICATION_KEY =
+            "advancedProjectionDensificationEnabled";
+
+    private static boolean ADVANCED_PROJECTION_DENSIFICATION_DEFAULT = false;
+
+    /** Densification Tolerance, to be used when densification is enabled. */
+    public static final String ADVANCED_PROJECTION_DENSIFICATION_TOLERANCE_KEY =
+            "advancedProjectionDensificationTolerance";
+
+    private static double ADVANCED_PROJECTION_DENSIFICATION_TOLERANCE_DEFAULT = 0.8;
+
+    /**
+     * Boolean flag indicating whether advanced projection wrapping heuristic should be used or nto.
+     */
+    public static final String DATELINE_WRAPPING_HEURISTIC_KEY = "datelineWrappingCheckEnabled";
+
+    private static boolean DATELINE_WRAPPING_HEURISTIC_DEFAULT = true;
+
     public static final String LABEL_CACHE_KEY = "labelCache";
     public static final String FORCE_EPSG_AXIS_ORDER_KEY = "ForceEPSGAxisOrder";
     public static final String DPI_KEY = "dpi";
@@ -403,6 +428,9 @@ public class StreamingRenderer implements GTRenderer {
     private ExecutorService threadPool;
 
     private PainterThread painterThread;
+
+    private static int MAX_PIXELS_DENSIFY =
+            Integer.valueOf(System.getProperty("ADVANCED_PROJECTION_DENSIFY_MAX_PIXELS", "5"));
 
     /**
      * Creates a new instance of LiteRenderer without a context. Use it only to gain access to
@@ -1067,10 +1095,69 @@ public class StreamingRenderer implements GTRenderer {
             List<ReferencedEnvelope> envelopes = null;
             // enable advanced projection handling with the updated map extent
             if (isAdvancedProjectionHandlingEnabled()) {
+                Map projectionHints = new HashMap();
+                if (isAdvancedProjectionDensificationEnabled()
+                        && !CRS.equalsIgnoreMetadata(featCrs, mapCRS)) {
+                    double tolerance = getAdvancedProjectionDensificationTolerance();
+                    if (tolerance > 0.0) {
+                        ReferencedEnvelope targetEnvelope = envelope;
+                        ReferencedEnvelope sourceEnvelope =
+                                transformEnvelope(targetEnvelope, featCrs);
+                        AffineTransform at = worldToScreenTransform;
+                        AffineTransform screenToWorldTransform = new AffineTransform(at);
+                        screenToWorldTransform.invert();
+                        MathTransform2D crsTransform =
+                                (MathTransform2D)
+                                        CRS.findMathTransform(
+                                                CRS.getHorizontalCRS(featCrs),
+                                                CRS.getHorizontalCRS(mapCRS));
+                        MathTransform2D screenTransform = new AffineTransform2D(at);
+                        MathTransform2D fullTranform =
+                                (MathTransform2D)
+                                        ConcatenatedTransform.create(crsTransform, screenTransform);
+                        Rectangle2D.Double sourceDomain =
+                                new Rectangle2D.Double(
+                                        sourceEnvelope.getMinX(),
+                                        sourceEnvelope.getMinY(),
+                                        sourceEnvelope.getWidth(),
+                                        sourceEnvelope.getHeight());
+                        WarpBuilder wb = new WarpBuilder(tolerance);
+                        double densifyDistance = 0.0;
+                        int[] actualSplit = wb.getRowColsSplit(fullTranform, sourceDomain);
+                        double minDistance =
+                                Math.min(
+                                        MAX_PIXELS_DENSIFY
+                                                * sourceEnvelope.getWidth()
+                                                / screenSize.getWidth(),
+                                        MAX_PIXELS_DENSIFY
+                                                * sourceEnvelope.getHeight()
+                                                / screenSize.getHeight());
+                        if (actualSplit == null) {
+                            // alghoritm gave up, we decide to use a fixed distance value
+                            densifyDistance = minDistance;
+                        } else if (actualSplit[0] != 1 || actualSplit[1] != 1) {
+
+                            densifyDistance =
+                                    Math.max(
+                                            Math.min(
+                                                    sourceEnvelope.getWidth() / actualSplit[0],
+                                                    sourceEnvelope.getHeight() / actualSplit[1]),
+                                            minDistance);
+                        }
+                        if (densifyDistance > 0.0) {
+                            projectionHints.put(
+                                    ProjectionHandler.ADVANCED_PROJECTION_DENSIFY, densifyDistance);
+                        }
+                    }
+                }
+                if (!isWrappingHeuristicEnabled()) {
+                    projectionHints.put(
+                            WrappingProjectionHandler.DATELINE_WRAPPING_CHECK_ENABLED, false);
+                }
                 // get the projection handler and set a tentative envelope
                 ProjectionHandler projectionHandler =
                         ProjectionHandlerFinder.getHandler(
-                                envelope, featCrs, isMapWrappingEnabled());
+                                envelope, featCrs, isMapWrappingEnabled(), projectionHints);
                 if (projectionHandler != null) {
                     setProjectionHandler(styleList, projectionHandler);
                     envelopes = projectionHandler.getQueryEnvelopes();
@@ -1212,6 +1299,18 @@ public class StreamingRenderer implements GTRenderer {
         query.setFilter(simplifiedFilter);
 
         return query;
+    }
+
+    private ReferencedEnvelope transformEnvelope(
+            ReferencedEnvelope envelope, CoordinateReferenceSystem crs)
+            throws TransformException, FactoryException {
+        try {
+            ProjectionHandler projectionHandler =
+                    ProjectionHandlerFinder.getHandler(envelope, crs, isMapWrappingEnabled());
+            return projectionHandler.getProjectedEnvelope(envelope, crs);
+        } catch (FactoryException e) {
+            return envelope.transform(crs, true);
+        }
     }
 
     private void setMetaBuffer(List<LiteFeatureTypeStyle> styleList, int metaBuffer) {
@@ -1551,6 +1650,29 @@ public class StreamingRenderer implements GTRenderer {
         if (rendererHints == null) return true;
         Object result = rendererHints.get(VECTOR_RENDERING_KEY);
         if (result == null) return VECTOR_RENDERING_ENABLED_DEFAULT;
+        return ((Boolean) result).booleanValue();
+    }
+
+    /** Checks if advanced projection densification is enabled or not. */
+    private boolean isAdvancedProjectionDensificationEnabled() {
+        if (rendererHints == null) return false;
+        Object result = rendererHints.get(ADVANCED_PROJECTION_DENSIFICATION_KEY);
+        if (result == null) return ADVANCED_PROJECTION_DENSIFICATION_DEFAULT;
+        return ((Boolean) result).booleanValue();
+    }
+
+    private double getAdvancedProjectionDensificationTolerance() {
+        if (rendererHints == null) return ADVANCED_PROJECTION_DENSIFICATION_TOLERANCE_DEFAULT;
+        Object result = rendererHints.get(ADVANCED_PROJECTION_DENSIFICATION_TOLERANCE_KEY);
+        if (result == null) return ADVANCED_PROJECTION_DENSIFICATION_TOLERANCE_DEFAULT;
+        return ((Double) result).doubleValue();
+    }
+
+    /** Checks if advanced projection wrapping heuristic should be enabled. */
+    private boolean isWrappingHeuristicEnabled() {
+        if (rendererHints == null) return true;
+        Object result = rendererHints.get(DATELINE_WRAPPING_HEURISTIC_KEY);
+        if (result == null) return DATELINE_WRAPPING_HEURISTIC_DEFAULT;
         return ((Boolean) result).booleanValue();
     }
 

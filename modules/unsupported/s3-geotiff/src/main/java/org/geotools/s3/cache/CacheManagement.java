@@ -65,11 +65,11 @@ public enum CacheManagement {
             manager = new CacheManager(cacheConfig);
 
             manager.addCache(DEFAULT_CACHE);
-            Cache cache = manager.getCache(DEFAULT_CACHE);
-            SelfPopulatingCache populatingCache =
-                    new SelfPopulatingCache(cache, new S3ChunkEntryFactory(config));
-            manager.replaceCacheWithDecoratedCache(cache, populatingCache);
         }
+        Cache cache = manager.getCache(DEFAULT_CACHE);
+        SelfPopulatingCache populatingCache =
+                new SelfPopulatingCache(cache, new S3ChunkEntryFactory(config));
+        manager.replaceCacheWithDecoratedCache(cache, populatingCache);
 
         return manager;
     }

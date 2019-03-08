@@ -231,6 +231,11 @@ public class PostGISDialect extends BasicSQLDialect {
         return simplifyEnabled;
     }
 
+    public boolean canSimplifyPoints() {
+        // TWKB encoding is a form of simplified points representation (reduced precision)
+        return version.compareTo(V_2_2_0) >= 0;
+    }
+
     /**
      * Enables/disables usage of ST_Simplify geometry wrapping when the Query contains a geometry
      * simplification hint
@@ -283,11 +288,7 @@ public class PostGISDialect extends BasicSQLDialect {
             Hints hints)
             throws IOException, SQLException {
         // did we use WKB or TWKB encoding? See #encodeGeometryColumnSimplified
-        Double distance = (Double) hints.get(Hints.GEOMETRY_SIMPLIFICATION);
-        boolean geography =
-                "geography"
-                        .equals(descriptor.getUserData().get(JDBCDataStore.JDBC_NATIVE_TYPENAME));
-        if (!geography && distance != null && version.compareTo(V_2_2_0) >= 0) {
+        if (isTWKBTransferEnabled(descriptor, hints)) {
             TWKBAttributeIO reader = getTWKBReader(factory);
 
             Geometry g = (Geometry) reader.read(rs, column, descriptor.getType().getBinding());
@@ -308,11 +309,7 @@ public class PostGISDialect extends BasicSQLDialect {
             Hints hints)
             throws IOException, SQLException {
         // did we use WKB or TWKB encoding? See #encodeGeometryColumnSimplified
-        Double distance = (Double) hints.get(Hints.GEOMETRY_SIMPLIFICATION);
-        boolean geography =
-                "geography"
-                        .equals(descriptor.getUserData().get(JDBCDataStore.JDBC_NATIVE_TYPENAME));
-        if (!geography && distance != null && version.compareTo(V_2_2_0) >= 0) {
+        if (isTWKBTransferEnabled(descriptor, hints)) {
             TWKBAttributeIO reader = getTWKBReader(factory);
 
             Geometry g = (Geometry) reader.read(rs, column, descriptor.getType().getBinding());
@@ -322,6 +319,17 @@ public class PostGISDialect extends BasicSQLDialect {
 
             return (Geometry) reader.read(rs, column);
         }
+    }
+
+    private boolean isTWKBTransferEnabled(GeometryDescriptor descriptor, Hints hints) {
+        Double distance = (Double) hints.get(Hints.GEOMETRY_SIMPLIFICATION);
+        boolean geography =
+                "geography"
+                        .equals(descriptor.getUserData().get(JDBCDataStore.JDBC_NATIVE_TYPENAME));
+        return !geography
+                && distance != null
+                && version.compareTo(V_2_2_0) >= 0
+                && isStraightSegmentsGeometry(descriptor);
     }
 
     private WKBAttributeIO getWKBReader(GeometryFactory factory) {
@@ -431,6 +439,10 @@ public class PostGISDialect extends BasicSQLDialect {
                 }
             }
         }
+    }
+
+    private boolean isStraightSegmentsGeometry(GeometryDescriptor gatt) {
+        return NON_CURVED_GEOMETRY_CLASSES.contains(gatt.getType().getBinding());
     }
 
     /**

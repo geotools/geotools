@@ -1446,4 +1446,12 @@ public abstract class SQLDialect {
             throws SQLException {
         return rs.getString(columnIdx);
     }
+
+    /**
+     * Returns if points can be returned in simplified form (e.g reduced precision, like TWKB
+     * encoding)
+     */
+    public boolean canSimplifyPoints() {
+        return false;
+    }
 }

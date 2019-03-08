@@ -4924,7 +4924,8 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
             Hints hints, GeometryDescriptor gatt, Hints.Key param) {
         if (hints == null) return false;
         if (hints.containsKey(param) == false) return false;
-        if (gatt.getType().getBinding() == Point.class) return false;
+        if (gatt.getType().getBinding() == Point.class && !dialect.canSimplifyPoints())
+            return false;
         return true;
     }
 

@@ -113,6 +113,17 @@ public class OracleTestSetup extends JDBCTestSetup {
         run(sql);
     }
 
+    protected void run(String sql) throws Exception {
+        super.run(sql);
+    }
+
+    public void dropView(String view) {
+        try {
+            super.run("DROP VIEW " + view);
+        } catch (Exception e) {
+        }
+    }
+
     protected void deleteSpatialTable(String name) throws Exception {
         try {
             run("DROP TABLE " + name + " purge");

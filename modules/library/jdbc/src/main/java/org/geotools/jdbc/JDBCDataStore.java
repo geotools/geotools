@@ -76,6 +76,7 @@ import org.geotools.feature.visitor.LimitingVisitor;
 import org.geotools.filter.FilterCapabilities;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.jdbc.JoinInfo.JoinPart;
+import org.geotools.jdbc.MetadataTablePrimaryKeyFinder.Policy;
 import org.geotools.referencing.CRS;
 import org.geotools.util.Converters;
 import org.geotools.util.SoftValueHashMap;
@@ -1855,9 +1856,21 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
                 dialect.onInsert(ps, cx, featureType);
                 ps.addBatch();
             }
-            int[] inserts = ps.executeBatch();
-            checkAllInserted(inserts, features.size());
+            if (keysFetcher.hasPolicy(Policy.pfsequence)) {
+                try {
+                    ps.executeBatch();
+                } catch (AssertionError ae) {
+                    if (LOGGER.isLoggable(Level.WARNING)) {
+                        LOGGER.warning("Expected Assertion Error with Pre-generated Keys");
+                    }
+                }
+
+            } else {
+                int[] inserts = ps.executeBatch();
+                checkAllInserted(inserts, features.size());
+            }
             keysFetcher.postInsert(featureType, features, ps);
+
         } finally {
             closeSafe(ps);
         }

@@ -17,8 +17,10 @@
 package org.geotools.s3.cache;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -30,24 +32,82 @@ import java.io.File;
 import java.io.InputStream;
 import org.geotools.s3.S3Connector;
 import org.junit.After;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 public class CacheManagementTest {
+
+    public @Rule ExpectedException ex = ExpectedException.none();
 
     public @After void after() {
         System.clearProperty(CacheConfig.S3_CACHING_EH_CACHE_CONFIG);
     }
 
     @Test
-    public void testLoadExternalFile() throws Exception {
-        File cacheConfigFile = new File(getClass().getResource("s3-geotiff-ehcache.xml").toURI());
+    public void testLoadExternalFileWithDefaultCache() throws Exception {
+        File cacheConfigFile = new File(getClass().getResource("ehcache-defaultcache.xml").toURI());
         assertTrue(cacheConfigFile.exists());
         String configurationPath = cacheConfigFile.getAbsolutePath();
         System.setProperty(CacheConfig.S3_CACHING_EH_CACHE_CONFIG, configurationPath);
 
+        CacheManagement.DEFAULT.init(true);
         CacheConfig cacheConfig = CacheManagement.DEFAULT.getCacheConfig();
         assertEquals(configurationPath, cacheConfig.getConfigurationPath());
 
+        testGetChunk();
+    }
+
+    @Test
+    public void testLoadExternalFileWithoutDefaultCache() throws Exception {
+        File cacheConfigFile =
+                new File(getClass().getResource("ehcache-no-defaultcache.xml").toURI());
+        assertTrue(cacheConfigFile.exists());
+        String configurationPath = cacheConfigFile.getAbsolutePath();
+        System.setProperty(CacheConfig.S3_CACHING_EH_CACHE_CONFIG, configurationPath);
+
+        CacheManagement.DEFAULT.init(true);
+        CacheConfig cacheConfig = CacheManagement.DEFAULT.getCacheConfig();
+        assertEquals(configurationPath, cacheConfig.getConfigurationPath());
+
+        testGetChunk();
+    }
+
+    @Test
+    public void testDoesntFailIfExternalFileDoesntExist() throws Exception {
+        File cacheConfigFile = new File("/should/not/exist/ehcache.xml");
+        assertFalse(cacheConfigFile.exists());
+        String configurationPath = cacheConfigFile.getAbsolutePath();
+        System.setProperty(CacheConfig.S3_CACHING_EH_CACHE_CONFIG, configurationPath);
+        CacheManagement.DEFAULT.init(true);
+        assertNotNull(CacheManagement.DEFAULT.getCacheConfig());
+        testGetChunk();
+    }
+
+    @Test
+    public void testDoesntFailIfExternalFileIsUnparseable() throws Exception {
+        File cacheConfigFile = new File(getClass().getResource("ehcache-malformed.xml").toURI());
+        assertTrue(cacheConfigFile.exists());
+        String configurationPath = cacheConfigFile.getAbsolutePath();
+        System.setProperty(CacheConfig.S3_CACHING_EH_CACHE_CONFIG, configurationPath);
+        CacheManagement.DEFAULT.init(true);
+        assertNotNull(CacheManagement.DEFAULT.getCacheConfig());
+        testGetChunk();
+    }
+
+    @Test
+    public void testCacheFileGivenButNoCacheDefined() throws Exception {
+        File cacheConfigFile =
+                new File(getClass().getResource("ehcache-no-s3cache-defined.xml").toURI());
+        assertTrue(cacheConfigFile.exists());
+        String configurationPath = cacheConfigFile.getAbsolutePath();
+        System.setProperty(CacheConfig.S3_CACHING_EH_CACHE_CONFIG, configurationPath);
+        CacheManagement.DEFAULT.init(true);
+        assertNotNull(CacheManagement.DEFAULT.getCacheConfig());
+        testGetChunk();
+    }
+
+    private void testGetChunk() {
         byte[] content = new byte[128];
         InputStream objectContent = new ByteArrayInputStream(content);
         S3Object value = new S3Object();

@@ -1,0 +1,29 @@
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="ehcache.xsd"
+	>
+
+	<diskStore path="java.io.tmpdir" />
+	<defaultCache 
+		maxElementsInMemory="10000" 
+		eternal="false"
+		timeToIdleSeconds="120" 
+		timeToLiveSeconds="120" 
+		overflowToDisk="true"
+		diskPersistent="false" 
+		diskExpiryThreadIntervalSeconds="120"
+		memoryStoreEvictionPolicy="LRU" />
+		
+ 	<!--
+ 	The s3-geotiff geotools module looks up for a cache named "deafault_cache"
+ 	-->
+	<cache name="default_cache"
+		 
+		maxElementsInMemory="10000" 
+		eternal="false"
+		timeToIdleSeconds="240" 
+		timeToLiveSeconds="240" 
+		overflowToDisk="false"
+		diskPersistent="false" 
+		diskExpiryThreadIntervalSeconds="240"
+		memoryStoreEvictionPolicy="LRU" />
+</ehcache>

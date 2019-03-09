@@ -567,6 +567,7 @@ public class GeometryBuilder {
         return getGeometryFactory().createLineSegment(from, to);
     }
 
+    @SuppressWarnings("deprecation")
     public MultiPrimitive createMultiPrimitive() {
         return getGeometryFactory().createMultiPrimitive();
     }

@@ -356,6 +356,8 @@
                 <arg>-XDcompilePolicy=simple</arg>
                 <arg>-Xplugin:ErrorProne -XepExcludedPaths:${project.build.directory}/generated-sources/.* ${errorProneFlags}</arg>
                 <arg>-J-Xbootclasspath/p:${settings.localRepository}/com/google/errorprone/javac/${javac.version}/javac-${javac.version}.jar</arg>
+                <arg>-Xlint:deprecation</arg>
+                <arg>-Werror</arg>
               </compilerArgs>
               <annotationProcessorPaths>
                 <path>
@@ -391,6 +393,10 @@
               <skip>${spotbugs.skip}</skip>
               <excludeFilterFile>${geotoolsBaseDir}/build/qa/spotbugs-exclude.xml</excludeFilterFile>
               <jvmArgs>-XX:+TieredCompilation -XX:TieredStopAtLevel=1</jvmArgs>
+              <compilerArgs combine.children="append">
+                <arg>-Xlint:deprecation</arg>
+                <arg>-Werror</arg>
+              </compilerArgs>
             </configuration>
             <executions>
               <execution>

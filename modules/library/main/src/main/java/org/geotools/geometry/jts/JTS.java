@@ -16,7 +16,7 @@
  */
 package org.geotools.geometry.jts;
 
-import java.awt.Shape;
+import java.awt.*;
 import java.awt.geom.IllegalPathStateException;
 import java.awt.geom.PathIterator;
 import java.awt.geom.Rectangle2D;
@@ -37,7 +37,7 @@ import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.operation.TransformPathNotFoundException;
 import org.geotools.referencing.operation.projection.PointOutsideEnvelopeException;
 import org.geotools.util.Classes;
-import org.locationtech.jts.algorithm.CGAlgorithms;
+import org.locationtech.jts.algorithm.Orientation;
 import org.locationtech.jts.awt.ShapeReader;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.CoordinateSequence;
@@ -1450,10 +1450,9 @@ public final class JTS {
             midCoord = ls.getCoordinateN(i1);
             lastCoord = ls.getCoordinateN(i2);
 
-            final int orientation =
-                    CGAlgorithms.computeOrientation(firstCoord, midCoord, lastCoord);
+            final int orientation = Orientation.index(firstCoord, midCoord, lastCoord);
             // Colllinearity test
-            if (orientation != CGAlgorithms.COLLINEAR) {
+            if (orientation != Orientation.COLLINEAR) {
                 // add midcoord and change head
                 retain.add(midCoord);
                 i0 = i1;

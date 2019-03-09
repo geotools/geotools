@@ -21,7 +21,6 @@ import static org.junit.Assert.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import junit.framework.Assert;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.referencing.crs.DefaultEngineeringCRS;
 import org.geotools.referencing.operation.matrix.GeneralMatrix;
@@ -184,7 +183,6 @@ public final class MathTransformBuilderTest {
             AffineToGeometric a2g =
                     new AffineToGeometric((AffineTransform2D) aab.getMathTransform());
             Assert.assertEquals(a2g.getSkew(), 0, 0.000000001);
-
         } catch (Exception e) {
             fail(e.getMessage());
         }

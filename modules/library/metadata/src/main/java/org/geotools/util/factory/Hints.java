@@ -1044,22 +1044,6 @@ public class Hints extends RenderingHints {
     }
 
     /**
-     * Constructs a new object with key/value pairs from an array.
-     *
-     * @param key1 The key for the first pair.
-     * @param value1 The value for the first pair.
-     * @param pairs An array containing additional pairs of keys and values.
-     * @since 2.4
-     * @deprecated The {@code Object[]} argument was a kind of substitution for variable-length
-     *     arguments. In order to avoid confusion, it is safer to use the later.
-     */
-    @Deprecated
-    public Hints(final RenderingHints.Key key1, final Object value1, final Object[] pairs) {
-        this(key1, value1);
-        fromPairs(pairs);
-    }
-
-    /**
      * Constructs a new object from key/value pair.
      *
      * @param key1 The key for the first pair.

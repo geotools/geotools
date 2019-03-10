@@ -18,7 +18,6 @@ package org.geotools.referencing.epsg.esri;
 
 import java.net.URL;
 import org.geotools.metadata.iso.citation.Citations;
-import org.geotools.referencing.factory.epsg.DefaultFactory;
 import org.geotools.referencing.factory.epsg.FactoryUsingWKT;
 import org.geotools.util.factory.Hints;
 import org.opengis.metadata.citation.Citation;
@@ -79,11 +78,11 @@ public class EsriExtension extends FactoryUsingWKT {
     }
 
     /**
-     * Prints a list of codes that duplicate the ones provided in the {@link DefaultFactory}. The
-     * factory tested is the one registered in {@link ReferencingFactoryFinder}. By default, this is
-     * this {@code EsriExtension} class backed by the {@value #FILENAME} property file. This method
-     * can be invoked from the command line in order to check the content of the property file.
-     * Valid arguments are:
+     * Prints a list of codes that duplicate the ones provided in the default factory. The factory
+     * tested is the one registered in {@link ReferencingFactoryFinder}. By default, this is this
+     * {@code EsriExtension} class backed by the {@value #FILENAME} property file. This method can
+     * be invoked from the command line in order to check the content of the property file. Valid
+     * arguments are:
      *
      * <p>
      *

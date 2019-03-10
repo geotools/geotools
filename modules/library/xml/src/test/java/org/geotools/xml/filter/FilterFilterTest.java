@@ -16,6 +16,9 @@
  */
 package org.geotools.xml.filter;
 
+import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.junit.Assert.assertThat;
+
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -28,8 +31,6 @@ import javax.xml.parsers.SAXParserFactory;
 import junit.framework.AssertionFailedError;
 import junit.framework.TestCase;
 import org.geotools.filter.FilterHandler;
-import org.geotools.filter.FilterType;
-import org.geotools.filter.Filters;
 import org.geotools.filter.LogicFilterImpl;
 import org.geotools.gml.GMLFilterDocument;
 import org.geotools.gml.GMLFilterGeometry;
@@ -37,9 +38,12 @@ import org.geotools.util.logging.Logging;
 import org.opengis.filter.BinaryComparisonOperator;
 import org.opengis.filter.BinaryLogicOperator;
 import org.opengis.filter.Filter;
+import org.opengis.filter.Or;
 import org.opengis.filter.PropertyIsLike;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
+import org.opengis.filter.spatial.BBOX;
+import org.opengis.filter.spatial.Intersects;
 import org.xml.sax.InputSource;
 import org.xml.sax.helpers.ParserAdapter;
 import org.xml.sax.helpers.XMLFilterImpl;
@@ -101,8 +105,8 @@ public class FilterFilterTest extends TestCase {
         Filter f1 = (Filter) sub.get(0);
         Filter f2 = (Filter) sub.get(1);
 
-        assertEquals(FilterType.GEOMETRY_INTERSECTS, Filters.getFilterType(f1));
-        assertEquals(FilterType.GEOMETRY_BBOX, Filters.getFilterType(f2));
+        assertThat(f1, instanceOf(Intersects.class));
+        assertThat(f2, instanceOf(BBOX.class));
     }
 
     public void testLikeMatchCase_v1_0() throws Exception {
@@ -332,7 +336,7 @@ public class FilterFilterTest extends TestCase {
         assertEquals(1, contentHandler.filters.size());
         Filter f = (Filter) contentHandler.filters.get(0);
         assertTrue(f instanceof BinaryLogicOperator);
-        assertEquals(FilterType.LOGIC_OR, Filters.getFilterType(f));
+        assertThat(f, instanceOf(Or.class));
 
         int i = 0;
         for (Iterator<org.opengis.filter.Filter> filters =

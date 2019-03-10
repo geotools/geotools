@@ -22,7 +22,6 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.expression.PropertyAccessor;
@@ -263,16 +262,7 @@ public class FidFilterImpl extends AbstractFilter implements Id {
 
         if ((filter != null) && (filter.getClass() == this.getClass())) {
             FidFilterImpl other = (FidFilterImpl) filter;
-            int filterType = Filters.getFilterType(other);
-            if (LOGGER.isLoggable(Level.FINEST)) {
-                LOGGER.finest("condition: " + filterType);
-            }
-
-            if (filterType == AbstractFilter.FID) {
-                return fids.equals(other.fids);
-            } else {
-                return false;
-            }
+            return fids.equals(other.fids);
         } else {
             return false;
         }

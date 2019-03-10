@@ -19,10 +19,12 @@ package org.geotools.filter;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.opengis.filter.And;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterVisitor;
+import org.opengis.filter.Not;
+import org.opengis.filter.Or;
 
 /**
  * Defines a logic filter (the only filter type that contains other filters). This filter holds one
@@ -93,12 +95,11 @@ public abstract class LogicFilterImpl extends BinaryLogicAbstract {
     public final void addFilter(org.opengis.filter.Filter filter) throws IllegalFilterException {
         // reset
         cachedHash = 0;
-        int filterType = Filters.getFilterType(this);
-        if ((filterType != LOGIC_NOT) || (children.size() == 0)) {
-            children.add(filter);
-        } else {
+        if (this instanceof Not && children.size() != 0) {
             throw new IllegalFilterException(
                     "Attempted to add an more than one filter to a NOT filter.");
+        } else {
+            children.add(filter);
         }
     }
 
@@ -130,12 +131,11 @@ public abstract class LogicFilterImpl extends BinaryLogicAbstract {
         String returnString = "[";
         String operator = "";
         Iterator iterator = children.iterator();
-        int filterType = Filters.getFilterType(this);
-        if (filterType == LOGIC_OR) {
+        if (this instanceof Or) {
             operator = " OR ";
-        } else if (filterType == LOGIC_AND) {
+        } else if (this instanceof And) {
             operator = " AND ";
-        } else if (filterType == LOGIC_NOT) {
+        } else if (this instanceof Not) {
             return "[ NOT " + iterator.next().toString() + " ]";
         }
 
@@ -159,32 +159,11 @@ public abstract class LogicFilterImpl extends BinaryLogicAbstract {
      * @param obj - the object to compare this LogicFilter against.
      * @return true if specified object is equal to this filter; false otherwise.
      */
-    public boolean equals(Object obj) {
-        if (obj == this) return true;
-        if ((obj != null) && (obj.getClass() == this.getClass())) {
-            LogicFilterImpl logFilter = (LogicFilterImpl) obj;
-            if (LOGGER.isLoggable(Level.FINEST)) {
-                LOGGER.finest(
-                        "filter type match:"
-                                + (Filters.getFilterType(logFilter)
-                                        == Filters.getFilterType(this)));
-                LOGGER.finest(
-                        "same size:"
-                                + (logFilter.getSubFilters().size() == this.children.size())
-                                + "; inner size: "
-                                + logFilter.getSubFilters().size()
-                                + "; outer size: "
-                                + this.children.size());
-                LOGGER.finest("contains:" + logFilter.getSubFilters().containsAll(this.children));
-            }
-
-            return ((Filters.getFilterType(logFilter) == Filters.getFilterType(this))
-                    && (logFilter.getSubFilters().size() == this.children.size())
-                    && logFilter.getSubFilters().containsAll(this.children));
-
-        } else {
-            return false;
-        }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        return super.equals(o);
     }
 
     /**
@@ -195,8 +174,7 @@ public abstract class LogicFilterImpl extends BinaryLogicAbstract {
     public int hashCode() {
         if (cachedHash == 0) {
             int result = 17;
-            int filterType = Filters.getFilterType(this);
-            result = (37 * result) + filterType;
+            result = (37 * result) + getClass().hashCode();
             result = (37 * result) + children.hashCode();
             cachedHash = result;
         }

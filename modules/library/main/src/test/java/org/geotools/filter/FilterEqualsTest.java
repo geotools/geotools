@@ -333,8 +333,8 @@ public class FilterEqualsTest extends TestCase {
         testExp1 = new AttributeExpressionImpl(testSchema, "testDouble");
         testExp2 = new AttributeExpressionImpl(testSchema, "testDouble");
         testExp3 = new AttributeExpressionImpl(testSchema, "testBoolean");
-        NullFilterImpl nullFilter1 = new NullFilterImpl();
-        NullFilterImpl nullFilter2 = new NullFilterImpl();
+        NullFilterImpl nullFilter1 = new NullFilterImpl(Expression.NIL);
+        NullFilterImpl nullFilter2 = new NullFilterImpl(Expression.NIL);
         nullFilter1.setExpression(testExp1);
         nullFilter2.setExpression(testExp2);
         assertTrue(nullFilter1.equals(nullFilter2));

@@ -16,6 +16,7 @@
  */
 package org.geotools.filter;
 
+import java.util.Objects;
 import org.opengis.filter.FilterVisitor;
 import org.opengis.filter.PropertyIsNull;
 import org.opengis.filter.expression.Expression;
@@ -79,15 +80,12 @@ public class NullFilterImpl extends AbstractFilter implements PropertyIsNull {
      * @param obj - the object to compare this LikeFilter against.
      * @return true if specified object is equal to this filter; false otherwise.
      */
-    public boolean equals(Object obj) {
-        if (obj != null && obj.getClass() == this.getClass()) {
-            NullFilterImpl nullFilter = (NullFilterImpl) obj;
-
-            return ((Filters.getFilterType(nullFilter) == Filters.getFilterType(this))
-                    && nullFilter.getExpression().equals(this.nullCheck));
-        } else {
-            return false;
-        }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        NullFilterImpl that = (NullFilterImpl) o;
+        return Objects.equals(nullCheck, that.nullCheck);
     }
 
     /**

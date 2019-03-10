@@ -22,6 +22,7 @@ import java.util.Date;
 import java.util.logging.Logger;
 import org.geotools.util.Converters;
 import org.opengis.filter.FilterVisitor;
+import org.opengis.filter.PropertyIsLessThanOrEqualTo;
 import org.opengis.filter.expression.Expression;
 
 /**
@@ -153,33 +154,23 @@ public abstract class CompareFilterImpl extends BinaryComparisonAbstract {
      * @return String representation of the compare filter.
      */
     public String toString() {
-        int filterType = Filters.getFilterType(this);
-        if (filterType == NULL) {
+        if (this instanceof IsNullImpl) {
             return "[ " + expression1 + " IS NULL ]";
+        } else if (this instanceof IsNilImpl) {
+            return "[ " + expression1 + " IS NIL ]";
         }
         String operator = null;
-
-        if (filterType == COMPARE_EQUALS) {
+        if (this instanceof IsEqualsToImpl) {
             operator = " = ";
-        }
-
-        if (filterType == COMPARE_LESS_THAN) {
+        } else if (this instanceof IsLessThenImpl) {
             operator = " < ";
-        }
-
-        if (filterType == COMPARE_GREATER_THAN) {
+        } else if (this instanceof IsGreaterThanImpl) {
             operator = " > ";
-        }
-
-        if (filterType == COMPARE_LESS_THAN_EQUAL) {
+        } else if (this instanceof PropertyIsLessThanOrEqualTo) {
             operator = " <= ";
-        }
-
-        if (filterType == COMPARE_GREATER_THAN_EQUAL) {
+        } else if (this instanceof IsGreaterThanOrEqualToImpl) {
             operator = " >= ";
-        }
-
-        if (filterType == COMPARE_NOT_EQUALS) {
+        } else if (this instanceof IsNotEqualToImpl) {
             operator = " != ";
         }
 
@@ -223,9 +214,7 @@ public abstract class CompareFilterImpl extends BinaryComparisonAbstract {
      */
     public int hashCode() {
         int result = 17;
-        int filterType = Filters.getFilterType(this);
-
-        result = (37 * result) + filterType;
+        result = (37 * result) + this.getClass().hashCode();
         result = (37 * result) + ((expression1 == null) ? 0 : expression1.hashCode());
         result = (37 * result) + ((expression2 == null) ? 0 : expression2.hashCode());
 

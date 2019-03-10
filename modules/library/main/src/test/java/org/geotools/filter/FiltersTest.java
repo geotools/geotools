@@ -68,11 +68,6 @@ public class FiltersTest {
     }
 
     @Test
-    public void testGetFilterType() {
-        assertEquals(FilterType.COMPARE_GREATER_THAN, Filters.getFilterType(a));
-    }
-
-    @Test
     public void testAsInt() {
         assertEquals(1, filters.asInt(ff.literal(1)));
         assertEquals(1, filters.asInt(ff.literal("1")));

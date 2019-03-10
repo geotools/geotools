@@ -17,6 +17,7 @@
 package org.geotools.filter;
 
 import java.util.Collection;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.opengis.filter.FilterVisitor;
@@ -448,17 +449,12 @@ public class LikeFilterImpl extends AbstractFilter implements PropertyIsLike {
      * @param obj - the object to compare this LikeFilter against.
      * @return true if specified object is equal to this filter; false otherwise.
      */
-    public boolean equals(Object obj) {
-        if (obj instanceof LikeFilterImpl) {
-            LikeFilterImpl lFilter = (LikeFilterImpl) obj;
-
-            // REVISIT: check for nulls.
-
-            return ((Filters.getFilterType(lFilter) == Filters.getFilterType(this))
-                    && lFilter.getExpression().equals(this.attribute)
-                    && lFilter.getPattern().equals(this.pattern));
-        }
-        return false;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        LikeFilterImpl that = (LikeFilterImpl) o;
+        return Objects.equals(attribute, that.attribute) && Objects.equals(pattern, that.pattern);
     }
 
     /**
@@ -466,6 +462,7 @@ public class LikeFilterImpl extends AbstractFilter implements PropertyIsLike {
      *
      * @return the hash code for this like filter implementation.
      */
+    @Override
     public int hashCode() {
         int result = 17;
         result = (37 * result) + ((attribute == null) ? 0 : attribute.hashCode());

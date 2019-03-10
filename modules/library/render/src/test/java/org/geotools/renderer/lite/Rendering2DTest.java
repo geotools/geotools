@@ -689,7 +689,7 @@ public class Rendering2DTest extends TestCase {
         // FilterFactory ffac = FilterFactoryFinder.createFilterFactory();
         //
         // // test maxFeatures, render just the first 2 features
-        // layerQuery = new DefaultQuery("querytest", filter, 2, null,
+        // layerQuery = new Query("querytest", filter, 2, null,
         // "handle");
         // layer.setQuery(layerQuery);
         //
@@ -718,7 +718,7 @@ public class Rendering2DTest extends TestCase {
         // // the performance gain of
         // // renderer.setOptimizedDataLoadingEnabled(true),
         // // but we should test it anyway
-        // layerQuery = new DefaultQuery("querytest", filter, Integer.MAX_VALUE,
+        // layerQuery = new Query("querytest", filter, Integer.MAX_VALUE,
         // new String[] { "id" }, "handle");
         // layer.setQuery(layerQuery);
         //
@@ -764,7 +764,7 @@ public class Rendering2DTest extends TestCase {
         //
         // System.err.println("trying with filter: " + filter);
         //
-        // layerQuery = new DefaultQuery("querytest", filter, Integer.MAX_VALUE,
+        // layerQuery = new Query("querytest", filter, Integer.MAX_VALUE,
         // null, "handle");
         // layer.setQuery(layerQuery);
         //
@@ -803,7 +803,7 @@ public class Rendering2DTest extends TestCase {
         // FilterFactory ffac = FilterFactoryFinder.createFilterFactory();
         //
         // // test maxFeatures, render just the first 2 features
-        // layerQuery = new DefaultQuery("querytest", filter);
+        // layerQuery = new Query("querytest", filter);
         // layer.setQuery(layerQuery);
         //
         // ArrayList rules = new ArrayList();

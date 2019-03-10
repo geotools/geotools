@@ -115,7 +115,7 @@ public class CachingFeatureSource implements SimpleFeatureSource {
     }
 
     private void fillCache(Query query) throws IOException {
-        Query cloned = new DefaultQuery(query);
+        Query cloned = new Query(query);
         cloned.getHints().remove(Hints.GEOMETRY_DISTANCE);
 
         FeatureCollection features = wrapped.getFeatures(cloned);
@@ -167,7 +167,7 @@ public class CachingFeatureSource implements SimpleFeatureSource {
     }
 
     public SimpleFeatureCollection getFeatures(Filter filter) throws IOException {
-        return getFeatures(new DefaultQuery(wrapped.getSchema().getName().getLocalPart(), filter));
+        return getFeatures(new Query(wrapped.getSchema().getName().getLocalPart(), filter));
     }
 
     public SimpleFeatureCollection getFeatures(Query query) throws IOException {

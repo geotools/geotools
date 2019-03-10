@@ -343,7 +343,7 @@ value for Query.getFilter() is Filter.INCLUDES.
     public void draw( Filter filter ){
        if( filter == Filter.EXCLUDES ) return; // draw nothing
        
-       Query query = new DefaultQuery( "roads", filter );
+       Query query = new Query( "roads", filter );
        FeatureCollection collection = store.getFeatureSource( "roads" ).getFeatures( filter );
        ...
     }

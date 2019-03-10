@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.Set;
 import org.geotools.data.DataStore;
-import org.geotools.data.DefaultQuery;
+
 import org.geotools.data.FeatureListener;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.Query;
@@ -111,12 +111,12 @@ public class WSFeatureSource implements XmlFeatureSource {
 
     /** @see FeatureSource#getFeatures(Filter) */
     public WSFeatureCollection getFeatures(Filter filter) throws IOException {
-        return getFeatures(new DefaultQuery(typeName, filter));
+        return getFeatures(new Query(typeName, filter));
     }
 
     /** @see FeatureSource#getFeatures() */
     public WSFeatureCollection getFeatures() throws IOException {
-        return getFeatures(new DefaultQuery(typeName));
+        return getFeatures(new Query(typeName));
     }
 
     /** @see FeatureSource#getFeatures(Query) */
@@ -137,7 +137,7 @@ public class WSFeatureSource implements XmlFeatureSource {
             throw new IllegalArgumentException(
                     "Wrong query type name: " + quertyTypeName + ". Name should be " + typeName);
         }
-        DefaultQuery named = new DefaultQuery(query);
+        Query named = new Query(query);
         named.setTypeName(typeName);
         return named;
     }

@@ -664,18 +664,18 @@ public class DataUtilitiesTest extends DataTestCase {
      * @throws Exception
      */
     public void testMixQueries() throws Exception {
-        DefaultQuery firstQuery;
-        DefaultQuery secondQuery;
+        Query firstQuery;
+        Query secondQuery;
 
         firstQuery =
-                new DefaultQuery(
+                new Query(
                         "typeName",
                         Filter.EXCLUDE,
                         100,
                         new String[] {"att1", "att2", "att3"},
                         "handle");
         secondQuery =
-                new DefaultQuery(
+                new Query(
                         "typeName",
                         Filter.EXCLUDE,
                         20,
@@ -705,9 +705,9 @@ public class DataUtilitiesTest extends DataTestCase {
         filter1 = ffac.equals(ffac.property("att1"), ffac.literal("val1"));
         filter2 = ffac.equals(ffac.property("att2"), ffac.literal("val2"));
 
-        firstQuery = new DefaultQuery("typeName", filter1, 100, null, "handle");
+        firstQuery = new Query("typeName", filter1, 100, (String[]) null, "handle");
         secondQuery =
-                new DefaultQuery(
+                new Query(
                         "typeName", filter2, 20, new String[] {"att1", "att2", "att4"}, "handle2");
 
         mixed = DataUtilities.mixQueries(firstQuery, secondQuery, "newhandle");

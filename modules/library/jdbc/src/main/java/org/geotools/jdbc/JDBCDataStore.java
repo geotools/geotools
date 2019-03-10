@@ -50,7 +50,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import javax.sql.DataSource;
 import org.geotools.data.DataStore;
-import org.geotools.data.DefaultQuery;
 import org.geotools.data.DefaultTransaction;
 import org.geotools.data.FeatureStore;
 import org.geotools.data.GmlObjectStore;
@@ -909,7 +908,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
 
         // load the feature
         Id filter = getFilterFactory().id(Collections.singleton(id));
-        DefaultQuery query = new DefaultQuery(featureTypeName);
+        Query query = new Query(featureTypeName);
         query.setFilter(filter);
         query.setHints(hints);
 
@@ -2427,7 +2426,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
                 // intersect given filter with ids filter
                 filter = getFilterFactory().and(filter, lockFilter);
             }
-            Query query = new DefaultQuery(featureType.getTypeName(), filter, Query.NO_NAMES);
+            Query query = new Query(featureType.getTypeName(), filter, Query.NO_NAMES);
 
             Statement st = null;
             try {

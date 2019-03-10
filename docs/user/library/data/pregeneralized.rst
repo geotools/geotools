@@ -72,7 +72,7 @@ To create a **PreGeneralizedDataStore**:
     FeatureSource<SimpleFeatureType, SimpleFeature> fs = ds.getFeatureSource("GenStreams");
     
     //fs.getSupportedHints().contains(Hints.GEOMETRY_DISTANCE) must be true;
-    Query q = new  DefaultQuery("GenStreams");
+    Query q = new  Query("GenStreams");
     q.getHints().put(Hints.GEOMETRY_DISTANCE, 22.0);
     FeatureCollection<SimpleFeatureType, SimpleFeature> fCollection = fs.getFeatures(q);
     

@@ -18,8 +18,8 @@ package org.geotools.data.ogr;
 
 import java.net.URL;
 import org.geotools.TestData;
-import org.geotools.data.DefaultQuery;
 import org.geotools.data.FeatureReader;
+import org.geotools.data.Query;
 import org.geotools.data.Transaction;
 import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.referencing.CRS;
@@ -43,7 +43,7 @@ public abstract class OGRPeformanceTest extends TestCaseSupport {
         ods.getSchema(ods.getTypeNames()[0]);
         long end = System.currentTimeMillis();
         // System.out.println("OGR schema: " + (end - start) / 1000.0);
-        DefaultQuery query = new DefaultQuery(ods.getTypeNames()[0]);
+        Query query = new Query(ods.getTypeNames()[0]);
         start = System.currentTimeMillis();
         FeatureReader ofr = ods.getFeatureReader(query, Transaction.AUTO_COMMIT);
         while (ofr.hasNext()) ofr.next();
@@ -60,7 +60,7 @@ public abstract class OGRPeformanceTest extends TestCaseSupport {
         long end = System.currentTimeMillis();
         // System.out.println("SDS schema: " + (end - start) / 1000.0);
 
-        DefaultQuery query = new DefaultQuery(sds.getTypeNames()[0]);
+        Query query = new Query(sds.getTypeNames()[0]);
         start = System.currentTimeMillis();
         FeatureReader sfr = sds.getFeatureReader(query, Transaction.AUTO_COMMIT);
         while (sfr.hasNext()) sfr.next();

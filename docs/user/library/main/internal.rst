@@ -23,7 +23,6 @@ And a couple that are no longer used:
 
 * DefaultFeatureLock
 * DefaultFeatureLockFactory
-* DefaultQuery
 
 AbstractDataStore
 ^^^^^^^^^^^^^^^^^

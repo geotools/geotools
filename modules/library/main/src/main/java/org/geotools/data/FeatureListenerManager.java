@@ -27,7 +27,6 @@ import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.opengis.feature.Feature;
 import org.opengis.feature.type.FeatureType;
-import org.opengis.filter.Filter;
 
 /**
  * This class is used by DataStore implementations to provide FeatureListener support for the
@@ -236,9 +235,9 @@ public class FeatureListenerManager {
     public void fireFeaturesAdded(
             String typeName, Transaction transaction, ReferencedEnvelope bounds, boolean commit) {
         if (commit) {
-            fireCommit(typeName, transaction, FeatureEvent.FEATURES_ADDED, bounds);
+            fireCommit(typeName, transaction, FeatureEvent.Type.ADDED, bounds);
         } else {
-            fireEvent(typeName, transaction, FeatureEvent.FEATURES_ADDED, bounds);
+            fireEvent(typeName, transaction, FeatureEvent.Type.ADDED, bounds);
         }
     }
 
@@ -332,9 +331,9 @@ public class FeatureListenerManager {
     public void fireFeaturesChanged(
             String typeName, Transaction transaction, ReferencedEnvelope bounds, boolean commit) {
         if (commit) {
-            fireCommit(typeName, transaction, FeatureEvent.FEATURES_CHANGED, bounds);
+            fireCommit(typeName, transaction, FeatureEvent.Type.CHANGED, bounds);
         } else {
-            fireEvent(typeName, transaction, FeatureEvent.FEATURES_CHANGED, bounds);
+            fireEvent(typeName, transaction, FeatureEvent.Type.CHANGED, bounds);
         }
     }
 
@@ -359,9 +358,9 @@ public class FeatureListenerManager {
      */
     public void fireChanged(String typeName, Transaction transaction, boolean commit) {
         if (commit) {
-            fireCommit(typeName, transaction, FeatureEvent.FEATURES_CHANGED, null);
+            fireCommit(typeName, transaction, FeatureEvent.Type.CHANGED, null);
         } else {
-            fireEvent(typeName, transaction, FeatureEvent.FEATURES_CHANGED, null);
+            fireEvent(typeName, transaction, FeatureEvent.Type.CHANGED, null);
         }
     }
 
@@ -372,7 +371,10 @@ public class FeatureListenerManager {
      * @param transaction
      */
     private void fireCommit(
-            String typeName, Transaction transaction, int type, ReferencedEnvelope bounds) {
+            String typeName,
+            Transaction transaction,
+            FeatureEvent.Type type,
+            ReferencedEnvelope bounds) {
         FeatureSource<? extends FeatureType, ? extends Feature> featureSource;
         FeatureListener[] listeners;
         FeatureEvent event;
@@ -404,7 +406,10 @@ public class FeatureListenerManager {
      * @param bounds
      */
     private void fireEvent(
-            String typeName, Transaction transaction, int type, ReferencedEnvelope bounds) {
+            String typeName,
+            Transaction transaction,
+            FeatureEvent.Type type,
+            ReferencedEnvelope bounds) {
         FeatureSource<? extends FeatureType, ? extends Feature> featureSource;
         FeatureListener[] listeners;
         FeatureEvent event;
@@ -414,12 +419,7 @@ public class FeatureListenerManager {
             featureSource = (FeatureSource) entry.getKey();
             listeners = (FeatureListener[]) entry.getValue();
 
-            event =
-                    new FeatureEvent(
-                            featureSource,
-                            FeatureEvent.Type.fromValue(type),
-                            bounds,
-                            Filter.INCLUDE);
+            event = new FeatureEvent(featureSource, type, bounds);
 
             for (int l = 0; l < listeners.length; l++) {
                 listeners[l].changed(event);
@@ -447,9 +447,9 @@ public class FeatureListenerManager {
     public void fireFeaturesRemoved(
             String typeName, Transaction transaction, ReferencedEnvelope bounds, boolean commit) {
         if (commit) {
-            fireCommit(typeName, transaction, FeatureEvent.Type.REMOVED.type, bounds);
+            fireCommit(typeName, transaction, FeatureEvent.Type.REMOVED, bounds);
         } else {
-            fireEvent(typeName, transaction, FeatureEvent.Type.REMOVED.type, bounds);
+            fireEvent(typeName, transaction, FeatureEvent.Type.REMOVED, bounds);
         }
     }
 }

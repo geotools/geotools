@@ -252,8 +252,8 @@ public class FilterEqualsTest extends TestCase {
     }
 
     public void testBetweenFilter() throws IllegalFilterException {
-        BetweenFilterImpl bFilter1 = new BetweenFilterImpl();
-        BetweenFilterImpl bFilter2 = new BetweenFilterImpl();
+        IsBetweenImpl bFilter1 = new IsBetweenImpl(null, null, null);
+        IsBetweenImpl bFilter2 = new IsBetweenImpl(null, null, null);
         LiteralExpressionImpl testLit1 = new LiteralExpressionImpl(Integer.valueOf(55));
         LiteralExpressionImpl testLit2 = new LiteralExpressionImpl(Integer.valueOf(55));
         testExp1 = new LiteralExpressionImpl(Integer.valueOf(45));
@@ -340,7 +340,7 @@ public class FilterEqualsTest extends TestCase {
         assertTrue(nullFilter1.equals(nullFilter2));
         nullFilter1.setExpression(testExp3);
         assertTrue(!nullFilter1.equals(nullFilter2));
-        assertTrue(!nullFilter1.equals(new BetweenFilterImpl()));
+        assertTrue(!nullFilter1.equals(new IsBetweenImpl(null, null, null)));
     }
 
     public void testGeometryFilter() throws IllegalFilterException {

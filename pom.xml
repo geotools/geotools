@@ -358,6 +358,8 @@
                 <arg>-J-Xbootclasspath/p:${settings.localRepository}/com/google/errorprone/javac/${javac.version}/javac-${javac.version}.jar</arg>
                 <arg>-Xlint:deprecation</arg>
                 <arg>-Werror</arg>
+                <arg>-Xmaxwarns</arg>
+                <arg>1000</arg>
               </compilerArgs>
               <annotationProcessorPaths>
                 <path>

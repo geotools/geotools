@@ -27,6 +27,7 @@ import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.opengis.feature.Feature;
 import org.opengis.feature.type.FeatureType;
+import org.opengis.filter.Filter;
 
 /**
  * This class is used by DataStore implementations to provide FeatureListener support for the
@@ -413,7 +414,12 @@ public class FeatureListenerManager {
             featureSource = (FeatureSource) entry.getKey();
             listeners = (FeatureListener[]) entry.getValue();
 
-            event = new FeatureEvent(featureSource, type, bounds);
+            event =
+                    new FeatureEvent(
+                            featureSource,
+                            FeatureEvent.Type.fromValue(type),
+                            bounds,
+                            Filter.INCLUDE);
 
             for (int l = 0; l < listeners.length; l++) {
                 listeners[l].changed(event);
@@ -441,9 +447,9 @@ public class FeatureListenerManager {
     public void fireFeaturesRemoved(
             String typeName, Transaction transaction, ReferencedEnvelope bounds, boolean commit) {
         if (commit) {
-            fireCommit(typeName, transaction, FeatureEvent.FEATURES_REMOVED, bounds);
+            fireCommit(typeName, transaction, FeatureEvent.Type.REMOVED.type, bounds);
         } else {
-            fireEvent(typeName, transaction, FeatureEvent.FEATURES_REMOVED, bounds);
+            fireEvent(typeName, transaction, FeatureEvent.Type.REMOVED.type, bounds);
         }
     }
 }

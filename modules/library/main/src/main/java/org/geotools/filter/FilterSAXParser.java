@@ -166,13 +166,13 @@ public class FilterSAXParser {
                     curFilter = new IsGreaterThanOrEqualToImpl();
                     break;
                 case FilterType.COMPARE_LESS_THAN:
-                    curFilter = new IsLessThenImpl();
+                    curFilter = new IsLessThenImpl(null, null);
                     break;
                 case FilterType.COMPARE_LESS_THAN_EQUAL:
                     curFilter = new IsLessThenOrEqualToImpl();
                     break;
                 case FilterType.BETWEEN:
-                    curFilter = new BetweenFilterImpl();
+                    curFilter = new IsBetweenImpl(null, null, null);
                     break;
                 default:
                     throw new IllegalFilterException("Must be one of <,<=,==,>,>=,<>");
@@ -209,7 +209,7 @@ public class FilterSAXParser {
         // Handle all filter compare states and expressions
         if (filterType == FilterType.BETWEEN) {
             if (curState.equals("attribute")) {
-                ((BetweenFilterImpl) curFilter).setExpression(expression);
+                ((IsBetweenImpl) curFilter).setExpression(expression);
                 curState = "LowerBoundary";
             } else if (curState.equals("LowerBoundary")) {
                 ((BinaryComparisonAbstract) curFilter).setExpression1(expression);

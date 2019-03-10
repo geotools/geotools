@@ -16,7 +16,6 @@
  */
 package org.geotools.feature;
 
-
 /**
  * Interface to be implemented by all listeners of CollectionEvents.
  *

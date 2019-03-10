@@ -146,7 +146,7 @@ public class FilterSAXParser {
                             "Not one of the accepted spatial filter types.");
             }
         } else if (filterType == AbstractFilter.BETWEEN) {
-            curFilter = new BetweenFilterImpl();
+            curFilter = new IsBetweenImpl(null, null, null);
         } else if (filterType == AbstractFilter.NULL) {
             curFilter = new NullFilterImpl();
         } else if (filterType == AbstractFilter.LIKE) {

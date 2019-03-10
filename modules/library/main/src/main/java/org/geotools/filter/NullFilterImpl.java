@@ -19,7 +19,6 @@ package org.geotools.filter;
 import org.opengis.filter.FilterVisitor;
 import org.opengis.filter.PropertyIsNull;
 import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.PropertyName;
 
 /**
  * Defines a null filter, which checks to see if an attribute is null.
@@ -30,13 +29,6 @@ import org.opengis.filter.expression.PropertyName;
 public class NullFilterImpl extends AbstractFilter implements PropertyIsNull {
     /** The null check value, which must be an attribute expression. */
     private org.opengis.filter.expression.Expression nullCheck = null;
-
-    /**
-     * Constructor which sets the type as null check.
-     *
-     * @deprecated No argument constructor for use with SAX parser
-     */
-    protected NullFilterImpl() {}
 
     protected NullFilterImpl(org.opengis.filter.expression.Expression expresion) {
         setExpression(expresion);
@@ -49,10 +41,10 @@ public class NullFilterImpl extends AbstractFilter implements PropertyIsNull {
 
     /** Sets the expression which represents the null check. */
     public void setExpression(Expression nullCheck) {
-        if (nullCheck != null && nullCheck instanceof PropertyName) {
+        if (nullCheck != null) {
             this.nullCheck = nullCheck;
         } else {
-            throw new IllegalFilterException("PropertyName expression required");
+            throw new IllegalFilterException("Expression required");
         }
     }
 

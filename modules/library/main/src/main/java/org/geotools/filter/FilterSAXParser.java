@@ -148,28 +148,28 @@ public class FilterSAXParser {
         } else if (filterType == AbstractFilter.BETWEEN) {
             curFilter = new IsBetweenImpl(null, null, null);
         } else if (filterType == AbstractFilter.NULL) {
-            curFilter = new NullFilterImpl();
+            curFilter = new NullFilterImpl(Expression.NIL);
         } else if (filterType == AbstractFilter.LIKE) {
             curFilter = new LikeFilterImpl();
         } else if (AbstractFilter.isCompareFilter(filterType)) {
             switch (filterType) {
                 case FilterType.COMPARE_EQUALS:
-                    curFilter = new IsEqualsToImpl();
+                    curFilter = new IsEqualsToImpl(null, null);
                     break;
                 case FilterType.COMPARE_NOT_EQUALS:
-                    curFilter = new IsNotEqualToImpl();
+                    curFilter = new IsNotEqualToImpl(null, null);
                     break;
                 case FilterType.COMPARE_GREATER_THAN:
-                    curFilter = new IsGreaterThanImpl();
+                    curFilter = new IsGreaterThanImpl(null, null);
                     break;
                 case FilterType.COMPARE_GREATER_THAN_EQUAL:
-                    curFilter = new IsGreaterThanOrEqualToImpl();
+                    curFilter = new IsGreaterThanOrEqualToImpl(null, null);
                     break;
                 case FilterType.COMPARE_LESS_THAN:
                     curFilter = new IsLessThenImpl(null, null);
                     break;
                 case FilterType.COMPARE_LESS_THAN_EQUAL:
-                    curFilter = new IsLessThenOrEqualToImpl();
+                    curFilter = new IsLessThenOrEqualToImpl(null, null);
                     break;
                 case FilterType.BETWEEN:
                     curFilter = new IsBetweenImpl(null, null, null);

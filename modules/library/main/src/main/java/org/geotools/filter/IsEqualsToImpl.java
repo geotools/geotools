@@ -25,11 +25,6 @@ import org.opengis.filter.expression.Literal;
 /** @author jdeolive TODO: rename this class to IsEqualToImpl */
 public class IsEqualsToImpl extends MultiCompareFilterImpl implements PropertyIsEqualTo {
 
-    @Deprecated
-    public IsEqualsToImpl() {
-        this(null, null);
-    }
-
     protected IsEqualsToImpl(Expression expression1, Expression expression2) {
         this(expression1, expression2, true);
     }

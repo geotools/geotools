@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2019, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -20,13 +20,11 @@ package org.geotools.gml;
 
 import java.util.ArrayList;
 import java.util.logging.Logger;
-import org.locationtech.jts.algorithm.Orientation;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LinearRing;
 import org.locationtech.jts.geom.Polygon;
-import org.locationtech.jts.geom.TopologyException;
 
 /**
  * Creates a Polygon geometry.
@@ -80,62 +78,9 @@ public class SubHandlerPolygon extends SubHandler {
         if (message.equals("LinearRing")) {
             if (type == GEOMETRY_END) {
                 if (location == INNER_BOUNDARY) {
-                    LinearRing ring = (LinearRing) currentHandler.create(geometryFactory);
-                    Coordinate[] points = ring.getCoordinates();
-
-                    /* it is important later that internal rings (holes) are
-                     * anticlockwise (counter clockwise) - so we reverse the
-                     * points if necessary
-                     */
-                    if (Orientation.isCCW(points)) {
-                        LOGGER.finer("good hole found");
-
-                        // System.out.println("inner boundary: " + message);
-                        innerBoundaries.add(ring);
-
-                    } else {
-                        LOGGER.finer("bad hole found - fixing");
-                        Coordinate[] newPoints = new Coordinate[points.length];
-
-                        for (int i = 0, j = points.length - 1; i < points.length; i++, j--) {
-                            newPoints[i] = points[j];
-                        }
-
-                        try {
-                            ring = geometryFactory.createLinearRing(newPoints);
-                            innerBoundaries.add(ring);
-                        } catch (TopologyException e) {
-                            LOGGER.warning("Caught Topology exception in GMLPolygonHandler");
-                            ring = null;
-                        }
-                    }
+                    innerBoundaries.add((LinearRing) currentHandler.create(geometryFactory));
                 } else if (location == OUTER_BOUNDARY) {
-                    /* it is important later that the outerboundary is
-                     * clockwise  - so we reverse the
-                     * points if necessary
-                     */
                     outerBoundary = (LinearRing) currentHandler.create(geometryFactory);
-
-                    Coordinate[] points = outerBoundary.getCoordinates();
-
-                    if (Orientation.isCCW(points)) {
-                        LOGGER.finer("bad outer ring - rebuilding");
-                        //  System.out.println("rebuilding outer ring");
-                        Coordinate[] newPoints = new Coordinate[points.length];
-
-                        for (int i = 0, j = points.length - 1; i < points.length; i++, j--) {
-                            newPoints[i] = points[j];
-                        }
-
-                        try {
-                            outerBoundary = geometryFactory.createLinearRing(newPoints);
-                            // System.out.println("outer boundary: " + message);
-
-                        } catch (TopologyException e) {
-                            LOGGER.warning("Caught Topology exception in " + "GMLPolygonHandler");
-                            outerBoundary = null;
-                        }
-                    }
                 }
             } else if (type == GEOMETRY_START) {
                 currentHandler = new SubHandlerLinearRing();

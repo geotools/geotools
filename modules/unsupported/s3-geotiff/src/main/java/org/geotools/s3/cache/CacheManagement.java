@@ -109,7 +109,7 @@ public enum CacheManagement {
                             Level.WARNING,
                             String.format(
                                     "Unable to configure S3 GeoTiff cache from %s, using default config",
-                                    configFile, CacheConfig.S3_CACHING_EH_CACHE_CONFIG_FAILFAST),
+                                    configFile),
                             e);
         }
         return null;

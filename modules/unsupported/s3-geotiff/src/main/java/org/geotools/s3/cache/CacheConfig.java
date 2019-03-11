@@ -50,10 +50,6 @@ public class CacheConfig {
     // alternatively an EhCache 2.x XML config can be used to override all cache config
     public static final String S3_CACHING_EH_CACHE_CONFIG = "s3.caching.ehCacheConfig";
 
-    // boolean indicating whether to fail if the file passed through
-    // s3.caching.ehCacheConfig is not found or can't be parsed. Defaults to true.
-    public static final String S3_CACHING_EH_CACHE_CONFIG_FAILFAST = "s3.caching.failfast";
-
     public static final int MEBIBYTE_IN_BYTES = 1048576;
 
     // in heap cache size in bytes

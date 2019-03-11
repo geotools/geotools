@@ -90,8 +90,12 @@ public class S3ImageInputStreamImplSpi extends ImageInputStreamSpi {
      */
     public ImageInputStream createInputStreamInstance(
             Object input, boolean useCache, File cacheDir) {
-        LOGGER.warning("S3ImageInputStreamImplSpi.createInputStream(" + input.getClass() + ")");
-
+        if (LOGGER.isLoggable(Level.FINE)) {
+            LOGGER.fine(
+                    "S3ImageInputStreamImplSpi.createInputStreamInstance("
+                            + input.getClass()
+                            + ")");
+        }
         if (input instanceof S3ImageInputStreamImpl) {
             try {
                 return new S3ImageInputStreamImpl(((S3ImageInputStreamImpl) input).getUrl());

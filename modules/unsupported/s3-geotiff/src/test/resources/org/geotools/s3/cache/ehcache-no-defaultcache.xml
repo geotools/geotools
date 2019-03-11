@@ -1,0 +1,38 @@
+<!--
+/*
+ * GeoTools - The Open Source Java GIS Toolkit
+ * http://geotools.org
+ *
+ * (C) 2017, Open Source Geospatial Foundation (OSGeo)
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation;
+ * version 2.1 of the License.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ */
+-->
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="ehcache.xsd"
+	name="s3-geotiff-cache-manager"
+	>
+
+	<diskStore path="java.io.tmpdir" />
+ 	<!--
+ 	The s3-geotiff geotools module looks up for a cache named "deafault_cache"
+ 	-->
+	<cache name="default_cache"
+		 
+		maxElementsInMemory="10000" 
+		eternal="false"
+		timeToIdleSeconds="240" 
+		timeToLiveSeconds="240" 
+		overflowToDisk="false"
+		diskPersistent="false" 
+		diskExpiryThreadIntervalSeconds="240"
+		memoryStoreEvictionPolicy="LRU" />
+</ehcache>

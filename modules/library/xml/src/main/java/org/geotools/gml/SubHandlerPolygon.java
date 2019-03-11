@@ -16,17 +16,13 @@
  */
 package org.geotools.gml;
 
-// Java Topology Suite dependencies
-
 import java.util.ArrayList;
 import java.util.logging.Logger;
-import org.locationtech.jts.algorithm.Orientation;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LinearRing;
 import org.locationtech.jts.geom.Polygon;
-import org.locationtech.jts.geom.TopologyException;
 
 /**
  * Creates a Polygon geometry.
@@ -41,7 +37,7 @@ public class SubHandlerPolygon extends SubHandler {
             org.geotools.util.logging.Logging.getLogger(SubHandlerPolygon.class);
 
     /** Factory for creating the Polygon geometry. */
-    private GeometryFactory geometryFactory = new GeometryFactory();
+    private final GeometryFactory geometryFactory = new GeometryFactory();
 
     /** Handler for the LinearRings that comprise the Polygon. */
     private SubHandlerLinearRing currentHandler = new SubHandlerLinearRing();
@@ -50,16 +46,16 @@ public class SubHandlerPolygon extends SubHandler {
     private LinearRing outerBoundary = null;
 
     /** Stores Polygon's inner boundaries (holes). */
-    private ArrayList innerBoundaries = new ArrayList();
+    private final ArrayList<LinearRing> innerBoundaries = new ArrayList<>();
 
     /** Remembers the current location in the parsing stream (inner or outer boundary). */
     private int location = 0;
 
     /** Indicates that we are inside the inner boundary of the Polygon. */
-    private int INNER_BOUNDARY = 1;
+    private final int INNER_BOUNDARY = 1;
 
     /** Indicates that we are inside the outer boundary of the Polygon. */
-    private int OUTER_BOUNDARY = 2;
+    private final int OUTER_BOUNDARY = 2;
 
     /** Creates a new instance of GMLPolygonHandler. */
     public SubHandlerPolygon() {}
@@ -70,79 +66,20 @@ public class SubHandlerPolygon extends SubHandler {
      * @param message Name of sub geometry located.
      * @param type Type of sub geometry located.
      */
-    public void subGeometry(String message, int type) {
-        // if we have found a linear ring, either
-        // add it to the list of inner boundaries if we are reading them
-        // and at the end of the LinearRing
-        // add it to the outer boundary if we are reading it and at the end of
-        // the LinearRing
-        // create a new linear ring, if we are at the start of a new linear ring
+    @Override
+    public void subGeometry(final String message, final int type) {
+
         if (message.equals("LinearRing")) {
             if (type == GEOMETRY_END) {
                 if (location == INNER_BOUNDARY) {
-                    LinearRing ring = (LinearRing) currentHandler.create(geometryFactory);
-                    Coordinate[] points = ring.getCoordinates();
-
-                    /* it is important later that internal rings (holes) are
-                     * anticlockwise (counter clockwise) - so we reverse the
-                     * points if necessary
-                     */
-                    if (Orientation.isCCW(points)) {
-                        LOGGER.finer("good hole found");
-
-                        // System.out.println("inner boundary: " + message);
-                        innerBoundaries.add(ring);
-
-                    } else {
-                        LOGGER.finer("bad hole found - fixing");
-                        Coordinate[] newPoints = new Coordinate[points.length];
-
-                        for (int i = 0, j = points.length - 1; i < points.length; i++, j--) {
-                            newPoints[i] = points[j];
-                        }
-
-                        try {
-                            ring = geometryFactory.createLinearRing(newPoints);
-                            innerBoundaries.add(ring);
-                        } catch (TopologyException e) {
-                            LOGGER.warning("Caught Topology exception in GMLPolygonHandler");
-                            ring = null;
-                        }
-                    }
+                    innerBoundaries.add((LinearRing) currentHandler.create(geometryFactory));
                 } else if (location == OUTER_BOUNDARY) {
-                    /* it is important later that the outerboundary is
-                     * clockwise  - so we reverse the
-                     * points if necessary
-                     */
                     outerBoundary = (LinearRing) currentHandler.create(geometryFactory);
-
-                    Coordinate[] points = outerBoundary.getCoordinates();
-
-                    if (Orientation.isCCW(points)) {
-                        LOGGER.finer("bad outer ring - rebuilding");
-                        //  System.out.println("rebuilding outer ring");
-                        Coordinate[] newPoints = new Coordinate[points.length];
-
-                        for (int i = 0, j = points.length - 1; i < points.length; i++, j--) {
-                            newPoints[i] = points[j];
-                        }
-
-                        try {
-                            outerBoundary = geometryFactory.createLinearRing(newPoints);
-                            // System.out.println("outer boundary: " + message);
-
-                        } catch (TopologyException e) {
-                            LOGGER.warning("Caught Topology exception in " + "GMLPolygonHandler");
-                            outerBoundary = null;
-                        }
-                    }
                 }
             } else if (type == GEOMETRY_START) {
                 currentHandler = new SubHandlerLinearRing();
             }
         } else if (message.equals("outerBoundaryIs")) {
-            //  or, if we are getting notice of an inner/outer boundary marker,
-            // set current location appropriately
             LOGGER.finer("new outer Boundary");
             location = OUTER_BOUNDARY;
         } else if (message.equals("innerBoundaryIs")) {
@@ -156,7 +93,8 @@ public class SubHandlerPolygon extends SubHandler {
      *
      * @param coordinate Name of sub geometry located.
      */
-    public void addCoordinate(Coordinate coordinate) {
+    @Override
+    public void addCoordinate(final Coordinate coordinate) {
         currentHandler.addCoordinate(coordinate);
     }
 
@@ -166,7 +104,9 @@ public class SubHandlerPolygon extends SubHandler {
      * @param message Name of GML element that prompted this check.
      * @return Flag indicating whether or not the geometry is ready to be returned.
      */
-    public boolean isComplete(String message) {
+    @Override
+    public boolean isComplete(final String message) {
+
         // the conditions checked here are that the endGeometry message that
         // prompted this check is a Polygon and that this Polygon has an outer
         // boundary; if true, then return the all go signal
@@ -180,7 +120,7 @@ public class SubHandlerPolygon extends SubHandler {
         // otherwise, send this message to the subGeometry method for further
         // processing
         else {
-            //            this.subGeometry(message, GEOMETRY_END);
+            // this.subGeometry(message, GEOMETRY_END);
 
             return false;
         }
@@ -192,9 +132,10 @@ public class SubHandlerPolygon extends SubHandler {
      * @param geometryFactory Geometry factory to be used in Polygon creation.
      * @return Completed OGC Polygon.
      */
-    public Geometry create(GeometryFactory geometryFactory) {
+    @Override
+    public Geometry create(final GeometryFactory geometryFactory) {
         for (int i = 0; i < innerBoundaries.size(); i++) {
-            LinearRing hole = (LinearRing) innerBoundaries.get(i);
+            final LinearRing hole = innerBoundaries.get(i);
             if (hole.crosses(outerBoundary)) {
                 LOGGER.warning("Topology Error building polygon");
 
@@ -202,9 +143,8 @@ public class SubHandlerPolygon extends SubHandler {
             }
         }
 
-        LinearRing[] rings =
-                (LinearRing[]) innerBoundaries.toArray(new LinearRing[innerBoundaries.size()]);
-        Polygon polygon = geometryFactory.createPolygon(outerBoundary, rings);
+        final LinearRing[] rings = innerBoundaries.toArray(new LinearRing[innerBoundaries.size()]);
+        final Polygon polygon = geometryFactory.createPolygon(outerBoundary, rings);
         polygon.setUserData(getSRS());
         polygon.setSRID(getSRID());
         return polygon;

@@ -125,11 +125,11 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
     private int[] attributeRsIndex;
 
     public JDBCFeatureReader(
-            final String sql,
-            final Connection cx,
-            final JDBCFeatureSource featureSource,
-            final SimpleFeatureType featureType,
-            final Query query)
+            String sql,
+            Connection cx,
+            JDBCFeatureSource featureSource,
+            SimpleFeatureType featureType,
+            Query query)
             throws SQLException {
         init(featureSource, featureType, query);
 
@@ -144,11 +144,11 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
     }
 
     public JDBCFeatureReader(
-            final PreparedStatement st,
-            final Connection cx,
-            final JDBCFeatureSource featureSource,
-            final SimpleFeatureType featureType,
-            final Query query)
+            PreparedStatement st,
+            Connection cx,
+            JDBCFeatureSource featureSource,
+            SimpleFeatureType featureType,
+            Query query)
             throws SQLException {
 
         init(featureSource, featureType, query);
@@ -163,12 +163,12 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
     }
 
     public JDBCFeatureReader(
-            final ResultSet rs,
-            final Connection cx,
-            final int offset,
-            final JDBCFeatureSource featureSource,
-            final SimpleFeatureType featureType,
-            final Query query)
+            ResultSet rs,
+            Connection cx,
+            int offset,
+            JDBCFeatureSource featureSource,
+            SimpleFeatureType featureType,
+            Query query)
             throws SQLException {
         init(featureSource, featureType, query);
 
@@ -179,9 +179,7 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
     }
 
     protected void init(
-            final JDBCFeatureSource featureSource,
-            final SimpleFeatureType featureType,
-            final Query query) {
+            JDBCFeatureSource featureSource, SimpleFeatureType featureType, Query query) {
         // init the tracer if we need to debug a connection leak
         if (TRACE_ENABLED) {
             tracer = new Exception();
@@ -198,10 +196,10 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
 
         // grab a geometry factory... check for a special hint
         geometryFactory =
-                hints != null ? (GeometryFactory) hints.get(Hints.JTS_GEOMETRY_FACTORY) : null;
+                (hints != null) ? (GeometryFactory) hints.get(Hints.JTS_GEOMETRY_FACTORY) : null;
         if (geometryFactory == null) {
             // look for a coordinate sequence factory
-            final CoordinateSequenceFactory csFactory =
+            CoordinateSequenceFactory csFactory =
                     (CoordinateSequenceFactory) hints.get(Hints.JTS_COORDINATE_SEQUENCE_FACTORY);
 
             if (csFactory != null) {
@@ -214,7 +212,7 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
             geometryFactory = dataStore.getGeometryFactory();
         }
 
-        final Double linearizationTolerance =
+        Double linearizationTolerance =
                 hints != null ? (Double) hints.get(Hints.LINEARIZATION_TOLERANCE) : null;
         if (linearizationTolerance != null) {
             geometryFactory = new CurvedGeometryFactory(geometryFactory, linearizationTolerance);
@@ -227,15 +225,13 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
         // from the datastore
         FeatureFactory ff =
                 hints != null ? (FeatureFactory) hints.get(Hints.FEATURE_FACTORY) : null;
-        if (ff == null) {
-            ff = featureSource.getDataStore().getFeatureFactory();
-        }
+        if (ff == null) ff = featureSource.getDataStore().getFeatureFactory();
         builder = new SimpleFeatureBuilder(featureType, ff);
 
         // find the primary key
         try {
             pkey = dataStore.getPrimaryKey(featureType);
-        } catch (final IOException e) {
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
@@ -250,25 +246,25 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
         ResultSet run() throws Exception;
     }
 
-    void runQuery(final QueryRunner runner, final Statement st) throws SQLException {
+    void runQuery(QueryRunner runner, Statement st) throws SQLException {
         callback.beforeQuery(st);
         try {
             rs = runner.run();
             callback.afterQuery(st);
-        } catch (final Exception e1) {
+        } catch (Exception e1) {
             callback.queryError(e1);
 
             // make sure to mark as closed, otherwise we are going to log that it was not
             try {
                 close();
-            } catch (final IOException e2) {
+            } catch (IOException e2) {
                 LOGGER.log(Level.FINE, "Failed to close the reader, moving on", e2);
             }
             throw new SQLException(e1);
         }
     }
 
-    public JDBCFeatureReader(final JDBCFeatureReader other) {
+    public JDBCFeatureReader(JDBCFeatureReader other) {
         this.featureType = other.featureType;
         this.dataStore = other.dataStore;
         this.featureSource = other.featureSource;
@@ -281,14 +277,13 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
         this.md = other.md;
     }
 
-    public void setNext(final Boolean next) {
+    public void setNext(Boolean next) {
         this.next = next;
         if (next == null) {
             nextFeature = null;
         }
     }
 
-    @Override
     public SimpleFeatureType getFeatureType() {
         return featureType;
     }
@@ -301,7 +296,6 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
         return query;
     }
 
-    @Override
     public boolean hasNext() throws IOException {
         ensureOpen();
 
@@ -320,7 +314,7 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
                 if (!next) {
                     callback.finish(this);
                 }
-            } catch (final SQLException e) {
+            } catch (SQLException e) {
                 callback.rowError(e);
                 throw new RuntimeException(e);
             }
@@ -341,21 +335,21 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
             }
             // wrap the fid in the type name
             fid = featureType.getTypeName() + "." + fid;
-        } catch (final Exception e) {
+        } catch (Exception e) {
             throw new RuntimeException("Could not determine fid from primary key", e);
         }
 
         // round up attributes
         final int attributeCount = featureType.getAttributeCount();
         for (int i = 0; i < attributeCount; i++) {
-            final AttributeDescriptor type = featureType.getDescriptor(i);
+            AttributeDescriptor type = featureType.getDescriptor(i);
 
             try {
                 Object value = null;
 
                 // is this a geometry?
                 if (type instanceof GeometryDescriptor) {
-                    final GeometryDescriptor gatt = (GeometryDescriptor) type;
+                    GeometryDescriptor gatt = (GeometryDescriptor) type;
 
                     // read the geometry
                     try {
@@ -369,13 +363,13 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
                                                 geometryFactory,
                                                 cx,
                                                 hints);
-                    } catch (final IOException e) {
+                    } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
 
                     if (value != null) {
                         // check to see if a crs was set
-                        final Geometry geometry = (Geometry) value;
+                        Geometry geometry = (Geometry) value;
                         if (geometry.getUserData() == null) {
                             // if not set, set from descriptor
                             geometry.setUserData(gatt.getCoordinateReferenceSystem());
@@ -393,7 +387,7 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
                                     }
                                 }
                             }
-                        } catch (final TransformException e) {
+                        } catch (TransformException e) {
                             if (LOGGER.isLoggable(Level.WARNING)) {
                                 LOGGER.log(
                                         Level.WARNING,
@@ -413,12 +407,12 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
                 // user (being the feature type reverse engineerd, it's unlikely a true
                 // conversion will be needed)
                 if (value != null) {
-                    final Class binding = type.getType().getBinding();
-                    final Object converted = Converters.convert(value, binding);
+                    Class binding = type.getType().getBinding();
+                    Object converted = Converters.convert(value, binding);
                     if (converted != null && converted != value) {
                         value = converted;
                         if (dataStore.getLogger().isLoggable(Level.FINER)) {
-                            final String msg =
+                            String msg =
                                     value
                                             + " is not of type "
                                             + binding.getName()
@@ -429,7 +423,7 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
                 }
 
                 builder.add(value);
-            } catch (final SQLException e) {
+            } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
         }
@@ -437,7 +431,7 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
         // create the feature
         try {
             return builder.buildFeature(fid);
-        } catch (final IllegalAttributeException e) {
+        } catch (IllegalAttributeException e) {
             builder.reset();
             throw new RuntimeException(e);
         }
@@ -455,7 +449,6 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
         }
     }
 
-    @Override
     public SimpleFeature next()
             throws IOException, IllegalArgumentException, NoSuchElementException {
         try {
@@ -494,12 +487,12 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
      * @return
      */
     private int[] buildAttributeRsIndex() {
-        final LinkedHashSet<String> pkColumns = dataStore.getColumnNames(pkey);
-        final List<String> pkColumnsList = new ArrayList<String>(pkColumns);
-        final int[] indexes = new int[featureType.getAttributeCount()];
+        LinkedHashSet<String> pkColumns = dataStore.getColumnNames(pkey);
+        List<String> pkColumnsList = new ArrayList<String>(pkColumns);
+        int[] indexes = new int[featureType.getAttributeCount()];
         int exposedPks = 0;
         for (int i = 0; i < indexes.length; i++) {
-            final String attName = featureType.getDescriptor(i).getLocalName();
+            String attName = featureType.getDescriptor(i).getLocalName();
             if (pkColumns.contains(attName)) {
                 indexes[i] = pkColumnsList.indexOf(attName) + 1;
                 exposedPks++;
@@ -510,7 +503,6 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
         return indexes;
     }
 
-    @Override
     public void close() throws IOException {
         if (dataStore != null) {
             // clean up
@@ -589,7 +581,7 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
         /** true if primary keys are not returned (the default is false) */
         boolean exposePrimaryKeys;
 
-        ResultSetFeature(final ResultSet rs, final Connection cx) throws SQLException, IOException {
+        ResultSetFeature(ResultSet rs, Connection cx) throws SQLException, IOException {
             this.rs = rs;
             this.cx = cx;
 
@@ -600,10 +592,10 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
 
             exposePrimaryKeys = featureSource.getState().isExposePrimaryKeyColumns();
             for (int i = 0; i < md.getColumnCount(); i++) {
-                final String columnName = md.getColumnName(i + 1);
+                String columnName = md.getColumnName(i + 1);
                 columnNames[i] = columnName;
                 if (!exposePrimaryKeys) {
-                    for (final PrimaryKeyColumn col : key.getColumns()) {
+                    for (PrimaryKeyColumn col : key.getColumns()) {
                         if (col.getName().equals(columnName)) {
                             count--;
                             break;
@@ -624,7 +616,7 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
             O:
             for (int i = 0; i < md.getColumnCount(); i++) {
                 if (!exposePrimaryKeys) {
-                    for (final PrimaryKeyColumn col : key.getColumns()) {
+                    for (PrimaryKeyColumn col : key.getColumns()) {
                         if (col.getName().equals(md.getColumnName(i + 1))) {
                             offset++;
                             continue O;
@@ -636,7 +628,7 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
             }
         }
 
-        public void init(final String fid) {
+        public void init(String fid) {
             // mark as new according to the fid
             newFeature = fid == null;
 
@@ -655,59 +647,50 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
 
             // TODO: factory fid prefixing out
             init(featureType.getTypeName() + "." + dataStore.encodeFID(key, rs, offset));
-
-            // ensure initialized values GEOT-6264
-            for (int k = 0; k < values.length; k++) {
+            
+            for (int k = 0; k < values.length; k++) // ensure initialized values GEOT-6264
                 getAttribute(k);
-            }
         }
 
-        @Override
         public SimpleFeatureType getFeatureType() {
             return featureType;
         }
 
-        @Override
         public SimpleFeatureType getType() {
             return featureType;
         }
 
-        @Override
         public FeatureId getIdentifier() {
             return fid;
         }
 
-        @Override
         public String getID() {
             return fid.getID();
         }
 
-        public void setID(final String id) {
+        public void setID(String id) {
             ((FeatureIdImpl) fid).setID(id);
         }
 
-        @Override
-        public Object getAttribute(final String name) {
+        public Object getAttribute(String name) {
             return getAttribute(index.get(name));
         }
 
-        @Override
-        public Object getAttribute(final Name name) {
+        public Object getAttribute(Name name) {
             return getAttribute(name.getLocalPart());
         }
 
-        @Override
-        public Object getAttribute(final int index) throws IndexOutOfBoundsException {
+        public Object getAttribute(int index) throws IndexOutOfBoundsException {
             return getAttributeInternal(index, mapToResultSetIndex(index));
         }
 
-        private int mapToResultSetIndex(final int index) {
+        private int mapToResultSetIndex(int index) {
             // map the index to result set
             int rsindex = index;
 
             for (int i = 0; i <= index; i++) {
                 if (!exposePrimaryKeys) {
-                    for (final PrimaryKeyColumn col : key.getColumns()) {
+                    for (PrimaryKeyColumn col : key.getColumns()) {
                         if (col.getName().equals(columnNames[i])) {
                             rsindex++;
                             break;
@@ -720,7 +703,7 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
             return rsindex;
         }
 
-        private Object getAttributeInternal(final int index, final int rsindex) {
+        private Object getAttributeInternal(int index, int rsindex) {
             if (!newFeature && values[index] == null && !dirty[index]) {
                 synchronized (this) {
                     try {
@@ -729,9 +712,9 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
                             // in which its a geometry, this case the dialect needs
                             // to read it
 
-                            final AttributeDescriptor att = featureType.getDescriptor(index);
+                            AttributeDescriptor att = featureType.getDescriptor(index);
                             if (att instanceof GeometryDescriptor) {
-                                final GeometryDescriptor gatt = (GeometryDescriptor) att;
+                                GeometryDescriptor gatt = (GeometryDescriptor) att;
                                 values[index] =
                                         dataStore
                                                 .getSQLDialect()
@@ -746,9 +729,9 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
                                 values[index] = rs.getObject(rsindex);
                             }
                         }
-                    } catch (final IOException e) {
+                    } catch (IOException e) {
                         throw new RuntimeException(e);
-                    } catch (final SQLException e) {
+                    } catch (SQLException e) {
                         // do not throw exception because of insert mode
                         // TODO: set a flag for insert vs update
                         // throw new RuntimeException( e );
@@ -759,24 +742,20 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
             return values[index];
         }
 
-        @Override
-        public void setAttribute(final String name, final Object value) {
+        public void setAttribute(String name, Object value) {
             if (dataStore.getLogger().isLoggable(Level.FINE)) {
                 dataStore.getLogger().fine("Setting " + name + " to " + value);
             }
 
-            final int i = index.get(name);
+            int i = index.get(name);
             setAttribute(i, value);
         }
 
-        @Override
-        public void setAttribute(final Name name, final Object value) {
+        public void setAttribute(Name name, Object value) {
             setAttribute(name.getLocalPart(), value);
         }
 
-        @Override
-        public void setAttribute(final int index, final Object value)
-                throws IndexOutOfBoundsException {
+        public void setAttribute(int index, Object value) throws IndexOutOfBoundsException {
             if (dataStore.getLogger().isLoggable(Level.FINE)) {
                 dataStore.getLogger().fine("Setting " + index + " to " + value);
             }
@@ -784,29 +763,26 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
             dirty[index] = true;
         }
 
-        @Override
-        public void setAttributes(final List<Object> values) {
+        public void setAttributes(List<Object> values) {
             for (int i = 0; i < values.size(); i++) {
                 setAttribute(i, values.get(i));
             }
         }
 
-        @Override
         public int getAttributeCount() {
             return values.length;
         }
 
-        public boolean isDirty(final int index) {
+        public boolean isDirty(int index) {
             return dirty[index];
         }
 
         /** @deprecated use {@link #isDirty(String)} instead */
-        @Deprecated
-        public boolean isDirrty(final String name) {
+        public boolean isDirrty(String name) {
             return isDirty(name);
         }
 
-        public boolean isDirty(final String name) {
+        public boolean isDirty(String name) {
             return isDirty(index.get(name));
         }
 
@@ -816,19 +792,16 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
             columnNames = null;
         }
 
-        @Override
         public List<Object> getAttributes() {
             return Arrays.asList(values);
         }
 
-        @Override
         public Object getDefaultGeometry() {
-            final GeometryDescriptor defaultGeometry = featureType.getGeometryDescriptor();
+            GeometryDescriptor defaultGeometry = featureType.getGeometryDescriptor();
             return defaultGeometry != null ? getAttribute(defaultGeometry.getName()) : null;
         }
 
-        @Override
-        public void setAttributes(final Object[] object) {
+        public void setAttributes(Object[] object) {
             if (object == null) {
                 throw new NullPointerException("Attributes array is null");
             } else if (object.length != values.length) {
@@ -843,112 +816,92 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
             }
         }
 
-        @Override
-        public void setDefaultGeometry(final Object defaultGeometry) {
-            final GeometryDescriptor descriptor = featureType.getGeometryDescriptor();
+        public void setDefaultGeometry(Object defaultGeometry) {
+            GeometryDescriptor descriptor = featureType.getGeometryDescriptor();
             setAttribute(descriptor.getName(), defaultGeometry);
         }
 
-        @Override
         public BoundingBox getBounds() {
-            final Object obj = getDefaultGeometry();
+            Object obj = getDefaultGeometry();
             if (obj instanceof Geometry) {
-                final Geometry geometry = (Geometry) obj;
+                Geometry geometry = (Geometry) obj;
                 return ReferencedEnvelope.create(
                         geometry.getEnvelopeInternal(), featureType.getCoordinateReferenceSystem());
             }
             return ReferencedEnvelope.create(featureType.getCoordinateReferenceSystem());
         }
 
-        @Override
         public GeometryAttribute getDefaultGeometryProperty() {
-            final GeometryDescriptor geometryDescriptor = featureType.getGeometryDescriptor();
+            GeometryDescriptor geometryDescriptor = featureType.getGeometryDescriptor();
             GeometryAttribute geometryAttribute = null;
             if (geometryDescriptor != null) {
-                final Object defaultGeometry = getDefaultGeometry();
+                Object defaultGeometry = getDefaultGeometry();
                 geometryAttribute =
                         new GeometryAttributeImpl(defaultGeometry, geometryDescriptor, null);
             }
             return geometryAttribute;
         }
 
-        @Override
-        public void setDefaultGeometryProperty(final GeometryAttribute defaultGeometry) {
-            if (defaultGeometry != null) {
-                setDefaultGeometry(defaultGeometry.getValue());
-            } else {
-                setDefaultGeometry(null);
-            }
+        public void setDefaultGeometryProperty(GeometryAttribute defaultGeometry) {
+            if (defaultGeometry != null) setDefaultGeometry(defaultGeometry.getValue());
+            else setDefaultGeometry(null);
         }
 
-        @Override
         public Collection<Property> getProperties() {
             throw new UnsupportedOperationException("Use getAttributes()");
         }
 
-        @Override
-        public Collection<Property> getProperties(final Name name) {
+        public Collection<Property> getProperties(Name name) {
             throw new UnsupportedOperationException("Use getAttributes()");
         }
 
-        @Override
-        public Collection<Property> getProperties(final String name) {
+        public Collection<Property> getProperties(String name) {
             throw new UnsupportedOperationException("Use getAttributes()");
         }
 
-        @Override
-        public Property getProperty(final Name name) {
+        public Property getProperty(Name name) {
             throw new UnsupportedOperationException("Use getAttribute()");
         }
 
-        @Override
-        public Property getProperty(final String name) {
+        public Property getProperty(String name) {
             throw new UnsupportedOperationException("Use getAttribute()");
         }
 
-        @Override
         public Collection<? extends Property> getValue() {
             return getProperties();
         }
 
-        @Override
-        public void setValue(final Collection<Property> value) {
-            final int i = 0;
-            for (final Property p : value) {
+        public void setValue(Collection<Property> value) {
+            int i = 0;
+            for (Property p : value) {
                 this.values[i] = p.getValue();
             }
         }
 
-        @Override
         public AttributeDescriptor getDescriptor() {
             return new AttributeDescriptorImpl(
                     featureType, featureType.getName(), 0, Integer.MAX_VALUE, true, null);
         }
 
-        @Override
         public Name getName() {
             return featureType.getName();
         }
 
-        @Override
         public Map<Object, Object> getUserData() {
             return userData;
         }
 
-        @Override
         public boolean isNillable() {
             return true;
         }
 
-        @Override
-        public void setValue(final Object value) {
+        public void setValue(Object value) {
             setValue((Collection<Property>) value);
         }
 
-        @Override
         public void validate() {
             for (int i = 0; i < values.length; i++) {
-                final AttributeDescriptor descriptor = getType().getDescriptor(i);
+                AttributeDescriptor descriptor = getType().getDescriptor(i);
                 Types.validate(descriptor, values[i]);
             }
         }

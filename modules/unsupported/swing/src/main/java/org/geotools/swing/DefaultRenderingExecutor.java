@@ -288,8 +288,8 @@ public class DefaultRenderingExecutor implements RenderingExecutor {
                 if (!result) {
                     info.listener.onRenderingFailed(event);
                 } else {
+                    currentTasks.remove(info);
                     if (tasksLatch.getCount() == 0) {
-                        currentTasks.remove(info);
                         info.listener.onRenderingCompleted(event);
                         break;
                     }

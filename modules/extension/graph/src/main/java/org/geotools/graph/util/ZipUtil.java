@@ -22,12 +22,16 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
+import org.geotools.util.Utilities;
 
+// unused class
+@Deprecated
 public class ZipUtil {
 
     public static void zip(String zipFilename, String[] filenames) throws IOException {
@@ -57,11 +61,14 @@ public class ZipUtil {
         zout.close();
     }
 
+    @Deprecated
     public static void unzip(String zipFilename, Collection filenames, String outdir)
             throws IOException {
         unzip(zipFilename, (String[]) filenames.toArray(new String[filenames.size()]), outdir);
     }
 
+    /** @deprecated this used to only work on windows */
+    @Deprecated
     public static void unzip(String zipFilename, String[] filenames, String outdir)
             throws IOException {
 
@@ -74,13 +81,15 @@ public class ZipUtil {
 
             for (int i = 0; i < filenames.length; i++) {
                 if (entry.getName().equals(filenames[i])) {
+                    Utilities.assertNotZipSlipVulnarable(
+                            new File(outdir, filenames[i]), Paths.get(outdir));
                     byte[] buffer = new byte[1024];
                     int len;
 
                     InputStream zipin = zipFile.getInputStream(entry);
                     BufferedOutputStream fileout =
                             new BufferedOutputStream(
-                                    new FileOutputStream(outdir + "\\" + filenames[i]));
+                                    new FileOutputStream(new File(outdir, filenames[i])));
 
                     while ((len = zipin.read(buffer)) >= 0) fileout.write(buffer, 0, len);
 
@@ -93,19 +102,23 @@ public class ZipUtil {
             }
         }
     }
-
+    /** @deprecated this used to only work on windows */
+    @Deprecated
     public static void unzip(String zipFilename, String outdir) throws IOException {
         ZipFile zipFile = new ZipFile(zipFilename);
         Enumeration entries = zipFile.entries();
 
         while (entries.hasMoreElements()) {
             ZipEntry entry = (ZipEntry) entries.nextElement();
+            Utilities.assertNotZipSlipVulnarable(
+                    new File(outdir, entry.getName()), Paths.get(outdir));
             byte[] buffer = new byte[1024];
             int len;
 
             InputStream zipin = zipFile.getInputStream(entry);
             BufferedOutputStream fileout =
-                    new BufferedOutputStream(new FileOutputStream(outdir + "\\" + entry.getName()));
+                    new BufferedOutputStream(
+                            new FileOutputStream(new File(outdir, entry.getName())));
 
             while ((len = zipin.read(buffer)) >= 0) fileout.write(buffer, 0, len);
 

@@ -16,6 +16,8 @@
  */
 package org.geotools.util;
 
+import java.io.File;
+import java.io.IOException;
 import java.io.ObjectStreamException;
 import java.io.Serializable;
 import java.util.AbstractQueue;
@@ -754,5 +756,27 @@ public final class Utilities {
                 element -> element.getClass().getName(),
                 Function.identity(),
                 (first, second) -> second);
+    }
+
+    /**
+     * Checks if the given filename exposes a zip slip vulnerability when it would be extracted to
+     * the given path.
+     *
+     * @param fileName name of the destination file to check, this should include the directories
+     * @param destinationDir directory that the file would be unzipped to
+     * @throws java.io.IOException if the given {@code fileName} is found to be vulnerable to zip
+     *     slip with respect to the {@code destinationDir}
+     */
+    public static final void assertNotZipSlipVulnarable(String fileName, String destinationDir)
+            throws IOException {
+        File file = new File(fileName);
+        File path = new File(destinationDir);
+
+        if (!file.toPath().normalize().startsWith(path.toPath())) {
+            throw new IOException(
+                    String.format(
+                            "Bad zip entry: ZipSlip extracting %s to %s",
+                            fileName, destinationDir));
+        }
     }
 }

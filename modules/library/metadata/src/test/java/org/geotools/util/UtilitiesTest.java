@@ -19,6 +19,7 @@ package org.geotools.util;
 import static org.geotools.util.Utilities.*;
 import static org.junit.Assert.*;
 
+import java.io.IOException;
 import org.junit.*;
 
 /**
@@ -26,6 +27,7 @@ import org.junit.*;
  *
  * @version $Id$
  * @author Martin Desruisseaux
+ * @author mprins
  */
 public final class UtilitiesTest {
 
@@ -134,5 +136,62 @@ public final class UtilitiesTest {
         assertEquals("", spaces(0));
         assertEquals(" ", spaces(1));
         assertEquals("        ", spaces(8));
+    }
+
+    /**
+     * testcase for {@link org.geotools.util.Utilities#assertNotZipSlipVulnarable(java.lang.String,
+     * java.lang.String)} for vulnerable filename/path combination.
+     */
+    @Test(expected = IOException.class)
+    public void testAssertNotZipSlipVulnarableVulnerable() throws IOException {
+        Utilities.assertNotZipSlipVulnarable("../testfile", "./target");
+    }
+
+    /**
+     * testcase for {@link org.geotools.util.Utilities#assertNotZipSlipVulnarable(java.lang.String,
+     * java.lang.String)} for vulnerable filename/path combination.
+     */
+    @Test(expected = IOException.class)
+    public void testAssertNotZipSlipVulnarableVulnerable2() throws IOException {
+        Utilities.assertNotZipSlipVulnarable("./target/../../testfile", "./target");
+    }
+
+    /**
+     * testcase for {@link org.geotools.util.Utilities#assertNotZipSlipVulnarable(java.lang.String,
+     * java.lang.String)} for vulnerable filename/path combination.
+     */
+    @Test(expected = IOException.class)
+    public void testAssertNotZipSlipVulnarableVulnerable3() throws IOException {
+        Utilities.assertNotZipSlipVulnarable("../target/../testfile", "../target");
+    }
+
+    /**
+     * testcase for {@link org.geotools.util.Utilities#assertNotZipSlipVulnarable(java.lang.String,
+     * java.lang.String)} for non-vulnerable filename/path combination.
+     */
+    @Test
+    public void testAssertNotZipSlipVulnarableNotVulnerable() throws IOException {
+        try {
+            Utilities.assertNotZipSlipVulnarable("/../testfile", "/");
+        } catch (IOException io) {
+            fail(
+                    "zip slip check should not have failed for this case: "
+                            + io.getLocalizedMessage());
+        }
+    }
+
+    /**
+     * testcase for {@link org.geotools.util.Utilities#assertNotZipSlipVulnarable(java.lang.String,
+     * java.lang.String)} for non-vulnerable filename/path combination.
+     */
+    @Test
+    public void testAssertNotZipSlipVulnarableNotVulnerable2() throws IOException {
+        try {
+            Utilities.assertNotZipSlipVulnarable("../target/testfile", "../target");
+        } catch (IOException io) {
+            fail(
+                    "zip slip check should not have failed for this case: "
+                            + io.getLocalizedMessage());
+        }
     }
 }

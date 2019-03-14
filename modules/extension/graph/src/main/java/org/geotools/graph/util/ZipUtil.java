@@ -27,6 +27,7 @@ import java.util.Enumeration;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
+import org.geotools.util.Utilities;
 
 public class ZipUtil {
 
@@ -74,6 +75,7 @@ public class ZipUtil {
 
             for (int i = 0; i < filenames.length; i++) {
                 if (entry.getName().equals(filenames[i])) {
+                    Utilities.assertNotZipSlipVulnarable(outdir + "\\" + filenames[i], outdir);
                     byte[] buffer = new byte[1024];
                     int len;
 
@@ -100,6 +102,7 @@ public class ZipUtil {
 
         while (entries.hasMoreElements()) {
             ZipEntry entry = (ZipEntry) entries.nextElement();
+            Utilities.assertNotZipSlipVulnarable(outdir + "\\" + entry.getName(), outdir);
             byte[] buffer = new byte[1024];
             int len;
 

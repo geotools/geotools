@@ -42,7 +42,7 @@ public abstract class SourceGraphIterator extends AbstractGraphIterator {
      *
      * @return The source of the iteration.
      */
-  public Graphable getSource() {
+    public Graphable getSource() {
         return (m_source);
     }
 }

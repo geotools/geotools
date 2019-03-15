@@ -32,7 +32,7 @@ public interface DirectedGraphable extends Graphable {
      * @return An iterator over the other directed components related through an in relationship.
      * @see Graphable#getRelated()
      */
-  public Iterator<? extends Graphable> getInRelated();
+    public Iterator<? extends Graphable> getInRelated();
 
     /**
      * Returns other components related through an <B>out</B> relationship.
@@ -40,5 +40,5 @@ public interface DirectedGraphable extends Graphable {
      * @return An iterator over the other directed components related through an out relationship.
      * @see Graphable#getRelated()
      */
-  public Iterator<? extends Graphable> getOutRelated();
+    public Iterator<? extends Graphable> getOutRelated();
 }

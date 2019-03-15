@@ -22,7 +22,6 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
 import org.geotools.graph.structure.Edge;
 import org.geotools.graph.structure.Node;
 
@@ -99,9 +98,9 @@ public class OptNode extends OptGraphable implements Node {
     }
 
     /** @see Node#getEdges(Node) */
-  @Override
-  public List<Edge> getEdges(Node other) {
-    ArrayList<Edge> edges = new ArrayList<>();
+    @Override
+    public List<Edge> getEdges(Node other) {
+        ArrayList<Edge> edges = new ArrayList<>();
         for (int i = 0; i < m_edges.length; i++) {
             if (m_edges[i].getNodeA().equals(this) && m_edges[i].getNodeB().equals(other)
                     || m_edges[i].getNodeB().equals(this) && m_edges[i].getNodeA().equals(other))
@@ -121,8 +120,8 @@ public class OptNode extends OptGraphable implements Node {
 
     /** @see Node#getEdges() */
     @Override
-  public List<Edge> getEdges() {
-    ArrayList<Edge> edges = new ArrayList<>();
+    public List<Edge> getEdges() {
+        ArrayList<Edge> edges = new ArrayList<>();
 
         for (int i = 0; i < m_edges.length; i++) {
             edges.add(m_edges[i]);
@@ -152,7 +151,7 @@ public class OptNode extends OptGraphable implements Node {
      * @see org.geotools.graph.structure.Graphable#getRelated()
      */
     @Override
-  public Iterator<Node> getRelated() {
+    public Iterator<Node> getRelated() {
         return (new RelatedIterator(this));
     }
 
@@ -195,7 +194,7 @@ public class OptNode extends OptGraphable implements Node {
      *
      * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
      */
-  public class RelatedIterator implements Iterator<Node> {
+    public class RelatedIterator implements Iterator<Node> {
 
         /** index of iterator * */
         private byte m_index = 0;
@@ -232,7 +231,7 @@ public class OptNode extends OptGraphable implements Node {
          * @see Iterator#next()
          */
         @Override
-    public Node next() {
+        public Node next() {
             Edge e = m_edges[m_index++];
             return (e.getNodeA().equals(m_node) ? e.getNodeB() : e.getNodeA());
         }

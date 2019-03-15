@@ -18,7 +18,6 @@ package org.geotools.graph.structure.opt;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-
 import org.geotools.graph.structure.Edge;
 import org.geotools.graph.structure.Node;
 
@@ -86,17 +85,18 @@ public class OptEdge extends OptGraphable implements Edge {
     }
 
     /** @see org.geotools.graph.structure.Graphable#getRelated() */
-  @Override
-  public Iterator<Edge> getRelated() {
+    @Override
+    public Iterator<Edge> getRelated() {
         return (new RelatedIterator(this));
     }
 
-  public class RelatedIterator implements Iterator<Edge> {
+    public class RelatedIterator implements Iterator<Edge> {
 
-    private Iterator<Edge> m_itr;
+        private Iterator<Edge> m_itr;
 
         public RelatedIterator(OptEdge edge) {
-      ArrayList<Edge> edges = new ArrayList<>(
+            ArrayList<Edge> edges =
+                    new ArrayList<>(
                             m_nodeA.getDegree()
                                     + m_nodeB.getDegree()
                                     - 2
@@ -128,8 +128,8 @@ public class OptEdge extends OptGraphable implements Edge {
             return (m_itr.hasNext());
         }
 
-    @Override
-    public Edge next() {
+        @Override
+        public Edge next() {
             return (m_itr.next());
         }
     }

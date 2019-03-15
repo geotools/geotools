@@ -20,7 +20,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
-
 import org.geotools.graph.structure.Edge;
 import org.geotools.graph.structure.Graph;
 import org.geotools.graph.structure.Graphable;
@@ -32,139 +31,134 @@ import org.geotools.graph.traverse.basic.BasicGraphTraversal;
 import org.geotools.graph.traverse.standard.DepthFirstIterator;
 
 /**
- * Creates a collection of connected graphs from a single graph. A connected
- * graph in which for every two pair of nodes, there is a path between them.
+ * Creates a collection of connected graphs from a single graph. A connected graph in which for
+ * every two pair of nodes, there is a path between them.
  *
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
  */
 public class GraphPartitioner implements GraphWalker {
 
-  /** graph to be partitioned into connected components * */
-  private Graph m_graph;
+    /** graph to be partitioned into connected components * */
+    private Graph m_graph;
 
-  /** Partitions of graph * */
-  private ArrayList<Serializable> m_partitions;
+    /** Partitions of graph * */
+    private ArrayList<Serializable> m_partitions;
 
-  /** current partition * */
-  private ArrayList<Serializable> m_partition;
+    /** current partition * */
+    private ArrayList<Serializable> m_partition;
 
-  /** visited counter * */
-  private int m_nvisited;
+    /** visited counter * */
+    private int m_nvisited;
 
-  /**
-   * Constructs a new partitioner for a graph.
-   *
-   * @param graph
-   *          Graph to be partitioned.
-   */
-  public GraphPartitioner(Graph graph) {
-    m_graph = graph;
-    m_partitions = new ArrayList<>();
-  }
-
-  /**
-   * Performs the partition.
-   *
-   * @return True if the partition was successful, otherwise false.
-   */
-  public boolean partition() {
-    // strategy is to perform a depth first search from a node, every node is
-    // reaches is connected therefore in the same partition
-    // when traversal ends, start from a new source, repeat until no more
-    // sources
-
-    try {
-      m_nvisited = m_graph.getNodes().size();
-
-      DepthFirstIterator iterator = new DepthFirstIterator();
-      BasicGraphTraversal traversal = new BasicGraphTraversal(m_graph, this, iterator);
-
-      Iterator<?> sources = m_graph.getNodes().iterator();
-
-      traversal.init();
-      m_partition = new ArrayList<>();
-
-      while (m_nvisited > 0) {
-
-        // find a node that hasn't been visited and set as source of traversal
-        Node source = null;
-        while (sources.hasNext()) {
-          source = (Node) sources.next();
-          if (!source.isVisited())
-            break;
-        }
-
-        // if we could not find a source, return false
-        if (source == null || source.isVisited())
-          return (false);
-
-        iterator.setSource(source);
-        traversal.traverse();
-      }
-
-      // create the individual graphs
-      HashSet<Node> nodes = null;
-      HashSet<Edge> edges = null;
-      ArrayList<Serializable> graphs = new ArrayList<>();
-
-      for (Iterator<Serializable> itr = m_partitions.iterator(); itr.hasNext();) {
-        m_partition = (ArrayList<Serializable>) itr.next();
-        if (m_partition.size() == 0)
-          continue;
-
-        nodes = new HashSet<>();
-        edges = new HashSet<>();
-        for (Iterator<Serializable> nitr = m_partition.iterator(); nitr.hasNext();) {
-          Node node = (Node) nitr.next();
-          nodes.add(node);
-          edges.addAll(node.getEdges());
-        }
-
-        graphs.add(new BasicGraph(nodes, edges));
-      }
-
-      m_partitions = graphs;
-
-      return (true);
-    } catch (Exception e) {
-      java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
+    /**
+     * Constructs a new partitioner for a graph.
+     *
+     * @param graph Graph to be partitioned.
+     */
+    public GraphPartitioner(Graph graph) {
+        m_graph = graph;
+        m_partitions = new ArrayList<>();
     }
-    return (false);
-  }
 
-  /**
-   * Returns the partitions of the graph.
-   *
-   * @return A collection of Graph objects.
-   * @see Graph
-   */
-  public ArrayList<Serializable> getPartitions() {
-    return (m_partitions);
-  }
+    /**
+     * Performs the partition.
+     *
+     * @return True if the partition was successful, otherwise false.
+     */
+    public boolean partition() {
+        // strategy is to perform a depth first search from a node, every node is
+        // reaches is connected therefore in the same partition
+        // when traversal ends, start from a new source, repeat until no more
+        // sources
 
-  /**
-   * Adds the element to the current partition.
-   *
-   * @see GraphWalker#visit(Graphable, GraphTraversal)
-   */
-  @Override
-  public int visit(Graphable element, GraphTraversal traversal) {
-    // add element to current set
-    m_nvisited--;
-    m_partition.add((Serializable) element);
-    return (GraphTraversal.CONTINUE);
-  }
+        try {
+            m_nvisited = m_graph.getNodes().size();
 
-  /**
-   * Adds the current partition to the completed set of partitions and creates a
-   * new partition.
-   *
-   * @see GraphWalker#finish()
-   */
-  @Override
-  public void finish() {
-    // create a new set
-    m_partitions.add(m_partition);
-    m_partition = new ArrayList<>();
-  }
+            DepthFirstIterator iterator = new DepthFirstIterator();
+            BasicGraphTraversal traversal = new BasicGraphTraversal(m_graph, this, iterator);
+
+            Iterator<?> sources = m_graph.getNodes().iterator();
+
+            traversal.init();
+            m_partition = new ArrayList<>();
+
+            while (m_nvisited > 0) {
+
+                // find a node that hasn't been visited and set as source of traversal
+                Node source = null;
+                while (sources.hasNext()) {
+                    source = (Node) sources.next();
+                    if (!source.isVisited()) break;
+                }
+
+                // if we could not find a source, return false
+                if (source == null || source.isVisited()) return (false);
+
+                iterator.setSource(source);
+                traversal.traverse();
+            }
+
+            // create the individual graphs
+            HashSet<Node> nodes = null;
+            HashSet<Edge> edges = null;
+            ArrayList<Serializable> graphs = new ArrayList<>();
+
+            for (Iterator<Serializable> itr = m_partitions.iterator(); itr.hasNext(); ) {
+                m_partition = (ArrayList<Serializable>) itr.next();
+                if (m_partition.size() == 0) continue;
+
+                nodes = new HashSet<>();
+                edges = new HashSet<>();
+                for (Iterator<Serializable> nitr = m_partition.iterator(); nitr.hasNext(); ) {
+                    Node node = (Node) nitr.next();
+                    nodes.add(node);
+                    edges.addAll(node.getEdges());
+                }
+
+                graphs.add(new BasicGraph(nodes, edges));
+            }
+
+            m_partitions = graphs;
+
+            return (true);
+        } catch (Exception e) {
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
+        }
+        return (false);
+    }
+
+    /**
+     * Returns the partitions of the graph.
+     *
+     * @return A collection of Graph objects.
+     * @see Graph
+     */
+    public ArrayList<Serializable> getPartitions() {
+        return (m_partitions);
+    }
+
+    /**
+     * Adds the element to the current partition.
+     *
+     * @see GraphWalker#visit(Graphable, GraphTraversal)
+     */
+    @Override
+    public int visit(Graphable element, GraphTraversal traversal) {
+        // add element to current set
+        m_nvisited--;
+        m_partition.add((Serializable) element);
+        return (GraphTraversal.CONTINUE);
+    }
+
+    /**
+     * Adds the current partition to the completed set of partitions and creates a new partition.
+     *
+     * @see GraphWalker#finish()
+     */
+    @Override
+    public void finish() {
+        // create a new set
+        m_partitions.add(m_partition);
+        m_partition = new ArrayList<>();
+    }
 }

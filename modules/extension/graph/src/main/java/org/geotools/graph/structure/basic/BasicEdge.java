@@ -18,7 +18,6 @@ package org.geotools.graph.structure.basic;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-
 import org.geotools.graph.structure.Edge;
 import org.geotools.graph.structure.Node;
 
@@ -77,11 +76,11 @@ public class BasicEdge extends BasicGraphable implements Edge {
      *
      * @see org.geotools.graph.structure.Graphable#getRelated()
      */
-  @Override
-  public Iterator<Edge> getRelated() {
-    ArrayList<Edge> adj = new ArrayList<>();
+    @Override
+    public Iterator<Edge> getRelated() {
+        ArrayList<Edge> adj = new ArrayList<>();
 
-    for (Iterator<? extends Edge> itr = m_nodeA.getEdges().iterator(); itr.hasNext();) {
+        for (Iterator<? extends Edge> itr = m_nodeA.getEdges().iterator(); itr.hasNext(); ) {
             Edge e = itr.next();
             switch (e.compareNodes(this)) {
                 case EQUAL_NODE_ORIENTATION: // same node orientation
@@ -92,7 +91,7 @@ public class BasicEdge extends BasicGraphable implements Edge {
             }
         }
 
-    for (Iterator<? extends Edge> itr = m_nodeB.getEdges().iterator(); itr.hasNext();) {
+        for (Iterator<? extends Edge> itr = m_nodeB.getEdges().iterator(); itr.hasNext(); ) {
             Edge e = itr.next();
             switch (e.compareNodes(this)) {
                 case EQUAL_NODE_ORIENTATION:
@@ -127,14 +126,14 @@ public class BasicEdge extends BasicGraphable implements Edge {
         return (UNEQUAL_NODE_ORIENTATION);
     }
 
-  /*
-   * @Override public int hashCode() { return m_nodeA.hashCode() + 31 *
-   * m_nodeB.hashCode(); }
-   * 
-   * @Override public boolean equals(Object obj) { if (obj instanceof Edge) {
-   * Edge e = (Edge) obj; return e.getNodeA().equals(m_nodeA) &&
-   * e.getNodeB().equals(m_nodeB); } return false; }
-   */
+    /*
+     * @Override public int hashCode() { return m_nodeA.hashCode() + 31 *
+     * m_nodeB.hashCode(); }
+     *
+     * @Override public boolean equals(Object obj) { if (obj instanceof Edge) {
+     * Edge e = (Edge) obj; return e.getNodeA().equals(m_nodeA) &&
+     * e.getNodeB().equals(m_nodeB); } return false; }
+     */
     /** Returns ([A node.toString()],[B node.toString()]). */
     @Override
     public String toString() {

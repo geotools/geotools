@@ -19,7 +19,6 @@ package org.geotools.graph.traverse.standard;
 import java.util.ArrayDeque;
 import java.util.Collections;
 import java.util.Queue;
-
 import org.geotools.graph.structure.Graph;
 import org.geotools.graph.structure.Graphable;
 
@@ -45,8 +44,8 @@ public class DepthFirstIterator extends BreadthFirstIterator {
      * @param graph The graph of the iteration.
      * @return A Last In First Out queue (Stack)
      */
-  @Override
-  protected Queue<Graphable> buildQueue(Graph graph) {
-    return (Collections.asLifoQueue(new ArrayDeque<>(graph.getNodes().size())));
+    @Override
+    protected Queue<Graphable> buildQueue(Graph graph) {
+        return (Collections.asLifoQueue(new ArrayDeque<>(graph.getNodes().size())));
     }
 }

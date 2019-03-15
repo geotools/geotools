@@ -17,10 +17,8 @@
 package org.geotools.graph.structure.basic;
 
 import java.util.Iterator;
-
-import org.geotools.graph.structure.Edge;
-
 import junit.framework.TestCase;
+import org.geotools.graph.structure.Edge;
 
 public class BasicEdgeTest extends TestCase {
 
@@ -111,7 +109,7 @@ public class BasicEdgeTest extends TestCase {
 
     public void test_getRelated() {
         BasicEdge be;
-    Iterator<Edge> itr;
+        Iterator<Edge> itr;
 
         // nodes share single edge
         itr = m_edge.getRelated();
@@ -202,7 +200,7 @@ public class BasicEdgeTest extends TestCase {
         m_nodeA.remove(m_same);
         m_nodeB.remove(m_same);
 
-    // nodes share multiple edges (different direction)
+        // nodes share multiple edges (different direction)
         m_nodeB.add(m_opp);
         m_nodeA.add(m_opp);
 

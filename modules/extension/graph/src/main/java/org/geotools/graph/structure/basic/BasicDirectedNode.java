@@ -21,7 +21,6 @@ import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
 import org.geotools.graph.structure.DirectedEdge;
 import org.geotools.graph.structure.DirectedNode;
 import org.geotools.graph.structure.Edge;
@@ -35,16 +34,16 @@ import org.geotools.graph.structure.Node;
 public class BasicDirectedNode extends BasicGraphable implements DirectedNode {
 
     /** In adjacency list * */
-  private transient ArrayList<DirectedEdge> m_in;
+    private transient ArrayList<DirectedEdge> m_in;
 
     /** Out adjacecy list * */
-  private transient ArrayList<DirectedEdge> m_out;
+    private transient ArrayList<DirectedEdge> m_out;
 
     /** Constructs a new BasicDirectedNode. */
     public BasicDirectedNode() {
         super();
-    m_in = new ArrayList<>();
-    m_out = new ArrayList<>();
+        m_in = new ArrayList<>();
+        m_out = new ArrayList<>();
     }
 
     /**
@@ -125,7 +124,7 @@ public class BasicDirectedNode extends BasicGraphable implements DirectedNode {
     /** @see DirectedNode#getInEdge(DirectedNode) */
     @Override
     public Edge getInEdge(DirectedNode other) {
-    // must explicitly check that the edge has node other, and one node this,
+        // must explicitly check that the edge has node other, and one node this,
         // just checking other is not good enough because of loops
         for (int i = 0; i < m_in.size(); i++) {
             DirectedEdge edge = m_in.get(i);
@@ -137,7 +136,7 @@ public class BasicDirectedNode extends BasicGraphable implements DirectedNode {
     /** @see DirectedNode#getOutEdge(DirectedNode) */
     @Override
     public Edge getOutEdge(DirectedNode other) {
-    // must explicitly check that the edge has node other, and one node this,
+        // must explicitly check that the edge has node other, and one node this,
         // just checking other is not good enough because of loops
         for (int i = 0; i < m_out.size(); i++) {
             DirectedEdge edge = m_out.get(i);
@@ -146,24 +145,24 @@ public class BasicDirectedNode extends BasicGraphable implements DirectedNode {
         return (null);
     }
 
-  /** Returns the combination of both the in and out adjacency lists. */
-  @Override
-  public List<DirectedEdge> getEdges() {
-    ArrayList<DirectedEdge> edges = new ArrayList<>();
+    /** Returns the combination of both the in and out adjacency lists. */
+    @Override
+    public List<DirectedEdge> getEdges() {
+        ArrayList<DirectedEdge> edges = new ArrayList<>();
         edges.addAll(m_in);
         edges.addAll(m_out);
         return (edges);
     }
 
     /** @see DirectedNode#getInEdges() */
-  @Override
-  public List<DirectedEdge> getInEdges() {
+    @Override
+    public List<DirectedEdge> getInEdges() {
         return (m_in);
     }
 
     /** @see DirectedNode#getOutEdges() */
-  @Override
-  public List<DirectedEdge> getOutEdges() {
+    @Override
+    public List<DirectedEdge> getOutEdges() {
         return (m_out);
     }
 
@@ -174,17 +173,17 @@ public class BasicDirectedNode extends BasicGraphable implements DirectedNode {
      * @see DirectedNode#getInEdges(DirectedNode)
      * @see DirectedNode#getOutEdges(DirectedNode)
      */
-  @Override
-  public List<DirectedEdge> getEdges(Node other) {
-    List<DirectedEdge> edges = getInEdges((DirectedNode) other);
+    @Override
+    public List<DirectedEdge> getEdges(Node other) {
+        List<DirectedEdge> edges = getInEdges((DirectedNode) other);
         edges.addAll(getOutEdges((DirectedNode) other));
         return (edges);
     }
 
     /** @see DirectedNode#getInEdges(DirectedNode) */
-  @Override
-  public List<DirectedEdge> getInEdges(DirectedNode other) {
-    ArrayList<DirectedEdge> edges = new ArrayList<>();
+    @Override
+    public List<DirectedEdge> getInEdges(DirectedNode other) {
+        ArrayList<DirectedEdge> edges = new ArrayList<>();
         for (int i = 0; i < m_in.size(); i++) {
             DirectedEdge edge = m_in.get(i);
             if (edge.getInNode().equals(other)) edges.add(edge);
@@ -193,9 +192,9 @@ public class BasicDirectedNode extends BasicGraphable implements DirectedNode {
     }
 
     /** @see DirectedNode#getOutEdges(DirectedNode) */
-  @Override
-  public List<DirectedEdge> getOutEdges(DirectedNode other) {
-    ArrayList<DirectedEdge> edges = new ArrayList<>();
+    @Override
+    public List<DirectedEdge> getOutEdges(DirectedNode other) {
+        ArrayList<DirectedEdge> edges = new ArrayList<>();
         for (int i = 0; i < m_out.size(); i++) {
             DirectedEdge edge = m_out.get(i);
             if (edge.getOutNode().equals(other)) edges.add(edge);
@@ -230,9 +229,9 @@ public class BasicDirectedNode extends BasicGraphable implements DirectedNode {
      *
      * @see org.geotools.graph.structure.Graphable#getRelated()
      */
-  @Override
-  public Iterator<DirectedNode> getRelated() {
-    ArrayList<DirectedNode> related = new ArrayList<>(m_out.size() + m_in.size());
+    @Override
+    public Iterator<DirectedNode> getRelated() {
+        ArrayList<DirectedNode> related = new ArrayList<>(m_out.size() + m_in.size());
         for (int i = 0; i < m_in.size(); i++) {
             DirectedEdge e = m_in.get(i);
             related.add(e.getInNode());
@@ -250,9 +249,9 @@ public class BasicDirectedNode extends BasicGraphable implements DirectedNode {
      *
      * @see org.geotools.graph.structure.DirectedGraphable#getInRelated()
      */
-  @Override
-  public Iterator<DirectedNode> getInRelated() {
-    ArrayList<DirectedNode> related = new ArrayList<>(m_in.size());
+    @Override
+    public Iterator<DirectedNode> getInRelated() {
+        ArrayList<DirectedNode> related = new ArrayList<>(m_in.size());
         for (int i = 0; i < m_in.size(); i++) {
             DirectedEdge e = m_in.get(i);
             related.add(e.getInNode());
@@ -266,9 +265,9 @@ public class BasicDirectedNode extends BasicGraphable implements DirectedNode {
      *
      * @see org.geotools.graph.structure.DirectedGraphable#getOutRelated()
      */
-  @Override
-  public Iterator<DirectedNode> getOutRelated() {
-    ArrayList<DirectedNode> related = new ArrayList<>(m_out.size());
+    @Override
+    public Iterator<DirectedNode> getOutRelated() {
+        ArrayList<DirectedNode> related = new ArrayList<>(m_out.size());
         for (int i = 0; i < m_out.size(); i++) {
             DirectedEdge e = m_out.get(i);
             related.add(e.getOutNode());
@@ -290,7 +289,7 @@ public class BasicDirectedNode extends BasicGraphable implements DirectedNode {
         in.defaultReadObject();
 
         // recreate edge adjacency lists
-    m_in = new ArrayList<>();
-    m_out = new ArrayList<>();
+        m_in = new ArrayList<>();
+        m_out = new ArrayList<>();
     }
 }

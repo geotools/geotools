@@ -18,7 +18,6 @@ package org.geotools.graph.structure.opt;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-
 import org.geotools.graph.structure.DirectedEdge;
 import org.geotools.graph.structure.DirectedGraphable;
 import org.geotools.graph.structure.DirectedNode;
@@ -104,9 +103,9 @@ public class OptDirectedEdge extends OptGraphable implements DirectedEdge {
     }
 
     /** @see Graphable#getRelated() */
-  @Override
-  public Iterator<? extends Graphable> getRelated() {
-    ArrayList<Edge> related = new ArrayList<>(m_in.getDegree() + m_out.getDegree() - 2);
+    @Override
+    public Iterator<? extends Graphable> getRelated() {
+        ArrayList<Edge> related = new ArrayList<>(m_in.getDegree() + m_out.getDegree() - 2);
 
         Edge[] edges = m_in.getInEdgeArray();
         for (int i = 0; i < edges.length; i++) {
@@ -151,14 +150,14 @@ public class OptDirectedEdge extends OptGraphable implements DirectedEdge {
     }
 
     /** @see DirectedGraphable#getInRelated() */
-  @Override
-  public Iterator<? extends Graphable> getInRelated() {
+    @Override
+    public Iterator<? extends Graphable> getInRelated() {
         return (new RelatedIterator(RelatedIterator.IN));
     }
 
     /** @see DirectedGraphable#getOutRelated() */
-  @Override
-  public Iterator<? extends Graphable> getOutRelated() {
+    @Override
+    public Iterator<? extends Graphable> getOutRelated() {
         return (new RelatedIterator(RelatedIterator.OUT));
     }
 
@@ -167,7 +166,7 @@ public class OptDirectedEdge extends OptGraphable implements DirectedEdge {
      *
      * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
      */
-  public class RelatedIterator implements Iterator<Graphable> {
+    public class RelatedIterator implements Iterator<Graphable> {
         /** in mode * */
         public static final int IN = 0;
 
@@ -235,7 +234,7 @@ public class OptDirectedEdge extends OptGraphable implements DirectedEdge {
          * @see Iterator#next()
          */
         @Override
-    public Graphable next() {
+        public Graphable next() {
             switch (m_mode) {
                 case IN:
                     return (m_in.getInEdgeArray()[m_index++]);

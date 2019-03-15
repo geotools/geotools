@@ -21,7 +21,6 @@ import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
 import org.geotools.graph.structure.Edge;
 import org.geotools.graph.structure.Node;
 
@@ -33,12 +32,12 @@ import org.geotools.graph.structure.Node;
 public class BasicNode extends BasicGraphable implements Node {
 
     /** List of edges incident with the node. */
-  private transient ArrayList<Edge> m_edges;
+    private transient ArrayList<Edge> m_edges;
 
     /** Constructs a BasicNode. */
     public BasicNode() {
         super();
-    m_edges = new ArrayList<>();
+        m_edges = new ArrayList<>();
     }
 
     /**
@@ -89,11 +88,11 @@ public class BasicNode extends BasicGraphable implements Node {
     }
 
     /** @see Node#getEdges(Node) */
-  @Override
-  public List<Edge> getEdges(Node other) {
+    @Override
+    public List<Edge> getEdges(Node other) {
         // must explictley check that the edge has node other, and one node this,
         // just checking other is not good enough because of loops
-    ArrayList<Edge> edges = new ArrayList<>();
+        ArrayList<Edge> edges = new ArrayList<>();
         for (int i = 0; i < m_edges.size(); i++) {
             Edge e = m_edges.get(i);
             if ((e.getNodeA().equals(this) && e.getNodeB().equals(other))
@@ -103,8 +102,8 @@ public class BasicNode extends BasicGraphable implements Node {
     }
 
     /** @see Node#getEdges() */
-  @Override
-  public List<Edge> getEdges() {
+    @Override
+    public List<Edge> getEdges() {
         return (m_edges);
     }
 
@@ -114,9 +113,9 @@ public class BasicNode extends BasicGraphable implements Node {
      *
      * @see org.geotools.graph.structure.Graphable#getRelated()
      */
-  @Override
-  public Iterator<Node> getRelated() {
-    ArrayList<Node> related = new ArrayList<>(m_edges.size());
+    @Override
+    public Iterator<Node> getRelated() {
+        ArrayList<Node> related = new ArrayList<>(m_edges.size());
         for (int i = 0; i < m_edges.size(); i++) {
             Edge e = m_edges.get(i);
             related.add(e.getOtherNode(this));
@@ -137,6 +136,6 @@ public class BasicNode extends BasicGraphable implements Node {
         in.defaultReadObject();
 
         // recreate edge adjacency list
-    m_edges = new ArrayList<>();
+        m_edges = new ArrayList<>();
     }
 }

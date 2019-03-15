@@ -22,6 +22,7 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
 import org.geotools.graph.structure.Edge;
 import org.geotools.graph.structure.Node;
 
@@ -65,6 +66,7 @@ public class OptNode extends OptGraphable implements Node {
     }
 
     /** @see Node#add(Edge) */
+    @Override
     public void add(Edge e) {
         for (int i = 0; i < m_edges.length; i++) {
             if (m_edges[i] == null) {
@@ -80,11 +82,13 @@ public class OptNode extends OptGraphable implements Node {
      * @throws UnsupportedOperationException
      * @see Node#remove(Edge)
      */
+    @Override
     public void remove(Edge e) {
         throw new UnsupportedOperationException(getClass().getName() + "#remove(Edge)");
     }
 
     /** @see Node#getEdge(Node) */
+    @Override
     public Edge getEdge(Node other) {
         for (int i = 0; i < m_edges.length; i++) {
             if (m_edges[i].getNodeA().equals(this) && m_edges[i].getNodeB().equals(other)
@@ -95,8 +99,9 @@ public class OptNode extends OptGraphable implements Node {
     }
 
     /** @see Node#getEdges(Node) */
-    public List getEdges(Node other) {
-        ArrayList edges = new ArrayList();
+  @Override
+  public List<Edge> getEdges(Node other) {
+    ArrayList<Edge> edges = new ArrayList<>();
         for (int i = 0; i < m_edges.length; i++) {
             if (m_edges[i].getNodeA().equals(this) && m_edges[i].getNodeB().equals(other)
                     || m_edges[i].getNodeB().equals(this) && m_edges[i].getNodeA().equals(other))
@@ -115,8 +120,9 @@ public class OptNode extends OptGraphable implements Node {
     }
 
     /** @see Node#getEdges() */
-    public List getEdges() {
-        ArrayList edges = new ArrayList();
+    @Override
+  public List<Edge> getEdges() {
+    ArrayList<Edge> edges = new ArrayList<>();
 
         for (int i = 0; i < m_edges.length; i++) {
             edges.add(m_edges[i]);
@@ -135,6 +141,7 @@ public class OptNode extends OptGraphable implements Node {
     }
 
     /** @see Node#getDegree() */
+    @Override
     public int getDegree() {
         return (m_edges.length);
     }
@@ -144,7 +151,8 @@ public class OptNode extends OptGraphable implements Node {
      *
      * @see org.geotools.graph.structure.Graphable#getRelated()
      */
-    public Iterator getRelated() {
+    @Override
+  public Iterator<Node> getRelated() {
         return (new RelatedIterator(this));
     }
 
@@ -187,7 +195,7 @@ public class OptNode extends OptGraphable implements Node {
      *
      * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
      */
-    public class RelatedIterator implements Iterator {
+  public class RelatedIterator implements Iterator<Node> {
 
         /** index of iterator * */
         private byte m_index = 0;
@@ -203,6 +211,7 @@ public class OptNode extends OptGraphable implements Node {
          *
          * @throws UnsupportedOperationException
          */
+        @Override
         public void remove() {
             throw new UnsupportedOperationException(getClass().getName() + "#remove()");
         }
@@ -212,6 +221,7 @@ public class OptNode extends OptGraphable implements Node {
          *
          * @see Iterator#hasNext()
          */
+        @Override
         public boolean hasNext() {
             return (m_index < m_edges.length);
         }
@@ -221,7 +231,8 @@ public class OptNode extends OptGraphable implements Node {
          *
          * @see Iterator#next()
          */
-        public Object next() {
+        @Override
+    public Node next() {
             Edge e = m_edges[m_index++];
             return (e.getNodeA().equals(m_node) ? e.getNodeB() : e.getNodeA());
         }

@@ -436,7 +436,7 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
             throw new RuntimeException(e);
         }
     }
-
+    
     protected void ensureNext() {
         if (next == null) {
             throw new IllegalStateException("Must call hasNext before calling next");
@@ -647,9 +647,6 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
 
             // TODO: factory fid prefixing out
             init(featureType.getTypeName() + "." + dataStore.encodeFID(key, rs, offset));
-
-            for (int k = 0; k < values.length; k++) // ensure initialized values GEOT-6264
-            getAttribute(k);
         }
 
         public SimpleFeatureType getFeatureType() {
@@ -793,6 +790,8 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
         }
 
         public List<Object> getAttributes() {
+            // ensure initialized values GEOT-6264
+            for (int k = 0; k < values.length; k++) getAttribute(k);
             return Arrays.asList(values);
         }
 

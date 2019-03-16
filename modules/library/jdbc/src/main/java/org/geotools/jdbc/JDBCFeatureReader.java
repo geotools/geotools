@@ -436,7 +436,7 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
             throw new RuntimeException(e);
         }
     }
-    
+
     protected void ensureNext() {
         if (next == null) {
             throw new IllegalStateException("Must call hasNext before calling next");

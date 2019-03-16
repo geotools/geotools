@@ -28,7 +28,6 @@ import org.geotools.data.DataUtilities;
 import org.geotools.data.DefaultTransaction;
 import org.geotools.data.FeatureLock;
 import org.geotools.data.FeatureLockException;
-import org.geotools.data.FeatureLockFactory;
 import org.geotools.data.FeatureLocking;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.FeatureWriter;
@@ -1106,7 +1105,7 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
      * Test for void lockFeatures()
      */
     public void testLockFeatures() throws IOException {
-        FeatureLock lock = FeatureLockFactory.generate("test", LOCK_DURATION);
+        FeatureLock lock = new FeatureLock("test", LOCK_DURATION);
         FeatureLocking<SimpleFeatureType, SimpleFeature> road =
                 (FeatureLocking<SimpleFeatureType, SimpleFeature>)
                         dataStore.getFeatureSource(tname("road"));
@@ -1118,7 +1117,7 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
     }
 
     public void testUnLockFeatures() throws IOException {
-        FeatureLock lock = FeatureLockFactory.generate("test", LOCK_DURATION);
+        FeatureLock lock = new FeatureLock("test", LOCK_DURATION);
         FeatureLocking<SimpleFeatureType, SimpleFeature> road =
                 (FeatureLocking<SimpleFeatureType, SimpleFeature>)
                         dataStore.getFeatureSource(tname("road"));
@@ -1146,8 +1145,8 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
     }
 
     public void testLockFeatureInteraction() throws IOException {
-        FeatureLock lockA = FeatureLockFactory.generate("LockA", LOCK_DURATION);
-        FeatureLock lockB = FeatureLockFactory.generate("LockB", LOCK_DURATION);
+        FeatureLock lockA = new FeatureLock("LockA", LOCK_DURATION);
+        FeatureLock lockB = new FeatureLock("LockB", LOCK_DURATION);
         try (Transaction t1 = new DefaultTransaction();
                 Transaction t2 = new DefaultTransaction()) {
             FeatureLocking<SimpleFeatureType, SimpleFeature> road1 =
@@ -1203,7 +1202,7 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
     }
 
     public void testGetFeatureLockingExpire() throws Exception {
-        FeatureLock lock = FeatureLockFactory.generate("Timed", 1000);
+        FeatureLock lock = new FeatureLock("Timed", 1000);
 
         FeatureLocking<SimpleFeatureType, SimpleFeature> road =
                 (FeatureLocking<SimpleFeatureType, SimpleFeature>)

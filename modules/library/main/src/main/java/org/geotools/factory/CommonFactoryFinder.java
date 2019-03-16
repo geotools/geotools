@@ -18,7 +18,6 @@ package org.geotools.factory;
 
 import java.util.Arrays;
 import java.util.Set;
-import org.geotools.data.FeatureLockFactory;
 import org.geotools.data.FileDataStoreFactorySpi;
 import org.geotools.feature.FeatureCollections;
 import org.geotools.filter.FunctionFactory;
@@ -73,7 +72,6 @@ public final class CommonFactoryFinder extends FactoryFinder {
                                     new Class<?>[] {
                                         StyleFactory.class,
                                         FilterFactory.class,
-                                        FeatureLockFactory.class,
                                         FileDataStoreFactorySpi.class,
                                         //                  FunctionImpl.class, // TODO: remove
                                         //                  FunctionExpression.class,//TODO: remove
@@ -148,37 +146,6 @@ public final class CommonFactoryFinder extends FactoryFinder {
         hints = mergeSystemHints(hints);
         return new LazySet<FunctionFactory>(
                 getServiceRegistry().getFactories(FunctionFactory.class, null, hints));
-    }
-
-    /**
-     * Returns the first implementation of {@link FeatureLockFactory} matching the specified hints.
-     * If no implementation matches, a new one is created if possible or an exception is thrown
-     * otherwise.
-     *
-     * @param hints An optional map of hints, or {@code null} if none.
-     * @return The first feature lock factory that matches the supplied hints.
-     * @throws FactoryRegistryException if no implementation was found or can be created for the
-     *     {@link FeatureLockFactory} interface.
-     * @see Hints#FEATURE_LOCK_FACTORY
-     * @deprecated FeautreLockFactory is no longer needed; please create a FeatureLock directly
-     */
-    public static FeatureLockFactory getFeatureLockFactory(Hints hints) {
-        hints = mergeSystemHints(hints);
-        return (FeatureLockFactory)
-                lookup(FeatureLockFactory.class, hints, Hints.FEATURE_LOCK_FACTORY);
-    }
-
-    /**
-     * Returns a set of all available implementations for the {@link FeatureLockFactory} interface.
-     *
-     * @param hints An optional map of hints, or {@code null} if none.
-     * @return Set<FeatureLockFactory> of available style factory implementations.
-     * @deprecated FeatureLockFactory is no longer needed
-     */
-    public static synchronized Set<FeatureLockFactory> getFeatureLockFactories(Hints hints) {
-        hints = mergeSystemHints(hints);
-        return new LazySet<FeatureLockFactory>(
-                getServiceRegistry().getFactories(FeatureLockFactory.class, null, hints));
     }
 
     /**

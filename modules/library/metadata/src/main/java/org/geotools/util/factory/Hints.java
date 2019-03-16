@@ -571,15 +571,6 @@ public class Hints extends RenderingHints {
             new ClassKey("org.opengis.feature.type.FeatureTypeFactory");
 
     /**
-     * The {@link org.geotools.data.FeatureLockFactory} instance to use.
-     *
-     * @see CommonFactoryFinder#getFeatureLockFactory
-     * @since 2.4
-     */
-    public static final ClassKey FEATURE_LOCK_FACTORY =
-            new ClassKey("org.geotools.data.FeatureLockFactory");
-
-    /**
      * The {@link org.geotools.feature.FeatureCollections} instance to use.
      *
      * @see CommonFactoryFinder#getFeatureCollections

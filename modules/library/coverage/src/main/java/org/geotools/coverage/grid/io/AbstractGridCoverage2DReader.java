@@ -360,19 +360,10 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
 
         // //
         //
-        // Resolution requested. I am here computing the resolution required by
-        // the user.
+        // default values for subsampling
         //
-        double[] requestedRes =
-                getResolution(
-                        requestedEnvelope,
-                        requestedDim,
-                        getCoordinateReferenceSystem(coverageName));
-
-        // Decimation on reading (done here because it alters the read params allowing subsampling)
-        decimationOnReadingControl(coverageName, imageChoice, readP, requestedRes);
-
-        if (requestedRes == null) return imageChoice;
+        // //
+        readP.setSourceSubsampling(1, 1, 0, 0);
 
         // //
         //
@@ -392,20 +383,29 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
 
         // //
         //
+        // Resolution requested. I am here computing the resolution required by
+        // the user.
+        //
+        // //
+        double[] requestedRes =
+                getResolution(
+                        requestedEnvelope,
+                        requestedDim,
+                        getCoordinateReferenceSystem(coverageName));
+        if (requestedRes == null) return imageChoice;
+
+        // //
+        //
         // overviews or decimation
         //
         // //
-        if (useOverviews) {
-            int newImageChoice = pickOverviewLevel(coverageName, overviewPolicy, requestedRes);
+        if (useOverviews)
+            imageChoice = pickOverviewLevel(coverageName, overviewPolicy, requestedRes);
 
-            // if image choice has changed due to using overviews, recalculate subsamping factors
-            if (imageChoice != newImageChoice) {
-                imageChoice = newImageChoice; // update
-                // recalculate subsampling factors if overview number has changed
-                decimationOnReadingControl(coverageName, imageChoice, readP, requestedRes);
-            }
-        }
-
+        // /////////////////////////////////////////////////////////////////////
+        // DECIMATION ON READING
+        // /////////////////////////////////////////////////////////////////////
+        decimationOnReadingControl(coverageName, imageChoice, readP, requestedRes);
         return imageChoice;
     }
 
@@ -656,16 +656,6 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
                 subSamplingFactorY = subSamplingFactorY == 0 ? 1 : subSamplingFactorY;
 
                 readP.setSourceSubsampling(subSamplingFactorX, subSamplingFactorY, 0, 0);
-
-                if (LOGGER.isLoggable(Level.FINE))
-                    LOGGER.log(
-                            Level.FINE,
-                            String.format(
-                                    "coverageName:%s,imageChoice:%d,subSamplingFactorX:%d,subSamplingFactorY:%d",
-                                    coverageName,
-                                    imageChoice.intValue(),
-                                    subSamplingFactorX,
-                                    subSamplingFactorY));
             }
         }
     }

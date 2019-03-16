@@ -16,12 +16,11 @@
  */
 package org.geotools.referencing.factory.epsg.oracle;
 
+import javax.sql.DataSource;
 import org.geotools.referencing.factory.AbstractCachedAuthorityFactory;
 import org.geotools.referencing.factory.AbstractEpsgMediator;
 import org.geotools.util.factory.Hints;
 import org.opengis.referencing.FactoryException;
-
-import javax.sql.DataSource;
 
 /**
  * Mediator which delegates the creation of referencing objects to the OracleDialectEpsgFactory.

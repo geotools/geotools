@@ -19,11 +19,6 @@ A few public exceptions:
 * FeatureLockException
 * SchemaNotFoundException
 
-And a couple that are no longer used:
-
-* DefaultFeatureLock
-* DefaultFeatureLockFactory
-
 AbstractDataStore
 ^^^^^^^^^^^^^^^^^
 

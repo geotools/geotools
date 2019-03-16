@@ -35,7 +35,6 @@ import java.util.concurrent.TimeUnit;
  * @see <a href="http://vwfs.refractions.net/docs/Transactional_WFS_Design.pdf">Transactional WFS
  *     Design</a>
  * @see <a href="http://vwfs.refractions.net/docs/Design_Implications.pdf">Design Implications</a>
- * @see FeatureLockFactory
  */
 public class FeatureLock {
     /** Lock requested for the duration of the Transaction (until next commit or revert). */

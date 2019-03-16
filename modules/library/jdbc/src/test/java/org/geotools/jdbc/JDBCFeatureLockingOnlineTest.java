@@ -20,7 +20,6 @@ import java.util.Collections;
 import org.geotools.data.DefaultTransaction;
 import org.geotools.data.FeatureLock;
 import org.geotools.data.FeatureLockException;
-import org.geotools.data.FeatureLockFactory;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.FeatureWriter;
 import org.geotools.data.Query;
@@ -45,7 +44,7 @@ public abstract class JDBCFeatureLockingOnlineTest extends JDBCTestSupport {
 
     public void testLockFeatures() throws Exception {
 
-        FeatureLock lock = FeatureLockFactory.generate(tname("ft1"), 60 * 60 * 1000);
+        FeatureLock lock = new FeatureLock(tname("ft1"), 60 * 60 * 1000);
 
         try (Transaction tx = new DefaultTransaction()) {
             store.setTransaction(tx);
@@ -96,7 +95,7 @@ public abstract class JDBCFeatureLockingOnlineTest extends JDBCTestSupport {
 
     public void testLockFeaturesWithFilter() throws Exception {
 
-        FeatureLock lock = FeatureLockFactory.generate(tname("ft1"), 60 * 60 * 1000);
+        FeatureLock lock = new FeatureLock(tname("ft1"), 60 * 60 * 1000);
 
         try (Transaction tx = new DefaultTransaction()) {
             store.setTransaction(tx);
@@ -137,7 +136,7 @@ public abstract class JDBCFeatureLockingOnlineTest extends JDBCTestSupport {
 
     public void testLockFeaturesWithInvalidFilter() throws Exception {
 
-        FeatureLock lock = FeatureLockFactory.generate(tname("ft1"), 60 * 60 * 1000);
+        FeatureLock lock = new FeatureLock(tname("ft1"), 60 * 60 * 1000);
 
         try (Transaction tx = new DefaultTransaction()) {
             store.setTransaction(tx);
@@ -157,7 +156,7 @@ public abstract class JDBCFeatureLockingOnlineTest extends JDBCTestSupport {
     }
 
     public void testLockFeaturesWithInvalidQuery() throws Exception {
-        FeatureLock lock = FeatureLockFactory.generate(tname("ft1"), 60 * 60 * 1000);
+        FeatureLock lock = new FeatureLock(tname("ft1"), 60 * 60 * 1000);
 
         try (Transaction tx = new DefaultTransaction()) {
             store.setTransaction(tx);
@@ -177,7 +176,7 @@ public abstract class JDBCFeatureLockingOnlineTest extends JDBCTestSupport {
     }
 
     public void testUnlockFeatures() throws Exception {
-        FeatureLock lock = FeatureLockFactory.generate(tname("ft1"), 60 * 60 * 1000);
+        FeatureLock lock = new FeatureLock(tname("ft1"), 60 * 60 * 1000);
 
         try (Transaction tx = new DefaultTransaction()) {
             store.setTransaction(tx);
@@ -220,7 +219,7 @@ public abstract class JDBCFeatureLockingOnlineTest extends JDBCTestSupport {
     }
 
     public void testUnlockFeaturesInvalidFilter() throws Exception {
-        FeatureLock lock = FeatureLockFactory.generate(tname("ft1"), 60 * 60 * 1000);
+        FeatureLock lock = new FeatureLock(tname("ft1"), 60 * 60 * 1000);
 
         try (Transaction tx = new DefaultTransaction()) {
             store.setTransaction(tx);
@@ -245,7 +244,7 @@ public abstract class JDBCFeatureLockingOnlineTest extends JDBCTestSupport {
     }
 
     public void testDeleteLockedFeatures() throws Exception {
-        FeatureLock lock = FeatureLockFactory.generate(tname("ft1"), 60 * 60 * 1000);
+        FeatureLock lock = new FeatureLock(tname("ft1"), 60 * 60 * 1000);
 
         try (Transaction tx = new DefaultTransaction()) {
             store.setTransaction(tx);
@@ -279,7 +278,7 @@ public abstract class JDBCFeatureLockingOnlineTest extends JDBCTestSupport {
         Filter f0 = ff.equal(ff.property(aname("intProperty")), ff.literal(1000), true);
         assertEquals(0, store.getCount(new Query(tname("ft1"), f0)));
 
-        FeatureLock lock = FeatureLockFactory.generate(tname("ft1"), 60 * 60 * 1000);
+        FeatureLock lock = new FeatureLock(tname("ft1"), 60 * 60 * 1000);
 
         try (Transaction tx = new DefaultTransaction()) {
             store.setTransaction(tx);

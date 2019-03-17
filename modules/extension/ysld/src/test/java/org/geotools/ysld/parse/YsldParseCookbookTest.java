@@ -59,7 +59,9 @@ public class YsldParseCookbookTest {
         //   </FeatureTypeStyle>
         // </UserStyle>
         Style style = parse("point", "simple.sld");
-        assertEquals("SLD Cook Book: Simple Point With Stroke", style.getTitle());
+        assertEquals(
+                "SLD Cook Book: Simple Point With Stroke",
+                style.getDescription().getTitle().toString());
 
         PointSymbolizer point = SLD.pointSymbolizer(style);
         assertEquals("circle", SLD.wellKnownName(SLD.mark(point)));

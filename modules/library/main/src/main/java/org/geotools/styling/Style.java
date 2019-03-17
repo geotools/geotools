@@ -62,13 +62,6 @@ public interface Style extends org.opengis.style.Style {
     Description getDescription();
 
     /**
-     * Style Title (human readable name for user interfaces)
-     *
-     * @deprecated use getDescription().getTitle().toString()
-     */
-    String getTitle();
-
-    /**
      * @param title
      * @deprecated please use getDescription().setTitle( new SimpleInternationalString( text ) );
      */

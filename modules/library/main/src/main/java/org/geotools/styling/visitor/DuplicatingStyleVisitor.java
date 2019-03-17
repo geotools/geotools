@@ -246,7 +246,7 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         }
 
         copy = sf.createStyle();
-        copy.setAbstract(style.getAbstract());
+        copy.getDescription().setAbstract(style.getDescription().getAbstract());
         copy.setName(style.getName());
         copy.getDescription().setTitle(style.getDescription().getTitle());
         copy.setFeatureTypeStyles(ftsCopy);

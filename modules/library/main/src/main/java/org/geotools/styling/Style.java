@@ -67,13 +67,6 @@ public interface Style extends org.opengis.style.Style {
      */
     void setTitle(String title);
 
-    /**
-     * Description of this style
-     *
-     * @deprecated use getDesciption().getAbstract().toString()
-     */
-    String getAbstract();
-
     /** @deprecated use getDescription().setAbstract( new SimpleInternationalString( text ) ); */
     void setAbstract(String abstractStr);
 

@@ -51,14 +51,6 @@ public class StyleImpl implements org.geotools.styling.Style, Cloneable {
         return description;
     }
 
-    @Deprecated
-    public String getAbstract() {
-        if (description == null || description.getAbstract() == null) {
-            return null;
-        }
-        return description.getAbstract().toString();
-    }
-
     public FeatureTypeStyle[] getFeatureTypeStyles() {
         FeatureTypeStyle[] ret = new FeatureTypeStyleImpl[] {new FeatureTypeStyleImpl()};
 

@@ -30,8 +30,8 @@ public class SLDFeatureTypeStyleBindingTest extends SLDTestSupport {
         assertNotNull(fts);
 
         assertEquals("theName", fts.getName());
-        assertEquals("theAbstract", fts.getAbstract());
-        assertEquals("theTitle", fts.getTitle());
+        assertEquals("theAbstract", fts.getDescription().getAbstract().toString());
+        assertEquals("theTitle", fts.getDescription().getTitle().toString());
         assertEquals("theFeatureTypeName", fts.getFeatureTypeName());
 
         assertEquals(2, fts.getSemanticTypeIdentifiers().length);

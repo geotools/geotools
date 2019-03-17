@@ -24,7 +24,7 @@ import java.util.Map;
 import java.util.Set;
 import javax.measure.Unit;
 import javax.measure.quantity.Length;
-import javax.swing.Icon;
+import javax.swing.*;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.util.factory.GeoTools;
 import org.opengis.feature.type.Name;
@@ -167,10 +167,10 @@ public class StyleFactoryImpl2 implements org.opengis.style.StyleFactory {
         featureTypeStyle.setName(name);
 
         if (description != null && description.getTitle() != null) {
-            featureTypeStyle.setTitle(description.getTitle().toString());
+            featureTypeStyle.getDescription().setTitle(description.getTitle());
         }
         if (description != null && description.getAbstract() != null) {
-            featureTypeStyle.setAbstract(description.getAbstract().toString());
+            featureTypeStyle.getDescription().setAbstract(description.getAbstract());
         }
         // featureTypeStyle.setFeatureInstanceIDs( defainedFor );
         featureTypeStyle.featureTypeNames().addAll(featureTypeNames);

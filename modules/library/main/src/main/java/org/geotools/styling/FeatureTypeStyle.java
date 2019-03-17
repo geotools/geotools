@@ -138,15 +138,6 @@ public interface FeatureTypeStyle extends org.opengis.style.FeatureTypeStyle {
 
     void setName(String name);
 
-    /** @deprecated use getDescription.getTitle().toString() */
-    public String getTitle();
-
-    /**
-     * @param title
-     * @deprecated please use getDescription.setTitle( new SimpleInternationalString( title ))
-     */
-    void setTitle(String title);
-
     /**
      * Description for this style.
      *
@@ -154,16 +145,6 @@ public interface FeatureTypeStyle extends org.opengis.style.FeatureTypeStyle {
      * @since 2.5.x
      */
     Description getDescription();
-
-    /** @deprecated use getDescription().getAbstract().toString() */
-    public String getAbstract();
-
-    /**
-     * @param abstractStr
-     * @deprecated Please use getDescription().setAbstract( new SimpleInternationalString(
-     *     abstractStr ))
-     */
-    void setAbstract(String abstractStr);
 
     /**
      * Only features with the type name returned by this method should be styled by this feature

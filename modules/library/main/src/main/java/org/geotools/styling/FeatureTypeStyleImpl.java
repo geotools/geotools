@@ -26,7 +26,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
 import org.geotools.feature.NameImpl;
-import org.geotools.util.SimpleInternationalString;
 import org.geotools.util.Utilities;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.Id;
@@ -181,32 +180,6 @@ public class FeatureTypeStyleImpl implements org.geotools.styling.FeatureTypeSty
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    @Deprecated
-    public String getAbstract() {
-        if (description == null || description.getAbstract() == null) {
-            return null;
-        }
-        return description.getAbstract().toString();
-    }
-
-    @Deprecated
-    public void setAbstract(String abstractStr) {
-        description.setAbstract(new SimpleInternationalString(abstractStr));
-    }
-
-    @Deprecated
-    public String getTitle() {
-        if (description == null || description.getTitle() == null) {
-            return null;
-        }
-        return description.getTitle().toString();
-    }
-
-    @Deprecated
-    public void setTitle(String title) {
-        description.setTitle(new SimpleInternationalString(title));
     }
 
     public Object accept(StyleVisitor visitor, Object data) {

@@ -32,7 +32,7 @@ import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.data.collection.TreeSetFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.feature.FeatureCollections;
+import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.visitor.MaxVisitor.MaxResult;
 import org.geotools.feature.visitor.MedianVisitor.MedianResult;
@@ -73,7 +73,7 @@ public class VisitorCalculationTest extends DataTestCase {
 
     protected void setUp() throws Exception {
         super.setUp();
-        empty = FeatureCollections.newCollection();
+        empty = new DefaultFeatureCollection();
         fc = DataUtilities.collection(roadFeatures);
         invfc = new TreeSetFeatureCollection(fc).sort(SortBy.REVERSE_ORDER);
         fc2 = DataUtilities.collection(riverFeatures);

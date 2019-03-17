@@ -19,7 +19,7 @@
 package org.geotools.filter.function;
 
 import java.util.HashSet;
-import org.geotools.feature.FeatureCollections;
+import org.geotools.feature.DefaultFeatureCollection;
 import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.PropertyName;
 
@@ -36,8 +36,7 @@ public class Collection_FunctionsTest extends FunctionTestSupport {
     }
 
     public void testInstance() {
-        Function cmin =
-                ff.function("Collection_Min", ff.literal(FeatureCollections.newCollection()));
+        Function cmin = ff.function("Collection_Min", ff.literal(new DefaultFeatureCollection()));
         assertNotNull(cmin);
     }
 

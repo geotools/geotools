@@ -52,9 +52,9 @@ public class SLDTest {
         assertEquals(1, style.getFeatureTypeStyles().length);
 
         FeatureTypeStyle ftStyle = (FeatureTypeStyle) style.getFeatureTypeStyles()[0];
-        assertEquals(1, ftStyle.getRules().length);
+        assertEquals(1, ftStyle.rules().size());
 
-        Rule rule = ftStyle.getRules()[0];
+        Rule rule = ftStyle.rules().get(0);
         assertEquals("main", rule.getName());
         assertEquals(1, rule.symbolizers().size());
 

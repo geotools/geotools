@@ -898,7 +898,8 @@ public class SLDParser {
         if (sti.size() > 0) {
             ft.setSemanticTypeIdentifiers(sti.toArray(new String[0]));
         }
-        ft.setRules(rules.toArray(new Rule[0]));
+        ft.rules().clear();
+        ft.rules().addAll(rules);
 
         return ft;
     }

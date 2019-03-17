@@ -16,8 +16,7 @@
  */
 package org.geotools.xml.styling;
 
-import com.sun.org.apache.xalan.internal.xsltc.compiler.sym;
-import java.awt.Color;
+import java.awt.*;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URI;
@@ -1221,10 +1220,8 @@ public class SLDTransformer extends TransformerBase {
                 }
             }
 
-            Rule[] rules = fts.getRules();
-
-            for (int i = 0; i < rules.length; i++) {
-                rules[i].accept(this);
+            for (Rule rule : fts.rules()) {
+                rule.accept(this);
             }
 
             encodeVendorOptions(fts.getOptions());

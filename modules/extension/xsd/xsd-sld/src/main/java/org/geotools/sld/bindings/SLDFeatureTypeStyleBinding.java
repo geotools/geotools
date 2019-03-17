@@ -20,7 +20,6 @@ import java.util.List;
 import javax.xml.namespace.QName;
 import org.geotools.sld.CssParameter;
 import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.Rule;
 import org.geotools.styling.StyleFactory;
 import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.ElementInstance;
@@ -155,7 +154,8 @@ public class SLDFeatureTypeStyleBinding extends AbstractComplexBinding {
         // &lt;xsd:element ref="sld:Rule" maxOccurs="unbounded"/&gt;
         if (node.hasChild("Rule")) {
             List rules = node.getChildValues("Rule");
-            featureTypeStyle.setRules((Rule[]) rules.toArray(new Rule[rules.size()]));
+            featureTypeStyle.rules().clear();
+            featureTypeStyle.rules().addAll(rules);
         }
 
         // &lt;xsd:element ref="sld:VendorOption" minOccurs="0" maxOccurs="unbounded"/&gt;

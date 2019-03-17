@@ -149,10 +149,7 @@ public class MetaBufferEstimator extends FilterAttributeExtractor implements Sty
     }
 
     public void visit(FeatureTypeStyle fts) {
-        Rule[] rules = fts.getRules();
-
-        for (int i = 0; i < rules.length; i++) {
-            Rule rule = rules[i];
+        for (Rule rule : fts.rules()) {
             rule.accept(this);
         }
     }

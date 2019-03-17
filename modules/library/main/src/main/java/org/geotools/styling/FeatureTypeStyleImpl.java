@@ -105,33 +105,6 @@ public class FeatureTypeStyleImpl implements org.geotools.styling.FeatureTypeSty
         return rules;
     }
 
-    @Deprecated
-    public org.geotools.styling.Rule[] getRules() {
-        final org.geotools.styling.Rule[] ret;
-
-        ret = new org.geotools.styling.Rule[rules.size()];
-        for (int i = 0, n = rules.size(); i < n; i++) {
-            ret[i] = rules.get(i);
-        }
-
-        return ret;
-    }
-
-    @Deprecated
-    public void setRules(org.geotools.styling.Rule[] newRules) {
-        rules = new ArrayList<Rule>();
-        rules.addAll(Arrays.asList(newRules));
-
-        // fireChanged();
-    }
-
-    @Deprecated
-    public void addRule(org.geotools.styling.Rule rule) {
-        rules.add(rule);
-
-        // fireChildAdded(rule);
-    }
-
     public Set<SemanticType> semanticTypeIdentifiers() {
         return semantics;
     }

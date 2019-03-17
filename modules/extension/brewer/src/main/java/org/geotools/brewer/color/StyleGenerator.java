@@ -16,7 +16,7 @@
  */
 package org.geotools.brewer.color;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -164,7 +164,7 @@ public class StyleGenerator {
                                 colors,
                                 opacity,
                                 defaultStroke);
-                fts.addRule(rule);
+                fts.rules().add(rule);
             }
         } else if (classifier instanceof ExplicitClassifier) {
             ExplicitClassifier explicit = (ExplicitClassifier) classifier;
@@ -183,7 +183,7 @@ public class StyleGenerator {
                                 colors,
                                 opacity,
                                 defaultStroke);
-                fts.addRule(rule);
+                fts.rules().add(rule);
             }
         } else {
             LOGGER.log(Level.SEVERE, "Error: no handler for this Classifier type");
@@ -201,19 +201,7 @@ public class StyleGenerator {
             elseRule.setIsElseFilter(true);
             elseRule.setTitle("Else");
             elseRule.setName("else");
-            fts.addRule(elseRule);
-        }
-
-        // sort the FeatureTypeStyle rules
-        Rule[] rule = fts.getRules();
-
-        if (elseMode == ELSEMODE_INCLUDEASMIN) {
-            // move last rule to the front
-            for (int i = rule.length - 1; i > 0; i--) {
-                Rule tempRule = rule[i];
-                rule[i] = rule[i - 1];
-                rule[i - 1] = tempRule;
-            }
+            fts.rules().add(elseRule);
         }
 
         // our syntax will be: ColorBrewer:id
@@ -430,8 +418,7 @@ public class StyleGenerator {
      */
     public static void modifyFTS(FeatureTypeStyle fts, int ruleIndex, String styleExpression)
             throws IllegalFilterException {
-        Rule[] rule = fts.getRules();
-        Rule thisRule = rule[ruleIndex];
+        Rule thisRule = fts.rules().get(ruleIndex);
         Filter filter = thisRule.getFilter();
 
         if (filter instanceof And) { // ranged expression
@@ -479,9 +466,8 @@ public class StyleGenerator {
                 }
             }
 
-            thisRule.setFilter(
-                    filter); // style events don't handle filters yet, so fire the change event for
-            // filter
+            // style events don't handle filters yet, so fire the change event for filter
+            thisRule.setFilter(filter);
 
             // TODO: adjust the previous and next filters (uses isFirst, isLast)
         } else if (filter instanceof Or || filter instanceof PropertyIsEqualTo) {
@@ -498,7 +484,7 @@ public class StyleGenerator {
             }
 
             // recreate the filter with the new values
-            rule[ruleIndex].setFilter(toExplicitFilter(styleExpression, attrExpression));
+            thisRule.setFilter(toExplicitFilter(styleExpression, attrExpression));
 
             // TODO: remove duplicate values from other filters
         } else {

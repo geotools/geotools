@@ -36,7 +36,7 @@ public class BasicLineStyle extends StyleImpl implements org.geotools.styling.St
         rule.symbolizers().add(linesym);
 
         FeatureTypeStyleImpl fts = new FeatureTypeStyleImpl();
-        fts.setRules(new Rule[] {rule});
+        fts.rules().add(rule);
         this.setFeatureTypeStyles(new org.geotools.styling.FeatureTypeStyle[] {fts});
     }
 

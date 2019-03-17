@@ -1343,7 +1343,7 @@ public class StyleBuilder {
 
         // setup the feature type style
         FeatureTypeStyle fts = sf.createFeatureTypeStyle();
-        fts.setRules(new Rule[] {r});
+        fts.rules().add(r);
 
         if (typeName != null) {
             fts.setFeatureTypeName(typeName);
@@ -1363,7 +1363,7 @@ public class StyleBuilder {
     public FeatureTypeStyle createFeatureTypeStyle(String typeName, Rule r) {
         // setup the feature type style
         FeatureTypeStyle fts = sf.createFeatureTypeStyle();
-        fts.setRules(new Rule[] {r});
+        fts.rules().add(r);
 
         if (typeName != null) {
             fts.setFeatureTypeName(typeName);
@@ -1382,7 +1382,7 @@ public class StyleBuilder {
      */
     public FeatureTypeStyle createFeatureTypeStyle(String typeName, Rule[] rules) {
         FeatureTypeStyle fts = sf.createFeatureTypeStyle();
-        fts.setRules(rules);
+        fts.rules().addAll(Arrays.asList(rules));
 
         if (typeName != null) {
             fts.setFeatureTypeName(typeName);

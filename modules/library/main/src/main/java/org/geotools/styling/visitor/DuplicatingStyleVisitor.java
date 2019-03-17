@@ -306,22 +306,25 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         //                fts.getDescription(),
         //                fts.getName());
 
-        Rule[] rules = fts.getRules();
-        int length = rules.length;
-        Rule[] rulesCopy = new Rule[length];
-        for (int i = 0; i < length; i++) {
-            if (rules[i] != null) {
-                rules[i].accept(this);
-                rulesCopy[i] = (Rule) pages.pop();
-            }
-        }
+        List<Rule> rulesCopy =
+                fts.rules()
+                        .stream()
+                        .filter(r -> r != null)
+                        .map(
+                                r -> {
+                                    r.accept(this);
+                                    return (Rule) pages.pop();
+                                })
+                        .collect(Collectors.toList());
+
         //
         //        copy = sf.createFeatureTypeStyle();
         //        copy.setName(fts.getName());
         //        copy.setTitle(fts.getTitle());
         //        copy.setAbstract(fts.getAbstract());
         //        copy.setFeatureTypeName(fts.getFeatureTypeName());
-        copy.setRules(rulesCopy);
+        copy.rules().clear();
+        copy.rules().addAll(rulesCopy);
         //        copy.setSemanticTypeIdentifiers((String[])
         // fts.getSemanticTypeIdentifiers().clone());
 

@@ -35,6 +35,7 @@ import javax.swing.*;
 import javax.xml.parsers.ParserConfigurationException;
 import org.geotools.data.Base64;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.feature.NameImpl;
 import org.geotools.filter.ExpressionDOMParser;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
@@ -880,7 +881,7 @@ public class SLDParser {
             } else if (childName.equalsIgnoreCase("Abstract")) {
                 ft.getDescription().setAbstract(parseInternationalString(child));
             } else if (childName.equalsIgnoreCase("FeatureTypeName")) {
-                ft.setFeatureTypeName(getFirstChildValue(child));
+                ft.featureTypeNames().add(new NameImpl(getFirstChildValue(child)));
             } else if (childName.equalsIgnoreCase("SemanticTypeIdentifier")) {
                 sti.add(getFirstChildValue(child));
             } else if (childName.equalsIgnoreCase("Rule")) {

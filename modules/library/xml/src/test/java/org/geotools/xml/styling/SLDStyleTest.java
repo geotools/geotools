@@ -637,7 +637,7 @@ public class SLDStyleTest extends TestCase {
         assertEquals(1, notDisjoint.getFeatureTypeStyles().length);
 
         FeatureTypeStyle fts = notDisjoint.getFeatureTypeStyles()[0];
-        assertEquals(TYPE_NAME, fts.getFeatureTypeName());
+        assertEquals(TYPE_NAME, fts.featureTypeNames().iterator().next().getLocalPart());
         assertEquals(1, fts.rules().size());
 
         Filter filter = fts.rules().get(0).getFilter();
@@ -684,7 +684,7 @@ public class SLDStyleTest extends TestCase {
         assertEquals(1, style.getFeatureTypeStyles().length);
 
         FeatureTypeStyle fts = style.getFeatureTypeStyles()[0];
-        assertEquals("Feature", fts.getFeatureTypeName());
+        assertEquals("Feature", fts.featureTypeNames().iterator().next().getLocalPart());
         assertEquals(1, fts.rules().size());
 
         Filter filter = fts.rules().get(0).getFilter();

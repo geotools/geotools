@@ -20,13 +20,8 @@ import static java.lang.Math.abs;
 
 import com.conversantmedia.util.concurrent.PushPullBlockingQueue;
 import com.conversantmedia.util.concurrent.SpinPolicy;
-import java.awt.AlphaComposite;
-import java.awt.Composite;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
-import java.awt.RenderingHints;
+import java.awt.*;
 import java.awt.RenderingHints.Key;
-import java.awt.Shape;
 import java.awt.font.GlyphVector;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
@@ -2003,11 +1998,9 @@ public class StreamingRenderer implements GTRenderer {
         // TODO: find a complex feature equivalent for this check
         return fts.featureTypeNames().isEmpty()
                 || ((ftype.getName().getLocalPart() != null)
-                        && (ftype.getName()
-                                        .getLocalPart()
-                                        .equalsIgnoreCase(fts.getFeatureTypeName())
-                                || FeatureTypes.isDecendedFrom(
-                                        ftype, null, fts.getFeatureTypeName())));
+                        && fts.featureTypeNames()
+                                .stream()
+                                .anyMatch(tn -> FeatureTypes.matches(ftype, tn)));
     }
 
     private List<List<Rule>> splitRules(FeatureTypeStyle fts) {

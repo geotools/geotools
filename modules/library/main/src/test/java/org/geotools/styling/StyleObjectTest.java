@@ -20,6 +20,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import junit.framework.TestCase;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.feature.NameImpl;
 import org.geotools.metadata.iso.citation.OnLineResourceImpl;
 import org.geotools.styling.visitor.DuplicatingStyleVisitor;
 import org.opengis.filter.FilterFactory;
@@ -62,7 +63,7 @@ public class StyleObjectTest extends TestCase {
 
     public void testStyle() throws Exception {
         FeatureTypeStyle fts = styleFactory.createFeatureTypeStyle();
-        fts.setFeatureTypeName("feature-type-1");
+        fts.featureTypeNames().add(new NameImpl("feature-type-1"));
 
         FeatureTypeStyle fts2 = fts2();
 
@@ -84,14 +85,14 @@ public class StyleObjectTest extends TestCase {
         FeatureTypeStyle fts2 = styleFactory.createFeatureTypeStyle();
         Rule rule = styleFactory.createRule();
         fts2.rules().add(rule);
-        fts2.setFeatureTypeName("feature-type-2");
+        fts2.featureTypeNames().add(new NameImpl("feature-type-2"));
 
         return fts2;
     }
 
     public void testFeatureTypeStyle() throws Exception {
         FeatureTypeStyle fts = styleFactory.createFeatureTypeStyle();
-        fts.setFeatureTypeName("feature-type");
+        fts.featureTypeNames().add(new NameImpl("feature-type"));
 
         Rule rule1;
 

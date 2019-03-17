@@ -18,6 +18,7 @@ package org.geotools.sld.bindings;
 
 import java.util.List;
 import javax.xml.namespace.QName;
+import org.geotools.feature.NameImpl;
 import org.geotools.sld.CssParameter;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.StyleFactory;
@@ -141,7 +142,7 @@ public class SLDFeatureTypeStyleBinding extends AbstractComplexBinding {
                                 ? qn.getPrefix() + ":" + qn.getLocalPart()
                                 : qn.getLocalPart();
             }
-            featureTypeStyle.setFeatureTypeName(ftn.toString());
+            featureTypeStyle.featureTypeNames().add(new NameImpl(ftn.toString()));
         }
 
         // &lt;xsd:element ref="sld:SemanticTypeIdentifier" minOccurs="0" maxOccurs="unbounded"/&gt;

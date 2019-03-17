@@ -147,24 +147,6 @@ public interface FeatureTypeStyle extends org.opengis.style.FeatureTypeStyle {
     Description getDescription();
 
     /**
-     * Only features with the type name returned by this method should be styled by this feature
-     * type styler.
-     *
-     * @return The name of types that this styler applies to
-     * @deprecated this method is replaced by a live set featureTypeNames()
-     */
-    String getFeatureTypeName();
-
-    /**
-     * Sets the type name of the features that this styler should be applied to.
-     *
-     * @task REVISIT: should a set method be declared in this interface at all?
-     * @param name The TypeName of the features to be styled by this instance.
-     * @deprecated Use featureTypeNames().clear() and featureTypeNames.add( new NameImpl( name ))
-     */
-    void setFeatureTypeName(String name);
-
-    /**
      * The SemanticTypeIdentifiers is experimental and is intended to be used to identify, using a
      * community-controlled name(s), what the style is suitable to be used for. For example, a
      * single style may be suitable to use with many different feature types. The syntax of the

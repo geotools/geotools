@@ -599,7 +599,8 @@ public class SEExampleTest extends SETestSupport {
         </FeatureTypeStyle>*/
 
         FeatureTypeStyle fts = (FeatureTypeStyle) parse("example-featurestyle.xml");
-        assertEquals("oceansea:Foundation", fts.getFeatureTypeName());
+        assertEquals(
+                "oceansea:Foundation", fts.featureTypeNames().iterator().next().getLocalPart());
         assertEquals(1, fts.rules().size());
 
         Rule rule = fts.rules().get(0);

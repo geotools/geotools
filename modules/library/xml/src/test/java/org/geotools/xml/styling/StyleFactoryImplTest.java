@@ -22,6 +22,7 @@ import java.util.Random;
 import java.util.logging.Logger;
 import junit.framework.TestCase;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.feature.NameImpl;
 import org.geotools.filter.function.EnvFunction;
 import org.geotools.styling.AnchorPoint;
 import org.geotools.styling.Displacement;
@@ -334,7 +335,7 @@ public class StyleFactoryImplTest extends TestCase {
 
         FeatureTypeStyle style = sf.createFeatureTypeStyle();
         style.rules().add(rule);
-        style.setFeatureTypeName("Feature");
+        style.featureTypeNames().add(new NameImpl("Feature"));
 
         Style namedStyle = sf.createStyle();
         namedStyle.addFeatureTypeStyle(style);

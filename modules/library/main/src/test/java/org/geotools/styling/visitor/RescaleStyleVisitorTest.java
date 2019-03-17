@@ -22,6 +22,7 @@ import static org.junit.Assert.assertNotNull;
 import java.awt.Color;
 import java.util.Arrays;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.feature.NameImpl;
 import org.geotools.filter.IllegalFilterException;
 import org.geotools.styling.AnchorPoint;
 import org.geotools.styling.FeatureTypeStyle;
@@ -84,7 +85,7 @@ public class RescaleStyleVisitorTest {
     @Test
     public void testStyle() throws Exception {
         FeatureTypeStyle fts = sf.createFeatureTypeStyle();
-        fts.setFeatureTypeName("feature-type-1");
+        fts.featureTypeNames().add(new NameImpl("feature-type-1"));
 
         FeatureTypeStyle fts2 = fts2();
 
@@ -105,7 +106,7 @@ public class RescaleStyleVisitorTest {
         FeatureTypeStyle fts2 = sf.createFeatureTypeStyle();
         Rule rule = sf.createRule();
         fts2.rules().add(rule);
-        fts2.setFeatureTypeName("feature-type-2");
+        fts2.featureTypeNames().add(new NameImpl("feature-type-2"));
 
         return fts2;
     }

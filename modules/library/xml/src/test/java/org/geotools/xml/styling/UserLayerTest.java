@@ -28,6 +28,7 @@ import org.geotools.data.DataStore;
 import org.geotools.data.DataUtilities;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.DefaultFeatureCollection;
+import org.geotools.feature.NameImpl;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.referencing.CRS;
@@ -158,7 +159,7 @@ public class UserLayerTest extends TestCase {
         final Graphic g = sb.createGraphic(overlay, null, null, OPACITY, Double.NaN, 0.0);
         final PointSymbolizer ps = sb.createPointSymbolizer(g);
         final FeatureTypeStyle fts = sb.createFeatureTypeStyle(ps);
-        fts.setFeatureTypeName(MY_NAMESPACE + ":" + MY_FEATURE);
+        fts.featureTypeNames().add(new NameImpl(MY_NAMESPACE + ":" + MY_FEATURE));
 
         style.addFeatureTypeStyle(fts);
         layer.addUserStyle(style);

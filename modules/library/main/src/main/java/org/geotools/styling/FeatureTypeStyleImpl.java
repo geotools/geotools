@@ -25,7 +25,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
-import org.geotools.feature.NameImpl;
 import org.geotools.util.Utilities;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.Id;
@@ -140,30 +139,6 @@ public class FeatureTypeStyleImpl implements org.geotools.styling.FeatureTypeSty
 
     public Set<Name> featureTypeNames() {
         return featureTypeNames;
-    }
-
-    @Deprecated
-    public String getFeatureTypeName() {
-        if (!featureTypeNames.isEmpty()) {
-            return featureTypeNames.iterator().next().getLocalPart();
-        } else {
-            return "Feature"; // this is the deafault value - matches to any feature
-        }
-    }
-
-    @Deprecated
-    public void setFeatureTypeName(String name) {
-        featureTypeNames.clear();
-
-        if (name.equals("feature")) {
-            LOGGER.warning(
-                    "FeatureTypeStyle with typename 'feature' - "
-                            + "did you mean to say 'Feature' (with a capital F) for the 'generic' FeatureType");
-        }
-
-        Name featurename = new NameImpl(name);
-
-        featureTypeNames.add(featurename);
     }
 
     public Id getFeatureInstanceIDs() {

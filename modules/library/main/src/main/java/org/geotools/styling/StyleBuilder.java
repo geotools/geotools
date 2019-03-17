@@ -21,6 +21,7 @@ import java.util.Arrays;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.feature.NameImpl;
 import org.geotools.filter.IllegalFilterException;
 import org.geotools.util.factory.GeoTools;
 import org.opengis.feature.simple.SimpleFeature;
@@ -1346,7 +1347,7 @@ public class StyleBuilder {
         fts.rules().add(r);
 
         if (typeName != null) {
-            fts.setFeatureTypeName(typeName);
+            fts.featureTypeNames().add(new NameImpl(typeName));
         }
 
         return fts;
@@ -1366,7 +1367,7 @@ public class StyleBuilder {
         fts.rules().add(r);
 
         if (typeName != null) {
-            fts.setFeatureTypeName(typeName);
+            fts.featureTypeNames().add(new NameImpl(typeName));
         }
 
         return fts;
@@ -1385,7 +1386,7 @@ public class StyleBuilder {
         fts.rules().addAll(Arrays.asList(rules));
 
         if (typeName != null) {
-            fts.setFeatureTypeName(typeName);
+            fts.featureTypeNames().add(new NameImpl(typeName));
         }
 
         return fts;
@@ -1654,7 +1655,7 @@ public class StyleBuilder {
         rules[colors.length].setElseFilter(true);
 
         FeatureTypeStyle ft = sf.createFeatureTypeStyle(rules);
-        ft.setFeatureTypeName("Feature");
+        ft.featureTypeNames().add(new NameImpl("Feature"));
         ft.setName(name);
         ret.addFeatureTypeStyle(ft);
 

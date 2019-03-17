@@ -90,7 +90,7 @@ public class SLDExampleTest extends TestCase {
         assertEquals(1, s.getFeatureTypeStyles().length);
         FeatureTypeStyle fts = s.getFeatureTypeStyles()[0];
 
-        assertEquals("Foundation", fts.getFeatureTypeName());
+        assertEquals("Foundation", fts.featureTypeNames().iterator().next().getLocalPart());
         assertEquals(1, fts.rules().size());
 
         Rule r = fts.rules().get(0);

@@ -27,6 +27,7 @@ import java.util.Collections;
 import javax.swing.Icon;
 import junit.framework.TestCase;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.feature.NameImpl;
 import org.geotools.filter.IllegalFilterException;
 import org.geotools.metadata.iso.citation.OnLineResourceImpl;
 import org.geotools.styling.AnchorPoint;
@@ -121,7 +122,7 @@ public class DuplicatingStyleVisitorTest extends TestCase {
 
     public void testStyle() throws Exception {
         FeatureTypeStyle fts = sf.createFeatureTypeStyle();
-        fts.setFeatureTypeName("feature-type-1");
+        fts.featureTypeNames().add(new NameImpl("feature-type-1"));
 
         FeatureTypeStyle fts2 = fts2();
 
@@ -147,14 +148,14 @@ public class DuplicatingStyleVisitorTest extends TestCase {
         FeatureTypeStyle fts2 = sf.createFeatureTypeStyle();
         Rule rule = sf.createRule();
         fts2.rules().add(rule);
-        fts2.setFeatureTypeName("feature-type-2");
+        fts2.featureTypeNames().add(new NameImpl("feature-type-2"));
 
         return fts2;
     }
 
     public void testFeatureTypeStyle() throws Exception {
         FeatureTypeStyle fts = sf.createFeatureTypeStyle();
-        fts.setFeatureTypeName("feature-type");
+        fts.featureTypeNames().add(new NameImpl("feature-type"));
         fts.getOptions().put("key", "value");
 
         Rule rule1;

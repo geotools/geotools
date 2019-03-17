@@ -30,6 +30,7 @@ import org.geotools.data.DataUtilities;
 import org.geotools.data.memory.MemoryDataStore;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.feature.NameImpl;
 import org.geotools.feature.SchemaException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
@@ -129,36 +130,36 @@ public class Rendering2DTest extends TestCase {
         Rule rule = sFac.createRule();
         rule.symbolizers().add(polysym(sFac));
         FeatureTypeStyle fts = sFac.createFeatureTypeStyle(new Rule[] {rule});
-        fts.setFeatureTypeName("polygonfeature");
+        fts.featureTypeNames().add(new NameImpl("polygonfeature"));
 
         Rule rule1 = sFac.createRule();
         rule.symbolizers().add(polysym(sFac));
         FeatureTypeStyle fts1 = sFac.createFeatureTypeStyle(new Rule[] {rule1});
-        fts1.setFeatureTypeName("polygonfeature");
+        fts1.featureTypeNames().add(new NameImpl("polygonfeature"));
 
         Rule rule2 = sFac.createRule();
         rule2.symbolizers().add(linesym(sFac));
         FeatureTypeStyle fts2 = sFac.createFeatureTypeStyle();
         fts2.rules().add(rule2);
-        fts2.setFeatureTypeName("linefeature");
+        fts2.featureTypeNames().add(new NameImpl("linefeature"));
 
         Rule rule3 = sFac.createRule();
         rule3.symbolizers().add(pointsym);
         FeatureTypeStyle fts3 = sFac.createFeatureTypeStyle();
         fts3.rules().add(rule3);
-        fts3.setFeatureTypeName("pointfeature");
+        fts3.featureTypeNames().add(new NameImpl("pointfeature"));
 
         Rule rule4 = sFac.createRule();
         rule4.symbolizers().addAll(Arrays.asList(polysym(sFac), linesym(sFac)));
         FeatureTypeStyle fts4 = sFac.createFeatureTypeStyle();
         fts4.rules().add(rule4);
-        fts4.setFeatureTypeName("collFeature");
+        fts4.featureTypeNames().add(new NameImpl("collFeature"));
 
         Rule rule5 = sFac.createRule();
         rule5.symbolizers().add(linesym(sFac));
         FeatureTypeStyle fts5 = sFac.createFeatureTypeStyle();
         fts5.rules().add(rule5);
-        fts5.setFeatureTypeName("ringFeature");
+        fts5.featureTypeNames().add(new NameImpl("ringFeature"));
 
         Style style = sFac.createStyle();
         style.setFeatureTypeStyles(new FeatureTypeStyle[] {fts1, fts, fts2, fts3, fts4, fts5});
@@ -899,7 +900,7 @@ public class Rendering2DTest extends TestCase {
         rulep.symbolizers().add(pointsym);
         FeatureTypeStyle ftsP = sFac.createFeatureTypeStyle();
         ftsP.rules().add(rulep);
-        ftsP.setFeatureTypeName("querytest");
+        ftsP.featureTypeNames().add(new NameImpl("querytest"));
 
         LineSymbolizer linesym = sFac.createLineSymbolizer();
         linesym.setGeometryPropertyName("line");
@@ -914,7 +915,7 @@ public class Rendering2DTest extends TestCase {
         rule2.symbolizers().add(linesym);
         FeatureTypeStyle ftsL = sFac.createFeatureTypeStyle();
         ftsL.rules().add(rule2);
-        ftsL.setFeatureTypeName("querytest");
+        ftsL.featureTypeNames().add(new NameImpl("querytest"));
 
         PolygonSymbolizer polysym = sFac.createPolygonSymbolizer();
         polysym.setGeometryPropertyName("polygon");
@@ -926,7 +927,7 @@ public class Rendering2DTest extends TestCase {
         rule.symbolizers().add(polysym);
         FeatureTypeStyle ftsPoly = sFac.createFeatureTypeStyle(new Rule[] {rule});
         // ftsPoly.setRules(new Rule[]{rule});
-        ftsPoly.setFeatureTypeName("querytest");
+        ftsPoly.featureTypeNames().add(new NameImpl("querytest"));
 
         Style style = sFac.createStyle();
         style.setFeatureTypeStyles(new FeatureTypeStyle[] {ftsPoly, ftsL, ftsP});

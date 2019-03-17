@@ -17,7 +17,6 @@
 package org.geotools.gml2;
 
 import javax.xml.namespace.QName;
-import org.geotools.feature.DefaultFeatureCollections;
 import org.geotools.gml2.bindings.GMLAbstractFeatureCollectionBaseTypeBinding;
 import org.geotools.gml2.bindings.GMLAbstractFeatureCollectionTypeBinding;
 import org.geotools.gml2.bindings.GMLAbstractFeatureTypeBinding;
@@ -199,7 +198,6 @@ public class GMLConfiguration extends Configuration {
      *   <li>{@link CoordinateArraySequenceFactory} under {@link CoordinateSequenceFactory}
      *   <li>{@link GeometryFactory}
      *   <li>{@link FeatureTypeCache}
-     *   <li>{@link DefaultFeatureCollections}
      * </ul>
      */
     public void configureContext(MutablePicoContainer container) {
@@ -210,7 +208,6 @@ public class GMLConfiguration extends Configuration {
         container.registerComponentInstance(
                 CoordinateSequenceFactory.class, CoordinateArraySequenceFactory.instance());
         container.registerComponentImplementation(GeometryFactory.class);
-        container.registerComponentImplementation(DefaultFeatureCollections.class);
 
         container.registerComponentInstance(srsSyntax);
     }

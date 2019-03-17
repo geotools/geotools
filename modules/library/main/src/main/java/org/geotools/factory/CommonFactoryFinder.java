@@ -19,7 +19,6 @@ package org.geotools.factory;
 import java.util.Arrays;
 import java.util.Set;
 import org.geotools.data.FileDataStoreFactorySpi;
-import org.geotools.feature.FeatureCollections;
 import org.geotools.filter.FunctionFactory;
 import org.geotools.styling.StyleFactory;
 import org.geotools.util.LazySet;
@@ -79,7 +78,6 @@ public final class CommonFactoryFinder extends FactoryFinder {
                                         FunctionFactory.class,
                                         FeatureFactory.class,
                                         FeatureTypeFactory.class,
-                                        FeatureCollections.class
                                     }));
         }
         return registry;
@@ -198,46 +196,6 @@ public final class CommonFactoryFinder extends FactoryFinder {
         hints = mergeSystemHints(hints);
         return (FeatureTypeFactory)
                 lookup(FeatureTypeFactory.class, hints, Hints.FEATURE_TYPE_FACTORY);
-    }
-
-    /**
-     * Returns the first implementation of {@link FeatureCollections} matching the specified hints.
-     * If no implementation matches, a new one is created if possible or an exception is thrown
-     * otherwise.
-     *
-     * @param hints An optional map of hints, or {@code null} if none.
-     * @return The first feature collections that matches the supplied hints.
-     * @throws FactoryRegistryException if no implementation was found or can be created for the
-     *     {@link FeatureCollections} interface.
-     * @see Hints#FEATURE_COLLECTIONS
-     */
-    public static FeatureCollections getFeatureCollections(Hints hints) {
-        hints = mergeSystemHints(hints);
-        return (FeatureCollections)
-                lookup(FeatureCollections.class, hints, Hints.FEATURE_COLLECTIONS);
-    }
-    /**
-     * Returns the first implementation of {@link FeatureCollections}. If no implementation matches,
-     * a new one is created if possible or an exception is thrown otherwise.
-     *
-     * @return The first feature collections implementation
-     * @throws FactoryRegistryException if no implementation was found or can be created for the
-     *     {@link FeatureCollections} interface.
-     * @see Hints#FEATURE_COLLECTIONS
-     */
-    public static FeatureCollections getFeatureCollections() {
-        return getFeatureCollections(null);
-    }
-    /**
-     * Returns a set of all available implementations for the {@link FeatureCollections} interface.
-     *
-     * @param hints An optional map of hints, or {@code null} if none.
-     * @return Set of available feature collections implementations.
-     */
-    public static synchronized Set<FeatureCollections> getFeatureCollectionsSet(Hints hints) {
-        hints = mergeSystemHints(hints);
-        return new LazySet<FeatureCollections>(
-                getServiceRegistry().getFactories(FeatureCollections.class, null, hints));
     }
 
     /**

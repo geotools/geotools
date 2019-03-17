@@ -233,7 +233,7 @@ Once the graph is built each, edge#getObject() will hold the original feature us
 
 You can traverse your graph and build up FeatureCollection as you go.::
     
-    SimpleFeatureCollection features = FeatureCollections.newInstance();
+    SimpleFeatureCollection features = new DefaultFeatureCollection();
     
     for ( Iterator e = graph.getEdges().iterator(); e.hasNext(); ) {
        Edge edge = (Edge) e.next();

@@ -17,7 +17,6 @@
 package org.geotools.gml2;
 
 import junit.framework.TestCase;
-import org.geotools.feature.FeatureCollections;
 import org.geotools.xlink.XLINKConfiguration;
 import org.geotools.xs.XSConfiguration;
 import org.locationtech.jts.geom.CoordinateSequenceFactory;
@@ -70,6 +69,5 @@ public class GMLConfigurationTest extends TestCase {
         assertNotNull(container.getComponentInstanceOfType(FeatureTypeCache.class));
         assertNotNull(container.getComponentAdapter(CoordinateSequenceFactory.class));
         assertNotNull(container.getComponentAdapterOfType(GeometryFactory.class));
-        assertNotNull(container.getComponentAdapterOfType(FeatureCollections.class));
     }
 }

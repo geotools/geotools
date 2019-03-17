@@ -22,7 +22,6 @@ import java.util.Map;
 import javax.xml.namespace.QName;
 import net.opengis.gml.Gml4wcsFactory;
 import org.eclipse.emf.ecore.EFactory;
-import org.geotools.feature.DefaultFeatureCollections;
 import org.geotools.gml2.FeaturePropertyExtractor;
 import org.geotools.gml2.FeatureTypeCache;
 import org.geotools.gml4wcs.bindings.AbstractGeometricPrimitiveTypeBinding;
@@ -200,6 +199,5 @@ public class GMLConfiguration extends Configuration {
         container.registerComponentInstance(
                 CoordinateSequenceFactory.class, CoordinateArraySequenceFactory.instance());
         container.registerComponentImplementation(GeometryFactory.class);
-        container.registerComponentImplementation(DefaultFeatureCollections.class);
     }
 }

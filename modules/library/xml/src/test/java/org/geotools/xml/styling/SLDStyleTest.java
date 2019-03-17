@@ -450,7 +450,7 @@ public class SLDStyleTest extends TestCase {
 
         Style style = sf.createStyle();
         style.setName("Style Name");
-        style.setTitle("Style Title");
+        style.getDescription().setTitle("Style Title");
         Rule rule1 = sb.createRule(sb.createLineSymbolizer(new Color(0), 2));
         // note: symbolizers containing a fill will likely fail, as the SLD
         // transformation loses a little data (background colour?)

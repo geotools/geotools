@@ -115,7 +115,10 @@ public class StyleBuilder extends AbstractStyleBuilder<Style> {
             fts.add(new FeatureTypeStyleBuilder(this).reset(ft));
         }
         name = style.getName();
-        styleAbstract = style.getAbstract();
+        styleAbstract =
+                Optional.ofNullable(style.getDescription().getAbstract())
+                        .map(Object::toString)
+                        .orElse(null);
         title =
                 Optional.ofNullable(style.getDescription().getTitle())
                         .map(Object::toString)

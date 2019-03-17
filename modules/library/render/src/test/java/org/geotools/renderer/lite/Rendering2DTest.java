@@ -139,25 +139,25 @@ public class Rendering2DTest extends TestCase {
         Rule rule2 = sFac.createRule();
         rule2.symbolizers().add(linesym(sFac));
         FeatureTypeStyle fts2 = sFac.createFeatureTypeStyle();
-        fts2.setRules(new Rule[] {rule2});
+        fts2.rules().add(rule2);
         fts2.setFeatureTypeName("linefeature");
 
         Rule rule3 = sFac.createRule();
         rule3.symbolizers().add(pointsym);
         FeatureTypeStyle fts3 = sFac.createFeatureTypeStyle();
-        fts3.setRules(new Rule[] {rule3});
+        fts3.rules().add(rule3);
         fts3.setFeatureTypeName("pointfeature");
 
         Rule rule4 = sFac.createRule();
         rule4.symbolizers().addAll(Arrays.asList(polysym(sFac), linesym(sFac)));
         FeatureTypeStyle fts4 = sFac.createFeatureTypeStyle();
-        fts4.setRules(new Rule[] {rule4});
+        fts4.rules().add(rule4);
         fts4.setFeatureTypeName("collFeature");
 
         Rule rule5 = sFac.createRule();
         rule5.symbolizers().add(linesym(sFac));
         FeatureTypeStyle fts5 = sFac.createFeatureTypeStyle();
-        fts5.setRules(new Rule[] {rule5});
+        fts5.rules().add(rule5);
         fts5.setFeatureTypeName("ringFeature");
 
         Style style = sFac.createStyle();
@@ -898,7 +898,7 @@ public class Rendering2DTest extends TestCase {
         Rule rulep = sFac.createRule();
         rulep.symbolizers().add(pointsym);
         FeatureTypeStyle ftsP = sFac.createFeatureTypeStyle();
-        ftsP.setRules(new Rule[] {rulep});
+        ftsP.rules().add(rulep);
         ftsP.setFeatureTypeName("querytest");
 
         LineSymbolizer linesym = sFac.createLineSymbolizer();
@@ -913,7 +913,7 @@ public class Rendering2DTest extends TestCase {
         Rule rule2 = sFac.createRule();
         rule2.symbolizers().add(linesym);
         FeatureTypeStyle ftsL = sFac.createFeatureTypeStyle();
-        ftsL.setRules(new Rule[] {rule2});
+        ftsL.rules().add(rule2);
         ftsL.setFeatureTypeName("querytest");
 
         PolygonSymbolizer polysym = sFac.createPolygonSymbolizer();

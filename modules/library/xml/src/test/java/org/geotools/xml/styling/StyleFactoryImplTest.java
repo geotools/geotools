@@ -333,7 +333,7 @@ public class StyleFactoryImplTest extends TestCase {
         rule.setMaxScaleDenominator(20000);
 
         FeatureTypeStyle style = sf.createFeatureTypeStyle();
-        style.addRule(rule);
+        style.rules().add(rule);
         style.setFeatureTypeName("Feature");
 
         Style namedStyle = sf.createStyle();

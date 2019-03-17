@@ -104,7 +104,7 @@ public class RescaleStyleVisitorTest {
     private FeatureTypeStyle fts2() {
         FeatureTypeStyle fts2 = sf.createFeatureTypeStyle();
         Rule rule = sf.createRule();
-        fts2.addRule(rule);
+        fts2.rules().add(rule);
         fts2.setFeatureTypeName("feature-type-2");
 
         return fts2;

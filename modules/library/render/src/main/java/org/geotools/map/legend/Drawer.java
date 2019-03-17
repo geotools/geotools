@@ -153,9 +153,7 @@ public class Drawer {
         FeatureTypeStyle[] styles = style.getFeatureTypeStyles();
         for (int i = 0; i < styles.length; i++) {
             FeatureTypeStyle fstyle = styles[i];
-            Rule[] rules = fstyle.getRules();
-            for (int j = 0; j < rules.length; j++) {
-                Rule rule = rules[j];
+            for (Rule rule : fstyle.rules()) {
                 symbs.addAll(rule.symbolizers());
             }
         }

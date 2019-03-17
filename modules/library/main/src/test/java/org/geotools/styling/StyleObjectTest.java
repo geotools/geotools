@@ -83,7 +83,7 @@ public class StyleObjectTest extends TestCase {
     private FeatureTypeStyle fts2() {
         FeatureTypeStyle fts2 = styleFactory.createFeatureTypeStyle();
         Rule rule = styleFactory.createRule();
-        fts2.addRule(rule);
+        fts2.rules().add(rule);
         fts2.setFeatureTypeName("feature-type-2");
 
         return fts2;
@@ -102,8 +102,8 @@ public class StyleObjectTest extends TestCase {
         Rule rule2 = styleFactory.createRule();
         rule2.setIsElseFilter(true);
         rule2.setName("rule2");
-        fts.addRule(rule1);
-        fts.addRule(rule2);
+        fts.rules().add(rule1);
+        fts.rules().add(rule2);
 
         FeatureTypeStyle clone = (FeatureTypeStyle) ((Cloneable) fts).clone();
         assertClone(fts, clone);
@@ -114,7 +114,7 @@ public class StyleObjectTest extends TestCase {
 
         FeatureTypeStyle notEq = styleFactory.createFeatureTypeStyle();
         notEq.setName("fts-not-equal");
-        notEq.addRule(rule1);
+        notEq.rules().add(rule1);
         assertEqualsContract(clone, notEq, fts);
     }
 

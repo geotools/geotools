@@ -146,7 +146,7 @@ public class DuplicatingStyleVisitorTest extends TestCase {
     private FeatureTypeStyle fts2() {
         FeatureTypeStyle fts2 = sf.createFeatureTypeStyle();
         Rule rule = sf.createRule();
-        fts2.addRule(rule);
+        fts2.rules().add(rule);
         fts2.setFeatureTypeName("feature-type-2");
 
         return fts2;
@@ -166,8 +166,8 @@ public class DuplicatingStyleVisitorTest extends TestCase {
         Rule rule2 = sf.createRule();
         rule2.setIsElseFilter(true);
         rule2.setName("rule2");
-        fts.addRule(rule1);
-        fts.addRule(rule2);
+        fts.rules().add(rule1);
+        fts.rules().add(rule2);
 
         fts.accept(visitor);
         FeatureTypeStyle clone = (FeatureTypeStyle) visitor.getCopy();
@@ -180,7 +180,7 @@ public class DuplicatingStyleVisitorTest extends TestCase {
 
         FeatureTypeStyle notEq = sf.createFeatureTypeStyle();
         notEq.setName("fts-not-equal");
-        notEq.addRule(rule1);
+        notEq.rules().add(rule1);
         assertEqualsContract(clone, notEq, fts);
 
         fts.setTransformation(ff.literal("transformation"));

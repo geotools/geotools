@@ -218,31 +218,6 @@ public interface FeatureTypeStyle extends org.opengis.style.FeatureTypeStyle {
     void setSemanticTypeIdentifiers(String[] types);
 
     /**
-     * Rules govern the appearance of any given feature to be styled by this styler. Each rule
-     * contains conditions based on scale and feature attribute values. In addition, rules contain
-     * the symbolizers which should be applied when the rule holds true.
-     *
-     * @version SLD 1.0
-     * @version SLD 1.0.20 TODO: GeoAPI getRules(): List<Rule>
-     * @return The full set of rules contained in this styler.
-     * @deprecated use rules().toArray( new Rule[0] )
-     */
-    Rule[] getRules();
-
-    /**
-     * Rules govern the appearance of any given feature to be styled by this styler. Each rule
-     * contains conditions based on scale and feature attribute values. In addition, rules contain
-     * the symbolizers which should be applied when the rule holds true.
-     *
-     * @param rules The set of rules to be set for this styler.
-     * @deprecated Please use rules().clear(); rules.addAll( rules )
-     */
-    void setRules(Rule[] rules);
-
-    /** @deprecated Please use rules().add( rule ) */
-    void addRule(Rule rule);
-
-    /**
      * Rules govern the appearance of any given feature to be styled by this styler.
      *
      * <p>This is *the* list being used to manage the rules!

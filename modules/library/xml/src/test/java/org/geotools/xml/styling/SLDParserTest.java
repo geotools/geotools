@@ -369,7 +369,8 @@ public class SLDParserTest {
                 "sldtitle",
                 styles[0]
                         .getFeatureTypeStyles()[0]
-                        .getRules()[0]
+                        .rules()
+                        .get(0)
                         .getDescription()
                         .getTitle()
                         .toString(Locale.JAPAN));
@@ -377,7 +378,8 @@ public class SLDParserTest {
                 "english",
                 styles[0]
                         .getFeatureTypeStyles()[0]
-                        .getRules()[0]
+                        .rules()
+                        .get(0)
                         .getDescription()
                         .getTitle()
                         .toString(Locale.ENGLISH));
@@ -385,7 +387,8 @@ public class SLDParserTest {
                 "english",
                 styles[0]
                         .getFeatureTypeStyles()[0]
-                        .getRules()[0]
+                        .rules()
+                        .get(0)
                         .getDescription()
                         .getTitle()
                         .toString(Locale.US));
@@ -393,7 +396,8 @@ public class SLDParserTest {
                 "english",
                 styles[0]
                         .getFeatureTypeStyles()[0]
-                        .getRules()[0]
+                        .rules()
+                        .get(0)
                         .getDescription()
                         .getTitle()
                         .toString(Locale.US));
@@ -401,7 +405,8 @@ public class SLDParserTest {
                 "italian",
                 styles[0]
                         .getFeatureTypeStyles()[0]
-                        .getRules()[0]
+                        .rules()
+                        .get(0)
                         .getDescription()
                         .getTitle()
                         .toString(Locale.ITALY));
@@ -409,7 +414,8 @@ public class SLDParserTest {
                 "french",
                 styles[0]
                         .getFeatureTypeStyles()[0]
-                        .getRules()[0]
+                        .rules()
+                        .get(0)
                         .getDescription()
                         .getTitle()
                         .toString(Locale.FRENCH));
@@ -417,7 +423,8 @@ public class SLDParserTest {
                 "canada french",
                 styles[0]
                         .getFeatureTypeStyles()[0]
-                        .getRules()[0]
+                        .rules()
+                        .get(0)
                         .getDescription()
                         .getTitle()
                         .toString(Locale.CANADA_FRENCH));
@@ -425,7 +432,8 @@ public class SLDParserTest {
                 "sld abstract",
                 styles[0]
                         .getFeatureTypeStyles()[0]
-                        .getRules()[0]
+                        .rules()
+                        .get(0)
                         .getDescription()
                         .getAbstract()
                         .toString(Locale.JAPAN));
@@ -433,7 +441,8 @@ public class SLDParserTest {
                 "english abstract",
                 styles[0]
                         .getFeatureTypeStyles()[0]
-                        .getRules()[0]
+                        .rules()
+                        .get(0)
                         .getDescription()
                         .getAbstract()
                         .toString(Locale.ENGLISH));
@@ -441,7 +450,8 @@ public class SLDParserTest {
                 "english abstract",
                 styles[0]
                         .getFeatureTypeStyles()[0]
-                        .getRules()[0]
+                        .rules()
+                        .get(0)
                         .getDescription()
                         .getAbstract()
                         .toString(Locale.US));
@@ -449,7 +459,8 @@ public class SLDParserTest {
                 "italian abstract",
                 styles[0]
                         .getFeatureTypeStyles()[0]
-                        .getRules()[0]
+                        .rules()
+                        .get(0)
                         .getDescription()
                         .getAbstract()
                         .toString(Locale.ITALY));
@@ -457,7 +468,8 @@ public class SLDParserTest {
                 "french abstract",
                 styles[0]
                         .getFeatureTypeStyles()[0]
-                        .getRules()[0]
+                        .rules()
+                        .get(0)
                         .getDescription()
                         .getAbstract()
                         .toString(Locale.FRENCH));
@@ -465,7 +477,8 @@ public class SLDParserTest {
                 "french abstract",
                 styles[0]
                         .getFeatureTypeStyles()[0]
-                        .getRules()[0]
+                        .rules()
+                        .get(0)
                         .getDescription()
                         .getAbstract()
                         .toString(Locale.CANADA_FRENCH));
@@ -480,7 +493,8 @@ public class SLDParserTest {
                 "",
                 styles[0]
                         .getFeatureTypeStyles()[0]
-                        .getRules()[0]
+                        .rules()
+                        .get(0)
                         .getDescription()
                         .getTitle()
                         .toString());
@@ -494,7 +508,8 @@ public class SLDParserTest {
                 "",
                 styles[0]
                         .getFeatureTypeStyles()[0]
-                        .getRules()[0]
+                        .rules()
+                        .get(0)
                         .getDescription()
                         .getAbstract()
                         .toString());

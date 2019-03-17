@@ -104,14 +104,12 @@ public class OpacityFinder extends AbstractStyleVisitor implements StyleVisitor 
      * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.FeatureTypeStyle)
      */
     public void visit(FeatureTypeStyle fts) {
-        Rule[] rules = fts.getRules();
-
-        for (int i = 0; i < rules.length; i++) {
+        for (Rule rule : fts.rules()) {
             if (hasOpacity) {
                 break;
             }
 
-            rules[i].accept(this);
+            rule.accept(this);
         }
     }
 

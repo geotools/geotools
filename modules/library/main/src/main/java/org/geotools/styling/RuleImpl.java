@@ -68,7 +68,7 @@ public class RuleImpl implements org.geotools.styling.Rule, Cloneable {
             boolean isElseFilter,
             double maxScale,
             double minScale) {
-        setSymbolizers(symbolizers);
+        this.symbolizers = new ArrayList<>(Arrays.asList(symbolizers));
         description.setAbstract(desc.getAbstract());
         description.setTitle(desc.getTitle());
         setLegendGraphic(legends);
@@ -142,11 +142,6 @@ public class RuleImpl implements org.geotools.styling.Rule, Cloneable {
     }
 
     @Deprecated
-    public void addSymbolizer(org.geotools.styling.Symbolizer symb) {
-        this.symbolizers.add(symb);
-    }
-
-    @Deprecated
     public void setSymbolizers(org.geotools.styling.Symbolizer[] syms) {
         List<org.geotools.styling.Symbolizer> symbols = Arrays.asList(syms);
         this.symbolizers = new ArrayList<Symbolizer>(symbols);
@@ -154,7 +149,6 @@ public class RuleImpl implements org.geotools.styling.Rule, Cloneable {
         //        this.symbolizers.addAll(symbols);
     }
 
-    @Deprecated
     public org.geotools.styling.Symbolizer[] getSymbolizers() {
 
         final org.geotools.styling.Symbolizer[] ret;

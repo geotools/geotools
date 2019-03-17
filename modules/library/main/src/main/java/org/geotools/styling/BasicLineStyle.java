@@ -33,7 +33,7 @@ public class BasicLineStyle extends StyleImpl implements org.geotools.styling.St
         linesym.setStroke(stroke);
 
         RuleImpl rule = new RuleImpl();
-        rule.setSymbolizers(new org.geotools.styling.Symbolizer[] {linesym});
+        rule.symbolizers().add(linesym);
 
         FeatureTypeStyleImpl fts = new FeatureTypeStyleImpl();
         fts.setRules(new Rule[] {rule});

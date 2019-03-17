@@ -218,23 +218,6 @@ public interface Rule extends org.opengis.style.Rule {
      */
     List<org.geotools.styling.Symbolizer> symbolizers();
 
-    /**
-     * The symbolizers contain the actual styling information for different geometry types. A single
-     * feature may be rendered by more than one of the symbolizers returned by this method. It is
-     * important that the symbolizers be applied in the order in which they are returned if the end
-     * result is to be as intended. All symbolizers should be applied to all features which make it
-     * through the filters in this rule regardless of the features' geometry. For example, a polygon
-     * symbolizer should be applied to line geometries and even points. If this is not the desired
-     * beaviour, ensure that either the filters block inappropriate features or that the
-     * FeatureTypeStyler which contains this rule has its FeatureTypeName or SemanticTypeIdentifier
-     * set appropriately.
-     *
-     * @param symbolizers An array of symbolizers to be applied, in sequence, to all of the features
-     *     addressed by the FeatureTypeStyler which contains this rule.
-     * @deprecated please use symbolizers().addAll()
-     */
-    void setSymbolizers(Symbolizer[] symbolizers);
-
     /** @return Location where this style is defined; file or server; or null if unknown */
     public OnLineResource getOnlineResource();
 

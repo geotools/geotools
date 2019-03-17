@@ -987,7 +987,8 @@ public class SLDParser {
             }
         }
 
-        rule.setSymbolizers(symbolizers.toArray(new Symbolizer[0]));
+        rule.symbolizers().clear();
+        rule.symbolizers().addAll(symbolizers);
 
         return rule;
     }

@@ -27,7 +27,6 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import org.geotools.data.DataUtilities;
 import org.geotools.factory.CommonFactoryFinder;
@@ -157,7 +156,7 @@ public class Drawer {
             Rule[] rules = fstyle.getRules();
             for (int j = 0; j < rules.length; j++) {
                 Rule rule = rules[j];
-                symbs.addAll(Arrays.asList(rule.getSymbolizers()));
+                symbs.addAll(rule.symbolizers());
             }
         }
         return symbs.toArray(new Symbolizer[symbs.size()]);
@@ -165,7 +164,7 @@ public class Drawer {
 
     Symbolizer[] getSymbolizers(Rule rule) {
         List<Symbolizer> symbs = new ArrayList<Symbolizer>();
-        symbs.addAll(Arrays.asList(rule.getSymbolizers()));
+        symbs.addAll(rule.symbolizers());
         return symbs.toArray(new Symbolizer[symbs.size()]);
     }
 

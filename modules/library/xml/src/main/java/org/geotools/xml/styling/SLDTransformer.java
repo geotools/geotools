@@ -16,6 +16,7 @@
  */
 package org.geotools.xml.styling;
 
+import com.sun.org.apache.xalan.internal.xsltc.compiler.sym;
 import java.awt.Color;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -878,9 +879,8 @@ public class SLDTransformer extends TransformerBase {
                 element("MaxScaleDenominator", rule.getMaxScaleDenominator() + "");
             }
 
-            Symbolizer[] sym = rule.getSymbolizers();
-            for (int i = 0; i < sym.length; i++) {
-                sym[i].accept(this);
+            for (Symbolizer symbolizer : rule.symbolizers()) {
+                symbolizer.accept(this);
             }
 
             end("Rule");

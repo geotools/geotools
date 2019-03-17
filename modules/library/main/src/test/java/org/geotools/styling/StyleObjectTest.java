@@ -16,6 +16,7 @@
  */
 package org.geotools.styling;
 
+import java.util.Arrays;
 import java.util.Collections;
 import junit.framework.TestCase;
 import org.geotools.factory.CommonFactoryFinder;
@@ -126,7 +127,7 @@ public class StyleObjectTest extends TestCase {
                         styleFactory.getDefaultStroke(), styleFactory.getDefaultFill(), "shape");
 
         Rule rule = styleFactory.createRule();
-        rule.setSymbolizers(new Symbolizer[] {symb1, symb2});
+        rule.symbolizers().addAll(Arrays.asList(symb1, symb2));
 
         Rule clone = (Rule) ((Cloneable) rule).clone();
         assertClone(rule, clone);
@@ -136,11 +137,12 @@ public class StyleObjectTest extends TestCase {
                         styleFactory.getDefaultStroke(), styleFactory.getDefaultFill(), "shape");
 
         Rule notEq = styleFactory.createRule();
-        notEq.setSymbolizers(new Symbolizer[] {symb2});
+        notEq.symbolizers().add(symb2);
         assertEqualsContract(clone, notEq, rule);
 
         symb1 = styleFactory.createLineSymbolizer(styleFactory.getDefaultStroke(), "geometry");
-        clone.setSymbolizers(new Symbolizer[] {symb1});
+        clone.symbolizers().clear();
+        clone.symbolizers().add(symb1);
         assertTrue(!rule.equals(clone));
     }
 

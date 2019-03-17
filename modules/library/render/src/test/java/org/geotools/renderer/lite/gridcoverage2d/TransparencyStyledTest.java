@@ -316,7 +316,7 @@ public class TransparencyStyledTest {
         final Style style = nl.getUserStyles()[0];
         final FeatureTypeStyle fts = style.featureTypeStyles().get(0);
         final Rule rule = fts.rules().get(0);
-        final RasterSymbolizer rs_1 = (RasterSymbolizer) rule.getSymbolizers()[0];
+        final RasterSymbolizer rs_1 = (RasterSymbolizer) rule.symbolizers().get(0);
         return rs_1;
     }
 

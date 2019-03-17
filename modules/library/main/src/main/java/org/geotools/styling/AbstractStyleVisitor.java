@@ -67,7 +67,7 @@ public class AbstractStyleVisitor implements StyleVisitor {
 
     @Override
     public void visit(Rule rule) {
-        for (Symbolizer sym : rule.getSymbolizers()) {
+        for (Symbolizer sym : rule.symbolizers()) {
             sym.accept(this);
         }
     }

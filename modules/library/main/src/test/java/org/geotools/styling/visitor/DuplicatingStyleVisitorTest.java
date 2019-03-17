@@ -22,6 +22,7 @@ import java.awt.Graphics;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.Collections;
 import javax.swing.Icon;
 import junit.framework.TestCase;
@@ -197,7 +198,7 @@ public class DuplicatingStyleVisitorTest extends TestCase {
                 sf.createPolygonSymbolizer(sf.getDefaultStroke(), sf.getDefaultFill(), "shape");
 
         Rule rule = sf.createRule();
-        rule.setSymbolizers(new Symbolizer[] {symb1, symb2});
+        rule.symbolizers().addAll(Arrays.asList(symb1, symb2));
 
         rule.accept(visitor);
         Rule clone = (Rule) visitor.getCopy();
@@ -207,11 +208,11 @@ public class DuplicatingStyleVisitorTest extends TestCase {
         symb2 = sf.createPolygonSymbolizer(sf.getDefaultStroke(), sf.getDefaultFill(), "shape");
 
         Rule notEq = sf.createRule();
-        notEq.setSymbolizers(new Symbolizer[] {symb2});
+        notEq.symbolizers().add(symb2);
         assertEqualsContract(clone, notEq, rule);
 
         symb1 = sf.createLineSymbolizer(sf.getDefaultStroke(), "geometry");
-        clone.setSymbolizers(new Symbolizer[] {symb1});
+        clone.symbolizers().add(symb1);
         assertTrue(!rule.equals(clone));
     }
 

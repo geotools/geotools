@@ -89,14 +89,12 @@ public class OpacityFinder extends AbstractStyleVisitor implements StyleVisitor 
      * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.Rule)
      */
     public void visit(Rule rule) {
-        Symbolizer[] symbs = rule.getSymbolizers();
-
-        for (int i = 0; i < symbs.length; i++) {
+        for (Symbolizer symbolizer : rule.symbolizers()) {
             if (hasOpacity) {
                 break;
             }
 
-            symbs[i].accept(this);
+            symbolizer.accept(this);
         }
     }
 

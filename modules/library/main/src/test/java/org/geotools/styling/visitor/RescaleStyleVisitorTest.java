@@ -120,7 +120,7 @@ public class RescaleStyleVisitorTest {
         RasterSymbolizer symb3 = sf.createRasterSymbolizer();
 
         Rule rule = sf.createRule();
-        rule.setSymbolizers(new Symbolizer[] {symb1, symb2, symb3});
+        rule.symbolizers().addAll(Arrays.asList(symb1, symb2, symb3));
 
         rule.accept(visitor);
         Rule clone = (Rule) visitor.getCopy();

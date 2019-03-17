@@ -34,7 +34,7 @@ public class BasicPolygonStyle extends StyleImpl implements org.geotools.styling
         polysym.setStroke(stroke);
 
         RuleImpl rule = new RuleImpl();
-        rule.setSymbolizers(new Symbolizer[] {polysym});
+        rule.symbolizers().add(polysym);
 
         FeatureTypeStyleImpl fts = new FeatureTypeStyleImpl();
         fts.setRules(new Rule[] {rule});

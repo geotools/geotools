@@ -93,7 +93,7 @@ public class UnitRescaleTest {
 
         for (LiteFeatureTypeStyle s : lfts) {
             Rule r = s.ruleList[0];
-            LineSymbolizer rescaledLineSymbolizer = (LineSymbolizer) r.getSymbolizers()[0];
+            LineSymbolizer rescaledLineSymbolizer = (LineSymbolizer) r.symbolizers().get(0);
             return rescaledLineSymbolizer.getStroke().getWidth().evaluate(null, Double.class);
         }
 

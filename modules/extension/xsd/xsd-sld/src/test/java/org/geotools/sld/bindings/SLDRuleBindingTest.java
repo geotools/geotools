@@ -37,7 +37,7 @@ public class SLDRuleBindingTest extends SLDTestSupport {
         assertEquals(1, rule.getLegendGraphic().length);
         assertEquals(1d, rule.getMinScaleDenominator(), 0d);
         assertEquals(1d, rule.getMaxScaleDenominator(), 0d);
-        assertEquals(5, rule.getSymbolizers().length);
+        assertEquals(5, rule.symbolizers().size());
     }
 
     public void testLocalized() throws Exception {

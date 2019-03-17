@@ -1239,7 +1239,7 @@ public class StyleBuilder {
     public Rule createRule(
             Symbolizer[] symbolizers, double minScaleDenominator, double maxScaleDenominator) {
         Rule r = sf.createRule();
-        r.setSymbolizers(symbolizers);
+        r.symbolizers().addAll(Arrays.asList(symbolizers));
 
         if (!Double.isNaN(maxScaleDenominator)) {
             r.setMaxScaleDenominator(maxScaleDenominator);
@@ -1604,7 +1604,7 @@ public class StyleBuilder {
 
         // @todo: this should set the geometry name but currently this breaks the legend
         //        symb1.setGeometryPropertyName(geomName);
-        rules[0].setSymbolizers(new Symbolizer[] {symb1});
+        rules[0].symbolizers().add(symb1);
         LOGGER.fine("added low class " + breaks[0] + " " + colors[0]);
 
         //        LOGGER.fine(rules[0].toString());
@@ -1623,7 +1623,7 @@ public class StyleBuilder {
             PolygonSymbolizer symb = createPolygonSymbolizer(c, Color.black, 1.0);
 
             //            symb.setGeometryPropertyName(geomName);
-            rules[i].setSymbolizers(new Symbolizer[] {symb});
+            rules[i].symbolizers().add(symb);
             rules[i].setFilter(cf);
 
             //            rules[i].setName("class "+i);
@@ -1641,7 +1641,7 @@ public class StyleBuilder {
         PolygonSymbolizer symb2 = createPolygonSymbolizer(c, Color.black, 1.0);
 
         //        symb2.setGeometryPropertyName(geomName);
-        rules[colors.length - 1].setSymbolizers(new Symbolizer[] {symb2});
+        rules[colors.length - 1].symbolizers().add(symb2);
         LOGGER.fine(
                 "added upper class "
                         + breaks[colors.length - 2]
@@ -1650,7 +1650,7 @@ public class StyleBuilder {
         rules[colors.length] = sf.createRule();
 
         PolygonSymbolizer elsePoly = createPolygonSymbolizer(Color.black, 1.0);
-        rules[colors.length].setSymbolizers(new Symbolizer[] {elsePoly});
+        rules[colors.length].symbolizers().add(elsePoly);
         rules[colors.length].setElseFilter(true);
 
         FeatureTypeStyle ft = sf.createFeatureTypeStyle(rules);

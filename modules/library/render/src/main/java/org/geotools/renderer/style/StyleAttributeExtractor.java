@@ -91,14 +91,7 @@ public class StyleAttributeExtractor extends FilterAttributeExtractor implements
             filter.accept(this, null);
         }
 
-        Symbolizer[] symbolizers = rule.getSymbolizers();
-
-        if (symbolizers != null) {
-            for (int i = 0; i < symbolizers.length; i++) {
-                Symbolizer symbolizer = symbolizers[i];
-                symbolizer.accept(this);
-            }
-        }
+        rule.symbolizers().forEach(s -> s.accept(this));
     }
 
     /** @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.FeatureTypeStyle) */

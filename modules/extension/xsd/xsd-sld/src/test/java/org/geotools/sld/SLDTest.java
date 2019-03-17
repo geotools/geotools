@@ -56,9 +56,9 @@ public class SLDTest {
 
         Rule rule = ftStyle.getRules()[0];
         assertEquals("main", rule.getName());
-        assertEquals(1, rule.getSymbolizers().length);
+        assertEquals(1, rule.symbolizers().size());
 
-        PolygonSymbolizer ps = (PolygonSymbolizer) rule.getSymbolizers()[0];
+        PolygonSymbolizer ps = (PolygonSymbolizer) rule.symbolizers().get(0);
         assertEquals("GEOMETRY", ps.getGeometryPropertyName());
 
         Color color = SLD.color(ps.getFill().getColor());

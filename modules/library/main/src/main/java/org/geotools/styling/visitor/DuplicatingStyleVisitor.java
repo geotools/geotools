@@ -23,7 +23,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
-import javax.swing.Icon;
+import java.util.stream.Collectors;
+import javax.swing.*;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.visitor.DuplicatingFilterVisitor;
 import org.geotools.styling.AnchorPoint;
@@ -266,10 +267,8 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
             filterCopy = copy(filter);
         }
 
-        Symbolizer[] symsCopy = rule.getSymbolizers();
-        for (int i = 0; i < symsCopy.length; i++) {
-            symsCopy[i] = copy(symsCopy[i]);
-        }
+        List<Symbolizer> symsCopy =
+                rule.symbolizers().stream().map(s -> copy(s)).collect(Collectors.toList());
 
         Graphic[] legendCopy = rule.getLegendGraphic();
         for (int i = 0; i < legendCopy.length; i++) {
@@ -280,7 +279,7 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         descCopy = copy(descCopy);
 
         copy = sf.createRule();
-        copy.setSymbolizers(symsCopy);
+        copy.symbolizers().addAll(symsCopy);
         copy.setDescription(descCopy);
         copy.setLegendGraphic(legendCopy);
         copy.setName(rule.getName());

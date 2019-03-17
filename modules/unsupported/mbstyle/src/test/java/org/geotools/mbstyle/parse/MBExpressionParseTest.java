@@ -225,7 +225,7 @@ public class MBExpressionParseTest {
         SymbolMBLayer rgbLayer = (SymbolMBLayer) rgbTest.layer("rgbExpression");
         List<FeatureTypeStyle> rgbFeatures = rgbLayer.transformInternal(rgbTest);
         Color sldColor =
-                (((TextSymbolizer) rgbFeatures.get(0).rules().get(0).getSymbolizers()[0])
+                (((TextSymbolizer) rgbFeatures.get(0).rules().get(0).symbolizers().get(0))
                         .getFill()
                         .getColor()
                         .evaluate(null, Color.class));

@@ -161,7 +161,7 @@ public class SLDRuleBinding extends AbstractComplexBinding {
 
         // &lt;xsd:element ref="sld:Symbolizer" maxOccurs="unbounded"/&gt;
         List syms = node.getChildValues(Symbolizer.class);
-        rule.setSymbolizers((Symbolizer[]) syms.toArray(new Symbolizer[syms.size()]));
+        rule.symbolizers().addAll(syms);
 
         return rule;
     }

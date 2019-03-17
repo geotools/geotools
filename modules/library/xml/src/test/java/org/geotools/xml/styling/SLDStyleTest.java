@@ -127,7 +127,7 @@ public class SLDStyleTest extends TestCase {
         Style style = layer.getUserStyles()[0];
         assertEquals(1, style.getFeatureTypeStyles().length);
         assertEquals("My User Style", style.getName());
-        assertEquals("A style by me", style.getTitle());
+        assertEquals("A style by me", style.getDescription().getTitle().toString());
         assertEquals("this is a sample style", style.getAbstract());
         assertTrue(style.isDefault());
 

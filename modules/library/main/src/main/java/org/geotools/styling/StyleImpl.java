@@ -101,14 +101,6 @@ public class StyleImpl implements org.geotools.styling.Style, Cloneable {
         return name;
     }
 
-    @Deprecated
-    public String getTitle() {
-        if (description == null || description.getTitle() == null) {
-            return null;
-        }
-        return description.getTitle().toString();
-    }
-
     public boolean isDefault() {
         return defaultB;
     }
@@ -246,6 +238,10 @@ public class StyleImpl implements org.geotools.styling.Style, Cloneable {
     }
 
     public void setDescription(Description description) {
-        this.description = DescriptionImpl.cast(description);
+        if (description == null) {
+            this.description = new DescriptionImpl();
+        } else {
+            this.description = DescriptionImpl.cast(description);
+        }
     }
 }

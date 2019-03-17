@@ -17,10 +17,12 @@
  */
 package org.geotools.ysld.encode;
 
-import java.util.Collections;
 import org.geotools.styling.SLD;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyledLayerDescriptor;
+
+import java.util.Collections;
+import java.util.Optional;
 
 /**
  * Encodes a {@link StyledLayerDescriptor} as YSLD. Handles top-level elements such a name and
@@ -37,7 +39,11 @@ public class RootEncoder extends YsldEncodeHandler<StyledLayerDescriptor> {
         Style style = SLD.defaultStyle(sld);
         if (style != null) {
             put("name", style.getName());
-            put("title", style.getTitle());
+            put(
+                    "title",
+                    Optional.ofNullable(style.getDescription().getTitle())
+                            .map(Object::toString)
+                            .orElse(null));
             put("abstract", style.getAbstract());
             put("feature-styles", new FeatureStyleEncoder(style));
         }

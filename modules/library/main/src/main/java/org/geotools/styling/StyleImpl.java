@@ -21,7 +21,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.geotools.util.SimpleInternationalString;
 import org.geotools.util.Utilities;
 import org.opengis.style.Description;
 import org.opengis.util.Cloneable;
@@ -97,29 +96,12 @@ public class StyleImpl implements org.geotools.styling.Style, Cloneable {
         return defaultB;
     }
 
-    @Deprecated
-    public void setAbstract(String abstractStr) {
-        if (description == null) {
-            description = new DescriptionImpl();
-        }
-        description.setAbstract(
-                abstractStr == null ? null : new SimpleInternationalString(abstractStr));
-    }
-
     public void setDefault(boolean isDefault) {
         defaultB = isDefault;
     }
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    @Deprecated
-    public void setTitle(String title) {
-        if (description == null) {
-            description = new DescriptionImpl();
-        }
-        description.setTitle(title == null ? null : new SimpleInternationalString(title));
     }
 
     public void accept(StyleVisitor visitor) {

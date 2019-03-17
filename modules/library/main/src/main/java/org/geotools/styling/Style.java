@@ -62,15 +62,6 @@ public interface Style extends org.opengis.style.Style {
     Description getDescription();
 
     /**
-     * @param title
-     * @deprecated please use getDescription().setTitle( new SimpleInternationalString( text ) );
-     */
-    void setTitle(String title);
-
-    /** @deprecated use getDescription().setAbstract( new SimpleInternationalString( text ) ); */
-    void setAbstract(String abstractStr);
-
-    /**
      * Indicates that this is the default style.
      *
      * <p>Assume this is kept for GeoServer enabling a WMS to track which style is considered the

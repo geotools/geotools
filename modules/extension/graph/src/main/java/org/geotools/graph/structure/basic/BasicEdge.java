@@ -47,11 +47,13 @@ public class BasicEdge extends BasicGraphable implements Edge {
     }
 
     /** @see Edge#getNodeA() */
+    @Override
     public Node getNodeA() {
         return (m_nodeA);
     }
 
     /** @see Edge#getNodeB() */
+    @Override
     public Node getNodeB() {
         return (m_nodeB);
     }
@@ -61,6 +63,7 @@ public class BasicEdge extends BasicGraphable implements Edge {
      *
      * @see Edge#getOtherNode(Node)
      */
+    @Override
     public Node getOtherNode(Node node) {
         if (node.equals(m_nodeA)) return (m_nodeB);
         if (node.equals(m_nodeB)) return (m_nodeA);
@@ -73,11 +76,12 @@ public class BasicEdge extends BasicGraphable implements Edge {
      *
      * @see org.geotools.graph.structure.Graphable#getRelated()
      */
-    public Iterator getRelated() {
-        ArrayList adj = new ArrayList();
+    @Override
+    public Iterator<Edge> getRelated() {
+        ArrayList<Edge> adj = new ArrayList<>();
 
-        for (Iterator itr = m_nodeA.getEdges().iterator(); itr.hasNext(); ) {
-            Edge e = (Edge) itr.next();
+        for (Iterator<? extends Edge> itr = m_nodeA.getEdges().iterator(); itr.hasNext(); ) {
+            Edge e = itr.next();
             switch (e.compareNodes(this)) {
                 case EQUAL_NODE_ORIENTATION: // same node orientation
                     if (e.equals(this)) continue;
@@ -87,8 +91,8 @@ public class BasicEdge extends BasicGraphable implements Edge {
             }
         }
 
-        for (Iterator itr = m_nodeB.getEdges().iterator(); itr.hasNext(); ) {
-            Edge e = (Edge) itr.next();
+        for (Iterator<? extends Edge> itr = m_nodeB.getEdges().iterator(); itr.hasNext(); ) {
+            Edge e = itr.next();
             switch (e.compareNodes(this)) {
                 case EQUAL_NODE_ORIENTATION:
                 case OPPOSITE_NODE_ORIENTATION:
@@ -102,6 +106,7 @@ public class BasicEdge extends BasicGraphable implements Edge {
     }
 
     /** @see Edge#reverse() */
+    @Override
     public void reverse() {
         Node n = m_nodeA;
         m_nodeA = m_nodeB;
@@ -109,6 +114,7 @@ public class BasicEdge extends BasicGraphable implements Edge {
     }
 
     /** @see Edge#compareNodes(Edge) */
+    @Override
     public int compareNodes(Edge other) {
         if (m_nodeA.equals(other.getNodeA()) && m_nodeB.equals(other.getNodeB()))
             return (EQUAL_NODE_ORIENTATION);
@@ -120,7 +126,16 @@ public class BasicEdge extends BasicGraphable implements Edge {
         return (UNEQUAL_NODE_ORIENTATION);
     }
 
+    /*
+     * @Override public int hashCode() { return m_nodeA.hashCode() + 31 *
+     * m_nodeB.hashCode(); }
+     *
+     * @Override public boolean equals(Object obj) { if (obj instanceof Edge) {
+     * Edge e = (Edge) obj; return e.getNodeA().equals(m_nodeA) &&
+     * e.getNodeB().equals(m_nodeB); } return false; }
+     */
     /** Returns ([A node.toString()],[B node.toString()]). */
+    @Override
     public String toString() {
         return (super.toString() + " (" + m_nodeA.getID() + "," + m_nodeB.getID() + ")");
     }

@@ -18,6 +18,8 @@ package org.geotools.graph.structure.basic;
 
 import java.util.Collection;
 import org.geotools.graph.structure.DirectedGraph;
+import org.geotools.graph.structure.Edge;
+import org.geotools.graph.structure.Node;
 
 /**
  * Basic implementation of DirectedGraph.
@@ -35,7 +37,7 @@ public class BasicDirectedGraph extends BasicGraph implements DirectedGraph {
      * @param nodes Collection of DirectedNode objects contained by the graph.
      * @param edges Collection of DirectedEdge objects contained by the graph.
      */
-    public BasicDirectedGraph(Collection nodes, Collection edges) {
+    public BasicDirectedGraph(Collection<Node> nodes, Collection<Edge> edges) {
         super(nodes, edges);
     }
 }

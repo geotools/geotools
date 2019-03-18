@@ -47,21 +47,25 @@ public class OptEdge extends OptGraphable implements Edge {
     }
 
     /** @see Edge#getNodeA() */
+    @Override
     public Node getNodeA() {
         return (m_nodeA);
     }
 
     /** @see Edge#getNodeB() */
+    @Override
     public Node getNodeB() {
         return (m_nodeB);
     }
 
     /** @see Edge#getOtherNode(Node) */
+    @Override
     public Node getOtherNode(Node node) {
         return (m_nodeA.equals(node) ? m_nodeB : m_nodeB.equals(node) ? m_nodeA : null);
     }
 
     /** @see Edge#reverse() */
+    @Override
     public void reverse() {
         OptNode tmp = m_nodeA;
         m_nodeA = m_nodeB;
@@ -69,6 +73,7 @@ public class OptEdge extends OptGraphable implements Edge {
     }
 
     /** @see Edge#compareNodes(Edge) */
+    @Override
     public int compareNodes(Edge other) {
         if (m_nodeA.equals(other.getNodeA()) && m_nodeB.equals(other.getNodeB()))
             return (Edge.EQUAL_NODE_ORIENTATION);
@@ -80,17 +85,18 @@ public class OptEdge extends OptGraphable implements Edge {
     }
 
     /** @see org.geotools.graph.structure.Graphable#getRelated() */
-    public Iterator getRelated() {
+    @Override
+    public Iterator<Edge> getRelated() {
         return (new RelatedIterator(this));
     }
 
-    public class RelatedIterator implements Iterator {
+    public class RelatedIterator implements Iterator<Edge> {
 
-        private Iterator m_itr;
+        private Iterator<Edge> m_itr;
 
         public RelatedIterator(OptEdge edge) {
-            ArrayList edges =
-                    new ArrayList(
+            ArrayList<Edge> edges =
+                    new ArrayList<>(
                             m_nodeA.getDegree()
                                     + m_nodeB.getDegree()
                                     - 2
@@ -98,29 +104,32 @@ public class OptEdge extends OptGraphable implements Edge {
 
             // add all edges of node A except this edge
             for (int i = 0; i < m_nodeA.getEdgeArray().length; i++) {
-                Edge e = (Edge) m_nodeA.getEdgeArray()[i];
+                Edge e = m_nodeA.getEdgeArray()[i];
                 if (!e.equals(edge)) edges.add(m_nodeA.getEdgeArray()[i]);
             }
 
             // add only edges from node b that are node shared with node a
             for (int i = 0; i < m_nodeB.getEdgeArray().length; i++) {
-                Edge e = (Edge) m_nodeB.getEdgeArray()[i];
+                Edge e = m_nodeB.getEdgeArray()[i];
                 if (!e.getOtherNode(m_nodeB).equals(m_nodeA)) edges.add(e);
             }
 
             m_itr = edges.iterator();
         }
 
+        @Override
         public void remove() {
             throw new UnsupportedOperationException(
                     getClass().getName() + "#remove() not supported.");
         }
 
+        @Override
         public boolean hasNext() {
             return (m_itr.hasNext());
         }
 
-        public Object next() {
+        @Override
+        public Edge next() {
             return (m_itr.next());
         }
     }

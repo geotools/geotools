@@ -51,6 +51,7 @@ import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.Polygon;
 import org.opengis.geometry.BoundingBox;
 import org.opengis.geometry.MismatchedDimensionException;
+import org.opengis.metadata.spatial.PixelOrientation;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.ParameterValueGroup;
 import org.opengis.referencing.FactoryException;
@@ -113,7 +114,7 @@ public class GridCoverageReaderHelper {
         this.mapExtent = mapExtent;
         this.requestedGridGeometry =
                 new GridGeometry2D(new GridEnvelope2D(mapRasterArea), mapExtent);
-        this.worldToScreen = requestedGridGeometry.getCRSToGrid2D();
+        this.worldToScreen = requestedGridGeometry.getCRSToGrid2D(PixelOrientation.UPPER_LEFT);
         this.padding = DEFAULT_PADDING;
         if (hints != null && hints.containsKey(GridCoverageRenderer.PADDING)) {
             padding = (int) hints.get(GridCoverageRenderer.PADDING);

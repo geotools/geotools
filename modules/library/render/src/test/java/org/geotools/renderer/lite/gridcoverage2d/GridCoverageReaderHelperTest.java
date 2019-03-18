@@ -431,9 +431,9 @@ public class GridCoverageReaderHelperTest {
         ReferencedEnvelope readEnvelope = helper.getReadEnvelope();
         final double EPS = 1e-3;
         assertEquals(10.981, readEnvelope.getMinX(), EPS);
-        assertEquals(13.021, readEnvelope.getMaxX(), EPS);
-        assertEquals(-1.041, readEnvelope.getMinY(), EPS);
-        assertEquals(1.037, readEnvelope.getMaxY(), EPS);
+        assertEquals(13.019, readEnvelope.getMaxX(), EPS);
+        assertEquals(-1.039, readEnvelope.getMinY(), EPS);
+        assertEquals(1.039, readEnvelope.getMaxY(), EPS);
     }
 
     // fails on Travis but not locally in IDE nor Maven. There are other tests covering this

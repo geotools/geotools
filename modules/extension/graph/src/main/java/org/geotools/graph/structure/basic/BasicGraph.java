@@ -36,10 +36,10 @@ import org.geotools.graph.structure.Node;
 public class BasicGraph implements Graph, Serializable {
 
     /** Nodes belonging to the graph */
-    private transient Collection m_nodes;
+    private transient Collection<Node> m_nodes;
 
     /** Edges belonging to the graph */
-    private transient Collection m_edges;
+    private transient Collection<Edge> m_edges;
 
     /**
      * Constructs an empty graph with edge and node collections uninitialized. Mainly for
@@ -55,7 +55,7 @@ public class BasicGraph implements Graph, Serializable {
      * @param nodes Collection of nodes to be contained by the graph.
      * @param edges Collection of edges to be contained by the graph.
      */
-    public BasicGraph(Collection nodes, Collection edges) {
+    public BasicGraph(Collection<Node> nodes, Collection<Edge> edges) {
         m_nodes = nodes;
         m_edges = edges;
     }
@@ -65,12 +65,13 @@ public class BasicGraph implements Graph, Serializable {
      *
      * @param nodes Collection of Node objects.
      */
-    public void setNodes(Collection nodes) {
+    public void setNodes(Collection<Node> nodes) {
         m_nodes = nodes;
     }
 
     /** @see Graph#getNodes() */
-    public Collection getNodes() {
+    @Override
+    public Collection<Node> getNodes() {
         return (m_nodes);
     }
 
@@ -79,31 +80,39 @@ public class BasicGraph implements Graph, Serializable {
      *
      * @param edges Collection of Edge objects.
      */
-    public void setEdges(Collection edges) {
+    public void setEdges(Collection<Edge> edges) {
         m_edges = edges;
     }
 
     /** @see Graph#getEdges() */
-    public Collection getEdges() {
+    @Override
+    public Collection<Edge> getEdges() {
         return (m_edges);
     }
 
     /** @see Graph#queryNodes(GraphVisitor) */
-    public List queryNodes(GraphVisitor visitor) {
-        return (query(getNodes(), visitor));
+    @Override
+    public List<Node> queryNodes(GraphVisitor visitor) {
+        return (List<Node>) (query(getNodes(), visitor));
     }
 
-    /** @see Graph#queryEdges(GraphVisitor) */
-    public List queryEdges(GraphVisitor visitor) {
-        return (query(getEdges(), visitor));
+    /**
+     * @return
+     * @see Graph#queryEdges(GraphVisitor)
+     */
+    @Override
+    public List<Edge> queryEdges(GraphVisitor visitor) {
+        return (List<Edge>) (query(getEdges(), visitor));
     }
 
     /** @see Graph#visitNodes(GraphVisitor) */
+    @Override
     public void visitNodes(GraphVisitor visitor) {
         visit(m_nodes, visitor);
     }
 
     /** @see Graph#visitEdges(GraphVisitor) */
+    @Override
     public void visitEdges(GraphVisitor visitor) {
         visit(m_edges, visitor);
     }
@@ -112,11 +121,13 @@ public class BasicGraph implements Graph, Serializable {
      * @see Graph#getNodesOfDegree(int)
      * @see Node#getDegree()
      */
-    public List getNodesOfDegree(int n) {
+    @Override
+    public List<Node> getNodesOfDegree(int n) {
         final int degree = n;
 
         return (queryNodes(
                 new GraphVisitor() {
+                    @Override
                     public int visit(Graphable component) {
                         if (((Node) component).getDegree() == degree) return (PASS_AND_CONTINUE);
                         return (FAIL_QUERY);
@@ -125,13 +136,17 @@ public class BasicGraph implements Graph, Serializable {
     }
 
     /** @see Graph#getVisitedNodes(boolean) */
-    public List getVisitedNodes(boolean visited) {
-        return (getVisited(getNodes(), visited));
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<Node> getVisitedNodes(boolean visited) {
+        return (List<Node>) (getVisited(getNodes(), visited));
     }
 
     /** @see Graph#getVisitedEdges(boolean) */
-    public List getVisitedEdges(boolean visited) {
-        return (getVisited(getEdges(), visited));
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<Edge> getVisitedEdges(boolean visited) {
+        return (List<Edge>) (getVisited(getEdges(), visited));
     }
 
     /**
@@ -142,7 +157,7 @@ public class BasicGraph implements Graph, Serializable {
      * @see BasicGraphable#getCount()
      */
     public void initNodes() {
-        for (Iterator itr = m_nodes.iterator(); itr.hasNext(); ) {
+        for (Iterator<?> itr = m_nodes.iterator(); itr.hasNext(); ) {
             Node node = (Node) itr.next();
             node.setVisited(false);
             node.setCount(0);
@@ -157,7 +172,7 @@ public class BasicGraph implements Graph, Serializable {
      * @see BasicGraphable#getCount()
      */
     public void initEdges() {
-        for (Iterator itr = m_edges.iterator(); itr.hasNext(); ) {
+        for (Iterator<?> itr = m_edges.iterator(); itr.hasNext(); ) {
             Edge edge = (Edge) itr.next();
             edge.setVisited(false);
             edge.setCount(0);
@@ -170,17 +185,19 @@ public class BasicGraph implements Graph, Serializable {
      *
      * @return String represtentaton of graph.
      */
+    @Override
     public String toString() {
         return ("V=" + m_nodes.toString() + "\n" + "E=" + m_edges.toString());
     }
     /*
      * Internal query method.
      */
-    private List query(Collection components, GraphVisitor visitor) {
-        ArrayList result = new ArrayList();
+    private List<? extends Graphable> query(
+            Collection<? extends Graphable> components, GraphVisitor visitor) {
+        ArrayList<Graphable> result = new ArrayList<>();
 
-        for (Iterator itr = components.iterator(); itr.hasNext(); ) {
-            Graphable component = (Graphable) itr.next();
+        for (Iterator<? extends Graphable> itr = components.iterator(); itr.hasNext(); ) {
+            Graphable component = itr.next();
 
             switch (visitor.visit(component)) {
                 case PASS_AND_CONTINUE:
@@ -202,8 +219,8 @@ public class BasicGraph implements Graph, Serializable {
     /*
      * Internal visit method
      */
-    private void visit(Collection components, GraphVisitor visitor) {
-        for (Iterator itr = components.iterator(); itr.hasNext(); ) {
+    private void visit(Collection<?> components, GraphVisitor visitor) {
+        for (Iterator<?> itr = components.iterator(); itr.hasNext(); ) {
             visitor.visit((Graphable) itr.next());
         }
     }
@@ -211,11 +228,13 @@ public class BasicGraph implements Graph, Serializable {
     /*
      * Internal getVisited method.
      */
-    private List getVisited(Collection components, boolean visited) {
+    private List<? extends Graphable> getVisited(
+            Collection<? extends Graphable> components, boolean visited) {
         final boolean isVisited = visited;
         return (query(
                 components,
                 new GraphVisitor() {
+                    @Override
                     public int visit(Graphable component) {
                         if (component.isVisited() == isVisited) return (PASS_AND_CONTINUE);
                         return (FAIL_QUERY);

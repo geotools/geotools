@@ -79,7 +79,7 @@ public interface DirectedNode extends Node, DirectedGraphable {
      * @return All edges found to terminate at the node and originate from the specified node.
      * @see Node#getEdges(Node)
      */
-    public List getInEdges(DirectedNode other);
+    public List<? extends Edge> getInEdges(DirectedNode other);
 
     /**
      * Returns the <B>in</B> adjacency list of the node.
@@ -87,7 +87,7 @@ public interface DirectedNode extends Node, DirectedGraphable {
      * @return A list of edges that terminate at the node.
      * @see Node#getEdges()
      */
-    public List getInEdges();
+    public List<? extends Edge> getInEdges();
 
     /**
      * Returns an edge that originates at the node and terminates at a specified node. <br>
@@ -108,7 +108,7 @@ public interface DirectedNode extends Node, DirectedGraphable {
      * @return All edges found to originate at the node and terminate at the specified node.
      * @see Node#getEdges(Node)
      */
-    public List getOutEdges(DirectedNode other);
+    public List<? extends Edge> getOutEdges(DirectedNode other);
 
     /**
      * Returns the <B>out</B> adjacency list of the node.
@@ -116,7 +116,7 @@ public interface DirectedNode extends Node, DirectedGraphable {
      * @return A list of edges originating at the node.
      * @see Node#getEdges()
      */
-    public List getOutEdges();
+    public List<? extends Edge> getOutEdges();
 
     /**
      * Returns the <B>in</B> degree of the node.

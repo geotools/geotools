@@ -73,6 +73,16 @@
         <role>Module Maintainer</role>
       </roles>
     </developer>
+    <developer>
+      <name>Ian Turton</name>
+      <id>ianturton</id>
+      <email>ianturton@users.sourceforge.net</email>
+      <organization>Astun Technology</organization>
+      <roles>
+        <role>Java Developer</role>
+        <role>Module Maintainer</role>
+      </roles>
+    </developer>
   </developers>
 
 

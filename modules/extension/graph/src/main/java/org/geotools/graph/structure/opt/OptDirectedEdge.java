@@ -51,26 +51,31 @@ public class OptDirectedEdge extends OptGraphable implements DirectedEdge {
     }
 
     /** @see DirectedEdge#getInNode() */
+    @Override
     public DirectedNode getInNode() {
         return (m_in);
     }
 
     /** @see DirectedEdge#getOutNode() */
+    @Override
     public DirectedNode getOutNode() {
         return (m_out);
     }
 
     /** @see Edge#getNodeA() */
+    @Override
     public Node getNodeA() {
         return (m_in);
     }
 
     /** @see Edge#getNodeB() */
+    @Override
     public Node getNodeB() {
         return (m_out);
     }
 
     /** @see Edge#getOtherNode(Node) */
+    @Override
     public Node getOtherNode(Node node) {
         return (node == m_in ? m_out : node == m_out ? m_in : null);
     }
@@ -80,11 +85,13 @@ public class OptDirectedEdge extends OptGraphable implements DirectedEdge {
      *
      * @throws UnsupportedOperationException
      */
+    @Override
     public void reverse() {
         throw new UnsupportedOperationException(getClass().getName() + "#reverse()");
     }
 
     /** @see Edge#compareNodes(Edge) */
+    @Override
     public int compareNodes(Edge other) {
         if (m_in.equals(other.getNodeA()) && m_out.equals(other.getNodeB()))
             return (Edge.EQUAL_NODE_ORIENTATION);
@@ -96,8 +103,9 @@ public class OptDirectedEdge extends OptGraphable implements DirectedEdge {
     }
 
     /** @see Graphable#getRelated() */
-    public Iterator getRelated() {
-        ArrayList related = new ArrayList(m_in.getDegree() + m_out.getDegree() - 2);
+    @Override
+    public Iterator<? extends Graphable> getRelated() {
+        ArrayList<Edge> related = new ArrayList<>(m_in.getDegree() + m_out.getDegree() - 2);
 
         Edge[] edges = m_in.getInEdgeArray();
         for (int i = 0; i < edges.length; i++) {
@@ -142,12 +150,14 @@ public class OptDirectedEdge extends OptGraphable implements DirectedEdge {
     }
 
     /** @see DirectedGraphable#getInRelated() */
-    public Iterator getInRelated() {
+    @Override
+    public Iterator<? extends Graphable> getInRelated() {
         return (new RelatedIterator(RelatedIterator.IN));
     }
 
     /** @see DirectedGraphable#getOutRelated() */
-    public Iterator getOutRelated() {
+    @Override
+    public Iterator<? extends Graphable> getOutRelated() {
         return (new RelatedIterator(RelatedIterator.OUT));
     }
 
@@ -156,7 +166,7 @@ public class OptDirectedEdge extends OptGraphable implements DirectedEdge {
      *
      * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
      */
-    public class RelatedIterator implements Iterator {
+    public class RelatedIterator implements Iterator<Graphable> {
         /** in mode * */
         public static final int IN = 0;
 
@@ -203,6 +213,7 @@ public class OptDirectedEdge extends OptGraphable implements DirectedEdge {
          *
          * @throws UnsupportedOperationException
          */
+        @Override
         public void remove() {
             throw new UnsupportedOperationException(getClass().getName() + "#remove()");
         }
@@ -212,6 +223,7 @@ public class OptDirectedEdge extends OptGraphable implements DirectedEdge {
          *
          * @see Iterator#hasNext()
          */
+        @Override
         public boolean hasNext() {
             return (m_index < m_n);
         }
@@ -221,7 +233,8 @@ public class OptDirectedEdge extends OptGraphable implements DirectedEdge {
          *
          * @see Iterator#next()
          */
-        public Object next() {
+        @Override
+        public Graphable next() {
             switch (m_mode) {
                 case IN:
                     return (m_in.getInEdgeArray()[m_index++]);

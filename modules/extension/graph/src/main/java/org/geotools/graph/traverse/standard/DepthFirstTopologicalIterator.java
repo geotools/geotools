@@ -16,9 +16,11 @@
  */
 package org.geotools.graph.traverse.standard;
 
+import java.util.ArrayDeque;
+import java.util.Collections;
+import java.util.Queue;
 import org.geotools.graph.structure.Graph;
-import org.geotools.graph.util.Queue;
-import org.geotools.graph.util.Stack;
+import org.geotools.graph.structure.Graphable;
 
 /**
  * Iterates over the nodes of a graph in <B>Depth First Topological Sort</B> pattern. The following
@@ -45,7 +47,8 @@ public class DepthFirstTopologicalIterator extends BreadthFirstTopologicalIterat
      * @param graph The Graph whose components are being iterated over.
      * @return A last in first out queue (a stack)
      */
-    protected Queue buildQueue(Graph graph) {
-        return (new Stack(graph.getNodes().size()));
+    @Override
+    protected Queue<Graphable> buildQueue(Graph graph) {
+        return (Collections.asLifoQueue(new ArrayDeque<>(graph.getNodes().size())));
     }
 }

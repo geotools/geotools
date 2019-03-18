@@ -32,12 +32,12 @@ import org.geotools.graph.structure.Node;
 public class BasicNode extends BasicGraphable implements Node {
 
     /** List of edges incident with the node. */
-    private transient ArrayList m_edges;
+    private transient ArrayList<Edge> m_edges;
 
     /** Constructs a BasicNode. */
     public BasicNode() {
         super();
-        m_edges = new ArrayList();
+        m_edges = new ArrayList<>();
     }
 
     /**
@@ -46,16 +46,19 @@ public class BasicNode extends BasicGraphable implements Node {
      *
      * @see Node#add(Edge)
      */
+    @Override
     public void add(Edge e) {
         m_edges.add(e);
     }
 
     /** @see Node#remove(Edge) */
+    @Override
     public void remove(Edge e) {
         m_edges.remove(e);
     }
 
     /** @see Node#getDegree() */
+    @Override
     public int getDegree() {
         // since edges that loop on a node add 2 to the degree
         // of the node, the degree is not simply the size of the edge
@@ -63,7 +66,7 @@ public class BasicNode extends BasicGraphable implements Node {
         int degree = 0;
 
         for (int i = 0; i < m_edges.size(); i++) {
-            Edge e = (Edge) m_edges.get(i);
+            Edge e = m_edges.get(i);
             if (e.getNodeA().equals(this)) degree++;
             if (e.getNodeB().equals(this)) degree++;
         }
@@ -72,11 +75,12 @@ public class BasicNode extends BasicGraphable implements Node {
     }
 
     /** @see Node#getEdge(Node) */
+    @Override
     public Edge getEdge(Node other) {
         // must explictley check that the edge has node other, and one node this,
         // just checking other is not good enough because of loops
         for (int i = 0; i < m_edges.size(); i++) {
-            Edge e = (Edge) m_edges.get(i);
+            Edge e = m_edges.get(i);
             if ((e.getNodeA().equals(this) && e.getNodeB().equals(other))
                     || (e.getNodeA().equals(other) && e.getNodeB().equals(this))) return (e);
         }
@@ -84,12 +88,13 @@ public class BasicNode extends BasicGraphable implements Node {
     }
 
     /** @see Node#getEdges(Node) */
-    public List getEdges(Node other) {
+    @Override
+    public List<Edge> getEdges(Node other) {
         // must explictley check that the edge has node other, and one node this,
         // just checking other is not good enough because of loops
-        ArrayList edges = new ArrayList();
+        ArrayList<Edge> edges = new ArrayList<>();
         for (int i = 0; i < m_edges.size(); i++) {
-            Edge e = (Edge) m_edges.get(i);
+            Edge e = m_edges.get(i);
             if ((e.getNodeA().equals(this) && e.getNodeB().equals(other))
                     || (e.getNodeA().equals(other) && e.getNodeB().equals(this))) edges.add(e);
         }
@@ -97,7 +102,8 @@ public class BasicNode extends BasicGraphable implements Node {
     }
 
     /** @see Node#getEdges() */
-    public List getEdges() {
+    @Override
+    public List<Edge> getEdges() {
         return (m_edges);
     }
 
@@ -107,10 +113,11 @@ public class BasicNode extends BasicGraphable implements Node {
      *
      * @see org.geotools.graph.structure.Graphable#getRelated()
      */
-    public Iterator getRelated() {
-        ArrayList related = new ArrayList(m_edges.size());
+    @Override
+    public Iterator<Node> getRelated() {
+        ArrayList<Node> related = new ArrayList<>(m_edges.size());
         for (int i = 0; i < m_edges.size(); i++) {
-            Edge e = (Edge) m_edges.get(i);
+            Edge e = m_edges.get(i);
             related.add(e.getOtherNode(this));
         }
         return (related.iterator());
@@ -129,6 +136,6 @@ public class BasicNode extends BasicGraphable implements Node {
         in.defaultReadObject();
 
         // recreate edge adjacency list
-        m_edges = new ArrayList();
+        m_edges = new ArrayList<>();
     }
 }

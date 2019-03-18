@@ -48,6 +48,7 @@ public class NoBifurcationIterator extends SourceGraphIterator {
      *
      * @see GraphIterator#init(Graph)
      */
+    @Override
     public void init(Graph graph, GraphTraversal traversal) {
         // do nothing
     }
@@ -59,6 +60,7 @@ public class NoBifurcationIterator extends SourceGraphIterator {
      * @see SourceGraphIterator#setSource(Graphable)
      * @throws IllegalStateException
      */
+    @Override
     public void setSource(Graphable source) {
         // check that source node if of degree <= 2
         if (((Node) source).getDegree() > 2) {
@@ -75,6 +77,7 @@ public class NoBifurcationIterator extends SourceGraphIterator {
      *
      * @see org.geotools.graph.traverse.GraphIterator#next()
      */
+    @Override
     public Graphable next(GraphTraversal traversal) {
         return (m_next);
     }
@@ -85,9 +88,10 @@ public class NoBifurcationIterator extends SourceGraphIterator {
      *
      * @see org.geotools.graph.traverse.GraphIterator#cont(Graphable)
      */
+    @Override
     public void cont(Graphable current, GraphTraversal traversal) {
         // find a related node that is non visited and degree <= 2
-        Iterator itr = current.getRelated();
+        Iterator<? extends Graphable> itr = current.getRelated();
         m_next = (Node) itr.next();
         if (itr.hasNext() && (traversal.isVisited(m_next) || m_next.getDegree() > 2))
             m_next = (Node) itr.next();
@@ -100,6 +104,7 @@ public class NoBifurcationIterator extends SourceGraphIterator {
      *
      * @see org.geotools.graph.traverse.GraphIterator#killBranch(Graphable)
      */
+    @Override
     public void killBranch(Graphable current, GraphTraversal traversal) {
         m_next = null;
     }

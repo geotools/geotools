@@ -78,7 +78,7 @@ public interface Graph {
      * @return A collection of Node objects.
      * @see Node
      */
-    public Collection getNodes();
+    public Collection<Node> getNodes();
 
     /**
      * Returns the edges of the graph.
@@ -86,7 +86,7 @@ public interface Graph {
      * @return A collection of Edge objects.
      * @see Edge
      */
-    public Collection getEdges();
+    public Collection<Edge> getEdges();
 
     /**
      * Performs a query against the nodes of the graph. Each Node object contained in the graph is
@@ -101,7 +101,7 @@ public interface Graph {
      * @see Node
      * @see GraphVisitor
      */
-    public List queryNodes(GraphVisitor visitor);
+    public List<Node> queryNodes(GraphVisitor visitor);
 
     /**
      * Performs a query against the edges of the graph. Each Edge object contained in the graph is
@@ -117,7 +117,7 @@ public interface Graph {
      * @see Edge
      * @see GraphVisitor
      */
-    public List queryEdges(GraphVisitor visitor);
+    public List<? extends Graphable> queryEdges(GraphVisitor visitor);
 
     /**
      * Applies the visitor pattern to the nodes of the graph.
@@ -141,7 +141,7 @@ public interface Graph {
      * @return A collection of nodes of degree n.
      * @see Node#getDegree()
      */
-    public List getNodesOfDegree(int n);
+    public List<Node> getNodesOfDegree(int n);
 
     /**
      * Returns all the nodes in the graph that have been marked as visited or non-visited.
@@ -150,7 +150,7 @@ public interface Graph {
      * @return List of nodes marked as visited / non-visited.
      * @see Graphable#isVisited()
      */
-    public List getVisitedNodes(boolean visited);
+    public List<Node> getVisitedNodes(boolean visited);
 
     /**
      * Returns all the edges in the graph that have been marked as visited or non-visited.
@@ -159,5 +159,5 @@ public interface Graph {
      * @return List of edges marked as visited / non-visited.
      * @see Graphable#isVisited()
      */
-    public List getVisitedEdges(boolean visited);
+    public List<Edge> getVisitedEdges(boolean visited);
 }

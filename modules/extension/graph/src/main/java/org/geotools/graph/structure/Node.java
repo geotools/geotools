@@ -62,14 +62,14 @@ public interface Node extends Graphable {
      * @param other The other node that the desired edges to return are adjacent to.
      * @return List of all edges that are found to be adjacent to the specified node.
      */
-    public List getEdges(Node other);
+    public List<? extends Edge> getEdges(Node other);
 
     /**
      * Returns the edge adjacency list of the node.
      *
      * @return A list containing all edges that are adjacent to the node.
      */
-    public List getEdges();
+    public List<? extends Edge> getEdges();
 
     /**
      * Returns the degree of the node. The degree of a node is defined as the number of edges that

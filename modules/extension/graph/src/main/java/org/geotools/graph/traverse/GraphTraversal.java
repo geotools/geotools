@@ -121,7 +121,7 @@ public interface GraphTraversal {
      */
     public GraphWalker getWalker();
 
-    /** Initializes the traversal. */
+    /** Initialises the traversal. */
     public void init();
 
     /** Starts or resumes a traversal over the components of a graph. */

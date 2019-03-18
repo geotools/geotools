@@ -41,7 +41,7 @@ public interface GraphWalker {
     public int visit(Graphable element, GraphTraversal traversal);
 
     /**
-     * Called when the graph traversal is completed. Wether this method is called after a traversal
+     * Called when the graph traversal is completed. Whether this method is called after a traversal
      * has been stopped with a return signal is up to the implementation of GraphTraversal.
      *
      * @see GraphTraversal

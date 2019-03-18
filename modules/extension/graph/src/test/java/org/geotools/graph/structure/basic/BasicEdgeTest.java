@@ -46,6 +46,7 @@ public class BasicEdgeTest extends TestCase {
         super(name);
     }
 
+    @Override
     protected void setUp() throws Exception {
         m_nodeA = new BasicNode();
         m_nodeB = new BasicNode();
@@ -108,7 +109,7 @@ public class BasicEdgeTest extends TestCase {
 
     public void test_getRelated() {
         BasicEdge be;
-        Iterator itr;
+        Iterator<Edge> itr;
 
         // nodes share single edge
         itr = m_edge.getRelated();
@@ -199,7 +200,7 @@ public class BasicEdgeTest extends TestCase {
         m_nodeA.remove(m_same);
         m_nodeB.remove(m_same);
 
-        // nodes share multiple edges (differnt direction)
+        // nodes share multiple edges (different direction)
         m_nodeB.add(m_opp);
         m_nodeA.add(m_opp);
 

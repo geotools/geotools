@@ -46,7 +46,7 @@ public abstract class BasicGraphable implements Graphable, Serializable {
     private int m_id;
 
     /**
-     * Constrcuts a new a graph component. Sets the visited flag to false, counter to -1, and
+     * Constructs a new a graph component. Sets the visited flag to false, counter to -1, and
      * generates a new id.
      */
     public BasicGraphable() {
@@ -56,41 +56,49 @@ public abstract class BasicGraphable implements Graphable, Serializable {
     }
 
     /** @see Graphable#getID() */
+    @Override
     public int getID() {
         return (m_id);
     }
 
     /** @see Graphable#setID(int) */
+    @Override
     public void setID(int id) {
         m_id = id;
     }
 
     /** @see Graphable#getObject() */
+    @Override
     public Object getObject() {
         return (m_obj);
     }
 
     /** @see Graphable#setObject(Object) */
+    @Override
     public void setObject(Object obj) {
         m_obj = obj;
     }
 
     /** @see Graphable#isVisited() */
+    @Override
     public boolean isVisited() {
         return (m_visited);
     }
 
     /** @see Graphable#setVisited(boolean) */
+    @Override
     public void setVisited(boolean visited) {
         m_visited = visited;
     }
 
     /** @see Graphable#getCount() */
+    @Override
     public int getCount() {
         return (m_nvisited);
     }
 
     /** @see Graphable#setCount(int) */
+    @Override
     public void setCount(int count) {
         m_nvisited = count;
     }
@@ -100,6 +108,7 @@ public abstract class BasicGraphable implements Graphable, Serializable {
      *
      * @see Graphable#getID()
      */
+    @Override
     public String toString() {
         return (String.valueOf(m_id));
     }

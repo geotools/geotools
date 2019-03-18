@@ -26,7 +26,8 @@ public class DirectedDijkstraIterator extends DijkstraIterator {
         super(weighter);
     }
 
-    protected Iterator getRelated(Graphable current) {
+    @Override
+    protected Iterator<? extends Graphable> getRelated(Graphable current) {
         return (((DirectedGraphable) current).getOutRelated());
     }
 }

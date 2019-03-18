@@ -19,13 +19,13 @@ package org.geotools.graph.traverse.standard;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.PriorityQueue;
 import org.geotools.graph.structure.DirectedGraphable;
 import org.geotools.graph.structure.Graph;
 import org.geotools.graph.structure.Graphable;
 import org.geotools.graph.structure.Node;
 import org.geotools.graph.traverse.GraphTraversal;
 import org.geotools.graph.traverse.basic.SourceGraphIterator;
-import org.geotools.graph.util.PriorityQueue;
 
 /**
  * A path iterator that uses a function (usually denoted f(x)) to determine the order in which the
@@ -38,7 +38,8 @@ import org.geotools.graph.util.PriorityQueue;
  *
  * The iterator proceeds as follows (pseudo-code):
  *
- * <pre><code>
+ * <pre>
+ * <code>
  *     // COST(n,n') : the real cost to go from n to n'
  *     OPEN = [Source]
  *     CLOSE = []
@@ -61,19 +62,20 @@ import org.geotools.graph.util.PriorityQueue;
  *                 parent(n') = n
  *                 add n' to OPEN
  *     // end while
- * </code></pre>
+ * </code>
+ * </pre>
  *
  * For more details see http://en.wikipedia.org/wiki/A_star
  *
  * @author Germán E. Trouillet, Francisco G. Malbrán. Universidad Nacional de Córdoba (UNC)
  */
 public class AStarIterator extends SourceGraphIterator {
-    /** function necesaries for A Star algorithm */
+    /** function necessaries for A Star algorithm */
     private AStarFunctions m_afuncs;
     /** queue that represents the open list of the A Star algorithm */
-    private PriorityQueue m_pqueue;
+    private PriorityQueue<AStarNode> m_pqueue;
     /** map of graph node to internal A* node * */
-    private HashMap m_nodemap;
+    private HashMap<Node, AStarNode> m_nodemap;
 
     public AStarIterator(Node source, AStarFunctions afuncs) {
         AStarNode asn;
@@ -82,14 +84,15 @@ public class AStarIterator extends SourceGraphIterator {
         asn = new AStarNode(source, afuncs.h(source));
         asn.setG(0);
         setSource(source);
-        m_nodemap = new HashMap();
+        m_nodemap = new HashMap<>();
         m_nodemap.put(source, asn);
-        m_pqueue = new PriorityQueue(comparator);
-        m_pqueue.init(100);
+        m_pqueue = new PriorityQueue<>(100, comparator);
+
         m_pqueue.add(asn);
     }
 
     /** Does Nothing. All the work was already done by the constructor. */
+    @Override
     public void init(Graph graph, GraphTraversal traversal) {}
 
     /**
@@ -98,11 +101,12 @@ public class AStarIterator extends SourceGraphIterator {
      *
      * @see org.geotools.graph.traverse.GraphIterator#next()
      */
+    @Override
     public Graphable next(GraphTraversal traversal) {
         if (m_pqueue.isEmpty()) {
             return null;
         }
-        AStarNode next = (AStarNode) m_pqueue.extract();
+        AStarNode next = m_pqueue.remove();
         return (next.getNode());
     }
 
@@ -114,25 +118,27 @@ public class AStarIterator extends SourceGraphIterator {
      *
      * @see org.geotools.graph.traverse.GraphIterator#cont(Graphable)
      */
+    @Override
     public void cont(Graphable current, GraphTraversal traversal) {
         Node currdn = (Node) current;
         AStarNode currAsn;
         AStarNode nextAsn;
 
-        currAsn = (AStarNode) m_nodemap.get(currdn);
+        currAsn = m_nodemap.get(currdn);
         if (currAsn == null) {
             throw new IllegalArgumentException("AStarIterator: The node is not in the open list");
         }
         currAsn.close();
-        for (Iterator itr = getRelated(current); itr.hasNext(); ) {
+        for (Iterator<?> itr = getRelated(current); itr.hasNext(); ) {
             Node next = (Node) itr.next();
             if (m_nodemap.containsKey(next)) {
-                nextAsn = (AStarNode) m_nodemap.get(next);
+                nextAsn = m_nodemap.get(next);
                 if (!nextAsn.isClosed()) {
                     if ((currAsn.getG() + m_afuncs.cost(currAsn, nextAsn)) < nextAsn.getG()) {
+                        m_pqueue.remove(nextAsn);
                         nextAsn.setG(currAsn.getG() + m_afuncs.cost(currAsn, nextAsn));
                         nextAsn.setParent(currAsn);
-                        m_pqueue.update(nextAsn);
+                        m_pqueue.add(nextAsn);
                     }
                 }
             } else { // create new AStarNode
@@ -150,17 +156,18 @@ public class AStarIterator extends SourceGraphIterator {
      *
      * @see org.geotools.graph.traverse.GraphIterator#killBranch(Graphable)
      */
+    @Override
     public void killBranch(Graphable current, GraphTraversal traversal) {
         // do nothing
     }
 
     /** */
     public Node getParent(Node n) {
-        AStarNode asn = (AStarNode) m_nodemap.get(n);
+        AStarNode asn = m_nodemap.get(n);
         return (asn == null ? null : asn.getParent() == null ? null : asn.getParent().getNode());
     }
 
-    protected Iterator getRelated(Graphable current) {
+    protected Iterator<?> getRelated(Graphable current) {
         if (current instanceof DirectedGraphable) {
             return ((DirectedGraphable) current).getOutRelated();
         } else {
@@ -168,12 +175,13 @@ public class AStarIterator extends SourceGraphIterator {
         }
     }
 
-    /** Decides wich node has more priority */
-    private static Comparator comparator =
-            new Comparator() {
-                public int compare(Object o1, Object o2) {
-                    AStarNode n1 = (AStarNode) o1;
-                    AStarNode n2 = (AStarNode) o2;
+    /** Decides which node has more priority */
+    private static Comparator<AStarNode> comparator =
+            new Comparator<AStarNode>() {
+                @Override
+                public int compare(AStarNode o1, AStarNode o2) {
+                    AStarNode n1 = o1;
+                    AStarNode n2 = o2;
                     return (n1.getF() < n2.getF() ? -1 : n1.getF() > n2.getF() ? 1 : 0);
                 }
             };

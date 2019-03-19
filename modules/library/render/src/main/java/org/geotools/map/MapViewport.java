@@ -96,7 +96,12 @@ public class MapViewport {
     private CopyOnWriteArrayList<MapBoundsListener> boundsListeners;
     private boolean matchingAspectRatio;
     private boolean hasCenteringTransforms;
+    /**
+     * Determine if the map retains its scale (false) or its bounds (true) when the MapPane is
+     * resized.
+     */
     private boolean fixedBoundsOnResize = false;
+
     private final ReadWriteLock lock = new ReentrantReadWriteLock();
 
     /**
@@ -533,12 +538,19 @@ public class MapViewport {
         hasCenteringTransforms = true;
     }
 
-    /** @return the fixedBoundsOnResize */
+    /**
+     * Determine if the map retains its scale (false) or its bounds (true) when the MapPane is
+     * resized.
+     */
     public boolean isFixedBoundsOnResize() {
         return fixedBoundsOnResize;
     }
-
-    /** @param fixedBoundsOnResize the fixedBoundsOnResize to set */
+    /**
+     * Determine if the map retains its scale (false) or its bounds (true) when the MapPane is
+     * resized.
+     *
+     * @param fixedBoundsOnResize - if true retain bounds on resize otherwise retain scale.
+     */
     public void setFixedBoundsOnResize(boolean fixedBoundsOnResize) {
         this.fixedBoundsOnResize = fixedBoundsOnResize;
     }

@@ -49,7 +49,8 @@ public class MapViewportTest extends LoggerTest {
     private static final Rectangle SCREEN_2_1 = new Rectangle(200, 100);
     // Screen area with aspect ratio 1:2
     private static final Rectangle SCREEN_1_2 = new Rectangle(100, 200);
-
+    // Screen area with aspect ration 2:2 (or 1:1)
+    private static final Rectangle SCREEN_2_2 = new Rectangle(200, 200);
     private static final double TOL = 1.0e-6d;
 
     @Test
@@ -200,6 +201,29 @@ public class MapViewportTest extends LoggerTest {
                         WORLD_1_1.getCoordinateReferenceSystem());
 
         assertTrue(expectedBounds.boundsEquals2D(vp.getBounds(), TOL));
+        // Now check with Fixed bounds set - bounding box will change but will include the old bbox
+        vp.setFixedBoundsOnResize(true);
+        vp.setScreenArea(SCREEN_1_1);
+        vp.setBounds(WORLD_1_1);
+
+        vp.setScreenArea(SCREEN_2_1);
+
+        expectedBounds =
+                new ReferencedEnvelope(
+                        WORLD_1_1.getMinX() - WORLD_1_1.getWidth() / 2,
+                        WORLD_1_1.getMaxX() + WORLD_1_1.getWidth() / 2,
+                        WORLD_1_1.getMinY(),
+                        WORLD_1_1.getMaxY(),
+                        WORLD_1_1.getCoordinateReferenceSystem());
+        assertTrue(expectedBounds.boundsEquals2D(vp.getBounds(), TOL));
+        // double size of screen - no change in BBOX
+        vp.setScreenArea(SCREEN_1_1);
+        vp.setBounds(WORLD_1_1);
+        vp.setScreenArea(SCREEN_2_2);
+        assertTrue(WORLD_1_1.boundsEquals2D(vp.getBounds(), TOL));
+        // and back to small
+        vp.setScreenArea(SCREEN_1_1);
+        assertTrue(WORLD_1_1.boundsEquals2D(vp.getBounds(), TOL));
     }
 
     @Test

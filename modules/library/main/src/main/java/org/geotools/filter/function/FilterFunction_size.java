@@ -23,6 +23,11 @@ import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.opengis.filter.capability.FunctionName;
 
+/**
+ * Return the size of a list (or other collection).
+ *
+ * @author Niels Charlier
+ */
 public class FilterFunction_size extends FunctionExpressionImpl {
 
     public static FunctionName NAME =

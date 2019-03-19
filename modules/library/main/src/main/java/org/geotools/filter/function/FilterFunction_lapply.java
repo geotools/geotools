@@ -24,6 +24,13 @@ import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.opengis.filter.capability.FunctionName;
 
+/**
+ * Apply an expression to each item of a list, resulting in a new list. Provide a list and an
+ * expression as input, returns a new list as output. Use the "." symbol inside the expression to
+ * refer to each item of the list.
+ *
+ * @author Niels Charlier
+ */
 public class FilterFunction_lapply extends FunctionExpressionImpl {
 
     public static FunctionName NAME =

@@ -29,6 +29,13 @@ import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.ExpressionVisitor;
 import org.opengis.filter.expression.PropertyName;
 
+/**
+ * Builds a list via iteration. An index property name, a count (number of iterations) and an
+ * (indexed) expression must be provided. The result is a list containing the evaluated expression
+ * for each index.
+ *
+ * @author Niels Charlier
+ */
 public class FilterFunction_literate extends FunctionExpressionImpl {
 
     public static FunctionName NAME =
@@ -51,8 +58,9 @@ public class FilterFunction_literate extends FunctionExpressionImpl {
         }
         PropertyName indexName = (PropertyName) getExpression(0);
         Integer size = getExpression(1).evaluate(feature, Integer.class);
-        if (size == null) {
-            throw new IllegalArgumentException("literate function requires non-null size");
+        if (size == null || size <= 0) {
+            throw new IllegalArgumentException(
+                    "literate function requires non-null, positive size");
         }
 
         List<Object> result = new ArrayList<Object>();

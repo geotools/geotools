@@ -23,6 +23,12 @@ import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.opengis.filter.capability.FunctionName;
 
+/**
+ * Select one item for a list. Allows expressions to be used as index (as opposed to the []
+ * notation).
+ *
+ * @author Niels Charlier
+ */
 public class FilterFunction_litem extends FunctionExpressionImpl {
 
     public static FunctionName NAME =

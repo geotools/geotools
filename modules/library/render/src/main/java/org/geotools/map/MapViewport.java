@@ -96,6 +96,7 @@ public class MapViewport {
     private CopyOnWriteArrayList<MapBoundsListener> boundsListeners;
     private boolean matchingAspectRatio;
     private boolean hasCenteringTransforms;
+    private boolean fixedBoundsOnResize = false;
     private final ReadWriteLock lock = new ReentrantReadWriteLock();
 
     /**
@@ -350,8 +351,11 @@ public class MapViewport {
         } else {
             this.screenArea = new Rectangle(screenArea);
         }
-
-        setTransforms(false);
+        if (fixedBoundsOnResize) {
+            setTransforms(true);
+        } else {
+            setTransforms(false);
+        }
     }
 
     /**
@@ -529,6 +533,16 @@ public class MapViewport {
         hasCenteringTransforms = true;
     }
 
+    /** @return the fixedBoundsOnResize */
+    public boolean isFixedBoundsOnResize() {
+        return fixedBoundsOnResize;
+    }
+
+    /** @param fixedBoundsOnResize the fixedBoundsOnResize to set */
+    public void setFixedBoundsOnResize(boolean fixedBoundsOnResize) {
+        this.fixedBoundsOnResize = fixedBoundsOnResize;
+    }
+
     /**
      * Calculates transforms suitable for no aspect ratio matching.
      *
@@ -570,7 +584,7 @@ public class MapViewport {
     }
 
     /**
-     * Helper for setter methods which checkst that this viewport is editable and issues a log
+     * Helper for setter methods which checks that this viewport is editable and issues a log
      * message if not.
      */
     private boolean checkEditable(String methodName) {

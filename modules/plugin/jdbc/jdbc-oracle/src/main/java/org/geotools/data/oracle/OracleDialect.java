@@ -175,8 +175,6 @@ public class OracleDialect extends PreparedStatementSQLDialect {
                     put("NVARCHAR2", String.class);
                     put("DATE", java.sql.Date.class);
                     put("TIMESTAMP", java.sql.Timestamp.class);
-                    put("BINARY_DOUBLE", Double.class);
-                    put("BINARY_FLOAT", Float.class);
                 }
             };
 

@@ -23,10 +23,12 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.lang.reflect.Array;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -610,7 +612,106 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
      * @param extraData extra data (unused by this method)
      */
     public Object visit(Or filter, Object extraData) {
-        return visit((BinaryLogicOperator) filter, "OR");
+        // Check if we can encode the "or" as an "in", happens if the same property
+        // is compared as equality with multiple values. This is important as some databases
+        // cannot optimize index access otherwise
+        // The collector contains name -> list<values> for equalities, and the filter->null
+        // otherwise
+        LinkedHashMap<Object, Object> grouped = new LinkedHashMap<>();
+        int maxGroupSize = 0;
+        for (Filter child : filter.getChildren()) {
+            Expression[] nameLiteral = getNameLiteralFromEquality(child);
+            if (nameLiteral == null) {
+                grouped.put(child, null);
+            } else {
+                PropertyName name = (PropertyName) nameLiteral[0];
+                Literal value = (Literal) nameLiteral[1];
+                List<Literal> values = (List<Literal>) grouped.get(name);
+                if (values == null) {
+                    values = new ArrayList<>();
+                    grouped.put(name, values);
+                }
+                values.add(value);
+                maxGroupSize = Math.max(maxGroupSize, values.size());
+            }
+        }
+
+        if (maxGroupSize < 2) {
+            // no special behavior needed
+            return visit((BinaryLogicOperator) filter, "OR");
+        }
+
+        try {
+            Iterator<Map.Entry<Object, Object>> iterator = grouped.entrySet().iterator();
+
+            // ok, we can output at least one "in" statement
+            if (grouped.size() > 1) {
+                out.write("(");
+            }
+
+            while (iterator.hasNext()) {
+                Map.Entry<Object, Object> entry = iterator.next();
+                if (entry.getKey() instanceof PropertyName) {
+                    PropertyName pn = (PropertyName) entry.getKey();
+                    List<Literal> literals = (List<Literal>) entry.getValue();
+
+                    pn.accept(this, extraData);
+                    Class binding = getExpressionType(pn);
+
+                    // avoid bizarre enconding in case there is just one value in this one
+                    // (there is at least one other variable in this OR that benefits from IN)
+                    int literalsSize = literals.size();
+                    if (literalsSize == 1) {
+                        out.write(" = ");
+                        literals.get(0).accept(this, binding);
+                    } else {
+                        out.write(" IN (");
+
+                        for (int i = 0; i < literalsSize; i++) {
+                            literals.get(i).accept(this, binding);
+                            if (i < literalsSize - 1) {
+                                out.write(", ");
+                            }
+                        }
+                        out.write(")");
+                    }
+
+                } else {
+                    ((Filter) entry.getKey()).accept(this, extraData);
+                }
+
+                if (iterator.hasNext()) {
+                    out.write(" OR ");
+                }
+            }
+
+            if (grouped.size() > 1) {
+                out.write(")");
+            }
+        } catch (java.io.IOException ioe) {
+            throw new RuntimeException(IO_ERROR, ioe);
+        }
+
+        return extraData;
+    }
+
+    /**
+     * If the child is an equality between a property name and a literal, returns an array with the
+     * property name first, and the expression second. Will return null otherwise.
+     */
+    private Expression[] getNameLiteralFromEquality(Filter child) {
+        if (child instanceof PropertyIsEqualTo) {
+            PropertyIsEqualTo equal = (PropertyIsEqualTo) child;
+            Expression ex1 = equal.getExpression1();
+            Expression ex2 = equal.getExpression2();
+            if (ex1 instanceof PropertyName && ex2 instanceof Literal) {
+                return new Expression[] {ex1, ex2};
+            } else if (ex2 instanceof PropertyName && ex1 instanceof Literal) {
+                return new Expression[] {ex2, ex1};
+            }
+        }
+
+        return null;
     }
 
     /**

@@ -63,13 +63,13 @@ public class JTDSClobConverterFactory implements ConverterFactory {
 
         // can only convert towards String
         if (!(String.class.equals(target))) {
-            LOGGER.fine("Target not a string");
+            LOGGER.finest("Target not a string");
             return null;
         }
 
         // can only deal with oracle specific blob classes
         if (!JTDS_CLOB.isAssignableFrom(source)) {
-            LOGGER.fine("Source not a clob");
+            LOGGER.finest("Source not a clob");
             return null;
         }
 

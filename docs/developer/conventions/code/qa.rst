@@ -71,7 +71,7 @@ prefix, that will be used to perform the close, for example::
     </rule>
 
 For closing delegates that use an instance object instead of a class static method, the variable
-name is included in the prefix, so some uninformity in variable names is required.
+name is included in the prefix, so some uniformity in variable names is required.
 
 
 Error Prone
@@ -79,7 +79,7 @@ Error Prone
 
 The `Error Prone <https://errorprone.info/>`_ checker runs a compiler plugin.
 
-In order to activate the Error Prone checks, use the "-Perrorprone" for JDK 11 builds, or "Perrorprone8" for JDK 8 builds.
+In order to activate the Error Prone checks, use the "-Perrorprone" for JDK 11 builds, or "-Perrorprone8" for JDK 8 builds.
 
 Any failure to comply with the "Error Prone" rules will show up as a compile error in the build output, e.g.::
 

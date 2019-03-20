@@ -22,7 +22,6 @@ import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCFeatureSourceOnlineTest;
 import org.geotools.jdbc.JDBCTestSetup;
 import org.geotools.referencing.CRS;
-import org.opengis.feature.type.AttributeType;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.PropertyIsEqualTo;
 
@@ -86,17 +85,5 @@ public class OracleFeatureSourceOnlineTest extends JDBCFeatureSourceOnlineTest {
         assertEquals(1l, Math.round(bounds.getMaxY()));
 
         assertTrue(areCRSEqual(CRS.decode("EPSG:4326"), bounds.getCoordinateReferenceSystem()));
-    }
-
-    public void testFeatureSourceWithBinaryDouble() throws Exception {
-        AttributeType binaryDoubleAttribute =
-                dataStore.getFeatureSource(tname("ft1")).getSchema().getType("BIN_DOUBLE_PROPERTY");
-        assertNotNull(binaryDoubleAttribute);
-        assertTrue(binaryDoubleAttribute.getBinding() == Double.class);
-
-        AttributeType binaryFloatAttribute =
-                dataStore.getFeatureSource(tname("ft1")).getSchema().getType("BIN_FLOAT_PROPERTY");
-        assertNotNull(binaryFloatAttribute);
-        assertTrue(binaryFloatAttribute.getBinding() == Float.class);
     }
 }

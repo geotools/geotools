@@ -17,7 +17,9 @@
 package org.geotools.jdbc;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import org.geotools.filter.visitor.DuplicatingFilterVisitor;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.feature.type.PropertyDescriptor;
@@ -25,6 +27,7 @@ import org.opengis.filter.And;
 import org.opengis.filter.BinaryComparisonOperator;
 import org.opengis.filter.Filter;
 import org.opengis.filter.Not;
+import org.opengis.filter.Or;
 import org.opengis.filter.PropertyIsBetween;
 import org.opengis.filter.PropertyIsEqualTo;
 import org.opengis.filter.PropertyIsGreaterThan;
@@ -34,11 +37,12 @@ import org.opengis.filter.PropertyIsLessThanOrEqualTo;
 import org.opengis.filter.PropertyIsLike;
 import org.opengis.filter.PropertyIsNotEqualTo;
 import org.opengis.filter.expression.Expression;
+import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
 
 /**
  * Amends the differences between our in-memory two-valued logic and the database own three-valued
- * logic making sure we treat null values just like in memory (avoiding the third "unkonwn" status)
+ * logic making sure we treat null values just like in memory (avoiding the third "unknown" status)
  *
  * @author Andrea Aime - GeoSolutions
  */
@@ -100,6 +104,79 @@ class NullHandlingVisitor extends DuplicatingFilterVisitor {
         return f;
     }
 
+    @Override
+    public Object visit(Or filter, Object extraData) {
+        if (filter.getChildren().size() < 2) {
+            return super.visit(filter, extraData);
+        }
+        // this list contains a name -> List<filter> entry for any simple property name comparison,
+        // and a filter -> visit(Filter) for any other case
+        LinkedHashMap<Object, Object> grouped = new LinkedHashMap();
+        int maxListSize = 0;
+        for (Filter child : filter.getChildren()) {
+            // not equal comparisons are simplified another way
+            if (child instanceof PropertyIsNotEqualTo
+                    || !(child instanceof BinaryComparisonOperator)) {
+                grouped.put(child, child.accept(this, null));
+            } else {
+                String name = getComparisonPropertyName((BinaryComparisonOperator) child);
+                if (name == null) {
+                    // not a case we can simplify, visit and accumulate
+                    grouped.put(child, child.accept(this, null));
+                } else {
+                    List<Filter> filters = (List<Filter>) grouped.get(name);
+                    if (filters == null) {
+                        filters = new ArrayList<>();
+                        grouped.put(name, filters);
+                    }
+                    // just add the child, no need to clone it
+                    filters.add(child);
+                    maxListSize = Math.max(filters.size(), maxListSize);
+                }
+            }
+        }
+
+        // nothing to group, the classic translation can be used instead
+        if (maxListSize < 2) {
+            return super.visit(filter, extraData);
+        }
+
+        // some comparisons can be grouped, great
+        List<Filter> children = new ArrayList<>();
+        for (Map.Entry<Object, Object> entry : grouped.entrySet()) {
+            if (entry.getKey() instanceof String) {
+                Not notNull = ff.not(ff.isNull(ff.property((String) entry.getKey())));
+                List<Filter> filters = (List<Filter>) entry.getValue();
+                if (filters.size() == 1) {
+                    children.add(ff.and(filters.get(0), notNull));
+                } else {
+                    children.add(ff.and(ff.or(filters), notNull));
+                }
+            } else {
+                children.add((Filter) entry.getValue());
+            }
+        }
+        if (children.size() == 1) {
+            return children.get(0);
+        }
+        return ff.or(children);
+    }
+
+    /**
+     * Given a binary comparison, returns the property name in case the comparison is between a
+     * property and a literal
+     */
+    private String getComparisonPropertyName(BinaryComparisonOperator filter) {
+        if (filter.getExpression1() instanceof PropertyName
+                && filter.getExpression2() instanceof Literal) {
+            return ((PropertyName) filter.getExpression1()).getPropertyName();
+        } else if (filter.getExpression2() instanceof PropertyName
+                && filter.getExpression1() instanceof Literal) {
+            return ((PropertyName) filter.getExpression2()).getPropertyName();
+        }
+        return null;
+    }
+
     /**
      * Guards the filter against potential null values in the target property name (if it is a
      * property name, to start with)
@@ -112,7 +189,7 @@ class NullHandlingVisitor extends DuplicatingFilterVisitor {
                 Not notNull = ff.not(ff.isNull(ff.property(name)));
                 if (filter instanceof And) {
                     And and = (And) filter;
-                    List<Filter> children = new ArrayList<Filter>(and.getChildren());
+                    List<Filter> children = new ArrayList<>(and.getChildren());
                     children.add(notNull);
                     return ff.and(children);
                 } else {

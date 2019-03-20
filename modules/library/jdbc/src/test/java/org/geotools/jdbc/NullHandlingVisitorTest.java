@@ -13,9 +13,11 @@ import org.opengis.filter.And;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.Not;
+import org.opengis.filter.Or;
 import org.opengis.filter.PropertyIsBetween;
 import org.opengis.filter.PropertyIsEqualTo;
 import org.opengis.filter.PropertyIsLike;
+import org.opengis.filter.expression.PropertyName;
 
 public class NullHandlingVisitorTest {
 
@@ -141,5 +143,55 @@ public class NullHandlingVisitorTest {
 
     private Not propertyNotNull(String name) {
         return ff.not(ff.isNull(ff.property(name)));
+    }
+
+    @Test
+    public void testRepeatedOr() {
+        PropertyName p = ff.property("prop");
+        Or orFilter =
+                ff.or(
+                        Arrays.asList(
+                                ff.equal(p, ff.literal("zero"), true),
+                                ff.equal(p, ff.literal("one"), true),
+                                ff.equal(p, ff.literal("two"), true)));
+
+        NullHandlingVisitor nh = new NullHandlingVisitor();
+        Filter nhResult = (Filter) orFilter.accept(nh, null);
+        Filter expected = ff.and(Arrays.asList(orFilter, ff.not(ff.isNull(p))));
+        assertEquals(expected, nhResult);
+    }
+
+    @Test
+    public void testRepeatedMixedOr() {
+        PropertyName spp = ff.property("sp");
+        PropertyName ipp = ff.property("ip");
+        PropertyName dpp = ff.property("dp");
+        Or orFilter =
+                ff.or(
+                        Arrays.asList(
+                                ff.equal(spp, ff.literal("zero"), true),
+                                ff.equal(ipp, ff.literal(1), true),
+                                ff.equal(dpp, ff.literal(0d), true),
+                                ff.equal(spp, ff.literal("two"), true),
+                                ff.equal(ipp, ff.literal(2), true)));
+        NullHandlingVisitor nh = new NullHandlingVisitor();
+        Filter nhResult = (Filter) orFilter.accept(nh, null);
+        Filter expected =
+                ff.or(
+                        Arrays.asList(
+                                ff.and(
+                                        ff.or(
+                                                ff.equal(spp, ff.literal("zero"), true),
+                                                ff.equal(spp, ff.literal("two"), true)),
+                                        ff.not(ff.isNull(spp))),
+                                ff.and(
+                                        ff.or(
+                                                ff.equal(ipp, ff.literal(1), true),
+                                                ff.equal(ipp, ff.literal(2), true)),
+                                        ff.not(ff.isNull(ipp))),
+                                ff.and(
+                                        ff.equal(dpp, ff.literal(0d), true),
+                                        ff.not(ff.isNull(dpp)))));
+        assertEquals(expected, nhResult);
     }
 }

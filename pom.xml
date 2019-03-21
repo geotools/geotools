@@ -787,7 +787,7 @@
       <roles>
         <role>Java Developer</role>
         <role>Documentation</role>
-        <role>Module Mantainer</role>
+        <role>Module Maintainer</role>
       </roles>
     </developer>
     <developer>
@@ -797,7 +797,7 @@
       <organization>AMA-MI</organization>
       <roles>
         <role>Java Developer</role>
-        <role>Module Mantainer</role>
+        <role>Module Maintainer</role>
       </roles>
     </developer>
     <developer>
@@ -807,7 +807,7 @@
       <organization></organization>
       <roles>
         <role>Java Developer</role>
-        <role>Module Mantainer</role>
+        <role>Module Maintainer</role>
       </roles>
     </developer>
   </developers>
@@ -1608,11 +1608,11 @@
     <!-- ========================================================= -->
     <!--   Maven plugins dependencies management.                  -->
     <!--   It should not be needed since Maven select by default   -->
-    <!--   the latest plugins. Unfortunatdly, experience shows that -->
+    <!--   the latest plugins. Unfortunately, experience shows that-->
     <!--   new plugin releases sometime introduce new bugs that    -->
     <!--   break our build. So it is safer to specify plugin       -->
     <!--   versions that are known to work.  This list is in       -->
-    <!--   alphabetical order for easier comparaison with latest   -->
+    <!--   alphabetical order for easier comparison with latest    -->
     <!--   plugins at                                              -->
     <!--   http://repo1.maven.org/maven2                           -->
     <!-- ========================================================= -->
@@ -1796,7 +1796,7 @@
 	  <argLine>-Xmx${test.maxHeapSize} ${jvm.opts} -Dorg.geotools.test.extensive=${extensive.tests} -Dorg.geotools.test.interactive=${interactive.tests} -Dorg.geotools.image.test.skip=${skip.image.tests} -Dorg.geotools.image.test.interactive=${interactive.image} -Djava.awt.headless=${java.awt.headless} -Dsun.java2d.d3d=${sun.java2d.d3d} -Djava.io.tmpdir="${java.io.tmpdir}" -Djava.library.path="${java.library.path}" ${test.args}  -XX:+TieredCompilation -XX:TieredStopAtLevel=1 -XX:+IgnoreUnrecognizedVMOptions -Djava.util.logging.config.file="${geotoolsBaseDir}"/${logging-profile}.properties --illegal-access=debug</argLine>
           <!-- Ignores test failure only if we are generating a       -->
           <!-- report for publication on the web site. See the        -->
-          <!-- profiles section at the begining of this pom.xml file. -->
+          <!-- profiles section at the beginning of this pom.xml file. -->
           <testFailureIgnore>
             ${allow.test.failure.ignore}
           </testFailureIgnore>
@@ -2209,7 +2209,7 @@
         </reportSets>
         <configuration>
           <!-- Avoid the dependency plugin to download again all jars
-               from repositories just to report the following informations -->
+               from repositories just to report the following information -->
           <dependencyDetailsEnabled>false</dependencyDetailsEnabled>
           <dependencyLocationsEnabled>false</dependencyLocationsEnabled>
         </configuration>
@@ -2302,7 +2302,7 @@
     </repository>
 
     <repository>
-      <!-- contains snapshot and release (including third-party-dependences)               -->
+      <!-- Contains snapshot and release (including third-party-dependencies)              -->
       <!-- Restlet maven Repository (http://maven.restlet.org)                             -->
       <!-- ucar (https://artifacts.unidata.ucar.edu/content/repositories/unidata-releases) -->
       <!-- geosolutions (http://maven.geo-solutions.it/)                                   -->

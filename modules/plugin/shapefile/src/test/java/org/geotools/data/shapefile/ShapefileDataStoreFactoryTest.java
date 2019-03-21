@@ -22,6 +22,7 @@ import static org.geotools.data.shapefile.ShapefileDataStoreFactory.URLP;
 import static org.junit.Assert.*;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
 import java.net.URL;
 import java.util.HashMap;
@@ -163,5 +164,12 @@ public class ShapefileDataStoreFactoryTest extends TestCaseSupport {
         }
 
         return result;
+    }
+
+    /** Check non NullPointerException using a http URL instead Filesystem path */
+    @Test
+    public void testHttpUrl() throws IOException {
+        Map params = new KVP(URLP.key, "http://geo-solution.it/");
+        assertFalse(factory.canProcess(params));
     }
 }

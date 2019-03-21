@@ -51,7 +51,6 @@ import org.geotools.coverage.grid.io.DecimationPolicy;
 import org.geotools.coverage.grid.io.DefaultDimensionDescriptor;
 import org.geotools.coverage.grid.io.DimensionDescriptor;
 import org.geotools.coverage.grid.io.GranuleSource;
-import org.geotools.coverage.grid.io.GranuleStore;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.coverage.grid.io.GridFormatFinder;
 import org.geotools.coverage.grid.io.OverviewPolicy;
@@ -973,8 +972,6 @@ public class RasterManager implements Cloneable {
 
     GranuleCatalog granuleCatalog;
 
-    GranuleStore granuleStore;
-
     GranuleSource granuleSource;
 
     String typeName;
@@ -1578,10 +1575,8 @@ public class RasterManager implements Cloneable {
                 }
                 return granuleSource;
             } else {
-                if (granuleStore == null) {
-                    granuleStore = new GranuleCatalogStore(this, granuleCatalog, typeName, hints);
-                }
-                return granuleStore;
+                // stateful (holds transaction), do not cache
+                return new GranuleCatalogStore(this, granuleCatalog, typeName, hints);
             }
         }
     }
@@ -1610,9 +1605,6 @@ public class RasterManager implements Cloneable {
             } finally {
                 if (granuleSource != null) {
                     granuleSource = null;
-                }
-                if (granuleStore != null) {
-                    granuleStore = null;
                 }
                 if (granuleCatalog != null) {
                     granuleCatalog = null;

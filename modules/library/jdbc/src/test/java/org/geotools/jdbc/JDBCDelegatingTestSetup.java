@@ -39,6 +39,11 @@ public class JDBCDelegatingTestSetup extends JDBCTestSetup {
     }
 
     @Override
+    public boolean canResetSchema() {
+        return delegate.canResetSchema();
+    }
+
+    @Override
     public void setFixture(Properties fixture) {
         super.setFixture(fixture);
         delegate.setFixture(fixture);

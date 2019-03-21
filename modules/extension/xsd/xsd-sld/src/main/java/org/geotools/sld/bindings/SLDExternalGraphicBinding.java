@@ -108,6 +108,6 @@ public class SLDExternalGraphicBinding extends AbstractComplexBinding {
         URI uri = Converters.convert(node.getChildValue("OnlineResource"), URI.class);
         String format = (String) node.getChildValue("Format");
 
-        return styleFactory.createExternalGraphic(uri.toURL(), format);
+        return styleFactory.createExternalGraphic(uri.toString(), format);
     }
 }

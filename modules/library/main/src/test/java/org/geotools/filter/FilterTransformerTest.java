@@ -102,4 +102,18 @@ public class FilterTransformerTest extends TestCase {
         Document doc = XMLUnit.buildControlDocument(output);
         XMLAssert.assertXpathEvaluatesTo("urn:ogc:def:crs:EPSG::4326", "//gml:Point/@srsName", doc);
     }
+
+    public void testEncodeBBox() throws Exception {
+        Filter filter = ff.bbox("geom", -1.0, 50.0, 1.0, 51, "EPSG:4326");
+        String output = transform.transform(filter);
+        assertNotNull("got xml", output);
+        String xml =
+                "<?xml version=\"1.0\" encoding=\"UTF-8\"?><ogc:BBOX "
+                        + "xmlns=\"http://www.opengis.net/ogc\" xmlns:ogc=\"http://www.opengis.net/ogc\" "
+                        + "xmlns:gml=\"http://www.opengis.net/gml\">"
+                        + "<ogc:PropertyName>geom</ogc:PropertyName>"
+                        + "<gml:Box><gml:coordinates xmlns:gml=\"http://www.opengis.net/gml\" decimal=\".\" cs=\",\" ts=\" \">-1,50 1,51</gml:coordinates></gml:Box>"
+                        + "</ogc:BBOX>";
+        assertEquals(xml, output);
+    }
 }

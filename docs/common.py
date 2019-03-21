@@ -13,6 +13,7 @@
 
 import sys, os
 import re
+import datetime
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
@@ -28,9 +29,9 @@ extensions = ['sphinx.ext.todo','sphinx.ext.extlinks']
 extlinks = { 
     'wiki': ('https://github.com/geotools/geotools/wiki/%s',''),
     'website': ('http://geotools.org/%s',''),
-    'geoserver': ('http://docs.geoserver.org/latest/en/user/%s',''),
-    'developer': ('http://docs.geotools.org/latest/developer/%s',''),
-    'user': ('http://docs.geotools.org/latest/userguide/%s',''),
+    'geoserver': ('http://docs.geoserver.org/stable/en/user/%s',''),
+    'developer': ('http://docs.geotools.org/stable/developer/%s',''),
+    'user': ('http://docs.geotools.org/stable/userguide/%s',''),
     'geot': ('https://osgeo-org.atlassian.net/browse/GEOT-%s','GEOT-')
 }
 
@@ -47,11 +48,17 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # exclude
-exclude_patterns = ['**/.svn']
+exclude_patterns = ['**/.gitignore']
 
 # General information about the project.
 project = u'GeoTools'
-copyright = u'2017, GeoTools'
+
+#Current year
+now = datetime.datetime.now()
+year = now.year
+
+#Copyright
+copyright = u'{} Open Source Geospatial Foundation'.format(year)
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the

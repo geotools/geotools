@@ -21,6 +21,7 @@ import javax.annotation.Nullable;
 import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.filter.text.ecql.ECQL;
 import org.geotools.styling.FeatureTypeStyle;
+import org.geotools.styling.Graphic;
 import org.geotools.styling.Rule;
 import org.geotools.ysld.Tuple;
 import org.geotools.ysld.YamlMap;
@@ -57,6 +58,15 @@ public class RuleParser extends YsldParseHandler {
             }
             rule.setTitle(r.str("title"));
             rule.setAbstract(r.str("abstract"));
+            context.push(
+                    r,
+                    "legend",
+                    new GraphicParser(factory) {
+                        @Override
+                        protected void graphic(Graphic g) {
+                            rule.setLegend(g);
+                        }
+                    });
 
             if (r.has("filter")) {
                 try {

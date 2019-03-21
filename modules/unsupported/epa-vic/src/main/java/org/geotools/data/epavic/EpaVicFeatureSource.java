@@ -146,16 +146,7 @@ public class EpaVicFeatureSource extends ContentFeatureSource {
     }
 
     protected static String composeErrorMessage(Filter filter, String msg) {
-        return "The "
-                + filter.toString()
-                + " CQL expression is incorrect: "
-                + msg
-                + ". the CQL has to have"
-                + " MonitorID, TimeBaseID equality expression and time duration tied by 'And' logical predicate."
-                + " Date must be expressed as YYYYMMDD "
-                + "As in: \"BBOX(SHAPE, 144.79309207663,-37.790887782994,144.82828265916,-37.766134928431) "
-                + "AND MonitorId='PM10' AND TimeBaseId='24HR_RAV' "
-                + "AND DateTimeRecorded BETWEEN '2018-03-21T10:00:00' AND '2019-03-23T10:00:00'";
+        return "The " + filter.toString() + " is incorrect: " + msg;
     }
 
     public static String convertDateFormatBetweenAurinAndEPA(String aurinDate)
@@ -380,7 +371,7 @@ public class EpaVicFeatureSource extends ContentFeatureSource {
                 requestParams.put(BBOXPARAM, bbox);
             }
         } catch (Exception e) {
-            throw new CQLException(composeErrorMessage(filter, "CQL expression is incorrect"));
+            throw new CQLException(composeErrorMessage(filter, e.getMessage()));
         }
 
         // Checks that all required parameters are present

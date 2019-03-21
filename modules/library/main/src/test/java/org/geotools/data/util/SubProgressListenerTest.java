@@ -16,9 +16,9 @@
  */
 package org.geotools.data.util;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertFalse;
-import static junit.framework.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 import org.opengis.util.InternationalString;
@@ -38,9 +38,9 @@ public class SubProgressListenerTest {
         SubProgressListener sub = new SubProgressListener(parent, 50);
 
         sub.started();
-        assertEquals(0F, sub.getProgress());
+        assertEquals(0F, sub.getProgress(), 0f);
         sub.complete();
-        assertEquals(100F, sub.getProgress());
+        assertEquals(100F, sub.getProgress(), 0f);
     }
 
     @Test
@@ -70,13 +70,13 @@ public class SubProgressListenerTest {
         sub.started();
         sub.progress(50f);
 
-        assertEquals(50f, sub.getProgress());
-        assertEquals(75f, parent.getProgress());
+        assertEquals(50f, sub.getProgress(), 0f);
+        assertEquals(75f, parent.getProgress(), 0f);
 
         sub.progress(100f);
 
-        assertEquals(100f, sub.getProgress());
-        assertEquals(100f, parent.getProgress());
+        assertEquals(100f, sub.getProgress(), 0f);
+        assertEquals(100f, parent.getProgress(), 0f);
     }
 
     private static class SimpleProgressListener implements ProgressListener {

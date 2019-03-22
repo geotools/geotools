@@ -43,6 +43,7 @@ import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.filter.BinaryLogicOperator;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
+import org.opengis.filter.Or;
 import org.opengis.filter.PropertyIsBetween;
 import org.opengis.filter.PropertyIsEqualTo;
 import org.opengis.filter.PropertyIsGreaterThan;
@@ -471,6 +472,13 @@ public class NestedFilterToSQL extends FilterToSQL {
             return original.visit(filter, extraData);
         }
         return visitNestedFilter(filter, extraData, nestedAttr.getPropertyName());
+    }
+
+    @Override
+    public Object visit(Or filter, Object extraData) {
+        // or filters have a different implementation here, cannot use the "repeated or to in"
+        // translation, it uses unions and the like
+        return visit((BinaryLogicOperator) filter, "OR");
     }
 
     /**

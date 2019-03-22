@@ -309,7 +309,6 @@
         <property>
           <name>qa</name>
         </property>
-        <jdk>(1.8,)</jdk>
       </activation>
       <build>
         <plugins>
@@ -336,12 +335,10 @@
     </profile>
     
     <!-- using github.com/google/error-prone-javac is required when running on JDK 8 -->
+    <!-- see instructions at https://errorprone.info/docs/installation -->
     <profile>
       <id>errorprone8</id>
       <activation>
-        <property>
-          <name>qa</name>
-        </property>
         <jdk>1.8</jdk>
       </activation>
       <build>
@@ -353,8 +350,7 @@
             <configuration>
               <fork>true</fork>
               <compilerArgs combine.children="append">
-                <arg>-XDcompilePolicy=simple</arg>
-                <arg>-Xplugin:ErrorProne -XepExcludedPaths:${project.build.directory}/generated-sources/.* ${errorProneFlags}</arg>
+                <!-- append decorates the compiler settings - see errorprone profile -->
                 <arg>-J-Xbootclasspath/p:${settings.localRepository}/com/google/errorprone/javac/${javac.version}/javac-${javac.version}.jar</arg>
               </compilerArgs>
               <annotationProcessorPaths>

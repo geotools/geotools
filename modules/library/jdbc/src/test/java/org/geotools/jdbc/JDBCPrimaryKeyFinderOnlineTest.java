@@ -52,8 +52,8 @@ public abstract class JDBCPrimaryKeyFinderOnlineTest extends JDBCTestSupport {
     }
 
     public void testAssignedSinglePKeyView() throws Exception {
-        JDBCFeatureStore fs =
-                (JDBCFeatureStore) dataStore.getFeatureSource(tname("assignedsinglepk"));
+        JDBCFeatureSource fs =
+                (JDBCFeatureSource) dataStore.getFeatureSource(tname("assignedsinglepk"));
 
         assertEquals(1, fs.getPrimaryKey().getColumns().size());
         assertTrue(
@@ -64,8 +64,8 @@ public abstract class JDBCPrimaryKeyFinderOnlineTest extends JDBCTestSupport {
     }
 
     public void testAssignedMultiPKeyView() throws Exception {
-        JDBCFeatureStore fs =
-                (JDBCFeatureStore) dataStore.getFeatureSource(tname("assignedmultipk"));
+        JDBCFeatureSource fs =
+                (JDBCFeatureSource) dataStore.getFeatureSource(tname("assignedmultipk"));
 
         assertEquals(2, fs.getPrimaryKey().getColumns().size());
         assertTrue(

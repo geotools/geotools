@@ -16,10 +16,9 @@
  */
 package org.geotools.data.oracle;
 
-import java.util.Properties;
-import org.geotools.jdbc.JDBCDataStore;
-import org.geotools.jdbc.JDBCDataStoreFactory;
-import org.geotools.jdbc.JDBCTestSetup;
+import java.util.*;
+
+import org.geotools.jdbc.*;
 
 public class OracleTestSetup extends JDBCTestSetup {
 
@@ -48,7 +47,9 @@ public class OracleTestSetup extends JDBCTestSetup {
         // tests do assume the dialect is working in non loose mode
         ((OracleDialect) dataStore.getSQLDialect()).setLooseBBOXEnabled(false);
         ((OracleDialect) dataStore.getSQLDialect()).setEstimatedExtentsEnabled(false);
-        dataStore.setDatabaseSchema(fixture.getProperty("schema").toUpperCase());
+        Optional.ofNullable(fixture.getProperty("schema")).ifPresent(schema -> {
+            dataStore.setDatabaseSchema(schema.toUpperCase());
+        });
     }
 
     @Override

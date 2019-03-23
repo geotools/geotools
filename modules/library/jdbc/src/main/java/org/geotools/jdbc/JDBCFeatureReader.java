@@ -790,6 +790,8 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
         }
 
         public List<Object> getAttributes() {
+            // ensure initialized values GEOT-6264
+            for (int k = 0; k < values.length; k++) getAttribute(k);
             return Arrays.asList(values);
         }
 

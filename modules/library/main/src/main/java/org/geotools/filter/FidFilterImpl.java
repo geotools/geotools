@@ -135,7 +135,6 @@ public class FidFilterImpl extends AbstractFilter implements Id {
      * Adds a feature ID to the filter.
      *
      * @param fid A single feature ID.
-     * @deprecated
      */
     public final void addFid(String fid) {
         LOGGER.finest("got fid: " + fid);

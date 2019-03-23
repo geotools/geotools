@@ -57,6 +57,7 @@ import org.locationtech.jts.geom.impl.CoordinateArraySequenceFactory;
 import org.locationtech.jts.geom.util.AffineTransformation;
 import org.locationtech.jts.operation.polygonize.Polygonizer;
 import org.opengis.geometry.BoundingBox;
+import org.opengis.geometry.BoundingBox3D;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.referencing.FactoryException;
@@ -1702,5 +1703,53 @@ public final class JTS {
             geomROI.apply(Y_INVERSION);
         }
         return (Polygon) geomROI;
+    }
+
+    /**
+     * Envelope equality with target tolerance.
+     *
+     * @param e1 The first envelope
+     * @param e2 The second envelope
+     * @param tolerance The tolerance
+     * @return True if the envelopes have the same boundaries, minus the given tolerance
+     */
+    public static boolean equals(Envelope e1, Envelope e2, double tolerance) {
+        return Math.abs(e1.getMinX() - e2.getMinX()) < tolerance
+                && Math.abs(e1.getMinY() - e2.getMinY()) < tolerance
+                && Math.abs(e1.getMaxX() - e2.getMaxX()) < tolerance
+                && Math.abs(e1.getMaxY() - e2.getMaxY()) < tolerance;
+    }
+
+    /**
+     * BoundingBox equality with target tolerance. This method compares also coordinate reference
+     * systems.
+     *
+     * @param a The first envelope
+     * @param b The second envelope
+     * @param tolerance The tolerance
+     * @return True if the envelopes have the same boundaries, minus the given tolerance, and the
+     *     CRSs are equal according to CRS#equalsIgnoreMetadata
+     */
+    public static boolean equals(BoundingBox a, BoundingBox b, double tolerance) {
+        boolean flatEqual =
+                Math.abs(a.getMinX() - b.getMinX()) <= tolerance
+                        && Math.abs(a.getMinY() - b.getMinY()) <= tolerance
+                        && Math.abs(a.getMaxX() - b.getMaxX()) <= tolerance
+                        && Math.abs(a.getMaxY() - b.getMaxY()) <= tolerance
+                        && CRS.equalsIgnoreMetadata(
+                                a.getCoordinateReferenceSystem(), b.getCoordinateReferenceSystem());
+        if (!flatEqual) return false;
+
+        if (a instanceof BoundingBox3D && b instanceof BoundingBox3D) {
+            BoundingBox3D a3 = (BoundingBox3D) a;
+            BoundingBox3D b3 = (BoundingBox3D) b;
+            return Math.abs(a3.getMinZ() - b3.getMinZ()) <= tolerance
+                    && Math.abs(a3.getMaxZ() - b3.getMaxZ()) <= tolerance;
+        } else if (a instanceof BoundingBox3D && !(b instanceof BoundingBox3D)
+                || !(a instanceof BoundingBox3D) && b instanceof BoundingBox3D) {
+            return false;
+        }
+
+        return true;
     }
 }

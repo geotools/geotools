@@ -44,6 +44,7 @@ import org.geotools.filter.FunctionImpl;
 import org.geotools.filter.LikeFilterImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.geotools.filter.function.InFunction;
+import org.geotools.filter.spatial.BBOXImpl;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JoinPropertyName;
 import org.geotools.jdbc.PrimaryKey;
@@ -52,6 +53,7 @@ import org.geotools.util.ConverterFactory;
 import org.geotools.util.Converters;
 import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -1482,6 +1484,9 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
             if (literal instanceof Geometry) {
                 // call this method for backwards compatibility with subclasses
                 visitLiteralGeometry(filterFactory.literal(literal));
+            } else if (literal instanceof Envelope) {
+                visitLiteralGeometry(
+                        filterFactory.literal(BBOXImpl.boundingPolygon((Envelope) literal)));
             } else {
                 // write out the literal allowing subclasses to override this
                 // behaviour (for writing out dates and the like using the BDMS custom functions)

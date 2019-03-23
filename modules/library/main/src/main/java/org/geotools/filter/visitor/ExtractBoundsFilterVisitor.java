@@ -158,9 +158,7 @@ public class ExtractBoundsFilterVisitor extends NullFilterVisitor {
         ReferencedEnvelope bbox = bbox(data);
 
         // consider doing reprojection here into data CRS?
-        Envelope bounds =
-                new Envelope(
-                        filter.getMinX(), filter.getMaxX(), filter.getMinY(), filter.getMaxY());
+        Envelope bounds = new Envelope(ReferencedEnvelope.reference(filter.getBounds()));
         if (bbox != null) {
             bbox.expandToInclude(bounds);
             return bbox;

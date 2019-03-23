@@ -210,7 +210,7 @@ public abstract class AbstractFinderFilterVisitor implements FilterVisitor, Expr
         PropertyName property =
                 new PropertyName() {
                     public String getPropertyName() {
-                        return filter.getPropertyName();
+                        return ((PropertyName) filter.getExpression1()).getPropertyName();
                     }
 
                     public Object accept(ExpressionVisitor visitor, Object data) {

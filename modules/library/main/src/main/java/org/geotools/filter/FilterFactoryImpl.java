@@ -76,6 +76,7 @@ import org.geotools.filter.temporal.TEqualsImpl;
 import org.geotools.filter.temporal.TOverlapsImpl;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope3D;
+import org.geotools.referencing.CRS;
 import org.geotools.util.factory.Factory;
 import org.geotools.util.factory.Hints;
 import org.opengis.feature.type.Name;
@@ -153,7 +154,11 @@ import org.opengis.filter.temporal.TOverlaps;
 import org.opengis.geometry.BoundingBox;
 import org.opengis.geometry.BoundingBox3D;
 import org.opengis.geometry.Geometry;
+import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.parameter.Parameter;
+import org.opengis.referencing.FactoryException;
+import org.opengis.referencing.NoSuchAuthorityCodeException;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.util.InternationalString;
 import org.xml.sax.helpers.NamespaceSupport;
 
@@ -407,6 +412,14 @@ public class FilterFactoryImpl implements Factory, org.opengis.filter.FilterFact
         return new BBOXImpl(geometry, bounds);
     }
 
+    public BBOX bbox(Expression geometry, Expression bounds, MatchAction machAction) {
+        if (bounds instanceof Literal && ((Literal) bounds).getValue() instanceof BoundingBox3D) {
+            return bbox(geometry, (BoundingBox3D) ((Literal) bounds).getValue(), machAction);
+        } else {
+            return new BBOXImpl(geometry, bounds, machAction);
+        }
+    }
+
     public BBOX bbox(Expression geometry, BoundingBox bounds) {
         if (bounds instanceof BoundingBox3D) {
             return bbox(geometry, (BoundingBox3D) bounds);
@@ -434,7 +447,7 @@ public class FilterFactoryImpl implements Factory, org.opengis.filter.FilterFact
         Literal bbox = null;
         try {
             ReferencedEnvelope env = ReferencedEnvelope.reference(bounds);
-            bbox = literal(BBOXImpl.boundingPolygon(env));
+            bbox = literal(env);
         } catch (IllegalFilterException ife) {
             new IllegalArgumentException("Unable to convert to Polygon:" + bounds).initCause(ife);
         }
@@ -468,8 +481,24 @@ public class FilterFactoryImpl implements Factory, org.opengis.filter.FilterFact
             String srs,
             MatchAction matchAction) {
 
-        BBOXImpl box = bbox2d(e, new ReferencedEnvelope(minx, maxx, miny, maxy, null), matchAction);
-        box.setSRS(srs);
+        BBOXImpl box = null;
+        try {
+            CoordinateReferenceSystem crs;
+            if (srs == null || srs.isEmpty()) {
+                crs = null;
+            } else {
+                try {
+                    crs = CRS.decode(srs);
+                } catch (MismatchedDimensionException ex) {
+                    throw new RuntimeException(ex);
+                } catch (NoSuchAuthorityCodeException ex) {
+                    crs = CRS.parseWKT(srs);
+                }
+            }
+            box = bbox2d(e, new ReferencedEnvelope(minx, maxx, miny, maxy, crs), matchAction);
+        } catch (FactoryException e1) {
+            throw new RuntimeException("Failed to setup bbox SRS", e1);
+        }
 
         return box;
     }

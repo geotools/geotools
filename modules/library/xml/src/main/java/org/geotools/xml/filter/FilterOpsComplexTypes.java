@@ -27,6 +27,7 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.FilterCapabilities;
 import org.geotools.filter.Filters;
 import org.geotools.filter.IllegalFilterException;
+import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.xml.PrintHandler;
 import org.geotools.xml.XMLHandlerHints;
 import org.geotools.xml.filter.FilterComplexTypes.ExpressionType;
@@ -2091,9 +2092,9 @@ public class FilterOpsComplexTypes {
                     elems[0].getType()
                             .encode(elems[0], lf.getExpression1(), output, hints); // prop name
 
-                    Geometry g =
-                            ((Geometry) ((Literal) lf.getExpression2()).getValue()).getEnvelope();
-                    elems[1].getType().encode(elems[1], g, output, hints); // geom
+                    ReferencedEnvelope re =
+                            ((ReferencedEnvelope) ((Literal) lf.getExpression2()).getValue());
+                    elems[1].getType().encode(elems[1], re, output, hints); // geom
                 } else {
                     throw new OperationNotSupportedException(
                             "Either the left or right expr must be a literal for the property name : BBOXType");

@@ -217,7 +217,7 @@ public class ParameterTypeFactoryTest {
 
         Map<String, String> viewParams = new HashMap<String, String>();
 
-        Filter f = new FilterFactoryImpl().bbox("nada", -10.0, -5.0, 10.0, 5.0, "WGS:84");
+        Filter f = new FilterFactoryImpl().bbox("nada", -10.0, -5.0, 10.0, 5.0, "EPSG:4326");
 
         List<ParameterType> params = factory.buildStoredQueryParameters(viewParams, f);
 

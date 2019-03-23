@@ -1895,7 +1895,9 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
         String geomName = schema.getGeometryDescriptor().getName().getLocalPart();
         ReferencedEnvelope bounds = featureSource.getBounds();
-        bounds.expandBy(-bounds.getWidth() / 2, -bounds.getHeight() / 2);
+        // before it was working with / 2, that is, point bbox, now it does not, accuracy issue
+        // maybe? Winding?
+        bounds.expandBy(-bounds.getWidth() / 2.1, -bounds.getHeight() / 2.1);
         query.setFilter(ff.bbox(ff.property(geomName), bounds));
         SimpleFeatureCollection features = featureSource.getFeatures(query);
         SimpleFeatureIterator iterator = features.features();

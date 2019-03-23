@@ -90,23 +90,6 @@ public interface Style extends org.opengis.style.Style {
     public void setDefaultSpecification(Symbolizer defaultSymbolizer);
 
     /**
-     * Array of FeatureTypeStyles in portrayal order.
-     *
-     * <p>FeatureTypeStyle entries are rendered in order of appearance in this list.
-     *
-     * <p><i>Note: We are using a Array here to continue with Java 1.4 deployment.</i>
-     *
-     * @deprecated use featureTypeStyles().toArray( new FeatureTypeStyle[0] )
-     */
-    FeatureTypeStyle[] getFeatureTypeStyles();
-
-    /** @deprecated Use featureTypeStyles().clear(); featureTypeStyles.addAll( ... ) */
-    void setFeatureTypeStyles(FeatureTypeStyle[] types);
-
-    /** @deprecated Use featureTypeStyles().add( type ) */
-    void addFeatureTypeStyle(FeatureTypeStyle type);
-
-    /**
      * Used to navigate Style information during portrayal.
      *
      * @param visitor

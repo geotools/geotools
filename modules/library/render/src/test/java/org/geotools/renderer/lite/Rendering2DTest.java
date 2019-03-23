@@ -16,8 +16,7 @@
  */
 package org.geotools.renderer.lite;
 
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
@@ -162,7 +161,7 @@ public class Rendering2DTest extends TestCase {
         fts5.featureTypeNames().add(new NameImpl("ringFeature"));
 
         Style style = sFac.createStyle();
-        style.setFeatureTypeStyles(new FeatureTypeStyle[] {fts1, fts, fts2, fts3, fts4, fts5});
+        style.featureTypeStyles().addAll(Arrays.asList(fts1, fts, fts2, fts3, fts4, fts5));
         return style;
     }
 
@@ -930,7 +929,7 @@ public class Rendering2DTest extends TestCase {
         ftsPoly.featureTypeNames().add(new NameImpl("querytest"));
 
         Style style = sFac.createStyle();
-        style.setFeatureTypeStyles(new FeatureTypeStyle[] {ftsPoly, ftsL, ftsP});
+        style.featureTypeStyles().addAll(Arrays.asList(ftsPoly, ftsL, ftsP));
 
         return style;
     }

@@ -68,8 +68,8 @@ public class StyleObjectTest extends TestCase {
         FeatureTypeStyle fts2 = fts2();
 
         Style style = styleFactory.getDefaultStyle();
-        style.addFeatureTypeStyle(fts);
-        style.addFeatureTypeStyle(fts2);
+        style.featureTypeStyles().add(fts);
+        style.featureTypeStyles().add(fts2);
 
         Style clone = (Style) ((Cloneable) style).clone();
         assertClone(style, clone);
@@ -77,7 +77,7 @@ public class StyleObjectTest extends TestCase {
         Style notEq = styleFactory.getDefaultStyle();
 
         fts2 = fts2();
-        notEq.addFeatureTypeStyle(fts2);
+        notEq.featureTypeStyles().add(fts2);
         assertEqualsContract(clone, notEq, style);
     }
 

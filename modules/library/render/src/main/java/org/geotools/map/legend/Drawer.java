@@ -16,13 +16,7 @@
  */
 package org.geotools.map.legend;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
-import java.awt.Shape;
-import java.awt.Stroke;
+import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
@@ -149,10 +143,8 @@ public class Drawer {
     }
 
     Symbolizer[] getSymbolizers(Style style) {
-        List<Symbolizer> symbs = new ArrayList<Symbolizer>();
-        FeatureTypeStyle[] styles = style.getFeatureTypeStyles();
-        for (int i = 0; i < styles.length; i++) {
-            FeatureTypeStyle fstyle = styles[i];
+        List<Symbolizer> symbs = new ArrayList<>();
+        for (FeatureTypeStyle fstyle : style.featureTypeStyles()) {
             for (Rule rule : fstyle.rules()) {
                 symbs.addAll(rule.symbolizers());
             }

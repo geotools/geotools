@@ -49,9 +49,9 @@ public class SLDTest {
         Style style = layer.getStyles()[0];
         assertEquals("GEOSYM", style.getName());
         assertTrue(style.isDefault());
-        assertEquals(1, style.getFeatureTypeStyles().length);
+        assertEquals(1, style.featureTypeStyles().size());
 
-        FeatureTypeStyle ftStyle = (FeatureTypeStyle) style.getFeatureTypeStyles()[0];
+        FeatureTypeStyle ftStyle = style.featureTypeStyles().get(0);
         assertEquals(1, ftStyle.rules().size());
 
         Rule rule = ftStyle.rules().get(0);

@@ -1449,7 +1449,7 @@ public class StyleBuilder {
 
         // and finally create the style
         Style style = sf.createStyle();
-        style.addFeatureTypeStyle(fts);
+        style.featureTypeStyles().add(fts);
 
         return style;
     }
@@ -1657,7 +1657,7 @@ public class StyleBuilder {
         FeatureTypeStyle ft = sf.createFeatureTypeStyle(rules);
         ft.featureTypeNames().add(new NameImpl("Feature"));
         ft.setName(name);
-        ret.addFeatureTypeStyle(ft);
+        ret.featureTypeStyles().add(ft);
 
         return ret;
     }

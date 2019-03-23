@@ -38,7 +38,7 @@ public class BasicPolygonStyle extends StyleImpl implements org.geotools.styling
 
         FeatureTypeStyleImpl fts = new FeatureTypeStyleImpl();
         fts.rules().add(rule);
-        this.setFeatureTypeStyles(new FeatureTypeStyle[] {fts});
+        this.featureTypeStyles().add(fts);
     }
 
     public String getAbstract() {

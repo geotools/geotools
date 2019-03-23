@@ -109,15 +109,16 @@ public class DuplicatingStyleVisitorTest extends TestCase {
     public void testStyleDuplication() throws IllegalFilterException {
         // create a style
         Style oldStyle = sb.createStyle("FTSName", sf.createPolygonSymbolizer());
-        oldStyle.getFeatureTypeStyles()[0].setSemanticTypeIdentifiers(
-                new String[] {"simple", "generic:geometry"});
+        oldStyle.featureTypeStyles()
+                .get(0)
+                .setSemanticTypeIdentifiers(new String[] {"simple", "generic:geometry"});
         // duplicate it
         oldStyle.accept(visitor);
         Style newStyle = (Style) visitor.getCopy();
 
         // compare it
         assertNotNull(newStyle);
-        assertEquals(2, newStyle.getFeatureTypeStyles()[0].getSemanticTypeIdentifiers().length);
+        assertEquals(2, newStyle.featureTypeStyles().get(0).getSemanticTypeIdentifiers().length);
     }
 
     public void testStyle() throws Exception {
@@ -127,8 +128,8 @@ public class DuplicatingStyleVisitorTest extends TestCase {
         FeatureTypeStyle fts2 = fts2();
 
         Style style = sf.getDefaultStyle();
-        style.addFeatureTypeStyle(fts);
-        style.addFeatureTypeStyle(fts2);
+        style.featureTypeStyles().add(fts);
+        style.featureTypeStyles().add(fts2);
 
         style.accept(visitor);
         Style copy = (Style) visitor.getCopy();
@@ -139,7 +140,7 @@ public class DuplicatingStyleVisitorTest extends TestCase {
         Style notEq = sf.getDefaultStyle();
 
         fts2 = fts2();
-        notEq.addFeatureTypeStyle(fts2);
+        notEq.featureTypeStyles().add(fts2);
 
         assertEqualsContract(copy, notEq, style);
     }

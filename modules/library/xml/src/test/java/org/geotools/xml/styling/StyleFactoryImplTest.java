@@ -338,7 +338,7 @@ public class StyleFactoryImplTest extends TestCase {
         style.featureTypeNames().add(new NameImpl("Feature"));
 
         Style namedStyle = sf.createStyle();
-        namedStyle.addFeatureTypeStyle(style);
+        namedStyle.featureTypeStyles().add(style);
         namedStyle.setName("Feature");
 
         DuplicatingStyleVisitor duplicator = new DuplicatingStyleVisitor();

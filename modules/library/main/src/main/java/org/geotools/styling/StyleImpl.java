@@ -123,14 +123,14 @@ public class StyleImpl implements org.geotools.styling.Style, Cloneable {
             throw new RuntimeException(e); // this should never happen since we implement Cloneable
         }
 
-        FeatureTypeStyle[] ftsArray = new FeatureTypeStyle[featureTypeStyles.size()];
+        List<FeatureTypeStyle> ftsCopies = new ArrayList<>();
 
-        for (int i = 0; i < ftsArray.length; i++) {
-            FeatureTypeStyle fts = (FeatureTypeStyle) featureTypeStyles.get(i);
-            ftsArray[i] = (FeatureTypeStyle) ((Cloneable) fts).clone();
+        for (FeatureTypeStyle featureTypeStyle : featureTypeStyles) {
+            ftsCopies.add((FeatureTypeStyle) ((Cloneable) featureTypeStyle).clone());
         }
 
-        clone.setFeatureTypeStyles(ftsArray);
+        clone.featureTypeStyles().clear();
+        clone.featureTypeStyles().addAll(ftsCopies);
 
         return clone;
     }

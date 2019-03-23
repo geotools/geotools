@@ -72,8 +72,9 @@ public class RescaleStyleVisitorTest {
     public void testStyleDuplication() throws IllegalFilterException {
         // create a style
         Style oldStyle = sb.createStyle("FTSName", sf.createPolygonSymbolizer());
-        oldStyle.getFeatureTypeStyles()[0].setSemanticTypeIdentifiers(
-                new String[] {"simple", "generic:geometry"});
+        oldStyle.featureTypeStyles()
+                .get(0)
+                .setSemanticTypeIdentifiers(new String[] {"simple", "generic:geometry"});
         // duplicate it
         oldStyle.accept(visitor);
         Style newStyle = (Style) visitor.getCopy();
@@ -90,8 +91,8 @@ public class RescaleStyleVisitorTest {
         FeatureTypeStyle fts2 = fts2();
 
         Style style = sf.getDefaultStyle();
-        style.addFeatureTypeStyle(fts);
-        style.addFeatureTypeStyle(fts2);
+        style.featureTypeStyles().add(fts);
+        style.featureTypeStyles().add(fts2);
 
         style.accept(visitor);
         Style copy = (Style) visitor.getCopy();
@@ -99,7 +100,7 @@ public class RescaleStyleVisitorTest {
         Style notEq = sf.getDefaultStyle();
 
         fts2 = fts2();
-        notEq.addFeatureTypeStyle(fts2);
+        notEq.featureTypeStyles().add(fts2);
     }
 
     private FeatureTypeStyle fts2() {

@@ -55,13 +55,6 @@ public class FidFilterImpl extends AbstractFilter implements Id {
     private Set<String> ids = new HashSet<String>();
 
     /**
-     * Empty constructor.
-     *
-     * @deprecated use {@link #FidFilterImpl(Set)}
-     */
-    protected FidFilterImpl() {}
-
-    /**
      * Constructor with first fid set
      *
      * @param initialFid The type of comparison.

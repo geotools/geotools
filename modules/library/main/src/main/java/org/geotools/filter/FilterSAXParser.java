@@ -16,6 +16,7 @@
  */
 package org.geotools.filter;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -94,7 +95,7 @@ public class FilterSAXParser {
 
         if ((filterType == AbstractFilter.FID) && !curState.equals("fid")) {
             LOGGER.finer("creating the FID filter");
-            curFilter = new FidFilterImpl();
+            curFilter = new FidFilterImpl(Collections.emptySet());
         } else if (AbstractFilter.isGeometryDistanceFilter(filterType)) {
             switch (filterType) {
                 case FilterType.GEOMETRY_BEYOND:

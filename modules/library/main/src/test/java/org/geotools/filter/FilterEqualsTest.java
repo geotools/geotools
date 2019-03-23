@@ -16,6 +16,7 @@
  */
 package org.geotools.filter;
 
+import java.util.Collections;
 import java.util.logging.Logger;
 import junit.framework.Test;
 import junit.framework.TestCase;
@@ -169,8 +170,7 @@ public class FilterEqualsTest extends TestCase {
     }
 
     public void testFidFilter() {
-        FidFilterImpl ff = new FidFilterImpl();
-        ff.addFid("1");
+        FidFilterImpl ff = new FidFilterImpl(Collections.singleton("1"));
 
         FidFilterImpl ff2 = new FidFilterImpl("1");
         assertNotNull(ff2);

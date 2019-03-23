@@ -21,6 +21,7 @@ package org.geotools.filter;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.logging.Logger;
 import org.geotools.factory.CommonFactoryFinder;
@@ -50,9 +51,9 @@ public class FidFilterImpl extends AbstractFilter implements Id {
             org.geotools.util.logging.Logging.getLogger(FidFilterImpl.class);
 
     /** List of the Identifer. */
-    private Set<Identifier> fids = new HashSet<Identifier>();
+    private Set<Identifier> fids = new LinkedHashSet<>();
 
-    private Set<String> ids = new HashSet<String>();
+    private Set<String> ids = new LinkedHashSet<>();
 
     /**
      * Constructor with first fid set
@@ -73,7 +74,7 @@ public class FidFilterImpl extends AbstractFilter implements Id {
                 throw new ClassCastException(
                         "Fids must implement Identifier, " + next.getClass() + " does not");
         }
-        this.fids = fids;
+        this.fids = new LinkedHashSet<>(fids);
         for (Identifier identifier : this.fids) {
             ids.add(identifier.getID().toString());
         }

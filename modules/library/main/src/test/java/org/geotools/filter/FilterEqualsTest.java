@@ -27,6 +27,7 @@ import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.filter.expression.AddImpl;
 import org.geotools.filter.expression.SubtractImpl;
+import org.geotools.filter.identity.FeatureIdImpl;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LineString;
@@ -170,9 +171,9 @@ public class FilterEqualsTest extends TestCase {
     }
 
     public void testFidFilter() {
-        FidFilterImpl ff = new FidFilterImpl(Collections.singleton("1"));
+        FidFilterImpl ff = new FidFilterImpl(Collections.singleton(new FeatureIdImpl("1")));
 
-        FidFilterImpl ff2 = new FidFilterImpl("1");
+        FidFilterImpl ff2 = new FidFilterImpl(Collections.singleton(new FeatureIdImpl("1")));
         assertNotNull(ff2);
         assertEquals(ff, ff2);
         assertTrue(!ff.equals(null));

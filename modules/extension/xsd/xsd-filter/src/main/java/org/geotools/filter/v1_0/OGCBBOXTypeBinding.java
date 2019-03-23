@@ -21,7 +21,6 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.gml2.GML;
 import org.geotools.gml2.bindings.GML2EncodingUtils;
-import org.geotools.referencing.CRS;
 import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
@@ -139,22 +138,16 @@ public class OGCBBOXTypeBinding extends AbstractComplexBinding {
 
         // &lt;xsd:element ref="ogc:PropertyName"/&gt;
         if (OGC.PropertyName.equals(name)) {
-            return factory.property(box.getPropertyName());
+            return box.getExpression1();
         }
 
         // &lt;xsd:element ref="gml:Box"/&gt;
         if (GML.Box.equals(name) || org.geotools.gml3.GML.Envelope.equals(name)) {
-            try {
-                String srs = box.getSRS();
-                if (srs != null) {
-                    CoordinateReferenceSystem crs = CRS.decode(srs);
-                    return new ReferencedEnvelope(
-                            box.getMinX(), box.getMaxX(), box.getMinY(), box.getMaxY(), crs);
-                }
-            } catch (Throwable t) {
-                // never mind
+            Envelope env = box.getExpression2().evaluate(null, ReferencedEnvelope.class);
+            if (env == null) {
+                env = box.getExpression2().evaluate(null, Envelope.class);
             }
-            return new Envelope(box.getMinX(), box.getMaxX(), box.getMinY(), box.getMaxY());
+            return env;
         }
 
         return null;

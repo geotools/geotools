@@ -18,7 +18,6 @@ package org.geotools.data.wfs;
 
 import org.geotools.filter.visitor.DuplicatingFilterVisitor;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.referencing.CRS;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
@@ -35,7 +34,6 @@ import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.spatial.BBOX;
 import org.opengis.geometry.BoundingBox;
-import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
@@ -73,11 +71,6 @@ public class InvertAxisFilterVisitor extends DuplicatingFilterVisitor {
                 CoordinateReferenceSystem crs = null;
                 if (geom.getUserData() instanceof CoordinateReferenceSystem) {
                     crs = (CoordinateReferenceSystem) geom.getUserData();
-                } else if (filter.getSRS() != null) {
-                    try {
-                        crs = CRS.decode(filter.getSRS());
-                    } catch (FactoryException e) {
-                    }
                 }
                 return ff.bbox(
                         filter.getExpression1(),

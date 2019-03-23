@@ -708,7 +708,7 @@ public class StreamingRendererTest {
                 new ReferencedEnvelope(0, 100, 0, 100, DefaultGeographicCRS.WGS84);
 
         // simulate geofence adding a bbox
-        BBOX bbox = StreamingRenderer.filterFactory.bbox("", 30, 60, 30, 60, "WGS84");
+        BBOX bbox = StreamingRenderer.filterFactory.bbox("", 30, 60, 30, 60, "EPSG:4326");
         StyleFactoryImpl sf = new StyleFactoryImpl();
         Rule bboxRule =
                 sf.createRule(

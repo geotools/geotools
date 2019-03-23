@@ -18,6 +18,7 @@ package org.geotools.renderer.lite.gridcoverage2d;
 
 import java.awt.image.RenderedImage;
 import java.util.List;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.coverage.grid.GridCoverage2D;
@@ -148,7 +149,13 @@ class ChannelSelectionNode extends SubchainStyleVisitorCoverageProcessingAdapter
                     // get the channel element
                     final SelectedChannelType channel = sc[i];
                     if (LOGGER.isLoggable(Level.FINE))
-                        LOGGER.fine("Channel " + i + " was " + channel.getChannelName());
+                        LOGGER.fine(
+                                "Channel "
+                                        + i
+                                        + " was "
+                                        + Optional.ofNullable(channel)
+                                                .map(c -> c.getChannelName())
+                                                .orElse(null));
 
                     if (channel == null) {
                         ZeroImageNode zero = new ZeroImageNode(getHints());

@@ -19,7 +19,6 @@ package org.geotools.filter.spatial;
 
 import org.geotools.filter.IllegalFilterException;
 import org.geotools.geometry.jts.ReferencedEnvelope3D;
-import org.geotools.referencing.CRS;
 import org.geotools.util.Converters;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
@@ -53,40 +52,12 @@ public class BBOX3DImpl implements BBOX3D {
         this.factory = factory;
     }
 
-    public double getMaxX() {
-        return envelope.getMaxX();
-    }
-
-    public double getMaxY() {
-        return envelope.getMaxY();
-    }
-
-    public double getMinX() {
-        return envelope.getMinX();
-    }
-
-    public double getMinY() {
-        return envelope.getMinY();
-    }
-
-    public double getMinZ() {
-        return envelope.getMinX();
-    }
-
-    public double getMaxZ() {
-        return envelope.getMaxZ();
-    }
-
     public PropertyName getProperty() {
         return property;
     }
 
     public String getPropertyName() {
         return property.getPropertyName();
-    }
-
-    public String getSRS() {
-        return CRS.toSRS(envelope.getCoordinateReferenceSystem());
     }
 
     public BoundingBox3D getBounds() {

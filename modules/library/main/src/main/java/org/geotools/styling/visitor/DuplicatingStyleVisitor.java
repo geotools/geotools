@@ -235,13 +235,11 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
     public void visit(Style style) {
         Style copy = null;
 
-        FeatureTypeStyle[] fts = style.getFeatureTypeStyles();
-        final int length = fts.length;
-        FeatureTypeStyle[] ftsCopy = new FeatureTypeStyle[length];
-        for (int i = 0; i < length; i++) {
-            if (fts[i] != null) {
-                fts[i].accept(this);
-                ftsCopy[i] = (FeatureTypeStyle) pages.pop();
+        List<FeatureTypeStyle> ftsCopy = new ArrayList<>();
+        for (FeatureTypeStyle fts : style.featureTypeStyles()) {
+            if (fts != null) {
+                fts.accept(this);
+                ftsCopy.add((FeatureTypeStyle) pages.pop());
             }
         }
 
@@ -249,7 +247,7 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         copy.getDescription().setAbstract(style.getDescription().getAbstract());
         copy.setName(style.getName());
         copy.getDescription().setTitle(style.getDescription().getTitle());
-        copy.setFeatureTypeStyles(ftsCopy);
+        copy.featureTypeStyles().addAll(ftsCopy);
 
         if (STRICT && !copy.equals(style)) {
             throw new IllegalStateException("Was unable to duplicate provided Style:" + style);

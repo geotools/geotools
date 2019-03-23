@@ -161,7 +161,7 @@ public class UserLayerTest extends TestCase {
         final FeatureTypeStyle fts = sb.createFeatureTypeStyle(ps);
         fts.featureTypeNames().add(new NameImpl(MY_NAMESPACE + ":" + MY_FEATURE));
 
-        style.addFeatureTypeStyle(fts);
+        style.featureTypeStyles().add(fts);
         layer.addUserStyle(style);
 
         // create an SLD and populate it with that styled layer ---------------

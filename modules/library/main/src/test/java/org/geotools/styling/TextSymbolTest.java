@@ -133,7 +133,7 @@ public class TextSymbolTest extends TestCase {
         fts.featureTypeNames().add(new NameImpl("testPoint"));
 
         StyleImpl style = new StyleImpl();
-        style.addFeatureTypeStyle(fts);
+        style.featureTypeStyles().add(fts);
 
         // map.addFeatureTable(ft,style);
 

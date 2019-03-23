@@ -368,7 +368,8 @@ public class SLDParserTest {
         assertEquals(
                 "sldtitle",
                 styles[0]
-                        .getFeatureTypeStyles()[0]
+                        .featureTypeStyles()
+                        .get(0)
                         .rules()
                         .get(0)
                         .getDescription()
@@ -377,7 +378,8 @@ public class SLDParserTest {
         assertEquals(
                 "english",
                 styles[0]
-                        .getFeatureTypeStyles()[0]
+                        .featureTypeStyles()
+                        .get(0)
                         .rules()
                         .get(0)
                         .getDescription()
@@ -386,7 +388,8 @@ public class SLDParserTest {
         assertEquals(
                 "english",
                 styles[0]
-                        .getFeatureTypeStyles()[0]
+                        .featureTypeStyles()
+                        .get(0)
                         .rules()
                         .get(0)
                         .getDescription()
@@ -395,7 +398,8 @@ public class SLDParserTest {
         assertEquals(
                 "english",
                 styles[0]
-                        .getFeatureTypeStyles()[0]
+                        .featureTypeStyles()
+                        .get(0)
                         .rules()
                         .get(0)
                         .getDescription()
@@ -404,7 +408,8 @@ public class SLDParserTest {
         assertEquals(
                 "italian",
                 styles[0]
-                        .getFeatureTypeStyles()[0]
+                        .featureTypeStyles()
+                        .get(0)
                         .rules()
                         .get(0)
                         .getDescription()
@@ -413,7 +418,8 @@ public class SLDParserTest {
         assertEquals(
                 "french",
                 styles[0]
-                        .getFeatureTypeStyles()[0]
+                        .featureTypeStyles()
+                        .get(0)
                         .rules()
                         .get(0)
                         .getDescription()
@@ -422,7 +428,8 @@ public class SLDParserTest {
         assertEquals(
                 "canada french",
                 styles[0]
-                        .getFeatureTypeStyles()[0]
+                        .featureTypeStyles()
+                        .get(0)
                         .rules()
                         .get(0)
                         .getDescription()
@@ -431,7 +438,8 @@ public class SLDParserTest {
         assertEquals(
                 "sld abstract",
                 styles[0]
-                        .getFeatureTypeStyles()[0]
+                        .featureTypeStyles()
+                        .get(0)
                         .rules()
                         .get(0)
                         .getDescription()
@@ -440,7 +448,8 @@ public class SLDParserTest {
         assertEquals(
                 "english abstract",
                 styles[0]
-                        .getFeatureTypeStyles()[0]
+                        .featureTypeStyles()
+                        .get(0)
                         .rules()
                         .get(0)
                         .getDescription()
@@ -449,7 +458,8 @@ public class SLDParserTest {
         assertEquals(
                 "english abstract",
                 styles[0]
-                        .getFeatureTypeStyles()[0]
+                        .featureTypeStyles()
+                        .get(0)
                         .rules()
                         .get(0)
                         .getDescription()
@@ -458,7 +468,8 @@ public class SLDParserTest {
         assertEquals(
                 "italian abstract",
                 styles[0]
-                        .getFeatureTypeStyles()[0]
+                        .featureTypeStyles()
+                        .get(0)
                         .rules()
                         .get(0)
                         .getDescription()
@@ -467,7 +478,8 @@ public class SLDParserTest {
         assertEquals(
                 "french abstract",
                 styles[0]
-                        .getFeatureTypeStyles()[0]
+                        .featureTypeStyles()
+                        .get(0)
                         .rules()
                         .get(0)
                         .getDescription()
@@ -476,7 +488,8 @@ public class SLDParserTest {
         assertEquals(
                 "french abstract",
                 styles[0]
-                        .getFeatureTypeStyles()[0]
+                        .featureTypeStyles()
+                        .get(0)
                         .rules()
                         .get(0)
                         .getDescription()
@@ -492,7 +505,8 @@ public class SLDParserTest {
         assertEquals(
                 "",
                 styles[0]
-                        .getFeatureTypeStyles()[0]
+                        .featureTypeStyles()
+                        .get(0)
                         .rules()
                         .get(0)
                         .getDescription()
@@ -507,7 +521,8 @@ public class SLDParserTest {
         assertEquals(
                 "",
                 styles[0]
-                        .getFeatureTypeStyles()[0]
+                        .featureTypeStyles()
+                        .get(0)
                         .rules()
                         .get(0)
                         .getDescription()

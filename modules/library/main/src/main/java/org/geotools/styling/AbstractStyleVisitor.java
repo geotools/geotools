@@ -60,7 +60,7 @@ public class AbstractStyleVisitor implements StyleVisitor {
 
     @Override
     public void visit(Style style) {
-        for (FeatureTypeStyle fts : style.getFeatureTypeStyles()) {
+        for (FeatureTypeStyle fts : style.featureTypeStyles()) {
             fts.accept(this);
         }
     }

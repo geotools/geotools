@@ -125,13 +125,13 @@ public class SLDStyleTest extends TestCase {
         assertEquals(1, layer.getUserStyles().length);
 
         Style style = layer.getUserStyles()[0];
-        assertEquals(1, style.getFeatureTypeStyles().length);
+        assertEquals(1, style.featureTypeStyles().size());
         assertEquals("My User Style", style.getName());
         assertEquals("A style by me", style.getDescription().getTitle().toString());
         assertEquals("this is a sample style", style.getDescription().getAbstract().toString());
         assertTrue(style.isDefault());
 
-        FeatureTypeStyle fts = style.getFeatureTypeStyles()[0];
+        FeatureTypeStyle fts = style.featureTypeStyles().get(0);
         Rule rule = fts.rules().get(0);
         LineSymbolizer lineSym = (LineSymbolizer) rule.symbolizers().get(0);
         assertEquals(4, lineSym.getStroke().getWidth().evaluate(null, Number.class).intValue());
@@ -291,7 +291,8 @@ public class SLDStyleTest extends TestCase {
                 (TextSymbolizer)
                         ((NamedLayer) sld.getStyledLayers()[0])
                                 .getStyles()[0]
-                                .getFeatureTypeStyles()[0]
+                                .featureTypeStyles()
+                                .get(0)
                                 .rules()
                                 .get(0)
                                 .symbolizers()
@@ -312,7 +313,8 @@ public class SLDStyleTest extends TestCase {
         List<Symbolizer> symbolizers =
                 ((NamedLayer) sld.getStyledLayers()[0])
                         .getStyles()[0]
-                        .getFeatureTypeStyles()[0]
+                        .featureTypeStyles()
+                        .get(0)
                         .rules()
                         .get(0)
                         .symbolizers();
@@ -340,7 +342,8 @@ public class SLDStyleTest extends TestCase {
                         ((UserLayer) sld.getStyledLayers()[0])
                                 .userStyles()
                                 .get(0)
-                                .getFeatureTypeStyles()[0]
+                                .featureTypeStyles()
+                                .get(0)
                                 .rules()
                                 .get(0)
                                 .symbolizers()
@@ -359,7 +362,8 @@ public class SLDStyleTest extends TestCase {
                 (TextSymbolizer)
                         ((NamedLayer) sld.getStyledLayers()[0])
                                 .getStyles()[0]
-                                .getFeatureTypeStyles()[0]
+                                .featureTypeStyles()
+                                .get(0)
                                 .rules()
                                 .get(0)
                                 .symbolizers()
@@ -381,7 +385,8 @@ public class SLDStyleTest extends TestCase {
                 (TextSymbolizer)
                         ((NamedLayer) sld.getStyledLayers()[0])
                                 .getStyles()[0]
-                                .getFeatureTypeStyles()[0]
+                                .featureTypeStyles()
+                                .get(0)
                                 .rules()
                                 .get(0)
                                 .symbolizers()
@@ -403,7 +408,8 @@ public class SLDStyleTest extends TestCase {
                 (TextSymbolizer)
                         ((NamedLayer) sld.getStyledLayers()[0])
                                 .getStyles()[0]
-                                .getFeatureTypeStyles()[0]
+                                .featureTypeStyles()
+                                .get(0)
                                 .rules()
                                 .get(0)
                                 .symbolizers()
@@ -465,7 +471,7 @@ public class SLDStyleTest extends TestCase {
         // transformation loses a little data (background colour?)
         FeatureTypeStyle fts1 = sf.createFeatureTypeStyle(new Rule[] {rule1});
         fts1.setSemanticTypeIdentifiers(new String[] {"generic:geometry"});
-        style.setFeatureTypeStyles(new FeatureTypeStyle[] {fts1});
+        style.featureTypeStyles().add(fts1);
         layer.setUserStyles(new Style[] {style});
         sld.setStyledLayers(new UserLayer[] {layer});
 
@@ -634,9 +640,9 @@ public class SLDStyleTest extends TestCase {
         assertEquals(expectedStyleCount, styles.length);
 
         Style notDisjoint = styles[0];
-        assertEquals(1, notDisjoint.getFeatureTypeStyles().length);
+        assertEquals(1, notDisjoint.featureTypeStyles().size());
 
-        FeatureTypeStyle fts = notDisjoint.getFeatureTypeStyles()[0];
+        FeatureTypeStyle fts = notDisjoint.featureTypeStyles().get(0);
         assertEquals(TYPE_NAME, fts.featureTypeNames().iterator().next().getLocalPart());
         assertEquals(1, fts.rules().size());
 
@@ -681,9 +687,9 @@ public class SLDStyleTest extends TestCase {
         assertEquals(expectedStyleCount, styles.length);
 
         Style style = styles[0];
-        assertEquals(1, style.getFeatureTypeStyles().length);
+        assertEquals(1, style.featureTypeStyles().size());
 
-        FeatureTypeStyle fts = style.getFeatureTypeStyles()[0];
+        FeatureTypeStyle fts = style.featureTypeStyles().get(0);
         assertEquals("Feature", fts.featureTypeNames().iterator().next().getLocalPart());
         assertEquals(1, fts.rules().size());
 
@@ -712,9 +718,9 @@ public class SLDStyleTest extends TestCase {
         // basic checks
         Style[] styles = stylereader.readXML();
         assertEquals(1, styles.length);
-        assertEquals(1, styles[0].getFeatureTypeStyles().length);
-        assertEquals(1, styles[0].getFeatureTypeStyles()[0].rules().size());
-        final Rule rule = styles[0].getFeatureTypeStyles()[0].rules().get(0);
+        assertEquals(1, styles[0].featureTypeStyles().size());
+        assertEquals(1, styles[0].featureTypeStyles().get(0).rules().size());
+        final Rule rule = styles[0].featureTypeStyles().get(0).rules().get(0);
         assertEquals(1, rule.symbolizers().size());
         TextSymbolizer2 ts = (TextSymbolizer2) rule.symbolizers().get(0);
 
@@ -774,10 +780,10 @@ public class SLDStyleTest extends TestCase {
 
         Style[] styles = stylereader.readXML();
         assertEquals(1, styles.length);
-        assertEquals(1, styles[0].getFeatureTypeStyles().length);
-        assertEquals(1, styles[0].getFeatureTypeStyles()[0].rules().size());
+        assertEquals(1, styles[0].featureTypeStyles().size());
+        assertEquals(1, styles[0].featureTypeStyles().get(0).rules().size());
 
-        Rule r = styles[0].getFeatureTypeStyles()[0].rules().get(0);
+        Rule r = styles[0].featureTypeStyles().get(0).rules().get(0);
         assertEquals(1, r.symbolizers().size());
 
         RasterSymbolizer rs = (RasterSymbolizer) r.symbolizers().get(0);
@@ -836,10 +842,10 @@ public class SLDStyleTest extends TestCase {
 
         Style[] styles = stylereader.readXML();
         assertEquals(1, styles.length);
-        assertEquals(1, styles[0].getFeatureTypeStyles().length);
-        assertEquals(1, styles[0].getFeatureTypeStyles()[0].rules().size());
+        assertEquals(1, styles[0].featureTypeStyles().size());
+        assertEquals(1, styles[0].featureTypeStyles().get(0).rules().size());
 
-        Rule r = styles[0].getFeatureTypeStyles()[0].rules().get(0);
+        Rule r = styles[0].featureTypeStyles().get(0).rules().get(0);
         assertEquals(1, r.symbolizers().size());
 
         RasterSymbolizer rs = (RasterSymbolizer) r.symbolizers().get(0);
@@ -898,10 +904,10 @@ public class SLDStyleTest extends TestCase {
 
         Style[] styles = stylereader.readXML();
         assertEquals(1, styles.length);
-        assertEquals(1, styles[0].getFeatureTypeStyles().length);
-        assertEquals(1, styles[0].getFeatureTypeStyles()[0].rules().size());
+        assertEquals(1, styles[0].featureTypeStyles().size());
+        assertEquals(1, styles[0].featureTypeStyles().get(0).rules().size());
 
-        Rule r = styles[0].getFeatureTypeStyles()[0].rules().get(0);
+        Rule r = styles[0].featureTypeStyles().get(0).rules().get(0);
         assertEquals(1, r.symbolizers().size());
 
         RasterSymbolizer rs = (RasterSymbolizer) r.symbolizers().get(0);
@@ -940,10 +946,10 @@ public class SLDStyleTest extends TestCase {
 
         Style[] styles = stylereader.readXML();
         assertEquals(1, styles.length);
-        assertEquals(1, styles[0].getFeatureTypeStyles().length);
-        assertEquals(1, styles[0].getFeatureTypeStyles()[0].rules().size());
+        assertEquals(1, styles[0].featureTypeStyles().size());
+        assertEquals(1, styles[0].featureTypeStyles().get(0).rules().size());
 
-        Rule r = styles[0].getFeatureTypeStyles()[0].rules().get(0);
+        Rule r = styles[0].featureTypeStyles().get(0).rules().get(0);
         assertEquals(1, r.symbolizers().size());
 
         RasterSymbolizer rs = (RasterSymbolizer) r.symbolizers().get(0);

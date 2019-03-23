@@ -76,11 +76,7 @@ public class StyleAttributeExtractor extends FilterAttributeExtractor implements
 
     /** @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.Style) */
     public void visit(org.geotools.styling.Style style) {
-        FeatureTypeStyle[] ftStyles = style.getFeatureTypeStyles();
-
-        for (int i = 0; i < ftStyles.length; i++) {
-            ftStyles[i].accept(this);
-        }
+        style.featureTypeStyles().forEach(ft -> ft.accept(this));
     }
 
     /** @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.Rule) */

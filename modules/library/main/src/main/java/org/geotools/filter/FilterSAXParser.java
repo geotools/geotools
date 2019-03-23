@@ -34,6 +34,7 @@ import org.geotools.filter.spatial.WithinImpl;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
+import org.opengis.filter.expression.Literal;
 import org.xml.sax.Attributes;
 
 /**
@@ -300,8 +301,22 @@ public class FilterSAXParser {
                     ((LikeFilterImpl) curFilter).setMatchingCase(Boolean.parseBoolean(matchCase));
                 }
 
-                ((LikeFilterImpl) curFilter)
-                        .setPattern(expression, wildcard, singleChar, escapeChar);
+                if (expression instanceof Literal) {
+                    Literal literal = (Literal) expression;
+                    Object value = literal.getValue();
+                    if (value != null && value instanceof String) {
+                        String pattern = (String) value;
+
+                        ((LikeFilterImpl) curFilter).setLiteral(pattern);
+                        ((LikeFilterImpl) curFilter).setWildCard(wildcard);
+                        ((LikeFilterImpl) curFilter).setSingleChar(singleChar);
+                        ((LikeFilterImpl) curFilter).setEscape(escapeChar);
+                    } else {
+                        throw new ClassCastException("Pattern Literal must be a string:" + value);
+                    }
+                } else {
+                    throw new ClassCastException("Pattern must be a literal String");
+                }
                 curState = "complete";
             } else {
                 throw new IllegalFilterException(

@@ -288,12 +288,28 @@ public class FilterEqualsTest extends TestCase {
         testExp4 = new AttributeExpressionImpl(testSchema, "testInteger");
         lFilter1.setExpression(testExp3);
         lFilter2.setExpression(testExp4);
-        lFilter1.setPattern(pattern, wcMulti, wcSingle, escape);
-        lFilter2.setPattern(pattern, wcMulti, wcSingle, escape);
+
+        lFilter1.setLiteral(pattern);
+        lFilter1.setWildCard(wcMulti);
+        lFilter1.setSingleChar(wcSingle);
+        lFilter1.setEscape(escape);
+
+        lFilter2.setLiteral(pattern);
+        lFilter2.setWildCard(wcMulti);
+        lFilter2.setSingleChar(wcSingle);
+        lFilter2.setEscape(escape);
         assertTrue(lFilter1.equals(lFilter2));
-        lFilter2.setPattern("te__t!", wcMulti, wcSingle, escape);
+
+        lFilter2.setLiteral("te__t!");
+        lFilter2.setWildCard(wcMulti);
+        lFilter2.setSingleChar(wcSingle);
+        lFilter2.setEscape(escape);
         assertTrue(!lFilter1.equals(lFilter2));
-        lFilter2.setPattern(pattern, wcMulti, wcSingle, escape);
+
+        lFilter2.setLiteral(pattern);
+        lFilter2.setWildCard(wcMulti);
+        lFilter2.setSingleChar(wcSingle);
+        lFilter2.setEscape(escape);
         lFilter2.setExpression(testExp2);
         assertTrue(!lFilter1.equals(lFilter2));
     }

@@ -23,7 +23,6 @@ import java.util.regex.Pattern;
 import org.opengis.filter.FilterVisitor;
 import org.opengis.filter.PropertyIsLike;
 import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.Literal;
 
 /**
  * Defines a like filter, which checks to see if an attribute matches a REGEXP.
@@ -248,56 +247,6 @@ public class LikeFilterImpl extends AbstractFilter implements PropertyIsLike {
     }
 
     /**
-     * Sets the match pattern for this FilterLike.
-     *
-     * @param p the expression which evaluates to the match pattern for this filter
-     * @param wildcardMulti the string that represents a mulitple character (1->n) wildcard
-     * @param wildcardSingle the string that represents a single character (1) wildcard
-     * @param escape the string that represents an escape character
-     * @deprecated use one of {@link PropertyIsLike#setExpression(Expression)} {@link
-     *     PropertyIsLike#setWildCard(String)} {@link PropertyIsLike#setSingleChar(String)} {@link
-     *     PropertyIsLike#setEscape(String)}
-     */
-    public final void setPattern(
-            org.opengis.filter.expression.Expression p,
-            String wildcardMulti,
-            String wildcardSingle,
-            String escape) {
-        if (p instanceof Literal) {
-            Literal literal = (Literal) p;
-            Object value = literal.getValue();
-            if (value != null && value instanceof String) {
-                String pattern = (String) value;
-                setPattern(pattern, wildcardMulti, wildcardSingle, escape);
-            } else {
-                throw new ClassCastException("Pattern Literal must be a string:" + value);
-            }
-        } else {
-            throw new ClassCastException("Pattern must be a literal String");
-        }
-    }
-
-    /**
-     * Sets the match pattern for this FilterLike.
-     *
-     * @param pattern the string which contains the match pattern for this filter
-     * @param wildcardMulti the string that represents a mulitple character (1->n) wildcard
-     * @param wildcardSingle the string that represents a single character (1) wildcard
-     * @param escape the string that represents an escape character
-     * @deprecated use one of {@link PropertyIsLike#setLiteral(String)} {@link
-     *     PropertyIsLike#setWildCard(String)} {@link PropertyIsLike#setSingleChar(String)} {@link
-     *     PropertyIsLike#setEscape(String)}
-     */
-    public final void setPattern(
-            String pattern, String wildcardMulti, String wildcardSingle, String escape) {
-
-        setLiteral(pattern);
-        setWildCard(wildcardMulti);
-        setSingleChar(wildcardSingle);
-        setEscape(escape);
-    }
-
-    /**
      * Accessor method to retrieve the pattern.
      *
      * @return the pattern being matched.
@@ -404,41 +353,21 @@ public class LikeFilterImpl extends AbstractFilter implements PropertyIsLike {
     }
 
     /**
-     * Getter for property wildcardMulti.
-     *
-     * @return Value of property wildcardMulti.
-     * @deprecated use {@link #getWildCard()}.
-     */
-    public final String getWildcardMulti() {
-        return wildcardMulti;
-    }
-
-    /**
-     * THis method calls {@link #getWildcardMulti()} for subclass backwards compatability.
+     * Getter for property wildcardMulti
      *
      * @see org.opengis.filter.PropertyIsLike#getWildCard().
      */
     public String getWildCard() {
-        return getWildcardMulti();
+        return wildcardMulti;
     }
 
     /**
      * Getter for property wildcardSingle.
      *
-     * @return Value of property wildcardSingle.
-     * @deprecated use {@link #getSingleChar()}
-     */
-    public final String getWildcardSingle() {
-        return wildcardSingle;
-    }
-
-    /**
-     * THis method calls {@link #getWildcardSingle()()} for subclass backwards compatability.
-     *
      * @see org.opengis.filter.PropertyIsLike#getSingleChar()().
      */
     public String getSingleChar() {
-        return getWildcardSingle();
+        return wildcardSingle;
     }
 
     /**

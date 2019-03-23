@@ -350,7 +350,11 @@ public class FilterFactoryImpl implements Factory, org.opengis.filter.FilterFact
             boolean matchCase) {
         LikeFilterImpl filter = new LikeFilterImpl();
         filter.setExpression(expr);
-        filter.setPattern(pattern, wildcard, singleChar, escape);
+
+        filter.setLiteral(pattern);
+        filter.setWildCard(wildcard);
+        filter.setSingleChar(singleChar);
+        filter.setEscape(escape);
         filter.setMatchingCase(matchCase);
 
         return filter;
@@ -366,7 +370,11 @@ public class FilterFactoryImpl implements Factory, org.opengis.filter.FilterFact
             MatchAction matchAction) {
         LikeFilterImpl filter = new LikeFilterImpl(matchAction);
         filter.setExpression(expr);
-        filter.setPattern(pattern, wildcard, singleChar, escape);
+
+        filter.setLiteral(pattern);
+        filter.setWildCard(wildcard);
+        filter.setSingleChar(singleChar);
+        filter.setEscape(escape);
         filter.setMatchingCase(matchCase);
 
         return filter;

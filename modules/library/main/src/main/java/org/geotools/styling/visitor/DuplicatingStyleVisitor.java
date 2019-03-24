@@ -75,6 +75,7 @@ import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
 import org.opengis.style.Description;
 import org.opengis.style.ExternalMark;
+import org.opengis.style.GraphicalSymbol;
 
 /**
  * Creates a deep copy of a Style, this class is *NOT THREAD SAFE*.
@@ -798,26 +799,21 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         Graphic copy = null;
 
         Displacement displacementCopy = copy(gr.getDisplacement());
-        ExternalGraphic[] externalGraphicsCopy = copy(gr.getExternalGraphics());
-        Mark[] marksCopy = copy(gr.getMarks());
+        List<GraphicalSymbol> symbolsCopy = copy(gr.graphicalSymbols());
         Expression opacityCopy = copy(gr.getOpacity());
         Expression rotationCopy = copy(gr.getRotation());
         Expression sizeCopy = copy(gr.getSize());
         AnchorPoint anchorCopy = copy(gr.getAnchorPoint());
 
-        // Looks like Symbols are a "view" of marks and external graphics?
-        // Symbol[] symbolCopys = copy( gr.getSymbols() );
-
         copy = sf.createDefaultGraphic();
 
         copy.setDisplacement(displacementCopy);
-        copy.setAnchorPoint(anchorCopy);
-        copy.setExternalGraphics(externalGraphicsCopy);
-        copy.setMarks(marksCopy);
+        copy.graphicalSymbols().clear();
+        copy.graphicalSymbols().addAll(symbolsCopy);
         copy.setOpacity(opacityCopy);
         copy.setRotation(rotationCopy);
         copy.setSize(sizeCopy);
-        // copy.setSymbols(symbolCopys);
+        copy.setAnchorPoint(anchorCopy);
 
         if (STRICT) {
             if (!copy.equals(gr)) {
@@ -827,29 +823,14 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         pages.push(copy);
     }
 
-    private Mark[] copy(Mark[] marks) {
-        if (marks == null) return null;
-        Mark[] copy = new Mark[marks.length];
-        for (int i = 0; i < marks.length; i++) {
-            copy[i] = copy(marks[i]);
-        }
-        return copy;
-    }
-
-    private Symbol[] copy(Symbol[] symbols) {
-        if (symbols == null) return null;
-        Symbol[] copy = new Symbol[symbols.length];
-        for (int i = 0; i < symbols.length; i++) {
-            copy[i] = copy(symbols[i]);
-        }
-        return copy;
-    }
-
-    private ExternalGraphic[] copy(ExternalGraphic[] externalGraphics) {
-        if (externalGraphics == null) return null;
-        ExternalGraphic[] copy = new ExternalGraphic[externalGraphics.length];
-        for (int i = 0; i < externalGraphics.length; i++) {
-            copy[i] = copy(externalGraphics[i]);
+    private List<GraphicalSymbol> copy(List<GraphicalSymbol> symbols) {
+        List<GraphicalSymbol> copy = new ArrayList<>(symbols.size());
+        for (GraphicalSymbol symbol : symbols) {
+            if (symbol instanceof Symbol) {
+                copy.add(copy((Symbol) symbol));
+            } else {
+                throw new RuntimeException("Don't know how to copy " + symbol);
+            }
         }
         return copy;
     }

@@ -17,9 +17,9 @@
 package org.geotools.styling;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.ConstantExpression;
 import org.geotools.util.Utilities;
@@ -409,20 +409,7 @@ public class GraphicImpl implements Graphic, Cloneable {
             return Utilities.equals(this.size, other.size)
                     && Utilities.equals(this.rotation, other.rotation)
                     && Utilities.equals(this.opacity, other.opacity)
-                    && Arrays.equals(this.getMarks(), other.getMarks())
-                    && Arrays.equals(this.getExternalGraphics(), other.getExternalGraphics())
-                    && Arrays.equals(this.getSymbols(), other.getSymbols());
-
-            //                        return
-            //            Utilities.equals(this.geometryPropertyName,other.geometryPropertyName)
-            //            && Utilities.equals(this.size, other.size)
-            //            && Utilities.equals(this.rotation, other.rotation)
-            //            && Utilities.equals(this.opacity, other.opacity)
-            //            && Utilities.equals(this.graphics, other.graphics )
-            //            && Utilities.equals(this.anchor, other.anchor)
-            //            && Utilities.equals(this.gap, other.gap)
-            //            && Utilities.equals(this.initialGap, other.initialGap);
-
+                    && Objects.equals(this.graphicalSymbols(), other.graphicalSymbols());
         }
 
         return false;

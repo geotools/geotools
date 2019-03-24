@@ -855,10 +855,10 @@ public class sldComplexTypes {
 
                 Element e = value[i].getElement();
                 if (elems[EXTERNALGRAPHIC].getName().equals(e.getName()))
-                    symbol.addExternalGraphic((ExternalGraphic) value[i].getValue());
+                    symbol.graphicalSymbols().add((ExternalGraphic) value[i].getValue());
 
                 if (elems[MARK].getName().equals(e.getName()))
-                    symbol.addMark((Mark) value[i].getValue());
+                    symbol.graphicalSymbols().add((Mark) value[i].getValue());
 
                 if (elems[OPACITY].getName().equals(e.getName()))
                     symbol.setOpacity((Expression) value[i].getValue());

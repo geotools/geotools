@@ -207,7 +207,7 @@ public class StyledShapePainterTest extends TestCase {
         URL url = StreamingRenderer.class.getResource("test-data/");
         StyleFactory sf = CommonFactoryFinder.getStyleFactory(null);
         ExternalGraphic eg = sf.createExternalGraphic(url + "icon64.png", "image/png");
-        legend.addExternalGraphic(eg);
+        legend.graphicalSymbols().add(eg);
         BufferedImage image = new BufferedImage(100, 100, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2 = (Graphics2D) image.getGraphics();
         MathTransform transform = ProjectiveTransform.create(new AffineTransform());

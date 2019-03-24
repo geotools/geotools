@@ -263,12 +263,12 @@ public class StyleObjectTest extends TestCase {
 
     public void testGraphic() {
         Graphic graphic = styleFactory.getDefaultGraphic();
-        graphic.addMark(styleFactory.getDefaultMark());
+        graphic.graphicalSymbols().add(styleFactory.getDefaultMark());
 
         Graphic clone = (Graphic) ((Cloneable) graphic).clone();
         assertClone(graphic, clone);
         assertEqualsContract(clone, graphic);
-        assertEquals(clone.getSymbols().length, graphic.getSymbols().length);
+        assertEquals(clone.graphicalSymbols().size(), graphic.graphicalSymbols().size());
 
         Graphic notEq = styleFactory.getDefaultGraphic();
         assertEqualsContract(clone, notEq, graphic);

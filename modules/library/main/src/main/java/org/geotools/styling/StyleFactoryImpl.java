@@ -440,7 +440,7 @@ public class StyleFactoryImpl extends AbstractStyleFactory
         Graphic graphic = new GraphicImpl(filterFactory);
 
         symbols = symbols != null ? symbols : new Symbol[0];
-        graphic.setSymbols(symbols);
+        graphic.graphicalSymbols().addAll(Arrays.asList(symbols));
 
         // externalGraphics = externalGraphics != null ? externalGraphics : new ExternalGraphic[0];
         // graphic.setExternalGraphics(externalGraphics);
@@ -660,7 +660,8 @@ public class StyleFactoryImpl extends AbstractStyleFactory
 
     public Graphic createDefaultGraphic() {
         Graphic graphic = new GraphicImpl(filterFactory);
-        graphic.addMark(createMark()); // a default graphic is assumed to have a single Mark
+        graphic.graphicalSymbols()
+                .add(createMark()); // a default graphic is assumed to have a single Mark
         graphic.setSize(Expression.NIL);
         graphic.setOpacity(filterFactory.literal(1.0));
         graphic.setRotation(filterFactory.literal(0.0));

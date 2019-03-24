@@ -16,6 +16,8 @@
  */
 package org.geotools.styling;
 
+import org.opengis.style.GraphicalSymbol;
+
 /**
  * A basic implementation of the StyleVisitor interface.
  *
@@ -196,12 +198,12 @@ public class AbstractStyleVisitor implements StyleVisitor {
         if (gr.getDisplacement() != null) {
             gr.getDisplacement().accept(this);
         }
-        for (ExternalGraphic eg : gr.getExternalGraphics()) {
-            eg.accept(this);
-        }
-
-        for (Mark m : gr.getMarks()) {
-            m.accept(this);
+        for (GraphicalSymbol gs : gr.graphicalSymbols()) {
+            if (gs instanceof Symbol) {
+                ((Symbol) gs).accept(this);
+            } else {
+                throw new RuntimeException("Don't know how to visit " + gs);
+            }
         }
     }
 

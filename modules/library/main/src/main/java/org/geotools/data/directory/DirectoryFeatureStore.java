@@ -48,11 +48,6 @@ public class DirectoryFeatureStore extends DirectoryFeatureSource implements Sim
         fstore.modifyFeatures(attributeName, attributeValue, filter);
     }
 
-    public void modifyFeatures(AttributeDescriptor type, Object value, Filter filter)
-            throws IOException {
-        fstore.modifyFeatures(type, value, filter);
-    }
-
     public void modifyFeatures(Name[] name, Object[] value, Filter filter) throws IOException {
         fstore.modifyFeatures(name, value, filter);
     }

@@ -56,11 +56,6 @@ class SimpleFeatureStoreBridge extends SimpleFeatureSourceBridge implements Simp
         delegate().modifyFeatures(type, value, filter);
     }
 
-    public void modifyFeatures(AttributeDescriptor type, Object value, Filter filter)
-            throws IOException {
-        delegate().modifyFeatures(type, value, filter);
-    }
-
     public void modifyFeatures(Name[] names, Object[] values, Filter filter) throws IOException {
         delegate().modifyFeatures(names, values, filter);
     }

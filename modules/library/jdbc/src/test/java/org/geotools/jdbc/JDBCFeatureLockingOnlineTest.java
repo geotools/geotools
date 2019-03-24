@@ -24,9 +24,9 @@ import org.geotools.data.FeatureReader;
 import org.geotools.data.FeatureWriter;
 import org.geotools.data.Query;
 import org.geotools.data.Transaction;
+import org.geotools.feature.NameImpl;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.PropertyIsEqualTo;
@@ -288,23 +288,23 @@ public abstract class JDBCFeatureLockingOnlineTest extends JDBCTestSupport {
             Filter f1 = ff.id(Collections.singleton(ff.featureId(tname("ft1") + ".1")));
             store.lockFeatures(f1);
 
-            AttributeDescriptor ad;
             Integer v;
+            NameImpl intProperty = new NameImpl(aname("intProperty"));
             try (Transaction tx1 = new DefaultTransaction()) {
                 store.setTransaction(tx1);
 
-                ad = store.getSchema().getDescriptor(aname("intProperty"));
                 v = Integer.valueOf(1000);
 
                 try {
-                    store.modifyFeatures(ad, v, f1);
+
+                    store.modifyFeatures(intProperty, v, f1);
                     fail("Locked feature should not be modified.");
                 } catch (FeatureLockException e) {
                 }
             }
 
             store.setTransaction(tx);
-            store.modifyFeatures(ad, v, f1);
+            store.modifyFeatures(intProperty, v, f1);
             tx.commit();
 
             assertEquals(1, store.getCount(new Query(tname("ft1"), f0)));

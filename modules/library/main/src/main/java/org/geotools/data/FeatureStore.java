@@ -120,18 +120,6 @@ public interface FeatureStore<T extends FeatureType, F extends Feature>
             throws IOException;
 
     /**
-     * For backwards compatibility; please be careful that your descriptor is actually compatible
-     * with the one declared.
-     *
-     * @param type the attribute to modify
-     * @param value the new value for the attribute
-     * @param filter an OpenGIS filter
-     * @throws IOException
-     * @deprecated Please use the safer method {@link #modifyFeatures(Name, Object, Filter)}
-     */
-    void modifyFeatures(AttributeDescriptor type, Object value, Filter filter) throws IOException;
-
-    /**
      * Deletes any existing features in the data source and then inserts new features provided by
      * the given reader. This is primarily used as a convenience method for file-based data sources.
      *

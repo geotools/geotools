@@ -40,6 +40,7 @@ import org.geotools.data.store.ContentFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.AttributeTypeBuilder;
 import org.geotools.feature.DefaultFeatureCollection;
+import org.geotools.feature.NameImpl;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.Coordinate;
@@ -406,8 +407,7 @@ public abstract class JDBCFeatureStoreOnlineTest extends JDBCTestSupport {
 
     public void testModifyFeaturesSingleAttribute() throws IOException {
         SimpleFeatureType t = featureStore.getSchema();
-        featureStore.modifyFeatures(
-                t.getDescriptor(aname("stringProperty")), "foo", Filter.INCLUDE);
+        featureStore.modifyFeatures(new NameImpl(aname("stringProperty")), "foo", Filter.INCLUDE);
 
         SimpleFeatureCollection features = featureStore.getFeatures();
         try (SimpleFeatureIterator i = features.features()) {

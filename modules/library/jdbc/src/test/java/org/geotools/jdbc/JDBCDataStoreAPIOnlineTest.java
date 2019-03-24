@@ -40,6 +40,7 @@ import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.simple.SimpleFeatureStore;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.feature.NameImpl;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.filter.IllegalFilterException;
 import org.geotools.filter.function.FilterFunction_geometryType;
@@ -987,8 +988,7 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
         // FilterFactory factory = FilterFactoryFinder.createFilterFactory();
         // rd1Filter = factory.createFidFilter( roadFeatures[0].getID() );
         Object changed = Integer.valueOf(5);
-        AttributeDescriptor name = td.roadType.getDescriptor(aname("id"));
-        road.modifyFeatures(name, changed, td.rd1Filter);
+        road.modifyFeatures(new NameImpl(aname("id")), changed, td.rd1Filter);
 
         SimpleFeatureCollection results = road.getFeatures(td.rd1Filter);
         try (SimpleFeatureIterator features = results.features()) {

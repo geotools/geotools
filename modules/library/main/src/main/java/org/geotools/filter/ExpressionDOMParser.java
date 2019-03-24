@@ -705,9 +705,9 @@ public final class ExpressionDOMParser {
                                 Double.parseDouble(
                                         grandChild.getChildNodes().item(0).getNodeValue().trim());
                     } else if (grandChildName.equalsIgnoreCase("gml:z")) {
-                        c.z =
+                        c.setZ(
                                 Double.parseDouble(
-                                        grandChild.getChildNodes().item(0).getNodeValue().trim());
+                                        grandChild.getChildNodes().item(0).getNodeValue().trim()));
                     }
                 }
                 clist.add(c);

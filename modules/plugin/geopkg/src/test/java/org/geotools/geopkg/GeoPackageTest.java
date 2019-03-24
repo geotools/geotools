@@ -359,7 +359,7 @@ public class GeoPackageTest {
         Point readGeom = (Point) f.getAttribute("geom");
 
         assertEquals(3, readGeom.getCoordinateSequence().getDimension());
-        assertEquals(geom.getCoordinate().z, readGeom.getCoordinate().z, 0.0001);
+        assertEquals(geom.getCoordinate().getZ(), readGeom.getCoordinate().getZ(), 0.0001);
 
         ra.close();
     }

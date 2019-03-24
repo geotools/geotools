@@ -285,7 +285,7 @@ public class SqlServerBinaryReader {
     private void readZValues() throws IOException {
         if (binary.hasZ()) {
             for (int i = 0; i < binary.getNumberOfPoints(); i++) {
-                binary.getCoordinates()[i].z = dis.readDouble();
+                binary.getCoordinates()[i].setZ(dis.readDouble());
             }
         }
     }

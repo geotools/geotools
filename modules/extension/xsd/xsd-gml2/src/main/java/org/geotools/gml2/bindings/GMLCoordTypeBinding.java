@@ -107,8 +107,8 @@ public class GMLCoordTypeBinding extends AbstractComplexBinding {
             return new Double(c.y);
         }
 
-        if ("Z".equals(name.getLocalPart()) && !new Double(c.z).isNaN()) {
-            return new Double(c.z);
+        if ("Z".equals(name.getLocalPart()) && !new Double(c.getZ()).isNaN()) {
+            return new Double(c.getZ());
         }
 
         return null;

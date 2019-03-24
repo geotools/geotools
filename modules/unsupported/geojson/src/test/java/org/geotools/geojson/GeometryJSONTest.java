@@ -594,7 +594,7 @@ public class GeometryJSONTest extends GeoJSONTestSupport {
         for (int i = 0; i < coords.length; i++) {
             Coordinate c = new Coordinate(coords[i][0], coords[i][1]);
             if (coords[i].length > 2) {
-                c.z = coords[i][2];
+                c.setZ(coords[i][2]);
             }
 
             coordinates[i] = c;

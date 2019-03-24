@@ -101,6 +101,6 @@ public class GMLCoordTypeBindingTest extends AbstractGMLBindingTest {
         assertNotNull(c);
         assertEquals(c.x, 12.34, 0d);
         assertEquals(c.y, 56.78, 0d);
-        assertEquals(c.z, 910.11, 0d);
+        assertEquals(c.getZ(), 910.11, 0d);
     }
 }

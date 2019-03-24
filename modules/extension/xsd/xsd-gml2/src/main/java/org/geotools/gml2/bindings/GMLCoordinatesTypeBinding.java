@@ -195,10 +195,10 @@ public class GMLCoordinatesTypeBinding extends AbstractComplexBinding {
                 buf.append("," + c.y);
             }
 
-            boolean z = y && (coordinates.getDimension() > 2) && !new Double(c.z).isNaN();
+            boolean z = y && (coordinates.getDimension() > 2) && !new Double(c.getZ()).isNaN();
 
             if (z) {
-                buf.append("," + c.z);
+                buf.append("," + c.getZ());
             }
 
             if (i < (coordinates.size() - 1)) {

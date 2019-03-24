@@ -411,8 +411,8 @@ public class GMLComplexTypes {
         ai.addAttribute("", "X", "", "decimal", "" + coord.x);
         ai.addAttribute("", "Y", "", "decimal", "" + coord.y);
 
-        if (!Double.isNaN(coord.z)) {
-            ai.addAttribute("", "Z", "", "decimal", "" + coord.z);
+        if (!Double.isNaN(coord.getZ())) {
+            ai.addAttribute("", "Z", "", "decimal", "" + coord.getZ());
         }
 
         if (e == null) {
@@ -456,19 +456,19 @@ public class GMLComplexTypes {
 
         Coordinate c = coords[0];
 
-        if (Double.isNaN(c.z)) {
+        if (Double.isNaN(c.getZ())) {
             output.characters(c.x + cs + c.y);
         } else {
-            output.characters(c.x + cs + c.y + cs + c.z);
+            output.characters(c.x + cs + c.y + cs + c.getZ());
         }
 
         for (int i = 1; i < coords.length; i++) {
             c = coords[i];
 
-            if (Double.isNaN(c.z)) {
+            if (Double.isNaN(c.getZ())) {
                 output.characters(ts + c.x + cs + c.y);
             } else {
-                output.characters(ts + c.x + cs + c.y + cs + c.z);
+                output.characters(ts + c.x + cs + c.y + cs + c.getZ());
             }
         }
 

@@ -163,7 +163,7 @@ public class MultiPointHandler implements ShapeHandler {
 
             for (int t = 0; t < mp.getNumGeometries(); t++) {
                 Coordinate c = (mp.getGeometryN(t)).getCoordinate();
-                double z = c.z;
+                double z = c.getZ();
 
                 if (Double.isNaN(z)) {
                     buffer.putDouble(0.0);

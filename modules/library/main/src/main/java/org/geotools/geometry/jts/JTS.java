@@ -475,7 +475,7 @@ public final class JTS {
 
         switch (transform.getTargetDimensions()) {
             case 3:
-                dest.z = array[2]; // Fall through
+                dest.setZ(array[2]); // Fall through
 
             case 2:
                 dest.y = array[1]; // Fall through
@@ -674,7 +674,7 @@ public final class JTS {
                     case 1:
                         return point.y;
                     case 2:
-                        return point.z;
+                        return point.getZ();
                     default:
                         return Double.NaN;
                 }
@@ -689,7 +689,7 @@ public final class JTS {
                         point.y = value;
                         return;
                     case 2:
-                        point.z = value;
+                        point.setZ(value);
                         return;
                     default:
                         // ignore
@@ -715,7 +715,7 @@ public final class JTS {
                 Arrays.fill(ordinates, 3, ordinates.length, Double.NaN); // Fall through
 
             case 3:
-                ordinates[2] = point.z; // Fall through
+                ordinates[2] = point.getZ(); // Fall through
 
             case 2:
                 ordinates[1] = point.y; // Fall through
@@ -916,7 +916,7 @@ public final class JTS {
 
         Coordinate coordinate = new Coordinate(position.getOrdinate(0), position.getOrdinate(1));
         if (position.getDimension() == 3) {
-            coordinate.z = position.getOrdinate(2);
+            coordinate.setZ(position.getOrdinate(2));
         }
         return factory.createPoint(coordinate);
     }

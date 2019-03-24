@@ -163,6 +163,6 @@ public class InvertAxisFilterVisitor extends DuplicatingFilterVisitor {
      * @return
      */
     private Coordinate invertCoordinate(Coordinate coordinate) {
-        return new Coordinate(coordinate.y, coordinate.x, coordinate.z);
+        return new Coordinate(coordinate.y, coordinate.x, coordinate.getZ());
     }
 }

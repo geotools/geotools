@@ -45,11 +45,6 @@ public abstract class LogicFilterImpl extends BinaryLogicAbstract {
      */
     int cachedHash = 0;
 
-    @Deprecated
-    protected LogicFilterImpl() {
-        this(new ArrayList<org.opengis.filter.Filter>());
-    }
-
     protected LogicFilterImpl(List<org.opengis.filter.Filter> children) {
         super(children);
     }
@@ -62,7 +57,7 @@ public abstract class LogicFilterImpl extends BinaryLogicAbstract {
      */
     @Deprecated
     protected LogicFilterImpl(Filter filter) throws IllegalFilterException {
-        this();
+        this(new ArrayList<Filter>());
         children.add(filter);
     }
 
@@ -76,7 +71,7 @@ public abstract class LogicFilterImpl extends BinaryLogicAbstract {
      */
     protected LogicFilterImpl(Filter filter1, Filter filter2, short filterType)
             throws IllegalFilterException {
-        this();
+        this(new ArrayList<Filter>());
 
         // Push the initial filter on the stack
         children.add(filter1);

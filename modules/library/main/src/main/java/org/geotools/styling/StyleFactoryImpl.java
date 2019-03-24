@@ -333,10 +333,6 @@ public class StyleFactoryImpl extends AbstractStyleFactory
             color = Fill.DEFAULT.getColor();
         }
         fill.setColor(color);
-        if (backgroundColor == null) {
-            backgroundColor = Fill.DEFAULT.getBackgroundColor();
-        }
-        fill.setBackgroundColor(backgroundColor);
 
         if (opacity == null) {
             opacity = Fill.DEFAULT.getOpacity();
@@ -581,7 +577,6 @@ public class StyleFactoryImpl extends AbstractStyleFactory
         try {
             fill.setColor(filterFactory.literal("#808080"));
             fill.setOpacity(filterFactory.literal(new Double(1.0)));
-            fill.setBackgroundColor(filterFactory.literal("#FFFFFF"));
         } catch (org.geotools.filter.IllegalFilterException ife) {
             throw new RuntimeException("Error creating fill", ife);
         }

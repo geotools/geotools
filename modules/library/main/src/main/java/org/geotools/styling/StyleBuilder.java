@@ -251,7 +251,6 @@ public class StyleBuilder {
     public Fill createFill() {
         Fill f = sf.getDefaultFill();
         f.setColor(literalExpression("#808080"));
-        f.setBackgroundColor(literalExpression("#808080"));
         f.setOpacity(literalExpression(1.0));
 
         return f;

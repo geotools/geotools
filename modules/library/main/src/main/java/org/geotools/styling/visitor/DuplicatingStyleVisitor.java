@@ -646,7 +646,6 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
 
     public void visit(Fill fill) {
         Fill copy = sf.getDefaultFill();
-        copy.setBackgroundColor(copy(fill.getBackgroundColor()));
         copy.setColor(copy(fill.getColor()));
         copy.setGraphicFill(copy(fill.getGraphicFill()));
         copy.setOpacity(copy(fill.getOpacity()));

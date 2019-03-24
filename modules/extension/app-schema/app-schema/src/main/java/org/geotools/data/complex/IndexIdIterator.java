@@ -20,6 +20,7 @@ package org.geotools.data.complex;
 import java.io.Closeable;
 import java.io.IOException;
 import java.util.Iterator;
+import java.util.function.Consumer;
 import org.geotools.data.Query;
 import org.geotools.data.util.NullProgressListener;
 import org.geotools.feature.FeatureCollection;
@@ -81,12 +82,15 @@ public interface IndexIdIterator extends Iterator<String>, Closeable {
     }
 
     /**
-     * Index iterator for to work with UniqueVisitor over id field
+     * Index iterator for to work with UniqueVisitor over id field.
      *
      * @author Fernando Miño, Geosolutions
      */
     public static class IndexUniqueVisitorIterator implements IndexIdIterator {
+
         protected static final int STEP_LOAD = 1000;
+
+        public static Consumer<UniqueVisitor> uniqueVisitorBuildHook;
 
         private FeatureCollection<SimpleFeatureType, SimpleFeature> fc;
         private Query idQuery;
@@ -97,6 +101,7 @@ public interface IndexIdIterator extends Iterator<String>, Closeable {
         private UniqueVisitor visitor;
         private Iterator visitorIterator;
         private int currentVisitorStart;
+        private int currentMax;
         private String nextValue = null;
         private int counter = 0;
 
@@ -110,14 +115,19 @@ public interface IndexIdIterator extends Iterator<String>, Closeable {
             this.idFieldName = idFieldName;
             this.start = idQuery.getStartIndex() != null ? idQuery.getStartIndex() : 0;
             this.max = idQuery.getMaxFeatures();
-            currentVisitorStart = this.start;
+            this.currentVisitorStart = this.start;
+            this.currentMax = this.max;
             initVisitor();
         }
 
         private void initVisitor() {
             visitor = new UniqueVisitor(this.idFieldName);
             visitor.setStartIndex(currentVisitorStart);
-            visitor.setMaxFeatures(STEP_LOAD);
+            visitor.setMaxFeatures(Math.min(STEP_LOAD, currentMax));
+            // execute hook if exists
+            if (uniqueVisitorBuildHook != null) {
+                uniqueVisitorBuildHook.accept(visitor);
+            }
             try {
                 fc.accepts(visitor, new NullProgressListener());
                 visitorIterator = visitor.getUnique().iterator();
@@ -138,6 +148,7 @@ public interface IndexIdIterator extends Iterator<String>, Closeable {
                 if (nextStart <= (start + max - 1)) {
                     // init new visitor, next bounds
                     currentVisitorStart = nextStart;
+                    currentMax = currentMax - STEP_LOAD;
                     initVisitor();
                     // if don't have next value yet, no more data -> return null
                     if (!visitorIterator.hasNext()) return null;

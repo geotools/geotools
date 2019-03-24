@@ -172,20 +172,6 @@ public class ArcSdeFeatureStore extends ArcSdeFeatureSource implements SimpleFea
         modifyFeatures(attributeNames, values, filter);
     }
 
-    /** @see FeatureStore#modifyFeatures(AttributeDescriptor, Object, Filter) */
-    public final void modifyFeatures(
-            final AttributeDescriptor type, final Object value, final Filter filter)
-            throws IOException {
-        modifyFeatures(
-                new Name[] {
-                    type.getName(),
-                },
-                new Object[] {
-                    value,
-                },
-                filter);
-    }
-
     public final void modifyFeatures(final Name name, final Object value, final Filter filter)
             throws IOException {
         modifyFeatures(

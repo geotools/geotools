@@ -70,6 +70,7 @@ import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.FeatureTypes;
+import org.geotools.feature.NameImpl;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.feature.type.BasicFeatureTypes;
@@ -1732,11 +1733,9 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
         final SimpleFeatureType schema = store.getSchema();
         final String typeName = schema.getTypeName();
         // get a property of type String to update its value by the given filter
-        final AttributeDescriptor attribute = schema.getDescriptor("f");
-
         assertEquals(2, count(ds, typeName, fidFilter));
 
-        store.modifyFeatures(attribute, "modified", fidFilter);
+        store.modifyFeatures(new NameImpl("f"), "modified", fidFilter);
         Filter modifiedFilter = ff.equals(ff.property("f"), ff.literal("modified"));
         assertEquals(2, count(ds, typeName, modifiedFilter));
 

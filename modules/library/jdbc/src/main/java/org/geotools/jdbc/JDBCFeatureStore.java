@@ -340,7 +340,7 @@ public final class JDBCFeatureStore extends ContentFeatureStore {
         if (postFilter != null && !Filter.INCLUDE.equals(postFilter)) {
             // we don't have a fast way to perform this update, let's do it the
             // feature by feature way then
-            super.modifyFeatures(innerTypes, values, filter);
+            super.modifyFeatures(names, values, filter);
         } else {
             // let's grab the connection
             Connection cx = null;

@@ -237,15 +237,7 @@ public interface Stroke extends org.opengis.style.Stroke {
     /** This parameter controls how line strings should be capped. */
     void setLineCap(Expression lineCap);
 
-    /**
-     * Shortcut to retrieve dash array in the case where all expressions are literal numbers. Return
-     * the default value if one of the expressions is not a literal.
-     */
-    @Deprecated
-    float[] getDashArray();
-
     /** Shortcut to define dash array using literal numbers. */
-    @Deprecated
     void setDashArray(float[] dashArray);
 
     /**

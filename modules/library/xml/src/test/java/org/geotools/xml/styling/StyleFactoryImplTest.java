@@ -181,9 +181,6 @@ public class StyleFactoryImplTest extends TestCase {
         f = styleFactory.createFill(null);
         assertEquals(f.getColor(), Fill.DEFAULT.getColor());
         assertSame(f.getColor(), Fill.DEFAULT.getColor());
-
-        assertEquals(f.getBackgroundColor(), Fill.DEFAULT.getBackgroundColor());
-        assertSame(f.getBackgroundColor(), Fill.DEFAULT.getBackgroundColor());
     }
 
     /** Test of createMark method, of class org.geotools.styling.StyleFactoryImpl. */

@@ -100,10 +100,6 @@ public class StyleAttributeExtractor extends FilterAttributeExtractor implements
 
     /** @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.Fill) */
     public void visit(Fill fill) {
-        if (fill.getBackgroundColor() != null) {
-            fill.getBackgroundColor().accept(this, null);
-        }
-
         if (fill.getColor() != null) {
             fill.getColor().accept(this, null);
         }

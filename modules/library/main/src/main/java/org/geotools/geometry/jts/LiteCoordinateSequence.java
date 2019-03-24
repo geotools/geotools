@@ -36,7 +36,7 @@ import org.locationtech.jts.geom.impl.PackedCoordinateSequence;
  * @author jeichar
  * @since 2.1.x
  */
-public class LiteCoordinateSequence extends PackedCoordinateSequence {
+public class LiteCoordinateSequence extends PackedCoordinateSequence implements Cloneable {
 
     private static final GeometryFactory geomFac =
             new GeometryFactory(new LiteCoordinateSequenceFactory());
@@ -224,7 +224,7 @@ public class LiteCoordinateSequence extends PackedCoordinateSequence {
         return size;
     }
 
-    /** @see java.lang.Object#clone() */
+    @SuppressWarnings("deprecation")
     public Object clone() {
         double[] clone = new double[coords.length];
         System.arraycopy(coords, 0, clone, 0, coords.length);

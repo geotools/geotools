@@ -20,9 +20,10 @@ import java.io.IOException;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.feature.NameImpl;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.AttributeDescriptor;
+import org.opengis.feature.type.Name;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.PropertyIsEqualTo;
 
@@ -45,9 +46,7 @@ public abstract class JDBCFeatureStoreExposePkOnlineTest extends JDBCFeatureStor
         PropertyIsEqualTo filter =
                 ff.equal(ff.property(aname("stringProperty")), ff.literal("zero"), false);
         featureStore.modifyFeatures(
-                new AttributeDescriptor[] {
-                    t.getDescriptor(aname("stringProperty")), t.getDescriptor(aname("id"))
-                },
+                new Name[] {new NameImpl(aname("stringProperty")), new NameImpl(aname("id"))},
                 new Object[] {"foo", 123},
                 filter);
 

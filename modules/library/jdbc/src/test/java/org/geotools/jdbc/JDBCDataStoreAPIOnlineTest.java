@@ -58,6 +58,7 @@ import org.opengis.feature.IllegalAttributeException;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
+import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.PropertyIsEqualTo;
@@ -1006,10 +1007,9 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
         Filter rd1Filter =
                 factory.id(Collections.singleton(factory.featureId(td.roadFeatures[0].getID())));
 
-        AttributeDescriptor name = td.roadType.getDescriptor(aname("name"));
         road.modifyFeatures(
-                new AttributeDescriptor[] {
-                    name,
+                new Name[] {
+                    new NameImpl(aname("name")),
                 },
                 new Object[] {
                     "changed",
@@ -1035,10 +1035,9 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         PropertyIsEqualTo filter = ff.equals(ff.property(aname("name")), ff.literal("r1"));
 
-        AttributeDescriptor name = td.roadType.getDescriptor(aname("name"));
         road.modifyFeatures(
-                new AttributeDescriptor[] {
-                    name,
+                new Name[] {
+                    new NameImpl(aname("name")),
                 },
                 new Object[] {
                     "changed",

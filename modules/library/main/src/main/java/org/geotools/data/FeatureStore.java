@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.util.List;
 import org.geotools.feature.FeatureCollection;
 import org.opengis.feature.Feature;
-import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
@@ -92,19 +91,6 @@ public interface FeatureStore<T extends FeatureType, F extends Feature>
      *     errors accessing the data source
      */
     void modifyFeatures(Name[] attributeNames, Object[] attributeValues, Filter filter)
-            throws IOException;
-
-    /**
-     * For backwards compatibility; please be careful that your descriptor is actually compatible
-     * with the one declared.
-     *
-     * @param type the attributes to modify
-     * @param value the new values for the attributes
-     * @param filter an OpenGIS filter
-     * @throws IOException
-     * @deprecated Please use the safer method {@link #modifyFeatures(Name[], Object[], Filter)}
-     */
-    void modifyFeatures(AttributeDescriptor[] type, Object[] value, Filter filter)
             throws IOException;
 
     /**

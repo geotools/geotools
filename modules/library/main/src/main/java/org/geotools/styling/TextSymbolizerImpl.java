@@ -267,18 +267,6 @@ public class TextSymbolizerImpl extends AbstractSymbolizer implements TextSymbol
         return priority;
     }
 
-    public void addToOptions(String key, String value) {
-        getOptions().put(key, value.trim());
-    }
-
-    public String getOption(String key) {
-        if (options == null) {
-            return null;
-        }
-
-        return options.get(key);
-    }
-
     public Graphic getGraphic() {
         return graphic;
     }

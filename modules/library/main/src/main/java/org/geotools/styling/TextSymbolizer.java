@@ -423,21 +423,6 @@ public interface TextSymbolizer extends org.opengis.style.TextSymbolizer, Symbol
     Expression getPriority();
 
     /**
-     * Adds a parameter value to the options map
-     *
-     * @deprecated Please use getOptions().put( key, value )
-     */
-    void addToOptions(String key, String value);
-
-    /**
-     * Find the value of a key in the map (may return null)
-     *
-     * @param key
-     * @deprecated Please use getOptions.get( key )
-     */
-    String getOption(String key);
-
-    /**
      * return the map of option
      *
      * @return null - no options set

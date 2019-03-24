@@ -506,19 +506,7 @@ public class GeoTiffWriterTest extends Assert {
                     }
 
                     @Override
-                    public String getDescription() {
-                        // TODO Auto-generated method stub
-                        return null;
-                    }
-
-                    @Override
                     public void setTask(InternationalString task) {
-                        // TODO Auto-generated method stub
-
-                    }
-
-                    @Override
-                    public void setDescription(String description) {
                         // TODO Auto-generated method stub
 
                     }

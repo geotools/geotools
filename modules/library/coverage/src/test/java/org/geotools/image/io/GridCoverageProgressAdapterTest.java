@@ -64,11 +64,6 @@ public class GridCoverageProgressAdapterTest extends Assert {
                     }
 
                     @Override
-                    public void setDescription(String description) {
-                        adaptee.setDescription(description);
-                    }
-
-                    @Override
                     public void setCanceled(boolean cancel) {
                         adaptee.setCanceled(cancel);
                         LOGGER.info("canceled");
@@ -102,11 +97,6 @@ public class GridCoverageProgressAdapterTest extends Assert {
                     @Override
                     public float getProgress() {
                         return adaptee.getProgress();
-                    }
-
-                    @Override
-                    public String getDescription() {
-                        return adaptee.getDescription();
                     }
 
                     @Override
@@ -179,11 +169,6 @@ public class GridCoverageProgressAdapterTest extends Assert {
                     }
 
                     @Override
-                    public void setDescription(String description) {
-                        adaptee.setDescription(description);
-                    }
-
-                    @Override
                     public void setCanceled(boolean cancel) {
                         adaptee.setCanceled(cancel);
                         LOGGER.info("canceled");
@@ -210,11 +195,6 @@ public class GridCoverageProgressAdapterTest extends Assert {
                     @Override
                     public float getProgress() {
                         return adaptee.getProgress();
-                    }
-
-                    @Override
-                    public String getDescription() {
-                        return adaptee.getDescription();
                     }
 
                     @Override
@@ -275,11 +255,6 @@ public class GridCoverageProgressAdapterTest extends Assert {
                     }
 
                     @Override
-                    public void setDescription(String description) {
-                        adaptee.setDescription(description);
-                    }
-
-                    @Override
                     public void setCanceled(boolean cancel) {
                         adaptee.setCanceled(cancel);
                     }
@@ -304,11 +279,6 @@ public class GridCoverageProgressAdapterTest extends Assert {
                     @Override
                     public float getProgress() {
                         return adaptee.getProgress();
-                    }
-
-                    @Override
-                    public String getDescription() {
-                        return adaptee.getDescription();
                     }
 
                     @Override
@@ -370,11 +340,6 @@ public class GridCoverageProgressAdapterTest extends Assert {
                     }
 
                     @Override
-                    public void setDescription(String description) {
-                        adaptee.setDescription(description);
-                    }
-
-                    @Override
                     public void setCanceled(boolean cancel) {
                         adaptee.setCanceled(cancel);
                         LOGGER.info("requesting cancel");
@@ -408,11 +373,6 @@ public class GridCoverageProgressAdapterTest extends Assert {
                     @Override
                     public float getProgress() {
                         return adaptee.getProgress();
-                    }
-
-                    @Override
-                    public String getDescription() {
-                        return adaptee.getDescription();
                     }
 
                     @Override

@@ -34,6 +34,7 @@ import org.geotools.renderer.style.SLDStyleFactory;
 import org.geotools.renderer.style.Style2D;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.LineSymbolizer;
+import org.geotools.styling.Mark;
 import org.geotools.styling.PointSymbolizer;
 import org.geotools.styling.PolygonSymbolizer;
 import org.geotools.styling.RasterSymbolizer;
@@ -183,7 +184,8 @@ public class Drawer {
                                             .literal(10));
 
             // danger assumes a Mark!
-            point.getGraphic().getMarks()[0].setFill(builder.createFill(baseColor));
+            Mark mark = (Mark) point.getGraphic().graphicalSymbols().get(0);
+            mark.setFill(builder.createFill(baseColor));
             syms[0] = point;
         }
         if (Polygon.class.isAssignableFrom(type) || MultiPolygon.class.isAssignableFrom(type)) {

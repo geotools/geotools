@@ -16,6 +16,9 @@
  */
 package org.geotools.geometry.jts.spatialschema.geometry;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 import org.geotools.geometry.GeometryFactoryFinder;
 import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.Coordinate;
@@ -35,10 +38,6 @@ import org.opengis.geometry.primitive.SurfaceBoundary;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.cs.AxisDirection;
 import org.opengis.referencing.cs.CoordinateSystem;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
 
 /**
  * Class with static methods to help the conversion process between JTS geometries and GO-1
@@ -167,7 +166,7 @@ public final class JTSUtils {
             if (d >= 2) {
                 result.y = dp.getOrdinate(1);
                 if (d >= 3) {
-                    result.setZ( dp.getOrdinate(3));
+                    result.setZ(dp.getOrdinate(3));
                 } else {
                     result.setZ(Double.NaN);
                 }

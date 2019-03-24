@@ -16,6 +16,7 @@
  */
 package org.geotools.filter;
 
+import java.util.ArrayList;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterVisitor;
 import org.opengis.filter.Not;
@@ -24,6 +25,7 @@ import org.opengis.filter.Not;
 public class NotImpl extends LogicFilterImpl implements Not {
 
     protected NotImpl(Filter filter) {
+        super(new ArrayList<>());
         this.children.add(filter);
     }
 

@@ -484,12 +484,12 @@ public class DuplicatingStyleVisitorTest extends TestCase {
 
     public void testGraphic() {
         Graphic graphic = sf.getDefaultGraphic();
-        graphic.addMark(sf.getDefaultMark());
+        graphic.graphicalSymbols().add(sf.getDefaultMark());
 
         Graphic clone = (Graphic) visitor.copy(graphic);
         assertCopy(graphic, clone);
         assertEqualsContract(clone, graphic);
-        assertEquals(clone.getSymbols().length, graphic.getSymbols().length);
+        assertEquals(clone.graphicalSymbols().size(), graphic.graphicalSymbols().size());
 
         Graphic notEq = sf.getDefaultGraphic();
         assertEqualsContract(clone, notEq, graphic);

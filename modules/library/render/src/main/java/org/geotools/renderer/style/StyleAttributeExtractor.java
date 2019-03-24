@@ -25,6 +25,7 @@ import org.opengis.filter.Filter;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
+import org.opengis.style.GraphicalSymbol;
 
 /**
  * A simple visitor whose purpose is to extract the set of attributes used by a Style, that is,
@@ -312,12 +313,11 @@ public class StyleAttributeExtractor extends FilterAttributeExtractor implements
 
     /** @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.Graphic) */
     public void visit(Graphic gr) {
-        if (gr.getSymbols() != null) {
-            Symbol[] symbols = gr.getSymbols();
-
-            for (int i = 0; i < symbols.length; i++) {
-                Symbol symbol = symbols[i];
-                symbol.accept(this);
+        for (GraphicalSymbol symbol : gr.graphicalSymbols()) {
+            if (symbol instanceof Symbol) {
+                ((Symbol) symbol).accept(this);
+            } else {
+                throw new RuntimeException("Don't know how to visit " + symbol);
             }
         }
 

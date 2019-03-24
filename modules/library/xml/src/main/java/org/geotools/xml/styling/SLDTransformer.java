@@ -92,6 +92,7 @@ import org.opengis.filter.expression.PropertyName;
 import org.opengis.referencing.ReferenceIdentifier;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.style.ContrastMethod;
+import org.opengis.style.GraphicalSymbol;
 import org.opengis.style.SemanticType;
 import org.opengis.util.InternationalString;
 import org.xml.sax.Attributes;
@@ -938,12 +939,12 @@ public class SLDTransformer extends TransformerBase {
         public void visit(Graphic gr) {
             start("Graphic");
 
-            // encodeGeometryProperty(gr.getGeometryPropertyName());
-
-            Symbol[] symbols = gr.getSymbols();
-
-            for (int i = 0; i < symbols.length; i++) {
-                symbols[i].accept(this);
+            for (GraphicalSymbol symbol : gr.graphicalSymbols()) {
+                if (symbol instanceof Symbol) {
+                    ((Symbol) symbol).accept(this);
+                } else {
+                    throw new RuntimeException("Don't know how to visit " + symbol);
+                }
             }
 
             element("Opacity", gr.getOpacity(), 1.0);

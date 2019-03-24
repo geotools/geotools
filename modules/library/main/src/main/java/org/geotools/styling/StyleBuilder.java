@@ -16,7 +16,7 @@
  */
 package org.geotools.styling;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.Arrays;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
@@ -469,7 +469,7 @@ public class StyleBuilder {
         Graphic gr = sf.getDefaultGraphic();
 
         Mark mark = createMark(MARK_SQUARE, Color.decode("#808080"), Color.BLACK, 1);
-        gr.setMarks(new Mark[] {mark});
+        gr.graphicalSymbols().add(mark);
         gr.setSize(Expression.NIL);
 
         return gr;
@@ -485,21 +485,18 @@ public class StyleBuilder {
      */
     public Graphic createGraphic(ExternalGraphic externalGraphic, Mark mark, Symbol symbol) {
         Graphic gr = sf.getDefaultGraphic();
+        gr.graphicalSymbols().clear();
 
         if (symbol != null) {
-            gr.setSymbols(new Symbol[] {symbol});
-        } else {
-            gr.setSymbols(new Symbol[0]);
+            gr.graphicalSymbols().add(symbol);
         }
 
         if (externalGraphic != null) {
-            gr.setExternalGraphics(new ExternalGraphic[] {externalGraphic});
+            gr.graphicalSymbols().add(externalGraphic);
         }
 
         if (mark != null) {
-            gr.setMarks(new Mark[] {mark});
-        } else {
-            gr.setMarks(new Mark[0]);
+            gr.graphicalSymbols().add(mark);
         }
 
         return gr;

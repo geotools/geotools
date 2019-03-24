@@ -23,9 +23,6 @@ import org.opengis.filter.Not;
 /** @author jdeolive */
 public class NotImpl extends LogicFilterImpl implements Not {
 
-    @Deprecated
-    protected NotImpl() {}
-
     protected NotImpl(Filter filter) {
         this.children.add(filter);
     }

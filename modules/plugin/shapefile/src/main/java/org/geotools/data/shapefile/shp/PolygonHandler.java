@@ -75,7 +75,7 @@ public class PolygonHandler implements ShapeHandler {
             // nan test; x!=x iff x is nan
             if ((testPoint.x == p.x)
                     && (testPoint.y == p.y)
-                    && ((testPoint.z == p.z) || Double.isNaN(testPoint.z))) {
+                    && ((testPoint.getZ() == p.getZ()) || Double.isNaN(testPoint.getZ()))) {
                 return true;
             }
         }

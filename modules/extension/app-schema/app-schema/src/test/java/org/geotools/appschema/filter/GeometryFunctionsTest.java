@@ -301,10 +301,10 @@ public class GeometryFunctionsTest extends AppSchemaTestSupport {
         assertEquals("EPSG:9902", crs.getName().getCode());
         assertEquals(linestring.getCoordinateN(0).x, 5.0, 0);
         assertEquals(linestring.getCoordinateN(0).y, Coordinate.NULL_ORDINATE, 0);
-        assertEquals(linestring.getCoordinateN(0).z, Coordinate.NULL_ORDINATE, 0);
+        assertEquals(linestring.getCoordinateN(0).getZ(), Coordinate.NULL_ORDINATE, 0);
         assertEquals(linestring.getCoordinateN(1).x, 2.5, 0);
         assertEquals(linestring.getCoordinateN(1).y, Coordinate.NULL_ORDINATE, 0);
-        assertEquals(linestring.getCoordinateN(1).z, Coordinate.NULL_ORDINATE, 0);
+        assertEquals(linestring.getCoordinateN(1).getZ(), Coordinate.NULL_ORDINATE, 0);
     }
 
     @Test
@@ -322,10 +322,10 @@ public class GeometryFunctionsTest extends AppSchemaTestSupport {
         assertEquals(customSRS, crs.getName().getCode());
         assertEquals(linestring.getCoordinateN(0).x, 5.0, 0);
         assertEquals(linestring.getCoordinateN(0).y, Coordinate.NULL_ORDINATE, 0);
-        assertEquals(linestring.getCoordinateN(0).z, Coordinate.NULL_ORDINATE, 0);
+        assertEquals(linestring.getCoordinateN(0).getZ(), Coordinate.NULL_ORDINATE, 0);
         assertEquals(linestring.getCoordinateN(1).x, 2.5, 0);
         assertEquals(linestring.getCoordinateN(1).y, Coordinate.NULL_ORDINATE, 0);
-        assertEquals(linestring.getCoordinateN(1).z, Coordinate.NULL_ORDINATE, 0);
+        assertEquals(linestring.getCoordinateN(1).getZ(), Coordinate.NULL_ORDINATE, 0);
     }
 
     @Test

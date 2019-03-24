@@ -252,7 +252,7 @@ public class GeobufGeometry {
                 } else if (k == 1) {
                     coord.y = value;
                 } else if (k == 2) {
-                    coord.z = value;
+                    coord.setZ(value);
                 }
                 c++;
             }

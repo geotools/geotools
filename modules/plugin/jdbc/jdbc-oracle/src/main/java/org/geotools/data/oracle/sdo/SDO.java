@@ -122,7 +122,7 @@ public final class SDO {
             return 2;
         } else {
             // return 3;
-            return Double.isNaN(geom.getCoordinate().z) ? 2 : 3;
+            return Double.isNaN(geom.getCoordinate().getZ()) ? 2 : 3;
         }
     }
 
@@ -230,7 +230,7 @@ public final class SDO {
             Point point = (Point) geom;
             Coordinate coord = point.getCoordinate();
 
-            return new double[] {coord.x, coord.y, coord.z};
+            return new double[] {coord.x, coord.y, coord.getZ()};
         }
 
         // SDO_POINT_TYPE only used for non LRS Points
@@ -839,7 +839,7 @@ public final class SDO {
     }
 
     private static double[] ordinateArray(Coordinate coord) {
-        return new double[] {coord.x, coord.y, coord.z};
+        return new double[] {coord.x, coord.y, coord.getZ()};
     }
 
     private static double[] ordinateArray(CoordinateAccess access, int index) {
@@ -1037,7 +1037,7 @@ public final class SDO {
             } else if (ordinate == 2) {
                 for (int i = 0; i < LENGTH; i++) {
                     c = coords.getCoordinate(i);
-                    array[i] = (c != null) ? c.z : Double.NaN;
+                    array[i] = (c != null) ? c.getZ() : Double.NaN;
                 }
             } else {
                 // default to NaN
@@ -1089,7 +1089,7 @@ public final class SDO {
         } else if (ordinate == 2) {
             for (int i = 0; i < LENGTH; i++) {
                 c = array[i];
-                ords[i] = (c != null) ? c.z : Double.NaN;
+                ords[i] = (c != null) ? c.getZ() : Double.NaN;
             }
         } else {
             // default to NaN
@@ -1123,7 +1123,7 @@ public final class SDO {
         } else if (ordinate == 2) {
             for (int i = 0; i < LENGTH; i++) {
                 c = (Coordinate) list.get(i);
-                ords[i] = (c != null) ? c.z : Double.NaN;
+                ords[i] = (c != null) ? c.getZ() : Double.NaN;
             }
         } else {
             // default to NaN

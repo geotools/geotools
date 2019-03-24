@@ -245,7 +245,7 @@ public class JTSUtilities {
         int dims = 2;
 
         for (int t = cs.length - 1; t >= 0; t--) {
-            if (!(Double.isNaN(cs[t].z))) {
+            if (!(Double.isNaN(cs[t].getZ()))) {
                 dims = 4;
                 break;
             }

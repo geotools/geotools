@@ -53,9 +53,9 @@ public class SQLServerBinaryReaderTest extends TestCase {
                 "E61000000105030000000000000000000000000000000000F03F0000000000000840000000000000004000000000000010400000000000001440000000000000F03F0000000000000040000000000000F8FF01000000010000000001000000FFFFFFFF0000000002";
         Geometry geometry =
                 testGeometry(geometryLineStringWithZBinary, geometryLineStringWithZWKT, 4326);
-        assertEquals(1.0, geometry.getCoordinates()[0].z, 0);
-        assertEquals(2.0, geometry.getCoordinates()[1].z, 0);
-        assertEquals(Double.NaN, geometry.getCoordinates()[2].z, 0);
+        assertEquals(1.0, geometry.getCoordinates()[0].getZ(), 0);
+        assertEquals(2.0, geometry.getCoordinates()[1].getZ(), 0);
+        assertEquals(Double.NaN, geometry.getCoordinates()[2].getZ(), 0);
     }
 
     public void testGeometryCollection() throws Exception {

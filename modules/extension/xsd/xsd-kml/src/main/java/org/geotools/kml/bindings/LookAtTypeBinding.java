@@ -95,7 +95,7 @@ public class LookAtTypeBinding extends AbstractComplexBinding {
         c.y = (Double) node.getChildValue("latitude", 0d);
 
         // &lt;element default="0" minOccurs="0" name="altitude" type="double"/&gt;
-        c.z = (Double) node.getChildValue("altitude", 0d);
+        c.setZ((Double) node.getChildValue("altitude", 0d));
 
         Point p = geometryFactory.createPoint(c);
 

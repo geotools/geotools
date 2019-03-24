@@ -63,7 +63,7 @@ public class GeometryBuilderTest {
                         RECT_ENV.getMaxY(),
                         42);
         assertBounds(RECT_ENV, p.getEnvelopeInternal(), 1.0e-8);
-        assertEquals(42, (int) p.getCoordinate().z);
+        assertEquals(42, (int) p.getCoordinate().getZ());
     }
 
     @Test

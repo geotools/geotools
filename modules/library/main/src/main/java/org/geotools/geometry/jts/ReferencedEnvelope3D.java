@@ -132,7 +132,7 @@ public class ReferencedEnvelope3D extends ReferencedEnvelope implements Bounding
      * @param p2 the second Coordinate
      */
     public void init(Coordinate p1, Coordinate p2) {
-        init(p1.x, p2.x, p1.y, p2.y, p1.z, p2.z);
+        init(p1.x, p2.x, p1.y, p2.y, p1.getZ(), p2.getZ());
     }
 
     /**
@@ -141,7 +141,7 @@ public class ReferencedEnvelope3D extends ReferencedEnvelope implements Bounding
      * @param p the coordinate
      */
     public void init(Coordinate p) {
-        init(p.x, p.x, p.y, p.y, p.z, p.z);
+        init(p.x, p.x, p.y, p.y, p.getZ(), p.getZ());
     }
 
     @Override
@@ -242,7 +242,7 @@ public class ReferencedEnvelope3D extends ReferencedEnvelope implements Bounding
      * @param p the Coordinate to expand to include
      */
     public void expandToInclude(Coordinate p) {
-        expandToInclude(p.x, p.y, p.z);
+        expandToInclude(p.x, p.y, p.getZ());
     }
 
     /**
@@ -368,7 +368,7 @@ public class ReferencedEnvelope3D extends ReferencedEnvelope implements Bounding
      * @return <code>true</code> if the point overlaps this <code>Envelope</code>
      */
     public boolean intersects(Coordinate p) {
-        return intersects(p.x, p.y, p.z);
+        return intersects(p.x, p.y, p.getZ());
     }
 
     /** @deprecated Use #intersects instead. */
@@ -451,7 +451,7 @@ public class ReferencedEnvelope3D extends ReferencedEnvelope implements Bounding
      *     Envelope</code>.
      */
     public boolean covers(Coordinate p) {
-        return covers(p.x, p.y, p.z);
+        return covers(p.x, p.y, p.getZ());
     }
 
     /**

@@ -244,7 +244,7 @@ public class Coordinates {
 
         if (LEN == 3) {
             buf.append(" ");
-            buf.append(nf.format(c.z));
+            buf.append(nf.format(c.getZ()));
         }
     }
 
@@ -268,7 +268,7 @@ public class Coordinates {
         }
 
         if (cs.size() > 0) {
-            return Double.isNaN(cs.getCoordinate(0).z) ? 2 : 3;
+            return Double.isNaN(cs.getCoordinate(0).getZ()) ? 2 : 3;
         }
 
         return 3;

@@ -16,9 +16,6 @@
  */
 package org.geotools.geometry.jts.spatialschema.geometry;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
 import org.geotools.geometry.GeometryFactoryFinder;
 import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.Coordinate;
@@ -38,6 +35,10 @@ import org.opengis.geometry.primitive.SurfaceBoundary;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.cs.AxisDirection;
 import org.opengis.referencing.cs.CoordinateSystem;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Class with static methods to help the conversion process between JTS geometries and GO-1
@@ -166,17 +167,19 @@ public final class JTSUtils {
             if (d >= 2) {
                 result.y = dp.getOrdinate(1);
                 if (d >= 3) {
-                    result.z = dp.getOrdinate(3);
+                    result.setZ( dp.getOrdinate(3));
                 } else {
-                    result.z = Double.NaN;
+                    result.setZ(Double.NaN);
                 }
             } else {
-                result.y = result.z = Double.NaN;
+                result.y = Double.NaN;
+                result.setZ(Double.NaN);
             }
         } else {
             // I can't imagine a DirectPosition with dimension zero, but it
             // can't hurt to have code to handle that case...
-            result.x = result.y = result.z = Double.NaN;
+            result.x = result.y = Double.NaN;
+            result.setZ(Double.NaN);
         }
     }
 
@@ -219,7 +222,7 @@ public final class JTSUtils {
                 result.setOrdinate(yIndex, c.y); // 1
                 if (d >= 3) {
                     int zIndex = GeometryUtils.getDirectedAxisIndex(cs, AxisDirection.UP);
-                    result.setOrdinate(zIndex, c.z); // 2
+                    result.setOrdinate(zIndex, c.getZ()); // 2
                     // If d > 3, then the remaining ordinates of the DP are
                     // (so far) left with their original values.  So we init
                     // them to zero here.

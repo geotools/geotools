@@ -58,7 +58,7 @@ public class DefaultCSBuilder implements CSBuilder {
                 c.y = value;
                 break;
             case 2:
-                c.z = value;
+                c.setZ(value);
                 break;
         }
     }
@@ -72,7 +72,7 @@ public class DefaultCSBuilder implements CSBuilder {
             case 1:
                 return c.y;
             case 2:
-                return c.z;
+                return c.getZ();
             default:
                 return 0.0;
         }
@@ -112,7 +112,7 @@ public class DefaultCSBuilder implements CSBuilder {
                 c.y = value;
                 break;
             case 2:
-                c.z = value;
+                c.setZ(value);
                 break;
         }
     }

@@ -16,7 +16,7 @@
  */
 package org.geotools.renderer.lite;
 
-import java.awt.Graphics2D;
+import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.awt.image.WritableRaster;
@@ -51,7 +51,7 @@ public class StyledShapePainterTest extends TestCase {
         BufferedImage image = new BufferedImage(100, 100, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2 = (Graphics2D) image.getGraphics();
         MathTransform transform = ProjectiveTransform.create(new AffineTransform());
-        Decimator decimator = new Decimator(transform);
+        Decimator decimator = new Decimator(transform, new Rectangle());
         Point point = new GeometryFactory().createPoint(new Coordinate(10, 10));
         LiteShape2 pointShape = new LiteShape2(point, transform, decimator, false);
         try {
@@ -211,7 +211,7 @@ public class StyledShapePainterTest extends TestCase {
         BufferedImage image = new BufferedImage(100, 100, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2 = (Graphics2D) image.getGraphics();
         MathTransform transform = ProjectiveTransform.create(new AffineTransform());
-        Decimator decimator = new Decimator(transform);
+        Decimator decimator = new Decimator(transform, new Rectangle());
         Point point = new GeometryFactory().createPoint(new Coordinate(10, 10));
         LiteShape2 pointShape = new LiteShape2(point, transform, decimator, false);
         painter.paint(g2, pointShape, legend, 1, false);

@@ -141,7 +141,10 @@ public final class LiteShape2 implements Shape, Cloneable {
                     && !mathTransform.isIdentity()
                     && generalize
                     && geometry != null) {
-                new Decimator(mathTransform.inverse()).decimate(this.geometry);
+                new Decimator(
+                                mathTransform.inverse(),
+                                getRectangle(this.geometry.getEnvelopeInternal()))
+                        .decimate(this.geometry);
                 this.geometry.geometryChanged();
             }
             if (geometry != null) {
@@ -150,6 +153,14 @@ public final class LiteShape2 implements Shape, Cloneable {
             }
         }
         this.generalize = false;
+    }
+
+    private Rectangle getRectangle(Envelope envelope) {
+        int minX = (int) Math.floor(envelope.getMinX());
+        int minY = (int) Math.floor(envelope.getMinY());
+        int maxX = (int) Math.floor(envelope.getMaxX());
+        int maxY = (int) Math.floor(envelope.getMaxY());
+        return new Rectangle(minX, minY, maxX - minX, maxY - minY);
     }
 
     private void transformGeometry(Geometry geometry) throws TransformException, FactoryException {

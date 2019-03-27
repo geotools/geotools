@@ -36,6 +36,7 @@ import org.geotools.resources.i18n.ErrorKeys;
 import org.geotools.resources.i18n.Errors;
 import org.geotools.resources.i18n.LoggingKeys;
 import org.geotools.resources.i18n.Loggings;
+import org.geotools.util.Utilities;
 import org.geotools.util.Version;
 import org.geotools.util.logging.Logging;
 import org.hsqldb.jdbc.JDBCDataSource;
@@ -278,6 +279,8 @@ public class ThreadedHsqlEpsgFactory extends ThreadedEpsgFactory {
                     byte[] buf = new byte[1024];
                     int read = 0;
                     while ((ze = zin.getNextEntry()) != null) {
+                        Utilities.assertNotZipSlipVulnarable(
+                                new File(directory, ze.getName()), directory.toPath());
                         FileOutputStream fout =
                                 new FileOutputStream(new File(directory, ze.getName()));
                         while ((read = zin.read(buf)) > 0) {

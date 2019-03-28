@@ -79,7 +79,7 @@ Error Prone
 
 The `Error Prone <https://errorprone.info/>`_ checker runs a compiler plugin.
 
-In order to activate the Error Prone checks, use the "-Perrorprone" for JDK 11 builds, or "-Perrorprone8" for JDK 8 builds.
+In order to activate the Error Prone checks, use the "-Perrorprone". For JDK 8 the profile "errorprone-jdk8-fix" is automatically added.
 
 Any failure to comply with the "Error Prone" rules will show up as a compile error in the build output, e.g.::
 

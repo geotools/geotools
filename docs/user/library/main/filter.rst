@@ -43,13 +43,13 @@ You have a choice of which filter factory to use:
 
 Here is an example::
   
-  FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2( GeoTools.getDefaultHints );
+  FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2( GeoTools.getDefaultHints() );
   
   Filter filter = ff.contains( ff.property( "THE_GEOM"), ff.literal( geometry ) );
 
 One thing you can do with with a FilterFactory (which you cannot do in CQL) is request features by their FeatureId::
   
-  FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2( GeoTools.getDefaultHints );
+  FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2( GeoTools.getDefaultHints() );
   
   Set<FeatureId> fids = new HashSet<FeatureId>();
   fids.add( ff.featureId("ROAD.1") );
@@ -186,7 +186,7 @@ in order to make the correct query.
      // Transform to dataCRS, ignoring difference in datum, 10 samples per edge
      ReferencedEnvelope world = screen.transform( dataCRS, true, 10 );
      
-     FilterFactory2 bounds = CommonFactoryFinder.getFilterFactory2( GeoTools.getDefaultHints );
+     FilterFactory2 bounds = CommonFactoryFinder.getFilterFactory2( GeoTools.getDefaultHints() );
      Filter filter = ff.bbox( ff.property( "THE_GEOM" ), ff.literal( bounds ) );
 
   * Intersects
@@ -294,7 +294,7 @@ We can go through the same steps to create an expression.
   
   Here is an example::
     
-    FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2( GeoTools.getDefaultHints );
+    FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2( GeoTools.getDefaultHints() );
     
     Expression propertyAccess = ff.property( "THE_GEOM");
     Expression literal = ff.literal( geometry );

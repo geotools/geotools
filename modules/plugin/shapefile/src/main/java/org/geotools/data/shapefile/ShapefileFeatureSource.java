@@ -42,6 +42,7 @@ import org.geotools.data.shapefile.dbf.DbaseFileHeader;
 import org.geotools.data.shapefile.dbf.DbaseFileReader;
 import org.geotools.data.shapefile.fid.IndexedFidReader;
 import org.geotools.data.shapefile.files.FileReader;
+import org.geotools.data.shapefile.files.ShpFileType;
 import org.geotools.data.shapefile.files.ShpFiles;
 import org.geotools.data.shapefile.index.Data;
 import org.geotools.data.shapefile.index.TreeException;
@@ -328,6 +329,9 @@ class ShapefileFeatureSource extends ContentFeatureSource {
                 && filter instanceof Id
                 && indexManager.hasFidIndex(false)) {
             Id fidFilter = (Id) filter;
+            if(indexManager.isIndexStale(ShpFileType.FIX)) {
+              indexManager.createFidIndex();
+            }
             List<Data> records = indexManager.queryFidIndex(fidFilter);
             if (records != null) {
                 goodRecs = new CloseableIteratorWrapper<Data>(records.iterator());

@@ -25,6 +25,7 @@ import org.geotools.data.Query;
 import org.geotools.data.QueryCapabilities;
 import org.geotools.data.ResourceInfo;
 import org.geotools.data.Transaction;
+import org.geotools.data.shapefile.files.ShpFileType;
 import org.geotools.data.shapefile.files.ShpFiles;
 import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentFeatureStore;
@@ -70,6 +71,9 @@ class ShapefileFeatureStore extends ContentFeatureStore {
                     new IndexedShapefileFeatureWriter(
                             ds.indexManager, reader, ds.getCharset(), ds.getTimeZone());
         } else {
+            if(ds.indexManager.isIndexStale(ShpFileType.FIX)) {
+              ds.indexManager.createFidIndex();
+            }
             writer =
                     new ShapefileFeatureWriter(
                             delegate.shpFiles, reader, ds.getCharset(), ds.getTimeZone());

@@ -258,6 +258,38 @@ public class LabelingTest extends TestCase {
         ImageAssert.assertEquals(new File(refPath), image, 1000);
     }
 
+    /**
+     * Checks we won't label a feature with an almost 90 degrees change in the last segment
+     *
+     * @throws Exception
+     */
+    public void testSharpChangeLastSegment() throws Exception {
+        FeatureCollection collection = createSharpTurnLineCollection();
+        Style style = loadStyle("LineStyleLarge.sld");
+        assertNotNull(style);
+        MapContext map = new DefaultMapContext(DefaultGeographicCRS.WGS84);
+        map.addLayer(collection, style);
+
+        StreamingRenderer renderer = new StreamingRenderer();
+        renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
+        renderer.setContext(map);
+        int boundary = 2;
+        ReferencedEnvelope env = map.getLayerBounds();
+        env =
+                new ReferencedEnvelope(
+                        env.getMinX() - boundary,
+                        env.getMaxX() + boundary,
+                        env.getMinY() - boundary,
+                        env.getMaxY() + boundary,
+                        null);
+
+        BufferedImage image = RendererBaseTest.showRender("Ell label", renderer, 1000, env);
+        String refPath =
+                "./src/test/resources/org/geotools/renderer/lite/test-data/lineLabelSharpTurnLastSegment.png";
+        // small tolerance
+        ImageAssert.assertEquals(new File(refPath), image, 100);
+    }
+
     private SimpleFeatureCollection createLineFeatureCollection() throws Exception {
         AttributeDescriptor[] types = new AttributeDescriptor[2];
 
@@ -282,6 +314,16 @@ public class LabelingTest extends TestCase {
         data.addFeature(
                 createLineFeature(
                         "TheUTurnLabel", crs, geomFac, 1, 2, 8.7, 2, 9, 2.1, 8.7, 2.2, 1, 2.2));
+
+        return data.getFeatureSource(Rendering2DTest.LINE).getFeatures();
+    }
+
+    private SimpleFeatureCollection createSharpTurnLineCollection() throws Exception {
+        GeometryFactory geomFac = new GeometryFactory();
+        CoordinateReferenceSystem crs = DefaultGeographicCRS.WGS84;
+
+        MemoryDataStore data = new MemoryDataStore();
+        data.addFeature(createLineFeature("TheUTurnLabel", crs, geomFac, 1, 1, 2, 5, 3, 7, 10, 7));
 
         return data.getFeatureSource(Rendering2DTest.LINE).getFeatures();
     }

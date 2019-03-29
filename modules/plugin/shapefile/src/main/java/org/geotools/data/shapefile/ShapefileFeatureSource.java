@@ -329,8 +329,8 @@ class ShapefileFeatureSource extends ContentFeatureSource {
                 && filter instanceof Id
                 && indexManager.hasFidIndex(false)) {
             Id fidFilter = (Id) filter;
-            if(indexManager.isIndexStale(ShpFileType.FIX)) {
-              indexManager.createFidIndex();
+            if (indexManager.isIndexStale(ShpFileType.FIX)) {
+                indexManager.createFidIndex();
             }
             List<Data> records = indexManager.queryFidIndex(fidFilter);
             if (records != null) {

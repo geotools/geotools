@@ -204,23 +204,14 @@ public class IndexedFidWriter implements FileWriter {
 
     /**
      * Increments the fidIndex by 1. Indicates that a feature was removed from the location. This is
-     * intended to ensure that FIDs stay constant over time. 
-     * Consider the following case of 5 features. 
-     * feature 1 has fid typename.0 
-     * feature 2 has fid typename.1 
-     * feature 3 has fid typename.2 
-     * feature 4 has fid typename.3 
-     * feature 5 has fid typename.4 
-     * 
-     * when feature 3 is removed/deleted the following usage of the write should take place: 
-     * next(); (move to feature 1)
-     * next(); (move to feature 2)
-     * next(); (move to feature 3) 
-     * remove();(delete feature 3)
-     * next(); (move to feature 4) 
-     * // optional write(); (write feature 4) 
-     * next(); (move to feature 5) 
-     * write(); (write(feature 5)
+     * intended to ensure that FIDs stay constant over time. Consider the following case of 5
+     * features. feature 1 has fid typename.0 feature 2 has fid typename.1 feature 3 has fid
+     * typename.2 feature 4 has fid typename.3 feature 5 has fid typename.4
+     *
+     * <p>when feature 3 is removed/deleted the following usage of the write should take place:
+     * next(); (move to feature 1) next(); (move to feature 2) next(); (move to feature 3)
+     * remove();(delete feature 3) next(); (move to feature 4) // optional write(); (write feature
+     * 4) next(); (move to feature 5) write(); (write(feature 5)
      *
      * @throws IOException
      */

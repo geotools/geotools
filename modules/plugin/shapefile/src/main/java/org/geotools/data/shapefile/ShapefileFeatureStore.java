@@ -71,8 +71,8 @@ class ShapefileFeatureStore extends ContentFeatureStore {
                     new IndexedShapefileFeatureWriter(
                             ds.indexManager, reader, ds.getCharset(), ds.getTimeZone());
         } else {
-            if(ds.indexManager.isIndexStale(ShpFileType.FIX)) {
-              ds.indexManager.createFidIndex();
+            if (ds.indexManager.isIndexStale(ShpFileType.FIX)) {
+                ds.indexManager.createFidIndex();
             }
             writer =
                     new ShapefileFeatureWriter(

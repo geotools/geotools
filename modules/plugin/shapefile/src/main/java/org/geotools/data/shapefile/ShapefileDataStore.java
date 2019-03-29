@@ -133,13 +133,13 @@ public class ShapefileDataStore extends ContentDataStore implements FileDataStor
     }
 
     Name getTypeName() {
-      String typeName="Null";
-      if(shpFiles!=null) {
-        typeName = shpFiles.getTypeName();
-      } else {
-        typeName = "Null";
-      }
-      return new NameImpl(namespaceURI, typeName);
+        String typeName = "Null";
+        if (shpFiles != null) {
+            typeName = shpFiles.getTypeName();
+        } else {
+            typeName = "Null";
+        }
+        return new NameImpl(namespaceURI, typeName);
     }
 
     @Override

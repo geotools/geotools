@@ -375,7 +375,7 @@ public class LikeFilterImpl extends AbstractFilter implements PropertyIsLike {
      * same as this filter. Checks to make sure the filter types, the value, and the pattern are the
      * same. &
      *
-     * @param obj - the object to compare this LikeFilter against.
+     * @param o - the object to compare this LikeFilter against.
      * @return true if specified object is equal to this filter; false otherwise.
      */
     @Override

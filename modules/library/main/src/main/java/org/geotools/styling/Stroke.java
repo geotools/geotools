@@ -142,10 +142,6 @@ public interface Stroke extends org.opengis.style.Stroke {
                     return ConstantExpression.NULL;
                 }
 
-                public Color getColor(SimpleFeature f) {
-                    return Color.BLACK;
-                }
-
                 public Expression getWidth() {
                     return ConstantExpression.NULL;
                 }

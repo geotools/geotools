@@ -88,17 +88,6 @@ public interface Graphic
      */
     public static final Graphic DEFAULT =
             new ConstantGraphic() {
-                public ExternalGraphic[] getExternalGraphics() {
-                    return ExternalGraphic.EXTERNAL_GRAPHICS_EMPTY;
-                }
-
-                public Mark[] getMarks() {
-                    return Mark.MARKS_EMPTY;
-                }
-
-                public Symbol[] getSymbols() {
-                    return Symbol.SYMBOLS_EMPTY;
-                }
 
                 public List<GraphicalSymbol> graphicalSymbols() {
                     return Collections.emptyList();
@@ -130,17 +119,6 @@ public interface Graphic
      */
     public static final Graphic NULL =
             new ConstantGraphic() {
-                public ExternalGraphic[] getExternalGraphics() {
-                    return ExternalGraphic.EXTERNAL_GRAPHICS_EMPTY;
-                }
-
-                public Mark[] getMarks() {
-                    return Mark.MARKS_EMPTY;
-                }
-
-                public Symbol[] getSymbols() {
-                    return Symbol.SYMBOLS_EMPTY;
-                }
 
                 public List<GraphicalSymbol> graphicalSymbols() {
                     return Collections.emptyList();

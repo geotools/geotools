@@ -19,8 +19,6 @@ package org.geotools.styling.visitor;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-import java.awt.Color;
-import java.util.Arrays;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.NameImpl;
 import org.geotools.filter.IllegalFilterException;
@@ -44,6 +42,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
+import org.opengis.style.SemanticType;
+
+import java.awt.*;
+import java.util.Arrays;
+
 import si.uom.SI;
 
 /**
@@ -74,7 +77,10 @@ public class RescaleStyleVisitorTest {
         Style oldStyle = sb.createStyle("FTSName", sf.createPolygonSymbolizer());
         oldStyle.featureTypeStyles()
                 .get(0)
-                .setSemanticTypeIdentifiers(new String[] {"simple", "generic:geometry"});
+                .semanticTypeIdentifiers()
+                .addAll(
+                        Arrays.asList(
+                                new SemanticType("simple"), new SemanticType("generic:geometry")));
         // duplicate it
         oldStyle.accept(visitor);
         Style newStyle = (Style) visitor.getCopy();

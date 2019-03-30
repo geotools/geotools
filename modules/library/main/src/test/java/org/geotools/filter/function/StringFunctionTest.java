@@ -16,8 +16,7 @@
  */
 package org.geotools.filter.function;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertNull;
+import static org.junit.Assert.*;
 
 import org.geotools.factory.CommonFactoryFinder;
 import org.junit.Test;

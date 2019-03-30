@@ -53,9 +53,6 @@ public class FeatureTypeStyleImpl implements org.geotools.styling.FeatureTypeSty
     /** Only the first matching rule gets executed, all the others are skipped */
     public static String VALUE_EVALUATION_MODE_FIRST = "first";
 
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(FeatureTypeStyleImpl.class);
-
     private List<Rule> rules = new ArrayList<Rule>();
     private Set<SemanticType> semantics = new LinkedHashSet<SemanticType>();
     private Id featureInstances = null;

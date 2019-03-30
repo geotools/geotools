@@ -16,16 +16,8 @@
  */
 package org.geotools.styling.visitor;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Graphics;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.util.Arrays;
-import java.util.Collections;
-import javax.swing.Icon;
 import junit.framework.TestCase;
+
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.NameImpl;
 import org.geotools.filter.IllegalFilterException;
@@ -69,7 +61,17 @@ import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
 import org.opengis.style.ContrastMethod;
 import org.opengis.style.OverlapBehavior;
+import org.opengis.style.SemanticType;
 import org.opengis.util.Cloneable;
+
+import java.awt.*;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.util.Arrays;
+import java.util.Collections;
+
+import javax.swing.*;
 
 /**
  * Unit test for DuplicatorStyleVisitor.
@@ -111,14 +113,17 @@ public class DuplicatingStyleVisitorTest extends TestCase {
         Style oldStyle = sb.createStyle("FTSName", sf.createPolygonSymbolizer());
         oldStyle.featureTypeStyles()
                 .get(0)
-                .setSemanticTypeIdentifiers(new String[] {"simple", "generic:geometry"});
+                .semanticTypeIdentifiers()
+                .addAll(
+                        Arrays.asList(
+                                new SemanticType("simple"), new SemanticType("generic:geometry")));
         // duplicate it
         oldStyle.accept(visitor);
         Style newStyle = (Style) visitor.getCopy();
 
         // compare it
         assertNotNull(newStyle);
-        assertEquals(2, newStyle.featureTypeStyles().get(0).getSemanticTypeIdentifiers().length);
+        assertEquals(2, newStyle.featureTypeStyles().get(0).semanticTypeIdentifiers().size());
     }
 
     public void testStyle() throws Exception {

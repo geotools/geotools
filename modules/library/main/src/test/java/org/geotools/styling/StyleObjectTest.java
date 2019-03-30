@@ -50,7 +50,7 @@ public class StyleObjectTest extends TestCase {
      * @see TestCase#setUp()
      */
     protected void setUp() throws Exception {
-        styleFactory = StyleFactoryFinder.createStyleFactory();
+        styleFactory = CommonFactoryFinder.getStyleFactory();
         filterFactory = CommonFactoryFinder.getFilterFactory(null);
     }
 

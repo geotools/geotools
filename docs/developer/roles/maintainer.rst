@@ -37,7 +37,7 @@ Module maintainers have the three most critical responsibilities in GeoTools:
    
    * Your source code must meet the developers guide to the letter
    * Your test code coverage is measured by the build box (you can provide a profile - if normal JUnit tests take too long)
-   * Your module code up should be up to date with other released modules (no deprecations)
+   * Your module code should be up to date with other released modules (no deprecations)
 
 3. You must keep your external documentation up to date
    

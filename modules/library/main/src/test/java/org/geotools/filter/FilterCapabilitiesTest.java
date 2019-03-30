@@ -21,7 +21,10 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import org.geotools.factory.CommonFactoryFinder;
+import org.opengis.filter.And;
 import org.opengis.filter.FilterFactory2;
+import org.opengis.filter.PropertyIsLike;
+import org.opengis.filter.PropertyIsNull;
 
 /**
  * Unit test for FilterCapabilities.
@@ -100,12 +103,12 @@ public class FilterCapabilitiesTest extends TestCase {
         capabilities.addType(FilterType.COMPARE_GREATER_THAN);
         capabilities.addType(FilterType.COMPARE_LESS_THAN_EQUAL);
         capabilities.addType(AbstractFilter.NULL);
-        assertTrue(capabilities.supports(AbstractFilter.NULL));
+        assertTrue(capabilities.supports(PropertyIsNull.class));
     }
 
     public void testShortSupports() {
-        assertTrue(capabilities.supports(AbstractFilter.LOGIC_AND));
-        assertTrue(!(capabilities.supports(AbstractFilter.LIKE)));
+        assertTrue(capabilities.supports(And.class));
+        assertTrue(!(capabilities.supports(PropertyIsLike.class)));
     }
 
     public void testFilterSupports() {

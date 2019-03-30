@@ -240,7 +240,7 @@ public class FactoryCreator extends FactoryRegistry {
     }
 
     /**
-     * Invokes {@link #createServiceProvider}, but checks against recursive calls. If the specified
+     * Invokes {@link #createFactory(Class, Class, Hints)}, but checks against recursive calls. If the specified
      * implementation is already under construction, returns {@code null} in order to tell to {@link
      * #getFactory} that it need to search for an other implementation. This is needed for avoiding
      * infinite recursivity when a factory is a wrapper around an ther factory of the same category.
@@ -253,20 +253,12 @@ public class FactoryCreator extends FactoryRegistry {
             return null;
         }
         try {
-            return createServiceProvider(category, implementation, hints);
+            return createFactory(category, implementation, hints);
         } finally {
             if (!underConstruction.remove(implementation)) {
                 throw new AssertionError();
             }
         }
-    }
-
-    /** @deprecated Replaced with {@link #createFactory(Class, Class, Hints)} */
-    @Deprecated
-    protected <T> T createServiceProvider(
-            final Class<T> category, final Class<?> implementation, final Hints hints)
-            throws FactoryRegistryException {
-        return createFactory(category, implementation, hints);
     }
 
     /**

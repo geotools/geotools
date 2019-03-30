@@ -22,6 +22,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
@@ -82,6 +83,7 @@ import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.spatial.Disjoint;
 import org.opengis.style.ContrastMethod;
 import org.opengis.style.GraphicalSymbol;
+import org.opengis.style.SemanticType;
 
 /**
  * Try out our SLD parser and see how well it does.
@@ -470,7 +472,7 @@ public class SLDStyleTest extends TestCase {
         // note: symbolizers containing a fill will likely fail, as the SLD
         // transformation loses a little data (background colour?)
         FeatureTypeStyle fts1 = sf.createFeatureTypeStyle(new Rule[] {rule1});
-        fts1.setSemanticTypeIdentifiers(new String[] {"generic:geometry"});
+        fts1.semanticTypeIdentifiers().add(SemanticType.valueOf("generic:geometry"));
         style.featureTypeStyles().add(fts1);
         layer.setUserStyles(new Style[] {style});
         sld.setStyledLayers(new UserLayer[] {layer});
@@ -542,9 +544,11 @@ public class SLDStyleTest extends TestCase {
         assertEquals(1, sld.getStyledLayers().length);
         FeatureTypeStyle[] fts = SLD.featureTypeStyles(sld);
         assertEquals(2, fts.length);
-        assertEquals(1, fts[0].getSemanticTypeIdentifiers().length);
-        assertEquals(2, fts[1].getSemanticTypeIdentifiers().length);
-        assertEquals("colorbrewer:default", fts[1].getSemanticTypeIdentifiers()[1]);
+        assertEquals(1, fts[0].semanticTypeIdentifiers().size());
+        assertEquals(2, fts[1].semanticTypeIdentifiers().size());
+        assertEquals(
+                "colorbrewer:default",
+                new ArrayList<>(fts[1].semanticTypeIdentifiers()).get(1).name());
     }
 
     /**

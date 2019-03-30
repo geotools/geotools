@@ -103,6 +103,7 @@ import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.style.ContrastMethod;
+import org.opengis.style.SemanticType;
 import org.opengis.util.InternationalString;
 import org.w3c.dom.CharacterData;
 import org.w3c.dom.Element;
@@ -883,7 +884,10 @@ public class SLDParser {
             } else if (childName.equalsIgnoreCase("FeatureTypeName")) {
                 ft.featureTypeNames().add(new NameImpl(getFirstChildValue(child)));
             } else if (childName.equalsIgnoreCase("SemanticTypeIdentifier")) {
-                sti.add(getFirstChildValue(child));
+                String value = getFirstChildValue(child);
+                if (value != null) {
+                    sti.add(value);
+                }
             } else if (childName.equalsIgnoreCase("Rule")) {
                 rules.add(parseRule(child));
             } else if (childName.equalsIgnoreCase("Transformation")) {
@@ -897,7 +901,8 @@ public class SLDParser {
         }
 
         if (sti.size() > 0) {
-            ft.setSemanticTypeIdentifiers(sti.toArray(new String[0]));
+            ft.semanticTypeIdentifiers().clear();
+            sti.forEach(s -> ft.semanticTypeIdentifiers().add(SemanticType.valueOf(s)));
         }
         ft.rules().clear();
         ft.rules().addAll(rules);

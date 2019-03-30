@@ -58,6 +58,7 @@ import org.opengis.filter.PropertyIsLessThanOrEqualTo;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
+import org.opengis.style.SemanticType;
 
 /**
  * Generates a style/featureTypeStyle using ColorBrewer. <br>
@@ -205,7 +206,9 @@ public class StyleGenerator {
         }
 
         // our syntax will be: ColorBrewer:id
-        fts.setSemanticTypeIdentifiers(new String[] {"generic:geometry", "colorbrewer:" + typeId});
+        Set<SemanticType> semanticTypes = fts.semanticTypeIdentifiers();
+        semanticTypes.add(SemanticType.valueOf("generic:geometry"));
+        semanticTypes.add(SemanticType.valueOf("colorbrewer:" + typeId));
 
         return fts;
     }

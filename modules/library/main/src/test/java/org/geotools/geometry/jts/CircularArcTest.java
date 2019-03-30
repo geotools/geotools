@@ -281,8 +281,7 @@ public class CircularArcTest {
     }
 
     private int getOrientationIndex(LineString ls) {
-        return Orientation.index(
-                ls.getCoordinateN(0), ls.getCoordinateN(1), ls.getCoordinateN(2));
+        return Orientation.index(ls.getCoordinateN(0), ls.getCoordinateN(1), ls.getCoordinateN(2));
     }
 
     private LineString getLinearizedArc(

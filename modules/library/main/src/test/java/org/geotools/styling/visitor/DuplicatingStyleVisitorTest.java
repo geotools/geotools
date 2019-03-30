@@ -16,8 +16,14 @@
  */
 package org.geotools.styling.visitor;
 
+import java.awt.*;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.util.Arrays;
+import java.util.Collections;
+import javax.swing.*;
 import junit.framework.TestCase;
-
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.NameImpl;
 import org.geotools.filter.IllegalFilterException;
@@ -64,15 +70,6 @@ import org.opengis.style.OverlapBehavior;
 import org.opengis.style.SemanticType;
 import org.opengis.util.Cloneable;
 
-import java.awt.*;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.util.Arrays;
-import java.util.Collections;
-
-import javax.swing.*;
-
 /**
  * Unit test for DuplicatorStyleVisitor.
  *
@@ -116,7 +113,8 @@ public class DuplicatingStyleVisitorTest extends TestCase {
                 .semanticTypeIdentifiers()
                 .addAll(
                         Arrays.asList(
-                                new SemanticType("simple"), new SemanticType("generic:geometry")));
+                                SemanticType.valueOf("simple"),
+                                SemanticType.valueOf("generic:geometry")));
         // duplicate it
         oldStyle.accept(visitor);
         Style newStyle = (Style) visitor.getCopy();

@@ -16,11 +16,9 @@
  */
 package org.geotools.styling;
 
-import java.awt.Color;
 import java.util.Collections;
 import java.util.List;
 import org.geotools.filter.ConstantExpression;
-import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.expression.Expression;
 
 /**

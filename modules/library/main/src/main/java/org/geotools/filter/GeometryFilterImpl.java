@@ -21,7 +21,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-import java.util.logging.Logger;
 import org.geotools.util.Converters;
 import org.locationtech.jts.geom.Geometry;
 import org.opengis.filter.spatial.BBOX;

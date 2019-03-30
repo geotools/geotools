@@ -82,11 +82,6 @@ public class StyleTest {
         assertEquals(weight, font.getWeight()); // bold or normal
         assertEquals(size, font.getSize());
 
-        assertSame(font.getFontStyle(), font.getStyle());
-        assertSame(font.getFontFamily(), family.get(0));
-        assertSame(font.getFontWeight(), font.getWeight());
-        assertSame(font.getFontSize(), font.getSize());
-
         FontImpl cast = FontImpl.cast(font);
         assertSame(cast, font);
     }

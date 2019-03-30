@@ -2423,11 +2423,11 @@ public class SLDParser {
                     // use add instead of set as we might have multiple fonts here
                     font.getFamily().add(parseCssParameter(child));
                 } else if (res.equalsIgnoreCase("font-style")) {
-                    font.setFontStyle(parseCssParameter(child));
+                    font.setStyle(parseCssParameter(child));
                 } else if (res.equalsIgnoreCase("font-size")) {
-                    font.setFontSize(parseCssParameter(child));
+                    font.setSize(parseCssParameter(child));
                 } else if (res.equalsIgnoreCase("font-weight")) {
-                    font.setFontWeight(parseCssParameter(child));
+                    font.setWeight(parseCssParameter(child));
                 }
             }
         }

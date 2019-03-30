@@ -255,10 +255,11 @@ public class StyleFactoryImplTest extends TestCase {
 
         assertNotNull("Failed to build font", f);
 
-        assertEquals("Wrong font type ", "Times", f.getFontFamily().evaluate(feature).toString());
-        assertEquals("Wrong font Style ", "Italic", f.getFontStyle().evaluate(feature).toString());
-        assertEquals("Wrong font weight ", "Bold", f.getFontWeight().evaluate(feature).toString());
-        assertEquals("Wrong font size ", "12", f.getFontSize().evaluate(feature).toString());
+        assertEquals(
+                "Wrong font type ", "Times", f.getFamily().get(0).evaluate(feature).toString());
+        assertEquals("Wrong font Style ", "Italic", f.getStyle().evaluate(feature).toString());
+        assertEquals("Wrong font weight ", "Bold", f.getWeight().evaluate(feature).toString());
+        assertEquals("Wrong font size ", "12", f.getSize().evaluate(feature).toString());
     }
 
     /** Test of createLinePlacement method, of class org.geotools.styling.StyleFactoryImpl. */

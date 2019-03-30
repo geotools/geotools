@@ -25,6 +25,7 @@ import org.geotools.styling.StyleFactory;
 import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
+import org.opengis.style.SemanticType;
 import org.opengis.util.InternationalString;
 import org.picocontainer.MutablePicoContainer;
 
@@ -148,8 +149,11 @@ public class SLDFeatureTypeStyleBinding extends AbstractComplexBinding {
         // &lt;xsd:element ref="sld:SemanticTypeIdentifier" minOccurs="0" maxOccurs="unbounded"/&gt;
         if (node.hasChild("SemanticTypeIdentifier")) {
             List ids = node.getChildValues("SemanticTypeIdentifier");
-            featureTypeStyle.setSemanticTypeIdentifiers(
-                    (String[]) ids.toArray(new String[ids.size()]));
+            ids.forEach(
+                    id ->
+                            featureTypeStyle
+                                    .semanticTypeIdentifiers()
+                                    .add(SemanticType.valueOf((String) id)));
         }
 
         // &lt;xsd:element ref="sld:Rule" maxOccurs="unbounded"/&gt;

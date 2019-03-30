@@ -20,6 +20,7 @@ import java.awt.*;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -1212,11 +1213,11 @@ public class SLDTransformer extends TransformerBase {
                 element("Transformation", fts.getTransformation());
             }
 
-            String[] sti = fts.getSemanticTypeIdentifiers();
+            List<SemanticType> sti = new ArrayList(fts.semanticTypeIdentifiers());
 
-            if (sti.length != 1 || !sti[0].equals(SemanticType.ANY.toString())) {
-                for (int i = 0; i < sti.length; i++) {
-                    element("SemanticTypeIdentifier", sti[i]);
+            if (sti.size() != 1 || !sti.get(0).equals(SemanticType.ANY)) {
+                for (SemanticType semanticType : sti) {
+                    element("SemanticTypeIdentifier", semanticType.name());
                 }
             }
 

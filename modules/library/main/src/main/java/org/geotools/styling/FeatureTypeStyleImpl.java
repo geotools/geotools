@@ -18,13 +18,11 @@ package org.geotools.styling;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.logging.Logger;
 import org.geotools.util.Utilities;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.Id;
@@ -102,36 +100,6 @@ public class FeatureTypeStyleImpl implements org.geotools.styling.FeatureTypeSty
 
     public Set<SemanticType> semanticTypeIdentifiers() {
         return semantics;
-    }
-
-    @Deprecated
-    public String[] getSemanticTypeIdentifiers() {
-        String[] ids = new String[semantics.size()];
-
-        Iterator<SemanticType> types = semantics.iterator();
-        int i = 0;
-        while (types.hasNext()) {
-            ids[i] = types.next().name();
-            i++;
-        }
-
-        if (ids.length == 0) {
-            ids = new String[] {SemanticType.ANY.toString()};
-        }
-
-        return ids;
-    }
-
-    @Deprecated
-    public void setSemanticTypeIdentifiers(String[] types) {
-        semantics.clear();
-
-        for (String id : types) {
-
-            SemanticType st = SemanticType.valueOf(id);
-
-            if (st != null) semantics.add(st);
-        }
     }
 
     public Set<Name> featureTypeNames() {

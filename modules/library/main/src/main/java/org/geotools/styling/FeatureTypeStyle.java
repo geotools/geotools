@@ -147,40 +147,6 @@ public interface FeatureTypeStyle extends org.opengis.style.FeatureTypeStyle {
     Description getDescription();
 
     /**
-     * The SemanticTypeIdentifiers is experimental and is intended to be used to identify, using a
-     * community-controlled name(s), what the style is suitable to be used for. For example, a
-     * single style may be suitable to use with many different feature types. The syntax of the
-     * SemanticTypeIdentifiers string is undefined, but the strings "generic:line_string",
-     * "generic:polygon", "generic:point", "generic:text", "generic:raster", and "generic:any" are
-     * reserved to indicate that a FeatureTypeStyle may be used with any feature type with the
-     * corresponding default geometry type (i.e., no feature properties are referenced in the
-     * feature type style).
-     *
-     * <p>This method will be replaced by a live set semanticIdentifiers() in 2.6.x
-     *
-     * @return An array of strings representing systematic types which could be styled by this
-     *     instance.
-     * @deprecated this method is replaced by a live set semanticIdentifiers()
-     */
-    String[] getSemanticTypeIdentifiers();
-
-    /**
-     * The SemanticTypeIdentifiers is experimental and is intended to be used to identify, using a
-     * community-controlled name(s), what the style is suitable to be used for. For example, a
-     * single style may be suitable to use with many different feature types. The syntax of the
-     * SemanticTypeIdentifiers string is undefined, but the strings "generic:line_string",
-     * "generic:polygon", "generic:point", "generic:text", "generic:raster", and "generic:any" are
-     * reserved to indicate that a FeatureTypeStyle may be used with any feature type with the
-     * corresponding default geometry type (i.e., no feature properties are referenced in the
-     * feature type style).
-     *
-     * @param types An array of strings representing systematic types which could be styled by this
-     *     instance.
-     * @deprecated Please use semanticIdentifiers().addAll()
-     */
-    void setSemanticTypeIdentifiers(String[] types);
-
-    /**
      * Rules govern the appearance of any given feature to be styled by this styler.
      *
      * <p>This is *the* list being used to manage the rules!

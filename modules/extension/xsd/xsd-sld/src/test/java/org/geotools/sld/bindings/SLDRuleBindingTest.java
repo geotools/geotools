@@ -31,8 +31,8 @@ public class SLDRuleBindingTest extends SLDTestSupport {
 
         assertNotNull(rule);
         assertEquals("theName", rule.getName());
-        assertEquals("theAbstract", rule.getAbstract());
-        assertEquals("theTitle", rule.getTitle());
+        assertEquals("theAbstract", rule.getDescription().getAbstract().toString());
+        assertEquals("theTitle", rule.getDescription().getTitle().toString());
 
         assertNotNull(rule.getLegend());
         assertEquals(1d, rule.getMinScaleDenominator(), 0d);

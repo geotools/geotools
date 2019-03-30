@@ -755,10 +755,6 @@ public class StyleFactoryImpl extends AbstractStyleFactory
                 null, filterFactory.literal(1.0), null, null, null, null, null, null);
     }
 
-    public ChannelSelection createChannelSelection() {
-        return new ChannelSelectionImpl();
-    }
-
     public ChannelSelection createChannelSelection(SelectedChannelType[] channels) {
         ChannelSelection channelSel = new ChannelSelectionImpl();
 

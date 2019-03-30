@@ -256,19 +256,7 @@ public interface StyleFactory extends Factory, org.opengis.style.StyleFactory {
 
     public RasterSymbolizer getDefaultRasterSymbolizer();
 
-    /**
-     * Deprecated, please use {@link #createChannelSelection()} and call {@link
-     * ChannelSelection#setGrayChannel(SelectedChannelType)} or {@link
-     * ChannelSelection#setRGBChannels(SelectedChannelType, SelectedChannelType,
-     * SelectedChannelType)} instead
-     *
-     * @param channels
-     * @return
-     */
-    @Deprecated
     public ChannelSelection createChannelSelection(SelectedChannelType[] channels);
-
-    public ChannelSelection createChannelSelection();
 
     public ContrastEnhancement createContrastEnhancement();
 

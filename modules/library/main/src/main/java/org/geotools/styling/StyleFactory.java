@@ -280,9 +280,6 @@ public interface StyleFactory extends Factory, org.opengis.style.StyleFactory {
     public SelectedChannelType createSelectedChannelType(
             String name, ContrastEnhancement enhancement);
 
-    /** @deprecated Use {@link #createSelectedChannelType(String, ContrastEnhancement)} */
-    public SelectedChannelType createSelectedChannelType(String name, Expression gammaValue);
-
     public SelectedChannelType createSelectedChannelType(Expression name, Expression gammaValue);
 
     public ColorMap createColorMap();

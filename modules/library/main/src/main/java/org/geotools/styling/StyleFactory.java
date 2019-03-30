@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import javax.measure.Unit;
-import javax.swing.Icon;
+import javax.swing.*;
 import org.geotools.util.factory.Factory;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
@@ -256,7 +256,19 @@ public interface StyleFactory extends Factory, org.opengis.style.StyleFactory {
 
     public RasterSymbolizer getDefaultRasterSymbolizer();
 
+    /**
+     * Deprecated, please use {@link #createChannelSelection()} and call {@link
+     * ChannelSelection#setGrayChannel(SelectedChannelType)} or {@link
+     * ChannelSelection#setRGBChannels(SelectedChannelType, SelectedChannelType,
+     * SelectedChannelType)} instead
+     *
+     * @param channels
+     * @return
+     */
+    @Deprecated
     public ChannelSelection createChannelSelection(SelectedChannelType[] channels);
+
+    public ChannelSelection createChannelSelection();
 
     public ContrastEnhancement createContrastEnhancement();
 

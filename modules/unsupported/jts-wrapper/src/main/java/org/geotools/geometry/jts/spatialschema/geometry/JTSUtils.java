@@ -25,6 +25,7 @@ import org.locationtech.jts.geom.Coordinate;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.Envelope;
 import org.opengis.geometry.Geometry;
+import org.opengis.geometry.PositionFactory;
 import org.opengis.geometry.aggregate.MultiPrimitive;
 import org.opengis.geometry.coordinate.GeometryFactory;
 import org.opengis.geometry.coordinate.LineString;
@@ -196,11 +197,12 @@ public final class JTSUtils {
 
         Hints hints = new Hints(Hints.CRS, crs);
         GeometryFactory gf = GeometryFactoryFinder.getGeometryFactory(hints);
+        PositionFactory pf = GeometryFactoryFinder.getPositionFactory(hints);
 
         double[] vertices;
         if (crs == null) vertices = new double[3];
         else vertices = new double[crs.getCoordinateSystem().getDimension()];
-        DirectPosition result = gf.createDirectPosition(vertices);
+        DirectPosition result = pf.createDirectPosition(vertices);
         coordinateToDirectPosition(c, result);
         return result;
     }

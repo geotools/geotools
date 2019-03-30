@@ -28,6 +28,7 @@ import org.geotools.geometry.iso.primitive.PrimitiveFactoryImpl;
 import org.geotools.geometry.iso.util.elem2D.Geo2DFactory;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.opengis.geometry.DirectPosition;
+import org.opengis.geometry.PositionFactory;
 import org.opengis.geometry.Precision;
 import org.opengis.geometry.complex.ComplexFactory;
 import org.opengis.geometry.complex.CompositeSurface;
@@ -83,14 +84,16 @@ public class PicoCompositeSurfaceTest extends TestCase {
                 (PrimitiveFactoryImpl) c.getComponentInstanceOfType(PrimitiveFactory.class);
         GeometryFactoryImpl geomFact =
                 (GeometryFactoryImpl) c.getComponentInstanceOfType(GeometryFactory.class);
+        PositionFactory posf =
+                (PositionFactory) c.getComponentInstanceOfType(PositionFactory.class);
 
         List<DirectPosition> directPositionList = new ArrayList<DirectPosition>();
-        directPositionList.add(geomFact.createDirectPosition(new double[] {20, 10}));
-        directPositionList.add(geomFact.createDirectPosition(new double[] {40, 10}));
-        directPositionList.add(geomFact.createDirectPosition(new double[] {50, 40}));
-        directPositionList.add(geomFact.createDirectPosition(new double[] {30, 50}));
-        directPositionList.add(geomFact.createDirectPosition(new double[] {10, 30}));
-        directPositionList.add(geomFact.createDirectPosition(new double[] {20, 10}));
+        directPositionList.add(posf.createDirectPosition(new double[] {20, 10}));
+        directPositionList.add(posf.createDirectPosition(new double[] {40, 10}));
+        directPositionList.add(posf.createDirectPosition(new double[] {50, 40}));
+        directPositionList.add(posf.createDirectPosition(new double[] {30, 50}));
+        directPositionList.add(posf.createDirectPosition(new double[] {10, 30}));
+        directPositionList.add(posf.createDirectPosition(new double[] {20, 10}));
 
         // test createCompositeSurface()
         Surface s1 = pf.createSurfaceByDirectPositions(directPositionList);

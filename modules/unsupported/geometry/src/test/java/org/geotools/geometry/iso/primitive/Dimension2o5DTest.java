@@ -25,6 +25,7 @@ import org.geotools.geometry.iso.coordinate.LineStringImpl;
 import org.geotools.geometry.iso.coordinate.PositionImpl;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.opengis.geometry.DirectPosition;
+import org.opengis.geometry.PositionFactory;
 import org.opengis.geometry.coordinate.Position;
 import org.opengis.geometry.primitive.Curve;
 import org.opengis.geometry.primitive.CurveSegment;
@@ -78,17 +79,13 @@ public class Dimension2o5DTest extends TestCase {
     private Curve _createCurve1(GeometryBuilder builder) {
         GeometryFactoryImpl tCoordFactory = (GeometryFactoryImpl) builder.getGeometryFactory();
         PrimitiveFactoryImpl tPrimFactory = (PrimitiveFactoryImpl) builder.getPrimitiveFactory();
+        PositionFactory pf = builder.getPositionFactory();
 
-        PositionImpl p1 =
-                new PositionImpl(tCoordFactory.createDirectPosition(new double[] {-50, 0, 0}));
-        PositionImpl p2 =
-                new PositionImpl(tCoordFactory.createDirectPosition(new double[] {-30, 30, 10}));
-        PositionImpl p3 =
-                new PositionImpl(tCoordFactory.createDirectPosition(new double[] {0, 50, 20}));
-        PositionImpl p4 =
-                new PositionImpl(tCoordFactory.createDirectPosition(new double[] {30, 30, 10}));
-        PositionImpl p5 =
-                new PositionImpl(tCoordFactory.createDirectPosition(new double[] {50, 0, 0}));
+        PositionImpl p1 = new PositionImpl(pf.createDirectPosition(new double[] {-50, 0, 0}));
+        PositionImpl p2 = new PositionImpl(pf.createDirectPosition(new double[] {-30, 30, 10}));
+        PositionImpl p3 = new PositionImpl(pf.createDirectPosition(new double[] {0, 50, 20}));
+        PositionImpl p4 = new PositionImpl(pf.createDirectPosition(new double[] {30, 30, 10}));
+        PositionImpl p5 = new PositionImpl(pf.createDirectPosition(new double[] {50, 0, 0}));
 
         LineStringImpl line1 = null;
 
@@ -120,11 +117,10 @@ public class Dimension2o5DTest extends TestCase {
     private Curve _createCurve2(GeometryBuilder builder) {
         GeometryFactoryImpl tCoordFactory = (GeometryFactoryImpl) builder.getGeometryFactory();
         PrimitiveFactoryImpl tPrimFactory = (PrimitiveFactoryImpl) builder.getPrimitiveFactory();
+        PositionFactory pf = builder.getPositionFactory();
 
-        PositionImpl p1 =
-                new PositionImpl(tCoordFactory.createDirectPosition(new double[] {10, 0, 100}));
-        PositionImpl p2 =
-                new PositionImpl(tCoordFactory.createDirectPosition(new double[] {50, 30, 100}));
+        PositionImpl p1 = new PositionImpl(pf.createDirectPosition(new double[] {10, 0, 100}));
+        PositionImpl p2 = new PositionImpl(pf.createDirectPosition(new double[] {50, 30, 100}));
 
         LineStringImpl line1 = null;
 
@@ -153,14 +149,15 @@ public class Dimension2o5DTest extends TestCase {
     private Surface _createSurface1(GeometryBuilder builder) {
         GeometryFactoryImpl tCoordFactory = (GeometryFactoryImpl) builder.getGeometryFactory();
         PrimitiveFactoryImpl tPrimFactory = (PrimitiveFactoryImpl) builder.getPrimitiveFactory();
+        PositionFactory pf = builder.getPositionFactory();
 
         List<DirectPosition> directPositionList = new ArrayList<DirectPosition>();
-        directPositionList.add(tCoordFactory.createDirectPosition(new double[] {20, 10, 100}));
-        directPositionList.add(tCoordFactory.createDirectPosition(new double[] {40, 10, 100}));
-        directPositionList.add(tCoordFactory.createDirectPosition(new double[] {50, 40, 100}));
-        directPositionList.add(tCoordFactory.createDirectPosition(new double[] {30, 50, 100}));
-        directPositionList.add(tCoordFactory.createDirectPosition(new double[] {10, 30, 100}));
-        directPositionList.add(tCoordFactory.createDirectPosition(new double[] {20, 10, 100}));
+        directPositionList.add(pf.createDirectPosition(new double[] {20, 10, 100}));
+        directPositionList.add(pf.createDirectPosition(new double[] {40, 10, 100}));
+        directPositionList.add(pf.createDirectPosition(new double[] {50, 40, 100}));
+        directPositionList.add(pf.createDirectPosition(new double[] {30, 50, 100}));
+        directPositionList.add(pf.createDirectPosition(new double[] {10, 30, 100}));
+        directPositionList.add(pf.createDirectPosition(new double[] {20, 10, 100}));
 
         Ring exteriorRing = tPrimFactory.createRingByDirectPositions(directPositionList);
         List<Ring> interiors = new ArrayList<Ring>();
@@ -176,14 +173,15 @@ public class Dimension2o5DTest extends TestCase {
     public Surface _createSurface2(GeometryBuilder builder) {
         GeometryFactoryImpl tCoordFactory = (GeometryFactoryImpl) builder.getGeometryFactory();
         PrimitiveFactoryImpl tPrimFactory = (PrimitiveFactoryImpl) builder.getPrimitiveFactory();
+        PositionFactory pf = builder.getPositionFactory();
 
         List<DirectPosition> directPositionList = new ArrayList<DirectPosition>();
-        directPositionList.add(tCoordFactory.createDirectPosition(new double[] {20, 10, 100}));
-        directPositionList.add(tCoordFactory.createDirectPosition(new double[] {40, 10, 100}));
-        directPositionList.add(tCoordFactory.createDirectPosition(new double[] {50, 40, 100}));
-        directPositionList.add(tCoordFactory.createDirectPosition(new double[] {30, 50, 100}));
-        directPositionList.add(tCoordFactory.createDirectPosition(new double[] {10, 30, 100}));
-        directPositionList.add(tCoordFactory.createDirectPosition(new double[] {20, 10, 100}));
+        directPositionList.add(pf.createDirectPosition(new double[] {20, 10, 100}));
+        directPositionList.add(pf.createDirectPosition(new double[] {40, 10, 100}));
+        directPositionList.add(pf.createDirectPosition(new double[] {50, 40, 100}));
+        directPositionList.add(pf.createDirectPosition(new double[] {30, 50, 100}));
+        directPositionList.add(pf.createDirectPosition(new double[] {10, 30, 100}));
+        directPositionList.add(pf.createDirectPosition(new double[] {20, 10, 100}));
 
         Ring exteriorRing = tPrimFactory.createRingByDirectPositions(directPositionList);
         List<Ring> interiors = new ArrayList<Ring>();

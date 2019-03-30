@@ -1424,7 +1424,10 @@ public class SLDTransformer extends TransformerBase {
         public void visit(ChannelSelection cs) {
             if (cs == null) return;
             start("ChannelSelection");
-            final SelectedChannelType[] sct = cs.getSelectedChannels();
+            SelectedChannelType[] sct = cs.getRGBChannels();
+            if (sct == null && cs.getGrayChannel() != null) {
+                sct = new SelectedChannelType[] {cs.getGrayChannel()};
+            }
             for (int i = 0; sct != null && i < sct.length; i++) visit(sct[i]);
             end("ChannelSelection");
         }

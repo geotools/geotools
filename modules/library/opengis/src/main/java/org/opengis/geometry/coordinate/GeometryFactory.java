@@ -42,22 +42,6 @@ public interface GeometryFactory {
     CoordinateReferenceSystem getCoordinateReferenceSystem();
 
     /**
-     * Create a direct position with empty coordinates.
-     *
-     * @deprecated Moved to PositionFactory
-     */
-    @Deprecated
-    DirectPosition createDirectPosition();
-
-    /**
-     * Create a direct position at the specified location specified by coordinates.
-     *
-     * @deprecated Moved to PositionFactory
-     */
-    @Deprecated
-    DirectPosition createDirectPosition(double[] coordinates);
-
-    /**
      * Creates a new Envelope with the given corners.
      *
      * @param lowerCorner A coordinate position consisting of all the maximal ordinates for each
@@ -455,6 +439,5 @@ public interface GeometryFactory {
      *     factory when the creation of Geometry interfaces will be completed.</strong> See <A
      *     HREF="http://jira.codehaus.org/browse/GEO-1">GEO-1 on JIRA</A>.
      */
-    @Deprecated
     MultiPrimitive createMultiPrimitive();
 }

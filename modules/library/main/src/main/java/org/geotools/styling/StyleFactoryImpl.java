@@ -755,11 +755,19 @@ public class StyleFactoryImpl extends AbstractStyleFactory
                 null, filterFactory.literal(1.0), null, null, null, null, null, null);
     }
 
+    public ChannelSelection createChannelSelection() {
+        return new ChannelSelectionImpl();
+    }
+
     public ChannelSelection createChannelSelection(SelectedChannelType[] channels) {
         ChannelSelection channelSel = new ChannelSelectionImpl();
 
         if ((channels != null) && (channels.length > 0)) {
-            channelSel.setSelectedChannels(channels);
+            if (channels.length == 1) {
+                channelSel.setGrayChannel(channels[0]);
+            } else {
+                channelSel.setRGBChannels(channels);
+            }
         }
 
         return channelSel;

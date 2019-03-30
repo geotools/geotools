@@ -21,9 +21,11 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Map;
 import javax.naming.OperationNotSupportedException;
+import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.styling.ChannelSelection;
 import org.geotools.styling.ColorMap;
 import org.geotools.styling.ContrastEnhancement;
+import org.geotools.styling.ContrastEnhancementImpl;
 import org.geotools.styling.FeatureTypeConstraint;
 import org.geotools.styling.Fill;
 import org.geotools.styling.Graphic;
@@ -80,6 +82,7 @@ import org.geotools.xml.styling.sldComplexTypes._ImageOutline;
 import org.geotools.xml.styling.sldComplexTypes._LATEST_ON_TOP;
 import org.geotools.xml.styling.sldComplexTypes._LabelPlacement;
 import org.geotools.xml.xLink.XLinkSchema;
+import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -2777,8 +2780,12 @@ public class sldComplexTypes2 {
                 if (elems[SOURCECHANNELNAME].getName().equals(e.getName()))
                     symbol.setChannelName((String) value[i].getValue());
 
-                if (elems[CONTRASTENHANCEMENT].getName().equals(e.getName()))
-                    symbol.setContrastEnhancement((Expression) value[i].getValue());
+                if (elems[CONTRASTENHANCEMENT].getName().equals(e.getName())) {
+                    FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+                    symbol.setContrastEnhancement(
+                            new ContrastEnhancementImpl(
+                                    ff, (Expression) value[i].getValue(), null));
+                }
             }
 
             return symbol;

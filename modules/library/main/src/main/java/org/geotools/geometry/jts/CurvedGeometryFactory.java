@@ -263,6 +263,7 @@ public class CurvedGeometryFactory extends GeometryFactory {
         return delegate.createMultiPoint(point);
     }
 
+    @SuppressWarnings("deprecation")
     public MultiPoint createMultiPoint(Coordinate[] coordinates) {
         return delegate.createMultiPoint(coordinates);
     }

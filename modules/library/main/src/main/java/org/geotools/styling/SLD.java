@@ -937,10 +937,13 @@ public class SLD {
 
                             private ChannelSelection createChannelSelection() {
                                 if (rgb == null) {
-                                    return sf.createChannelSelection(
-                                            new SelectedChannelType[] {gray});
+                                    ChannelSelection cs = sf.createChannelSelection();
+                                    cs.setGrayChannel(gray);
+                                    return cs;
                                 } else {
-                                    return sf.createChannelSelection(rgb);
+                                    ChannelSelection cs = sf.createChannelSelection();
+                                    cs.setRGBChannels(rgb);
+                                    return cs;
                                 }
                             }
                         };

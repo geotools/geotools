@@ -77,7 +77,7 @@ public class NullFilterImpl extends AbstractFilter implements PropertyIsNull {
      * same as this filter. Checks to make sure the filter types, and the NullCheckValue are the
      * same.
      *
-     * @param obj - the object to compare this LikeFilter against.
+     * @param o - the object to compare this LikeFilter against.
      * @return true if specified object is equal to this filter; false otherwise.
      */
     @Override

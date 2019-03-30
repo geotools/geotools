@@ -78,10 +78,6 @@ public interface Fill extends org.opengis.style.Fill {
                     return COLOR;
                 }
 
-                public Expression getBackgroundColor() {
-                    return BGCOLOR;
-                }
-
                 public Expression getOpacity() {
                     return OPACITY;
                 }
@@ -103,10 +99,6 @@ public interface Fill extends org.opengis.style.Fill {
                 }
 
                 public Expression getColor() {
-                    return ConstantExpression.NULL;
-                }
-
-                public Expression getBackgroundColor() {
                     return ConstantExpression.NULL;
                 }
 

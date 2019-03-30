@@ -64,9 +64,6 @@ import org.opengis.filter.spatial.Within;
  */
 public abstract class GeometryFilterImpl extends BinaryComparisonAbstract
         implements BinarySpatialOperator {
-    /** Class logger */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(GeometryFilterImpl.class);
 
     protected MatchAction matchAction;
 

@@ -524,9 +524,8 @@ public class VisitorCalculationTest extends DataTestCase {
         AverageVisitor visit1 = new AverageVisitor(expr);
         fc3.accepts(visit1, null);
         CalcResult result = visit1.getResult();
-        double average = result.toDouble();
 
-        StandardDeviationVisitor visit2 = new StandardDeviationVisitor(expr, average);
+        StandardDeviationVisitor visit2 = new StandardDeviationVisitor(expr);
         fc3.accepts(visit2, null);
         assertEquals(28.86, visit2.getResult().toDouble(), 0.01);
         // then do it single pass
@@ -534,7 +533,7 @@ public class VisitorCalculationTest extends DataTestCase {
         fc3.accepts(visit3, null);
         assertEquals(28.86, visit3.getResult().toDouble(), 0.01);
         // test empty collection
-        StandardDeviationVisitor emptyVisitor = new StandardDeviationVisitor(expr, average);
+        StandardDeviationVisitor emptyVisitor = new StandardDeviationVisitor(expr);
         empty.accepts(emptyVisitor, null);
         assertEquals(CalcResult.NULL_RESULT, emptyVisitor.getResult());
         // test merge

@@ -513,9 +513,9 @@ public class DataUtilitiesTest extends DataTestCase {
     }
 
     public void testDefaultValue() throws IllegalAttributeException {
-        assertNull(DataUtilities.defaultValue(roadType.getDescriptor("name")));
-        assertNull(DataUtilities.defaultValue(roadType.getDescriptor("id")));
-        assertNull(DataUtilities.defaultValue(roadType.getDescriptor("geom")));
+        assertNull(roadType.getDescriptor("name").getDefaultValue());
+        assertNull(roadType.getDescriptor("id").getDefaultValue());
+        assertNull(roadType.getDescriptor("geom").getDefaultValue());
 
         GeometryFactory fac = new GeometryFactory();
         Coordinate coordinate = new Coordinate(0, 0);

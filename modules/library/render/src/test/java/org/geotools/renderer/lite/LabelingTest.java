@@ -26,6 +26,7 @@ import java.io.IOException;
 import junit.framework.TestCase;
 import org.geotools.data.memory.MemoryDataStore;
 import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
@@ -37,7 +38,6 @@ import org.geotools.map.MapContext;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleFactory;
-import org.geotools.styling.StyleFactoryFinder;
 import org.geotools.test.TestData;
 import org.geotools.xml.styling.SLDParser;
 import org.locationtech.jts.geom.Coordinate;
@@ -99,7 +99,7 @@ public class LabelingTest extends TestCase {
     }
 
     private Style loadStyle(String sldFilename) throws IOException {
-        StyleFactory factory = StyleFactoryFinder.createStyleFactory();
+        StyleFactory factory = CommonFactoryFinder.getStyleFactory();
 
         java.net.URL surl = TestData.getResource(this, sldFilename);
         SLDParser stylereader = new SLDParser(factory, surl);

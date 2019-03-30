@@ -280,9 +280,5 @@ class FilterNameTypeMapping {
                 public boolean supports(long type) {
                     return true;
                 }
-
-                public boolean supports(short type) {
-                    return true;
-                }
             };
 }

@@ -362,18 +362,7 @@ public class FilterCapabilities {
         return supports;
     }
 
-    /**
-     * Determines if the filter type passed in is supported.
-     *
-     * @param type The AbstractFilter type to be tested
-     * @return true if supported, false otherwise.
-     * @deprecated
-     */
-    public boolean supports(short type) {
-        return supports(convertFilterTypeToMask(type));
-    }
-
-    public boolean supports(long type) {
+    private boolean supports(long type) {
         return (ops & type) == type;
     }
 
@@ -456,7 +445,6 @@ public class FilterCapabilities {
      * </pre>
      *
      * @param filter
-     * @deprecated please use instanceof checks
      */
     private static short getFilterType(org.opengis.filter.Filter filter) {
         if (filter == null) return 0;

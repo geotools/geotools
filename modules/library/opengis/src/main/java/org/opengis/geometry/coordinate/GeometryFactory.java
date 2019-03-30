@@ -435,9 +435,6 @@ public interface GeometryFactory {
     /**
      * Placeholder to create a MultiPrimitive (or derivatives).
      *
-     * @deprecated <strong>This method is temporary. It will move to some {@code MultiPrimitive}
-     *     factory when the creation of Geometry interfaces will be completed.</strong> See <A
-     *     HREF="http://jira.codehaus.org/browse/GEO-1">GEO-1 on JIRA</A>.
      */
     MultiPrimitive createMultiPrimitive();
 }

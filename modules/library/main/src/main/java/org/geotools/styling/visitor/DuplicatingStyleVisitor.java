@@ -555,10 +555,12 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
     protected ChannelSelection copy(ChannelSelection channelSelection) {
         if (channelSelection == null) return null;
 
-        ChannelSelection copy = sf.createChannelSelection();
-        copy.setGrayChannel(copy(channelSelection.getGrayChannel()));
-        copy.setRGBChannels(copy(channelSelection.getRGBChannels()));
-        return copy;
+        if (channelSelection.getGrayChannel() != null) {
+            return sf.createChannelSelection(
+                    new SelectedChannelType[] {copy(channelSelection.getGrayChannel())});
+        } else {
+            return sf.createChannelSelection(copy(channelSelection.getRGBChannels()));
+        }
     }
 
     /**

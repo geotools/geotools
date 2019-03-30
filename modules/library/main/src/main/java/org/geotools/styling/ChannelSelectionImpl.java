@@ -90,20 +90,6 @@ public class ChannelSelectionImpl implements ChannelSelection {
         this.blue = new SelectedChannelTypeImpl(blue);
     }
 
-    public void setSelectedChannels(SelectedChannelType[] channels) {
-        if (channels.length == 1) {
-            gray = channels[0];
-        } else if (channels.length == 3) {
-            red = channels[0];
-            green = channels[1];
-            blue = channels[2];
-        } else {
-            throw new IllegalArgumentException(
-                    "Wrong number of elements in setSelectedChannels, expected 1 or 3, got "
-                            + channels.length);
-        }
-    }
-
     public Object accept(StyleVisitor visitor, Object data) {
         return visitor.visit(this, data);
     }

@@ -72,10 +72,6 @@ public class ExternalMarkImpl implements org.geotools.styling.ExternalMark {
         this.inlineContent = inline;
     }
 
-    public void getInlineContent(Icon inline) {
-        setInlineContent(inline);
-    }
-
     public void setFormat(String mimeType) {
         this.format = mimeType;
     }

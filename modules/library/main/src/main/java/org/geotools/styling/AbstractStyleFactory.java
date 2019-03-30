@@ -209,8 +209,6 @@ public abstract class AbstractStyleFactory implements StyleFactory {
 
     public abstract RasterSymbolizer getDefaultRasterSymbolizer();
 
-    public abstract ChannelSelection createChannelSelection(SelectedChannelType[] channels);
-
     public abstract SelectedChannelType createSelectedChannelType(
             Expression name, Expression enhancement);
 

@@ -164,7 +164,7 @@ public abstract class DataFeatureCollection implements SimpleFeatureCollection {
      * <p>So when we implement FeatureCollection.iterator() this will work out of the box.
      */
     public SimpleFeatureIterator features() {
-        SimpleFeatureIterator iterator = new DelegateSimpleFeatureIterator(this, iterator());
+        SimpleFeatureIterator iterator = new DelegateSimpleFeatureIterator(iterator());
         open.add(iterator);
         return iterator;
     }

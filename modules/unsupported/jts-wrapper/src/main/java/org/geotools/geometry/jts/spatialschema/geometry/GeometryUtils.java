@@ -26,10 +26,14 @@ import javax.measure.UnitConverter;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.geotools.factory.BasicFactories;
+import org.geotools.geometry.GeometryFactoryFinder;
+import org.geotools.geometry.jts.spatialschema.PositionFactoryImpl;
 import org.geotools.referencing.CRS;
+import org.geotools.util.factory.Hints;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.Envelope;
 import org.opengis.geometry.MismatchedDimensionException;
+import org.opengis.geometry.PositionFactory;
 import org.opengis.geometry.complex.CompositeCurve;
 import org.opengis.geometry.coordinate.GeometryFactory;
 import org.opengis.geometry.coordinate.LineString;
@@ -76,11 +80,12 @@ public final class GeometryUtils {
 
             final BasicFactories commonFactory = BasicFactories.getDefault();
             final GeometryFactory geometryFactory = commonFactory.getGeometryFactory(crs);
+            final PositionFactory positionFactory = new PositionFactoryImpl(crs);
 
             final DirectPosition lowerCorner =
-                    geometryFactory.createDirectPosition(new double[] {-90, -180});
+                    positionFactory.createDirectPosition(new double[] {-90, -180});
             final DirectPosition upperCorner =
-                    geometryFactory.createDirectPosition(new double[] {90, 180});
+                    positionFactory.createDirectPosition(new double[] {90, 180});
 
             WHOLE_WORLD = geometryFactory.createEnvelope(lowerCorner, upperCorner);
         }
@@ -131,12 +136,13 @@ public final class GeometryUtils {
             final double maxy) {
         final BasicFactories commonFactory = BasicFactories.getDefault();
         final GeometryFactory geometryFactory = commonFactory.getGeometryFactory(crs);
+        final PositionFactory positionFactory = GeometryFactoryFinder.getPositionFactory(null);
 
-        final DirectPosition lowerCorner = geometryFactory.createDirectPosition();
+        final DirectPosition lowerCorner = positionFactory.createDirectPosition(null);
         lowerCorner.setOrdinate(0, minx);
         lowerCorner.setOrdinate(1, miny);
 
-        final DirectPosition upperCorner = geometryFactory.createDirectPosition();
+        final DirectPosition upperCorner = positionFactory.createDirectPosition(null);
         upperCorner.setOrdinate(0, maxx);
         upperCorner.setOrdinate(1, maxy);
 
@@ -163,6 +169,8 @@ public final class GeometryUtils {
             final Unit unit) {
         final BasicFactories commonFactory = BasicFactories.getDefault();
         final GeometryFactory geometryFactory = commonFactory.getGeometryFactory(crs);
+        final PositionFactory positionFactory =
+                GeometryFactoryFinder.getPositionFactory(new Hints(Hints.CRS, crs));
 
         final CoordinateSystem cs = crs.getCoordinateSystem();
 
@@ -210,8 +218,8 @@ public final class GeometryUtils {
                 upperOrdinates[i] = 0;
             }
         }*/
-        final DirectPosition lowerCorner = geometryFactory.createDirectPosition(lowerOrdinates);
-        final DirectPosition upperCorner = geometryFactory.createDirectPosition(upperOrdinates);
+        final DirectPosition lowerCorner = positionFactory.createDirectPosition(lowerOrdinates);
+        final DirectPosition upperCorner = positionFactory.createDirectPosition(upperOrdinates);
 
         return geometryFactory.createEnvelope(lowerCorner, upperCorner);
     }
@@ -440,7 +448,7 @@ public final class GeometryUtils {
         // CoordinateReferenceSystem crs2 = dim == 2 ? wgs84crs : CRSUtils.WGS84_PROJ;
         // same equality issues as above
         DirectPosition dp2 =
-                BasicFactories.getDefault().getGeometryFactory(wgs84crs).createDirectPosition();
+                GeometryFactoryFinder.getPositionFactory(null).createDirectPosition(null);
         try {
             MathTransform transform = CRS.findMathTransform(crs, wgs84crs);
             transform.transform(dp, dp2);

@@ -56,7 +56,7 @@ public class LinePlacementImpl implements LinePlacement, Cloneable {
         this.generalized = placement.isGeneralizeLine();
         this.perpendicularOffset = placement.getPerpendicularOffset();
         this.repeated = placement.isRepeated();
-        this.aligned = placement.IsAligned();
+        this.aligned = placement.isAligned();
     }
 
     public LinePlacementImpl(FilterFactory factory) {

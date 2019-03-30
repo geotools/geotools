@@ -168,14 +168,15 @@ public class SurfaceTest extends TestCase {
 
         GeometryFactoryImpl tCoordFactory = (GeometryFactoryImpl) builder.getGeometryFactory();
         PrimitiveFactoryImpl tPrimFactory = (PrimitiveFactoryImpl) builder.getPrimitiveFactory();
+        PositionFactory pf = builder.getPositionFactory();
 
         List<DirectPosition> directPositionList = new ArrayList<DirectPosition>();
-        directPositionList.add(tCoordFactory.createDirectPosition(new double[] {20, 10}));
-        directPositionList.add(tCoordFactory.createDirectPosition(new double[] {40, 10}));
-        directPositionList.add(tCoordFactory.createDirectPosition(new double[] {50, 40}));
-        directPositionList.add(tCoordFactory.createDirectPosition(new double[] {30, 50}));
-        directPositionList.add(tCoordFactory.createDirectPosition(new double[] {10, 30}));
-        directPositionList.add(tCoordFactory.createDirectPosition(new double[] {20, 10}));
+        directPositionList.add(pf.createDirectPosition(new double[] {20, 10}));
+        directPositionList.add(pf.createDirectPosition(new double[] {40, 10}));
+        directPositionList.add(pf.createDirectPosition(new double[] {50, 40}));
+        directPositionList.add(pf.createDirectPosition(new double[] {30, 50}));
+        directPositionList.add(pf.createDirectPosition(new double[] {10, 30}));
+        directPositionList.add(pf.createDirectPosition(new double[] {20, 10}));
 
         Ring exteriorRing = (Ring) tPrimFactory.createRingByDirectPositions(directPositionList);
         List<Ring> interiors = new ArrayList<Ring>();

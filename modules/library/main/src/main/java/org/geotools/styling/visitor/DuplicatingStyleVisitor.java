@@ -555,8 +555,7 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
     protected ChannelSelection copy(ChannelSelection channelSelection) {
         if (channelSelection == null) return null;
 
-        SelectedChannelType[] channels = copy(channelSelection.getSelectedChannels());
-        ChannelSelection copy = sf.createChannelSelection(channels);
+        ChannelSelection copy = sf.createChannelSelection();
         copy.setGrayChannel(copy(channelSelection.getGrayChannel()));
         copy.setRGBChannels(copy(channelSelection.getRGBChannels()));
         return copy;
@@ -1033,13 +1032,7 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
     }
 
     public void visit(ChannelSelection cs) {
-        // get the channels
-        final SelectedChannelType sct[] = copy(cs.getSelectedChannels());
-        final ChannelSelection copy = sf.createChannelSelection(sct);
-        if (STRICT && !copy.equals(cs)) {
-            throw new IllegalStateException(
-                    "Was unable to duplicate provided ChannelSelection:" + cs);
-        }
+        ChannelSelection copy = copy(cs);
         pages.push(copy);
     }
 

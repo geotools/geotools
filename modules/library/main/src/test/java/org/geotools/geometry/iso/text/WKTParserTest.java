@@ -18,6 +18,8 @@ package org.geotools.geometry.iso.text;
 
 import junit.framework.TestCase;
 import org.geotools.geometry.iso.MockGeometryFactory;
+import org.geotools.geometry.iso.MockPositionFactory;
+import org.opengis.geometry.PositionFactory;
 import org.opengis.geometry.primitive.Curve;
 import org.opengis.geometry.primitive.Point;
 
@@ -30,7 +32,8 @@ public class WKTParserTest extends TestCase {
         super.setUp();
 
         MockGeometryFactory mockFactory = new MockGeometryFactory();
-        parser = new WKTParser(mockFactory, mockFactory, null, null);
+        PositionFactory pf = new MockPositionFactory();
+        parser = new WKTParser(mockFactory, mockFactory, pf, null);
     }
 
     public void testPoint1() throws Exception {

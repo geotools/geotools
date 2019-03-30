@@ -89,7 +89,7 @@ public class PicoGeometryFactoryTest extends TestCase {
                 (PositionFactory) c.getComponentInstanceOfType(PositionFactory.class);
 
         // public DirectPositionImpl createDirectPosition();
-        DirectPosition dp1 = cf.createDirectPosition();
+        DirectPosition dp1 = positionFactory.createDirectPosition(null);
         assertTrue(Double.compare(dp1.getOrdinate(0), Double.NaN) == 0);
         assertTrue(Double.compare(dp1.getOrdinate(1), Double.NaN) == 0);
         assertTrue(Double.compare(dp1.getOrdinate(2), Double.NaN) == 0);
@@ -99,7 +99,7 @@ public class PicoGeometryFactoryTest extends TestCase {
         da[0] = 10.0;
         da[1] = -115000.0;
         da[2] = 0.0000000125;
-        DirectPosition dp2 = cf.createDirectPosition(da);
+        DirectPosition dp2 = positionFactory.createDirectPosition(da);
         assertTrue(dp2.getOrdinate(0) == 10.0);
         assertTrue(dp2.getOrdinate(1) == -115000.0);
         assertTrue(dp2.getOrdinate(2) == 0.0000000125);

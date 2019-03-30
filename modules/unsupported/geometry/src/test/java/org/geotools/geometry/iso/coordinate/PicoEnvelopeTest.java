@@ -26,6 +26,7 @@ import org.geotools.geometry.iso.primitive.PrimitiveFactoryImpl;
 import org.geotools.geometry.iso.util.elem2D.Geo2DFactory;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.opengis.geometry.DirectPosition;
+import org.opengis.geometry.PositionFactory;
 import org.opengis.geometry.Precision;
 import org.opengis.geometry.coordinate.GeometryFactory;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -72,12 +73,13 @@ public class PicoEnvelopeTest extends TestCase {
 
         GeometryFactoryImpl gf =
                 (GeometryFactoryImpl) c.getComponentInstanceOfType(GeometryFactory.class);
+        PositionFactory pf = (PositionFactory) c.getComponentInstanceOfType(PositionFactory.class);
 
         // CoordinateFactory.createDirectPosition(double[])
-        DirectPosition dp1 = gf.createDirectPosition(new double[] {0, 0});
-        DirectPosition dp2 = gf.createDirectPosition(new double[] {100, 100});
+        DirectPosition dp1 = pf.createDirectPosition(new double[] {0, 0});
+        DirectPosition dp2 = pf.createDirectPosition(new double[] {100, 100});
 
-        DirectPosition dp0 = gf.createDirectPosition(new double[] {100, 100});
+        DirectPosition dp0 = pf.createDirectPosition(new double[] {100, 100});
 
         // DirectPosition.equals(DirectPosition)
         assertTrue(dp2.equals(dp0));
@@ -103,11 +105,11 @@ public class PicoEnvelopeTest extends TestCase {
         // Envelope.equals(Envelope)
         assertTrue(env1.equals(env2));
 
-        DirectPosition dp3 = gf.createDirectPosition(new double[] {0, 0});
-        DirectPosition dp4 = gf.createDirectPosition(new double[] {100, 50});
-        DirectPosition dp5 = gf.createDirectPosition(new double[] {100.01, 50});
-        DirectPosition dp6 = gf.createDirectPosition(new double[] {50, 100});
-        DirectPosition dp7 = gf.createDirectPosition(new double[] {50, 100.01});
+        DirectPosition dp3 = pf.createDirectPosition(new double[] {0, 0});
+        DirectPosition dp4 = pf.createDirectPosition(new double[] {100, 50});
+        DirectPosition dp5 = pf.createDirectPosition(new double[] {100.01, 50});
+        DirectPosition dp6 = pf.createDirectPosition(new double[] {50, 100});
+        DirectPosition dp7 = pf.createDirectPosition(new double[] {50, 100.01});
 
         // Envelope.contains(DirectPosition)
         // System.outprintln("Contains Method for " + env1);

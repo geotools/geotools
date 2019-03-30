@@ -77,6 +77,7 @@ import org.opengis.referencing.operation.TransformException;
 public class MockGeometryFactory implements GeometryFactory, PrimitiveFactory {
     CoordinateReferenceSystem crs;
     public Precision precision;
+    MockPositionFactory pf;
 
     public MockGeometryFactory() {
         this(DefaultGeographicCRS.WGS84);
@@ -84,6 +85,7 @@ public class MockGeometryFactory implements GeometryFactory, PrimitiveFactory {
 
     public MockGeometryFactory(CoordinateReferenceSystem crs) {
         this.crs = crs;
+        this.pf = new MockPositionFactory(crs);
     }
 
     public Arc createArc(Position startPoint, Position midPoint, Position endPoint)
@@ -122,61 +124,6 @@ public class MockGeometryFactory implements GeometryFactory, PrimitiveFactory {
             List points, int[] degree, List[] knots, KnotType knotSpec)
             throws MismatchedReferenceSystemException, MismatchedDimensionException {
         return null;
-    }
-
-    public DirectPosition createDirectPosition() {
-        return new MockDirectPosition();
-    }
-
-    public DirectPosition createDirectPosition(double[] coordinates) {
-        return new MockDirectPosition(coordinates);
-    }
-
-    class MockDirectPosition implements DirectPosition {
-        double[] coordinates;
-
-        MockDirectPosition() {
-            this(new double[crs.getCoordinateSystem().getDimension()]);
-        }
-
-        public MockDirectPosition(double[] coordinates) {
-            this.coordinates = coordinates;
-        }
-
-        public MockDirectPosition(DirectPosition position) {
-            assert position.getCoordinateReferenceSystem() == crs;
-            coordinates = position.getCoordinate();
-        }
-
-        public CoordinateReferenceSystem getCoordinateReferenceSystem() {
-            return crs;
-        }
-
-        public double[] getCoordinate() {
-            double copy[] = new double[crs.getCoordinateSystem().getDimension()];
-            System.arraycopy(coordinates, 0, copy, 0, getDimension());
-            return copy;
-        }
-
-        public int getDimension() {
-            return crs.getCoordinateSystem().getDimension();
-        }
-
-        public double getOrdinate(int dimension) throws IndexOutOfBoundsException {
-            return coordinates[dimension];
-        }
-
-        public void setOrdinate(int dimension, double value) throws IndexOutOfBoundsException {
-            coordinates[dimension] = value;
-        }
-
-        public DirectPosition getDirectPosition() {
-            return this;
-        }
-
-        public MockDirectPosition clone() {
-            return new MockDirectPosition(this);
-        }
     }
 
     public Envelope createEnvelope(
@@ -605,7 +552,7 @@ public class MockGeometryFactory implements GeometryFactory, PrimitiveFactory {
         }
 
         public MockPoint clone() {
-            return new MockPoint(new MockDirectPosition(position));
+            return new MockPoint(pf.createDirectPosition(position.getCoordinate()));
         }
 
         public Bearing getBearing(Position toPoint) {

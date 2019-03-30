@@ -89,10 +89,6 @@ public interface Stroke extends org.opengis.style.Stroke {
                     return ConstantExpression.BLACK;
                 }
 
-                public Color getColor(SimpleFeature f) {
-                    return Color.BLACK;
-                }
-
                 public Expression getWidth() {
                     return ConstantExpression.ONE;
                 }
@@ -186,18 +182,6 @@ public interface Stroke extends org.opengis.style.Stroke {
                     return Graphic.NULL;
                 }
             };
-
-    /**
-     * This parameter gives the solid color that will be used for a stroke.<br>
-     * The color value returned here as a Java Color object, this is a convinence method that goes
-     * above The default color is defined to be Color.BLACK
-     *
-     * <p>Note: in CSS this parameter is just called Stroke and not Color.
-     *
-     * @return The color of the stroke as a Color object
-     */
-    @Deprecated
-    Color getColor(SimpleFeature f);
 
     /**
      * This parameter gives the solid color that will be used for a stroke.<br>

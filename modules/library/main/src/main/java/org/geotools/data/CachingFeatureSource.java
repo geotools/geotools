@@ -16,15 +16,16 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.store.EmptyFeatureCollection;
-import org.geotools.data.store.FilteringIterator;
-import org.geotools.data.store.ReTypingIterator;
+import org.geotools.data.store.ReTypingFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.collection.AbstractFeatureCollection;
+import org.geotools.feature.collection.FilteringSimpleFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -398,14 +399,15 @@ public class CachingFeatureSource implements SimpleFeatureSource {
                     throw new RuntimeException("Failed to get data", e);
                 }
             }
-            Iterator it = features.iterator();
+            SimpleFeatureCollection fc = new ListFeatureCollection(schema, features);
             if (query.getFilter() != null && Filter.INCLUDE.equals(query.getFilter())) {
-                it = new FilteringIterator<Feature>(it, query.getFilter());
+                fc = new FilteringSimpleFeatureCollection(fc, query.getFilter());
             }
             if (targetSchema != sourceSchema) {
-                it = new ReTypingIterator(it, sourceSchema, targetSchema);
+                fc = new ReTypingFeatureCollection(fc, targetSchema);
             }
-            return it;
+            SimpleFeature[] results = fc.toArray(new SimpleFeature[fc.size()]);
+            return Arrays.asList(results).iterator();
         }
 
         @Override

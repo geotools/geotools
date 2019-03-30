@@ -188,7 +188,7 @@ public class StyleExamples {
                 builder.createGraphic(null, builder.createMark(StyleBuilder.MARK_CIRCLE), null);
         PointSymbolizer dotSymbolize = builder.createPointSymbolizer(dotGraphic);
         Rule rule2 = builder.createRule(dotSymbolize);
-        rule2.setIsElseFilter(true);
+        rule2.setElseFilter(true);
 
         //
         // define feature type styles used to actually define how features are rendered
@@ -295,7 +295,7 @@ public class StyleExamples {
 
         // creating the rule 2
         Rule rule2 = styleFactory.createRule();
-        rule2.setIsElseFilter(true);
+        rule2.setElseFilter(true);
         rule2.setName("rule2");
         fts2.rules().add(rule2);
 

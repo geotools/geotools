@@ -101,7 +101,7 @@ public class StyleObjectTest extends TestCase {
         rule1.setFilter(filterFactory.id(Collections.singleton(filterFactory.featureId("FID"))));
 
         Rule rule2 = styleFactory.createRule();
-        rule2.setIsElseFilter(true);
+        rule2.setElseFilter(true);
         rule2.setName("rule2");
         fts.rules().add(rule1);
         fts.rules().add(rule2);

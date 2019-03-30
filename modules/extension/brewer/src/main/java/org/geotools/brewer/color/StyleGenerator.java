@@ -198,7 +198,7 @@ public class StyleGenerator {
                             opacity,
                             defaultStroke);
             Rule elseRule = sb.createRule(symb);
-            elseRule.setIsElseFilter(true);
+            elseRule.setElseFilter(true);
             elseRule.setTitle("Else");
             elseRule.setName("else");
             fts.rules().add(elseRule);

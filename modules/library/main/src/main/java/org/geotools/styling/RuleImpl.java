@@ -194,16 +194,6 @@ public class RuleImpl implements org.geotools.styling.Rule, Cloneable {
         return hasElseFilter;
     }
 
-    /** @deprecated use isElseFilter instead. */
-    @Deprecated
-    public boolean hasElseFilter() {
-        return hasElseFilter;
-    }
-
-    public void setIsElseFilter(boolean flag) {
-        hasElseFilter = flag;
-    }
-
     public void setElseFilter(boolean defaultb) {
         hasElseFilter = defaultb;
     }

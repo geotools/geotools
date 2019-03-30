@@ -160,17 +160,9 @@ public interface Rule extends org.opengis.style.Rule {
      */
     void setFilter(Filter filter);
 
-    /** @deprecated Please use isElseFilter */
-    boolean hasElseFilter();
-
     /** @param isElse if this rule should accept any features not already rendered */
     void setElseFilter(boolean isElse);
 
-    /**
-     * @param isElse
-     * @deprecaated Please use setElseFilter( isElse );
-     */
-    void setIsElseFilter(boolean isElse);
     /** */
     public GraphicLegend getLegend();
 

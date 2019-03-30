@@ -21,7 +21,6 @@ import java.util.Arrays;
 import java.util.List;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.visitor.DuplicatingFilterVisitor;
-import org.geotools.util.SimpleInternationalString;
 import org.geotools.util.Utilities;
 import org.opengis.filter.Filter;
 import org.opengis.metadata.citation.OnLineResource;
@@ -136,50 +135,9 @@ public class RuleImpl implements org.geotools.styling.Rule, Cloneable {
     public String getName() {
         return name;
     }
-    /**
-     * Getter for property abstractStr.
-     *
-     * @return Value of property abstractStr.
-     */
-    public java.lang.String getAbstract() {
-        if (description == null || description.getAbstract() == null) {
-            return null;
-        }
-        return description.getAbstract().toString();
-    }
 
     public void setName(String name) {
         this.name = name;
-    }
-    /**
-     * Setter for property abstractStr.
-     *
-     * @param abstractStr New value of property abstractStr.
-     */
-    public void setAbstract(java.lang.String abstractStr) {
-        description.setAbstract(
-                abstractStr != null ? new SimpleInternationalString(abstractStr) : null);
-    }
-
-    /**
-     * Getter for property title.
-     *
-     * @return Value of property title.
-     */
-    public java.lang.String getTitle() {
-        if (description == null || description.getTitle() == null) {
-            return null;
-        }
-        return description.getTitle().toString();
-    }
-
-    /**
-     * Setter for property title.
-     *
-     * @param title New value of property title.
-     */
-    public void setTitle(java.lang.String title) {
-        this.description.setTitle(title != null ? new SimpleInternationalString(title) : null);
     }
 
     public Filter getFilter() {

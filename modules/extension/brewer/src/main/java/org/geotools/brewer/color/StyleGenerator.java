@@ -199,7 +199,7 @@ public class StyleGenerator {
                             defaultStroke);
             Rule elseRule = sb.createRule(symb);
             elseRule.setElseFilter(true);
-            elseRule.setTitle("Else");
+            elseRule.getDescription().setTitle("Else");
             elseRule.setName("else");
             fts.rules().add(elseRule);
         }
@@ -343,7 +343,7 @@ public class StyleGenerator {
         // create a rule
         Rule rule = sb.createRule(symb);
         rule.setFilter(filter);
-        rule.setTitle(title);
+        rule.getDescription().setTitle(title);
         rule.setName(getRuleName(i + 1));
 
         return rule;
@@ -403,7 +403,7 @@ public class StyleGenerator {
             rule.setFilter(ff.or(filters));
         }
 
-        rule.setTitle(title);
+        rule.getDescription().setTitle(title);
         rule.setName(getRuleName(i + 1));
 
         return rule;

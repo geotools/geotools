@@ -94,37 +94,6 @@ public interface Rule extends org.opengis.style.Rule {
     void setDescription(org.opengis.style.Description description);
 
     /**
-     * Gets the title.
-     *
-     * @return The title of the rule. This is a brief, human readable, description of the rule.
-     * @deprecated use getDescription().getTitle().getString()
-     */
-    String getTitle();
-
-    /**
-     * Sets the title.
-     *
-     * @param title The title of the rule. This is a brief, human readable, description of the rule.
-     */
-    void setTitle(String title);
-
-    /**
-     * Gets the abstract text for the rule.
-     *
-     * @return The abstract text, a more detailed description of the rule.
-     * @deprecated use getDescription().getAbstract().getString()
-     */
-    String getAbstract();
-
-    /**
-     * Sets the abstract text for the rule.
-     *
-     * @param abstractStr The abstract text, a more detailed description of the rule.
-     * @deprecated use getDescription().setAbstract()
-     */
-    void setAbstract(String abstractStr);
-
-    /**
      * The smallest value for scale denominator at which symbolizers contained by this rule should
      * be applied.
      *

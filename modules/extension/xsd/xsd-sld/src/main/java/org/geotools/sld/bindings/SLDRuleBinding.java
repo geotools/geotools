@@ -144,7 +144,7 @@ public class SLDRuleBinding extends AbstractComplexBinding {
         if (node.hasChild(Filter.class)) {
             rule.setFilter((Filter) node.getChildValue(Filter.class));
         } else if (node.hasChild("ElseFilter")) {
-            rule.setIsElseFilter(true);
+            rule.setElseFilter(true);
         }
 
         // &lt;xsd:element ref="sld:MinScaleDenominator" minOccurs="0"/&gt;

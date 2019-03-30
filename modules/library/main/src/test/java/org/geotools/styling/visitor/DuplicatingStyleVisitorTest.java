@@ -166,7 +166,7 @@ public class DuplicatingStyleVisitorTest extends TestCase {
         rule1.setFilter(ff.id(Collections.singleton(ff.featureId("FID"))));
 
         Rule rule2 = sf.createRule();
-        rule2.setIsElseFilter(true);
+        rule2.setElseFilter(true);
         rule2.setName("rule2");
         fts.rules().add(rule1);
         fts.rules().add(rule2);

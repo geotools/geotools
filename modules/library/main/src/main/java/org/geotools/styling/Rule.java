@@ -178,24 +178,6 @@ public interface Rule extends org.opengis.style.Rule {
     void setLegend(GraphicLegend legend);
 
     /**
-     * A set of equivalent Graphics in different formats which can be used as a legend against
-     * features stylized by the symbolizers in this rule.
-     *
-     * @return A single Graphic matching the getLegend()
-     * @deprecated Please use getLegend
-     */
-    Graphic[] getLegendGraphic();
-
-    /**
-     * A set of equivalent Graphics in different formats which can be used as a legend against
-     * features stylized by the symbolizers in this rule.
-     *
-     * @param graphics Graphic objects; the first one will be used to configure getGraphicLenged
-     * @deprecated Please use setLegend
-     */
-    void setLegendGraphic(Graphic[] graphics);
-
-    /**
      * The symbolizers contain the actual styling information for different geometry types. A single
      * feature may be rendered by more than one of the symbolizers returned by this method. It is
      * important that the symbolizers be applied in the order in which they are returned if the end

@@ -854,10 +854,10 @@ public class SLDTransformer extends TransformerBase {
             if (rule.getDescription() != null && rule.getDescription().getAbstract() != null)
                 element("Abstract", rule.getDescription().getAbstract());
 
-            Graphic[] gr = rule.getLegendGraphic();
-            for (int i = 0; i < gr.length; i++) {
+            Graphic legend = (Graphic) rule.getLegend();
+            if (legend != null) {
                 start("LegendGraphic");
-                gr[i].accept(this);
+                legend.accept(this);
                 end("LegendGraphic");
             }
 

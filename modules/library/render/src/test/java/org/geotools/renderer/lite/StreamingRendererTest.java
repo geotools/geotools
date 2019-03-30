@@ -79,7 +79,6 @@ import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.renderer.RenderListener;
 import org.geotools.renderer.lite.StreamingRenderer.RenderingRequest;
 import org.geotools.styling.DescriptionImpl;
-import org.geotools.styling.Graphic;
 import org.geotools.styling.Rule;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleBuilder;
@@ -104,6 +103,7 @@ import org.opengis.filter.spatial.BBOX;
 import org.opengis.geometry.BoundingBox;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.style.GraphicLegend;
 
 /**
  * Test the inner workings of StreamingRenderer.
@@ -714,7 +714,7 @@ public class StreamingRendererTest {
                 sf.createRule(
                         new Symbolizer[0],
                         new DescriptionImpl(),
-                        new Graphic[0],
+                        (GraphicLegend) null,
                         "bbox",
                         bbox,
                         false,

@@ -367,12 +367,6 @@ public class FillExtrusionMBLayer extends MBLayer {
                         Arrays.asList(roofSymbolizer),
                         filter.filter());
 
-        // Set legend graphic to null.
-        // setLegend(null) to empty list.
-        shadowRule.setLegendGraphic(new Graphic[0]);
-        sidesRule.setLegendGraphic(new Graphic[0]);
-        roofRule.setLegendGraphic(new Graphic[0]);
-
         // Finally we create the FeatureTypeStyles for the extrusion.
         FeatureTypeStyle shadow =
                 sf.featureTypeStyle(

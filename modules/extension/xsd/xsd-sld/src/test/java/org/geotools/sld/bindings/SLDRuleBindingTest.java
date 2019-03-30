@@ -34,7 +34,7 @@ public class SLDRuleBindingTest extends SLDTestSupport {
         assertEquals("theAbstract", rule.getAbstract());
         assertEquals("theTitle", rule.getTitle());
 
-        assertEquals(1, rule.getLegendGraphic().length);
+        assertNotNull(rule.getLegend());
         assertEquals(1d, rule.getMinScaleDenominator(), 0d);
         assertEquals(1d, rule.getMaxScaleDenominator(), 0d);
         assertEquals(5, rule.symbolizers().size());

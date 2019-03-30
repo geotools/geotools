@@ -520,25 +520,25 @@ public class StyleFactoryImpl extends AbstractStyleFactory
         if (fontFamily == null) {
             throw new IllegalArgumentException("Null font family specified");
         }
-        font.setFontFamily(fontFamily);
+        font.getFamily().add(fontFamily);
 
         if (fontSize == null) {
             throw new IllegalArgumentException("Null font size specified");
         }
 
-        font.setFontSize(fontSize);
+        font.setSize(fontSize);
 
         if (fontStyle == null) {
             throw new IllegalArgumentException("Null font Style specified");
         }
 
-        font.setFontStyle(fontStyle);
+        font.setStyle(fontStyle);
 
         if (fontWeight == null) {
             throw new IllegalArgumentException("Null font weight specified");
         }
 
-        font.setFontWeight(fontWeight);
+        font.setWeight(fontWeight);
 
         return font;
     }

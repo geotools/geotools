@@ -849,7 +849,7 @@ public class SLDStyleFactory {
 
     private java.awt.Font styleFont(
             Object feature, Font curr, java.awt.Font javaFont, TextSymbolizer symbolizer) {
-        String reqStyle = evalToString(curr.getFontStyle(), feature, null);
+        String reqStyle = evalToString(curr.getStyle(), feature, null);
 
         int styleCode;
 
@@ -859,7 +859,7 @@ public class SLDStyleFactory {
             styleCode = java.awt.Font.PLAIN;
         }
 
-        String reqWeight = evalToString(curr.getFontWeight(), feature, null);
+        String reqWeight = evalToString(curr.getWeight(), feature, null);
 
         if ("Bold".equalsIgnoreCase(reqWeight)) {
             styleCode = styleCode | java.awt.Font.BOLD;

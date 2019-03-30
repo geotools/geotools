@@ -48,43 +48,8 @@ public class FontImpl implements Font, Cloneable {
     /** Creates a new instance of DefaultFont */
     protected FontImpl() {}
 
-    /**
-     * Getter for property fontFamily.
-     *
-     * @return Value of property fontFamily.
-     */
-    @Deprecated
-    public Expression getFontFamily() {
-        if (fontFamily.isEmpty()) {
-            return null;
-        } else {
-            return fontFamily.get(0);
-        }
-    }
-
     public List<Expression> getFamily() {
         return fontFamily;
-    }
-
-    /**
-     * Setter for property fontFamily.
-     *
-     * @param fontFamily New value of property fontFamily.
-     */
-    @Deprecated
-    public void setFontFamily(Expression fontFamily) {
-        this.fontFamily.clear();
-        this.fontFamily.add(fontFamily);
-    }
-
-    /**
-     * Getter for property fontSize.
-     *
-     * @return Value of property fontSize.
-     */
-    @Deprecated
-    public Expression getFontSize() {
-        return fontSize;
     }
 
     public Expression getSize() {
@@ -94,25 +59,6 @@ public class FontImpl implements Font, Cloneable {
     public void setSize(Expression size) {
         this.fontSize = size;
     }
-    /**
-     * Setter for property fontSize.
-     *
-     * @param fontSize New value of property fontSize.
-     */
-    @Deprecated
-    public void setFontSize(Expression fontSize) {
-        this.fontSize = fontSize;
-    }
-
-    /**
-     * Getter for property fontStyle.
-     *
-     * @return Value of property fontStyle.
-     */
-    @Deprecated
-    public Expression getFontStyle() {
-        return fontStyle;
-    }
 
     public Expression getStyle() {
         return fontStyle;
@@ -121,25 +67,6 @@ public class FontImpl implements Font, Cloneable {
     public void setStyle(Expression style) {
         fontStyle = style;
     }
-    /**
-     * Setter for property fontStyle.
-     *
-     * @param fontStyle New value of property fontStyle.
-     */
-    @Deprecated
-    public void setFontStyle(Expression fontStyle) {
-        this.fontStyle = fontStyle;
-    }
-
-    /**
-     * Getter for property fontWeight.
-     *
-     * @return Value of property fontWeight.
-     */
-    @Deprecated
-    public Expression getFontWeight() {
-        return fontWeight;
-    }
 
     public Expression getWeight() {
         return fontWeight;
@@ -147,15 +74,6 @@ public class FontImpl implements Font, Cloneable {
 
     public void setWeight(Expression weight) {
         fontWeight = weight;
-    }
-    /**
-     * Setter for property fontWeight.
-     *
-     * @param fontWeight New value of property fontWeight.
-     */
-    @Deprecated
-    public void setFontWeight(Expression fontWeight) {
-        this.fontWeight = fontWeight;
     }
 
     /**
@@ -239,7 +157,7 @@ public class FontImpl implements Font, Cloneable {
             font.setSize(filterFactory.literal(Integer.valueOf(10)));
             font.setStyle(filterFactory.literal("normal"));
             font.setWeight(filterFactory.literal("normal"));
-            font.setFontFamily(filterFactory.literal("Serif"));
+            font.getFamily().add(filterFactory.literal("Serif"));
         } catch (org.geotools.filter.IllegalFilterException ife) {
             throw new RuntimeException("Error creating default", ife);
         }

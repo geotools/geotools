@@ -124,10 +124,6 @@ public class LinePlacementImpl implements LinePlacement, Cloneable {
         return repeated;
     }
 
-    public boolean IsAligned() {
-        return aligned;
-    }
-
     public boolean isAligned() {
         return aligned;
     }

@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import javax.measure.Unit;
-import javax.swing.Icon;
+import javax.swing.*;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.util.factory.GeoTools;
 import org.opengis.feature.type.Name;
@@ -205,6 +205,7 @@ public class StyleFactoryImpl extends AbstractStyleFactory
         return new RuleImpl();
     }
 
+    @Deprecated
     public Rule createRule(
             org.geotools.styling.Symbolizer[] symbolizers,
             Description desc,
@@ -215,9 +216,27 @@ public class StyleFactoryImpl extends AbstractStyleFactory
             double maxScale,
             double minScale) {
 
+        GraphicLegend legend = legends != null && legends.length > 0 ? legends[0] : null;
         Rule r =
                 new RuleImpl(
-                        symbolizers, desc, legends, name, filter, isElseFilter, maxScale, minScale);
+                        symbolizers, desc, legend, name, filter, isElseFilter, maxScale, minScale);
+
+        return r;
+    }
+
+    public Rule createRule(
+            org.geotools.styling.Symbolizer[] symbolizers,
+            Description desc,
+            org.opengis.style.GraphicLegend legend,
+            String name,
+            Filter filter,
+            boolean isElseFilter,
+            double maxScale,
+            double minScale) {
+
+        Rule r =
+                new RuleImpl(
+                        symbolizers, desc, legend, name, filter, isElseFilter, maxScale, minScale);
 
         return r;
     }

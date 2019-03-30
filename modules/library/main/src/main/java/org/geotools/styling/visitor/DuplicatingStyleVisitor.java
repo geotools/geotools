@@ -269,10 +269,7 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         List<Symbolizer> symsCopy =
                 rule.symbolizers().stream().map(s -> copy(s)).collect(Collectors.toList());
 
-        Graphic[] legendCopy = rule.getLegendGraphic();
-        for (int i = 0; i < legendCopy.length; i++) {
-            legendCopy[i] = copy(legendCopy[i]);
-        }
+        Graphic legendCopy = copy((Graphic) rule.getLegend());
 
         Description descCopy = rule.getDescription();
         descCopy = copy(descCopy);
@@ -280,7 +277,7 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         copy = sf.createRule();
         copy.symbolizers().addAll(symsCopy);
         copy.setDescription(descCopy);
-        copy.setLegendGraphic(legendCopy);
+        copy.setLegend(legendCopy);
         copy.setName(rule.getName());
         copy.setFilter(filterCopy);
         copy.setElseFilter(rule.isElseFilter());

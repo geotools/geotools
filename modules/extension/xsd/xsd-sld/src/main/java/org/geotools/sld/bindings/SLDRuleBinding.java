@@ -134,7 +134,7 @@ public class SLDRuleBinding extends AbstractComplexBinding {
 
         // &lt;xsd:element ref="sld:LegendGraphic" minOccurs="0"/&gt;
         if (node.hasChild("LegendGraphic")) {
-            rule.setLegendGraphic(new Graphic[] {(Graphic) node.getChildValue("LegendGraphic")});
+            rule.setLegend((Graphic) node.getChildValue("LegendGraphic"));
         }
 
         // &lt;xsd:choice minOccurs="0"&gt;

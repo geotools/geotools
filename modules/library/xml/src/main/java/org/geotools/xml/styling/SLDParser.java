@@ -969,13 +969,14 @@ public class SLDParser {
             } else if (childName.equalsIgnoreCase("LegendGraphic")) {
                 findElements(((Element) child), graphicSt);
                 NodeList g = findElements(((Element) child), graphicSt);
-                List<Graphic> legends = new ArrayList<Graphic>();
                 final int l = g.getLength();
                 for (int k = 0; k < l; k++) {
-                    legends.add(parseGraphic(g.item(k)));
+                    Graphic graphic = parseGraphic(g.item(k));
+                    if (graphic != null) {
+                        rule.setLegend(graphic);
+                        break;
+                    }
                 }
-
-                rule.setLegendGraphic(legends.toArray(new Graphic[0]));
             } else if (childName.equalsIgnoreCase("LineSymbolizer")) {
                 symbolizers.add(parseLineSymbolizer(child));
             } else if (childName.equalsIgnoreCase("PolygonSymbolizer")) {

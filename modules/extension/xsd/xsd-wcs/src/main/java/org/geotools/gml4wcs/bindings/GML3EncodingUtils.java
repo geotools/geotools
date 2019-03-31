@@ -21,6 +21,7 @@ import java.net.URISyntaxException;
 import java.util.Collections;
 import java.util.List;
 import javax.xml.namespace.QName;
+import org.eclipse.xsd.XSDElementDeclaration;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.gml2.bindings.GML2EncodingUtils;
 import org.geotools.gml3.GML;
@@ -134,8 +135,8 @@ public class GML3EncodingUtils {
     }
 
     /**
-     * Helper method used to implement {@link ComplexBinding#getProperties(Object)} for bindings of
-     * geometry reference types:
+     * Helper method used to implement {@link ComplexBinding#getProperties(Object,
+     * XSDElementDeclaration)} for bindings of geometry reference types:
      *
      * <ul>
      *   <li>GeometryPropertyType

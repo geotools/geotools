@@ -17,6 +17,7 @@
 package org.geotools.xsd;
 
 import javax.xml.namespace.QName;
+import org.geotools.xsd.impl.Handler;
 import org.geotools.xsd.impl.ParserHandler;
 import org.xml.sax.Attributes;
 import org.xml.sax.Locator;
@@ -39,8 +40,11 @@ public class XSDParserDelegate implements ParserDelegate {
         handler = new ParserHandler(configuration);
     }
 
-    public boolean canHandle(QName elementName) {
-        return handler.getConfiguration()
+    @Override
+    public boolean canHandle(
+            QName elementName, Attributes attributes, Handler handler, Handler parent) {
+        return this.handler
+                .getConfiguration()
                 .getXSD()
                 .getNamespaceURI()
                 .equals(elementName.getNamespaceURI());

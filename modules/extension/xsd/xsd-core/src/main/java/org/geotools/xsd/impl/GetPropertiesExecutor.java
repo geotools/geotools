@@ -53,10 +53,7 @@ public class GetPropertiesExecutor implements BindingWalker.Visitor {
             ComplexBinding complex = (ComplexBinding) binding;
 
             try {
-                List properties = complex.getProperties(parent);
-                if (properties == null || properties.isEmpty()) {
-                    properties = complex.getProperties(parent, element);
-                }
+                List properties = complex.getProperties(parent, element);
                 if (properties != null) {
                     this.properties.addAll(properties);
                 }

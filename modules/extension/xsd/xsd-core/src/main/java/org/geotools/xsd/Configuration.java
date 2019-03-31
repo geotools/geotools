@@ -16,7 +16,6 @@
  */
 package org.geotools.xsd;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -30,7 +29,6 @@ import java.util.PriorityQueue;
 import java.util.Set;
 import java.util.Stack;
 import javax.xml.namespace.QName;
-import org.eclipse.xsd.XSDSchema;
 import org.eclipse.xsd.util.XSDSchemaLocationResolver;
 import org.eclipse.xsd.util.XSDSchemaLocator;
 import org.geotools.util.Utilities;
@@ -368,20 +366,6 @@ public abstract class Configuration {
     }
 
     /**
-     * Convenience method for creating an instance of the schema for this configuration.
-     *
-     * @return The schema for this configuration.
-     * @deprecated use {@link #getXSD()} and {@link XSD#getSchema()}.
-     */
-    public XSDSchema schema() {
-        try {
-            return getXSD().getSchema();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    /**
      * Returns an internal context which is copied into the runtime context while parsing.
      *
      * <p>This context is provided to allow for placing values in the parsing context without having
@@ -480,7 +464,6 @@ public abstract class Configuration {
      * implementing.
      *
      * @param container Container containing all bindings, keyed by {@link QName}.
-     * @deprecated use {@link #registerBindings(Map)}.
      */
     protected void registerBindings(MutablePicoContainer container) {
         // do nothing, in the case where the subclass has overridden the config
@@ -505,7 +488,6 @@ public abstract class Configuration {
      * Template method allowing subclass to override any bindings.
      *
      * @param container Container containing all bindings, keyed by {@link QName}.
-     * @deprecated use {@link #configureBindings(Map)}.
      */
     protected void configureBindings(MutablePicoContainer container) {
         // do nothing

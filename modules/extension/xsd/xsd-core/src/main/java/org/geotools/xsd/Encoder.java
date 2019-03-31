@@ -136,8 +136,8 @@ public class Encoder {
     /**
      * Special name recognized by the encoder as a comment.
      *
-     * <p>Bindings can return this name in {@link ComplexBinding#getProperties(Object)} to provide
-     * comments to be encoded.
+     * <p>Bindings can return this name in {@link ComplexBinding#getProperties(Object,
+     * XSDElementDeclaration)} to provide comments to be encoded.
      */
     public static final QName COMMENT = new QName("http://www.geotools.org", "comment");
 
@@ -206,7 +206,15 @@ public class Encoder {
      * @param configuration The encoder configuration.
      */
     public Encoder(Configuration configuration) {
-        this(configuration, configuration.schema());
+        this(configuration, getSchema(configuration));
+    }
+
+    public static XSDSchema getSchema(Configuration configuration) {
+        try {
+            return configuration.getXSD().getSchema();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**

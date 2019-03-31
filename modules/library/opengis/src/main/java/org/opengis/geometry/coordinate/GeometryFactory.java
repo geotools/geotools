@@ -432,9 +432,6 @@ public interface GeometryFactory {
     PolyhedralSurface createPolyhedralSurface(List<Polygon> tiles)
             throws MismatchedReferenceSystemException, MismatchedDimensionException;
 
-    /**
-     * Placeholder to create a MultiPrimitive (or derivatives).
-     *
-     */
+    /** Placeholder to create a MultiPrimitive (or derivatives). */
     MultiPrimitive createMultiPrimitive();
 }

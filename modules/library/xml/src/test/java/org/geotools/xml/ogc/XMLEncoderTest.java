@@ -19,7 +19,6 @@ package org.geotools.xml.ogc;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.StringBufferInputStream;
 import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -87,11 +86,6 @@ public class XMLEncoderTest extends TestCase {
         }
     }
 
-    /** Main for test runner. */
-    public static void main(String[] args) {
-        junit.textui.TestRunner.run(suite());
-    }
-
     /**
      * Required suite builder.
      *
@@ -109,7 +103,7 @@ public class XMLEncoderTest extends TestCase {
         StringWriter output = new StringWriter();
         DocumentWriter.writeFragment(test, FilterSchema.getInstance(), output, null);
         // System.out.println( output );
-        InputStream stream = new StringBufferInputStream(output.toString());
+        InputStream stream = new ByteArrayInputStream(output.toString().getBytes("UTF-8"));
 
         Object o = DocumentFactory.getInstance(stream, new HashMap<String, Object>(), Level.FINEST);
         assertNotNull(o);

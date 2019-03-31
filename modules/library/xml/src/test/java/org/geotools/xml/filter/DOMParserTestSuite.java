@@ -16,12 +16,13 @@
  */
 package org.geotools.xml.filter;
 
+import static org.junit.Assert.*;
+
 import java.io.File;
 import java.io.FileFilter;
 import java.util.logging.Logger;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import junit.framework.Assert;
 import junit.framework.Protectable;
 import junit.framework.Test;
 import junit.framework.TestResult;
@@ -142,7 +143,7 @@ public class DOMParserTestSuite extends TestSuite {
     }
 
     /** Quick test of a single xml document */
-    class DomTestXml extends Assert implements Test {
+    class DomTestXml implements Test {
         String document;
 
         public DomTestXml(String document) {

@@ -368,47 +368,6 @@ public abstract class Configuration {
     }
 
     /**
-     * Returns the url to the file defining the schema.
-     *
-     * <p>For schema which are defined by multiple files, this method should return the base schema
-     * which includes all other files that define the schema.
-     *
-     * @deprecated use {@link XSD#getSchemaLocation()}.
-     */
-    public final String getSchemaFileURL() {
-        return getXSD().getSchemaLocation();
-    }
-
-    /**
-     * Returns a schema location resolver instance used to override schema location uri's
-     * encountered in an instance document.
-     *
-     * <p>This method should be overridden to return such an instance. The default implementation
-     * returns <code>null</code>
-     *
-     * @return The schema location resolver, or <code>null</code>
-     * @deprecated
-     */
-    public final XSDSchemaLocationResolver getSchemaLocationResolver() {
-        return new SchemaLocationResolver(xsd);
-    }
-
-    /**
-     * Returns a schema locator, used to create imported and included schemas when parsing an
-     * instance document.
-     *
-     * <p>This method may be overridden to return such an instance. The default delegates to {@link
-     * #createSchemaLocator()} to and caches the result. This method may return <code>null</code> to
-     * indicate that no such locator should be used.
-     *
-     * @return The schema locator, or <code>null</code>
-     * @deprecated
-     */
-    public final XSDSchemaLocator getSchemaLocator() {
-        return new SchemaLocator(xsd);
-    }
-
-    /**
      * Convenience method for creating an instance of the schema for this configuration.
      *
      * @return The schema for this configuration.
@@ -574,14 +533,14 @@ public abstract class Configuration {
             Configuration dependency = (Configuration) d.next();
 
             // throw locator and location resolver into context
-            XSDSchemaLocationResolver resolver = dependency.getSchemaLocationResolver();
+            XSDSchemaLocationResolver resolver = new SchemaLocationResolver(dependency.getXSD());
 
             if (resolver != null) {
                 QName key = new QName(dependency.getNamespaceURI(), "schemaLocationResolver");
                 container.registerComponentInstance(key, resolver);
             }
 
-            XSDSchemaLocator locator = dependency.getSchemaLocator();
+            XSDSchemaLocator locator = new SchemaLocator(dependency.getXSD());
 
             if (locator != null) {
                 QName key = new QName(dependency.getNamespaceURI(), "schemaLocator");

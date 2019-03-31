@@ -125,7 +125,7 @@ public class GML3EncodingOnlineTest extends TestCase {
     void validate(byte[] data, Configuration configuration) throws Exception {
         SchemaFactory sf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
 
-        Schema s = sf.newSchema(new URI(configuration.getSchemaFileURL()).toURL());
+        Schema s = sf.newSchema(new URI(configuration.getXSD().getSchemaLocation()).toURL());
 
         Validator v = s.newValidator();
 

@@ -1184,26 +1184,6 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
         return Collections.emptySet();
     }
 
-    @Override
-    public int getNumOverviews(String coverageName) {
-        if (!checkName(coverageName)) {
-            throw new IllegalArgumentException(
-                    "The specified coverageName " + coverageName + "is not supported");
-        }
-        if (dtLayout == null) {
-            // Back to the default
-            return numOverviews;
-        }
-        return dtLayout.getNumInternalOverviews()
-                + (dtLayout.getNumExternalOverviews() > 0 ? dtLayout.getNumExternalOverviews() : 0);
-    }
-
-    @Override
-    public int getNumOverviews() {
-        // Default implementation for backwards compatibility
-        return getNumOverviews(coverageName);
-    }
-
     public DatasetLayout getDatasetLayout() {
         // Default implementation for backwards compatibility
         return getDatasetLayout(coverageName);

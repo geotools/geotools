@@ -323,12 +323,6 @@ public final class ImagePyramidReader extends AbstractGridCoverage2DReader
     }
 
     @Override
-    public int getNumOverviews(String coverageName) {
-        return getFirstLevelReader(coverageName, false)
-                .getNumOverviews(getReaderCoverageName(coverageName));
-    }
-
-    @Override
     public DatasetLayout getDatasetLayout(String coverageName) {
         return getFirstLevelReader(coverageName, false)
                 .getDatasetLayout(getReaderCoverageName(coverageName));

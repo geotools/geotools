@@ -1034,7 +1034,7 @@ public class GeoTiffReaderTest extends org.junit.Assert {
         assertNotNull(file);
         assertEquals(true, file.exists());
         GeoTiffReader reader = new GeoTiffReader(file);
-        final int nOvrs = reader.getNumOverviews();
+        final int nOvrs = reader.getDatasetLayout().getNumExternalOverviews();
         LOGGER.info("Number of external overviews: " + nOvrs);
         assertEquals(4, nOvrs);
         double[][] availableResolutions = reader.getResolutionLevels();

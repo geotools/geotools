@@ -16,6 +16,7 @@
  */
 package org.geotools.gce.imagemosaic;
 
+import it.geosolutions.imageio.maskband.DatasetLayout;
 import java.awt.Rectangle;
 import java.io.File;
 import java.io.FilenameFilter;
@@ -1071,28 +1072,20 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
     }
 
     @Override
-    public int getNumOverviews(String coverageName) {
-        coverageName = checkUnspecifiedCoverage(coverageName);
-        RasterManager manager = getRasterManager(coverageName);
-        return manager.overviewsController.getNumberOfOverviews();
-    }
-
-    @Override
-    public int getNumOverviews() {
-        return getNumOverviews(UNSPECIFIED);
-    }
-
-    @Override
-    public double[] getReadingResolutions(OverviewPolicy policy, double[] requestedResolution) {
+    public double[] getReadingResolutions(OverviewPolicy policy, double[] requestedResolution)
+            throws IOException {
         return getReadingResolutions(UNSPECIFIED, policy, requestedResolution);
     }
 
     @Override
     public double[] getReadingResolutions(
-            String coverageName, OverviewPolicy policy, double[] requestedResolution) {
+            String coverageName, OverviewPolicy policy, double[] requestedResolution)
+            throws IOException {
         coverageName = checkUnspecifiedCoverage(coverageName);
         RasterManager manager = getRasterManager(coverageName);
-        final int numOverviews = getNumOverviews(coverageName);
+        DatasetLayout datasetLayout = getDatasetLayout(coverageName);
+        final int numOverviews =
+                datasetLayout.getNumInternalOverviews() + datasetLayout.getNumExternalOverviews();
         OverviewsController overviewsController = manager.overviewsController;
         OverviewLevel level = null;
         if (numOverviews > 0) {

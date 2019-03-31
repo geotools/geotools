@@ -272,7 +272,7 @@ public class GeoPackageReaderTest {
     public void testNumberOverviews() throws IOException {
         GeoPackageReader reader =
                 new GeoPackageReader(GeoPackageTest.class.getResource("Blue_Marble.gpkg"), null);
-        assertEquals(4, reader.getNumOverviews());
+        assertEquals(4, reader.getDatasetLayout().getNumInternalOverviews());
 
         // get all
         final double[][] resolutionLevels = reader.getResolutionLevels();

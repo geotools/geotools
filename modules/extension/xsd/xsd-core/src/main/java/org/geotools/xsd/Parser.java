@@ -534,7 +534,7 @@ public class Parser {
             // add the entry
             schemaLocation.append(dependency.getNamespaceURI());
             schemaLocation.append(" ");
-            schemaLocation.append(dependency.getSchemaFileURL());
+            schemaLocation.append(dependency.getXSD().getSchemaLocation());
         }
 
         // set the property to map namespaces to schema locations

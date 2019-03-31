@@ -132,7 +132,7 @@ public class Schemas {
                 LOGGER.fine("looking up schema for " + conf.getNamespaceURI());
             }
 
-            XSDSchemaLocator locator = conf.getSchemaLocator();
+            XSDSchemaLocator locator = new SchemaLocator(conf.getXSD());
 
             if (locator == null) {
                 LOGGER.fine("No schema locator for " + conf.getNamespaceURI());
@@ -144,7 +144,7 @@ public class Schemas {
             String schemaLocation = null;
 
             try {
-                URL location = new URL(conf.getSchemaFileURL());
+                URL location = new URL(conf.getXSD().getSchemaLocation());
                 schemaLocation = location.toExternalForm();
             } catch (MalformedURLException e) {
                 throw new RuntimeException(e);
@@ -181,7 +181,7 @@ public class Schemas {
         for (Iterator c = all.iterator(); c.hasNext(); ) {
             configuration = (Configuration) c.next();
 
-            XSDSchemaLocationResolver resolver = configuration.getSchemaLocationResolver();
+            XSDSchemaLocationResolver resolver = new SchemaLocationResolver(configuration.getXSD());
 
             if (resolver != null) {
                 resolvers.add(resolver);

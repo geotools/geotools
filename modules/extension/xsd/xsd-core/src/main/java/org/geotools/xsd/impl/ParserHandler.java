@@ -365,8 +365,9 @@ public class ParserHandler extends DefaultHandler2 {
                         "No schemaLocation found, using '"
                                 + config.getNamespaceURI()
                                 + " "
-                                + config.getSchemaFileURL());
-                locations = new String[] {config.getNamespaceURI(), config.getSchemaFileURL()};
+                                + config.getXSD().getSchemaLocation());
+                locations = new String[] {config.getNamespaceURI(),
+                        config.getXSD().getSchemaLocation()};
             }
 
             // look up schema overrides

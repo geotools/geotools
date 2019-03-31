@@ -261,7 +261,7 @@ public abstract class XMLTestSupport extends TestCase {
             // no schemaLocation attribute, add one for the schema for this config
             root.setAttribute(
                     "xsi:schemaLocation",
-                    config.getNamespaceURI() + " " + config.getSchemaFileURL());
+                    config.getNamespaceURI() + " " + config.getXSD().getSchemaLocation());
         }
 
         DOMParser parser = new DOMParser(config, document);

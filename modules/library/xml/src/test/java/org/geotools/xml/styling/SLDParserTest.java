@@ -22,12 +22,11 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.awt.Color;
+import java.awt.*;
 import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.StringBufferInputStream;
 import java.io.StringReader;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -36,7 +35,6 @@ import java.util.Locale;
 import java.util.Map;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import junit.framework.Assert;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.styling.ContrastEnhancement;
 import org.geotools.styling.ExternalGraphic;
@@ -607,7 +605,7 @@ public class SLDParserTest {
                 new ResourceLocator() {
 
                     public URL locateResource(String uri) {
-                        Assert.assertEquals("test-data/blob.gif", uri);
+                        assertEquals("test-data/blob.gif", uri);
                         return getClass().getResource(uri);
                     }
                 });
@@ -685,11 +683,12 @@ public class SLDParserTest {
     public void testStrokeColorWithEnv() throws Exception {
         DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
         org.w3c.dom.Document node =
-                builder.parse(new StringBufferInputStream(formattedCssStrokeParameter));
+                builder.parse(
+                        new ByteArrayInputStream(formattedCssStrokeParameter.getBytes("UTF-8")));
         SLDParser parser = new SLDParser(styleFactory);
         Stroke stroke = parser.parseStroke(node.getDocumentElement());
         // <strConcat([#], [env([stroke_color], [" + color + "])])>";
-        Assert.assertEquals("#" + color, stroke.getColor().evaluate(Color.decode("#" + color)));
+        assertEquals("#" + color, stroke.getColor().evaluate(Color.decode("#" + color)));
     }
 
     @Test

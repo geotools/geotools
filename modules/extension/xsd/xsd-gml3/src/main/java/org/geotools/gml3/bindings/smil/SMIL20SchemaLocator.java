@@ -17,8 +17,8 @@
 package org.geotools.gml3.bindings.smil;
 
 import java.io.IOException;
+import java.util.Collections;
 import org.eclipse.xsd.XSDSchema;
-import org.eclipse.xsd.util.XSDSchemaLocationResolver;
 import org.eclipse.xsd.util.XSDSchemaLocator;
 import org.geotools.gml3.smil.SMIL20;
 import org.geotools.gml3.smil.SMIL20LANG;
@@ -33,11 +33,11 @@ public class SMIL20SchemaLocator implements XSDSchemaLocator {
         if (SMIL20.NAMESPACE.equals(namespaceURI)) {
             String location = getClass().getResource("smil20.xsd").toString();
 
-            XSDSchemaLocationResolver[] locators =
-                    new XSDSchemaLocationResolver[] {new SMIL20SchemaLocationResolver()};
-
             try {
-                return Schemas.parse(location, null, locators);
+                return Schemas.parse(
+                        location,
+                        null,
+                        Collections.singletonList(new SMIL20SchemaLocationResolver()));
             } catch (IOException e) {
                 // TODO:  log this
             }
@@ -46,11 +46,11 @@ public class SMIL20SchemaLocator implements XSDSchemaLocator {
         if (SMIL20LANG.NAMESPACE.equals(namespaceURI)) {
             String location = getClass().getResource("smil20-language.xsd").toString();
 
-            XSDSchemaLocationResolver[] locators =
-                    new XSDSchemaLocationResolver[] {new SMIL20SchemaLocationResolver()};
-
             try {
-                return Schemas.parse(location, null, locators);
+                return Schemas.parse(
+                        location,
+                        null,
+                        Collections.singletonList(new SMIL20SchemaLocationResolver()));
             } catch (IOException e) {
                 // TODO:  log this
             }

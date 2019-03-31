@@ -206,27 +206,6 @@ public class Schemas {
      * Parses a schema at the specified location.
      *
      * @param location A uri pointing to the location of the schema.
-     * @param locators An array of schema locator objects to be used when parsing imports/includes
-     *     of the main schema.
-     * @param resolvers An array of schema location resolvers used to override schema locations
-     *     encountered in an instance document or an imported schema.
-     * @return The parsed schema, or null if the schema could not be parsed.
-     * @throws IOException In the event of a schema parsing error.
-     * @deprecated use {@link #parse(String, List, List)}
-     */
-    public static final XSDSchema parse(
-            String location, XSDSchemaLocator[] locators, XSDSchemaLocationResolver[] resolvers)
-            throws IOException {
-        return parse(
-                location,
-                (locators != null) ? Arrays.asList(locators) : Collections.EMPTY_LIST,
-                (resolvers != null) ? Arrays.asList(resolvers) : Collections.EMPTY_LIST);
-    }
-
-    /**
-     * Parses a schema at the specified location.
-     *
-     * @param location A uri pointing to the location of the schema.
      * @param locators A list of schema locator objects to be used when parsing imports/includes of
      *     the main schema.
      * @param resolvers A list of schema location resolvers used to override schema locations
@@ -673,18 +652,6 @@ public class Schemas {
     }
 
     /**
-     * Returns a list of all child element declarations of the specified element, no order is
-     * guaranteed.
-     *
-     * @param element The parent element.
-     * @return A list of @link XSDElementDeclaration objects, one for each child element.
-     * @deprecated use {@link #getChildElementDeclarations(XSDTypeDefinition)}
-     */
-    public static final List getChildElementDeclarations(XSDElementDeclaration element) {
-        return getChildElementDeclarations(element.getType());
-    }
-
-    /**
      * Returns a list of all child element declarations of the specified type, no order is
      * guaranteed.
      *
@@ -693,22 +660,6 @@ public class Schemas {
      */
     public static final List getChildElementDeclarations(XSDTypeDefinition type) {
         return getChildElementDeclarations(type, true);
-    }
-
-    /**
-     * Returns a list of all child element declarations of the specified element.
-     *
-     * <p>The <code>includeParents</code> flag controls if this method should returns those elements
-     * defined on parent types.
-     *
-     * @param element The parent element.
-     * @param includeParents Flag indicating if parent types should be processed.
-     * @return A list of @link XSDElementDeclaration objects, one for each child element.
-     * @deprecated use {@link #getChildElementDeclarations(XSDTypeDefinition, boolean)}
-     */
-    public static final List getChildElementDeclarations(
-            XSDElementDeclaration element, boolean includeParents) {
-        return getChildElementDeclarations(element.getType(), includeParents);
     }
 
     /**
@@ -1199,7 +1150,7 @@ public class Schemas {
     public static final XSDElementDeclaration getChildElementDeclaration(
             XSDElementDeclaration parent, QName qName) {
         // look for a match in a direct child
-        List children = getChildElementDeclarations(parent);
+        List children = getChildElementDeclarations(parent.getType());
 
         for (Iterator itr = children.iterator(); itr.hasNext(); ) {
             XSDElementDeclaration element = (XSDElementDeclaration) itr.next();

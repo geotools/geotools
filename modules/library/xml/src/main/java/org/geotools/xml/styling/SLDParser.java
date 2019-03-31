@@ -120,6 +120,8 @@ import org.xml.sax.InputSource;
  */
 public class SLDParser {
 
+    private static final FilterFactory2 FF = CommonFactoryFinder.getFilterFactory2();
+
     /** HISTOGRAM */
     private static final String HISTOGRAM = "histogram";
 
@@ -194,6 +196,8 @@ public class SLDParser {
     private EntityResolver entityResolver;
 
     private boolean disposeInputSource;
+
+    private ExpressionDOMParser expressionDOMParser = new ExpressionDOMParser(FF);
 
     /**
      * Create a Stylereader - use if you already have a dom to parse.
@@ -2117,7 +2121,7 @@ public class SLDParser {
     }
 
     private void handleDashArrayNode(Node child, List<Expression> expressions) {
-        Expression expression = ExpressionDOMParser.parseExpression(child);
+        Expression expression = expressionDOMParser.expression(child);
         if (expression instanceof Literal) {
             handleDashArrayLiteral((Literal) expression, expressions);
         } else {
@@ -2294,7 +2298,7 @@ public class SLDParser {
                     LOGGER.finest("about to parse " + child.getLocalName());
                 }
                 // add the element node as an expression
-                expressions.add(org.geotools.filter.ExpressionDOMParser.parseExpression(child));
+                expressions.add(expressionDOMParser.expression(child));
                 cdatas.add(false);
             } else if (child.getNodeType() == Node.CDATA_SECTION_NODE) {
                 String value = child.getNodeValue();

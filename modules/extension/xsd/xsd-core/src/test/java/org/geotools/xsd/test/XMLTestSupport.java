@@ -401,7 +401,13 @@ public abstract class XMLTestSupport extends TestCase {
         context.registerComponentInstance(namespaces);
         context.registerComponentInstance(new NamespaceSupportWrapper(namespaces));
 
-        SchemaIndex index = new SchemaIndexImpl(new XSDSchema[] {configuration.schema()});
+        XSDSchema result;
+        try {
+            result = configuration.getXSD().getSchema();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        SchemaIndex index = new SchemaIndexImpl(new XSDSchema[] {result});
         context.registerComponentInstance(index);
 
         context.registerComponentInstance(configuration);

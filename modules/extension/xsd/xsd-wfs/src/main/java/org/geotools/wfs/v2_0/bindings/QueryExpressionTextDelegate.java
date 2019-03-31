@@ -22,6 +22,7 @@ import net.opengis.wfs20.QueryExpressionTextType;
 import net.opengis.wfs20.Wfs20Factory;
 import org.geotools.wfs.v2_0.WFS;
 import org.geotools.xsd.ParserDelegate;
+import org.geotools.xsd.impl.Handler;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.NamespaceSupport;
@@ -79,6 +80,12 @@ public class QueryExpressionTextDelegate extends CopyingHandler implements Parse
 
     public boolean canHandle(QName elementName) {
         return QueryExpressionText.equals(elementName);
+    }
+
+    @Override
+    public boolean canHandle(
+            QName elementName, Attributes attributes, Handler handler, Handler parent) {
+        return canHandle(elementName);
     }
 
     public Object getParsedObject() {

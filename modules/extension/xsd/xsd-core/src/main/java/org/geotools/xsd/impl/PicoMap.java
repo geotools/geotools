@@ -343,6 +343,7 @@ public class PicoMap implements Map, MutablePicoContainer {
         return null;
     }
 
+    @SuppressWarnings("deprecation")
     public void verify() throws PicoVerificationException {}
 
     public void start() {}

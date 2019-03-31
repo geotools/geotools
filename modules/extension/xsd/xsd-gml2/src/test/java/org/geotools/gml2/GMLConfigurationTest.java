@@ -17,7 +17,6 @@
 package org.geotools.gml2;
 
 import junit.framework.TestCase;
-
 import org.eclipse.xsd.util.XSDSchemaLocationResolver;
 import org.geotools.xlink.XLINKConfiguration;
 import org.geotools.xs.XSConfiguration;

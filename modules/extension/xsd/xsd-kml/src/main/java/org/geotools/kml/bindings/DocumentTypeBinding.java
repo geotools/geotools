@@ -21,6 +21,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import javax.xml.namespace.QName;
+import org.eclipse.xsd.XSDElementDeclaration;
 import org.geotools.data.DataUtilities;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
@@ -114,7 +115,7 @@ public class DocumentTypeBinding extends AbstractComplexBinding {
         return b.buildFeature(feature.getID());
     }
 
-    public List getProperties(Object object) throws Exception {
+    public List getProperties(Object object, XSDElementDeclaration element) throws Exception {
         Object[] prop = new Object[2];
         prop[0] = getPlacemarkName();
         if (object instanceof FeatureCollection) {

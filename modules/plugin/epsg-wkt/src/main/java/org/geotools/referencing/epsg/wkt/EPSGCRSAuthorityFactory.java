@@ -49,9 +49,7 @@ import org.opengis.util.InternationalString;
  * @version $Id$
  * @author Jody Garnett
  * @author Rueben Schulz
- * @deprecated Uses one of the other EPSG factories backed by a database instead.
  */
-// not quite sure how I am going to create a new factory (what should the geoapi method be)
 public class EPSGCRSAuthorityFactory extends AbstractFactory implements CRSAuthorityFactory {
 
     private static final Logger LOGGER = Logging.getLogger(EPSGCRSAuthorityFactory.class);

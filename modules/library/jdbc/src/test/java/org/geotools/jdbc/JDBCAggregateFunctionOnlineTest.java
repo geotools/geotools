@@ -126,7 +126,7 @@ public abstract class JDBCAggregateFunctionOnlineTest extends JDBCTestSupport {
                         .build();
 
         dataStore.getFeatureSource(tname("aggregate")).accepts(Query.ALL, v, null);
-        if (dataStore.getSupportedFunctions().containsKey(FilterFunction_area.NAME.getName())) {
+        if (dataStore.getFilterCapabilities().supports(FilterFunction_area.class)) {
             assertFalse(visited);
         }
         List groups = v.getResult().toList();

@@ -1137,6 +1137,15 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
         }
     }
 
+    @Override
+    protected boolean checkName(String coverageName) {
+        if (coverageName.equalsIgnoreCase(UNSPECIFIED)) {
+            return getGridCoverageCount() == 1;
+        } else {
+            return names.contains(coverageName);
+        }
+    }
+
     /**
      * Create a RasterManager on top of this {@link MosaicConfigurationBean}
      *
@@ -1532,5 +1541,10 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
 
     public ExecutorService getMultiThreadedLoader() {
         return multiThreadedLoader;
+    }
+
+    public DatasetLayout getDatasetLayout() {
+        // Default implementation for backwards compatibility
+        return getDatasetLayout(checkUnspecifiedCoverage(UNSPECIFIED));
     }
 }

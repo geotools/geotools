@@ -1,6 +1,6 @@
 package org.geotools.data.transform;
 
-import static junit.framework.Assert.*;
+import static org.junit.Assert.*;
 
 import java.io.File;
 import org.geotools.data.property.PropertyDataStore;

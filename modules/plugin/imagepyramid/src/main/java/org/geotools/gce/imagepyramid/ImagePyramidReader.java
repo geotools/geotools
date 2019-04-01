@@ -43,11 +43,11 @@ import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.OverviewPolicy;
 import org.geotools.data.DataSourceException;
-import org.geotools.data.DataUtilities;
 import org.geotools.data.PrjFileReader;
 import org.geotools.gce.imagemosaic.ImageMosaicReader;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.referencing.operation.builder.GridToEnvelopeMapper;
+import org.geotools.util.URLs;
 import org.geotools.util.factory.Hints;
 import org.opengis.coverage.grid.Format;
 import org.opengis.coverage.grid.GridCoverage;
@@ -163,7 +163,7 @@ public final class ImagePyramidReader extends AbstractGridCoverage2DReader
         }
 
         // get the crs if able to
-        final URL prjURL = DataUtilities.changeUrlExt(sourceURL, "prj");
+        final URL prjURL = URLs.changeUrlExt(sourceURL, "prj");
         PrjFileReader crsReader = null;
         try {
             crsReader = new PrjFileReader(Channels.newChannel(prjURL.openStream()));

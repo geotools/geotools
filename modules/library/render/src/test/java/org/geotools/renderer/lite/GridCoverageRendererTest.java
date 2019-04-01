@@ -59,7 +59,6 @@ import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.coverage.grid.io.imageio.GeoToolsWriteParams;
 import org.geotools.coverage.processing.CoverageProcessor;
 import org.geotools.coverage.processing.operation.Crop;
-import org.geotools.data.DataUtilities;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.function.EnvFunction;
 import org.geotools.gce.arcgrid.ArcGridReader;
@@ -199,14 +198,14 @@ public class GridCoverageRendererTest {
 
         // sampleGrib.tif has longitudes from 302 to 308 degrees East
         coverageFile =
-                DataUtilities.urlToFile(
+                URLs.urlToFile(
                         GridCoverageRendererTest.class.getResource("test-data/sampleGrib.tif"));
         assertTrue(coverageFile.exists());
         sampleGribReader = new GeoTiffReader(coverageFile);
 
         // multi pixel packed sample model test case, two bits per pixel
         coverageFile =
-                DataUtilities.urlToFile(
+                URLs.urlToFile(
                         GridCoverageRendererTest.class.getResource(
                                 "test-data/multi_pixel_packed.tif"));
         assertTrue(coverageFile.exists());
@@ -1790,7 +1789,7 @@ public class GridCoverageRendererTest {
     @Test
     public void testRenderOffDateline() throws Exception {
         File coverageFile =
-                DataUtilities.urlToFile(
+                URLs.urlToFile(
                         GridCoverageReaderHelperTest.class.getResource(
                                 "test-data/off_dateline.tif"));
         assertTrue(coverageFile.exists());

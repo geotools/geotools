@@ -423,7 +423,7 @@ class RasterManager {
         hints = reader.getHints();
         coverageEnvelope = reader.getOriginalEnvelope();
         coverageGridrange = reader.getOriginalGridRange();
-        coverageCRS = reader.getCrs();
+        coverageCRS = reader.getCoordinateReferenceSystem();
         raster2Model = reader.getOriginalGridToWorld(PixelInCell.CELL_CENTER);
         this.coverageIdentifier = reader.getName();
         this.coverageFactory = reader.getGridCoverageFactory();

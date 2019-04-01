@@ -584,7 +584,7 @@ public abstract class BaseGridCoverage2DReader extends AbstractGridCoverage2DRea
         resourceInfo = localInfo;
         localInfo.setName(subname);
         localInfo.setBounds(new ReferencedEnvelope(this.getOriginalEnvelope()));
-        localInfo.setCRS(this.getCrs());
+        localInfo.setCRS(getCoordinateReferenceSystem());
         localInfo.setTitle(subname);
 
         return new DefaultResourceInfo(this.resourceInfo);
@@ -623,11 +623,6 @@ public abstract class BaseGridCoverage2DReader extends AbstractGridCoverage2DRea
     /** @return the gridCoverage count */
     public int getGridCoverageCount() {
         return 1;
-    }
-
-    /** @see org.opengis.coverage.grid.GridCoverageReader#hasMoreGridCoverages() */
-    public boolean hasMoreGridCoverages() {
-        return false;
     }
 
     protected MultiLevelROI getMultiLevelRoi() {

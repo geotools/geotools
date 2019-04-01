@@ -78,21 +78,6 @@ public interface GridCoverageReader {
     String getMetadataValue(String coverageName, String name) throws IOException;
 
     /**
-     * Retrieve the list of grid coverages contained within the {@linkplain #getSource input
-     * source}. Each grid can have a different coordinate system, number of dimensions and grid
-     * geometry. For example, a HDF-EOS file (GRID.HDF) contains 6 grid coverages each having a
-     * different projection. An empty array will be returned if no sub names exist.
-     *
-     * @return The list of grid coverages contained within the input source.
-     * @throws IOException if an error occurs during reading.
-     * @todo The javadoc should also be more explicit about hierarchical format. Should the names be
-     *     returned as paths? Explain what to return if the GridCoverage are accessible by index
-     *     only. A proposal is to name them "grid1", "grid2", etc.
-     * @deprecated use {@link #getGridCoverageNames()}
-     */
-    String[] listSubNames() throws IOException;
-
-    /**
      * Retrieve the list of coverages contained within the {@linkplain #getSource input source}.
      * Each grid can have a different coordinate system, number of dimensions and grid geometry. For
      * example, a HDF-EOS file (GRID.HDF) contains 6 grid coverages each having a different
@@ -110,23 +95,6 @@ public interface GridCoverageReader {
      * @throws IOException if an error occurs during reading.
      */
     int getGridCoverageCount() throws IOException;
-
-    /**
-     * Returns the name for the next grid coverage to be {@linkplain #read read} from the
-     * {@linkplain #getSource input source}.
-     *
-     * @throws IOException if an error occurs during reading.
-     * @todo Do we need a special method for that, or should it be a metadata?
-     * @deprecated no replacement for that.
-     */
-    String getCurrentSubname() throws IOException;
-
-    /**
-     * Returns {@code true} if there is at least one more grid coverage available on the stream.
-     *
-     * @deprecated no replacement for that.
-     */
-    boolean hasMoreGridCoverages() throws IOException;
 
     /**
      * Read the only available grid coverage. Use {@link #read(String, GeneralParameterValue[])} in
@@ -172,15 +140,6 @@ public interface GridCoverageReader {
      */
     GridCoverage read(String coverageName, GeneralParameterValue[] parameters)
             throws IllegalArgumentException, IOException;
-
-    /**
-     * Skip the current grid coverage without reading it, and move the stream position to the next
-     * grid coverage.
-     *
-     * @throws IOException if the operation failed.
-     * @deprecated no replacement for that.
-     */
-    void skip() throws IOException;
 
     /**
      * Allows any resources held by this object to be released. The result of calling any other

@@ -51,15 +51,6 @@ public class PreparedFilterToSQL extends FilterToSQL {
     boolean prepareEnabled = true;
 
     /**
-     * Default constructor
-     *
-     * @deprecated Use {@link PreparedFilterToSQL(PreparedStatementSQLDialect)} instead
-     */
-    public PreparedFilterToSQL() {
-        this.dialect = null;
-    }
-
-    /**
      * Contructor taking a reference to the SQL dialect, will use it to encode geometry placeholders
      *
      * @param dialect

@@ -383,15 +383,6 @@ public abstract class SQLDialect {
     }
 
     /**
-     * Register the dialect mappings between Geotools FilterFunction names and database related
-     * function.
-     *
-     * @param functions mappings from GT FilterFunction name to sql function name
-     * @deprecated No longer needed, use FilterToSQL to handle function encoding
-     */
-    public void registerFunctions(Map<String, String> functions) {}
-
-    /**
      * Returns the java class mapping for a particular column.
      *
      * <p>This method is used as a "last resort" when the mappings specified by the dialect in the
@@ -438,18 +429,6 @@ public abstract class SQLDialect {
     /** Quick accessor for {@link #getNameEscape()}. */
     protected final String ne() {
         return getNameEscape();
-    }
-
-    /**
-     * Encodes the name of a column in an SQL statement.
-     *
-     * <p>This method wraps <tt>raw</tt> in the character provided by {@link #getNameEscape()}.
-     * Subclasses usually dont override this method and instead override {@link #getNameEscape()}.
-     *
-     * @deprecated use {@link #encodeColumnName(String, String, StringBuffer)}.
-     */
-    public final void encodeColumnName(String raw, StringBuffer sql) {
-        encodeColumnName(null, raw, sql);
     }
 
     /**
@@ -674,35 +653,6 @@ public abstract class SQLDialect {
      * asWKB</code> when fetching a geometry.
      *
      * <p>This method must also be sure to properly encode the name of the column with the {@link
-     * #encodeColumnName(String, StringBuffer)} function.
-     *
-     * <p>Example:
-     *
-     * <pre>
-     *   <code>
-     *   sql.append( "asText(" );
-     *   column( gatt.getLocalName(), sql );
-     *   sql.append( ")" );
-     *   </code>
-     * </pre>
-     *
-     * <p>This default implementation simply uses the column name without any wrapping function,
-     * subclasses must override.
-     *
-     * @deprecated use {@link #encodeGeometryColumn(GeometryDescriptor, String, int, StringBuffer)}
-     */
-    public final void encodeGeometryColumn(GeometryDescriptor gatt, int srid, StringBuffer sql) {
-        encodeColumnName(gatt.getLocalName(), sql);
-    }
-
-    /**
-     * Encodes the name of a geometry column in a SELECT statement.
-     *
-     * <p>This method should wrap the column name in any functions that are used to retrieve its
-     * value. For instance, often it is necessary to use the function <code>asText</code>, or <code>
-     * asWKB</code> when fetching a geometry.
-     *
-     * <p>This method must also be sure to properly encode the name of the column with the {@link
      * #encodeColumnName(String, String, StringBuffer)} function.
      *
      * <p>Example:
@@ -714,93 +664,15 @@ public abstract class SQLDialect {
      *   sql.append( ")" );
      *   </code>
      * </pre>
-     *
-     * <p>This default implementation simply uses the column name without any wrapping function,
-     * subclasses must override.
-     *
-     * @deprecated use {@link #encodeGeometryColumn(GeometryDescriptor, String, int, Hints,
-     *     StringBuffer)}
-     */
-    public void encodeGeometryColumn(
-            GeometryDescriptor gatt, String prefix, int srid, StringBuffer sql) {
-        encodeColumnName(prefix, gatt.getLocalName(), sql);
-    }
-
-    /**
-     * Encodes the name of a geometry column in a SELECT statement.
-     *
-     * <p>This method should wrap the column name in any functions that are used to retrieve its
-     * value. For instance, often it is necessary to use the function <code>asText</code>, or <code>
-     * asWKB</code> when fetching a geometry.
-     *
-     * <p>This method must also be sure to properly encode the name of the column with the {@link
-     * #encodeColumnName(String, String, StringBuffer)} function.
-     *
-     * <p>Example:
-     *
-     * <pre>
-     *   <code>
-     *   sql.append( "asText(" );
-     *   column( gatt.getLocalName(), sql );
-     *   sql.append( ")" );
-     *   </code>
-     * </pre>
-     *
-     * <p>This default implementation calls the deprecated {@link
-     * #encodeGeometryColumn(GeometryDescriptor, String, int, StringBuffer)} version of this method
-     * for backward compatibility reasons.
      */
     public void encodeGeometryColumn(
             GeometryDescriptor gatt, String prefix, int srid, Hints hints, StringBuffer sql) {
-
-        // call previously deprecated
-        encodeGeometryColumn(gatt, prefix, srid, sql);
-    }
-
-    /**
-     * Encodes a generalized geometry using a DB provided SQL function if available If not
-     * supported, subclasses should not implement Only called if {@link
-     * Hints#GEOMETRY_GENERALIZATION is supported}
-     *
-     * <p>Example:
-     *
-     * <pre>
-     *   <code>
-     *   sql.append( "asText(generalize(" );
-     *   column( gatt.getLocalName(), sql );
-     *   sql.append( "," );
-     *   sql.append(distance);
-     *   sql.append( "))" );
-     *   </code>
-     * </pre>
-     *
-     * <p>
-     *
-     * @deprecated use {@link #encodeGeometryColumnGeneralized(GeometryDescriptor, String, int,
-     *     StringBuffer, Double)}
-     */
-    public final void encodeGeometryColumnGeneralized(
-            GeometryDescriptor gatt, int srid, StringBuffer sql, Double distance) {
-        throw new UnsupportedOperationException("Geometry generalization not supported");
+        encodeColumnName(prefix, gatt.getLocalName(), sql);
     }
 
     public void encodeGeometryColumnGeneralized(
             GeometryDescriptor gatt, String prefix, int srid, StringBuffer sql, Double distance) {
         throw new UnsupportedOperationException("Geometry generalization not supported");
-    }
-
-    /**
-     * Encodes a simplified geometry using a DB provided SQL function if available If not supported,
-     * subclasses should not implement Only called if {@link Hints#GEOMETRY_SIMPLIFICATION is
-     * supported}
-     *
-     * @see SQLDialect#encodeGeometryColumnGeneralized(GeometryDescriptor, StringBuffer, Double)
-     * @deprecated use {@link #encodeGeometryColumnSimplified(GeometryDescriptor, String, int,
-     *     StringBuffer, Double)}
-     */
-    public void encodeGeometryColumnSimplified(
-            GeometryDescriptor gatt, int srid, StringBuffer sql, Double distance) {
-        throw new UnsupportedOperationException("Geometry simplification not supported");
     }
 
     public void encodeGeometryColumnSimplified(
@@ -1419,23 +1291,6 @@ public abstract class SQLDialect {
     protected PrimaryKey getPrimaryKey(String typeName) throws IOException {
         SimpleFeatureType featureType = dataStore.getSchema(typeName);
         return dataStore.getPrimaryKey(featureType);
-    }
-
-    @Deprecated
-    protected void encodeAggregateFunction(String function, String column, StringBuffer sql) {
-        encodeAggregateFunctionPrefix(function, sql);
-        sql.append(column);
-        encodeAggregateFunctionPostfix(function, sql);
-    }
-
-    @Deprecated
-    public void encodeAggregateFunctionPrefix(String function, StringBuffer sql) {
-        sql.append(function).append("(");
-    }
-
-    @Deprecated
-    public void encodeAggregateFunctionPostfix(String function, StringBuffer sql) {
-        sql.append(")");
     }
 
     /**

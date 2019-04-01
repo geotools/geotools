@@ -131,7 +131,7 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
         getDataStore().encodeGeometryColumn(gatt, temp, hints);
 
         StringBuffer originalColumnName = new StringBuffer();
-        getDataStore().dialect.encodeColumnName(gatt.getLocalName(), originalColumnName);
+        getDataStore().dialect.encodeColumnName(null, gatt.getLocalName(), originalColumnName);
 
         StringBuffer replaceColumnName = new StringBuffer();
         encodeColumnName(gatt.getLocalName(), typeName, replaceColumnName, hints);
@@ -334,7 +334,7 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
 
         getDataStore().encodeTableName(typeName, sql, hints);
         sql.append(".");
-        getDataStore().dialect.encodeColumnName(colName, sql);
+        getDataStore().dialect.encodeColumnName(null, colName, sql);
     }
 
     /**
@@ -351,7 +351,7 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
 
         getDataStore().dialect.encodeTableName(typeName, sql);
         sql.append(".");
-        getDataStore().dialect.encodeColumnName(colName, sql);
+        getDataStore().dialect.encodeColumnName(null, colName, sql);
     }
 
     /**
@@ -935,13 +935,13 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
                 throw new RuntimeException(e);
             }
             sql.append(" ON ");
-            store.dialect.encodeColumnName(rootTableName, sql);
+            store.dialect.encodeColumnName(null, rootTableName, sql);
             sql.append(".");
-            store.dialect.encodeColumnName(multipleValue.getSourceColumn(), sql);
+            store.dialect.encodeColumnName(null, multipleValue.getSourceColumn(), sql);
             sql.append(" = ");
             store.dialect.encodeTableName(alias, sql);
             sql.append(".");
-            store.dialect.encodeColumnName(multipleValue.getTargetColumn(), sql);
+            store.dialect.encodeColumnName(null, multipleValue.getTargetColumn(), sql);
             sql.append(" ");
         }
     }

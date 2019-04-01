@@ -38,12 +38,7 @@ import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.jdbc.JDBCDataStore;
-import org.geotools.jdbc.NullPrimaryKey;
-import org.geotools.jdbc.PreparedFilterToSQL;
-import org.geotools.jdbc.PreparedStatementSQLDialect;
-import org.geotools.jdbc.PrimaryKey;
-import org.geotools.jdbc.PrimaryKeyColumn;
+import org.geotools.jdbc.*;
 import org.geotools.referencing.CRS;
 import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.Envelope;
@@ -332,7 +327,7 @@ public class TeradataDialect extends PreparedStatementSQLDialect {
 
     @Override
     public void encodeGeometryEnvelope(String tableName, String geometryColumn, StringBuffer sql) {
-        encodeColumnName(geometryColumn, sql);
+        encodeColumnName(null, geometryColumn, sql);
         sql.append(".ST_Envelope().ST_AsBinary()");
     }
 
@@ -351,9 +346,9 @@ public class TeradataDialect extends PreparedStatementSQLDialect {
             for (AttributeDescriptor att : featureType.getAttributeDescriptors()) {
                 if (att instanceof GeometryDescriptor) {
                     sql.append(", CASE WHEN CHARACTERS(cast(");
-                    encodeColumnName(att.getLocalName(), sql);
+                    encodeColumnName(null, att.getLocalName(), sql);
                     sql.append(" as clob)) > 30000 THEN NULL ELSE CAST (");
-                    encodeColumnName(att.getLocalName(), sql);
+                    encodeColumnName(null, att.getLocalName(), sql);
                     // works but not ideal, assumes rest of attributes consume < 2000 characters in
                     // result set
                     sql.append(" as VARCHAR(30000)) END");
@@ -386,17 +381,17 @@ public class TeradataDialect extends PreparedStatementSQLDialect {
 
             sql.append(" WHERE ");
             sql.append("gc.");
-            encodeColumnName("SRID", sql);
+            encodeColumnName(null, "SRID", sql);
             sql.append(" = ");
             sql.append("srs.");
-            encodeColumnName("SRID", sql);
+            encodeColumnName(null, "SRID", sql);
 
             sql.append(" AND gc.");
-            encodeColumnName("F_TABLE_SCHEMA", sql);
+            encodeColumnName(null, "F_TABLE_SCHEMA", sql);
             sql.append(" = ?").append(" AND ");
 
             sql.append("gc.");
-            encodeColumnName("F_TABLE_NAME", sql);
+            encodeColumnName(null, "F_TABLE_NAME", sql);
             sql.append(" = ? ");
 
             // AND gc.UxMin IS NOT NULL AND gc.UyMin IS NOT NULL AND UxMax IS NOT NULL")
@@ -481,7 +476,7 @@ public class TeradataDialect extends PreparedStatementSQLDialect {
     }
 
     public void encodePrimaryKey(String column, StringBuffer sql) {
-        encodeColumnName(column, sql);
+        encodeColumnName(null, column, sql);
         //       sql.append(" PRIMARY KEY not null generated always as identity (start with 0)
         // integer");
         sql.append(" PRIMARY KEY not null integer");
@@ -571,13 +566,13 @@ public class TeradataDialect extends PreparedStatementSQLDialect {
             throws SQLException {
 
         StringBuffer sql = new StringBuffer("SELECT TOP 1 ");
-        encodeColumnName(columnName, sql);
+        encodeColumnName(null, columnName, sql);
 
         sql.append(" FROM ");
         encodeTableName(schemaName, tableName, sql);
 
         sql.append(" ORDER BY ");
-        encodeColumnName(columnName, sql);
+        encodeColumnName(null, columnName, sql);
         sql.append(" DESC");
 
         LOGGER.fine(sql.toString());
@@ -704,15 +699,15 @@ public class TeradataDialect extends PreparedStatementSQLDialect {
 
         sql.append(" WHERE ");
 
-        encodeColumnName("F_TABLE_SCHEMA", sql);
+        encodeColumnName(null, "F_TABLE_SCHEMA", sql);
         sql.append(" = ?").append(" AND ");
 
-        encodeColumnName("F_TABLE_NAME", sql);
+        encodeColumnName(null, "F_TABLE_NAME", sql);
         sql.append(" = ?");
 
         if (columnName != null) {
             sql.append(" AND ");
-            encodeColumnName("F_GEOMETRY_COLUMN", sql);
+            encodeColumnName(null, "F_GEOMETRY_COLUMN", sql);
             sql.append(" = ?");
         }
 
@@ -947,7 +942,7 @@ public class TeradataDialect extends PreparedStatementSQLDialect {
                     sb.append("( ");
 
                     for (PrimaryKeyColumn col : pkey.getColumns()) {
-                        encodeColumnName(col.getName(), sb);
+                        encodeColumnName(null, col.getName(), sb);
 
                         String typeName =
                                 lookupSqlTypeName(cx, schemaName, tableName, col.getName());
@@ -958,7 +953,7 @@ public class TeradataDialect extends PreparedStatementSQLDialect {
                         // more multiply keyed tables, this at least ensures some speed
                         sb.append("cellid INTEGER NOT NULL)");
                         sb.append("PRIMARY INDEX (");
-                        encodeColumnName(pkey.getColumns().get(0).getName(), sb);
+                        encodeColumnName(null, pkey.getColumns().get(0).getName(), sb);
                         sb.append(")");
                     }
                     sql = sb.toString();
@@ -1130,10 +1125,10 @@ public class TeradataDialect extends PreparedStatementSQLDialect {
     private void encodeWhereStatement(StringBuffer buf, List<PrimaryKeyColumn> ids, String table) {
         buf.append(" WHERE ");
         for (int i = 0; i < ids.size(); i++) {
-            encodeColumnName(ids.get(i).getName(), buf);
+            encodeColumnName(null, ids.get(i).getName(), buf);
             buf.append('=');
             buf.append(table).append('.');
-            encodeColumnName(ids.get(i).getName(), buf);
+            encodeColumnName(null, ids.get(i).getName(), buf);
             if (i + 1 < ids.size()) {
                 buf.append(" AND ");
             }
@@ -1189,7 +1184,7 @@ public class TeradataDialect extends PreparedStatementSQLDialect {
             String indexTable, String geometryName, List<PrimaryKeyColumn> primaryKeys) {
         StringBuffer buf = new StringBuffer();
         for (int i = 0; i < primaryKeys.size(); i++) {
-            encodeColumnName(primaryKeys.get(i).getName(), buf);
+            encodeColumnName(null, primaryKeys.get(i).getName(), buf);
             if (i + 1 < primaryKeys.size()) {
                 buf.append(',');
             }

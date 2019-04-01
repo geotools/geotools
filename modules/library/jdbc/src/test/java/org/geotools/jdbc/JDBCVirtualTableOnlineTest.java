@@ -56,15 +56,15 @@ public abstract class JDBCVirtualTableOnlineTest extends JDBCTestSupport {
         // a first vt with a condition, computing a new field
         sb = new StringBuffer();
         sb.append("select ");
-        dialect.encodeColumnName(aname("id"), sb);
+        dialect.encodeColumnName(null, aname("id"), sb);
         sb.append(", ");
-        dialect.encodeColumnName(aname("geom"), sb);
+        dialect.encodeColumnName(null, aname("geom"), sb);
         sb.append(", ");
-        dialect.encodeColumnName(aname("river"), sb);
+        dialect.encodeColumnName(null, aname("river"), sb);
         sb.append(", ");
-        dialect.encodeColumnName(aname("flow"), sb);
+        dialect.encodeColumnName(null, aname("flow"), sb);
         sb.append(" * 2 as ");
-        dialect.encodeColumnName(aname("doubleFlow"), sb);
+        dialect.encodeColumnName(null, aname("doubleFlow"), sb);
         sb.append(" from ");
         if (dbSchemaName != null) {
             dialect.encodeSchemaName(dbSchemaName, sb);
@@ -72,7 +72,7 @@ public abstract class JDBCVirtualTableOnlineTest extends JDBCTestSupport {
         }
         dialect.encodeTableName(tname("river"), sb);
         sb.append(" where ");
-        dialect.encodeColumnName(aname("flow"), sb);
+        dialect.encodeColumnName(null, aname("flow"), sb);
         sb.append(" > 4");
         vt = new VirtualTable("riverReduced", sb.toString());
         vt.addGeometryMetadatata(aname("geom"), LineString.class, 4326);
@@ -93,13 +93,13 @@ public abstract class JDBCVirtualTableOnlineTest extends JDBCTestSupport {
         // a final vt with some parameters
         sb = new StringBuffer();
         sb.append("select ");
-        dialect.encodeColumnName(aname("id"), sb);
+        dialect.encodeColumnName(null, aname("id"), sb);
         sb.append(", ");
-        dialect.encodeColumnName(aname("geom"), sb);
+        dialect.encodeColumnName(null, aname("geom"), sb);
         sb.append(", ");
-        dialect.encodeColumnName("flow", sb);
+        dialect.encodeColumnName(null, "flow", sb);
         sb.append(" * %mul% as ");
-        dialect.encodeColumnName("mulflow", sb);
+        dialect.encodeColumnName(null, "mulflow", sb);
         sb.append(" from ");
         if (dbSchemaName != null) {
             dialect.encodeSchemaName(dbSchemaName, sb);
@@ -237,7 +237,7 @@ public abstract class JDBCVirtualTableOnlineTest extends JDBCTestSupport {
         Query q = new Query(Query.ALL);
         StringBuffer sb = new StringBuffer();
         sb.append(" where ");
-        dialect.encodeColumnName(aname("flow"), sb);
+        dialect.encodeColumnName(null, aname("flow"), sb);
         sb.append(" > 4");
         q.setHints(
                 new Hints(

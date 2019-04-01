@@ -95,10 +95,9 @@ public class MySQLDialectBasic extends BasicSQLDialect {
         delegate.encodeColumnName(prefix, raw, sql);
     }
 
-    @Override
     public void encodeGeometryColumn(
             GeometryDescriptor gatt, String prefix, int srid, StringBuffer sql) {
-        delegate.encodeGeometryColumn(gatt, prefix, srid, sql);
+        delegate.encodeColumnName(prefix, gatt.getLocalName(), sql);
     }
 
     @Override
@@ -220,7 +219,7 @@ public class MySQLDialectBasic extends BasicSQLDialect {
             sql.append("envelope(");
         }
 
-        encodeColumnName(geometryColumn, sql);
+        encodeColumnName(null, geometryColumn, sql);
         sql.append("))");
     }
 

@@ -356,12 +356,6 @@ public class PostGISDialect extends BasicSQLDialect {
 
     @Override
     public void encodeGeometryColumn(
-            GeometryDescriptor gatt, String prefix, int srid, StringBuffer sql) {
-        encodeGeometryColumn(gatt, prefix, srid, null, sql);
-    }
-
-    @Override
-    public void encodeGeometryColumn(
             GeometryDescriptor gatt, String prefix, int srid, Hints hints, StringBuffer sql) {
 
         boolean geography =
@@ -1132,7 +1126,7 @@ public class PostGISDialect extends BasicSQLDialect {
 
     @Override
     public void encodePrimaryKey(String column, StringBuffer sql) {
-        encodeColumnName(column, sql);
+        encodeColumnName(null, column, sql);
         sql.append(" SERIAL PRIMARY KEY");
     }
 

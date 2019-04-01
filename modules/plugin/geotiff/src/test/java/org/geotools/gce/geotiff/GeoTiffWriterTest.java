@@ -103,9 +103,14 @@ public class GeoTiffWriterTest extends Assert {
             // System.out.println(iIOMetadataDumper.getMetadata());
         }
         assertTrue(
-                CRS.findMathTransform(reader.getCrs(), DefaultGeographicCRS.WGS84, true)
+                CRS.findMathTransform(
+                                reader.getCoordinateReferenceSystem(),
+                                DefaultGeographicCRS.WGS84,
+                                true)
                         .isIdentity()); // more lenient towards metadata differences
-        assertTrue(CRS.equalsIgnoreMetadata(reader.getCrs(), DefaultGeographicCRS.WGS84));
+        assertTrue(
+                CRS.equalsIgnoreMetadata(
+                        reader.getCoordinateReferenceSystem(), DefaultGeographicCRS.WGS84));
     }
 
     /**

@@ -16,8 +16,6 @@
  */
 package org.geotools.jdbc;
 
-import static junit.framework.Assert.assertEquals;
-
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -32,6 +30,8 @@ import javax.sql.DataSource;
 import org.apache.commons.dbcp.BasicDataSource;
 import org.geotools.data.jdbc.datasource.DBCPDataSource;
 import org.geotools.data.jdbc.datasource.ManageableDataSource;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * Sets up the test harness for a database.

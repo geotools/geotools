@@ -310,17 +310,6 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
      * this method will replace it with the new one. * @param vt
      *
      * @throws IOException If the view definition is not valid
-     * @deprecated Use createVirtualTable instead
-     */
-    public void addVirtualTable(VirtualTable vtable) throws IOException {
-        createVirtualTable(vtable);
-    }
-
-    /**
-     * Adds a virtual table to the data store. If a virtual table with the same name was registered
-     * this method will replace it with the new one. * @param vt
-     *
-     * @throws IOException If the view definition is not valid
      */
     public void createVirtualTable(VirtualTable vtable) throws IOException {
         try {
@@ -341,17 +330,6 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
      */
     public List<ConnectionLifecycleListener> getConnectionLifecycleListeners() {
         return connectionLifecycleListeners;
-    }
-
-    /**
-     * Removes and returns the specified virtual table
-     *
-     * @param name
-     * @return
-     * @deprecated Use dropVirtualTable instead
-     */
-    public VirtualTable removeVirtualTable(String name) {
-        return dropVirtualTable(name);
     }
 
     /**
@@ -794,7 +772,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
 
         // check for virtual table
         if (virtualTables.containsKey(typeName.getLocalPart())) {
-            removeVirtualTable(typeName.getLocalPart());
+            dropVirtualTable(typeName.getLocalPart());
             return;
         }
 

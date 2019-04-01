@@ -276,7 +276,7 @@ public abstract class JDBCGeographyOnlineTest extends JDBCTestSupport {
         dialect.encodeTableName(tname("geopoint"), sb);
 
         VirtualTable vt = new VirtualTable("geopoint_vt", sb.toString());
-        dataStore.addVirtualTable(vt);
+        dataStore.createVirtualTable(vt);
 
         SimpleFeatureType featureType = dataStore.getSchema("geopoint_vt");
         assertNotNull(featureType);

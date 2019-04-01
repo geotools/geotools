@@ -66,7 +66,7 @@ public class H2ConnectionLifecycleTest extends JDBCConnectionLifecycleOnlineTest
                 new VirtualTable(
                         "ft1var",
                         "select * from  \"geotools\".\"ft1\" where \"doubleProperty\" > @MYVAR");
-        dataStore.addVirtualTable(vt);
+        dataStore.createVirtualTable(vt);
 
         // setup a listener that uses said variable
         SetVariableListener listener = new SetVariableListener();

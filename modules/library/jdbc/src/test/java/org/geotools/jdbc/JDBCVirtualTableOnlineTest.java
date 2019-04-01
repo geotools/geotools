@@ -47,11 +47,11 @@ public abstract class JDBCVirtualTableOnlineTest extends JDBCTestSupport {
         }
         dialect.encodeTableName(tname("river"), sb);
         VirtualTable vt = new VirtualTable("riverFull", sb.toString());
-        dataStore.addVirtualTable(vt);
+        dataStore.createVirtualTable(vt);
 
         sb.append(" where 1 = 1 :where_clause:");
         vt = new VirtualTable("riverFullPlaceHolder", sb.toString());
-        dataStore.addVirtualTable(vt);
+        dataStore.createVirtualTable(vt);
 
         // a first vt with a condition, computing a new field
         sb = new StringBuffer();
@@ -76,19 +76,19 @@ public abstract class JDBCVirtualTableOnlineTest extends JDBCTestSupport {
         sb.append(" > 4");
         vt = new VirtualTable("riverReduced", sb.toString());
         vt.addGeometryMetadatata(aname("geom"), LineString.class, 4326);
-        dataStore.addVirtualTable(vt);
+        dataStore.createVirtualTable(vt);
 
         // same vt, this time with a sql comment
         sb.append("\n--This is a comment");
         vt = new VirtualTable("riverReducedComment", sb.toString());
         vt.addGeometryMetadatata(aname("geom"), LineString.class, 4326);
-        dataStore.addVirtualTable(vt);
+        dataStore.createVirtualTable(vt);
 
         // the same vt, but with a id specification
         vt = new VirtualTable("riverReducedPk", sb.toString());
         vt.addGeometryMetadatata(aname("geom"), LineString.class, 4326);
         vt.setPrimaryKeyColumns(Arrays.asList(aname("id")));
-        dataStore.addVirtualTable(vt);
+        dataStore.createVirtualTable(vt);
 
         // a final vt with some parameters
         sb = new StringBuffer();
@@ -112,7 +112,7 @@ public abstract class JDBCVirtualTableOnlineTest extends JDBCTestSupport {
         vt.addParameter(
                 new VirtualTableParameter("mul", "1", new RegexpValidator("[\\d\\.e\\+-]+")));
         vt.addParameter(new VirtualTableParameter("where", ""));
-        dataStore.addVirtualTable(vt);
+        dataStore.createVirtualTable(vt);
     }
 
     public void testGuessGeometry() throws Exception {
@@ -188,7 +188,7 @@ public abstract class JDBCVirtualTableOnlineTest extends JDBCTestSupport {
         VirtualTable vt = new VirtualTable("riverPolluted", "SOME EXTRA GARBAGE " + sql);
         vt.addGeometryMetadatata("geom", LineString.class, -1);
         try {
-            dataStore.addVirtualTable(vt);
+            dataStore.createVirtualTable(vt);
             fail("Should have failed with invalid sql definition");
         } catch (IOException e) {
             // ok, that's what we expected

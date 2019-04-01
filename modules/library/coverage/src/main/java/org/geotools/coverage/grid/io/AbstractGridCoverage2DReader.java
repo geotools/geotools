@@ -17,6 +17,7 @@
 package org.geotools.coverage.grid.io;
 
 import it.geosolutions.imageio.maskband.DatasetLayout;
+import it.geosolutions.imageio.maskband.DefaultDatasetLayoutImpl;
 import it.geosolutions.jaiext.utilities.ImageLayout2;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
@@ -1185,7 +1186,16 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
     public DatasetLayout getDatasetLayout(String coverageName) {
         if (!checkName(coverageName)) {
             throw new IllegalArgumentException(
-                    "The specified coverageName " + coverageName + "is not supported");
+                    "The specified coverageName " + coverageName + " is not supported");
+        }
+        // for compatibility with the readers not initializing the field
+        if (dtLayout == null) {
+            return new DefaultDatasetLayoutImpl() {
+                @Override
+                public int getNumInternalOverviews() {
+                    return numOverviews;
+                }
+            };
         }
         return dtLayout;
     }

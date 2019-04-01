@@ -85,7 +85,6 @@ import org.apache.commons.io.filefilter.IOFileFilter;
 import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.data.DataAccessFactory.Param;
 import org.geotools.data.DataStoreFactorySpi;
-import org.geotools.data.DataUtilities;
 import org.geotools.data.shapefile.ShapefileDataStoreFactory;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.visitor.DefaultFilterVisitor;
@@ -574,7 +573,7 @@ public class Utils {
         //
         URL propsURL = sourceURL;
         if (!sourceURL.toExternalForm().endsWith(".properties")) {
-            propsURL = DataUtilities.changeUrlExt(sourceURL, "properties");
+            propsURL = URLs.changeUrlExt(sourceURL, "properties");
             if (propsURL.getProtocol().equals("file")) {
                 final File sourceFile = URLs.urlToFile(propsURL);
                 if (!sourceFile.exists()) {

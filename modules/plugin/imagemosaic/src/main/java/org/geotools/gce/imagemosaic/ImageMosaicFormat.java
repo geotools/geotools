@@ -43,7 +43,6 @@ import org.geotools.coverage.grid.io.imageio.GeoToolsWriteParams;
 import org.geotools.data.DataAccessFactory.Param;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFactorySpi;
-import org.geotools.data.DataUtilities;
 import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.gce.imagemosaic.catalog.CatalogConfigurationBean;
@@ -454,7 +453,7 @@ public final class ImageMosaicFormat extends AbstractGridFormat implements Forma
                     if (tileIndexStore == null) return false;
 
                 } else {
-                    URL testPropertiesUrl = DataUtilities.changeUrlExt(sourceURL, "properties");
+                    URL testPropertiesUrl = URLs.changeUrlExt(sourceURL, "properties");
                     File testFile = URLs.urlToFile(testPropertiesUrl);
                     if (!testFile.exists()) {
                         return false;
@@ -469,7 +468,7 @@ public final class ImageMosaicFormat extends AbstractGridFormat implements Forma
                 // Now look for the properties file and try to parse relevant fields
                 //
                 URL propsUrl = null;
-                if (shapefile) propsUrl = DataUtilities.changeUrlExt(sourceURL, "properties");
+                if (shapefile) propsUrl = URLs.changeUrlExt(sourceURL, "properties");
                 else {
                     //
                     // do we have a datastore properties file? It will preempt on the shapefile

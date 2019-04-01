@@ -37,7 +37,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.media.jai.Interpolation;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.io.IOUtils;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.imageio.GeoToolsWriteParams;
 import org.geotools.data.DataAccessFactory.Param;
@@ -413,11 +412,8 @@ public final class ImageMosaicFormat extends AbstractGridFormat implements Forma
                     // load spi anche check it
                     // read the properties file
                     final Properties properties = new Properties();
-                    final FileInputStream stream = new FileInputStream(sourceF);
-                    try {
+                    try (FileInputStream stream = new FileInputStream(sourceF)) {
                         properties.load(stream);
-                    } finally {
-                        IOUtils.closeQuietly(stream);
                     }
 
                     // SPI

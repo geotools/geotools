@@ -1015,12 +1015,6 @@ public class NetCDFReader extends AbstractGridCoverage2DReader
     }
 
     @Override
-    public boolean removeCoverage(String coverageName)
-            throws IOException, UnsupportedOperationException {
-        return removeCoverage(coverageName, false);
-    }
-
-    @Override
     public ResourceInfo getInfo(String coverageName) {
         String name = checkUnspecifiedCoverage(coverageName);
         return new NetCDFFileResourceInfo(

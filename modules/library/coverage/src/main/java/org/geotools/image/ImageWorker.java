@@ -5530,7 +5530,7 @@ public class ImageWorker {
                 final ImageWriterSpi spi = writer.getOriginatingProvider();
                 final Class<?>[] outputTypes;
                 if (spi == null) {
-                    outputTypes = ImageWriterSpi.STANDARD_OUTPUT_TYPE;
+                    outputTypes = new Class[] {ImageOutputStream.class};
                 } else {
                     /*
                      * If the encoder is for some format handled in a special way (e.g. GIF), apply the required operation. Note that invoking the

@@ -1105,7 +1105,8 @@ public class RasterManager implements Cloneable {
                 update = true;
             }
             if (update
-                    && !configuration.getCatalogConfigurationBean().isAbsolutePath()
+                    && (configuration.getCatalogConfigurationBean().getPathType()
+                            != PathType.ABSOLUTE)
                     && !hints.containsKey(Utils.PARENT_DIR)) {
                 String parentDir = null;
                 if (parentReader.parentDirectory != null) {

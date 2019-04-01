@@ -1418,12 +1418,6 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
         }
     }
 
-    @Override
-    public boolean removeCoverage(String coverageName)
-            throws IOException, UnsupportedOperationException {
-        return removeCoverage(coverageName, false);
-    }
-
     /**
      * This subclass of the {@link ImageMosaicWalker} cycles around a List of files and for each one
      * calls the superclass handleFile() method. For each file is done a check if it really exists,

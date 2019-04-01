@@ -34,7 +34,6 @@ import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.apache.commons.io.IOUtils;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureReader;
@@ -182,11 +181,9 @@ public abstract class DataStoreWrapper implements DataStore {
      * @return
      */
     private static Properties loadProperties(final String propertiesFile) {
-        InputStream inStream = null;
         Properties properties = new Properties();
-        try {
-            File propertiesFileP = new File(propertiesFile);
-            inStream = new BufferedInputStream(new FileInputStream(propertiesFileP));
+        File propertiesFileP = new File(propertiesFile);
+        try (InputStream inStream = new BufferedInputStream(new FileInputStream(propertiesFileP))) {
             properties.load(inStream);
         } catch (FileNotFoundException e) {
             if (LOGGER.isLoggable(Level.WARNING)) {
@@ -195,11 +192,6 @@ public abstract class DataStoreWrapper implements DataStore {
         } catch (IOException e) {
             if (LOGGER.isLoggable(Level.WARNING)) {
                 LOGGER.warning("Unable to store the mapping " + e.getLocalizedMessage());
-            }
-
-        } finally {
-            if (inStream != null) {
-                IOUtils.closeQuietly(inStream);
             }
         }
         return properties;
@@ -256,14 +248,10 @@ public abstract class DataStoreWrapper implements DataStore {
      * @param typeName
      */
     protected void storeProperties(Properties properties, String typeName) {
-        OutputStream outStream = null;
-        try {
-            final String propertiesPath =
-                    auxiliaryFolder.getAbsolutePath()
-                            + File.separatorChar
-                            + typeName
-                            + ".properties";
-            outStream = new BufferedOutputStream(new FileOutputStream(new File(propertiesPath)));
+        final String propertiesPath =
+                auxiliaryFolder.getAbsolutePath() + File.separatorChar + typeName + ".properties";
+        try (OutputStream outStream =
+                new BufferedOutputStream(new FileOutputStream(new File(propertiesPath)))) {
             properties.store(outStream, null);
         } catch (FileNotFoundException e) {
             if (LOGGER.isLoggable(Level.WARNING)) {
@@ -272,11 +260,6 @@ public abstract class DataStoreWrapper implements DataStore {
         } catch (IOException e) {
             if (LOGGER.isLoggable(Level.WARNING)) {
                 LOGGER.warning("Unable to store the mapping " + e.getLocalizedMessage());
-            }
-
-        } finally {
-            if (outStream != null) {
-                IOUtils.closeQuietly(outStream);
             }
         }
     }

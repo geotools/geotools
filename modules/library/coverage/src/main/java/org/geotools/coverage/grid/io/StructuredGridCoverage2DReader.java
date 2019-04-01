@@ -55,9 +55,6 @@ public interface StructuredGridCoverage2DReader extends GridCoverage2DReader {
     void createCoverage(String coverageName, SimpleFeatureType schema)
             throws IOException, UnsupportedOperationException;
 
-    /** @deprecated use {@link #removeCoverage(String, boolean)} */
-    boolean removeCoverage(String coverageName) throws IOException, UnsupportedOperationException;
-
     /** removes a granule store for the specified coverageName */
     boolean removeCoverage(String coverageName, boolean delete)
             throws IOException, UnsupportedOperationException;

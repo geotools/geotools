@@ -60,7 +60,6 @@ import org.geotools.data.Transaction.State;
 import org.geotools.data.jdbc.FilterToSQL;
 import org.geotools.data.jdbc.FilterToSQLException;
 import org.geotools.data.jdbc.datasource.ManageableDataSource;
-import org.geotools.data.jdbc.fidmapper.FIDMapper;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.store.ContentDataStore;
@@ -2250,7 +2249,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
      * @param strict If set to true the value of the fid will be validated against the type of the
      *     key columns. If a conversion can not be made, an exception will be thrown.
      */
-    protected static List<Object> decodeFID(PrimaryKey key, String FID, boolean strict) {
+    public static List<Object> decodeFID(PrimaryKey key, String FID, boolean strict) {
         // strip off the feature type name
         if (FID.startsWith(key.getTableName() + ".")) {
             FID = FID.substring(key.getTableName().length() + 1);
@@ -2289,8 +2288,6 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
         }
 
         // convert to the type of the key
-        // JD: usually this would be done by the dialect directly when the value
-        // actually gets set but the FIDMapper interface does not report types
         for (int i = 0; i < values.size(); i++) {
             Object value = values.get(i);
             if (value != null) {
@@ -4543,67 +4540,8 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
                 throw new RuntimeException(e);
             }
 
-            FIDMapper mapper =
-                    new FIDMapper() {
-                        public String createID(
-                                Connection conn, SimpleFeature feature, Statement statement)
-                                throws IOException {
-                            return null;
-                        }
-
-                        public int getColumnCount() {
-                            return key.getColumns().size();
-                        }
-
-                        public int getColumnDecimalDigits(int colIndex) {
-                            return 0;
-                        }
-
-                        public String getColumnName(int colIndex) {
-                            return key.getColumns().get(colIndex).getName();
-                        }
-
-                        public int getColumnSize(int colIndex) {
-                            return 0;
-                        }
-
-                        public int getColumnType(int colIndex) {
-                            return 0;
-                        }
-
-                        public String getID(Object[] attributes) {
-                            return null;
-                        }
-
-                        public Object[] getPKAttributes(String FID) throws IOException {
-                            return decodeFID(key, FID, false).toArray();
-                        }
-
-                        public boolean hasAutoIncrementColumns() {
-                            return false;
-                        }
-
-                        public void initSupportStructures() {}
-
-                        public boolean isAutoIncrement(int colIndex) {
-                            return false;
-                        }
-
-                        public boolean isVolatile() {
-                            return false;
-                        }
-
-                        public boolean returnFIDColumnsAsAttributes() {
-                            return false;
-                        }
-
-                        public boolean isValid(String fid) {
-                            return true;
-                        }
-                    };
             toSQL.setFeatureType(featureType);
             toSQL.setPrimaryKey(key);
-            toSQL.setFIDMapper(mapper);
             toSQL.setDatabaseSchema(databaseSchema);
         }
 

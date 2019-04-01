@@ -336,26 +336,6 @@ public class ImagePyramidReaderTest extends ImageLevelsMapperTest {
 
         }
         assertNull(reader);
-
-        //
-        // Unsopported operation
-        reader =
-                new ImagePyramidReader(
-                        testFile, new Hints(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.FALSE));
-
-        try {
-            reader.getCurrentSubname();
-
-        } catch (UnsupportedOperationException e) {
-            try {
-                String value = reader.getMetadataValue("");
-                assertNull(value);
-                return;
-            } catch (UnsupportedOperationException e2) {
-                return;
-            }
-        }
-        assertTrue("Some of the unsopported method did not send an exception", false);
     }
 
     @Test

@@ -27,7 +27,7 @@ import org.junit.Test;
  *
  * @author Matthias Schulze (LDBV at ldbv dot bayern dot de)
  */
-public class Capabilities200ServiceInfoTest {
+public class Capabilities200ServiceInfoOnlineTest {
     public static final String SERVER_URL =
             "http://laermkartierung1.eisenbahn-bundesamt.de/deegree/services/wfs?service=WFS&request=GetCapabilities"; // $NON-NLS-1$
 

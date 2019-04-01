@@ -257,9 +257,6 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
      * </code>
      * </pre>
      *
-     * The method {@link #hasMoreGridCoverages} should be invoked first in order to verify that a
-     * coverage is available.
-     *
      * @param parameters Optional parameters matching {@link Format#getReadParameters}.
      * @return a {@linkplain GridCoverage grid coverage} from the input source.
      * @throws InvalidParameterNameException if a parameter in {@code parameters} doesn't have a
@@ -809,18 +806,6 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
     }
 
     /**
-     * Retrieves the {@link CoordinateReferenceSystem} for dataset pointed by this {@link
-     * AbstractGridCoverage2DReader}.
-     *
-     * @return the {@link CoordinateReferenceSystem} for dataset pointed by this {@link
-     *     AbstractGridCoverage2DReader}.
-     * @deprecated use {@link #getCoordinateReferenceSystem()}
-     */
-    public final CoordinateReferenceSystem getCrs() {
-        return getCoordinateReferenceSystem();
-    }
-
-    /**
      * Retrieves the {@link GeneralGridEnvelope} that represents the raster grid dimensions of the
      * highest resolution level in this dataset.
      *
@@ -981,22 +966,6 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
         }
     }
 
-    /**
-     * @see org.opengis.coverage.grid.GridCoverageReader#skip()
-     * @deprecated no replacement for that method
-     */
-    public void skip() {
-        throw new UnsupportedOperationException("Unsupported operation.");
-    }
-
-    /**
-     * @see org.opengis.coverage.grid.GridCoverageReader#hasMoreGridCoverages()
-     * @deprecated no replacement for that method
-     */
-    public boolean hasMoreGridCoverages() {
-        throw new UnsupportedOperationException("Unsupported operation.");
-    }
-
     /** @deprecated use {@link #getGridCoverageNames()} */
     public String[] listSubNames() {
         return getGridCoverageNames();
@@ -1005,14 +974,6 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
     @Override
     public String[] getGridCoverageNames() {
         return new String[] {coverageName};
-    }
-
-    /**
-     * @see org.opengis.coverage.grid.GridCoverageReader#getCurrentSubname()
-     * @deprecated no replacement for that method
-     */
-    public String getCurrentSubname() {
-        throw new UnsupportedOperationException("Unsupported operation.");
     }
 
     public String[] getMetadataNames(final String coverageName) {

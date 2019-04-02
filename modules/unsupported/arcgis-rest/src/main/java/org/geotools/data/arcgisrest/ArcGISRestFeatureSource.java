@@ -86,8 +86,7 @@ public class ArcGISRestFeatureSource extends ContentFeatureSource {
     static {
         EsriJTSMapping.put("esriGeometryPoint", org.locationtech.jts.geom.Point.class);
         EsriJTSMapping.put("esriGeometryMultipoint", org.locationtech.jts.geom.MultiPoint.class);
-        EsriJTSMapping.put(
-                "esriGeometryPolyline", org.locationtech.jts.geom.MultiLineString.class);
+        EsriJTSMapping.put("esriGeometryPolyline", org.locationtech.jts.geom.MultiLineString.class);
         EsriJTSMapping.put("esriGeometryPolygon", org.locationtech.jts.geom.MultiPolygon.class);
     }
 
@@ -128,9 +127,21 @@ public class ArcGISRestFeatureSource extends ContentFeatureSource {
             // Re-packages the exception to be compatible with method signature
             throw new IOException(e.getMessage(), e.fillInStackTrace());
         }
+        // Exxgtracts the CRS either using WKID or WKT
         try {
-            this.resInfo.setCRS(
-                    CRS.decode("EPSG:" + ws.getExtent().getSpatialReference().getLatestWkid()));
+            if (ws.getExtent().getSpatialReference().getLatestWkid() != null) {
+                this.resInfo.setCRS(
+                        CRS.decode("EPSG:" + ws.getExtent().getSpatialReference().getLatestWkid()));
+            } else {
+                if (ws.getExtent().getSpatialReference().getWkid() != null) {
+                    this.resInfo.setCRS(
+                            CRS.decode("EPSG:" + ws.getExtent().getSpatialReference().getWkid()));
+                } else {
+                    this.resInfo.setCRS(
+                            CRS.parseWKT(ws.getExtent().getSpatialReference().getWkt()));
+                }
+            }
+
         } catch (FactoryException e) {
             // FIXME: this is not nice: exceptions should not be re-packaged
             throw new IOException(e.getMessage());

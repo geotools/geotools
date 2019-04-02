@@ -2,9 +2,6 @@ package org.geotools.data.arcgisrest.schema.webservice;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class SpatialReference {
 
@@ -17,50 +14,72 @@ public class SpatialReference {
     @Expose
     private Integer latestWkid;
 
-    /**
-     * (Required)
-     *
-     * @return The wkid
-     */
+    @SerializedName("wkt")
+    @Expose
+    private String wkt;
+
+    /** (Required) */
     public Integer getWkid() {
         return wkid;
     }
 
-    /**
-     * (Required)
-     *
-     * @param wkid The wkid
-     */
+    /** (Required) */
     public void setWkid(Integer wkid) {
         this.wkid = wkid;
     }
 
-    /**
-     * (Required)
-     *
-     * @return The latestWkid
-     */
+    /** (Required) */
     public Integer getLatestWkid() {
         return latestWkid;
     }
 
-    /**
-     * (Required)
-     *
-     * @param latestWkid The latestWkid
-     */
+    /** (Required) */
     public void setLatestWkid(Integer latestWkid) {
         this.latestWkid = latestWkid;
     }
 
+    public String getWkt() {
+        return wkt;
+    }
+
+    public void setWkt(String wkt) {
+        this.wkt = wkt;
+    }
+
     @Override
     public String toString() {
-        return ToStringBuilder.reflectionToString(this);
+        StringBuilder sb = new StringBuilder();
+        sb.append(SpatialReference.class.getName())
+                .append('@')
+                .append(Integer.toHexString(System.identityHashCode(this)))
+                .append('[');
+        sb.append("wkid");
+        sb.append('=');
+        sb.append(((this.wkid == null) ? "<null>" : this.wkid));
+        sb.append(',');
+        sb.append("latestWkid");
+        sb.append('=');
+        sb.append(((this.latestWkid == null) ? "<null>" : this.latestWkid));
+        sb.append(',');
+        sb.append("wkt");
+        sb.append('=');
+        sb.append(((this.wkt == null) ? "<null>" : this.wkt));
+        sb.append(',');
+        if (sb.charAt((sb.length() - 1)) == ',') {
+            sb.setCharAt((sb.length() - 1), ']');
+        } else {
+            sb.append(']');
+        }
+        return sb.toString();
     }
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(wkid).append(latestWkid).toHashCode();
+        int result = 1;
+        result = ((result * 31) + ((this.wkid == null) ? 0 : this.wkid.hashCode()));
+        result = ((result * 31) + ((this.wkt == null) ? 0 : this.wkt.hashCode()));
+        result = ((result * 31) + ((this.latestWkid == null) ? 0 : this.latestWkid.hashCode()));
+        return result;
     }
 
     @Override
@@ -72,9 +91,10 @@ public class SpatialReference {
             return false;
         }
         SpatialReference rhs = ((SpatialReference) other);
-        return new EqualsBuilder()
-                .append(wkid, rhs.wkid)
-                .append(latestWkid, rhs.latestWkid)
-                .isEquals();
+        return ((((this.wkid == rhs.wkid) || ((this.wkid != null) && this.wkid.equals(rhs.wkid)))
+                        && ((this.wkt == rhs.wkt)
+                                || ((this.wkt != null) && this.wkt.equals(rhs.wkt))))
+                && ((this.latestWkid == rhs.latestWkid)
+                        || ((this.latestWkid != null) && this.latestWkid.equals(rhs.latestWkid))));
     }
 }

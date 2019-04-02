@@ -154,7 +154,7 @@
       <plugin>
         <groupId>org.jsonschema2pojo</groupId>
         <artifactId>jsonschema2pojo-maven-plugin</artifactId>
-        <version>0.4.28</version>
+        <version>1.0.0</version>
         <configuration>
           <sourceDirectory>${basedir}/src/main/resources/schema</sourceDirectory>
           <outputDirectory>${basedir}/src/main/java</outputDirectory>

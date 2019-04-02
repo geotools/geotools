@@ -6,9 +6,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+<<<<<<< HEAD
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+=======
+>>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
 
 /**
  * Project Open Data Catalog
@@ -75,9 +78,14 @@ public class Catalog {
 
     /**
      * Metadata Context
+<<<<<<< HEAD
      * <p>
      * URL or JSON object for the JSON-LD Context that defines the schema used
      * 
+=======
+     *
+     * <p>URL or JSON object for the JSON-LD Context that defines the schema used
+>>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
      */
     public URI getContext() {
         return context;
@@ -85,9 +93,14 @@ public class Catalog {
 
     /**
      * Metadata Context
+<<<<<<< HEAD
      * <p>
      * URL or JSON object for the JSON-LD Context that defines the schema used
      * 
+=======
+     *
+     * <p>URL or JSON object for the JSON-LD Context that defines the schema used
+>>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
      */
     public void setContext(URI context) {
         this.context = context;
@@ -95,9 +108,15 @@ public class Catalog {
 
     /**
      * Metadata Catalog ID
+<<<<<<< HEAD
      * <p>
      * IRI for the JSON-LD Node Identifier of the Catalog. This should be the URL of the data.json file itself.
      * 
+=======
+     *
+     * <p>IRI for the JSON-LD Node Identifier of the Catalog. This should be the URL of the
+     * data.json file itself.
+>>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
      */
     public URI getId() {
         return id;
@@ -105,9 +124,15 @@ public class Catalog {
 
     /**
      * Metadata Catalog ID
+<<<<<<< HEAD
      * <p>
      * IRI for the JSON-LD Node Identifier of the Catalog. This should be the URL of the data.json file itself.
      * 
+=======
+     *
+     * <p>IRI for the JSON-LD Node Identifier of the Catalog. This should be the URL of the
+     * data.json file itself.
+>>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
      */
     public void setId(URI id) {
         this.id = id;
@@ -115,9 +140,14 @@ public class Catalog {
 
     /**
      * Metadata Context
+<<<<<<< HEAD
      * <p>
      * IRI for the JSON-LD data type. This should be dcat:Catalog for the Catalog
      * 
+=======
+     *
+     * <p>IRI for the JSON-LD data type. This should be dcat:Catalog for the Catalog
+>>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
      */
     public Catalog.Type getType() {
         return type;
@@ -125,9 +155,14 @@ public class Catalog {
 
     /**
      * Metadata Context
+<<<<<<< HEAD
      * <p>
      * IRI for the JSON-LD data type. This should be dcat:Catalog for the Catalog
      * 
+=======
+     *
+     * <p>IRI for the JSON-LD data type. This should be dcat:Catalog for the Catalog
+>>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
      */
     public void setType(Catalog.Type type) {
         this.type = type;
@@ -135,10 +170,15 @@ public class Catalog {
 
     /**
      * Version of Schema
+<<<<<<< HEAD
      * <p>
      * Version of Schema
      * (Required)
      * 
+=======
+     *
+     * <p>Version of Schema (Required)
+>>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
      */
     public Catalog.ConformsTo getConformsTo() {
         return conformsTo;
@@ -146,10 +186,15 @@ public class Catalog {
 
     /**
      * Version of Schema
+<<<<<<< HEAD
      * <p>
      * Version of Schema
      * (Required)
      * 
+=======
+     *
+     * <p>Version of Schema (Required)
+>>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
      */
     public void setConformsTo(Catalog.ConformsTo conformsTo) {
         this.conformsTo = conformsTo;
@@ -157,9 +202,14 @@ public class Catalog {
 
     /**
      * Data Dictionary
+<<<<<<< HEAD
      * <p>
      * URL for the JSON Schema file that defines the schema used
      * 
+=======
+     *
+     * <p>URL for the JSON Schema file that defines the schema used
+>>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
      */
     public URI getDescribedBy() {
         return describedBy;
@@ -167,28 +217,41 @@ public class Catalog {
 
     /**
      * Data Dictionary
+<<<<<<< HEAD
      * <p>
      * URL for the JSON Schema file that defines the schema used
      * 
+=======
+     *
+     * <p>URL for the JSON Schema file that defines the schema used
+>>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
      */
     public void setDescribedBy(URI describedBy) {
         this.describedBy = describedBy;
     }
 
+<<<<<<< HEAD
     /**
      * 
      * (Required)
      * 
      */
+=======
+    /** (Required) */
+>>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
     public List<Dataset> getDataset() {
         return dataset;
     }
 
+<<<<<<< HEAD
     /**
      * 
      * (Required)
      * 
      */
+=======
+    /** (Required) */
+>>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
     public void setDataset(List<Dataset> dataset) {
         this.dataset = dataset;
     }
@@ -196,6 +259,7 @@ public class Catalog {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
+<<<<<<< HEAD
         sb.append(Catalog.class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this))).append('[');
         sb.append("context");
         sb.append('=');
@@ -223,6 +287,38 @@ public class Catalog {
         sb.append(',');
         if (sb.charAt((sb.length()- 1)) == ',') {
             sb.setCharAt((sb.length()- 1), ']');
+=======
+        sb.append(Catalog.class.getName())
+                .append('@')
+                .append(Integer.toHexString(System.identityHashCode(this)))
+                .append('[');
+        sb.append("context");
+        sb.append('=');
+        sb.append(((this.context == null) ? "<null>" : this.context));
+        sb.append(',');
+        sb.append("id");
+        sb.append('=');
+        sb.append(((this.id == null) ? "<null>" : this.id));
+        sb.append(',');
+        sb.append("type");
+        sb.append('=');
+        sb.append(((this.type == null) ? "<null>" : this.type));
+        sb.append(',');
+        sb.append("conformsTo");
+        sb.append('=');
+        sb.append(((this.conformsTo == null) ? "<null>" : this.conformsTo));
+        sb.append(',');
+        sb.append("describedBy");
+        sb.append('=');
+        sb.append(((this.describedBy == null) ? "<null>" : this.describedBy));
+        sb.append(',');
+        sb.append("dataset");
+        sb.append('=');
+        sb.append(((this.dataset == null) ? "<null>" : this.dataset));
+        sb.append(',');
+        if (sb.charAt((sb.length() - 1)) == ',') {
+            sb.setCharAt((sb.length() - 1), ']');
+>>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
         } else {
             sb.append(']');
         }
@@ -232,12 +328,21 @@ public class Catalog {
     @Override
     public int hashCode() {
         int result = 1;
+<<<<<<< HEAD
         result = ((result* 31)+((this.context == null)? 0 :this.context.hashCode()));
         result = ((result* 31)+((this.describedBy == null)? 0 :this.describedBy.hashCode()));
         result = ((result* 31)+((this.id == null)? 0 :this.id.hashCode()));
         result = ((result* 31)+((this.conformsTo == null)? 0 :this.conformsTo.hashCode()));
         result = ((result* 31)+((this.type == null)? 0 :this.type.hashCode()));
         result = ((result* 31)+((this.dataset == null)? 0 :this.dataset.hashCode()));
+=======
+        result = ((result * 31) + ((this.context == null) ? 0 : this.context.hashCode()));
+        result = ((result * 31) + ((this.describedBy == null) ? 0 : this.describedBy.hashCode()));
+        result = ((result * 31) + ((this.id == null) ? 0 : this.id.hashCode()));
+        result = ((result * 31) + ((this.conformsTo == null) ? 0 : this.conformsTo.hashCode()));
+        result = ((result * 31) + ((this.type == null) ? 0 : this.type.hashCode()));
+        result = ((result * 31) + ((this.dataset == null) ? 0 : this.dataset.hashCode()));
+>>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
         return result;
     }
 
@@ -250,7 +355,27 @@ public class Catalog {
             return false;
         }
         Catalog rhs = ((Catalog) other);
+<<<<<<< HEAD
         return (((((((this.context == rhs.context)||((this.context!= null)&&this.context.equals(rhs.context)))&&((this.describedBy == rhs.describedBy)||((this.describedBy!= null)&&this.describedBy.equals(rhs.describedBy))))&&((this.id == rhs.id)||((this.id!= null)&&this.id.equals(rhs.id))))&&((this.conformsTo == rhs.conformsTo)||((this.conformsTo!= null)&&this.conformsTo.equals(rhs.conformsTo))))&&((this.type == rhs.type)||((this.type!= null)&&this.type.equals(rhs.type))))&&((this.dataset == rhs.dataset)||((this.dataset!= null)&&this.dataset.equals(rhs.dataset))));
+=======
+        return (((((((this.context == rhs.context)
+                                                        || ((this.context != null)
+                                                                && this.context.equals(
+                                                                        rhs.context)))
+                                                && ((this.describedBy == rhs.describedBy)
+                                                        || ((this.describedBy != null)
+                                                                && this.describedBy.equals(
+                                                                        rhs.describedBy))))
+                                        && ((this.id == rhs.id)
+                                                || ((this.id != null) && this.id.equals(rhs.id))))
+                                && ((this.conformsTo == rhs.conformsTo)
+                                        || ((this.conformsTo != null)
+                                                && this.conformsTo.equals(rhs.conformsTo))))
+                        && ((this.type == rhs.type)
+                                || ((this.type != null) && this.type.equals(rhs.type))))
+                && ((this.dataset == rhs.dataset)
+                        || ((this.dataset != null) && this.dataset.equals(rhs.dataset))));
+>>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
     }
 
     public enum ConformsTo {

@@ -43,6 +43,9 @@
         },
         "latestWkid": {
           "type": "integer"
+        },
+        "wkt": {
+          "type": "string"
         }
       },
       "required": [
@@ -73,6 +76,9 @@
             },
             "latestWkid": {
               "type": "integer"
+            },
+            "wkt": {
+              "type": "string"
             }
           },
           "required": [
@@ -112,6 +118,9 @@
             },
             "latestWkid": {
               "type": "integer"
+            },
+            "wkt": {
+              "type": "string"
             }
           },
           "required": [

@@ -39,74 +39,106 @@ public class Symbol {
     @Expose
     private String style;
 
+<<<<<<< HEAD
     /**
      * 
      * (Required)
      * 
      */
+=======
+    /** (Required) */
+>>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
     public Object getColor() {
         return color;
     }
 
+<<<<<<< HEAD
     /**
      * 
      * (Required)
      * 
      */
+=======
+    /** (Required) */
+>>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
     public void setColor(Object color) {
         this.color = color;
     }
 
+<<<<<<< HEAD
     /**
      * 
      * (Required)
      * 
      */
+=======
+    /** (Required) */
+>>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
     public Outline getOutline() {
         return outline;
     }
 
+<<<<<<< HEAD
     /**
      * 
      * (Required)
      * 
      */
+=======
+    /** (Required) */
+>>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
     public void setOutline(Outline outline) {
         this.outline = outline;
     }
 
+<<<<<<< HEAD
     /**
      * 
      * (Required)
      * 
      */
+=======
+    /** (Required) */
+>>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
     public String getType() {
         return type;
     }
 
+<<<<<<< HEAD
     /**
      * 
      * (Required)
      * 
      */
+=======
+    /** (Required) */
+>>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
     public void setType(String type) {
         this.type = type;
     }
 
+<<<<<<< HEAD
     /**
      * 
      * (Required)
      * 
      */
+=======
+    /** (Required) */
+>>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
     public String getStyle() {
         return style;
     }
 
+<<<<<<< HEAD
     /**
      * 
      * (Required)
      * 
      */
+=======
+    /** (Required) */
+>>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
     public void setStyle(String style) {
         this.style = style;
     }
@@ -114,6 +146,7 @@ public class Symbol {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
+<<<<<<< HEAD
         sb.append(Symbol.class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this))).append('[');
         sb.append("color");
         sb.append('=');
@@ -133,6 +166,30 @@ public class Symbol {
         sb.append(',');
         if (sb.charAt((sb.length()- 1)) == ',') {
             sb.setCharAt((sb.length()- 1), ']');
+=======
+        sb.append(Symbol.class.getName())
+                .append('@')
+                .append(Integer.toHexString(System.identityHashCode(this)))
+                .append('[');
+        sb.append("color");
+        sb.append('=');
+        sb.append(((this.color == null) ? "<null>" : this.color));
+        sb.append(',');
+        sb.append("outline");
+        sb.append('=');
+        sb.append(((this.outline == null) ? "<null>" : this.outline));
+        sb.append(',');
+        sb.append("type");
+        sb.append('=');
+        sb.append(((this.type == null) ? "<null>" : this.type));
+        sb.append(',');
+        sb.append("style");
+        sb.append('=');
+        sb.append(((this.style == null) ? "<null>" : this.style));
+        sb.append(',');
+        if (sb.charAt((sb.length() - 1)) == ',') {
+            sb.setCharAt((sb.length() - 1), ']');
+>>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
         } else {
             sb.append(']');
         }
@@ -142,10 +199,17 @@ public class Symbol {
     @Override
     public int hashCode() {
         int result = 1;
+<<<<<<< HEAD
         result = ((result* 31)+((this.outline == null)? 0 :this.outline.hashCode()));
         result = ((result* 31)+((this.style == null)? 0 :this.style.hashCode()));
         result = ((result* 31)+((this.color == null)? 0 :this.color.hashCode()));
         result = ((result* 31)+((this.type == null)? 0 :this.type.hashCode()));
+=======
+        result = ((result * 31) + ((this.outline == null) ? 0 : this.outline.hashCode()));
+        result = ((result * 31) + ((this.style == null) ? 0 : this.style.hashCode()));
+        result = ((result * 31) + ((this.color == null) ? 0 : this.color.hashCode()));
+        result = ((result * 31) + ((this.type == null) ? 0 : this.type.hashCode()));
+>>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
         return result;
     }
 
@@ -158,7 +222,19 @@ public class Symbol {
             return false;
         }
         Symbol rhs = ((Symbol) other);
+<<<<<<< HEAD
         return (((((this.outline == rhs.outline)||((this.outline!= null)&&this.outline.equals(rhs.outline)))&&((this.style == rhs.style)||((this.style!= null)&&this.style.equals(rhs.style))))&&((this.color == rhs.color)||((this.color!= null)&&this.color.equals(rhs.color))))&&((this.type == rhs.type)||((this.type!= null)&&this.type.equals(rhs.type))));
+=======
+        return (((((this.outline == rhs.outline)
+                                        || ((this.outline != null)
+                                                && this.outline.equals(rhs.outline)))
+                                && ((this.style == rhs.style)
+                                        || ((this.style != null) && this.style.equals(rhs.style))))
+                        && ((this.color == rhs.color)
+                                || ((this.color != null) && this.color.equals(rhs.color))))
+                && ((this.type == rhs.type)
+                        || ((this.type != null) && this.type.equals(rhs.type))));
+>>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
     }
 
 }

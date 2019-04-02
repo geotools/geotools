@@ -19,6 +19,9 @@
         },
         "latestWkid": {
           "type": "integer"
+        },
+        "wkt": {
+          "type": "string"
         }
       },
       "required": [

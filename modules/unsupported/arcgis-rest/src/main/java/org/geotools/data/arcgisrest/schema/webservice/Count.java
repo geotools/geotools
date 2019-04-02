@@ -21,6 +21,7 @@ public class Count {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
+<<<<<<< HEAD
         sb.append(Count.class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this))).append('[');
         sb.append("count");
         sb.append('=');
@@ -28,6 +29,18 @@ public class Count {
         sb.append(',');
         if (sb.charAt((sb.length()- 1)) == ',') {
             sb.setCharAt((sb.length()- 1), ']');
+=======
+        sb.append(Count.class.getName())
+                .append('@')
+                .append(Integer.toHexString(System.identityHashCode(this)))
+                .append('[');
+        sb.append("count");
+        sb.append('=');
+        sb.append(((this.count == null) ? "<null>" : this.count));
+        sb.append(',');
+        if (sb.charAt((sb.length() - 1)) == ',') {
+            sb.setCharAt((sb.length() - 1), ']');
+>>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
         } else {
             sb.append(']');
         }
@@ -37,7 +50,11 @@ public class Count {
     @Override
     public int hashCode() {
         int result = 1;
+<<<<<<< HEAD
         result = ((result* 31)+((this.count == null)? 0 :this.count.hashCode()));
+=======
+        result = ((result * 31) + ((this.count == null) ? 0 : this.count.hashCode()));
+>>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
         return result;
     }
 
@@ -50,7 +67,12 @@ public class Count {
             return false;
         }
         Count rhs = ((Count) other);
+<<<<<<< HEAD
         return ((this.count == rhs.count)||((this.count!= null)&&this.count.equals(rhs.count)));
+=======
+        return ((this.count == rhs.count)
+                || ((this.count != null) && this.count.equals(rhs.count)));
+>>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
     }
 
 }

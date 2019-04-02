@@ -23,38 +23,54 @@ public class Feature {
     @Expose
     private Geometry geometry;
 
+<<<<<<< HEAD
     /**
      * 
      * (Required)
      * 
      */
+=======
+    /** (Required) */
+>>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
     public Attributes getAttributes() {
         return attributes;
     }
 
+<<<<<<< HEAD
     /**
      * 
      * (Required)
      * 
      */
+=======
+    /** (Required) */
+>>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
     public void setAttributes(Attributes attributes) {
         this.attributes = attributes;
     }
 
+<<<<<<< HEAD
     /**
      * 
      * (Required)
      * 
      */
+=======
+    /** (Required) */
+>>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
     public Geometry getGeometry() {
         return geometry;
     }
 
+<<<<<<< HEAD
     /**
      * 
      * (Required)
      * 
      */
+=======
+    /** (Required) */
+>>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
     public void setGeometry(Geometry geometry) {
         this.geometry = geometry;
     }
@@ -62,6 +78,7 @@ public class Feature {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
+<<<<<<< HEAD
         sb.append(Feature.class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this))).append('[');
         sb.append("attributes");
         sb.append('=');
@@ -73,6 +90,22 @@ public class Feature {
         sb.append(',');
         if (sb.charAt((sb.length()- 1)) == ',') {
             sb.setCharAt((sb.length()- 1), ']');
+=======
+        sb.append(Feature.class.getName())
+                .append('@')
+                .append(Integer.toHexString(System.identityHashCode(this)))
+                .append('[');
+        sb.append("attributes");
+        sb.append('=');
+        sb.append(((this.attributes == null) ? "<null>" : this.attributes));
+        sb.append(',');
+        sb.append("geometry");
+        sb.append('=');
+        sb.append(((this.geometry == null) ? "<null>" : this.geometry));
+        sb.append(',');
+        if (sb.charAt((sb.length() - 1)) == ',') {
+            sb.setCharAt((sb.length() - 1), ']');
+>>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
         } else {
             sb.append(']');
         }
@@ -82,8 +115,13 @@ public class Feature {
     @Override
     public int hashCode() {
         int result = 1;
+<<<<<<< HEAD
         result = ((result* 31)+((this.attributes == null)? 0 :this.attributes.hashCode()));
         result = ((result* 31)+((this.geometry == null)? 0 :this.geometry.hashCode()));
+=======
+        result = ((result * 31) + ((this.attributes == null) ? 0 : this.attributes.hashCode()));
+        result = ((result * 31) + ((this.geometry == null) ? 0 : this.geometry.hashCode()));
+>>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
         return result;
     }
 
@@ -96,7 +134,14 @@ public class Feature {
             return false;
         }
         Feature rhs = ((Feature) other);
+<<<<<<< HEAD
         return (((this.attributes == rhs.attributes)||((this.attributes!= null)&&this.attributes.equals(rhs.attributes)))&&((this.geometry == rhs.geometry)||((this.geometry!= null)&&this.geometry.equals(rhs.geometry))));
+=======
+        return (((this.attributes == rhs.attributes)
+                        || ((this.attributes != null) && this.attributes.equals(rhs.attributes)))
+                && ((this.geometry == rhs.geometry)
+                        || ((this.geometry != null) && this.geometry.equals(rhs.geometry))));
+>>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
     }
 
 }

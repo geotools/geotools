@@ -31,56 +31,80 @@ public class Service {
     @Expose
     private String url;
 
+<<<<<<< HEAD
     /**
      * 
      * (Required)
      * 
      */
+=======
+    /** (Required) */
+>>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
     public String getName() {
         return name;
     }
 
+<<<<<<< HEAD
     /**
      * 
      * (Required)
      * 
      */
+=======
+    /** (Required) */
+>>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
     public void setName(String name) {
         this.name = name;
     }
 
+<<<<<<< HEAD
     /**
      * 
      * (Required)
      * 
      */
+=======
+    /** (Required) */
+>>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
     public String getType() {
         return type;
     }
 
+<<<<<<< HEAD
     /**
      * 
      * (Required)
      * 
      */
+=======
+    /** (Required) */
+>>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
     public void setType(String type) {
         this.type = type;
     }
 
+<<<<<<< HEAD
     /**
      * 
      * (Required)
      * 
      */
+=======
+    /** (Required) */
+>>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
     public String getUrl() {
         return url;
     }
 
+<<<<<<< HEAD
     /**
      * 
      * (Required)
      * 
      */
+=======
+    /** (Required) */
+>>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
     public void setUrl(String url) {
         this.url = url;
     }
@@ -88,6 +112,7 @@ public class Service {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
+<<<<<<< HEAD
         sb.append(Service.class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this))).append('[');
         sb.append("name");
         sb.append('=');
@@ -103,6 +128,26 @@ public class Service {
         sb.append(',');
         if (sb.charAt((sb.length()- 1)) == ',') {
             sb.setCharAt((sb.length()- 1), ']');
+=======
+        sb.append(Service.class.getName())
+                .append('@')
+                .append(Integer.toHexString(System.identityHashCode(this)))
+                .append('[');
+        sb.append("name");
+        sb.append('=');
+        sb.append(((this.name == null) ? "<null>" : this.name));
+        sb.append(',');
+        sb.append("type");
+        sb.append('=');
+        sb.append(((this.type == null) ? "<null>" : this.type));
+        sb.append(',');
+        sb.append("url");
+        sb.append('=');
+        sb.append(((this.url == null) ? "<null>" : this.url));
+        sb.append(',');
+        if (sb.charAt((sb.length() - 1)) == ',') {
+            sb.setCharAt((sb.length() - 1), ']');
+>>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
         } else {
             sb.append(']');
         }
@@ -112,9 +157,15 @@ public class Service {
     @Override
     public int hashCode() {
         int result = 1;
+<<<<<<< HEAD
         result = ((result* 31)+((this.name == null)? 0 :this.name.hashCode()));
         result = ((result* 31)+((this.type == null)? 0 :this.type.hashCode()));
         result = ((result* 31)+((this.url == null)? 0 :this.url.hashCode()));
+=======
+        result = ((result * 31) + ((this.name == null) ? 0 : this.name.hashCode()));
+        result = ((result * 31) + ((this.type == null) ? 0 : this.type.hashCode()));
+        result = ((result * 31) + ((this.url == null) ? 0 : this.url.hashCode()));
+>>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
         return result;
     }
 
@@ -127,7 +178,14 @@ public class Service {
             return false;
         }
         Service rhs = ((Service) other);
+<<<<<<< HEAD
         return ((((this.name == rhs.name)||((this.name!= null)&&this.name.equals(rhs.name)))&&((this.type == rhs.type)||((this.type!= null)&&this.type.equals(rhs.type))))&&((this.url == rhs.url)||((this.url!= null)&&this.url.equals(rhs.url))));
+=======
+        return ((((this.name == rhs.name) || ((this.name != null) && this.name.equals(rhs.name)))
+                        && ((this.type == rhs.type)
+                                || ((this.type != null) && this.type.equals(rhs.type))))
+                && ((this.url == rhs.url) || ((this.url != null) && this.url.equals(rhs.url))));
+>>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
     }
 
 }

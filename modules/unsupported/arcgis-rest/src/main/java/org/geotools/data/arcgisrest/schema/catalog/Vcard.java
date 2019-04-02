@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
 package org.geotools.data.arcgisrest.schema.catalog;
 
@@ -12,34 +13,62 @@ import com.google.gson.annotations.SerializedName;
  * <p>
  * A Dataset ContactPoint as a vCard object
  * 
+=======
+package org.geotools.data.arcgisrest.schema.catalog;
+
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Project Open Data ContactPoint vCard
+ *
+ * <p>A Dataset ContactPoint as a vCard object
+>>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
  */
 public class Vcard {
 
     /**
      * Metadata Context
+<<<<<<< HEAD
      * <p>
      * IRI for the JSON-LD data type. This should be vcard:Contact for contactPoint
      * 
+=======
+     *
+     * <p>IRI for the JSON-LD data type. This should be vcard:Contact for contactPoint
+>>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
      */
     @SerializedName("@type")
     @Expose
     private Vcard.Type type;
     /**
      * Contact Name
+<<<<<<< HEAD
      * <p>
      * A full formatted name, eg Firstname Lastname
      * (Required)
      * 
+=======
+     *
+     * <p>A full formatted name, eg Firstname Lastname (Required)
+>>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
      */
     @SerializedName("fn")
     @Expose
     private String fn;
     /**
      * Email
+<<<<<<< HEAD
      * <p>
      * Email address for the contact
      * (Required)
      * 
+=======
+     *
+     * <p>Email address for the contact (Required)
+>>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
      */
     @SerializedName("hasEmail")
     @Expose
@@ -47,9 +76,14 @@ public class Vcard {
 
     /**
      * Metadata Context
+<<<<<<< HEAD
      * <p>
      * IRI for the JSON-LD data type. This should be vcard:Contact for contactPoint
      * 
+=======
+     *
+     * <p>IRI for the JSON-LD data type. This should be vcard:Contact for contactPoint
+>>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
      */
     public Vcard.Type getType() {
         return type;
@@ -57,9 +91,14 @@ public class Vcard {
 
     /**
      * Metadata Context
+<<<<<<< HEAD
      * <p>
      * IRI for the JSON-LD data type. This should be vcard:Contact for contactPoint
      * 
+=======
+     *
+     * <p>IRI for the JSON-LD data type. This should be vcard:Contact for contactPoint
+>>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
      */
     public void setType(Vcard.Type type) {
         this.type = type;
@@ -67,10 +106,15 @@ public class Vcard {
 
     /**
      * Contact Name
+<<<<<<< HEAD
      * <p>
      * A full formatted name, eg Firstname Lastname
      * (Required)
      * 
+=======
+     *
+     * <p>A full formatted name, eg Firstname Lastname (Required)
+>>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
      */
     public String getFn() {
         return fn;
@@ -78,10 +122,15 @@ public class Vcard {
 
     /**
      * Contact Name
+<<<<<<< HEAD
      * <p>
      * A full formatted name, eg Firstname Lastname
      * (Required)
      * 
+=======
+     *
+     * <p>A full formatted name, eg Firstname Lastname (Required)
+>>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
      */
     public void setFn(String fn) {
         this.fn = fn;
@@ -89,10 +138,15 @@ public class Vcard {
 
     /**
      * Email
+<<<<<<< HEAD
      * <p>
      * Email address for the contact
      * (Required)
      * 
+=======
+     *
+     * <p>Email address for the contact (Required)
+>>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
      */
     public String getHasEmail() {
         return hasEmail;
@@ -100,10 +154,15 @@ public class Vcard {
 
     /**
      * Email
+<<<<<<< HEAD
      * <p>
      * Email address for the contact
      * (Required)
      * 
+=======
+     *
+     * <p>Email address for the contact (Required)
+>>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
      */
     public void setHasEmail(String hasEmail) {
         this.hasEmail = hasEmail;
@@ -112,6 +171,7 @@ public class Vcard {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
+<<<<<<< HEAD
         sb.append(Vcard.class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this))).append('[');
         sb.append("type");
         sb.append('=');
@@ -127,6 +187,26 @@ public class Vcard {
         sb.append(',');
         if (sb.charAt((sb.length()- 1)) == ',') {
             sb.setCharAt((sb.length()- 1), ']');
+=======
+        sb.append(Vcard.class.getName())
+                .append('@')
+                .append(Integer.toHexString(System.identityHashCode(this)))
+                .append('[');
+        sb.append("type");
+        sb.append('=');
+        sb.append(((this.type == null) ? "<null>" : this.type));
+        sb.append(',');
+        sb.append("fn");
+        sb.append('=');
+        sb.append(((this.fn == null) ? "<null>" : this.fn));
+        sb.append(',');
+        sb.append("hasEmail");
+        sb.append('=');
+        sb.append(((this.hasEmail == null) ? "<null>" : this.hasEmail));
+        sb.append(',');
+        if (sb.charAt((sb.length() - 1)) == ',') {
+            sb.setCharAt((sb.length() - 1), ']');
+>>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
         } else {
             sb.append(']');
         }
@@ -136,9 +216,15 @@ public class Vcard {
     @Override
     public int hashCode() {
         int result = 1;
+<<<<<<< HEAD
         result = ((result* 31)+((this.fn == null)? 0 :this.fn.hashCode()));
         result = ((result* 31)+((this.hasEmail == null)? 0 :this.hasEmail.hashCode()));
         result = ((result* 31)+((this.type == null)? 0 :this.type.hashCode()));
+=======
+        result = ((result * 31) + ((this.fn == null) ? 0 : this.fn.hashCode()));
+        result = ((result * 31) + ((this.hasEmail == null) ? 0 : this.hasEmail.hashCode()));
+        result = ((result * 31) + ((this.type == null) ? 0 : this.type.hashCode()));
+>>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
         return result;
     }
 
@@ -151,6 +237,7 @@ public class Vcard {
             return false;
         }
         Vcard rhs = ((Vcard) other);
+<<<<<<< HEAD
         return ((((this.fn == rhs.fn)||((this.fn!= null)&&this.fn.equals(rhs.fn)))&&((this.hasEmail == rhs.hasEmail)||((this.hasEmail!= null)&&this.hasEmail.equals(rhs.hasEmail))))&&((this.type == rhs.type)||((this.type!= null)&&this.type.equals(rhs.type))));
     }
 
@@ -163,6 +250,23 @@ public class Vcard {
 
         static {
             for (Vcard.Type c: values()) {
+=======
+        return ((((this.fn == rhs.fn) || ((this.fn != null) && this.fn.equals(rhs.fn)))
+                        && ((this.hasEmail == rhs.hasEmail)
+                                || ((this.hasEmail != null) && this.hasEmail.equals(rhs.hasEmail))))
+                && ((this.type == rhs.type)
+                        || ((this.type != null) && this.type.equals(rhs.type))));
+    }
+
+    public enum Type {
+        @SerializedName("vcard:Contact")
+        VCARD_CONTACT("vcard:Contact");
+        private final String value;
+        private static final Map<String, Vcard.Type> CONSTANTS = new HashMap<String, Vcard.Type>();
+
+        static {
+            for (Vcard.Type c : values()) {
+>>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
                 CONSTANTS.put(c.value, c);
             }
         }
@@ -188,7 +292,11 @@ public class Vcard {
                 return constant;
             }
         }
+<<<<<<< HEAD
 
     }
 
+=======
+    }
+>>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
 }

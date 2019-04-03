@@ -3,15 +3,18 @@ package org.geotools.data.epavic;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
+
 import org.geotools.data.DefaultResourceInfo;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.Query;
@@ -27,6 +30,7 @@ import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.filter.visitor.DefaultFilterVisitor;
 import org.geotools.gce.imagemosaic.Utils.BBOXFilterExtractor;
+import org.geotools.gce.imagemosaic.catalog.index.Indexer;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.locationtech.jts.geom.Point;
@@ -87,25 +91,25 @@ public class EpaVicFeatureSource extends ContentFeatureSource {
             Map<String, String> map = (Map<String, String>) data;
 
             expr.getChildren()
-                    .forEach(
-                            (eqExpr) -> {
-                                if (eqExpr instanceof And) {
-                                    this.visit((And) eqExpr, map);
-                                    return;
-                                }
-                                if (eqExpr instanceof Or) {
-                                    this.visit((Or) eqExpr, map);
-                                    return;
-                                }
-                                if (eqExpr instanceof PropertyIsEqualTo) {
-                                    this.visit((PropertyIsEqualTo) eqExpr, map);
-                                    return;
-                                }
-                                if (eqExpr instanceof PropertyIsBetween) {
-                                    this.visit((PropertyIsBetween) eqExpr, map);
-                                    return;
-                                }
-                            });
+                .forEach(
+                    (eqExpr) -> {
+                        if (eqExpr instanceof And) {
+                            this.visit((And) eqExpr, map);
+                            return;
+                        }
+                        if (eqExpr instanceof Or) {
+                            this.visit((Or) eqExpr, map);
+                            return;
+                        }
+                        if (eqExpr instanceof PropertyIsEqualTo) {
+                            this.visit((PropertyIsEqualTo) eqExpr, map);
+                            return;
+                        }
+                        if (eqExpr instanceof PropertyIsBetween) {
+                            this.visit((PropertyIsBetween) eqExpr, map);
+                            return;
+                        }
+                    });
 
             return map;
         }
@@ -114,13 +118,13 @@ public class EpaVicFeatureSource extends ContentFeatureSource {
             Map<String, String> map = (Map<String, String>) data;
 
             expr.getChildren()
-                    .forEach(
-                            (eqExpr) -> {
-                                if (eqExpr instanceof PropertyIsEqualTo) {
-                                    this.visit((PropertyIsEqualTo) eqExpr, map);
-                                    return;
-                                }
-                            });
+                .forEach(
+                    (eqExpr) -> {
+                        if (eqExpr instanceof PropertyIsEqualTo) {
+                            this.visit((PropertyIsEqualTo) eqExpr, map);
+                            return;
+                        }
+                    });
 
             return map;
         }
@@ -140,9 +144,11 @@ public class EpaVicFeatureSource extends ContentFeatureSource {
         }
     }
 
-    public EpaVicFeatureSource(ContentEntry entry, Query query) {
+    public EpaVicFeatureSource(ContentEntry entry, Query query)
+        throws IOException {
         super(entry, query);
         this.dataStore = (EpaVicDatastore) entry.getDataStore();
+        this.schema = this.buildFeatureType();
     }
 
     protected static String composeErrorMessage(Filter filter, String msg) {
@@ -150,10 +156,10 @@ public class EpaVicFeatureSource extends ContentFeatureSource {
     }
 
     public static String convertDateFormatBetweenAurinAndEPA(String aurinDate)
-            throws ParseException {
+        throws ParseException {
         try {
             return (new SimpleDateFormat(EPATIMEFORMAT))
-                    .format((new SimpleDateFormat(AURINTIMEFORMAT)).parse(aurinDate));
+                .format((new SimpleDateFormat(AURINTIMEFORMAT)).parse(aurinDate));
         } catch (NullPointerException e) {
             throw new ParseException(e.getMessage(), 0);
         }
@@ -179,16 +185,16 @@ public class EpaVicFeatureSource extends ContentFeatureSource {
         this.resInfo.setName(EpaVicDatastore.MEASUREMENT);
 
         try {
-            this.schema = buildType();
-        } catch (FactoryException e) {
+            this.schema = buildType(this.resInfo.getSchema().toURL());
+        } catch (FactoryException|URISyntaxException e) {
             throw new IOException(e);
         }
 
         return this.schema;
     }
 
-    public static SimpleFeatureType buildType()
-            throws NoSuchAuthorityCodeException, FactoryException {
+    public static SimpleFeatureType buildType(URL ns)
+        throws URISyntaxException, FactoryException {
         // Builds the feature type
         SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
         builder.setCRS(CRS.decode(EpaVicDatastore.EPACRS));
@@ -199,6 +205,7 @@ public class EpaVicFeatureSource extends ContentFeatureSource {
         }
 
         builder.add(EpaVicDatastore.GEOMETRY_ATTR, Point.class);
+        builder.setNamespaceURI(new URI(ns.toExternalForm()));
         SimpleFeatureType buildFeatureType = builder.buildFeatureType();
         return buildFeatureType;
     }
@@ -258,7 +265,7 @@ public class EpaVicFeatureSource extends ContentFeatureSource {
 
     @Override
     protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query)
-            throws IOException {
+        throws IOException {
 
         try {
 
@@ -276,17 +283,17 @@ public class EpaVicFeatureSource extends ContentFeatureSource {
     }
 
     private Queue<InputStream> loadSiteStreams(Query query, Sites sites)
-            throws CQLException, IOException, ParseException {
+        throws CQLException, IOException, ParseException {
         Map<String, Object> params = composeRequestParameters(query.getFilter());
         ReferencedEnvelope bbox = (ReferencedEnvelope) params.get(BBOXPARAM);
 
         List<Site> sitesToRetrieve = Collections.emptyList();
         if (bbox != null) {
             sitesToRetrieve =
-                    sites.getSites()
-                            .stream()
-                            .filter(site -> bbox.contains(site.getLongitude(), site.getLatitude()))
-                            .collect(Collectors.toList());
+                sites.getSites()
+                    .stream()
+                    .filter(site -> bbox.contains(site.getLongitude(), site.getLatitude()))
+                    .collect(Collectors.toList());
         } else {
             sitesToRetrieve = sites.getSites();
         }
@@ -326,9 +333,9 @@ public class EpaVicFeatureSource extends ContentFeatureSource {
                 AttributeDescriptor attr = iter.next();
                 // Skips ID and geometry field
                 if (!attr.getLocalName().equalsIgnoreCase(this.objectIdField)
-                        && !attr.getLocalName()
-                                .equalsIgnoreCase(
-                                        this.schema.getGeometryDescriptor().getLocalName())) {
+                    && !attr.getLocalName()
+                    .equalsIgnoreCase(
+                        this.schema.getGeometryDescriptor().getLocalName())) {
                     joiner.add(iter.next().getLocalName());
                 }
             }
@@ -336,8 +343,8 @@ public class EpaVicFeatureSource extends ContentFeatureSource {
             for (String attr : query.getPropertyNames()) {
                 // Skips ID and geometry field
                 if (!attr.equalsIgnoreCase(this.objectIdField)
-                        && !attr.equalsIgnoreCase(
-                                this.schema.getGeometryDescriptor().getLocalName())) {
+                    && !attr.equalsIgnoreCase(
+                    this.schema.getGeometryDescriptor().getLocalName())) {
                     joiner.add(attr);
                 }
             }
@@ -354,17 +361,17 @@ public class EpaVicFeatureSource extends ContentFeatureSource {
      */
     @SuppressWarnings("unchecked")
     public Map<String, Object> composeRequestParameters(Filter filter)
-            throws CQLException, ParseException {
+        throws CQLException, ParseException {
 
         Map<String, Object> requestParams = null;
         BBOXFilterExtractor bboxExtractor = (new BBOXFilterExtractor());
 
         try {
             requestParams =
-                    (Map<String, Object>)
-                            filter.accept(
-                                    new EpaVicFeatureSource.VisitFilter(),
-                                    new TreeMap<String, Object>(String.CASE_INSENSITIVE_ORDER));
+                (Map<String, Object>)
+                    filter.accept(
+                        new EpaVicFeatureSource.VisitFilter(),
+                        new TreeMap<String, Object>(String.CASE_INSENSITIVE_ORDER));
             filter.accept(bboxExtractor, null);
             BoundingBox bbox = bboxExtractor.getBBox();
             if (bbox != null) {
@@ -382,15 +389,15 @@ public class EpaVicFeatureSource extends ContentFeatureSource {
         // Checks that no parameter other than the allowed ones is present
         try {
             requestParams.forEach(
-                    (k, v) -> {
-                        if (!(BBOXPARAM.equalsIgnoreCase(k)
-                                || MONITORID.equalsIgnoreCase(k)
-                                || TIMEBASEID.equalsIgnoreCase(k)
-                                || FROMDATE.equalsIgnoreCase(k)
-                                || TODATE.equalsIgnoreCase(k))) {
-                            throw new IllegalArgumentException();
-                        }
-                    });
+                (k, v) -> {
+                    if (!(BBOXPARAM.equalsIgnoreCase(k)
+                        || MONITORID.equalsIgnoreCase(k)
+                        || TIMEBASEID.equalsIgnoreCase(k)
+                        || FROMDATE.equalsIgnoreCase(k)
+                        || TODATE.equalsIgnoreCase(k))) {
+                        throw new IllegalArgumentException();
+                    }
+                });
         } catch (IllegalArgumentException e) {
             throw new CQLException(composeErrorMessage(filter, "Some parameters are missing"));
         }
@@ -398,11 +405,11 @@ public class EpaVicFeatureSource extends ContentFeatureSource {
         // Converts dates into EPA format
         try {
             requestParams.put(
-                    FROMDATE,
-                    convertDateFormatBetweenAurinAndEPA((String) requestParams.get(FROMDATE)));
+                FROMDATE,
+                convertDateFormatBetweenAurinAndEPA((String) requestParams.get(FROMDATE)));
             requestParams.put(
-                    TODATE,
-                    convertDateFormatBetweenAurinAndEPA((String) requestParams.get(TODATE)));
+                TODATE,
+                convertDateFormatBetweenAurinAndEPA((String) requestParams.get(TODATE)));
             return requestParams;
 
         } catch (IllegalArgumentException | ParseException e) {

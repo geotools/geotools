@@ -24,19 +24,28 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Queue;
+import java.net.URI;
+
+import org.geotools.data.FeatureSource;
 import org.geotools.data.epavic.schema.MeasurementFields;
 import org.geotools.data.epavic.schema.Monitors;
 import org.geotools.data.epavic.schema.Sites;
+import org.geotools.feature.DefaultFeatureCollection;
+import org.geotools.feature.NameImpl;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.junit.Before;
 import org.junit.Test;
 import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.feature.type.Name;
 
 public class EpaVicFeatureReaderTest {
+
+    EpaVicDatastore dataStore;
 
     EpaVicFeatureReader reader;
 
@@ -44,11 +53,11 @@ public class EpaVicFeatureReaderTest {
 
     String json;
 
-    private ObjectMapper om = new ObjectMapper();
+    ObjectMapper om = new ObjectMapper();
 
-    private Sites sites;
+    Sites sites;
 
-    private Monitors monitors;
+    Monitors monitors;
 
     @Before
     public void setUp() throws Exception {
@@ -108,13 +117,17 @@ public class EpaVicFeatureReaderTest {
     @Test
     public void readFirstFeature() throws Exception {
 
+        this.dataStore =
+            (EpaVicDatastore) EpaVicDataStoreFactoryTest.createDefaultOpenDataTestDataStore();
+        List<Name> names = this.dataStore.createTypeNames();
+
         ByteArrayInputStream nine =
                 new ByteArrayInputStream(
                         EpaVicDataStoreFactoryTest.readJSONAsString("test-data/9measurements.json")
                                 .getBytes());
 
         this.reader =
-                new EpaVicFeatureReader(EpaVicFeatureSource.buildType(), nine, sites, monitors);
+                new EpaVicFeatureReader(EpaVicFeatureSource.buildType(this.dataStore.getNamespace()), nine, sites, monitors);
 
         if (reader.hasNext()) {
             SimpleFeature f = reader.next();
@@ -125,7 +138,42 @@ public class EpaVicFeatureReaderTest {
     }
 
     @Test
+    public void readFeaturesAsGeoServer() throws Exception {
+
+        this.dataStore =
+            (EpaVicDatastore) EpaVicDataStoreFactoryTest.createDefaultOpenDataTestDataStore();
+        List<Name> names = this.dataStore.createTypeNames();
+
+        ByteArrayInputStream nine =
+            new ByteArrayInputStream(
+                EpaVicDataStoreFactoryTest.readJSONAsString("test-data/9measurements.json")
+                    .getBytes());
+        FeatureSource<SimpleFeatureType, SimpleFeature> src =
+            this.dataStore.createFeatureSource(
+                this.dataStore.getEntry(
+                    new NameImpl(EpaVicDataStoreFactoryTest.NAMESPACE, EpaVicDataStoreTest.TYPENAME1)));
+        this.reader =
+            new EpaVicFeatureReader(
+                src.getSchema(),
+                nine, this.sites, this.monitors);
+
+        DefaultFeatureCollection results = new DefaultFeatureCollection();
+        while (this.reader.hasNext()) {
+            results.add(this.reader.next());
+        }
+
+        SimpleFeatureType featureType = (SimpleFeatureType) results.getSchema();
+        assertEquals("measurement", featureType.getName().getLocalPart());
+        assertEquals(EpaVicDataStoreFactoryTest.NAMESPACE, featureType.getName().getNamespaceURI());
+
+    }
+
+    @Test
     public void oneStream() throws Exception {
+
+        this.dataStore =
+            (EpaVicDatastore) EpaVicDataStoreFactoryTest.createDefaultOpenDataTestDataStore();
+        List<Name> names = this.dataStore.createTypeNames();
 
         ByteArrayInputStream nine =
                 new ByteArrayInputStream(
@@ -133,7 +181,7 @@ public class EpaVicFeatureReaderTest {
                                 .getBytes());
 
         this.reader =
-                new EpaVicFeatureReader(EpaVicFeatureSource.buildType(), nine, sites, monitors);
+                new EpaVicFeatureReader(EpaVicFeatureSource.buildType(this.dataStore.getNamespace()), nine, sites, monitors);
 
         int c = 0;
         while (reader.hasNext()) {
@@ -147,6 +195,10 @@ public class EpaVicFeatureReaderTest {
     @Test
     public void multipleStreams() throws Exception {
 
+        this.dataStore =
+            (EpaVicDatastore) EpaVicDataStoreFactoryTest.createDefaultOpenDataTestDataStore();
+        List<Name> names = this.dataStore.createTypeNames();
+
         Queue<InputStream> l = new LinkedList<>();
         l.add(
                 new ByteArrayInputStream(
@@ -157,7 +209,7 @@ public class EpaVicFeatureReaderTest {
                         EpaVicDataStoreFactoryTest.readJSONAsString("test-data/17measurements.json")
                                 .getBytes()));
 
-        this.reader = new EpaVicFeatureReader(EpaVicFeatureSource.buildType(), l, sites, monitors);
+        this.reader = new EpaVicFeatureReader(EpaVicFeatureSource.buildType(this.dataStore.getNamespace()), l, sites, monitors);
 
         int c = 0;
         while (reader.hasNext()) {

@@ -24,53 +24,77 @@ public class Renderer {
     private Symbol symbol;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> db04a836af... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
     /**
      * 
      * (Required)
      * 
      */
+<<<<<<< HEAD
 =======
     /** (Required) */
 >>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
+=======
+>>>>>>> db04a836af... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
     public String getType() {
         return type;
     }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> db04a836af... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
     /**
      * 
      * (Required)
      * 
      */
+<<<<<<< HEAD
 =======
     /** (Required) */
 >>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
+=======
+>>>>>>> db04a836af... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
     public void setType(String type) {
         this.type = type;
     }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> db04a836af... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
     /**
      * 
      * (Required)
      * 
      */
+<<<<<<< HEAD
 =======
     /** (Required) */
 >>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
+=======
+>>>>>>> db04a836af... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
     public Symbol getSymbol() {
         return symbol;
     }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> db04a836af... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
     /**
      * 
      * (Required)
      * 
      */
+<<<<<<< HEAD
 =======
     /** (Required) */
 >>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
+=======
+>>>>>>> db04a836af... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
     public void setSymbol(Symbol symbol) {
         this.symbol = symbol;
     }
@@ -78,6 +102,7 @@ public class Renderer {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
+<<<<<<< HEAD
 <<<<<<< HEAD
         sb.append(Renderer.class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this))).append('[');
         sb.append("type");
@@ -95,17 +120,25 @@ public class Renderer {
                 .append('@')
                 .append(Integer.toHexString(System.identityHashCode(this)))
                 .append('[');
+=======
+        sb.append(Renderer.class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this))).append('[');
+>>>>>>> db04a836af... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
         sb.append("type");
         sb.append('=');
-        sb.append(((this.type == null) ? "<null>" : this.type));
+        sb.append(((this.type == null)?"<null>":this.type));
         sb.append(',');
         sb.append("symbol");
         sb.append('=');
-        sb.append(((this.symbol == null) ? "<null>" : this.symbol));
+        sb.append(((this.symbol == null)?"<null>":this.symbol));
         sb.append(',');
+<<<<<<< HEAD
         if (sb.charAt((sb.length() - 1)) == ',') {
             sb.setCharAt((sb.length() - 1), ']');
 >>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
+=======
+        if (sb.charAt((sb.length()- 1)) == ',') {
+            sb.setCharAt((sb.length()- 1), ']');
+>>>>>>> db04a836af... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
         } else {
             sb.append(']');
         }
@@ -116,12 +149,17 @@ public class Renderer {
     public int hashCode() {
         int result = 1;
 <<<<<<< HEAD
+<<<<<<< HEAD
         result = ((result* 31)+((this.type == null)? 0 :this.type.hashCode()));
         result = ((result* 31)+((this.symbol == null)? 0 :this.symbol.hashCode()));
 =======
         result = ((result * 31) + ((this.type == null) ? 0 : this.type.hashCode()));
         result = ((result * 31) + ((this.symbol == null) ? 0 : this.symbol.hashCode()));
 >>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
+=======
+        result = ((result* 31)+((this.type == null)? 0 :this.type.hashCode()));
+        result = ((result* 31)+((this.symbol == null)? 0 :this.symbol.hashCode()));
+>>>>>>> db04a836af... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
         return result;
     }
 
@@ -135,12 +173,16 @@ public class Renderer {
         }
         Renderer rhs = ((Renderer) other);
 <<<<<<< HEAD
+<<<<<<< HEAD
         return (((this.type == rhs.type)||((this.type!= null)&&this.type.equals(rhs.type)))&&((this.symbol == rhs.symbol)||((this.symbol!= null)&&this.symbol.equals(rhs.symbol))));
 =======
         return (((this.type == rhs.type) || ((this.type != null) && this.type.equals(rhs.type)))
                 && ((this.symbol == rhs.symbol)
                         || ((this.symbol != null) && this.symbol.equals(rhs.symbol))));
 >>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
+=======
+        return (((this.type == rhs.type)||((this.type!= null)&&this.type.equals(rhs.type)))&&((this.symbol == rhs.symbol)||((this.symbol!= null)&&this.symbol.equals(rhs.symbol))));
+>>>>>>> db04a836af... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
     }
 
 }

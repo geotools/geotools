@@ -64,183 +64,267 @@ public class Layer {
     private Integer maxScale;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> db04a836af... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
     /**
      * 
      * (Required)
      * 
      */
+<<<<<<< HEAD
 =======
     /** (Required) */
 >>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
+=======
+>>>>>>> db04a836af... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
     public Integer getId() {
         return id;
     }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> db04a836af... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
     /**
      * 
      * (Required)
      * 
      */
+<<<<<<< HEAD
 =======
     /** (Required) */
 >>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
+=======
+>>>>>>> db04a836af... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
     public void setId(Integer id) {
         this.id = id;
     }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> db04a836af... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
     /**
      * 
      * (Required)
      * 
      */
+<<<<<<< HEAD
 =======
     /** (Required) */
 >>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
+=======
+>>>>>>> db04a836af... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
     public String getName() {
         return name;
     }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> db04a836af... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
     /**
      * 
      * (Required)
      * 
      */
+<<<<<<< HEAD
 =======
     /** (Required) */
 >>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
+=======
+>>>>>>> db04a836af... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
     public void setName(String name) {
         this.name = name;
     }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> db04a836af... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
     /**
      * 
      * (Required)
      * 
      */
+<<<<<<< HEAD
 =======
     /** (Required) */
 >>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
+=======
+>>>>>>> db04a836af... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
     public Integer getParentLayerId() {
         return parentLayerId;
     }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> db04a836af... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
     /**
      * 
      * (Required)
      * 
      */
+<<<<<<< HEAD
 =======
     /** (Required) */
 >>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
+=======
+>>>>>>> db04a836af... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
     public void setParentLayerId(Integer parentLayerId) {
         this.parentLayerId = parentLayerId;
     }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> db04a836af... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
     /**
      * 
      * (Required)
      * 
      */
+<<<<<<< HEAD
 =======
     /** (Required) */
 >>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
+=======
+>>>>>>> db04a836af... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
     public Boolean getDefaultVisibility() {
         return defaultVisibility;
     }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> db04a836af... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
     /**
      * 
      * (Required)
      * 
      */
+<<<<<<< HEAD
 =======
     /** (Required) */
 >>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
+=======
+>>>>>>> db04a836af... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
     public void setDefaultVisibility(Boolean defaultVisibility) {
         this.defaultVisibility = defaultVisibility;
     }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> db04a836af... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
     /**
      * 
      * (Required)
      * 
      */
+<<<<<<< HEAD
 =======
     /** (Required) */
 >>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
+=======
+>>>>>>> db04a836af... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
     public Object getSubLayerIds() {
         return subLayerIds;
     }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> db04a836af... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
     /**
      * 
      * (Required)
      * 
      */
+<<<<<<< HEAD
 =======
     /** (Required) */
 >>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
+=======
+>>>>>>> db04a836af... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
     public void setSubLayerIds(Object subLayerIds) {
         this.subLayerIds = subLayerIds;
     }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> db04a836af... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
     /**
      * 
      * (Required)
      * 
      */
+<<<<<<< HEAD
 =======
     /** (Required) */
 >>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
+=======
+>>>>>>> db04a836af... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
     public Integer getMinScale() {
         return minScale;
     }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> db04a836af... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
     /**
      * 
      * (Required)
      * 
      */
+<<<<<<< HEAD
 =======
     /** (Required) */
 >>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
+=======
+>>>>>>> db04a836af... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
     public void setMinScale(Integer minScale) {
         this.minScale = minScale;
     }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> db04a836af... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
     /**
      * 
      * (Required)
      * 
      */
+<<<<<<< HEAD
 =======
     /** (Required) */
 >>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
+=======
+>>>>>>> db04a836af... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
     public Integer getMaxScale() {
         return maxScale;
     }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> db04a836af... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
     /**
      * 
      * (Required)
      * 
      */
+<<<<<<< HEAD
 =======
     /** (Required) */
 >>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
+=======
+>>>>>>> db04a836af... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
     public void setMaxScale(Integer maxScale) {
         this.maxScale = maxScale;
     }
@@ -248,6 +332,7 @@ public class Layer {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
+<<<<<<< HEAD
 <<<<<<< HEAD
         sb.append(Layer.class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this))).append('[');
         sb.append("id");
@@ -285,37 +370,45 @@ public class Layer {
                 .append('@')
                 .append(Integer.toHexString(System.identityHashCode(this)))
                 .append('[');
+=======
+        sb.append(Layer.class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this))).append('[');
+>>>>>>> db04a836af... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
         sb.append("id");
         sb.append('=');
-        sb.append(((this.id == null) ? "<null>" : this.id));
+        sb.append(((this.id == null)?"<null>":this.id));
         sb.append(',');
         sb.append("name");
         sb.append('=');
-        sb.append(((this.name == null) ? "<null>" : this.name));
+        sb.append(((this.name == null)?"<null>":this.name));
         sb.append(',');
         sb.append("parentLayerId");
         sb.append('=');
-        sb.append(((this.parentLayerId == null) ? "<null>" : this.parentLayerId));
+        sb.append(((this.parentLayerId == null)?"<null>":this.parentLayerId));
         sb.append(',');
         sb.append("defaultVisibility");
         sb.append('=');
-        sb.append(((this.defaultVisibility == null) ? "<null>" : this.defaultVisibility));
+        sb.append(((this.defaultVisibility == null)?"<null>":this.defaultVisibility));
         sb.append(',');
         sb.append("subLayerIds");
         sb.append('=');
-        sb.append(((this.subLayerIds == null) ? "<null>" : this.subLayerIds));
+        sb.append(((this.subLayerIds == null)?"<null>":this.subLayerIds));
         sb.append(',');
         sb.append("minScale");
         sb.append('=');
-        sb.append(((this.minScale == null) ? "<null>" : this.minScale));
+        sb.append(((this.minScale == null)?"<null>":this.minScale));
         sb.append(',');
         sb.append("maxScale");
         sb.append('=');
-        sb.append(((this.maxScale == null) ? "<null>" : this.maxScale));
+        sb.append(((this.maxScale == null)?"<null>":this.maxScale));
         sb.append(',');
+<<<<<<< HEAD
         if (sb.charAt((sb.length() - 1)) == ',') {
             sb.setCharAt((sb.length() - 1), ']');
 >>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
+=======
+        if (sb.charAt((sb.length()- 1)) == ',') {
+            sb.setCharAt((sb.length()- 1), ']');
+>>>>>>> db04a836af... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
         } else {
             sb.append(']');
         }
@@ -326,6 +419,9 @@ public class Layer {
     public int hashCode() {
         int result = 1;
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> db04a836af... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
         result = ((result* 31)+((this.subLayerIds == null)? 0 :this.subLayerIds.hashCode()));
         result = ((result* 31)+((this.maxScale == null)? 0 :this.maxScale.hashCode()));
         result = ((result* 31)+((this.name == null)? 0 :this.name.hashCode()));
@@ -333,6 +429,7 @@ public class Layer {
         result = ((result* 31)+((this.id == null)? 0 :this.id.hashCode()));
         result = ((result* 31)+((this.minScale == null)? 0 :this.minScale.hashCode()));
         result = ((result* 31)+((this.parentLayerId == null)? 0 :this.parentLayerId.hashCode()));
+<<<<<<< HEAD
 =======
         result = ((result * 31) + ((this.subLayerIds == null) ? 0 : this.subLayerIds.hashCode()));
         result = ((result * 31) + ((this.maxScale == null) ? 0 : this.maxScale.hashCode()));
@@ -348,6 +445,8 @@ public class Layer {
                 ((result * 31)
                         + ((this.parentLayerId == null) ? 0 : this.parentLayerId.hashCode()));
 >>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
+=======
+>>>>>>> db04a836af... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
         return result;
     }
 
@@ -360,6 +459,7 @@ public class Layer {
             return false;
         }
         Layer rhs = ((Layer) other);
+<<<<<<< HEAD
 <<<<<<< HEAD
         return ((((((((this.subLayerIds == rhs.subLayerIds)||((this.subLayerIds!= null)&&this.subLayerIds.equals(rhs.subLayerIds)))&&((this.maxScale == rhs.maxScale)||((this.maxScale!= null)&&this.maxScale.equals(rhs.maxScale))))&&((this.name == rhs.name)||((this.name!= null)&&this.name.equals(rhs.name))))&&((this.defaultVisibility == rhs.defaultVisibility)||((this.defaultVisibility!= null)&&this.defaultVisibility.equals(rhs.defaultVisibility))))&&((this.id == rhs.id)||((this.id!= null)&&this.id.equals(rhs.id))))&&((this.minScale == rhs.minScale)||((this.minScale!= null)&&this.minScale.equals(rhs.minScale))))&&((this.parentLayerId == rhs.parentLayerId)||((this.parentLayerId!= null)&&this.parentLayerId.equals(rhs.parentLayerId))));
 =======
@@ -386,6 +486,9 @@ public class Layer {
                         || ((this.parentLayerId != null)
                                 && this.parentLayerId.equals(rhs.parentLayerId))));
 >>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
+=======
+        return ((((((((this.subLayerIds == rhs.subLayerIds)||((this.subLayerIds!= null)&&this.subLayerIds.equals(rhs.subLayerIds)))&&((this.maxScale == rhs.maxScale)||((this.maxScale!= null)&&this.maxScale.equals(rhs.maxScale))))&&((this.name == rhs.name)||((this.name!= null)&&this.name.equals(rhs.name))))&&((this.defaultVisibility == rhs.defaultVisibility)||((this.defaultVisibility!= null)&&this.defaultVisibility.equals(rhs.defaultVisibility))))&&((this.id == rhs.id)||((this.id!= null)&&this.id.equals(rhs.id))))&&((this.minScale == rhs.minScale)||((this.minScale!= null)&&this.minScale.equals(rhs.minScale))))&&((this.parentLayerId == rhs.parentLayerId)||((this.parentLayerId!= null)&&this.parentLayerId.equals(rhs.parentLayerId))));
+>>>>>>> db04a836af... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
     }
 
 }

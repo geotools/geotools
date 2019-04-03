@@ -42,7 +42,6 @@ import javax.swing.JList;
  * @see DnDListModel
  * @author Michael Bedward
  * @since 2.6
- * @source $URL$
  * @version $Id$
  */
 public class DnDList<T> extends JList
@@ -278,12 +277,8 @@ public class DnDList<T> extends JList
              */
             DnDListModel<T> model = getModel();
             model.moveItems(overIndex, dragIndices);
-
-        } else {
-
-            // @todo stuff dragged from other list
-
         }
+        // @todo stuff dragged from other list
 
         overIndex = -1;
         movingItems = false;

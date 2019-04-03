@@ -26,7 +26,6 @@ import org.opengis.metadata.SpatialAttributeSupplement;
 /**
  * Spatial attributes in the application schema for the feature types.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @author Touraïvane
@@ -62,13 +61,12 @@ public class SpatialAttributeSupplementImpl extends MetadataEntity
     /**
      * Provides information about the list of feature types with the same spatial representation.
      */
-    public synchronized Collection<FeatureTypeList> getFeatureTypeList() {
+    public Collection<FeatureTypeList> getFeatureTypeList() {
         return featureTypeList = nonNullCollection(featureTypeList, FeatureTypeList.class);
     }
 
     /** Set information about the list of feature types with the same spatial representation. */
-    public synchronized void setFeatureTypeList(
-            final Collection<? extends FeatureTypeList> newValues) {
+    public void setFeatureTypeList(final Collection<? extends FeatureTypeList> newValues) {
         featureTypeList = copyCollection(newValues, featureTypeList, FeatureTypeList.class);
     }
 }

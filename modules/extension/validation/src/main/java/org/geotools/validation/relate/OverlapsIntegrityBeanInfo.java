@@ -18,10 +18,7 @@ package org.geotools.validation.relate;
 
 import java.beans.PropertyDescriptor;
 
-/**
- * @author bowens
- * @source $URL$
- */
+/** @author bowens */
 public class OverlapsIntegrityBeanInfo extends RelationIntegrityBeanInfo {
 
     /** */

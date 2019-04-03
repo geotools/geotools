@@ -43,7 +43,6 @@ import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Expression;
 
-/** @source $URL$ */
 public class StyleGeneratorTest extends DataTestCase {
     public StyleGeneratorTest(String arg0) {
         super(arg0);
@@ -74,7 +73,7 @@ public class StyleGeneratorTest extends DataTestCase {
             }
 
             it.close();
-            System.out.println(filterInfo + ")");
+            // System.out.println(filterInfo + ")");
         }
     }
 
@@ -167,7 +166,7 @@ public class StyleGeneratorTest extends DataTestCase {
                     null);
         } catch (IOException e) {
             fail(e.getMessage());
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
 
         ExplicitClassifier classifier = new ExplicitClassifier(binValues2);
@@ -207,7 +206,7 @@ public class StyleGeneratorTest extends DataTestCase {
                     null);
         } catch (IOException e) {
             fail(e.getMessage());
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
     }
 }

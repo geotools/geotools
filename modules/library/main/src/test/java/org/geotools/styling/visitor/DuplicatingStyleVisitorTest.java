@@ -24,7 +24,6 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Collections;
 import javax.swing.Icon;
-import javax.xml.transform.TransformerException;
 import junit.framework.TestCase;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.IllegalFilterException;
@@ -35,7 +34,6 @@ import org.geotools.styling.ContrastEnhancement;
 import org.geotools.styling.Displacement;
 import org.geotools.styling.ExternalGraphic;
 import org.geotools.styling.ExternalMark;
-import org.geotools.styling.FeatureTypeConstraint;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.Fill;
 import org.geotools.styling.Font;
@@ -52,18 +50,15 @@ import org.geotools.styling.PointSymbolizer;
 import org.geotools.styling.PolygonSymbolizer;
 import org.geotools.styling.RasterSymbolizer;
 import org.geotools.styling.Rule;
-import org.geotools.styling.SLDTransformer;
 import org.geotools.styling.SelectedChannelType;
 import org.geotools.styling.Stroke;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleBuilder;
 import org.geotools.styling.StyleFactory;
-import org.geotools.styling.StyledLayerDescriptor;
 import org.geotools.styling.Symbolizer;
 import org.geotools.styling.TextSymbolizer;
 import org.geotools.styling.TextSymbolizer2;
 import org.geotools.styling.UomOgcMapping;
-import org.geotools.styling.UserLayer;
 import org.geotools.util.Utilities;
 import org.junit.Test;
 import org.opengis.filter.FilterFactory2;
@@ -78,7 +73,6 @@ import org.opengis.util.Cloneable;
  * Unit test for DuplicatorStyleVisitor.
  *
  * @author Cory Horner, Refractions Research Inc.
- * @source $URL$
  */
 public class DuplicatingStyleVisitorTest extends TestCase {
     StyleBuilder sb;
@@ -122,48 +116,6 @@ public class DuplicatingStyleVisitorTest extends TestCase {
         // compare it
         assertNotNull(newStyle);
         assertEquals(2, newStyle.getFeatureTypeStyles()[0].getSemanticTypeIdentifiers().length);
-
-        // TODO: actually compare it
-        assertTrue(areStylesEqualByXml(oldStyle, newStyle));
-    }
-
-    /**
-     * Produces an XML representation of a Style.
-     *
-     * @param style
-     * @return
-     * @throws TransformerException
-     */
-    private String styleToXML(final Style style) throws TransformerException {
-        StyledLayerDescriptor sld = sf.createStyledLayerDescriptor();
-        UserLayer layer = sf.createUserLayer();
-        layer.setLayerFeatureConstraints(new FeatureTypeConstraint[] {null});
-        sld.addStyledLayer(layer);
-        layer.addUserStyle(style);
-
-        SLDTransformer styleTransform = new SLDTransformer();
-        String xml = styleTransform.transform(sld);
-
-        return xml;
-    }
-
-    /**
-     * Returns whether two Styles have equal XML representations.
-     *
-     * @param s1
-     * @param s2
-     * @return
-     */
-    private boolean areStylesEqualByXml(final Style s1, final Style s2) {
-        try {
-            String xmlS1 = styleToXML(s1);
-            String xmlS2 = styleToXML(s2);
-
-            return xmlS1.equals(xmlS2);
-        } catch (TransformerException te) {
-            te.printStackTrace();
-            return false;
-        }
     }
 
     public void testStyle() throws Exception {
@@ -668,7 +620,7 @@ public class DuplicatingStyleVisitorTest extends TestCase {
         int controlEqHash = controlEqual.hashCode();
         int testHash = test.hashCode();
         if (controlEqHash != testHash) {
-            System.out.println("Warning  - Equal objects should return equal hashcodes");
+            // System.out.println("Warning  - Equal objects should return equal hashcodes");
         }
     }
 

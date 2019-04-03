@@ -29,16 +29,16 @@ import org.opengis.filter.spatial.BBOX;
  * Test the LOB workaround and triggers directly.
  *
  * @author Ian Schneider
- * @source $URL$
  */
 public class TeradataDialectOnlineTest extends JDBCTestSupport {
     static int cnt = 99;
 
     static void enableLogging(Level level) {
-        Handler handler = Logging.getLogger("").getHandlers()[0];
+        Handler handler = Logging.getLogger(TeradataDialectOnlineTest.class).getHandlers()[0];
         handler.setLevel(level);
 
-        org.geotools.util.logging.Logging.getLogger("org.geotools.jdbc").setLevel(level);
+        org.geotools.util.logging.Logging.getLogger(TeradataDialectOnlineTest.class)
+                .setLevel(level);
     }
 
     @Override

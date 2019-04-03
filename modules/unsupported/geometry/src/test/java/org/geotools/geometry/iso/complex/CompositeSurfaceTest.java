@@ -29,7 +29,6 @@ import org.opengis.geometry.coordinate.GeometryFactory;
 import org.opengis.geometry.primitive.OrientableSurface;
 import org.opengis.geometry.primitive.Surface;
 
-/** @source $URL$ */
 public class CompositeSurfaceTest extends TestCase {
 
     public void testMain() {

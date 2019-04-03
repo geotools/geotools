@@ -1,5 +1,3 @@
-package org.geotools.filter.function;
-
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
@@ -16,6 +14,7 @@ package org.geotools.filter.function;
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
+package org.geotools.filter.function;
 
 import static org.geotools.filter.capability.FunctionNameImpl.parameter;
 
@@ -32,7 +31,6 @@ import org.opengis.filter.capability.FunctionName;
  *
  * @see SimpleDateFormat
  * @author Andrea Aime - TOPP
- * @source $URL$
  */
 public class FilterFunction_dateFormat extends FunctionExpressionImpl {
 

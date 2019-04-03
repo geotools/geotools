@@ -1,8 +1,8 @@
 /*
- *    GeoTools - OpenSource mapping toolkit
+ *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *   (C) 2000-2016, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2000-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -21,10 +21,10 @@
 package org.geotools.referencing.operation.projection;
 
 import java.awt.geom.Point2D;
+import org.geotools.metadata.i18n.Vocabulary;
+import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.NamedIdentifier;
-import org.geotools.resources.i18n.Vocabulary;
-import org.geotools.resources.i18n.VocabularyKeys;
 import org.opengis.parameter.ParameterDescriptor;
 import org.opengis.parameter.ParameterDescriptorGroup;
 import org.opengis.parameter.ParameterNotFoundException;
@@ -40,13 +40,8 @@ import org.opengis.referencing.operation.MathTransform;
  * Transverse Mercator which it resembles. Like this, it has a straight central meridian along which
  * the scale is true, all other meridians and parallels are curved, and the scale distortion
  * increases rapidly with increasing distance from the central meridian.
- *
- * @source $URL$
  */
 public class CassiniSoldner extends MapProjection {
-
-    /** Maximum number of iterations for iterative computations. */
-    private static final int MAXIMUM_ITERATIONS = 15;
 
     /**
      * Meridian distance at the {@code latitudeOfOrigin}. Used for calculations for the ellipsoid.
@@ -193,7 +188,7 @@ public class CassiniSoldner extends MapProjection {
                             new NamedIdentifier(Citations.EPSG, "Cassini-Soldner"),
                             new NamedIdentifier(Citations.EPSG, "9806"),
                             new NamedIdentifier(Citations.GEOTIFF, "CT_CassiniSoldner"),
-                            new NamedIdentifier(Citations.ESRI, "Cassini_Soldner"),
+                            new NamedIdentifier(Citations.ESRI, "Cassini"),
                             new NamedIdentifier(
                                     Citations.GEOTOOLS,
                                     Vocabulary.formatInternational(

@@ -41,14 +41,13 @@ import org.xml.sax.SAXException;
  * <p>
  *
  * @author dzwiers, Refractions Research, Inc.
- * @source $URL$
  * @version $Id$
  * @see XMLConfigReader
  */
 class ReaderUtils {
     /** Used internally to create log information to detect errors. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.vfny.geoserver.global");
+            org.geotools.util.logging.Logging.getLogger(ReaderUtils.class);
 
     /**
      * ReaderUtils constructor.
@@ -64,9 +63,7 @@ class ReaderUtils {
      *
      * @param configFile The file to parse int a DOM tree.
      * @return the resulting DOM tree
-     * @throws ParserConfigurationException DOCUMENT ME!
      * @throws ParserConfigurationException
-     * @throws SAXException DOCUMENT ME!
      */
     public static Element loadConfig(Reader configFile)
             throws IOException, ParserConfigurationException, SAXException {

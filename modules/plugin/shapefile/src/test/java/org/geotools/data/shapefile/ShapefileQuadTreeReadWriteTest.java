@@ -34,8 +34,8 @@ import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.simple.SimpleFeatureStore;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.factory.GeoTools;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.util.factory.GeoTools;
 import org.junit.Test;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
@@ -46,7 +46,6 @@ import org.opengis.filter.Id;
 import org.opengis.filter.identity.FeatureId;
 
 /**
- * @source $URL$
  * @version $Id$
  * @author Ian Schneider
  */
@@ -111,7 +110,7 @@ public class ShapefileQuadTreeReadWriteTest extends TestCaseSupport {
             throws IOException {
         Map params = new HashMap();
         params.put(ShapefileDataStoreFactory.URLP.key, url);
-        params.put(ShapefileDataStoreFactory.CREATE_SPATIAL_INDEX.key, new Boolean(true));
+        params.put(ShapefileDataStoreFactory.CREATE_SPATIAL_INDEX.key, Boolean.valueOf(true));
         DataStore createDataStore = fac.createDataStore(params);
         return createDataStore;
     }
@@ -235,7 +234,7 @@ public class ShapefileQuadTreeReadWriteTest extends TestCaseSupport {
 
         Map params = new HashMap();
         params.put(ShapefileDataStoreFactory.URLP.key, file.toURI().toURL());
-        params.put(ShapefileDataStoreFactory.CREATE_SPATIAL_INDEX.key, new Boolean(true));
+        params.put(ShapefileDataStoreFactory.CREATE_SPATIAL_INDEX.key, Boolean.valueOf(true));
         ShapefileDataStore ds = (ShapefileDataStore) fac.createDataStore(params);
 
         FilterFactory2 ff =

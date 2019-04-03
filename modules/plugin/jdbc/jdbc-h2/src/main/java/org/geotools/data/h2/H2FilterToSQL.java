@@ -19,10 +19,9 @@ package org.geotools.data.h2;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.logging.Logger;
 import org.geotools.data.jdbc.FilterToSQL;
 import org.geotools.filter.FilterCapabilities;
-import org.geotools.util.logging.Logging;
+import org.geotools.jdbc.SQLDialect;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.LinearRing;
@@ -44,13 +43,13 @@ import org.opengis.filter.spatial.Overlaps;
 import org.opengis.filter.spatial.Touches;
 import org.opengis.filter.spatial.Within;
 
-/** @source $URL$ */
 public class H2FilterToSQL extends FilterToSQL {
-    private static final Logger LOGGER = Logging.getLogger(H2FilterToSQL.class);
 
     @Override
     protected FilterCapabilities createFilterCapabilities() {
         FilterCapabilities caps = super.createFilterCapabilities();
+        caps.addAll(SQLDialect.BASE_DBMS_CAPABILITIES);
+
         caps.addType(BBOX.class);
         caps.addType(Contains.class);
         caps.addType(Crosses.class);

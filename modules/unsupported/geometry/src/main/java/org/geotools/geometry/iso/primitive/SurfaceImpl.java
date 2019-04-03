@@ -58,7 +58,6 @@ import org.opengis.referencing.operation.TransformException;
  * for Surface.
  *
  * @author Jackson Roehrig & Sanjay Jena
- * @source $URL$
  */
 public class SurfaceImpl extends OrientableSurfaceImpl implements Surface {
     private static final long serialVersionUID = 2431540523002962079L;
@@ -143,7 +142,6 @@ public class SurfaceImpl extends OrientableSurfaceImpl implements Surface {
      * doesn´t exist
      *
      * @param patch List of SurfacePatch´s
-     * @param surfaceBoundary SurfaceBoundary; will be calculated if this parameter is NULL
      */
     private void initializeSurface(List<? extends SurfacePatch> patch) {
 
@@ -227,7 +225,6 @@ public class SurfaceImpl extends OrientableSurfaceImpl implements Surface {
      * Sets the Surface Patches and Boundary for the Surface
      *
      * @param surfacePatches - ArrayList of Surface Patches, which represent the Surface
-     * @param surfaceBoundary - Surface Boundary of the Surface
      */
     protected void setPatches(List<? extends SurfacePatch> surfacePatches) {
         this.initializeSurface(surfacePatches);

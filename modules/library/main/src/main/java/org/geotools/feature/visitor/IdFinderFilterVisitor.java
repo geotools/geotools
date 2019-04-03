@@ -23,8 +23,6 @@ import org.opengis.filter.Id;
  * Quick check to see if an ID filter is found.
  *
  * <p>Example:<code>found = (Boolean) filter.accept( new IdFinderFilter(), null )</code>
- *
- * @source $URL$
  */
 public class IdFinderFilterVisitor extends AbstractFinderFilterVisitor {
 

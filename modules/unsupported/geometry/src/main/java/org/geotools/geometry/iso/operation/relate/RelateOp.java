@@ -2,8 +2,8 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2001-2006  Vivid Solutions
  *    (C) 2001-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2001-2006  Vivid Solutions
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -23,11 +23,7 @@ import org.geotools.geometry.iso.root.GeometryImpl;
 import org.geotools.geometry.iso.topograph2D.IntersectionMatrix;
 import org.opengis.geometry.Geometry;
 
-/**
- * Implements the relate() operation on {@link Geometry}s.
- *
- * @source $URL$
- */
+/** Implements the relate() operation on {@link Geometry}s. */
 public class RelateOp extends GeometryGraphOperation {
 
     public static IntersectionMatrix relate(GeometryImpl a, GeometryImpl b)

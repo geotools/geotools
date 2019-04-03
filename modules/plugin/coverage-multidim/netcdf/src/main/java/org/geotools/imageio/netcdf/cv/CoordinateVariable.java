@@ -158,7 +158,9 @@ public abstract class CoordinateVariable<T> {
                     coordinateAxis instanceof CoordinateAxis2D
                             ? indexMap.get(coordinateAxis.getDimension(0).getFullName())
                             : 0;
-            return convertedData.get(j * coordinateAxis.getDimension(1).getLength() + i);
+            // j will be zero for 1D axis
+            return convertedData.get(
+                    i + (j != 0 ? (j * coordinateAxis.getDimension(1).getLength()) : 0));
         }
 
         @Override
@@ -313,12 +315,16 @@ public abstract class CoordinateVariable<T> {
     }
 
     protected void init() {
-        if (coordinateAxis.isNumeric()
-                && coordinateAxis instanceof CoordinateAxis1D
-                && !coordinateAxis.hasMissing()) {
-            axisHelper = new CoordinateAxis1DNumericHelper();
-        } else {
+        if (!coordinateAxis.isNumeric()
+                || !(coordinateAxis instanceof CoordinateAxis1D)
+                || (coordinateAxis.hasMissing()
+                        && !AxisType.Time.equals(coordinateAxis.getAxisType()))) {
+            // Not sure time variable can have actual NoData values in the array.
+            // Let's exclude it from GeneralHelper case.
+            // We may revisit it if we find some data with FillValues in the array.
             axisHelper = new CoordinateAxisGeneralHelper();
+        } else {
+            axisHelper = new CoordinateAxis1DNumericHelper();
         }
     }
 

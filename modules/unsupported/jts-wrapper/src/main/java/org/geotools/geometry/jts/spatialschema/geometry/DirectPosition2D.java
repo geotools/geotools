@@ -2,6 +2,24 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
+ *    (C) 2019, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ *
+ */
+
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
  *    (C) 2005-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -26,7 +44,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import org.geotools.geometry.jts.GeometryUtils;
+import java.util.Objects;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -40,7 +58,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * anyway such a restriction is hard to generalize (what to do with {@linkplain
  * AxisDirection#NORTH_EAST North-East} direction?).
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  */
@@ -212,6 +229,15 @@ public class DirectPosition2D extends Point2D.Double implements DirectPosition, 
      */
     public String toString() {
         return toString(this, getCoordinates());
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        DirectPosition2D that = (DirectPosition2D) o;
+        return Objects.equals(crs, that.crs);
     }
 
     /**

@@ -21,9 +21,9 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
-import org.geotools.factory.GeoTools;
-import org.geotools.factory.Hints;
 import org.geotools.referencing.CRS;
+import org.geotools.util.factory.GeoTools;
+import org.geotools.util.factory.Hints;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.Envelope;
 import org.opengis.geometry.MismatchedDimensionException;
@@ -74,7 +74,6 @@ import org.opengis.referencing.cs.CoordinateSystemAxis;
  * <p>
  *
  * @author Jody Garnett
- * @source $URL$
  */
 public class GeometryBuilder {
     /** Hints used for the duration of this GeometryBuilder. */

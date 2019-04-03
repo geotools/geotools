@@ -22,10 +22,10 @@ import static java.lang.Math.cos;
 import java.awt.geom.Point2D;
 import java.util.Collection;
 import java.util.logging.Level;
+import org.geotools.metadata.i18n.Vocabulary;
+import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.NamedIdentifier;
-import org.geotools.resources.i18n.Vocabulary;
-import org.geotools.resources.i18n.VocabularyKeys;
 import org.opengis.parameter.GeneralParameterDescriptor;
 import org.opengis.parameter.ParameterDescriptor;
 import org.opengis.parameter.ParameterDescriptorGroup;
@@ -55,7 +55,6 @@ import org.opengis.referencing.operation.MathTransform;
  *     HREF="http://www.remotesensing.org/geotiff/proj_list/equirectangular.html">"Equirectangular"
  *     on RemoteSensing.org</A>
  * @since 2.2
- * @source $URL$
  * @version $Id$
  * @author John Grange
  * @author Martin Desruisseaux
@@ -197,7 +196,8 @@ public class EquidistantCylindrical extends MapProjection {
                         new NamedIdentifier[] {
                             new NamedIdentifier(Citations.OGC, "Equidistant_Cylindrical"),
                             new NamedIdentifier(Citations.EPSG, "Equidistant Cylindrical"),
-                            new NamedIdentifier(Citations.ESRI, "Equidistant_Cylindrical"),
+                            new NamedIdentifier(
+                                    Citations.ESRI, "Equidistant_Cylindrical_Ellipsoidal"),
                             new NamedIdentifier(Citations.EPSG, "9823"),
                             new NamedIdentifier(
                                     Citations.GEOTOOLS,
@@ -268,6 +268,7 @@ public class EquidistantCylindrical extends MapProjection {
                         new NamedIdentifier[] {
                             new NamedIdentifier(
                                     Citations.EPSG, "Equidistant Cylindrical (Spherical)"),
+                            new NamedIdentifier(Citations.ESRI, "Equidistant_Cylindrical"),
                             new NamedIdentifier(
                                     Citations.GEOTOOLS,
                                     Vocabulary.formatInternational(

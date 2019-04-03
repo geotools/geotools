@@ -46,4 +46,34 @@ public class ReadResolutionCalculatorTest {
         assertEquals(0.0331, requestedResolution[0], 1e-4);
         assertEquals(0.0331, requestedResolution[1], 1e-4);
     }
+
+    @Test
+    public void testReadResolutionCalculatorNullRes() throws Exception {
+        final CoordinateReferenceSystem requestCRS = CRS.decode("EPSG:3857", true);
+        final CoordinateReferenceSystem nativeCRS = CRS.decode("EPSG:4326", true);
+        final ReferencedEnvelope requestBounds =
+                new ReferencedEnvelope(
+                        -1.3184040176569374E7,
+                        -1.31787660216177E7,
+                        4020998.5368273035,
+                        4026272.691778981,
+                        requestCRS);
+        GridGeometry2D gg = new GridGeometry2D(new GridEnvelope2D(0, 0, 256, 256), requestBounds);
+
+        // We intentionally provide a null native res
+        ReadResolutionCalculator calculator = new ReadResolutionCalculator(gg, nativeCRS, null);
+        ReferencedEnvelope readBounds =
+                new ReferencedEnvelope(
+                        -118.43424797058104,
+                        -118.38686943054199,
+                        33.941864643619226,
+                        33.981161019696614,
+                        nativeCRS);
+        calculator.setAccurateResolution(true);
+        double[] requestedResolution = calculator.computeRequestedResolution(readBounds);
+
+        // Before the fix, that computation would have returned a wrong full resolution
+        assertEquals(1.85072E-4, requestedResolution[0], 1e-6);
+        assertEquals(1.53466E-4, requestedResolution[1], 1e-6);
+    }
 }

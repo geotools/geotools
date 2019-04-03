@@ -26,12 +26,8 @@ import org.geotools.validation.DefaultIntegrityValidationBeanInfo;
  *
  * @author bowens<br>
  *     Created Apr 27, 2004<br>
- * @source $URL$
  * @version <br>
  *     <b>Puropse:</b><br>
- *     <p>DOCUMENT ME!! <b>Description:</b><br>
- *     <p>DOCUMENT ME!! <b>Usage:</b><br>
- *     <p>DOCUMENT ME!!
  */
 public class RelateIntegrityBeanInfo extends DefaultIntegrityValidationBeanInfo {
 
@@ -65,7 +61,7 @@ public class RelateIntegrityBeanInfo extends DefaultIntegrityValidationBeanInfo 
             pd = pd2;
 
             // TODO error, log here
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
 
         return pd;

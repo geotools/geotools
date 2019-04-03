@@ -25,7 +25,6 @@ import org.geotools.geometry.iso.util.interpolation.ITP_Interpolation.Point3d;
  * @author roehrig
  *     <p>TODO To change the template for this generated type comment go to Window - Preferences -
  *     Java - Code Style - Code Templates
- * @source $URL$
  */
 public class PointNeighboursGradients {
 
@@ -41,6 +40,7 @@ public class PointNeighboursGradients {
 
     public PointNeighboursGradients(Point3d p, Point3d[] nbrs) {
         this.mP = p;
+        this.mNbrs = new Point3d[nbrs.length];
         System.arraycopy(nbrs, 0, this.mNbrs, 0, nbrs.length);
         this.mGradXY = null;
     }

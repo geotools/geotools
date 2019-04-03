@@ -16,7 +16,7 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>library</artifactId>
-    <version>20-SNAPSHOT</version>
+    <version>22-SNAPSHOT</version>
   </parent>
 
 
@@ -27,11 +27,14 @@
   <artifactId>gt-opengis</artifactId>
   <packaging>jar</packaging>
   <name>Open GIS Interfaces</name>
-  
 
   <description>
     Standard interfaces implemented throughout the library.
   </description>
+
+  <properties>
+    <moduleIdentifier>org.geotools.opengis</moduleIdentifier>
+  </properties>
 
   <licenses>
     <license>

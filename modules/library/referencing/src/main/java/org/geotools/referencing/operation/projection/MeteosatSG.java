@@ -67,7 +67,6 @@ import org.opengis.referencing.operation.MathTransform;
  *     href="http://www.eumetsat.int/website/home/Data/DataDelivery/SupportSoftwareandTools/index.html">
  *     Navigation Software for Meteosat-9 (MSG) - Level 1.5 VIS/IR/HRV data</a>
  * @since 14.0
- * @source $URL$
  * @version $Id$
  * @author Maciej Filocha (ICM)
  */
@@ -135,8 +134,8 @@ public class MeteosatSG extends MapProjection {
      * Transforms the specified (<var>&lambda;</var>,<var>&phi;</var>) coordinates (units in
      * radians) and stores the result in {@code ptDst} (pixel coordinates).
      *
-     * @param lon The longitude of the coordinate, in <strong>radians</strong>.
-     * @param lat The latitude of the coordinate, in <strong>radians</strong>.
+     * @param x The longitude of the coordinate, in <strong>radians</strong>.
+     * @param y The latitude of the coordinate, in <strong>radians</strong>.
      */
     protected Point2D transformNormalized(double x, double y, Point2D ptDst)
             throws ProjectionException {

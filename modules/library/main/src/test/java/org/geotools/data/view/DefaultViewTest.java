@@ -35,7 +35,6 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 
-/** @source $URL$ */
 public class DefaultViewTest extends TestCase {
 
     String typeName = "type1";
@@ -57,7 +56,9 @@ public class DefaultViewTest extends TestCase {
         GeometryFactory fac = new GeometryFactory();
         return SimpleFeatureBuilder.build(
                 ft,
-                new Object[] {fac.createPoint(new Coordinate(i, i)), "name" + i, new Integer(i)},
+                new Object[] {
+                    fac.createPoint(new Coordinate(i, i)), "name" + i, Integer.valueOf(i)
+                },
                 null);
     }
 

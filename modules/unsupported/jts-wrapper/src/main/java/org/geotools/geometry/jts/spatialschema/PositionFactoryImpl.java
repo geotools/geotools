@@ -28,7 +28,6 @@ import org.opengis.geometry.coordinate.PointArray;
 import org.opengis.geometry.coordinate.Position;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-/** @source $URL$ */
 public class PositionFactoryImpl implements PositionFactory {
     private CoordinateReferenceSystem crs;
 
@@ -101,7 +100,7 @@ public class PositionFactoryImpl implements PositionFactory {
         } else {
             for (int i = start; i < end; i += D) {
                 double[] ordinates = new double[D];
-                for (int o = 0; i < D; i++) {
+                for (int o = 0; o < D; o++) {
                     ordinates[o] = array[i + o];
                 }
                 pointArray.add(new DirectPositionImpl(crs, ordinates));

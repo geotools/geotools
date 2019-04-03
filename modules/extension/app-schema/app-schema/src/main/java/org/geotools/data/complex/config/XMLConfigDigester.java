@@ -22,14 +22,17 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
 import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.digester.Digester;
+import org.geotools.appschema.util.InterpolationProperties;
 import org.geotools.data.complex.AppSchemaDataAccessFactory;
 import org.geotools.data.complex.AppSchemaDataAccessRegistry;
 import org.geotools.data.complex.spi.CustomSourceDataStore;
-import org.geotools.util.InterpolationProperties;
 import org.geotools.util.URLs;
 import org.xml.sax.SAXException;
 
@@ -41,14 +44,12 @@ import org.xml.sax.SAXException;
  * @author Ben Caradoc-Davies (CSIRO Earth Science and Resource Engineering)
  * @author Russell Petty (GeoScience Victoria)
  * @version $Id$
- * @source $URL$
  * @since 2.4
  */
 public class XMLConfigDigester {
-    /** DOCUMENT ME! */
+
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(
-                    XMLConfigDigester.class.getPackage().getName());
+            org.geotools.util.logging.Logging.getLogger(XMLConfigDigester.class);
 
     /** Namespace URI for the AppSchemaDataAccess configuration files */
     public static final String CONFIG_NS_URI = "http://www.geotools.org/app-schema";
@@ -92,14 +93,7 @@ public class XMLConfigDigester {
         return config;
     }
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @param dataStoreConfigUrl DOCUMENT ME!
-     * @return DOCUMENT ME!
-     * @throws IOException DOCUMENT ME!
-     * @throws NullPointerException DOCUMENT ME!
-     */
+    /** */
     private AppSchemaDataAccessDTO digest(final URL dataStoreConfigUrl) throws IOException {
         if (dataStoreConfigUrl == null) {
             throw new NullPointerException("datastore config url");
@@ -162,7 +156,7 @@ public class XMLConfigDigester {
             setTypeMappingsRules(digester);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             XMLConfigDigester.LOGGER.log(Level.SEVERE, "setting digester properties: ", e);
             throw new IOException("Error setting digester properties: " + e.getMessage());
         }
@@ -170,7 +164,7 @@ public class XMLConfigDigester {
         try {
             digester.parse(new StringReader(configString));
         } catch (SAXException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             XMLConfigDigester.LOGGER.log(Level.SEVERE, "parsing " + dataStoreConfigUrl, e);
 
             IOException ioe = new IOException("Can't parse complex datastore config. ");
@@ -212,6 +206,15 @@ public class XMLConfigDigester {
         // maxFeatures limit when constructing SQL queries (isDenormalsed = false).
         digester.addCallMethod(typeMapping + "/isDenormalised", "setIsDenormalised", 1);
         digester.addCallParam(typeMapping + "/isDenormalised", 0);
+
+        // indexDataStore is datastore designated to be index layer only
+        digester.addCallMethod(typeMapping + "/indexDataStore", "setIndexDataStore", 1);
+        digester.addCallParam(typeMapping + "/indexDataStore", 0);
+        // indexType is Type name for index layer
+        digester.addCallMethod(typeMapping + "/indexType", "setIndexTypeName", 1);
+        digester.addCallParam(typeMapping + "/indexType", 0);
+        digester.addCallMethod(typeMapping + "/IndexTypeName", "setIndexTypeName", 1);
+        digester.addCallParam(typeMapping + "/IndexTypeName", 0);
 
         // create attribute mappings
         final String attMappings = typeMapping + "/attributeMappings";
@@ -277,6 +280,31 @@ public class XMLConfigDigester {
         digester.addCallParam(attMap + "/ClientProperty/name", 0);
         digester.addCallParam(attMap + "/ClientProperty/value", 1);
 
+        // Field name in external index layer
+        digester.addCallMethod(attMap + "/indexField", "setIndexField", 1);
+        digester.addCallParam(attMap + "/indexField", 0);
+        digester.addCallMethod(attMap + "/IndexAttribute", "setIndexField", 1);
+        digester.addCallParam(attMap + "/IndexAttribute", 0);
+        digester.addCallMethod(attMap + "/IndexIdAttribute", "setIndexField", 1);
+        digester.addCallParam(attMap + "/IndexIdAttribute", 0);
+
+        // parse JDBC multi value element
+        String jdbcMultipleValue = attMap + "/jdbcMultipleValue";
+        digester.addObjectCreate(
+                jdbcMultipleValue, XMLConfigDigester.CONFIG_NS_URI, JdbcMultipleValue.class);
+        digester.addCallMethod(jdbcMultipleValue + "/sourceColumn", "setSourceColumn", 1);
+        digester.addCallParam(jdbcMultipleValue + "/sourceColumn", 0);
+        digester.addCallMethod(jdbcMultipleValue + "/targetTable", "setTargetTable", 1);
+        digester.addCallParam(jdbcMultipleValue + "/targetTable", 0);
+        digester.addCallMethod(jdbcMultipleValue + "/targetColumn", "setTargetColumn", 1);
+        digester.addCallParam(jdbcMultipleValue + "/targetColumn", 0);
+        digester.addCallMethod(jdbcMultipleValue + "/targetValue", "setTargetValue", 1);
+        digester.addCallParam(jdbcMultipleValue + "/targetValue", 0);
+        digester.addSetNext(jdbcMultipleValue, "setMultipleValue");
+
+        // give a chance to extensions to contribute custom surtaxes
+        extensions.forEach(extension -> extension.configXmlDigesterAttributesMappings(digester));
+
         // add the AttributeMapping to the list
         digester.addSetNext(attMap, "add");
 
@@ -311,7 +339,7 @@ public class XMLConfigDigester {
         digester.addObjectCreate(dataStores, XMLConfigDigester.CONFIG_NS_URI, ArrayList.class);
         setCommonSourceDataStoreRules(SourceDataStore.class, "DataStore", digester);
         // extension point allowing data sources to provide a custom syntax for their configuration
-        extensions.forEach(extension -> extension.configXmlDigester(digester));
+        extensions.forEach(extension -> extension.configXmlDigesterDataSources(digester));
         // set the list of SourceDataStores for ComlexDataStoreDTO
         digester.addSetNext(dataStores, "setSourceDataStores");
     }

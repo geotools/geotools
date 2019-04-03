@@ -27,7 +27,6 @@ import java.awt.Stroke;
  * an image painted along the contour)
  *
  * @author aaime
- * @source $URL$
  */
 public class LineStyle2D extends Style2D {
     protected Paint contour;

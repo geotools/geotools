@@ -9,28 +9,17 @@ import java.util.HashMap;
 import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
-import org.geotools.factory.GeoTools;
+import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
-import org.junit.AfterClass;
+import org.geotools.util.factory.GeoTools;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 /** Unit test for the 'Multiply' process */
 public class MultiplyProcessTest {
 
     GridCoverageFactory covFactory;
-
-    @BeforeClass
-    public static void setupJaiExt() {
-        JAIExt.initJAIEXT(true, true);
-    }
-
-    @AfterClass
-    public static void teardownJaiExt() {
-        JAIExt.initJAIEXT(false, false);
-    }
 
     @Before
     public void setUp() {
@@ -48,8 +37,7 @@ public class MultiplyProcessTest {
                 };
 
         HashMap properties = new HashMap<>();
-        org.geotools.resources.coverage.CoverageUtilities.setNoDataProperty(
-                properties, new NoDataContainer(2));
+        CoverageUtilities.setNoDataProperty(properties, new NoDataContainer(2));
         GridCoverage2D cov =
                 covFactory.create(
                         "test",

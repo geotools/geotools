@@ -50,7 +50,6 @@ import org.opengis.filter.temporal.During;
  * http://docs.codehaus.org/display/GEOTOOLS/GeomeryFactoryFinder+Proposal
  *
  * @author Mauricio Pazos (Axios Engineering)
- * @source $URL$
  * @version $Id$
  * @since 2.5
  */
@@ -70,10 +69,8 @@ public class CQLCompiler extends CQLParser implements ICompiler {
      * @param filterFactory
      */
     public CQLCompiler(final String cqlSource, final FilterFactory filterFactory) {
-
         super(new StringReader(cqlSource));
 
-        assert cqlSource != null : "cqlSource cannot be null";
         assert filterFactory != null : "filterFactory cannot be null";
 
         this.source = cqlSource;

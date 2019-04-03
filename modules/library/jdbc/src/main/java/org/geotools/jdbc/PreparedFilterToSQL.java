@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Set;
 import org.geotools.data.jdbc.FilterToSQL;
 import org.locationtech.jts.geom.Geometry;
+import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.filter.Id;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.identity.Identifier;
@@ -37,15 +38,15 @@ import org.opengis.filter.identity.Identifier;
  *
  * @author Justin Deoliveira, OpenGEO
  * @author Andrea Aime, OpenGEO
- * @source $URL$
  */
 public class PreparedFilterToSQL extends FilterToSQL {
     /** ordered list of literal values encountered and their types */
-    protected List<Object> literalValues = new ArrayList<Object>();
+    protected List<Object> literalValues = new ArrayList<>();
 
-    protected List<Class> literalTypes = new ArrayList<Class>();
-    protected List<Integer> SRIDs = new ArrayList<Integer>();
-    protected List<Integer> dimensions = new ArrayList<Integer>();
+    protected List<Class> literalTypes = new ArrayList<>();
+    protected List<Integer> SRIDs = new ArrayList<>();
+    protected List<Integer> dimensions = new ArrayList<>();
+    protected List<AttributeDescriptor> descriptors = new ArrayList<>();
     protected PreparedStatementSQLDialect dialect;
     boolean prepareEnabled = true;
 
@@ -88,16 +89,19 @@ public class PreparedFilterToSQL extends FilterToSQL {
     public Object visit(Literal expression, Object context) throws RuntimeException {
         if (!prepareEnabled) return super.visit(expression, context);
 
+        Class clazz = getTargetClassFromContext(context);
+
         // evaluate the literal and store it for later
-        Object literalValue =
-                evaluateLiteral(expression, (context instanceof Class ? (Class) context : null));
+        Object literalValue = evaluateLiteral(expression, clazz);
         literalValues.add(literalValue);
         SRIDs.add(currentSRID);
         dimensions.add(currentDimension);
+        descriptors.add(
+                context instanceof AttributeDescriptor ? (AttributeDescriptor) context : null);
 
-        Class clazz = null;
-        if (context instanceof Class) clazz = (Class) context;
-        else if (literalValue != null) clazz = literalValue.getClass();
+        if (clazz == null && literalValue != null) {
+            clazz = literalValue.getClass();
+        }
         literalTypes.add(clazz);
 
         try {
@@ -122,6 +126,15 @@ public class PreparedFilterToSQL extends FilterToSQL {
         }
 
         return context;
+    }
+
+    private Class getTargetClassFromContext(Object context) {
+        if (context instanceof Class) {
+            return (Class) context;
+        } else if (context instanceof AttributeDescriptor) {
+            return ((AttributeDescriptor) context).getType().getBinding();
+        }
+        return null;
     }
 
     /**
@@ -163,6 +176,7 @@ public class PreparedFilterToSQL extends FilterToSQL {
                     dimensions.add(-1);
                     // if it's not null, we can also infer the type
                     literalTypes.add(attValues[j] != null ? attValues[j].getClass() : null);
+                    descriptors.add(null);
 
                     if (j < (attValues.length - 1)) {
                         out.write(" AND ");
@@ -208,5 +222,15 @@ public class PreparedFilterToSQL extends FilterToSQL {
      */
     public List<Integer> getDimensions() {
         return dimensions;
+    }
+
+    /**
+     * Returns the attribute descriptors compared to a given literal (if any, not always available,
+     * normally only needed if arrays are involved)
+     *
+     * @return
+     */
+    public List<AttributeDescriptor> getDescriptors() {
+        return descriptors;
     }
 }

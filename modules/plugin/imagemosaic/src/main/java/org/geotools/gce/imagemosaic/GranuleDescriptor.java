@@ -26,9 +26,7 @@ import it.geosolutions.jaiext.range.NoDataContainer;
 import it.geosolutions.jaiext.vectorbin.ROIGeometry;
 import it.geosolutions.jaiext.vectorbin.VectorBinarizeDescriptor;
 import it.geosolutions.jaiext.vectorbin.VectorBinarizeRIF;
-import java.awt.Dimension;
-import java.awt.Rectangle;
-import java.awt.RenderingHints;
+import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Rectangle2D;
@@ -60,6 +58,7 @@ import javax.media.jai.JAI;
 import javax.media.jai.PlanarImage;
 import javax.media.jai.ROI;
 import javax.media.jai.ROIShape;
+import javax.media.jai.RenderedOp;
 import javax.media.jai.TileCache;
 import javax.media.jai.TileScheduler;
 import org.apache.commons.beanutils.MethodUtils;
@@ -72,25 +71,25 @@ import org.geotools.coverage.grid.io.footprint.MultiLevelROI;
 import org.geotools.coverage.grid.io.imageio.MaskOverviewProvider;
 import org.geotools.coverage.grid.io.imageio.MaskOverviewProvider.SpiHelper;
 import org.geotools.coverage.grid.io.imageio.ReadType;
+import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.data.Repository;
-import org.geotools.factory.Hints;
-import org.geotools.factory.Hints.Key;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.geometry.util.XRectangle2D;
 import org.geotools.image.ImageWorker;
 import org.geotools.image.io.ImageIOExt;
 import org.geotools.image.jai.Registry;
+import org.geotools.image.util.ImageUtilities;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.operation.builder.GridToEnvelopeMapper;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
-import org.geotools.resources.coverage.CoverageUtilities;
-import org.geotools.resources.geometry.XRectangle2D;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
-import org.geotools.resources.image.ImageUtilities;
 import org.geotools.util.URLs;
+import org.geotools.util.factory.Hints;
+import org.geotools.util.factory.Hints.Key;
 import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.geometry.BoundingBox;
@@ -114,7 +113,6 @@ import org.opengis.referencing.operation.TransformException;
  * @author Stefan Alfons Krueger (alfonx), Wikisquare.de : Support for
  *     jar:file:foo.jar/bar.properties URLs
  * @since 2.5.5
- * @source $URL$
  */
 public class GranuleDescriptor {
 
@@ -144,6 +142,8 @@ public class GranuleDescriptor {
     OverviewsController overviewsController;
 
     private GeneralEnvelope granuleEnvelope;
+    private AbstractGridFormat format;
+    private Hints hints;
 
     public GeneralEnvelope getGranuleEnvelope() {
         return granuleEnvelope;
@@ -365,11 +365,12 @@ public class GranuleDescriptor {
         this.granuleUrl = granuleUrl;
         this.roiProvider = roiProvider;
         this.handleArtifactsFiltering = handleArtifactsFiltering;
+        this.hints = new Hints(hints);
         filterMe = handleArtifactsFiltering && roiProvider != null;
 
         // When looking for formats which may parse this file, make sure to exclude the
         // ImageMosaicFormat as return
-        AbstractGridFormat format =
+        this.format =
                 suggestedFormat == null
                         ? GridFormatFinder.findFormat(granuleUrl, EXCLUDE_MOSAIC)
                         : suggestedFormat;
@@ -844,7 +845,6 @@ public class GranuleDescriptor {
      *     a relative or an absolute path.
      * @param locationAttribute the attribute containing the granule location.
      * @param parentLocation the location of the parent of that granule.
-     * @param inclusionGeometry the footprint of that granule (if any). It may be null.
      */
     public GranuleDescriptor(
             SimpleFeature feature,
@@ -878,7 +878,6 @@ public class GranuleDescriptor {
      *     a relative or an absolute path.
      * @param locationAttribute the attribute containing the granule location.
      * @param parentLocation the location of the parent of that granule.
-     * @param inclusionGeometry the footprint of that granule (if any). It may be null.
      * @param heterogeneousGranules if {@code true}, this granule belongs to a set of heterogeneous
      *     granules
      */
@@ -1025,46 +1024,6 @@ public class GranuleDescriptor {
             // get info about the raster we have to read
             //
 
-            // get a stream
-            assert cachedStreamSPI != null : "no cachedStreamSPI available!";
-            inStream =
-                    cachedStreamSPI.createInputStreamInstance(
-                            granuleUrl, ImageIO.getUseCache(), ImageIO.getCacheDirectory());
-            if (inStream == null) return null;
-
-            // get a reader and try to cache the relevant SPI
-            if (cachedReaderSPI == null) {
-                reader = ImageIOExt.getImageioReader(inStream);
-                if (reader != null) cachedReaderSPI = reader.getOriginatingProvider();
-            } else reader = cachedReaderSPI.createReaderInstance();
-            if (reader == null) {
-                if (LOGGER.isLoggable(java.util.logging.Level.WARNING)) {
-                    LOGGER.warning(
-                            new StringBuilder("Unable to get s reader for granuleDescriptor ")
-                                    .append(this.toString())
-                                    .append(" with request ")
-                                    .append(request.toString())
-                                    .append(" Resulting in no granule loaded: Empty result")
-                                    .toString());
-                }
-                return null;
-            }
-            // set input
-            customizeReaderInitialization(reader, hints);
-            reader.setInput(inStream);
-
-            // check if the reader wants to be aware of the current request
-            if (MethodUtils.getAccessibleMethod(
-                            reader.getClass(), "setRasterLayerRequest", RasterLayerRequest.class)
-                    != null) {
-                try {
-                    MethodUtils.invokeMethod(reader, "setRasterLayerRequest", request);
-                } catch (Exception exception) {
-                    throw new RuntimeException(
-                            "Error setting raster layer request on reader.", exception);
-                }
-            }
-
             // Checking for heterogeneous granules and if the mosaic is not multidimensional
             if (request.isHeterogeneousGranules()
                     && (originator == null || originator.getAttribute("imageindex") == null)) {
@@ -1092,16 +1051,6 @@ public class GranuleDescriptor {
             URL granuleURLUpdated = granuleUrl;
             // If the file is external we must update the Granule elements
             if (isExternal) {
-                // Disposing File Reader and Stream
-                try {
-                    if (inStream != null) {
-                        inStream.close();
-                    }
-                } finally {
-                    if (reader != null) {
-                        reader.dispose();
-                    }
-                }
                 granuleURLUpdated = ovrProvider.getOvrURL();
                 assert ovrProvider.getExternalOverviewInputStreamSpi() != null
                         : "no cachedStreamSPI available for external overview!";
@@ -1113,7 +1062,7 @@ public class GranuleDescriptor {
                                         ImageIO.getUseCache(),
                                         ImageIO.getCacheDirectory());
                 // get a reader and try to cache the relevant SPI
-                reader = ovrProvider.getImageReaderSpi().createReaderInstance();
+                reader = ovrProvider.getExternalOverviewReaderSpi().createReaderInstance();
                 if (reader == null) {
                     if (LOGGER.isLoggable(java.util.logging.Level.WARNING)) {
                         LOGGER.warning(
@@ -1133,6 +1082,46 @@ public class GranuleDescriptor {
 
             } else {
                 ovrIndex = ovrProvider.getOverviewIndex(imageIndex);
+
+                // get a stream
+                assert cachedStreamSPI != null : "no cachedStreamSPI available!";
+                inStream =
+                        cachedStreamSPI.createInputStreamInstance(
+                                granuleUrl, ImageIO.getUseCache(), ImageIO.getCacheDirectory());
+                if (inStream == null) return null;
+
+                // get a reader and try to cache the relevant SPI
+                if (cachedReaderSPI == null) {
+                    reader = ImageIOExt.getImageioReader(inStream);
+                    if (reader != null) cachedReaderSPI = reader.getOriginatingProvider();
+                } else reader = cachedReaderSPI.createReaderInstance();
+                if (reader == null) {
+                    if (LOGGER.isLoggable(java.util.logging.Level.WARNING)) {
+                        LOGGER.warning(
+                                new StringBuilder("Unable to get s reader for granuleDescriptor ")
+                                        .append(this.toString())
+                                        .append(" with request ")
+                                        .append(request.toString())
+                                        .append(" Resulting in no granule loaded: Empty result")
+                                        .toString());
+                    }
+                    return null;
+                }
+            }
+            // set input
+            customizeReaderInitialization(reader, hints);
+            reader.setInput(inStream);
+
+            // check if the reader wants to be aware of the current request
+            if (MethodUtils.getAccessibleMethod(
+                            reader.getClass(), "setRasterLayerRequest", RasterLayerRequest.class)
+                    != null) {
+                try {
+                    MethodUtils.invokeMethod(reader, "setRasterLayerRequest", request);
+                } catch (Exception exception) {
+                    throw new RuntimeException(
+                            "Error setting raster layer request on reader.", exception);
+                }
             }
 
             // get selected level and base level dimensions
@@ -1373,6 +1362,12 @@ public class GranuleDescriptor {
                         return null;
                     }
                     pi.setProperty("ROI", transformed);
+                    if (pi instanceof RenderedOp) {
+                        // For some reason the "ROI" property is sometime lost
+                        // when getting the rendering
+                        PlanarImage theImage = ((RenderedOp) pi).getRendering();
+                        theImage.setProperty("ROI", transformed);
+                    }
                     raster = pi;
 
                 } catch (NoninvertibleTransformException e) {
@@ -1470,6 +1465,9 @@ public class GranuleDescriptor {
 
                 ImageWorker iw = new ImageWorker(raster);
                 iw.setRenderingHints(localHints);
+                if (iw.getNoData() == null && this.noData != null) {
+                    iw.setNoData(this.noData.getAsRange());
+                }
                 iw.affine(finalRaster2Model, interpolation, request.getBackgroundValues());
                 RenderedImage renderedImage = iw.getRenderedImage();
                 Object roi = renderedImage.getProperty("ROI");
@@ -1574,17 +1572,18 @@ public class GranuleDescriptor {
             final ImageLayout layout = new ImageLayout();
             layout.setTileHeight(tileDimensions.width).setTileWidth(tileDimensions.height);
             localHints = new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout);
-        } else {
-            if (hints != null && hints.containsKey(JAI.KEY_IMAGE_LAYOUT)) {
-                final Object layout = hints.get(JAI.KEY_IMAGE_LAYOUT);
-                if (layout != null && layout instanceof ImageLayout) {
-                    final ImageLayout originalLayout = (ImageLayout) layout;
-                    final ImageLayout localLayout = new ImageLayout();
-                    localLayout.setTileHeight(originalLayout.getTileHeight(null));
-                    localLayout.setTileWidth(originalLayout.getTileWidth(null));
-                    localHints = new RenderingHints(JAI.KEY_IMAGE_LAYOUT, localLayout);
-                }
+        } else if (hints != null && hints.containsKey(JAI.KEY_IMAGE_LAYOUT)) {
+            final Object layout = hints.get(JAI.KEY_IMAGE_LAYOUT);
+            if (layout != null && layout instanceof ImageLayout) {
+                final ImageLayout originalLayout = (ImageLayout) layout;
+                final ImageLayout localLayout = new ImageLayout();
+                localLayout.setTileHeight(originalLayout.getTileHeight(null));
+                localLayout.setTileWidth(originalLayout.getTileWidth(null));
+                localHints = new RenderingHints(JAI.KEY_IMAGE_LAYOUT, localLayout);
             }
+        }
+        if (localHints == null) {
+            localHints = new RenderingHints(null);
         }
         updateLocalHints(hints, localHints);
         localHints.add(ImageUtilities.BORDER_EXTENDER_HINTS);
@@ -1772,5 +1771,18 @@ public class GranuleDescriptor {
         } else {
             return roiProvider.getFootprint();
         }
+    }
+
+    /**
+     * Returns a new instance of the AbstractGridCoverage2DReader associated with this descriptor.
+     * It's the responsibility of the caller to dispose of it.
+     */
+    public AbstractGridCoverage2DReader getReader() {
+        return this.format.getReader(granuleUrl, hints);
+    }
+
+    /** @return */
+    public MultiLevelROI getRoiProvider() {
+        return this.roiProvider;
     }
 }

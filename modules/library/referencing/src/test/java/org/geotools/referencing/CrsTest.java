@@ -27,11 +27,11 @@ import java.awt.geom.Rectangle2D;
 import java.util.Set;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.util.XRectangle2D;
 import org.geotools.referencing.CRS.AxisOrder;
 import org.geotools.referencing.crs.DefaultEngineeringCRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.operation.projection.MapProjection;
-import org.geotools.resources.geometry.XRectangle2D;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.opengis.geometry.Envelope;
@@ -46,7 +46,6 @@ import org.opengis.referencing.operation.TransformException;
 /**
  * Tests the {@link CRS} utilities methods.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
@@ -110,6 +109,7 @@ public final class CrsTest {
      *
      * @throws Exception
      */
+    @Test
     public void testAxisAliases() throws Exception {
         String wkt1 =
                 "PROJCS[\"NAD_1927_Texas_Statewide_Mapping_System\","
@@ -139,7 +139,7 @@ public final class CrsTest {
                         + "PARAMETER[\"Standard_Parallel_1\",27.416666666666668],"
                         + "PARAMETER[\"Standard_Parallel_2\",34.916666666666664],"
                         + "PARAMETER[\"Latitude_Of_Origin\",31.166666666666668],"
-                        + "UNIT[\"Foot\",0.3048]"
+                        + "UNIT[\"Foot\",0.3048],"
                         + "AXIS[\"Easting\", EAST],"
                         + "AXIS[\"Northing\", NORTH]]";
 
@@ -196,8 +196,10 @@ public final class CrsTest {
         assertEquals(transformed.getMaximum(0), firstEnvelope.getMaximum(0), EPS);
         assertEquals(transformed.getMaximum(1), firstEnvelope.getMaximum(1), EPS);
     }
-    /** Test "densification" during envelope transform in order to avoid clipping(GEOT-3634). */
-    public void XtestEnvelopeTransformClipping() throws Exception {
+
+    @Test
+    @Ignore
+    public void testEnvelopeTransformClipping() throws Exception {
         final CoordinateReferenceSystem source = WGS84;
         final CoordinateReferenceSystem target;
         target =
@@ -479,7 +481,7 @@ public final class CrsTest {
             originalEnvelope.setEnvelope(-9000000, -9000000, 900000, 9000000);
             // back to wgs84
             GeneralEnvelope wgs84Envelope = CRS.transform(originalEnvelope, WGS84);
-            System.out.println(wgs84Envelope);
+            // System.out.println(wgs84Envelope);
             // and then again in target crs, the result should contain the input, but not taking
             // into account the origin in -150, it ended up not doing so
             GeneralEnvelope transformed = CRS.transform(wgs84Envelope, crs);

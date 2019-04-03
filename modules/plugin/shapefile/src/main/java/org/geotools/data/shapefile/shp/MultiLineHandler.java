@@ -18,6 +18,8 @@ package org.geotools.data.shapefile.shp;
 
 import java.nio.ByteBuffer;
 import java.nio.DoubleBuffer;
+import java.util.ArrayList;
+import java.util.List;
 import org.geotools.geometry.jts.JTS;
 import org.locationtech.jts.geom.CoordinateSequence;
 import org.locationtech.jts.geom.Envelope;
@@ -32,8 +34,6 @@ import org.locationtech.jts.geom.MultiLineString;
 /**
  * The default JTS handler for shapefile. Currently uses the default JTS GeometryFactory, since it
  * doesn't seem to matter.
- *
- * @source $URL$
  */
 public class MultiLineHandler implements ShapeHandler {
     final ShapeType shapeType;
@@ -270,13 +270,28 @@ public class MultiLineHandler implements ShapeHandler {
                     }
                 }
             }
+        }
 
-            buffer.putDouble(-10E40);
-            buffer.putDouble(-10E40);
-
-            for (int t = 0; t < npoints; t++) {
-                buffer.putDouble(-10E40);
+        // if there are M coordinates
+        if (shapeType == ShapeType.ARCZ || shapeType == ShapeType.ARCM) {
+            // get M values list
+            List<Double> mvalues = new ArrayList<>();
+            for (int t = 0, tt = multi.getNumGeometries(); t < tt; t++) {
+                LineString line = (LineString) multi.getGeometryN(t);
+                CoordinateSequence seq = line.getCoordinateSequence();
+                for (int i = 0; i < seq.size(); i++) {
+                    mvalues.add(line.getCoordinateSequence().getM(i));
+                }
             }
+
+            // min, max
+            buffer.putDouble(mvalues.stream().min(Double::compare).get());
+            buffer.putDouble(mvalues.stream().max(Double::compare).get());
+            // encode all M values
+            mvalues.forEach(
+                    x -> {
+                        buffer.putDouble(x);
+                    });
         }
     }
 }

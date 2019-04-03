@@ -47,8 +47,7 @@ import org.opengis.referencing.operation.TransformException;
  */
 public abstract class TileService {
 
-    protected static final Logger LOGGER =
-            Logging.getLogger(TileService.class.getPackage().getName());
+    protected static final Logger LOGGER = Logging.getLogger(TileService.class);
 
     /**
      * This WeakHashMap acts as a memory cache.
@@ -131,11 +130,11 @@ public abstract class TileService {
     public int getZoomLevelFromMapScale(ScaleZoomLevelMatcher zoomLevelMatcher, int scaleFactor) {
         // fallback scale-list
         double[] scaleList = getScaleList();
+        assert (scaleList != null && scaleList.length > 0);
+
         // during the calculations this list caches already calculated scales
         double[] tempScaleList = new double[scaleList.length];
         Arrays.fill(tempScaleList, Double.NaN);
-
-        assert (scaleList != null && scaleList.length > 0);
 
         int zoomLevel = zoomLevelMatcher.getZoomLevelFromScale(this, tempScaleList);
 

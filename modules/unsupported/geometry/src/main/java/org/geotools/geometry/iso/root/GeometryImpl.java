@@ -82,7 +82,6 @@ import org.opengis.referencing.operation.TransformException;
  * <p>NOTE As a type, GeometryImpl does not have a well-defined default state or value
  * representation as a data type. Instantiated subclasses of GeometryImpl will.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengis.org/docs/01-101.pdf">Abstract Specification V5</A>
  * @author Jackson Roehrig & Sanjay Jena
  */
@@ -176,7 +175,7 @@ public abstract class GeometryImpl implements Geometry, Serializable {
                 return g;
             } catch (CloneNotSupportedException e) {
                 // TODO Auto-generated catch block
-                e.printStackTrace();
+                java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
                 return null;
             }
         }
@@ -604,7 +603,7 @@ public abstract class GeometryImpl implements Geometry, Serializable {
         try {
             tIM = RelateOp.relate(this, geom);
         } catch (UnsupportedDimensionException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             return false;
         }
 
@@ -716,7 +715,7 @@ public abstract class GeometryImpl implements Geometry, Serializable {
             return rValue;
 
         } catch (UnsupportedDimensionException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             return false;
         }
     }
@@ -736,7 +735,7 @@ public abstract class GeometryImpl implements Geometry, Serializable {
         try {
             tIM = RelateOp.relate(this, geom);
         } catch (UnsupportedDimensionException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             return false;
         }
 
@@ -791,7 +790,7 @@ public abstract class GeometryImpl implements Geometry, Serializable {
         try {
             tIM = RelateOp.relate(this, geom);
         } catch (UnsupportedDimensionException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             return false;
         }
 
@@ -858,7 +857,7 @@ public abstract class GeometryImpl implements Geometry, Serializable {
         try {
             tIM = RelateOp.relate(this, geom);
         } catch (UnsupportedDimensionException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             return false;
         }
 
@@ -924,7 +923,7 @@ public abstract class GeometryImpl implements Geometry, Serializable {
         try {
             tIM = RelateOp.relate(this, geom);
         } catch (UnsupportedDimensionException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             return false;
         }
 
@@ -991,7 +990,7 @@ public abstract class GeometryImpl implements Geometry, Serializable {
         try {
             return OverlayOp.overlayOp(this, otherGeom, OverlayOp.UNION);
         } catch (UnsupportedDimensionException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             return null;
         }
     }
@@ -1008,7 +1007,7 @@ public abstract class GeometryImpl implements Geometry, Serializable {
         try {
             return OverlayOp.overlayOp(this, otherGeom, OverlayOp.INTERSECTION);
         } catch (UnsupportedDimensionException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             return null;
         }
     }
@@ -1025,7 +1024,7 @@ public abstract class GeometryImpl implements Geometry, Serializable {
         try {
             return OverlayOp.overlayOp(this, otherGeom, OverlayOp.DIFFERENCE);
         } catch (UnsupportedDimensionException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             return null;
         }
     }
@@ -1042,7 +1041,7 @@ public abstract class GeometryImpl implements Geometry, Serializable {
         try {
             return OverlayOp.overlayOp(this, otherGeom, OverlayOp.SYMDIFFERENCE);
         } catch (UnsupportedDimensionException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             return null;
         }
     }

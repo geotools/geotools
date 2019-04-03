@@ -16,14 +16,14 @@
  */
 package org.geotools.data.ogr.bridj;
 
+import java.util.logging.Logger;
 import org.bridj.BridJ;
+import org.geotools.util.logging.Logging;
 
-/**
- * Helper class allowing to locate the GDAL library and attach to it
- *
- * @source $URL$
- */
+/** Helper class allowing to locate the GDAL library and attach to it */
 class GdalInit {
+
+    static final Logger LOGGER = Logging.getLogger(GdalInit.class);
 
     private static volatile String NATIVE_NAME;
 
@@ -85,7 +85,7 @@ class GdalInit {
     }
 
     private static void registerAlias(String name) {
-        System.out.println("Registered library as " + name);
+        LOGGER.info("Registered library as " + name);
         BridJ.addNativeLibraryAlias("ogr", name);
         BridJ.addNativeLibraryAlias("osr", name);
         BridJ.addNativeLibraryAlias("cplError", name);

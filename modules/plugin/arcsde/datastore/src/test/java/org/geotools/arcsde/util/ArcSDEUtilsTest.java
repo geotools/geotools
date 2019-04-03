@@ -34,7 +34,6 @@ import org.geotools.referencing.crs.DefaultEngineeringCRS;
 import org.junit.Test;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-/** @source $URL$ */
 public class ArcSDEUtilsTest {
     @Test
     public void testFindCompatibleCRS_Projected() throws Exception {
@@ -82,7 +81,7 @@ public class ArcSDEUtilsTest {
                 if (coordsys != null) {
                     coordsystems.put(i, coordsys.toString());
                 } else {
-                    System.err.println("No PeProjectedCS found for code " + i);
+                    // System.err.println("No PeProjectedCS found for code " + i);
                 }
             }
             for (int i : geogtranCodelist) {
@@ -90,7 +89,7 @@ public class ArcSDEUtilsTest {
                 if (coordsys != null) {
                     coordsystems.put(i, coordsys.toString());
                 } else {
-                    System.err.println("No PeGeographicCS found for code " + i);
+                    // System.err.println("No PeGeographicCS found for code " + i);
                 }
             }
 
@@ -105,10 +104,10 @@ public class ArcSDEUtilsTest {
 
         } catch (Exception e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         } catch (PeProjectionException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
     }
 }

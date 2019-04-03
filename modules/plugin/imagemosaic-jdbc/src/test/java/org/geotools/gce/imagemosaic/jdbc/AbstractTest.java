@@ -45,21 +45,19 @@ import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.GridFormatFinder;
-import org.geotools.factory.Hints;
 import org.geotools.gce.imagemosaic.jdbc.Import.ImportTyp;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.util.URLs;
+import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.ParameterValue;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-/** @source $URL$ */
 public abstract class AbstractTest extends TestCase {
 
-    protected static final Logger LOGGER =
-            Logging.getLogger(AbstractTest.class.getPackage().getName());
+    protected static final Logger LOGGER = Logging.getLogger(AbstractTest.class);
 
     protected static String CRSNAME = "EPSG:4326";
 
@@ -93,7 +91,7 @@ public abstract class AbstractTest extends TestCase {
         try {
             initOutputDir();
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
 
             LOGGER.severe("Cannot init " + OUTPUTDIR_RESOURCES + ", skipping test");
 
@@ -192,7 +190,7 @@ public abstract class AbstractTest extends TestCase {
         try {
             Connection.commit();
         } catch (SQLException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
 
         try {
@@ -275,7 +273,7 @@ public abstract class AbstractTest extends TestCase {
         try {
             Connection.commit();
         } catch (SQLException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
     }
 
@@ -293,7 +291,7 @@ public abstract class AbstractTest extends TestCase {
             gen.generate();
         } catch (Exception e) {
             Assert.fail(e.getMessage());
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
     }
 
@@ -375,7 +373,7 @@ public abstract class AbstractTest extends TestCase {
 
             Connection.commit();
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             Assert.fail(e.getMessage());
         }
     }
@@ -563,7 +561,7 @@ public abstract class AbstractTest extends TestCase {
 
             Connection.commit();
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             Assert.fail(e.getMessage());
         }
     }
@@ -852,7 +850,7 @@ public abstract class AbstractTest extends TestCase {
         Integer port = null;
 
         if (portString != null) {
-            port = new Integer(portString);
+            port = Integer.valueOf(portString);
         }
 
         String dbName = fixture.getProperty("dbname");
@@ -895,7 +893,7 @@ public abstract class AbstractTest extends TestCase {
             Connection = getDBDialect().getConnection();
         } catch (Exception e) {
             Assert.fail("Error getting connection");
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
     }
 
@@ -905,7 +903,7 @@ public abstract class AbstractTest extends TestCase {
                 Connection.close();
             } catch (SQLException e) {
                 Assert.fail("Error closing connection");
-                e.printStackTrace();
+                java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             } finally {
                 Connection = null;
             }

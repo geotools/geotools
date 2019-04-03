@@ -19,10 +19,9 @@ package org.geotools.kml.bindings;
 import java.util.Collection;
 import org.geotools.kml.KML;
 import org.geotools.kml.KMLTestSupport;
-import org.geotools.xml.Binding;
+import org.geotools.xsd.Binding;
 import org.opengis.feature.simple.SimpleFeature;
 
-/** @source $URL$ */
 public class FolderTypeBindingTest extends KMLTestSupport {
     public void testType() throws Exception {
         assertEquals(SimpleFeature.class, binding(KML.FolderType).getType());

@@ -25,12 +25,12 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import javax.measure.Unit;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.iso.quality.PositionalAccuracyImpl;
 import org.geotools.referencing.AbstractIdentifiedObject;
 import org.geotools.referencing.crs.AbstractDerivedCRS;
 import org.geotools.referencing.wkt.Formatter;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
 import org.geotools.util.Utilities;
 import org.opengis.metadata.extent.Extent;
 import org.opengis.metadata.quality.PositionalAccuracy;
@@ -72,7 +72,6 @@ import si.uom.SI;
  * identify the exact type.
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
@@ -549,6 +548,7 @@ public class AbstractCoordinateOperation extends AbstractIdentifiedObject
 
     /** Returns a hash code value for this coordinate operation. */
     @Override
+    @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int hashCode() {
         int code = (int) serialVersionUID;
         if (sourceCRS != null) code ^= sourceCRS.hashCode();

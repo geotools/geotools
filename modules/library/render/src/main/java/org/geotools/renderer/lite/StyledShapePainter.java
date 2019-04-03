@@ -65,7 +65,6 @@ import org.opengis.style.GraphicalSymbol;
  * painting logic.
  *
  * @author Andrea Aime
- * @source $URL$
  */
 public class StyledShapePainter {
     public static final Key TEXTURE_ANCHOR_HINT_KEY = new TextureAnchorKey();
@@ -73,7 +72,7 @@ public class StyledShapePainter {
 
     /** The logger for the rendering module. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(StyledShapePainter.class.getName());
+            org.geotools.util.logging.Logging.getLogger(StyledShapePainter.class);
     /** Whether icon centers should be matched to a pixel center, or not */
     public static boolean ROUND_ICON_COORDS =
             Boolean.parseBoolean(
@@ -526,7 +525,7 @@ public class StyledShapePainter {
             if (type == PathIterator.SEG_LINETO) event = "SEG_LINETO";
             if (type == PathIterator.SEG_MOVETO) event = "SEG_MOVETO";
             if (type == PathIterator.SEG_QUADTO) event = "SEG_QUADTO";
-            System.out.println(event + " " + pt[0] + "," + pt[1]);
+            LOGGER.fine(event + " " + pt[0] + "," + pt[1]);
             iter.next();
         }
     }

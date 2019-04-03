@@ -52,7 +52,6 @@ import org.opengis.style.ContrastMethod;
  * Tests rendering a GridCoverage2D object directly (ie. not via a coverage reader).
  *
  * @author mbedward
- * @source $URL$
  * @since 2.7
  * @version $Id$
  */
@@ -137,7 +136,8 @@ public class DisplayCoverageTest {
                     public void featureRenderer(SimpleFeature feature) {}
 
                     public void errorOccurred(Exception e) {
-                        e.printStackTrace();
+                        java.util.logging.Logger.getGlobal()
+                                .log(java.util.logging.Level.INFO, "", e);
                         fail("Failed to render coverage");
                     }
                 };

@@ -33,7 +33,6 @@ import org.xml.sax.SAXNotRecognizedException;
  *
  * @author dzwiers, Refractions Research, Inc. http://www.refractions.net
  * @author $Author:$ (last modification)
- * @source $URL$
  * @version $Id$
  */
 public class ElementTypeHandler extends ElementGroupingHandler {
@@ -71,6 +70,7 @@ public class ElementTypeHandler extends ElementGroupingHandler {
     }
 
     /** @see java.lang.Object#hashCode() */
+    @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int hashCode() {
         return (LOCALNAME.hashCode()
                         * ((id == null) ? 1 : id.hashCode())

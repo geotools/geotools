@@ -16,7 +16,9 @@
  */
 package org.geotools.graph.traverse.standard;
 
+import java.util.ArrayDeque;
 import java.util.Map;
+import java.util.Queue;
 import junit.framework.TestCase;
 import org.geotools.graph.GraphTestUtil;
 import org.geotools.graph.build.GraphBuilder;
@@ -28,9 +30,7 @@ import org.geotools.graph.structure.Node;
 import org.geotools.graph.traverse.GraphTraversal;
 import org.geotools.graph.traverse.basic.BasicGraphTraversal;
 import org.geotools.graph.traverse.basic.CountingWalker;
-import org.geotools.graph.util.FIFOQueue;
 
-/** @source $URL$ */
 public class DepthFirstIteratorTest extends TestCase {
 
     private GraphBuilder m_builder;
@@ -39,6 +39,7 @@ public class DepthFirstIteratorTest extends TestCase {
         super(name);
     }
 
+    @Override
     protected void setUp() throws Exception {
         super.setUp();
 
@@ -56,6 +57,7 @@ public class DepthFirstIteratorTest extends TestCase {
 
         CountingWalker walker =
                 new CountingWalker() {
+                    @Override
                     public int visit(Graphable element, GraphTraversal traversal) {
                         super.visit(element, traversal);
                         element.setCount(getCount() - 1);
@@ -100,6 +102,7 @@ public class DepthFirstIteratorTest extends TestCase {
                 new CountingWalker() {
                     private int m_mode = 0;
 
+                    @Override
                     public int visit(Graphable element, GraphTraversal traversal) {
                         super.visit(element, traversal);
                         if (m_mode == 0) {
@@ -128,6 +131,7 @@ public class DepthFirstIteratorTest extends TestCase {
         // stopping node should be visited and nodes with greater id should not
         GraphVisitor visitor =
                 new GraphVisitor() {
+                    @Override
                     public int visit(Graphable component) {
                         if (component.getID() <= suspend) assertTrue(component.isVisited());
                         else assertTrue(!component.isVisited());
@@ -144,6 +148,7 @@ public class DepthFirstIteratorTest extends TestCase {
         // every node should now be visited
         visitor =
                 new GraphVisitor() {
+                    @Override
                     public int visit(Graphable component) {
                         assertTrue(component.isVisited());
                         return (0);
@@ -171,6 +176,7 @@ public class DepthFirstIteratorTest extends TestCase {
                 new CountingWalker() {
                     private int m_mode = 0;
 
+                    @Override
                     public int visit(Graphable element, GraphTraversal traversal) {
                         super.visit(element, traversal);
                         if (m_mode == 0) {
@@ -198,6 +204,7 @@ public class DepthFirstIteratorTest extends TestCase {
         // kill node should be visited and nodes with greater id should not
         GraphVisitor visitor =
                 new GraphVisitor() {
+                    @Override
                     public int visit(Graphable component) {
                         if (component.getID() <= kill) assertTrue(component.isVisited());
                         else assertTrue(!component.isVisited());
@@ -227,6 +234,7 @@ public class DepthFirstIteratorTest extends TestCase {
 
         GraphVisitor initializer =
                 new GraphVisitor() {
+                    @Override
                     public int visit(Graphable component) {
                         component.setCount(-1);
                         return 0;
@@ -235,6 +243,7 @@ public class DepthFirstIteratorTest extends TestCase {
 
         CountingWalker walker =
                 new CountingWalker() {
+                    @Override
                     public int visit(Graphable element, GraphTraversal traversal) {
                         element.setCount(getCount());
                         return super.visit(element, traversal);
@@ -251,6 +260,7 @@ public class DepthFirstIteratorTest extends TestCase {
 
         GraphVisitor visitor =
                 new GraphVisitor() {
+                    @Override
                     public int visit(Graphable component) {
                         // ensure component visited
                         assertTrue(component.isVisited());
@@ -266,12 +276,12 @@ public class DepthFirstIteratorTest extends TestCase {
                                 n2 = ln;
                             }
 
-                            FIFOQueue queue = new FIFOQueue(256);
-                            queue.enq(n1);
+                            Queue<Graphable> queue = new ArrayDeque<>(256);
+                            queue.add(n1);
 
                             // ensure all subnodes of n1 visited before n2
                             while (!queue.isEmpty()) {
-                                Node n = (Node) queue.deq();
+                                Node n = (Node) queue.remove();
 
                                 ln = (Node) obj2node.get(n.getObject().toString() + ".0");
                                 rn = (Node) obj2node.get(n.getObject().toString() + ".1");
@@ -281,8 +291,8 @@ public class DepthFirstIteratorTest extends TestCase {
                                 assertTrue(ln.getCount() < n2.getCount());
                                 assertTrue(rn.getCount() < n2.getCount());
 
-                                queue.enq(ln);
-                                queue.enq(rn);
+                                queue.add(ln);
+                                queue.add(rn);
                             }
                         }
                         return 0;
@@ -316,6 +326,7 @@ public class DepthFirstIteratorTest extends TestCase {
                 new CountingWalker() {
                     private int m_mode = 0;
 
+                    @Override
                     public int visit(Graphable element, GraphTraversal traversal) {
                         super.visit(element, traversal);
                         if (m_mode == 0) {
@@ -357,6 +368,7 @@ public class DepthFirstIteratorTest extends TestCase {
 
         GraphVisitor visitor =
                 new GraphVisitor() {
+                    @Override
                     public int visit(Graphable component) {
                         if (component != root && component != ln && component != rn) {
                             assertTrue(!component.isVisited());
@@ -371,6 +383,7 @@ public class DepthFirstIteratorTest extends TestCase {
         // ensure all nodes visited
         visitor =
                 new GraphVisitor() {
+                    @Override
                     public int visit(Graphable component) {
                         assertTrue(component.isVisited());
                         return (0);
@@ -404,6 +417,7 @@ public class DepthFirstIteratorTest extends TestCase {
                 new CountingWalker() {
                     private int m_mode = 0;
 
+                    @Override
                     public int visit(Graphable element, GraphTraversal traversal) {
                         element.setCount(getCount());
                         super.visit(element, traversal); // set count
@@ -440,6 +454,7 @@ public class DepthFirstIteratorTest extends TestCase {
 
         GraphVisitor visitor =
                 new GraphVisitor() {
+                    @Override
                     public int visit(Graphable component) {
                         String eid = component.getObject().toString();
                         if (eid.length() <= id.length()) assertTrue(component.isVisited());
@@ -468,12 +483,13 @@ public class DepthFirstIteratorTest extends TestCase {
         GraphTestUtil.buildCircular(builder(), nnodes);
         GraphVisitor visitor =
                 new GraphVisitor() {
+                    @Override
                     public int visit(Graphable component) {
                         if (component.getID() == 50) return (Graph.PASS_AND_CONTINUE);
                         return (Graph.FAIL_QUERY);
                     }
                 };
-        Node source = (Node) builder().getGraph().queryNodes(visitor).get(0);
+        Node source = builder().getGraph().queryNodes(visitor).get(0);
 
         CountingWalker walker = new CountingWalker();
         DepthFirstIterator iterator = createIterator();
@@ -488,6 +504,7 @@ public class DepthFirstIteratorTest extends TestCase {
         // ensure all nodes visisited
         visitor =
                 new GraphVisitor() {
+                    @Override
                     public int visit(Graphable component) {
                         assertTrue(component.isVisited());
                         return (0);

@@ -16,7 +16,6 @@ import org.opengis.filter.Or;
 import org.opengis.filter.PropertyIsLike;
 
 @SuppressWarnings("deprecation")
-/** @source $URL$ */
 public class FiltersTest {
 
     private static final double DELTA = 0.0000001;
@@ -110,7 +109,7 @@ public class FiltersTest {
 
     @Test
     public void testGets() throws Throwable {
-        assertEquals(new Long(1l), Filters.gets("1.0", Long.class));
+        assertEquals(Long.valueOf(1l), Filters.gets("1.0", Long.class));
     }
 
     @Test

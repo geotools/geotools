@@ -34,7 +34,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  *
  * @author Simone Giannecchini, GeoSolutions SAS
  * @deprecated Use a custom subclass of {@link MapContent} instead
- * @source $URL$
  * @version $Id$
  */
 public class GraphicEnhancedMapContext extends DefaultMapContext {
@@ -77,8 +76,6 @@ public class GraphicEnhancedMapContext extends DefaultMapContext {
     }
 
     /**
-     * DOCUMENT ME!
-     *
      * @param layers
      * @deprecated
      */
@@ -91,80 +88,42 @@ public class GraphicEnhancedMapContext extends DefaultMapContext {
         super(crs);
     }
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @param layers
-     */
+    /** @param layers */
     public GraphicEnhancedMapContext(MapLayer[] layers, final CoordinateReferenceSystem crs) {
         super(layers, crs);
     }
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @return DOCUMENT ME!
-     * @uml.property name="bgColor"
-     */
+    /** @uml.property name="bgColor" */
     public Color getBgColor() {
         return this.bgColor;
     }
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @param bgColor DOCUMENT ME!
-     * @uml.property name="bgColor"
-     */
+    /** @uml.property name="bgColor" */
     public void setBgColor(Color bgColor) {
         this.bgColor = bgColor;
     }
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @return DOCUMENT ME!
-     * @uml.property name="mapHeight"
-     */
+    /** @uml.property name="mapHeight" */
     public int getMapHeight() {
         return this.mapHeight;
     }
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @param mapHeight DOCUMENT ME!
-     * @uml.property name="mapHeight"
-     */
+    /** @uml.property name="mapHeight" */
     public void setMapHeight(int mapHeight) {
         this.mapHeight = mapHeight;
     }
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @return DOCUMENT ME!
-     * @uml.property name="mapWidth"
-     */
+    /** @uml.property name="mapWidth" */
     public int getMapWidth() {
         return this.mapWidth;
     }
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @param mapWidth DOCUMENT ME!
-     * @uml.property name="mapWidth"
-     */
+    /** @uml.property name="mapWidth" */
     public void setMapWidth(int mapWidth) {
         this.mapWidth = mapWidth;
     }
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @return DOCUMENT ME!
-     */
+    /** */
     public boolean isTransparent() {
         return this.transparent;
     }
@@ -172,7 +131,6 @@ public class GraphicEnhancedMapContext extends DefaultMapContext {
     /**
      * Setting transparency for this wms context.
      *
-     * @param transparent DOCUMENT ME!
      * @uml.property name="transparent"
      */
     public void setTransparent(boolean transparent) {

@@ -67,7 +67,7 @@ import junit.framework.TestResult;
  * @since 2.4
  *
  *
- * @source $URL$
+ *
  * @version $Id$
  * @author Justin Deoliveira, The Open Planning Project
  * @author Ben Caradoc-Davies, CSIRO Earth Science and Resource Engineering
@@ -119,6 +119,7 @@ public abstract class OnlineTestCase extends TestCase {
      *
      * @return true if fixture is available for use
      */
+    @SuppressWarnings("PMD.SystemPrintln")
     boolean checkAvailable() {
         configureFixture();
         if (fixture == null) {
@@ -137,7 +138,7 @@ public abstract class OnlineTestCase extends TestCase {
                                     + fixtureId
                                     + " tests, resources not available: "
                                     + t.getMessage());
-                    t.printStackTrace();
+                    java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", t);
                     available = Boolean.FALSE;
                 }
                 online.put(fixtureId, available);
@@ -192,7 +193,7 @@ public abstract class OnlineTestCase extends TestCase {
                     FixtureUtilities.printSkipNotice(fixtureId, fixtureFile);
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             }
         }
     }
@@ -210,10 +211,10 @@ public abstract class OnlineTestCase extends TestCase {
                             + "values and remove the .example suffix to enable the test");
             fout.flush();
             fout.close();
-            System.out.println("Wrote example fixture file to " + exFixtureFile);
+            // System.out.println("Wrote example fixture file to " + exFixtureFile);
         } catch (IOException ioe) {
-            System.out.println("Unable to write out example fixture " + exFixtureFile);
-            ioe.printStackTrace();
+            // System.out.println("Unable to write out example fixture " + exFixtureFile);
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", ioe);
         }
     }
     /**
@@ -237,7 +238,7 @@ public abstract class OnlineTestCase extends TestCase {
                 // disable the test
                 fixture = null;
                 // leave some trace of the swallowed exception
-                e.printStackTrace();
+                java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             } else {
                 // do not swallow the exception
                 throw e;
@@ -256,11 +257,10 @@ public abstract class OnlineTestCase extends TestCase {
             try {
                 disconnect();
             } catch (Exception e) {
-                if (skipOnFailure) {
-                    // do nothing
-                } else {
+                if (!skipOnFailure) {
                     throw e;
                 }
+                // otherwise do nothing
             }
         }
     }

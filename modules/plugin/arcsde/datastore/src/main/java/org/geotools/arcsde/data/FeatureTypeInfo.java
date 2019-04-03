@@ -25,16 +25,11 @@ import org.opengis.feature.simple.SimpleFeatureType;
 /**
  * Stores information about known ArcSDE feature types or in-process registered "views".
  *
- * @author Gabriel Roldan (TOPP)
- * @version $Id$
  * @since 2.5
- * @source $URL:
- *     http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/main/java
- *     /org/geotools/arcsde/data/FeatureTypeInfo.java $
  */
 final class FeatureTypeInfo {
 
-    private static final Logger LOGGER = Logging.getLogger(FeatureTypeInfo.class.getName());
+    private static final Logger LOGGER = Logging.getLogger(FeatureTypeInfo.class);
 
     private final SimpleFeatureType featureType;
 

@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Set;
 import org.geotools.geometry.iso.io.GeometryToString;
 import org.geotools.geometry.iso.primitive.PointImpl;
+import org.geotools.util.SuppressFBWarnings;
 import org.opengis.geometry.Boundary;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.Envelope;
@@ -33,7 +34,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * is a Complex containing one and only one Point.
  *
  * @author Jackson Roehrig & Sanjay Jena
- * @source $URL$
  */
 public class CompositePointImpl extends CompositeImpl<PointImpl> implements CompositePoint {
     private static final long serialVersionUID = 3391515492110694489L;
@@ -62,6 +62,7 @@ public class CompositePointImpl extends CompositeImpl<PointImpl> implements Comp
     /* (non-Javadoc)
      * @see org.geotools.geometry.featgeom.root.GeometryImpl#clone()
      */
+    @SuppressFBWarnings("NP_CLONE_COULD_RETURN_NULL")
     public CompositePointImpl clone() throws CloneNotSupportedException {
         // TODO Auto-generated method stub
         return null;

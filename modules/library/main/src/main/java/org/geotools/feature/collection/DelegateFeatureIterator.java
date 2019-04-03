@@ -33,7 +33,6 @@ import org.opengis.feature.type.FeatureType;
  * allow for collections that make use of system resources.
  *
  * @author Jody Garnett, Refractions Research, Inc.
- * @source $URL$
  */
 public class DelegateFeatureIterator<F extends Feature> implements FeatureIterator<F> {
     Iterator<F> delegate;

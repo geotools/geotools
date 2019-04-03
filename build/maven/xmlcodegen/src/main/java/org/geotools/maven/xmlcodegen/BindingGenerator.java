@@ -21,19 +21,17 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.eclipse.xsd.XSDAttributeDeclaration;
-import org.eclipse.xsd.XSDComplexTypeContent;
 import org.eclipse.xsd.XSDComplexTypeDefinition;
 import org.eclipse.xsd.XSDElementDeclaration;
 import org.eclipse.xsd.XSDInclude;
 import org.eclipse.xsd.XSDNamedComponent;
 import org.eclipse.xsd.XSDSchema;
 import org.eclipse.xsd.XSDTypeDefinition;
-import org.geotools.xml.Schemas;
+import org.geotools.xsd.Schemas;
 
 
 /**
@@ -55,8 +53,9 @@ import org.geotools.xml.Schemas;
  * @author Justin Deoliveira, The Open Planning Project, jdeolive@openplans.org
  *
  */
+@SuppressWarnings("PMD.SystemPrintln")
 public class BindingGenerator extends AbstractGenerator {
-    static Logger logger = org.geotools.util.logging.Logging.getLogger("org.geotools.xml");
+    static Logger logger = org.geotools.util.logging.Logging.getLogger(BindingGenerator.class);
     boolean generateXsd = true;
     boolean generateAttributes = true;
     boolean generateElements = true;

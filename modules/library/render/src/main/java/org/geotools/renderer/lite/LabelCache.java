@@ -32,7 +32,6 @@ import org.opengis.feature.Feature;
  *
  * @author jeichar
  * @since 2.2
- * @source $URL$
  */
 public interface LabelCache {
     /** Called by renderer to indicate that the rendering process is starting. */
@@ -69,7 +68,7 @@ public interface LabelCache {
      * <p>This facility is used to reserve an area so that labels do not end up overlapping on
      * screen constructs like scalebars or north arrows etc...
      *
-     * @param Geometry The Area of the screen to reserve (in screen coordinates)
+     * @param geometry The Area of the screen to reserve (in screen coordinates)
      */
     void put(Rectangle2D geometry);
 

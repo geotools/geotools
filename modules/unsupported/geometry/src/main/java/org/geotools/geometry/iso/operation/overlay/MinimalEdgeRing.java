@@ -2,8 +2,8 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2001-2006  Vivid Solutions
  *    (C) 2001-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2001-2006  Vivid Solutions
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -26,8 +26,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 /**
  * A ring of {@link Edge}s with the property that no node has degree greater than 2. These are the
  * form of rings required to represent polygons under the OGC SFS spatial data model.
- *
- * @source $URL$
  */
 public class MinimalEdgeRing extends EdgeRing {
 

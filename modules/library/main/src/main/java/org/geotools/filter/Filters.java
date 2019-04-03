@@ -16,7 +16,7 @@
  */
 package org.geotools.filter;
 
-import java.awt.Color;
+import java.awt.*;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -117,7 +117,6 @@ import org.opengis.filter.spatial.Within;
  * @author Jody Garnett (LISAsoft)
  * @since GeoTools 2.2
  * @version 8.0
- * @source $URL$
  */
 public class Filters {
     /** <code>NOTFOUND</code> indicates int value was unavailable */
@@ -152,6 +151,25 @@ public class Filters {
     }
 
     /**
+     * Safe and combiner for filters, will build an and filter around them only if there is at least
+     * two filters
+     *
+     * @param ff The filter factory used to combine filters
+     * @param filters The list of filters to be combined
+     * @return The combination in AND of the filters, or Filter.EXCLUDE if filters is null or empty,
+     *     or the one filter found in the list, in case it has only one element
+     */
+    public static Filter and(org.opengis.filter.FilterFactory ff, List<Filter> filters) {
+        if (filters == null || filters.isEmpty()) {
+            return Filter.EXCLUDE;
+        } else if (filters.size() == 1) {
+            return filters.get(0);
+        } else {
+            return ff.and(filters);
+        }
+    }
+
+    /**
      * Safe version of FilterFactory *and* that is willing to combine filter1 and filter2 correctly
      * in the even either of them is already an And filter.
      *
@@ -162,21 +180,17 @@ public class Filters {
      */
     public static Filter and(org.opengis.filter.FilterFactory ff, Filter filter1, Filter filter2) {
         ArrayList<Filter> list = new ArrayList<Filter>(2);
-        if (filter1 == null) {
-            // ignore
-        } else if (filter1 instanceof And) {
+        if (filter1 instanceof And) {
             And some = (And) filter1;
             list.addAll(some.getChildren());
-        } else {
+        } else if (filter1 != null) {
             list.add(filter1);
         }
 
-        if (filter2 == null) {
-            // ignore
-        } else if (filter2 instanceof And) {
+        if (filter2 instanceof And) {
             And more = (And) filter2;
             list.addAll(more.getChildren());
-        } else {
+        } else if (filter2 != null) {
             list.add(filter2);
         }
 
@@ -188,6 +202,26 @@ public class Filters {
             return ff.and(list);
         }
     }
+
+    /**
+     * Safe or combiner for filters, will build an and filter around them only if there is at least
+     * two filters
+     *
+     * @param ff The filter factory used to combine filters
+     * @param filters The list of filters to be combined
+     * @return The combination in OR of the filters, or Filter.EXCLUDE if filters is null or empty,
+     *     or the one filter found in the list, in case it has only one element
+     */
+    public static Filter or(org.opengis.filter.FilterFactory ff, List<Filter> filters) {
+        if (filters == null || filters.isEmpty()) {
+            return Filter.EXCLUDE;
+        } else if (filters.size() == 1) {
+            return filters.get(0);
+        } else {
+            return ff.or(filters);
+        }
+    }
+
     /**
      * Safe version of FilterFactory *or* that is willing to combine filter1 and filter2 correctly
      * in the even either of them is already an Or filter.
@@ -199,21 +233,17 @@ public class Filters {
      */
     public static Filter or(org.opengis.filter.FilterFactory ff, Filter filter1, Filter filter2) {
         ArrayList<Filter> list = new ArrayList<Filter>();
-        if (filter1 == null) {
-            // ignore
-        } else if (filter1 instanceof Or) {
+        if (filter1 instanceof Or) {
             Or some = (Or) filter1;
             list.addAll(some.getChildren());
-        } else {
+        } else if (filter1 != null) {
             list.add(filter1);
         }
 
-        if (filter2 == null) {
-            // ignore
-        } else if (filter2 instanceof Or) {
+        if (filter2 instanceof Or) {
             Or more = (Or) filter2;
             list.addAll(more.getChildren());
-        } else {
+        } else if (filter2 != null) {
             list.add(filter2);
         }
 
@@ -442,26 +472,26 @@ public class Filters {
      * </code></pre>
      *
      * @param expr This only really works for down casting literals to a value
-     * @param Target type
+     * @param type Target type
      * @return expr smunched into indicated type
      * @deprecated This is not a good idea; use expr.evaulate( null, TYPE )
      */
-    public static <T> T asType(Expression expr, Class<T> TYPE) {
+    public static <T> T asType(Expression expr, Class<T> type) {
         if (expr == null) {
             return null;
         }
         if (STRICT) {
-            return expr.evaluate(null, TYPE);
+            return expr.evaluate(null, type);
         } else if (expr instanceof Literal) {
             Literal literal = (Literal) expr;
-            return (T) literal.evaluate(null, TYPE);
+            return (T) literal.evaluate(null, type);
         } else if (expr instanceof Function) {
             Function function = (Function) expr;
             List<Expression> params = function.getParameters();
             if (params != null && params.size() != 0) {
                 for (int i = 0; i < params.size(); i++) {
                     Expression e = (Expression) params.get(i);
-                    T value = asType(e, TYPE);
+                    T value = asType(e, type);
 
                     if (value != null) {
                         return value;
@@ -470,9 +500,9 @@ public class Filters {
             }
         } else {
             try { // this is a bad idea, not expected to work much
-                T value = expr.evaluate(null, TYPE);
+                T value = expr.evaluate(null, type);
 
-                if (TYPE.isInstance(value)) {
+                if (type.isInstance(value)) {
                     return value;
                 }
             } catch (NullPointerException expected) {
@@ -915,7 +945,7 @@ public class Filters {
      * attributeNames( filter ).contains( name )</code>
      *
      * @param filter
-     * @param property - name of the property to look for
+     * @param propertyName - name of the property to look for
      * @return
      */
     static boolean uses(Filter filter, final String propertyName) {
@@ -1081,7 +1111,7 @@ public class Filters {
      *
      * @param filter
      * @param filterType - class of the filter to look for
-     * @param property - name of the property to look for
+     * @param propertyName - name of the property to look for
      * @return
      */
     public static <T extends Filter> T search(

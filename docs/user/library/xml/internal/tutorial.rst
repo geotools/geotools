@@ -252,11 +252,11 @@ SKU (Simple Type)
 
 2. From the schema definition, we see that the SKU type is a Simple Type,
    which extends xsd:string. In the realm of xml schema, the following diagram
-   depicts the inheritance hierachy of the SKU type:
+   depicts the inheritance hierarchy of the SKU type:
 
    .. image:: /images/xml/skuHierachy.png
 
-3. The parser takes this hierachy into account when executing bindings. The
+3. The parser takes this hierarchy into account when executing bindings. The
    bindings are executed in order from the top down. The output of each binding
    is passed on to the next binding in the chain. The following diagram depicts
    the binding execution chain:

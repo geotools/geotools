@@ -32,7 +32,6 @@ import java.util.ResourceBundle;
  *
  * @author David Zwiers, Refractions Research, Inc.
  * @author $Author: jive $ (last modification)
- * @source $URL$
  * @version $Id$
  */
 public class ValidationBeanInfo extends SimpleBeanInfo {
@@ -65,7 +64,7 @@ public class ValidationBeanInfo extends SimpleBeanInfo {
             return pd;
         } catch (IntrospectionException e) {
             // TODO error, log here
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
 
             return new PropertyDescriptor[0];
         }
@@ -109,14 +108,14 @@ public class ValidationBeanInfo extends SimpleBeanInfo {
         PropertyDescriptor pd = new PropertyDescriptor(name, cls);
         String s = resourceBundle.getString(pd.getName() + ".DisplayName");
 
-        if ((s == null) || (s == "")) {
+        if ((s == null) || s.isEmpty()) {
             s = pd.getDisplayName();
         }
 
         pd.setDisplayName(s);
         s = resourceBundle.getString(pd.getName() + ".Description");
 
-        if ((s == null) || (s == "")) {
+        if ((s == null) || s.isEmpty()) {
             s = pd.getShortDescription();
         }
 
@@ -209,7 +208,7 @@ public class ValidationBeanInfo extends SimpleBeanInfo {
                 url = new URL(value.toString());
             } catch (MalformedURLException e) {
                 // TODO error, log this
-                e.printStackTrace();
+                java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             }
         }
 

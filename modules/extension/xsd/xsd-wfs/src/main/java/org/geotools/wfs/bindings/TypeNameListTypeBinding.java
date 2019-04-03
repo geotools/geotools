@@ -19,8 +19,8 @@ package org.geotools.wfs.bindings;
 import javax.xml.namespace.QName;
 import net.opengis.wfs.WfsFactory;
 import org.geotools.wfs.WFS;
-import org.geotools.xml.AbstractSimpleBinding;
-import org.geotools.xml.InstanceComponent;
+import org.geotools.xsd.AbstractSimpleBinding;
+import org.geotools.xsd.InstanceComponent;
 
 /**
  * Binding object for the type http://www.opengis.net/wfs:TypeNameListType.
@@ -51,7 +51,6 @@ import org.geotools.xml.InstanceComponent;
  *
  * @generated
  * @deprecated this binding is not used, there's no emf object for TypeNameListType
- * @source $URL$
  */
 public class TypeNameListTypeBinding extends AbstractSimpleBinding {
     public TypeNameListTypeBinding(WfsFactory factory) {}

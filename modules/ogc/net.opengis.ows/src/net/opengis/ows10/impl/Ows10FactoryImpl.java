@@ -59,516 +59,520 @@ import org.eclipse.emf.ecore.plugin.EcorePlugin;
  */
 public class Ows10FactoryImpl extends EFactoryImpl implements Ows10Factory {
 	/**
-     * Creates the default factory implementation.
-     * <!-- begin-user-doc -->
+   * Creates the default factory implementation.
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public static Ows10Factory init() {
-        try {
-            Ows10Factory theOws10Factory = (Ows10Factory)EPackage.Registry.INSTANCE.getEFactory("http://www.opengis.net/ows"); 
-            if (theOws10Factory != null) {
-                return theOws10Factory;
-            }
-        }
-        catch (Exception exception) {
-            EcorePlugin.INSTANCE.log(exception);
-        }
-        return new Ows10FactoryImpl();
+    try {
+      Ows10Factory theOws10Factory = (Ows10Factory)EPackage.Registry.INSTANCE.getEFactory(Ows10Package.eNS_URI);
+      if (theOws10Factory != null) {
+        return theOws10Factory;
+      }
     }
+    catch (Exception exception) {
+      EcorePlugin.INSTANCE.log(exception);
+    }
+    return new Ows10FactoryImpl();
+  }
 
 	/**
-     * Creates an instance of the factory.
-     * <!-- begin-user-doc -->
+   * Creates an instance of the factory.
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public Ows10FactoryImpl() {
-        super();
-    }
+    super();
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
-	public EObject create(EClass eClass) {
-        switch (eClass.getClassifierID()) {
-            case Ows10Package.ACCEPT_FORMATS_TYPE: return createAcceptFormatsType();
-            case Ows10Package.ACCEPT_VERSIONS_TYPE: return createAcceptVersionsType();
-            case Ows10Package.ADDRESS_TYPE: return createAddressType();
-            case Ows10Package.BOUNDING_BOX_TYPE: return createBoundingBoxType();
-            case Ows10Package.CAPABILITIES_BASE_TYPE: return createCapabilitiesBaseType();
-            case Ows10Package.CODE_TYPE: return createCodeType();
-            case Ows10Package.CONTACT_TYPE: return createContactType();
-            case Ows10Package.DCP_TYPE: return createDCPType();
-            case Ows10Package.DESCRIPTION_TYPE: return createDescriptionType();
-            case Ows10Package.DOCUMENT_ROOT: return createDocumentRoot();
-            case Ows10Package.DOMAIN_TYPE: return createDomainType();
-            case Ows10Package.EXCEPTION_REPORT_TYPE: return createExceptionReportType();
-            case Ows10Package.EXCEPTION_TYPE: return createExceptionType();
-            case Ows10Package.GET_CAPABILITIES_TYPE: return createGetCapabilitiesType();
-            case Ows10Package.HTTP_TYPE: return createHTTPType();
-            case Ows10Package.IDENTIFICATION_TYPE: return createIdentificationType();
-            case Ows10Package.KEYWORDS_TYPE: return createKeywordsType();
-            case Ows10Package.METADATA_TYPE: return createMetadataType();
-            case Ows10Package.ONLINE_RESOURCE_TYPE: return createOnlineResourceType();
-            case Ows10Package.OPERATION_TYPE: return createOperationType();
-            case Ows10Package.OPERATIONS_METADATA_TYPE: return createOperationsMetadataType();
-            case Ows10Package.REQUEST_METHOD_TYPE: return createRequestMethodType();
-            case Ows10Package.RESPONSIBLE_PARTY_SUBSET_TYPE: return createResponsiblePartySubsetType();
-            case Ows10Package.RESPONSIBLE_PARTY_TYPE: return createResponsiblePartyType();
-            case Ows10Package.SECTIONS_TYPE: return createSectionsType();
-            case Ows10Package.SERVICE_IDENTIFICATION_TYPE: return createServiceIdentificationType();
-            case Ows10Package.SERVICE_PROVIDER_TYPE: return createServiceProviderType();
-            case Ows10Package.TELEPHONE_TYPE: return createTelephoneType();
-            case Ows10Package.WGS84_BOUNDING_BOX_TYPE: return createWGS84BoundingBoxType();
-            default:
-                throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
-        }
+   * @generated
+   */
+	@Override
+  public EObject create(EClass eClass) {
+    switch (eClass.getClassifierID()) {
+      case Ows10Package.ACCEPT_FORMATS_TYPE: return createAcceptFormatsType();
+      case Ows10Package.ACCEPT_VERSIONS_TYPE: return createAcceptVersionsType();
+      case Ows10Package.ADDRESS_TYPE: return createAddressType();
+      case Ows10Package.BOUNDING_BOX_TYPE: return createBoundingBoxType();
+      case Ows10Package.CAPABILITIES_BASE_TYPE: return createCapabilitiesBaseType();
+      case Ows10Package.CODE_TYPE: return createCodeType();
+      case Ows10Package.CONTACT_TYPE: return createContactType();
+      case Ows10Package.DCP_TYPE: return createDCPType();
+      case Ows10Package.DESCRIPTION_TYPE: return createDescriptionType();
+      case Ows10Package.DOCUMENT_ROOT: return createDocumentRoot();
+      case Ows10Package.DOMAIN_TYPE: return createDomainType();
+      case Ows10Package.EXCEPTION_REPORT_TYPE: return createExceptionReportType();
+      case Ows10Package.EXCEPTION_TYPE: return createExceptionType();
+      case Ows10Package.GET_CAPABILITIES_TYPE: return createGetCapabilitiesType();
+      case Ows10Package.HTTP_TYPE: return createHTTPType();
+      case Ows10Package.IDENTIFICATION_TYPE: return createIdentificationType();
+      case Ows10Package.KEYWORDS_TYPE: return createKeywordsType();
+      case Ows10Package.METADATA_TYPE: return createMetadataType();
+      case Ows10Package.ONLINE_RESOURCE_TYPE: return createOnlineResourceType();
+      case Ows10Package.OPERATION_TYPE: return createOperationType();
+      case Ows10Package.OPERATIONS_METADATA_TYPE: return createOperationsMetadataType();
+      case Ows10Package.REQUEST_METHOD_TYPE: return createRequestMethodType();
+      case Ows10Package.RESPONSIBLE_PARTY_SUBSET_TYPE: return createResponsiblePartySubsetType();
+      case Ows10Package.RESPONSIBLE_PARTY_TYPE: return createResponsiblePartyType();
+      case Ows10Package.SECTIONS_TYPE: return createSectionsType();
+      case Ows10Package.SERVICE_IDENTIFICATION_TYPE: return createServiceIdentificationType();
+      case Ows10Package.SERVICE_PROVIDER_TYPE: return createServiceProviderType();
+      case Ows10Package.TELEPHONE_TYPE: return createTelephoneType();
+      case Ows10Package.WGS84_BOUNDING_BOX_TYPE: return createWGS84BoundingBoxType();
+      default:
+        throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
     }
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
-	public Object createFromString(EDataType eDataType, String initialValue) {
-        switch (eDataType.getClassifierID()) {
-            case Ows10Package.MIME_TYPE:
-                return createMimeTypeFromString(eDataType, initialValue);
-            case Ows10Package.VERSION_TYPE:
-                return createVersionTypeFromString(eDataType, initialValue);
-            case Ows10Package.POSITION_TYPE:
-                return createPositionTypeFromString(eDataType, initialValue);
-            case Ows10Package.UPDATE_SEQUENCE_TYPE:
-                return createUpdateSequenceTypeFromString(eDataType, initialValue);
-            case Ows10Package.MAP:
-                return createMapFromString(eDataType, initialValue);
-            default:
-                throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
-        }
+   * @generated
+   */
+	@Override
+  public Object createFromString(EDataType eDataType, String initialValue) {
+    switch (eDataType.getClassifierID()) {
+      case Ows10Package.MIME_TYPE:
+        return createMimeTypeFromString(eDataType, initialValue);
+      case Ows10Package.VERSION_TYPE:
+        return createVersionTypeFromString(eDataType, initialValue);
+      case Ows10Package.POSITION_TYPE:
+        return createPositionTypeFromString(eDataType, initialValue);
+      case Ows10Package.UPDATE_SEQUENCE_TYPE:
+        return createUpdateSequenceTypeFromString(eDataType, initialValue);
+      case Ows10Package.MAP:
+        return createMapFromString(eDataType, initialValue);
+      default:
+        throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
     }
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
-	public String convertToString(EDataType eDataType, Object instanceValue) {
-        switch (eDataType.getClassifierID()) {
-            case Ows10Package.MIME_TYPE:
-                return convertMimeTypeToString(eDataType, instanceValue);
-            case Ows10Package.VERSION_TYPE:
-                return convertVersionTypeToString(eDataType, instanceValue);
-            case Ows10Package.POSITION_TYPE:
-                return convertPositionTypeToString(eDataType, instanceValue);
-            case Ows10Package.UPDATE_SEQUENCE_TYPE:
-                return convertUpdateSequenceTypeToString(eDataType, instanceValue);
-            case Ows10Package.MAP:
-                return convertMapToString(eDataType, instanceValue);
-            default:
-                throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
-        }
+   * @generated
+   */
+	@Override
+  public String convertToString(EDataType eDataType, Object instanceValue) {
+    switch (eDataType.getClassifierID()) {
+      case Ows10Package.MIME_TYPE:
+        return convertMimeTypeToString(eDataType, instanceValue);
+      case Ows10Package.VERSION_TYPE:
+        return convertVersionTypeToString(eDataType, instanceValue);
+      case Ows10Package.POSITION_TYPE:
+        return convertPositionTypeToString(eDataType, instanceValue);
+      case Ows10Package.UPDATE_SEQUENCE_TYPE:
+        return convertUpdateSequenceTypeToString(eDataType, instanceValue);
+      case Ows10Package.MAP:
+        return convertMapToString(eDataType, instanceValue);
+      default:
+        throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
     }
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public AcceptFormatsType createAcceptFormatsType() {
-        AcceptFormatsTypeImpl acceptFormatsType = new AcceptFormatsTypeImpl();
-        return acceptFormatsType;
-    }
+    AcceptFormatsTypeImpl acceptFormatsType = new AcceptFormatsTypeImpl();
+    return acceptFormatsType;
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public AcceptVersionsType createAcceptVersionsType() {
-        AcceptVersionsTypeImpl acceptVersionsType = new AcceptVersionsTypeImpl();
-        return acceptVersionsType;
-    }
+    AcceptVersionsTypeImpl acceptVersionsType = new AcceptVersionsTypeImpl();
+    return acceptVersionsType;
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public AddressType createAddressType() {
-        AddressTypeImpl addressType = new AddressTypeImpl();
-        return addressType;
-    }
+    AddressTypeImpl addressType = new AddressTypeImpl();
+    return addressType;
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public BoundingBoxType createBoundingBoxType() {
-        BoundingBoxTypeImpl boundingBoxType = new BoundingBoxTypeImpl();
-        return boundingBoxType;
-    }
+    BoundingBoxTypeImpl boundingBoxType = new BoundingBoxTypeImpl();
+    return boundingBoxType;
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public CapabilitiesBaseType createCapabilitiesBaseType() {
-        CapabilitiesBaseTypeImpl capabilitiesBaseType = new CapabilitiesBaseTypeImpl();
-        return capabilitiesBaseType;
-    }
+    CapabilitiesBaseTypeImpl capabilitiesBaseType = new CapabilitiesBaseTypeImpl();
+    return capabilitiesBaseType;
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public CodeType createCodeType() {
-        CodeTypeImpl codeType = new CodeTypeImpl();
-        return codeType;
-    }
+    CodeTypeImpl codeType = new CodeTypeImpl();
+    return codeType;
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public ContactType createContactType() {
-        ContactTypeImpl contactType = new ContactTypeImpl();
-        return contactType;
-    }
+    ContactTypeImpl contactType = new ContactTypeImpl();
+    return contactType;
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public DCPType createDCPType() {
-        DCPTypeImpl dcpType = new DCPTypeImpl();
-        return dcpType;
-    }
+    DCPTypeImpl dcpType = new DCPTypeImpl();
+    return dcpType;
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public DescriptionType createDescriptionType() {
-        DescriptionTypeImpl descriptionType = new DescriptionTypeImpl();
-        return descriptionType;
-    }
+    DescriptionTypeImpl descriptionType = new DescriptionTypeImpl();
+    return descriptionType;
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public DocumentRoot createDocumentRoot() {
-        DocumentRootImpl documentRoot = new DocumentRootImpl();
-        return documentRoot;
-    }
+    DocumentRootImpl documentRoot = new DocumentRootImpl();
+    return documentRoot;
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public DomainType createDomainType() {
-        DomainTypeImpl domainType = new DomainTypeImpl();
-        return domainType;
-    }
+    DomainTypeImpl domainType = new DomainTypeImpl();
+    return domainType;
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public ExceptionReportType createExceptionReportType() {
-        ExceptionReportTypeImpl exceptionReportType = new ExceptionReportTypeImpl();
-        return exceptionReportType;
-    }
+    ExceptionReportTypeImpl exceptionReportType = new ExceptionReportTypeImpl();
+    return exceptionReportType;
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public ExceptionType createExceptionType() {
-        ExceptionTypeImpl exceptionType = new ExceptionTypeImpl();
-        return exceptionType;
-    }
+    ExceptionTypeImpl exceptionType = new ExceptionTypeImpl();
+    return exceptionType;
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public GetCapabilitiesType createGetCapabilitiesType() {
-        GetCapabilitiesTypeImpl getCapabilitiesType = new GetCapabilitiesTypeImpl();
-        return getCapabilitiesType;
-    }
+    GetCapabilitiesTypeImpl getCapabilitiesType = new GetCapabilitiesTypeImpl();
+    return getCapabilitiesType;
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public HTTPType createHTTPType() {
-        HTTPTypeImpl httpType = new HTTPTypeImpl();
-        return httpType;
-    }
+    HTTPTypeImpl httpType = new HTTPTypeImpl();
+    return httpType;
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public IdentificationType createIdentificationType() {
-        IdentificationTypeImpl identificationType = new IdentificationTypeImpl();
-        return identificationType;
-    }
+    IdentificationTypeImpl identificationType = new IdentificationTypeImpl();
+    return identificationType;
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public KeywordsType createKeywordsType() {
-        KeywordsTypeImpl keywordsType = new KeywordsTypeImpl();
-        return keywordsType;
-    }
+    KeywordsTypeImpl keywordsType = new KeywordsTypeImpl();
+    return keywordsType;
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public MetadataType createMetadataType() {
-        MetadataTypeImpl metadataType = new MetadataTypeImpl();
-        return metadataType;
-    }
+    MetadataTypeImpl metadataType = new MetadataTypeImpl();
+    return metadataType;
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public OnlineResourceType createOnlineResourceType() {
-        OnlineResourceTypeImpl onlineResourceType = new OnlineResourceTypeImpl();
-        return onlineResourceType;
-    }
+    OnlineResourceTypeImpl onlineResourceType = new OnlineResourceTypeImpl();
+    return onlineResourceType;
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public OperationType createOperationType() {
-        OperationTypeImpl operationType = new OperationTypeImpl();
-        return operationType;
-    }
+    OperationTypeImpl operationType = new OperationTypeImpl();
+    return operationType;
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public OperationsMetadataType createOperationsMetadataType() {
-        OperationsMetadataTypeImpl operationsMetadataType = new OperationsMetadataTypeImpl();
-        return operationsMetadataType;
-    }
+    OperationsMetadataTypeImpl operationsMetadataType = new OperationsMetadataTypeImpl();
+    return operationsMetadataType;
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public RequestMethodType createRequestMethodType() {
-        RequestMethodTypeImpl requestMethodType = new RequestMethodTypeImpl();
-        return requestMethodType;
-    }
+    RequestMethodTypeImpl requestMethodType = new RequestMethodTypeImpl();
+    return requestMethodType;
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public ResponsiblePartySubsetType createResponsiblePartySubsetType() {
-        ResponsiblePartySubsetTypeImpl responsiblePartySubsetType = new ResponsiblePartySubsetTypeImpl();
-        return responsiblePartySubsetType;
-    }
+    ResponsiblePartySubsetTypeImpl responsiblePartySubsetType = new ResponsiblePartySubsetTypeImpl();
+    return responsiblePartySubsetType;
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public ResponsiblePartyType createResponsiblePartyType() {
-        ResponsiblePartyTypeImpl responsiblePartyType = new ResponsiblePartyTypeImpl();
-        return responsiblePartyType;
-    }
+    ResponsiblePartyTypeImpl responsiblePartyType = new ResponsiblePartyTypeImpl();
+    return responsiblePartyType;
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public SectionsType createSectionsType() {
-        SectionsTypeImpl sectionsType = new SectionsTypeImpl();
-        return sectionsType;
-    }
+    SectionsTypeImpl sectionsType = new SectionsTypeImpl();
+    return sectionsType;
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public ServiceIdentificationType createServiceIdentificationType() {
-        ServiceIdentificationTypeImpl serviceIdentificationType = new ServiceIdentificationTypeImpl();
-        return serviceIdentificationType;
-    }
+    ServiceIdentificationTypeImpl serviceIdentificationType = new ServiceIdentificationTypeImpl();
+    return serviceIdentificationType;
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public ServiceProviderType createServiceProviderType() {
-        ServiceProviderTypeImpl serviceProviderType = new ServiceProviderTypeImpl();
-        return serviceProviderType;
-    }
+    ServiceProviderTypeImpl serviceProviderType = new ServiceProviderTypeImpl();
+    return serviceProviderType;
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public TelephoneType createTelephoneType() {
-        TelephoneTypeImpl telephoneType = new TelephoneTypeImpl();
-        return telephoneType;
-    }
+    TelephoneTypeImpl telephoneType = new TelephoneTypeImpl();
+    return telephoneType;
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public WGS84BoundingBoxType createWGS84BoundingBoxType() {
-        WGS84BoundingBoxTypeImpl wgs84BoundingBoxType = new WGS84BoundingBoxTypeImpl();
-        return wgs84BoundingBoxType;
-    }
+    WGS84BoundingBoxTypeImpl wgs84BoundingBoxType = new WGS84BoundingBoxTypeImpl();
+    return wgs84BoundingBoxType;
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public String createMimeTypeFromString(EDataType eDataType, String initialValue) {
-        return (String)super.createFromString(eDataType, initialValue);
-    }
+    return (String)super.createFromString(eDataType, initialValue);
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public String convertMimeTypeToString(EDataType eDataType, Object instanceValue) {
-        return super.convertToString(eDataType, instanceValue);
-    }
+    return super.convertToString(eDataType, instanceValue);
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public String createVersionTypeFromString(EDataType eDataType, String initialValue) {
-        return (String)super.createFromString(eDataType, initialValue);
-    }
+    return (String)super.createFromString(eDataType, initialValue);
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public String convertVersionTypeToString(EDataType eDataType, Object instanceValue) {
-        return super.convertToString(eDataType, instanceValue);
-    }
+    return super.convertToString(eDataType, instanceValue);
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public List createPositionTypeFromString(EDataType eDataType, String initialValue) {
-        return (List)super.createFromString(eDataType, initialValue);
-    }
+    return (List)super.createFromString(eDataType, initialValue);
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public String convertPositionTypeToString(EDataType eDataType, Object instanceValue) {
-        return super.convertToString(eDataType, instanceValue);
-    }
+    return super.convertToString(eDataType, instanceValue);
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public String createUpdateSequenceTypeFromString(EDataType eDataType, String initialValue) {
-        return (String)super.createFromString(eDataType, initialValue);
-    }
+    return (String)super.createFromString(eDataType, initialValue);
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public String convertUpdateSequenceTypeToString(EDataType eDataType, Object instanceValue) {
-        return super.convertToString(eDataType, instanceValue);
-    }
+    return super.convertToString(eDataType, instanceValue);
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public Map createMapFromString(EDataType eDataType, String initialValue) {
-        return (Map)super.createFromString(eDataType, initialValue);
-    }
+    return (Map)super.createFromString(eDataType, initialValue);
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public String convertMapToString(EDataType eDataType, Object instanceValue) {
-        return super.convertToString(eDataType, instanceValue);
-    }
+    return super.convertToString(eDataType, instanceValue);
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public Ows10Package getOws10Package() {
-        return (Ows10Package)getEPackage();
-    }
+    return (Ows10Package)getEPackage();
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @deprecated
-     * @generated
-     */
-	public static Ows10Package getPackage() {
-        return Ows10Package.eINSTANCE;
-    }
+   * @deprecated
+   * @generated
+   */
+	@Deprecated
+  public static Ows10Package getPackage() {
+    return Ows10Package.eINSTANCE;
+  }
 
 } //Ows10FactoryImpl

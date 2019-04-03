@@ -87,7 +87,7 @@ public class GeoServerIntegrationTest extends AbstractIntegrationTest {
                                             new Coordinate[] {
                                                 new Coordinate(1, 2), new Coordinate(2, 3)
                                             }),
-                            new Integer(4),
+                            Integer.valueOf(4),
                             "somekindofroad"
                         },
                         "roads.4");

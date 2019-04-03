@@ -103,8 +103,7 @@
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>4.4</version>
-      <scope>compile</scope>
-      <optional>true</optional>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 

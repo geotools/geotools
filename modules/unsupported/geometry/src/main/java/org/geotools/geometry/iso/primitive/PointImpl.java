@@ -42,7 +42,6 @@ import org.opengis.referencing.operation.TransformException;
  * Point is the basic data type for a geometric object consisting of one and only one point.
  *
  * @author Jackson Roehrig & Sanjay Jena
- * @source $URL$
  */
 public class PointImpl extends PrimitiveImpl implements Point {
     private static final long serialVersionUID = -1750949790172649244L;

@@ -28,12 +28,6 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.map.event.MapBoundsEvent;
-import org.geotools.map.event.MapBoundsListener;
-import org.geotools.map.event.MapLayerEvent;
-import org.geotools.map.event.MapLayerListEvent;
-import org.geotools.map.event.MapLayerListListener;
-import org.geotools.map.event.MapLayerListener;
 import org.geotools.referencing.CRS;
 import org.geotools.util.logging.Logging;
 import org.opengis.referencing.FactoryException;
@@ -59,13 +53,12 @@ import org.opengis.referencing.operation.TransformException;
  *
  * @author Jody Garnett
  * @since 2.7
- * @source $URL$
  * @version $Id$
  */
 public class MapContent {
 
     /** The logger for the map module. */
-    protected static final Logger LOGGER = Logging.getLogger("org.geotools.map");
+    protected static final Logger LOGGER = Logging.getLogger(MapContent.class);
 
     static final String UNDISPOSED_MAPCONTENT_ERROR =
             "Call MapContent dispose() to prevent memory leaks";
@@ -93,8 +86,6 @@ public class MapContent {
      * tiles to be rendered.
      */
     protected MapViewport viewport;
-
-    private MapViewport defaultViewport;
 
     /** Listener used to watch individual layers and report changes to MapLayerListListeners */
     private MapLayerListener layerListener;

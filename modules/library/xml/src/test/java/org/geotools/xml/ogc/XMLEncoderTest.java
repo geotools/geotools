@@ -54,13 +54,12 @@ import org.w3c.dom.NodeList;
  * @author James MacGill, CCG
  * @author Rob Hranac, TOPP
  * @author David Zwiers
- * @source $URL$
  */
 public class XMLEncoderTest extends TestCase {
 
     /** Standard logging instance */
     protected static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.filter");
+            org.geotools.util.logging.Logging.getLogger(XMLEncoderTest.class);
 
     /** Constructor with test name. */
     String dataFolder = "";
@@ -88,11 +87,7 @@ public class XMLEncoderTest extends TestCase {
         }
     }
 
-    /**
-     * Main for test runner.
-     *
-     * @param args DOCUMENT ME!
-     */
+    /** Main for test runner. */
     public static void main(String[] args) {
         junit.textui.TestRunner.run(suite());
     }

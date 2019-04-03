@@ -28,7 +28,6 @@ import org.opengis.metadata.extent.SpatialTemporalExtent;
  * Boundary enclosing the dataset, expressed as the closed set of (<var>x</var>,<var>y</var>)
  * coordinates of the polygon. The last point replicates first point.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @author Touraïvane
@@ -67,13 +66,12 @@ public class SpatialTemporalExtentImpl extends TemporalExtentImpl implements Spa
      *
      * @return The list of geographic extents (never {@code null}).
      */
-    public synchronized Collection<GeographicExtent> getSpatialExtent() {
+    public Collection<GeographicExtent> getSpatialExtent() {
         return spatialExtent = nonNullCollection(spatialExtent, GeographicExtent.class);
     }
 
     /** Set the spatial extent component of composite spatial and temporal extent. */
-    public synchronized void setSpatialExtent(
-            final Collection<? extends GeographicExtent> newValues) {
+    public void setSpatialExtent(final Collection<? extends GeographicExtent> newValues) {
         spatialExtent = copyCollection(newValues, spatialExtent, GeographicExtent.class);
     }
 }

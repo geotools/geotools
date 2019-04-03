@@ -65,8 +65,8 @@ import org.geotools.ows.ServiceException;
 import org.geotools.test.OnlineTestCase;
 import org.geotools.wps.WPS;
 import org.geotools.wps.WPSConfiguration;
-import org.geotools.xml.Encoder;
-import org.geotools.xml.EncoderDelegate;
+import org.geotools.xsd.Encoder;
+import org.geotools.xsd.EncoderDelegate;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.io.ParseException;
@@ -78,9 +78,6 @@ import org.xml.sax.ext.LexicalHandler;
  * Test making requests by manually building up requests using the utility methods.
  *
  * @author GDavis
- * @source $URL$
- *     http://svn.osgeo.org/geotools/trunk/modules/unsupported/wps/src/test/java/org/geotools
- *     /data/wps/OnlineWPSManualRequestTest.java $
  */
 public class WPSManualRequestOnlineTest extends OnlineTestCase {
 
@@ -488,7 +485,7 @@ public class WPSManualRequestOnlineTest extends OnlineTestCase {
 
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         exeRequest.performPostOutput(bos);
-        System.out.println(bos.toString());
+        // System.out.println(bos.toString());
 
         // send the request
         ExecuteProcessResponse response = wps.issueRequest(exeRequest);
@@ -684,7 +681,7 @@ public class WPSManualRequestOnlineTest extends OnlineTestCase {
 
         // exit test if my process doesn't exist on server
         if (!found) {
-            System.out.println("Skipping, gs:AreaGrid not found!");
+            // System.out.println("Skipping, gs:AreaGrid not found!");
             return;
         }
 
@@ -785,7 +782,7 @@ public class WPSManualRequestOnlineTest extends OnlineTestCase {
 
         // exit test if my process doesn't exist on server
         if (!found) {
-            System.out.println("Skipping, gs:AreaGrid not found!");
+            // System.out.println("Skipping, gs:AreaGrid not found!");
             return;
         }
 
@@ -858,7 +855,7 @@ public class WPSManualRequestOnlineTest extends OnlineTestCase {
 
         // exit test if my process doesn't exist on server
         if (!found) {
-            System.out.println("Skipping, gs:AreaGrid not found!");
+            // System.out.println("Skipping, gs:AreaGrid not found!");
             return;
         }
 
@@ -931,7 +928,7 @@ public class WPSManualRequestOnlineTest extends OnlineTestCase {
                         + "YLLCORNER -90.0\n"
                         + "CELLSIZE 3.6\n"
                         + "NODATA_VALUE -9999";
-        System.out.println(arcgrid);
+        // System.out.println(arcgrid);
         assertTrue(arcgrid.startsWith(expectedHeader));
     }
 
@@ -972,7 +969,7 @@ public class WPSManualRequestOnlineTest extends OnlineTestCase {
 
         // exit test if my process doesn't exist on server
         if (found) {
-            System.out.println("Skipping, gs:InvalidProcessName has been found!");
+            // System.out.println("Skipping, gs:InvalidProcessName has been found!");
             return;
         }
 
@@ -996,8 +993,8 @@ public class WPSManualRequestOnlineTest extends OnlineTestCase {
         ExceptionReportType report = response.getExceptionResponse();
         assertNotNull(report);
         ExceptionType exception = (ExceptionType) report.getException().get(0);
-        String errorMessage = exception.getExceptionText().get(0).toString();
-        assertTrue(errorMessage.contains(processIdenLocal));
+        EList<String> errorMessage = exception.getExceptionText();
+        assertTrue(errorMessage.get(0).contains(processIdenLocal));
     }
 
     /**
@@ -1037,7 +1034,7 @@ public class WPSManualRequestOnlineTest extends OnlineTestCase {
 
         // exit test if my process doesn't exist on server
         if (!found) {
-            System.out.println("Skipping, gs:AreaGrid not found!");
+            // System.out.println("Skipping, gs:AreaGrid not found!");
             return;
         }
 
@@ -1151,7 +1148,7 @@ public class WPSManualRequestOnlineTest extends OnlineTestCase {
         // send the request
         ExecuteProcessResponse response = wps.issueRequest(exeRequest);
         Object result = response.getExecuteResponse().getProcessOutputs().getOutput().get(0);
-        System.out.println(result);
+        // System.out.println(result);
     }
 }
 

@@ -46,27 +46,39 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-/** @source $URL$ */
 public class FeatureJSONTest extends GeoJSONTestSupport {
 
     FeatureJSON fjson = new FeatureJSON();
     SimpleFeatureType featureType;
     SimpleFeatureBuilder fb;
+    SimpleFeatureType featureTypeArray;
+    SimpleFeatureBuilder fbArray;
 
     @Override
     protected void setUp() throws Exception {
         super.setUp();
 
         SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
+        setupNonGeometricAttributes(tb);
+        tb.add("geometry", Geometry.class);
+
+        featureType = tb.buildFeatureType();
+        fb = new SimpleFeatureBuilder(featureType);
+
+        setupNonGeometricAttributes(tb);
+        tb.add("array", String[].class);
+        tb.add("geometry", Geometry.class);
+        featureTypeArray = tb.buildFeatureType();
+
+        fbArray = new SimpleFeatureBuilder(featureTypeArray);
+    }
+
+    private void setupNonGeometricAttributes(SimpleFeatureTypeBuilder tb) {
         tb.setName("feature");
         tb.setSRS("EPSG:4326");
         tb.add("int", Integer.class);
         tb.add("double", Double.class);
         tb.add("string", String.class);
-        tb.add("geometry", Geometry.class);
-
-        featureType = tb.buildFeatureType();
-        fb = new SimpleFeatureBuilder(featureType);
     }
 
     public void testFeatureWrite() throws Exception {
@@ -75,6 +87,14 @@ public class FeatureJSONTest extends GeoJSONTestSupport {
         fjson.writeFeature(feature(1), writer);
 
         assertEquals(strip(featureText(1)), writer.toString());
+    }
+
+    public void testFeatureArrayWrite() throws Exception {
+
+        StringWriter writer = new StringWriter();
+        fjson.writeFeature(featureArray(1), writer);
+
+        assertEquals(strip(featureArrayText(1, false, false)), strip(writer.toString()));
     }
 
     public void testWriteReadNoProperties() throws Exception {
@@ -104,6 +124,12 @@ public class FeatureJSONTest extends GeoJSONTestSupport {
     public void testFeatureRead() throws Exception {
         SimpleFeature f1 = feature(1);
         SimpleFeature f2 = fjson.readFeature(reader(strip(featureText(1))));
+        assertEqualsLax(f1, f2);
+    }
+
+    public void testFeatureArrayRead() throws Exception {
+        SimpleFeature f1 = featureArray(1);
+        SimpleFeature f2 = fjson.readFeature(reader(strip(featureArrayText(1, false, false))));
         assertEqualsLax(f1, f2);
     }
 
@@ -670,7 +696,7 @@ public class FeatureJSONTest extends GeoJSONTestSupport {
         String collectionText = collectionText(true, true, false, false, true);
         SimpleFeatureType ftype = fjson.readFeatureCollectionSchema((strip(collectionText)), true);
 
-        System.out.println("type: " + ftype);
+        // System.out.println("type: " + ftype);
 
         assertEquals(4, ftype.getAttributeCount());
 
@@ -949,6 +975,16 @@ public class FeatureJSONTest extends GeoJSONTestSupport {
         return fb.buildFeature("feature." + val);
     }
 
+    SimpleFeature featureArray(int val) {
+        fbArray.add(val);
+        fbArray.add(val + 0.1);
+        fbArray.add(toString(val));
+        fbArray.add(new String[] {toString(val), toString(val + 1)});
+        fbArray.add(new GeometryFactory().createPoint(new Coordinate(val + 0.1, val + 0.1)));
+
+        return fbArray.buildFeature("feature." + val);
+    }
+
     SimpleFeature featureMissingAttribute(int val) {
         fb.add(val);
         fb.add(val + 0.1);
@@ -998,6 +1034,48 @@ public class FeatureJSONTest extends GeoJSONTestSupport {
                         + "     'string': '"
                         + toString(val)
                         + "'"
+                        + "   },"
+                        + "   'id':'feature."
+                        + val
+                        + "'"
+                        + "}";
+
+        return text;
+    }
+
+    String featureArrayText(int val, boolean missingAttribute, boolean nullAttribute) {
+        if (missingAttribute && nullAttribute) {
+            throw new IllegalArgumentException(
+                    "For tests, use only one of either missingAttribute or nullAttribute");
+        }
+        String text =
+                "{"
+                        + "  'type': 'Feature',"
+                        + "  'geometry': {"
+                        + "     'type': 'Point',"
+                        + "     'coordinates': ["
+                        + (val + 0.1)
+                        + ","
+                        + (val + 0.1)
+                        + "]"
+                        + "   }, "
+                        + "'  properties': {"
+                        + "     'int': "
+                        + val
+                        + ","
+                        + (missingAttribute
+                                ? ""
+                                : (nullAttribute
+                                        ? ("     'double': null,")
+                                        : ("     'double': " + (val + 0.1) + ",")))
+                        + "     'string': '"
+                        + toString(val)
+                        + "',"
+                        + "'array': ['"
+                        + toString(val)
+                        + "','"
+                        + toString(val + 1)
+                        + "']"
                         + "   },"
                         + "   'id':'feature."
                         + val

@@ -46,7 +46,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 
-/** @source $URL$ */
 public class DrawTest {
     private static final Logger LOGGER = Logging.getLogger(DrawTest.class);
     private static final long TIME = 4000;

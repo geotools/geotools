@@ -30,7 +30,6 @@ import org.opengis.feature.type.GeometryDescriptor;
  * This is a support class which creates test features for use in testing.
  *
  * @author jamesm
- * @source $URL$
  */
 public class SampleFeatureFixtures {
     /** Feature on which to preform tests */
@@ -72,12 +71,12 @@ public class SampleFeatureFixtures {
         Object[] attributes = new Object[10];
         GeometryFactory gf = new GeometryFactory();
         attributes[0] = gf.createPoint(new Coordinate(1, 2));
-        attributes[1] = new Boolean(true);
+        attributes[1] = Boolean.valueOf(true);
         attributes[2] = new Character('t');
-        attributes[3] = new Byte("10");
-        attributes[4] = new Short("101");
-        attributes[5] = new Integer(1002);
-        attributes[6] = new Long(10003);
+        attributes[3] = Byte.valueOf("10");
+        attributes[4] = Short.valueOf("101");
+        attributes[5] = Integer.valueOf(1002);
+        attributes[6] = Long.valueOf(10003);
         attributes[7] = new Float(10000.4);
         attributes[8] = new Double(100000.5);
         attributes[9] = "test string data";
@@ -159,11 +158,7 @@ public class SampleFeatureFixtures {
         //        return tb.buildFeatureType();
     }
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @throws SchemaException
-     */
+    /** @throws SchemaException */
     public static SimpleFeatureType createTestType() throws SchemaException {
         SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
         tb.setName("test");

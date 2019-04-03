@@ -2,8 +2,8 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2001-2006  Vivid Solutions
  *    (C) 2001-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2001-2006  Vivid Solutions
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -33,8 +33,6 @@ import org.opengis.geometry.primitive.Ring;
  * Computes whether a point lies in the interior of an area {@link Geometry}. The algorithm used is
  * only guaranteed to return correct results for points which are <b>not</b> on the boundary of the
  * Geometry.
- *
- * @source $URL$
  */
 public class SimplePointInAreaLocator {
 

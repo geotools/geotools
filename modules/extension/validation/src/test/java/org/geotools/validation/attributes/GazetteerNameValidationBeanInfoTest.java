@@ -29,7 +29,6 @@ import junit.framework.TestCase;
  *
  * @author dzwiers, Refractions Research, Inc.
  * @author $Author: sploreg $ (last modification)
- * @source $URL$
  * @version $Id$
  */
 public class GazetteerNameValidationBeanInfoTest extends TestCase {
@@ -68,7 +67,7 @@ public class GazetteerNameValidationBeanInfoTest extends TestCase {
                     (new URL("http://http://hydra/time/"))
                             .equals(url.getReadMethod().invoke(gnv, null)));
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             fail(e.toString());
         }
     }

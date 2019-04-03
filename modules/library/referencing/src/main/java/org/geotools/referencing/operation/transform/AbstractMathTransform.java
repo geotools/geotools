@@ -27,6 +27,11 @@ import java.awt.geom.PathIterator;
 import java.awt.geom.Point2D;
 import java.io.Serializable;
 import org.geotools.geometry.GeneralDirectPosition;
+import org.geotools.geometry.util.ShapeUtilities;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
+import org.geotools.metadata.i18n.Vocabulary;
+import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.referencing.operation.matrix.GeneralMatrix;
 import org.geotools.referencing.operation.matrix.Matrix1;
 import org.geotools.referencing.operation.matrix.MatrixFactory;
@@ -34,12 +39,7 @@ import org.geotools.referencing.operation.matrix.SingularMatrixException;
 import org.geotools.referencing.operation.matrix.XMatrix;
 import org.geotools.referencing.wkt.Formattable;
 import org.geotools.referencing.wkt.Formatter;
-import org.geotools.resources.Classes;
-import org.geotools.resources.geometry.ShapeUtilities;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
-import org.geotools.resources.i18n.Vocabulary;
-import org.geotools.resources.i18n.VocabularyKeys;
+import org.geotools.util.Classes;
 import org.geotools.util.Utilities;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.MismatchedDimensionException;
@@ -64,13 +64,10 @@ import si.uom.SI;
  * transform classes can be easily derived. In addition, {@code AbstractMathTransform} implements
  * methods required by the {@link MathTransform2D} interface, but <strong>does not</strong>
  * implements {@code MathTransform2D}. Subclasses must declare {@code implements MathTransform2D}
- * themself if they know to maps two-dimensional coordinate systems.
+ * themselves if they know to map two-dimensional coordinate systems.
  *
  * @since 2.0
- * @source $URL$
- * @version $Id$
  * @author Martin Desruisseaux (IRD)
- * @tutorial http://docs.codehaus.org/display/GEOTOOLS/Coordinate+Transformation+Parameters
  */
 public abstract class AbstractMathTransform extends Formattable implements MathTransform {
     /** Constructs a math transform. */

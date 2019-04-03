@@ -24,7 +24,6 @@ import org.geotools.data.ows.Request;
  * <p>The only parameter it takes is a process which it uses to return the information about.
  *
  * @author gdavis
- * @source $URL$
  */
 public interface DescribeProcessRequest extends Request {
     /** Represents the PROCESS parameter */
@@ -33,7 +32,7 @@ public interface DescribeProcessRequest extends Request {
     /**
      * Sets the name of the process to look up
      *
-     * @param processname A comma-delimited list of unique process names
+     * @param processNames A comma-delimited list of unique process names
      */
-    public void setIdentifier(String processnames);
+    public void setIdentifier(String processNames);
 }

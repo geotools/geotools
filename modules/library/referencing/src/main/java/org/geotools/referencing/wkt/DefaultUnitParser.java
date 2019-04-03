@@ -23,7 +23,7 @@ import javax.measure.Quantity;
 import javax.measure.UnconvertibleException;
 import javax.measure.Unit;
 import org.geotools.measure.Units;
-import org.geotools.referencing.wkt.GeoToolsUnitFormat.BaseGT2Format;
+import org.geotools.referencing.wkt.GeoToolsCRSUnitFormat.BaseGT2Format;
 import tec.uom.se.unit.TransformedUnit;
 
 /**
@@ -37,16 +37,18 @@ public class DefaultUnitParser extends BaseGT2Format {
     protected HashMap<UnitWrapper, Unit<?>> unitWrapperToUnitMap =
             new HashMap<UnitWrapper, Unit<?>>();
 
-    /**
-     * Gets a UnitFormat configured to parse units. Since usually we don't know the citation in use
-     * for a particular unit literal definition, this format includes the aliases of EPSG and ESRI
-     * citations, in order to be able to parse the widest possible range of units.
-     *
-     * @return
-     */
-    public static DefaultUnitParser getInstance() {
-        return UNITPARSER;
-    }
+    //    /**
+    //     * Gets a UnitFormat configured to parse units. Since usually we don't know the citation
+    // in use
+    //     * for a particular unit literal definition, this format includes the aliases of EPSG and
+    // ESRI
+    //     * citations, in order to be able to parse the widest possible range of units.
+    //     *
+    //     * @return
+    //     */
+    //    public static DefaultUnitParser getInstance() {
+    //        return UNITPARSER;
+    //    }
 
     public static DefaultUnitParser getInstance(
             Flavor flavour) { // to avoid confusions with parent class
@@ -54,8 +56,7 @@ public class DefaultUnitParser extends BaseGT2Format {
     }
 
     DefaultUnitParser() {
-        super();
-        initUnits();
+        initUnits(Units.getDefaultFormat());
         esriLabelsAndAliases(this);
         // add epsg labels the latest, to override esri ones if they collide
         epsgLabelsAndAliases(this);

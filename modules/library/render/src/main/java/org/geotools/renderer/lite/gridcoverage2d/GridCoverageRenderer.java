@@ -52,7 +52,6 @@ import javax.media.jai.InterpolationNearest;
 import javax.media.jai.JAI;
 import javax.media.jai.PlanarImage;
 import javax.media.jai.ROI;
-import javax.media.jai.operator.ConstantDescriptor;
 import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.TypeMap;
@@ -62,12 +61,15 @@ import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
-import org.geotools.factory.Hints;
-import org.geotools.factory.Hints.Key;
+import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.ImageWorker;
+import org.geotools.image.util.ColorUtilities;
+import org.geotools.image.util.ImageUtilities;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 import org.geotools.parameter.Parameter;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.operation.builder.GridToEnvelopeMapper;
@@ -78,15 +80,12 @@ import org.geotools.renderer.composite.BlendComposite.BlendingMode;
 import org.geotools.renderer.crs.ProjectionHandler;
 import org.geotools.renderer.crs.ProjectionHandlerFinder;
 import org.geotools.renderer.crs.WrappingProjectionHandler;
-import org.geotools.resources.coverage.CoverageUtilities;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
-import org.geotools.resources.image.ColorUtilities;
-import org.geotools.resources.image.ImageUtilities;
 import org.geotools.styling.ChannelSelection;
 import org.geotools.styling.RasterSymbolizer;
 import org.geotools.styling.SelectedChannelType;
 import org.geotools.styling.SelectedChannelTypeImpl;
+import org.geotools.util.factory.Hints;
+import org.geotools.util.factory.Hints.Key;
 import org.locationtech.jts.algorithm.match.HausdorffSimilarityMeasure;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
@@ -110,7 +109,6 @@ import org.opengis.referencing.operation.TransformException;
  * @author Simone Giannecchini, GeoSolutions SAS
  * @author Andrea Aime, GeoSolutions SAS
  * @author Alessio Fabiani, GeoSolutions SAS
- * @source $URL$
  * @version $Id$
  */
 @SuppressWarnings("deprecation")
@@ -139,12 +137,12 @@ public final class GridCoverageRenderer {
             final File tempDir = new File(System.getProperty("user.home"), "gt-renderer");
             if (!tempDir.exists()) {
                 if (!tempDir.mkdir())
-                    System.out.println("Unable to create debug dir, exiting application!!!");
+                    LOGGER.severe("Unable to create debug dir, exiting application!!!");
                 DEBUG = false;
                 DUMP_DIRECTORY = null;
             } else {
                 DUMP_DIRECTORY = tempDir.getAbsolutePath();
-                System.out.println("Rendering debug dir " + DUMP_DIRECTORY);
+                LOGGER.info("Rendering debug dir " + DUMP_DIRECTORY);
             }
         }
     }
@@ -454,7 +452,7 @@ public final class GridCoverageRenderer {
         // FINAL AFFINE
         //
         // ///////////////////////////////////////////////////////////////////
-        final GridCoverage2D preSymbolizer = affine(coverage, bkgValues);
+        final GridCoverage2D preSymbolizer = affine(coverage, bkgValues, symbolizer);
         if (preSymbolizer == null) {
             return null;
         }
@@ -606,7 +604,8 @@ public final class GridCoverageRenderer {
      * @param preResample
      * @return
      */
-    private GridCoverage2D affine(GridCoverage2D input, double[] bkgValues) {
+    private GridCoverage2D affine(
+            GridCoverage2D input, double[] bkgValues, RasterSymbolizer symbolizer) {
         // NOTICE that at this stage the image we get should be 8 bits, either RGB, RGBA, Gray,
         // GrayA
         // either multiband or indexed. It could also be 16 bits indexed!!!!
@@ -665,8 +664,14 @@ public final class GridCoverageRenderer {
 
         RenderedImage im = null;
         try {
+            // if we have a color map don't expand the index color model
+            Hints localHints = new Hints();
+            localHints.putAll(hints);
+            if (symbolizer != null && symbolizer.getColorMap() != null) {
+                localHints.put(JAI.KEY_REPLACE_INDEX_COLOR_MODEL, false);
+            }
             ImageWorker iw = new ImageWorker(finalImage);
-            iw.setRenderingHints(hints);
+            iw.setRenderingHints(localHints);
             iw.setROI(roi);
             iw.setNoData(noData);
             iw.affine(finalRasterTransformation, interpolation, bkgValues);
@@ -839,7 +844,7 @@ public final class GridCoverageRenderer {
         // symbolizer. Reader should have taken care o proper channel order, based on initial
         // symbolizer channel definition
         RasterSymbolizer finalSymbolizer = symbolizer;
-        if (isBandsSelectionApplicable(reader, symbolizer)) {
+        if (symbolizer != null && isBandsSelectionApplicable(reader, symbolizer)) {
             readParams = applyBandsSelectionParameter(reader, readParams, symbolizer);
             finalSymbolizer = setupSymbolizerForBandsSelection(symbolizer);
         }
@@ -1009,13 +1014,11 @@ public final class GridCoverageRenderer {
 
         // symbolize each bit (done here to make sure we can perform the warp/affine reduction)
         List<GridCoverage2D> symbolizedCoverages = new ArrayList<>();
-        int ii = 0;
         for (GridCoverage2D displaced : displacedCoverages) {
             GridCoverage2D symbolized = symbolize(displaced, finalSymbolizer, bgValues);
             if (symbolized != null) {
                 symbolizedCoverages.add(symbolized);
             }
-            ii++;
         }
 
         // Parameters used for taking into account an optional removal of the alpha band
@@ -1102,47 +1105,6 @@ public final class GridCoverageRenderer {
         } else {
             return coverage;
         }
-    }
-
-    /**
-     * Method for creating an alpha band to use for mosaiking
-     *
-     * @param coverage
-     * @return a new GridCoverage containing a single band with the same size of the input Coverage
-     */
-    private GridCoverage2D createAlphaBand(GridCoverage2D coverage) {
-        // Getting input image
-        RenderedImage input = coverage.getRenderedImage();
-        // Define image layout
-        ImageLayout layout = new ImageLayout();
-        layout.setMinX(input.getMinX());
-        layout.setMinY(input.getMinY());
-        layout.setWidth(input.getWidth());
-        layout.setHeight(input.getHeight());
-        layout.setTileHeight(input.getTileHeight());
-        layout.setTileWidth(input.getTileWidth());
-        // Define rendering hints
-        RenderingHints renderHints = new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout);
-        // Create an image with all 255
-        RenderedImage alpha =
-                ConstantDescriptor.create(
-                        Float.valueOf(input.getWidth()),
-                        Float.valueOf(input.getHeight()),
-                        new Byte[] {(byte) 255},
-                        renderHints);
-        // Format Image
-        ImageWorker w = new ImageWorker(alpha).format(input.getSampleModel().getDataType());
-
-        // Create the GridCoverage
-        GridCoverage2D newCoverage =
-                gridCoverageFactory.create(
-                        coverage.getName() + "Alpha",
-                        w.getRenderedImage(),
-                        coverage.getGridGeometry(),
-                        null,
-                        new GridCoverage2D[] {coverage},
-                        coverage.getProperties());
-        return newCoverage;
     }
 
     private double[] getTranslationFactors(Polygon reference, Polygon displaced) {

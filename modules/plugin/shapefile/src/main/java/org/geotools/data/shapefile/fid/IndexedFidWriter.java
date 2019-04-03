@@ -26,13 +26,12 @@ import org.geotools.data.shapefile.files.FileWriter;
 import org.geotools.data.shapefile.files.ShpFiles;
 import org.geotools.data.shapefile.files.StorageFile;
 import org.geotools.data.shapefile.files.StreamLogging;
-import org.geotools.resources.NIOUtilities;
+import org.geotools.util.NIOUtilities;
 
 /**
  * The Writer writes out the fid and record number of features to the fid index file.
  *
  * @author Jesse
- * @source $URL$
  */
 public class IndexedFidWriter implements FileWriter {
     public static final int HEADER_SIZE = 13;
@@ -111,11 +110,7 @@ public class IndexedFidWriter implements FileWriter {
         writeBuffer = NIOUtilities.allocate(HEADER_SIZE + RECORD_SIZE * 1024);
     }
 
-    /**
-     * Drain internal buffers into underlying channels.
-     *
-     * @throws IOException DOCUMENT ME!
-     */
+    /** Drain internal buffers into underlying channels. */
     private void drain() throws IOException {
         writeBuffer.flip();
 

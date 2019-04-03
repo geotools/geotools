@@ -16,7 +16,7 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>library</artifactId>
-    <version>20-SNAPSHOT</version>
+    <version>22-SNAPSHOT</version>
   </parent>
 
 
@@ -27,13 +27,15 @@
   <artifactId>gt-referencing</artifactId>
   <packaging>jar</packaging>
   <name>Referencing services</name>
-  
-
 
   <description>
     Contains implementations of Coordinate Reference Systems (CRS),
     conversion and transformation services.
   </description>
+
+  <properties>
+    <moduleIdentifier>org.geotools.referencing</moduleIdentifier>
+  </properties>
 
   <licenses>
     <license>
@@ -191,7 +193,7 @@
    <dependency>
      <groupId>net.sf.geographiclib</groupId>
      <artifactId>GeographicLib-Java</artifactId>
-     <version>1.44</version>
+     <version>1.49</version>
    </dependency>
 
 

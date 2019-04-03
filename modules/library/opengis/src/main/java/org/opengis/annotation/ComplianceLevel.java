@@ -14,7 +14,6 @@ package org.opengis.annotation;
  * elements. Typically only a subset of the full number of elements is used. However, it is
  * essential that a basic minimum number of metadata elements be maintained for a dataset.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/as#01-111">ISO 19115</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 2.0

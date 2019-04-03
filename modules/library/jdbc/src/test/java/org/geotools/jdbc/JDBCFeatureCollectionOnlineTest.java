@@ -30,7 +30,6 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 
-/** @source $URL$ */
 public abstract class JDBCFeatureCollectionOnlineTest extends JDBCTestSupport {
     SimpleFeatureCollection collection;
     JDBCFeatureStore source;
@@ -101,7 +100,7 @@ public abstract class JDBCFeatureCollectionOnlineTest extends JDBCTestSupport {
 
     public void testAdd() throws IOException {
         SimpleFeatureBuilder b = new SimpleFeatureBuilder(collection.getSchema());
-        b.set(aname("intProperty"), new Integer(3));
+        b.set(aname("intProperty"), Integer.valueOf(3));
         b.set(aname("doubleProperty"), new Double(3.3));
         b.set(aname("stringProperty"), "three");
         b.set(aname("geometry"), new GeometryFactory().createPoint(new Coordinate(3, 3)));

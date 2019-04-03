@@ -18,8 +18,6 @@
 package org.geotools.process.vector;
 
 import java.util.logging.Logger;
-import javax.measure.Unit;
-import javax.measure.UnitConverter;
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
@@ -48,19 +46,12 @@ import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.feature.type.PropertyDescriptor;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
-import si.uom.SI;
-import systems.uom.common.USCustomary;
 
 @DescribeProcess(
     title = "Measure point in LRS",
     description =
             "Computes the measure of a point along a feature (as feature with attribute lrs_measure). The point is measured along the nearest feature."
 )
-/**
- * @source $URL:
- *     http://svn.osgeo.org/geotools/trunk/modules/unsupported/process-feature/src/main/java/org/geotools/process/feature/gs/NearestProcess.java
- *     $
- */
 public class LRSMeasureProcess implements VectorProcess {
     private static final Logger LOGGER = Logging.getLogger(LRSMeasureProcess.class);
 
@@ -137,9 +128,6 @@ public class LRSMeasureProcess implements VectorProcess {
             MathTransform crsTransform = CRS.findMathTransform(crs, epsg4326);
 
             FeatureType targetFeatureType = createTargetFeatureType(featureCollection.getSchema());
-            Unit fromUnit = SI.METRE;
-            Unit toUnit = USCustomary.MILE;
-            UnitConverter unitConvert = fromUnit.getConverterTo(toUnit);
             Feature nearestFeature = null;
             double nearestDistance = 9e9;
             Coordinate[] nearestCoords = null;
@@ -241,8 +229,6 @@ public class LRSMeasureProcess implements VectorProcess {
      *
      * @param feature the source feature
      * @param targetFeatureType the modified feature type
-     * @param nearestDistance the snap distance
-     * @param nearestBearing the snap bearing
      * @return the modified feature
      * @throws ProcessException error
      */
@@ -266,22 +252,5 @@ public class LRSMeasureProcess implements VectorProcess {
             LOGGER.warning("Error creating feature: " + e);
             throw new ProcessException("Error creating feature: " + e, e);
         }
-    }
-
-    /**
-     * Calculate the bearing between two points.
-     *
-     * @param coords the points
-     * @return the bearing
-     */
-    private double calcBearing(Coordinate[] coords) {
-        double y = Math.sin(coords[1].x - coords[0].x) * Math.cos(coords[1].y);
-        double x =
-                Math.cos(coords[0].y) * Math.sin(coords[1].y)
-                        - Math.sin(coords[0].y)
-                                * Math.cos(coords[1].y)
-                                * Math.cos(coords[1].x - coords[0].x);
-        double brng = ((Math.atan2(y, x) * 180.0 / Math.PI) + 360) % 360;
-        return brng;
     }
 }

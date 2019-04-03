@@ -16,8 +16,8 @@
  */
 package org.geotools.data.shapefile.shp;
 
-import org.geotools.factory.Hints;
 import org.geotools.geometry.jts.JTS;
+import org.geotools.util.factory.Hints;
 import org.locationtech.jts.algorithm.CGAlgorithms;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.CoordinateSequence;
@@ -39,7 +39,6 @@ import org.opengis.feature.type.GeometryDescriptor;
  *
  * @author aaime
  * @author Ian Schneider
- * @source $URL$
  */
 public class JTSUtilities {
 
@@ -168,7 +167,8 @@ public class JTSUtilities {
         CoordinateSequence csOrig = lr.getCoordinateSequence();
         int numPoints = csOrig.size();
         int dimensions = csOrig.getDimension();
-        CoordinateSequence csNew = JTS.createCS(csf, numPoints, dimensions);
+
+        CoordinateSequence csNew = JTS.createCS(csf, numPoints, dimensions, csOrig.getMeasures());
 
         for (int i = 0; i < numPoints; i++) {
             for (int j = 0; j < dimensions; j++) {

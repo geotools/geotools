@@ -1,6 +1,4 @@
 /**
- * <copyright>
- * </copyright>
  *
  * $Id$
  */
@@ -15,9 +13,9 @@ import org.eclipse.emf.common.util.EList;
  * This can be disabled with -vmargs -Dorg.eclipse.emf.examples.generator.validator=false.
  */
 public interface ExceptionReportTypeValidator {
-    boolean validate();
+  boolean validate();
 
-    boolean validateException(EList value);
-    boolean validateLang(String value);
-    boolean validateVersion(String value);
+  boolean validateException(EList value);
+  boolean validateLang(String value);
+  boolean validateVersion(String value);
 }

@@ -19,8 +19,6 @@ package org.geotools.referencing;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.Set;
-import org.geotools.factory.GeoTools;
-import org.geotools.factory.Hints;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.Envelope2D;
 import org.geotools.metadata.iso.citation.Citations;
@@ -31,6 +29,8 @@ import org.geotools.referencing.operation.projection.LambertConformal1SP;
 import org.geotools.referencing.operation.projection.MapProjection;
 import org.geotools.referencing.operation.projection.TransverseMercator;
 import org.geotools.test.OnlineTestCase;
+import org.geotools.util.factory.GeoTools;
+import org.geotools.util.factory.Hints;
 import org.opengis.geometry.Envelope;
 import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.metadata.citation.Citation;
@@ -49,7 +49,6 @@ import org.opengis.referencing.operation.TransformException;
 /**
  * Tests if the CRS utility class is functioning correctly when using HSQL datastore.
  *
- * @source $URL$
  * @version $Id$
  * @author Jody Garnett
  * @author Martin Desruisseaux
@@ -369,10 +368,11 @@ public abstract class AbstractCRSTest extends OnlineTestCase {
                 assertNotNull(crs);
                 count++;
             } catch (FactoryException e) {
-                System.err.println("WARNING (CRS: " + code + " ):" + e.getMessage());
+                // System.err.println("WARNING (CRS: " + code + " ):" + e.getMessage());
             }
         }
-        System.out.println("Success: " + count + "/" + total + " (" + (count * 100) / total + "%)");
+        // System.out.println("Success: " + count + "/" + total + " (" + (count * 100) / total +
+        // "%)");
     }
 
     public void testSRSAxisOrder() throws Exception {
@@ -669,7 +669,7 @@ public abstract class AbstractCRSTest extends OnlineTestCase {
             envelope.add(40061162.89695589, 37753756.60975308);
 
             Envelope transformed = CRS.transform(envelope, DefaultGeographicCRS.WGS84);
-            System.out.println(transformed);
+            // System.out.println(transformed);
         } finally {
             MapProjection.SKIP_SANITY_CHECKS = false;
         }
@@ -718,7 +718,7 @@ public abstract class AbstractCRSTest extends OnlineTestCase {
             CRS.decode("EPSG:4326");
             return true;
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             return false;
         }
     }

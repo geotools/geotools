@@ -6,7 +6,7 @@ including shapefiles, GML files, databases, Web Feature Servers, and other forma
 
 References:
 
-* :doc:`gt-api <../api/datastore>`
+* :doc:`gt-main <../main/datastore>`
 
 Create
 ^^^^^^
@@ -114,7 +114,7 @@ If you are working with GeoServer or uDig you have access to some great faciliti
   ServiceFinder finder = new DefaultServiceFactory( catalog );
   
   File file = new File("example.shp");
-  Service service = finder.aquire( file.toURI() );
+  Service service = finder.acquire( file.toURI() );
   
   // Getting information about the Shapefile (BEFORE making the DataStore)
   IServiceInfo info = service.getInfo( new NullProgressListener() );

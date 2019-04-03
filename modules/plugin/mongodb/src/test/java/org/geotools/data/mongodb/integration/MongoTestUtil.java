@@ -54,13 +54,14 @@ public class MongoTestUtil {
             try {
                 port = Integer.parseInt(portAsString);
             } catch (NumberFormatException e) {
-                System.out.println("Exception extracting EmbedMongo port from property");
+                // System.out.println("Exception extracting EmbedMongo port from property");
             }
         }
         PORT = port;
-        System.out.println("EmbedMongo Port is " + PORT);
+        // System.out.println("EmbedMongo Port is " + PORT);
     }
 
+    @Test
     public void testConnect() throws UnknownHostException {
         MongoClient mc = new MongoClient("localhost", PORT);
         try {
@@ -74,7 +75,7 @@ public class MongoTestUtil {
                             .append("info", new BasicDBObject("x", 203).append("y", 102));
 
             coll.insert(bdo);
-            System.out.println(coll.findOne());
+            // System.out.println(coll.findOne());
         } finally {
             mc.close();
         }

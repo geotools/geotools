@@ -18,7 +18,6 @@ package org.geotools.renderer.style;
 
 import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
-import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Graphics2D;
@@ -30,7 +29,6 @@ import java.awt.TexturePaint;
 import java.awt.font.TextAttribute;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
-import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
@@ -45,7 +43,6 @@ import java.util.regex.Pattern;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.factory.Hints;
 import org.geotools.renderer.VendorOptionParser;
 import org.geotools.renderer.composite.BlendComposite;
 import org.geotools.renderer.composite.BlendComposite.BlendingMode;
@@ -65,20 +62,18 @@ import org.geotools.styling.Mark;
 import org.geotools.styling.PointPlacement;
 import org.geotools.styling.PointSymbolizer;
 import org.geotools.styling.PolygonSymbolizer;
-import org.geotools.styling.StyleAttributeExtractorTruncated;
 import org.geotools.styling.StyleFactory;
 import org.geotools.styling.Symbolizer;
 import org.geotools.styling.TextSymbolizer;
 import org.geotools.styling.TextSymbolizer2;
 import org.geotools.util.Range;
 import org.geotools.util.SoftValueHashMap;
-import org.locationtech.jts.geom.Geometry;
+import org.geotools.util.factory.Hints;
 import org.opengis.feature.Feature;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
-import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.sort.SortBy;
 import org.opengis.filter.sort.SortOrder;
 import org.opengis.style.GraphicalSymbol;
@@ -88,12 +83,11 @@ import org.opengis.style.GraphicalSymbol;
  *
  * @author aaime
  * @author dblasby
- * @source $URL$
  */
 public class SLDStyleFactory {
     /** The logger for the rendering module. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.rendering");
+            org.geotools.util.logging.Logging.getLogger(SLDStyleFactory.class);
 
     /** Java System Property to enable legacy default anchor point. */
     public static final String USE_LEGACY_ANCHOR_POINT_KEY =
@@ -120,9 +114,6 @@ public class SLDStyleFactory {
 
     private static final FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
 
-    /** This one is used as the observer object in image tracks */
-    private static final Canvas obs = new Canvas();
-
     /**
      * The default size for Marks when a mark is used, but no size is provided (got from the default
      * size to be used for SVGs and other scalable graphics when no size is provided)
@@ -130,18 +121,18 @@ public class SLDStyleFactory {
     public static final int DEFAULT_MARK_SIZE = 16;
 
     static { // static block to populate the lookups
-        JOIN_LOOKUP.put("miter", new Integer(BasicStroke.JOIN_MITER));
-        JOIN_LOOKUP.put("bevel", new Integer(BasicStroke.JOIN_BEVEL));
-        JOIN_LOOKUP.put("round", new Integer(BasicStroke.JOIN_ROUND));
+        JOIN_LOOKUP.put("miter", Integer.valueOf(BasicStroke.JOIN_MITER));
+        JOIN_LOOKUP.put("bevel", Integer.valueOf(BasicStroke.JOIN_BEVEL));
+        JOIN_LOOKUP.put("round", Integer.valueOf(BasicStroke.JOIN_ROUND));
 
-        CAP_LOOKUP.put("butt", new Integer(BasicStroke.CAP_BUTT));
-        CAP_LOOKUP.put("round", new Integer(BasicStroke.CAP_ROUND));
-        CAP_LOOKUP.put("square", new Integer(BasicStroke.CAP_SQUARE));
+        CAP_LOOKUP.put("butt", Integer.valueOf(BasicStroke.CAP_BUTT));
+        CAP_LOOKUP.put("round", Integer.valueOf(BasicStroke.CAP_ROUND));
+        CAP_LOOKUP.put("square", Integer.valueOf(BasicStroke.CAP_SQUARE));
 
-        FONT_STYLE_LOOKUP.put("normal", new Integer(java.awt.Font.PLAIN));
-        FONT_STYLE_LOOKUP.put("italic", new Integer(java.awt.Font.ITALIC));
-        FONT_STYLE_LOOKUP.put("oblique", new Integer(java.awt.Font.ITALIC));
-        FONT_STYLE_LOOKUP.put("bold", new Integer(java.awt.Font.BOLD));
+        FONT_STYLE_LOOKUP.put("normal", Integer.valueOf(java.awt.Font.PLAIN));
+        FONT_STYLE_LOOKUP.put("italic", Integer.valueOf(java.awt.Font.ITALIC));
+        FONT_STYLE_LOOKUP.put("oblique", Integer.valueOf(java.awt.Font.ITALIC));
+        FONT_STYLE_LOOKUP.put("bold", Integer.valueOf(java.awt.Font.BOLD));
 
         ALPHA_COMPOSITE_LOOKUP.put("copy", AlphaComposite.SRC);
         ALPHA_COMPOSITE_LOOKUP.put("destination", AlphaComposite.DST);
@@ -322,14 +313,7 @@ public class SLDStyleFactory {
         return style;
     }
 
-    /**
-     * Really creates the symbolizer
-     *
-     * @param drawMe DOCUMENT ME!
-     * @param symbolizer DOCUMENT ME!
-     * @param scaleRange DOCUMENT ME!
-     * @return DOCUMENT ME!
-     */
+    /** Really creates the symbolizer */
     private Style2D createStyleInternal(Object drawMe, Symbolizer symbolizer, Range scaleRange) {
         Style2D style = null;
 
@@ -562,16 +546,7 @@ public class SLDStyleFactory {
         if (symbols == null || symbols.isEmpty()) {
             return null;
         }
-        final int length = symbols.size();
         ExternalGraphic eg;
-        BufferedImage img = null;
-        double dsize;
-        AffineTransform scaleTx;
-        AffineTransformOp ato;
-        BufferedImage scaledImage;
-        Mark mark;
-        Shape shape;
-        MarkStyle2D ms2d;
         for (GraphicalSymbol symbol : symbols) {
             if (LOGGER.isLoggable(Level.FINER)) {
                 LOGGER.finer("trying to render symbol " + symbol);
@@ -765,7 +740,6 @@ public class SLDStyleFactory {
             if (p.getDisplacement() != null) {
                 dispX = evalToDouble(p.getDisplacement().getDisplacementX(), feature, 0);
                 dispY = evalToDouble(p.getDisplacement().getDisplacementY(), feature, 0);
-                ;
             }
 
             // rotation
@@ -820,25 +794,6 @@ public class SLDStyleFactory {
         }
 
         return ts2d;
-    }
-
-    /**
-     * Extracts the named geometry from feature. If geomName is null then the feature's default
-     * geometry is used. If geomName cannot be found in feature then null is returned.
-     *
-     * @param feature The feature to find the geometry in
-     * @param geomName The name of the geometry to find: null if the default geometry should be
-     *     used.
-     * @return The geometry extracted from feature or null if this proved impossible.
-     */
-    private Geometry findGeometry(final Object feature, String geomName) {
-        Geometry geom = null;
-
-        if (geomName == null) {
-            geomName = ""; // ie default geometry
-        }
-        PropertyName property = ff.property(geomName);
-        return property.evaluate(feature, Geometry.class);
     }
 
     /**
@@ -995,7 +950,7 @@ public class SLDStyleFactory {
         // Simple optimization: let java2d use the fast drawing path if the line
         // width
         // is small enough...
-        if (width < 1.5 & lineOptimizationEnabled) {
+        if (width < 1.5 && lineOptimizationEnabled) {
             width = 0;
         }
 
@@ -1484,12 +1439,7 @@ public class SLDStyleFactory {
         }
     }
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @param joinType DOCUMENT ME!
-     * @return DOCUMENT ME!
-     */
+    /** */
     public static int lookUpJoin(String joinType) {
         if (SLDStyleFactory.JOIN_LOOKUP.containsKey(joinType)) {
             return ((Integer) JOIN_LOOKUP.get(joinType)).intValue();
@@ -1498,12 +1448,7 @@ public class SLDStyleFactory {
         }
     }
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @param capType DOCUMENT ME!
-     * @return DOCUMENT ME!
-     */
+    /** */
     public static int lookUpCap(String capType) {
         if (SLDStyleFactory.CAP_LOOKUP.containsKey(capType)) {
             return ((Integer) CAP_LOOKUP.get(capType)).intValue();

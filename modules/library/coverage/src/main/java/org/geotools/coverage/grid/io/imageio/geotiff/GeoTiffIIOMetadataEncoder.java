@@ -36,7 +36,6 @@ import org.jdom2.Element;
  *
  * @author Simone Giannecchini, GeoSolutions
  * @since 2.3
- * @source $URL$
  */
 public class GeoTiffIIOMetadataEncoder {
 
@@ -331,9 +330,7 @@ public class GeoTiffIIOMetadataEncoder {
             newValue.append(value).append(ASCII_SEPARATOR);
 
             // now add to the geoascii metatag
-            GeoKeyEntry newEntry =
-                    updateGeoAsciiParamsRef(
-                            keyID, newValue.length(), currentEntry.getValueOffset());
+            updateGeoAsciiParamsRef(keyID, newValue.length(), currentEntry.getValueOffset());
 
             // +1 for the '|' character to be appended
             replaceAsciiParam(
@@ -835,16 +832,7 @@ public class GeoTiffIIOMetadataEncoder {
         isNodataSet = true;
     }
 
-    /**
-     * Allows to setup metadata by leveraging on Ascii TIFF Tags.
-     *
-     * @param name is the Ascii TIFF Tag identifier. It can be a String representing: 1) a simple
-     *     Integer (referring to a tag ID) (in that case it will refer to the BaselineTIFFTagSet 2)
-     *     OR an identifier in the form: TIFFTagSet:TIFFTagID. As an instance:
-     *     "BaselineTIFFTagSet:305" in order to add the Copyright info.
-     * @param value is the value to be assigned to that metadata.
-     * @see GeoTiffIIOMetadataEncoder.TagSet
-     */
+    /** Allows to setup metadata by leveraging on Ascii TIFF Tags. */
     public void setTiffTagsMetadata(Map<String, String> metadata) {
         this.tiffTagsMetadata = metadata;
         isMetadataSet = true;

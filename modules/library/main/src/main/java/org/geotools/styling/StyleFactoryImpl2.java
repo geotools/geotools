@@ -26,7 +26,7 @@ import javax.measure.Unit;
 import javax.measure.quantity.Length;
 import javax.swing.Icon;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.factory.GeoTools;
+import org.geotools.util.factory.GeoTools;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
@@ -54,7 +54,6 @@ import org.opengis.util.InternationalString;
  * magic default values please read the SE or SLD specification; or use an appropriate builder.
  *
  * @author Jody Garnett
- * @source $URL$
  * @version $Id$
  */
 public class StyleFactoryImpl2 implements org.opengis.style.StyleFactory {
@@ -497,14 +496,8 @@ public class StyleFactoryImpl2 implements org.opengis.style.StyleFactory {
             return RasterSymbolizerImpl.cast(symbolizer);
         } else if (symbolizer instanceof org.opengis.style.TextSymbolizer) {
             return TextSymbolizerImpl.cast(symbolizer);
-        } else if (symbolizer instanceof org.opengis.style.ExtensionSymbolizer) {
-            // here is where we can hook up experimental symbolizers
-            ExtensionSymbolizer extensionSymbolizer = (ExtensionSymbolizer) symbolizer;
-            String name = extensionSymbolizer.getExtensionName();
-            // use name to look up implementation
-
-            return null;
         }
+        // the day there is any implementation, handle org.opengis.style.ExtensionSymbolizer
         return null; // must be some new extension?
     }
 

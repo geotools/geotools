@@ -32,7 +32,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
-import org.geotools.arcsde.ArcSDERasterFormatFactory;
+import org.geotools.arcsde.data.ArcSDERasterFormatFactory;
 import org.geotools.arcsde.raster.info.RasterCellType;
 import org.geotools.arcsde.session.ArcSDEConnectionConfig;
 import org.geotools.coverage.grid.GridCoverage2D;
@@ -44,8 +44,8 @@ import org.geotools.coverage.grid.io.OverviewPolicy;
 import org.geotools.gce.geotiff.GeoTiffWriter;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.image.util.ColorUtilities;
 import org.geotools.parameter.Parameter;
-import org.geotools.resources.image.ColorUtilities;
 import org.geotools.util.logging.Logging;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -58,17 +58,15 @@ import org.opengis.geometry.Envelope;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-/**
- * @author groldan
- * @source $URL$
- */
+/** @author groldan */
 @SuppressWarnings({"deprecation", "nls"})
 @Ignore
 public class ArcSDEGridCoverage2DReaderJAIOnlineTest {
 
     private static final String RASTER_TEST_DEBUG_TO_DISK = "raster.test.debugToDisk";
 
-    private static final Logger LOGGER = Logging.getLogger("org.geotools.arcsde.gce");
+    private static final Logger LOGGER =
+            Logging.getLogger(ArcSDEGridCoverage2DReaderJAIOnlineTest.class);
 
     /** Whether to write the fetched rasters to disk or not */
     private static boolean DEBUG;
@@ -244,12 +242,12 @@ public class ArcSDEGridCoverage2DReaderJAIOnlineTest {
         ColorModel gpCm = geophysics.getColorModel();
         SampleModel gpSm = geophysics.getSampleModel();
 
-        System.out.println("Geophysics: \t" + gpCm + "\n\t" + gpSm);
+        // System.out.println("Geophysics: \t" + gpCm + "\n\t" + gpSm);
 
-        System.out.println(Float.NaN);
+        // System.out.println(Float.NaN);
         Float valueOf = Float.valueOf("NaN");
-        System.out.println(valueOf);
-        System.out.println(valueOf.floatValue());
+        // System.out.println(valueOf);
+        // System.out.println(valueOf.floatValue());
     }
 
     @Test
@@ -674,13 +672,13 @@ public class ArcSDEGridCoverage2DReaderJAIOnlineTest {
                             + " because it fails with IndexColorModel. Don't know why");
         } else {
             GeoTiffWriter writer = new GeoTiffWriter(destination);
-            System.out.println("\n --- Writing to " + destination);
+            // System.out.println("\n --- Writing to " + destination);
             try {
                 long t = System.currentTimeMillis();
                 writer.write(coverage, null);
-                System.out.println(" - wrote in " + t + "ms" + destination);
+                // System.out.println(" - wrote in " + t + "ms" + destination);
             } catch (Exception e) {
-                e.printStackTrace();
+                java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
                 throw e;
             }
         }
@@ -697,12 +695,12 @@ public class ArcSDEGridCoverage2DReaderJAIOnlineTest {
         file += File.separator + "arcsde_test" + File.separator + fileName;
         File targetFile = new File(file + ".tiff");
         targetFile.getParentFile().mkdirs();
-        System.out.println("\n --- Writing to " + file);
+        // System.out.println("\n --- Writing to " + file);
 
         try {
             ImageIO.write(image, "TIFF", targetFile);
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             throw e;
         }
     }

@@ -42,7 +42,6 @@ import org.opengis.util.Cloneable;
  *
  * @author James Macgill
  * @author Johann Sorel (Geomatys)
- * @source $URL$
  * @version $Id$
  */
 public class FeatureTypeStyleImpl implements org.geotools.styling.FeatureTypeStyle, Cloneable {
@@ -57,7 +56,7 @@ public class FeatureTypeStyleImpl implements org.geotools.styling.FeatureTypeSty
     public static String VALUE_EVALUATION_MODE_FIRST = "first";
 
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.styling");
+            org.geotools.util.logging.Logging.getLogger(FeatureTypeStyleImpl.class);
 
     private List<Rule> rules = new ArrayList<Rule>();
     private Set<SemanticType> semantics = new LinkedHashSet<SemanticType>();
@@ -71,11 +70,7 @@ public class FeatureTypeStyleImpl implements org.geotools.styling.FeatureTypeSty
 
     protected Map<String, String> options;
 
-    /**
-     * Creates a new instance of FeatureTypeStyleImpl
-     *
-     * @param rules DOCUMENT ME!
-     */
+    /** Creates a new instance of FeatureTypeStyleImpl */
     protected FeatureTypeStyleImpl(Rule[] rules) {
         this(Arrays.asList(rules));
     }

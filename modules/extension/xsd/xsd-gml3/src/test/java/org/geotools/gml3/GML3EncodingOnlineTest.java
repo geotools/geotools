@@ -36,14 +36,13 @@ import org.eclipse.xsd.XSDSchema;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.gml3.bindings.TEST;
 import org.geotools.gml3.bindings.TestConfiguration;
-import org.geotools.xml.Configuration;
-import org.geotools.xml.Encoder;
-import org.geotools.xml.Parser;
+import org.geotools.xsd.Configuration;
+import org.geotools.xsd.Encoder;
+import org.geotools.xsd.Parser;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.helpers.DefaultHandler;
 
-/** @source $URL$ */
 public class GML3EncodingOnlineTest extends TestCase {
 
     @Override
@@ -134,12 +133,12 @@ public class GML3EncodingOnlineTest extends TestCase {
         DefaultHandler handler =
                 new DefaultHandler() {
                     public void error(SAXParseException e) throws SAXException {
-                        System.out.println(e.getMessage());
+                        // System.out.println(e.getMessage());
                         errors.add(e);
                     }
 
                     public void fatalError(SAXParseException e) throws SAXException {
-                        System.out.println(e.getMessage());
+                        // System.out.println(e.getMessage());
                         errors.add(e);
                     }
                 };

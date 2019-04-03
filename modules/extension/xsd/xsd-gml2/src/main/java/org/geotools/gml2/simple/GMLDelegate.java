@@ -19,8 +19,8 @@ package org.geotools.gml2.simple;
 import java.util.List;
 import java.util.Map;
 import org.eclipse.xsd.XSDElementDeclaration;
-import org.geotools.xml.Encoder;
-import org.geotools.xml.XSD;
+import org.geotools.xsd.Encoder;
+import org.geotools.xsd.XSD;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.xml.sax.SAXException;
@@ -163,9 +163,27 @@ public interface GMLDelegate {
     int getNumDecimals();
 
     /**
-     * Returns true if ordinates should be encoded as xs:decimal instead of xs:double
+     * Returns true if coordinates should be encoded as xs:decimal instead of xs:double
      *
      * @return
      */
     boolean forceDecimalEncoding();
+
+    /**
+     * Returns true if coordinates should be right-padded with zeros up to the requested number of
+     * decimals.
+     *
+     * @return
+     */
+    boolean padWithZeros();
+
+    /**
+     * Controls if coordinates measures should be included in WFS outputs.
+     *
+     * @return TRUE if measures should be encoded, otherwise FALSE
+     */
+    default boolean getEncodeMeasures() {
+        // by default coordinates measures are encoded
+        return true;
+    }
 }

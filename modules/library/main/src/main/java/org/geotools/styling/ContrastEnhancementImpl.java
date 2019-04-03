@@ -62,17 +62,13 @@ import org.opengis.style.ContrastMethod;
  * are selected in a ContrastEnhancement, then no enhancement is performed.
  *
  * @author iant
- * @source $URL$
- *     http://svn.osgeo.org/geotools/trunk/modules/library/main/src/main/java/org/geotools/
- *     styling/ContrastEnhancementImpl.java $
  */
 public class ContrastEnhancementImpl implements ContrastEnhancement {
 
+    @SuppressWarnings("PMD.UnusedPrivateField")
     private FilterFactory filterFactory;
 
     private Expression gamma;
-
-    private Expression type;
 
     private ContrastMethod method;
 
@@ -203,7 +199,6 @@ public class ContrastEnhancementImpl implements ContrastEnhancement {
         result = prime * result + ((gamma == null) ? 0 : gamma.hashCode());
         result = prime * result + ((method == null) ? 0 : method.hashCode());
         result = prime * result + ((options == null) ? 0 : options.hashCode());
-        result = prime * result + ((type == null) ? 0 : type.hashCode());
         return result;
     }
 
@@ -238,13 +233,6 @@ public class ContrastEnhancementImpl implements ContrastEnhancement {
                 return false;
             }
         } else if (!options.equals(other.options)) {
-            return false;
-        }
-        if (type == null) {
-            if (other.type != null) {
-                return false;
-            }
-        } else if (!type.equals(other.type)) {
             return false;
         }
         return true;

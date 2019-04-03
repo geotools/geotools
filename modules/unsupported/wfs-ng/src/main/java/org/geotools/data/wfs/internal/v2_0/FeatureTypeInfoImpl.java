@@ -145,7 +145,7 @@ public class FeatureTypeInfoImpl implements FeatureTypeInfo {
             try {
                 crs = CRS.decode(defaultSRS);
             } catch (Exception e) {
-                e.printStackTrace();
+                java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             }
         }
         return crs;

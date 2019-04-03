@@ -18,9 +18,9 @@ package org.geotools.coverage.processing;
 
 import java.io.Serializable;
 import java.util.Iterator;
-import org.geotools.factory.Hints;
-import org.geotools.resources.Classes;
+import org.geotools.util.Classes;
 import org.geotools.util.Utilities;
+import org.geotools.util.factory.Hints;
 import org.opengis.coverage.Coverage;
 import org.opengis.coverage.processing.Operation;
 import org.opengis.filter.identity.Identifier;
@@ -37,7 +37,6 @@ import org.opengis.util.InternationalString;
  * description, and number of source grid coverages required for the operation.
  *
  * @since 2.2
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

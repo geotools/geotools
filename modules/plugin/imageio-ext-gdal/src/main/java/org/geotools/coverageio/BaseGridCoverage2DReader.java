@@ -1,20 +1,19 @@
 /*
-
-*    GeoTools - The Open Source Java GIS Toolkit
-*    http://geotools.org
-*
-*    (C) 2007 - 2016, Open Source Geospatial Foundation (OSGeo)
-*
-*    This library is free software; you can redistribute it and/or
-*    modify it under the terms of the GNU Lesser General Public
-*    License as published by the Free Software Foundation;
-*    version 2.1 of the License.
-*
-*    This library is distributed in the hope that it will be useful,
-*    but WITHOUT ANY WARRANTY; without even the implied warranty of
-*    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-*    Lesser General Public License for more details.
-*/
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2007 - 2016, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
 package org.geotools.coverageio;
 
 import it.geosolutions.imageio.imageioimpl.imagereadmt.ImageReadDescriptorMT;
@@ -41,6 +40,7 @@ import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.coverage.grid.io.footprint.MultiLevelROI;
 import org.geotools.coverage.grid.io.footprint.MultiLevelROIProvider;
 import org.geotools.coverage.grid.io.footprint.MultiLevelROIProviderFactory;
+import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.DefaultResourceInfo;
 import org.geotools.data.DefaultServiceInfo;
@@ -48,14 +48,13 @@ import org.geotools.data.PrjFileReader;
 import org.geotools.data.ResourceInfo;
 import org.geotools.data.ServiceInfo;
 import org.geotools.data.WorldFileReader;
-import org.geotools.factory.Hints;
 import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.PixelTranslation;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.metadata.iso.spatial.PixelTranslation;
 import org.geotools.referencing.CRS;
-import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.util.URLs;
+import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.Geometry;
 import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.geometry.Envelope;
@@ -70,14 +69,13 @@ import org.opengis.referencing.operation.TransformException;
  *
  * @author Daniele Romagnoli, GeoSolutions
  * @author Simone Giannecchini, GeoSolutions
- * @source $URL$
  */
 public abstract class BaseGridCoverage2DReader extends AbstractGridCoverage2DReader
         implements GridCoverage2DReader {
 
     /** Logger. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.coverageio.gdal");
+            org.geotools.util.logging.Logging.getLogger(BaseGridCoverage2DReader.class);
 
     /** registering ImageReadMT JAI operation (for multithread ImageRead) */
     static {
@@ -250,7 +248,6 @@ public abstract class BaseGridCoverage2DReader extends AbstractGridCoverage2DRea
      * @param input provided to this {@link BaseGridCoverage2DReader}. Actually supported input
      *     types for the underlying ImageIO-Ext GDAL framework are: {@code File}, {@code URL}
      *     pointing to a file and {@link FileImageInputStreamExt}
-     * @param hints Hints to be used by this reader throughout his life.
      * @throws UnsupportedEncodingException
      * @throws DataSourceException
      * @throws IOException

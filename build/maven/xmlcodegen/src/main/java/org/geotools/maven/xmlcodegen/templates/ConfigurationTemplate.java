@@ -1,9 +1,27 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2019, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ *
+ */
+
 package org.geotools.maven.xmlcodegen.templates;
 
 import java.util.*;
-import java.io.*;
+
 import org.eclipse.xsd.*;
-import org.geotools.xml.*;
+import org.geotools.xsd.Schemas;
 
 public class ConfigurationTemplate
 {
@@ -17,7 +35,7 @@ public class ConfigurationTemplate
   }
 
   public final String NL = nl == null ? (System.getProperties().getProperty("line.separator")) : nl;
-  protected final String TEXT_1 = "import org.eclipse.xsd.util.XSDSchemaLocationResolver;\t" + NL + "import org.geotools.xml.Configuration;" + NL + "import org.picocontainer.MutablePicoContainer;" + NL + "" + NL + "/**" + NL + " * Parser configuration for the ";
+  protected final String TEXT_1 = "import org.eclipse.xsd.util.XSDSchemaLocationResolver;\t" + NL + "import org.geotools.xsd.Configuration;" + NL + "import org.picocontainer.MutablePicoContainer;" + NL + "" + NL + "/**" + NL + " * Parser configuration for the ";
   protected final String TEXT_2 = " schema." + NL + " *" + NL + " * @generated" + NL + " */" + NL + "public class ";
   protected final String TEXT_3 = "Configuration extends Configuration {" + NL + "" + NL + "    /**" + NL + "     * Creates a new configuration." + NL + "     * " + NL + "     * @generated" + NL + "     */     " + NL + "    public ";
   protected final String TEXT_4 = "Configuration() {" + NL + "       super(";

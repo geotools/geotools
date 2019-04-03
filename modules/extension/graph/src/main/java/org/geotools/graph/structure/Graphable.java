@@ -24,7 +24,6 @@ import java.util.Iterator;
  *
  * @see Graph
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
- * @source $URL$
  */
 public interface Graphable {
 
@@ -98,5 +97,5 @@ public interface Graphable {
      * @return Iterator An iterator over other components of the graph that are related to the
      *     component.
      */
-    public Iterator getRelated();
+    public Iterator<? extends Graphable> getRelated();
 }

@@ -17,7 +17,6 @@
  */
 package org.geotools.process.vector;
 
-import java.util.ArrayList;
 import java.util.List;
 import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -35,7 +34,6 @@ import org.opengis.util.ProgressListener;
  * Returns the unique values of a certain attribute
  *
  * @author Andrea Aime
- * @source $URL$
  */
 @DescribeProcess(
     title = "Unique",
@@ -81,14 +79,6 @@ public class UniqueProcess implements VectorProcess {
         for (Object value : uniqueValues) {
             fb.add(value);
             result.add(fb.buildFeature(null));
-        }
-        return result;
-    }
-
-    private List<String> attNames(List<AttributeDescriptor> atts) {
-        List<String> result = new ArrayList<String>();
-        for (AttributeDescriptor ad : atts) {
-            result.add(ad.getLocalName());
         }
         return result;
     }

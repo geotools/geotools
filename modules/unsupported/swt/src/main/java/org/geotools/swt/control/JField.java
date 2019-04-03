@@ -30,8 +30,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * Field that uses the converter API to hack away at a text representation of the provided value.
- *
- * @source $URL$
  */
 public class JField extends ParamField {
     private Text text;

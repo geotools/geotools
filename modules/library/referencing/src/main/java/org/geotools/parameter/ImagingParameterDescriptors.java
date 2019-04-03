@@ -33,17 +33,17 @@ import javax.media.jai.ParameterListDescriptor;
 import javax.media.jai.RegistryElementDescriptor;
 import javax.media.jai.registry.RenderedRegistryMode;
 import javax.media.jai.util.Range;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.iso.citation.CitationImpl;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.metadata.iso.citation.ContactImpl;
 import org.geotools.metadata.iso.citation.OnLineResourceImpl;
 import org.geotools.metadata.iso.citation.ResponsiblePartyImpl;
 import org.geotools.referencing.AbstractIdentifiedObject;
-import org.geotools.resources.XArray;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
 import org.geotools.util.NameFactory;
 import org.geotools.util.Utilities;
+import org.geotools.util.XArray;
 import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.metadata.Identifier;
 import org.opengis.metadata.citation.Citation;
@@ -65,7 +65,6 @@ import org.opengis.util.InternationalString;
  * framework.
  *
  * @since 2.2
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
@@ -355,14 +354,12 @@ public class ImagingParameterDescriptors extends DefaultParameterDescriptorGroup
                 final CitationImpl citation = new CitationImpl(authority);
                 final Collection<ResponsibleParty> parties = citation.getCitedResponsibleParties();
                 final ResponsibleParty oldParty;
-                if (true) {
-                    final Iterator<ResponsibleParty> it = parties.iterator();
-                    if (it.hasNext()) {
-                        oldParty = it.next();
-                        it.remove(); // This party will be re-injected with a new URI below.
-                    } else {
-                        oldParty = null;
-                    }
+                final Iterator<ResponsibleParty> it = parties.iterator();
+                if (it.hasNext()) {
+                    oldParty = it.next();
+                    it.remove(); // This party will be re-injected with a new URI below.
+                } else {
+                    oldParty = null;
                 }
                 final ResponsiblePartyImpl party = new ResponsiblePartyImpl(oldParty);
                 party.setRole(Role.RESOURCE_PROVIDER);
@@ -580,6 +577,7 @@ public class ImagingParameterDescriptors extends DefaultParameterDescriptorGroup
      * future versions of this class.
      */
     @Override
+    @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int hashCode() {
         return super.hashCode() ^ descriptor.hashCode();
     }

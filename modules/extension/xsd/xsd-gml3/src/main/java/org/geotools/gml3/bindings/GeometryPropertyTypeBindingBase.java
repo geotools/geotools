@@ -1,17 +1,34 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2019, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ *
+ */
+
 package org.geotools.gml3.bindings;
 
 import java.util.List;
 import javax.xml.namespace.QName;
 import org.geotools.gml2.bindings.GML2EncodingUtils;
 import org.geotools.gml3.XSDIdRegistry;
-import org.geotools.xml.AbstractComplexBinding;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
+import org.geotools.xsd.AbstractComplexBinding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 import org.locationtech.jts.geom.Geometry;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-/** @source $URL$ */
 public abstract class GeometryPropertyTypeBindingBase extends AbstractComplexBinding {
 
     private XSDIdRegistry idSet;
@@ -46,7 +63,7 @@ public abstract class GeometryPropertyTypeBindingBase extends AbstractComplexBin
     }
 
     /**
-     * @see org.geotools.xml.AbstractComplexBinding#encode(java.lang.Object, org.w3c.dom.Document,
+     * @see AbstractComplexBinding#encode(java.lang.Object, org.w3c.dom.Document,
      *     org.w3c.dom.Element)
      */
     @Override
@@ -68,8 +85,7 @@ public abstract class GeometryPropertyTypeBindingBase extends AbstractComplexBin
      * Check if the geometry contains a feature which id is pre-existing in the document. If it's
      * true, make the geometry empty and add xlink:href property
      *
-     * @param value The complex attribute value
-     * @param att The complex attribute itself
+     * @param geom The geometry to be checked
      */
     private void checkExistingId(Geometry geom) {
         if (geom != null) {
@@ -84,6 +100,5 @@ public abstract class GeometryPropertyTypeBindingBase extends AbstractComplexBin
                 idSet.add(id);
             }
         }
-        return;
     }
 }

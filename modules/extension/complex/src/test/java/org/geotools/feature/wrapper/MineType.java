@@ -10,6 +10,8 @@
 package org.geotools.feature.wrapper;
 
 import java.util.ArrayList;
+import org.geotools.data.complex.feature.wrapper.FeatureWrapper;
+import org.geotools.data.complex.feature.wrapper.XSDMapping;
 
 // This demonstrates how to extend FeatureWrapper to get a strongly-typed object to represent a
 // feature.

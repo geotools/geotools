@@ -49,7 +49,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
-/** @source $URL$ */
 public class PicoSurfaceTest extends TestCase {
 
     public void testMain() {
@@ -169,7 +168,7 @@ public class PicoSurfaceTest extends TestCase {
         try {
             surface3 = (SurfaceImpl) surface2.clone();
         } catch (CloneNotSupportedException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
         assertTrue(surface2 != surface3);
         this.testSurfaces((SurfaceImpl) surface3);
@@ -226,7 +225,7 @@ public class PicoSurfaceTest extends TestCase {
             surface2 = surface.clone();
             surface_bak = surface.clone();
         } catch (CloneNotSupportedException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             fail();
         }
 

@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2008-12, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2008-2012, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -53,11 +53,10 @@ import org.opengis.util.InternationalString;
  *
  * @author gdavis
  * @author etj
- * @source $URL$
  */
 public class WPSUtils {
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.data.wps");
+            org.geotools.util.logging.Logging.getLogger(WPSUtils.class);
 
     /** static ints representing the input types */
     public static final int INPUTTYPE_LITERAL = 1;

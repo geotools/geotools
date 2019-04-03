@@ -4,7 +4,7 @@
 	<parent>
 		<artifactId>unsupported</artifactId>
 		<groupId>org.geotools</groupId>
-		<version>20-SNAPSHOT</version>
+		<version>22-SNAPSHOT</version>
 	</parent>
 	<groupId>org.geotools</groupId>
 	<artifactId>gt-geojsondatastore</artifactId>
@@ -17,7 +17,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.geotools</groupId>
-			<artifactId>gt-data</artifactId>
+			<artifactId>gt-main</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>

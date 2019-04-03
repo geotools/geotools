@@ -41,7 +41,7 @@ import javax.imageio.stream.ImageOutputStream;
 import javax.imageio.stream.MemoryCacheImageOutputStream;
 import javax.media.jai.PlanarImage;
 import org.geotools.image.ImageWorker;
-import org.geotools.resources.Classes;
+import org.geotools.util.Classes;
 import org.geotools.util.Utilities;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -59,7 +59,6 @@ import org.w3c.dom.NodeList;
  *
  * @author Andrea Aime - GeoSolutions
  * @since 2.7.2
- * @source $URL$
  */
 public class ImageIOExt {
 
@@ -127,7 +126,7 @@ public class ImageIOExt {
      * Sets the directory where cache files are to be created. If set to null (the default value)
      * {@link ImageIO#getCacheDirectory()} will be used as the value
      *
-     * @param cacheDirectory a <code>File</code> specifying a directory.
+     * @param cache a <code>File</code> specifying a directory.
      */
     public static void setCacheDirectory(File cache) {
         ImageIOExt.cacheDirectory = cache;
@@ -311,7 +310,7 @@ public class ImageIOExt {
         for (int i = 0; i < bands; i++) {
             bits += image.getSampleModel().getSampleSize(i);
         }
-        return (long) Math.ceil(bits / 8) * image.getWidth() * image.getHeight();
+        return (long) Math.ceil(bits / 8d) * image.getWidth() * image.getHeight();
     }
 
     /**

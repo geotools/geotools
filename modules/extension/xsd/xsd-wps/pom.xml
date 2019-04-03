@@ -16,7 +16,7 @@
   <parent>
     <groupId>org.geotools.xsd</groupId>
     <artifactId>xsd</artifactId>
-    <version>20-SNAPSHOT</version>
+    <version>22-SNAPSHOT</version>
   </parent>
   
   <!-- =========================================================== -->
@@ -77,6 +77,18 @@
       <artifactId>gt-epsg-hsql</artifactId>
       <version>${project.version}</version>
       <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools.xsd</groupId>
+      <artifactId>gt-xsd-core</artifactId>
+      <classifier>tests</classifier>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <scope>test</scope>
     </dependency>          
   </dependencies>
 
@@ -95,7 +107,7 @@
           </schemaLookupDirectories>
           <!--destinationPackage>org.geotools.wps</destinationPackage-->
           <!--generateTypeBindings>true</generateTypeBindings-->
-          <!--complexBindingBaseClass>org.geotools.xml.AbstractComplexEMFBinding</complexBindingBaseClass-->
+          <!--complexBindingBaseClass>org.geotools.xsd.AbstractComplexEMFBinding</complexBindingBaseClass-->
           <bindingConstructorArguments>
             <bindingConstructorArgument>
               <name>factory</name>

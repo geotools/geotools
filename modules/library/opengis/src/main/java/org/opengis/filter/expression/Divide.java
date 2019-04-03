@@ -20,7 +20,6 @@ import org.opengis.annotation.XmlElement;
  * numeric quotient resulting from dividing the {@linkplain #getExpression1 first} operand by the
  * {@linkplain #getExpression2 second}. The second argument or expression cannot evaluate to zero.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengis.org/docs/02-059.pdf">Implementation specification 1.0</A>
  * @author Chris Dillard (SYS Technologies)
  * @since GeoAPI 2.0

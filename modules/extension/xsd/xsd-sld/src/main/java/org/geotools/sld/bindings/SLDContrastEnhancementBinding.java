@@ -20,10 +20,11 @@ import javax.xml.namespace.QName;
 import org.geotools.styling.ContrastEnhancement;
 import org.geotools.styling.ContrastMethodStrategy;
 import org.geotools.styling.StyleFactory;
-import org.geotools.xml.AbstractComplexBinding;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
+import org.geotools.xsd.AbstractComplexBinding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 import org.opengis.filter.FilterFactory;
+import org.opengis.filter.expression.Expression;
 import org.picocontainer.MutablePicoContainer;
 
 /**
@@ -56,7 +57,6 @@ import org.picocontainer.MutablePicoContainer;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class SLDContrastEnhancementBinding extends AbstractComplexBinding {
     StyleFactory styleFactory;
@@ -113,9 +113,9 @@ public class SLDContrastEnhancementBinding extends AbstractComplexBinding {
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         ContrastEnhancement ce = styleFactory.createContrastEnhancement();
 
-        if (node.getChildValue("GammaValue") != null) {
-            Double gamma = (Double) node.getChildValue("GammaValue");
-            ce.setGammaValue(filterFactory.literal(gamma.doubleValue()));
+        if (node.getChild("GammaValue") != null) {
+            Expression gamma = (Expression) node.getChildValue("GammaValue");
+            ce.setGammaValue(gamma);
         }
 
         if (node.getChild("Normalize") != null) {

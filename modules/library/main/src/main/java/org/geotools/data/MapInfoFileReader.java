@@ -32,11 +32,11 @@ import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.geotools.geometry.DirectPosition2D;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.operation.builder.AffineTransformBuilder;
 import org.geotools.referencing.operation.builder.MappedPosition;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -52,7 +52,7 @@ public class MapInfoFileReader {
 
     /** Logger for this class. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.data.MapInfoFileReader");
+            org.geotools.util.logging.Logging.getLogger(MapInfoFileReader.class);
 
     /** Projection mappings Mapinfo -> WKT */
     private static Map<Integer, String> PROJECTIONS = new HashMap<Integer, String>();
@@ -380,7 +380,6 @@ public class MapInfoFileReader {
      * Constructor for a {@link MapInfoFileReader}.
      *
      * @param tabfile holds the location where to read from.
-     * @param bufferSize to buffer when reading.
      * @throws IOException in case something bad happens.
      */
     public MapInfoFileReader(final File tabfile) throws IOException {
@@ -399,7 +398,6 @@ public class MapInfoFileReader {
      * Constructor for a {@link MapInfoFileReader}.
      *
      * @param tabfile {@link URL} where to read from.
-     * @param bufferSize to buffer when reading.
      * @throws IOException in case something bad happens.
      */
     public MapInfoFileReader(final URL tabfile) throws IOException {

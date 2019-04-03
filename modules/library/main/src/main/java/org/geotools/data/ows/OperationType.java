@@ -24,7 +24,6 @@ import java.util.List;
  * Represents an operation used by Open Web Services for requests and responses.
  *
  * @author rgould
- * @source $URL$
  */
 public class OperationType {
     protected List<String> formats = new ArrayList<>();

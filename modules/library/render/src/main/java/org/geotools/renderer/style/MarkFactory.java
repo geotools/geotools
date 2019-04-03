@@ -21,11 +21,7 @@ import java.awt.Shape;
 import org.opengis.feature.Feature;
 import org.opengis.filter.expression.Expression;
 
-/**
- * Symbol handler for a Mark.
- *
- * @source $URL$
- */
+/** Symbol handler for a Mark. */
 public interface MarkFactory {
     /**
      * Turns the specified URL into an Shape, eventually using the Feature attributes to evaluate

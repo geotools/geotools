@@ -16,8 +16,10 @@
  */
 package org.geotools.graph;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Queue;
 import org.geotools.graph.build.GraphBuilder;
 import org.geotools.graph.build.GraphGenerator;
 import org.geotools.graph.build.opt.OptDirectedGraphBuilder;
@@ -28,9 +30,7 @@ import org.geotools.graph.structure.Graphable;
 import org.geotools.graph.structure.Node;
 import org.geotools.graph.structure.opt.OptDirectedNode;
 import org.geotools.graph.structure.opt.OptNode;
-import org.geotools.graph.util.FIFOQueue;
 
-/** @source $URL$ */
 public class GraphTestUtil {
 
     /**
@@ -93,7 +93,7 @@ public class GraphTestUtil {
         n1.setDegree(1);
 
         builder.addNode(n1);
-        node2id.put(n1, new Integer(0));
+        node2id.put(n1, Integer.valueOf(0));
 
         OptNode n2 = null;
         Edge e = null;
@@ -105,11 +105,11 @@ public class GraphTestUtil {
             else n2.setDegree(1);
 
             builder.addNode(n2);
-            node2id.put(n2, new Integer(i));
+            node2id.put(n2, Integer.valueOf(i));
 
             e = builder.buildEdge(n1, n2);
             builder.addEdge(e);
-            edge2id.put(e, new Integer(i - 1));
+            edge2id.put(e, Integer.valueOf(i - 1));
 
             n1 = n2;
         }
@@ -127,7 +127,7 @@ public class GraphTestUtil {
         n1.setOutDegree(1);
 
         builder.addNode(n1);
-        node2id.put(n1, new Integer(0));
+        node2id.put(n1, Integer.valueOf(0));
 
         OptDirectedNode n2 = null;
         Edge e = null;
@@ -144,11 +144,11 @@ public class GraphTestUtil {
             }
 
             builder.addNode(n2);
-            node2id.put(n2, new Integer(i));
+            node2id.put(n2, Integer.valueOf(i));
 
             e = builder.buildEdge(n1, n2);
             builder.addEdge(e);
-            edge2id.put(e, new Integer(i - 1));
+            edge2id.put(e, Integer.valueOf(i - 1));
 
             n1 = n2;
         }
@@ -165,6 +165,7 @@ public class GraphTestUtil {
         builder.getGraph()
                 .visitNodes(
                         new GraphVisitor() {
+                            @Override
                             public int visit(Graphable component) {
                                 if (component.getID() == bifurcation) {
                                     bif.add(component);
@@ -194,7 +195,7 @@ public class GraphTestUtil {
      * @return A 2 element object array. 0 = root node 1 = map of locstring to node
      */
     public static Object[] buildPerfectBinaryTree(GraphBuilder builder, int levels) {
-        HashMap id2node = new HashMap();
+        HashMap<Object, Node> id2node = new HashMap<>();
 
         // a balanced binary tree
         Node root = builder.buildNode();
@@ -203,8 +204,8 @@ public class GraphTestUtil {
 
         builder.addNode(root);
 
-        FIFOQueue queue = new FIFOQueue((int) Math.pow(2, levels + 1));
-        queue.enq(root);
+        Queue<Graphable> queue = new ArrayDeque<>((int) Math.pow(2, levels + 1));
+        queue.add(root);
 
         // build a complete binary tree
         // number of nodes = 2^(n+1) - 1
@@ -212,7 +213,7 @@ public class GraphTestUtil {
         while (level < levels) {
             int nnodes = (int) Math.pow(2, level);
             for (int i = 0; i < nnodes; i++) {
-                Node n = (Node) queue.deq();
+                Node n = (Node) queue.remove();
 
                 Node ln = builder.buildNode();
                 ln.setObject(n.getObject() + ".0");
@@ -230,8 +231,8 @@ public class GraphTestUtil {
                 builder.addEdge(le);
                 builder.addEdge(re);
 
-                queue.enq(ln);
-                queue.enq(rn);
+                queue.add(ln);
+                queue.add(rn);
             }
             level++;
         }
@@ -244,8 +245,8 @@ public class GraphTestUtil {
         root.setDegree(2);
         builder.addNode(root);
 
-        FIFOQueue queue = new FIFOQueue((int) Math.pow(2, levels + 1));
-        queue.enq(root);
+        Queue<Graphable> queue = new ArrayDeque<>((int) Math.pow(2, levels + 1));
+        queue.add(root);
 
         // build a complete binary tree
         // number of nodes = 2^(n+1) - 1
@@ -253,7 +254,7 @@ public class GraphTestUtil {
         while (level < levels) {
             int nnodes = (int) Math.pow(2, level);
             for (int i = 0; i < nnodes; i++) {
-                Node n = (Node) queue.deq();
+                Node n = (Node) queue.remove();
 
                 OptNode ln = (OptNode) builder.buildNode();
                 if (level < levels - 1) ln.setDegree(3);
@@ -271,8 +272,8 @@ public class GraphTestUtil {
                 builder.addEdge(le);
                 builder.addEdge(re);
 
-                queue.enq(ln);
-                queue.enq(rn);
+                queue.add(ln);
+                queue.add(rn);
             }
             level++;
         }
@@ -286,8 +287,8 @@ public class GraphTestUtil {
         root.setOutDegree(2);
         builder.addNode(root);
 
-        FIFOQueue queue = new FIFOQueue((int) Math.pow(2, levels + 1));
-        queue.enq(root);
+        Queue<Graphable> queue = new ArrayDeque<>((int) Math.pow(2, levels + 1));
+        queue.add(root);
 
         // build a complete binary tree
         // number of nodes = 2^(n+1) - 1
@@ -295,7 +296,7 @@ public class GraphTestUtil {
         while (level < levels) {
             int nnodes = (int) Math.pow(2, level);
             for (int i = 0; i < nnodes; i++) {
-                Node n = (Node) queue.deq();
+                Node n = (Node) queue.remove();
 
                 OptDirectedNode ln = (OptDirectedNode) builder.buildNode();
                 if (level < levels - 1) {
@@ -323,8 +324,8 @@ public class GraphTestUtil {
                 builder.addEdge(le);
                 builder.addEdge(re);
 
-                queue.enq(ln);
-                queue.enq(rn);
+                queue.add(ln);
+                queue.add(rn);
             }
             level++;
         }

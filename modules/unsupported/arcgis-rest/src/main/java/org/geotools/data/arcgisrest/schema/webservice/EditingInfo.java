@@ -1,31 +1,33 @@
+
 package org.geotools.data.arcgisrest.schema.webservice;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
 
 public class EditingInfo {
 
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("lastEditDate")
     @Expose
     private Object lastEditDate;
 
     /**
+     * 
      * (Required)
-     *
-     * @return The lastEditDate
+     * 
      */
     public Object getLastEditDate() {
         return lastEditDate;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param lastEditDate The lastEditDate
+     * 
      */
     public void setLastEditDate(Object lastEditDate) {
         this.lastEditDate = lastEditDate;
@@ -33,12 +35,25 @@ public class EditingInfo {
 
     @Override
     public String toString() {
-        return ToStringBuilder.reflectionToString(this);
+        StringBuilder sb = new StringBuilder();
+        sb.append(EditingInfo.class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this))).append('[');
+        sb.append("lastEditDate");
+        sb.append('=');
+        sb.append(((this.lastEditDate == null)?"<null>":this.lastEditDate));
+        sb.append(',');
+        if (sb.charAt((sb.length()- 1)) == ',') {
+            sb.setCharAt((sb.length()- 1), ']');
+        } else {
+            sb.append(']');
+        }
+        return sb.toString();
     }
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(lastEditDate).toHashCode();
+        int result = 1;
+        result = ((result* 31)+((this.lastEditDate == null)? 0 :this.lastEditDate.hashCode()));
+        return result;
     }
 
     @Override
@@ -50,6 +65,7 @@ public class EditingInfo {
             return false;
         }
         EditingInfo rhs = ((EditingInfo) other);
-        return new EqualsBuilder().append(lastEditDate, rhs.lastEditDate).isEquals();
+        return ((this.lastEditDate == rhs.lastEditDate)||((this.lastEditDate!= null)&&this.lastEditDate.equals(rhs.lastEditDate)));
     }
+
 }

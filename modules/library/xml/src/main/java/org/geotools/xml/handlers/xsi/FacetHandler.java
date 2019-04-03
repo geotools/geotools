@@ -28,7 +28,6 @@ import org.xml.sax.SAXNotRecognizedException;
  *
  * @author dzwiers, Refractions Research, Inc. http://www.refractions.net
  * @author $Author:$ (last modification)
- * @source $URL$
  * @version $Id$
  */
 public abstract class FacetHandler extends XSIElementHandler {
@@ -72,6 +71,7 @@ public abstract class FacetHandler extends XSIElementHandler {
     }
 
     /** @see java.lang.Object#hashCode() */
+    @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int hashCode() {
         return getHandlerType() * ((value == null) ? 1 : value.hashCode());
     }

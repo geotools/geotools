@@ -18,13 +18,13 @@ package org.geotools.filter;
 
 import java.util.logging.Logger;
 import junit.framework.TestCase;
-import org.geotools.feature.IllegalAttributeException;
 import org.geotools.feature.SchemaException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LineString;
+import org.opengis.feature.IllegalAttributeException;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
@@ -32,12 +32,11 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * Common filter testing code factored up here.
  *
  * @author Chris Holmes
- * @source $URL$
  */
 public abstract class FilterTestSupport extends TestCase {
     /** Standard logging instance */
     protected static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.filter");
+            org.geotools.util.logging.Logging.getLogger(FilterTestSupport.class);
     /** Schema on which to preform tests */
     protected static SimpleFeatureType testSchema = null;
 
@@ -97,12 +96,12 @@ public abstract class FilterTestSupport extends TestCase {
         // Builds the test feature
         Object[] attributes = new Object[10];
         attributes[0] = geomFac.createLineString(coords);
-        attributes[1] = new Boolean(true);
+        attributes[1] = Boolean.valueOf(true);
         attributes[2] = new Character('t');
-        attributes[3] = new Byte("10");
-        attributes[4] = new Short("101");
-        attributes[5] = new Integer(1002);
-        attributes[6] = new Long(10003);
+        attributes[3] = Byte.valueOf("10");
+        attributes[4] = Short.valueOf("101");
+        attributes[5] = Integer.valueOf(1002);
+        attributes[6] = Long.valueOf(10003);
         attributes[7] = new Float(10000.4);
         attributes[8] = new Double(100000.5);
         attributes[9] = "test string data";

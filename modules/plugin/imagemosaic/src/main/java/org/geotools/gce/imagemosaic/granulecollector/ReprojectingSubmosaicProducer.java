@@ -18,7 +18,8 @@
 package org.geotools.gce.imagemosaic.granulecollector;
 
 import it.geosolutions.jaiext.range.NoDataContainer;
-import java.awt.RenderingHints;
+import it.geosolutions.jaiext.vectorbin.ROIGeometry;
+import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.RenderedImage;
@@ -37,7 +38,7 @@ import javax.media.jai.ROI;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.processing.Operations;
-import org.geotools.factory.Hints;
+import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.gce.imagemosaic.GranuleDescriptor;
 import org.geotools.gce.imagemosaic.MergeBehavior;
 import org.geotools.gce.imagemosaic.MosaicElement;
@@ -46,13 +47,15 @@ import org.geotools.gce.imagemosaic.RasterLayerRequest;
 import org.geotools.gce.imagemosaic.RasterLayerResponse;
 import org.geotools.gce.imagemosaic.RasterManager;
 import org.geotools.gce.imagemosaic.Utils;
+import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.ImageWorker;
+import org.geotools.image.util.ImageUtilities;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
-import org.geotools.resources.coverage.CoverageUtilities;
-import org.geotools.resources.image.ImageUtilities;
+import org.geotools.util.factory.Hints;
+import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -224,16 +227,29 @@ class ReprojectingSubmosaicProducer extends BaseSubmosaicProducer {
             MosaicElement mosaicElement,
             GridCoverageFactory factory,
             ReferencedEnvelope submosaicBBOX) {
-        final RenderedImage image = mosaicElement.getSource();
+        RenderedImage image = mosaicElement.getSource();
+
         Object roiProperty = image.getProperty("ROI");
-        if (roiProperty instanceof ROI) {
-            // move the property at the coverage level too
-            Map<String, Object> properties = new HashMap<>();
-            CoverageUtilities.setROIProperty(properties, (ROI) roiProperty);
-            return factory.create("submosaic", image, submosaicBBOX, null, null, properties);
-        } else {
-            return factory.create("submosaic", image, submosaicBBOX);
+        if (!(roiProperty instanceof ROI)) {
+            // need the ROI before warp, as the area of validity needs to be warped along, so
+            // if missing add one now
+            ROIGeometry roi =
+                    new ROIGeometry(
+                            JTS.toGeometry(
+                                    new Envelope(
+                                            image.getMinX(),
+                                            image.getMinX() + image.getWidth(),
+                                            image.getMinY(),
+                                            image.getMinY() + image.getHeight())));
+            ImageWorker iw = new ImageWorker(image);
+            iw.setROI(roi);
+            image = iw.getRenderedImage();
+            roiProperty = roi;
         }
+        // move the property at the coverage level too
+        Map<String, Object> properties = new HashMap<>();
+        CoverageUtilities.setROIProperty(properties, (ROI) roiProperty);
+        return factory.create("submosaic", image, submosaicBBOX, null, null, properties);
     }
 
     /**

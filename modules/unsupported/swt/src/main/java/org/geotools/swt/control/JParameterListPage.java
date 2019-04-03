@@ -33,7 +33,6 @@ import org.geotools.util.Converters;
  * Parameters wizard page for trhe {@link JParameterListWizard parameter list wizard}.
  *
  * @author Andrea Antonello (www.hydrologis.com)
- * @source $URL$
  */
 public class JParameterListPage extends WizardPage {
     public static final String ID = "org.geotools.swt.data.ParameterListPage";

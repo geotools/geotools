@@ -21,7 +21,7 @@ import java.util.List;
 import javax.measure.Unit;
 import javax.measure.quantity.Length;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.factory.GeoTools;
+import org.geotools.util.factory.GeoTools;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Expression;
 import org.opengis.style.StyleVisitor;
@@ -33,7 +33,6 @@ import org.opengis.util.Cloneable;
  *
  * @author Ian Turton, CCG
  * @author Johann Sorel (Geomatys)
- * @source $URL$
  * @version $Id$
  */
 public class TextSymbolizerImpl extends AbstractSymbolizer implements TextSymbolizer2, Cloneable {
@@ -248,7 +247,6 @@ public class TextSymbolizerImpl extends AbstractSymbolizer implements TextSymbol
      * Creates a deep copy clone. TODO: Need to complete the deep copy, currently only shallow copy.
      *
      * @return The deep copy clone.
-     * @throws AssertionError DOCUMENT ME!
      */
     public Object clone() {
         try {

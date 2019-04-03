@@ -29,11 +29,11 @@ import static java.lang.Math.tan;
 
 import java.awt.geom.Point2D;
 import java.util.logging.Level;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Vocabulary;
+import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.NamedIdentifier;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Vocabulary;
-import org.geotools.resources.i18n.VocabularyKeys;
 import org.opengis.parameter.ParameterDescriptor;
 import org.opengis.parameter.ParameterDescriptorGroup;
 import org.opengis.parameter.ParameterNotFoundException;
@@ -58,7 +58,6 @@ import org.opengis.referencing.operation.MathTransform;
  * @see <A HREF="http://www.remotesensing.org/geotiff/proj_list/polyconic.html">"Polyconic" on
  *     RemoteSensing.org</A>
  * @since 2.6.1
- * @source $URL$
  * @version $Id$
  * @author Andrea Aime
  */

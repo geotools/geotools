@@ -16,7 +16,7 @@
     <parent>
         <groupId>org.geotools</groupId>
         <artifactId>unsupported</artifactId>
-        <version>20-SNAPSHOT</version>
+        <version>22-SNAPSHOT</version>
     </parent>
 
   <!-- =========================================================== -->
@@ -127,11 +127,12 @@
             <classifier>swing</classifier>
         </dependency>
         <dependency>
-            <groupId>org.easytesting</groupId>
-            <artifactId>fest-swing-junit</artifactId>
-            <version>1.2.1</version>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-swing-junit</artifactId>
+            <version>3.8.0</version>
             <scope>test</scope>
         </dependency>
+
         <dependency>
             <groupId>org.jaitools</groupId>
             <artifactId>jt-utils</artifactId>

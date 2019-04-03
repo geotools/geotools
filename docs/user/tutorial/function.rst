@@ -58,7 +58,7 @@ Things to Try
 
 * Create a quick test case to show that the above function is available using::
   
-    FunctionFactory ff = CommonFactoryFinder.getFactoryFinder();
+    FilterFactory ff = CommonFactoryFinder.getFilterFactory();
     Expression expr = ff.function( "snap", ff.property("the_geom"), ff.literal( lines ) );
 
 * The function should be very slow as written (when called to snap thousands of points).

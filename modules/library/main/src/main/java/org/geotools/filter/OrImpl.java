@@ -16,16 +16,12 @@
  */
 package org.geotools.filter;
 
-import java.util.Iterator;
 import java.util.List;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterVisitor;
 import org.opengis.filter.Or;
 
-/**
- * @author jdeolive
- * @source $URL$
- */
+/** @author jdeolive */
 public class OrImpl extends LogicFilterImpl implements Or {
 
     protected OrImpl(List<Filter> children) {
@@ -33,8 +29,7 @@ public class OrImpl extends LogicFilterImpl implements Or {
     }
 
     public boolean evaluate(Object feature) {
-        for (Iterator<Filter> itr = children.iterator(); itr.hasNext(); ) {
-            Filter filter = itr.next();
+        for (Filter filter : children) {
             if (filter.evaluate(feature)) {
                 return true;
             }

@@ -26,9 +26,9 @@ import javax.xml.namespace.QName;
 import org.geotools.data.complex.AttributeMapping;
 import org.geotools.data.complex.FeatureTypeMapping;
 import org.geotools.data.complex.NestedAttributeMapping;
-import org.geotools.data.complex.config.Types;
-import org.geotools.data.complex.filter.XPathUtil.Step;
-import org.geotools.data.complex.filter.XPathUtil.StepList;
+import org.geotools.data.complex.feature.type.Types;
+import org.geotools.data.complex.util.XPathUtil.Step;
+import org.geotools.data.complex.util.XPathUtil.StepList;
 import org.geotools.data.joining.JoiningNestedAttributeMapping;
 import org.geotools.filter.visitor.DefaultExpressionVisitor;
 import org.geotools.util.logging.Logging;
@@ -114,7 +114,7 @@ public class FeatureChainedAttributeVisitor extends DefaultExpressionVisitor {
         for (NestedAttributeMapping nestedAttr : currentAttributes) {
             StepList targetXPath = nestedAttr.getTargetXPath();
 
-            if (currentXPath.startsWith(targetXPath)) {
+            if (startsWith(currentXPath, targetXPath)) {
                 if (nestedAttr.isConditional() && feature == null) {
                     logConditionalMappingFound(currentType, targetXPath);
                     // quit the search
@@ -128,7 +128,7 @@ public class FeatureChainedAttributeVisitor extends DefaultExpressionVisitor {
                         StepList nestedTypeXPath = targetXPath.clone();
                         nestedTypeXPath.add(nestedTypeStep);
 
-                        boolean xpathContainsNestedType = currentXPath.startsWith(nestedTypeXPath);
+                        boolean xpathContainsNestedType = startsWith(currentXPath, nestedTypeXPath);
                         boolean hasSimpleContent = Types.isSimpleContentType(nestedPropertyType);
 
                         // if this is feature chaining for simple content, the name of the nested
@@ -297,6 +297,10 @@ public class FeatureChainedAttributeVisitor extends DefaultExpressionVisitor {
         return conditionalMappingFound;
     }
 
+    protected boolean startsWith(StepList one, StepList other) {
+        return one.startsWith(other);
+    }
+
     /**
      * Descriptor class holding information about a feature chained attribute, i.e. an attribute
      * belonging to a feature type that is linked to a root feature type via feature chaining.
@@ -319,7 +323,7 @@ public class FeatureChainedAttributeVisitor extends DefaultExpressionVisitor {
 
         private StepList attributePath;
 
-        private FeatureChainedAttributeDescriptor() {
+        FeatureChainedAttributeDescriptor() {
             featureChain = new ArrayList<>();
         }
 

@@ -1,31 +1,33 @@
+
 package org.geotools.data.arcgisrest.schema.webservice;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
 
 public class Prototype {
 
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("attributes")
     @Expose
     private Attributes attributes;
 
     /**
+     * 
      * (Required)
-     *
-     * @return The attributes
+     * 
      */
     public Attributes getAttributes() {
         return attributes;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param attributes The attributes
+     * 
      */
     public void setAttributes(Attributes attributes) {
         this.attributes = attributes;
@@ -33,12 +35,25 @@ public class Prototype {
 
     @Override
     public String toString() {
-        return ToStringBuilder.reflectionToString(this);
+        StringBuilder sb = new StringBuilder();
+        sb.append(Prototype.class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this))).append('[');
+        sb.append("attributes");
+        sb.append('=');
+        sb.append(((this.attributes == null)?"<null>":this.attributes));
+        sb.append(',');
+        if (sb.charAt((sb.length()- 1)) == ',') {
+            sb.setCharAt((sb.length()- 1), ']');
+        } else {
+            sb.append(']');
+        }
+        return sb.toString();
     }
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(attributes).toHashCode();
+        int result = 1;
+        result = ((result* 31)+((this.attributes == null)? 0 :this.attributes.hashCode()));
+        return result;
     }
 
     @Override
@@ -50,6 +65,7 @@ public class Prototype {
             return false;
         }
         Prototype rhs = ((Prototype) other);
-        return new EqualsBuilder().append(attributes, rhs.attributes).isEquals();
+        return ((this.attributes == rhs.attributes)||((this.attributes!= null)&&this.attributes.equals(rhs.attributes)));
     }
+
 }

@@ -76,16 +76,11 @@ import org.opengis.filter.spatial.BBOX;
  * {@link ArcSdeFeatureSource} test cases
  *
  * @author Gabriel Roldan
- * @source $URL$
- *     http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/test/java
- *     /org/geotools/arcsde/data/ArcSDEDataStoreTest.java $
- * @version $Id$
  */
 public class ArcSDEFeatureSourceTest {
     /** package logger */
     private static Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(
-                    ArcSDEFeatureSourceTest.class.getPackage().getName());
+            org.geotools.util.logging.Logging.getLogger(ArcSDEFeatureSourceTest.class);
 
     private static TestData testData;
 
@@ -333,7 +328,7 @@ public class ArcSDEFeatureSourceTest {
         try {
             testFilter(mixedFilter, fs, EXPECTED_RESULT_COUNT);
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             throw e;
         }
         // check that getBounds and size do function
@@ -784,7 +779,7 @@ public class ArcSDEFeatureSourceTest {
         try {
             assertNotNull(reader.next());
         } catch (NoSuchElementException ex) {
-            ex.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", ex);
             fail(ex.getMessage());
         }
 

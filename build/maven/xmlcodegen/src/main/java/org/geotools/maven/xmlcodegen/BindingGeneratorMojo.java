@@ -1,3 +1,21 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2019, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ *
+ */
+
 package org.geotools.maven.xmlcodegen;
 
 import java.io.File;
@@ -17,7 +35,10 @@ import org.apache.maven.model.Resource;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.eclipse.xsd.XSDSchema;
-import org.geotools.xml.XSD;
+import org.geotools.xsd.AbstractComplexBinding;
+import org.geotools.xsd.XSD;
+import org.geotools.xsd.AbstractSimpleBinding;
+import org.geotools.xsd.Configuration;
 
 /**
  * Generates the bindings and utility classes used to parse xml documents 
@@ -31,7 +52,7 @@ import org.geotools.xml.XSD;
 public class BindingGeneratorMojo extends AbstractGeneratorMojo {
 
 	/**
-     * Flag controlling wether a parser configuration ( {@link org.geotools.xml.Configuration} ) 
+     * Flag controlling wether a parser configuration ( {@link Configuration} )
      * the default is true.
      * 
      * @parameter expression="true"
@@ -90,19 +111,19 @@ public class BindingGeneratorMojo extends AbstractGeneratorMojo {
     BindingConstructorArgument[] bindingConstructorArguments;
     
     /**
-     * The base class for complex bindings. If unspecified {@link org.geotools.xml.AbstractComplexBinding}
+     * The base class for complex bindings. If unspecified {@link AbstractComplexBinding}
      * is used.
      * 
-     * @parameter expression="org.geotools.xml.AbstractComplexBinding"
+     * @parameter expression="org.geotools.xsd.AbstractComplexBinding"
      * 
      */
     String complexBindingBaseClass;
     
     /**
-     * The base class for simple bindings. If unspecified {@link org.geotools.xml.AbstractSimpleBinding}
+     * The base class for simple bindings. If unspecified {@link AbstractSimpleBinding}
      * is used.
      * 
-     * @parameter expression="org.geotools.xml.AbstractSimpleBinding"
+     * @parameter expression="org.geotools.xsd.AbstractSimpleBinding"
      */
     String simpleBindingBaseClass;
     

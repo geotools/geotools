@@ -16,7 +16,7 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>library</artifactId>
-    <version>20-SNAPSHOT</version>
+    <version>22-SNAPSHOT</version>
   </parent>
 
 
@@ -27,13 +27,15 @@
   <artifactId>gt-coverage</artifactId>
   <packaging>jar</packaging>
   <name>Grid Coverage module</name>
-  
-
 
   <description>
     Implementation of GridCoverage. Provides support
     for rasters and some image processing like reprojection.
   </description>
+
+  <properties>
+    <moduleIdentifier>org.geotools.coverage</moduleIdentifier>
+  </properties>
 
   <licenses>
     <license>
@@ -95,11 +97,6 @@
   <!--     Dependency Management                                   -->
   <!-- =========================================================== -->
   <dependencies>
-    <dependency>
-      <groupId>org.geotools</groupId>
-      <artifactId>gt-api</artifactId>
-      <version>${project.version}</version>
-    </dependency>
     <dependency>
       <groupId>org.geotools</groupId>
       <artifactId>gt-referencing</artifactId>

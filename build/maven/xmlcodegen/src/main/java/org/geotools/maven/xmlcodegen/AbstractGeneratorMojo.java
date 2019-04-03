@@ -1,3 +1,21 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2019, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ *
+ */
+
 package org.geotools.maven.xmlcodegen;
 
 import java.io.File;
@@ -26,8 +44,8 @@ import org.apache.maven.project.MavenProject;
 import org.eclipse.xsd.XSDSchema;
 import org.eclipse.xsd.util.XSDSchemaLocationResolver;
 import org.eclipse.xsd.util.XSDSchemaLocator;
-import org.geotools.xml.Schemas;
-import org.geotools.xml.XSD;
+import org.geotools.xsd.Schemas;
+import org.geotools.xsd.XSD;
 
 /**
  * Generates the bindings and utility classes used to parse xml documents 
@@ -254,7 +272,7 @@ public abstract class AbstractGeneratorMojo extends AbstractMojo {
 		//use extended classloader to load up configuration classes to load schema files
 		// with
 		final List xsds = new ArrayList();
-                xsds.add( "org.geotools.xml.XML" );
+                xsds.add( "org.geotools.xsd.XML" );
                 xsds.add( "org.geotools.xlink.XLINK" );
                 
                 if (includeGML) {

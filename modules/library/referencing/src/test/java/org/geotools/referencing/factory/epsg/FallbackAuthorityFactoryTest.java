@@ -35,7 +35,6 @@ import org.opengis.referencing.crs.ProjectedCRS;
  * Checks the exception thrown by the fallback system do report actual errors when the code is
  * available but for some reason broken, and not "code not found" ones.
  *
- * @source $URL$
  * @version $Id$
  * @author Andrea Aime (TOPP)
  */
@@ -74,7 +73,7 @@ public final class FallbackAuthorityFactoryTest {
         Set<CRSAuthorityFactory> factories =
                 ReferencingFactoryFinder.getCRSAuthorityFactories(null);
         for (CRSAuthorityFactory factory : factories) {
-            System.out.println("--> " + factory.getClass().getSimpleName());
+            // System.out.println("--> " + factory.getClass().getSimpleName());
         }
         boolean foundWkt = false;
         boolean foundExtra = false;
@@ -82,7 +81,7 @@ public final class FallbackAuthorityFactoryTest {
             CRSAuthorityFactory factory = (CRSAuthorityFactory) it.next();
             Class<?> type = factory.getClass();
             if (VERBOSE) {
-                System.out.println(type);
+                // System.out.println(type);
             }
             if (type == FactoryEPSGExtra.class) {
                 foundExtra = true;

@@ -714,14 +714,13 @@ public class XmlSimpleFeatureParser implements GetFeatureParser {
         if (srsName == null) {
             return defaultValue;
         }
-        boolean forceXY = false;
+        // boolean forceXY = false;
+        // forceXY=true breaks axis flipping handling
         if (srsName.startsWith("http://") && srsName.indexOf('#') != -1) {
-            forceXY = true;
+            // forceXY = true;
             srsName = "EPSG:" + srsName.substring(1 + srsName.lastIndexOf('#'));
-        } else if (srsName.startsWith("EPSG:")) {
-            forceXY = true;
         }
-        CoordinateReferenceSystem crs = CRS.decode(srsName, forceXY);
+        CoordinateReferenceSystem crs = CRS.decode(srsName); // , forceXY);
         return crs;
     }
 

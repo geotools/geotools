@@ -23,23 +23,25 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.util.List;
 import junit.framework.TestCase;
+import org.geotools.styling.ContrastEnhancement;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.Graphic;
 import org.geotools.styling.LineSymbolizer;
 import org.geotools.styling.NamedLayer;
 import org.geotools.styling.PointSymbolizer;
 import org.geotools.styling.PolygonSymbolizer;
+import org.geotools.styling.RasterSymbolizer;
 import org.geotools.styling.Rule;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyledLayerDescriptor;
 import org.geotools.styling.TextSymbolizer;
-import org.geotools.xml.Parser;
+import org.geotools.xsd.Parser;
+import org.opengis.filter.expression.Expression;
 import org.opengis.style.ExternalGraphic;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.ext.EntityResolver2;
 
-/** @source $URL$ */
 public class SLDExampleTest extends TestCase {
 
     public void testParseSLD() throws Exception {
@@ -177,6 +179,31 @@ public class SLDExampleTest extends TestCase {
                     "parsing should fail with a MalformedURLException because the EntityResolver blocked entity resolution");
         } catch (MalformedURLException e) {
         }
+    }
+
+    public void testValidateGammaValueExpression() throws Exception {
+        String file = "example-sld-gamma-value.xml";
+        StyledLayerDescriptor sld = (StyledLayerDescriptor) parse(file);
+
+        // basic drill down
+        assertEquals(1, sld.getStyledLayers().length);
+        NamedLayer layer = (NamedLayer) sld.getStyledLayers()[0];
+        assertEquals(1, layer.getStyles().length);
+        Style style = layer.getStyles()[0];
+        assertEquals(1, style.featureTypeStyles().size());
+        FeatureTypeStyle fts = style.featureTypeStyles().get(0);
+        assertEquals(1, fts.rules().size());
+        Rule rule = fts.rules().get(0);
+        assertEquals(1, rule.symbolizers().size());
+
+        // every symbolizer has the vendor option
+        RasterSymbolizer raster = (RasterSymbolizer) rule.symbolizers().get(0);
+        ContrastEnhancement ce = raster.getContrastEnhancement();
+        assertNotNull(ce);
+        Expression gammaExp = ce.getGammaValue();
+        assertNotNull(gammaExp);
+        Double gamma = gammaExp.evaluate(null, Double.class);
+        assertEquals(1.5, gamma);
     }
 
     public void testParseValidateVendorOptions() throws Exception {

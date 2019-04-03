@@ -44,7 +44,6 @@ import org.opengis.referencing.operation.Matrix;
  * centered in this ellipsoid (or sphere).
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @see Ellipsoid
@@ -382,6 +381,7 @@ public class DefaultGeodeticDatum extends AbstractDatum implements GeodeticDatum
      *     versions of this class.
      */
     @Override
+    @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int hashCode() {
         int code =
                 (int) serialVersionUID

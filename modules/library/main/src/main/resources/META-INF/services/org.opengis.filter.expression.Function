@@ -6,6 +6,7 @@ org.geotools.filter.function.ClassifyFunction
 org.geotools.filter.function.EqualIntervalFunction
 org.geotools.filter.function.StandardDeviationFunction
 org.geotools.filter.function.QuantileFunction
+org.geotools.filter.function.EqualAreaFunction
 org.geotools.filter.function.UniqueIntervalFunction
 org.geotools.filter.function.Collection_AverageFunction
 org.geotools.filter.function.Collection_BoundsFunction
@@ -80,6 +81,9 @@ org.geotools.filter.function.FilterFunction_strConcat
 org.geotools.filter.function.FilterFunction_strEndsWith
 org.geotools.filter.function.FilterFunction_strStartsWith
 org.geotools.filter.function.FilterFunction_strCapitalize
+org.geotools.filter.function.FilterFunction_strAbbreviate
+org.geotools.filter.function.FilterFunction_strDefaultIfBlank
+org.geotools.filter.function.FilterFunction_strStripAccents
 org.geotools.filter.function.FilterFunction_strEqualsIgnoreCase
 org.geotools.filter.function.FilterFunction_strIndexOf
 org.geotools.filter.function.FilterFunction_strLastIndexOf
@@ -170,6 +174,7 @@ org.geotools.filter.function.math.FilterFunction_toDegrees
 org.geotools.filter.function.math.FilterFunction_toRadians
 org.geotools.filter.function.math.ModuloFunction
 org.geotools.filter.function.math.PiFunction
+org.geotools.filter.function.PropertyExistsFunction
 org.geotools.filter.function.string.ConcatenateFunction
 org.geotools.filter.function.string.URLEncodeFunction
 org.geotools.filter.function.JenksNaturalBreaksFunction
@@ -189,3 +194,4 @@ org.geotools.filter.function.color.GrayscaleFunction
 org.geotools.filter.function.color.ConstrastFunction
 org.geotools.filter.function.BoundedByFunction
 org.geotools.filter.function.DateDifferenceFunction
+org.geotools.filter.function.JsonPointerFunction

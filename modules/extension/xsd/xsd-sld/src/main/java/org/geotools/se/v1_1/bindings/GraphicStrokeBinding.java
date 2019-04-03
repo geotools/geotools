@@ -20,7 +20,8 @@ import javax.xml.namespace.QName;
 import org.geotools.se.v1_1.SE;
 import org.geotools.sld.bindings.SLDGraphicStrokeBinding;
 import org.geotools.styling.Graphic;
-import org.geotools.xml.*;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 import org.opengis.filter.expression.Expression;
 
 /**
@@ -43,7 +44,6 @@ import org.opengis.filter.expression.Expression;
  * </pre>
  *
  * @generated
- * @source $URL$
  */
 public class GraphicStrokeBinding extends SLDGraphicStrokeBinding {
 

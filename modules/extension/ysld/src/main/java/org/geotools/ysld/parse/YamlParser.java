@@ -23,8 +23,7 @@ import java.io.Reader;
 import java.util.Collections;
 import java.util.Map;
 import org.geotools.ysld.YamlObject;
-import org.yaml.snakeyaml.Yaml;
-import org.yaml.snakeyaml.events.*;
+import org.geotools.ysld.YamlUtil;
 import org.yaml.snakeyaml.reader.UnicodeReader;
 
 /**
@@ -57,9 +56,10 @@ public class YamlParser {
      *     YamlObject}..
      * @throws IOException
      */
+    @SuppressWarnings("PMD.EmptyWhileStmt")
     public <T extends YamlParseHandler> T parse(T root, Map<String, Object> hints)
             throws IOException {
-        Object parsed = new Yaml().load(yaml);
+        Object parsed = YamlUtil.getSafeYaml().load(yaml);
 
         YamlParseContext context = new YamlParseContext();
         context.mergeDocHints(hints);

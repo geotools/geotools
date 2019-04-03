@@ -33,171 +33,171 @@ import org.opengis.filter.identity.FeatureId;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link net.opengis.wfs.impl.FeaturesNotLockedTypeImpl#getGroup <em>Group</em>}</li>
  *   <li>{@link net.opengis.wfs.impl.FeaturesNotLockedTypeImpl#getFeatureId <em>Feature Id</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
 public class FeaturesNotLockedTypeImpl extends EObjectImpl implements FeaturesNotLockedType {
 	/**
-     * The cached value of the '{@link #getGroup() <em>Group</em>}' attribute list.
-     * <!-- begin-user-doc -->
+   * The cached value of the '{@link #getGroup() <em>Group</em>}' attribute list.
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @see #getGroup()
-     * @generated
-     * @ordered
-     */
+   * @see #getGroup()
+   * @generated
+   * @ordered
+   */
 	protected FeatureMap group;
 
 	/**
-     * The cached value of the '{@link #getFeatureId() <em>Feature Id</em>}' attribute list.
-     * <!-- begin-user-doc -->
+   * The cached value of the '{@link #getFeatureId() <em>Feature Id</em>}' attribute list.
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @see #getFeatureId()
-     * @generated
-     * @ordered
-     */
+   * @see #getFeatureId()
+   * @generated
+   * @ordered
+   */
 	protected EList featureId;
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	protected FeaturesNotLockedTypeImpl() {
-        super();
-    }
+    super();
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	protected EClass eStaticClass() {
-        return WfsPackage.Literals.FEATURES_NOT_LOCKED_TYPE;
-    }
+    return WfsPackage.Literals.FEATURES_NOT_LOCKED_TYPE;
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public FeatureMap getGroup() {
-        if (group == null) {
-            group = new BasicFeatureMap(this, WfsPackage.FEATURES_NOT_LOCKED_TYPE__GROUP);
-        }
-        return group;
+    if (group == null) {
+      group = new BasicFeatureMap(this, WfsPackage.FEATURES_NOT_LOCKED_TYPE__GROUP);
     }
+    return group;
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public EList getFeatureId() {
-        if (featureId == null) {
-            featureId = new EDataTypeUniqueEList(FeatureId.class, this, WfsPackage.FEATURES_NOT_LOCKED_TYPE__FEATURE_ID);
-        }
-        return featureId;
+    if (featureId == null) {
+      featureId = new EDataTypeUniqueEList(FeatureId.class, this, WfsPackage.FEATURES_NOT_LOCKED_TYPE__FEATURE_ID);
     }
+    return featureId;
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-        switch (featureID) {
-            case WfsPackage.FEATURES_NOT_LOCKED_TYPE__GROUP:
-                return ((InternalEList)getGroup()).basicRemove(otherEnd, msgs);
-        }
-        return super.eInverseRemove(otherEnd, featureID, msgs);
+    switch (featureID) {
+      case WfsPackage.FEATURES_NOT_LOCKED_TYPE__GROUP:
+        return ((InternalEList)getGroup()).basicRemove(otherEnd, msgs);
     }
+    return super.eInverseRemove(otherEnd, featureID, msgs);
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case WfsPackage.FEATURES_NOT_LOCKED_TYPE__GROUP:
-                if (coreType) return getGroup();
-                return ((FeatureMap.Internal)getGroup()).getWrapper();
-            case WfsPackage.FEATURES_NOT_LOCKED_TYPE__FEATURE_ID:
-                return getFeatureId();
-        }
-        return super.eGet(featureID, resolve, coreType);
+    switch (featureID) {
+      case WfsPackage.FEATURES_NOT_LOCKED_TYPE__GROUP:
+        if (coreType) return getGroup();
+        return ((FeatureMap.Internal)getGroup()).getWrapper();
+      case WfsPackage.FEATURES_NOT_LOCKED_TYPE__FEATURE_ID:
+        return getFeatureId();
     }
+    return super.eGet(featureID, resolve, coreType);
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case WfsPackage.FEATURES_NOT_LOCKED_TYPE__GROUP:
-                ((FeatureMap.Internal)getGroup()).set(newValue);
-                return;
-            case WfsPackage.FEATURES_NOT_LOCKED_TYPE__FEATURE_ID:
-                getFeatureId().clear();
-                getFeatureId().addAll((Collection)newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
+    switch (featureID) {
+      case WfsPackage.FEATURES_NOT_LOCKED_TYPE__GROUP:
+        ((FeatureMap.Internal)getGroup()).set(newValue);
+        return;
+      case WfsPackage.FEATURES_NOT_LOCKED_TYPE__FEATURE_ID:
+        getFeatureId().clear();
+        getFeatureId().addAll((Collection)newValue);
+        return;
     }
+    super.eSet(featureID, newValue);
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public void eUnset(int featureID) {
-        switch (featureID) {
-            case WfsPackage.FEATURES_NOT_LOCKED_TYPE__GROUP:
-                getGroup().clear();
-                return;
-            case WfsPackage.FEATURES_NOT_LOCKED_TYPE__FEATURE_ID:
-                getFeatureId().clear();
-                return;
-        }
-        super.eUnset(featureID);
+    switch (featureID) {
+      case WfsPackage.FEATURES_NOT_LOCKED_TYPE__GROUP:
+        getGroup().clear();
+        return;
+      case WfsPackage.FEATURES_NOT_LOCKED_TYPE__FEATURE_ID:
+        getFeatureId().clear();
+        return;
     }
+    super.eUnset(featureID);
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case WfsPackage.FEATURES_NOT_LOCKED_TYPE__GROUP:
-                return group != null && !group.isEmpty();
-            case WfsPackage.FEATURES_NOT_LOCKED_TYPE__FEATURE_ID:
-                return featureId != null && !featureId.isEmpty();
-        }
-        return super.eIsSet(featureID);
+    switch (featureID) {
+      case WfsPackage.FEATURES_NOT_LOCKED_TYPE__GROUP:
+        return group != null && !group.isEmpty();
+      case WfsPackage.FEATURES_NOT_LOCKED_TYPE__FEATURE_ID:
+        return featureId != null && !featureId.isEmpty();
     }
+    return super.eIsSet(featureID);
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public String toString() {
-        if (eIsProxy()) return super.toString();
+    if (eIsProxy()) return super.toString();
 
-        StringBuffer result = new StringBuffer(super.toString());
-        result.append(" (group: ");
-        result.append(group);
-        result.append(", featureId: ");
-        result.append(featureId);
-        result.append(')');
-        return result.toString();
-    }
+    StringBuffer result = new StringBuffer(super.toString());
+    result.append(" (group: ");
+    result.append(group);
+    result.append(", featureId: ");
+    result.append(featureId);
+    result.append(')');
+    return result.toString();
+  }
 
 } //FeaturesNotLockedTypeImpl

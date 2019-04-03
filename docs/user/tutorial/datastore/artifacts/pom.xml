@@ -13,7 +13,7 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <geotools.version>20-SNAPSHOT</geotools.version>
+    <geotools.version>22-SNAPSHOT</geotools.version>
   </properties>
 
   <dependencies>
@@ -25,12 +25,7 @@
     </dependency>
     <dependency>
       <groupId>org.geotools</groupId>
-      <artifactId>gt-api</artifactId>
-      <version>${geotools.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.geotools</groupId>
-      <artifactId>gt-data</artifactId>
+      <artifactId>gt-main</artifactId>
       <version>${geotools.version}</version>
     </dependency>
     <dependency>

@@ -36,12 +36,12 @@ import org.geotools.gml2.GMLConfiguration;
 import org.geotools.gml2.bindings.GML2EncodingUtils;
 import org.geotools.gml2.bindings.GMLEncodingUtils;
 import org.geotools.util.Converters;
-import org.geotools.xml.Binding;
-import org.geotools.xml.Encoder;
-import org.geotools.xml.EncoderDelegate;
-import org.geotools.xml.SimpleBinding;
-import org.geotools.xml.impl.BindingLoader;
 import org.geotools.xs.bindings.XSStringBinding;
+import org.geotools.xsd.Binding;
+import org.geotools.xsd.Encoder;
+import org.geotools.xsd.EncoderDelegate;
+import org.geotools.xsd.SimpleBinding;
+import org.geotools.xsd.impl.BindingLoader;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.MultiLineString;
@@ -101,7 +101,9 @@ public abstract class FeatureCollectionEncoderDelegate implements EncoderDelegat
                         namespaces,
                         gml.getNumDecimals(),
                         gml.forceDecimalEncoding(),
-                        gml.getGmlPrefix());
+                        gml.padWithZeros(),
+                        gml.getGmlPrefix(),
+                        gml.getEncodeMeasures());
         boolean featureBounds =
                 !encoder.getConfiguration().hasProperty(GMLConfiguration.NO_FEATURE_BOUNDS);
 
@@ -165,13 +167,11 @@ public abstract class FeatureCollectionEncoderDelegate implements EncoderDelegat
         for (AttributeContext attribute : ftContext.attributes) {
             QualifiedName name = attribute.name;
             Object value1 = null;
-            AttributeDescriptor ad = null;
             if (boundedBy.equals(name) && featureBounds) {
                 value1 = f.getBounds();
             } else {
                 int idx = attribute.attributeIndex;
                 value1 = f.getAttribute(idx);
-                ad = f.getFeatureType().getDescriptor(idx);
             }
             Object value = value1;
 
@@ -404,9 +404,7 @@ public abstract class FeatureCollectionEncoderDelegate implements EncoderDelegat
                     // gml:name is a code type which is actually complex, but since we don't
                     // support code types for simple features, we just use xs:string
                     attribute.binding = new XSStringBinding();
-                } else if (boundedBy.equals(contentName)) {
-                    // no need for a binding here
-                } else {
+                } else if (!boundedBy.equals(contentName)) {
                     XSDTypeDefinition contentType = content.getTypeDefinition();
                     if (contentType.getName() == null) {
                         // move up to a parent which is not null

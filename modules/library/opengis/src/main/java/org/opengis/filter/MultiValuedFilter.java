@@ -15,7 +15,6 @@ import org.opengis.annotation.XmlElement;
  * Defines a filter that supports filtering on multi-valued attributes.
  *
  * @author Niels Charlier, Curtin University of Technology
- * @source $URL$
  */
 public interface MultiValuedFilter extends Filter {
 
@@ -28,9 +27,13 @@ public interface MultiValuedFilter extends Filter {
      * and m values for the right operand, there are n * m possible combinations that can be
      * compared,
      *
-     * <p>ANY - if any of the possible combinations match, the result is true (aggregated OR) ALL -
-     * only if all of the possible combinations match, the result is true (aggregated AND) ONE -
-     * only if exactly one of the possible combinations match, the result is true (aggregated XOR)
+     * <ul>
+     *   <li>ANY - if any of the possible combinations match, the result is true (aggregated OR)
+     *   <li>ALL - only if all of the possible combinations match, the result is true (aggregated
+     *       AND)
+     *   <li>ONE - only if exactly one of the possible combinations match, the result is true
+     *       (aggregated XOR)
+     * </ul>
      *
      * @author Niels Charlier, Curtin University of Technology
      */

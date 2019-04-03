@@ -16,14 +16,15 @@
  */
 package org.geotools.kml.bindings;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import javax.xml.namespace.QName;
 import org.geotools.kml.KML;
-import org.geotools.xml.AbstractComplexBinding;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
-import org.locationtech.jts.geom.CoordinateSequence;
-import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.geom.LinearRing;
+import org.geotools.xsd.AbstractComplexBinding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
+import org.locationtech.jts.geom.*;
 
 /**
  * Binding object for the type http://earth.google.com/kml/2.1:LinearRingType.
@@ -47,13 +48,15 @@ import org.locationtech.jts.geom.LinearRing;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class LinearRingTypeBinding extends AbstractComplexBinding {
+    CoordinateSequenceFactory csFactory;
     GeometryFactory geometryFactory;
 
-    public LinearRingTypeBinding(GeometryFactory geometryFactory) {
+    public LinearRingTypeBinding(
+            GeometryFactory geometryFactory, CoordinateSequenceFactory csFactory) {
         this.geometryFactory = geometryFactory;
+        this.csFactory = csFactory;
     }
 
     /** @generated */
@@ -82,6 +85,20 @@ public class LinearRingTypeBinding extends AbstractComplexBinding {
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         CoordinateSequence coordinates =
                 (CoordinateSequence) node.getChildValue(KML.coordinates.getLocalPart());
+
+        // If the last point is not the same as the first point jts will throw an error
+        // where as other KML readers like google earth just auto close the polygon so
+        // here we manually fix it even though it's invalid so KMls that work elsewhere work here
+        Coordinate firstCoord = coordinates.getCoordinate(0);
+        Coordinate lastCoord = coordinates.getCoordinate(coordinates.size() - 1);
+
+        if (!firstCoord.equals3D(lastCoord)) {
+            List<Coordinate> updateCoords =
+                    new ArrayList<>(Arrays.asList(coordinates.toCoordinateArray()));
+            updateCoords.add((Coordinate) firstCoord.clone());
+
+            coordinates = csFactory.create(updateCoords.toArray(new Coordinate[0]));
+        }
 
         return geometryFactory.createLinearRing(coordinates);
     }

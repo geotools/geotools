@@ -36,7 +36,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * order to do subList efficiently.
  *
  * @author Jody
- * @source $URL$
  */
 public class DoublePointArray extends AbstractList<Position> implements PointArray, Serializable {
     private static final long serialVersionUID = 1250362674574138318L;
@@ -332,7 +331,6 @@ class DoubleDirectPosition implements DirectPosition, Serializable {
 
     public String toString() {
         double coord[] = this.getCoordinate();
-        int D = crs.getCoordinateSystem().getDimension();
         String str = "(" + array[index];
         for (int i = 1; i < coord.length; ++i) {
             str += " " + array[index + i];

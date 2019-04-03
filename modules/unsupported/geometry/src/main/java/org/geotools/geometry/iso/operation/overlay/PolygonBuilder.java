@@ -2,8 +2,8 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2001-2006  Vivid Solutions
  *    (C) 2001-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2001-2006  Vivid Solutions
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -42,8 +42,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * being in the result Area.
  *
  * <p>
- *
- * @source $URL$
  */
 public class PolygonBuilder {
     static final int X = 0;
@@ -140,8 +138,7 @@ public class PolygonBuilder {
      * case the shell is returned. The other possibility is that they are a series of connected
      * holes, in which case no shell is returned.
      *
-     * @return the shell EdgeRing, if there is one
-     * @return null, if all the rings are holes
+     * @return the shell EdgeRing, if there is one, null, if all the rings are holes
      */
     private EdgeRing findShell(List minEdgeRings) {
         int shellCount = 0;
@@ -222,8 +219,7 @@ public class PolygonBuilder {
      * contained in a shell (which is guaranteed to be the case if the hole does not touch its
      * shell)
      *
-     * @return containing EdgeRing, if there is one
-     * @return null if no containing EdgeRing is found
+     * @return containing EdgeRing, if there is one, null if no containing EdgeRing is found
      */
     private EdgeRing findEdgeRingContaining(EdgeRing testEr, List shellList) {
 

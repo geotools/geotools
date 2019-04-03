@@ -155,32 +155,81 @@ and let Maven take care of the transitive dependencies (i.e. libraries the ArcSD
 If that is not the case, the following are the full dependencies of the GeoTools ArcSDE plugin, plus the ones listed in the ref:`esri-jars` section::
 
     org.geotools:gt-arcsde:jar:<VERSION>
-    +- org.geotools:gt-arcsde-common:jar:<VERSION>
-    |  +- commons-pool:commons-pool:jar:1.5.4    
-    |  \- com.ibm.icu:icu4j:jar:3.4.4    
-    +- jsqlparser:jsqlparser:jar:0.3.14    
-    +- org.geotools:gt-jdbc:jar:<VERSION>    
-    |  +- org.geotools:gt-api:jar:<VERSION>    
-    |  +- org.geotools:gt-main:jar:<VERSION>    
-    |  |  \- org.jdom:jdom:jar:1.1.3    
-    |  +- org.geotools:gt-data:jar:<VERSION>    
-    |  +- commons-dbcp:commons-dbcp:jar:1.3    
-    |  \- commons-collections:commons-collections:jar:3.1    
-    +- org.geotools:gt-coverage:jar:<VERSION>    
-    |  +- org.geotools:gt-referencing:jar:<VERSION>    
-    |  |  +- java3d:vecmath:jar:1.3.2    
-    |  |  \- org.geotools:gt-metadata:jar:<VERSION>    
-    |  |     \- org.geotools:gt-opengis:jar:<VERSION>    
-    |  |        \- net.java.dev.jsr-275:jsr-275:jar:1.0-beta-2    
-    |  +- org.locationtech:jts:jar:1.11    
-    |  |  \- xerces:xercesImpl:jar:2.7.1     (version managed from 2.4.0)
-    |  \- it.geosolutions.imageio-ext:imageio-ext-tiff:jar:1.0.8    
-    |     \- it.geosolutions.imageio-ext:imageio-ext-utilities:jar:1.0.8    
+    +- org.geotools:gt-arcsde-common:jar:<VERSION>:compile
+    |  +- commons-pool:commons-pool:jar:1.5.4:compile
+    |  \- com.ibm.icu:icu4j:jar:3.4.4:compile
+    +- jsqlparser:jsqlparser:jar:0.3.14:compile
+    +- org.geotools:gt-jdbc:jar:<VERSION>:compile
+    |  +- org.geotools:gt-main:jar:<VERSION>:compile
+    |  |  \- org.jdom:jdom2:jar:2.0.6:compile
+    |  +- org.geotools:gt-main:jar:<VERSION>:compile
+    |  +- commons-dbcp:commons-dbcp:jar:1.4:compile
+    |  \- commons-collections:commons-collections:jar:3.2.2:compile
+    +- org.geotools:gt-coverage:jar:<VERSION>:compile
+    |  +- org.geotools:gt-referencing:jar:<VERSION>:compile
+    |  |  +- org.ejml:ejml-ddense:jar:0.32:compile
+    |  |  |  \- org.ejml:ejml-core:jar:0.32:compile
+    |  |  +- org.geotools:gt-metadata:jar:<VERSION>:compile
+    |  |  |  \- org.geotools:gt-opengis:jar:<VERSION>:compile
+    |  |  |     \- systems.uom:systems-common-java8:jar:0.7.2:compile
+    |  |  |        +- tec.uom:uom-se:jar:1.0.8:compile
+    |  |  |        |  +- javax.measure:unit-api:jar:1.0:compile
+    |  |  |        |  \- tec.uom.lib:uom-lib-common:jar:1.0.2:compile
+    |  |  |        +- si.uom:si-quantity:jar:0.7.1:compile
+    |  |  |        \- si.uom:si-units-java8:jar:0.7.1:compile
+    |  |  +- jgridshift:jgridshift:jar:1.0:compile
+    |  |  \- net.sf.geographiclib:GeographicLib-Java:jar:1.44:compile
+    |  +- org.locationtech.jts:jts-core:jar:1.15.1:compile
+    |  +- it.geosolutions.imageio-ext:imageio-ext-tiff:jar:1.1.24:compile
+    |  |  +- it.geosolutions.imageio-ext:imageio-ext-utilities:jar:1.1.24:compile
+    |  |  \- it.geosolutions.imageio-ext:imageio-ext-geocore:jar:1.1.24:compile
+    |  |     \- it.geosolutions.imageio-ext:imageio-ext-streams:jar:1.1.24:compile
+    |  +- org.jaitools:jt-zonalstats:jar:1.5.0:compile
+    |  +- org.jaitools:jt-utils:jar:1.5.0:compile
+    |  +- it.geosolutions.jaiext.affine:jt-affine:jar:1.1.1:compile
+    |  +- it.geosolutions.jaiext.algebra:jt-algebra:jar:1.1.1:compile
+    |  +- it.geosolutions.jaiext.bandmerge:jt-bandmerge:jar:1.1.1:compile
+    |  +- it.geosolutions.jaiext.bandselect:jt-bandselect:jar:1.1.1:compile
+    |  +- it.geosolutions.jaiext.bandcombine:jt-bandcombine:jar:1.1.1:compile
+    |  +- it.geosolutions.jaiext.border:jt-border:jar:1.1.1:compile
+    |  +- it.geosolutions.jaiext.buffer:jt-buffer:jar:1.1.1:compile
+    |  +- it.geosolutions.jaiext.crop:jt-crop:jar:1.1.1:compile
+    |  +- it.geosolutions.jaiext.iterators:jt-iterators:jar:1.1.1:compile
+    |  +- it.geosolutions.jaiext.lookup:jt-lookup:jar:1.1.1:compile
+    |  +- it.geosolutions.jaiext.mosaic:jt-mosaic:jar:1.1.1:compile
+    |  +- it.geosolutions.jaiext.nullop:jt-nullop:jar:1.1.1:compile
+    |  +- it.geosolutions.jaiext.rescale:jt-rescale:jar:1.1.1:compile
+    |  +- it.geosolutions.jaiext.scale:jt-scale:jar:1.1.1:compile
+    |  +- it.geosolutions.jaiext.scale2:jt-scale2:jar:1.1.1:compile
+    |  +- it.geosolutions.jaiext.stats:jt-stats:jar:1.1.1:compile
+    |  |  \- com.google.guava:guava:jar:25.1-jre:compile
+    |  |     +- com.google.code.findbugs:jsr305:jar:3.0.2:compile
+    |  |     +- org.checkerframework:checker-qual:jar:2.0.0:compile
+    |  |     +- com.google.errorprone:error_prone_annotations:jar:2.1.3:compile
+    |  |     +- com.google.j2objc:j2objc-annotations:jar:1.1:compile
+    |  |     \- org.codehaus.mojo:animal-sniffer-annotations:jar:1.14:compile
+    |  +- it.geosolutions.jaiext.translate:jt-translate:jar:1.1.1:compile
+    |  +- it.geosolutions.jaiext.utilities:jt-utilities:jar:1.1.1:compile
+    |  +- it.geosolutions.jaiext.warp:jt-warp:jar:1.1.1:compile
+    |  +- it.geosolutions.jaiext.zonal:jt-zonal:jar:1.1.1:compile
+    |  +- it.geosolutions.jaiext.binarize:jt-binarize:jar:1.1.1:compile
+    |  +- it.geosolutions.jaiext.format:jt-format:jar:1.1.1:compile
+    |  +- it.geosolutions.jaiext.colorconvert:jt-colorconvert:jar:1.1.1:compile
+    |  +- it.geosolutions.jaiext.errordiffusion:jt-errordiffusion:jar:1.1.1:compile
+    |  +- it.geosolutions.jaiext.orderdither:jt-orderdither:jar:1.1.1:compile
+    |  +- it.geosolutions.jaiext.colorindexer:jt-colorindexer:jar:1.1.1:compile
+    |  +- it.geosolutions.jaiext.imagefunction:jt-imagefunction:jar:1.1.1:compile
+    |  +- it.geosolutions.jaiext.piecewise:jt-piecewise:jar:1.1.1:compile
+    |  +- it.geosolutions.jaiext.classifier:jt-classifier:jar:1.1.1:compile
+    |  +- it.geosolutions.jaiext.rlookup:jt-rlookup:jar:1.1.1:compile
+    |  +- it.geosolutions.jaiext.vectorbin:jt-vectorbin:jar:1.1.1:compile
+    |  +- it.geosolutions.jaiext.shadedrelief:jt-shadedrelief:jar:1.1.1:compile
+    |  \- commons-io:commons-io:jar:2.6:compile
     +- org.geotools:gt-epsg-hsql:jar:<VERSION>:provided
-    |  \- hsqldb:hsqldb:jar:1.8.0.7:provided
-    +- javax.media:jai_core:jar:1.1.3:provided
-    +- javax.media:jai_codec:jar:1.1.3:provided
-    +- javax.media:jai_imageio:jar:1.1:provided
+    |  \- org.hsqldb:hsqldb:jar:2.4.1:provided
+    +- javax.media:jai_core:jar:1.1.3:compile
+    +- javax.media:jai_codec:jar:1.1.3:compile
+    +- javax.media:jai_imageio:jar:1.1:compile
 
 .. _esri-jars:
 

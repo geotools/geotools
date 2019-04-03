@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2016, Open Source Geospatial Foundation (OSGeo).
+ *    (C) 2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -20,7 +20,7 @@ import org.geotools.gml2.simple.GMLWriter;
 import org.geotools.gml2.simple.GeometryEncoder;
 import org.geotools.gml2.simple.QualifiedName;
 import org.geotools.gml3.GML;
-import org.geotools.xml.Encoder;
+import org.geotools.xsd.Encoder;
 import org.locationtech.jts.geom.GeometryCollection;
 import org.xml.sax.helpers.AttributesImpl;
 
@@ -46,6 +46,17 @@ class GeometryCollectionEncoder extends GeometryEncoder<GeometryCollection> {
     protected GeometryCollectionEncoder(Encoder encoder, String gmlPrefix, String gmlUri) {
         super(encoder);
         gge = new GenericGeometryEncoder(encoder, gmlPrefix, gmlUri);
+        init(gmlPrefix, gmlUri);
+    }
+
+    protected GeometryCollectionEncoder(
+            Encoder encoder, String gmlPrefix, String gmlUri, boolean encodeGmlId) {
+        super(encoder, encodeGmlId);
+        gge = new GenericGeometryEncoder(encoder, gmlPrefix, gmlUri, encodeGmlId);
+        init(gmlPrefix, gmlUri);
+    }
+
+    private void init(String gmlPrefix, String gmlUri) {
         multiGeometry = MULTI_GEOMETRY.derive(gmlPrefix, gmlUri);
         geometryMember = GEOMETRY_MEMBER.derive(gmlPrefix, gmlUri);
     }

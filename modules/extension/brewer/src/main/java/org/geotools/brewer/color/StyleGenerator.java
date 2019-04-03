@@ -24,7 +24,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.filter.Filters;
 import org.geotools.filter.IllegalFilterException;
 import org.geotools.filter.function.Classifier;
 import org.geotools.filter.function.ExplicitClassifier;
@@ -65,11 +64,10 @@ import org.opengis.filter.expression.PropertyName;
  * WARNING: this is unstable and subject to radical change.
  *
  * @author Cory Horner, Refractions Research Inc.
- * @source $URL$
  */
 public class StyleGenerator {
     private static final java.util.logging.Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.brewer.color");
+            org.geotools.util.logging.Logging.getLogger(StyleGenerator.class);
     public static final int ELSEMODE_IGNORE = 0;
     public static final int ELSEMODE_INCLUDEASMIN = 1;
     public static final int ELSEMODE_INCLUDEASMAX = 2;
@@ -140,11 +138,6 @@ public class StyleGenerator {
         FeatureTypeStyle fts = sf.createFeatureTypeStyle();
 
         // update the number of classes
-        int numClasses = classifier.getSize();
-
-        //        if (elseMode == ELSEMODE_IGNORE) {
-        //            numClasses++;
-        //        }
 
         // numeric
         if (classifier instanceof RangedClassifier) {
@@ -279,7 +272,7 @@ public class StyleGenerator {
      */
     private static Object chopInteger(Object value) {
         if ((value instanceof Number) && (value.toString().endsWith(".0"))) {
-            return new Integer(((Number) value).intValue());
+            return Integer.valueOf(((Number) value).intValue());
         } else {
             return value;
         }
@@ -291,7 +284,7 @@ public class StyleGenerator {
      * @param count
      */
     private static String getRuleName(int count) {
-        String strVal = new Integer(count).toString();
+        String strVal = Integer.valueOf(count).toString();
 
         if (strVal.length() == 1) {
             return "rule0" + strVal;
@@ -469,12 +462,12 @@ public class StyleGenerator {
                         "Subfilters or subExpressions in incorrect order");
             }
 
-            if (filter1.getExpression1().toString() != newValue[0]) {
+            if (!filter1.getExpression1().toString().equals(newValue[0])) {
                 // lower bound value has changed, update
                 filter1 = ff.greaterOrEqual(filter1.getExpression1(), ff.literal(newValue[0]));
             }
 
-            if (filter2.getExpression2().toString() != newValue[1]) {
+            if (!filter2.getExpression2().toString().equals(newValue[1])) {
                 // upper bound value has changed, update
                 if (filter2 instanceof PropertyIsLessThan) {
                     filter2 = ff.less(filter1.getExpression1(), ff.literal(newValue[1]));
@@ -514,8 +507,6 @@ public class StyleGenerator {
     }
 
     public static String toStyleExpression(Filter filter) {
-        short filterType = Filters.getFilterType(filter);
-
         if (filter instanceof And) { // looks like a ranged filter
             return toRangedStyleExpression((And) filter);
         } else { // it's probably a filter with explicitly defined values
@@ -716,8 +707,6 @@ public class StyleGenerator {
                 throw new IllegalArgumentException(
                         "Couldn't find the expected arrangement of Expressions");
             }
-        } else if (filter instanceof BinaryComparisonOperator) {
-            // what the heck??
         }
 
         throw new UnsupportedOperationException("Don't know how to handle this filter");

@@ -16,7 +16,7 @@
     <parent>
         <groupId>org.geotools</groupId>
         <artifactId>unsupported</artifactId>
-        <version>20-SNAPSHOT</version>
+        <version>22-SNAPSHOT</version>
     </parent>
 
 
@@ -152,6 +152,11 @@
                     <artifactId>jts</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>it.geosolutions.jaiext.classbreaks</groupId>
+            <artifactId>jt-classbreaks</artifactId>
+            <version>${jaiext.version}</version>
         </dependency>
         
         <!-- Test dependencies -->

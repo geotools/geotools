@@ -36,7 +36,6 @@ import org.xml.sax.InputSource;
  * Class for holding the config info read from the xml config file
  *
  * @author mcr
- * @source $URL$
  */
 public class Config {
     private static Map<String, Config> ConfigMap = new Hashtable<String, Config>(); // Hashtable
@@ -160,14 +159,14 @@ public class Config {
         Node tmp = dom.getElementsByTagName("scaleop").item(0);
         NamedNodeMap map = tmp.getAttributes();
         String s = map.getNamedItem("interpolation").getNodeValue();
-        result.interpolation = new Integer(s);
+        result.interpolation = Integer.valueOf(s);
 
         result.ignoreAxisOrder = Boolean.FALSE;
         tmp = dom.getElementsByTagName("axisOrder").item(0);
         if (tmp != null) {
             map = tmp.getAttributes();
             s = map.getNamedItem("ignore").getNodeValue();
-            result.ignoreAxisOrder = new Boolean(s);
+            result.ignoreAxisOrder = Boolean.valueOf(s);
         }
 
         // db mapping
@@ -236,7 +235,7 @@ public class Config {
         if (tmp != null) {
             NamedNodeMap map = tmp.getAttributes();
             String s = map.getNamedItem("cardinality").getNodeValue();
-            result.verifyCardinality = new Boolean(s);
+            result.verifyCardinality = Boolean.valueOf(s);
         }
     }
 
@@ -314,7 +313,7 @@ public class Config {
             return null;
         }
 
-        return new Integer(n.getNodeValue());
+        return Integer.valueOf(n.getNodeValue());
     }
 
     private static Node readValueAttribute(Document dom, String elemName) {

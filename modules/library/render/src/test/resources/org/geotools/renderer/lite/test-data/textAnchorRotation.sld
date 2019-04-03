@@ -10,7 +10,7 @@
           <TextSymbolizer>
             <Label>lbl<ogc:PropertyName>id</ogc:PropertyName></Label>
             <Font>
-              <CssParameter name="font-family">SansSerif</CssParameter>
+              <CssParameter name="font-family">Bitstream Vera Sans</CssParameter>
               <CssParameter name="font-size">16</CssParameter>
             </Font>
             <LabelPlacement>

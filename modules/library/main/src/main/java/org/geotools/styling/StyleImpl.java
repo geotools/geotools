@@ -30,13 +30,12 @@ import org.opengis.util.Cloneable;
  * Implementation of style.
  *
  * @author James Macgill, CCG
- * @source $URL$
  * @version $Id$
  */
 public class StyleImpl implements org.geotools.styling.Style, Cloneable {
     /** The logger for the default core module. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.styling");
+            org.geotools.util.logging.Logging.getLogger(StyleImpl.class);
 
     private List<FeatureTypeStyle> featureTypeStyles = new ArrayList<FeatureTypeStyle>();
     private DescriptionImpl description = new DescriptionImpl();
@@ -147,7 +146,6 @@ public class StyleImpl implements org.geotools.styling.Style, Cloneable {
      * Clones the Style. Creates deep copy clone of the style.
      *
      * @return the Clone of the style.
-     * @throws RuntimeException DOCUMENT ME!
      * @see org.geotools.styling.Style#clone()
      */
     public Object clone() {

@@ -1,5 +1,6 @@
 /*
- *    Geotools - OpenSource mapping toolkit
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
  *
  *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
  *
@@ -25,7 +26,7 @@ import java.nio.charset.Charset;
 import java.util.TimeZone;
 import org.geotools.data.shapefile.ShapefileDataStoreFactory;
 import org.geotools.data.shapefile.files.ShpFiles;
-import org.geotools.resources.NIOUtilities;
+import org.geotools.util.NIOUtilities;
 
 /**
  * A DbaseFileReader is used to read a dbase III format file. <br>
@@ -59,7 +60,6 @@ import org.geotools.resources.NIOUtilities;
  *
  * @author Ian Schneider
  * @author Tommaso Nolli
- * @source $URL$
  */
 public class IndexedDbaseFileReader extends DbaseFileReader {
 
@@ -76,7 +76,6 @@ public class IndexedDbaseFileReader extends DbaseFileReader {
     /**
      * Creates a new instance of DBaseFileReader
      *
-     * @param channel The readable channel to use.
      * @param useMemoryMappedBuffer Wether or not map the file in memory
      * @throws IOException If an error occurs while initializing.
      */
@@ -152,6 +151,7 @@ public class IndexedDbaseFileReader extends DbaseFileReader {
         return this.randomAccessEnabled;
     }
 
+    @SuppressWarnings("PMD.SystemPrintln")
     public static void main(String[] args) throws Exception {
         IndexedDbaseFileReader reader = new IndexedDbaseFileReader(new ShpFiles(args[0]), false);
         System.out.println(reader.getHeader());

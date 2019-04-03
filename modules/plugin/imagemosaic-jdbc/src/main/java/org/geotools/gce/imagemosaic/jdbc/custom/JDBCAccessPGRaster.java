@@ -17,10 +17,14 @@
 
 package org.geotools.gce.imagemosaic.jdbc.custom;
 
-import java.awt.Rectangle;
+import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.io.IOException;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -55,14 +59,10 @@ import org.locationtech.jts.io.WKBWriter;
  * This class is used for JDBC Access to the Postgis raster feature
  *
  * @author Christian Mueller
- * @source $URL$
- *     http://svn.osgeo.org/geotools/trunk/modules/plugin/imagemosaic-jdbc/src/main/java/org
- *     /geotools/gce/imagemosaic/jdbc/custom/JDBCAccessPGRaster.java $
  */
 public class JDBCAccessPGRaster extends JDBCAccessCustom {
 
-    private static final Logger LOGGER =
-            Logging.getLogger(JDBCAccessPGRaster.class.getPackage().getName());
+    private static final Logger LOGGER = Logging.getLogger(JDBCAccessPGRaster.class);
 
     /** Different sql statements needed for in-db and out-db raster data */
     protected Map<ImageLevelInfo, String> statementMap;
@@ -83,7 +83,6 @@ public class JDBCAccessPGRaster extends JDBCAccessCustom {
     public void initialize() throws IOException {
 
         Connection con = null;
-
         try {
             con = getConnection();
 
@@ -107,7 +106,6 @@ public class JDBCAccessPGRaster extends JDBCAccessCustom {
              to leave it here...
              */
             con.commit();
-            con.close();
 
             for (ImageLevelInfo levelInfo : getLevelInfos()) {
                 if (LOGGER.isLoggable(Level.INFO)) LOGGER.info(levelInfo.infoString());
@@ -115,14 +113,14 @@ public class JDBCAccessPGRaster extends JDBCAccessCustom {
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
-            try {
-                // con.rollback();
-                con.close();
-            } catch (SQLException e1) {
-            }
-
             LOGGER.severe(e.getMessage());
             throw new IOException(e);
+        } finally {
+            try {
+                // con.rollback();
+                if (con != null) con.close();
+            } catch (SQLException e1) {
+            }
         }
 
         if (getLevelInfos().isEmpty()) {
@@ -171,62 +169,60 @@ public class JDBCAccessPGRaster extends JDBCAccessCustom {
 
         try {
             con = getConnection();
+            try (PreparedStatement s = con.prepareStatement(gridStatement)) {
+                WKBWriter w = new WKBWriter();
+                byte[] bytes = w.write(polyFromEnvelope(requestEnvelope));
+                s.setBytes(1, bytes);
+                s.setInt(2, levelInfo.getSrsId());
 
-            PreparedStatement s = con.prepareStatement(gridStatement);
-            WKBWriter w = new WKBWriter();
-            byte[] bytes = w.write(polyFromEnvelope(requestEnvelope));
-            s.setBytes(1, bytes);
-            s.setInt(2, levelInfo.getSrsId());
+                try (ResultSet r = s.executeQuery()) {
+                    while (r.next()) {
+                        // byte[] tileBytes = getTileBytes(r,2);
+                        byte[] tileBytes = r.getBytes(2);
+                        byte[] envBytes = r.getBytes(1);
+                        WKBReader reader = new WKBReader();
+                        Geometry g;
+                        try {
+                            g = reader.read(envBytes);
+                        } catch (ParseException e) {
+                            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+                            throw new IOException(e);
+                        }
+                        Envelope env = g.getEnvelopeInternal();
+                        Rectangle2D tmp =
+                                new Rectangle2D.Double(
+                                        env.getMinX(),
+                                        env.getMinY(),
+                                        env.getWidth(),
+                                        env.getHeight());
+                        GeneralEnvelope tileGeneralEnvelope = new GeneralEnvelope(tmp);
+                        tileGeneralEnvelope.setCoordinateReferenceSystem(
+                                requestEnvelope.getCoordinateReferenceSystem());
 
-            ResultSet r = s.executeQuery();
-
-            while (r.next()) {
-                // byte[] tileBytes = getTileBytes(r,2);
-                byte[] tileBytes = r.getBytes(2);
-                byte[] envBytes = r.getBytes(1);
-                WKBReader reader = new WKBReader();
-                Geometry g;
-                try {
-                    g = reader.read(envBytes);
-                } catch (ParseException e) {
-                    LOGGER.log(Level.SEVERE, e.getMessage(), e);
-                    throw new IOException(e);
+                        ImageDecoderThread thread =
+                                new ImageDecoderThread(
+                                        tileBytes,
+                                        "",
+                                        tileGeneralEnvelope,
+                                        pixelDimension,
+                                        requestEnvelope,
+                                        levelInfo,
+                                        tileQueue,
+                                        getConfig());
+                        // thread.start();
+                        threads.add(thread);
+                        pool.execute(thread);
+                    }
                 }
-                Envelope env = g.getEnvelopeInternal();
-                Rectangle2D tmp =
-                        new Rectangle2D.Double(
-                                env.getMinX(), env.getMinY(), env.getWidth(), env.getHeight());
-                GeneralEnvelope tileGeneralEnvelope = new GeneralEnvelope(tmp);
-                tileGeneralEnvelope.setCoordinateReferenceSystem(
-                        requestEnvelope.getCoordinateReferenceSystem());
-
-                ImageDecoderThread thread =
-                        new ImageDecoderThread(
-                                tileBytes,
-                                "",
-                                tileGeneralEnvelope,
-                                pixelDimension,
-                                requestEnvelope,
-                                levelInfo,
-                                tileQueue,
-                                getConfig());
-                // thread.start();
-                threads.add(thread);
-                pool.execute(thread);
             }
-
-            r.close();
-            s.close();
-
-            con.close();
         } catch (SQLException e) {
-            try {
-                con.close();
-            } catch (SQLException e1) {
-            }
-
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new IOException(e);
+        } finally {
+            try {
+                if (con != null) con.close();
+            } catch (SQLException e1) {
+            }
         }
 
         if (LOGGER.isLoggable(Level.INFO))
@@ -438,26 +434,24 @@ public class JDBCAccessPGRaster extends JDBCAccessCustom {
                             + " ) select st_asbinary(st_extent(env)) from envelopes";
 
             Envelope envelope = null;
-            PreparedStatement s = con.prepareStatement(envSelect);
-            ResultSet r = s.executeQuery();
-            WKBReader reader = new WKBReader();
+            try (PreparedStatement s = con.prepareStatement(envSelect);
+                    ResultSet r = s.executeQuery()) {
+                WKBReader reader = new WKBReader();
 
-            if (r.next()) {
-                byte[] bytes = r.getBytes(1);
-                Geometry g;
+                if (r.next()) {
+                    byte[] bytes = r.getBytes(1);
+                    Geometry g;
 
-                try {
-                    g = reader.read(bytes);
-                } catch (ParseException e) {
-                    LOGGER.log(Level.SEVERE, e.getMessage(), e);
-                    throw new IOException(e);
+                    try {
+                        g = reader.read(bytes);
+                    } catch (ParseException e) {
+                        LOGGER.log(Level.SEVERE, e.getMessage(), e);
+                        throw new IOException(e);
+                    }
+
+                    envelope = g.getEnvelopeInternal();
                 }
-
-                envelope = g.getEnvelopeInternal();
             }
-
-            r.close();
-            s.close();
 
             if (envelope == null) {
                 if (LOGGER.isLoggable(Level.WARNING))
@@ -549,14 +543,13 @@ public class JDBCAccessPGRaster extends JDBCAccessCustom {
                             + " LIMIT 1";
 
             double resolutions[] = null;
-            PreparedStatement ps = con.prepareStatement(select);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                resolutions = new double[] {rs.getDouble(1), rs.getDouble(2)};
-                li.setSrsId(rs.getInt(3));
+            try (PreparedStatement ps = con.prepareStatement(select);
+                    ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    resolutions = new double[] {rs.getDouble(1), rs.getDouble(2)};
+                    li.setSrsId(rs.getInt(3));
+                }
             }
-            rs.close();
-            ps.close();
 
             if (resolutions == null) {
                 if (LOGGER.isLoggable(Level.WARNING))
@@ -615,36 +608,35 @@ public class JDBCAccessPGRaster extends JDBCAccessCustom {
                             + " from "
                             + li.getTileTableName()
                             + " LIMIT 1";
-            PreparedStatement ps = con.prepareStatement(select);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                Boolean isOut = (Boolean) rs.getObject("isoutdb");
-                String gridStatement =
-                        isOut
-                                ? "SELECT st_asbinary(st_envelope ("
-                                        + getConfig().getBlobAttributeNameInTileTable()
-                                        + ")),"
-                                        + getConfig().getBlobAttributeNameInTileTable()
-                                        + " from "
-                                        + li.getTileTableName()
-                                        + " where st_intersects("
-                                        + getConfig().getBlobAttributeNameInTileTable()
-                                        + " ,ST_GeomFromWKB(?,?))"
-                                : "SELECT st_asbinary(st_envelope ("
-                                        + getConfig().getBlobAttributeNameInTileTable()
-                                        + ")),st_astiff("
-                                        + getConfig().getBlobAttributeNameInTileTable()
-                                        + ") "
-                                        + " from "
-                                        + li.getTileTableName()
-                                        + " where st_intersects("
-                                        + getConfig().getBlobAttributeNameInTileTable()
-                                        + " ,ST_GeomFromWKB(?,?))";
+            try (PreparedStatement ps = con.prepareStatement(select);
+                    ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    Boolean isOut = (Boolean) rs.getObject("isoutdb");
+                    String gridStatement =
+                            isOut
+                                    ? "SELECT st_asbinary(st_envelope ("
+                                            + getConfig().getBlobAttributeNameInTileTable()
+                                            + ")),"
+                                            + getConfig().getBlobAttributeNameInTileTable()
+                                            + " from "
+                                            + li.getTileTableName()
+                                            + " where st_intersects("
+                                            + getConfig().getBlobAttributeNameInTileTable()
+                                            + " ,ST_GeomFromWKB(?,?))"
+                                    : "SELECT st_asbinary(st_envelope ("
+                                            + getConfig().getBlobAttributeNameInTileTable()
+                                            + ")),st_astiff("
+                                            + getConfig().getBlobAttributeNameInTileTable()
+                                            + ") "
+                                            + " from "
+                                            + li.getTileTableName()
+                                            + " where st_intersects("
+                                            + getConfig().getBlobAttributeNameInTileTable()
+                                            + " ,ST_GeomFromWKB(?,?))";
 
-                statementMap.put(li, gridStatement);
+                    statementMap.put(li, gridStatement);
+                }
             }
-            rs.close();
-            ps.close();
         }
     }
 
@@ -690,21 +682,20 @@ public class JDBCAccessPGRaster extends JDBCAccessCustom {
         if (LOGGER.isLoggable(Level.INFO) == false) return;
 
         String statement = "SELECT short_name, long_name FROM st_gdaldrivers() ORDER BY short_name";
-        PreparedStatement ps = con.prepareStatement(statement);
-        ResultSet rs = ps.executeQuery();
-        StringBuffer buff = new StringBuffer("\n\n");
-        buff.append("Supported GDAL formats for postgis raster\n");
-        buff.append("Short Name\t\t\tLong Name\n");
-        buff.append("-----------------------------------------------\n");
-        while (rs.next()) {
-            buff.append(rs.getString(1));
-            buff.append("\t\t\t");
-            buff.append(rs.getString(2));
-            buff.append("\n");
+        try (PreparedStatement ps = con.prepareStatement(statement);
+                ResultSet rs = ps.executeQuery()) {
+            StringBuffer buff = new StringBuffer("\n\n");
+            buff.append("Supported GDAL formats for postgis raster\n");
+            buff.append("Short Name\t\t\tLong Name\n");
+            buff.append("-----------------------------------------------\n");
+            while (rs.next()) {
+                buff.append(rs.getString(1));
+                buff.append("\t\t\t");
+                buff.append(rs.getString(2));
+                buff.append("\n");
+            }
+            LOGGER.info(buff.toString());
         }
-        LOGGER.info(buff.toString());
-        rs.close();
-        ps.close();
     }
 
     /*
@@ -715,7 +706,7 @@ public class JDBCAccessPGRaster extends JDBCAccessCustom {
         String[] crsComponents = crsStr.split(":");
         if (crsComponents.length == 2) {
             try {
-                return new Integer(crsComponents[1]);
+                return Integer.valueOf(crsComponents[1]);
             } catch (Exception e) {
                 return null;
             }

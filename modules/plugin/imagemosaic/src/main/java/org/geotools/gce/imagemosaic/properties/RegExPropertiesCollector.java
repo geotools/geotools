@@ -26,7 +26,6 @@ import java.util.regex.Pattern;
 import org.apache.commons.io.FilenameUtils;
 import org.geotools.util.logging.Logging;
 
-/** @source $URL$ */
 public abstract class RegExPropertiesCollector extends PropertiesCollector {
 
     private static final Logger LOGGER = Logging.getLogger(RegExPropertiesCollector.class);

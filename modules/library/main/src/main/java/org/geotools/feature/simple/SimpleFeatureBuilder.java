@@ -108,11 +108,10 @@ import org.opengis.feature.type.Name;
  *
  * @author Justin Deoliveira
  * @author Jody Garnett
- * @source $URL$
  */
 public class SimpleFeatureBuilder extends FeatureBuilder<FeatureType, Feature> {
     /** logger */
-    static Logger LOGGER = org.geotools.util.logging.Logging.getLogger("org.geotools.feature");
+    static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(SimpleFeatureBuilder.class);
 
     /** the feature type */
     SimpleFeatureType featureType;
@@ -468,7 +467,7 @@ public class SimpleFeatureBuilder extends FeatureBuilder<FeatureType, Feature> {
      * value for, the value in the resulting feature is set to <code>null</code>.
      *
      * @param feature The original feature.
-     * @param SimpleFeatureBuilder A builder for the target feature type
+     * @param builder A builder for the target feature type
      * @return The copied feature, with a new type.
      * @since 2.5.3
      */

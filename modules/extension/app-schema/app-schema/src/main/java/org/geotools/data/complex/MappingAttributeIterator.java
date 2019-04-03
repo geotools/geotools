@@ -22,7 +22,8 @@ import java.util.Iterator;
 import org.geotools.data.Query;
 import org.geotools.data.Transaction;
 import org.geotools.data.complex.filter.XPath;
-import org.geotools.data.complex.filter.XPathUtil.StepList;
+import org.geotools.data.complex.util.ComplexFeatureConstants;
+import org.geotools.data.complex.util.XPathUtil.StepList;
 import org.opengis.feature.type.Name;
 
 /**
@@ -34,11 +35,6 @@ import org.opengis.feature.type.Name;
  * directly in another feature type.
  *
  * @author Rini Angreani (CSIRO Earth Science and Resource Engineering)
- * @source $URL:
- *     http://svn.osgeo.org/geotools/trunk/modules/extension/app-schema/app-schema/src/main
- *     /java/org/geotools/data/complex/MappingAttributeIterator.java $
- *     http://svn.osgeo.org/geotools/trunk/modules/unsupported/app-schema/app-schema/src/main
- *     /java/org/geotools/data/complex/MappingAttributeIterator.java $
  * @since 2.7
  */
 public class MappingAttributeIterator extends DataAccessMappingFeatureIterator {

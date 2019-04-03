@@ -37,17 +37,16 @@ import org.opengis.filter.expression.Expression;
  * to attempt to simplify/make meaningful filter logic.
  *
  * @author Rob Hranac, Vision for New York
- * @source $URL$
  * @version $Id$
  */
 public abstract class CompareFilterImpl extends BinaryComparisonAbstract {
     /** The logger for the default core module. */
-    static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger("org.geotools.core");
+    static final Logger LOGGER =
+            org.geotools.util.logging.Logging.getLogger(CompareFilterImpl.class);
 
     /**
-     * Constructor with filter type.
+     * Constructor
      *
-     * @param filterType The type of comparison.
      * @throws IllegalFilterException Non-compare type.
      * @deprecated use {@link #CompareFilterImpl(org.opengis.filter.FilterFactory,
      *     org.opengis.filter.expression.Expression, org.opengis.filter.expression.Expression)}
@@ -82,6 +81,9 @@ public abstract class CompareFilterImpl extends BinaryComparisonAbstract {
      * @return same contract as {@link Comparable#compareTo(java.lang.Object)}.
      */
     protected int compare(Comparable leftObj, Comparable rightObj) {
+        if (leftObj == null || rightObj == null) {
+            throw new NullPointerException("Left and right objects are meant to be non null)");
+        }
         // implements a lax compare, doing some back flips for numbers
         if (!(leftObj instanceof Number && rightObj instanceof Number)) {
             // check for case of one number one string
@@ -90,16 +92,21 @@ public abstract class CompareFilterImpl extends BinaryComparisonAbstract {
                 // the class hierarchy
                 if (leftObj instanceof Date || rightObj instanceof Date) {
                     // they do compare fine if they are both dates, otherwise we need to convert
+                    Date leftConverted = null;
+                    Date rightConverted = null;
                     if (!(leftObj instanceof Date)) {
-                        leftObj = Converters.convert(leftObj, Date.class);
+                        leftConverted = Converters.convert(leftObj, Date.class);
                     }
                     if (!(rightObj instanceof Date)) {
-                        rightObj = Converters.convert(rightObj, Date.class);
+                        rightConverted = Converters.convert(rightObj, Date.class);
                     }
                     // if conversion failed fall back on string comparison
-                    if (leftObj == null || rightObj == null) {
+                    if (leftConverted == null || rightConverted == null) {
                         leftObj = leftObj.toString();
                         rightObj = rightObj.toString();
+                    } else {
+                        leftObj = leftConverted;
+                        rightObj = rightConverted;
                     }
                 } else if (leftObj instanceof Number && (rightObj.getClass() == String.class)) {
                     try {
@@ -190,6 +197,9 @@ public abstract class CompareFilterImpl extends BinaryComparisonAbstract {
     public boolean equals(Object obj) {
         if (this == obj) {
             return true;
+        }
+        if (obj == null) {
+            return false;
         }
 
         if (obj.getClass().equals(this.getClass())) {

@@ -26,7 +26,6 @@ import org.opengis.feature.simple.SimpleFeatureType;
 /**
  * @author Christian Muüller
  *     <p>Implementation of {@link FeatureIterator} for {@link PreGeneralizedSimpleFeature}
- * @source $URL$
  */
 public class PreGeneralizedFeatureIterator implements SimpleFeatureIterator {
 

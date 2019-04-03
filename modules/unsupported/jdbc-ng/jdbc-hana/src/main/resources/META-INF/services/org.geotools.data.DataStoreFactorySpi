@@ -1,0 +1,2 @@
+org.geotools.data.hana.HanaDataStoreFactory
+org.geotools.data.hana.HanaJNDIDataStoreFactory

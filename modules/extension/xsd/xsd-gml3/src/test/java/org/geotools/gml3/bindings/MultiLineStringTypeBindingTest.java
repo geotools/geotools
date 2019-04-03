@@ -25,7 +25,6 @@ import org.locationtech.jts.geom.MultiLineString;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 
-/** @source $URL$ */
 public class MultiLineStringTypeBindingTest extends GML3TestSupport {
 
     public void test() throws Exception {

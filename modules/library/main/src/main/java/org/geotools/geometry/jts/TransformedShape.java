@@ -34,7 +34,6 @@ import org.geotools.referencing.operation.matrix.XAffineTransform;
  * {@link RenderedMarks}. It is designed for reuse with many different affine transforms and shapes.
  * This class is <strong>not</strong> thread-safe.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
@@ -230,6 +229,6 @@ public final class TransformedShape extends AffineTransform implements Shape {
         record.setSourceClassName(TransformedShape.class.getName());
         record.setSourceMethodName(method);
         record.setThrown(exception);
-        org.geotools.util.logging.Logging.getLogger("org.geotools.renderer.lite").log(record);
+        org.geotools.util.logging.Logging.getLogger(TransformedShape.class).log(record);
     }
 }

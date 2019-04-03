@@ -25,7 +25,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import org.geotools.geometry.GeometryBuilder;
 import org.geotools.geometry.iso.PrecisionModel;
-import org.geotools.geometry.text.WKTParser;
+import org.geotools.geometry.iso.text.WKTParser;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.opengis.geometry.Geometry;
 import org.opengis.geometry.PrecisionType;
@@ -38,13 +38,10 @@ import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-/**
- * @author <a href="mailto:joel@lggi.com">Joel Skelton</a>
- * @source $URL$
- */
+/** @author <a href="mailto:joel@lggi.com">Joel Skelton</a> */
 public class GeometryTestParser {
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.geometry");
+            org.geotools.util.logging.Logging.getLogger(GeometryTestParser.class);
 
     private DocumentBuilderFactory documentBuilderFactory;
     private DocumentBuilder documentBuilder;

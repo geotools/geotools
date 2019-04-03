@@ -26,7 +26,6 @@ import org.geotools.geometry.DirectPosition2D;
 import org.junit.*;
 import org.opengis.geometry.DirectPosition;
 
-/** @source $URL$ */
 public final class TriangulationFactoryTest {
     /** Test (@link TringulationFactory). */
     @Test
@@ -59,7 +58,7 @@ public final class TriangulationFactoryTest {
         try {
             new TriangulationFactory(quad, vertices);
         } catch (TriangulationException e) {
-            System.out.println(e.getMessage());
+            // System.out.println(e.getMessage());
         }
     }
 

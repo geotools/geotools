@@ -20,7 +20,6 @@ import javax.xml.namespace.QName;
 import org.geotools.xs.TestSchema;
 import org.geotools.xs.XS;
 
-/** @source $URL$ */
 public class XSFloatStrategyTest extends TestSchema {
     public void validateValues(String given, Float expected) throws Exception {
         Float actual = (Float) strategy.parse(element(given, qname), given);

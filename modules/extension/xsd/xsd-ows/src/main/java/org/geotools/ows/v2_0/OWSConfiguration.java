@@ -1,3 +1,19 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2019, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
 package org.geotools.ows.v2_0;
 
 import java.lang.reflect.Field;
@@ -9,10 +25,10 @@ import org.geotools.ows.bindings.BoundingBoxTypeBinding;
 import org.geotools.ows.bindings.UnitBinding;
 import org.geotools.ows.bindings.WGS84BoundingBoxTypeBinding;
 import org.geotools.xlink.XLINKConfiguration;
-import org.geotools.xml.ComplexEMFBinding;
-import org.geotools.xml.Configuration;
-import org.geotools.xml.SimpleContentComplexEMFBinding;
-import org.geotools.xml.XMLConfiguration;
+import org.geotools.xsd.ComplexEMFBinding;
+import org.geotools.xsd.Configuration;
+import org.geotools.xsd.SimpleContentComplexEMFBinding;
+import org.geotools.xsd.XMLConfiguration;
 import org.picocontainer.MutablePicoContainer;
 
 /**
@@ -203,6 +219,7 @@ public class OWSConfiguration extends Configuration {
      *
      * @param args
      */
+    @SuppressWarnings("PMD.SystemPrintln")
     public static void main(String[] args) {
         for (Field f : OWS.class.getFields()) {
             if ((f.getModifiers() & (Modifier.STATIC | Modifier.FINAL)) != 0

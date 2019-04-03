@@ -1,3 +1,19 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2019, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
 /*$************************************************************************************************
  **
  ** $Id$
@@ -9,7 +25,7 @@
  *************************************************************************************************/
 package org.geotools.geometry.jts.spatialschema.geometry.primitive;
 
-import org.geotools.geometry.jts.JTSUtils;
+import org.geotools.geometry.jts.spatialschema.geometry.JTSUtils;
 import org.geotools.geometry.jts.spatialschema.geometry.complex.CompositeCurveImpl;
 import org.locationtech.jts.geom.LineString;
 import org.opengis.geometry.complex.CompositeCurve;
@@ -37,7 +53,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  *
  * @author ISO/DIS 19107
  * @author <A HREF="http://www.opengis.org">OpenGIS&reg; consortium</A>
- * @source $URL$
  * @version 2.0
  * @see SurfaceBoundary
  * @see Shell
@@ -77,7 +92,7 @@ public class RingImpl extends CompositeCurveImpl implements Ring {
         int count = coords.length;
         // System.err.println("RingImpl.isValid -- coord count " + count);
         if (count > 2) {
-            if (!coords[0].equals(coords)) {
+            if (!coords[0].equals(coords[count - 1])) {
                 // System.err.println("  Adding closure coord");
                 // Close the set of coordinates for the validation test
                 // if it isn't already closed
@@ -89,7 +104,7 @@ public class RingImpl extends CompositeCurveImpl implements Ring {
             }
             LineString jtsLineString = JTSUtils.GEOMETRY_FACTORY.createLineString(coords);
             /*
-            System.err.println("  Created JTS LineString, point count " + jtsLineString.getNumPoints()
+            // System.err.println("  Created JTS LineString, point count " + jtsLineString.getNumPoints()
             	+ ", length " + jtsLineString.getLength() + "\n  simple? " + jtsLineString.isSimple()
             	+ "; valid? " + jtsLineString.isValid() + "; closed? " + jtsLineString.isClosed());
             	*/

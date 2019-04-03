@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (c) 2014 - 2015 Open Source Geospatial Foundation - all rights reserved
+ *    (C) 2014 - 2015, Open Source Geospatial Foundation (OSGeo)
  *    (c) 2001 - 2013 OpenPlans
  *           (c) 2009 Open Source Geospatial Foundation (LGPL)
  *
@@ -29,9 +29,9 @@ import net.opengis.wcs11.Wcs111Factory;
 import org.geotools.gml3.GML;
 import org.geotools.temporal.object.DefaultInstant;
 import org.geotools.wcs.v1_1.WCS;
-import org.geotools.xml.AbstractComplexBinding;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
+import org.geotools.xsd.AbstractComplexBinding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 import org.opengis.temporal.Instant;
 import org.opengis.temporal.Period;
 import org.opengis.temporal.Position;
@@ -128,7 +128,7 @@ public class TimeSequenceTypeBinding extends AbstractComplexBinding {
     /*
      * (non-Javadoc)
      *
-     * @see org.geotools.xml.AbstractComplexBinding#encode(java.lang.Object,
+     * @see org.geotools.xsd.AbstractComplexBinding#encode(java.lang.Object,
      *      org.w3c.dom.Document, org.w3c.dom.Element)
      */
     @Override

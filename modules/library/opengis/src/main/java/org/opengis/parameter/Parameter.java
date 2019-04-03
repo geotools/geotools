@@ -16,7 +16,6 @@ import org.opengis.util.InternationalString;
  *
  * @author Justin Deoliveira, OpenGeo
  * @param <T>
- * @source $URL$
  */
 public interface Parameter<T> {
 

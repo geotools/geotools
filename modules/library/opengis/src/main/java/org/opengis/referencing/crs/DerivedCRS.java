@@ -22,7 +22,6 @@ import org.opengis.annotation.UML;
  * @departure ISO 19111 defines a {@code DerivedCRSType} code list. The later is omitted in GeoAPI
  *     since Java expressions like {@code (baseCRS instanceof FooCRS)} provides the same capability
  *     with more flexibility.
- * @source $URL$
  * @version <A HREF="http://portal.opengeospatial.org/files/?artifact_id=6716">Abstract
  *     specification 2.0</A>
  * @author Martin Desruisseaux (IRD)

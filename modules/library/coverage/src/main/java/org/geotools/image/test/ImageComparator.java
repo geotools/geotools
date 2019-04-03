@@ -64,11 +64,7 @@ public class ImageComparator {
         public void init(int[] px) {
             if (bands < 2) {
                 r = g = b = px[0];
-                if (bands == 2) {
-                    a = px[1];
-                } else {
-                    a = 255;
-                }
+                a = 255;
             } else {
                 r = px[0];
                 g = px[1];
@@ -91,7 +87,7 @@ public class ImageComparator {
         }
 
         double getHue() {
-            if (hue == Double.NaN) {
+            if (Double.isNaN(hue)) {
                 double r = this.r / 255d;
                 double g = this.g / 255d;
                 double b = this.b / 255d;

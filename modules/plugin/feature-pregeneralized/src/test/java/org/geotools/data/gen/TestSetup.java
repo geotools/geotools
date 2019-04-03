@@ -51,7 +51,6 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.filter.Filter;
 
-/** @source $URL$ */
 public class TestSetup {
 
     public static DefaultRepository REPOSITORY;

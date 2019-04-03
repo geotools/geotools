@@ -42,7 +42,6 @@ import org.geotools.ows.ServiceException;
  * (representing versions of the OWS to be implemented) and their own request/response instances.
  *
  * @author Richard Gould
- * @source $URL$
  */
 public abstract class AbstractOpenWebService<C extends Capabilities, R extends Object> {
 
@@ -61,7 +60,7 @@ public abstract class AbstractOpenWebService<C extends Capabilities, R extends O
     protected Map<String, Object> hints;
 
     protected static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.data.ows");
+            org.geotools.util.logging.Logging.getLogger(AbstractOpenWebService.class);
 
     /**
      * Set up the specifications used and retrieve the Capabilities document given by serverURL.
@@ -167,8 +166,11 @@ public abstract class AbstractOpenWebService<C extends Capabilities, R extends O
      * @return description of this service.
      */
     public ServiceInfo getInfo() {
+        if (capabilities == null) {
+            return null;
+        }
         synchronized (capabilities) {
-            if (info == null && capabilities != null) {
+            if (info == null) {
                 info = createInfo();
             }
             return info;
@@ -182,6 +184,9 @@ public abstract class AbstractOpenWebService<C extends Capabilities, R extends O
     protected abstract ServiceInfo createInfo();
 
     public ResourceInfo getInfo(R resource) {
+        if (capabilities == null) {
+            return null;
+        }
         synchronized (capabilities) {
             if (!resourceInfo.containsKey(resource)) {
                 resourceInfo.put(resource, createInfo(resource));
@@ -191,10 +196,6 @@ public abstract class AbstractOpenWebService<C extends Capabilities, R extends O
     }
 
     protected abstract ResourceInfo createInfo(R resource);
-
-    private void syncrhonized(Capabilities capabilities2) {
-        // TODO Auto-generated method stub
-    }
 
     /** Sets up the specifications/versions that this server is capable of communicating with. */
     protected abstract void setupSpecifications();

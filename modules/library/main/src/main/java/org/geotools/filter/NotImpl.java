@@ -20,10 +20,7 @@ import org.opengis.filter.Filter;
 import org.opengis.filter.FilterVisitor;
 import org.opengis.filter.Not;
 
-/**
- * @author jdeolive
- * @source $URL$
- */
+/** @author jdeolive */
 public class NotImpl extends LogicFilterImpl implements Not {
 
     @Deprecated

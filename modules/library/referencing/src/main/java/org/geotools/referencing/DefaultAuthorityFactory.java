@@ -21,14 +21,14 @@ import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
-import org.geotools.factory.GeoTools;
-import org.geotools.factory.Hints;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.factory.AbstractAuthorityFactory;
 import org.geotools.referencing.factory.ManyAuthoritiesFactory;
 import org.geotools.referencing.factory.ThreadedAuthorityFactory;
-import org.geotools.resources.UnmodifiableArrayList;
+import org.geotools.util.UnmodifiableArrayList;
+import org.geotools.util.factory.GeoTools;
+import org.geotools.util.factory.Hints;
 import org.opengis.metadata.Identifier;
 import org.opengis.metadata.citation.Citation;
 import org.opengis.referencing.FactoryException;
@@ -46,7 +46,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * </ul>
  *
  * @since 2.3
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  * @author Andrea Aime
@@ -76,14 +75,14 @@ final class DefaultAuthorityFactory extends ThreadedAuthorityFactory
         final Hints hints = GeoTools.getDefaultHints();
         if (longitudeFirst) {
             hints.put(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.TRUE);
-        } else {
             /*
-             * Do NOT set the hint to false. If 'longitudeFirst' is false, this means
+             * Otherwise do NOT set the hint to false. If 'longitudeFirst' is false, this means
              * "use the system default", not "latitude first". The longitude may or may
              * not be first depending the value of "org.geotools.referencing.forcexy"
              * system property. This state is included in GeoTools.getDefaultHints().
              */
         }
+
         Collection<CRSAuthorityFactory> factories =
                 ReferencingFactoryFinder.getCRSAuthorityFactories(hints);
         if (Boolean.TRUE.equals(hints.put(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.FALSE))) {

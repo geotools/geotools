@@ -21,10 +21,10 @@ import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.memory.CollectionSource;
-import org.geotools.factory.FactoryRegistryException;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.SchemaException;
 import org.geotools.styling.Style;
+import org.geotools.util.factory.FactoryRegistryException;
 import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.referencing.operation.TransformException;
@@ -33,9 +33,6 @@ import org.opengis.referencing.operation.TransformException;
  * Default Implementation of MapLayer.
  *
  * @author wolf
- * @source $URL$
- *     http://svn.osgeo.org/geotools/trunk/modules/library/render/src/main/java/org/geotools
- *     /map/DefaultMapLayer.java $
  * @deprecated Use MapLayer for user interface work; or use Layer directly for rendering
  */
 public class DefaultMapLayer extends MapLayer {
@@ -54,7 +51,6 @@ public class DefaultMapLayer extends MapLayer {
      * @param featureSource the data source for this layer
      * @param style the style used to represent this layer
      * @param title the layer title
-     * @throws NullPointerException DOCUMENT ME!
      */
     @SuppressWarnings("unchecked")
     public DefaultMapLayer(FeatureSource featureSource, Style style, String title) {

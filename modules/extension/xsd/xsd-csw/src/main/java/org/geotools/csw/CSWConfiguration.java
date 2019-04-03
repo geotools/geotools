@@ -27,10 +27,10 @@ import org.geotools.csw.bindings.ElementSetNameTypeBinding;
 import org.geotools.csw.bindings.RecordBinding;
 import org.geotools.csw.bindings.TypeNameListTypeBinding;
 import org.geotools.filter.v1_1.OGCConfiguration;
-import org.geotools.ows.OWSConfiguration;
-import org.geotools.xml.ComplexEMFBinding;
-import org.geotools.xml.Configuration;
-import org.geotools.xml.EnumSimpleBinding;
+import org.geotools.xsd.ComplexEMFBinding;
+import org.geotools.xsd.Configuration;
+import org.geotools.xsd.EnumSimpleBinding;
+import org.geotools.xsd.ows.OWSConfiguration;
 import org.picocontainer.MutablePicoContainer;
 
 /**
@@ -224,6 +224,7 @@ public class CSWConfiguration extends Configuration {
      *
      * @param args
      */
+    @SuppressWarnings("PMD.SystemPrintln")
     public static void main(String[] args) {
         for (Field f : CSW.class.getFields()) {
             if ((f.getModifiers() & (Modifier.STATIC | Modifier.FINAL)) != 0

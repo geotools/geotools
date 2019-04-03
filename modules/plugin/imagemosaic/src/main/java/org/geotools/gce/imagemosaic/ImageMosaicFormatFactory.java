@@ -38,7 +38,6 @@ import org.geotools.coverage.grid.io.GridFormatFactorySpi;
  *
  * @author Simone Giannecchini, GeoSolutions S.A.S.
  * @since 2.3
- * @source $URL$
  */
 public final class ImageMosaicFormatFactory implements GridFormatFactorySpi {
 
@@ -183,7 +182,7 @@ public final class ImageMosaicFormatFactory implements GridFormatFactorySpi {
 
     private static boolean hasJP2Kakadu() {
         try {
-            Class<?> cl = Class.forName(KAKADU_SPI);
+            Class.forName(KAKADU_SPI);
             Class<?> utilityClass = Class.forName("it.geosolutions.util.KakaduUtilities");
             final Method method =
                     utilityClass.getDeclaredMethod("isKakaduAvailable", (Class[]) null);

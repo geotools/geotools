@@ -29,7 +29,6 @@ import org.w3c.dom.Node;
  *
  * @author Simone Giannecchini
  * @since 2.3.x
- * @source $URL$
  */
 public final class IIOMetadataDumper {
 
@@ -134,7 +133,7 @@ public final class IIOMetadataDumper {
      *
      * @return The name of the format we want to get the XML representation for.
      */
-    public String getFormatName() {
+    public synchronized String getFormatName() {
         return formatName;
     }
 

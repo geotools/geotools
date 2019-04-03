@@ -18,8 +18,7 @@ package org.geotools.gce.gtopo30;
 
 // J2SE dependencies
 
-import java.awt.Rectangle;
-import java.awt.RenderingHints;
+import java.awt.*;
 import java.awt.image.ColorModel;
 import java.awt.image.ComponentColorModel;
 import java.awt.image.ComponentSampleModel;
@@ -45,9 +44,9 @@ import javax.media.jai.registry.RenderedRegistryMode;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.grid.AbstractGridCoverage;
 import org.geotools.image.TransfertRectIter;
-import org.geotools.resources.i18n.LoggingKeys;
-import org.geotools.resources.i18n.Loggings;
-import org.geotools.resources.image.ImageUtilities;
+import org.geotools.image.util.ImageUtilities;
+import org.geotools.metadata.i18n.LoggingKeys;
+import org.geotools.metadata.i18n.Loggings;
 
 /**
  * An image that contains transformed samples, specifically this method will transform the NoData
@@ -59,7 +58,6 @@ import org.geotools.resources.image.ImageUtilities;
  * where "CRIF" stands for {@link java.awt.image.renderable.ContextualRenderedImageFactory}. The
  * image operation name is "org.geotools.gce.NoDataReplacer".
  *
- * @source $URL$
  * @version $Id$
  * @author Simone Giannecchini
  * @since 2.2
@@ -133,7 +131,7 @@ public final class NoDataReplacerOpImage extends PointOpImage {
             layout.setColorModel(newCm);
             layout.setSampleModel(newSm);
             return layout;
-        } else ; // do nothing for the moment
+        }
 
         return null;
     }
@@ -159,18 +157,16 @@ public final class NoDataReplacerOpImage extends PointOpImage {
             final PlanarImage[] sources, final WritableRaster dest, final Rectangle destRect) {
         final PlanarImage source = sources[0];
         WritableRectIter iterator = RectIterFactory.createWritable(dest, destRect);
-        if (true) {
-            // TODO: Detect if source and destination rasters are the same. If they are
-            //       the same, we should skip this block. Iteration will then be faster.
-            iterator = TransfertRectIter.create(RectIterFactory.create(source, destRect), iterator);
-        }
+        // TODO: Detect if source and destination rasters are the same. If they are
+        //       the same, we should skip this block. Iteration will then be faster.
+        iterator = TransfertRectIter.create(RectIterFactory.create(source, destRect), iterator);
         formatRect(iterator);
     }
 
     /**
      * Transform a raster. Only the current band in {@code iterator} will be transformed. The
      * transformed value are write back in the {@code iterator}. If a different destination raster
-     * is wanted, a {@link org.geotools.resources.image.DualRectIter} may be used.
+     * is wanted, a {@link org.geotools.referencing.util.image.DualRectIter} may be used.
      *
      * @param iterator An iterator to iterate among the samples to transform.
      */
@@ -229,7 +225,7 @@ public final class NoDataReplacerOpImage extends PointOpImage {
                     new String[] {"oldNoData", "newNoData", "EPS"}, // Argument names
                     new Class[] {Number.class, Short.class, Double.class}, // Argument classes
                     new Object[] {
-                        new Double(Double.NaN), new Short((short) -9999), new Double(10.0E-6)
+                        new Double(Double.NaN), Short.valueOf((short) -9999), new Double(10.0E-6)
                     }, // Default values for parameters,
                     null // No restriction on valid parameter values.
                     );
@@ -247,16 +243,6 @@ public final class NoDataReplacerOpImage extends PointOpImage {
         protected boolean validateParameters(
                 final String modeName, final ParameterBlock param, final StringBuffer message) {
             if (!super.validateParameters(modeName, param, message)) {
-                return false;
-            }
-            try {
-                //            	param.
-                //	            final RenderedImage source = (RenderedImage) param.getSource(0);
-                //	            final Number  oldNoData= (Number) param.getObjectParameter(0);
-                //	            final Number  newNoData= (Number) param.getObjectParameter(1);
-                //	            final Double  EPS=  (Double) param.getObjectParameter(1);
-            } catch (Exception e) {
-                message.append(e.getMessage());
                 return false;
             }
             return true;

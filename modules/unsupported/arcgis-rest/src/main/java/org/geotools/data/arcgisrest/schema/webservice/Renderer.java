@@ -1,53 +1,59 @@
+
 package org.geotools.data.arcgisrest.schema.webservice;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
 
 public class Renderer {
 
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("type")
     @Expose
     private String type;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("symbol")
     @Expose
     private Symbol symbol;
 
     /**
+     * 
      * (Required)
-     *
-     * @return The type
+     * 
      */
     public String getType() {
         return type;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param type The type
+     * 
      */
     public void setType(String type) {
         this.type = type;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The symbol
+     * 
      */
     public Symbol getSymbol() {
         return symbol;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param symbol The symbol
+     * 
      */
     public void setSymbol(Symbol symbol) {
         this.symbol = symbol;
@@ -55,12 +61,30 @@ public class Renderer {
 
     @Override
     public String toString() {
-        return ToStringBuilder.reflectionToString(this);
+        StringBuilder sb = new StringBuilder();
+        sb.append(Renderer.class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this))).append('[');
+        sb.append("type");
+        sb.append('=');
+        sb.append(((this.type == null)?"<null>":this.type));
+        sb.append(',');
+        sb.append("symbol");
+        sb.append('=');
+        sb.append(((this.symbol == null)?"<null>":this.symbol));
+        sb.append(',');
+        if (sb.charAt((sb.length()- 1)) == ',') {
+            sb.setCharAt((sb.length()- 1), ']');
+        } else {
+            sb.append(']');
+        }
+        return sb.toString();
     }
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(type).append(symbol).toHashCode();
+        int result = 1;
+        result = ((result* 31)+((this.type == null)? 0 :this.type.hashCode()));
+        result = ((result* 31)+((this.symbol == null)? 0 :this.symbol.hashCode()));
+        return result;
     }
 
     @Override
@@ -72,6 +96,7 @@ public class Renderer {
             return false;
         }
         Renderer rhs = ((Renderer) other);
-        return new EqualsBuilder().append(type, rhs.type).append(symbol, rhs.symbol).isEquals();
+        return (((this.type == rhs.type)||((this.type!= null)&&this.type.equals(rhs.type)))&&((this.symbol == rhs.symbol)||((this.symbol!= null)&&this.symbol.equals(rhs.symbol))));
     }
+
 }

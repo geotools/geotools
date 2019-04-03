@@ -21,7 +21,7 @@ import java.util.logging.Logger;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverageio.gdal.BaseGDALGridCoverage2DReader;
 import org.geotools.data.DataSourceException;
-import org.geotools.factory.Hints;
+import org.geotools.util.factory.Hints;
 import org.opengis.coverage.grid.Format;
 import org.opengis.coverage.grid.GridCoverageReader;
 
@@ -32,14 +32,13 @@ import org.opengis.coverage.grid.GridCoverageReader;
  * @author Daniele Romagnoli, GeoSolutions.
  * @author Simone Giannecchini (simboss), GeoSolutions
  * @since 2.5.x
- * @source $URL$
  */
 public final class EsriHdrReader extends BaseGDALGridCoverage2DReader
         implements GridCoverageReader {
     /** Logger. */
     @SuppressWarnings("unused")
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.coverageio.gdal.ehdr");
+            org.geotools.util.logging.Logging.getLogger(EsriHdrReader.class);
 
     private static final String worldFileExt = ".wld";
 

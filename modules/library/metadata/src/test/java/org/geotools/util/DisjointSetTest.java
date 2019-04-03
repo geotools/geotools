@@ -26,7 +26,6 @@ import org.junit.*;
 /**
  * Tests the {@link DisjointSet} class.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

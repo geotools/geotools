@@ -24,7 +24,6 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-/** @source $URL$ */
 public class MarkTest {
     private static final long TIME = 3000;
     SimpleFeatureSource pointFS;
@@ -207,7 +206,7 @@ public class MarkTest {
 
         BufferedImage image =
                 RendererBaseTest.showRender("Rotate north arrow", renderer, TIME, bounds);
-        ImageAssert.assertEquals(file("rotateArrow"), image, 50);
+        ImageAssert.assertEquals(file("rotateArrow"), image, 240);
     }
 
     @Test

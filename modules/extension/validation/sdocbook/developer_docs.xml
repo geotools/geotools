@@ -296,7 +296,7 @@ public class NullZeroValidationBeanInfo extends DefaultFeatureValidationBeanInfo
             pd = pd2;
 
             // TODO error, log here
-            e.printStackTrace();
+           java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
 
         return pd;
@@ -387,7 +387,7 @@ public class NullZeroValidationTest extends TestCase {
 
     
     feature = type.create(new Object[] {
-        new Integer(1),
+        Integer.valueOf(1),
         gf.createLineString(coords),
         "r1",
       },

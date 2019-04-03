@@ -1,3 +1,19 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2019, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
 package org.geotools.arcsde.raster.jai;
 
 import com.sun.media.jai.util.ImageUtil;
@@ -14,6 +30,7 @@ import java.awt.image.Raster;
 import java.awt.image.SampleModel;
 import java.io.IOException;
 import java.math.BigInteger;
+import java.util.Objects;
 import java.util.Observable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -27,7 +44,6 @@ import org.geotools.util.Utilities;
 import org.geotools.util.logging.Logging;
 
 @SuppressWarnings("unchecked")
-/** @source $URL$ */
 public class ArcSDEPlanarImage extends PlanarImage {
 
     private static final Logger LOGGER = Logging.getLogger(ArcSDEPlanarImage.class);
@@ -147,6 +163,18 @@ public class ArcSDEPlanarImage extends PlanarImage {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ArcSDEPlanarImage that = (ArcSDEPlanarImage) o;
+        return hashCode == that.hashCode
+                && Objects.equals(tileReader, that.tileReader)
+                && Objects.equals(tileSampleModel, that.tileSampleModel)
+                && Objects.equals(UID, that.UID)
+                && Objects.equals(tileCache, that.tileCache);
+    }
+
+    @Override
     public BigInteger getImageID() {
         return UID;
     }
@@ -232,7 +260,7 @@ public class ArcSDEPlanarImage extends PlanarImage {
                             "Unrecognized DataBuffer type: " + tileSampleModel.getDataType());
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             throw new RuntimeException(e);
         }
 

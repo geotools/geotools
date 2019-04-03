@@ -21,10 +21,10 @@ import java.awt.image.Raster;
 import java.awt.image.RenderedImage;
 import java.io.Serializable;
 import java.util.Arrays;
-import org.geotools.metadata.iso.spatial.PixelTranslation;
-import org.geotools.resources.Classes;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
+import org.geotools.geometry.PixelTranslation;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
+import org.geotools.util.Classes;
 import org.opengis.coverage.grid.GridCoordinates;
 import org.opengis.coverage.grid.GridEnvelope;
 import org.opengis.geometry.Envelope;
@@ -40,7 +40,6 @@ import org.opengis.referencing.datum.PixelInCell;
  * required.
  *
  * @since 2.5
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @see GridEnvelope2D
@@ -340,9 +339,6 @@ public class GeneralGridEnvelope implements GridEnvelope, Serializable {
      *     often zero, but this is not mandatory.
      * @param high The valid maximum grid coordinate. The array contains a maximum value for each
      *     dimension of the grid coverage.
-     * @param isHighIncluded {@code true} if the {@code high} values are inclusive (as in ISO 19123
-     *     specification), or {@code false} if they are exclusive (as in Java usage). This argument
-     *     does not apply to low values, which are always inclusive.
      * @see #getLow
      * @see #getHigh
      */

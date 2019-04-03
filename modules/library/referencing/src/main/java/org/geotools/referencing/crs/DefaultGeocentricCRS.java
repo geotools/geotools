@@ -22,12 +22,12 @@ package org.geotools.referencing.crs;
 import java.util.Collections;
 import java.util.Map;
 import javax.measure.Unit;
+import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.referencing.AbstractReferenceSystem;
 import org.geotools.referencing.cs.DefaultCartesianCS;
 import org.geotools.referencing.cs.DefaultSphericalCS;
 import org.geotools.referencing.datum.DefaultGeodeticDatum;
 import org.geotools.referencing.wkt.Formatter;
-import org.geotools.resources.i18n.VocabularyKeys;
 import org.opengis.referencing.crs.GeocentricCRS;
 import org.opengis.referencing.cs.CartesianCS;
 import org.opengis.referencing.cs.SphericalCS;
@@ -46,7 +46,6 @@ import org.opengis.referencing.datum.GeodeticDatum;
  * </TD></TR></TABLE>
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
@@ -155,6 +154,7 @@ public class DefaultGeocentricCRS extends AbstractSingleCRS implements Geocentri
      *     versions of this class.
      */
     @Override
+    @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int hashCode() {
         return (int) serialVersionUID ^ super.hashCode();
     }

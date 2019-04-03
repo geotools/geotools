@@ -28,9 +28,6 @@ import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.data.FeatureSource;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.map.event.MapBoundsEvent;
-import org.geotools.map.event.MapBoundsListener;
-import org.geotools.map.event.MapLayerListListener;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.styling.Style;
@@ -54,10 +51,6 @@ import org.opengis.referencing.operation.TransformException;
  * keywords.
  *
  * @author Cameron Shorter
- * @source $URL$
- *     http://svn.osgeo.org/geotools/trunk/modules/library/render/src/main/java/org/geotools
- *     /map/MapContext.java $
- * @version $Id$
  * @deprecated This class is being phased out, please use {@link MapContent}.
  */
 public class MapContext extends MapContent {
@@ -170,7 +163,7 @@ public class MapContext extends MapContent {
     /**
      * Add a new layer if not already present and trigger a {@link LayerListEvent}.
      *
-     * @param layer the layer to be inserted
+     * @param mapLayer the layer to be inserted
      * @return true if the layer has been added, false otherwise
      */
     public boolean addLayer(MapLayer mapLayer) {
@@ -183,7 +176,7 @@ public class MapContext extends MapContent {
      * be added if it's already in the list.
      *
      * @param index index at which the layer will be inserted
-     * @param layer the layer to be inserted
+     * @param mapLayer the layer to be inserted
      * @return true if the layer has been added, false otherwise
      */
     public boolean addLayer(int index, MapLayer mapLayer) {
@@ -204,7 +197,7 @@ public class MapContext extends MapContent {
     /**
      * Add a new layer and trigger a {@link LayerListEvent}.
      *
-     * @param collection a SimpleFeatureCollection with the new layer that will be added.
+     * @param featureCollection a SimpleFeatureCollection with the new layer that will be added.
      */
     public void addLayer(FeatureCollection featureCollection, Style style) {
         Layer layer = new FeatureLayer(featureCollection, style);
@@ -245,7 +238,7 @@ public class MapContext extends MapContent {
     /**
      * Add a new layer and trigger a {@link LayerListEvent}
      *
-     * @param gridCoverage an AbstractGridCoverage2DReader with the new layer that will be added.
+     * @param reader an AbstractGridCoverage2DReader with the new layer that will be added.
      */
     public void addLayer(GridCoverage2DReader reader, Style style) {
         if (style == null) {
@@ -288,11 +281,11 @@ public class MapContext extends MapContent {
      * @param layers The new layers that are to be added.
      * @return the number of layers actually added to the MapContext
      */
-    public int addLayers(MapLayer[] array) {
-        if ((array == null) || (array.length == 0)) {
+    public int addLayers(MapLayer[] layers) {
+        if ((layers == null) || (layers.length == 0)) {
             return 0;
         }
-        return super.addLayers(toLayerList(array));
+        return super.addLayers(toLayerList(layers));
     }
 
     /**
@@ -300,11 +293,11 @@ public class MapContext extends MapContent {
      *
      * @param layers The layers that are to be removed.
      */
-    public void removeLayers(MapLayer[] array) {
-        if ((array == null) || (array.length == 0) || layers().isEmpty()) {
+    public void removeLayers(MapLayer[] layers) {
+        if ((layers == null) || (layers.length == 0) || layers().isEmpty()) {
             return;
         }
-        List<Layer> layersToRemove = toLayerList(array);
+        List<Layer> layersToRemove = toLayerList(layers);
         layers().removeAll(layersToRemove);
     }
 
@@ -381,7 +374,7 @@ public class MapContext extends MapContent {
      * Returns the index of the first occurrence of the specified layer, or -1 if this list does not
      * contain this element.
      *
-     * @param layer the MapLayer to search for
+     * @param mapLayer the MapLayer to search for
      * @return index of mapLayer or -1 if not found
      */
     public int indexOf(MapLayer mapLayer) {
@@ -489,7 +482,7 @@ public class MapContext extends MapContent {
      * Set the area of interest. This triggers a MapBoundsEvent to be published.
      *
      * @param areaOfInterest the new area of interest
-     * @param coordinateReferenceSystem the CRS for the new area of interest
+     * @param crs the CRS for the new area of interest
      * @throws IllegalArgumentException if either argument is {@code null}
      */
     public void setAreaOfInterest(Envelope areaOfInterest, CoordinateReferenceSystem crs)
@@ -593,7 +586,7 @@ public class MapContext extends MapContent {
     /**
      * Set an abstract which describes this context.
      *
-     * @param conAbstract the Abstract.
+     * @param contextAbstract the Abstract.
      */
     public void setAbstract(final String contextAbstract) {
         getUserData().put("abstract", contextAbstract);

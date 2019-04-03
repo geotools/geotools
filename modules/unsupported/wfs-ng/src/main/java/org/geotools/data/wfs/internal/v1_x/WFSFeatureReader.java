@@ -30,11 +30,7 @@ import org.opengis.feature.type.FeatureType;
  * for all the data content related implementations in the WFS module.
  *
  * @author Gabriel Roldan (TOPP)
- * @version $Id$
  * @since 2.5.x
- * @source $URL:
- *     http://gtsvn.refractions.net/trunk/modules/plugin/wfs/src/main/java/org/geotools/data
- *     /wfs/v1_1_0/WFSFeatureReader.java $
  * @see WFSDataStore#getFeatureReader(org.geotools.data.Query, org.geotools.data.Transaction)
  */
 class WFSFeatureReader implements FeatureReader<SimpleFeatureType, SimpleFeature> {

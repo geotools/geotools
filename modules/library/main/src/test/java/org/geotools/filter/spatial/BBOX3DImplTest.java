@@ -20,7 +20,6 @@ import org.opengis.geometry.BoundingBox3D;
 /**
  * A test for the 3D BBOX Filter.
  *
- * @source $URL$
  * @author Niels Charlier
  */
 public class BBOX3DImplTest extends TestCase {
@@ -39,7 +38,7 @@ public class BBOX3DImplTest extends TestCase {
             type = DataUtilities.createType("testSchema", "name:String,*geom:Geometry");
         } catch (SchemaException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
 
         Feature f1 =

@@ -40,7 +40,6 @@ import org.opengis.filter.expression.Expression;
  * image file. The <code>format</code> must be one of the mime types supported by the current JDK.
  *
  * @author Andrea Aime - TOPP
- * @source $URL$
  */
 public class ImageGraphicFactory implements ExternalGraphicFactory, GraphicCache {
 

@@ -21,7 +21,6 @@ package org.geotools.geometry.iso.util.algorithmND;
  * majority, these algorithms are non-robust in sense that floating-point rounding errors may occur.
  *
  * @author Jackson Roehrig and Sanjay Jena
- * @source $URL$
  */
 public class AlgoPointND {
 
@@ -237,8 +236,8 @@ public class AlgoPointND {
      * according to floating-point rounding errors may be caused.
      *
      * @param p the end point of the vector
-     * @return double[] End point of the normalized vector
-     * @return NULL if the result is not valid (for example when <code>p</code> is the origin)
+     * @return double[] End point of the normalized vector, NULL if the result is not valid (for
+     *     example when <code>p</code> is the origin)
      */
     public static double[] normalize(double[] p) {
         // Test OK

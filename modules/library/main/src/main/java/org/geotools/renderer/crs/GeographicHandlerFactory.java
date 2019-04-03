@@ -25,11 +25,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.crs.GeographicCRS;
 import org.opengis.referencing.operation.MathTransform;
 
-/**
- * Returns a {@link ProjectionHandler} for any {@link GeographicCRS}
- *
- * @source $URL$
- */
+/** Returns a {@link ProjectionHandler} for any {@link GeographicCRS} */
 public class GeographicHandlerFactory implements ProjectionHandlerFactory {
 
     static final double MAX_LATITUDE = 89.99;
@@ -41,8 +37,9 @@ public class GeographicHandlerFactory implements ProjectionHandlerFactory {
             boolean wrap,
             int maxWraps)
             throws FactoryException {
-        CoordinateReferenceSystem crs = renderingEnvelope.getCoordinateReferenceSystem();
-        if (renderingEnvelope != null && crs instanceof GeographicCRS) {
+        if (renderingEnvelope != null
+                && renderingEnvelope.getCoordinateReferenceSystem() instanceof GeographicCRS) {
+            CoordinateReferenceSystem crs = renderingEnvelope.getCoordinateReferenceSystem();
             GeographicCRS geogCrs = (GeographicCRS) CRS.getHorizontalCRS(crs);
             CoordinateReferenceSystem horizontalSourceCrs = CRS.getHorizontalCRS(sourceCrs);
 
@@ -63,8 +60,8 @@ public class GeographicHandlerFactory implements ProjectionHandlerFactory {
                     } else {
                         validArea =
                                 new ReferencedEnvelope(
-                                        Float.MAX_VALUE,
-                                        -Float.MAX_VALUE,
+                                        Integer.MAX_VALUE,
+                                        -Integer.MAX_VALUE,
                                         MIN_LATITUDE,
                                         MAX_LATITUDE,
                                         horizontalSourceCrs);

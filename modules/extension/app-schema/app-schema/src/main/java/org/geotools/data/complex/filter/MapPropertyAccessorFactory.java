@@ -19,17 +19,16 @@ package org.geotools.data.complex.filter;
 
 import java.util.Map;
 import org.apache.commons.jxpath.JXPathContext;
-import org.geotools.factory.Hints;
-import org.geotools.feature.IllegalAttributeException;
 import org.geotools.filter.expression.PropertyAccessor;
 import org.geotools.filter.expression.PropertyAccessorFactory;
+import org.geotools.util.factory.Hints;
+import org.opengis.feature.IllegalAttributeException;
 
 /**
  * A {@link PropertyAccessorFactory} that returns a {@link PropertyAccessor} capable of evaluating
  * single attribute names from a {@link Map}.
  *
  * @author Gabriel Roldan
- * @source $URL$
  */
 public class MapPropertyAccessorFactory implements PropertyAccessorFactory {
 

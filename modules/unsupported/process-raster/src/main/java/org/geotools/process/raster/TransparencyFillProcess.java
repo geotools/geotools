@@ -22,13 +22,13 @@ import javax.media.jai.RenderedOp;
 import javax.media.jai.operator.ExtremaDescriptor;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.processing.CoverageProcessor;
+import org.geotools.image.util.ImageUtilities;
+import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.process.ProcessException;
 import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
 import org.geotools.renderer.i18n.Errors;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.image.ImageUtilities;
 import org.opengis.parameter.ParameterValueGroup;
 import org.opengis.util.ProgressListener;
 
@@ -36,7 +36,6 @@ import org.opengis.util.ProgressListener;
  * A transparency holes-dashes filling process
  *
  * @author Daniele Romagnoli - GeoSolutions
- * @source $URL$
  */
 @DescribeProcess(title = "TransparencyFill", description = "Fill transparent pixels")
 public class TransparencyFillProcess implements RasterProcess {

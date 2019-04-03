@@ -41,7 +41,6 @@ import org.opengis.referencing.operation.TransformException;
  * Tests the {@link DefaultCoordinateSequenceTransformer} implementation.
  *
  * @since 2.2
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  */
@@ -124,7 +123,6 @@ public class CoordinateSequenceTransformerTest {
 
         assertEquals(reference.getOrdinate(0, 0), transformed.getOrdinate(0, 0), 0.0);
         assertEquals(reference.getOrdinate(0, 1), transformed.getOrdinate(0, 1), 0.0);
-        assertEquals(Double.NaN, transformed.getOrdinate(0, 2), 0.0);
     }
 
     /** The following is basically a copy-and-paste of a previous implementation by Andrea Aime. */

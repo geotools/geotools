@@ -22,8 +22,8 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
-import org.geotools.factory.FactoryCreator;
-import org.geotools.factory.FactoryRegistry;
+import org.geotools.util.factory.FactoryCreator;
+import org.geotools.util.factory.FactoryRegistry;
 import org.opengis.feature.Feature;
 import org.opengis.feature.type.FeatureType;
 
@@ -40,16 +40,14 @@ import org.opengis.feature.type.FeatureType;
  *
  * <p>Example:<br>
  * <code>org.geotools.data.mytype.MyTypeDataStoreFacotry</code>
- *
- * @source $URL$
  */
 public final class DataStoreFinder {
     /** The logger for the filter module. */
     protected static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.data");
+            org.geotools.util.logging.Logging.getLogger(DataStoreFinder.class);
 
     /** The service registry for this manager. Will be initialized only when first needed. */
-    private static FactoryRegistry registry;
+    private static volatile FactoryRegistry registry;
 
     // Singleton pattern
     private DataStoreFinder() {}

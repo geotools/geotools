@@ -21,9 +21,9 @@ import org.eclipse.xsd.XSDElementDeclaration;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.gml2.FeatureTypeCache;
 import org.geotools.gml2.bindings.GML2ParsingUtils;
-import org.geotools.xml.BindingWalkerFactory;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
+import org.geotools.xsd.BindingWalkerFactory;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.CoordinateSequence;
 import org.locationtech.jts.geom.CoordinateSequenceFactory;
@@ -40,7 +40,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * Utility class for gml3 parsing.
  *
  * @author Justin Deoliveira, The Open Planning Project, jdeolive@openplans.org
- * @source $URL$
  */
 public class GML3ParsingUtils {
     /**
@@ -66,7 +65,6 @@ public class GML3ParsingUtils {
     /**
      * Turns a xml type definition into a geotools feature type.
      *
-     * @param type The xml schema tupe.
      * @return The corresponding geotools feature type.
      */
     public static SimpleFeatureType featureType(

@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2018, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -17,6 +17,7 @@
 package org.geotools.data.postgis;
 
 import java.io.IOException;
+import java.io.StringWriter;
 import java.io.Writer;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -24,12 +25,13 @@ import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.function.BiConsumer;
 import org.geotools.data.jdbc.FilterToSQL;
+import org.geotools.data.postgis.filter.FilterFunction_pgNearest;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.FilterCapabilities;
+import org.geotools.filter.LengthFunction;
 import org.geotools.filter.function.DateDifferenceFunction;
 import org.geotools.filter.function.FilterFunction_area;
 import org.geotools.filter.function.FilterFunction_strConcat;
@@ -53,7 +55,10 @@ import org.geotools.filter.function.math.FilterFunction_ceil;
 import org.geotools.filter.function.math.FilterFunction_floor;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.jdbc.JDBCDataStore;
+import org.geotools.jdbc.PreparedFilterToSQL;
+import org.geotools.jdbc.PrimaryKeyColumn;
 import org.geotools.jdbc.SQLDialect;
+import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryComponentFilter;
@@ -61,10 +66,17 @@ import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Polygon;
 import org.opengis.feature.type.AttributeDescriptor;
+import org.opengis.feature.type.GeometryDescriptor;
+import org.opengis.filter.BinaryComparisonOperator;
+import org.opengis.filter.MultiValuedFilter;
 import org.opengis.filter.NativeFilter;
+import org.opengis.filter.PropertyIsBetween;
+import org.opengis.filter.PropertyIsEqualTo;
+import org.opengis.filter.expression.BinaryExpression;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
+import org.opengis.filter.expression.NilExpression;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.spatial.BBOX;
 import org.opengis.filter.spatial.BBOX3D;
@@ -94,23 +106,6 @@ import org.opengis.geometry.BoundingBox3D;
 class FilterToSqlHelper {
 
     protected static final String IO_ERROR = "io problem writing filter";
-
-    /** Conversion factor from common units to meter */
-    private static final Map<String, Double> UNITS_MAP =
-            new HashMap<String, Double>() {
-                {
-                    put("kilometers", 1000.0);
-                    put("kilometer", 1000.0);
-                    put("mm", 0.001);
-                    put("millimeter", 0.001);
-                    put("mi", 1609.344);
-                    put("miles", 1609.344);
-                    put("NM", 1852d);
-                    put("feet", 0.3048);
-                    put("ft", 0.3048);
-                    put("in", 0.0254);
-                }
-            };
 
     private static final Envelope WORLD = new Envelope(-180, 180, -90, 90);
 
@@ -163,6 +158,7 @@ class FilterToSqlHelper {
             caps.addType(FilterFunction_strEqualsIgnoreCase.class);
             caps.addType(FilterFunction_strIndexOf.class);
             caps.addType(FilterFunction_strLength.class);
+            caps.addType(LengthFunction.class);
             caps.addType(FilterFunction_strToLowerCase.class);
             caps.addType(FilterFunction_strToUpperCase.class);
             caps.addType(FilterFunction_strReplace.class);
@@ -181,6 +177,9 @@ class FilterToSqlHelper {
 
             // time related functions
             caps.addType(DateDifferenceFunction.class);
+
+            // n nearest function
+            caps.addType(FilterFunction_pgNearest.class);
         }
 
         // native filter support
@@ -505,7 +504,7 @@ class FilterToSqlHelper {
      * @return
      */
     public String getFunctionName(Function function) {
-        if (function instanceof FilterFunction_strLength) {
+        if (function instanceof FilterFunction_strLength || function instanceof LengthFunction) {
             return "char_length";
         } else if (function instanceof FilterFunction_strToLowerCase) {
             return "lower";
@@ -685,5 +684,371 @@ class FilterToSqlHelper {
             // dunno how to cast, leave as is
             return property;
         }
+    }
+
+    boolean isArray(Expression exp) {
+        if (exp instanceof Literal) {
+            Object value = exp.evaluate(null);
+            return value != null && value.getClass().isArray();
+        }
+        return false;
+    }
+
+    boolean isNull(Expression exp) {
+        return (exp instanceof Literal && (exp.evaluate(null) == null))
+                || exp instanceof NilExpression;
+    }
+
+    boolean isArray(Class clazz) {
+        return clazz != null && clazz.isArray();
+    }
+
+    void visitArrayComparison(
+            BinaryComparisonOperator filter,
+            Expression left,
+            Expression right,
+            Class rightContext,
+            Class leftContext,
+            String type) {
+        String leftCast = "";
+        String rightCast = "";
+        if (left instanceof PropertyName) {
+            rightCast = getArrayTypeCast((PropertyName) left);
+        }
+        if (right instanceof PropertyName) {
+            leftCast = getArrayTypeCast((PropertyName) right);
+        }
+
+        try {
+            // match any against non array literals? we need custom logic
+            MultiValuedFilter.MatchAction matchAction = filter.getMatchAction();
+            if ((matchAction == MultiValuedFilter.MatchAction.ANY
+                            || matchAction == MultiValuedFilter.MatchAction.ONE)
+                    && (!isArray(left) && !isArray(right))) {
+                // the only indexable search in this block
+                if ("=".equalsIgnoreCase(type) && !isNull(left) && !isNull(right)) {
+                    // if using a prepared statement dialect we need the native type info
+                    // contained in the AttributeDescriptor to create a SQL array...
+                    Object leftArrayContext = getArrayComparisonContext(left, right, leftContext);
+                    writeBinaryExpressionMember(left, leftArrayContext);
+                    out.write(leftCast);
+                    // use the overlap operator to avoid deciding which side is the expression
+                    out.write(" && ");
+                    Object rightArrayContext = getArrayComparisonContext(right, left, rightContext);
+                    writeBinaryExpressionMember(right, rightArrayContext);
+                    out.write(rightCast);
+                } else {
+                    // need to un-nest and apply element by element, this is not indexable
+                    if (left instanceof PropertyName) {
+                        rightContext = rightContext.getComponentType();
+                    }
+                    if (right instanceof PropertyName) {
+                        leftContext = leftContext.getComponentType();
+                    }
+
+                    boolean isPropertyLeft = left instanceof PropertyName;
+                    boolean isPropertyRight = right instanceof PropertyName;
+                    // un-nesting the array to do element by element comparisons... the
+                    // generated "table" has "unnest" as the variable name
+                    if (matchAction == MultiValuedFilter.MatchAction.ANY) {
+                        out.write("EXISTS ( SELECT * from unnest(");
+                    } else {
+                        out.write("( SELECT count(*) from unnest(");
+                    }
+                    if (isPropertyLeft) {
+                        left.accept(delegate, null);
+                    } else {
+                        right.accept(delegate, null);
+                    }
+                    out.write(") WHERE ");
+                    // oh fun, if there are nulls we cannot write the same sql
+                    if ((isPropertyLeft && isNull(right))
+                            || (isPropertyRight && isNull(left))
+                                    && ("=".equalsIgnoreCase(type)
+                                            || "!=".equalsIgnoreCase(type))) {
+                        if ("=".equalsIgnoreCase(type)) {
+                            out.write("unnest is NULL");
+                        } else if ("!=".equalsIgnoreCase(type)) {
+                            out.write("unnest is NOT NULL");
+                        }
+                    } else {
+                        // no nulls, but we still have to consider the comparison direction
+                        if (isPropertyLeft) {
+                            out.write("unnest");
+                            out.write(" " + type + " ");
+                            writeBinaryExpressionMember(right, rightContext);
+                        } else {
+                            writeBinaryExpressionMember(left, leftContext);
+                            out.write(" " + type + " ");
+                            out.write("unnest");
+                        }
+                    }
+                    if (matchAction == MultiValuedFilter.MatchAction.ONE) {
+                        out.write(") = 1");
+                    } else {
+                        out.write(")");
+                    }
+                }
+            } else if (matchAction == MultiValuedFilter.MatchAction.ALL
+                    || isArray(left)
+                    || isArray(right)) {
+                // for comparison against array literals we only support match-all style
+                // for the user it would be really strange to ask for equality on an array
+                // and get a positive match on a partial element overlap (filters build
+                // without explicit match action default to "ANY")
+                Object leftArrayContext = getArrayComparisonContext(left, right, leftContext);
+                writeBinaryExpressionMember(left, leftArrayContext);
+                out.write(leftCast);
+                out.write(" " + type + " ");
+                Object rightArrayContext = getArrayComparisonContext(right, left, rightContext);
+                writeBinaryExpressionMember(right, rightArrayContext);
+                out.write(rightCast);
+            }
+
+        } catch (IOException ioe) {
+            throw new RuntimeException("Failed to write out SQL", ioe);
+        }
+    }
+
+    /**
+     * When using prepared statements we need the AttributeDescritor's stored native type name to
+     * set array values in the PreparedStatement
+     *
+     * @param thisExpression
+     * @param otherExpression
+     * @param context
+     * @return
+     */
+    private Object getArrayComparisonContext(
+            Expression thisExpression, Expression otherExpression, Class context) {
+        if (delegate instanceof PreparedFilterToSQL
+                && thisExpression instanceof Literal
+                && otherExpression instanceof PropertyName) {
+            // grab the info from the other side of the comparison
+            AttributeDescriptor ad =
+                    otherExpression.evaluate(delegate.getFeatureType(), AttributeDescriptor.class);
+            if (ad != null) {
+                return ad;
+            }
+        }
+        // all good, no extra info actually needed
+        return context;
+    }
+
+    private void writeBinaryExpressionMember(Expression exp, Object context) throws IOException {
+        if (context != null && exp instanceof BinaryExpression) {
+            writeBinaryExpression(exp, context);
+        } else {
+            exp.accept(delegate, context);
+        }
+    }
+
+    protected void writeBinaryExpression(Expression e, Object context) throws IOException {
+        Writer tmp = out;
+        try {
+            out = new StringWriter();
+            out.write("(");
+            e.accept(delegate, null);
+            out.write(")");
+            if (context instanceof Class) {
+                tmp.write(cast(out.toString(), (Class) context));
+            } else {
+                tmp.write(out.toString());
+            }
+        } finally {
+            out = tmp;
+        }
+    }
+
+    /**
+     * Returns the type cast needed to match this property
+     *
+     * @param pn
+     * @return
+     */
+    String getArrayTypeCast(PropertyName pn) {
+        AttributeDescriptor at = pn.evaluate(delegate.getFeatureType(), AttributeDescriptor.class);
+        if (at != null) {
+            Object value = at.getUserData().get(JDBCDataStore.JDBC_NATIVE_TYPENAME);
+            if (value instanceof String) {
+                String typeName = (String) value;
+                if (typeName.startsWith("_")) {
+                    return "::" + typeName.substring(1) + "[]";
+                }
+            }
+        }
+
+        return "";
+    }
+
+    public void visitArrayBetween(PropertyIsBetween filter, Class context, Object extraData) {
+        Expression expr = filter.getExpression();
+        Expression lowerbounds = filter.getLowerBoundary();
+        Expression upperbounds = filter.getUpperBoundary();
+
+        try {
+            // we have to un-nest
+            // generated "table" has "unnest" as the variable name
+            MultiValuedFilter.MatchAction matchAction = filter.getMatchAction();
+            if (matchAction == MultiValuedFilter.MatchAction.ANY) {
+                out.write("EXISTS ( SELECT * from unnest(");
+            } else {
+                out.write("( SELECT count(*) from unnest(");
+            }
+            expr.accept(delegate, null);
+            out.write(") WHERE unnest BETWEEN ");
+            lowerbounds.accept(delegate, context);
+            out.write(" AND ");
+            upperbounds.accept(delegate, context);
+
+            if (matchAction == MultiValuedFilter.MatchAction.ONE) {
+                out.write(") = 1");
+            } else if (matchAction == MultiValuedFilter.MatchAction.ALL) {
+                out.write(") = (SELECT COUNT(*) FROM unnest(");
+                expr.accept(delegate, null);
+                out.write("))");
+            } else {
+                out.write(")");
+            }
+        } catch (java.io.IOException ioe) {
+            throw new RuntimeException(IO_ERROR, ioe);
+        }
+    }
+
+    private String getPrimaryKeyColumnsAsCommaSeparatedList(
+            List<PrimaryKeyColumn> pkColumns, SQLDialect dialect) {
+        StringBuffer sb = new StringBuffer();
+        boolean first = true;
+        for (PrimaryKeyColumn c : pkColumns) {
+            if (first) {
+                first = false;
+            } else {
+                sb.append(",");
+            }
+            dialect.encodeColumnName(null, c.getName(), sb);
+        }
+        return sb.toString();
+    }
+
+    public Object visit(
+            FilterFunction_pgNearest filter, Object extraData, NearestHelperContext ctx) {
+        SQLDialect pgDialect = ctx.getPgDialect();
+        Expression geometryExp = getParameter(filter, 0, true);
+        Expression numNearest = getParameter(filter, 1, true);
+        try {
+            List<PrimaryKeyColumn> pkColumns = delegate.getPrimaryKey().getColumns();
+            if (pkColumns == null || pkColumns.size() == 0) {
+                throw new UnsupportedOperationException(
+                        "Unsupported usage of Postgis Nearest Operator: table with no primary key");
+            }
+
+            String pkColumnsAsString =
+                    getPrimaryKeyColumnsAsCommaSeparatedList(pkColumns, pgDialect);
+            StringBuffer sb = new StringBuffer();
+            sb.append(" (")
+                    .append(pkColumnsAsString)
+                    .append(")")
+                    .append(" in (select ")
+                    .append(pkColumnsAsString)
+                    .append(" from ");
+            if (delegate.getDatabaseSchema() != null) {
+                pgDialect.encodeSchemaName(delegate.getDatabaseSchema(), sb);
+                sb.append(".");
+            }
+            pgDialect.encodeTableName(delegate.getPrimaryKey().getTableName(), sb);
+            sb.append(" order by ");
+            // geometry column name
+            pgDialect.encodeColumnName(
+                    null, delegate.getFeatureType().getGeometryDescriptor().getLocalName(), sb);
+            sb.append(" <-> ");
+            // reference geometry
+            Geometry geomValue =
+                    (Geometry) delegate.evaluateLiteral((Literal) geometryExp, Geometry.class);
+            ctx.encodeGeometryValue.accept(geomValue, sb);
+
+            // num of features
+            sb.append(" limit ");
+            int numFeatures = numNearest.evaluate(null, Number.class).intValue();
+            sb.append(numFeatures);
+            sb.append(")");
+
+            out.write(sb.toString());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return extraData;
+    }
+
+    /** Context data struct for nearest visit method */
+    public static class NearestHelperContext {
+        private SQLDialect pgDialect;
+        private BiConsumer<Geometry, StringBuffer> encodeGeometryValue;
+
+        public NearestHelperContext(
+                SQLDialect pgDialect, BiConsumer<Geometry, StringBuffer> encodeGeometryValue) {
+            super();
+            this.pgDialect = pgDialect;
+            this.encodeGeometryValue = encodeGeometryValue;
+        }
+
+        public SQLDialect getPgDialect() {
+            return pgDialect;
+        }
+
+        public void setPgDialect(SQLDialect pgDialect) {
+            this.pgDialect = pgDialect;
+        }
+
+        public BiConsumer<Geometry, StringBuffer> getEncodeGeometryValue() {
+            return encodeGeometryValue;
+        }
+
+        public void setEncodeGeometryValue(BiConsumer<Geometry, StringBuffer> encodeGeometryValue) {
+            this.encodeGeometryValue = encodeGeometryValue;
+        }
+    }
+
+    /**
+     * Detects and return a FilterFunction_pgNearest if found, otherwise null
+     *
+     * @param filter filter to evaluate
+     * @return FilterFunction_pgNearest if found
+     */
+    public FilterFunction_pgNearest getNearestFilter(PropertyIsEqualTo filter) {
+        Expression expr1 = filter.getExpression1();
+        Expression expr2 = filter.getExpression2();
+        // if expr2 is nearest filter, switch positions
+        if (expr2 instanceof FilterFunction_pgNearest) {
+            Expression tmp = expr1;
+            expr1 = expr2;
+            expr2 = tmp;
+        }
+        if (expr1 instanceof FilterFunction_pgNearest) {
+            if (!(expr2 instanceof Literal)) {
+                throw new UnsupportedOperationException(
+                        "Unsupported usage of Nearest Operator: it can be compared only to a Boolean \"true\" value");
+            }
+            Boolean nearest = (Boolean) delegate.evaluateLiteral((Literal) expr2, Boolean.class);
+            if (nearest == null || !nearest.booleanValue()) {
+                throw new UnsupportedOperationException(
+                        "Unsupported usage of Nearest Operator: it can be compared only to a Boolean \"true\" value");
+            }
+            return (FilterFunction_pgNearest) expr1;
+        } else {
+            return null;
+        }
+    }
+
+    public Integer getFeatureTypeGeometrySRID() {
+        return (Integer)
+                delegate.getFeatureType()
+                        .getGeometryDescriptor()
+                        .getUserData()
+                        .get(JDBCDataStore.JDBC_NATIVE_SRID);
+    }
+
+    public Integer getFeatureTypeGeometryDimension() {
+        GeometryDescriptor descriptor = delegate.getFeatureType().getGeometryDescriptor();
+        return (Integer) descriptor.getUserData().get(Hints.COORDINATE_DIMENSION);
     }
 }

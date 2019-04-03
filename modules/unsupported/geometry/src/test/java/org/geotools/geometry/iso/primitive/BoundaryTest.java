@@ -33,10 +33,7 @@ import org.opengis.geometry.primitive.Ring;
 import org.opengis.geometry.primitive.SurfaceBoundary;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-/**
- * @author sanjay
- * @source $URL$
- */
+/** @author sanjay */
 public class BoundaryTest extends TestCase {
 
     private CoordinateReferenceSystem crs;
@@ -90,7 +87,7 @@ public class BoundaryTest extends TestCase {
             CurveBoundaryImpl expected = ((CurveBoundaryImpl) curveBoundary1).clone();
             assertTrue(b2.equals(expected));
         } catch (CloneNotSupportedException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             fail();
         }
 
@@ -183,7 +180,7 @@ public class BoundaryTest extends TestCase {
         try {
             surfaceBoundary2 = (SurfaceBoundary) surfaceBoundary1.clone();
         } catch (CloneNotSupportedException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
         assertTrue(surfaceBoundary1 != surfaceBoundary2);
         assertTrue(surfaceBoundary1.getExterior() != surfaceBoundary2.getExterior());

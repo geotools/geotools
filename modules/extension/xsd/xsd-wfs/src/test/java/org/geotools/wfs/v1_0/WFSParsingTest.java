@@ -65,11 +65,12 @@ import org.eclipse.xsd.XSDSchema;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.util.URLs;
-import org.geotools.xml.Configuration;
-import org.geotools.xml.Parser;
-import org.geotools.xml.Schemas;
-import org.geotools.xml.StreamingParser;
+import org.geotools.xsd.Configuration;
+import org.geotools.xsd.Parser;
+import org.geotools.xsd.Schemas;
+import org.geotools.xsd.StreamingParser;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.locationtech.jts.geom.Point;
 import org.opengis.feature.simple.SimpleFeature;
@@ -78,14 +79,13 @@ import org.opengis.filter.capability.Operator;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
-/** @source $URL$ */
 public class WFSParsingTest {
 
     Configuration configuration;
 
     @Before
     public void setUp() throws Exception {
-        configuration = new org.geotools.wfs.v1_0.WFSConfiguration();
+        configuration = new org.geotools.wfs.v1_0.WFSConfiguration_1_0();
     }
 
     @Test
@@ -139,7 +139,9 @@ public class WFSParsingTest {
      *
      * @throws Exception
      */
-    public void _testParseGetCapabilitiesDeegree() throws Exception {
+    @Test
+    @Ignore
+    public void testParseGetCapabilitiesDeegree() throws Exception {
         Parser parser = new Parser(configuration);
         WFSCapabilitiesType caps =
                 (WFSCapabilitiesType)
@@ -314,7 +316,9 @@ public class WFSParsingTest {
         assertNotNull(fc.getScalarCapabilities().getComparisonOperators().getOperator("NullCheck"));
     }
 
-    public void _testParseDescribeFeatureType() throws Exception {
+    @Test
+    @Ignore
+    public void testParseDescribeFeatureType() throws Exception {
         String loc = getClass().getResource("geoserver-DescribeFeatureType.xml").getFile();
         XSDSchema schema = Schemas.parse(loc);
 
@@ -332,7 +336,9 @@ public class WFSParsingTest {
     }
 
     @SuppressWarnings("unchecked")
-    public void _testParseGetFeature() throws Exception {
+    @Test
+    @Ignore
+    public void testParseGetFeature() throws Exception {
         File tmp = File.createTempFile("geoserver-DescribeFeatureType", "xml");
         tmp.deleteOnExit();
 
@@ -428,7 +434,9 @@ public class WFSParsingTest {
         writer.close();
     }
 
-    public void _testParseGetFeatureStreaming() throws Exception {
+    @Test
+    @Ignore
+    public void testParseGetFeatureStreaming() throws Exception {
         InputStream in = getClass().getResourceAsStream("geoserver-GetFeature.xml");
         StreamingParser parser = new StreamingParser(configuration, in, SimpleFeature.class);
 

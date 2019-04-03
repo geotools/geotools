@@ -208,10 +208,10 @@ class FeatureMapper {
      * @return
      */
     Geometry fixGeometryType(Geometry ogrGeometry, AttributeDescriptor ad) {
-        if (MultiPolygon.class.equals(ad.getType())) {
+        if (MultiPolygon.class.equals(ad.getType().getBinding())) {
             if (ogrGeometry instanceof MultiPolygon) return ogrGeometry;
             else return geomFactory.createMultiPolygon(new Polygon[] {(Polygon) ogrGeometry});
-        } else if (MultiLineString.class.equals(ad.getType())) {
+        } else if (MultiLineString.class.equals(ad.getType().getBinding())) {
             if (ogrGeometry instanceof MultiLineString) return ogrGeometry;
             else
                 return geomFactory.createMultiLineString(
@@ -254,7 +254,7 @@ class FeatureMapper {
             return ogr.FeatureGetFieldAsInteger(ogrFeature, idx);
         } else if (clazz.equals(Long.class)) {
             String value = ogr.FeatureGetFieldAsString(ogrFeature, idx);
-            return new Long(value);
+            return Long.valueOf(value);
         } else if (clazz.equals(BigInteger.class)) {
             String value = ogr.FeatureGetFieldAsString(ogrFeature, idx);
             return new BigInteger(value);

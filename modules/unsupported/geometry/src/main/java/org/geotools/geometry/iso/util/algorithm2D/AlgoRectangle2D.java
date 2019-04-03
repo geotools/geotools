@@ -24,7 +24,6 @@ import java.awt.geom.Rectangle2D;
  * @author roehrig
  *     <p>TODO To change the template for this generated type comment go to Window - Preferences -
  *     Java - Code Style - Code Templates
- * @source $URL$
  */
 public class AlgoRectangle2D {
 
@@ -214,8 +213,8 @@ public class AlgoRectangle2D {
      * Corner (maxx1, maxy1) Second Rectangle: Lower Corner (minx2, miny2), Upper Corner (maxx2,
      * maxy2)
      *
-     * @return TRUE, if the two rectangle intersect in at least one point
-     * @return FALSE, if the two rectangle do not intersect at all
+     * @return TRUE, if the two rectangle intersect in at least one point, FALSE, if the two
+     *     rectangle do not intersect at all
      */
     public static boolean intersects(
             double minx1,

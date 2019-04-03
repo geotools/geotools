@@ -37,7 +37,7 @@ MODULE METADATA
   Appears to be focused on the usual text suspects, EOL and TAB.
 
 
-* org.geotools.math
+* org.geotools.metadata.math
   ~~~~~~~~~~~~~~~~~
   Contains formula for a line and other madness, mostly utility classes for 
   elsewhere. 
@@ -82,7 +82,7 @@ OpenGIS consortium's work is fully acknowledged here.
   Some neat, and more performant implementations for hacking Java 2d.
 
 
-* org.geotools.resources.i18n
+* org.geotools.metadata.i18n
   ~~~~~~~~~~~~~~~~~~~~~~~~~~~
   Contains a breakdown of resource bundle/property files that have been processed to
   use number based lookup for speed, compile-time safety and to minimize resource use.

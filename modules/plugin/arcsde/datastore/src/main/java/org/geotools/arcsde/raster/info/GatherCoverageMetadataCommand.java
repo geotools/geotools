@@ -62,11 +62,10 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  *
  * @author Gabriel Roldan (OpenGeo)
  * @since 2.5.8
- * @source $URL$
  */
 public class GatherCoverageMetadataCommand extends Command<RasterDatasetInfo> {
 
-    private static final Logger LOGGER = Logging.getLogger("org.geotools.arcsde.gce");
+    private static final Logger LOGGER = Logging.getLogger(GatherCoverageMetadataCommand.class);
 
     private final boolean statisticsMandatory;
 
@@ -185,7 +184,7 @@ public class GatherCoverageMetadataCommand extends Command<RasterDatasetInfo> {
                                         + rasterInfo.toString());
                     }
 
-                    System.out.println(rasterInfo);
+                    // System.out.println(rasterInfo);
                 }
             } catch (SeException e) {
                 throw new ArcSdeException("Gathering raster dataset information", e);

@@ -20,18 +20,29 @@
  */
 package org.geotools.referencing.operation.projection;
 
-import static java.lang.Math.*;
+import static java.lang.Math.PI;
+import static java.lang.Math.abs;
+import static java.lang.Math.asin;
+import static java.lang.Math.atan2;
+import static java.lang.Math.cos;
+import static java.lang.Math.floor;
+import static java.lang.Math.log;
+import static java.lang.Math.sin;
+import static java.lang.Math.sinh;
+import static java.lang.Math.sqrt;
+import static java.lang.Math.tan;
+import static java.lang.Math.toDegrees;
 
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
+import org.geotools.metadata.i18n.Vocabulary;
+import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.NamedIdentifier;
 import org.geotools.referencing.operation.transform.ConcatenatedTransform;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
-import org.geotools.resources.i18n.Vocabulary;
-import org.geotools.resources.i18n.VocabularyKeys;
 import org.opengis.parameter.ParameterDescriptor;
 import org.opengis.parameter.ParameterDescriptorGroup;
 import org.opengis.parameter.ParameterNotFoundException;
@@ -83,22 +94,12 @@ import org.opengis.referencing.operation.MathTransform;
  *     HREF="http://www.remotesensing.org/geotiff/proj_list/transverse_mercator.html">"Transverse_Mercator"
  *     on RemoteSensing.org</A>
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author André Gosselin
  * @author Martin Desruisseaux (PMO, IRD)
  * @author Rueben Schulz
  */
 public class TransverseMercator extends MapProjection {
-    /** Maximum number of iterations for iterative computations. */
-    private static final int MAXIMUM_ITERATIONS = 15;
-
-    /**
-     * Relative iteration precision used in the {@code mlfn} method. This overrides the value in the
-     * {@link MapProjection} class.
-     */
-    private static final double ITERATION_TOLERANCE = 1E-11;
-
     /** Maximum difference allowed when comparing real numbers. */
     private static final double EPSILON = 1E-6;
 
@@ -531,15 +532,13 @@ public class TransverseMercator extends MapProjection {
         return ((int) code ^ (int) (code >>> 32)) + 37 * super.hashCode();
     }
 
-    /** Compares the specified object with this map projection for equality. */
     @Override
-    public boolean equals(final Object object) {
-        if (object == this) {
-            // Slight optimization
-            return true;
-        }
-        // Relevant parameters are already compared in MapProjection
-        return super.equals(object);
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        TransverseMercator that = (TransverseMercator) o;
+        return equals(that.esp, esp) && equals(that.ml0, ml0);
     }
 
     //////////////////////////////////////////////////////////////////////////////////////////

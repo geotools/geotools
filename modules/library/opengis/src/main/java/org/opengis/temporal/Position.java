@@ -24,7 +24,6 @@ import org.opengis.util.InternationalString;
  *
  * @author Alexander Petkov
  * @author Martin Desruisseaux (IRD)
- * @source $URL$
  */
 @UML(identifier = "TM_Position", specification = ISO_19108)
 public interface Position {

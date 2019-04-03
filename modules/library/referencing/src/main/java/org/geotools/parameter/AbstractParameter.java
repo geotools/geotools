@@ -24,11 +24,11 @@ import java.io.Serializable;
 import java.io.Writer;
 import java.lang.reflect.Array;
 import java.util.Iterator;
-import org.geotools.io.TableWriter;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.wkt.Formattable;
 import org.geotools.referencing.wkt.Formatter;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
+import org.geotools.util.TableWriter;
 import org.geotools.util.Utilities;
 import org.opengis.parameter.GeneralParameterDescriptor;
 import org.opengis.parameter.GeneralParameterValue;
@@ -39,7 +39,6 @@ import org.opengis.parameter.ParameterValueGroup;
  * Abstract parameter value or group of parameter values.
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @see AbstractParameterDescriptor
@@ -261,10 +260,6 @@ public abstract class AbstractParameter extends Formattable
             if (inner != null) {
                 inner.flush();
             }
-        } else {
-            /*
-             * No know parameter value for this default implementation.
-             */
         }
         table.nextLine();
     }

@@ -19,7 +19,6 @@ package org.geotools.grid;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Logger;
 import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -32,12 +31,9 @@ import org.locationtech.jts.geom.Envelope;
  * @see org.geotools.grid.oblong.OblongGridBuilder
  * @author mbedward
  * @since 8.0
- * @source $URL$
  * @version $Id$
  */
 public abstract class PolygonBuilder {
-
-    private static final Logger LOGGER = Logger.getLogger("org.geotools.grid");
 
     protected final ReferencedEnvelope gridBounds;
 

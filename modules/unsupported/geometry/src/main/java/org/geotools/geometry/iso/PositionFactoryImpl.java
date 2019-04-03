@@ -21,12 +21,12 @@ import java.io.Serializable;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import org.geotools.factory.Factory;
-import org.geotools.factory.Hints;
 import org.geotools.geometry.iso.coordinate.DirectPositionImpl;
 import org.geotools.geometry.iso.coordinate.DoublePointArray;
 import org.geotools.geometry.iso.coordinate.PointArrayImpl;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.geotools.util.factory.Factory;
+import org.geotools.util.factory.Hints;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.geometry.PositionFactory;
@@ -50,7 +50,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * </ul>
  *
  * @author Jody Garnett
- * @source $URL$
  */
 public class PositionFactoryImpl implements Serializable, Factory, PositionFactory {
     private static final long serialVersionUID = 1L;
@@ -151,7 +150,7 @@ public class PositionFactoryImpl implements Serializable, Factory, PositionFacto
         } else {
             for (int i = start; i < end; i += D) {
                 double[] ordinates = new double[D];
-                for (int o = 0; i < D; i++) {
+                for (int o = 0; o < D; o++) {
                     ordinates[o] = array[i + o];
                 }
                 pointArray.add(new DirectPositionImpl(crs, ordinates));

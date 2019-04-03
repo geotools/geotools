@@ -22,7 +22,6 @@ import com.amazonaws.services.s3.model.ObjectMetadata;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.ByteBuffer;
-import java.util.logging.Logger;
 import javax.imageio.stream.ImageInputStreamImpl;
 import org.geotools.s3.cache.CacheEntryKey;
 import org.geotools.s3.cache.CacheManagement;
@@ -30,7 +29,6 @@ import org.geotools.s3.cache.CacheManagement;
 /** ImageInputStream implementation that fetches and caches data from S3 */
 public class S3ImageInputStreamImpl extends ImageInputStreamImpl {
 
-    private static final Logger LOGGER = Logger.getLogger("S3");
     private final String fileName;
     private final S3Connector connector;
     private String url;

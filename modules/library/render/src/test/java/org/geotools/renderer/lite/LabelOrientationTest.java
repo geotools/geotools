@@ -17,7 +17,6 @@ import org.geotools.renderer.label.LabelCacheImpl;
 import org.geotools.styling.Style;
 import org.geotools.test.TestData;
 
-/** @source $URL$ */
 public class LabelOrientationTest extends TestCase {
 
     private static final long TIME = 10000;
@@ -41,6 +40,8 @@ public class LabelOrientationTest extends TestCase {
         renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
 
         //        System.setProperty("org.geotools.test.interactive", "true");
+
+        RendererBaseTest.setupVeraFonts();
     }
 
     public void testLabelNatural() throws Exception {

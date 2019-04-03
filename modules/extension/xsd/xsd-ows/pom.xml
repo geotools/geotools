@@ -16,7 +16,7 @@
   <parent>
     <groupId>org.geotools.xsd</groupId>
     <artifactId>xsd</artifactId>
-    <version>20-SNAPSHOT</version>
+    <version>22-SNAPSHOT</version>
   </parent>
   
   <!-- =========================================================== -->
@@ -65,12 +65,24 @@
     <dependency>
       <groupId>org.geotools.ogc</groupId>
       <artifactId>net.opengis.ows</artifactId>
-      <version>20-SNAPSHOT</version>
+      <version>22-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>org.geotools.xsd</groupId>
       <artifactId>gt-xsd-filter</artifactId>
       <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools.xsd</groupId>
+      <artifactId>gt-xsd-core</artifactId>
+      <classifier>tests</classifier>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 
@@ -84,7 +96,7 @@
           <schemaLocation>owsAll.xsd</schemaLocation>
           <schemaSourceDirectory>${basedir}/src/main/resources/org/geotools/ows/v2_0</schemaSourceDirectory>
           <destinationPackage>org.geotools.ows.v2_0</destinationPackage>
-          <complexBindingBaseClass>org.geotools.xml.AbstractComplexEMFBinding</complexBindingBaseClass>
+          <complexBindingBaseClass>org.geotools.xsd.AbstractComplexEMFBinding</complexBindingBaseClass>
           <bindingConstructorArguments>
             <bindingConstructorArgument>
               <name>factory</name>

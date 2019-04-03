@@ -1,4 +1,5 @@
 /*
+ *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
  *    (C) 2002-2009, Open Source Geospatial Foundation (OSGeo)
@@ -76,7 +77,6 @@ import org.geotools.arcsde.session.SessionPoolFactory;
  * ArcSDE on GeoTools.
  *
  * @author Gabriel Roldan (OpenGeo)
- * @source $URL$
  * @version $Id$
  * @since 2.5.7
  */

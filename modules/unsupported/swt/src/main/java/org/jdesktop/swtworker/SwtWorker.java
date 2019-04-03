@@ -160,14 +160,13 @@ import org.eclipse.swt.widgets.Display;
  *     });
  *
  * task.execute();
- * System.out.println(task.get()); //prints all prime numbers we have got
+ * // System.out.println(task.get()); //prints all prime numbers we have got
  * </pre>
  *
  * <p>Because {@code SwingWorker} implements {@code Runnable}, a {@code SwingWorker} can be
  * submitted to an {@link java.util.concurrent.Executor} for execution.
  *
  * @author Igor Kushnirskiy
- * @source $URL$
  * @version $Revision: 1.6 $ $Date: 2008/07/25 19:32:29 $
  * @param <T> the result type returned by this {@code SwingWorker's} {@code doInBackground} and
  *     {@code get} methods

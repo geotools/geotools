@@ -19,11 +19,11 @@ package org.geotools.referencing.operation.projection;
 import static java.lang.Math.abs;
 
 import java.util.Collection;
+import org.geotools.metadata.i18n.Vocabulary;
+import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.NamedIdentifier;
 import org.geotools.referencing.operation.projection.MapProjection.AbstractProvider;
-import org.geotools.resources.i18n.Vocabulary;
-import org.geotools.resources.i18n.VocabularyKeys;
 import org.opengis.parameter.GeneralParameterDescriptor;
 import org.opengis.parameter.ParameterDescriptor;
 import org.opengis.parameter.ParameterDescriptorGroup;
@@ -37,7 +37,6 @@ import si.uom.NonSI;
  * Supports the popular visualisation projection used by Google, Microsoft, Yahoo, OSM and others
  *
  * @author Andrea Aime - OpenGeo
- * @source $URL$
  */
 public class MercatorPseudoProvider extends AbstractProvider {
     /** For cross-version compatibility. */

@@ -25,15 +25,15 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
-import org.geotools.factory.FactoryRegistryException;
-import org.geotools.factory.Hints;
-import org.geotools.factory.OptionalFactory;
+import org.geotools.metadata.i18n.LoggingKeys;
+import org.geotools.metadata.i18n.Loggings;
 import org.geotools.referencing.AbstractIdentifiedObject;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.ReferencingFactoryFinder;
 import org.geotools.referencing.factory.BackingStoreException;
-import org.geotools.resources.i18n.LoggingKeys;
-import org.geotools.resources.i18n.Loggings;
+import org.geotools.util.factory.FactoryRegistryException;
+import org.geotools.util.factory.Hints;
+import org.geotools.util.factory.OptionalFactory;
 import org.opengis.metadata.Identifier;
 import org.opengis.metadata.citation.Citation;
 import org.opengis.referencing.AuthorityFactory;
@@ -70,7 +70,6 @@ import org.opengis.referencing.operation.SingleOperation;
  * super-class is used as a fallback.
  *
  * @since 2.2
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
@@ -206,7 +205,7 @@ public class AuthorityBackedFactory extends DefaultCoordinateOperationFactory
      * which is a valid transformation from the sourceCRS to targetCRs and that is accepted by this
      * authority.
      *
-     * @param operations A set of candidate operations
+     * @param candidate A set of candidate operations
      * @param sourceCRS Source CRS
      * @param targetCRS Target CRS
      * @param inverse whether the inverse operation has to be applied

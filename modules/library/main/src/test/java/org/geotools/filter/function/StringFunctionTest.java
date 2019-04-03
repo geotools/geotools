@@ -26,7 +26,6 @@ import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
 
-/** @source $URL$ */
 public class StringFunctionTest {
 
     FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
@@ -62,6 +61,61 @@ public class StringFunctionTest {
         assertEquals(
                 "United Kingdom",
                 ff.function("strCapitalize", ff.literal("UnItEd kInGdOm")).evaluate(null));
+    }
+
+    @Test
+    public void testDefaultIfBlank() {
+        assertEquals(
+                "Default",
+                ff.function("strDefaultIfBlank", ff.literal(""), ff.literal("Default"))
+                        .evaluate(null));
+        assertEquals(
+                "Default",
+                ff.function("strDefaultIfBlank", ff.literal(" "), ff.literal("Default"))
+                        .evaluate(null));
+        assertEquals(
+                "Default",
+                ff.function("strDefaultIfBlank", ff.literal("   "), ff.literal("Default"))
+                        .evaluate(null));
+        assertEquals(
+                "Default",
+                ff.function("strDefaultIfBlank", ff.literal(null), ff.literal("Default"))
+                        .evaluate(null));
+        assertEquals(
+                "Bob",
+                ff.function("strDefaultIfBlank", ff.literal("Bob"), ff.literal("Default"))
+                        .evaluate(null));
+    }
+
+    @Test
+    public void testStripAccents() {
+        assertEquals("Ian", ff.function("strStripAccents", ff.literal("Ian")).evaluate(null));
+        assertEquals(
+                "orcpzsiayd",
+                ff.function("strStripAccents", ff.literal("orčpžsíáýd")).evaluate(null));
+        assertEquals("eclair", ff.function("strStripAccents", ff.literal("éclair")).evaluate(null));
+    }
+
+    @Test
+    public void testAbbreviate() {
+        assertEquals(
+                "UNITED ...",
+                ff.function(
+                                "strAbbreviate",
+                                ff.literal("UNITED KINGDOM"),
+                                ff.literal(3),
+                                ff.literal(6),
+                                ff.literal(" ..."))
+                        .evaluate(null));
+        assertEquals(
+                "UNITED ...",
+                ff.function(
+                                "strAbbreviate",
+                                ff.literal("UNITED KINGDOM"),
+                                ff.literal(6),
+                                ff.literal(100),
+                                ff.literal(" ..."))
+                        .evaluate(null));
     }
 
     @Test

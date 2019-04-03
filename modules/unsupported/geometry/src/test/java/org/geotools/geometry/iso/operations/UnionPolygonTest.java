@@ -24,7 +24,6 @@ import org.geotools.geometry.iso.root.GeometryImpl;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-/** @source $URL$ */
 public class UnionPolygonTest extends TestCase {
 
     private SurfaceImpl createPolygonFromWKT(CoordinateReferenceSystem crs, String aWKTpolygon) {
@@ -33,7 +32,7 @@ public class UnionPolygonTest extends TestCase {
         try {
             surface = (SurfaceImpl) wktReader.read(aWKTpolygon);
         } catch (ParseException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
         return surface;
     }

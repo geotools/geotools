@@ -31,8 +31,9 @@ import org.geotools.coverage.io.Driver;
 import org.geotools.coverage.io.metadata.MetadataNode;
 import org.geotools.data.Parameter;
 import org.geotools.data.ServiceInfo;
-import org.geotools.factory.Hints;
-import org.geotools.util.NullProgressListener;
+import org.geotools.data.util.NullProgressListener;
+import org.geotools.util.SuppressFBWarnings;
+import org.geotools.util.factory.Hints;
 import org.opengis.feature.type.Name;
 import org.opengis.util.ProgressListener;
 
@@ -40,7 +41,6 @@ import org.opengis.util.ProgressListener;
  * Default implementation of {@link CoverageAccess}.
  *
  * @author Simone Giannecchini, GeoSolutions SAS
- * @source $URL$
  */
 public class DefaultCoverageAccess implements CoverageAccess {
 
@@ -55,6 +55,7 @@ public class DefaultCoverageAccess implements CoverageAccess {
     protected final Map<String, Serializable> connectionParameters =
             new HashMap<String, Serializable>();
 
+    @SuppressFBWarnings("UWF_NULL_FIELD")
     protected List<Name> names = null;
 
     public DefaultCoverageAccess(

@@ -29,7 +29,6 @@ import org.opengis.util.InternationalString;
 /**
  * Keywords, their type and reference source.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @author Touraïvane
@@ -68,15 +67,14 @@ public class KeywordsImpl extends MetadataEntity implements Keywords {
     }
 
     /** Commonly used word(s) or formalised word(s) or phrase(s) used to describe the subject. */
-    public synchronized Collection<InternationalString> getKeywords() {
+    public Collection<InternationalString> getKeywords() {
         return keywords = nonNullCollection(keywords, InternationalString.class);
     }
 
     /**
      * Set commonly used word(s) or formalised word(s) or phrase(s) used to describe the subject.
      */
-    public synchronized void setKeywords(
-            final Collection<? extends InternationalString> newValues) {
+    public void setKeywords(final Collection<? extends InternationalString> newValues) {
         keywords = copyCollection(newValues, keywords, InternationalString.class);
     }
 
@@ -86,7 +84,7 @@ public class KeywordsImpl extends MetadataEntity implements Keywords {
     }
 
     /** Set the subject matter used to group similar keywords. */
-    public synchronized void setType(final KeywordType newValue) {
+    public void setType(final KeywordType newValue) {
         checkWritePermission();
         type = newValue;
     }
@@ -100,7 +98,7 @@ public class KeywordsImpl extends MetadataEntity implements Keywords {
      * Set the name of the formally registered thesaurus or a similar authoritative source of
      * keywords.
      */
-    public synchronized void setThesaurusName(final Citation newValue) {
+    public void setThesaurusName(final Citation newValue) {
         checkWritePermission();
         thesaurusName = newValue;
     }

@@ -20,11 +20,7 @@ package org.geotools.gce.gtopo30;
 import com.sun.media.imageio.stream.RawImageInputStream;
 import com.sun.media.imageioimpl.plugins.raw.RawImageReader;
 import com.sun.media.imageioimpl.plugins.raw.RawImageReaderSpi;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Rectangle;
-import java.awt.RenderingHints;
-import java.awt.Transparency;
+import java.awt.*;
 import java.awt.color.ColorSpace;
 import java.awt.image.ColorModel;
 import java.awt.image.ComponentColorModel;
@@ -62,18 +58,18 @@ import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.coverage.grid.io.OverviewPolicy;
 import org.geotools.data.DataSourceException;
-import org.geotools.factory.Hints;
 import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.image.util.ImageUtilities;
+import org.geotools.metadata.i18n.Vocabulary;
+import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.ReferencingFactoryFinder;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.factory.ReferencingFactoryContainer;
 import org.geotools.referencing.operation.builder.GridToEnvelopeMapper;
-import org.geotools.resources.i18n.Vocabulary;
-import org.geotools.resources.i18n.VocabularyKeys;
-import org.geotools.resources.image.ImageUtilities;
 import org.geotools.util.NumberRange;
 import org.geotools.util.URLs;
+import org.geotools.util.factory.Hints;
 import org.opengis.coverage.grid.Format;
 import org.opengis.geometry.Envelope;
 import org.opengis.parameter.GeneralParameterValue;
@@ -93,14 +89,13 @@ import si.uom.SI;
  * @author Simone Giannecchini
  * @author jeichar
  * @author mkraemer
- * @source $URL$
  */
 public final class GTopo30Reader extends AbstractGridCoverage2DReader
         implements GridCoverage2DReader {
 
     /** Logger. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.gce.gtopo30");
+            org.geotools.util.logging.Logging.getLogger(GTopo30Reader.class);
     /** Cached {@link ImageIO} SPI for creating instances of {@link RawImageReader}. */
     private static final RawImageReaderSpi imageIOSPI = new RawImageReaderSpi();
 
@@ -145,7 +140,6 @@ public final class GTopo30Reader extends AbstractGridCoverage2DReader
      * @throws MalformedURLException if the URL does not correspond to one of the GTopo30 files
      * @throws IOException
      * @throws DataSourceException if the given url points to an unrecognized file
-     * @throws IllegalArgumentException DOCUMENT ME!
      */
     public GTopo30Reader(final Object source) throws IOException {
         this(source, null);
@@ -159,7 +153,6 @@ public final class GTopo30Reader extends AbstractGridCoverage2DReader
      * @throws MalformedURLException if the URL does not correspond to one of the GTopo30 files
      * @throws IOException
      * @throws DataSourceException if the given url points to an unrecognized file
-     * @throws IllegalArgumentException DOCUMENT ME!
      */
     public GTopo30Reader(final Object source, final Hints hints) throws IOException {
         super(source, hints);
@@ -324,26 +317,24 @@ public final class GTopo30Reader extends AbstractGridCoverage2DReader
         GeneralEnvelope requestedEnvelope = null;
         Rectangle dim = null;
         OverviewPolicy overviewPolicy = null;
+        // /////////////////////////////////////////////////////////////////////
+        //
+        // Checking params
+        //
+        // /////////////////////////////////////////////////////////////////////
         if (params != null) {
-            // /////////////////////////////////////////////////////////////////////
-            //
-            // Checking params
-            //
-            // /////////////////////////////////////////////////////////////////////
-            if (params != null) {
-                for (int i = 0; i < params.length; i++) {
-                    final ParameterValue<?> param = (ParameterValue<?>) params[i];
-                    final String name = param.getDescriptor().getName().getCode();
-                    if (name.equals(AbstractGridFormat.READ_GRIDGEOMETRY2D.getName().toString())) {
-                        final GridGeometry2D gg = (GridGeometry2D) param.getValue();
-                        requestedEnvelope = new GeneralEnvelope((Envelope) gg.getEnvelope2D());
-                        dim = gg.getGridRange2D().getBounds();
-                        continue;
-                    }
-                    if (name.equals(AbstractGridFormat.OVERVIEW_POLICY.getName().toString())) {
-                        overviewPolicy = (OverviewPolicy) param.getValue();
-                        continue;
-                    }
+            for (int i = 0; i < params.length; i++) {
+                final ParameterValue<?> param = (ParameterValue<?>) params[i];
+                final String name = param.getDescriptor().getName().getCode();
+                if (name.equals(AbstractGridFormat.READ_GRIDGEOMETRY2D.getName().toString())) {
+                    final GridGeometry2D gg = (GridGeometry2D) param.getValue();
+                    requestedEnvelope = new GeneralEnvelope((Envelope) gg.getEnvelope2D());
+                    dim = gg.getGridRange2D().getBounds();
+                    continue;
+                }
+                if (name.equals(AbstractGridFormat.OVERVIEW_POLICY.getName().toString())) {
+                    overviewPolicy = (OverviewPolicy) param.getValue();
+                    continue;
                 }
             }
         }

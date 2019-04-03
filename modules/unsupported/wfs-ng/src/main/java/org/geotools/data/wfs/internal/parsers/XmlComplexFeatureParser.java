@@ -25,8 +25,8 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.xml.namespace.QName;
 import org.geotools.data.DataSourceException;
-import org.geotools.data.complex.ComplexFeatureConstants;
-import org.geotools.data.complex.config.Types;
+import org.geotools.data.complex.feature.type.Types;
+import org.geotools.data.complex.util.ComplexFeatureConstants;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.AttributeBuilder;
 import org.geotools.feature.AttributeImpl;
@@ -251,6 +251,7 @@ public class XmlComplexFeatureParser extends XmlFeatureParser<FeatureType, Featu
      * @throws XmlPullParserException
      * @throws IOException
      */
+    @SuppressWarnings("PMD.EmptyWhileStmt")
     private ReturnAttribute parseNextAttribute(ComplexType complexType)
             throws XmlPullParserException, IOException {
 

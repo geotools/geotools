@@ -27,16 +27,16 @@ import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryCollection;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
+import org.opengis.feature.IllegalAttributeException;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 
-/** @source $URL$ */
 public class FeatureFlatTest extends TestCase {
 
     /** The logger for the default core module. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.defaultcore");
+            org.geotools.util.logging.Logging.getLogger(FeatureFlatTest.class);
 
     /** Feature on which to preform tests */
     private SimpleFeature testFeature = null;
@@ -69,22 +69,22 @@ public class FeatureFlatTest extends TestCase {
                         .equalsExact(gf.createPoint(new Coordinate(1, 2))));
         assertTrue(
                 "boolean retrieval and match",
-                ((Boolean) testFeature.getAttribute("testBoolean")).equals(new Boolean(true)));
+                ((Boolean) testFeature.getAttribute("testBoolean")).equals(Boolean.valueOf(true)));
         assertTrue(
                 "character retrieval and match",
                 ((Character) testFeature.getAttribute("testCharacter")).equals(new Character('t')));
         assertTrue(
                 "byte retrieval and match",
-                ((Byte) testFeature.getAttribute("testByte")).equals(new Byte("10")));
+                ((Byte) testFeature.getAttribute("testByte")).equals(Byte.valueOf("10")));
         assertTrue(
                 "short retrieval and match",
-                ((Short) testFeature.getAttribute("testShort")).equals(new Short("101")));
+                ((Short) testFeature.getAttribute("testShort")).equals(Short.valueOf("101")));
         assertTrue(
                 "integer retrieval and match",
-                ((Integer) testFeature.getAttribute("testInteger")).equals(new Integer(1002)));
+                ((Integer) testFeature.getAttribute("testInteger")).equals(Integer.valueOf(1002)));
         assertTrue(
                 "long retrieval and match",
-                ((Long) testFeature.getAttribute("testLong")).equals(new Long(10003)));
+                ((Long) testFeature.getAttribute("testLong")).equals(Long.valueOf(10003)));
         assertTrue(
                 "float retrieval and match",
                 ((Float) testFeature.getAttribute("testFloat")).equals(new Float(10000.4)));

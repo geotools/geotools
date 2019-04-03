@@ -25,7 +25,6 @@ import org.locationtech.jts.geom.CoordinateSequenceFactory;
  *
  * @author jeichar
  * @since 2.1.x
- * @source $URL$
  */
 public class LiteCoordinateSequenceFactory implements CoordinateSequenceFactory {
 
@@ -64,6 +63,11 @@ public class LiteCoordinateSequenceFactory implements CoordinateSequenceFactory 
     /** @param points */
     public CoordinateSequence create(double[] points, int dimension) {
         return new LiteCoordinateSequence(points, dimension);
+    }
+
+    @Override
+    public CoordinateSequence create(int size, int dimension, int measures) {
+        return new LiteCoordinateSequence((int) size, (int) dimension, (int) measures);
     }
 
     /**

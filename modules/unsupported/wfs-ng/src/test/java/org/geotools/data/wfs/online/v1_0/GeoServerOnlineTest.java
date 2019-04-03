@@ -31,7 +31,6 @@ import org.locationtech.jts.geom.Polygon;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 
-/** @source $URL$ */
 public class GeoServerOnlineTest extends AbstractWfsDataStoreOnlineTest {
 
     public static final String SERVER_URL =

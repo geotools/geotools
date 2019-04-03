@@ -21,6 +21,7 @@ import static org.geotools.referencing.crs.DefaultGeographicCRS.WGS84;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -30,6 +31,7 @@ import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.operation.transform.ConcatenatedTransform;
 import org.geotools.referencing.operation.transform.GeocentricTransform;
+import org.locationtech.jts.densify.Densifier;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryCollection;
@@ -63,9 +65,10 @@ import org.opengis.referencing.operation.TransformException;
  * <p>WARNING: this API is not finalized and is meant to be used by StreamingRenderer only
  *
  * @author Andrea Aime - OpenGeo
- * @source $URL$
  */
 public class ProjectionHandler {
+
+    public static final String ADVANCED_PROJECTION_DENSIFY = "advancedProjectionDensify";
 
     protected static final double EPS = 1e-6;
 
@@ -93,6 +96,10 @@ public class ProjectionHandler {
     protected SingleCRS geometryCRS;
 
     protected boolean noReprojection;
+
+    protected double densify = 0.0;
+
+    Map projectionParameters;
 
     /**
      * Initializes a projection handler
@@ -160,6 +167,19 @@ public class ProjectionHandler {
         checkReprojection();
     }
 
+    /**
+     * Set one of the supported projection parameters: - advancedProjectionDensify (double) if > 0
+     * enables densification on preprocessing with the given distance between points.
+     *
+     * @param projectionParameters
+     */
+    public void setProjectionParameters(Map projectionParameters) {
+        if (projectionParameters.containsKey(ADVANCED_PROJECTION_DENSIFY)) {
+            densify = (Double) projectionParameters.get(ADVANCED_PROJECTION_DENSIFY);
+        }
+        this.projectionParameters = projectionParameters;
+    }
+
     private void checkReprojection() throws FactoryException {
         geometryCRS = CRS.getHorizontalCRS(sourceCRS);
         CoordinateReferenceSystem renderingCRS = renderingEnvelope.getCoordinateReferenceSystem();
@@ -200,32 +220,33 @@ public class ProjectionHandler {
             // subsystem directly
             ReferencedEnvelope re = renderingEnvelope;
             List<ReferencedEnvelope> envelopes = new ArrayList<ReferencedEnvelope>();
-            envelopes.add(re);
+            addTransformedEnvelope(re, envelopes);
             if (CRS.getAxisOrder(renderingCRS) == CRS.AxisOrder.NORTH_EAST) {
                 if (re.getMinY() >= -180.0 && re.getMaxY() <= 180) {
-                    return Collections.singletonList(
-                            transformEnvelope(renderingEnvelope, sourceCRS));
+                    return envelopes;
                 }
                 // We need to split reprojected envelope and normalize it. To be lenient with
                 // situations in which the data is just broken (people saying 4326 just because they
                 // have no idea at all) we don't actually split, but add elements
                 if (re.getMinY() < -180) {
-                    envelopes.add(
+                    ReferencedEnvelope envelope =
                             new ReferencedEnvelope(
                                     re.getMinX(),
                                     re.getMaxX(),
                                     re.getMinY() + 360,
                                     Math.min(re.getMaxY() + 360, 180),
-                                    re.getCoordinateReferenceSystem()));
+                                    re.getCoordinateReferenceSystem());
+                    addTransformedEnvelope(envelope, envelopes);
                 }
                 if (re.getMaxY() > 180) {
-                    envelopes.add(
+                    ReferencedEnvelope envelope =
                             new ReferencedEnvelope(
                                     re.getMinX(),
                                     re.getMaxX(),
                                     Math.max(re.getMinY() - 360, -180),
                                     re.getMaxY() - 360,
-                                    re.getCoordinateReferenceSystem()));
+                                    re.getCoordinateReferenceSystem());
+                    addTransformedEnvelope(envelope, envelopes);
                 }
             } else {
                 if (re.getMinX() >= -180.0 && re.getMaxX() <= 180) {
@@ -236,26 +257,27 @@ public class ProjectionHandler {
                 // situations in which the data is just broken (people saying 4326 just because they
                 // have no idea at all) we don't actually split, but add elements
                 if (re.getMinX() < -180) {
-                    envelopes.add(
+                    ReferencedEnvelope envelope =
                             new ReferencedEnvelope(
                                     re.getMinX() + 360,
                                     Math.min(re.getMaxX() + 360, 180),
                                     re.getMinY(),
                                     re.getMaxY(),
-                                    re.getCoordinateReferenceSystem()));
+                                    re.getCoordinateReferenceSystem());
+                    addTransformedEnvelope(envelope, envelopes);
                 }
                 if (re.getMaxX() > 180) {
-                    envelopes.add(
+                    ReferencedEnvelope envelope =
                             new ReferencedEnvelope(
                                     Math.max(re.getMinX() - 360, -180),
                                     re.getMaxX() - 360,
                                     re.getMinY(),
                                     re.getMaxY(),
-                                    re.getCoordinateReferenceSystem()));
+                                    re.getCoordinateReferenceSystem());
+                    addTransformedEnvelope(envelope, envelopes);
                 }
             }
             mergeEnvelopes(envelopes);
-            reprojectEnvelopes(sourceCRS, envelopes);
             return envelopes;
         } else {
             if (!Double.isNaN(datelineX)
@@ -272,7 +294,7 @@ public class ProjectionHandler {
                 ReferencedEnvelope tx1 = transformEnvelope(re1, WGS84);
                 if (tx1 != null) {
                     tx1.expandToInclude(180, tx1.getMinY());
-                    result.add(tx1);
+                    addTransformedEnvelope(tx1, result);
                 }
                 ReferencedEnvelope re2 =
                         new ReferencedEnvelope(datelineX + EPS, maxX, minY, maxY, renderingCRS);
@@ -282,7 +304,7 @@ public class ProjectionHandler {
                         tx2.translate(-360, 0);
                     }
                     tx2.expandToInclude(-180, tx1.getMinY());
-                    result.add(tx2);
+                    addTransformedEnvelope(tx2, result);
                 }
 
                 mergeEnvelopes(result);
@@ -290,6 +312,14 @@ public class ProjectionHandler {
             } else {
                 return getSourceEnvelopes(renderingEnvelope);
             }
+        }
+    }
+
+    private void addTransformedEnvelope(ReferencedEnvelope re, List<ReferencedEnvelope> envelopes)
+            throws TransformException, FactoryException {
+        ReferencedEnvelope transformed = transformEnvelope(re, sourceCRS);
+        if (transformed != null) {
+            envelopes.add(transformed);
         }
     }
 
@@ -336,9 +366,28 @@ public class ProjectionHandler {
         return envelopes.stream().filter(e -> e != null).collect(Collectors.toList());
     }
 
+    /**
+     * Reprojects the given envelope to the target CRS, taking into account the ProjectionHandler
+     * constraints (valid area bounds, etc.).
+     *
+     * @param envelope envelope to reproject
+     * @param targetCRS target CRS
+     * @return reprojected envelope
+     * @throws TransformException
+     * @throws FactoryException
+     */
+    public ReferencedEnvelope getProjectedEnvelope(
+            ReferencedEnvelope envelope, CoordinateReferenceSystem targetCRS)
+            throws TransformException, FactoryException {
+        return transformEnvelope(envelope, targetCRS);
+    }
+
     protected ReferencedEnvelope transformEnvelope(
             ReferencedEnvelope envelope, CoordinateReferenceSystem targetCRS)
             throws TransformException, FactoryException {
+        if (CRS.equalsIgnoreMetadata(envelope.getCoordinateReferenceSystem(), targetCRS)) {
+            return envelope;
+        }
         try {
             if (validAreaBounds != null) {
                 ReferencedEnvelope validAreaInTargetCRS =
@@ -352,7 +401,10 @@ public class ProjectionHandler {
             ReferencedEnvelope transformed = envelope.transform(targetCRS, true, 10);
             ProjectionHandler handler =
                     ProjectionHandlerFinder.getHandler(
-                            new ReferencedEnvelope(targetCRS), DefaultGeographicCRS.WGS84, true);
+                            new ReferencedEnvelope(targetCRS),
+                            DefaultGeographicCRS.WGS84,
+                            true,
+                            projectionParameters);
             // does the target CRS have a strict notion of what's possible in terms of
             // valid coordinate ranges?
             if (handler == null || handler instanceof WrappingProjectionHandler) {
@@ -502,11 +554,11 @@ public class ProjectionHandler {
      */
     public Geometry preProcess(Geometry geometry) throws TransformException, FactoryException {
         // if there is no valid area, no cutting is required either
-        if (validAreaBounds == null) return geometry;
+        if (validAreaBounds == null) return densify(geometry);
 
         // if not reprojection is going on, we don't need to cut
         if (noReprojection) {
-            return geometry;
+            return densify(geometry);
         }
 
         Geometry mask;
@@ -522,7 +574,7 @@ public class ProjectionHandler {
             // if the geometry is within the valid area for this projection
             // just skip expensive cutting
             if (validAreaBounds.contains((Envelope) geWGS84)) {
-                return geometry;
+                return densify(geometry);
             }
 
             // we need to cut, first thing, we intersect the geometry envelope
@@ -541,7 +593,7 @@ public class ProjectionHandler {
                     ReferencedEnvelope translated = new ReferencedEnvelope(validAreaBounds);
                     translated.translate(-360, 0);
                     if (translated.contains((Envelope) geWGS84)) {
-                        return geometry;
+                        return densify(geometry);
                     }
                     envIntWgs84 = translated.intersection(geWGS84);
                 } else if (validAreaBounds.contains(
@@ -549,7 +601,7 @@ public class ProjectionHandler {
                     ReferencedEnvelope translated = new ReferencedEnvelope(validAreaBounds);
                     translated.translate(360, 0);
                     if (translated.contains((Envelope) geWGS84)) {
-                        return geometry;
+                        return densify(geometry);
                     }
                     envIntWgs84 = translated.intersection(geWGS84);
                 }
@@ -564,7 +616,7 @@ public class ProjectionHandler {
             // if the geometry is within the valid area for this projection
             // just skip expensive cutting
             if (validaAreaTester.contains(JTS.toGeometry(geWGS84))) {
-                return geometry;
+                return densify(geometry);
             }
 
             // we need to cut, first thing, we intersect the geometry envelope
@@ -588,7 +640,26 @@ public class ProjectionHandler {
             mask = JTS.transform(maskWgs84, CRS.findMathTransform(WGS84, geometryCRS));
         }
 
-        return intersect(geometry, mask, geometryCRS);
+        return densify(intersect(geometry, mask, geometryCRS));
+    }
+
+    /**
+     * Densifies the given geometry using the current densification configuration.
+     *
+     * <p>It returns the original geometry if densification is not enabled.
+     *
+     * @param geometry
+     * @return
+     */
+    protected Geometry densify(Geometry geometry) {
+        if (geometry != null && densify > 0.0) {
+            try {
+                geometry = Densifier.densify(geometry, densify);
+            } catch (Throwable t) {
+                LOGGER.warning("Cannot densify geometry");
+            }
+        }
+        return geometry;
     }
 
     protected Geometry intersect(

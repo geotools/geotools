@@ -28,13 +28,13 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.AbstractIdentifiedObject;
 import org.geotools.referencing.operation.transform.ConcatenatedTransform;
 import org.geotools.referencing.wkt.Formatter;
-import org.geotools.resources.Classes;
-import org.geotools.resources.UnmodifiableArrayList;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
+import org.geotools.util.Classes;
+import org.geotools.util.UnmodifiableArrayList;
 import org.opengis.metadata.quality.PositionalAccuracy;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -54,7 +54,6 @@ import org.opengis.referencing.operation.Transformation;
  * system associated with the concatenated operation.
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
@@ -85,10 +84,7 @@ public class DefaultConcatenatedOperation extends AbstractCoordinateOperation
      */
     public DefaultConcatenatedOperation(
             final Map<String, ?> properties, final CoordinateOperation[] operations) {
-        this(
-                properties,
-                new ArrayList<SingleOperation>(operations != null ? operations.length : 4),
-                operations);
+        this(properties, new ArrayList<>(operations.length), operations);
     }
 
     /**
@@ -106,11 +102,7 @@ public class DefaultConcatenatedOperation extends AbstractCoordinateOperation
             final CoordinateOperation[] operations,
             final MathTransformFactory factory)
             throws FactoryException {
-        this(
-                properties,
-                new ArrayList<SingleOperation>(operations != null ? operations.length : 4),
-                operations,
-                factory);
+        this(properties, new ArrayList<>(operations.length), operations, factory);
     }
 
     /**
@@ -321,6 +313,7 @@ public class DefaultConcatenatedOperation extends AbstractCoordinateOperation
 
     /** Returns a hash code value for this concatenated operation. */
     @Override
+    @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int hashCode() {
         return operations.hashCode() ^ (int) serialVersionUID;
     }

@@ -28,11 +28,11 @@ import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.OverviewPolicy;
-import org.geotools.factory.Hints;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.test.TestData;
+import org.geotools.util.factory.Hints;
 import org.junit.Test;
 import org.junit.internal.AssumptionViolatedException;
 import org.opengis.geometry.Envelope;
@@ -45,7 +45,6 @@ import org.opengis.referencing.operation.MathTransform;
  * @author Daniele Romagnoli, GeoSolutions
  * @author Simone Giannecchini (simboss), GeoSolutions
  *     <p>Testing {@link org.geotools.coverageio.jp2k.JP2KReader}
- * @source $URL$
  */
 public final class JP2KTest extends BaseJP2K {
 

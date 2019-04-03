@@ -1,2 +1,2 @@
-org.geotools.referencing.factory.epsg.UnnamedExtension
-org.geotools.referencing.factory.epsg.EsriExtension
+org.geotools.referencing.epsg.esri.UnnamedExtension
+org.geotools.referencing.epsg.esri.EsriExtension

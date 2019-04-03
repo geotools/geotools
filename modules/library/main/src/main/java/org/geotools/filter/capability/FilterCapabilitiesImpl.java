@@ -26,7 +26,6 @@ import org.opengis.filter.capability.TemporalCapabilities;
  * Implementation of the FilterCapabilities interface.
  *
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL$
  */
 public class FilterCapabilitiesImpl implements FilterCapabilities {
 

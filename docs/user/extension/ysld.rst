@@ -12,7 +12,7 @@ The **gt-ysld** module provides a YAML parser/encoder for GeoTools style objects
 References:
 
 * :geoserver:`YSLD <styling/ysld/index>` (GeoServer User Guide)
-* :doc:`gt-api style layer descriptor </library/api/sld>` (interfaces)
+* :doc:`gt-main style layer descriptor </library/main/sld>` (interfaces)
 * :doc:`gt-opengis symbology encoding</library/opengis/se>` (interfaces)
 * :doc:`style </tutorial/map/style>` (tutorial)
 * :doc:`gt-render style </library/render/style>` (code examples)
@@ -619,7 +619,7 @@ Additional hints for working with graphic fills:
 Using YSLD
 ^^^^^^^^^^
 
-YSLD relies on the :doc:`gt-api style layer descriptor </library/api/sld>`. Style files are parsed to a StyledLayerDescripter object, which can then be used by the GeoTools style renderer.
+YSLD relies on the :doc:`gt-main style layer descriptor </library/main/sld>`. Style files are parsed to a StyledLayerDescripter object, which can then be used by the GeoTools style renderer.
 
 To read a YSLD style:
 

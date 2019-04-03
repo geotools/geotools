@@ -33,7 +33,7 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.geotools.data.arcgisrest.schema.catalog.Error_;
+import org.geotools.data.arcgisrest.schema.catalog.Error__1;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.geometry.jts.GeometryBuilder;
@@ -232,7 +232,7 @@ public class GeoJSONParser implements SimpleFeatureIterator {
         this.inFeatureCollection = false;
     }
 
-    /** Helper funciton to convert a List of double to an array of doubles */
+    /** Helper function to convert a List of double to an array of doubles */
     public static double[] listToArray(List<Double> coords) {
 
         double[] arr = new double[coords.size()];
@@ -619,7 +619,7 @@ public class GeoJSONParser implements SimpleFeatureIterator {
      */
     public IOException parseError() throws IOException {
 
-        Error_ err = new Error_();
+        Error__1 err = new Error__1();
 
         try {
             this.reader.beginObject();

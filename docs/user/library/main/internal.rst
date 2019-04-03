@@ -2,7 +2,7 @@ Internals
 ---------
 
 The gt-main class holds a number of internal and abstract classes useful to those implementing support for additional DataStore formats.
-These classes should be moved to gt-data when time permits.
+These classes should be moved to gt-main when time permits.
 
 The gt-main module provides many well known classes covered in the public documentation:
 
@@ -32,7 +32,7 @@ The **AbstractDataStore** is an old base class for DataStore implementations, cu
 
 .. image:: /images/AbstractDataStore.PNG
 
-This class is helpful starting point, however we have taken the lessons learned and wrapped them up in ContentDataStore covered in the :doc:`gt-data <../data/internal>` documentation.
+This class is helpful starting point, however we have taken the lessons learned and wrapped them up in ContentDataStore covered in the :doc:`gt-main <../data/internal>` documentation.
 
 The following classes are related:
 
@@ -185,8 +185,7 @@ Wrappers used by DataUtilities to morph to SimpleFeatureSource, SimpleFeatureCol
 Open Web Services
 ^^^^^^^^^^^^^^^^^
 
-Some of the data structures used by open web services such as WMS and WFS are defined here, when we are happy with them
-they will be published as part of gt-api.
+Some of the data structures used by open web services such as WMS and WFS are defined here.
 
 XML
 ^^^
@@ -195,3 +194,12 @@ Some of the SAX, DOM and Transform classes for handling are defined in gt-main.
 
 Their use for XML and GML handling will be covered in gt-xml.
 
+Style
+^^^^^
+
+The gt-main interfaces for Style are a straight extension of the gt-opengis interfaces for mutability. This does come with a drawback; we need to ask you to be careful of thread safety.
+
+Filter
+^^^^^^
+
+The Filter classes in gt-main are deprecated; and have been so since GeoTools 2.3. We are having trouble removing all the existing test cases that depend on these old Filter definitions.

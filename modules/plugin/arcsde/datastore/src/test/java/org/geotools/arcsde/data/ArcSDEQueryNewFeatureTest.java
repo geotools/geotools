@@ -41,10 +41,6 @@ import org.opengis.filter.spatial.BBOX;
  * Test suite for the {@link ArcSDEQuery} query wrapper
  *
  * @author Gabriel Roldan
- * @source $URL$
- *     http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/test/java
- *     /org/geotools/arcsde/data/ArcSDEQueryTest.java $
- * @version $Revision: 1.9 $
  */
 public class ArcSDEQueryNewFeatureTest {
 
@@ -98,7 +94,7 @@ public class ArcSDEQueryNewFeatureTest {
         // Get current extent of all the features
         ReferencedEnvelope oldBounds =
                 this.dstore.getFeatureSource(ft.getName().getLocalPart()).getBounds();
-        System.out.println(oldBounds);
+        // System.out.println(oldBounds);
 
         ISession session = testData.getConnectionPool().getSession();
 
@@ -126,7 +122,7 @@ public class ArcSDEQueryNewFeatureTest {
 
         // Output result count
         int resultCount = queryFiltered.calculateResultCount();
-        System.out.println(String.format("Result count : %d ", resultCount));
+        // System.out.println(String.format("Result count : %d ", resultCount));
         queryFiltered.close();
 
         //
@@ -146,7 +142,7 @@ public class ArcSDEQueryNewFeatureTest {
         // Output bounding box of all the features
         ReferencedEnvelope newBounds =
                 this.dstore.getFeatureSource(ft.getName().getLocalPart()).getBounds();
-        System.out.println(newBounds);
+        // System.out.println(newBounds);
 
         ArcSDEQuery newQueryFiltered =
                 ArcSDEQuery.createQuery(
@@ -158,7 +154,7 @@ public class ArcSDEQueryNewFeatureTest {
 
         // Output the updated result count
         int newResultCount = newQueryFiltered.calculateResultCount();
-        System.out.println(String.format("New result count : %d", newResultCount));
+        // System.out.println(String.format("New result count : %d", newResultCount));
         Assert.assertEquals(resultCount + 1, newResultCount);
 
         newQueryFiltered.close();

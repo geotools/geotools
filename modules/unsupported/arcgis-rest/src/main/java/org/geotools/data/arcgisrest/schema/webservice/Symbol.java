@@ -1,97 +1,111 @@
+
 package org.geotools.data.arcgisrest.schema.webservice;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
 
 public class Symbol {
 
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("color")
     @Expose
     private Object color;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("outline")
     @Expose
     private Outline outline;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("type")
     @Expose
     private String type;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("style")
     @Expose
     private String style;
 
     /**
+     * 
      * (Required)
-     *
-     * @return The color
+     * 
      */
     public Object getColor() {
         return color;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param color The color
+     * 
      */
     public void setColor(Object color) {
         this.color = color;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The outline
+     * 
      */
     public Outline getOutline() {
         return outline;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param outline The outline
+     * 
      */
     public void setOutline(Outline outline) {
         this.outline = outline;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The type
+     * 
      */
     public String getType() {
         return type;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param type The type
+     * 
      */
     public void setType(String type) {
         this.type = type;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The style
+     * 
      */
     public String getStyle() {
         return style;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param style The style
+     * 
      */
     public void setStyle(String style) {
         this.style = style;
@@ -99,17 +113,40 @@ public class Symbol {
 
     @Override
     public String toString() {
-        return ToStringBuilder.reflectionToString(this);
+        StringBuilder sb = new StringBuilder();
+        sb.append(Symbol.class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this))).append('[');
+        sb.append("color");
+        sb.append('=');
+        sb.append(((this.color == null)?"<null>":this.color));
+        sb.append(',');
+        sb.append("outline");
+        sb.append('=');
+        sb.append(((this.outline == null)?"<null>":this.outline));
+        sb.append(',');
+        sb.append("type");
+        sb.append('=');
+        sb.append(((this.type == null)?"<null>":this.type));
+        sb.append(',');
+        sb.append("style");
+        sb.append('=');
+        sb.append(((this.style == null)?"<null>":this.style));
+        sb.append(',');
+        if (sb.charAt((sb.length()- 1)) == ',') {
+            sb.setCharAt((sb.length()- 1), ']');
+        } else {
+            sb.append(']');
+        }
+        return sb.toString();
     }
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder()
-                .append(color)
-                .append(outline)
-                .append(type)
-                .append(style)
-                .toHashCode();
+        int result = 1;
+        result = ((result* 31)+((this.outline == null)? 0 :this.outline.hashCode()));
+        result = ((result* 31)+((this.style == null)? 0 :this.style.hashCode()));
+        result = ((result* 31)+((this.color == null)? 0 :this.color.hashCode()));
+        result = ((result* 31)+((this.type == null)? 0 :this.type.hashCode()));
+        return result;
     }
 
     @Override
@@ -121,11 +158,7 @@ public class Symbol {
             return false;
         }
         Symbol rhs = ((Symbol) other);
-        return new EqualsBuilder()
-                .append(color, rhs.color)
-                .append(outline, rhs.outline)
-                .append(type, rhs.type)
-                .append(style, rhs.style)
-                .isEquals();
+        return (((((this.outline == rhs.outline)||((this.outline!= null)&&this.outline.equals(rhs.outline)))&&((this.style == rhs.style)||((this.style!= null)&&this.style.equals(rhs.style))))&&((this.color == rhs.color)||((this.color!= null)&&this.color.equals(rhs.color))))&&((this.type == rhs.type)||((this.type!= null)&&this.type.equals(rhs.type))));
     }
+
 }

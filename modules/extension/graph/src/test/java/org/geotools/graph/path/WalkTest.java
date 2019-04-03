@@ -30,7 +30,6 @@ import org.geotools.graph.traverse.GraphWalker;
 import org.geotools.graph.traverse.basic.BasicGraphTraversal;
 import org.geotools.graph.traverse.standard.NoBifurcationIterator;
 
-/** @source $URL$ */
 public class WalkTest extends TestCase {
 
     private GraphBuilder m_builder;

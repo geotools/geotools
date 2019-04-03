@@ -34,12 +34,10 @@ import org.locationtech.jts.geom.Polygon;
 /**
  * Converts a JTS geometry into the equivalent MDSYS.SDO_GEOMETRY SQL syntax. Useful for non
  * prepared statement based dialects and for debugging purposes
- *
- * @source $URL$
  */
 public class SDOSqlDumper {
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.data.oracle.sdo");
+            org.geotools.util.logging.Logging.getLogger(SDOSqlDumper.class);
 
     /**
      * Converts JTS Geometry to a String version of a SDO Geometry. This should move to a utility
@@ -49,7 +47,6 @@ public class SDOSqlDumper {
      * <p>TODO: Multi eometries
      *
      * @param geometry The JTS Geometry to convert.
-     * @param srid DOCUMENT ME!
      * @return A String representation of the SDO Geometry.
      */
     public static String toSDOGeom(Geometry geometry, int srid) {
@@ -106,7 +103,6 @@ public class SDOSqlDumper {
      * encoded as a 2D geometry.
      *
      * @param line The line to encode.
-     * @param srid DOCUMENT ME!
      * @return An SDO SQL geometry object construction statement
      */
     private static String toSDOGeom(LineString line, int srid) {
@@ -159,7 +155,6 @@ public class SDOSqlDumper {
      * encoded as a 2D geometry.
      *
      * @param point The point to encode.
-     * @param srid DOCUMENT ME!
      * @return An SDO SQL geometry object construction statement
      */
     private static String toSDOGeom(Point point, int srid) {
@@ -201,7 +196,6 @@ public class SDOSqlDumper {
      * encoded as a 2D geometry.
      *
      * @param polygon The polygon to encode.
-     * @param srid DOCUMENT ME!
      * @return An SDO SQL geometry object construction statement
      */
     private static String toSDOGeom(Polygon polygon, int srid) {
@@ -281,7 +275,6 @@ public class SDOSqlDumper {
      * Converts an Envelope in an SDO SQL geometry construction statement.
      *
      * @param envelope The envelope to encode.
-     * @param srid DOCUMENT ME!
      * @return An SDO SQL geometry object construction statement
      */
     private static String toSDOGeom(Envelope envelope, int srid) {

@@ -28,6 +28,8 @@ import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 import javax.measure.Unit;
+import org.geotools.metadata.i18n.LoggingKeys;
+import org.geotools.metadata.i18n.Loggings;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.cs.AbstractCS;
 import org.geotools.referencing.factory.ReferencingFactory;
@@ -36,8 +38,6 @@ import org.geotools.referencing.operation.matrix.XMatrix;
 import org.geotools.referencing.operation.projection.MapProjection; // For javadoc
 import org.geotools.referencing.operation.transform.AbstractMathTransform;
 import org.geotools.referencing.operation.transform.ConcatenatedTransform;
-import org.geotools.resources.i18n.LoggingKeys;
-import org.geotools.resources.i18n.Loggings;
 import org.geotools.util.Utilities;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.ParameterDescriptor;
@@ -68,24 +68,12 @@ import si.uom.SI;
  * conversion. For example if only false easting/northing differ, then the coordinate conversion is
  * simply a translation.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
 final class ProjectionAnalyzer {
     /** The map projection. */
     private final Conversion projection;
-
-    /**
-     * The affine transform applied on geographic coordinates before the projection. In Geotools
-     * {@link MapProjection} implementation, this is the axis swapping and scaling needed in order
-     * to get standard (<var>longitude</var>,<var>latitude</var>) axis in degrees. Can be {@code
-     * null} if none.
-     *
-     * <p>This is not needed for {@code ProjectionAnalyzer} working, but is stored anyway for
-     * debugging purpose.
-     */
-    private final Matrix geographicScale;
 
     /**
      * The affine transform applied on projected coordinates after the projection. In Geotools
@@ -176,7 +164,6 @@ final class ProjectionAnalyzer {
         if (group != null) {
             parameters = group.values();
         }
-        this.geographicScale = geographicScale;
         this.projectedScale = projectedScale;
         this.transform = candidate;
     }

@@ -26,7 +26,6 @@ import java.math.BigDecimal;
  * <p>The implementations in this class are robust using the Java type BigDecimal.
  *
  * @author Sanjay Jena
- * @source $URL$
  */
 public class ExactDoubleOperation {
 
@@ -38,7 +37,7 @@ public class ExactDoubleOperation {
      * @return Sum of the two values
      */
     public static double add(double d1, double d2) {
-        return (new BigDecimal(d1)).add(new BigDecimal(d2)).doubleValue();
+        return (BigDecimal.valueOf(d1)).add(BigDecimal.valueOf(d2)).doubleValue();
     }
 
     /**
@@ -49,7 +48,7 @@ public class ExactDoubleOperation {
      * @return Subtraction d1 - d2
      */
     public static double subtract(double d1, double d2) {
-        return (new BigDecimal(d1)).subtract(new BigDecimal(d2)).doubleValue();
+        return (BigDecimal.valueOf(d1)).subtract(BigDecimal.valueOf(d2)).doubleValue();
     }
 
     /**
@@ -60,7 +59,7 @@ public class ExactDoubleOperation {
      * @return Product of the two values
      */
     public static double mult(double d1, double d2) {
-        return (new BigDecimal(d1)).multiply(new BigDecimal(d2)).doubleValue();
+        return (BigDecimal.valueOf(d1)).multiply(BigDecimal.valueOf(d2)).doubleValue();
     }
 
     /**
@@ -71,6 +70,6 @@ public class ExactDoubleOperation {
      * @return Division of the two values
      */
     public static double div(double d1, double d2) {
-        return (new BigDecimal(d1)).divide(new BigDecimal(d2)).doubleValue();
+        return (BigDecimal.valueOf(d1)).divide(BigDecimal.valueOf(d2)).doubleValue();
     }
 }

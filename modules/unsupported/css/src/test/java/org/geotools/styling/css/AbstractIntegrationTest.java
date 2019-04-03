@@ -25,6 +25,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.List;
+import java.util.logging.Level;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import org.apache.commons.io.FileUtils;
@@ -32,11 +33,11 @@ import org.apache.commons.io.FilenameUtils;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.sld.SLDConfiguration;
 import org.geotools.styling.NamedLayer;
-import org.geotools.styling.SLDParser;
-import org.geotools.styling.SLDTransformer;
 import org.geotools.styling.StyleFactory;
 import org.geotools.styling.StyledLayerDescriptor;
-import org.geotools.xml.Parser;
+import org.geotools.xml.styling.SLDParser;
+import org.geotools.xml.styling.SLDTransformer;
+import org.geotools.xsd.Parser;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -68,7 +69,7 @@ public abstract class AbstractIntegrationTest extends CssBaseTest {
     @Test
     public void translateTest() throws Exception {
         String css = FileUtils.readFileToString(file);
-        if (!exclusiveRulesEnabled) {
+        if (!exclusiveRulesEnabled && !css.contains("@mode")) {
             css = "@mode \"Simple\";\n" + css;
         }
 
@@ -114,17 +115,16 @@ public abstract class AbstractIntegrationTest extends CssBaseTest {
 
         List validationErrors = validateSLD(actualSld);
         if (!validationErrors.isEmpty()) {
-            System.out.println("Validation failed, errors are: ");
+            LOGGER.severe("Validation failed, errors are: ");
             for (Object e : validationErrors) {
                 if (e instanceof SAXParseException) {
                     SAXParseException se = (SAXParseException) e;
-                    System.out.println(
-                            "line " + se.getLineNumber() + ": " + se.getLocalizedMessage());
+                    LOGGER.severe("line " + se.getLineNumber() + ": " + se.getLocalizedMessage());
                 } else {
-                    System.out.println(e);
+                    LOGGER.log(Level.SEVERE, "Other exception type", e);
                 }
             }
-            System.err.println(
+            LOGGER.severe(
                     "Validation failed, the two files are: "
                             + sldFile.getAbsolutePath()
                             + " "
@@ -154,7 +154,7 @@ public abstract class AbstractIntegrationTest extends CssBaseTest {
                 }
             }
 
-            System.err.println(message);
+            // System.err.println(message);
             fail(message);
         }
     }

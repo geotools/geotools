@@ -24,13 +24,12 @@ import java.io.IOException;
 import javax.xml.parsers.ParserConfigurationException;
 import org.apache.commons.io.IOUtils;
 import org.geotools.styling.*;
-import org.geotools.xml.Configuration;
-import org.geotools.xml.Parser;
+import org.geotools.xsd.Configuration;
+import org.geotools.xsd.Parser;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.xml.sax.SAXException;
 
-/** @source $URL$ */
 public class SLDTest {
 
     @Test
@@ -72,7 +71,7 @@ public class SLDTest {
     public void testValidateTransformation() throws Exception {
         Parser parser = new Parser(new SLDConfiguration());
 
-        // if a validato error occurs it will blow up with an exception
+        // if a validation error occurs it will blow up with an exception
         parser.validate(getClass().getResourceAsStream("gcontours.sld"));
     }
 
@@ -80,8 +79,16 @@ public class SLDTest {
     public void testValidatePerpendicularOffset() throws Exception {
         Parser parser = new Parser(new SLDConfiguration());
 
-        // if a validato error occurs it will blow up with an exception
+        // if a validation error occurs it will blow up with an exception
         parser.validate(getClass().getResourceAsStream("linePerpendicularOffset.sld"));
+    }
+
+    @Test
+    public void testValidateGammaValueExpression() throws Exception {
+        Parser parser = new Parser(new SLDConfiguration());
+
+        // if a validation error occurs it will blow up with an exception
+        parser.validate(getClass().getResourceAsStream("gammaValueExpression.sld"));
     }
 
     // Currently disabled, as this does not match either the current or previous behavior

@@ -22,7 +22,7 @@ import it.geosolutions.jaiext.classifier.LinearColorMapElement;
 import it.geosolutions.jaiext.piecewise.PiecewiseUtilities;
 import it.geosolutions.jaiext.range.Range;
 import it.geosolutions.jaiext.range.RangeFactory;
-import java.awt.Color;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.MissingResourceException;
@@ -32,6 +32,7 @@ import org.geotools.renderer.style.ExpressionExtractor;
 import org.geotools.styling.ColorMap;
 import org.geotools.styling.ColorMapEntry;
 import org.geotools.styling.RasterSymbolizer;
+import org.geotools.util.SuppressFBWarnings;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
 
@@ -42,7 +43,6 @@ import org.opengis.filter.expression.Literal;
  * <p>This class is not intended to be thread safe.
  *
  * @author Simone Giannecchini, GeoSolutions
- * @source $URL$
  */
 public class SLDColorMapBuilder {
 
@@ -107,8 +107,8 @@ public class SLDColorMapBuilder {
      * <p>In case one would want to unset the default color, he should simply call this method with
      * a <code>null</code> value.
      *
-     * @param the default {@link Color} to use when a value falls outside the provided color map
-     *     elements.
+     * @param defaultColor The default {@link Color} to use when a value falls outside the provided
+     *     color map elements.
      * @uml.property name="gapsColor"
      */
     public void setGapsColor(final Color defaultColor) {
@@ -478,6 +478,7 @@ public class SLDColorMapBuilder {
      * @return
      * @throws NumberFormatException
      */
+    @SuppressFBWarnings("NP_NULL_PARAM_DEREF")
     private static Color getColor(ColorMapEntry entry) throws NumberFormatException {
         ColorMapUtilities.ensureNonNull("ColorMapEntry", entry);
         Expression color = entry.getColor();
@@ -521,6 +522,10 @@ public class SLDColorMapBuilder {
             opacity = ExpressionExtractor.extractCqlExpressions(opacityExp);
             opacityValue = opacity.evaluate(null, Double.class);
         }
+        if (opacityValue == null) {
+            throw new IllegalArgumentException(
+                    "Opacity value null or could not be converted to a double" + opacity);
+        }
         if ((opacityValue.doubleValue() - 1) > 0 || opacityValue.doubleValue() < 0) {
             throw new IllegalArgumentException(
                     Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "Opacity", opacityValue));
@@ -532,11 +537,12 @@ public class SLDColorMapBuilder {
      * @param entry
      * @return
      */
+    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH")
     private static double getQuantity(ColorMapEntry entry) {
         ColorMapUtilities.ensureNonNull("ColorMapEntry", entry);
         Expression quantity = entry.getQuantity();
         ColorMapUtilities.ensureNonNull("quantity", quantity);
-        Double quantityString = (Double) quantity.evaluate(null, Double.class);
+        Double quantityString = quantity.evaluate(null, Double.class);
         if (quantityString == null && quantity instanceof Literal) {
             String quantityExp = quantity.evaluate(null, String.class);
             quantity = ExpressionExtractor.extractCqlExpressions(quantityExp);
@@ -690,8 +696,8 @@ public class SLDColorMapBuilder {
         for (int i = 0; i < preservedValuesElement.length; i++) {
             preservedValuesElement[i] =
                     LinearColorMapElement.create(
-                            org.geotools.resources.i18n.Vocabulary.format(
-                                            org.geotools.resources.i18n.VocabularyKeys.NODATA)
+                            org.geotools.metadata.i18n.Vocabulary.format(
+                                            org.geotools.metadata.i18n.VocabularyKeys.NODATA)
                                     + Integer.toString(i + 1),
                             preservedValuesColor,
                             RangeFactory.create(preservedValues.get(i), preservedValues.get(i)),

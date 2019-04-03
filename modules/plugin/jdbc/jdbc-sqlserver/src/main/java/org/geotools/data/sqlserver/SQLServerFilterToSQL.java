@@ -41,7 +41,6 @@ import org.opengis.filter.spatial.Overlaps;
 import org.opengis.filter.spatial.Touches;
 import org.opengis.filter.spatial.Within;
 
-/** @source $URL$ */
 public class SQLServerFilterToSQL extends FilterToSQL {
 
     @Override

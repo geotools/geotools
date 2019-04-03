@@ -16,7 +16,7 @@
  */
 package org.geotools.coverage.grid;
 
-import org.geotools.resources.i18n.Errors;
+import org.geotools.metadata.i18n.Errors;
 
 /**
  * Thrown by {@link GeneralGridGeometry} when a grid geometry is in an invalid state. For example
@@ -24,7 +24,6 @@ import org.geotools.resources.i18n.Errors;
  * invoked while the grid geometry were built with a null {@link
  * org.opengis.coverage.grid.GridRange}.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @since 2.1

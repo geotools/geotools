@@ -56,7 +56,6 @@ import org.opengis.referencing.operation.Projection;
  * </TD></TR></TABLE>
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
@@ -238,6 +237,7 @@ public class DefaultProjectedCRS extends AbstractDerivedCRS implements Projected
      *     versions of this class.
      */
     @Override
+    @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int hashCode() {
         return (int) serialVersionUID ^ super.hashCode();
     }

@@ -26,11 +26,11 @@ import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.processing.CoverageProcessingException;
-import org.geotools.factory.Hints;
 import org.geotools.renderer.i18n.ErrorKeys;
 import org.geotools.renderer.i18n.Errors;
 import org.geotools.renderer.i18n.Vocabulary;
 import org.geotools.renderer.i18n.VocabularyKeys;
+import org.geotools.util.factory.Hints;
 import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.util.InternationalString;
 
@@ -47,7 +47,6 @@ import org.opengis.util.InternationalString;
  * not be touched.
  *
  * @author Simone Giannecchini, GeoSolutions.
- * @source $URL$
  */
 public abstract class BaseCoverageProcessingNode implements CoverageProcessingNode {
 
@@ -243,7 +242,7 @@ public abstract class BaseCoverageProcessingNode implements CoverageProcessingNo
                 if (error == null) output = (GridCoverage2D) result;
             } catch (Throwable t) {
                 // something bad happened
-                t.printStackTrace();
+                java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", t);
                 output = null;
                 error = t;
             }
@@ -548,7 +547,7 @@ public abstract class BaseCoverageProcessingNode implements CoverageProcessingNo
      * IllegalArgumentException} exception.
      *
      * @param source the object to check.
-     * @param node the operation we are trying to run.
+     * @param name the operation we are trying to run.
      */
     protected static void ensureSourceNotNull(final Object source, final String name) {
         if (source == null)
@@ -561,7 +560,7 @@ public abstract class BaseCoverageProcessingNode implements CoverageProcessingNo
      * IllegalArgumentException} exception.
      *
      * @param source the object to check.
-     * @param node the operation we are trying to run.
+     * @param name the operation we are trying to run.
      */
     protected static void ensureNotNull(final Object source, final String name) {
         if (source == null)

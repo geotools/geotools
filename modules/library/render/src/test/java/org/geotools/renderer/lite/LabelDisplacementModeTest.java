@@ -19,7 +19,6 @@ package org.geotools.renderer.lite;
 import static java.awt.RenderingHints.KEY_ANTIALIASING;
 import static java.awt.RenderingHints.VALUE_ANTIALIAS_ON;
 
-import java.awt.Font;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -33,11 +32,10 @@ import org.geotools.image.test.ImageAssert;
 import org.geotools.map.FeatureLayer;
 import org.geotools.map.MapContent;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
-import org.geotools.renderer.style.FontCache;
 import org.geotools.styling.Style;
-import org.geotools.test.TestData;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
 import org.opengis.feature.simple.SimpleFeature;
@@ -48,23 +46,18 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * multi-layer map
  *
  * @author nprigour
- * @source $URL$
  */
 public class LabelDisplacementModeTest extends TestCase {
 
     private static final long TIME = 5000;
     SimpleFeatureSource fs;
     SimpleFeatureSource fs2;
+
     ReferencedEnvelope bounds;
 
     @Override
     protected void setUp() throws Exception {
-        // register a cross platform test
-        FontCache.getDefaultInstance()
-                .registerFont(
-                        Font.createFont(
-                                Font.TRUETYPE_FONT,
-                                TestData.getResource(this, "Vera.ttf").openStream()));
+        RendererBaseTest.setupVeraFonts();
 
         bounds = new ReferencedEnvelope(0, 10, 0, 10, null);
 
@@ -149,7 +142,7 @@ public class LabelDisplacementModeTest extends TestCase {
         // File("./src/test/resources/org/geotools/renderer/lite/test-data/displacementMode/textDisplacementStandard1.png"));
         String refPath =
                 "./src/test/resources/org/geotools/renderer/lite/test-data/displacementMode/textDisplacementStandard.png";
-        ImageAssert.assertEquals(new File(refPath), image, 0);
+        ImageAssert.assertEquals(new File(refPath), image, 800);
     }
 
     public void testDisplacementNorth() throws Exception {
@@ -159,7 +152,7 @@ public class LabelDisplacementModeTest extends TestCase {
         // File("./src/test/resources/org/geotools/renderer/lite/test-data/displacementMode/textDisplacementVerticalBoth1.png"));
         String refPath =
                 "./src/test/resources/org/geotools/renderer/lite/test-data/displacementMode/textDisplacementN.png";
-        ImageAssert.assertEquals(new File(refPath), image, 0);
+        ImageAssert.assertEquals(new File(refPath), image, 800);
     }
 
     public void testDisplacementSouth() throws Exception {
@@ -169,7 +162,7 @@ public class LabelDisplacementModeTest extends TestCase {
         // File("./src/test/resources/org/geotools/renderer/lite/test-data/displacementMode/textDisplacementVerticalBoth1.png"));
         String refPath =
                 "./src/test/resources/org/geotools/renderer/lite/test-data/displacementMode/textDisplacementS.png";
-        ImageAssert.assertEquals(new File(refPath), image, 0);
+        ImageAssert.assertEquals(new File(refPath), image, 800);
     }
 
     public void testDisplacementEast() throws Exception {
@@ -179,7 +172,7 @@ public class LabelDisplacementModeTest extends TestCase {
         // File("./src/test/resources/org/geotools/renderer/lite/test-data/displacementMode/textDisplacementVerticalBoth1.png"));
         String refPath =
                 "./src/test/resources/org/geotools/renderer/lite/test-data/displacementMode/textDisplacementE.png";
-        ImageAssert.assertEquals(new File(refPath), image, 0);
+        ImageAssert.assertEquals(new File(refPath), image, 800);
     }
 
     public void testDisplacementWest() throws Exception {
@@ -189,7 +182,7 @@ public class LabelDisplacementModeTest extends TestCase {
         // File("./src/test/resources/org/geotools/renderer/lite/test-data/displacementMode/textDisplacementVerticalBoth1.png"));
         String refPath =
                 "./src/test/resources/org/geotools/renderer/lite/test-data/displacementMode/textDisplacementW.png";
-        ImageAssert.assertEquals(new File(refPath), image, 0);
+        ImageAssert.assertEquals(new File(refPath), image, 800);
     }
 
     public void testDisplacementNE() throws Exception {
@@ -199,7 +192,7 @@ public class LabelDisplacementModeTest extends TestCase {
         // File("./src/test/resources/org/geotools/renderer/lite/test-data/displacementMode/textDisplacementVerticalBoth1.png"));
         String refPath =
                 "./src/test/resources/org/geotools/renderer/lite/test-data/displacementMode/textDisplacementNE.png";
-        ImageAssert.assertEquals(new File(refPath), image, 0);
+        ImageAssert.assertEquals(new File(refPath), image, 800);
     }
 
     public void testDisplacementNW() throws Exception {
@@ -209,7 +202,7 @@ public class LabelDisplacementModeTest extends TestCase {
         // File("./src/test/resources/org/geotools/renderer/lite/test-data/displacementMode/textDisplacementVerticalBoth1.png"));
         String refPath =
                 "./src/test/resources/org/geotools/renderer/lite/test-data/displacementMode/textDisplacementNW.png";
-        ImageAssert.assertEquals(new File(refPath), image, 0);
+        ImageAssert.assertEquals(new File(refPath), image, 800);
     }
 
     public void testDisplacementSE() throws Exception {
@@ -219,7 +212,7 @@ public class LabelDisplacementModeTest extends TestCase {
         // File("./src/test/resources/org/geotools/renderer/lite/test-data/displacementMode/textDisplacementVerticalBoth1.png"));
         String refPath =
                 "./src/test/resources/org/geotools/renderer/lite/test-data/displacementMode/textDisplacementSE.png";
-        ImageAssert.assertEquals(new File(refPath), image, 0);
+        ImageAssert.assertEquals(new File(refPath), image, 800);
     }
 
     public void testDisplacementSW() throws Exception {
@@ -229,7 +222,7 @@ public class LabelDisplacementModeTest extends TestCase {
         // File("./src/test/resources/org/geotools/renderer/lite/test-data/displacementMode/textDisplacementVerticalBoth1.png"));
         String refPath =
                 "./src/test/resources/org/geotools/renderer/lite/test-data/displacementMode/textDisplacementSW.png";
-        ImageAssert.assertEquals(new File(refPath), image, 0);
+        ImageAssert.assertEquals(new File(refPath), image, 800);
     }
 
     public void testDisplacementDiagonal() throws Exception {
@@ -240,7 +233,7 @@ public class LabelDisplacementModeTest extends TestCase {
         // File("./src/test/resources/org/geotools/renderer/lite/test-data/displacementMode/textDisplacementVerticalBoth1.png"));
         String refPath =
                 "./src/test/resources/org/geotools/renderer/lite/test-data/displacementMode/textDisplacementDiagonal.png";
-        ImageAssert.assertEquals(new File(refPath), image, 0);
+        ImageAssert.assertEquals(new File(refPath), image, 800);
     }
 
     public void testDisplacementNotDiagonal() throws Exception {
@@ -252,7 +245,7 @@ public class LabelDisplacementModeTest extends TestCase {
         // File("./src/test/resources/org/geotools/renderer/lite/test-data/displacementMode/textDisplacementVerticalBoth1.png"));
         String refPath =
                 "./src/test/resources/org/geotools/renderer/lite/test-data/displacementMode/textDisplacementNotDiagonal.png";
-        ImageAssert.assertEquals(new File(refPath), image, 0);
+        ImageAssert.assertEquals(new File(refPath), image, 800);
     }
 
     public void testDisplacementE_NE() throws Exception {
@@ -262,7 +255,7 @@ public class LabelDisplacementModeTest extends TestCase {
         // File("./src/test/resources/org/geotools/renderer/lite/test-data/displacementMode/textDisplacementVerticalBoth1.png"));
         String refPath =
                 "./src/test/resources/org/geotools/renderer/lite/test-data/displacementMode/textDisplacementE_NE.png";
-        ImageAssert.assertEquals(new File(refPath), image, 0);
+        ImageAssert.assertEquals(new File(refPath), image, 800);
     }
 
     public void testDisplacementRandomConflictDisabled() throws Exception {
@@ -275,7 +268,7 @@ public class LabelDisplacementModeTest extends TestCase {
         // File("./src/test/resources/org/geotools/renderer/lite/test-data/displacementMode/textDisplacementVerticalBoth_conflict_disabled.png"));
         String refPath =
                 "./src/test/resources/org/geotools/renderer/lite/test-data/displacementMode/textDisplacementRandom_conflict_disabled.png";
-        ImageAssert.assertEquals(new File(refPath), image, 0);
+        ImageAssert.assertEquals(new File(refPath), image, 800);
     }
 
     public void testDisplacementStandardMultiLayer() throws Exception {
@@ -293,7 +286,7 @@ public class LabelDisplacementModeTest extends TestCase {
         // File("./src/test/resources/org/geotools/renderer/lite/test-data/displacementMode/textDisplacementStandard1_multi.png"));
         String refPath =
                 "./src/test/resources/org/geotools/renderer/lite/test-data/displacementMode/textDisplacementStandard_multi.png";
-        ImageAssert.assertEquals(new File(refPath), image, 0);
+        ImageAssert.assertEquals(new File(refPath), image, 1200);
     }
 
     public void testDisplacementNotDiagonalMultiLayer() throws Exception {
@@ -312,7 +305,7 @@ public class LabelDisplacementModeTest extends TestCase {
         // File("./src/test/resources/org/geotools/renderer/lite/test-data/displacementMode/textDisplacementVerticalBoth1_multi.png"));
         String refPath =
                 "./src/test/resources/org/geotools/renderer/lite/test-data/displacementMode/textDisplacementNotDiagonal_multi.png";
-        ImageAssert.assertEquals(new File(refPath), image, 0);
+        ImageAssert.assertEquals(new File(refPath), image, 1100);
     }
 
     public void testDisplacementVerticalBoth() throws Exception {
@@ -324,7 +317,7 @@ public class LabelDisplacementModeTest extends TestCase {
         // File("./src/test/resources/org/geotools/renderer/lite/test-data/displacementMode/textDisplacementVerticalBoth1.png"));
         String refPath =
                 "./src/test/resources/org/geotools/renderer/lite/test-data/displacementMode/textDisplacementVerticalBoth.png";
-        ImageAssert.assertEquals(new File(refPath), image, 0);
+        ImageAssert.assertEquals(new File(refPath), image, 800);
     }
 
     public void testDisplacementVerticalBothMultiLayer() throws Exception {
@@ -343,7 +336,7 @@ public class LabelDisplacementModeTest extends TestCase {
         // File("./src/test/resources/org/geotools/renderer/lite/test-data/displacementMode/textDisplacementVerticalBoth1_multi.png"));
         String refPath =
                 "./src/test/resources/org/geotools/renderer/lite/test-data/displacementMode/textDisplacementVerticalBoth_multi.png";
-        ImageAssert.assertEquals(new File(refPath), image, 0);
+        ImageAssert.assertEquals(new File(refPath), image, 1100);
     }
 
     public void testDisplacementVerticalBothConflictDisabled() throws Exception {
@@ -357,7 +350,7 @@ public class LabelDisplacementModeTest extends TestCase {
         // File("./src/test/resources/org/geotools/renderer/lite/test-data/displacementMode/textDisplacementVerticalBoth_conflict_disabled.png"));
         String refPath =
                 "./src/test/resources/org/geotools/renderer/lite/test-data/displacementMode/textDisplacementVerticalBoth_conflict_disabled.png";
-        ImageAssert.assertEquals(new File(refPath), image, 0);
+        ImageAssert.assertEquals(new File(refPath), image, 800);
     }
 
     public void testDisplacementVerticalBothConflictDisabledMultiLayer() throws Exception {
@@ -378,7 +371,95 @@ public class LabelDisplacementModeTest extends TestCase {
         // File("./src/test/resources/org/geotools/renderer/lite/test-data/displacementMode/textDisplacementVerticalBoth_conflict_disabled_multi.png"));
         String refPath =
                 "./src/test/resources/org/geotools/renderer/lite/test-data/displacementMode/textDisplacementVerticalBoth_conflict_disabled_multi.png";
-        ImageAssert.assertEquals(new File(refPath), image, 0);
+        ImageAssert.assertEquals(new File(refPath), image, 900);
+    }
+
+    // https://osgeo-org.atlassian.net/browse/GEOS-8975
+    // https://osgeo-org.atlassian.net/projects/GEOT/issues/GEOT-6253
+    public void testMultiLineLabelDisplacementY() throws Exception {
+        GeometryFactory gf = new GeometryFactory();
+
+        SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
+        builder.add("the_geom", LineString.class);
+        builder.add("TEXTSTRING", String.class);
+        builder.add("FONTNAME", String.class);
+        builder.add("FONTSIZE", Integer.class);
+        builder.add("FONTSTYLE", String.class);
+        builder.add("ANGLE", Integer.class);
+        builder.add("ANCHORY", Integer.class);
+        builder.setName("geos8975");
+        SimpleFeatureType type = builder.buildFeatureType();
+
+        // a horizontal line with label with line breaks
+        // Formata-CondensedMedium(windows) ,// Formata-Condensed(other OS) was reported.
+        SimpleFeature f11 =
+                SimpleFeatureBuilder.build(
+                        type,
+                        new Object[] {
+                            gf.createLineString( // straight line
+                                    new Coordinate[] {
+                                        new Coordinate(2, 5),
+                                        new Coordinate(3, 5),
+                                        new Coordinate(4, 5),
+                                        new Coordinate(5, 5),
+                                        new Coordinate(6, 5),
+                                        new Coordinate(7, 5),
+                                        new Coordinate(8, 5)
+                                    }),
+                            "Espace\nPierrey\nBetazg", // label with decender and line breaks
+                            "Bitstream Vera Sans",
+                            10,
+                            "Bold",
+                            0,
+                            0 // anchorY
+                        },
+                        null);
+        SimpleFeature f12 =
+                SimpleFeatureBuilder.build(
+                        type,
+                        new Object[] {
+                            gf.createLineString( // straight line
+                                    new Coordinate[] {
+                                        new Coordinate(2, 3),
+                                        new Coordinate(3, 3),
+                                        new Coordinate(4, 3),
+                                        new Coordinate(5, 3),
+                                        new Coordinate(6, 3),
+                                        new Coordinate(7, 3),
+                                        new Coordinate(8, 3)
+                                    }),
+                            "Liney 1\nLineg", // label with decender and line breaks
+                            "Bitstream Vera Sans",
+                            10,
+                            "Bold",
+                            0,
+                            1 // anchorY
+                        },
+                        null);
+
+        Style style =
+                RendererBaseTest.loadStyle(
+                        this, "displacementMode/testMultiLineLabelDisplacementY.sld");
+        assertNotNull(style);
+
+        MemoryDataStore data = new MemoryDataStore();
+
+        data.addFeature(f11);
+        data.addFeature(f12);
+
+        SimpleFeatureSource fs3 = data.getFeatureSource("geos8975");
+
+        BufferedImage image = renderLabels(fs3, style, "GEOS-8975, Multi Line Label Placement");
+        //        ImageIO.write(
+        //                image,
+        //                "PNG",
+        //                new File(
+        //
+        // "./src/test/resources/org/geotools/renderer/lite/test-data/displacementMode/testMultiLineLabelDisplacementY.png"));
+
+        String refPath =
+                "./src/test/resources/org/geotools/renderer/lite/test-data/displacementMode/testMultiLineLabelDisplacementY.png";
+        ImageAssert.assertEquals(new File(refPath), image, 1100);
     }
 
     private BufferedImage renderLabels(SimpleFeatureSource fs, Style style, String title)

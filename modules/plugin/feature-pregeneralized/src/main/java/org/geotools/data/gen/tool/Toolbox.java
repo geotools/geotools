@@ -44,8 +44,8 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * <p>1) Validate xml config 2) generalize shape files
  *
  * @author Chrisitan Mueller
- * @source $URL$
  */
+@SuppressWarnings("PMD.SystemPrintln")
 public class Toolbox {
     /**
      * read args and delegate jobs
@@ -68,7 +68,7 @@ public class Toolbox {
         try {
             retval = toolBox.parse(args);
         } catch (IOException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             retval = false;
         }
 

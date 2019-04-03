@@ -2,8 +2,8 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2001-2006  Vivid Solutions
  *    (C) 2001-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2001-2006  Vivid Solutions
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -31,8 +31,6 @@ package org.geotools.geometry.iso.topograph2D.index;
  * chain for intersection. Property 2 allows binary search to be used to find the intersection
  * points of two monotone chains. For many types of real-world data, these properties eliminate a
  * large number of segment comparisons, producing substantial speed gains.
- *
- * @source $URL$
  */
 public class MonotoneChain {
 

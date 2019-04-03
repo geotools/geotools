@@ -1,0 +1,61 @@
+@mode 'Flat';
+
+[@sd <= 400k] {
+  z-index: 0;
+  label: [shortName];
+  label-geometry: [centroid(geometry)];
+  font-size: 10;
+  font-family: 'Noto Sans Regular';
+  halo-radius: 1;
+  halo-opacity: 0.6;
+  label-anchor: 0.5 1.0;
+  label-offset: 0 -12;
+  label-auto-wrap: 50;
+  label-group: true;
+  label-priority: 2100;
+
+  [type in (
+    'pub',
+    'restaurant',
+    'food_court',
+    'cafe',
+    'fast_food',
+    'biergarten',
+    'bar',
+    'ice_cream',
+    'nightclub'
+  )][@sd < 6k] {
+    label: [name];
+    font-fill: #734a08;
+    halo-color: #ffffff;
+    [type = 'bar']{
+      label-offset: 0 -13;
+    };
+    [type = 'nightclub']{
+      label-offset: 0 -12;
+    };
+  };
+
+  [type in (
+    'library',
+    'museum',
+    'theatre',
+    'cinema',
+    'arts_centre',
+    'community_centre',
+    'archaeological_site'
+  )][@sd < 6k] {
+    label: [name];
+    font-fill: #734a08;
+    halo-color: #ffffff;
+    [type = 'community_centrer']{
+      label-offset: 0 -10;
+    };
+  };
+
+  [type = 'public_bath'][@sd < 6k] {
+    label: [name];
+    font-fill: #734a08;
+    halo-color: #ffffff;
+  };
+}

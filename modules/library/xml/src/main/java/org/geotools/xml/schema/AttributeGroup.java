@@ -25,7 +25,6 @@ import java.net.URI;
  * AttributeGroups defined in XML Schemas.
  *
  * @author dzwiers www.refractions.net
- * @source $URL$
  */
 public interface AttributeGroup {
     /**
@@ -46,6 +45,5 @@ public interface AttributeGroup {
     /** The name of this Attribute Group declaration within the XML Schema */
     public String getName();
 
-    /** DOCUMENT ME! */
     public URI getNamespace();
 }

@@ -16,18 +16,16 @@
  */
 package org.geotools.graph.util.delaunay;
 
+import java.util.Objects;
 import java.util.logging.Logger;
 import org.geotools.graph.structure.basic.BasicEdge;
 import org.geotools.graph.structure.line.XYNode;
 
-/**
- * @author jfc173
- * @source $URL$
- */
+/** @author jfc173 */
 public class DelaunayEdge extends BasicEdge {
 
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.graph");
+            org.geotools.util.logging.Logging.getLogger(DelaunayEdge.class);
     Triangle faceA, faceB;
 
     /** Creates a new instance of DelaunayEdge */
@@ -103,6 +101,11 @@ public class DelaunayEdge extends BasicEdge {
                                 && (this.getNodeB().equals(((DelaunayEdge) o).getNodeB())))
                         || (this.getNodeA().equals(((DelaunayEdge) o).getNodeB())
                                 && (this.getNodeB().equals(((DelaunayEdge) o).getNodeA())))));
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.getNodeA(), this.getNodeB());
     }
 
     public String toString() {

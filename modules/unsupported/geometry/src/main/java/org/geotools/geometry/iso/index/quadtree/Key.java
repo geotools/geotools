@@ -2,8 +2,8 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2001-2006  Vivid Solutions
  *    (C) 2001-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2001-2006  Vivid Solutions
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -24,7 +24,6 @@ import org.geotools.geometry.iso.topograph2D.Envelope;
  * A Key is a unique identifier for a node in a quadtree. It contains a lower-left point and a level
  * number. The level number is the power of two for the size of the node envelope
  *
- * @source $URL$
  * @version 1.7.2
  */
 public class Key {

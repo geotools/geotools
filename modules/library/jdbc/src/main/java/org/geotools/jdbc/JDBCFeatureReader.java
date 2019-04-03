@@ -36,23 +36,23 @@ import java.util.logging.Logger;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.Query;
 import org.geotools.data.Transaction;
-import org.geotools.factory.Hints;
+import org.geotools.data.util.ScreenMap;
 import org.geotools.feature.GeometryAttributeImpl;
-import org.geotools.feature.IllegalAttributeException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.type.AttributeDescriptorImpl;
 import org.geotools.feature.type.Types;
 import org.geotools.filter.identity.FeatureIdImpl;
 import org.geotools.geometry.jts.CurvedGeometryFactory;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.renderer.ScreenMap;
 import org.geotools.util.Converters;
+import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.CoordinateSequenceFactory;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.opengis.feature.FeatureFactory;
 import org.opengis.feature.GeometryAttribute;
+import org.opengis.feature.IllegalAttributeException;
 import org.opengis.feature.Property;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -67,7 +67,6 @@ import org.opengis.referencing.operation.TransformException;
  * Reader for jdbc datastore
  *
  * @author Justin Deoliveira, The Open Plannign Project.
- * @source $URL$
  */
 public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, SimpleFeature> {
     protected static final Logger LOGGER = Logging.getLogger(JDBCFeatureReader.class);
@@ -123,6 +122,7 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
     protected int offset = 0;
 
     protected JDBCReaderCallback callback = JDBCReaderCallback.NULL;
+    private int[] attributeRsIndex;
 
     public JDBCFeatureReader(
             String sql,
@@ -195,7 +195,8 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
         this.hints = query != null ? query.getHints() : null;
 
         // grab a geometry factory... check for a special hint
-        geometryFactory = (GeometryFactory) hints.get(Hints.JTS_GEOMETRY_FACTORY);
+        geometryFactory =
+                (hints != null) ? (GeometryFactory) hints.get(Hints.JTS_GEOMETRY_FACTORY) : null;
         if (geometryFactory == null) {
             // look for a coordinate sequence factory
             CoordinateSequenceFactory csFactory =
@@ -211,17 +212,19 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
             geometryFactory = dataStore.getGeometryFactory();
         }
 
-        Double linearizationTolerance = (Double) hints.get(Hints.LINEARIZATION_TOLERANCE);
+        Double linearizationTolerance =
+                hints != null ? (Double) hints.get(Hints.LINEARIZATION_TOLERANCE) : null;
         if (linearizationTolerance != null) {
             geometryFactory = new CurvedGeometryFactory(geometryFactory, linearizationTolerance);
         }
 
         // screenmap support
-        this.screenMap = (ScreenMap) hints.get(Hints.SCREENMAP);
+        this.screenMap = hints != null ? (ScreenMap) hints.get(Hints.SCREENMAP) : null;
 
         // create a feature builder using the factory hinted or the one coming
         // from the datastore
-        FeatureFactory ff = (FeatureFactory) hints.get(Hints.FEATURE_FACTORY);
+        FeatureFactory ff =
+                hints != null ? (FeatureFactory) hints.get(Hints.FEATURE_FACTORY) : null;
         if (ff == null) ff = featureSource.getDataStore().getFeatureFactory();
         builder = new SimpleFeatureBuilder(featureType, ff);
 
@@ -231,6 +234,8 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
+        this.attributeRsIndex = buildAttributeRsIndex();
 
         callback = dataStore.getCallbackFactory().createReaderCallback();
         callback.init(this);
@@ -319,14 +324,6 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
     }
 
     protected SimpleFeature readNextFeature() throws IOException {
-        // grab the connection
-        Connection cx;
-        try {
-            cx = st.getConnection();
-        } catch (SQLException e) {
-            throw (IOException) new IOException().initCause(e);
-        }
-
         // figure out the fid
         String fid;
 
@@ -344,7 +341,6 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
 
         // round up attributes
         final int attributeCount = featureType.getAttributeCount();
-        int[] attributeRsIndex = buildAttributeRsIndex();
         for (int i = 0; i < attributeCount; i++) {
             AttributeDescriptor type = featureType.getDescriptor(i);
 
@@ -514,8 +510,6 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
             dataStore.closeSafe(st);
 
             dataStore.releaseConnection(cx, featureSource.getState());
-        } else {
-            // means we are already closed... should we throw an exception?
         }
 
         cleanup();
@@ -726,7 +720,7 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
                                                         rs,
                                                         rsindex,
                                                         dataStore.getGeometryFactory(),
-                                                        st.getConnection(),
+                                                        cx,
                                                         hints);
                             } else {
                                 values[index] = rs.getObject(rsindex);
@@ -796,6 +790,8 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
         }
 
         public List<Object> getAttributes() {
+            // ensure initialized values GEOT-6264
+            for (int k = 0; k < values.length; k++) getAttribute(k);
             return Arrays.asList(values);
         }
 

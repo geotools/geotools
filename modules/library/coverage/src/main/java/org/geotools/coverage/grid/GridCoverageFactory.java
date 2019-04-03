@@ -31,14 +31,14 @@ import javax.media.jai.PlanarImage;
 import javax.media.jai.RasterFactory;
 import javax.media.jai.util.CaselessStringKey;
 import org.geotools.coverage.GridSampleDimension;
-import org.geotools.factory.AbstractFactory;
-import org.geotools.factory.Hints;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.image.ImageWorker;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.crs.DefaultEngineeringCRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
+import org.geotools.util.factory.AbstractFactory;
+import org.geotools.util.factory.Hints;
 import org.opengis.coverage.SampleDimensionType;
 import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.coverage.grid.GridEnvelope;
@@ -83,7 +83,6 @@ import org.opengis.referencing.operation.MathTransform;
  *
  * @since 2.1
  * @author Martin Desruisseaux
- * @source $URL$
  * @version $Id$
  */
 public class GridCoverageFactory extends AbstractFactory {
@@ -271,8 +270,8 @@ public class GridCoverageFactory extends AbstractFactory {
      * Constructs a grid coverage from the specified {@linkplain WritableRaster raster} and
      * {@linkplain Envelope envelope}.
      *
-     * <p>See the {@linkplain #create(CharSequence, RenderedImage, Envelope, GridSampleDimension[],
-     * GridCoverage[], Map) rendered image variant} for a note on heuristic rules applied by this
+     * <p>See the {@code #create(CharSequence, RenderedImage, Envelope, GridSampleDimension[],
+     * GridCoverage[], Map)} rendered image variant for a note on heuristic rules applied by this
      * method.
      *
      * @param name The grid coverage name.

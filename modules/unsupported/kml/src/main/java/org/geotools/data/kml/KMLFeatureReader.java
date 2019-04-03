@@ -34,10 +34,10 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * Read a KML file directly.
  *
  * @author Niels Charlier, Scitus Development
- * @source $URL$
+
  */
 public class KMLFeatureReader implements FeatureReader<SimpleFeatureType, SimpleFeature> {
-    private static final Logger LOGGER = Logging.getLogger("org.geotools.data.property");
+    private static final Logger LOGGER = Logging.getLogger(KMLFeatureReader.class);
 
     SimpleFeatureType type = null;
     SimpleFeature f = null;
@@ -85,10 +85,10 @@ public class KMLFeatureReader implements FeatureReader<SimpleFeatureType, Simple
     }
 
     /**
-     * DOCUMENT ME!
+
      *
-     * @return DOCUMENT ME!
-     * @throws IOException DOCUMENT ME!
+
+
      */
     public boolean hasNext() throws IOException {
         return f != null;

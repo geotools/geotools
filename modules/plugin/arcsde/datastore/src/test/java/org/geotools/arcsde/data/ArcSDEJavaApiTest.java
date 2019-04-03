@@ -69,16 +69,11 @@ import org.junit.Test;
  * obvious things.
  *
  * @author Gabriel Roldan, Axios Engineering
- * @source $URL$
- *     http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/test/java
- *     /org/geotools/arcsde/data/ArcSDEJavaApiTest.java $
- * @version $Id$
  */
 public class ArcSDEJavaApiTest {
     /** package logger */
     private static Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(
-                    ArcSDEJavaApiTest.class.getPackage().getName());
+            org.geotools.util.logging.Logging.getLogger(ArcSDEJavaApiTest.class);
 
     /** utility to load test parameters and build a datastore with them */
     private static TestData testData;
@@ -124,7 +119,7 @@ public class ArcSDEJavaApiTest {
             try {
                 session.dispose();
             } catch (Exception e) {
-                e.printStackTrace();
+                java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             }
         }
         session = null;
@@ -215,7 +210,7 @@ public class ArcSDEJavaApiTest {
 
                         rowQuery.close();
                         countQuery.close();
-                        return new Integer(resultCount);
+                        return Integer.valueOf(resultCount);
                     }
                 };
         final Integer resultCount = session.issue(countCmd);
@@ -272,7 +267,7 @@ public class ArcSDEJavaApiTest {
 
                         int actualCount = tableStats.getCount();
                         query.close();
-                        return new Integer(actualCount);
+                        return Integer.valueOf(actualCount);
                     }
                 };
 
@@ -314,7 +309,7 @@ public class ArcSDEJavaApiTest {
 
             assertEquals(expCount, actualCount);
         } catch (IOException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             throw e;
         }
     }
@@ -348,7 +343,7 @@ public class ArcSDEJavaApiTest {
 
             assertEquals(expCount, actualCount);
         } catch (IOException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             throw e;
         }
     }
@@ -935,8 +930,7 @@ public class ArcSDEJavaApiTest {
                              * are defined in the dbtune table.
                              */
                             if (LOGGER.isLoggable(Level.FINE)) {
-                                System.out.println(
-                                        "\n--> Creating a table using DBMS Default Keyword");
+                                LOGGER.fine("\n--> Creating a table using DBMS Default Keyword");
                             }
                             SeColumnDefinition[] tmpCols =
                                     new SeColumnDefinition[] {
@@ -945,7 +939,7 @@ public class ArcSDEJavaApiTest {
                                     };
                             table.create(tmpCols, testData.getConfigKeyword());
                             if (LOGGER.isLoggable(Level.FINE)) {
-                                System.out.println(" - Done.");
+                                LOGGER.fine(" - Done.");
                             }
                             SeColumnDefinition[] colDefs = new SeColumnDefinition[7];
 
@@ -1213,7 +1207,7 @@ public class ArcSDEJavaApiTest {
             assertNotNull(noTransRow);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         } finally {
             if (!commited) {
                 transSession.rollbackTransaction();

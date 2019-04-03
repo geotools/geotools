@@ -18,10 +18,10 @@ package org.geotools.tutorial.process;
 
 import java.util.HashMap;
 import java.util.Map;
+import org.geotools.data.util.NullProgressListener;
 import org.geotools.process.ProcessFactory;
 import org.geotools.process.impl.AbstractProcess;
 import org.geotools.text.Text;
-import org.geotools.util.NullProgressListener;
 import org.locationtech.jts.geom.Geometry;
 import org.opengis.util.ProgressListener;
 

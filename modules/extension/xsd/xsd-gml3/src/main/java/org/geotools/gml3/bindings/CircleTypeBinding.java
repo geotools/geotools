@@ -20,18 +20,15 @@ import javax.xml.namespace.QName;
 import org.geotools.gml3.ArcParameters;
 import org.geotools.gml3.Circle;
 import org.geotools.gml3.GML;
-import org.geotools.xml.AbstractComplexBinding;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
+import org.geotools.xsd.AbstractComplexBinding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.CoordinateSequenceFactory;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LineString;
 
-/**
- * @author Erik van de Pol. B3Partners BV.
- * @source $URL$
- */
+/** @author Erik van de Pol. B3Partners BV. */
 public class CircleTypeBinding extends AbstractComplexBinding {
     GeometryFactory gFactory;
     CoordinateSequenceFactory csFactory;

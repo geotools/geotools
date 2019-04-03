@@ -2,8 +2,8 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2001-2006  Vivid Solutions
  *    (C) 2001-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2001-2006  Vivid Solutions
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -30,8 +30,6 @@ import java.util.List;
  *
  * It uses a {@link SegmentIntersector} to compute the intersections between segments and to record
  * statistics about what kinds of intersections were found.
- *
- * @source $URL$
  */
 public abstract class EdgeSetIntersector {
 

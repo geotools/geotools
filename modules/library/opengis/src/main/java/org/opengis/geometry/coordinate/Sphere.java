@@ -50,7 +50,6 @@ import org.opengis.annotation.UML;
  * closes back on it self forming a geometric cycle. This gives us a metrically bounded (of finite
  * size), topologically unbounded (not having a boundary, a cycle) surface.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/as">ISO 19107</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 2.0

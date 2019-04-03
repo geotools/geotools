@@ -16,7 +16,7 @@
  */
 package org.geotools.data.jdbc;
 
-import static org.geotools.util.Converters.*;
+import static org.geotools.util.Converters.convert;
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -25,6 +25,7 @@ import java.sql.Statement;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.LinkedHashSet;
+import java.util.Locale;
 import java.util.Set;
 import java.util.logging.Handler;
 import java.util.logging.Level;
@@ -55,12 +56,11 @@ import org.opengis.filter.identity.FeatureId;
  *
  * @author Chris Holmes, TOPP
  * @author Saul Farber, MassGIS
- * @source $URL$
  */
 public class FilterToSQLTest extends TestCase {
-    private FilterFactory filterFac = CommonFactoryFinder.getFilterFactory(null);
+    private FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
     private static Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.data.jdbc");
+            org.geotools.util.logging.Logging.getLogger(FilterToSQLTest.class);
 
     private SimpleFeatureType integerFType;
     private SimpleFeatureType stringFType;
@@ -72,6 +72,7 @@ public class FilterToSQLTest extends TestCase {
 
     public void setUp() throws Exception {
         Level debugLevel = Level.FINE;
+        Locale.setDefault(new Locale("en", "US"));
         Logger log = LOGGER;
         while (log != null) {
             log.setLevel(debugLevel);
@@ -200,10 +201,9 @@ public class FilterToSQLTest extends TestCase {
 
     public void testIntegerContext() throws Exception {
 
-        Expression literal = filterFac.literal(5);
-        Expression prop =
-                filterFac.property(integerFType.getAttributeDescriptors().get(0).getLocalName());
-        PropertyIsEqualTo filter = filterFac.equals(prop, literal);
+        Expression literal = ff.literal(5);
+        Expression prop = ff.property(integerFType.getAttributeDescriptors().get(0).getLocalName());
+        PropertyIsEqualTo filter = ff.equals(prop, literal);
 
         encoder.setFeatureType(integerFType);
         encoder.encode(filter);
@@ -213,10 +213,9 @@ public class FilterToSQLTest extends TestCase {
     }
 
     public void testSqlDateContext() throws Exception {
-        Expression literal = filterFac.literal("2002-12-03");
-        Expression prop =
-                filterFac.property(sqlDateFType.getAttributeDescriptors().get(0).getLocalName());
-        PropertyIsEqualTo filter = filterFac.equals(prop, literal);
+        Expression literal = ff.literal("2002-12-03");
+        Expression prop = ff.property(sqlDateFType.getAttributeDescriptors().get(0).getLocalName());
+        PropertyIsEqualTo filter = ff.equals(prop, literal);
 
         encoder.setFeatureType(sqlDateFType);
         encoder.encode(filter);
@@ -227,10 +226,10 @@ public class FilterToSQLTest extends TestCase {
     }
 
     public void testTimestampContext() throws Exception {
-        Expression literal = filterFac.literal("2002-12-03 10:00");
+        Expression literal = ff.literal("2002-12-03 10:00");
         Expression prop =
-                filterFac.property(timestampFType.getAttributeDescriptors().get(0).getLocalName());
-        PropertyIsEqualTo filter = filterFac.equals(prop, literal);
+                ff.property(timestampFType.getAttributeDescriptors().get(0).getLocalName());
+        PropertyIsEqualTo filter = ff.equals(prop, literal);
 
         encoder.setFeatureType(timestampFType);
         encoder.encode(filter);
@@ -240,10 +239,9 @@ public class FilterToSQLTest extends TestCase {
     }
 
     public void testDateContext() throws Exception {
-        Expression literal = filterFac.literal("2002-12-03 10:00");
-        Expression prop =
-                filterFac.property(dateFType.getAttributeDescriptors().get(0).getLocalName());
-        PropertyIsEqualTo filter = filterFac.equals(prop, literal);
+        Expression literal = ff.literal("2002-12-03 10:00");
+        Expression prop = ff.property(dateFType.getAttributeDescriptors().get(0).getLocalName());
+        PropertyIsEqualTo filter = ff.equals(prop, literal);
 
         encoder.setFeatureType(dateFType);
         encoder.encode(filter);
@@ -254,10 +252,9 @@ public class FilterToSQLTest extends TestCase {
     }
 
     public void testStringContext() throws Exception {
-        Expression literal = filterFac.literal(5);
-        Expression prop =
-                filterFac.property(stringFType.getAttributeDescriptors().get(0).getLocalName());
-        PropertyIsEqualTo filter = filterFac.equals(prop, literal);
+        Expression literal = ff.literal(5);
+        Expression prop = ff.property(stringFType.getAttributeDescriptors().get(0).getLocalName());
+        PropertyIsEqualTo filter = ff.equals(prop, literal);
 
         encoder.setFeatureType(stringFType);
         encoder.encode(filter);
@@ -268,10 +265,9 @@ public class FilterToSQLTest extends TestCase {
 
     public void testIntegerToNumberContext() throws Exception {
 
-        Expression literal = filterFac.literal(5.0);
-        Expression prop =
-                filterFac.property(integerFType.getAttributeDescriptors().get(0).getLocalName());
-        PropertyIsEqualTo filter = filterFac.equals(prop, literal);
+        Expression literal = ff.literal(5.0);
+        Expression prop = ff.property(integerFType.getAttributeDescriptors().get(0).getLocalName());
+        PropertyIsEqualTo filter = ff.equals(prop, literal);
 
         encoder.setFeatureType(integerFType);
         encoder.encode(filter);
@@ -292,9 +288,9 @@ public class FilterToSQLTest extends TestCase {
 
     public void testIdFilterMulti() throws Exception {
         Set<FeatureId> fids = new LinkedHashSet<FeatureId>();
-        fids.add(filterFac.featureId("fid1"));
-        fids.add(filterFac.featureId("fid2"));
-        Id id = filterFac.id(fids);
+        fids.add(ff.featureId("fid1"));
+        fids.add(ff.featureId("fid2"));
+        Id id = ff.id(fids);
 
         encoder.encode(id);
         assertEquals("WHERE ((id = 'fid1') OR (id = 'fid2'))", output.toString());
@@ -302,22 +298,21 @@ public class FilterToSQLTest extends TestCase {
 
     public void testIdFilterSingle() throws Exception {
         Set<FeatureId> fids = new LinkedHashSet<FeatureId>();
-        fids.add(filterFac.featureId("fid1"));
-        Id id = filterFac.id(fids);
+        fids.add(ff.featureId("fid1"));
+        Id id = ff.id(fids);
 
         encoder.encode(id);
         assertEquals("WHERE (id = 'fid1')", output.toString());
     }
 
     public void testEscapeQuote() throws FilterToSQLException {
-        PropertyIsEqualTo equals =
-                filterFac.equals(filterFac.property("attribute"), filterFac.literal("A'A"));
+        PropertyIsEqualTo equals = ff.equals(ff.property("attribute"), ff.literal("A'A"));
         encoder.encode(equals);
         assertEquals("WHERE attribute = 'A''A'", output.toString());
     }
 
     public void testExpression() throws Exception {
-        Add a = filterFac.add(filterFac.property("testAttr"), filterFac.literal(5));
+        Add a = ff.add(ff.property("testAttr"), ff.literal(5));
         encoder.encode(a);
         assertEquals("testAttr + 5", output.toString());
     }
@@ -339,8 +334,8 @@ public class FilterToSQLTest extends TestCase {
     }
 
     public void testNumberEscapes() throws Exception {
-        Add a = filterFac.add(filterFac.property("testAttr"), filterFac.literal(5));
-        PropertyIsEqualTo equal = filterFac.equal(filterFac.property("testAttr"), a, false);
+        Add a = ff.add(ff.property("testAttr"), ff.literal(5));
+        PropertyIsEqualTo equal = ff.equal(ff.property("testAttr"), a, false);
         StringWriter output = new StringWriter();
         FilterToSQL encoder = new FilterToSQL(output);
         // this test must pass even when the target feature type is not known
@@ -350,8 +345,7 @@ public class FilterToSQLTest extends TestCase {
     }
 
     public void testInline() throws Exception {
-        PropertyIsEqualTo equal =
-                filterFac.equal(filterFac.property("testAttr"), filterFac.literal(5), false);
+        PropertyIsEqualTo equal = ff.equal(ff.property("testAttr"), ff.literal(5), false);
         StringWriter output = new StringWriter();
         FilterToSQL encoder = new FilterToSQL(output);
         encoder.setInline(true);
@@ -363,10 +357,10 @@ public class FilterToSQLTest extends TestCase {
     public void testAfterInstant() throws Exception {
         Date date = convert("2002-12-03 10:00:00AM", Date.class);
         DefaultInstant instant = new DefaultInstant(new DefaultPosition(date));
-        Expression literal = filterFac.literal(instant);
+        Expression literal = ff.literal(instant);
         Expression prop =
-                filterFac.property(timestampFType.getAttributeDescriptors().get(0).getLocalName());
-        PropertyIsEqualTo filter = filterFac.equals(prop, literal);
+                ff.property(timestampFType.getAttributeDescriptors().get(0).getLocalName());
+        PropertyIsEqualTo filter = ff.equals(prop, literal);
 
         encoder.setFeatureType(timestampFType);
         encoder.encode(filter);
@@ -407,7 +401,7 @@ public class FilterToSQLTest extends TestCase {
         FilterToSQL encoder = new FilterToSQL(output);
 
         Function function = buildInFunction("in", new Object[] {1, 2});
-        Filter filter = filterFac.less(function, filterFac.literal(true));
+        Filter filter = ff.less(function, ff.literal(true));
         encoder.encode(filter);
 
         // weird but legit, at least in some databases
@@ -422,9 +416,9 @@ public class FilterToSQLTest extends TestCase {
         Function function = buildInFunction(functionName, valueList);
         Filter filter;
         if (equality) {
-            filter = filterFac.equal(function, filterFac.literal(literal), true);
+            filter = ff.equal(function, ff.literal(literal), true);
         } else {
-            filter = filterFac.notEqual(function, filterFac.literal(literal), true);
+            filter = ff.notEqual(function, ff.literal(literal), true);
         }
         encoder.encode(filter);
 
@@ -434,9 +428,78 @@ public class FilterToSQLTest extends TestCase {
     }
 
     public Function buildInFunction(String functionName, Object[] valueList) {
-        Stream<Literal> values = Arrays.stream(valueList).map(v -> filterFac.literal(v));
-        Stream<PropertyName> property = Stream.of(filterFac.property("testAttr"));
+        Stream<Literal> values = Arrays.stream(valueList).map(v -> ff.literal(v));
+        Stream<PropertyName> property = Stream.of(ff.property("testAttr"));
         Expression[] literals = Stream.concat(property, values).toArray(i -> new Expression[i]);
-        return filterFac.function(functionName, literals);
+        return ff.function(functionName, literals);
+    }
+
+    public void testNestedMath1() throws Exception {
+        final Filter filter =
+                ff.equals(
+                        ff.multiply(
+                                ff.subtract(ff.property("PROP1"), ff.literal(10)), ff.literal(20)),
+                        ff.literal(50));
+        FilterToSQL encoder = new FilterToSQL(output);
+        assertEquals("WHERE (PROP1 - 10) * 20 = 50", encoder.encodeToString(filter));
+    }
+
+    public void testNestedMath2() throws Exception {
+        final Filter filter =
+                ff.equals(
+                        ff.subtract(
+                                ff.property("PROP1"), ff.multiply(ff.literal(10), ff.literal(20))),
+                        ff.literal(50));
+        FilterToSQL encoder = new FilterToSQL(output);
+        assertEquals("WHERE PROP1 - (10 * 20) = 50", encoder.encodeToString(filter));
+    }
+
+    public void testSimpleInFromEqualities() throws Exception {
+        PropertyName p = ff.property("PROP1");
+        final Filter filter =
+                ff.or(Arrays.asList(ff.equals(p, ff.literal(1)), ff.equals(p, ff.literal(2))));
+        FilterToSQL encoder = new FilterToSQL(output);
+        assertEquals("WHERE PROP1 IN (1, 2)", encoder.encodeToString(filter));
+    }
+
+    public void testMixedInFromEqualities() throws Exception {
+        PropertyName p1 = ff.property("P1");
+        PropertyName p2 = ff.property("P2");
+        final Filter filter =
+                ff.or(
+                        Arrays.asList(
+                                ff.equals(p1, ff.literal(1)),
+                                ff.equals(p2, ff.literal("a")),
+                                ff.equals(p1, ff.literal(2)),
+                                ff.equals(p2, ff.literal("b"))));
+        FilterToSQL encoder = new FilterToSQL(output);
+        assertEquals("WHERE (P1 IN (1, 2) OR P2 IN ('a', 'b'))", encoder.encodeToString(filter));
+    }
+
+    public void testMixedInWithSingleEquality() throws Exception {
+        PropertyName p1 = ff.property("P1");
+        PropertyName p2 = ff.property("P2");
+        final Filter filter =
+                ff.or(
+                        Arrays.asList(
+                                ff.equals(p1, ff.literal(1)),
+                                ff.equals(p2, ff.literal("a")),
+                                ff.equals(p1, ff.literal(2))));
+        FilterToSQL encoder = new FilterToSQL(output);
+        assertEquals("WHERE (P1 IN (1, 2) OR P2 = 'a')", encoder.encodeToString(filter));
+    }
+
+    public void testInFromEqualitiesInequalities() throws Exception {
+        PropertyName p1 = ff.property("P1");
+        PropertyName p2 = ff.property("P2");
+        final Filter filter =
+                ff.or(
+                        Arrays.asList(
+                                ff.equals(p1, ff.literal(1)),
+                                ff.greater(p2, ff.literal(3)),
+                                ff.equals(p1, ff.literal(2)),
+                                ff.less(p2, ff.literal(4))));
+        FilterToSQL encoder = new FilterToSQL(output);
+        assertEquals("WHERE (P1 IN (1, 2) OR P2 > 3 OR P2 < 4)", encoder.encodeToString(filter));
     }
 }

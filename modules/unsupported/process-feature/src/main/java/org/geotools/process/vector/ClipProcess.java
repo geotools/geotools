@@ -26,7 +26,6 @@ import java.util.logging.Logger;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.factory.GeoTools;
 import org.geotools.feature.collection.DecoratingSimpleFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
@@ -38,6 +37,7 @@ import org.geotools.process.factory.DescribeResult;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.renderer.crs.GeometryDimensionCollector;
+import org.geotools.util.factory.GeoTools;
 import org.geotools.util.logging.Logging;
 import org.locationtech.jts.algorithm.LineIntersector;
 import org.locationtech.jts.algorithm.RobustLineIntersector;
@@ -68,7 +68,6 @@ import org.opengis.referencing.crs.GeographicCRS;
  * Modified version that can preserve Z values after the clip
  *
  * @author Andrea Aime - GeoSolutions
- * @source $URL$
  */
 @DescribeProcess(title = "Clip", description = "Clips (crops) features to a given geometry")
 public class ClipProcess implements VectorProcess {
@@ -172,17 +171,13 @@ public class ClipProcess implements VectorProcess {
 
         @Override
         public int size() {
-            SimpleFeatureIterator fi = null;
-            try {
+            try (SimpleFeatureIterator fi = features()) {
                 int count = 0;
-                fi = features();
                 while (fi.hasNext()) {
                     fi.next();
                     count++;
                 }
                 return count;
-            } finally {
-                fi.close();
             }
         }
     }
@@ -426,7 +421,7 @@ public class ClipProcess implements VectorProcess {
                 double z = sum / weights;
                 // apply safe rounding to avoid numerical issues with the above calculation due
                 // to the weights being, often, very small numbers
-                BigDecimal bd = new BigDecimal(z);
+                BigDecimal bd = BigDecimal.valueOf(z);
                 double rz = bd.setScale(scale, BigDecimal.ROUND_HALF_EVEN).doubleValue();
                 seq.setOrdinate(i, 2, rz);
             }
@@ -608,16 +603,19 @@ public class ClipProcess implements VectorProcess {
 
             private void applyZValues(
                     CoordinateSequence cs, int idx, CoordinateSequence csOrig, int origIdx) {
+
+                if (!cs.hasZ()) return;
+
                 double lx1 = cs.getOrdinate(idx, 0);
                 double ly1 = cs.getOrdinate(idx, 1);
                 double lz1;
 
-                double ox1 = csOrig.getOrdinate(origIdx, 0);
-                double oy1 = csOrig.getOrdinate(origIdx, 1);
-                double oz1 = csOrig.getOrdinate(origIdx, 2);
-                double ox2 = csOrig.getOrdinate(origIdx + 1, 0);
-                double oy2 = csOrig.getOrdinate(origIdx + 1, 1);
-                double oz2 = csOrig.getOrdinate(origIdx + 1, 2);
+                double ox1 = csOrig.getX(origIdx);
+                double oy1 = csOrig.getY(origIdx);
+                double oz1 = csOrig.getZ(origIdx);
+                double ox2 = csOrig.getX(origIdx + 1);
+                double oy2 = csOrig.getY(origIdx + 1);
+                double oz2 = csOrig.getZ(origIdx + 1);
 
                 if (lx1 == ox1 && ly1 == oy1) {
                     lz1 = oz1;

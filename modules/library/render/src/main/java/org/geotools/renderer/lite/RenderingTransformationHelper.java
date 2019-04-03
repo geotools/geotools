@@ -16,15 +16,14 @@
  */
 package org.geotools.renderer.lite;
 
-import static org.geotools.resources.coverage.FeatureUtilities.GRID_PROPERTY_NAME;
-import static org.geotools.resources.coverage.FeatureUtilities.PARAMS_PROPERTY_NAME;
+import static org.geotools.coverage.util.FeatureUtilities.GRID_PROPERTY_NAME;
+import static org.geotools.coverage.util.FeatureUtilities.PARAMS_PROPERTY_NAME;
 
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.awt.image.RenderedImage;
 import java.io.IOException;
-import java.util.logging.Logger;
 import javax.media.jai.Interpolation;
 import javax.media.jai.JAI;
 import org.geotools.coverage.grid.GridCoverage2D;
@@ -32,6 +31,7 @@ import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.coverage.processing.CoverageProcessor;
+import org.geotools.coverage.util.FeatureUtilities;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.Query;
@@ -45,7 +45,6 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
-import org.geotools.resources.coverage.FeatureUtilities;
 import org.locationtech.jts.geom.Envelope;
 import org.opengis.feature.Feature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -68,10 +67,6 @@ import org.opengis.referencing.operation.TransformException;
  * RenderedImage}
  */
 public abstract class RenderingTransformationHelper {
-
-    /** The logger for the rendering module. */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.rendering");
 
     private static final FilterFactory2 filterFactory = CommonFactoryFinder.getFilterFactory2(null);
 

@@ -37,13 +37,12 @@ import org.opengis.util.ProgressListener;
  *
  * @author James Macgill
  * @author Cory Horner, Refractions Research Inc.
- * @source $URL$
  */
 public abstract class ClassificationFunction extends DefaultExpression
         implements FunctionExpression {
 
     protected static final java.util.logging.Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.filter.function");
+            org.geotools.util.logging.Logging.getLogger(ClassificationFunction.class);
 
     FunctionName name;
 
@@ -140,6 +139,9 @@ public abstract class ClassificationFunction extends DefaultExpression
      * @param slotWidth
      */
     protected int decimalPlaces(double slotWidth) {
+        if (slotWidth == 0) {
+            return 5;
+        }
         String str = Double.toString(slotWidth);
         if (str.indexOf(".") > -1) {
             while (str.endsWith("0")) {

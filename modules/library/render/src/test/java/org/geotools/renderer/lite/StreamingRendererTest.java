@@ -17,15 +17,16 @@
 package org.geotools.renderer.lite;
 
 import static org.easymock.EasyMock.anyObject;
+import static org.easymock.EasyMock.createNiceMock;
 import static org.easymock.EasyMock.expect;
-import static org.easymock.classextension.EasyMock.createNiceMock;
-import static org.easymock.classextension.EasyMock.replay;
+import static org.easymock.EasyMock.replay;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
@@ -33,8 +34,10 @@ import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -43,6 +46,7 @@ import javax.media.jai.JAI;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
+import org.geotools.coverage.util.FeatureUtilities;
 import org.geotools.data.Query;
 import org.geotools.data.collection.CollectionFeatureSource;
 import org.geotools.data.property.PropertyDataStore;
@@ -58,6 +62,7 @@ import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.LiteCoordinateSequence;
+import org.geotools.geometry.jts.LiteShape2;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.DefaultMapContext;
 import org.geotools.map.FeatureLayer;
@@ -69,7 +74,6 @@ import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.renderer.RenderListener;
 import org.geotools.renderer.lite.StreamingRenderer.RenderingRequest;
-import org.geotools.resources.coverage.FeatureUtilities;
 import org.geotools.styling.DescriptionImpl;
 import org.geotools.styling.Graphic;
 import org.geotools.styling.Rule;
@@ -87,6 +91,7 @@ import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.Point;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -103,7 +108,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  *
  * @author Jody
  * @author PHustad
- * @source $URL$
  */
 public class StreamingRendererTest {
 
@@ -159,6 +163,52 @@ public class StreamingRendererTest {
     private Style createPointStyle() {
         StyleBuilder sb = new StyleBuilder();
         return sb.createStyle(sb.createPointSymbolizer());
+    }
+
+    @Test
+    public void testDensification() throws Exception {
+        // build a feature source with two zig-zag line occupying the same position
+        LiteCoordinateSequence cs = new LiteCoordinateSequence(new double[] {13, 10, 13, 40});
+        SimpleFeature line =
+                SimpleFeatureBuilder.build(
+                        testLineFeatureType, new Object[] {gf.createLineString(cs)}, "zz1");
+        DefaultFeatureCollection fc = new DefaultFeatureCollection();
+        fc.add(line);
+        SimpleFeatureSource zzSource = new CollectionFeatureSource(fc);
+
+        // prepare the map
+        MapContent mc = new MapContent();
+        StyleBuilder sb = new StyleBuilder();
+        mc.addLayer(new FeatureLayer(zzSource, sb.createStyle(sb.createLineSymbolizer())));
+        StreamingRenderer sr = new StreamingRenderer();
+        Map hints = new HashMap();
+        hints.put(StreamingRenderer.ADVANCED_PROJECTION_HANDLING_KEY, true);
+        hints.put(StreamingRenderer.ADVANCED_PROJECTION_DENSIFICATION_KEY, true);
+        sr.setRendererHints(hints);
+        sr.setMapContent(mc);
+
+        /*BufferedImage bi = new BufferedImage(1, 1, BufferedImage.TYPE_3BYTE_BGR);
+        Graphics2D graphics = bi.createGraphics();*/
+        Graphics2D graphics = Mockito.mock(Graphics2D.class);
+        CoordinateReferenceSystem utm32n = CRS.decode("EPSG:32632", true);
+        ReferencedEnvelope env = new ReferencedEnvelope(10, 20, 0, 40, DefaultGeographicCRS.WGS84);
+        ReferencedEnvelope mapEnv = env.transform(utm32n, true);
+        sr.paint(graphics, new Rectangle(0, 0, 100, 100), mapEnv);
+        ArgumentCaptor<Shape> shape = ArgumentCaptor.forClass(Shape.class);
+        Mockito.verify(graphics).draw(shape.capture());
+        LiteShape2 drawnShape = (LiteShape2) shape.getValue();
+        assertTrue(drawnShape.getGeometry().getCoordinates().length > 2);
+        graphics.dispose();
+
+        hints.put(StreamingRenderer.ADVANCED_PROJECTION_DENSIFICATION_KEY, false);
+        sr.setRendererHints(hints);
+        graphics = Mockito.mock(Graphics2D.class);
+        sr.paint(graphics, new Rectangle(0, 0, 100, 100), mapEnv);
+        shape = ArgumentCaptor.forClass(Shape.class);
+        Mockito.verify(graphics).draw(shape.capture());
+        drawnShape = (LiteShape2) shape.getValue();
+        assertTrue(drawnShape.getGeometry().getCoordinates().length == 2);
+        graphics.dispose();
     }
 
     @Test
@@ -224,7 +274,7 @@ public class StreamingRendererTest {
         layer.getUserData()
                 .put(
                         StreamingRenderer.BYLAYER_INTERPOLATION,
-                        Interpolation.getInstance(Interpolation.INTERP_BICUBIC));
+                        Interpolation.getInstance(Interpolation.INTERP_BICUBIC_2));
         mc.addLayer(layer);
 
         BufferedImage image = new BufferedImage(200, 200, BufferedImage.TYPE_4BYTE_ABGR);
@@ -238,19 +288,9 @@ public class StreamingRendererTest {
         // test right interpolation hint is set on Graphics2D
         assertEquals(
                 graphics.getRenderingHint(JAI.KEY_INTERPOLATION),
-                Interpolation.getInstance(Interpolation.INTERP_BICUBIC));
+                Interpolation.getInstance(Interpolation.INTERP_BICUBIC_2));
 
-        layer.getUserData()
-                .put(
-                        StreamingRenderer.BYLAYER_INTERPOLATION,
-                        Interpolation.getInstance(Interpolation.INTERP_NEAREST));
-
-        sr.paint(graphics, new Rectangle(200, 200), reWgs);
         mc.dispose();
-        // test right interpolation hint is set on Graphics2D
-        assertEquals(
-                graphics.getRenderingHint(JAI.KEY_INTERPOLATION),
-                Interpolation.getInstance(Interpolation.INTERP_NEAREST));
     }
 
     @Test
@@ -407,7 +447,7 @@ public class StreamingRendererTest {
                 new StreamingRenderer() {
 
                     // makes it easy to reproduce the deadlock, just two features are sufficient
-                    protected BlockingQueue<RenderingRequest> getRequestsQueue() {
+                    protected RenderingBlockingQueue getRequestsQueue() {
                         return new RenderingBlockingQueue(1);
                     }
                 };
@@ -502,7 +542,7 @@ public class StreamingRendererTest {
         graphics.dispose();
         mc.dispose();
 
-        System.out.println(filters);
+        // System.out.println(filters);
         assertEquals(2, filters.size());
         Filter f1 = filters.get(0);
         assertTrue(f1 instanceof BBOX);

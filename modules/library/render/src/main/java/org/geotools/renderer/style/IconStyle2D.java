@@ -23,7 +23,6 @@ import javax.swing.Icon;
  * Represents a {@link Style2D} backed by an {@link Icon}
  *
  * @author milton
- * @source $URL$
  */
 public class IconStyle2D extends Style2D implements PointStyle2D {
     private Icon icon;
@@ -50,7 +49,6 @@ public class IconStyle2D extends Style2D implements PointStyle2D {
 
     public IconStyle2D(Icon icon, Object feature) {
         this.icon = icon;
-        this.composite = composite;
     }
 
     /**

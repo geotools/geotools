@@ -32,7 +32,6 @@ import org.opengis.referencing.operation.TransformException;
  *
  * <p>This is probably the most important test case for the whole CRS module.
  *
- * @source $URL$
  * @version $Id$
  * @author Yann Cézard
  * @author Remi Eve
@@ -397,5 +396,11 @@ public final class ScriptTest {
     @Test
     public void testAzimuthalEquidistant() throws Exception {
         runScript("scripts/AzimuthalEquidistant.txt");
+    }
+
+    /** Run "EqualEarth.txt". */
+    @Test
+    public void testEqualEarth() throws Exception {
+        runScript("scripts/EqualEarth.txt");
     }
 }

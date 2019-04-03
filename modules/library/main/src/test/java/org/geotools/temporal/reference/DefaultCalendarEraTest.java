@@ -41,10 +41,7 @@ import org.opengis.temporal.Period;
 import org.opengis.temporal.TemporalReferenceSystem;
 import org.opengis.util.InternationalString;
 
-/**
- * @author Mehdi Sidhoum (Geomatys)
- * @source $URL$
- */
+/** @author Mehdi Sidhoum (Geomatys) */
 public class DefaultCalendarEraTest {
 
     private CalendarEra calendarEra1;

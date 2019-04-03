@@ -27,7 +27,6 @@ import org.opengis.filter.expression.PropertyName;
  * Do aggregate functions actually work?
  *
  * @author Cory Horner, Refractions Research
- * @source $URL$
  */
 public class Collection_FunctionsTest extends FunctionTestSupport {
 
@@ -47,11 +46,11 @@ public class Collection_FunctionsTest extends FunctionTestSupport {
     }
 
     public void testCount() throws Exception {
-        performNumberTest("Collection_Count", new Integer(8));
+        performNumberTest("Collection_Count", Integer.valueOf(8));
     }
 
     public void testMin() throws Exception {
-        performNumberTest("Collection_Min", new Integer(4));
+        performNumberTest("Collection_Min", Integer.valueOf(4));
     }
 
     public void testMedian() throws Exception {
@@ -59,23 +58,23 @@ public class Collection_FunctionsTest extends FunctionTestSupport {
     }
 
     public void testMax() throws Exception {
-        performNumberTest("Collection_Max", new Integer(90));
+        performNumberTest("Collection_Max", Integer.valueOf(90));
     }
 
     public void testSum() throws Exception {
-        performNumberTest("Collection_Sum", new Integer(267));
+        performNumberTest("Collection_Sum", Integer.valueOf(267));
     }
 
     public void testUnique() throws Exception {
         HashSet result = new HashSet(8);
-        result.add(new Integer(90));
-        result.add(new Integer(4));
-        result.add(new Integer(8));
-        result.add(new Integer(43));
-        result.add(new Integer(61));
-        result.add(new Integer(20));
-        result.add(new Integer(29));
-        result.add(new Integer(12));
+        result.add(Integer.valueOf(90));
+        result.add(Integer.valueOf(4));
+        result.add(Integer.valueOf(8));
+        result.add(Integer.valueOf(43));
+        result.add(Integer.valueOf(61));
+        result.add(Integer.valueOf(20));
+        result.add(Integer.valueOf(29));
+        result.add(Integer.valueOf(12));
         performObjectTest("Collection_Unique", result);
     }
 

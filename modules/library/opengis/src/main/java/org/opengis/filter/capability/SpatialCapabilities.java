@@ -41,7 +41,6 @@ import java.util.Collection;
  *
  * @author <a href="mailto:tfr@users.sourceforge.net">Torsten Friebe </A>
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL$
  */
 public interface SpatialCapabilities {
     /**

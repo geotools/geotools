@@ -36,13 +36,13 @@ import org.geotools.data.FeatureSource;
 import org.geotools.data.complex.config.AppSchemaDataAccessConfigurator;
 import org.geotools.data.complex.config.AppSchemaDataAccessDTO;
 import org.geotools.data.complex.config.AppSchemaFeatureTypeRegistry;
-import org.geotools.data.complex.config.EmfComplexFeatureReader;
-import org.geotools.data.complex.config.Types;
 import org.geotools.data.complex.config.XMLConfigDigester;
+import org.geotools.data.complex.feature.type.Types;
+import org.geotools.data.complex.util.EmfComplexFeatureReader;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.test.AppSchemaTestSupport;
-import org.geotools.xml.SchemaIndex;
+import org.geotools.xsd.SchemaIndex;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.opengis.feature.Feature;
@@ -51,18 +51,12 @@ import org.opengis.feature.type.FeatureType;
 import org.opengis.feature.type.Name;
 
 /**
- * DOCUMENT ME!
- *
  * @author Rob Atkinson
- * @version $Id$
- * @source $URL$
- *     http://svn.geotools.org/geotools/branches/2.4.x/modules/unsupported/community-schemas
- *     /community-schema-ds/src/test/java/org/geotools/data/complex/BoreholeTest.java $
  * @since 2.4
  */
 public class GeoSciMLTest extends AppSchemaTestSupport {
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(GeoSciMLTest.class.getPackage().getName());
+            org.geotools.util.logging.Logging.getLogger(GeoSciMLTest.class);
 
     private static final String GSMLNS = "http://www.cgi-iugs.org/xml/GeoSciML/2";
 
@@ -112,7 +106,7 @@ public class GeoSciMLTest extends AppSchemaTestSupport {
             // use the absolute URL and let the Oasis Catalog resolve it to the local FS
             schemaIndex = loadSchema("http://schemas.opengis.net/GeoSciML/Gsml.xsd");
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             throw e;
         }
 
@@ -218,7 +212,7 @@ public class GeoSciMLTest extends AppSchemaTestSupport {
 
             assertEquals(EXPECTED_RESULT_COUNT, count);
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             throw e;
         }
     }

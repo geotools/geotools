@@ -16,11 +16,10 @@
  */
 package org.geotools.filter.v1_0;
 
-import org.geotools.xml.Binding;
+import org.geotools.xsd.Binding;
 import org.opengis.filter.identity.FeatureId;
 import org.w3c.dom.Document;
 
-/** @source $URL$ */
 public class OGCFeatureIdTypeBindingTest extends FilterTestSupport {
     public void testType() {
         assertEquals(FeatureId.class, binding(OGC.FeatureIdType).getType());

@@ -25,8 +25,8 @@ import org.geotools.geometry.DirectPosition2D;
 import org.geotools.gml2.bindings.GML2EncodingUtils;
 import org.geotools.gml3.GML;
 import org.geotools.xlink.XLINK;
-import org.geotools.xml.ComplexBinding;
-import org.geotools.xml.Encoder;
+import org.geotools.xsd.ComplexBinding;
+import org.geotools.xsd.Encoder;
 import org.locationtech.jts.geom.CoordinateSequence;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryCollection;
@@ -38,7 +38,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * Utility class for gml3 encoding.
  *
  * @author Justin Deoliveira, The Open Planning Project, jdeolive@openplans.org
- * @source $URL$
  */
 public class GML3EncodingUtils {
     static DirectPosition[] positions(LineString line) {

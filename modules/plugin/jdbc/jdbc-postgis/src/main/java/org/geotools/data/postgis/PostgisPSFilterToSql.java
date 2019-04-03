@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2018, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -17,9 +17,13 @@
 package org.geotools.data.postgis;
 
 import java.io.IOException;
+import org.geotools.data.postgis.filter.FilterFunction_pgNearest;
 import org.geotools.filter.FilterCapabilities;
 import org.geotools.jdbc.PreparedFilterToSQL;
 import org.opengis.feature.type.GeometryDescriptor;
+import org.opengis.filter.BinaryComparisonOperator;
+import org.opengis.filter.PropertyIsBetween;
+import org.opengis.filter.PropertyIsEqualTo;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
@@ -27,7 +31,6 @@ import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.spatial.BinarySpatialOperator;
 import org.opengis.filter.spatial.DistanceBufferOperator;
 
-/** @source $URL$ */
 public class PostgisPSFilterToSql extends PreparedFilterToSQL {
 
     FilterToSqlHelper helper;
@@ -114,6 +117,78 @@ public class PostgisPSFilterToSql extends PreparedFilterToSQL {
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Overrides base behavior to handler arrays
+     *
+     * @param filter the comparison to be turned into SQL.
+     * @param extraData
+     * @throws RuntimeException
+     */
+    protected void visitBinaryComparisonOperator(BinaryComparisonOperator filter, Object extraData)
+            throws RuntimeException {
+        Expression left = filter.getExpression1();
+        Expression right = filter.getExpression2();
+        Class rightContext = super.getExpressionType(left);
+        Class leftContext = super.getExpressionType(right);
+
+        // array comparison in PostgreSQL is strict, need to know the base type, that info is
+        // available only in the property name userdata
+        String type = (String) extraData;
+        if ((helper.isArray(rightContext) || helper.isArray(leftContext))
+                && (left instanceof PropertyName || right instanceof PropertyName)) {
+            helper.out = out;
+            helper.visitArrayComparison(filter, left, right, rightContext, leftContext, type);
+        } else {
+            super.visitBinaryComparisonOperator(filter, extraData);
+        }
+    }
+
+    /**
+     * Writes the SQL for the PropertyIsBetween Filter.
+     *
+     * @param filter the Filter to be visited.
+     * @throws RuntimeException for io exception with writer
+     */
+    public Object visit(PropertyIsBetween filter, Object extraData) throws RuntimeException {
+        LOGGER.finer("exporting PropertyIsBetween");
+
+        Expression expr = filter.getExpression();
+        Class context = super.getExpressionType(expr);
+        if (helper.isArray(context)) {
+            helper.out = out;
+            helper.visitArrayBetween(filter, context.getComponentType(), extraData);
+            return extraData;
+        } else {
+            return super.visit(filter, extraData);
+        }
+    }
+
+    public Object visit(PropertyIsEqualTo filter, Object extraData) {
+        helper.out = out;
+        FilterFunction_pgNearest nearest = helper.getNearestFilter(filter);
+        if (nearest != null) {
+            return helper.visit(
+                    nearest,
+                    extraData,
+                    new FilterToSqlHelper.NearestHelperContext(
+                            dialect,
+                            (a, b) -> {
+                                try {
+                                    ((PostGISPSDialect) dialect)
+                                            .encodeGeometryValue(
+                                                    a,
+                                                    helper.getFeatureTypeGeometryDimension(),
+                                                    helper.getFeatureTypeGeometrySRID(),
+                                                    b);
+                                } catch (IOException e) {
+                                    throw new RuntimeException(e);
+                                }
+                            }));
+        } else {
+            return super.visit(filter, extraData);
         }
     }
 }

@@ -42,13 +42,14 @@ import org.geotools.data.DefaultServiceInfo;
 import org.geotools.data.Parameter;
 import org.geotools.data.Repository;
 import org.geotools.data.ServiceInfo;
-import org.geotools.factory.Hints;
+import org.geotools.data.util.NullProgressListener;
 import org.geotools.feature.NameImpl;
 import org.geotools.gce.imagemosaic.Utils;
 import org.geotools.imageio.GeoSpatialImageReader;
 import org.geotools.imageio.netcdf.NetCDFImageReader;
-import org.geotools.util.NullProgressListener;
+import org.geotools.imageio.netcdf.utilities.NetCDFUtilities;
 import org.geotools.util.URLs;
+import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
 import org.opengis.feature.type.Name;
 import org.opengis.util.ProgressListener;
@@ -57,12 +58,12 @@ import org.opengis.util.ProgressListener;
  * {@link CoverageAccess} implementation for NetCDF Data format.
  *
  * @author Romagnoli Daniele, GeoSolutions SAS
- * @source $URL$
  */
 public class NetCDFAccess extends DefaultFileCoverageAccess
         implements CoverageAccess, FileSetManager {
 
-    private static final Logger LOGGER = Logging.getLogger(NetCDFAccess.class.toString());
+    private static final Logger LOGGER = Logging.getLogger(NetCDFAccess.class);
+    private Exception tracer;
 
     GeoSpatialImageReader reader = null;
 
@@ -136,6 +137,11 @@ public class NetCDFAccess extends DefaultFileCoverageAccess
             }
         } catch (Exception e) {
             throw new DataSourceException(e);
+        }
+
+        if (NetCDFUtilities.TRACE_ENABLED) {
+            tracer = new Exception();
+            tracer.fillInStackTrace();
         }
     }
 
@@ -232,9 +238,26 @@ public class NetCDFAccess extends DefaultFileCoverageAccess
         if (reader != null) {
             try {
                 reader.dispose();
+                reader = null;
             } catch (Throwable t) {
 
             }
+        }
+    }
+
+    @Override
+    protected void finalize() throws Throwable {
+        if (reader != null) {
+            LOGGER.warning(
+                    "There is code leaving netcdf readers open, this might cause "
+                            + "issues with file deletion on Windows!");
+            if (NetCDFUtilities.TRACE_ENABLED) {
+                LOGGER.log(
+                        Level.WARNING,
+                        "The unclosed reader originated on this stack trace",
+                        tracer);
+            }
+            dispose();
         }
     }
 

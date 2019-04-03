@@ -20,9 +20,9 @@ import java.io.Serializable;
 import java.util.AbstractList;
 import java.util.List;
 import java.util.RandomAccess;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.AbstractIdentifiedObject;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
 import org.opengis.parameter.GeneralParameterDescriptor;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.InvalidParameterCardinalityException;
@@ -36,7 +36,6 @@ import org.opengis.parameter.ParameterValue;
  * operations.
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

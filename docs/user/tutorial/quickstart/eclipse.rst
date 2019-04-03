@@ -158,7 +158,7 @@ To use M2E plugin to create a create a new maven project:
    .. image:: images/archetype.png
       :scale: 60
 
-#. The archtype acts a template using the parameters we supply to create the project.
+#. The archetype acts a template using the parameters we supply to create the project.
    
    * Group Id: org.geotools
    * Artifact Id: tutorial
@@ -396,7 +396,7 @@ Here are some additional challenges for you to try:
      :end-before: </project>
 
 * So what jars did maven actually use for the Quickstart application? Open up your :file:`pom.xml`
-  and switch to the :guilabel:`dependency heirarchy` or :guilabel:`dependency graph` tabs to see
+  and switch to the :guilabel:`dependency hierarchy` or :guilabel:`dependency graph` tabs to see
   what is going on.
   
   .. image:: images/quickstart-dependency.png

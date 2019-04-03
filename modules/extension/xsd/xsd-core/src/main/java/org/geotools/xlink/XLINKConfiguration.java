@@ -16,14 +16,13 @@
  */
 package org.geotools.xlink;
 
-import org.geotools.xml.Configuration;
+import org.geotools.xsd.Configuration;
 import org.picocontainer.MutablePicoContainer;
 
 /**
  * Parser configuration for the xlink schema.
  *
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL$
  */
 public class XLINKConfiguration extends Configuration {
     public XLINKConfiguration() {

@@ -23,16 +23,16 @@ import java.util.LinkedHashSet;
 import java.util.Locale;
 import java.util.Set;
 import java.util.function.Predicate;
-import org.geotools.factory.FactoryCreator;
-import org.geotools.factory.FactoryFinder;
-import org.geotools.factory.FactoryRegistry;
-import org.geotools.factory.FactoryRegistryException;
-import org.geotools.factory.GeoTools;
-import org.geotools.factory.Hints;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.factory.gridshift.GridShiftLocator;
-import org.geotools.resources.Arguments;
-import org.geotools.resources.LazySet;
+import org.geotools.util.Arguments;
+import org.geotools.util.LazySet;
+import org.geotools.util.factory.FactoryCreator;
+import org.geotools.util.factory.FactoryFinder;
+import org.geotools.util.factory.FactoryRegistry;
+import org.geotools.util.factory.FactoryRegistryException;
+import org.geotools.util.factory.GeoTools;
+import org.geotools.util.factory.Hints;
 import org.opengis.metadata.Identifier;
 import org.opengis.metadata.citation.Citation;
 import org.opengis.referencing.AuthorityFactory;
@@ -85,13 +85,12 @@ import org.opengis.referencing.operation.MathTransformFactory;
  * FactoryFinder} class is simply a convenience wrapper around a {@code FactoryRegistry} instance.
  *
  * @since 2.4
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
 public final class ReferencingFactoryFinder extends FactoryFinder {
     /** The service registry for this manager. Will be initialized only when first needed. */
-    private static FactoryRegistry registry;
+    private static volatile FactoryRegistry registry;
 
     /** The authority names. Will be created only when first needed. */
     private static Set<String> authorityNames;
@@ -772,11 +771,11 @@ public final class ReferencingFactoryFinder extends FactoryFinder {
      */
     public static void main(String[] args) {
         final Arguments arguments = new Arguments(args);
-        args = arguments.getRemainingArguments(0);
+        arguments.getRemainingArguments(0);
         try {
             listProviders(arguments.out, arguments.locale);
         } catch (Exception exception) {
-            exception.printStackTrace(arguments.err);
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", exception);
         }
     }
 }

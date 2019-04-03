@@ -37,7 +37,6 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import org.geotools.factory.Hints;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.NullPrimaryKey;
@@ -46,6 +45,7 @@ import org.geotools.jdbc.PreparedStatementSQLDialect;
 import org.geotools.jdbc.PrimaryKey;
 import org.geotools.jdbc.PrimaryKeyColumn;
 import org.geotools.referencing.CRS;
+import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryCollection;
@@ -64,7 +64,6 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.GeometryDescriptor;
 
-/** @source $URL$ */
 public class TeradataDialect extends PreparedStatementSQLDialect {
 
     /** sysspatial schema */
@@ -788,11 +787,13 @@ public class TeradataDialect extends PreparedStatementSQLDialect {
                             dataStore.escapeNamePattern(metaData, schemaName),
                             dataStore.escapeNamePattern(metaData, tableName),
                             dataStore.escapeNamePattern(metaData, columnName));
-            columns.next();
+            if (!columns.next()) {
+                throw new SQLException("Could not find column metadata");
+            }
 
             return columns.getString("TYPE_NAME");
         } finally {
-            columns.close();
+            dataStore.closeSafe(columns);
         }
     }
 
@@ -862,7 +863,7 @@ public class TeradataDialect extends PreparedStatementSQLDialect {
                                 LOGGER.warning("EPSG Code " + epsg + " does not map to SRID");
                             }
                         } finally {
-                            dataStore.closeSafe(ps);
+                            dataStore.closeSafe(rs);
                         }
                     } finally {
                         dataStore.closeSafe(ps);
@@ -1251,11 +1252,11 @@ public class TeradataDialect extends PreparedStatementSQLDialect {
         sql = sql + "FOR EACH STATEMENT BEGIN ATOMIC (\n";
         sql = sql + triggerStmt + "\n) END;";
         Statement s = cx.createStatement();
-        LOGGER.fine("trigger SQL : " + sql);
         try {
+            LOGGER.fine("trigger SQL : " + sql);
             s.execute(sql);
         } finally {
-            s.close();
+            dataStore.closeSafe(s);
         }
     }
 

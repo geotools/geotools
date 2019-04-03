@@ -66,10 +66,10 @@ import org.geotools.data.wfs.internal.parsers.PullParserFeatureReader;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.ows.ServiceException;
 import org.geotools.wfs.v1_1.WFS;
-import org.geotools.xml.Configuration;
-import org.geotools.xml.Encoder;
 import org.geotools.xml.XMLHandlerHints;
-import org.geotools.xml.impl.ParserHandler.ContextCustomizer;
+import org.geotools.xsd.Configuration;
+import org.geotools.xsd.Encoder;
+import org.geotools.xsd.impl.ParserHandler.ContextCustomizer;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -281,7 +281,8 @@ public class IntegrationTestWFSClient extends WFSClient {
                                     serverFiltered.close();
                                 }
                             } catch (Exception e) {
-                                e.printStackTrace();
+                                java.util.logging.Logger.getGlobal()
+                                        .log(java.util.logging.Level.INFO, "", e);
                                 throw new RuntimeException(e);
                             }
                         }

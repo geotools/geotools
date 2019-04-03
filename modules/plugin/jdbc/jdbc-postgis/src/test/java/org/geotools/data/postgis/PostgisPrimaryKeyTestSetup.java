@@ -3,7 +3,6 @@ package org.geotools.data.postgis;
 import org.geotools.jdbc.JDBCPrimaryKeyTestSetup;
 import org.geotools.jdbc.JDBCTestSetup;
 
-/** @source $URL$ */
 public class PostgisPrimaryKeyTestSetup extends JDBCPrimaryKeyTestSetup {
 
     public PostgisPrimaryKeyTestSetup(JDBCTestSetup delegate) {

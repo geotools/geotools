@@ -25,16 +25,12 @@ import org.geotools.referencing.operation.projection.Mercator;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-/**
- * Returns a {@link ProjectionHandler} for the {@link Mercator} projection
- *
- * @source $URL$
- */
+/** Returns a {@link ProjectionHandler} for the {@link Mercator} projection */
 public class MercatorHandlerFactory implements ProjectionHandlerFactory {
 
     private static final ReferencedEnvelope VALID_AREA =
             new ReferencedEnvelope(
-                    -Double.MAX_VALUE, Double.MAX_VALUE, -85, 85, DefaultGeographicCRS.WGS84);
+                    -Integer.MAX_VALUE, Integer.MAX_VALUE, -85, 85, DefaultGeographicCRS.WGS84);
 
     public ProjectionHandler getHandler(
             ReferencedEnvelope renderingEnvelope,
@@ -42,35 +38,31 @@ public class MercatorHandlerFactory implements ProjectionHandlerFactory {
             boolean wrap,
             int maxWraps)
             throws FactoryException {
+
+        if (renderingEnvelope == null) return null;
         MapProjection mapProjection =
                 CRS.getMapProjection(renderingEnvelope.getCoordinateReferenceSystem());
-        if (renderingEnvelope != null && mapProjection instanceof Mercator) {
-            ProjectionHandler handler;
-            double centralMeridian =
-                    mapProjection
-                            .getParameterValues()
-                            .parameter(AbstractProvider.CENTRAL_MERIDIAN.getName().getCode())
-                            .doubleValue();
-            if (wrap && maxWraps > 0) {
-                handler =
-                        new WrappingProjectionHandler(
-                                renderingEnvelope,
-                                VALID_AREA,
-                                sourceCrs,
-                                centralMeridian,
-                                maxWraps);
-            } else {
-                handler = new ProjectionHandler(sourceCrs, VALID_AREA, renderingEnvelope);
-                handler.setCentralMeridian(centralMeridian);
-            }
-            if (!wrap) {
-                // for this projection, if wrapping is not enabled, do not query across the
-                // dateline
-                handler.queryAcrossDateline = false;
-            }
-            return handler;
-        }
+        if (!(mapProjection instanceof Mercator)) return null;
 
-        return null;
+        ProjectionHandler handler;
+        double centralMeridian =
+                mapProjection
+                        .getParameterValues()
+                        .parameter(AbstractProvider.CENTRAL_MERIDIAN.getName().getCode())
+                        .doubleValue();
+        if (wrap && maxWraps > 0) {
+            handler =
+                    new WrappingProjectionHandler(
+                            renderingEnvelope, VALID_AREA, sourceCrs, centralMeridian, maxWraps);
+        } else {
+            handler = new ProjectionHandler(sourceCrs, VALID_AREA, renderingEnvelope);
+            handler.setCentralMeridian(centralMeridian);
+        }
+        if (!wrap) {
+            // for this projection, if wrapping is not enabled, do not query across the
+            // dateline
+            handler.queryAcrossDateline = false;
+        }
+        return handler;
     }
 }

@@ -20,14 +20,12 @@ import java.util.ArrayList;
 import java.util.List;
 import junit.framework.TestCase;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.filter.FilterTransformer;
 import org.geotools.filter.NotImpl;
 import org.geotools.xml.XMLHandlerHints;
 import org.opengis.filter.And;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 
-/** @source $URL$ */
 public class FilterCompliancePreProcessorTest extends TestCase {
 
     @Override

@@ -57,6 +57,7 @@ import org.geotools.filter.v2_0.bindings.GeometryOperandsType_GeometryOperandBin
 import org.geotools.filter.v2_0.bindings.Id_CapabilitiesTypeBinding;
 import org.geotools.filter.v2_0.bindings.IntersectsBinding;
 import org.geotools.filter.v2_0.bindings.LiteralBinding;
+import org.geotools.filter.v2_0.bindings.MatchActionBinding;
 import org.geotools.filter.v2_0.bindings.MeetsBinding;
 import org.geotools.filter.v2_0.bindings.MetByBinding;
 import org.geotools.filter.v2_0.bindings.NotBinding;
@@ -88,7 +89,7 @@ import org.geotools.filter.v2_0.bindings.WithinBinding;
 import org.geotools.filter.v2_0.bindings._LogicalOperatorsBinding;
 import org.geotools.gml3.v3_2.GMLConfiguration;
 import org.geotools.ows.v1_1.OWSConfiguration;
-import org.geotools.xml.Configuration;
+import org.geotools.xsd.Configuration;
 import org.opengis.filter.FilterFactory;
 import org.picocontainer.MutablePicoContainer;
 
@@ -96,7 +97,6 @@ import org.picocontainer.MutablePicoContainer;
  * Parser configuration for the http://www.opengis.net/fes/2.0 schema.
  *
  * @generated
- * @source $URL$
  */
 public class FESConfiguration extends Configuration {
 
@@ -133,6 +133,10 @@ public class FESConfiguration extends Configuration {
         // container.registerComponentImplementation(FES.AbstractSortingClauseType,AbstractSortingClauseTypeBinding.class);
         //
         // container.registerComponentImplementation(FES.AliasesType,AliasesTypeBinding.class);
+
+        // MatchActionType
+        container.registerComponentImplementation(FES.MatchActionType, MatchActionBinding.class);
+
         container.registerComponentImplementation(FES.ArgumentsType, ArgumentsTypeBinding.class);
         container.registerComponentImplementation(FES.ArgumentType, ArgumentTypeBinding.class);
         container.registerComponentImplementation(

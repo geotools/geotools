@@ -22,10 +22,12 @@ package org.geotools.referencing.operation.projection;
 
 import static java.lang.Math.*;
 
+import java.util.Objects;
+import org.geotools.metadata.i18n.Vocabulary;
+import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.NamedIdentifier;
-import org.geotools.resources.i18n.Vocabulary;
-import org.geotools.resources.i18n.VocabularyKeys;
+import org.geotools.util.SuppressFBWarnings;
 import org.geotools.util.Utilities;
 import org.opengis.parameter.ParameterDescriptor;
 import org.opengis.parameter.ParameterDescriptorGroup;
@@ -127,7 +129,6 @@ import org.opengis.util.InternationalString;
  *     HREF="http://www.remotesensing.org/geotiff/proj_list/random_issues.html#stereographic">Some
  *     Random Stereographic Issues</A>
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author André Gosselin
  * @author Martin Desruisseaux (PMO, IRD)
@@ -158,6 +159,7 @@ public abstract class Stereographic extends MapProjection {
     }
 
     /** {@inheritDoc} */
+    @SuppressFBWarnings("UR_UNINIT_READ_CALLED_FROM_SUPER_CONSTRUCTOR")
     public ParameterDescriptorGroup getParameterDescriptors() {
         return descriptor;
     }
@@ -180,6 +182,11 @@ public abstract class Stereographic extends MapProjection {
             return Utilities.equals(this.descriptor, that.descriptor);
         }
         return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), descriptor);
     }
 
     //////////////////////////////////////////////////////////////////////////////////////////

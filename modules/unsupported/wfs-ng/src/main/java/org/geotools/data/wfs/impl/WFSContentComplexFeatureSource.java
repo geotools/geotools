@@ -30,9 +30,9 @@ import org.geotools.data.FeatureSource;
 import org.geotools.data.Query;
 import org.geotools.data.QueryCapabilities;
 import org.geotools.data.ResourceInfo;
-import org.geotools.data.store.WFSContentComplexFeatureCollection;
 import org.geotools.data.wfs.internal.GetFeatureRequest;
 import org.geotools.data.wfs.internal.WFSClient;
+import org.geotools.data.wfs.internal.WFSContentComplexFeatureCollection;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.opengis.feature.Feature;
@@ -96,10 +96,6 @@ public class WFSContentComplexFeatureSource implements FeatureSource<FeatureType
         request.setSortBy(query.getSortBy());
 
         String srsName = null;
-        CoordinateReferenceSystem crs = query.getCoordinateSystem();
-        if (null != crs) {
-            System.err.println("Warning: don't forget to set the query CRS");
-        }
 
         request.setSrsName(srsName);
 

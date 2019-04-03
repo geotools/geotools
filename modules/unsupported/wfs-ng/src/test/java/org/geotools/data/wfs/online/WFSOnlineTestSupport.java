@@ -64,8 +64,8 @@ public class WFSOnlineTestSupport {
         m.put(WFSDataStoreFactory.URL.key, server);
         m.put(WFSDataStoreFactory.PROTOCOL.key, false);
         m.put(WFSDataStoreFactory.GML_COMPATIBLE_TYPENAMES.key, true);
-        m.put(WFSDataStoreFactory.TIMEOUT.key, new Integer(10000)); // not debug
-        m.put(WFSDataStoreFactory.TIMEOUT.key, new Integer(1000000)); // for debug
+        m.put(WFSDataStoreFactory.TIMEOUT.key, Integer.valueOf(10000)); // not debug
+        m.put(WFSDataStoreFactory.TIMEOUT.key, Integer.valueOf(1000000)); // for debug
 
         if (post != null) {
             m.put(WFSDataStoreFactory.PROTOCOL.key, Boolean.valueOf(post));
@@ -155,7 +155,7 @@ public class WFSOnlineTestSupport {
                 fr.next();
                 j++;
             }
-            System.out.println(j + " Features");
+            // System.out.println(j + " Features");
         } finally {
             fr.close();
         }
@@ -205,7 +205,7 @@ public class WFSOnlineTestSupport {
             fr.next();
             j++;
         }
-        System.out.println("bbox selected " + j + " Features");
+        // System.out.println("bbox selected " + j + " Features");
         fr.close();
     }
 
@@ -214,7 +214,7 @@ public class WFSOnlineTestSupport {
         Transaction t = new DefaultTransaction();
         ContentFeatureStore fs = (ContentFeatureStore) ds.getFeatureSource(ft.getTypeName());
         fs.setTransaction(t);
-        System.out.println("Insert Read 1");
+        // System.out.println("Insert Read 1");
         SimpleFeatureIterator fr = fs.getFeatures().features();
         int count1 = 0;
         while (fr.hasNext()) {
@@ -222,10 +222,10 @@ public class WFSOnlineTestSupport {
             fr.next();
         }
         fr.close();
-        System.out.println("Insert Add Features");
+        // System.out.println("Insert Add Features");
         List<FeatureId> fids1 = fs.addFeatures(insert);
 
-        System.out.println("Insert Read 2");
+        // System.out.println("Insert Read 2");
         fr = fs.getFeatures().features();
         int count2 = 0;
         while (fr.hasNext()) {
@@ -242,10 +242,10 @@ public class WFSOnlineTestSupport {
         }
         Id fidfilter = fac.id(featureIds);
 
-        System.out.println("Remove Inserted Features");
+        // System.out.println("Remove Inserted Features");
         fs.removeFeatures(fidfilter);
 
-        System.out.println("Insert Read 3");
+        // System.out.println("Insert Read 3");
         fr = fs.getFeatures().features();
         count2 = 0;
         while (fr.hasNext()) {
@@ -255,10 +255,10 @@ public class WFSOnlineTestSupport {
         fr.close();
         assertEquals(count1, count2);
 
-        System.out.println("Insert Add Features");
+        // System.out.println("Insert Add Features");
         fs.addFeatures(insert);
 
-        System.out.println("Insert Read 2");
+        // System.out.println("Insert Read 2");
         fr = fs.getFeatures().features();
         count2 = 0;
         while (fr.hasNext()) {
@@ -268,10 +268,10 @@ public class WFSOnlineTestSupport {
         fr.close();
         assertEquals(count1 + insert.size(), count2);
 
-        System.out.println("Insert Commit");
+        // System.out.println("Insert Commit");
         t.commit();
 
-        System.out.println("Insert Read 3");
+        // System.out.println("Insert Read 3");
         fr = fs.getFeatures().features();
         int count3 = 0;
         while (fr.hasNext()) {
@@ -290,7 +290,7 @@ public class WFSOnlineTestSupport {
         SimpleFeatureStore fs = (SimpleFeatureStore) ds.getFeatureSource(ft.getTypeName());
         fs.setTransaction(t);
 
-        System.out.println("Delete Read 1");
+        // System.out.println("Delete Read 1");
         SimpleFeatureIterator fr = fs.getFeatures().features();
         int count1 = 0;
         while (fr.hasNext()) {
@@ -299,24 +299,23 @@ public class WFSOnlineTestSupport {
         }
         fr.close();
 
-        System.out.println("Delete Remove " + ff);
+        // System.out.println("Delete Remove " + ff);
         fs.removeFeatures(ff);
 
-        System.out.println("Delete Read 2");
+        // System.out.println("Delete Read 2");
         fr = fs.getFeatures().features();
         int count2 = 0;
         while (fr.hasNext()) {
             count2++;
-            if (count2 < 5) System.out.println("# == " + count2 + " " + fr.next().getID());
-            else fr.next();
+            fr.next();
         }
         fr.close();
         assertTrue("Read 1 == " + count1 + " Read 2 == " + count2, count2 < count1);
 
-        System.out.println("Delete Commit");
+        // System.out.println("Delete Commit");
         t.commit();
 
-        System.out.println("Delete Read 3");
+        // System.out.println("Delete Read 3");
         fr = fs.getFeatures().features();
         int count3 = 0;
         while (fr.hasNext()) {
@@ -342,7 +341,7 @@ public class WFSOnlineTestSupport {
                 filterFactory.equals(
                         filterFactory.property(at.getLocalName()), filterFactory.literal(newValue));
 
-        System.out.println("Update Read 1");
+        // System.out.println("Update Read 1");
         SimpleFeatureIterator fr = fs.getFeatures(f).features();
 
         int count1 = 0;
@@ -354,10 +353,10 @@ public class WFSOnlineTestSupport {
             }
 
         fr.close();
-        System.out.println("Update Modify");
+        // System.out.println("Update Modify");
         fs.modifyFeatures(at, newValue, Filter.INCLUDE);
 
-        System.out.println("Update Read 2");
+        // System.out.println("Update Read 2");
         fr = fs.getFeatures(f).features();
         int count2 = 0;
         while (fr.hasNext()) {
@@ -367,11 +366,11 @@ public class WFSOnlineTestSupport {
         fr.close();
         assertTrue("Read 1 == " + count1 + " Read 2 == " + count2, count2 > count1);
 
-        System.out.println("Update Commit");
+        // System.out.println("Update Commit");
         try {
             t.commit();
 
-            System.out.println("Update Read 3");
+            // System.out.println("Update Read 3");
             fr = fs.getFeatures(f).features();
             int count3 = 0;
             while (fr.hasNext()) {

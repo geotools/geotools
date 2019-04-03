@@ -19,13 +19,12 @@ package org.geotools.referencing.factory.epsg;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import javax.sql.DataSource;
-import org.geotools.factory.Hints;
+import org.geotools.util.factory.Hints;
 
 /**
  * Please use {@link AccessDialectEpsgFactory}.
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Jody Garnett
  * @deprecated Please use {@link AccessDialectEpsgFactory}.

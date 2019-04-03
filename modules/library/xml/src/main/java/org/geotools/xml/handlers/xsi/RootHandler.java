@@ -30,7 +30,6 @@ import org.xml.sax.SAXNotSupportedException;
  *
  * @author dzwiers, Refractions Research, Inc. http://www.refractions.net
  * @author $Author:$ (last modification)
- * @source $URL$
  * @version $Id$
  */
 public class RootHandler extends XSIElementHandler {
@@ -58,6 +57,7 @@ public class RootHandler extends XSIElementHandler {
     }
 
     /** @see java.lang.Object#hashCode() */
+    @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int hashCode() {
         return LOCALNAME.hashCode() * ((uri == null) ? 1 : uri.hashCode());
     }

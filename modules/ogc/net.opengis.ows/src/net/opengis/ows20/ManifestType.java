@@ -16,10 +16,10 @@ import org.eclipse.emf.common.util.EList;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link net.opengis.ows20.ManifestType#getReferenceGroup <em>Reference Group</em>}</li>
  * </ul>
- * </p>
  *
  * @see net.opengis.ows20.Ows20Package#getManifestType()
  * @model extendedMetaData="name='ManifestType' kind='elementOnly'"
@@ -27,20 +27,20 @@ import org.eclipse.emf.common.util.EList;
  */
 public interface ManifestType extends BasicIdentificationType {
     /**
-     * Returns the value of the '<em><b>Reference Group</b></em>' containment reference list.
-     * The list contents are of type {@link net.opengis.ows20.ReferenceGroupType}.
-     * <!-- begin-user-doc -->
+   * Returns the value of the '<em><b>Reference Group</b></em>' containment reference list.
+   * The list contents are of type {@link net.opengis.ows20.ReferenceGroupType}.
+   * <!-- begin-user-doc -->
      * <p>
      * If the meaning of the '<em>Reference Group</em>' containment reference list isn't clear,
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     * @return the value of the '<em>Reference Group</em>' containment reference list.
-     * @see net.opengis.ows20.Ows20Package#getManifestType_ReferenceGroup()
-     * @model containment="true" required="true"
-     *        extendedMetaData="kind='element' name='ReferenceGroup' namespace='##targetNamespace'"
-     * @generated
-     */
+   * @return the value of the '<em>Reference Group</em>' containment reference list.
+   * @see net.opengis.ows20.Ows20Package#getManifestType_ReferenceGroup()
+   * @model containment="true" required="true"
+   *        extendedMetaData="kind='element' name='ReferenceGroup' namespace='##targetNamespace'"
+   * @generated
+   */
     EList<ReferenceGroupType> getReferenceGroup();
 
 } // ManifestType

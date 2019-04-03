@@ -33,13 +33,12 @@ import org.geotools.data.Transaction;
  *
  * @author Sean Geoghegan, Defence Science and Technology Organisation
  * @author $Author: seangeo $
- * @source $URL$
  * @version $Id$ Last Modified: $Date: 2003/11/28 08:49:51 $
  */
 public class JDBCUtils {
 
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.data.jdbc");
+            org.geotools.util.logging.Logging.getLogger(JDBCUtils.class);
 
     /** Non Constructable. */
     private JDBCUtils() {
@@ -78,11 +77,8 @@ public class JDBCUtils {
             } catch (SQLException e) {
                 String msg = "Error closing JDBC ResultSet";
                 LOGGER.log(Level.WARNING, msg, e);
-            } catch (Exception e) { // oracle drivers are crapping out
-
-                String msg = "Error closing JDBC ResultSet";
-
-                // LOGGER.log(Level.WARNING, msg, e);
+            } catch (Exception e) {
+                LOGGER.log(Level.FINE, "Error closing JDBC ResultSet", e);
             }
         }
     }

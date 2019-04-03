@@ -21,7 +21,7 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import org.json.simple.parser.ParseException;
 
-/** @source $URL$ */
+@SuppressWarnings("PMD.SystemPrintln")
 public class TracingHandler implements InvocationHandler {
 
     int indent = 0;

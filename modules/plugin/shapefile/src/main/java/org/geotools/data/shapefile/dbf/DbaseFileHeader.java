@@ -33,13 +33,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.geotools.resources.NIOUtilities;
+import org.geotools.util.NIOUtilities;
 
-/**
- * Class to represent the header of a Dbase III file. Creation date: (5/15/2001 5:15:30 PM)
- *
- * @source $URL$
- */
+/** Class to represent the header of a Dbase III file. Creation date: (5/15/2001 5:15:30 PM) */
 public class DbaseFileHeader {
     // Constant for the size of a record
     private static final int FILE_DESCRIPTOR_SIZE = 32;
@@ -66,8 +62,7 @@ public class DbaseFileHeader {
 
     private int largestFieldSize = 0;
 
-    private Logger logger =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.data.shapefile");
+    private Logger logger = org.geotools.util.logging.Logging.getLogger(DbaseFileHeader.class);
 
     /**
      * Returns the number of millis at January 1st 4713 BC
@@ -389,7 +384,7 @@ public class DbaseFileHeader {
                 // if this is the last field and we still haven't found the
                 // named field
                 if (i == j && i == fields.length - 1) {
-                    System.err.println(
+                    logger.warning(
                             "Could not find a field named '" + inFieldName + "' for removal");
                     return retCol;
                 }
@@ -643,8 +638,7 @@ public class DbaseFileHeader {
     /**
      * Read the header data from the DBF file.
      *
-     * @param channel A readable byte channel. If you have an InputStream you need to use, you can
-     *     call java.nio.Channels.getChannel(InputStream in).
+     * @param in The ByteBuffer to read the header from
      * @throws IOException If errors occur while reading.
      */
     public void readHeader(ByteBuffer in) throws IOException {

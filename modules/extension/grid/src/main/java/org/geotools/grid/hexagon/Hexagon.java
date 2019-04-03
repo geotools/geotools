@@ -24,7 +24,6 @@ import org.geotools.grid.PolygonElement;
  *
  * @author mbedward
  * @since 2.7
- * @source $URL$
  * @version $Id$
  */
 public interface Hexagon extends PolygonElement {

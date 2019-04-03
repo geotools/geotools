@@ -26,7 +26,6 @@ import org.geotools.geometry.iso.util.algorithm2D.AlgoRectangle2D;
  * @author roehrig
  *     <p>TODO To change the template for this generated type comment go to Window - Preferences -
  *     Java - Code Style - Code Templates
- * @source $URL$
  */
 public class TEST {
 
@@ -34,7 +33,7 @@ public class TEST {
         Double dd = new Double(1.0);
         double aa = dd.doubleValue();
         int ii = 1;
-        Integer iii = new Integer(ii);
+        Integer iii = Integer.valueOf(ii);
 
         Rectangle2D r = new Rectangle2D.Double(10.0, 80.0, 10.0, 10.0);
         Point2D pa = new Point2D.Double(0.0, 100.0);

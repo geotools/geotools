@@ -23,12 +23,12 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.measure.Unit;
 import org.geotools.measure.Measure;
+import org.geotools.metadata.i18n.Vocabulary;
 import org.geotools.referencing.AbstractIdentifiedObject;
 import org.geotools.referencing.AbstractReferenceSystem;
 import org.geotools.referencing.cs.AbstractCS;
+import org.geotools.referencing.util.CRSUtilities;
 import org.geotools.referencing.wkt.Formatter;
-import org.geotools.resources.CRSUtilities;
-import org.geotools.resources.i18n.Vocabulary;
 import org.geotools.util.UnsupportedImplementationException;
 import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -39,13 +39,9 @@ import org.opengis.util.InternationalString;
  * Abstract coordinate reference system, usually defined by a coordinate system and a datum.
  *
  * @since 2.1
- * @source $URL$
- * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @see AbstractCS
  * @see org.geotools.referencing.datum.AbstractDatum
- * @tutorial
- *     http://docs.codehaus.org/display/GEOTOOLS/Coordinate+Transformation+Services+for+Geotools+2.1
  */
 public abstract class AbstractCRS extends AbstractReferenceSystem
         implements CoordinateReferenceSystem {
@@ -163,6 +159,7 @@ public abstract class AbstractCRS extends AbstractReferenceSystem
      *     versions of this class.
      */
     @Override
+    @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int hashCode() {
         return (int) serialVersionUID ^ coordinateSystem.hashCode();
     }

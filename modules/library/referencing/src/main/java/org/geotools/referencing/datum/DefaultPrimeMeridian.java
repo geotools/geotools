@@ -34,7 +34,6 @@ import si.uom.NonSI;
  * #getName name} initial value is "Greenwich", and that value shall be used when the {@linkplain
  * #getGreenwichLongitude greenwich longitude} value is zero.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @since 2.1
@@ -182,6 +181,7 @@ public class DefaultPrimeMeridian extends AbstractIdentifiedObject implements Pr
      *     versions of this class.
      */
     @Override
+    @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int hashCode() {
         final long code = Double.doubleToLongBits(greenwichLongitude);
         return ((int) (code >>> 32) ^ (int) code) ^ (int) serialVersionUID;

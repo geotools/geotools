@@ -34,7 +34,6 @@ import org.geotools.util.logging.Logging;
  * (ISBN 0-12-286166-3, Chapter 4, pages 297-293)
  *
  * @author Simone Giannecchini - GeoSolutions
- * @source $URL$
  */
 public final class CustomPaletteBuilder {
     /**
@@ -150,8 +149,6 @@ public final class CustomPaletteBuilder {
         final int maxy_ = miny_ + srcH_;
         final int minTileX = src.getMinTileX();
         final int minTileY = src.getMinTileY();
-        final int tileW = src.getTileWidth();
-        final int tileH = src.getTileHeight();
         final int maxTileX = minTileX + src.getNumXTiles();
         final int maxTileY = minTileY + src.getNumYTiles();
         int dstTempX = 0;
@@ -591,8 +588,6 @@ public final class CustomPaletteBuilder {
         ColorNode pList = thisNode;
         int minColorCount = pList.colorCount;
 
-        int cnt = 1;
-
         while (pList.nextReducible != null) {
             if (minColorCount > pList.nextReducible.colorCount) {
                 thisNode = pList;
@@ -600,7 +595,6 @@ public final class CustomPaletteBuilder {
             }
 
             pList = pList.nextReducible;
-            cnt++;
         }
 
         // save pointer to first reducible node
@@ -622,7 +616,6 @@ public final class CustomPaletteBuilder {
         thisNode.isLeaf = true;
         currSize -= (leafChildCount - 1);
 
-        final int aDepth = thisNode.level;
         for (int i = 0; i < 8; i++) {
             thisNode.children[i] = freeTree(thisNode.children[i]);
         }

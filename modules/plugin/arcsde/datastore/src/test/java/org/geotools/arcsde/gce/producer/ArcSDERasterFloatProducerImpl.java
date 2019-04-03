@@ -7,7 +7,6 @@ import com.esri.sde.sdk.client.SeRasterScanLineGenerator;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferFloat;
 
-/** @source $URL$ */
 public class ArcSDERasterFloatProducerImpl extends ArcSDERasterProducer {
 
     public ArcSDERasterFloatProducerImpl() {
@@ -83,10 +82,11 @@ public class ArcSDERasterFloatProducerImpl extends ArcSDERasterProducer {
                                     consumer.setScanLines(imageHeight, sdeRasterData, null);
                                     consumer.rasterComplete(SeRasterConsumer.SINGLEFRAMEDONE);
                                 }
-                                System.out.println("min value: " + min + ", max value: " + max);
+                                // System.out.println("min value: " + min + ", max value: " + max);
                                 consumer.rasterComplete(SeRasterConsumer.STATICIMAGEDONE);
                             } catch (Exception se) {
-                                se.printStackTrace();
+                                java.util.logging.Logger.getGlobal()
+                                        .log(java.util.logging.Level.INFO, "", se);
                                 consumer.rasterComplete(SeRasterConsumer.IMAGEERROR);
                             }
                         }

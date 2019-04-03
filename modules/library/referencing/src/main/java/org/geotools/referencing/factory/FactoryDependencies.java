@@ -25,12 +25,12 @@ import java.util.Set;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreeNode;
-import org.geotools.factory.BufferedFactory;
-import org.geotools.factory.OptionalFactory;
 import org.geotools.referencing.ReferencingFactoryFinder;
-import org.geotools.resources.Classes;
-import org.geotools.resources.OptionalDependencies;
-import org.geotools.resources.X364;
+import org.geotools.util.Classes;
+import org.geotools.util.OptionalDependencies;
+import org.geotools.util.X364;
+import org.geotools.util.factory.BufferedFactory;
+import org.geotools.util.factory.OptionalFactory;
 import org.opengis.metadata.Identifier;
 import org.opengis.metadata.citation.Citation;
 import org.opengis.referencing.AuthorityFactory;
@@ -48,7 +48,6 @@ import org.opengis.referencing.operation.CoordinateOperationFactory;
  * Build a tree of factory dependencies.
  *
  * @since 2.4
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  */

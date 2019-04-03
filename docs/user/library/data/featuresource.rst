@@ -5,7 +5,7 @@ FeatureSource is probably the reason you came to this party; it let's you access
 
 References:
 
-* :doc:`gt-api <../api/datastore>`
+* :doc:`gt-main <../main/datastore>`
 
 To review a FeatureSource may support the additional interfaces FeatureStore and FeatureLocking if
 the current user has permission to modify or lock features.
@@ -271,7 +271,7 @@ You can also perform batch changes to the all the data matching a specific filte
    
    SimpleFeatureType featureType = store.getSchema();
    try {
-      store.modifyFeatures( "age", new Integer(24), filter );
+      store.modifyFeatures( "age", Integer.valueOf(24), filter );
       transaction.commit();
    }
    catch( Exception eek){

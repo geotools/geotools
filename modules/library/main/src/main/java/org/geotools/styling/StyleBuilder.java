@@ -21,8 +21,8 @@ import java.util.Arrays;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.factory.GeoTools;
 import org.geotools.filter.IllegalFilterException;
+import org.geotools.util.factory.GeoTools;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.FilterFactory;
@@ -37,11 +37,10 @@ import org.opengis.filter.expression.PropertyName;
  * An utility class designed to ease style building with convenience methods.
  *
  * @author aaime
- * @source $URL$
  */
 public class StyleBuilder {
     private static final java.util.logging.Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.styling");
+            org.geotools.util.logging.Logging.getLogger(StyleBuilder.class);
     public static final String LINE_JOIN_MITRE = "mitre";
     public static final String LINE_JOIN_ROUND = "round";
     public static final String LINE_JOIN_BEVEL = "bevel";
@@ -333,11 +332,7 @@ public class StyleBuilder {
         return sf.createFill(color, backgroundColor, opacity, fill);
     }
 
-    /**
-     * Returns the array of all the well known mark names
-     *
-     * @return DOCUMENT ME!
-     */
+    /** Returns the array of all the well known mark names */
     public String[] getWellKnownMarkNames() {
         return new String[] {
             MARK_SQUARE, MARK_CIRCLE, MARK_TRIANGLE, MARK_STAR, MARK_CROSS, MARK_ARROW, MARK_X
@@ -1540,7 +1535,6 @@ public class StyleBuilder {
      *
      * @param value the value to be encoded
      * @return the expression
-     * @throws IllegalFilterException DOCUMENT ME!
      */
     public Expression literalExpression(Object value) throws IllegalFilterException {
         Expression result = null;
@@ -1567,13 +1561,6 @@ public class StyleBuilder {
     /**
      * given a feature collection and an array of colours build a style with the given number of
      * classes on the named column
-     *
-     * @param fc DOCUMENT ME!
-     * @param name DOCUMENT ME!
-     * @param colors DOCUMENT ME!
-     * @param schema DOCUMENT ME!
-     * @return DOCUMENT ME!
-     * @throws IllegalFilterException DOCUMENT ME!
      */
     public Style buildClassifiedStyle(
             SimpleFeatureCollection fc, String name, String[] colors, SimpleFeatureType schema)

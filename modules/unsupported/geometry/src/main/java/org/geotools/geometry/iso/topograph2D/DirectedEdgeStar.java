@@ -2,8 +2,8 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2001-2006  Vivid Solutions
  *    (C) 2001-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2001-2006  Vivid Solutions
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -27,8 +27,6 @@ import org.geotools.geometry.iso.util.Assert;
  * A DirectedEdgeStar is an ordered list of <b>outgoing</b> DirectedEdges around a node. It supports
  * labelling the edges as well as linking the edges to form both MaximalEdgeRings and
  * MinimalEdgeRings.
- *
- * @source $URL$
  */
 public class DirectedEdgeStar extends EdgeEndStar {
 
@@ -84,7 +82,6 @@ public class DirectedEdgeStar extends EdgeEndStar {
             // is non-horizontal
             // Assert.isTrue(de0.getDy() != 0, "should never return horizontal
             // edge!");
-            DirectedEdge nonHorizontalEdge = null;
             if (de0.getDy() != 0) return de0;
             else if (deLast.getDy() != 0) return deLast;
         }
@@ -317,7 +314,6 @@ public class DirectedEdgeStar extends EdgeEndStar {
 
     public void computeDepths(DirectedEdge de) {
         int edgeIndex = findIndex(de);
-        Label label = de.getLabel();
         int startDepth = de.getDepth(Position.LEFT);
         int targetLastDepth = de.getDepth(Position.RIGHT);
         // compute the depths from this edge up to the end of the edge array
@@ -342,7 +338,6 @@ public class DirectedEdgeStar extends EdgeEndStar {
         int currDepth = startDepth;
         for (int i = startIndex; i < endIndex; i++) {
             DirectedEdge nextDe = (DirectedEdge) edgeList.get(i);
-            Label label = nextDe.getLabel();
             nextDe.setEdgeDepths(Position.RIGHT, currDepth);
             currDepth = nextDe.getDepth(Position.LEFT);
         }
@@ -350,7 +345,7 @@ public class DirectedEdgeStar extends EdgeEndStar {
     }
 
     public void print(PrintStream out) {
-        System.out.println("DirectedEdgeStar: " + getCoordinate());
+        // System.out.println("DirectedEdgeStar: " + getCoordinate());
         for (Iterator it = iterator(); it.hasNext(); ) {
             DirectedEdge de = (DirectedEdge) it.next();
             out.print("out ");

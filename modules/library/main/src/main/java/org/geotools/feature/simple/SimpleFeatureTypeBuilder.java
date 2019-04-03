@@ -98,11 +98,11 @@ import org.opengis.util.InternationalString;
  *
  * @author Justin Deolivera
  * @author Jody Garnett
- * @source $URL$
  */
 public class SimpleFeatureTypeBuilder {
     /** logger */
-    static Logger LOGGER = org.geotools.util.logging.Logging.getLogger("org.geotools.feature");
+    static Logger LOGGER =
+            org.geotools.util.logging.Logging.getLogger(SimpleFeatureTypeBuilder.class);
 
     /** factories */
     protected FeatureTypeFactory factory;
@@ -185,6 +185,9 @@ public class SimpleFeatureTypeBuilder {
         restrictions().addAll(type.getRestrictions());
         this.defaultCrs = type.getCoordinateReferenceSystem();
         this.defaultCrsSet = true;
+        if (type.getGeometryDescriptor() != null) {
+            this.defaultGeometry = type.getGeometryDescriptor().getLocalName();
+        }
         attributes = null;
         attributes().addAll(type.getAttributeDescriptors());
 
@@ -546,7 +549,7 @@ public class SimpleFeatureTypeBuilder {
      * <p>If not such binding exists then an attribute type is created on the fly.
      *
      * @param name The name of the attribute.
-     * @param bind The class the attribute is bound to.
+     * @param binding The class the attribute is bound to.
      */
     public void add(String name, Class<?> binding) {
 
@@ -607,6 +610,9 @@ public class SimpleFeatureTypeBuilder {
             AttributeDescriptor descriptor = iterator.next();
             if (descriptor.getLocalName().equals(attributeName)) {
                 iterator.remove();
+                if (attributeName.equals(defaultGeometry)) {
+                    defaultGeometry = null;
+                }
                 return descriptor;
             }
         }
@@ -847,7 +853,7 @@ public class SimpleFeatureTypeBuilder {
                 String msg =
                         "'"
                                 + this.defaultGeometry
-                                + " specified as default"
+                                + "' specified as default"
                                 + " but could find no such attribute.";
                 throw new IllegalArgumentException(msg);
             }
@@ -1000,6 +1006,8 @@ public class SimpleFeatureTypeBuilder {
         GeometryDescriptor defaultGeometry = original.getGeometryDescriptor();
         if (defaultGeometry != null && types.contains(defaultGeometry.getLocalName())) {
             b.setDefaultGeometry(defaultGeometry.getLocalName());
+        } else {
+            b.setDefaultGeometry(null);
         }
 
         return b.buildFeatureType();

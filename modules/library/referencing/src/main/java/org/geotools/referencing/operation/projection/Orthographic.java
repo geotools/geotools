@@ -23,10 +23,10 @@ package org.geotools.referencing.operation.projection;
 import static java.lang.Math.*;
 
 import java.util.logging.Level;
+import org.geotools.metadata.i18n.Vocabulary;
+import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.NamedIdentifier;
-import org.geotools.resources.i18n.Vocabulary;
-import org.geotools.resources.i18n.VocabularyKeys;
 import org.opengis.parameter.ParameterDescriptor;
 import org.opengis.parameter.ParameterDescriptorGroup;
 import org.opengis.parameter.ParameterNotFoundException;
@@ -60,7 +60,6 @@ import org.opengis.referencing.operation.PlanarProjection;
  * @see <A HREF="http://www.remotesensing.org/geotiff/proj_list/orthographic.html">"Orthographic" on
  *     www.remotesensing.org</A>
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Rueben Schulz
  */
@@ -86,17 +85,6 @@ public abstract class Orthographic extends MapProjection {
     /** {@inheritDoc} */
     public ParameterDescriptorGroup getParameterDescriptors() {
         return Provider.PARAMETERS;
-    }
-
-    /** Compares the specified object with this map projection for equality. */
-    @Override
-    public boolean equals(final Object object) {
-        if (object == this) {
-            // Slight optimization
-            return true;
-        }
-        // Relevant parameters are already compared in MapProjection
-        return super.equals(object);
     }
 
     //////////////////////////////////////////////////////////////////////////////////////////

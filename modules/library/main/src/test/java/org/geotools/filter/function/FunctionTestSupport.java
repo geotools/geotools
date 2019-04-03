@@ -30,15 +30,10 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.FilterFactory2;
 
-/**
- * @author James
- * @source $URL$
- *     http://svn.osgeo.org/geotools/trunk/modules/library/main/src/test/java/org/geotools/
- *     filter/function/FunctionTestSupport.java $
- */
+/** @author James */
 public abstract class FunctionTestSupport extends TestCase {
 
-    protected SimpleFeatureCollection featureCollection, jenksCollection;
+    protected SimpleFeatureCollection featureCollection, jenksCollection, constantCollection;
 
     FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
 
@@ -68,8 +63,8 @@ public abstract class FunctionTestSupport extends TestCase {
                     SimpleFeatureBuilder.build(
                             dataType,
                             new Object[] {
-                                new Integer(i + 1),
-                                new Integer(iVal[i]),
+                                Integer.valueOf(i + 1),
+                                Integer.valueOf(iVal[i]),
                                 new Double(dVal[i]),
                                 fac.createPoint(new Coordinate(iVal[i], iVal[i])),
                                 "Group" + (i % 4)
@@ -95,9 +90,21 @@ public abstract class FunctionTestSupport extends TestCase {
             features.add(
                     SimpleFeatureBuilder.build(
                             jenksType,
-                            new Object[] {new Integer(i + 1), new Double(jenks71[i])},
+                            new Object[] {Integer.valueOf(i + 1), new Double(jenks71[i])},
                             "jenks" + i));
         }
         jenksCollection = features;
+
+        SimpleFeatureType constantType =
+                DataUtilities.createType("constant", "id:0,v:double,s:String");
+        ListFeatureCollection constantCollection = new ListFeatureCollection(constantType);
+        for (int i = 0; i < 10; i++) {
+            constantCollection.add(
+                    SimpleFeatureBuilder.build(
+                            constantType,
+                            new Object[] {Integer.valueOf(i + 1), new Double(123.123), "abc"},
+                            "constant" + i));
+        }
+        this.constantCollection = constantCollection;
     }
 }

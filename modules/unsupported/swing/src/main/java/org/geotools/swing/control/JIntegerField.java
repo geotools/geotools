@@ -33,14 +33,13 @@ import javax.swing.event.DocumentListener;
  * JIntegerField control = new JIntegerField(initialValue, allowNegatives);
  * control.addValueChangedListener( new ValueChangedListener() {
  *     public void onValueChanged( ValueChangedEvent ev ) {
- *         System.out.println("The new value is " + ev.getValue());
+ *         // System.out.println("The new value is " + ev.getValue());
  *     }
  * });
  * </code></pre>
  *
  * @author Michael Bedward
  * @since 2.6.1
- * @source $URL$
  * @version $Id$
  */
 public class JIntegerField extends JValueField {
@@ -56,7 +55,7 @@ public class JIntegerField extends JValueField {
     /**
      * Creates a new text field with an initial value of 0.
      *
-     * @param allowNegative true if this field should allow negative values to be entered; false if
+     * @param allowsNegative true if this field should allow negative values to be entered; false if
      *     only positive values are allowed
      */
     public JIntegerField(boolean allowsNegative) {

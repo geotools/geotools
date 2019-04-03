@@ -28,7 +28,6 @@ import org.opengis.style.ContrastMethod;
  * The ContrastEnhancementImpl UnitTest
  *
  * @author Jared Erickson
- * @source $URL$
  */
 public class ContrastEnhancementImplTest extends TestCase {
 
@@ -36,7 +35,7 @@ public class ContrastEnhancementImplTest extends TestCase {
 
     /** Test of getGammaValue method, of class ContrastEnhancementImpl. */
     public void testGetSetGammaValue() {
-        System.out.println("getGammaValue");
+        // System.out.println("getGammaValue");
         ContrastEnhancementImpl contrastEnhancementImpl = new ContrastEnhancementImpl();
         double expected = 1.5;
         contrastEnhancementImpl.setGammaValue(filterFactory.literal(expected));
@@ -48,7 +47,7 @@ public class ContrastEnhancementImplTest extends TestCase {
 
     /** Test of setMethod method, of class ContrastEnhancementImpl. */
     public void testGetSetMethod() {
-        System.out.println("setMethod");
+        // System.out.println("setMethod");
         ContrastMethod expected = ContrastMethod.HISTOGRAM;
         ContrastEnhancementImpl contrastEnhancementImpl = new ContrastEnhancementImpl();
         contrastEnhancementImpl.setMethod(expected);

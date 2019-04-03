@@ -20,8 +20,7 @@ import org.geotools.gml2.simple.GMLWriter;
 import org.geotools.gml2.simple.GeometryEncoder;
 import org.geotools.gml2.simple.QualifiedName;
 import org.geotools.gml3.GML;
-import org.geotools.xml.Encoder;
-import org.locationtech.jts.geom.Coordinate;
+import org.geotools.xsd.Encoder;
 import org.locationtech.jts.geom.Point;
 import org.xml.sax.helpers.AttributesImpl;
 
@@ -42,6 +41,15 @@ class PointEncoder extends GeometryEncoder<Point> {
 
     protected PointEncoder(Encoder encoder, String gmlPrefix, String gmlUri) {
         super(encoder);
+        init(gmlPrefix, gmlUri);
+    }
+
+    protected PointEncoder(Encoder encoder, String gmlPrefix, String gmlUri, boolean encodeGmlId) {
+        super(encoder, encodeGmlId);
+        init(gmlPrefix, gmlUri);
+    }
+
+    private void init(String gmlPrefix, String gmlUri) {
         point = POINT.derive(gmlPrefix, gmlUri);
         pos = POS.derive(gmlPrefix, gmlUri);
     }
@@ -52,10 +60,7 @@ class PointEncoder extends GeometryEncoder<Point> {
         atts = cloneWithGmlId(atts, gmlId);
         handler.startElement(point, atts);
         handler.startElement(pos, null);
-
-        Coordinate coordinate = geometry.getCoordinate();
-        handler.position(coordinate.x, coordinate.y, coordinate.z);
-
+        handler.position(geometry.getCoordinateSequence());
         handler.endElement(pos);
         handler.endElement(point);
     }

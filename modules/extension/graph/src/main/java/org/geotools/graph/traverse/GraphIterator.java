@@ -165,7 +165,6 @@ import org.geotools.graph.structure.Graphable;
  * @see GraphWalker
  * @see GraphTraversal
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
- * @source $URL$
  */
 public interface GraphIterator {
 
@@ -188,7 +187,6 @@ public interface GraphIterator {
      * creation/initialization of any internal data structures used by the iterator.
      *
      * @param graph The graph being whose components are being iterated over.
-     * @todo DOCUMENT ME!
      */
     public void init(Graph graph, GraphTraversal traversal);
 
@@ -197,7 +195,6 @@ public interface GraphIterator {
      * is complete, null should be returned.
      *
      * @return The next component in the iteration, or null if iteration is complete.
-     * @todo DOCUMENT ME!
      */
     public Graphable next(GraphTraversal traversal);
 
@@ -206,7 +203,6 @@ public interface GraphIterator {
      * traversal.
      *
      * @param current The current component of the traversal.
-     * @todo DOCUMENT ME!
      */
     public void cont(Graphable current, GraphTraversal traversal);
 
@@ -214,7 +210,6 @@ public interface GraphIterator {
      * Signals the iterator to kill the branch at the current component.
      *
      * @param current The current component of the traversal.
-     * @todo DOCUMENT ME!
      */
     public void killBranch(Graphable current, GraphTraversal traversal);
 }

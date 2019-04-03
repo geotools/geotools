@@ -29,7 +29,6 @@ import junit.framework.TestCase;
  * {@link OnlineTestCase} and {@link OnlineTestSupport} for details.
  *
  * @author Ben Caradoc-Davies, CSIRO Earth Science and Resource Engineering
- * @source $URL$
  */
 public class FixtureUtilities {
 
@@ -88,6 +87,7 @@ public class FixtureUtilities {
      * @param fixtureId the fixture id
      * @param fixtureFile the missing fixture configuration file
      */
+    @SuppressWarnings("PMD.SystemPrintln")
     public static void printSkipNotice(String fixtureId, File fixtureFile) {
         try {
             System.out.println(
@@ -97,7 +97,7 @@ public class FixtureUtilities {
                             + fixtureFile.getCanonicalPath()
                             + " not found.");
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
     }
 

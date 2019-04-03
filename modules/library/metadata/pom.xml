@@ -16,7 +16,7 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>library</artifactId>
-    <version>20-SNAPSHOT</version>
+    <version>22-SNAPSHOT</version>
   </parent>
 
 
@@ -26,14 +26,15 @@
   <groupId>org.geotools</groupId>
   <artifactId>gt-metadata</artifactId>
   <packaging>jar</packaging>
+
   <name>Metadata</name>
-  
-
-
   <description>
     Contains implementations of metadata and some core utilities classes.
   </description>
-
+  <properties>
+    <moduleIdentifier>org.geotools.metadata</moduleIdentifier>
+  </properties>
+  
   <licenses>
     <license>
       <name>Lesser General Public License (LGPL)</name>
@@ -129,6 +130,10 @@
       <artifactId>log4j</artifactId>
       <scope>provided</scope>  <!-- Not required for default execution. -->
       <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
     </dependency>
   </dependencies>
 

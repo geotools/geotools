@@ -28,8 +28,8 @@ import java.util.logging.Logger;
 import javax.media.jai.PropertySource;
 import org.geotools.coverage.AbstractCoverage;
 import org.geotools.geometry.DirectPosition2D;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 import org.geotools.util.logging.Logging;
 import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.coverage.grid.GridGeometry;
@@ -40,7 +40,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * Base class for GeoTools implementation of grid coverage.
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
@@ -49,7 +48,7 @@ public abstract class AbstractGridCoverage extends AbstractCoverage implements G
     private static final long serialVersionUID = 6476934258101450793L;
 
     /** The logger for grid coverage operations. */
-    public static final Logger LOGGER = Logging.getLogger("org.geotools.coverage.grid");
+    public static final Logger LOGGER = Logging.getLogger(AbstractGridCoverage.class);
 
     /**
      * Sources grid coverage, or {@code null} if none. This information is lost during

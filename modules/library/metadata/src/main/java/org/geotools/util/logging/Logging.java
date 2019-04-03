@@ -23,10 +23,11 @@ import java.util.Comparator;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
-import org.geotools.resources.Classes;
-import org.geotools.resources.XArray;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
+import org.geotools.util.Classes;
+import org.geotools.util.SuppressFBWarnings;
+import org.geotools.util.XArray;
 
 /**
  * A set of utilities method for configuring loggings in GeoTools. <strong>All GeoTools code should
@@ -48,10 +49,10 @@ import org.geotools.resources.i18n.Errors;
  * </blockquote>
  *
  * @since 2.4
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  */
+@SuppressWarnings("PMD.SystemPrintln")
 public final class Logging {
     /** Compares {@link Logging} or {@link String} objects for alphabetical order. */
     private static final Comparator<Object> COMPARATOR =
@@ -222,7 +223,7 @@ public final class Logging {
      * specified name and {@code create} is {@code true}, then a new instance will be created.
      * Otherwise the nearest parent is returned.
      *
-     * @param root The root logger name.
+     * @param base The root logger name.
      * @param create {@code true} if this method is allowed to create new {@code Logging} instance.
      */
     private static Logging getLogging(final String base, final boolean create) {
@@ -388,11 +389,11 @@ public final class Logging {
      * setting. A user trying to configure his logging properties may find confusing to see his
      * setting ignored.
      *
-     * @see org.geotools.factory.GeoTools#init
+     * @see org.geotools.util.factory.GeoTools#init
      */
+    @SuppressFBWarnings("LG_LOST_LOGGER_DUE_TO_WEAK_REFERENCE")
     public void forceMonolineConsoleOutput(final Level level) {
-        final Logger logger =
-                Logger.getLogger(name); // Really Java logging, not the redirected one.
+        Logger logger = Logger.getLogger(name); // Really Java logging, not the redirected one.
         synchronized (EMPTY) {
             final MonolineFormatter f = MonolineFormatter.configureConsoleHandler(logger, level);
             if (f.getSourceFormat() == null) {

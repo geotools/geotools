@@ -25,7 +25,6 @@ import org.geotools.data.wfs.internal.GetFeatureParser;
 import org.geotools.wfs.v1_1.WFSConfiguration;
 import org.opengis.feature.simple.SimpleFeatureType;
 
-/** @source $URL$ */
 public class PullParserTest extends AbstractGetFeatureParserTest {
 
     public PullParserTest() {
@@ -37,12 +36,14 @@ public class PullParserTest extends AbstractGetFeatureParserTest {
             final QName featureName,
             final URL schemaLocation,
             final SimpleFeatureType featureType,
-            final URL getFeaturesRequest)
+            final URL getFeaturesRequest,
+            String axisOrder)
             throws IOException {
 
         InputStream inputStream = new BufferedInputStream(getFeaturesRequest.openStream());
         GetFeatureParser parser =
-                new PullParserFeatureReader(new WFSConfiguration(), inputStream, featureType);
+                new PullParserFeatureReader(
+                        new WFSConfiguration(), inputStream, featureType, axisOrder);
         return parser;
     }
 

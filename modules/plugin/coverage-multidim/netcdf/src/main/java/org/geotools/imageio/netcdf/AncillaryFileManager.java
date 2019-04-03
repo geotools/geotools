@@ -42,6 +42,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.geotools.coverage.grid.io.FileSetManager;
 import org.geotools.coverage.grid.io.FileSystemFileSetManager;
 import org.geotools.coverage.io.catalog.DataStoreConfiguration;
+import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.data.DataStoreFactorySpi;
 import org.geotools.feature.NameImpl;
 import org.geotools.gce.imagemosaic.Utils;
@@ -61,7 +62,6 @@ import org.geotools.gce.imagemosaic.properties.PropertiesCollectorFinder;
 import org.geotools.gce.imagemosaic.properties.PropertiesCollectorSPI;
 import org.geotools.imageio.netcdf.Slice2DIndex.Slice2DIndexManager;
 import org.geotools.imageio.netcdf.utilities.NetCDFUtilities;
-import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.util.URLs;
 import org.geotools.util.Utilities;
 import org.geotools.util.logging.Logging;
@@ -171,7 +171,7 @@ public class AncillaryFileManager implements FileSetManager {
 
     private FileSetManager fileSetManager;
 
-    private static final Logger LOGGER = Logging.getLogger(AncillaryFileManager.class.toString());
+    private static final Logger LOGGER = Logging.getLogger(AncillaryFileManager.class);
 
     private static ObjectFactory OBJECT_FACTORY = new ObjectFactory();
 
@@ -263,8 +263,8 @@ public class AncillaryFileManager implements FileSetManager {
         parentDirectory = new File(ncFile.getParent());
 
         // Look for external folder configuration
+        File baseDir = parentDirectory;
         final String baseFolder = NetCDFUtilities.EXTERNAL_DATA_DIR;
-        File baseDir = null;
         if (baseFolder != null) {
             baseDir = new File(baseFolder);
             // Check it again in case it has been deleted in the meantime:
@@ -284,12 +284,7 @@ public class AncillaryFileManager implements FileSetManager {
         String baseName =
                 cutExtension(extension) ? FilenameUtils.removeExtension(mainName) : mainName;
         String outputLocalFolder = "." + baseName + "_" + hashCode;
-        destinationDir = new File(parentDirectory, outputLocalFolder);
-
-        // append base file folder tree to the optional external data dir
-        if (baseDir != null) {
-            destinationDir = new File(baseDir, outputLocalFolder);
-        }
+        destinationDir = new File(baseDir, outputLocalFolder);
 
         boolean createdDir = false;
         if (!destinationDir.exists()) {
@@ -556,7 +551,7 @@ public class AncillaryFileManager implements FileSetManager {
      *
      * @throws JAXBException
      */
-    private void initIndexer() throws JAXBException {
+    protected void initIndexer() throws JAXBException {
         if (indexerFile.exists() && indexerFile.canRead()) {
             Unmarshaller unmarshaller = CONTEXT.createUnmarshaller();
             if (unmarshaller != null) {

@@ -25,13 +25,12 @@ import org.geotools.coverageio.BaseGridFormatFactorySPI;
 /**
  * @author Mathew Wyatt, CSIRO Australia
  * @author Daniele Romagnoli, GeoSolutions SAS
- * @source $URL$
  */
 public class EnviHdrFormatFactory extends BaseGridFormatFactorySPI implements GridFormatFactorySpi {
 
     /** Logger. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.coverageio.gdal.envihdr");
+            org.geotools.util.logging.Logging.getLogger(EnviHdrFormatFactory.class);
 
     public boolean isAvailable() {
         boolean available = true;

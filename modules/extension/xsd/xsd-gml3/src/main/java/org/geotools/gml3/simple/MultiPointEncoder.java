@@ -20,7 +20,7 @@ import org.geotools.gml2.simple.GMLWriter;
 import org.geotools.gml2.simple.GeometryEncoder;
 import org.geotools.gml2.simple.QualifiedName;
 import org.geotools.gml3.GML;
-import org.geotools.xml.Encoder;
+import org.geotools.xsd.Encoder;
 import org.locationtech.jts.geom.MultiPoint;
 import org.locationtech.jts.geom.Point;
 import org.xml.sax.helpers.AttributesImpl;
@@ -46,6 +46,17 @@ class MultiPointEncoder extends GeometryEncoder<MultiPoint> {
     protected MultiPointEncoder(Encoder encoder, String gmlPrefix, String gmlUri) {
         super(encoder);
         pe = new PointEncoder(encoder, gmlPrefix, gmlUri);
+        init(gmlPrefix, gmlUri);
+    }
+
+    protected MultiPointEncoder(
+            Encoder encoder, String gmlPrefix, String gmlUri, boolean encodeGmlId) {
+        super(encoder, encodeGmlId);
+        pe = new PointEncoder(encoder, gmlPrefix, gmlUri, encodeGmlId);
+        init(gmlPrefix, gmlUri);
+    }
+
+    private void init(String gmlPrefix, String gmlUri) {
         multiPoint = MULTI_POINT.derive(gmlPrefix, gmlUri);
         pointMember = POINT_MEMBER.derive(gmlPrefix, gmlUri);
     }

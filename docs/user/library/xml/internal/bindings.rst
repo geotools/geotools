@@ -8,7 +8,7 @@ A binding is what transforms XML into a Java object and vice versa. Bindings can
 * simple types
 * complex types
 
-More specifically, a binding is an instanceof of **org.geotools.xml.Binding**::
+More specifically, a binding is an instanceof of **org.geotools.xsd.Binding**::
   
   interface Binding {
     /**
@@ -121,7 +121,7 @@ The default execution behaviour is to execute after its "parent" binding has exe
    
    You may have asked yourself the question Whats the point of the binding for "integerElement". If you did give yourself a gold star because the binding indeed unnecessary. Transforming the string "25" to the integer 25 can really be done with a single binding. Which brings the next question Which binding should do the job?.
    
-   The answer depends on the java object model being mapped to. Suppose we chose the binding for "integerElement" to perform the mapping and removed the binding for "integer" from the chain. This would be perfectly valid, but lets assume that we have other elements and attributes in our schema that are of type "xs:integer". Do we want to create bindings indentical to the "integerElement" binding? Probably not.
+   The answer depends on the java object model being mapped to. Suppose we chose the binding for "integerElement" to perform the mapping and removed the binding for "integer" from the chain. This would be perfectly valid, but lets assume that we have other elements and attributes in our schema that are of type "xs:integer". Do we want to create bindings identical to the "integerElement" binding? Probably not.
    
    In this case, it makes more sense to have the "integer" binding do the work, and remove the "integerElement" completley (that is, remove the element binding from the configuration, so that the chain will be built only up to the type handler):
    
@@ -186,7 +186,7 @@ Simple bindings are used to parse and encode elements and attributes which have 
   
   The parse method for simple bindings takes two parameters:
   
-  * instance: The instance component ( element or attribute ) that is being parsed as an instance of org.geotools.xml.InstanceComponent
+  * instance: The instance component ( element or attribute ) that is being parsed as an instance of org.geotools.xsd.InstanceComponent
   * value: The parsed value of the element / attribute created by the previous binding in the execution chain ( explained in greater detail above ). If the binding is the first in the chain, this value is the raw text of the element / attribute as a String.
   
   The return value of the method is the transformed object. Continuing with the "xs:integer" example, an implementation could be::
@@ -216,7 +216,7 @@ Simple bindings are used to parse and encode elements and attributes which have 
 
 * AbstractSimpleBinding
   
-  The class org.geotools.xml.AbstractSimpleBinding is available for subclassing
+  The class org.geotools.xsd.AbstractSimpleBinding is available for subclassing
   by binding writers.
 
 Complex Bindings
@@ -252,7 +252,7 @@ The interface for complex bindings looks like::
   
   The parse method for a complex binding takes three parameters:
 
-  * instance: The element instance being parsed, an instance of **org.geotools.xml.ElementInstance**
+  * instance: The element instance being parsed, an instance of **org.geotools.xsd.ElementInstance**
   * nocde:: A node in the current "parse tree" ( explained below ) at the time the binding is being executed, an instance of Node
   * value: The parsed value as produced by the previous binding in the execution chain. This value is null for the first binding in the chain.
 
@@ -376,7 +376,7 @@ The interface for complex bindings looks like::
         return null;
      }
    
-   In this example, all the work is done in the encode method. However it is evident that the second example results in much more work for the binding implementor which is why teh first method is often preferred.
+   In this example, all the work is done in the encode method. However it is evident that the second example results in much more work for the binding implementor which is why the first method is often preferred.
 
 * AbstractComplexBinding
   
@@ -409,7 +409,7 @@ The Binding Context is described further in the Configuration section.
 Binding Testing
 ''''''''''''''''
 
-The **org.geotools.xml.test.XMLTestSupport** class is used as a base class for binding unit tests.
+The **XMLTestSupport** class is used as a base class for binding unit tests.
 
 Subclasses of XMLTestSupport need to provide the configuration the binding under test is part of. For instance::
   

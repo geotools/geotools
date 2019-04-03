@@ -25,9 +25,6 @@ import org.opengis.feature.Feature;
  * Iterator wrapper which caps the number of returned features.
  *
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL$
- *     http://svn.osgeo.org/geotools/trunk/modules/library/main/src/main/java/org/geotools/
- *     data/store/MaxFeaturesIterator.java $
  */
 public class MaxFeaturesIterator<F extends Feature> implements FeatureIterator<F> {
 
@@ -85,7 +82,7 @@ public class MaxFeaturesIterator<F extends Feature> implements FeatureIterator<F
         if (counter < start) {
             while (delegate.hasNext() && counter < start) {
                 counter++;
-                F skip = delegate.next(); // skip!
+                delegate.next(); // skip!
             }
         }
     }

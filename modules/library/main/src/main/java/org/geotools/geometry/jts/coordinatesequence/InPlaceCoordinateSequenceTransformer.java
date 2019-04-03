@@ -46,7 +46,6 @@ import org.opengis.referencing.operation.TransformException;
  *
  * @author jeichar
  * @since 0.6.0
- * @source $URL$
  */
 public class InPlaceCoordinateSequenceTransformer implements CoordinateSequenceTransformer {
 

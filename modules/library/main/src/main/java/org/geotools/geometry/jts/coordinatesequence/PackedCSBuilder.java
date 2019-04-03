@@ -26,7 +26,6 @@ import org.locationtech.jts.geom.impl.PackedCoordinateSequenceFactory;
  * An implementation of a JTS CSBuilder which uses a PackedCoordinateSequence.
  *
  * @author wolf
- * @source $URL$
  */
 public abstract class PackedCSBuilder implements CSBuilder {
     int size = -1;
@@ -58,7 +57,7 @@ public abstract class PackedCSBuilder implements CSBuilder {
 
         /** @see org.geotools.geometry.coordinatesequence.CSBuilder#end() */
         public CoordinateSequence end() {
-            CoordinateSequence cs = factory.create(ordinates, dimensions);
+            CoordinateSequence cs = factory.create(ordinates, dimensions, 0);
             ordinates = null;
             size = -1;
             dimensions = -1;
@@ -102,7 +101,7 @@ public abstract class PackedCSBuilder implements CSBuilder {
 
         /** @see org.geotools.geometry.coordinatesequence.CSBuilder#end() */
         public CoordinateSequence end() {
-            CoordinateSequence cs = factory.create(ordinates, dimensions);
+            CoordinateSequence cs = factory.create(ordinates, dimensions, 0);
             ordinates = null;
             size = -1;
             dimensions = -1;

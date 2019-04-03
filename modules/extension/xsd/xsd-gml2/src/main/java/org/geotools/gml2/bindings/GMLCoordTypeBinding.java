@@ -19,9 +19,9 @@ package org.geotools.gml2.bindings;
 import java.math.BigDecimal;
 import javax.xml.namespace.QName;
 import org.geotools.gml2.GML;
-import org.geotools.xml.AbstractComplexBinding;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
+import org.geotools.xsd.AbstractComplexBinding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.CoordinateSequenceFactory;
 
@@ -48,7 +48,6 @@ import org.locationtech.jts.geom.CoordinateSequenceFactory;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class GMLCoordTypeBinding extends AbstractComplexBinding {
     CoordinateSequenceFactory csFactory;
@@ -82,21 +81,15 @@ public class GMLCoordTypeBinding extends AbstractComplexBinding {
      * @generated modifiable
      */
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
-        int dimension = 1;
-        double x;
-        double y;
-        double z;
-        x = y = z = Double.NaN;
-
-        x = ((BigDecimal) node.getChild("X").getValue()).doubleValue();
+        double x = ((BigDecimal) node.getChild("X").getValue()).doubleValue();
+        double y = Double.NaN;
+        double z = Double.NaN;
 
         if (!node.getChildren("Y").isEmpty()) {
-            dimension++;
             y = ((BigDecimal) node.getChild("Y").getValue()).doubleValue();
         }
 
         if (!node.getChildren("Z").isEmpty()) {
-            dimension++;
             z = ((BigDecimal) node.getChild("Z").getValue()).doubleValue();
         }
 

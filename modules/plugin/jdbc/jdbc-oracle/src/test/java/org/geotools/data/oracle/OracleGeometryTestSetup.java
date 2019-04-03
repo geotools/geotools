@@ -19,7 +19,6 @@ package org.geotools.data.oracle;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCGeometryTestSetup;
 
-/** @source $URL$ */
 public class OracleGeometryTestSetup extends JDBCGeometryTestSetup {
 
     protected OracleGeometryTestSetup() {

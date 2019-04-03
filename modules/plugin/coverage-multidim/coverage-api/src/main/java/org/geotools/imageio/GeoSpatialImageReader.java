@@ -32,12 +32,12 @@ import org.geotools.coverage.io.catalog.CoverageSlicesCatalog.WrappedCoverageSli
 import org.geotools.coverage.io.catalog.DataStoreConfiguration;
 import org.geotools.data.Query;
 import org.geotools.data.Repository;
+import org.geotools.util.SuppressFBWarnings;
 import org.opengis.feature.type.Name;
 
 /**
  * @author Daniele Romagnoli, GeoSolutions SAS
  * @author Simone Giannecchini, GeoSolutions SAS
- * @source $URL$
  */
 public abstract class GeoSpatialImageReader extends ImageReader implements FileSetManager {
 
@@ -96,10 +96,13 @@ public abstract class GeoSpatialImageReader extends ImageReader implements FileS
      * @throw {@link IndexOutOfBoundsException} in case the provided imageIndex is not in the range
      *     of supported ones.
      */
+    @SuppressFBWarnings("INT_BAD_COMPARISON_WITH_NONNEGATIVE_VALUE")
     protected void checkImageIndex(final int imageIndex) {
         if (imageIndex < 0 || imageIndex >= numImages) {
             throw new IndexOutOfBoundsException(
-                    "Invalid imageIndex. It should "
+                    "Invalid imageIndex "
+                            + imageIndex
+                            + ", it should "
                             + (numImages > 0
                                     ? ("belong the range [0," + (numImages - 1))
                                     : "be 0"));

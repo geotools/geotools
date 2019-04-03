@@ -21,7 +21,6 @@ package org.geotools.filter.function;
  * then pass it to a ClassifyFunction.
  *
  * @author Cory Horner, Refractions Research
- * @source $URL$
  */
 public abstract class Classifier {
 
@@ -63,11 +62,4 @@ public abstract class Classifier {
 
     /** @return the number of bins */
     public abstract int getSize();
-
-    @Override
-    public String toString() {
-        StringBuffer buffer = new StringBuffer();
-
-        return super.toString();
-    }
 }

@@ -50,6 +50,7 @@ import java.util.Set;
 import java.util.TimeZone;
 import java.util.TreeSet;
 import java.util.UUID;
+import org.apache.commons.io.FileUtils;
 import org.geotools.TestData;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataUtilities;
@@ -67,7 +68,6 @@ import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.simple.SimpleFeatureStore;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.factory.FactoryRegistryException;
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.FeatureTypes;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
@@ -78,9 +78,11 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.util.URLs;
+import org.geotools.util.factory.FactoryRegistryException;
 import org.junit.After;
 import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.CoordinateXYZM;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryCollection;
@@ -106,7 +108,6 @@ import org.opengis.geometry.BoundingBox;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
- * @source $URL$
  * @version $Id$
  * @author Ian Schneider
  */
@@ -858,7 +859,7 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
                 if (b.byteValue() % 2 == 0) {
                     writer.remove();
                 } else {
-                    feat.setAttribute(1, new Byte((byte) -1));
+                    feat.setAttribute(1, Byte.valueOf((byte) -1));
                 }
             }
         } finally {
@@ -898,7 +899,7 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
                         sds.getFeatureWriter(
                                 sds.getTypeNames()[0], Filter.INCLUDE, Transaction.AUTO_COMMIT);
                 SimpleFeature feature = writer.next();
-                System.out.println(feature);
+                // System.out.println(feature);
                 writer.remove();
             } finally {
                 if (writer != null) {
@@ -1061,15 +1062,15 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
         for (int i = 0, ii = 20; i < ii; i++) {
 
             build.add(new GeometryFactory().createPoint(new Coordinate(1, -1)));
-            build.add(new Byte((byte) i));
-            build.add(new Short((short) i));
+            build.add(Byte.valueOf((byte) i));
+            build.add(Short.valueOf((short) i));
             build.add(new Double(i));
             build.add(new Float(i));
             build.add(new String(i + " "));
             build.add(new Date(i));
-            build.add(new Boolean(true));
-            build.add(new Integer(22));
-            build.add(new Long(1234567890123456789L));
+            build.add(Boolean.valueOf(true));
+            build.add(Integer.valueOf(22));
+            build.add(Long.valueOf(1234567890123456789L));
             build.add(new BigDecimal(new BigInteger("12345678901234567890123456789"), 2));
             build.add(new BigInteger("12345678901234567890123456789"));
             GregorianCalendar calendar = new GregorianCalendar();
@@ -1943,5 +1944,156 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
         assertTrue(
                 "bounds of a shapefile without any data must be empty",
                 bounds.isEmpty() && bounds.isNull());
+    }
+
+    /** Tests measures (M) values on shp output for Point type */
+    @Test
+    public void testPointZMSupport() throws Exception {
+        // create feature type
+        SimpleFeatureType type =
+                DataUtilities.createType(
+                        "junk", "a:Point,b:java.math.BigDecimal,c:java.math.BigInteger");
+        DefaultFeatureCollection features = new DefaultFeatureCollection();
+
+        BigInteger bigInteger = new BigInteger("1234567890123456789");
+        BigDecimal bigDecimal = new BigDecimal(bigInteger, 2);
+
+        SimpleFeatureBuilder build = new SimpleFeatureBuilder(type);
+        build.add(new GeometryFactory().createPoint(new CoordinateXYZM(1, -1, 1, 2)));
+        build.add(bigDecimal);
+        build.add(bigInteger);
+
+        SimpleFeature feature = build.buildFeature(null);
+        features.add(feature);
+
+        // store features
+        File tmpFile = getTempFile();
+        tmpFile.createNewFile();
+        ShapefileDataStore s = new ShapefileDataStore(tmpFile.toURI().toURL());
+        writeFeatures(s, features);
+        File expected = new File(getClass().getResource("test-data/measure/pointzm.shp").toURI());
+        // compare byte stream produced in shp file
+        assertTrue(FileUtils.contentEquals(tmpFile, expected));
+    }
+
+    /** Tests measures (M) values on shp output for MultiPoint type */
+    @Test
+    public void testMultiPointZMSupport() throws Exception {
+        // create feature type
+        SimpleFeatureType type =
+                DataUtilities.createType(
+                        "junk", "a:MultiPoint,b:java.math.BigDecimal,c:java.math.BigInteger");
+        DefaultFeatureCollection features = new DefaultFeatureCollection();
+
+        BigInteger bigInteger = new BigInteger("1234567890123456789");
+        BigDecimal bigDecimal = new BigDecimal(bigInteger, 2);
+
+        SimpleFeatureBuilder build = new SimpleFeatureBuilder(type);
+        GeometryFactory gf = new GeometryFactory();
+        build.add(
+                gf.createMultiPoint(
+                        new Point[] {
+                            gf.createPoint(new CoordinateXYZM(1, -1, 1, 2)),
+                            gf.createPoint(new CoordinateXYZM(1, 3, 1, 4)),
+                            gf.createPoint(new CoordinateXYZM(3, 4, 1, 2))
+                        }));
+        build.add(bigDecimal);
+        build.add(bigInteger);
+
+        SimpleFeature feature = build.buildFeature(null);
+        features.add(feature);
+
+        // store features
+        File tmpFile = getTempFile();
+        tmpFile.createNewFile();
+        ShapefileDataStore s = new ShapefileDataStore(tmpFile.toURI().toURL());
+        writeFeatures(s, features);
+        File expected =
+                new File(getClass().getResource("test-data/measure/multipointszm.shp").toURI());
+        // compare byte stream produced in shp file
+        assertTrue(FileUtils.contentEquals(tmpFile, expected));
+    }
+
+    /** Tests measures (M) values on shp output for MultiPolygon type */
+    @Test
+    public void testPolygonZMSupport() throws Exception {
+        // create feature type
+        SimpleFeatureType type =
+                DataUtilities.createType(
+                        "junk", "a:Polygon,b:java.math.BigDecimal,c:java.math.BigInteger");
+        DefaultFeatureCollection features = new DefaultFeatureCollection();
+
+        BigInteger bigInteger = new BigInteger("1234567890123456789");
+        BigDecimal bigDecimal = new BigDecimal(bigInteger, 2);
+
+        SimpleFeatureBuilder build = new SimpleFeatureBuilder(type);
+        GeometryFactory gf = new GeometryFactory();
+        build.add(
+                gf.createMultiPolygon(
+                        new Polygon[] {
+                            gf.createPolygon(
+                                    new CoordinateXYZM[] {
+                                        new CoordinateXYZM(1, -1, 1, 1),
+                                        new CoordinateXYZM(2, 0, 1, 2),
+                                        new CoordinateXYZM(3, 1, 1, 2),
+                                        new CoordinateXYZM(1, -1, 1, 1)
+                                    })
+                        }));
+        build.add(bigDecimal);
+        build.add(bigInteger);
+
+        SimpleFeature feature = build.buildFeature(null);
+        features.add(feature);
+
+        // store features
+        File tmpFile = getTempFile();
+        tmpFile.createNewFile();
+        ShapefileDataStore s = new ShapefileDataStore(tmpFile.toURI().toURL());
+        writeFeatures(s, features);
+        File expected =
+                new File(getClass().getResource("test-data/measure/multipolygonzm.shp").toURI());
+        // compare byte stream produced in shp file
+        assertTrue(FileUtils.contentEquals(tmpFile, expected));
+    }
+
+    /** Tests measures (M) values on shp output for LineString type */
+    @Test
+    public void testLineStringZMSupport() throws Exception {
+        // create feature type
+        SimpleFeatureType type =
+                DataUtilities.createType(
+                        "junk", "a:LineString,b:java.math.BigDecimal,c:java.math.BigInteger");
+        DefaultFeatureCollection features = new DefaultFeatureCollection();
+
+        BigInteger bigInteger = new BigInteger("1234567890123456789");
+        BigDecimal bigDecimal = new BigDecimal(bigInteger, 2);
+
+        SimpleFeatureBuilder build = new SimpleFeatureBuilder(type);
+        GeometryFactory gf = new GeometryFactory();
+        build.add(
+                gf.createMultiLineString(
+                        new LineString[] {
+                            gf.createLineString(
+                                    new CoordinateXYZM[] {
+                                        new CoordinateXYZM(1, -1, 1, 1),
+                                        new CoordinateXYZM(2, 0, 1, 2),
+                                        new CoordinateXYZM(3, 1, 1, 2)
+                                    })
+                        }));
+        build.add(bigDecimal);
+        build.add(bigInteger);
+
+        SimpleFeature feature = build.buildFeature(null);
+        features.add(feature);
+
+        // store features
+        File tmpFile = getTempFile();
+        tmpFile.createNewFile();
+        ShapefileDataStore s = new ShapefileDataStore(tmpFile.toURI().toURL());
+        writeFeatures(s, features);
+        File expected =
+                new File(getClass().getResource("test-data/measure/multilinezm.shp").toURI());
+        // compare byte stream produced in shp file
+        assertTrue(FileUtils.contentEquals(tmpFile, expected));
     }
 }

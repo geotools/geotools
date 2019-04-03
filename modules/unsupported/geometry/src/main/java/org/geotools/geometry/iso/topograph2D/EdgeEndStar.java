@@ -2,8 +2,8 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2001-2006  Vivid Solutions
  *    (C) 2001-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2001-2006  Vivid Solutions
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -29,8 +29,6 @@ import org.geotools.geometry.iso.util.algorithm2D.SimplePointInAreaLocator;
 /**
  * A EdgeEndStar is an ordered list of EdgeEnds around a node. They are maintained in CCW order
  * (starting with the positive x-axis) around the node for efficient lookup and topology building.
- *
- * @source $URL$
  */
 public abstract class EdgeEndStar {
 
@@ -297,7 +295,7 @@ public abstract class EdgeEndStar {
     }
 
     public void print(PrintStream out) {
-        System.out.println("EdgeEndStar:   " + getCoordinate());
+        // System.out.println("EdgeEndStar:   " + getCoordinate());
         for (Iterator it = iterator(); it.hasNext(); ) {
             EdgeEnd e = (EdgeEnd) it.next();
             e.print(out);

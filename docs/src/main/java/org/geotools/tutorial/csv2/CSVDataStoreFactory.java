@@ -1,4 +1,5 @@
-/* GeoTools - The Open Source Java GIS Toolkit
+/*
+ * GeoTools - The Open Source Java GIS Toolkit
  * http://geotools.org
  *
  * (C) 2010-2014, Open Source Geospatial Foundation (OSGeo)
@@ -21,11 +22,7 @@ import org.geotools.data.DataStoreFactorySpi;
 import org.geotools.util.KVP;
 import org.geotools.util.logging.Logging;
 
-/**
- * Provide access to CSV Files.
- *
- * @source $URL$
- */
+/** Provide access to CSV Files. */
 public class CSVDataStoreFactory implements DataStoreFactorySpi {
     /**
      * Public "no argument" constructor called by Factory Service Provider (SPI) entry listed in
@@ -118,7 +115,7 @@ public class CSVDataStoreFactory implements DataStoreFactorySpi {
     }
     // createDataStore end
 
-    private static final Logger LOGGER = Logging.getLogger("org.geotools.data.csv");
+    private static final Logger LOGGER = Logging.getLogger(CSVDataStoreFactory.class);
 
     // createNewDataStore start
     public DataStore createNewDataStore(Map<String, Serializable> params) throws IOException {

@@ -18,6 +18,8 @@ package org.geotools.renderer.lite;
 
 import static java.lang.Math.abs;
 
+import com.conversantmedia.util.concurrent.PushPullBlockingQueue;
+import com.conversantmedia.util.concurrent.SpinPolicy;
 import java.awt.AlphaComposite;
 import java.awt.Composite;
 import java.awt.Graphics2D;
@@ -29,6 +31,7 @@ import java.awt.font.GlyphVector;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
 import java.io.IOException;
@@ -37,20 +40,24 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.IdentityHashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ArrayBlockingQueue;
+import java.util.Spliterator;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import javax.media.jai.Interpolation;
 import javax.media.jai.PlanarImage;
 import org.geotools.coverage.grid.GridCoverage2D;
@@ -58,21 +65,24 @@ import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.InvalidGridGeometryException;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
+import org.geotools.coverage.util.FeatureUtilities;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.Query;
 import org.geotools.data.QueryCapabilities;
 import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.data.util.ScreenMap;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.factory.Hints;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.FeatureTypes;
 import org.geotools.feature.SchemaException;
 import org.geotools.filter.IllegalFilterException;
+import org.geotools.filter.function.EnvFunction;
 import org.geotools.filter.function.GeometryTransformationVisitor;
 import org.geotools.filter.spatial.DefaultCRSFilterVisitor;
 import org.geotools.filter.spatial.ReprojectingFilterVisitor;
+import org.geotools.filter.visitor.DefaultFilterVisitor;
 import org.geotools.filter.visitor.SimplifyingFilterVisitor;
 import org.geotools.filter.visitor.SpatialFilterVisitor;
 import org.geotools.geometry.jts.Decimator;
@@ -83,6 +93,7 @@ import org.geotools.geometry.jts.LiteCoordinateSequenceFactory;
 import org.geotools.geometry.jts.LiteShape2;
 import org.geotools.geometry.jts.OffsetCurveBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.image.util.ImageUtilities;
 import org.geotools.map.DirectLayer;
 import org.geotools.map.Layer;
 import org.geotools.map.MapContent;
@@ -95,11 +106,12 @@ import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.geotools.referencing.operation.transform.ConcatenatedTransform;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
+import org.geotools.referencing.operation.transform.WarpBuilder;
 import org.geotools.renderer.GTRenderer;
 import org.geotools.renderer.RenderListener;
-import org.geotools.renderer.ScreenMap;
 import org.geotools.renderer.crs.ProjectionHandler;
 import org.geotools.renderer.crs.ProjectionHandlerFinder;
+import org.geotools.renderer.crs.WrappingProjectionHandler;
 import org.geotools.renderer.label.LabelCacheImpl;
 import org.geotools.renderer.label.LabelCacheImpl.LabelRenderingMode;
 import org.geotools.renderer.lite.gridcoverage2d.GridCoverageReaderHelper;
@@ -107,19 +119,18 @@ import org.geotools.renderer.lite.gridcoverage2d.GridCoverageRenderer;
 import org.geotools.renderer.style.LineStyle2D;
 import org.geotools.renderer.style.SLDStyleFactory;
 import org.geotools.renderer.style.Style2D;
-import org.geotools.resources.coverage.FeatureUtilities;
-import org.geotools.resources.image.ImageUtilities;
+import org.geotools.renderer.style.StyleAttributeExtractor;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.PointSymbolizer;
 import org.geotools.styling.RasterSymbolizer;
 import org.geotools.styling.Rule;
 import org.geotools.styling.RuleImpl;
-import org.geotools.styling.StyleAttributeExtractor;
 import org.geotools.styling.Symbolizer;
 import org.geotools.styling.TextSymbolizer;
 import org.geotools.styling.visitor.DpiRescaleStyleVisitor;
 import org.geotools.styling.visitor.DuplicatingStyleVisitor;
 import org.geotools.styling.visitor.UomRescaleStyleVisitor;
+import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
@@ -138,6 +149,7 @@ import org.opengis.feature.type.PropertyDescriptor;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
+import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.sort.SortBy;
 import org.opengis.parameter.GeneralParameterValue;
@@ -172,7 +184,6 @@ import org.opengis.style.PolygonSymbolizer;
  * @author Simone Giannecchini
  * @author Andrea Aime
  * @author Alessio Fabiani
- * @source $URL$
  * @version $Id$
  */
 public class StreamingRenderer implements GTRenderer {
@@ -209,7 +220,7 @@ public class StreamingRenderer implements GTRenderer {
 
     /** The logger for the rendering module. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.rendering");
+            org.geotools.util.logging.Logging.getLogger(StreamingRenderer.class);
 
     int error = 0;
 
@@ -359,6 +370,27 @@ public class StreamingRenderer implements GTRenderer {
 
     private static boolean VECTOR_RENDERING_ENABLED_DEFAULT = false;
 
+    /**
+     * Boolean flag indicating whether advanced projection densification should be used when needed.
+     */
+    public static final String ADVANCED_PROJECTION_DENSIFICATION_KEY =
+            "advancedProjectionDensificationEnabled";
+
+    private static boolean ADVANCED_PROJECTION_DENSIFICATION_DEFAULT = false;
+
+    /** Densification Tolerance, to be used when densification is enabled. */
+    public static final String ADVANCED_PROJECTION_DENSIFICATION_TOLERANCE_KEY =
+            "advancedProjectionDensificationTolerance";
+
+    private static double ADVANCED_PROJECTION_DENSIFICATION_TOLERANCE_DEFAULT = 0.8;
+
+    /**
+     * Boolean flag indicating whether advanced projection wrapping heuristic should be used or nto.
+     */
+    public static final String DATELINE_WRAPPING_HEURISTIC_KEY = "datelineWrappingCheckEnabled";
+
+    private static boolean DATELINE_WRAPPING_HEURISTIC_DEFAULT = true;
+
     public static final String LABEL_CACHE_KEY = "labelCache";
     public static final String FORCE_EPSG_AXIS_ORDER_KEY = "ForceEPSGAxisOrder";
     public static final String DPI_KEY = "dpi";
@@ -396,6 +428,9 @@ public class StreamingRenderer implements GTRenderer {
     private ExecutorService threadPool;
 
     private PainterThread painterThread;
+
+    private static int MAX_PIXELS_DENSIFY =
+            Integer.valueOf(System.getProperty("ADVANCED_PROJECTION_DENSIFY_MAX_PIXELS", "5"));
 
     /**
      * Creates a new instance of LiteRenderer without a context. Use it only to gain access to
@@ -985,7 +1020,6 @@ public class StreamingRenderer implements GTRenderer {
      * @param schema
      * @param source
      * @param envelope the spatial extent which is the target area of the rendering process
-     * @param destinationCRS DOCUMENT ME!
      * @param sourceCrs
      * @param screenSize
      * @param geometryAttribute
@@ -1061,10 +1095,69 @@ public class StreamingRenderer implements GTRenderer {
             List<ReferencedEnvelope> envelopes = null;
             // enable advanced projection handling with the updated map extent
             if (isAdvancedProjectionHandlingEnabled()) {
+                Map projectionHints = new HashMap();
+                if (isAdvancedProjectionDensificationEnabled()
+                        && !CRS.equalsIgnoreMetadata(featCrs, mapCRS)) {
+                    double tolerance = getAdvancedProjectionDensificationTolerance();
+                    if (tolerance > 0.0) {
+                        ReferencedEnvelope targetEnvelope = envelope;
+                        ReferencedEnvelope sourceEnvelope =
+                                transformEnvelope(targetEnvelope, featCrs);
+                        AffineTransform at = worldToScreenTransform;
+                        AffineTransform screenToWorldTransform = new AffineTransform(at);
+                        screenToWorldTransform.invert();
+                        MathTransform2D crsTransform =
+                                (MathTransform2D)
+                                        CRS.findMathTransform(
+                                                CRS.getHorizontalCRS(featCrs),
+                                                CRS.getHorizontalCRS(mapCRS));
+                        MathTransform2D screenTransform = new AffineTransform2D(at);
+                        MathTransform2D fullTranform =
+                                (MathTransform2D)
+                                        ConcatenatedTransform.create(crsTransform, screenTransform);
+                        Rectangle2D.Double sourceDomain =
+                                new Rectangle2D.Double(
+                                        sourceEnvelope.getMinX(),
+                                        sourceEnvelope.getMinY(),
+                                        sourceEnvelope.getWidth(),
+                                        sourceEnvelope.getHeight());
+                        WarpBuilder wb = new WarpBuilder(tolerance);
+                        double densifyDistance = 0.0;
+                        int[] actualSplit = wb.getRowColsSplit(fullTranform, sourceDomain);
+                        double minDistance =
+                                Math.min(
+                                        MAX_PIXELS_DENSIFY
+                                                * sourceEnvelope.getWidth()
+                                                / screenSize.getWidth(),
+                                        MAX_PIXELS_DENSIFY
+                                                * sourceEnvelope.getHeight()
+                                                / screenSize.getHeight());
+                        if (actualSplit == null) {
+                            // alghoritm gave up, we decide to use a fixed distance value
+                            densifyDistance = minDistance;
+                        } else if (actualSplit[0] != 1 || actualSplit[1] != 1) {
+
+                            densifyDistance =
+                                    Math.max(
+                                            Math.min(
+                                                    sourceEnvelope.getWidth() / actualSplit[0],
+                                                    sourceEnvelope.getHeight() / actualSplit[1]),
+                                            minDistance);
+                        }
+                        if (densifyDistance > 0.0) {
+                            projectionHints.put(
+                                    ProjectionHandler.ADVANCED_PROJECTION_DENSIFY, densifyDistance);
+                        }
+                    }
+                }
+                if (!isWrappingHeuristicEnabled()) {
+                    projectionHints.put(
+                            WrappingProjectionHandler.DATELINE_WRAPPING_CHECK_ENABLED, false);
+                }
                 // get the projection handler and set a tentative envelope
                 ProjectionHandler projectionHandler =
                         ProjectionHandlerFinder.getHandler(
-                                envelope, featCrs, isMapWrappingEnabled());
+                                envelope, featCrs, isMapWrappingEnabled(), projectionHints);
                 if (projectionHandler != null) {
                     setProjectionHandler(styleList, projectionHandler);
                     envelopes = projectionHandler.getQueryEnvelopes();
@@ -1208,6 +1301,18 @@ public class StreamingRenderer implements GTRenderer {
         return query;
     }
 
+    private ReferencedEnvelope transformEnvelope(
+            ReferencedEnvelope envelope, CoordinateReferenceSystem crs)
+            throws TransformException, FactoryException {
+        try {
+            ProjectionHandler projectionHandler =
+                    ProjectionHandlerFinder.getHandler(envelope, crs, isMapWrappingEnabled());
+            return projectionHandler.getProjectedEnvelope(envelope, crs);
+        } catch (FactoryException e) {
+            return envelope.transform(crs, true);
+        }
+    }
+
     private void setMetaBuffer(List<LiteFeatureTypeStyle> styleList, int metaBuffer) {
         for (LiteFeatureTypeStyle fts : styleList) {
             fts.metaBuffer = metaBuffer;
@@ -1235,9 +1340,11 @@ public class StreamingRenderer implements GTRenderer {
      * @return
      */
     private SortBy[] getSortByFromLiteStyles(List<LiteFeatureTypeStyle> styles) {
-        for (LiteFeatureTypeStyle fts : styles) {
-            if (fts.sortBy != null) {
-                return fts.sortBy;
+        if (styles != null) {
+            for (LiteFeatureTypeStyle fts : styles) {
+                if (fts.sortBy != null) {
+                    return fts.sortBy;
+                }
             }
         }
 
@@ -1251,7 +1358,7 @@ public class StreamingRenderer implements GTRenderer {
             throws FactoryException {
         // now, if a definition query has been established for this layer, be
         // sure to respect it by combining it with the bounding box one.
-        Query definitionQuery = reprojectQuery(currLayer.getQuery(), source);
+        Query definitionQuery = new Query(reprojectQuery(currLayer.getQuery(), source));
         definitionQuery.setCoordinateSystem(featCrs);
 
         return definitionQuery;
@@ -1268,17 +1375,19 @@ public class StreamingRenderer implements GTRenderer {
             List<LiteFeatureTypeStyle> styles, ReferencedEnvelope envelope) {
         GeometryTransformationVisitor visitor = new GeometryTransformationVisitor();
         ReferencedEnvelope result = new ReferencedEnvelope(envelope);
-        for (LiteFeatureTypeStyle lts : styles) {
-            List<Rule> rules = new ArrayList<Rule>();
-            rules.addAll(Arrays.asList(lts.ruleList));
-            rules.addAll(Arrays.asList(lts.elseRules));
-            for (Rule r : rules) {
-                for (Symbolizer s : r.symbolizers()) {
-                    if (s.getGeometry() != null) {
-                        ReferencedEnvelope re =
-                                (ReferencedEnvelope) s.getGeometry().accept(visitor, envelope);
-                        if (re != null) {
-                            result.expandToInclude(re);
+        if (styles != null) {
+            for (LiteFeatureTypeStyle lts : styles) {
+                List<Rule> rules = new ArrayList<Rule>();
+                rules.addAll(Arrays.asList(lts.ruleList));
+                rules.addAll(Arrays.asList(lts.elseRules));
+                for (Rule r : rules) {
+                    for (Symbolizer s : r.symbolizers()) {
+                        if (s.getGeometry() != null) {
+                            ReferencedEnvelope re =
+                                    (ReferencedEnvelope) s.getGeometry().accept(visitor, envelope);
+                            if (re != null) {
+                                result.expandToInclude(re);
+                            }
                         }
                     }
                 }
@@ -1544,6 +1653,29 @@ public class StreamingRenderer implements GTRenderer {
         return ((Boolean) result).booleanValue();
     }
 
+    /** Checks if advanced projection densification is enabled or not. */
+    private boolean isAdvancedProjectionDensificationEnabled() {
+        if (rendererHints == null) return false;
+        Object result = rendererHints.get(ADVANCED_PROJECTION_DENSIFICATION_KEY);
+        if (result == null) return ADVANCED_PROJECTION_DENSIFICATION_DEFAULT;
+        return ((Boolean) result).booleanValue();
+    }
+
+    private double getAdvancedProjectionDensificationTolerance() {
+        if (rendererHints == null) return ADVANCED_PROJECTION_DENSIFICATION_TOLERANCE_DEFAULT;
+        Object result = rendererHints.get(ADVANCED_PROJECTION_DENSIFICATION_TOLERANCE_KEY);
+        if (result == null) return ADVANCED_PROJECTION_DENSIFICATION_TOLERANCE_DEFAULT;
+        return ((Double) result).doubleValue();
+    }
+
+    /** Checks if advanced projection wrapping heuristic should be enabled. */
+    private boolean isWrappingHeuristicEnabled() {
+        if (rendererHints == null) return true;
+        Object result = rendererHints.get(DATELINE_WRAPPING_HEURISTIC_KEY);
+        if (result == null) return DATELINE_WRAPPING_HEURISTIC_DEFAULT;
+        return ((Boolean) result).booleanValue();
+    }
+
     /**
      * Returns an estimate of the rendering buffer needed to properly display this layer taking into
      * consideration the constant stroke sizes in the feature type styles.
@@ -1582,7 +1714,7 @@ public class StreamingRenderer implements GTRenderer {
      * Inspects the <code>MapLayer</code>'s style and retrieves it's needed attribute names,
      * returning at least the default geometry attribute name.
      *
-     * @param layer the <code>MapLayer</code> to determine the needed attributes from
+     * @param styles the <code>styles</code> to determine the needed attributes from
      * @param schema the <code>layer</code>'s FeatureSource<SimpleFeatureType, SimpleFeature> schema
      * @return the minimum set of attribute names needed to render <code>layer</code>
      */
@@ -1683,7 +1815,7 @@ public class StreamingRenderer implements GTRenderer {
      *
      * @param schema the layer's feature source schema
      * @param attributes set of needed attributes
-     * @param bbox the expression holding the target rendering bounding box
+     * @param bboxes the rendering bounding boxes
      * @return an or'ed list of bbox filters, one for each geometric attribute in <code>attributes
      *     </code>. If there are just one geometric attribute, just returns its corresponding <code>
      *     GeometryFilter</code>.
@@ -1879,17 +2011,55 @@ public class StreamingRenderer implements GTRenderer {
         List<Rule> ruleList = new ArrayList<Rule>();
         List<Rule> elseRuleList = new ArrayList<Rule>();
 
-        for (Rule r : fts.rules()) {
+        for (Rule r : fts.rules())
             if (isWithInScale(r)) {
                 if (r.isElseFilter()) {
                     elseRuleList.add(r);
                 } else {
-                    ruleList.add(r);
+                    // rules can have dynamic bits related to env variables that we evaluate and
+                    // skip at this this time
+                    if (!Filter.INCLUDE.equals(r.getFilter()) && hasEnvVariables(r.getFilter())) {
+                        DuplicatingStyleVisitor cloner =
+                                new DuplicatingStyleVisitor() {
+                                    SimplifyingFilterVisitor simplifier =
+                                            new SimplifyingFilterVisitor();
+
+                                    @Override
+                                    protected Filter copy(Filter filter) {
+                                        if (filter == null) return null;
+                                        return (Filter) filter.accept(simplifier, ff);
+                                    }
+                                };
+                        r.accept(cloner);
+                        Rule copy = (Rule) cloner.getCopy();
+                        if (!Filter.EXCLUDE.equals(copy.getFilter())) {
+                            ruleList.add(copy);
+                        }
+                    } else {
+                        ruleList.add(r);
+                    }
                 }
             }
-        }
 
         return Arrays.asList(ruleList, elseRuleList);
+    }
+
+    private boolean hasEnvVariables(Filter filter) {
+        if (filter == null) {
+            return false;
+        }
+        DefaultFilterVisitor envFunctionChecker =
+                new DefaultFilterVisitor() {
+                    @Override
+                    public Object visit(Function expression, Object data) {
+                        if (Boolean.TRUE.equals(super.visit(expression, data))) {
+                            return true;
+                        } else {
+                            return expression instanceof EnvFunction;
+                        }
+                    }
+                };
+        return Boolean.TRUE.equals(filter.accept(envFunctionChecker, null));
     }
 
     /**
@@ -2838,9 +3008,6 @@ public class StreamingRenderer implements GTRenderer {
      * Finds the geometric attribute requested by the symbolizer
      *
      * @param drawMe The feature
-     * @param s
-     *     <p>/** Finds the geometric attribute requested by the symbolizer
-     * @param drawMe The feature
      * @param s The symbolizer
      * @return The geometry requested in the symbolizer, or the default geometry if none is
      *     specified
@@ -3758,17 +3925,49 @@ public class StreamingRenderer implements GTRenderer {
      *
      * @author Andrea Aime - GeoSolutions
      */
-    public class RenderingBlockingQueue extends ArrayBlockingQueue<RenderingRequest> {
+    public class RenderingBlockingQueue implements BlockingQueue<RenderingRequest> {
         private static final long serialVersionUID = 4908029658595573833L;
 
+        PushPullBlockingQueue<RenderingRequest> delegate;
+
         public RenderingBlockingQueue(int capacity) {
-            super(capacity);
+            this.delegate = new PushPullBlockingQueue<>(capacity, SpinPolicy.BLOCKING);
+        }
+
+        @Override
+        public boolean add(RenderingRequest renderingRequest) {
+            return delegate.add(renderingRequest);
+        }
+
+        @Override
+        public boolean offer(RenderingRequest renderingRequest) {
+            return delegate.offer(renderingRequest);
+        }
+
+        @Override
+        public RenderingRequest remove() {
+            return delegate.remove();
+        }
+
+        @Override
+        public RenderingRequest poll() {
+            return delegate.poll();
+        }
+
+        @Override
+        public RenderingRequest element() {
+            return delegate.element();
+        }
+
+        @Override
+        public RenderingRequest peek() {
+            return delegate.peek();
         }
 
         @Override
         public void put(RenderingRequest e) throws InterruptedException {
             if (!renderingStopRequested) {
-                super.put(e);
+                delegate.put(e);
                 if (renderingStopRequested) {
                     this.clear();
                 }
@@ -3776,23 +3975,124 @@ public class StreamingRenderer implements GTRenderer {
         }
 
         @Override
+        public boolean offer(RenderingRequest renderingRequest, long timeout, TimeUnit unit)
+                throws InterruptedException {
+            return delegate.offer(renderingRequest, timeout, unit);
+        }
+
+        @Override
         public RenderingRequest take() throws InterruptedException {
             if (!renderingStopRequested) {
-                return super.take();
+                return delegate.take();
             } else {
                 return new EndRequest();
             }
         }
 
         @Override
+        public RenderingRequest poll(long timeout, TimeUnit unit) throws InterruptedException {
+            return delegate.poll(timeout, unit);
+        }
+
+        @Override
+        public int remainingCapacity() {
+            return delegate.remainingCapacity();
+        }
+
+        @Override
+        public boolean remove(Object o) {
+            return delegate.remove(o);
+        }
+
+        @Override
+        public boolean containsAll(Collection<?> c) {
+            return delegate.containsAll(c);
+        }
+
+        @Override
+        public boolean addAll(Collection<? extends RenderingRequest> c) {
+            return delegate.addAll(c);
+        }
+
+        @Override
+        public boolean removeAll(Collection<?> c) {
+            return delegate.removeAll(c);
+        }
+
+        @Override
+        public boolean removeIf(Predicate<? super RenderingRequest> filter) {
+            return delegate.removeIf(filter);
+        }
+
+        @Override
+        public boolean retainAll(Collection<?> c) {
+            return delegate.retainAll(c);
+        }
+
+        @Override
+        public void clear() {
+            delegate.clear();
+        }
+
+        @Override
+        public Spliterator<RenderingRequest> spliterator() {
+            return delegate.spliterator();
+        }
+
+        @Override
+        public Stream<RenderingRequest> stream() {
+            return delegate.stream();
+        }
+
+        @Override
+        public Stream<RenderingRequest> parallelStream() {
+            return delegate.parallelStream();
+        }
+
+        @Override
+        public int size() {
+            return delegate.size();
+        }
+
+        @Override
+        public boolean isEmpty() {
+            return delegate.isEmpty();
+        }
+
+        @Override
+        public boolean contains(Object o) {
+            return delegate.contains(o);
+        }
+
+        @Override
+        public Iterator<RenderingRequest> iterator() {
+            return delegate.iterator();
+        }
+
+        @Override
+        public Object[] toArray() {
+            return delegate.toArray();
+        }
+
+        @Override
+        public <T> T[] toArray(T[] a) {
+            return delegate.toArray(a);
+        }
+
+        @Override
         public int drainTo(Collection<? super RenderingRequest> list) {
             if (!renderingStopRequested) {
-                return super.drainTo(list);
+                return delegate.drainTo(list);
             } else {
                 list.clear();
                 list.add(new EndRequest());
                 return 1;
             }
+        }
+
+        @Override
+        public int drainTo(Collection<? super RenderingRequest> c, int maxElements) {
+            return delegate.drainTo(c, maxElements);
         }
     }
 }

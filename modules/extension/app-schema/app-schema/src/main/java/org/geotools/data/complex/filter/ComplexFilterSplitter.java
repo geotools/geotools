@@ -17,28 +17,29 @@
 
 package org.geotools.data.complex.filter;
 
-import static org.geotools.data.complex.ComplexFeatureConstants.DEFAULT_GEOMETRY_LOCAL_NAME;
+import static org.geotools.data.complex.util.ComplexFeatureConstants.DEFAULT_GEOMETRY_LOCAL_NAME;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
+import org.geotools.appschema.filter.FilterFactoryImplNamespaceAware;
+import org.geotools.data.complex.AttributeMapping;
 import org.geotools.data.complex.FeatureTypeMapping;
 import org.geotools.data.complex.NestedAttributeMapping;
 import org.geotools.data.complex.config.AppSchemaDataAccessConfigurator;
-import org.geotools.data.complex.config.Types;
+import org.geotools.data.complex.expression.FeaturePropertyAccessorFactory;
+import org.geotools.data.complex.feature.type.Types;
 import org.geotools.data.complex.filter.FeatureChainedAttributeVisitor.FeatureChainLink;
 import org.geotools.data.complex.filter.FeatureChainedAttributeVisitor.FeatureChainedAttributeDescriptor;
-import org.geotools.data.complex.filter.XPathUtil.Step;
-import org.geotools.data.complex.filter.XPathUtil.StepList;
-import org.geotools.factory.Hints;
+import org.geotools.data.complex.util.XPathUtil.Step;
+import org.geotools.data.complex.util.XPathUtil.StepList;
 import org.geotools.filter.FilterCapabilities;
-import org.geotools.filter.FilterFactoryImplNamespaceAware;
-import org.geotools.filter.expression.FeaturePropertyAccessorFactory;
 import org.geotools.filter.expression.PropertyAccessor;
 import org.geotools.filter.expression.PropertyAccessorFactory;
 import org.geotools.filter.visitor.PostPreProcessFilterSplittingVisitor;
+import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.FeatureType;
@@ -65,10 +66,7 @@ import org.opengis.filter.spatial.BBOX;
 import org.opengis.filter.spatial.BinarySpatialOperator;
 import org.opengis.filter.temporal.BinaryTemporalOperator;
 
-/**
- * @author Niels Charlier (Curtin University of Technology)
- * @source $URL$
- */
+/** @author Niels Charlier (Curtin University of Technology) */
 public class ComplexFilterSplitter extends PostPreProcessFilterSplittingVisitor {
 
     private static final Logger LOGGER = Logging.getLogger(ComplexFilterSplitter.class);
@@ -308,17 +306,15 @@ public class ComplexFilterSplitter extends PostPreProcessFilterSplittingVisitor 
             FeatureChainedAttributeVisitor nestedAttrExtractor =
                     new FeatureChainedAttributeVisitor(mappings);
             nestedAttrExtractor.visit(expression, null);
+            // check expression exists
+            FeatureChainedAttributeVisitor existsAttrExtractor = existsExtractorVisitor();
+            existsAttrExtractor.visit(expression, null);
 
             List<FeatureChainedAttributeDescriptor> fcAttrs =
                     nestedAttrExtractor.getFeatureChainedAttributes();
-            if (fcAttrs.size() == 0
-                    && !nestedAttrExtractor.conditionalMappingWasFound()
-                    && !FeatureChainedAttributeVisitor.isXlinkHref(exprSteps)) {
-                throw new IllegalArgumentException(
-                        String.format(
-                                "Attribute \"%s\" not found in type \"%s\"",
-                                expression, mappings.getTargetFeature().getName().toString()));
-            }
+            // error on attribute check
+            checkAttributeFound(
+                    expression, exprSteps, nestedAttrExtractor, existsAttrExtractor, fcAttrs);
             // encoding of filters on multiple nested attributes is not (yet) supported
             if (fcAttrs.size() == 1) {
                 FeatureChainedAttributeDescriptor nestedAttrDescr = fcAttrs.get(0);
@@ -376,6 +372,13 @@ public class ComplexFilterSplitter extends PostPreProcessFilterSplittingVisitor 
         }
 
         if (matchingMappings.isEmpty()) {
+            // handle multi value
+            AttributeMapping candidate = mappings.getAttributeMapping(exprSteps);
+            if (candidate != null
+                    && candidate.isMultiValued()
+                    && candidate.getMultipleValue() != null) {
+                return super.visit(expression, notUsed);
+            }
             postStack.push(expression);
             return null;
         } else {
@@ -397,6 +400,50 @@ public class ComplexFilterSplitter extends PostPreProcessFilterSplittingVisitor 
         }
 
         return super.visit(expression, notUsed);
+    }
+
+    /** Attribute error check */
+    protected void checkAttributeFound(
+            PropertyName expression,
+            StepList exprSteps,
+            FeatureChainedAttributeVisitor nestedAttrExtractor,
+            FeatureChainedAttributeVisitor existsAttrExtractor,
+            List<FeatureChainedAttributeDescriptor> fcAttrs) {
+        if (fcAttrs.size() == 0
+                && !nestedAttrExtractor.conditionalMappingWasFound()
+                && !isXlinkHRef(exprSteps)
+                && existsAttrExtractor.getFeatureChainedAttributes().isEmpty()) {
+            throw new IllegalArgumentException(
+                    String.format(
+                            "Attribute \"%s\" not found in type \"%s\"",
+                            expression, mappings.getTargetFeature().getName().toString()));
+        }
+    }
+
+    protected boolean isXlinkHRef(StepList exprSteps) {
+        return FeatureChainedAttributeVisitor.isXlinkHref(exprSteps);
+    }
+
+    private FeatureChainedAttributeVisitor existsExtractorVisitor() {
+        return new FeatureChainedAttributeVisitor(mappings) {
+            @Override
+            protected boolean startsWith(StepList one, StepList other) {
+                if (other.size() > one.size()) {
+                    return false;
+                }
+                boolean result = true;
+                for (int i = 0; i < other.size(); i++) {
+                    Step thisStep = one.get(i);
+                    Step otherStep = other.get(i);
+                    if (thisStep.isIndexed() && otherStep.isIndexed()) {
+                        result = result && thisStep.equals(otherStep);
+                    } else {
+                        result = result && thisStep.equalsIgnoreIndex(otherStep);
+                    }
+                }
+                return result;
+            }
+        };
     }
 
     private void nestedAttributeSanityCheck(Filter filter) {
@@ -436,8 +483,7 @@ public class ComplexFilterSplitter extends PostPreProcessFilterSplittingVisitor 
                     }
                 }
                 xpathSteps = removeIndexesAndPredicates(xpathSteps);
-                if (FeatureChainedAttributeVisitor.isXlinkHref(xpathSteps)
-                        || FeatureChainedAttributeVisitor.isFid(xpathSteps)) {
+                if (isXlinkHRef(xpathSteps) || FeatureChainedAttributeVisitor.isFid(xpathSteps)) {
                     // if XPath expression points to xlink:href or to a FID, the only reliable thing
                     // to is to check the existence of its parent attribute
                     xpathSteps.remove(xpathSteps.size() - 1);

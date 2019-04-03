@@ -35,7 +35,7 @@ import org.locationtech.jts.geom.Polygon;
  * @author Casper Børgesen
  */
 public class PolyLabeller {
-    private static final Logger LOGGER = Logging.getLogger(PolyLabeller.class.getName());
+    private static final Logger LOGGER = Logging.getLogger(PolyLabeller.class);
 
     static GeometryBuilder GB = new GeometryBuilder();
 
@@ -52,10 +52,6 @@ public class PolyLabeller {
 
         if (polygon.isEmpty() || polygon.getArea() <= 0.0) {
             throw new IllegalStateException("Can not label empty geometries");
-        }
-
-        if (!polygon.isValid()) {
-            throw new IllegalStateException("Can not label invalid geometries");
         }
 
         // find the bounding box of the outer ring

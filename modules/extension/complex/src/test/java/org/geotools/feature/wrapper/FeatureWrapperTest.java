@@ -13,6 +13,7 @@ import java.io.InvalidClassException;
 import java.util.ArrayList;
 import java.util.Collection;
 import org.geotools.ExceptionChecker;
+import org.geotools.data.complex.feature.wrapper.FeatureWrapper;
 import org.geotools.feature.AttributeImpl;
 import org.geotools.feature.ComplexAttributeImpl;
 import org.geotools.feature.FakeTypes.Mine;

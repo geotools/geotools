@@ -19,7 +19,10 @@ package org.geotools.mbstyle.parse;
 import static org.geotools.mbstyle.function.ZoomLevelFunction.EPSG_3857_O_SCALE;
 
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.geotools.mbstyle.layer.MBLayer;
+import org.geotools.util.logging.Logging;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -33,6 +36,8 @@ import org.json.simple.parser.ParseException;
  * @author David Vick (Boundless)
  */
 public class MBObjectStops {
+
+    static final Logger LOGGER = Logging.getLogger(MBObjectStops.class);
 
     JSONParser parser = new JSONParser();
     public LayerStops ls = new LayerStops();
@@ -64,7 +69,7 @@ public class MBObjectStops {
             }
 
         } catch (ParseException e) {
-            System.out.println(e.getLocalizedMessage());
+            LOGGER.log(Level.INFO, "Failed to parse MBStiles", e);
         }
     }
 
@@ -126,7 +131,7 @@ public class MBObjectStops {
             if (current < maxZoom) {
                 range[0] = current;
                 range[1] = layerStops.get(i + 1);
-            } else if (current == maxZoom) {
+            } else if (current.equals(maxZoom)) {
                 range[0] = current;
                 range[1] = maxZoom;
             }
@@ -151,7 +156,7 @@ public class MBObjectStops {
             if (current < maxZoom) {
                 range[0] = current;
                 range[1] = stops.get(i + 1);
-            } else if (current == maxZoom) {
+            } else if (current.equals(maxZoom)) {
                 range[0] = current;
                 range[1] = -1;
             }
@@ -199,8 +204,6 @@ public class MBObjectStops {
     }
 
     LayerStops containsStops(JSONObject jsonObject, LayerStops ls) {
-        Boolean hasStops = false;
-
         Set<?> keySet = jsonObject.keySet();
         Iterator<?> keys = keySet.iterator();
         while (keys.hasNext()) {

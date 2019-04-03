@@ -30,120 +30,120 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link net.opengis.wps10.impl.ComplexDataCombinationsTypeImpl#getFormat <em>Format</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
 public class ComplexDataCombinationsTypeImpl extends EObjectImpl implements ComplexDataCombinationsType {
     /**
-     * The cached value of the '{@link #getFormat() <em>Format</em>}' containment reference list.
-     * <!-- begin-user-doc -->
+   * The cached value of the '{@link #getFormat() <em>Format</em>}' containment reference list.
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getFormat()
-     * @generated
-     * @ordered
-     */
+   * @see #getFormat()
+   * @generated
+   * @ordered
+   */
     protected EList format;
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     protected ComplexDataCombinationsTypeImpl() {
-        super();
-    }
+    super();
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     protected EClass eStaticClass() {
-        return Wps10Package.Literals.COMPLEX_DATA_COMBINATIONS_TYPE;
-    }
+    return Wps10Package.Literals.COMPLEX_DATA_COMBINATIONS_TYPE;
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public EList getFormat() {
-        if (format == null) {
-            format = new EObjectContainmentEList(ComplexDataDescriptionType.class, this, Wps10Package.COMPLEX_DATA_COMBINATIONS_TYPE__FORMAT);
-        }
-        return format;
+    if (format == null) {
+      format = new EObjectContainmentEList(ComplexDataDescriptionType.class, this, Wps10Package.COMPLEX_DATA_COMBINATIONS_TYPE__FORMAT);
     }
+    return format;
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-        switch (featureID) {
-            case Wps10Package.COMPLEX_DATA_COMBINATIONS_TYPE__FORMAT:
-                return ((InternalEList)getFormat()).basicRemove(otherEnd, msgs);
-        }
-        return super.eInverseRemove(otherEnd, featureID, msgs);
+    switch (featureID) {
+      case Wps10Package.COMPLEX_DATA_COMBINATIONS_TYPE__FORMAT:
+        return ((InternalEList)getFormat()).basicRemove(otherEnd, msgs);
     }
+    return super.eInverseRemove(otherEnd, featureID, msgs);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case Wps10Package.COMPLEX_DATA_COMBINATIONS_TYPE__FORMAT:
-                return getFormat();
-        }
-        return super.eGet(featureID, resolve, coreType);
+    switch (featureID) {
+      case Wps10Package.COMPLEX_DATA_COMBINATIONS_TYPE__FORMAT:
+        return getFormat();
     }
+    return super.eGet(featureID, resolve, coreType);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case Wps10Package.COMPLEX_DATA_COMBINATIONS_TYPE__FORMAT:
-                getFormat().clear();
-                getFormat().addAll((Collection)newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
+    switch (featureID) {
+      case Wps10Package.COMPLEX_DATA_COMBINATIONS_TYPE__FORMAT:
+        getFormat().clear();
+        getFormat().addAll((Collection)newValue);
+        return;
     }
+    super.eSet(featureID, newValue);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case Wps10Package.COMPLEX_DATA_COMBINATIONS_TYPE__FORMAT:
-                getFormat().clear();
-                return;
-        }
-        super.eUnset(featureID);
+    switch (featureID) {
+      case Wps10Package.COMPLEX_DATA_COMBINATIONS_TYPE__FORMAT:
+        getFormat().clear();
+        return;
     }
+    super.eUnset(featureID);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case Wps10Package.COMPLEX_DATA_COMBINATIONS_TYPE__FORMAT:
-                return format != null && !format.isEmpty();
-        }
-        return super.eIsSet(featureID);
+    switch (featureID) {
+      case Wps10Package.COMPLEX_DATA_COMBINATIONS_TYPE__FORMAT:
+        return format != null && !format.isEmpty();
     }
+    return super.eIsSet(featureID);
+  }
 
 } //ComplexDataCombinationsTypeImpl

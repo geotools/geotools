@@ -32,7 +32,6 @@ import org.codehaus.plexus.util.FileUtils;
  *
  * @goal collect
  * @phase package
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  */
@@ -95,6 +94,7 @@ public class JarCollector extends AbstractMojo {
     }
 
     /** Implementation of the {@link #execute} method. */
+    @SuppressWarnings("PMD.SystemPrintln")
     private void collect() throws MojoExecutionException, IOException {
         /*
          * Make sure that we are collecting the JAR file from a module which produced

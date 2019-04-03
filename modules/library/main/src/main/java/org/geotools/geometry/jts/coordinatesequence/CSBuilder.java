@@ -24,7 +24,6 @@ import org.locationtech.jts.geom.CoordinateSequence;
  * A Builder for JTS CoordinateSequences.
  *
  * @author wolf
- * @source $URL$
  */
 public interface CSBuilder {
     /**

@@ -19,7 +19,7 @@ package org.geotools.renderer.lite;
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.Icon;
+import javax.swing.*;
 import org.geotools.filter.ConstantExpression;
 import org.geotools.filter.FilterAttributeExtractor;
 import org.geotools.renderer.style.DynamicSymbolFactoryFinder;
@@ -74,13 +74,11 @@ import org.opengis.style.GraphicalSymbol;
  * symbolizer whose width is specified with a literal expression.<br>
  * Also provides an indication whether the stroke width is accurate, or if a non literal width has
  * been found.
- *
- * @source $URL$
  */
 public class MetaBufferEstimator extends FilterAttributeExtractor implements StyleVisitor {
     /** The logger for the rendering module. */
     protected static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.rendering");
+            org.geotools.util.logging.Logging.getLogger(MetaBufferEstimator.class);
 
     protected FilterAttributeExtractor attributeExtractor = new FilterAttributeExtractor();
 
@@ -155,10 +153,6 @@ public class MetaBufferEstimator extends FilterAttributeExtractor implements Sty
                 symbolizer.accept(this);
             }
         }
-
-        Graphic[] legendGraphics = rule.getLegendGraphic();
-
-        if (legendGraphics != null) {}
     }
 
     public void visit(FeatureTypeStyle fts) {
@@ -363,13 +357,11 @@ public class MetaBufferEstimator extends FilterAttributeExtractor implements Sty
                     }
                     // evaluate the icon if found, if not SLD asks us to go to the next one
                     if (icon != null) {
-                        if (icon != null) {
-                            int size = Math.max(icon.getIconHeight(), icon.getIconWidth());
-                            if (size > buffer) {
-                                buffer = size;
-                            }
-                            return;
+                        int size = Math.max(icon.getIconHeight(), icon.getIconWidth());
+                        if (size > buffer) {
+                            buffer = size;
                         }
+                        return;
                     }
                 } else if (gs instanceof Mark) {
                     Mark mark = (Mark) gs;

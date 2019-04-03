@@ -40,14 +40,10 @@ import org.geotools.util.KVP;
 import org.geotools.util.URLs;
 import org.geotools.util.logging.Logging;
 
-/**
- * Builds instances of the shapefile data store
- *
- * @source $URL$
- */
+/** Builds instances of the shapefile data store */
 public class ShapefileDataStoreFactory implements FileDataStoreFactorySpi {
 
-    static final Logger LOGGER = Logging.getLogger("org.geotools.data.shapefile");
+    static final Logger LOGGER = Logging.getLogger(ShapefileDataStoreFactory.class);
 
     /** url to the .shp file. */
     public static final Param URLP =
@@ -282,8 +278,30 @@ public class ShapefileDataStoreFactory implements FileDataStoreFactorySpi {
                 // maybe it's a directory?
                 Object fileType = FILE_TYPE.lookUp(params);
                 File dir = URLs.urlToFile(url);
+
                 // check for null fileType for backwards compatibility
-                return dir.isDirectory() && (fileType == null || "shapefile".equals(fileType));
+
+                // Return false if this is a VPF directory
+                if (dir != null && dir.isDirectory() && fileType == null) {
+                    String dirPath = dir.getPath();
+
+                    String[] vpfTables = {"LAT", "LHT", "DHT", "lat", "lht", "dht"};
+
+                    for (int itab = 0; itab < vpfTables.length; itab++) {
+
+                        String tabFilename = vpfTables[itab];
+
+                        String pathTab = dirPath.concat(File.separator).concat(tabFilename);
+
+                        if (new File(pathTab).exists()) {
+                            return false;
+                        }
+                    }
+                }
+
+                return dir != null
+                        && dir.isDirectory()
+                        && (fileType == null || "shapefile".equals(fileType));
             }
         } catch (IOException e) {
             return false;

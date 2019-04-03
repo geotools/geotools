@@ -19,14 +19,12 @@ package org.geotools.util.logging;
 import java.util.logging.Logger;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.commons.logging.impl.Jdk14Logger;
 
 /**
  * A factory for loggers that redirect all Java logging events to the Apache's <A
  * HREF="http://jakarta.apache.org/commons/logging/">Commons-logging</A> framework.
  *
  * @since 2.4
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  */
@@ -61,7 +59,8 @@ public class CommonsLoggerFactory extends LoggerFactory<Log> {
      */
     protected Log getImplementation(final String name) {
         final Log log = LogFactory.getLog(name);
-        if (log instanceof Jdk14Logger) {
+        if (log != null
+                && log.getClass().getName().equals("org.apache.commons.logging.impl.Jdk14Logger")) {
             return null;
         }
         return log;

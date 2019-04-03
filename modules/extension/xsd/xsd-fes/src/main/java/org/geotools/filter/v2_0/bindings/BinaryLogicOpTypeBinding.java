@@ -19,7 +19,6 @@ package org.geotools.filter.v2_0.bindings;
 import javax.xml.namespace.QName;
 import org.geotools.filter.v1_0.OGCBinaryLogicOpTypeBinding;
 import org.geotools.filter.v2_0.FES;
-import org.opengis.filter.FilterFactory;
 
 /**
  * <pre>
@@ -38,10 +37,6 @@ import org.opengis.filter.FilterFactory;
  *
  */
 public class BinaryLogicOpTypeBinding extends OGCBinaryLogicOpTypeBinding {
-
-    public BinaryLogicOpTypeBinding(FilterFactory factory) {
-        super(factory);
-    }
 
     @Override
     public QName getTarget() {

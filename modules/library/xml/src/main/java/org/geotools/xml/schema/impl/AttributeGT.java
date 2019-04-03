@@ -20,12 +20,7 @@ import java.net.URI;
 import org.geotools.xml.schema.Attribute;
 import org.geotools.xml.schema.SimpleType;
 
-/**
- * DOCUMENT ME!
- *
- * @author dzwiers
- * @source $URL$
- */
+/** @author dzwiers */
 public class AttributeGT implements Attribute {
     private String defualT;
     private String fixed;
@@ -40,18 +35,7 @@ public class AttributeGT implements Attribute {
         // do nothing
     }
 
-    /**
-     * Creates a new AttributeGT object.
-     *
-     * @param id DOCUMENT ME!
-     * @param name DOCUMENT ME!
-     * @param namespace DOCUMENT ME!
-     * @param type DOCUMENT ME!
-     * @param use DOCUMENT ME!
-     * @param defaulT DOCUMENT ME!
-     * @param fixed DOCUMENT ME!
-     * @param form DOCUMENT ME!
-     */
+    /** Creates a new AttributeGT object. */
     public AttributeGT(
             String id,
             String name,

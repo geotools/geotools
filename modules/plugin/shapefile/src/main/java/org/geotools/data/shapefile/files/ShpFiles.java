@@ -62,11 +62,10 @@ import org.geotools.util.logging.Logging;
  * #acquireRead(ShpFileType, FileReader)} and {@link #acquireWrite(ShpFileType, FileWriter)} svn
  *
  * @author jesse
- * @source $URL$
  */
 public class ShpFiles {
 
-    static final Logger LOGGER = Logging.getLogger("org.geotools.data.shapefile");
+    static final Logger LOGGER = Logging.getLogger(ShpFiles.class);
 
     /**
      * The urls for each type of file that is associated with the shapefile. The key is the type of
@@ -118,7 +117,7 @@ public class ShpFiles {
     /**
      * Searches for all the files and adds then to the map of files.
      *
-     * @param file any one of the shapefile files
+     * @param url any one of the shapefile files
      */
     public ShpFiles(URL url) throws IllegalArgumentException {
         init(url);
@@ -191,7 +190,7 @@ public class ShpFiles {
                                 return file.getName().equalsIgnoreCase(name);
                             }
                         });
-        if (files.length > 0) {
+        if (files != null && files.length > 0) {
             try {
                 return files[0].toURI().toURL();
             } catch (MalformedURLException e) {

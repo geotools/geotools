@@ -34,7 +34,7 @@ class PropertyComparator implements Comparator<SimpleFeature> {
      * Builds a new comparator
      *
      * @param propertyName The property name to be used
-     * @param inverse If true the comparator will force an ascending order (descending otherwise)
+     * @param ascending If true the comparator will force an ascending order (descending otherwise)
      */
     public PropertyComparator(String propertyName, boolean ascending) {
         this.propertyName = propertyName;

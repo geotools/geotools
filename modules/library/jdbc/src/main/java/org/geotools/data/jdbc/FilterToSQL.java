@@ -21,11 +21,14 @@ import static org.geotools.filter.capability.FunctionNameImpl.parameter;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.lang.reflect.Array;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -36,7 +39,6 @@ import javax.measure.UnitConverter;
 import javax.measure.quantity.Length;
 import org.geotools.data.jdbc.fidmapper.FIDMapper;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.factory.Hints;
 import org.geotools.filter.FilterCapabilities;
 import org.geotools.filter.FunctionImpl;
 import org.geotools.filter.LikeFilterImpl;
@@ -48,6 +50,7 @@ import org.geotools.jdbc.PrimaryKey;
 import org.geotools.referencing.CRS;
 import org.geotools.util.ConverterFactory;
 import org.geotools.util.Converters;
+import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -137,7 +140,6 @@ import si.uom.SI;
  * @author ported by Saul Farber, MassGIS
  * @task REVISIT: need to figure out exceptions, we're currently eating io errors, which is bad.
  *     Probably need a generic visitor exception.
- * @source $URL$
  */
 /*
  * TODO: Use the new FilterCapabilities.  This may fall out of using the new
@@ -189,8 +191,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
     protected FilterCapabilities capabilities = null;
 
     /** Standard java logger */
-    protected static Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.filter");
+    protected static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(FilterToSQL.class);
 
     /** Character used to escape database schema, table and column names */
     private String sqlNameEscape = "";
@@ -271,8 +272,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
      * Performs the encoding, sends the encoded sql to the writer passed in.
      *
      * @param filter the Filter to be encoded.
-     * @throws OpenGISFilterToOpenGISFilterToSQLEncoderException If filter type not supported, or if
-     *     there were io problems.
+     * @throws FilterToSQLException If filter type not supported, or if there were io problems.
      */
     public void encode(Filter filter) throws FilterToSQLException {
         if (out == null) throw new FilterToSQLException("Can't encode to a null writer.");
@@ -291,7 +291,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
                 throw new FilterToSQLException("Problem writing filter: ", ioe);
             }
         } else {
-            throw new FilterToSQLException("Filter type not supported");
+            throw new FilterToSQLException("Filter type not supported: " + filter);
         }
     }
 
@@ -317,9 +317,8 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
     /**
      * Performs the encoding, sends the encoded sql to the writer passed in.
      *
-     * @param filter the Filter to be encoded.
-     * @throws OpenGISFilterToOpenGISFilterToSQLEncoderException If filter type not supported, or if
-     *     there were io problems.
+     * @param expression the Expression to be encoded.
+     * @throws FilterToSQLException If filter type not supported, or if there were io problems.
      */
     public void encode(Expression expression) throws FilterToSQLException {
         if (out == null) throw new FilterToSQLException("Can't encode to a null writer.");
@@ -354,6 +353,15 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
      */
     public void setFeatureType(SimpleFeatureType featureType) {
         this.featureType = featureType;
+    }
+
+    /**
+     * Returns the feature type set in this encoder, if any
+     *
+     * @return
+     */
+    public SimpleFeatureType getFeatureType() {
+        return this.featureType;
     }
 
     /**
@@ -457,7 +465,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
     /**
      * @see {@link FilterVisitor#visit(ExcludeFilter, Object)}
      *     <p>Writes the SQL for the IncludeFilter by writing "FALSE".
-     * @param the filter to be visited
+     * @param filter the filter to be visited
      */
     public Object visit(ExcludeFilter filter, Object extraData) {
         try {
@@ -471,7 +479,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
     /**
      * @see {@link FilterVisitor#visit(IncludeFilter, Object)}
      *     <p>Writes the SQL for the IncludeFilter by writing "TRUE".
-     * @param the filter to be visited
+     * @param filter the filter to be visited
      */
     public Object visit(IncludeFilter filter, Object extraData) {
         try {
@@ -604,7 +612,106 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
      * @param extraData extra data (unused by this method)
      */
     public Object visit(Or filter, Object extraData) {
-        return visit((BinaryLogicOperator) filter, "OR");
+        // Check if we can encode the "or" as an "in", happens if the same property
+        // is compared as equality with multiple values. This is important as some databases
+        // cannot optimize index access otherwise
+        // The collector contains name -> list<values> for equalities, and the filter->null
+        // otherwise
+        LinkedHashMap<Object, Object> grouped = new LinkedHashMap<>();
+        int maxGroupSize = 0;
+        for (Filter child : filter.getChildren()) {
+            Expression[] nameLiteral = getNameLiteralFromEquality(child);
+            if (nameLiteral == null) {
+                grouped.put(child, null);
+            } else {
+                PropertyName name = (PropertyName) nameLiteral[0];
+                Literal value = (Literal) nameLiteral[1];
+                List<Literal> values = (List<Literal>) grouped.get(name);
+                if (values == null) {
+                    values = new ArrayList<>();
+                    grouped.put(name, values);
+                }
+                values.add(value);
+                maxGroupSize = Math.max(maxGroupSize, values.size());
+            }
+        }
+
+        if (maxGroupSize < 2) {
+            // no special behavior needed
+            return visit((BinaryLogicOperator) filter, "OR");
+        }
+
+        try {
+            Iterator<Map.Entry<Object, Object>> iterator = grouped.entrySet().iterator();
+
+            // ok, we can output at least one "in" statement
+            if (grouped.size() > 1) {
+                out.write("(");
+            }
+
+            while (iterator.hasNext()) {
+                Map.Entry<Object, Object> entry = iterator.next();
+                if (entry.getKey() instanceof PropertyName) {
+                    PropertyName pn = (PropertyName) entry.getKey();
+                    List<Literal> literals = (List<Literal>) entry.getValue();
+
+                    pn.accept(this, extraData);
+                    Class binding = getExpressionType(pn);
+
+                    // avoid bizarre enconding in case there is just one value in this one
+                    // (there is at least one other variable in this OR that benefits from IN)
+                    int literalsSize = literals.size();
+                    if (literalsSize == 1) {
+                        out.write(" = ");
+                        literals.get(0).accept(this, binding);
+                    } else {
+                        out.write(" IN (");
+
+                        for (int i = 0; i < literalsSize; i++) {
+                            literals.get(i).accept(this, binding);
+                            if (i < literalsSize - 1) {
+                                out.write(", ");
+                            }
+                        }
+                        out.write(")");
+                    }
+
+                } else {
+                    ((Filter) entry.getKey()).accept(this, extraData);
+                }
+
+                if (iterator.hasNext()) {
+                    out.write(" OR ");
+                }
+            }
+
+            if (grouped.size() > 1) {
+                out.write(")");
+            }
+        } catch (java.io.IOException ioe) {
+            throw new RuntimeException(IO_ERROR, ioe);
+        }
+
+        return extraData;
+    }
+
+    /**
+     * If the child is an equality between a property name and a literal, returns an array with the
+     * property name first, and the expression second. Will return null otherwise.
+     */
+    private Expression[] getNameLiteralFromEquality(Filter child) {
+        if (child instanceof PropertyIsEqualTo) {
+            PropertyIsEqualTo equal = (PropertyIsEqualTo) child;
+            Expression ex1 = equal.getExpression1();
+            Expression ex2 = equal.getExpression2();
+            if (ex1 instanceof PropertyName && ex2 instanceof Literal) {
+                return new Expression[] {ex1, ex2};
+            } else if (ex2 instanceof PropertyName && ex1 instanceof Literal) {
+                return new Expression[] {ex2, ex1};
+            }
+        }
+
+        return null;
     }
 
     /**
@@ -745,33 +852,8 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
             }
         }
 
-        Class leftContext = null, rightContext = null;
-        if (left instanceof PropertyName) {
-            // aha!  It's a propertyname, we should get the class and pass it in
-            // as context to the tree walker.
-            AttributeDescriptor attType = (AttributeDescriptor) left.evaluate(featureType);
-            if (attType != null) {
-                rightContext = attType.getType().getBinding();
-            }
-        } else if (left instanceof Function) {
-            // check for a function return type
-            Class ret = getFunctionReturnType((Function) left);
-            if (ret != null) {
-                rightContext = ret;
-            }
-        }
-
-        if (right instanceof PropertyName) {
-            AttributeDescriptor attType = (AttributeDescriptor) right.evaluate(featureType);
-            if (attType != null) {
-                leftContext = attType.getType().getBinding();
-            }
-        } else if (right instanceof Function) {
-            Class ret = getFunctionReturnType((Function) right);
-            if (ret != null) {
-                leftContext = ret;
-            }
-        }
+        Class rightContext = getExpressionType(left);
+        Class leftContext = getExpressionType(right);
 
         // case sensitivity
         boolean matchCase = true;
@@ -789,19 +871,9 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
 
         try {
             if (matchCase) {
-                if (leftContext != null && isBinaryExpression(left)) {
-                    writeBinaryExpression(left, leftContext);
-                } else {
-                    left.accept(this, leftContext);
-                }
-
+                writeBinaryExpressionMember(left, leftContext);
                 out.write(" " + type + " ");
-
-                if (rightContext != null && isBinaryExpression(right)) {
-                    writeBinaryExpression(right, rightContext);
-                } else {
-                    right.accept(this, rightContext);
-                }
+                writeBinaryExpressionMember(right, rightContext);
             } else {
                 // wrap both sides in "lower"
                 FunctionImpl f =
@@ -830,6 +902,50 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
         }
     }
 
+    /**
+     * Writes out an expression, wrapping it in parenthesis if it's a binary one
+     *
+     * @param exp
+     * @param context
+     * @throws IOException
+     */
+    protected void writeBinaryExpressionMember(Expression exp, Class context) throws IOException {
+        if (context != null && isBinaryExpression(exp)) {
+            writeBinaryExpression(exp, context);
+        } else {
+            exp.accept(this, context);
+        }
+    }
+
+    /**
+     * Returns the expression type, if can be found, or null otherwise. Based on feature type
+     * inspection for attribute references, and function return types otherwise. Cannot yet handle
+     * arithmetics or literals (the latter are actually not useful and should be ignored, expression
+     * in geotools are free to use a string where a number is needed due to the on the fly
+     * conversion, here we are concerned only with types that are a reliable reference).
+     *
+     * @param expression
+     * @return The expression return type, or null if cannot be computed
+     */
+    public Class getExpressionType(Expression expression) {
+        Class binding = null;
+        if (expression instanceof PropertyName) {
+            // aha!  It's a propertyname, we should get the class and pass it in
+            // as context to the tree walker.
+            AttributeDescriptor attType = (AttributeDescriptor) expression.evaluate(featureType);
+            if (attType != null) {
+                binding = attType.getType().getBinding();
+            }
+        } else if (expression instanceof Function) {
+            // check for a function return type
+            Class ret = getFunctionReturnType((Function) expression);
+            if (ret != null) {
+                binding = ret;
+            }
+        }
+        return binding;
+    }
+
     /*
      * write out the binary expression and cast only the end result, not passing any context into
      * encoding the individual parts
@@ -844,7 +960,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
         visitInFunction(in, false, negated, null);
     }
 
-    void writeBinaryExpression(Expression e, Class context) throws IOException {
+    protected void writeBinaryExpression(Expression e, Class context) throws IOException {
         Writer tmp = out;
         try {
             out = new StringWriter();
@@ -862,7 +978,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
      * returns the return type of the function, or null if it could not be determined or is simply
      * of return type Object.class
      */
-    Class getFunctionReturnType(Function f) {
+    protected Class getFunctionReturnType(Function f) {
         Class clazz = Object.class;
         if (f.getFunctionName() != null && f.getFunctionName().getReturn() != null) {
             clazz = f.getFunctionName().getReturn().getType();
@@ -876,7 +992,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
     /*
      * determines if the function is a binary expression
      */
-    boolean isBinaryExpression(Expression e) {
+    protected boolean isBinaryExpression(Expression e) {
         return e instanceof BinaryExpression;
     }
 
@@ -1143,9 +1259,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
                         || filter instanceof During
                         || filter instanceof TContains)
                 && period == null) {
-            if (period == null) {
-                throw new IllegalArgumentException("Filter requires a time period");
-            }
+            throw new IllegalArgumentException("Filter requires a time period");
         }
         if (filter instanceof TEquals && period != null) {
             throw new IllegalArgumentException("TEquals filter does not accept time period");
@@ -1380,7 +1494,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
         return context;
     }
 
-    protected Object evaluateLiteral(Literal expression, Class target) {
+    public Object evaluateLiteral(Literal expression, Class target) {
         Object literal = null;
 
         // HACK: let expression figure out the right value for numbers,
@@ -1457,6 +1571,17 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
             java.util.Date date = ((Instant) literal).getPosition().getDate();
             Timestamp ts = new java.sql.Timestamp(date.getTime());
             out.write("'" + ts + "'");
+        } else if (literal.getClass().isArray()) {
+            // write as a SQL99 array
+            out.write("ARRAY[");
+            int length = Array.getLength(literal);
+            for (int i = 0; i < length; i++) {
+                writeLiteral(Array.get(literal, i));
+                if (i < length - 1) {
+                    out.write(", ");
+                }
+            }
+            out.write("]");
         } else {
             // we don't know the type...just convert back to a string
             String encoding = (String) Converters.convert(literal, String.class, null);
@@ -1476,8 +1601,6 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
      * specific database implementation
      *
      * @param expression
-     * @throws IOException DOCUMENT ME!
-     * @throws RuntimeException DOCUMENT ME!
      */
     protected void visitLiteralGeometry(Literal expression) throws IOException {
         throw new RuntimeException(
@@ -1518,13 +1641,21 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
         LOGGER.finer("exporting Expression Math");
 
         try {
-            expression.getExpression1().accept(this, extraData);
+            encodeBinaryExpressionChild(expression.getExpression1(), extraData);
             out.write(" " + operator + " ");
-            expression.getExpression2().accept(this, extraData);
+            encodeBinaryExpressionChild(expression.getExpression2(), extraData);
         } catch (java.io.IOException ioe) {
             throw new RuntimeException("IO problems writing expression", ioe);
         }
         return extraData;
+    }
+
+    private void encodeBinaryExpressionChild(Expression expression, Object extraData)
+            throws IOException {
+        boolean needsParens = expression instanceof BinaryExpression;
+        if (needsParens) out.write("(");
+        expression.accept(this, extraData);
+        if (needsParens) out.write(")");
     }
 
     /**
@@ -1532,7 +1663,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
      * arguments provided to the GeoTools function, subclasses should override on a case by case
      * basis if this behavior is not the desired one.
      *
-     * @param expression a function expression
+     * @param function a function expression
      * @throws RuntimeException If an IO error occurs.
      * @see #getFunctionName(Function)
      */
@@ -1543,12 +1674,6 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
         } else {
             try {
                 List<Expression> parameters = function.getParameters();
-                List contexts = null;
-                // check context, if a list which patches parameter size list assume its context
-                // to pass along to each Expression for encoding
-                if (extraData instanceof List && ((List) extraData).size() == parameters.size()) {
-                    contexts = (List) extraData;
-                }
 
                 // set the encoding function flag to signal we are inside a function
                 encodingFunction = true;
@@ -1774,7 +1899,6 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
      * Surrounds a name with the SQL escape character.
      *
      * @param name
-     * @return DOCUMENT ME!
      */
     public String escapeName(String name) {
         return sqlNameEscape + name + sqlNameEscape;

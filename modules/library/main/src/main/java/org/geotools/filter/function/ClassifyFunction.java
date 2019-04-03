@@ -23,7 +23,6 @@ import org.geotools.filter.capability.FunctionNameImpl;
 import org.opengis.filter.capability.FunctionName;
 import org.opengis.filter.expression.Literal;
 
-/** @source $URL$ */
 public class ClassifyFunction extends FunctionExpressionImpl {
 
     // parameters are expression, classifier
@@ -55,6 +54,6 @@ public class ClassifyFunction extends FunctionExpressionImpl {
     public Object evaluate(Object feature) {
         Classifier classifier = getClassifier(feature);
         org.opengis.filter.expression.Expression expression = getExpression();
-        return new Integer(classifier.classify(expression, feature));
+        return Integer.valueOf(classifier.classify(expression, feature));
     }
 }

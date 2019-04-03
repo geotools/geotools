@@ -19,7 +19,6 @@ package org.geotools.gce.geotiff;
 
 import it.geosolutions.imageio.maskband.DatasetLayout;
 import it.geosolutions.imageio.utilities.ImageIOUtilities;
-import it.geosolutions.jaiext.JAIExt;
 import it.geosolutions.jaiext.range.NoDataContainer;
 import it.geosolutions.jaiext.range.Range;
 import java.awt.Color;
@@ -56,9 +55,9 @@ import org.geotools.coverage.grid.io.imageio.IIOMetadataDumper;
 import org.geotools.coverage.grid.io.imageio.geotiff.TiePoint;
 import org.geotools.coverage.processing.CoverageProcessor;
 import org.geotools.coverage.processing.operation.Scale;
+import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.PrjFileReader;
-import org.geotools.factory.Hints;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.referencing.CRS;
@@ -66,8 +65,9 @@ import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.referencing.operation.projection.Sinusoidal;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
-import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.test.TestData;
+import org.geotools.util.factory.Hints;
+import org.hamcrest.CoreMatchers;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -88,11 +88,10 @@ import org.opengis.referencing.operation.Projection;
  * Testing {@link GeoTiffReader} as well as {@link IIOMetadataDumper}.
  *
  * @author Simone Giannecchini
- * @source $URL$
  */
 public class GeoTiffReaderTest extends org.junit.Assert {
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(GeoTiffReaderTest.class.toString());
+            org.geotools.util.logging.Logging.getLogger(GeoTiffReaderTest.class);
 
     static boolean oldOverrideInnerCRS;
 
@@ -100,14 +99,12 @@ public class GeoTiffReaderTest extends org.junit.Assert {
     public void saveGlobals() {
         oldOverrideInnerCRS = GeoTiffReader.OVERRIDE_INNER_CRS;
         GeoTiffReader.OVERRIDE_INNER_CRS = true;
-        JAIExt.initJAIEXT(true, true);
     }
 
     @After
     public void cleanupGlobals() {
         System.clearProperty(GeoTiffReader.OVERRIDE_CRS_SWITCH);
         GeoTiffReader.OVERRIDE_INNER_CRS = oldOverrideInnerCRS;
-        JAIExt.initJAIEXT(false, true);
     }
 
     /**
@@ -171,7 +168,7 @@ public class GeoTiffReaderTest extends org.junit.Assert {
         if (TestData.isInteractiveTest()) {
             IIOMetadataDumper iIOMetadataDumper =
                     new IIOMetadataDumper(reader.getMetadata().getRootNode());
-            System.out.println(iIOMetadataDumper.getMetadata());
+            // System.out.println(iIOMetadataDumper.getMetadata());
         }
         // reading the coverage
         GridCoverage2D coverage1 = reader.read(null);
@@ -500,6 +497,13 @@ public class GeoTiffReaderTest extends org.junit.Assert {
         assertTrue(nd.isPoint());
         assertEquals(nd.getMin().doubleValue(), -9999, 0.001);
         assertEquals(nd.getMax().doubleValue(), -9999, 0.001);
+
+        // check the image too
+        RenderedImage image = coverage.getRenderedImage();
+        Object property = image.getProperty(NoDataContainer.GC_NODATA);
+        assertThat(property, CoreMatchers.instanceOf(NoDataContainer.class));
+        NoDataContainer nc = (NoDataContainer) property;
+        assertEquals(-9999, nc.getAsSingleValue(), 0.0001);
     }
 
     /**

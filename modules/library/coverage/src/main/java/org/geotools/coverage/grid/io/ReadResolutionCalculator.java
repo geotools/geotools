@@ -25,12 +25,12 @@ import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.data.DataSourceException;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.operation.LinearTransform;
 import org.geotools.referencing.operation.builder.GridToEnvelopeMapper;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
 import org.geotools.util.Utilities;
 import org.geotools.util.logging.Logging;
 import org.opengis.geometry.Envelope;
@@ -47,6 +47,8 @@ public class ReadResolutionCalculator {
 
     static final Logger LOGGER = Logging.getLogger(ReadResolutionCalculator.class);
 
+    static final double DELTA = 1E-10;
+
     private ReferencedEnvelope requestedBBox;
 
     private Rectangle requestedRasterArea;
@@ -56,6 +58,8 @@ public class ReadResolutionCalculator {
     private double[] fullResolution;
 
     private boolean accurateResolution;
+
+    private boolean isFullResolutionInRequestedCRS;
 
     private MathTransform destinationToSourceTransform;
 
@@ -74,6 +78,7 @@ public class ReadResolutionCalculator {
         // pick the classic computation results, it's better than nothing
         if (fullResolution == null) {
             this.fullResolution = computeClassicResolution();
+            isFullResolutionInRequestedCRS = true;
         }
         CoordinateReferenceSystem requestedCRS =
                 requestedGridGeometry.getCoordinateReferenceSystem();
@@ -171,9 +176,11 @@ public class ReadResolutionCalculator {
      */
     private double[] computeAccurateResolution(ReferencedEnvelope readBBox)
             throws TransformException, NoninvertibleTransformException, FactoryException {
-        if (!CRS.equalsIgnoreMetadata(
-                readBBox.getCoordinateReferenceSystem(),
-                requestedBBox.getCoordinateReferenceSystem())) {
+        final boolean isReprojected =
+                !CRS.equalsIgnoreMetadata(
+                        readBBox.getCoordinateReferenceSystem(),
+                        requestedBBox.getCoordinateReferenceSystem());
+        if (isReprojected) {
             readBBox = readBBox.transform(requestedBBox.getCoordinateReferenceSystem(), true);
         }
         double resX = XAffineTransform.getScaleX0(requestedGridToWorld);
@@ -224,10 +231,27 @@ public class ReadResolutionCalculator {
             }
         }
 
-        // reprojection can turn a segment into a zero lenght one, in that case, fall back on
-        // the full resolution in that case
-        double minDistanceX = Math.max(minDistance, fullResolution[0]);
-        double minDistanceY = Math.max(minDistance, fullResolution[1]);
+        // reprojection can turn a segment into a zero length one
+        double fullRes[] = new double[] {fullResolution[0], fullResolution[1]};
+        if (isReprojected && isFullResolutionInRequestedCRS) {
+            // Create a full resolution's one pixel bbox and reproject it to
+            // retrieve full resolution in read CRS
+            double x0 = requestedBBox.getMedian(0);
+            double y0 = requestedBBox.getMedian(1);
+            double x1 = x0 + fullRes[0];
+            double y1 = y0 + fullRes[1];
+            GeneralEnvelope envelope =
+                    new GeneralEnvelope(new double[] {x0, y0}, new double[] {x1, y1});
+            envelope = CRS.transform(destinationToSourceTransform, envelope);
+            GridToEnvelopeMapper mapper =
+                    new GridToEnvelopeMapper(new GridEnvelope2D(0, 0, 1, 1), envelope);
+            AffineTransform transform = mapper.createAffineTransform();
+            fullRes[0] = XAffineTransform.getScaleX0(transform);
+            fullRes[1] = XAffineTransform.getScaleY0(transform);
+        }
+        // fall back on the full resolution when zero length
+        double minDistanceX = Math.max(fullRes[0], minDistance);
+        double minDistanceY = Math.max(fullRes[1], minDistance);
         return new double[] {minDistanceX, minDistanceY};
     }
 

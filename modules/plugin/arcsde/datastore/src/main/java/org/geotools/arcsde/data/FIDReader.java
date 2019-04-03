@@ -48,10 +48,6 @@ import org.opengis.feature.type.AttributeDescriptor;
  * </ul>
  *
  * @author Gabriel Roldan, Axios Engineering
- * @version $Id$
- * @source $URL$
- *     http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/main/java
- *     /org/geotools/arcsde/data/FIDReader.java $
  */
 public abstract class FIDReader {
 
@@ -92,8 +88,8 @@ public abstract class FIDReader {
     /**
      * Returns the attribute names of the FeatureType passed to the constructor.
      *
-     * @param the feature type containing the properties the client code is interested in. May well
-     *     be a subset of the full set of attributes in the SeLayer
+     * @param schema the feature type containing the properties the client code is interested in.
+     *     May well be a subset of the full set of attributes in the SeLayer
      * @return the list of property names to actually fetch for a given feature type, taking into
      *     account the ones that possibly need to be fetched to generate the feature id, even if
      *     they're not part of the schema.

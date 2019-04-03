@@ -22,7 +22,6 @@ import java.util.List;
  * Primary key of a table.
  *
  * @author Justin Deoliveira, The Open Planning Project, jdeolive@openplans.org
- * @source $URL$
  */
 public class PrimaryKey {
     /** The columns making up the primary key. */

@@ -31,7 +31,6 @@ import org.opengis.filter.spatial.Touches;
 import org.opengis.filter.spatial.Within;
 import org.w3c.dom.Document;
 
-/** @source $URL$ */
 public class BinarySpatialOpTypeBindingTest extends FilterTestSupport {
     public void testDistanceBufferType() {
         assertEquals(DistanceBufferOperator.class, binding(OGC.DistanceBufferType).getType());

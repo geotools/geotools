@@ -17,7 +17,6 @@
 package org.geotools.validation;
 
 import java.util.Map;
-import java.util.logging.Logger;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 
 /**
@@ -28,14 +27,9 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
  *
  * @author Jody Garnett, Refractions Research, Inc.
  * @author $Author: dmzwiers $ (last modification)
- * @source $URL$
  * @version $Id$
  */
 public class DefaultIntegrityValidation implements IntegrityValidation {
-    /** The logger for the validation module. */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.validation");
-
     /** User's Name of this integrity test. */
     private String name;
 
@@ -122,7 +116,6 @@ public class DefaultIntegrityValidation implements IntegrityValidation {
      * @param envelope The bounding box that encloses the unvalidated data
      * @param results Used to coallate results information
      * @return <code>true</code> if all the features pass this test.
-     * @throws Exception DOCUMENT ME!
      */
     public boolean validate(Map layers, ReferencedEnvelope envelope, ValidationResults results)
             throws Exception {

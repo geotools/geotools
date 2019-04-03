@@ -40,7 +40,6 @@ import org.opengis.referencing.datum.ImageDatum;
  * </TD></TR></TABLE>
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
@@ -104,6 +103,7 @@ public class DefaultImageCRS extends AbstractSingleCRS implements ImageCRS {
      *     versions of this class.
      */
     @Override
+    @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int hashCode() {
         return (int) serialVersionUID ^ super.hashCode();
     }

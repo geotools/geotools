@@ -132,7 +132,6 @@ public enum Aggregate {
             if (value == null) {
                 return AbstractCalcResult.NULL_RESULT;
             }
-            Double area = Converters.convert(value, Double.class);
             return new SumVisitor.SumResult(value);
         }
     };

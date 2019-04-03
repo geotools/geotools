@@ -104,13 +104,12 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * <p>This is a replacement for FilterConsumer.
  *
  * @author Jody Garnett
- * @source $URL$
  */
 public class ExtractBoundsFilterVisitor extends NullFilterVisitor {
     public static NullFilterVisitor BOUNDS_VISITOR = new ExtractBoundsFilterVisitor();
 
     private static Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.index.rtree");
+            org.geotools.util.logging.Logging.getLogger(ExtractBoundsFilterVisitor.class);
 
     /**
      * This FilterVisitor is stateless - use ExtractBoundsFilterVisitor.BOUNDS_VISITOR.
@@ -172,7 +171,7 @@ public class ExtractBoundsFilterVisitor extends NullFilterVisitor {
     /**
      * Please note we are only visiting literals involved in spatial operations.
      *
-     * @param expression, a literal expression, hopefully a Geometry or Envelope
+     * @param expression a literal expression, hopefully a Geometry or Envelope
      * @param data Incoming BoundingBox (or Envelope or CRS)
      * @return ReferencedEnvelope updated to reflect literal
      */

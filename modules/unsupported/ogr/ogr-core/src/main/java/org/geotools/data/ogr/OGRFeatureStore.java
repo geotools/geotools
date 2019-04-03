@@ -53,14 +53,14 @@ class OGRFeatureStore extends ContentFeatureStore {
     @Override
     protected FeatureWriter<SimpleFeatureType, SimpleFeature> getWriterInternal(
             Query query, int flags) throws IOException {
-        Object dataSource = null;
+        OGRDataSource dataSource = null;
         Object layer = null;
         boolean cleanup = true;
         try {
             // grab the layer
             String typeName = getEntry().getTypeName();
             dataSource = getDataStore().openOGRDataSource(true);
-            layer = getDataStore().openOGRLayer(dataSource, typeName);
+            layer = getDataStore().openOGRLayer(dataSource, typeName, false);
 
             FeatureReader<SimpleFeatureType, SimpleFeature> reader =
                     delegate.getReaderInternal(dataSource, layer, query);
@@ -72,7 +72,7 @@ class OGRFeatureStore extends ContentFeatureStore {
         } finally {
             if (cleanup) {
                 ogr.LayerRelease(layer);
-                ogr.DataSourceRelease(dataSource);
+                dataSource.close();
             }
         }
     }

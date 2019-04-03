@@ -47,10 +47,7 @@ import org.opengis.geometry.primitive.SurfaceBoundary;
 import org.opengis.geometry.primitive.SurfacePatch;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-/**
- * @author sanjay
- * @source $URL$
- */
+/** @author sanjay */
 public class SurfaceTest extends TestCase {
     GeometryBuilder builder;
 
@@ -197,7 +194,7 @@ public class SurfaceTest extends TestCase {
         try {
             surface3 = (SurfaceImpl) surface2.clone();
         } catch (CloneNotSupportedException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
         assertTrue(surface2 != surface3);
         this.testSurfaces((SurfaceImpl) surface3);

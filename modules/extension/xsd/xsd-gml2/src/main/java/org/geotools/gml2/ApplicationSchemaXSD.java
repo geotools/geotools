@@ -22,8 +22,8 @@ import java.net.URL;
 import java.util.Set;
 import org.eclipse.xsd.XSDSchema;
 import org.geotools.util.URLs;
-import org.geotools.xml.SchemaLocationResolver;
-import org.geotools.xml.XSD;
+import org.geotools.xsd.SchemaLocationResolver;
+import org.geotools.xsd.XSD;
 
 /**
  * XSD instance for an application schema.
@@ -31,7 +31,6 @@ import org.geotools.xml.XSD;
  * <p>Copied from org.geotools.gml3 making use of addDependencies with our gml2.GML instance.
  *
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL$
  */
 public class ApplicationSchemaXSD extends XSD {
     /** application schema namespace */
@@ -64,10 +63,6 @@ public class ApplicationSchemaXSD extends XSD {
      * <p>This way, application schemas splitted over multiple files can be resolved based on the
      * relative location of a given import or include.
      *
-     * @param schema the schema being resolved
-     * @param uri not used as it might be an empty string when location refers to an include
-     * @param location the xsd location, either of <code>schema</code>, an import or an include, for
-     *     which to try resolving it as a relative path of the <code>schema</code> location.
      * @return a file: style uri with the resolved schema location for the given one, or <code>null
      *     </code> if <code>location</code> can't be resolved as a relative path of the <code>schema
      *     </code> location.

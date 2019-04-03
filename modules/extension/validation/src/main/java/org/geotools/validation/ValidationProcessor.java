@@ -82,12 +82,11 @@ import org.opengis.feature.type.Name;
  *
  * @author bowens, Refractions Research, Inc.
  * @author $Author: jive $ (last modification)
- * @source $URL$
  * @version $Id$
  */
 public class ValidationProcessor {
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.validation");
+            org.geotools.util.logging.Logging.getLogger(ValidationProcessor.class);
 
     /** Magic key used to hold the place of any featureType */
     final Object ANYTYPENAME = new Object();
@@ -255,9 +254,8 @@ public class ValidationProcessor {
      * take in a SimpleFeatureSource so not everything is loaded into memory.
      *
      * @param dsID data Store id.
-     * @param type The FeatureTypeInfo of the features being tested.
-     * @param features The collection of features, of a particulare FeatureTypeInfo "type", that are
-     *     to be validated.
+     * @param collection The collection of features, of a particulare FeatureTypeInfo "type", that
+     *     are to be validated.
      * @param results Storage for the results of the validation tests.
      * @throws Exception FeatureValidations throw Exceptions
      */
@@ -412,7 +410,7 @@ public class ValidationProcessor {
                 }
 
                 LOGGER.log(Level.WARNING, validator.getName() + " failed with " + error, e);
-                e.printStackTrace();
+                java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
                 results.error(null, error);
             }
         }
@@ -451,10 +449,6 @@ public class ValidationProcessor {
      *
      * <p>This is mostly useful for testing, you may want to write your own load method with
      * enhanced error reporting.
-     *
-     * @param plugins DOCUMENT ME!
-     * @param testsuites DOCUMENT ME!
-     * @throws Exception DOCUMENT ME!
      */
     public void load(File plugins, File testsuites) throws Exception {
         Map pluginDTOs = XMLReader.loadPlugIns(TestData.file(this, "plugins"));
@@ -472,7 +466,6 @@ public class ValidationProcessor {
      * @param plugInDTOs
      * @param testSuiteDTOs
      * @throws Exception
-     * @throws ClassNotFoundException DOCUMENT ME!
      */
     public void load(Map plugInDTOs, Map testSuiteDTOs) throws Exception {
         // step 1 make a list required plug-ins

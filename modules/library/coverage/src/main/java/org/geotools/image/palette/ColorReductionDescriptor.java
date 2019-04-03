@@ -23,7 +23,6 @@ import java.awt.image.renderable.ParameterBlock;
 import javax.media.jai.OperationDescriptorImpl;
 import javax.media.jai.registry.RenderedRegistryMode;
 
-/** @source $URL$ */
 public class ColorReductionDescriptor extends OperationDescriptorImpl {
 
     /** */
@@ -61,7 +60,7 @@ public class ColorReductionDescriptor extends OperationDescriptorImpl {
                 }, // Parameter
                 // classes
                 new Object[] {
-                    new Integer(255), new Integer(1), new Integer(1), new Integer(1)
+                    Integer.valueOf(255), Integer.valueOf(1), Integer.valueOf(1), Integer.valueOf(1)
                 }, // Default
                 // values
                 null // Valid parameter values

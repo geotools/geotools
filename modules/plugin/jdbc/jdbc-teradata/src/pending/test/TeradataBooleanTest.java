@@ -22,7 +22,7 @@ import org.geotools.jdbc.JDBCBooleanTestSetup;
 /**
  * 
  *
- * @source $URL$
+
  */
 public class TeradataBooleanTest extends JDBCBooleanTest {
 

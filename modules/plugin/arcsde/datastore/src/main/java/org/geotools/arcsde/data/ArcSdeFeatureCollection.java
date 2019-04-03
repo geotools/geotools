@@ -41,16 +41,12 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * <p>Note this class and the iterators it returns are thread safe.
  *
  * @author Gabriel Roldan (TOPP)
- * @version $Id$
  * @since 2.5
- * @source $URL$
- *     http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/main/java
- *     /org/geotools/arcsde/data/ArcSdeFeatureCollection.java $
  * @see FeatureCollection
  */
 public class ArcSdeFeatureCollection extends DataFeatureCollection {
 
-    private static final Logger LOGGER = Logging.getLogger("org.geotools.arcsde.data");
+    private static final Logger LOGGER = Logging.getLogger(ArcSdeFeatureCollection.class);
 
     private final ArcSdeFeatureSource featureSource;
 
@@ -136,9 +132,7 @@ public class ArcSdeFeatureCollection extends DataFeatureCollection {
      */
     @Override
     protected void closeIterator(Iterator<SimpleFeature> close) throws IOException {
-        if (close == null) {
-            // iterator probably failed during consturction !
-        } else if (close instanceof FeatureReaderIterator) {
+        if (close instanceof FeatureReaderIterator) {
             FeatureReaderIterator<SimpleFeature> iterator =
                     (FeatureReaderIterator<SimpleFeature>) close;
             iterator.close(); // only needs package visability

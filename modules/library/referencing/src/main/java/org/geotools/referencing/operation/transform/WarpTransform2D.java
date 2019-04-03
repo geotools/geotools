@@ -28,12 +28,12 @@ import java.util.TimeZone;
 import javax.media.jai.JAI;
 import javax.media.jai.Warp;
 import javax.media.jai.WarpPolynomial;
+import org.geotools.metadata.i18n.Vocabulary;
+import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.parameter.Parameter;
 import org.geotools.parameter.ParameterGroup;
-import org.geotools.resources.XArray;
-import org.geotools.resources.i18n.Vocabulary;
-import org.geotools.resources.i18n.VocabularyKeys;
 import org.geotools.util.Utilities;
+import org.geotools.util.XArray;
 import org.opengis.parameter.ParameterDescriptor;
 import org.opengis.parameter.ParameterDescriptorGroup;
 import org.opengis.parameter.ParameterValue;
@@ -61,7 +61,6 @@ import org.opengis.referencing.operation.NoninvertibleTransformException;
  * Image Manipulation</A> in the <cite>Programming in Java Advanced Imaging</cite> guide.
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  * @author Alessio Fabiani
@@ -551,7 +550,6 @@ public class WarpTransform2D extends AbstractMathTransform
             postIncrement = 0;
         }
         final Point2D.Float ptSrc = new PointFloat();
-        final float[] ptDst = new float[2];
         while (--numPts >= 0) {
             ptSrc.x = srcPts[srcOff++] - 0.5f; // See the comment in transform(Point2D...)
             ptSrc.y = srcPts[srcOff++] - 0.5f; // for an explanation about the 0.5 shift.
@@ -577,7 +575,6 @@ public class WarpTransform2D extends AbstractMathTransform
             postIncrement = 0;
         }
         final Point2D.Double ptSrc = new PointDouble();
-        final float[] ptDst = new float[2];
         while (--numPts >= 0) {
             ptSrc.x = srcPts[srcOff++] - 0.5; // See the comment in transform(Point2D...)
             ptSrc.y = srcPts[srcOff++] - 0.5; // for an explanation about the 0.5 shift.

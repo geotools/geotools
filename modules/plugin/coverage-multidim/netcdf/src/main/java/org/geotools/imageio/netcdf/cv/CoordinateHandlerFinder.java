@@ -25,9 +25,9 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.geotools.factory.FactoryCreator;
-import org.geotools.factory.FactoryRegistry;
 import org.geotools.imageio.netcdf.cv.CoordinateHandlerSpi.CoordinateHandler;
+import org.geotools.util.factory.FactoryCreator;
+import org.geotools.util.factory.FactoryRegistry;
 import org.geotools.util.logging.Logging;
 import ucar.nc2.dataset.CoordinateAxis;
 import ucar.nc2.dataset.CoordinateAxis1D;
@@ -49,11 +49,10 @@ import ucar.nc2.dataset.CoordinateAxis1D;
  */
 public final class CoordinateHandlerFinder {
 
-    private static final Logger LOGGER =
-            Logging.getLogger(CoordinateHandlerFinder.class.toString());
+    private static final Logger LOGGER = Logging.getLogger(CoordinateHandlerFinder.class);
 
     /** The service registry for this manager. Will be initialized only when first needed. */
-    private static FactoryRegistry registry;
+    private static volatile FactoryRegistry registry;
 
     /** Do not allows any instantiation of this class. */
     private CoordinateHandlerFinder() {

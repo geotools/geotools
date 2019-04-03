@@ -28,7 +28,6 @@ import org.opengis.feature.type.ComplexType;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.identity.Identifier;
 
-/** @source $URL$ */
 public class ComplexAttributeImpl extends AttributeImpl implements ComplexAttribute {
 
     public ComplexAttributeImpl(

@@ -27,13 +27,13 @@ import javax.measure.Unit;
 import javax.measure.UnitConverter;
 import org.geotools.measure.Measure;
 import org.geotools.measure.Units;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
+import org.geotools.metadata.i18n.Vocabulary;
 import org.geotools.referencing.AbstractIdentifiedObject;
 import org.geotools.referencing.operation.matrix.GeneralMatrix;
 import org.geotools.referencing.wkt.Formatter;
-import org.geotools.resources.Classes;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
-import org.geotools.resources.i18n.Vocabulary;
+import org.geotools.util.Classes;
 import org.geotools.util.Utilities;
 import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.referencing.cs.AxisDirection;
@@ -61,7 +61,6 @@ import si.uom.SI;
  * situation, a plain {@code AbstractCS} object may be instantiated.
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @see DefaultCoordinateSystemAxis
@@ -572,7 +571,7 @@ public class AbstractCS extends AbstractIdentifiedObject implements CoordinateSy
                 final DefaultCoordinateSystemAxis candidate = axis1[j];
                 if (candidate != null) {
                     if (candidate.equals(direct, false, false)
-                            || (opposite != null && candidate.equals(opposite, false, false))) {
+                            || (opposite != null && opposite.equals(candidate, false, false))) {
                         axis1[j] = null; // Flags as already compared.
                         continue next;
                     }
@@ -635,6 +634,7 @@ public class AbstractCS extends AbstractIdentifiedObject implements CoordinateSy
      *     versions of this class.
      */
     @Override
+    @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int hashCode() {
         int code = (int) serialVersionUID;
         for (int i = 0; i < axis.length; i++) {

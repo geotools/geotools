@@ -29,12 +29,7 @@ import org.geotools.TestData;
 import org.geotools.xml.schema.Schema;
 import org.xml.sax.SAXException;
 
-/**
- * DOCUMENT ME! @
- *
- * @author dzwiers www.refractions.net
- * @source $URL$
- */
+/** @author dzwiers www.refractions.net */
 public class XMLParserTest extends TestCase {
 
     public void testNestedFeature() throws Throwable {
@@ -69,12 +64,12 @@ public class XMLParserTest extends TestCase {
             Object doc = DocumentFactory.getInstance(u, null, Level.WARNING);
 
             assertNotNull("Document missing", doc);
-            System.out.println(doc);
+            // System.out.println(doc);
         } catch (SAXException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             fail(e.toString());
         } catch (Throwable e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             fail(e.toString());
         }
     }
@@ -103,9 +98,9 @@ public class XMLParserTest extends TestCase {
             assertNotNull("New Document missing", doc);
 
             assertTrue("file was not created +f", f.exists());
-            System.out.println(f);
+            // System.out.println(f);
         } catch (SAXException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             fail(e.toString());
         } catch (Throwable e) {
             assertTrue(e instanceof OperationNotSupportedException);

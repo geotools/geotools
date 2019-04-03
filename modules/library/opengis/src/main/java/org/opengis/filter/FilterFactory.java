@@ -78,7 +78,6 @@ import org.opengis.geometry.Geometry;
  *
  * <p>
  *
- * @source $URL$
  * @version <A HREF="http://www.opengis.org/docs/02-059.pdf">Implementation specification 1.0</A>
  * @author Chris Dillard (SYS Technologies)
  * @since GeoAPI 2.0
@@ -118,10 +117,10 @@ public interface FilterFactory {
      * be {@code null}, making for an unconstrained date range at either of the ends.
      *
      * @param fid feature id, non null;
-     * @param start lower end timestamp of the time range, inclusive, or {@code null} only if {@code
-     *     end != null}
-     * @param start upper end timestamp of the time range, inclusive, or {@code null} only if {@code
-     *     start != null}
+     * @param startTime lower end timestamp of the time range, inclusive, or {@code null} only if
+     *     {@code end != null}
+     * @param endTime upper end timestamp of the time range, inclusive, or {@code null} only if
+     *     {@code start != null}
      */
     ResourceId resourceId(String fid, Date startTime, Date endTime);
 

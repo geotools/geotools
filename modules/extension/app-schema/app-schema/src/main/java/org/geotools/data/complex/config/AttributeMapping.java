@@ -29,7 +29,6 @@ import java.util.Map;
  * @author Rini Angreani (CSIRO Earth Science and Resource Engineering)
  * @author Russell Petty (GeoScience Victoria)
  * @version $Id$
- * @source $URL$
  * @since 2.4
  */
 public class AttributeMapping implements Serializable {
@@ -125,6 +124,15 @@ public class AttributeMapping implements Serializable {
      * <p>for example: srsName/strConcat("#bh.", BGS_ID)
      */
     private Map clientProperties;
+
+    /** Field name in external index layer */
+    private String indexField;
+
+    /**
+     * Mapping of attributes with 1..N cardinality. Each data store is free to contribute is own
+     * syntax (e.g. Solr multi values to support multi valuated fields).
+     */
+    private MultipleValue multipleValue;
 
     /**
      * Returns the expression whose evaluation result against a Feature of the source FeatureType is
@@ -451,5 +459,21 @@ public class AttributeMapping implements Serializable {
 
     public void setIdentifierExpression(String identifierExpression) {
         this.identifierExpression = identifierExpression;
+    }
+
+    public MultipleValue getMultipleValue() {
+        return multipleValue;
+    }
+
+    public void setMultipleValue(MultipleValue multipleValue) {
+        this.multipleValue = multipleValue;
+    }
+
+    public String getIndexField() {
+        return indexField;
+    }
+
+    public void setIndexField(String indexField) {
+        this.indexField = indexField;
     }
 }

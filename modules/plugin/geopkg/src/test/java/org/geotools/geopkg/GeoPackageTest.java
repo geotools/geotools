@@ -58,7 +58,6 @@ import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureReader;
 import org.geotools.data.simple.SimpleFeatureWriter;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.factory.Hints;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geometry.jts.Geometries;
@@ -66,17 +65,17 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.geopkg.mosaic.GeoPackageFormat;
 import org.geotools.geopkg.mosaic.GeoPackageReader;
 import org.geotools.image.test.ImageAssert;
+import org.geotools.jdbc.util.SqlUtil;
 import org.geotools.parameter.Parameter;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
-import org.geotools.sql.SqlUtil;
 import org.geotools.util.URLs;
+import org.geotools.util.factory.Hints;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
@@ -586,7 +585,8 @@ public class GeoPackageTest {
         TileEntry e = new TileEntry();
         e.setTableName("foo");
         e.setBounds(new ReferencedEnvelope(-10, 10, -10, 10, DefaultGeographicCRS.WGS84));
-        e.setTileMatrixSetBounds(new Envelope(-180, 180, -90, 90));
+        e.setTileMatrixSetBounds(
+                new ReferencedEnvelope(-180, 180, -90, 90, DefaultGeographicCRS.WGS84));
         e.getTileMatricies().add(new TileMatrix(0, 1, 1, 256, 256, 0.1, 0.1));
         e.getTileMatricies().add(new TileMatrix(1, 2, 2, 256, 256, 0.1, 0.1));
 
@@ -772,10 +772,10 @@ public class GeoPackageTest {
 
             rs.next();
             assertEquals(rs.getInt(2), entry.getSrid().intValue());
-            assertEquals(rs.getDouble(3), entry.getBounds().getMinX(), 0.01);
-            assertEquals(rs.getDouble(4), entry.getBounds().getMinY(), 0.01);
-            assertEquals(rs.getDouble(5), entry.getBounds().getMaxX(), 0.01);
-            assertEquals(rs.getDouble(6), entry.getBounds().getMaxY(), 0.01);
+            assertEquals(rs.getDouble(3), entry.getTileMatrixSetBounds().getMinX(), 0.01);
+            assertEquals(rs.getDouble(4), entry.getTileMatrixSetBounds().getMinY(), 0.01);
+            assertEquals(rs.getDouble(5), entry.getTileMatrixSetBounds().getMaxX(), 0.01);
+            assertEquals(rs.getDouble(6), entry.getTileMatrixSetBounds().getMaxY(), 0.01);
 
             assertFalse(rs.next());
 

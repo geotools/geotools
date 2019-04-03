@@ -27,10 +27,7 @@ import org.opengis.geometry.coordinate.Position;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.util.Cloneable;
 
-/**
- * @author Jackson Roehrig & Sanjay Jena
- * @source $URL$
- */
+/** @author Jackson Roehrig & Sanjay Jena */
 public class DirectPositionImpl implements DirectPosition, Cloneable, Serializable {
     private static final long serialVersionUID = 2327211794986364062L;
 
@@ -291,7 +288,7 @@ public class DirectPositionImpl implements DirectPosition, Cloneable, Serializab
      * DirectPosition (not DirectPositionImpl), so that the equals method is found for
      * DirectPosition´s and DirectPositionImpl´s
      *
-     * @param p DirectPosition
+     * @param o DirectPosition
      * @return TRUE, if the two DirectPositions describe the same point in the Euclidian Space
      */
 

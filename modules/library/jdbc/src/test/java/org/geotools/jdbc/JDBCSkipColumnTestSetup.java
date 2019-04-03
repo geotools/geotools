@@ -18,10 +18,7 @@ package org.geotools.jdbc;
 
 import java.sql.SQLException;
 
-/**
- * @author Andrea Aime
- * @source $URL$
- */
+/** @author Andrea Aime */
 public abstract class JDBCSkipColumnTestSetup extends JDBCDelegatingTestSetup {
 
     protected JDBCSkipColumnTestSetup(JDBCTestSetup delegate) {

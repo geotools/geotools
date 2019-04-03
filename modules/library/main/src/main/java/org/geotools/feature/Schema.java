@@ -21,9 +21,9 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.factory.Hints;
 import org.geotools.feature.type.AttributeDescriptorImpl;
 import org.geotools.feature.type.AttributeTypeImpl;
+import org.geotools.util.factory.Hints;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.FeatureType;
@@ -47,7 +47,6 @@ import org.opengis.filter.PropertyIsNull;
  * @author Jody Garnett
  * @since 2.1.0
  * @deprecated This helper class was for the old feature model; please use FeatureTypes
- * @source $URL$
  */
 public class Schema {
     private static Schema DEFAULT = new Schema();
@@ -282,7 +281,7 @@ public class Schema {
 
         List result = new ArrayList();
         for (int i = 0; i < filters.size(); i++) {
-            Filter f = override((Filter) filters.get(i), (Filter) overrides.get(i));
+            override((Filter) filters.get(i), (Filter) overrides.get(i));
         }
 
         return result;

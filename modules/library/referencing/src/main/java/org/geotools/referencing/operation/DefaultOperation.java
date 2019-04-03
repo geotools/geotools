@@ -50,7 +50,6 @@ import org.opengis.referencing.operation.Transformation;
  * the {@link #getParameterValues} method.
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @see DefaultOperationMethod
@@ -127,7 +126,7 @@ public class DefaultOperation extends DefaultSingleOperation implements Operatio
                 final Class<? extends Operation> candidate =
                         ((MathTransformProvider) method).getOperationType();
                 if (candidate != null) {
-                    if (type == null || type.isAssignableFrom(candidate)) {
+                    if (type.isAssignableFrom(candidate)) {
                         type = candidate.asSubclass(type);
                     }
                 }
@@ -277,6 +276,7 @@ public class DefaultOperation extends DefaultSingleOperation implements Operatio
 
     /** Returns a hash code value for this operation method. */
     @Override
+    @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int hashCode() {
         return super.hashCode() ^ method.hashCode();
     }

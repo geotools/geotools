@@ -19,14 +19,14 @@ package org.geotools.referencing.operation;
 import java.util.HashMap;
 import java.util.Map;
 import javax.measure.Unit;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 import org.geotools.parameter.DefaultParameterDescriptor;
 import org.geotools.parameter.DefaultParameterDescriptorGroup;
 import org.geotools.parameter.Parameters;
 import org.geotools.referencing.operation.transform.MathTransformProxy;
 import org.geotools.referencing.wkt.Formatter;
-import org.geotools.resources.XArray;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
+import org.geotools.util.XArray;
 import org.opengis.parameter.GeneralParameterDescriptor;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.InvalidParameterNameException;
@@ -61,7 +61,6 @@ import org.opengis.util.GenericName;
  * {@linkplain DefaultCoordinateOperationFactory math transform factory} will read all of them.
  *
  * @since 2.0
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

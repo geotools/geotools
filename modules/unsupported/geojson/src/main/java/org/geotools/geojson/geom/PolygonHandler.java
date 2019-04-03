@@ -25,7 +25,6 @@ import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LinearRing;
 import org.locationtech.jts.geom.Polygon;
 
-/** @source $URL$ */
 public class PolygonHandler extends GeometryHandlerBase<Polygon> {
 
     List<Coordinate> coordinates;

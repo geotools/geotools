@@ -34,10 +34,12 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.logging.Formatter;
 import java.util.logging.Handler;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 import java.util.logging.StreamHandler;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.util.logging.Logging;
 import org.junit.After;
 import org.junit.Test;
 import org.opengis.filter.FilterFactory;
@@ -49,7 +51,6 @@ import org.opengis.filter.expression.Function;
  * @author Michael Bedward
  * @author Frank Gasdorf
  * @since 2.6
- * @source $URL$
  * @version $Id $
  */
 public class EnvFunctionTest {
@@ -68,7 +69,7 @@ public class EnvFunctionTest {
     /** Tests the use of two thread-local tables with same var names and different values */
     @Test
     public void testSetLocalValues() throws Exception {
-        System.out.println("   setLocalValues");
+        // System.out.println("   setLocalValues");
 
         final String key1 = "foo";
         final String key2 = "bar";
@@ -126,7 +127,7 @@ public class EnvFunctionTest {
     /** Tests the use of a single var name with two thread-local values */
     @Test
     public void testSetLocalValue() throws Exception {
-        System.out.println("   setLocalValue");
+        // System.out.println("   setLocalValue");
 
         final String varName = "foo";
         final int[] values = {1, 2};
@@ -169,7 +170,7 @@ public class EnvFunctionTest {
     /** Tests setting global values and accessing them from different threads */
     @Test
     public void testSetGlobalValues() throws Exception {
-        System.out.println("   setGlobalValues");
+        // System.out.println("   setGlobalValues");
 
         final Map<String, Object> table = new HashMap<String, Object>();
         table.put("foo", 1);
@@ -219,7 +220,7 @@ public class EnvFunctionTest {
     /** Tests setting a global value and accessing it from different threads */
     @Test
     public void testSetGlobalValue() throws Exception {
-        System.out.println("   setGlobalValue");
+        // System.out.println("   setGlobalValue");
 
         final String varName = "foo";
         final String varValue = "a global value";
@@ -244,7 +245,7 @@ public class EnvFunctionTest {
 
     @Test
     public void testCaseInsensitiveGlobalLookup() {
-        System.out.println("   test case-insensitive global lookup");
+        // System.out.println("   test case-insensitive global lookup");
 
         final String varName = "foo";
         final String altVarName = "FoO";
@@ -257,7 +258,7 @@ public class EnvFunctionTest {
 
     @Test
     public void testCaseInsensitiveLocalLookup() {
-        System.out.println("   test case-insensitive local lookup");
+        // System.out.println("   test case-insensitive local lookup");
 
         final String varName = "foo";
         final String altVarName = "FoO";
@@ -270,7 +271,7 @@ public class EnvFunctionTest {
 
     @Test
     public void testClearGlobal() {
-        System.out.println("   clearGlobalValues");
+        // System.out.println("   clearGlobalValues");
 
         final String varName = "foo";
         final String varValue = "clearGlobal";
@@ -283,7 +284,7 @@ public class EnvFunctionTest {
 
     @Test
     public void testClearLocal() {
-        System.out.println("   clearLocalValues");
+        // System.out.println("   clearLocalValues");
 
         final String varName = "foo";
         final String varValue = "clearLocal";
@@ -296,14 +297,14 @@ public class EnvFunctionTest {
 
     @Test
     public void testGetArgCount() {
-        System.out.println("   getArgCount");
+        // System.out.println("   getArgCount");
         EnvFunction fn = new EnvFunction();
         assertEquals(1, fn.getFunctionName().getArgumentCount());
     }
 
     @Test
     public void testLiteralDefaultValue() {
-        System.out.println("   literal default value");
+        // System.out.println("   literal default value");
 
         int defaultValue = 42;
 
@@ -316,7 +317,7 @@ public class EnvFunctionTest {
 
     @Test
     public void testNonLiteralDefaultValue() {
-        System.out.println("   non-literal default value");
+        // System.out.println("   non-literal default value");
 
         int x = 21;
         Expression defaultExpr = ff.add(ff.literal(x), ff.literal(x));
@@ -329,24 +330,30 @@ public class EnvFunctionTest {
     /** The setFallback method should log a warning and ignore the argument. */
     @Test
     public void testSetFallbackNotAllowed() {
-        Logger logger = Logger.getLogger(EnvFunction.class.getName());
-
-        Formatter formatter = new SimpleFormatter();
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        Handler handler = new StreamHandler(out, formatter);
-        logger.addHandler(handler);
-
+        Logger logger = Logging.getLogger(EnvFunction.class);
+        Level level = logger.getLevel();
         try {
-            EnvFunction function = new EnvFunction();
-            function.setFallbackValue(ff.literal(0));
+            logger.setLevel(Level.INFO);
 
-            handler.flush();
-            String logMsg = out.toString();
-            assertNotNull(logMsg);
-            assertTrue(logMsg.toLowerCase().contains("setfallbackvalue"));
+            Formatter formatter = new SimpleFormatter();
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            Handler handler = new StreamHandler(out, formatter);
+            logger.addHandler(handler);
 
+            try {
+                EnvFunction function = new EnvFunction();
+                function.setFallbackValue(ff.literal(0));
+
+                handler.flush();
+                String logMsg = out.toString();
+                assertNotNull(logMsg);
+                assertTrue(logMsg.toLowerCase().contains("setfallbackvalue"));
+
+            } finally {
+                logger.removeHandler(handler);
+            }
         } finally {
-            logger.removeHandler(handler);
+            logger.setLevel(level);
         }
     }
 

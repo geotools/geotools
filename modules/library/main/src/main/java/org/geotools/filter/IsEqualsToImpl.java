@@ -22,10 +22,7 @@ import org.opengis.filter.PropertyIsEqualTo;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
 
-/**
- * @author jdeolive TODO: rename this class to IsEqualToImpl
- * @source $URL$
- */
+/** @author jdeolive TODO: rename this class to IsEqualToImpl */
 public class IsEqualsToImpl extends MultiCompareFilterImpl implements PropertyIsEqualTo {
 
     @Deprecated
@@ -80,17 +77,21 @@ public class IsEqualsToImpl extends MultiCompareFilterImpl implements PropertyIs
          * them. It is better to fallback on the more generic code following the "if" block in order
          * to ensure consistent behavior.
          */
-        if (value1.equals(value2)) {
+        if (!matchingCase && value1 instanceof String && value2 instanceof String) {
+            return ((String) value1).equalsIgnoreCase((String) value2);
+        } else if (value1.equals(value2)) {
             return true;
+        } else if (value1.getClass().equals(value2.getClass())) {
+            return false;
         }
 
         // if we are doing delayed evaluation of a literal, try conversions to the actual type
         if (expression1 instanceof Literal && !(expression2 instanceof Literal)) {
             Object v1 = Converters.convert(value1, value2.getClass());
-            if (v1 != null && value2.equals(v1)) return true;
+            if (v1 != null && v1.equals(value2)) return true;
         } else if (expression2 instanceof Literal && !(expression1 instanceof Literal)) {
             Object v2 = Converters.convert(value2, value1.getClass());
-            if (v2 != null && value1.equals(v2)) return true;
+            if (v2 != null && v2.equals(value1)) return true;
         }
 
         // try the usual conversions then

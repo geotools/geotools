@@ -32,6 +32,8 @@ import javax.measure.Unit;
 import javax.measure.quantity.Angle;
 import javax.measure.quantity.Length;
 import org.geotools.measure.Units;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.NamedIdentifier;
 import org.geotools.referencing.ReferencingFactoryFinder;
@@ -45,9 +47,7 @@ import org.geotools.referencing.datum.DefaultVerticalDatum;
 import org.geotools.referencing.factory.ReferencingFactoryContainer;
 import org.geotools.referencing.factory.epsg.CartesianAuthorityFactory;
 import org.geotools.referencing.operation.DefiningConversion;
-import org.geotools.resources.Arguments;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
+import org.geotools.util.Arguments;
 import org.opengis.metadata.citation.Citation;
 import org.opengis.parameter.ParameterNotFoundException;
 import org.opengis.parameter.ParameterValue;
@@ -93,7 +93,6 @@ import tec.uom.se.AbstractUnit;
  * objects as well, which is part of the WKT's {@code FITTED_CS} element.
  *
  * @since 2.0
- * @source $URL$
  * @version $Id$
  * @author Remi Eve
  * @author Martin Desruisseaux (IRD)
@@ -218,8 +217,7 @@ public class Parser extends MathTransformParser {
     /**
      * Parses a coordinate reference system element.
      *
-     * @param parent The parent element.
-     * @return The next element as a {@link CoordinateReferenceSystem} object.
+     * @return element The next element as a {@link CoordinateReferenceSystem} object.
      * @throws ParseException if the next element can't be parsed.
      */
     private CoordinateReferenceSystem parseCoordinateReferenceSystem(final Element element)
@@ -398,7 +396,7 @@ public class Parser extends MathTransformParser {
         final Element element = parent.pullElement("UNIT");
         final String name = element.pullString("name");
         final double factor = element.pullDouble("factor");
-        final Map<String, ?> properties = parseAuthority(element, name);
+        parseAuthority(element, name);
         element.close();
         Unit<T> finalUnit = (factor != 1) ? unit.multiply(factor) : unit;
         return Units.autoCorrect(finalUnit);
@@ -616,7 +614,7 @@ public class Parser extends MathTransformParser {
             throws ParseException {
         final Element element = parent.pullElement("PROJECTION");
         final String classification = element.pullString("name");
-        final Map<String, ?> properties = parseAuthority(element, classification);
+        parseAuthority(element, classification);
         element.close();
         /*
          * Set the list of parameters.  NOTE: Parameters are defined in
@@ -765,7 +763,7 @@ public class Parser extends MathTransformParser {
     private EngineeringDatum parseLocalDatum(final Element parent) throws ParseException {
         final Element element = parent.pullElement("LOCAL_DATUM");
         final String name = element.pullString("name");
-        final int datum = element.pullInteger("datum");
+        element.pullInteger("datum");
         final Map<String, ?> properties = parseAuthority(element, name);
         element.close();
         try {
@@ -1187,7 +1185,7 @@ public class Parser extends MathTransformParser {
         final Arguments arguments = new Arguments(args);
         final Integer indentation = arguments.getOptionalInteger(Formattable.INDENTATION);
         final String authority = arguments.getOptionalString("-authority");
-        args = arguments.getRemainingArguments(0);
+        arguments.getRemainingArguments(0);
         if (indentation != null) {
             Formattable.setIndentation(indentation.intValue());
         }
@@ -1199,7 +1197,7 @@ public class Parser extends MathTransformParser {
             }
             parser.reformat(in, arguments.out, arguments.err);
         } catch (Exception exception) {
-            exception.printStackTrace(arguments.err);
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", exception);
         }
         // Do not close 'in', since it is the standard input stream.
     }

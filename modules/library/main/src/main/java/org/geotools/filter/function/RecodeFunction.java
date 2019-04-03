@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.FilterAttributeExtractor;
 import org.geotools.filter.capability.FunctionNameImpl;
@@ -48,7 +49,6 @@ import org.opengis.filter.expression.Literal;
  *
  * @author Johann Sorel (Geomatys)
  * @author Michael Bedward
- * @source $URL$
  * @version $Id$
  */
 public class RecodeFunction implements Function {
@@ -132,14 +132,15 @@ public class RecodeFunction implements Function {
                     synchronized (this) {
                         if (fastLookup == null) {
                             // build the fast lookup map
-                            fastLookup = new HashMap();
+                            Map fl = new HashMap();
                             lastKeyType = lookup.getClass();
                             lastContextType = context;
                             for (int i = 0; i < pairList.size(); i += 2) {
                                 Object key = pairList.get(i).evaluate(object, lastKeyType);
                                 Object value = pairList.get(i + 1).evaluate(object, context);
-                                fastLookup.put(key, value);
+                                fl.put(key, value);
                             }
+                            fastLookup = fl;
                         }
                     }
                 }
@@ -198,5 +199,24 @@ public class RecodeFunction implements Function {
         }
         sb.append(")");
         return sb.toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        RecodeFunction that = (RecodeFunction) o;
+        return staticTable == that.staticTable
+                && Objects.equals(parameters, that.parameters)
+                && Objects.equals(fastLookup, that.fastLookup)
+                && Objects.equals(lastKeyType, that.lastKeyType)
+                && Objects.equals(lastContextType, that.lastContextType)
+                && Objects.equals(fallback, that.fallback);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(
+                parameters, staticTable, fastLookup, lastKeyType, lastContextType, fallback);
     }
 }

@@ -36,9 +36,9 @@ import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.store.ContentFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.factory.GeoTools;
 import org.geotools.test.TestData;
 import org.geotools.util.URLs;
+import org.geotools.util.factory.GeoTools;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -46,7 +46,6 @@ import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 
-/** @source $URL$ */
 public class ExcelDatastoreTest extends DataTestCase {
 
     public ExcelDatastoreTest(String name) {
@@ -77,7 +76,7 @@ public class ExcelDatastoreTest extends DataTestCase {
             eds = new ExcelDataStore[testFiles.length];
             int i = 0;
             for (String f : testFiles) {
-                System.out.println("testing " + f);
+                // System.out.println("testing " + f);
                 File file = TestData.file(this, f);
                 HashMap<String, Serializable> params = new HashMap<String, Serializable>();
                 java.net.URL url = URLs.fileToUrl(file);
@@ -137,7 +136,7 @@ public class ExcelDatastoreTest extends DataTestCase {
         while (it.hasNext()) {
             count++;
             final DataStoreFactorySpi next = it.next();
-            System.out.println(next + " " + next.getDisplayName() + " " + next.isAvailable());
+            // System.out.println(next + " " + next.getDisplayName() + " " + next.isAvailable());
         }
 
         HashMap<String, Serializable> params = new HashMap<String, Serializable>();
@@ -151,7 +150,7 @@ public class ExcelDatastoreTest extends DataTestCase {
             // running in Eclipse I only get a MockDataStoreFactory found
             DataStore store = DataStoreFinder.getDataStore(params);
             assertNotNull("no datastore found", store);
-            System.out.println(store.getInfo());
+            // System.out.println(store.getInfo());
         }
         ExcelDataStoreFactory fac = new ExcelDataStoreFactory();
 
@@ -166,10 +165,10 @@ public class ExcelDatastoreTest extends DataTestCase {
 
     public void testGetNames() throws IOException {
         for (ExcelDataStore ed : eds) {
-            System.out.println(ed.getName());
+            // System.out.println(ed.getName());
 
             String[] names = ed.getTypeNames();
-            System.out.println(names);
+            // System.out.println(names);
             if (ed.getName().contains("qed")) continue;
             assertEquals("Sheet Name is wrong", "locations", names[0]);
         }
@@ -177,39 +176,39 @@ public class ExcelDatastoreTest extends DataTestCase {
 
     public void testGetFeatureSource() throws IOException {
         for (ExcelDataStore ed : eds) {
-            System.out.println(ed.getName());
+            // System.out.println(ed.getName());
 
             List<Name> names = ed.getNames();
             ExcelFeatureSource source = (ExcelFeatureSource) ed.getFeatureSource(names.get(0));
             assertNotNull("FeatureSource is null", source);
             SimpleFeatureType schema = source.getSchema();
             assertNotNull("Null Schema", schema);
-            System.out.println(schema.getAttributeCount());
+            // System.out.println(schema.getAttributeCount());
             List<AttributeDescriptor> attrs = schema.getAttributeDescriptors();
             for (AttributeDescriptor attr : attrs) {
-                System.out.println(attr.getName() + ": " + attr.getType());
+                // System.out.println(attr.getName() + ": " + attr.getType());
             }
             ContentFeatureCollection fts = source.getFeatures();
-            System.out.println("BBox = " + source.getBounds());
-            System.out.println("got " + fts.size() + " features");
+            // System.out.println("BBox = " + source.getBounds());
+            // System.out.println("got " + fts.size() + " features");
             SimpleFeatureIterator its = fts.features();
             int count = 10;
             int counter = 0;
             while (its.hasNext() && counter++ < count) {
                 SimpleFeature feature = its.next();
-                System.out.print(feature.getID() + ": ");
+                // System.out.print(feature.getID() + ": ");
                 for (AttributeDescriptor attr : attrs) {
-                    System.out.print(feature.getAttribute(attr.getName()) + ", ");
+                    // System.out.print(feature.getAttribute(attr.getName()) + ", ");
                 }
-                System.out.println();
+                // System.out.println();
             }
             if (ed.getName().contains("qed")) continue;
             FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(GeoTools.getDefaultHints());
             Filter filter = ff.equal(ff.property("CITY"), ff.literal("Trento"), true);
             Query query = new Query("locations", filter);
             fts = source.getFeatures(query);
-            System.out.println(fts.size());
-            System.out.println(fts.features().next());
+            // System.out.println(fts.size());
+            // System.out.println(fts.features().next());
         }
     }
 
@@ -224,7 +223,7 @@ public class ExcelDatastoreTest extends DataTestCase {
         query.setStartIndex(1);
 
         for (ExcelDataStore ed : eds) {
-            System.out.println(ed.getName());
+            // System.out.println(ed.getName());
 
             List<Name> names = ed.getNames();
             ExcelFeatureSource source = (ExcelFeatureSource) ed.getFeatureSource(names.get(0));
@@ -242,7 +241,7 @@ public class ExcelDatastoreTest extends DataTestCase {
         Query query = new Query(Query.ALL);
         query.setMaxFeatures(2);
         for (ExcelDataStore ed : eds) {
-            System.out.println(ed.getName());
+            // System.out.println(ed.getName());
 
             List<Name> names = ed.getNames();
             ExcelFeatureSource source = (ExcelFeatureSource) ed.getFeatureSource(names.get(0));
@@ -261,7 +260,7 @@ public class ExcelDatastoreTest extends DataTestCase {
         query.setMaxFeatures(2);
         query.setStartIndex(1);
         for (ExcelDataStore ed : eds) {
-            System.out.println(ed.getName());
+            // System.out.println(ed.getName());
 
             List<Name> names = ed.getNames();
             ExcelFeatureSource source = (ExcelFeatureSource) ed.getFeatureSource(names.get(0));

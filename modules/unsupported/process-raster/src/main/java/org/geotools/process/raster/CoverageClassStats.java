@@ -16,6 +16,9 @@
  */
 package org.geotools.process.raster;
 
+import it.geosolutions.jaiext.classbreaks.ClassBreaksDescriptor;
+import it.geosolutions.jaiext.classbreaks.ClassBreaksRIF;
+import it.geosolutions.jaiext.classbreaks.Classification;
 import java.awt.image.RenderedImage;
 import java.awt.image.renderable.ParameterBlock;
 import java.io.IOException;
@@ -27,17 +30,14 @@ import javax.media.jai.JAI;
 import javax.media.jai.ParameterBlockJAI;
 import javax.media.jai.operator.BandSelectDescriptor;
 import org.geotools.coverage.grid.GridCoverage2D;
+import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.process.ProcessException;
 import org.geotools.process.classify.ClassificationMethod;
 import org.geotools.process.classify.ClassificationStats;
 import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
-import org.geotools.process.raster.classify.Classification;
-import org.geotools.processing.jai.ClassBreaksDescriptor;
-import org.geotools.processing.jai.ClassBreaksRIF;
 import org.geotools.renderer.i18n.Errors;
-import org.geotools.resources.i18n.ErrorKeys;
 import org.jaitools.media.jai.zonalstats.Result;
 import org.jaitools.media.jai.zonalstats.ZonalStats;
 import org.jaitools.media.jai.zonalstats.ZonalStatsDescriptor;
@@ -141,7 +141,7 @@ public class CoverageClassStats implements RasterProcess {
         ParameterBlock pb = new ParameterBlock();
         pb.addSource(sourceImage);
         pb.set(classes, 0);
-        pb.set(method, 1);
+        pb.set(toJAIExtMethod(method), 1);
         pb.set(null, 2);
         pb.set(null, 3);
         pb.set(new Integer[] {0}, 4);
@@ -192,6 +192,14 @@ public class CoverageClassStats implements RasterProcess {
         return new Results(stats, zonalStats);
     }
 
+    private it.geosolutions.jaiext.classbreaks.ClassificationMethod toJAIExtMethod(
+            ClassificationMethod method) {
+        if (method == null) {
+            return null;
+        }
+        return it.geosolutions.jaiext.classbreaks.ClassificationMethod.valueOf(method.name());
+    }
+
     public static class Results implements ClassificationStats {
 
         Statistic firstStat;
@@ -228,15 +236,6 @@ public class CoverageClassStats implements RasterProcess {
 
         ZonalStats getZonalStats() {
             return zonalStats;
-        }
-
-        public void print() {
-            for (int i = 0; i < size(); i++) {
-                System.out.println(range(i));
-                for (Statistic stat : stats) {
-                    System.out.println(stat + " = " + value(i, stat));
-                }
-            }
         }
     }
 }

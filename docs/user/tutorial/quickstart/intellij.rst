@@ -14,7 +14,7 @@ Pre-Requisites
 --------------
 This guide assumes the following:
 
-* You have the latest JDK installed (8 at the time this article was written) installed. If not the TODO Eclipse Quickstart
+* You have the latest JDK installed (8 at the time this article was written) installed. If not the `Eclipse Quickstart <./eclipse.html>`_
   provides instructions on how to do this.
 * You have IntelliJ installed. This article targets IntelliJ CE 2016; however, previous versions at least as far back as
   13 should work fine. Ultimate versions should also work fine. IntelliJ can be downloaded from JetBrains_ and generally
@@ -202,7 +202,7 @@ shapefile on the screen.
    * We are using a very basic display style here that just shows feature outlines. In the examples that follow we will see how to specify more sophisticated styles.
   
 Things to Try
-=============
+-------------
 
 Each tutorial consists of very detailed steps followed by a series of extra questions. If you get
 stuck at any point please ask your instructor; or sign up to the geotools-users_ email list.

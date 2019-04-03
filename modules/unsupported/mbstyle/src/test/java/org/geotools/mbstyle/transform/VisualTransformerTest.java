@@ -776,7 +776,7 @@ public class VisualTransformerTest {
                         null,
                         width,
                         height);
-        ImageAssert.assertEquals(file(renderComparisonFileName), image, 900);
+        ImageAssert.assertEquals(file(renderComparisonFileName), image, 1400);
         mc.dispose();
     }
 
@@ -811,7 +811,7 @@ public class VisualTransformerTest {
                         DISPLAY_TIME,
                         new ReferencedEnvelope[] {bounds},
                         null);
-        ImageAssert.assertEquals(file(renderComparisonFileName), image, 2000);
+        ImageAssert.assertEquals(file(renderComparisonFileName), image, 3000);
         mc.dispose();
     }
 

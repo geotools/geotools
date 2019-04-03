@@ -27,7 +27,7 @@ import org.geotools.geometry.jts.LiteCoordinateSequenceFactory;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.gml3.GML;
 import org.geotools.referencing.CRS;
-import org.geotools.xml.XSD;
+import org.geotools.xsd.XSD;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
@@ -51,7 +51,6 @@ import org.w3c.dom.Node;
  * Utility class for creating test xml data for gml3 bindings.
  *
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL$
  */
 public class GML3MockData {
     static CurvedGeometryFactory gf = new CurvedGeometryFactory(0.1);
@@ -666,7 +665,7 @@ public class GML3MockData {
         builder.add("theName");
         builder.add("theDescription");
         builder.add(point());
-        builder.add(new Integer(1));
+        builder.add(Integer.valueOf(1));
         builder.add(new Date());
 
         return builder.buildFeature("fid.1");

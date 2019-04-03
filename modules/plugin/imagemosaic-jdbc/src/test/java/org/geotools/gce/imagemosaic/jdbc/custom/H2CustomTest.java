@@ -34,10 +34,7 @@ import org.geotools.gce.imagemosaic.jdbc.Config;
 import org.geotools.gce.imagemosaic.jdbc.DBDialect;
 import org.geotools.gce.imagemosaic.jdbc.UniversalDialect;
 
-/**
- * @author mcr
- * @source $URL$
- */
+/** @author mcr */
 public class H2CustomTest extends AbstractTest {
 
     static DBDialect dialect = null;
@@ -45,7 +42,7 @@ public class H2CustomTest extends AbstractTest {
     {
         try {
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
     }
 
@@ -199,7 +196,7 @@ public class H2CustomTest extends AbstractTest {
             con.close();
 
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             Assert.fail(e.getMessage());
         }
     }
@@ -222,7 +219,7 @@ public class H2CustomTest extends AbstractTest {
         try {
             con = dialect.getConnection();
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             Assert.fail(e.getMessage());
         }
         try {

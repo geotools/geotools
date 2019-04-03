@@ -32,7 +32,6 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-/** @source $URL$ */
 public class FeatureHandler extends DelegatingHandler<SimpleFeature> {
 
     private int fid = 0;
@@ -130,12 +129,9 @@ public class FeatureHandler extends DelegatingHandler<SimpleFeature> {
 
             if (delegate instanceof GeometryHandler) {
                 Geometry g = ((IContentHandler<Geometry>) delegate).getValue();
-                if (g == null
-                        && ((GeometryHandler) delegate).getDelegate()
-                                instanceof GeometryCollectionHandler) {
-                    // this means that the collecetion handler is still parsing objects, continue
-                    // to delegate to it
-                } else {
+                if (g != null
+                        || !(((GeometryHandler) delegate).getDelegate()
+                                instanceof GeometryCollectionHandler)) {
                     if (properties != null) {
                         // this is a regular property
                         values.add(g);
@@ -283,11 +279,6 @@ public class FeatureHandler extends DelegatingHandler<SimpleFeature> {
     // " }," +
     // " 'id':'widgets." + val + "'" +
     // "}";
-
-    /** set the ID to 0 */
-    private void resetFID() {
-        fid = 0;
-    }
 
     /** Add one to the current ID */
     private void incrementFID() {

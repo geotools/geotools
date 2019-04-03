@@ -74,12 +74,12 @@ public class CSVWriteTest {
         tmp = File.createTempFile("example", "");
         boolean exists = tmp.exists();
         if (exists) {
-            System.err.println("Removing tempfile " + tmp);
+            // System.err.println("Removing tempfile " + tmp);
             tmp.delete();
         }
         boolean created = tmp.mkdirs();
         if (!created) {
-            System.err.println("Could not create " + tmp);
+            // System.err.println("Could not create " + tmp);
             System.exit(1);
         }
         statesfile = new File(tmp, "locations.csv");
@@ -104,6 +104,18 @@ public class CSVWriteTest {
         tmp.delete();
     }
 
+    // Make sure any temp files were cleaned up.
+    public boolean cleanedup() {
+        File list[] = tmp.listFiles((dir, name) -> name.endsWith(".csv"));
+        for (int i = 0; i < list.length; i++) {
+            if (list[i].getName().equalsIgnoreCase("locations.csv")) {
+                continue;
+            }
+            return false;
+        }
+        return true;
+    }
+
     @Test
     public void featureStoreExample() throws Exception {
         Map<String, Serializable> params = new HashMap<String, Serializable>();
@@ -113,6 +125,7 @@ public class CSVWriteTest {
         SimpleFeatureSource featureSource = store.getFeatureSource("locations");
 
         assertTrue("Modification not supported", (featureSource instanceof SimpleFeatureStore));
+        assertTrue("Temp files being left behind", cleanedup());
     }
 
     @Test
@@ -213,6 +226,7 @@ public class CSVWriteTest {
         t1.close();
         t2.close();
         store.dispose(); // clear out any listeners
+        assertTrue("Temp files being left behind", cleanedup());
     }
 
     @Test
@@ -248,6 +262,7 @@ public class CSVWriteTest {
             t.close();
             store.dispose();
         }
+        assertTrue("Temp files being left behind", cleanedup());
     }
 
     @Test
@@ -304,6 +319,7 @@ public class CSVWriteTest {
                 "Ensure the file has only the one feature we created",
                 contents.trim(),
                 checkFileContents(statesfile).trim());
+        assertTrue("Temp files being left behind", cleanedup());
     }
 
     @Test
@@ -342,7 +358,7 @@ public class CSVWriteTest {
             reader.close();
             writer.close();
         }
-
+        assertTrue("Temp files being left behind", cleanedup());
         // Test that content was appended
         SimpleFeatureStore featureStore = (SimpleFeatureStore) store.getFeatureSource("locations");
         assertEquals(9, featureStore.getFeatures().size());
@@ -368,6 +384,7 @@ public class CSVWriteTest {
         FileDataStore store = FileDataStoreFinder.getDataStore(states);
         assertNotNull("couldn't create store", store);
         File file2 = File.createTempFile("CSVTest", ".csv");
+        file2.deleteOnExit();
         Map<String, Serializable> params2 = new HashMap<String, Serializable>();
         params2.put("file", file2);
         params2.put(
@@ -400,12 +417,14 @@ public class CSVWriteTest {
             reader.close();
             writer.close();
         }
+        assertTrue("Temp files being left behind", cleanedup());
         String contents = checkFileContents(file2);
         BufferedReader lineReader = new BufferedReader(new CharArrayReader(contents.toCharArray()));
         String line = lineReader.readLine(); // header
         assertFalse("Geom is included", line.toLowerCase().contains("the_geom"));
         line = lineReader.readLine();
         assertFalse("Geom is included", line.toLowerCase().contains("multipolygon"));
+        file2.delete();
     }
 
     @Test
@@ -463,6 +482,7 @@ public class CSVWriteTest {
             reader.close();
             writer.close();
         }
+        assertTrue("Temp files being left behind", cleanedup());
         String contents = checkFileContents(file2);
         BufferedReader lineReader = new BufferedReader(new CharArrayReader(contents.toCharArray()));
         String line = lineReader.readLine(); // header
@@ -471,6 +491,7 @@ public class CSVWriteTest {
         assertTrue("No Lon", line.contains("LON"));
         line = lineReader.readLine();
         assertEquals("11.116667,46.066667,Trento,140,2002", line);
+        file2.delete();
     }
 
     @Test
@@ -512,12 +533,14 @@ public class CSVWriteTest {
             reader.close();
             writer.close();
         }
+        assertTrue("Temp files being left behind", cleanedup());
         String contents = checkFileContents(file2);
         BufferedReader lineReader = new BufferedReader(new CharArrayReader(contents.toCharArray()));
         String line = lineReader.readLine(); // header
         assertTrue("Geom is not included", line.toLowerCase().contains("the_geom_wkt"));
         line = lineReader.readLine();
         assertTrue("Geom is not included", line.toLowerCase().contains("multipolygon"));
+        file2.delete();
     }
 
     public static void assertEqualsIgnoreWhitespace(

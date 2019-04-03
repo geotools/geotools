@@ -28,7 +28,6 @@ import org.opengis.util.Cloneable;
  *
  * @author Ian Turton, CCG
  * @author Johann Sorel (Geomatys)
- * @source $URL$
  * @version $Id$
  */
 public class PointSymbolizerImpl extends AbstractSymbolizer implements PointSymbolizer, Cloneable {
@@ -91,7 +90,6 @@ public class PointSymbolizerImpl extends AbstractSymbolizer implements PointSymb
      * Creates a deep copy clone.
      *
      * @return The deep copy clone.
-     * @throws RuntimeException DOCUMENT ME!
      */
     public Object clone() {
         PointSymbolizerImpl clone;

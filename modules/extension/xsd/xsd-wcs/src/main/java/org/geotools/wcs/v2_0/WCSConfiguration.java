@@ -24,8 +24,8 @@ import net.opengis.ows20.Ows20Factory;
 import net.opengis.wcs20.Wcs20Factory;
 import org.geotools.ows.v2_0.OWSConfiguration;
 import org.geotools.wcs.bindings.ExtensionTypeBinding;
-import org.geotools.xml.ComplexEMFBinding;
-import org.geotools.xml.Configuration;
+import org.geotools.xsd.ComplexEMFBinding;
+import org.geotools.xsd.Configuration;
 import org.picocontainer.MutablePicoContainer;
 
 /**
@@ -146,6 +146,7 @@ public class WCSConfiguration extends Configuration {
      *
      * @param args
      */
+    @SuppressWarnings("PMD.SystemPrintln")
     public static void main(String[] args) {
         for (Field f : WCS.class.getFields()) {
             if ((f.getModifiers() & (Modifier.STATIC | Modifier.FINAL)) != 0

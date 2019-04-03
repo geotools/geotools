@@ -16,7 +16,7 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>plugin</artifactId>
-    <version>20-SNAPSHOT</version>
+    <version>22-SNAPSHOT</version>
   </parent>
 
 
@@ -93,7 +93,7 @@
     <module>jdbc-db2</module>
     <module>jdbc-mysql</module>
     <module>jdbc-sqlserver</module>
-    <module>jdbc-spatialite</module>
+    <!-- Pending Java 11 migration: <module>jdbc-spatialite</module> -->
     <module>jdbc-teradata</module>
   </modules>
 </project>

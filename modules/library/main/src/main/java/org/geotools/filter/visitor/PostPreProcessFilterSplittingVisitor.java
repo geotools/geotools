@@ -123,12 +123,11 @@ import org.opengis.filter.temporal.TOverlaps;
  *
  * @author dzwiers
  * @author commented and ported from gt to ogc filters by saul.farber
- * @source $URL$
  * @deprecated use {@link CapabilitiesFilterSplitter} instead for geoapi FilterCapabilities
  */
 public class PostPreProcessFilterSplittingVisitor implements FilterVisitor, ExpressionVisitor {
     private static final Logger logger =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.filter");
+            org.geotools.util.logging.Logging.getLogger(PostPreProcessFilterSplittingVisitor.class);
 
     /**
      * The stack holding the bits of the filter that are not processable by something with the given
@@ -257,9 +256,7 @@ public class PostPreProcessFilterSplittingVisitor implements FilterVisitor, Expr
      * @see FilterVisitor#visit(IncludeFilter, Object)
      * @param filter the {@link Filter} to visit
      */
-    public void visit(IncludeFilter filter) {
-        return;
-    }
+    public void visit(IncludeFilter filter) {}
 
     /**
      * @see FilterVisitor#visit(ExcludeFilter, Object)

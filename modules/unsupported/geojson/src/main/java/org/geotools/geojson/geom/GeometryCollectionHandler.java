@@ -26,7 +26,6 @@ import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryCollection;
 import org.locationtech.jts.geom.GeometryFactory;
 
-/** @source $URL$ */
 public class GeometryCollectionHandler extends DelegatingHandler<GeometryCollection> {
 
     GeometryFactory factory;

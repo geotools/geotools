@@ -19,8 +19,6 @@ package org.geotools.xml.styling;
 /**
  * This code generated using Refractions SchemaCodeGenerator For more information, view the attached
  * licensing information. CopyRight 105
- *
- * @source $URL$
  */
 
 import java.util.Map;
@@ -289,9 +287,6 @@ public class sldComplexTypes {
                         1,
                         1);
 
-        private static final int DISPLACEMENTX = 0;
-        private static final int DISPLACEMENTY = 0;
-
         private _Displacement() {
             super(null, child, attrs, elems, null, false, false);
         }
@@ -361,9 +356,6 @@ public class sldComplexTypes {
                             1,
                             1)
                 };
-
-        // array positions
-        private static final int PROPERTYNAME = 0;
 
         private static final ElementGrouping child = new SequenceGT(elems);
 
@@ -479,9 +471,6 @@ public class sldComplexTypes {
                         1,
                         1);
 
-        private static final int ONLINERESOURCE = 0;
-        private static final int FORMAT = 1;
-
         private _ExternalGraphic() {
             super(null, child, attrs, elems, null, false, false);
         }
@@ -553,8 +542,6 @@ public class sldComplexTypes {
         private static final Attribute[] attrs = null;
         private static final Element[] elems =
                 new Element[] {new sldElement("Graphic", null, null, 1, 1)};
-
-        private static final int GRAPHIC = 0;
 
         private static final ElementGrouping child =
                 new SequenceGT(
@@ -653,8 +640,6 @@ public class sldComplexTypes {
                             1,
                             1)
                 };
-
-        private static final int EXPRESSION = 0;
 
         private static final ElementGrouping child =
                 new SequenceGT(
@@ -902,8 +887,6 @@ public class sldComplexTypes {
                     new sldElement("Graphic", sldComplexTypes._Graphic.getInstance(), null, 1, 1)
                 };
 
-        private static final int GRPAHIC = 0;
-
         private static final ElementGrouping child =
                 new SequenceGT(
                         null,
@@ -1015,7 +998,6 @@ public class sldComplexTypes {
                         1);
 
         private static final int GRAPHICFILL = 0;
-        private static final int CSSPARAMETER = 1;
 
         private _Fill() {
             super(null, child, attrs, elems, null, false, false);
@@ -1083,10 +1065,9 @@ public class sldComplexTypes {
                 if (elems[GRAPHICFILL].getName().equals(e.getName()))
                     symbol.setGraphicFill((Graphic) value[i].getValue());
 
-                if (elems[CSSPARAMETER].getName().equals(e.getName())) {
-                    Expression css = (Expression) value[i].getValue();
-                    // TODO apply the css
-                }
+                //                if (elems[CSSPARAMETER].getName().equals(e.getName())) {
+                //                    // TODO apply the css
+                //                }
             }
 
             return symbol;
@@ -1300,9 +1281,6 @@ public class sldComplexTypes {
                             1)
                 };
 
-        private static final int NAME = 0;
-        private static final int VALUE = 1;
-
         private static final ElementGrouping child =
                 new SequenceGT(
                         null,
@@ -1418,10 +1396,6 @@ public class sldComplexTypes {
                             Element.UNBOUNDED)
                 };
 
-        private static final int FEATURETYPENAME = 0;
-        private static final int FILTER = 1;
-        private static final int EXTENT = 2;
-
         private static final ElementGrouping child = new SequenceGT(elems);
 
         private _FeatureTypeConstraint() {
@@ -1500,11 +1474,6 @@ public class sldComplexTypes {
                     new sldElement("BlueChannel", SelectedChannelType.getInstance(), null, 1, 1),
                     new sldElement("GrayChannel", SelectedChannelType.getInstance(), null, 1, 1)
                 };
-
-        private static final int REDCHANNEL = 0;
-        private static final int GREENCHANNEL = 0;
-        private static final int BLUECHANNEL = 0;
-        private static final int GRAYCHANNEL = 0;
 
         private static final ElementGrouping child =
                 new ChoiceGT(
@@ -1618,8 +1587,6 @@ public class sldComplexTypes {
                             0,
                             Element.UNBOUNDED)
                 };
-
-        private static final int CSSPARAMETER = 0;
 
         private static final ElementGrouping child =
                 new SequenceGT(
@@ -1813,13 +1780,6 @@ public class sldComplexTypes {
                     new sldElement("Rule", _Rule.getInstance(), null, 1, Element.UNBOUNDED)
                 };
 
-        private static final int NAME = 0;
-        private static final int TITLE = 1;
-        private static final int ABSTRACT = 2;
-        private static final int FEATURETYPENAME = 3;
-        private static final int SEMANTICTYPEIDENTIFIER = 4;
-        private static final int RULE = 5;
-
         private static final ElementGrouping child = new SequenceGT(elems);
 
         private _FeatureTypeStyle() {
@@ -1896,9 +1856,6 @@ public class sldComplexTypes {
                     new sldElement("AnchorPointX", ParameterValueType.getInstance(), null, 1, 1),
                     new sldElement("AnchorPointY", ParameterValueType.getInstance(), null, 1, 1)
                 };
-
-        private static final int ANCHORPOINTX = 0;
-        private static final int ANCHORPOINTY = 1;
 
         private static final ElementGrouping child =
                 new SequenceGT(
@@ -2071,9 +2028,6 @@ public class sldComplexTypes {
                                     "LinePlacement", _LinePlacement.getInstance(), null, 1, 1)
                         });
 
-        private static final int POINTPLACEMENT = 0;
-        private static final int LINEPLACEMENT = 1;
-
         private _LabelPlacement() {
             super(null, child, attrs, elems, null, false, false);
         }
@@ -2158,9 +2112,6 @@ public class sldComplexTypes {
                         },
                         1,
                         1);
-
-        private static final int RADIUS = 0;
-        private static final int FILL = 0;
 
         private _Halo() {
             super(null, child, attrs, elems, null, false, false);
@@ -2310,9 +2261,6 @@ public class sldComplexTypes {
                             "PolygonSymbolizer", _PolygonSymbolizer.getInstance(), null, 1, 1)
                 };
 
-        private static final int LINESYMBOLIZER = 0;
-        private static final int POLYGONSYBOLIZER = 1;
-
         private static final ElementGrouping child =
                 new ChoiceGT(
                         null,
@@ -2407,8 +2355,6 @@ public class sldComplexTypes {
                             1,
                             1)
                 };
-
-        private static final int COLORMAPENTRY = 0;
 
         private static final ElementGrouping child =
                 new ChoiceGT(

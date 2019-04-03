@@ -19,12 +19,12 @@ package org.geotools.geometry.jts;
 import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.Set;
-import org.geotools.factory.FactoryCreator;
-import org.geotools.factory.FactoryFinder;
-import org.geotools.factory.FactoryRegistry;
-import org.geotools.factory.FactoryRegistryException;
-import org.geotools.factory.Hints;
-import org.geotools.resources.LazySet;
+import org.geotools.util.LazySet;
+import org.geotools.util.factory.FactoryCreator;
+import org.geotools.util.factory.FactoryFinder;
+import org.geotools.util.factory.FactoryRegistry;
+import org.geotools.util.factory.FactoryRegistryException;
+import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.CoordinateSequenceFactory;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.PrecisionModel;
@@ -34,13 +34,12 @@ import org.locationtech.jts.geom.PrecisionModel;
  * CoordinateSequenceFactory coordinate sequence} or {@linkplain PrecisionModel precision model}
  * factories.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  */
 public class JTSFactoryFinder extends FactoryFinder {
     /** The service registry for this manager. Will be initialized only when first needed. */
-    private static FactoryRegistry registry;
+    private static volatile FactoryRegistry registry;
 
     /** Do not allows any instantiation of this class. */
     private JTSFactoryFinder() {
@@ -54,8 +53,15 @@ public class JTSFactoryFinder extends FactoryFinder {
     private static FactoryRegistry getServiceRegistry() {
         assert Thread.holdsLock(JTSFactoryFinder.class);
         if (registry == null) {
-            registry = new FactoryCreator(Arrays.asList(new Class<?>[] {GeometryFactory.class}));
-            registry.registerFactory(new GeometryFactory(), GeometryFactory.class);
+            synchronized (JTSFactoryFinder.class) {
+                if (registry == null) {
+                    FactoryRegistry temp =
+                            new FactoryCreator(
+                                    Arrays.asList(new Class<?>[] {GeometryFactory.class}));
+                    temp.registerFactory(new GeometryFactory(), GeometryFactory.class);
+                    registry = temp;
+                }
+            }
         }
         return registry;
     }

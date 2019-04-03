@@ -1,3 +1,21 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2019, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ *
+ */
+
 package org.geotools.styling.visitor;
 
 import javax.measure.Unit;
@@ -17,10 +35,7 @@ class UomRescaleHelper {
 
     private FilterFactory ff;
 
-    private boolean rescaleRealWorldUnits;
-
     public UomRescaleHelper(FilterFactory ff, double mapScale, boolean rescaleRealWorldUnits) {
-        this.rescaleRealWorldUnits = rescaleRealWorldUnits;
         this.ff = ff;
         this.mapScale = mapScale;
     }
@@ -28,7 +43,6 @@ class UomRescaleHelper {
     /**
      * Computes a rescaling multiplier to be applied to an unscaled value.
      *
-     * @param mapScale the mapScale in pixels per meter.
      * @param uom the unit of measure that will be used to scale.
      * @return the rescaling multiplier for the provided parameters.
      */
@@ -49,7 +63,6 @@ class UomRescaleHelper {
      * Used to rescale the provided unscaled value.
      *
      * @param unscaled the unscaled value.
-     * @param mapScale the mapScale in pixels per meter.
      * @param uom the unit of measure that will be used to scale.
      * @return the expression multiplied by the provided scale.
      */
@@ -98,18 +111,17 @@ class UomRescaleHelper {
      * Used to rescale the provided dash array.
      *
      * @param dashArray the unscaled dash array. If null, the method returns null.
-     * @param mapScale the mapScale in pixels per meter.
      * @param uom the unit of measure that will be used to scale.
      * @return the rescaled dash array
      */
-    protected float[] rescale(float[] dashArray, Unit<Length> unitOfMeasure) {
+    protected float[] rescale(float[] dashArray, Unit<Length> uom) {
         if (dashArray == null) return null;
-        if (unitOfMeasure == null || unitOfMeasure.equals(Units.PIXEL)) return dashArray;
+        if (uom == null || uom.equals(Units.PIXEL)) return dashArray;
 
         float[] rescaledDashArray = new float[dashArray.length];
 
         for (int i = 0; i < rescaledDashArray.length; i++) {
-            rescaledDashArray[i] = (float) rescale((double) dashArray[i], unitOfMeasure);
+            rescaledDashArray[i] = (float) rescale((double) dashArray[i], uom);
         }
         return rescaledDashArray;
     }
@@ -118,7 +130,6 @@ class UomRescaleHelper {
      * Used to rescale the provided unscaled value.
      *
      * @param unscaled the unscaled value.
-     * @param mapScale the mapScale in pixels per meter.
      * @param uom the unit of measure that will be used to scale.
      * @return a scaled value.
      */

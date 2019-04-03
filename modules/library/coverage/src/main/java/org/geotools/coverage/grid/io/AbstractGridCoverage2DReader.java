@@ -52,6 +52,7 @@ import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.io.footprint.MultiLevelROIProvider;
+import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.DefaultFileResourceInfo;
 import org.geotools.data.DefaultFileServiceInfo;
@@ -60,19 +61,18 @@ import org.geotools.data.DefaultServiceInfo;
 import org.geotools.data.FileGroupProvider.FileGroup;
 import org.geotools.data.ResourceInfo;
 import org.geotools.data.ServiceInfo;
-import org.geotools.factory.GeoTools;
-import org.geotools.factory.Hints;
 import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.operation.builder.GridToEnvelopeMapper;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.referencing.operation.transform.IdentityTransform;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
-import org.geotools.resources.coverage.CoverageUtilities;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
 import org.geotools.util.URLs;
 import org.geotools.util.Utilities;
+import org.geotools.util.factory.GeoTools;
+import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
 import org.opengis.coverage.ColorInterpretation;
 import org.opengis.coverage.grid.Format;
@@ -105,12 +105,11 @@ import org.opengis.referencing.operation.TransformException;
  *
  * @author Simone Giannecchini, GeoSolutions
  * @since 2.3
- * @source $URL$
  */
 public abstract class AbstractGridCoverage2DReader implements GridCoverage2DReader {
 
     /** The {@link Logger} for this {@link AbstractGridCoverage2DReader}. */
-    private static final Logger LOGGER = Logging.getLogger("org.geotools.data.coverage.grid");
+    private static final Logger LOGGER = Logging.getLogger(AbstractGridCoverage2DReader.class);
 
     /** Small number used for double comparisons */
     protected static double EPS = 1e-6;
@@ -348,7 +347,7 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
         // Default image index 0
         //
         // //
-        Integer imageChoice = new Integer(0);
+        Integer imageChoice = Integer.valueOf(0);
 
         // //
         //
@@ -600,11 +599,6 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
         public String toString() {
             return "Resolution[Choice=" + imageChoice + ",scaleFactor=" + scaleFactor + "]";
         }
-    }
-
-    protected final void decimationOnReadingControl(
-            Integer imageChoice, ImageReadParam readP, double[] requestedRes) {
-        decimationOnReadingControl(imageChoice, readP, requestedRes);
     }
 
     /**

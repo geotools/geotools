@@ -12,7 +12,6 @@ import org.geotools.swing.event.MapMouseListener;
  *
  * @author Michael Bedward
  * @since 8.0
- * @source $URL$
  * @version $Id$
  */
 public class WaitingMapMouseListener

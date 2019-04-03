@@ -38,7 +38,6 @@ import si.uom.SI;
  * This is a tool class to convert DateTime from ISO8601 to Date object.
  *
  * @author Mehdi Sidhoum (Geomatys)
- * @source $URL$
  */
 public class Utils {
 

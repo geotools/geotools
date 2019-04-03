@@ -31,14 +31,14 @@ import org.geotools.filter.function.EqualIntervalFunction;
 import org.geotools.filter.function.JenksNaturalBreaksFunction;
 import org.geotools.filter.function.QuantileFunction;
 import org.geotools.filter.function.RangedClassifier;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 import org.geotools.process.ProcessException;
 import org.geotools.process.classify.ClassificationMethod;
 import org.geotools.process.classify.ClassificationStats;
 import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
 import org.geotools.util.Converters;
 import org.geotools.util.logging.Logging;
 import org.jaitools.numeric.Range;
@@ -237,9 +237,9 @@ public class FeatureClassStats implements VectorProcess {
 
         public void print() {
             for (int i = 0; i < size(); i++) {
-                System.out.println(range(i));
+                LOG.info(String.valueOf(range(i)));
                 for (Statistic stat : sampleStats[0].getStatistics()) {
-                    System.out.println(stat + " = " + value(i, stat));
+                    LOG.info(stat + " = " + value(i, stat));
                 }
             }
         }

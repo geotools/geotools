@@ -25,7 +25,6 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * Concrete extension to FeatureCollections to create DefaultFeatureCollections.
  *
  * @author Ian Schneider
- * @source $URL$
  */
 public class DefaultFeatureCollections extends FeatureCollections {
     /** Creates a new instance of DefaultFeatureCollections */

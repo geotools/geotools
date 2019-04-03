@@ -20,7 +20,6 @@ import java.sql.Connection;
 import org.geotools.jdbc.JDBCGeometryOnlineTest;
 import org.geotools.jdbc.JDBCGeometryTestSetup;
 
-/** @source $URL$ */
 public class PostgisGeometryOnlineTest extends JDBCGeometryOnlineTest {
 
     @Override

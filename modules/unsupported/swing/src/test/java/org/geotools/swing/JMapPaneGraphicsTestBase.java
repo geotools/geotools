@@ -19,7 +19,7 @@ package org.geotools.swing;
 
 import java.awt.BorderLayout;
 import javax.swing.JFrame;
-import org.fest.swing.fixture.FrameFixture;
+import org.assertj.swing.fixture.FrameFixture;
 import org.geotools.swing.event.MapPaneListener;
 
 /**
@@ -27,7 +27,6 @@ import org.geotools.swing.event.MapPaneListener;
  *
  * @author Michael Bedward
  * @since 8.0
- * @source $URL$
  * @version $Id$
  */
 public class JMapPaneGraphicsTestBase extends JMapPaneTestBase {

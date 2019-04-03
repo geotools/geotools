@@ -18,8 +18,8 @@ package org.geotools.data;
 
 import java.io.IOException;
 import java.util.NoSuchElementException;
-import org.geotools.feature.IllegalAttributeException;
 import org.opengis.feature.Feature;
+import org.opengis.feature.IllegalAttributeException;
 import org.opengis.feature.type.FeatureType;
 
 /**
@@ -27,7 +27,6 @@ import org.opengis.feature.type.FeatureType;
  * number of features passed in.
  *
  * @author Chris Holmes
- * @source $URL$
  * @version $Id$
  */
 public class MaxFeatureReader<T extends FeatureType, F extends Feature>
@@ -41,7 +40,6 @@ public class MaxFeatureReader<T extends FeatureType, F extends Feature>
      * Creates a new instance of MaxFeatureReader
      *
      * @param featureReader FeatureReader being maxed
-     * @param maxFeatures DOCUMENT ME!
      */
     public MaxFeatureReader(FeatureReader<T, F> featureReader, int maxFeatures) {
         this.featureReader = featureReader;

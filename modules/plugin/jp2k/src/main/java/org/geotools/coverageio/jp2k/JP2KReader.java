@@ -27,7 +27,7 @@ import it.geosolutions.imageio.plugins.jp2k.box.XMLBox;
 import it.geosolutions.imageio.plugins.jp2k.box.XMLBoxMetadataNode;
 import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReader;
 import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReaderSpi;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.io.ByteArrayInputStream;
@@ -62,17 +62,17 @@ import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.coverage.grid.io.imageio.geotiff.GeoTiffIIOMetadataDecoder;
 import org.geotools.coverage.grid.io.imageio.geotiff.GeoTiffMetadata2CRSAdapter;
+import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.PrjFileReader;
 import org.geotools.data.WorldFileReader;
-import org.geotools.factory.Hints;
 import org.geotools.geometry.GeneralEnvelope;
-import org.geotools.metadata.iso.spatial.PixelTranslation;
+import org.geotools.geometry.PixelTranslation;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
-import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.util.URLs;
+import org.geotools.util.factory.Hints;
 import org.opengis.coverage.grid.Format;
 import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.geometry.Envelope;
@@ -91,7 +91,6 @@ import org.xml.sax.SAXException;
  *
  * @author Daniele Romagnoli, GeoSolutions.
  * @author Simone Giannecchini (simboss), GeoSolutions
- * @source $URL$
  */
 public final class JP2KReader extends AbstractGridCoverage2DReader implements GridCoverage2DReader {
 
@@ -185,7 +184,7 @@ public final class JP2KReader extends AbstractGridCoverage2DReader implements Gr
         // Additional settings due to "final" methods getOriginalXXX
     }
 
-    /** @param nativeEnvelope the nativeEnvelope to set */
+    /** @param coverageEnvelope the envelope to set */
     protected void setCoverageEnvelope(GeneralEnvelope coverageEnvelope) {
         this.nativeEnvelope = coverageEnvelope;
     }
@@ -195,7 +194,7 @@ public final class JP2KReader extends AbstractGridCoverage2DReader implements Gr
         return nativeEnvelope;
     }
 
-    /** @param nativeGridRange the nativeGridRange to set */
+    /** @param coverageGridRange the coverage grid range to set */
     protected void setCoverageGridRange(GridEnvelope2D coverageGridRange) {
         this.nativeGridRange = coverageGridRange;
     }
@@ -712,8 +711,7 @@ public final class JP2KReader extends AbstractGridCoverage2DReader implements Gr
 
             if (crs == null) {
                 throw new DataSourceException(
-                        "Unable to find a CRS for this coverage, using a default one: "
-                                + crs.toWKT());
+                        "Unable to find a CRS for this coverage, using a default one");
             }
         }
         setResolutionInfo(reader);

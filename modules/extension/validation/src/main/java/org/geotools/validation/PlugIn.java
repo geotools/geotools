@@ -35,7 +35,6 @@ import org.geotools.validation.xml.ValidationException;
  *
  * @see <a http://vwfs.refractions.net/docs/Validating_Web_Feature_Server.pdf>A PDF on Validating
  *     Web Feature Servers</a>
- * @source $URL$
  */
 public class PlugIn {
     Map defaults;
@@ -61,7 +60,7 @@ public class PlugIn {
         try {
             beanInfo = Introspector.getBeanInfo(type);
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             throw new ValidationException(
                     "Could not use the '" + name + "' plugIn:" + type.getName());
         }
@@ -116,8 +115,6 @@ public class PlugIn {
      * using this plugIn's defaults.
      *
      * @param name Map defining User's test.
-     * @param description DOCUMENT ME!
-     * @param args DOCUMENT ME!
      * @return Validation ready for use by the ValidationProcessor
      * @throws ValidationException when an error occurs
      */

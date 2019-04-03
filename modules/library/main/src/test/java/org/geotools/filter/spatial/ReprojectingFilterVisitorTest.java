@@ -5,11 +5,11 @@ import java.util.List;
 import junit.framework.TestCase;
 import org.geotools.data.DataUtilities;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.factory.GeoTools;
-import org.geotools.factory.Hints;
 import org.geotools.feature.FeatureTypes;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.geotools.referencing.CRS;
+import org.geotools.util.factory.GeoTools;
+import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LineString;
@@ -27,7 +27,6 @@ import org.opengis.filter.spatial.Intersects;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-/** @source $URL$ */
 public class ReprojectingFilterVisitorTest extends TestCase {
 
     SimpleFeatureType ft;
@@ -272,6 +271,41 @@ public class ReprojectingFilterVisitorTest extends TestCase {
         assertTrue(25 == clonedLs.getCoordinateN(1).x);
         assertTrue(20 == clonedLs.getCoordinateN(1).y);
         assertEquals(CRS.decode("EPSG:4326"), clonedLs.getUserData());
+    }
+
+    /** The provided target CRS (3857) should override the native one (4326). */
+    public void testBboxReprojectWithTargetCrsProvided() throws FactoryException {
+        ReprojectingFilterVisitor reprojector =
+                new ReprojectingFilterVisitor(ff, ft, CRS.decode("EPSG:3857"));
+        BBOX bbox = ff.bbox(ff.property("geom"), 10, 15, 20, 25, "EPSG:4326");
+        Filter clone = (Filter) bbox.accept(reprojector, null);
+        assertNotSame(bbox, clone);
+        BBOX clonedBbox = (BBOX) clone;
+        assertEquals(bbox.getPropertyName(), clonedBbox.getPropertyName());
+        assertEquals(1113194.9079327357, clonedBbox.getMinX(), 0.1);
+        assertEquals(1689200.1396078924, clonedBbox.getMinY(), 0.1);
+        assertEquals(2226389.8158654715, clonedBbox.getMaxX(), 0.1);
+        assertEquals(2875744.6243522423, clonedBbox.getMaxY(), 0.1);
+        assertEquals("EPSG:3857", clonedBbox.getSRS());
+    }
+
+    /**
+     * The provided target CRS (3857) should not override the native one (4326) since the use
+     * property is not a geometry.
+     */
+    public void testTargetCrsProvidedButNoGeometryProperty() throws FactoryException {
+        ReprojectingFilterVisitor reprojector =
+                new ReprojectingFilterVisitor(ff, ft, CRS.decode("EPSG:3857"));
+        BBOX bbox = ff.bbox(ff.property("name"), 10, 15, 20, 25, "EPSG:4326");
+        BBOX clone = (BBOX) bbox.accept(reprojector, null);
+        assertNotSame(bbox, clone);
+        // check that no reprojection was applied
+        assertEquals(bbox.getPropertyName(), clone.getPropertyName());
+        assertEquals(10.0, clone.getMinX(), 0.1);
+        assertEquals(15.0, clone.getMinY(), 0.1);
+        assertEquals(20.0, clone.getMaxX(), 0.1);
+        assertEquals(25.0, clone.getMaxY(), 0.1);
+        assertEquals("EPSG:4326", clone.getSRS());
     }
 
     private final class GeometryFunction implements Function {

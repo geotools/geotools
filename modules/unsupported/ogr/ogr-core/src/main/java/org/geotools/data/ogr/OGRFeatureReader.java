@@ -28,13 +28,10 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * It assumes eventual filters have already been set on it, and will extract only the
  *
  * @author Andrea Aime - GeoSolutions
- * @source $URL$
- *     http://svn.osgeo.org/geotools/trunk/modules/unsupported/ogr/src/main/java/org/geotools
- *     /data/ogr/OGRFeatureReader.java $
  */
 class OGRFeatureReader implements FeatureReader<SimpleFeatureType, SimpleFeature> {
 
-    Object dataSource;
+    OGRDataSource dataSource;
 
     Object layer;
 
@@ -49,7 +46,7 @@ class OGRFeatureReader implements FeatureReader<SimpleFeatureType, SimpleFeature
     OGR ogr;
 
     public OGRFeatureReader(
-            Object dataSource,
+            OGRDataSource dataSource,
             Object layer,
             SimpleFeatureType targetSchema,
             SimpleFeatureType originalSchema,
@@ -78,7 +75,7 @@ class OGRFeatureReader implements FeatureReader<SimpleFeatureType, SimpleFeature
             layer = null;
         }
         if (dataSource != null) {
-            ogr.DataSourceRelease(dataSource);
+            dataSource.close();
             dataSource = null;
         }
         schema = null;

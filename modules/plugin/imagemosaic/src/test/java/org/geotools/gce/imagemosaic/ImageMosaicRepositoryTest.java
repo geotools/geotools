@@ -42,12 +42,12 @@ import org.geotools.data.ServiceInfo;
 import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.data.shapefile.ShapefileDataStoreFactory;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.factory.Hints;
 import org.geotools.feature.AttributeTypeBuilder;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.TypeBuilder;
 import org.geotools.test.TestData;
 import org.geotools.util.URLs;
+import org.geotools.util.factory.Hints;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -260,6 +260,63 @@ public class ImageMosaicRepositoryTest {
     }
 
     /**
+     * Test for GEOS-8311 load a mosaic when it doesn't have a projection set.
+     *
+     * @throws Exception
+     */
+    @Test
+    public void createFromEmptyStoreWithNoProjection() throws Exception {
+        // setup mosaic
+        URL storeUrl = TestData.url(this, "rgba");
+        File testDataFolder = new File(storeUrl.toURI());
+        File testDirectory = crsMosaicFolder.newFolder("rgba_no_proj");
+        FileUtils.copyDirectory(testDataFolder, testDirectory);
+        // clean up, other tests might have left the rgba source dir dirty
+        for (File file : testDirectory.listFiles(f -> f.getName().startsWith("rgba"))) {
+            file.delete();
+        }
+        // remove the .prj files
+        for (File file : testDirectory.listFiles(f -> f.getName().endsWith("prj"))) {
+            file.delete();
+        }
+
+        ImageMosaicReader reader = FORMAT.getReader(testDirectory);
+
+        assertNotNull(reader);
+        GridCoverage2D coverage = reader.read(NO_DEFERRED_LOAD);
+        assertNotNull(coverage);
+        coverage.dispose(true);
+        reader.dispose();
+    }
+
+    /**
+     * Test for GEOS-8311 load a mosaic when it doesn't have a projection set.
+     *
+     * @throws Exception
+     */
+    @Test
+    public void createFromEmptyStoreWithNoProjectionGeoTif() throws Exception {
+        // setup mosaic
+        URL storeUrl = TestData.url(this, "nocrs");
+        File testDataFolder = new File(storeUrl.toURI());
+        File testDirectory = crsMosaicFolder.newFolder("no_crs");
+        FileUtils.copyDirectory(testDataFolder, testDirectory);
+
+        // remove the .prj files - there shouldn't be any but check
+        for (File file : testDirectory.listFiles(f -> f.getName().endsWith("prj"))) {
+            file.delete();
+        }
+        // signal the intention to use a store name using both datastore.properties and indexer
+        ImageMosaicReader reader = FORMAT.getReader(testDirectory);
+
+        assertNotNull(reader);
+        GridCoverage2D coverage = reader.read(NO_DEFERRED_LOAD);
+        assertNotNull(coverage);
+        coverage.dispose(true);
+        reader.dispose();
+    }
+
+    /**
      * Removes the sample image and
      *
      * @param directory
@@ -315,7 +372,7 @@ public class ImageMosaicRepositoryTest {
 
         @Override
         public FeatureSource getFeatureSource(Name typeName) throws IOException {
-            if (this.name.equals(name)) {
+            if (this.name.equals(typeName)) {
                 return delegate.getFeatureSource(name.getLocalPart());
             }
             return null;

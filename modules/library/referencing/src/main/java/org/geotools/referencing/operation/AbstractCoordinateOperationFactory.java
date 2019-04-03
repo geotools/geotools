@@ -29,7 +29,10 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
-import org.geotools.factory.Hints;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
+import org.geotools.metadata.i18n.Vocabulary;
+import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.metadata.iso.quality.PositionalAccuracyImpl;
 import org.geotools.referencing.AbstractIdentifiedObject;
@@ -38,13 +41,10 @@ import org.geotools.referencing.cs.AbstractCS;
 import org.geotools.referencing.factory.ReferencingFactory;
 import org.geotools.referencing.factory.ReferencingFactoryContainer;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
-import org.geotools.resources.Classes;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
-import org.geotools.resources.i18n.Vocabulary;
-import org.geotools.resources.i18n.VocabularyKeys;
 import org.geotools.util.CanonicalSet;
+import org.geotools.util.Classes;
 import org.geotools.util.Utilities;
+import org.geotools.util.factory.Hints;
 import org.opengis.metadata.quality.PositionalAccuracy;
 import org.opengis.parameter.ParameterValueGroup;
 import org.opengis.referencing.FactoryException;
@@ -71,7 +71,6 @@ import org.opengis.referencing.operation.Transformation;
  * "intelligent" job is left to subclasses.
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
@@ -486,13 +485,6 @@ public abstract class AbstractCoordinateOperationFactory extends ReferencingFact
             throws FactoryException {
         if (step1 == null) return step2;
         if (step2 == null) return step1;
-        if (false) {
-            // Note: we sometime get this assertion failure if the user provided CRS with two
-            //       different ellipsoids but an identical TOWGS84 conversion infos (which is
-            //       usually wrong, but still happen).
-            assert equalsIgnoreMetadata(step1.getTargetCRS(), step2.getSourceCRS())
-                    : "CRS 1 =" + step1.getTargetCRS() + '\n' + "CRS 2 =" + step2.getSourceCRS();
-        }
         if (isIdentity(step1)) return step2;
         if (isIdentity(step2)) return step1;
         final MathTransform mt1 = step1.getMathTransform();
@@ -528,8 +520,8 @@ public abstract class AbstractCoordinateOperationFactory extends ReferencingFact
      * ConcatenatedOperation}. If a concatenated operation is created, it will get an automatically
      * generated name.
      *
-     * @param step1 The first step, or {@code null} for the identity operation.
-     * @param step2 The second step, or {@code null} for the identity operation.
+     * @param candidatesStep1 The first step, or {@code null} for the identity operation.
+     * @param candidatesStep2 The second step, or {@code null} for the identity operation.
      * @return A concatenated operation, or {@code null} if all arguments was nul.
      * @throws FactoryException if the operation can't be constructed.
      */

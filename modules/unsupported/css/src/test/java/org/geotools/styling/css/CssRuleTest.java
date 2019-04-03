@@ -47,7 +47,7 @@ public class CssRuleTest extends CssBaseTest {
         // just the declared level
         Set<Integer> zeds = rule.getZIndexes();
         assertEquals(1, zeds.size());
-        assertEquals(new Integer(10), zeds.iterator().next());
+        assertEquals(Integer.valueOf(10), zeds.iterator().next());
         CssRule subRule = rule.getSubRuleByZIndex(10);
         assertEquals(1, subRule.getProperties().size());
         assertEquals(2, subRule.getProperties().get(PseudoClass.ROOT).size());
@@ -64,8 +64,8 @@ public class CssRuleTest extends CssBaseTest {
         Set<Integer> zeds = rule.getZIndexes();
         assertEquals(2, zeds.size());
         Iterator<Integer> it = zeds.iterator();
-        assertEquals(new Integer(1), it.next());
-        assertEquals(new Integer(3), it.next());
+        assertEquals(Integer.valueOf(1), it.next());
+        assertEquals(Integer.valueOf(3), it.next());
         // nothing at the base level
         assertNull(rule.getSubRuleByZIndex(0));
         // first subrule
@@ -91,8 +91,8 @@ public class CssRuleTest extends CssBaseTest {
         Set<Integer> zeds = rule.getZIndexes();
         assertEquals(2, zeds.size());
         Iterator<Integer> it = zeds.iterator();
-        assertEquals(new Integer(1), it.next());
-        assertEquals(new Integer(3), it.next());
+        assertEquals(Integer.valueOf(1), it.next());
+        assertEquals(Integer.valueOf(3), it.next());
         // nothing at the base level
         assertNull(rule.getSubRuleByZIndex(0));
         // first subrule

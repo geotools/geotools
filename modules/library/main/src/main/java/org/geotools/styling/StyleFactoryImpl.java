@@ -26,7 +26,7 @@ import java.util.Set;
 import javax.measure.Unit;
 import javax.swing.Icon;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.factory.GeoTools;
+import org.geotools.util.factory.GeoTools;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
@@ -56,7 +56,6 @@ import org.opengis.util.InternationalString;
  * </ul>
  *
  * @author iant
- * @source $URL$
  * @version $Id$
  */
 public class StyleFactoryImpl extends AbstractStyleFactory
@@ -277,7 +276,6 @@ public class StyleFactoryImpl extends AbstractStyleFactory
      * @param graphicFill - a graphic object to fill the line with
      * @param graphicStroke - a graphic object to draw the line with
      * @return The completed stroke.
-     * @throws IllegalArgumentException DOCUMENT ME!
      * @see org.geotools.stroke
      */
     public Stroke createStroke(
@@ -306,7 +304,6 @@ public class StyleFactoryImpl extends AbstractStyleFactory
 
         if (opacity == null) {
             opacity = Stroke.DEFAULT.getOpacity();
-            ;
         }
         stroke.setOpacity(opacity);
 
@@ -613,13 +610,13 @@ public class StyleFactoryImpl extends AbstractStyleFactory
             Stroke stroke =
                     createStroke(
                             filterFactory.literal("#000000"),
-                            filterFactory.literal(new Integer(1)));
+                            filterFactory.literal(Integer.valueOf(1)));
 
-            stroke.setDashOffset(filterFactory.literal(new Integer(0)));
+            stroke.setDashOffset(filterFactory.literal(Integer.valueOf(0)));
             stroke.setDashArray(Stroke.DEFAULT.getDashArray());
             stroke.setLineCap(filterFactory.literal("butt"));
             stroke.setLineJoin(filterFactory.literal("miter"));
-            stroke.setOpacity(filterFactory.literal(new Integer(1)));
+            stroke.setOpacity(filterFactory.literal(Integer.valueOf(1)));
 
             return stroke;
         } catch (org.geotools.filter.IllegalFilterException ife) {
@@ -656,7 +653,6 @@ public class StyleFactoryImpl extends AbstractStyleFactory
      * Weight normal and uses a serif font.
      *
      * @return the default Font
-     * @throws RuntimeException DOCUMENT ME!
      */
     public Font getDefaultFont() {
         return FontImpl.createDefault(filterFactory);

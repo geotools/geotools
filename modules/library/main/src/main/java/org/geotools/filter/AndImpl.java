@@ -16,7 +16,6 @@
  */
 package org.geotools.filter;
 
-import java.util.Iterator;
 import java.util.List;
 import org.opengis.filter.And;
 import org.opengis.filter.Filter;
@@ -26,7 +25,6 @@ import org.opengis.filter.FilterVisitor;
  * Direct implementation of And filter.
  *
  * @author jdeolive
- * @source $URL$
  */
 public class AndImpl extends LogicFilterImpl implements And {
 
@@ -35,8 +33,7 @@ public class AndImpl extends LogicFilterImpl implements And {
     }
 
     public boolean evaluate(Object object) {
-        for (Iterator<Filter> itr = children.iterator(); itr.hasNext(); ) {
-            Filter filter = itr.next();
+        for (Filter filter : children) {
             if (!filter.evaluate(object)) {
                 return false; // short circuit
             }

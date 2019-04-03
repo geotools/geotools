@@ -28,11 +28,11 @@ import javax.media.jai.iterator.RectIterFactory;
 import org.geotools.coverage.Category;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.TypeMap;
-import org.geotools.factory.Hints;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 import org.geotools.util.NumberRange;
 import org.geotools.util.SimpleInternationalString;
+import org.geotools.util.factory.Hints;
 import org.opengis.coverage.ColorInterpretation;
 import org.opengis.coverage.SampleDimensionType;
 import org.opengis.coverage.grid.GridCoverage;
@@ -42,7 +42,6 @@ import org.opengis.util.InternationalString;
  * Describes the band values for a grid coverage.
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
@@ -251,7 +250,6 @@ final class RenderedSampleDimension extends GridSampleDimension {
          * would not fit in the target data type.
          */
         final SampleDimensionType sourceType = TypeMap.getSampleDimensionType(model, 0);
-        final boolean sourceIsFloat = TypeMap.isFloatingPoint(sourceType);
         SampleDimensionType targetType = null;
         if (hints != null) {
             targetType = (SampleDimensionType) hints.get(Hints.SAMPLE_DIMENSION_TYPE);
@@ -270,7 +268,6 @@ final class RenderedSampleDimension extends GridSampleDimension {
          * it could have NaN later if the image uses a writable raster.
          */
         final InternationalString n = SimpleInternationalString.wrap(name);
-        NumberRange sourceRange = TypeMap.getRange(sourceType);
         for (int b = 0; b < numBands; b++) {
             final Color[] c = colors != null ? colors[b] : null;
             categories[0] = new Category(n, c, targetRange, true);

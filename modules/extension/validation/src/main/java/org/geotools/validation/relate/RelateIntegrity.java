@@ -32,17 +32,15 @@ import org.opengis.filter.Filter;
  *
  * @author bowens<br>
  *     Created Apr 27, 2004<br>
- * @source $URL$
  * @version <br>
  *     <b>Puropse:</b><br>
  *     <p>Tests to see if a Geometry intersects with another Geometry. <b>Description:</b><br>
  *     <p>If only one Geometry is given, then this test checks to see if it intersects part of
  *     itself. <b>Usage:</b><br>
- *     <p>DOCUMENT ME!!
  */
 public class RelateIntegrity extends RelationIntegrity {
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.validation");
+            org.geotools.util.logging.Logging.getLogger(RelateIntegrity.class);
     private String de9im;
 
     /** RelateIntegrity Constructor */
@@ -155,8 +153,8 @@ public class RelateIntegrity extends RelationIntegrity {
                 }
             }
         } finally {
-            fr1.close();
-            fr2.close();
+            if (fr1 != null) fr1.close();
+            if (fr2 != null) fr2.close();
         }
 
         return success;
@@ -236,8 +234,8 @@ public class RelateIntegrity extends RelationIntegrity {
                 }
             }
         } finally {
-            fr1.close();
-            fr2.close();
+            if (fr1 != null) fr1.close();
+            if (fr2 != null) fr2.close();
         }
 
         return success;

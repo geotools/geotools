@@ -26,7 +26,7 @@ import junit.framework.TestCase;
 import junit.framework.TestResult;
 import org.geotools.geometry.GeometryBuilder;
 import org.geotools.geometry.iso.primitive.PointImpl;
-import org.geotools.geometry.text.WKTParser;
+import org.geotools.geometry.iso.text.WKTParser;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.test.TestData;
 import org.opengis.geometry.Boundary;
@@ -50,8 +50,6 @@ import org.xml.sax.InputSource;
  * intersection and union operations.
  *
  * <p>notes: - spaces must be replaced by "_" in description - "No_description" is the default
- *
- * @source $URL$
  */
 public class GeometryConformanceTestCases extends TestCase {
 
@@ -226,7 +224,7 @@ public class GeometryConformanceTestCases extends TestCase {
         assertTrue("failures: " + tempResult.failureCount(), tempResult.wasSuccessful());
         Enumeration enums = tempResult.failures();
         while (enums.hasMoreElements()) {
-            System.out.println("what");
+            // System.out.println("what");
             AssertionFailedError failure = (AssertionFailedError) enums.nextElement();
             assertTrue("--" + failure.toString(), tempResult.wasSuccessful());
         }
@@ -323,7 +321,8 @@ public class GeometryConformanceTestCases extends TestCase {
                                 op.setExpectedResult(expectedResult);
                                 testCase.addTestOperation(op);
                             } catch (ParseException e) {
-                                e.printStackTrace();
+                                java.util.logging.Logger.getGlobal()
+                                        .log(java.util.logging.Level.INFO, "", e);
                             }
                         }
                     }

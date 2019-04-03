@@ -22,16 +22,16 @@ import java.io.FileWriter;
 import java.util.Random;
 import net.sourceforge.groboutils.junit.v1.MultiThreadedTestRunner;
 import net.sourceforge.groboutils.junit.v1.TestRunnable;
-import org.geotools.factory.Hints;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.referencing.CRS;
+import org.geotools.referencing.factory.epsg.oracle.OracleDialectEpsgMediator;
 import org.geotools.referencing.factory.epsg.oracle.OracleOnlineTestCase;
+import org.geotools.util.factory.Hints;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
 
-/** @source $URL$ */
 public class OracleDialectEpsgMediatorOnlineStressTest extends OracleOnlineTestCase {
 
     static final int RUNNER_COUNT = 10;
@@ -47,7 +47,7 @@ public class OracleDialectEpsgMediatorOnlineStressTest extends OracleOnlineTestC
     protected void connect() throws Exception {
         super.connect();
         hints = new Hints(Hints.CACHE_POLICY, "none");
-        hints.put(Hints.AUTHORITY_MAX_ACTIVE, new Integer(MAX_WORKERS));
+        hints.put(Hints.AUTHORITY_MAX_ACTIVE, Integer.valueOf(MAX_WORKERS));
         if (datasource == null) {
             fail("no datasource available");
         }
@@ -92,7 +92,7 @@ public class OracleDialectEpsgMediatorOnlineStressTest extends OracleOnlineTestC
             System.out.println("Overall Time: " + timeElapsed);
             System.out.println(
                     "Throughput: "
-                            + (1000 * totalRuns / new Long(totalTime).doubleValue())
+                            + (1000 * totalRuns / Long.valueOf(totalTime).doubleValue())
                             + " Hz");
             System.out.println("Min: " + minTime);
             System.out.println("Max: " + maxTime);
@@ -114,7 +114,7 @@ public class OracleDialectEpsgMediatorOnlineStressTest extends OracleOnlineTestC
             sb.append(", ");
             sb.append(totalRuns);
             sb.append(", ");
-            sb.append((1000 * totalRuns / new Long(totalTime).doubleValue()));
+            sb.append((1000 * totalRuns / Long.valueOf(totalTime).doubleValue()));
             sb.append(", ");
             sb.append(minTime);
             sb.append(", ");
@@ -351,7 +351,7 @@ public class OracleDialectEpsgMediatorOnlineStressTest extends OracleOnlineTestC
                     }
                 } catch (Exception e) {
                     exceptions++;
-                    System.out.println("Exception in Thread " + id + ", EPSG: " + code2);
+                    // System.out.println("Exception in Thread " + id + ", EPSG: " + code2);
                     // TODO: save exception
                     // e.printStackTrace();
                 }

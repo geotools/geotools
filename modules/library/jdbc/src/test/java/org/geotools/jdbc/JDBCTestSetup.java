@@ -45,11 +45,9 @@ import org.geotools.data.jdbc.datasource.ManageableDataSource;
  * </ol>
  *
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL$
  */
 public abstract class JDBCTestSetup {
-    static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.data.jdbc");
+    static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(JDBCTestSetup.class);
     protected Properties fixture = null;
     private DataSource dataSource = null;
 
@@ -226,6 +224,14 @@ public abstract class JDBCTestSetup {
      * made to the database.
      */
     public boolean shouldRunTests(Connection cx) throws SQLException {
+        return true;
+    }
+
+    /**
+     * Returns true if making the test run without a target schema is safe (normally is, but for
+     * Oracle Enterprise for example, it is not)
+     */
+    public boolean canResetSchema() {
         return true;
     }
 }

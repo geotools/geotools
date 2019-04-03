@@ -35,12 +35,11 @@ import org.opengis.filter.expression.Expression;
  * For now just writes the expression built.
  *
  * @author David Zwiers, Refractions Research
- * @source $URL$
  */
 public class ExpresionEncodeTest extends TestCase {
     /** Standard logging instance */
     protected static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.filter");
+            org.geotools.util.logging.Logging.getLogger(ExpresionEncodeTest.class);
     /** Constructor with test name. */
     String dataFolder = "";
 

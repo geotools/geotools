@@ -25,7 +25,7 @@ import org.geotools.filter.v1_0.OGCConfiguration;
 import org.geotools.gml2.GML;
 import org.geotools.gml2.bindings.GMLBoxTypeBinding;
 import org.geotools.gml2.bindings.GMLCoordinatesTypeBinding;
-import org.geotools.xml.Configuration;
+import org.geotools.xsd.Configuration;
 import org.locationtech.jts.geom.CoordinateSequence;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.impl.PackedCoordinateSequence;
@@ -65,7 +65,7 @@ public class IonicStrategy extends StrictWFS_1_x_Strategy {
             Envelope e = (Envelope) object;
             if (GML.coordinates.equals(name)) {
                 double[] seq = {e.getMinX(), e.getMinY(), e.getMaxX(), e.getMaxY()};
-                CoordinateSequence coords = new PackedCoordinateSequence.Double(seq, 2);
+                CoordinateSequence coords = new PackedCoordinateSequence.Double(seq, 2, 0);
                 return coords;
             }
 

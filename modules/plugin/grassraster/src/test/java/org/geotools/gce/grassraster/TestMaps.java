@@ -24,7 +24,6 @@ import static java.lang.Double.NaN;
  * <p>These data are all synthetically created by the author and released into Public Domain.
  *
  * @author Andrea Antonello (www.hydrologis.com)
- * @source $URL$
  */
 public class TestMaps {
     static double[][] matrix =

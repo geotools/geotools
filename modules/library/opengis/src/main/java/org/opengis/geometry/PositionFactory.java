@@ -22,7 +22,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  *
  * @author Jody Garnett
  * @since GeoAPI 2.1
- * @source $URL$
  */
 public interface PositionFactory {
     /**

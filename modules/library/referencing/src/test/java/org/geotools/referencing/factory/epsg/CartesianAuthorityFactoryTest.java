@@ -13,7 +13,6 @@ import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.ReferenceIdentifier;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-/** @source $URL$ */
 public class CartesianAuthorityFactoryTest {
 
     static final String CODE = CartesianAuthorityFactory.GENERIC_2D_CODE;
@@ -43,8 +42,8 @@ public class CartesianAuthorityFactoryTest {
     @Test
     public void testLookup() throws NoSuchAuthorityCodeException, FactoryException {
         CoordinateReferenceSystem crs = CRS.decode("EPSG:" + CODE);
-        assertEquals(new Integer(CODE), CRS.lookupEpsgCode(crs, true));
-        assertEquals(new Integer(CODE), CRS.lookupEpsgCode(crs, false));
+        assertEquals(Integer.valueOf(CODE), CRS.lookupEpsgCode(crs, true));
+        assertEquals(Integer.valueOf(CODE), CRS.lookupEpsgCode(crs, false));
     }
 
     @Test
@@ -81,7 +80,7 @@ public class CartesianAuthorityFactoryTest {
                         + CODE
                         + "\"]]";
 
-        System.out.println(wkt);
+        // System.out.println(wkt);
         assertEquals(expected, wkt);
     }
 }

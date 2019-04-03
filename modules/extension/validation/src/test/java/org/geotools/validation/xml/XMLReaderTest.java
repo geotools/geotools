@@ -46,7 +46,6 @@ import org.geotools.validation.dto.TestSuiteDTO;
  *
  * @author dzwiers, Refractions Research, Inc.
  * @author $Author: sploreg $ (last modification)
- * @source $URL$
  * @version $Id$
  */
 public class XMLReaderTest extends TestCase {
@@ -135,7 +134,7 @@ public class XMLReaderTest extends TestCase {
             // assertTrue("Arg. value :
             // "+test.getArgs().get("LUTName"),test.getArgs().containsValue("RoadNameLUT.xls"));
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             fail(e.toString());
         }
     }

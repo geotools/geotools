@@ -22,13 +22,13 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.bind.JAXBException;
+import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.gce.imagemosaic.Utils;
 import org.geotools.gce.imagemosaic.catalog.index.Indexer.Collectors;
 import org.geotools.gce.imagemosaic.catalog.index.Indexer.Collectors.Collector;
 import org.geotools.gce.imagemosaic.catalog.index.Indexer.Coverages;
 import org.geotools.gce.imagemosaic.catalog.index.Indexer.Coverages.Coverage;
 import org.geotools.gce.imagemosaic.catalog.index.ParametersType.Parameter;
-import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.util.URLs;
 import org.geotools.util.Utilities;
 
@@ -39,7 +39,7 @@ public class IndexerUtils {
     public static final String INDEXER_PROPERTIES = "indexer.properties";
 
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(IndexerUtils.class.toString());
+            org.geotools.util.logging.Logging.getLogger(IndexerUtils.class);
 
     /**
      * Build {@link Collectors} element by parsing the specified propertyCollectors, and put them on
@@ -60,7 +60,6 @@ public class IndexerUtils {
                 // parse this def as NAME[CONFIG_FILE](PROPERTY;PROPERTY;....;PROPERTY)
                 final int squareLPos = pcDef.indexOf("[");
                 final int squareRPos = pcDef.indexOf("]");
-                final int squareRPosLast = pcDef.lastIndexOf("]");
                 final int roundLPos = pcDef.indexOf("(");
                 final int roundRPos = pcDef.indexOf(")");
                 final int roundRPosLast = pcDef.lastIndexOf(")");
@@ -613,8 +612,7 @@ public class IndexerUtils {
         Coverage coverage = Utils.OBJECT_FACTORY.createIndexerCoveragesCoverage();
         coverageList.add(coverage);
 
-        indexer.setParameters(params);
-        List<Parameter> parameters = params.getParameter();
+        List<Parameter> parameters = indexer.getParameters().getParameter();
 
         // name
         if (props.containsKey(Utils.Prop.NAME)) {

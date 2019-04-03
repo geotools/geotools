@@ -35,12 +35,11 @@ import org.opengis.filter.capability.FunctionName;
  * Calculate the Jenks' Natural Breaks classification for a featurecollection
  *
  * @author Ian Turton
- * @source $URL$
  */
 public class JenksNaturalBreaksFunction extends ClassificationFunction {
     org.opengis.util.ProgressListener progress;
 
-    private static final Logger logger = Logging.getLogger("org.geotools.filter.function");
+    private static final Logger logger = Logging.getLogger(JenksNaturalBreaksFunction.class);
 
     public static FunctionName NAME =
             new FunctionNameImpl(
@@ -89,6 +88,12 @@ public class JenksNaturalBreaksFunction extends ClassificationFunction {
             return null; // if it isn't a number what should we do?
         }
         Collections.sort(data);
+
+        if (data.size() == 1 || data.get(0).equals(data.get(data.size() - 1))) {
+            return new RangedClassifier(
+                    new Comparable[] {data.get(0)}, new Comparable[] {data.get(0)});
+        }
+
         final int k = getClasses();
         final int m = data.size();
         if (k == m) {
@@ -193,7 +198,7 @@ public class JenksNaturalBreaksFunction extends ClassificationFunction {
         }
         localMin[0] = data.get(0);
         /*
-         * for(int k1=0;k1<k;k1++) { System.out.println(k1+" "+localMin[k1]+" - "+localMax[k1]); }
+         * for(int k1=0;k1<k;k1++) { // System.out.println(k1+" "+localMin[k1]+" - "+localMax[k1]); }
          */
         features.close();
         return new RangedClassifier(localMin, localMax);

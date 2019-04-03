@@ -17,6 +17,7 @@
 package org.geotools.feature.type;
 
 import java.util.List;
+import java.util.Objects;
 import org.opengis.feature.type.AttributeType;
 import org.opengis.feature.type.GeometryType;
 import org.opengis.feature.type.Name;
@@ -24,11 +25,7 @@ import org.opengis.filter.Filter;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.util.InternationalString;
 
-/**
- * AttributeType for hold geometry implementations, maintains CRS information.
- *
- * @source $URL$
- */
+/** AttributeType for hold geometry implementations, maintains CRS information. */
 public class GeometryTypeImpl extends AttributeTypeImpl implements GeometryType {
 
     protected CoordinateReferenceSystem CRS;
@@ -48,6 +45,11 @@ public class GeometryTypeImpl extends AttributeTypeImpl implements GeometryType 
 
     public CoordinateReferenceSystem getCoordinateReferenceSystem() {
         return CRS;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), CRS);
     }
 
     @Override

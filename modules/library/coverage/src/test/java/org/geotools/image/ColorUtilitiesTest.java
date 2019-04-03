@@ -5,7 +5,7 @@ import static org.junit.Assert.*;
 import java.awt.Color;
 import java.awt.Transparency;
 import java.awt.image.IndexColorModel;
-import org.geotools.resources.image.ColorUtilities;
+import org.geotools.image.util.ColorUtilities;
 import org.junit.Test;
 
 public class ColorUtilitiesTest {

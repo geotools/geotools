@@ -28,16 +28,10 @@ import org.opengis.filter.Filter;
  * Run through the provided collection only returning features that pass the provided filter.
  *
  * @author Ian Schneider
- * @source $URL$
  * @deprecated Please use {@link FilteringFeatureCollection}
  */
 public class FilteringIteration extends FeatureCollectionIteration {
-    /**
-     * Creates a new instance of FilteringIteration
-     *
-     * @param filter DOCUMENT ME!
-     * @param collection DOCUMENT ME!
-     */
+    /** Creates a new instance of FilteringIteration */
     public FilteringIteration(
             org.opengis.filter.Filter filter, FeatureCollection<?, ?> collection) {
         super(new FilterHandler(filter), new FilteringFeatureCollection(collection, filter));
@@ -67,12 +61,7 @@ public class FilteringIteration extends FeatureCollectionIteration {
 
         public void handleAttribute(PropertyDescriptor type, Object value) {}
 
-        public void handleFeature(Feature f) {
-            if (!filter.evaluate(f)) {
-                // iterator.remove();
-                // this shoudl not occur
-            }
-        }
+        public void handleFeature(Feature f) {}
 
         public void handleFeatureCollection(FeatureCollection<?, ?> fc) {}
     }

@@ -45,8 +45,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 /**
  * This is a legacy benchmarking suite I'm using to assess the performance of some very large
  * datasets. Will be removed.
- *
- * @source $URL$
  */
 @Ignore
 public class LargePolygonsPerfTest {
@@ -75,7 +73,7 @@ public class LargePolygonsPerfTest {
             // test.testRender();
             LargePolygonsPerfTest.oneTimeTearDown();
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
     }
 
@@ -96,7 +94,7 @@ public class LargePolygonsPerfTest {
     }
 
     private void log(String s) {
-        System.err.println(s);
+        // System.err.println(s);
     }
 
     @Test

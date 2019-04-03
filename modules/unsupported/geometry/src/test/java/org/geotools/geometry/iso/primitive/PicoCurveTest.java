@@ -50,7 +50,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
-/** @source $URL$ */
 public class PicoCurveTest extends TestCase {
 
     public void testMain() {
@@ -353,7 +352,7 @@ public class PicoCurveTest extends TestCase {
         try {
             curve2 = curve.clone();
         } catch (CloneNotSupportedException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             fail();
         }
 

@@ -4,7 +4,7 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>unsupported</artifactId>
-    <version>20-SNAPSHOT</version>
+    <version>22-SNAPSHOT</version>
   </parent>
 
   <!-- =========================================================== -->
@@ -45,7 +45,7 @@
       <email>mcoudert@users.sourceforge.net</email>
       <organization>Camptocamp</organization>
       <roles>
-        <role>Module Mantainer</role>
+        <role>Module Maintainer</role>
         <role>Java Developer</role>
       </roles>
     </developer>    

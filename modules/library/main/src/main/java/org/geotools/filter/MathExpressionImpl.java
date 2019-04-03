@@ -28,7 +28,6 @@ import org.opengis.filter.expression.BinaryExpression;
  * numerator and the right is the denominator in an ExpressionMath division operation.
  *
  * @author Rob Hranac, Vision for New York
- * @source $URL$
  * @version $Id$
  */
 public abstract class MathExpressionImpl extends DefaultExpression implements BinaryExpression {

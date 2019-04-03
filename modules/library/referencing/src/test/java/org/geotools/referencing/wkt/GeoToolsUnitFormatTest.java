@@ -32,9 +32,9 @@ import tec.uom.se.format.SimpleUnitFormat;
 /** @author ian */
 public class GeoToolsUnitFormatTest {
 
-    private UnitFormat epsgUnitFormat = GeoToolsUnitFormat.getInstance(Citations.EPSG);
+    private UnitFormat epsgUnitFormat = GeoToolsCRSUnitFormat.getInstance(Citations.EPSG);
 
-    private UnitFormat esriUnitFormat = GeoToolsUnitFormat.getInstance(Citations.ESRI);
+    private UnitFormat esriUnitFormat = GeoToolsCRSUnitFormat.getInstance(Citations.ESRI);
 
     /**
      * Test method for {@link javax.measure.unit.UnitFormat#format(javax.measure.unit.Unit,

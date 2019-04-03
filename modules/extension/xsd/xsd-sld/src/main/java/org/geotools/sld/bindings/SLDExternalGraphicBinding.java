@@ -21,7 +21,9 @@ import javax.xml.namespace.QName;
 import org.geotools.styling.ExternalGraphic;
 import org.geotools.styling.StyleFactory;
 import org.geotools.util.Converters;
-import org.geotools.xml.*;
+import org.geotools.xsd.AbstractComplexBinding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 import org.picocontainer.MutablePicoContainer;
 
 /**
@@ -49,7 +51,6 @@ import org.picocontainer.MutablePicoContainer;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class SLDExternalGraphicBinding extends AbstractComplexBinding {
     protected StyleFactory styleFactory;
@@ -108,6 +109,6 @@ public class SLDExternalGraphicBinding extends AbstractComplexBinding {
         URI uri = Converters.convert(node.getChildValue("OnlineResource"), URI.class);
         String format = (String) node.getChildValue("Format");
 
-        return styleFactory.createExternalGraphic(uri.toURL(), format);
+        return styleFactory.createExternalGraphic(uri.toString(), format);
     }
 }

@@ -1,4 +1,3 @@
-package org.geotools.data.geojson;
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
@@ -15,6 +14,7 @@ package org.geotools.data.geojson;
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
+package org.geotools.data.geojson;
 
 import java.awt.RenderingHints.Key;
 import java.io.IOException;
@@ -92,7 +92,7 @@ public class GeoJSONDataStoreFactory implements DataStoreFactorySpi {
     public synchronized boolean isAvailable() {
         if (isAvailable == null) {
             try {
-                Class geoJSONReaderType = Class.forName("org.geotools.geojson.feature.FeatureJSON");
+                Class.forName("org.geotools.geojson.feature.FeatureJSON");
                 isAvailable = true;
             } catch (ClassNotFoundException e) {
                 isAvailable = false;

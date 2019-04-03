@@ -27,7 +27,7 @@ import net.opengis.wfs.FeatureTypeType;
 import net.opengis.wfs.WfsFactory;
 import org.eclipse.emf.ecore.EObject;
 import org.geotools.wfs.WFS;
-import org.geotools.xml.AbstractComplexEMFBinding;
+import org.geotools.xsd.AbstractComplexEMFBinding;
 
 /**
  * Binding object for the type http://www.opengis.net/wfs:FeatureTypeType.
@@ -117,7 +117,6 @@ import org.geotools.xml.AbstractComplexEMFBinding;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class FeatureTypeTypeBinding extends AbstractComplexEMFBinding {
     public FeatureTypeTypeBinding(WfsFactory factory) {

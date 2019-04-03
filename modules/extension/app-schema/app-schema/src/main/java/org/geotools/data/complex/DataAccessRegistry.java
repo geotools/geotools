@@ -26,14 +26,14 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.geotools.appschema.util.InterpolationProperties;
 import org.geotools.data.DataAccess;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.DataStore;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.Repository;
-import org.geotools.data.complex.config.Types;
-import org.geotools.factory.Hints;
-import org.geotools.util.InterpolationProperties;
+import org.geotools.data.complex.feature.type.Types;
+import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
 import org.opengis.feature.Feature;
 import org.opengis.feature.type.FeatureType;
@@ -46,7 +46,6 @@ import org.opengis.filter.identity.FeatureId;
  *
  * @author Rini Angreani (CSIRO Earth Science and Resource Engineering)
  * @author Niels Charlier (Curtin University Of Technology)
- * @source $URL$
  */
 public class DataAccessRegistry implements Repository {
 
@@ -55,7 +54,7 @@ public class DataAccessRegistry implements Repository {
     private static final Logger LOGGER = Logging.getLogger(DataAccessRegistry.class);
 
     /** Singleton instance */
-    protected static DataAccessRegistry theRegistry = null;
+    protected static volatile DataAccessRegistry theRegistry = null;
 
     /** Properties for interpolation / configuration settings */
     protected InterpolationProperties properties = null;
@@ -277,7 +276,7 @@ public class DataAccessRegistry implements Repository {
      * mapping has mappingName, then it will be the key that is matched in the search. If it
      * doesn't, then it will match the targetElementName.
      *
-     * @param featureTypeName Feature type name
+     * @param name Feature type name
      * @return
      * @throws IOException
      */
@@ -295,7 +294,7 @@ public class DataAccessRegistry implements Repository {
      * the type mapping has mappingName, then it will be the key that is matched in the search. If
      * it doesn't, then it will match the targetElementName.
      *
-     * @param featureTypeName Feature type name
+     * @param name Feature type name
      * @return
      * @throws IOException
      */

@@ -22,9 +22,9 @@ import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.DirectPosition3D;
 import org.geotools.gml.producer.CoordinateFormatter;
 import org.geotools.gml3.GML;
-import org.geotools.xml.AbstractComplexBinding;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
+import org.geotools.xsd.AbstractComplexBinding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 import org.locationtech.jts.geom.CoordinateSequence;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.opengis.geometry.DirectPosition;
@@ -57,7 +57,6 @@ import org.w3c.dom.Element;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class DirectPositionTypeBinding extends AbstractComplexBinding {
     GeometryFactory factory;
@@ -126,7 +125,7 @@ public class DirectPositionTypeBinding extends AbstractComplexBinding {
 
     public Element encode(Object object, Document document, Element value) throws Exception {
         CoordinateSequence cs = (CoordinateSequence) object;
-
+        boolean hasm = cs.hasM();
         StringBuffer sb = new StringBuffer();
 
         // assume either zero or one coordinate
@@ -134,17 +133,15 @@ public class DirectPositionTypeBinding extends AbstractComplexBinding {
             int dim = cs.getDimension();
             for (int d = 0; d < dim; d++) {
                 double v = cs.getOrdinate(0, d);
+                // if has M coordinate and no Z(dim=3), fill empty Z coordinate with 0
+                if (hasm && dim == 3 && d == 2) {
+                    formatAndAppend(sb, 0);
+                }
                 if (Double.isNaN(v) && d > 1) {
                     continue;
                 }
 
-                // separator char is a blank
-                if (formatter != null) {
-                    formatter.format(v, sb);
-                } else {
-                    sb.append(String.valueOf(v));
-                }
-                sb.append(" ");
+                formatAndAppend(sb, v);
             }
             if (dim > 0) {
                 sb.setLength(sb.length() - 1);
@@ -154,5 +151,15 @@ public class DirectPositionTypeBinding extends AbstractComplexBinding {
         value.appendChild(document.createTextNode(sb.toString()));
 
         return value;
+    }
+
+    private void formatAndAppend(StringBuffer sb, double v) {
+        // separator char is a blank
+        if (formatter != null) {
+            formatter.format(v, sb);
+        } else {
+            sb.append(String.valueOf(v));
+        }
+        sb.append(" ");
     }
 }

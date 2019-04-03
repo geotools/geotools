@@ -17,7 +17,7 @@
 package org.geotools.coverage.io.netcdf;
 
 import it.geosolutions.imageio.utilities.ImageIOUtilities;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BandedSampleModel;
 import java.awt.image.ColorModel;
@@ -35,6 +35,7 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -70,9 +71,9 @@ import org.geotools.coverage.io.catalog.CoverageSlicesCatalog;
 import org.geotools.coverage.io.catalog.CoverageSlicesCatalogSource;
 import org.geotools.coverage.io.util.DateRangeTreeSet;
 import org.geotools.coverage.io.util.DoubleRangeTreeSet;
+import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.ResourceInfo;
-import org.geotools.factory.Hints;
 import org.geotools.feature.NameImpl;
 import org.geotools.gce.imagemosaic.ImageMosaicFormat;
 import org.geotools.geometry.GeneralEnvelope;
@@ -81,12 +82,12 @@ import org.geotools.imageio.netcdf.VariableAdapter;
 import org.geotools.imageio.netcdf.VariableAdapter.UnidataSpatialDomain;
 import org.geotools.referencing.operation.transform.IdentityTransform;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
-import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.util.DateRange;
 import org.geotools.util.NumberRange;
 import org.geotools.util.Range;
 import org.geotools.util.SoftValueHashMap;
 import org.geotools.util.URLs;
+import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
 import org.opengis.coverage.Coverage;
 import org.opengis.coverage.grid.Format;
@@ -125,8 +126,7 @@ public class NetCDFReader extends AbstractGridCoverage2DReader
 
     private static final String DATATYPE_SUFFIX = "_DATATYPE";
 
-    private static final Logger LOGGER =
-            Logging.getLogger("org.geotools.coverage.io.netcdf.NetCDFReader");
+    private static final Logger LOGGER = Logging.getLogger(NetCDFReader.class);
 
     static FileDriver DRIVER = new NetCDFDriver();
 
@@ -842,7 +842,7 @@ public class NetCDFReader extends AbstractGridCoverage2DReader
     public int getNumOverviews(String coverageName) {
         coverageName = checkUnspecifiedCoverage(coverageName);
         try {
-            final CoverageSource source = getGridCoverageSource(coverageName);
+            getGridCoverageSource(coverageName);
             // Make sure that coverageName exists
             return 0;
         } catch (IOException e) {
@@ -1003,7 +1003,7 @@ public class NetCDFReader extends AbstractGridCoverage2DReader
         } else {
             return false;
         }
-        if (defaultName == coverageName) {
+        if (Objects.equals(defaultName, coverageName)) {
             Iterator<Name> iterator = names.iterator();
             if (iterator.hasNext()) {
                 defaultName = iterator.next().toString();
@@ -1020,6 +1020,15 @@ public class NetCDFReader extends AbstractGridCoverage2DReader
     @Override
     public void delete(boolean deleteData) throws IOException {
         ((NetCDFAccess) access).purge();
+        if (deleteData) {
+            // hold hands off the files first
+            dispose();
+            // now it's possible to delete them
+            File file = URLs.urlToFile(sourceURL);
+            if (file != null && file.exists()) {
+                file.delete();
+            }
+        }
     }
 
     @Override

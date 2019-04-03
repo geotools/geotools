@@ -34,14 +34,15 @@ import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 import javax.measure.Unit;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
+import org.geotools.metadata.i18n.LoggingKeys;
+import org.geotools.metadata.i18n.Loggings;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.wkt.Formattable;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
-import org.geotools.resources.i18n.LoggingKeys;
-import org.geotools.resources.i18n.Loggings;
 import org.geotools.util.GrowableInternationalString;
 import org.geotools.util.NameFactory;
+import org.geotools.util.SuppressFBWarnings;
 import org.geotools.util.Utilities;
 import org.geotools.util.logging.Logging;
 import org.opengis.metadata.Identifier;
@@ -73,7 +74,6 @@ import tec.uom.se.AbstractUnit;
  * situation, a plain {@link org.geotools.referencing.cs.AbstractCS} object may be instantiated.
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
@@ -147,6 +147,7 @@ public class AbstractIdentifiedObject extends Formattable
         private static final long serialVersionUID = -7315726806679993522L;
 
         /** Compares the given identified objects for order. */
+        @SuppressFBWarnings("NS_DANGEROUS_NON_SHORT_CIRCUIT")
         public int compare(final IdentifiedObject o1, final IdentifiedObject o2) {
             Collection<ReferenceIdentifier> a1 = o1.getIdentifiers();
             Collection<ReferenceIdentifier> a2 = o2.getIdentifiers();

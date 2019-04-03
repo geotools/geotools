@@ -2,7 +2,6 @@ package org.geotools.data.postgis;
 
 import org.geotools.jdbc.JDBCSkipColumnTestSetup;
 
-/** @source $URL$ */
 public class PostgisSkipColumnTestSetup extends JDBCSkipColumnTestSetup {
 
     protected PostgisSkipColumnTestSetup() {
@@ -16,7 +15,7 @@ public class PostgisSkipColumnTestSetup extends JDBCSkipColumnTestSetup {
                         + "\"fid\" serial primary key, " //
                         + "\"id\" integer, " //
                         + "\"geom\" geometry, " //
-                        + "\"weirdproperty\" integer[]," //
+                        + "\"weirdproperty\" macaddr," //
                         + "\"name\" varchar)");
         run(
                 "INSERT INTO GEOMETRY_COLUMNS VALUES('', 'public', 'skipcolumn', 'geom', 2, '4326', 'POINT')");

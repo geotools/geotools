@@ -17,10 +17,9 @@
 package org.geotools.gml2.bindings;
 
 import org.geotools.gml2.GML;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 
-/** @source $URL$ */
 public class GMLFeatureAssociationTypeBindingTest extends AbstractGMLBindingTest {
     ElementInstance featureAssociation;
     ElementInstance feature;
@@ -37,7 +36,7 @@ public class GMLFeatureAssociationTypeBindingTest extends AbstractGMLBindingTest
     //	public void testWithFeature() throws Exception {
     //		Feature f = createFeature(
     //			new String[]{"geom","count"},new Class[]{Point.class,Integer.class},
-    //			new Object[]{new GeometryFactory().createPoint(new Coordinate(1,1)), new Integer(2)}
+    //			new Object[]{new GeometryFactory().createPoint(new Coordinate(1,1)), Integer.valueOf(2)}
     //		);
     //
     //		Node node = createNode(

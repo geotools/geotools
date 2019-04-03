@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *   (C) 2016, Open Source Geospatial Foundation (OSGeo).
+ *   (C) 2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -23,7 +23,7 @@ import org.geotools.geometry.jts.CompoundRing;
 import org.geotools.gml2.simple.GMLWriter;
 import org.geotools.gml2.simple.GeometryEncoder;
 import org.geotools.gml3.GML;
-import org.geotools.xml.Encoder;
+import org.geotools.xsd.Encoder;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.LinearRing;
@@ -55,6 +55,16 @@ public class GenericGeometryEncoder extends GeometryEncoder<Geometry> {
      */
     public GenericGeometryEncoder(Encoder encoder, String gmlPrefix, String gmlUri) {
         super(encoder);
+        init(encoder, gmlPrefix, gmlUri);
+    }
+
+    public GenericGeometryEncoder(
+            Encoder encoder, String gmlPrefix, String gmlUri, boolean encodeGmlId) {
+        super(encoder, encodeGmlId);
+        init(encoder, gmlPrefix, gmlUri);
+    }
+
+    private void init(Encoder encoder, String gmlPrefix, String gmlUri) {
         this.encoder = encoder;
         this.gmlPrefix = gmlPrefix;
         this.gmlUri = gmlUri;

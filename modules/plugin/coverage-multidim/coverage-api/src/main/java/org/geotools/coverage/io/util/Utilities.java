@@ -47,17 +47,19 @@ import javax.media.jai.JAI;
 import javax.media.jai.PlanarImage;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.SystemUtils;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.grid.GeneralGridEnvelope;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.OverviewPolicy;
+import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.data.DataSourceException;
-import org.geotools.factory.Hints;
 import org.geotools.feature.NameImpl;
 import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.util.XRectangle2D;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.NamedIdentifier;
@@ -72,8 +74,7 @@ import org.geotools.referencing.operation.builder.GridToEnvelopeMapper;
 import org.geotools.referencing.operation.transform.ConcatenatedTransform;
 import org.geotools.referencing.operation.transform.IdentityTransform;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
-import org.geotools.resources.coverage.CoverageUtilities;
-import org.geotools.resources.geometry.XRectangle2D;
+import org.geotools.util.factory.Hints;
 import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.coverage.grid.GridEnvelope;
 import org.opengis.geometry.Envelope;
@@ -90,21 +91,14 @@ import org.opengis.referencing.operation.TransformException;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import si.uom.SI;
-import sun.awt.OSInfo;
-import sun.awt.OSInfo.OSType;
 import tec.uom.se.AbstractUnit;
 import tec.uom.se.format.SimpleUnitFormat;
 
-/**
- * @author Daniele Romagnoli, GeoSolutions
- * @source $URL$
- */
+/** @author Daniele Romagnoli, GeoSolutions */
 public class Utilities {
 
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(Utilities.class.toString());
-
-    private static final OSType OSTYPE = OSInfo.getOSType();
+            org.geotools.util.logging.Logging.getLogger(Utilities.class);
 
     /**
      * TODO: Define a contains method which allows to know if the extent of a CoverageSlice contains
@@ -173,7 +167,7 @@ public class Utilities {
         final String path = fileCheck.getAbsolutePath();
         final int imageSpecifierIndex = path.lastIndexOf(":");
         final File file;
-        if (OSTYPE.equals(OSType.WINDOWS)) {
+        if (SystemUtils.IS_OS_WINDOWS) {
             if (imageSpecifierIndex > 1 && imageSpecifierIndex > path.indexOf(":")) {
                 file = new File(path.substring(0, imageSpecifierIndex));
             } else {
@@ -851,16 +845,11 @@ public class Utilities {
      * This method creates the GridCoverage2D from the underlying file given a specified envelope,
      * and a requested dimension.
      *
-     * @param imageIndex
-     * @param coordinateReferenceSystem
-     * @param generalEnvelope
-     * @param mathTransform
-     * @param iUseJAI specify if the underlying read process should leverage on a JAI ImageRead
+     * @param useJAI specify if the underlying read process should leverage on a JAI ImageRead
      *     operation or a simple direct call to the {@code read} method of a proper {@code
      *     ImageReader}.
      * @param useMultithreading specify if the underlying read process should use multithreading
      *     when a JAI ImageRead operation is requested
-     * @param overviewPolicy the overview policy which need to be adopted
      * @return a {@code GridCoverage}
      * @throws java.io.IOException
      */
@@ -949,8 +938,7 @@ public class Utilities {
      * to be performed.
      *
      * @param imageIndex
-     * @param new FileImageInputStreamExtImplinput the input {@code ImageInputStream} to be used for
-     *     reading the image.
+     * @param input the input to be used for reading the image.
      * @param useJAI {@code true} if we need to use a JAI ImageRead operation, {@code false} if we
      *     need a simple direct {@code ImageReader.read(...)} call.
      * @param imageReadParam an {@code ImageReadParam} specifying the read parameters

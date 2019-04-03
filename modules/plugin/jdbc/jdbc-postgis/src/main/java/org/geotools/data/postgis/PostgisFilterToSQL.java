@@ -19,11 +19,15 @@ package org.geotools.data.postgis;
 import java.io.IOException;
 import java.util.Date;
 import org.geotools.data.jdbc.FilterToSQL;
+import org.geotools.data.postgis.filter.FilterFunction_pgNearest;
 import org.geotools.filter.FilterCapabilities;
 import org.geotools.jdbc.JDBCDataStore;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.LinearRing;
 import org.opengis.feature.type.GeometryDescriptor;
+import org.opengis.filter.BinaryComparisonOperator;
+import org.opengis.filter.PropertyIsBetween;
+import org.opengis.filter.PropertyIsEqualTo;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
@@ -31,14 +35,15 @@ import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.spatial.BinarySpatialOperator;
 import org.opengis.filter.spatial.DistanceBufferOperator;
 
-/** @source $URL$ */
 public class PostgisFilterToSQL extends FilterToSQL {
 
     FilterToSqlHelper helper;
     private boolean functionEncodingEnabled;
+    protected PostGISDialect pgDialect;
 
     public PostgisFilterToSQL(PostGISDialect dialect) {
         helper = new FilterToSqlHelper(this);
+        pgDialect = dialect;
     }
 
     public boolean isLooseBBOXEnabled() {
@@ -67,7 +72,10 @@ public class PostgisFilterToSQL extends FilterToSQL {
             geom = geom.getFactory().createLineString(((LinearRing) geom).getCoordinateSequence());
         }
 
-        Object typename = currentGeometry.getUserData().get(JDBCDataStore.JDBC_NATIVE_TYPENAME);
+        Object typename =
+                currentGeometry != null
+                        ? currentGeometry.getUserData().get(JDBCDataStore.JDBC_NATIVE_TYPENAME)
+                        : null;
         if ("geography".equals(typename)) {
             out.write("ST_GeogFromText('");
             out.write(geom.toText());
@@ -163,5 +171,76 @@ public class PostgisFilterToSQL extends FilterToSQL {
     @Override
     public double getDistanceInNativeUnits(DistanceBufferOperator operator) {
         return super.getDistanceInNativeUnits(operator);
+    }
+
+    /**
+     * Overrides base behavior to handler arrays
+     *
+     * @param filter the comparison to be turned into SQL.
+     * @param extraData
+     * @throws RuntimeException
+     */
+    protected void visitBinaryComparisonOperator(BinaryComparisonOperator filter, Object extraData)
+            throws RuntimeException {
+        Expression left = filter.getExpression1();
+        Expression right = filter.getExpression2();
+        Class rightContext = super.getExpressionType(left);
+        Class leftContext = super.getExpressionType(right);
+
+        // array comparison in PostgreSQL is strict, need to know the base type, that info is
+        // available only in the property name userdata
+        String type = (String) extraData;
+        if ((helper.isArray(rightContext) || helper.isArray(leftContext))
+                && (left instanceof PropertyName || right instanceof PropertyName)) {
+            helper.out = out;
+            helper.visitArrayComparison(filter, left, right, rightContext, leftContext, type);
+        } else {
+            super.visitBinaryComparisonOperator(filter, extraData);
+        }
+    }
+
+    /**
+     * Writes the SQL for the PropertyIsBetween Filter.
+     *
+     * @param filter the Filter to be visited.
+     * @throws RuntimeException for io exception with writer
+     */
+    public Object visit(PropertyIsBetween filter, Object extraData) throws RuntimeException {
+        LOGGER.finer("exporting PropertyIsBetween");
+
+        Expression expr = filter.getExpression();
+        Class context = super.getExpressionType(expr);
+        if (helper.isArray(context)) {
+            helper.out = out;
+            helper.visitArrayBetween(filter, context.getComponentType(), extraData);
+            return extraData;
+        } else {
+            return super.visit(filter, extraData);
+        }
+    }
+
+    public Object visit(PropertyIsEqualTo filter, Object extraData) {
+        helper.out = out;
+        FilterFunction_pgNearest nearest = helper.getNearestFilter(filter);
+        if (nearest != null) {
+            return helper.visit(
+                    nearest,
+                    extraData,
+                    new FilterToSqlHelper.NearestHelperContext(
+                            pgDialect,
+                            (a, b) -> {
+                                try {
+                                    pgDialect.encodeGeometryValue(
+                                            a,
+                                            helper.getFeatureTypeGeometryDimension(),
+                                            helper.getFeatureTypeGeometrySRID(),
+                                            b);
+                                } catch (IOException e) {
+                                    throw new RuntimeException(e);
+                                }
+                            }));
+        } else {
+            return super.visit(filter, extraData);
+        }
     }
 }

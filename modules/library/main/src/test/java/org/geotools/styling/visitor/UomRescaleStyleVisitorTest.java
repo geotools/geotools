@@ -63,10 +63,7 @@ import org.opengis.filter.expression.Expression;
 import si.uom.SI;
 import systems.uom.common.USCustomary;
 
-/**
- * @author milton
- * @source $URL$
- */
+/** @author milton */
 public class UomRescaleStyleVisitorTest {
 
     FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
@@ -76,7 +73,7 @@ public class UomRescaleStyleVisitorTest {
         try {
             new UomRescaleStyleVisitor(1);
         } catch (Exception e2) {
-            e2.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e2);
             fail(e2.getClass().getSimpleName() + " should not be thrown.");
         }
     }
@@ -132,7 +129,7 @@ public class UomRescaleStyleVisitorTest {
             assertEquals(Math.round(expectedRescaledSize), Math.round(rescaledSize));
             assertNotSame(rescaledPointSymb, pointSymb);
         } catch (Exception e2) {
-            e2.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e2);
             fail(e2.getClass().getSimpleName() + " should not be thrown.");
         }
     }
@@ -166,7 +163,7 @@ public class UomRescaleStyleVisitorTest {
                     rescaledLineSymb.getPerpendicularOffset().evaluate(null, Double.class),
                     0.1d);
         } catch (Exception e2) {
-            e2.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e2);
             fail(e2.getClass().getSimpleName() + " should not be thrown.");
         }
     }
@@ -208,7 +205,7 @@ public class UomRescaleStyleVisitorTest {
             int rescaledGraphicMargin = Converters.convert(splitted[0], Integer.class).intValue();
             assertEquals(expectedGraphicMargin, rescaledGraphicMargin);
         } catch (Exception e2) {
-            e2.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e2);
             fail(e2.getClass().getSimpleName() + " should not be thrown.");
         }
     }
@@ -294,7 +291,7 @@ public class UomRescaleStyleVisitorTest {
             assertEquals(expectedGraphicMargin1, rescaledGraphicMargin1);
             assertEquals(expectedGraphicMargin2, rescaledGraphicMargin2);
         } catch (Exception e2) {
-            e2.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e2);
             fail(e2.getClass().getSimpleName() + " should not be thrown.");
         }
     }
@@ -333,7 +330,7 @@ public class UomRescaleStyleVisitorTest {
             assertEquals(expectedDashArray, rescaledDynamicDashArray);
             assertNotSame(rescaledLineSymb, lineSymb);
         } catch (Exception e2) {
-            e2.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e2);
             fail(e2.getClass().getSimpleName() + " should not be thrown.");
         }
     }
@@ -402,26 +399,32 @@ public class UomRescaleStyleVisitorTest {
     }
 
     // LINE SYMBOLIZER TESTS with dynamic dash arrays
+    @Test
     public void testVisitLineSymbolizerDynamicDashArray_ScalePixelNull() {
         visitLineSymbolizerTestDynamicDashArray(10, null);
     }
 
+    @Test
     public void testVisitLineSymbolizerDynamicDashArray_ScalePixelExplicit() {
         visitLineSymbolizerTestDynamicDashArray(10, Units.PIXEL);
     }
 
+    @Test
     public void testVisitLineSymbolizerDynamicDashArray_ScaleMeter1() {
         visitLineSymbolizerTestDynamicDashArray(1, SI.METRE);
     }
 
+    @Test
     public void testVisitLineSymbolizerDynamicDashArray_ScaleMeter10() {
         visitLineSymbolizerTestDynamicDashArray(10, SI.METRE);
     }
 
+    @Test
     public void testVisitLineSymbolizerDynamicDashArray_ScaleFoot1() {
         visitLineSymbolizerTestDynamicDashArray(1, USCustomary.FOOT);
     }
 
+    @Test
     public void testVisitLineSymbolizerDynamicDashArray_ScaleFoot10() {
         visitLineSymbolizerTestDynamicDashArray(10, USCustomary.FOOT);
     }
@@ -509,7 +512,7 @@ public class UomRescaleStyleVisitorTest {
             assertNull(rescaledLineSymb.getStroke());
             assertNotSame(rescaledLineSymb, lineSymb);
         } catch (Exception e2) {
-            e2.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e2);
             fail(e2.getClass().getSimpleName() + " should not be thrown.");
         }
     }
@@ -534,7 +537,7 @@ public class UomRescaleStyleVisitorTest {
             assertNull(rescaledPolySymb.getStroke());
             assertNotSame(rescaledPolySymb, polySymb);
         } catch (Exception e2) {
-            e2.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e2);
             fail(e2.getClass().getSimpleName() + " should not be thrown.");
         }
     }
@@ -594,7 +597,7 @@ public class UomRescaleStyleVisitorTest {
             assertEquals(Math.round(expectedRescaledInitialGap), Math.round(rescaledInitialGap));
             assertNotSame(rescaledTextSymb, textSymb);
         } catch (Exception e2) {
-            e2.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e2);
             fail(e2.getClass().getSimpleName() + " should not be thrown.");
         }
     }
@@ -652,7 +655,7 @@ public class UomRescaleStyleVisitorTest {
             assertNotSame(SI.METRE, rescaledLineSymb.getUnitOfMeasure());
             assertNotSame(rescaledLineSymb, lineSymb);
         } catch (Exception e2) {
-            e2.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e2);
             fail(e2.getClass().getSimpleName() + " should not be thrown.");
         }
     }

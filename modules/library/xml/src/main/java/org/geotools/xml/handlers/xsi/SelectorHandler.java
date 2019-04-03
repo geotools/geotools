@@ -26,7 +26,6 @@ import org.xml.sax.Attributes;
  *
  * @author dzwiers, Refractions Research, Inc. http://www.refractions.net
  * @author $Author:$ (last modification)
- * @source $URL$
  * @version $Id$
  */
 public class SelectorHandler extends XSIElementHandler {
@@ -37,6 +36,7 @@ public class SelectorHandler extends XSIElementHandler {
     private String xpath;
 
     /** @see java.lang.Object#hashCode() */
+    @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int hashCode() {
         return LOCALNAME.hashCode()
                 * ((id == null) ? 1 : id.hashCode())
@@ -72,20 +72,12 @@ public class SelectorHandler extends XSIElementHandler {
         return LOCALNAME;
     }
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @return id attribute value
-     */
+    /** @return id attribute value */
     public String getId() {
         return id;
     }
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @return xPath attribute value
-     */
+    /** @return xPath attribute value */
     public String getXpath() {
         return xpath;
     }

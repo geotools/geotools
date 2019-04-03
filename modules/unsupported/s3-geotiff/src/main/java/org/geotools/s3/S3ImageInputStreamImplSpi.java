@@ -49,8 +49,6 @@ public class S3ImageInputStreamImplSpi extends ImageInputStreamSpi {
 
     private static final Class<String> inputClass = String.class;
 
-    private static volatile boolean useFileChannel;
-
     /**
      * Constructs a blank {@link ImageInputStreamSpi}. It is up to the subclass to initialize
      * instance variables and/or override method implementations in order to provide working
@@ -90,8 +88,12 @@ public class S3ImageInputStreamImplSpi extends ImageInputStreamSpi {
      */
     public ImageInputStream createInputStreamInstance(
             Object input, boolean useCache, File cacheDir) {
-        LOGGER.warning("S3ImageInputStreamImplSpi.createInputStream(" + input.getClass() + ")");
-
+        if (LOGGER.isLoggable(Level.FINE)) {
+            LOGGER.fine(
+                    "S3ImageInputStreamImplSpi.createInputStreamInstance("
+                            + input.getClass()
+                            + ")");
+        }
         if (input instanceof S3ImageInputStreamImpl) {
             try {
                 return new S3ImageInputStreamImpl(((S3ImageInputStreamImpl) input).getUrl());

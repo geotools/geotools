@@ -25,6 +25,7 @@ import static java.lang.Math.*;
 import java.awt.geom.Point2D;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.NamedIdentifier;
+import org.geotools.util.SuppressFBWarnings;
 import org.opengis.parameter.ParameterDescriptor;
 import org.opengis.parameter.ParameterDescriptorGroup;
 import org.opengis.parameter.ParameterNotFoundException;
@@ -39,9 +40,6 @@ import org.opengis.referencing.operation.MathTransform;
  * @see <A HREF="http://www.remotesensing.org/geotiff/proj_list/mollweide.html">"Mollweide" on
  *     RemoteSensing.org</A>
  * @since 2.7.0
- * @source $URL$
- *     http://svn.osgeo.org/geotools/branches/2.6.x/modules/library/referencing/src/main/java
- *     /org/geotools/referencing/operation/projection/Mercator.java $
  * @author Andrea Aime
  */
 public class Mollweide extends MapProjection {
@@ -96,6 +94,7 @@ public class Mollweide extends MapProjection {
     }
 
     /** {@inheritDoc} */
+    @SuppressFBWarnings("UR_UNINIT_READ_CALLED_FROM_SUPER_CONSTRUCTOR")
     public ParameterDescriptorGroup getParameterDescriptors() {
         return descriptors;
     }
@@ -148,16 +147,6 @@ public class Mollweide extends MapProjection {
         ptDst.setLocation(lam, phi);
 
         return ptDst;
-    }
-
-    /** Compares the specified object with this map projection for equality. */
-    @Override
-    public boolean equals(final Object object) {
-        if (object == this) {
-            // Slight optimization
-            return true;
-        }
-        return super.equals(object);
     }
 
     @Override

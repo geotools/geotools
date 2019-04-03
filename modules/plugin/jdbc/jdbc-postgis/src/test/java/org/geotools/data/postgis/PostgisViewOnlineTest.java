@@ -6,7 +6,6 @@ import org.geotools.referencing.CRS;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-/** @source $URL$ */
 public class PostgisViewOnlineTest extends JDBCViewOnlineTest {
 
     @Override

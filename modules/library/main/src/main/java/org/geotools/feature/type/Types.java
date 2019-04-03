@@ -25,11 +25,11 @@ import java.util.Set;
 import java.util.TreeSet;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
-import org.geotools.feature.IllegalAttributeException;
 import org.geotools.feature.NameImpl;
 import org.geotools.util.Converters;
 import org.opengis.feature.Attribute;
 import org.opengis.feature.ComplexAttribute;
+import org.opengis.feature.IllegalAttributeException;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.AttributeType;
@@ -50,7 +50,6 @@ import org.xml.sax.helpers.NamespaceSupport;
  *
  * @author Jody Garnett, LISAsoft
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL$
  */
 public class Types {
 
@@ -278,7 +277,6 @@ public class Types {
      *
      * @param expected Expected FeatureType being used to compare against
      * @param actual Actual FeatureType
-     * @return true if actual is equal to or a subset of the expected feature type.
      */
     public static void assertNameAssignable(FeatureType expected, FeatureType actual) {
         // check feature type name
@@ -510,10 +508,7 @@ public class Types {
     }
 
     public static boolean equals(Name name, QName qName) {
-        if (name == null && qName != null) {
-            return false;
-        }
-        if (qName == null && name != null) {
+        if (name == null || qName == null) {
             return false;
         }
         if (XMLConstants.NULL_NS_URI.equals(qName.getNamespaceURI())) {
@@ -644,7 +639,7 @@ public class Types {
      * Converts content into a format which is used to store it internally within an attribute of a
      * specific type.
      *
-     * @param value the object to attempt parsing of.
+     * @param content the object to attempt parsing of.
      * @throws IllegalArgumentException if parsing is attempted and is unsuccessful.
      */
     public static Object parse(AttributeType type, Object content) throws IllegalArgumentException {

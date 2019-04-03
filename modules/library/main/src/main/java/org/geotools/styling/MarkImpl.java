@@ -17,7 +17,7 @@
 package org.geotools.styling;
 
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.factory.GeoTools;
+import org.geotools.util.factory.GeoTools;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Expression;
 import org.opengis.style.GraphicalSymbol;
@@ -29,14 +29,13 @@ import org.opengis.util.Cloneable;
  *
  * @author Ian Turton, CCG
  * @author Johann Sorel (Geomatys)
- * @source $URL$
  * @version $Id$
  */
 public class MarkImpl implements Mark, Cloneable {
 
     /** The logger for the default core module. */
     private static final java.util.logging.Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.styling");
+            org.geotools.util.logging.Logging.getLogger(MarkImpl.class);
 
     private final FilterFactory filterFactory;
     private FillImpl fill;
@@ -72,13 +71,7 @@ public class MarkImpl implements Mark, Cloneable {
         this.external = ExternalMarkImpl.cast(external);
     }
 
-    /**
-     * Convenience method for logging a message with an exception.
-     *
-     * @param method DOCUMENT ME!
-     * @param message DOCUMENT ME!
-     * @param exception DOCUMENT ME!
-     */
+    /** Convenience method for logging a message with an exception. */
     private static void severe(
             final String method, final String message, final Exception exception) {
         final java.util.logging.LogRecord record =

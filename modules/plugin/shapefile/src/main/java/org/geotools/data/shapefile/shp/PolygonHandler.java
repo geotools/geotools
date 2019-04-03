@@ -38,12 +38,11 @@ import org.locationtech.jts.geom.Polygon;
  *
  * @author aaime
  * @author Ian Schneider
- * @source $URL$
  * @version $Id$
  */
 public class PolygonHandler implements ShapeHandler {
     protected static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.data.shapefile");
+            org.geotools.util.logging.Logging.getLogger(PolygonHandler.class);
 
     GeometryFactory geometryFactory;
 
@@ -76,7 +75,7 @@ public class PolygonHandler implements ShapeHandler {
             // nan test; x!=x iff x is nan
             if ((testPoint.x == p.x)
                     && (testPoint.y == p.y)
-                    && ((testPoint.z == p.z) || (!(testPoint.z == testPoint.z)))) {
+                    && ((testPoint.z == p.z) || Double.isNaN(testPoint.z))) {
                 return true;
             }
         }
@@ -458,13 +457,30 @@ public class PolygonHandler implements ShapeHandler {
         }
 
         if (shapeType == ShapeType.POLYGONM || shapeType == ShapeType.POLYGONZ) {
-            // m
-            buffer.putDouble(-10E40);
-            buffer.putDouble(-10E40);
-
-            for (int t = 0; t < npoints; t++) {
-                buffer.putDouble(-10E40);
+            // obtain all M values
+            List<Double> values = new ArrayList<>();
+            for (int ringN = 0; ringN < nrings; ringN++) {
+                CoordinateSequence coords = coordinates[ringN];
+                final int seqSize = coords.size();
+                double m;
+                for (int coordN = 0; coordN < seqSize; coordN++) {
+                    m = coords.getM(coordN);
+                    values.add(m);
+                }
             }
+
+            // m min
+            double edge = values.stream().min(Double::compare).get();
+            buffer.putDouble(!Double.isNaN(edge) ? edge : -10E40);
+            // m max
+            edge = values.stream().max(Double::compare).get();
+            buffer.putDouble(!Double.isNaN(edge) ? edge : -10E40);
+
+            // m values
+            values.forEach(
+                    x -> {
+                        buffer.putDouble(!Double.isNaN(x) ? x : -10E40);
+                    });
         }
     }
 }

@@ -29,7 +29,6 @@ import org.opengis.filter.FilterFactory;
  *
  * @author Mauricio Pazos (Axios Engineering)
  * @since 2.6
- * @source $URL$
  */
 public abstract class AbstractCompilerFactory {
 
@@ -49,8 +48,7 @@ public abstract class AbstractCompilerFactory {
         if (filterFactory == null) {
             ff = CommonFactoryFinder.getFilterFactory();
         }
-        String clonePredicate = new String(predicate);
-        ICompiler compiler = createCompiler(clonePredicate, ff);
+        ICompiler compiler = createCompiler(predicate, ff);
 
         return compiler;
     }

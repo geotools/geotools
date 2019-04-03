@@ -25,7 +25,6 @@ import org.geotools.filter.v1_0.OGC;
  * shall be used, as its based on a different schema.
  *
  * @author Justin Deoliveira, OpenGEO
- * @source $URL$
  */
 public final class WFS extends org.geotools.wfs.WFS {
 

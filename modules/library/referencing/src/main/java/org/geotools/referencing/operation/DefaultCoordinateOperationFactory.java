@@ -31,7 +31,8 @@ import java.util.Set;
 import javax.measure.Unit;
 import javax.measure.quantity.Angle;
 import javax.measure.quantity.Time;
-import org.geotools.factory.Hints;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.AbstractIdentifiedObject;
 import org.geotools.referencing.crs.DefaultCompoundCRS;
 import org.geotools.referencing.crs.DefaultEngineeringCRS;
@@ -45,9 +46,8 @@ import org.geotools.referencing.operation.matrix.Matrix4;
 import org.geotools.referencing.operation.matrix.MatrixFactory;
 import org.geotools.referencing.operation.matrix.SingularMatrixException;
 import org.geotools.referencing.operation.matrix.XMatrix;
-import org.geotools.resources.Classes;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
+import org.geotools.util.Classes;
+import org.geotools.util.factory.Hints;
 import org.opengis.parameter.ParameterValueGroup;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.ReferenceIdentifier;
@@ -96,11 +96,7 @@ import tec.uom.se.unit.MetricPrefix;
  * those methods in order to extend the factory capability to some more CRS.
  *
  * @since 2.1
- * @source $URL$
- * @version $Id$
  * @author Martin Desruisseaux (IRD)
- * @tutorial
- *     http://docs.codehaus.org/display/GEOTOOLS/Coordinate+Transformation+Services+for+Geotools+2.1
  */
 public class DefaultCoordinateOperationFactory extends AbstractCoordinateOperationFactory {
     /** The priority level for this factory. */
@@ -199,9 +195,6 @@ public class DefaultCoordinateOperationFactory extends AbstractCoordinateOperati
      *
      * @param sourceCRS Input coordinate reference system.
      * @param targetCRS Output coordinate reference system.
-     * @param limit The maximum number of operations to be returned. Use -1 to return all the
-     *     available operations. Use 1 to return just one operation. Currently, the behavior for
-     *     other values of {@code limit} is undefined.
      * @return A coordinate operation from {@code sourceCRS} to {@code targetCRS}.
      * @throws OperationNotFoundException if no operation path was found from {@code sourceCRS} to
      *     {@code targetCRS}.
@@ -594,7 +587,7 @@ public class DefaultCoordinateOperationFactory extends AbstractCoordinateOperati
     /**
      * Returns {@code true} if the specified coordinate system use standard axis and units.
      *
-     * @param crs The coordinate system to test.
+     * @param cs The coordinate system to test.
      * @param standard The coordinate system that defines the standard. Usually {@link
      *     DefaultEllipsoidalCS#GEODETIC_2D} or {@link DefaultCartesianCS#PROJECTED}.
      */
@@ -901,10 +894,9 @@ public class DefaultCoordinateOperationFactory extends AbstractCoordinateOperati
                                     identifier, normSourceCRS, normTargetCRS, parameters);
                     step3 = createOperationStep(normTargetCRS, targetCRS);
                     return concatenate(step1, step2, step3);
-                } else {
-                    // TODO: Need some way to pass 'targetDim' to Molodenski.
-                    //       Fallback on geocentric transformations for now.
                 }
+                // TODO: Need some way to pass 'targetDim' to Molodenski.
+                //       Fallback on geocentric transformations for now.
             }
         }
         /*
@@ -1581,7 +1573,10 @@ public class DefaultCoordinateOperationFactory extends AbstractCoordinateOperati
          * for any target coordinates.
          */
         assert count == targets.size() : count;
-        while (count != 0 && steps[--count].getMathTransform().isIdentity()) ;
+        count--;
+        while (count != 0 && steps[count].getMathTransform().isIdentity()) {
+            count--;
+        }
         final ReferencingFactoryContainer factories = getFactoryContainer();
         CoordinateOperation operation = null;
         CoordinateReferenceSystem sourceStepCRS = sourceCRS;

@@ -52,7 +52,7 @@ The format of that pyramid.properties file is magic, while we can look at the ja
   #where all the levels reside
   LevelsDirs=0 2 4 8 16 32
   
-  #number of levels availaible
+  #number of levels available
   LevelsNum=6
   
   #envelope for this pyramid

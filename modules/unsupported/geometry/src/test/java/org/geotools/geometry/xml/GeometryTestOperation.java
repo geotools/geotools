@@ -26,10 +26,7 @@ import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.Geometry;
 import org.opengis.geometry.TransfiniteSet;
 
-/**
- * @author <a href="mailto:joel@lggi.com">Joel Skelton</a>
- * @source $URL$
- */
+/** @author <a href="mailto:joel@lggi.com">Joel Skelton</a> */
 public class GeometryTestOperation extends Assert {
     private String operation;
     private String arg1;
@@ -40,7 +37,7 @@ public class GeometryTestOperation extends Assert {
     private Map<String, OperationHandler> operationMap;
 
     private static final Logger LOG =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.geometry");
+            org.geotools.util.logging.Logging.getLogger(GeometryTestOperation.class);
 
     /**
      * Constructor
@@ -392,7 +389,7 @@ public class GeometryTestOperation extends Assert {
                 result = geom1.relate(geom2, arg3);
             } catch (UnsupportedDimensionException e) {
                 // TODO Auto-generated catch block
-                e.printStackTrace();
+                java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             }
             actualResult = result;
             return (actualResult == expectedResult);

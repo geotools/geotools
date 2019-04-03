@@ -42,7 +42,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
 
 public class GeoJSONParserTest {
 
-    private static final Logger LOGGER = Logging.getLogger("org.geotools.data.arcgisrest");
+    private static final Logger LOGGER = Logging.getLogger(GeoJSONParserTest.class);
 
     ArcGISRestFeatureReader reader;
     SimpleFeatureType fType;

@@ -28,6 +28,7 @@ import java.util.Map;
 import java.util.logging.Logger;
 import org.apache.commons.io.FilenameUtils;
 import org.geotools.coverage.grid.io.DimensionDescriptor;
+import org.geotools.coverage.util.FeatureUtilities;
 import org.geotools.data.CloseableIterator;
 import org.geotools.data.DefaultResourceInfo;
 import org.geotools.data.FileResourceInfo;
@@ -42,7 +43,6 @@ import org.geotools.filter.LikeFilterImpl;
 import org.geotools.filter.SortByImpl;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalog;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.resources.coverage.FeatureUtilities;
 import org.geotools.util.DateRange;
 import org.geotools.util.NumberRange;
 import org.geotools.util.Range;
@@ -231,8 +231,8 @@ public class ImageMosaicFileResourceInfo extends DefaultResourceInfo implements 
          * <p>The method also look for supportFiles.
          *
          * @param file
-         * @paran aggregate, whether aggregation queries should be invoked to extract domains
-         * @param firstFeature, sample feature to be used when no aggregation is needed
+         * @paran aggregate whether aggregation queries should be invoked to extract domains
+         * @param firstFeature sample feature to be used when no aggregation is needed
          * @return
          */
         private FileGroup buildFileGroup(File file, boolean aggregate, SimpleFeature firstFeature) {

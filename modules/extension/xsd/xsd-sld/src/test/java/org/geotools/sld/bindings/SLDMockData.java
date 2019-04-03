@@ -22,7 +22,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
-/** @source $URL$ */
 public class SLDMockData {
     static Element anchorPoint(Document document, Node parent) {
         Element anchorPoint = element(SLD.ANCHORPOINT, document, parent);
@@ -277,6 +276,18 @@ public class SLDMockData {
 
         Element histogram = element(SLD.HISTOGRAM, document, contrastEnhancement);
 
+        return contrastEnhancement;
+    }
+
+    static Element contrastEnhancementExpressionGammaValue(Document document, Node parent) {
+        Element contrastEnhancement = element(SLD.CONTRASTENHANCEMENT, document, parent);
+
+        Element gammaValue = element(SLD.GAMMAVALUE, document, contrastEnhancement);
+        Element addExp = element(OGC.Add, document, gammaValue);
+        Element addLit1 = element(OGC.Literal, document, addExp);
+        addLit1.appendChild(document.createTextNode("1.0"));
+        Element addLit2 = element(OGC.Literal, document, addExp);
+        addLit2.appendChild(document.createTextNode("0.5"));
         return contrastEnhancement;
     }
 

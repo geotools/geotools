@@ -45,7 +45,7 @@ import org.opengis.referencing.operation.TransformException;
  */
 public class TileLayer extends DirectLayer {
 
-    private static final Logger LOGGER = Logging.getLogger(TileLayer.class.getPackage().getName());
+    private static final Logger LOGGER = Logging.getLogger(TileLayer.class);
 
     private static final GridCoverageFactory gridFactory = new GridCoverageFactory();
 
@@ -83,7 +83,6 @@ public class TileLayer extends DirectLayer {
 
         BufferedImage mosaickedImage = createImage(viewport.getScreenArea());
         Graphics2D g2d = mosaickedImage.createGraphics();
-        long t = System.currentTimeMillis();
         renderTiles(tiles, g2d, viewportExtent, viewport.getWorldToScreen());
 
         this.coverage = gridFactory.create("GridCoverage", mosaickedImage, viewportExtent);

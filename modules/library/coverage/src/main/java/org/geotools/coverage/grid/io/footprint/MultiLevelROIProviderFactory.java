@@ -20,7 +20,7 @@ import java.io.File;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.geotools.resources.coverage.CoverageUtilities;
+import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.util.URLs;
 import org.geotools.util.Utilities;
 import org.locationtech.jts.geom.Geometry;
@@ -36,8 +36,7 @@ import org.locationtech.jts.geom.Geometry;
 public class MultiLevelROIProviderFactory {
 
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(
-                    MultiLevelROIProviderFactory.class.toString());
+            org.geotools.util.logging.Logging.getLogger(MultiLevelROIProviderFactory.class);
 
     // well known properties
     public static final String SOURCE_PROPERTY = "footprint_source";
@@ -52,7 +51,7 @@ public class MultiLevelROIProviderFactory {
     /**
      * Builds a footprint provider from file location
      *
-     * @param the reference file.
+     * @param referenceFile the reference file.
      * @return
      * @throws Exception
      * @see {@link #createFootprintProvider(File, Geometry)}
@@ -64,10 +63,10 @@ public class MultiLevelROIProviderFactory {
     /**
      * Builds a footprint provider from file location
      *
-     * @param It can be: - a folder containing the footprint config files (if any) OR the footprint
-     *     itself. - the data file for which we are looking for a footprint.
-     * @param The optional granuleBounds geometry. if not null, it will be used as data's reference
-     *     geometry.
+     * @param referenceFile It can be: - a folder containing the footprint config files (if any) OR
+     *     the footprint itself. - the data file for which we are looking for a footprint.
+     * @param granuleBounds The optional granuleBounds geometry. if not null, it will be used as
+     *     data's reference geometry.
      * @return
      * @throws Exception
      */

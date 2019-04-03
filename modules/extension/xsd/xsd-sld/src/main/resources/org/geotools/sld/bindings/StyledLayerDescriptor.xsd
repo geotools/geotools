@@ -192,7 +192,7 @@
     <xsd:annotation>
       <xsd:documentation>
         A FeatureTypeConstraint identifies a specific feature type and
-        supplies fitlering.
+        supplies filtering.
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
@@ -931,7 +931,13 @@
 	</xsd:complexType>
   
   
-  <xsd:element name="GammaValue" type="xsd:double"/>
+  <xsd:element name="GammaValue">
+    <xsd:complexType mixed="true">
+      <xsd:complexContent>
+        <xsd:extension base="sld:ParameterValueType"/>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
 
   <xsd:element name="ShadedRelief">
     <xsd:annotation>

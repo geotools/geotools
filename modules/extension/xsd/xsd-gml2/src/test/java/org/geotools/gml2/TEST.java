@@ -18,9 +18,8 @@ package org.geotools.gml2;
 
 import java.util.Set;
 import javax.xml.namespace.QName;
-import org.geotools.xml.XSD;
+import org.geotools.xsd.XSD;
 
-/** @source $URL$ */
 public final class TEST extends XSD {
     private static TEST instance = new TEST();
     public static String NAMESPACE = "http://www.geotools.org/test";

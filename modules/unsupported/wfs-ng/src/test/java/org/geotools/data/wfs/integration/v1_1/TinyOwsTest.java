@@ -42,10 +42,10 @@ import org.geotools.data.wfs.WFSDataStore;
 import org.geotools.data.wfs.WFSTestData;
 import org.geotools.data.wfs.internal.WFSClient;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.factory.GeoTools;
 import org.geotools.feature.NameImpl;
 import org.geotools.filter.identity.FeatureIdImpl;
 import org.geotools.ows.ServiceException;
+import org.geotools.util.factory.GeoTools;
 import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.type.Name;
@@ -107,7 +107,7 @@ public class TinyOwsTest {
         try {
             XMLAssert.assertXMLEqual(control, actualXml);
         } catch (SAXException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             throw new IOException(e);
         }
     }

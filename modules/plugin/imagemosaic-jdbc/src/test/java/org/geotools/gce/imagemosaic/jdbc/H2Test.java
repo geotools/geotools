@@ -52,7 +52,7 @@ public class H2Test extends AbstractTest {
             TARGET = CRS.parseWKT(EPSG_31287_TOWGS84);
             SOURCE = CRS.decode("EPSG:4326");
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
     }
 

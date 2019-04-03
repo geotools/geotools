@@ -31,11 +31,11 @@ import org.geotools.data.DataUtilities;
 import org.geotools.data.Parameter;
 import org.geotools.data.jdbc.datasource.DBCPDataSource;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.factory.FactoryCreator;
-import org.geotools.factory.FactoryRegistry;
-import org.geotools.factory.FactoryRegistryException;
 import org.geotools.feature.type.FeatureTypeFactoryImpl;
 import org.geotools.util.SimpleInternationalString;
+import org.geotools.util.factory.FactoryCreator;
+import org.geotools.util.factory.FactoryRegistry;
+import org.geotools.util.factory.FactoryRegistryException;
 import org.locationtech.jts.geom.GeometryFactory;
 
 /**
@@ -44,7 +44,6 @@ import org.locationtech.jts.geom.GeometryFactory;
  * <p>
  *
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL$
  */
 public abstract class JDBCDataStoreFactory implements DataStoreFactorySpi {
 
@@ -98,7 +97,7 @@ public abstract class JDBCDataStoreFactory implements DataStoreFactorySpi {
                     Integer.class,
                     "maximum number of open connections",
                     false,
-                    new Integer(10));
+                    Integer.valueOf(10));
 
     /** Minimum number of connections in the connection pool */
     public static final Param MINCONN =
@@ -107,7 +106,7 @@ public abstract class JDBCDataStoreFactory implements DataStoreFactorySpi {
                     Integer.class,
                     "minimum number of pooled connection",
                     false,
-                    new Integer(1));
+                    Integer.valueOf(1));
 
     /** If connections should be validated before using them */
     public static final Param VALIDATECONN =

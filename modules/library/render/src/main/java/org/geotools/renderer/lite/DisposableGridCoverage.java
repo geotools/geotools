@@ -19,7 +19,7 @@ package org.geotools.renderer.lite;
 import java.awt.image.RenderedImage;
 import javax.media.jai.PlanarImage;
 import org.geotools.coverage.grid.GridCoverage2D;
-import org.geotools.resources.image.ImageUtilities;
+import org.geotools.image.util.ImageUtilities;
 
 /**
  * Internal wrapper used by streaming renderer to figure out if a GridCoverage2D should be disposed
@@ -60,6 +60,7 @@ class DisposableGridCoverage extends GridCoverage2D {
 
     @Override
     public synchronized boolean dispose(boolean force) {
+        boolean disposed = false;
         try {
             delegate.dispose(force);
             final RenderedImage image = delegate.getRenderedImage();
@@ -67,7 +68,9 @@ class DisposableGridCoverage extends GridCoverage2D {
                 ImageUtilities.disposePlanarImageChain((PlanarImage) image);
             }
         } finally {
-            return super.dispose(force);
+            disposed = super.dispose(force);
         }
+
+        return disposed;
     }
 }

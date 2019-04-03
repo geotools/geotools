@@ -24,7 +24,6 @@ import org.opengis.feature.ComplexAttribute;
 import org.w3c.dom.Document;
 import tec.uom.se.unit.BaseUnit;
 
-/** @source $URL$ */
 public class MeasureTypeBindingTest extends ComplexAttributeTestSupport {
 
     public void testParser() throws Exception {

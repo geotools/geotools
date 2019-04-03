@@ -26,7 +26,7 @@ public class FilterFunction_disjoint3DTest extends TestCase {
         try {
             type = DataUtilities.createType("testSchema", "name:String,*geom:Geometry");
         } catch (SchemaException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
 
         WKTReader reader = new WKTReader();

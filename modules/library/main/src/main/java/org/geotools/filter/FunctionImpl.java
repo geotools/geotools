@@ -42,7 +42,6 @@ import org.opengis.parameter.Parameter;
  * <p>
  *
  * @author Cory Horner, Refractions Research
- * @source $URL$
  */
 public class FunctionImpl extends ExpressionAbstract implements Function {
 
@@ -148,31 +147,6 @@ public class FunctionImpl extends ExpressionAbstract implements Function {
         }
         sb.append(")");
         return sb.toString();
-    }
-
-    /**
-     * Validates the structure of arguments, basically enforcing java conventions for variable level
-     * arguments.
-     */
-    private void validateArguments() throws IllegalArgumentException {
-        List<Parameter<?>> args = getFunctionName().getArguments();
-
-        for (int i = 0; i < args.size(); i++) {
-            Parameter<?> arg = args.get(i);
-            if (arg.getMaxOccurs() == 0) {
-                throw new IllegalArgumentException(String.format("Argument %s has zero max"));
-            }
-            if (arg.getMinOccurs() != 1 || arg.getMaxOccurs() != 1) {
-                // this can only happen for the last argument
-                if (i != args.size() - 1) {
-                    throw new IllegalArgumentException(
-                            String.format(
-                                    "Argument %s(%d,%d) invalid."
-                                            + " Variable arguments must be the last argument of function.",
-                                    arg.getName(), arg.getMinOccurs(), arg.getMaxOccurs()));
-                }
-            }
-        }
     }
 
     /**

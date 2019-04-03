@@ -22,11 +22,11 @@ import java.lang.reflect.Field;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
-import org.geotools.io.TableWriter;
-import org.geotools.resources.Arguments;
-import org.geotools.resources.Classes;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
+import org.geotools.util.Arguments;
+import org.geotools.util.Classes;
+import org.geotools.util.TableWriter;
 
 /**
  * Base class for command line tools. Subclasses define fields annotated with {@link Option}, while
@@ -42,7 +42,6 @@ import org.geotools.resources.i18n.Errors;
  * </table>
  *
  * @since 2.5
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  * @author Cédric Briançon
@@ -222,7 +221,7 @@ public class CommandLine {
      * Gets the arguments for the given class. The arguments are added in the given set.
      *
      * @param classe The class to parse for arguments.
-     * @param mantatory The set where to put mandatory arguments.
+     * @param mandatory The set where to put mandatory arguments.
      * @param optional The set where to put optional arguments.
      */
     private void getArguments(

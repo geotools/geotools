@@ -17,6 +17,7 @@
 package org.geotools.data.postgis;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
@@ -36,7 +37,6 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.logging.Level;
 import org.geotools.data.jdbc.FilterToSQL;
-import org.geotools.factory.Hints;
 import org.geotools.geometry.jts.CircularRing;
 import org.geotools.geometry.jts.CircularString;
 import org.geotools.geometry.jts.CompoundCurve;
@@ -52,6 +52,7 @@ import org.geotools.jdbc.ColumnMetadata;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.referencing.CRS;
 import org.geotools.util.Version;
+import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryCollection;
@@ -71,7 +72,6 @@ import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-/** @source $URL$ */
 public class PostGISDialect extends BasicSQLDialect {
 
     public static final String BIGDATE_UDT = "bigdate";
@@ -102,6 +102,25 @@ public class PostGISDialect extends BasicSQLDialect {
                     put("CIRCULARSTRING", CircularString.class);
                     put("MULTISURFACE", MultiSurface.class);
                     put("BYTEA", byte[].class);
+                }
+            };
+
+    // simple type to class map
+    static final Map<String, Class> SIMPLE_TYPE_TO_CLASS_MAP =
+            new HashMap<String, Class>() {
+                {
+                    put("INT2", Short.class);
+                    put("INT4", Integer.class);
+                    put("INT8", Long.class);
+                    put("FLOAT4", Float.class);
+                    put("FLOAT8", Double.class);
+                    put("BOOL", Boolean.class);
+                    put("VARCHAR", String.class);
+                    put("DATE", java.sql.Date.class);
+                    put("TIME", java.sql.Time.class);
+                    put("TIMESTAMP", java.sql.Timestamp.class);
+                    put("TIMESTAMPZ", java.sql.Timestamp.class);
+                    put("TIMESTAMPTZ", java.sql.Timestamp.class);
                 }
             };
 
@@ -212,6 +231,11 @@ public class PostGISDialect extends BasicSQLDialect {
         return simplifyEnabled;
     }
 
+    public boolean canSimplifyPoints() {
+        // TWKB encoding is a form of simplified points representation (reduced precision)
+        return version.compareTo(V_2_2_0) >= 0;
+    }
+
     /**
      * Enables/disables usage of ST_Simplify geometry wrapping when the Query contains a geometry
      * simplification hint
@@ -252,6 +276,7 @@ public class PostGISDialect extends BasicSQLDialect {
     }
 
     ThreadLocal<WKBAttributeIO> wkbReader = new ThreadLocal<WKBAttributeIO>();
+    ThreadLocal<TWKBAttributeIO> twkbReader = new ThreadLocal<TWKBAttributeIO>();
 
     @Override
     public Geometry decodeGeometryValue(
@@ -262,9 +287,17 @@ public class PostGISDialect extends BasicSQLDialect {
             Connection cx,
             Hints hints)
             throws IOException, SQLException {
-        WKBAttributeIO reader = getWKBReader(factory);
+        // did we use WKB or TWKB encoding? See #encodeGeometryColumnSimplified
+        if (isTWKBTransferEnabled(descriptor, hints)) {
+            TWKBAttributeIO reader = getTWKBReader(factory);
 
-        return (Geometry) reader.read(rs, column);
+            Geometry g = (Geometry) reader.read(rs, column, descriptor.getType().getBinding());
+            return g;
+        } else {
+            WKBAttributeIO reader = getWKBReader(factory);
+
+            return (Geometry) reader.read(rs, column);
+        }
     }
 
     public Geometry decodeGeometryValue(
@@ -275,9 +308,28 @@ public class PostGISDialect extends BasicSQLDialect {
             Connection cx,
             Hints hints)
             throws IOException, SQLException {
-        WKBAttributeIO reader = getWKBReader(factory);
+        // did we use WKB or TWKB encoding? See #encodeGeometryColumnSimplified
+        if (isTWKBTransferEnabled(descriptor, hints)) {
+            TWKBAttributeIO reader = getTWKBReader(factory);
 
-        return (Geometry) reader.read(rs, column);
+            Geometry g = (Geometry) reader.read(rs, column, descriptor.getType().getBinding());
+            return g;
+        } else {
+            WKBAttributeIO reader = getWKBReader(factory);
+
+            return (Geometry) reader.read(rs, column);
+        }
+    }
+
+    private boolean isTWKBTransferEnabled(GeometryDescriptor descriptor, Hints hints) {
+        Double distance = (Double) hints.get(Hints.GEOMETRY_SIMPLIFICATION);
+        boolean geography =
+                "geography"
+                        .equals(descriptor.getUserData().get(JDBCDataStore.JDBC_NATIVE_TYPENAME));
+        return !geography
+                && distance != null
+                && version.compareTo(V_2_2_0) >= 0
+                && isStraightSegmentsGeometry(descriptor);
     }
 
     private WKBAttributeIO getWKBReader(GeometryFactory factory) {
@@ -285,6 +337,17 @@ public class PostGISDialect extends BasicSQLDialect {
         if (reader == null) {
             reader = new WKBAttributeIO(factory);
             wkbReader.set(reader);
+        } else {
+            reader.setGeometryFactory(factory);
+        }
+        return reader;
+    }
+
+    private TWKBAttributeIO getTWKBReader(GeometryFactory factory) {
+        TWKBAttributeIO reader = twkbReader.get();
+        if (reader == null) {
+            reader = new TWKBAttributeIO(factory);
+            twkbReader.set(reader);
         } else {
             reader.setGeometryFactory(factory);
         }
@@ -334,22 +397,36 @@ public class PostGISDialect extends BasicSQLDialect {
         } else {
             // add preserveCollapsed argument if it's supported (PostGIS 2.2+)
             // http://postgis.net/docs/manual-2.2/ST_Simplify.html
-            String preserveCollapsed = version.compareTo(V_2_2_0) >= 0 ? ", true" : "";
+            boolean atLeast2_2_0 = version.compareTo(V_2_2_0) >= 0;
 
             boolean geography =
                     "geography".equals(gatt.getUserData().get(JDBCDataStore.JDBC_NATIVE_TYPENAME));
 
             if (geography) {
+                // st_astwb and st_simplify do not accept a geography column
                 sql.append("encode(ST_AsBinary(");
                 encodeColumnName(prefix, gatt.getLocalName(), sql);
                 sql.append("),'base64')");
             } else {
+                String preserveCollapsed = atLeast2_2_0 ? ", true" : "";
                 if (NON_CURVED_GEOMETRY_CLASSES.contains(gatt.getType().getBinding())) {
-                    sql.append("encode(ST_AsBinary(ST_Simplify(" + getForce2DFunction() + "(");
-                    encodeColumnName(prefix, gatt.getLocalName(), sql);
-                    sql.append("), " + distance + preserveCollapsed + ")),'base64')");
+                    if (atLeast2_2_0) {
+                        sql.append("encode(ST_AsTWKB(ST_Simplify(" + getForce2DFunction() + "(");
+                        encodeColumnName(prefix, gatt.getLocalName(), sql);
+                        sql.append(
+                                "), "
+                                        + distance
+                                        + preserveCollapsed
+                                        + "),"
+                                        + getTWKBDigits(distance)
+                                        + "),'base64')");
+                    } else {
+                        sql.append("encode(ST_AsBinary(ST_Simplify(" + getForce2DFunction() + "(");
+                        encodeColumnName(prefix, gatt.getLocalName(), sql);
+                        sql.append("), " + distance + preserveCollapsed + ")),'base64')");
+                    }
                 } else {
-                    // we can have curves mixed in
+                    // may have curves mixed in, cannot use TWKB and need to guard ST_Simplify
                     sql.append("encode(ST_AsBinary(");
                     sql.append("CASE WHEN ST_HasArc(");
                     encodeColumnName(prefix, gatt.getLocalName(), sql);
@@ -362,6 +439,22 @@ public class PostGISDialect extends BasicSQLDialect {
                 }
             }
         }
+    }
+
+    private boolean isStraightSegmentsGeometry(GeometryDescriptor gatt) {
+        return NON_CURVED_GEOMETRY_CLASSES.contains(gatt.getType().getBinding());
+    }
+
+    /**
+     * Computes the number of digits preserved by TWKB based on the magnitude of the simplification
+     * distance
+     *
+     * @param distance
+     * @return
+     */
+    private int getTWKBDigits(Double distance) {
+        int result = -(int) Math.floor(Math.log10(distance));
+        return result;
     }
 
     @Override
@@ -466,7 +559,35 @@ public class PostGISDialect extends BasicSQLDialect {
     public Class<?> getMapping(ResultSet columnMetaData, Connection cx) throws SQLException {
 
         String typeName = columnMetaData.getString("TYPE_NAME");
+        int dataType = columnMetaData.getInt("DATA_TYPE");
 
+        if (dataType == Types.ARRAY && typeName.length() > 1) {
+            // type_name starts with an underscore and then provides the type of data in the array
+            typeName = typeName.substring(1);
+            Class<?> arrayContentType = getMappingInternal(columnMetaData, cx, typeName);
+            // if we did not find it with the above procedure, consult the type to class map
+            // (should contain mappings for all basic java types)
+            if (arrayContentType == null) {
+                arrayContentType = SIMPLE_TYPE_TO_CLASS_MAP.get(typeName.toUpperCase());
+            }
+
+            if (arrayContentType != null) {
+                try {
+                    return Class.forName("[L" + arrayContentType.getName() + ";");
+                } catch (ClassNotFoundException e) {
+                    LOGGER.log(Level.WARNING, "Failed to create Java equivalent of array class", e);
+                    return null;
+                }
+            }
+
+            return null;
+        }
+
+        return getMappingInternal(columnMetaData, cx, typeName);
+    }
+
+    private Class<?> getMappingInternal(ResultSet columnMetaData, Connection cx, String typeName)
+            throws SQLException {
         if ("uuid".equalsIgnoreCase(typeName)) {
             return UUID.class;
         }
@@ -522,7 +643,6 @@ public class PostGISDialect extends BasicSQLDialect {
         String schemaName = columnMetaData.getString("TABLE_SCHEM");
 
         // first attempt, try with the geometry metadata
-        Connection conn = null;
         Statement statement = null;
         ResultSet result = null;
 
@@ -983,6 +1103,7 @@ public class PostGISDialect extends BasicSQLDialect {
         mappings.put("int4", Integer.class);
         mappings.put("bool", Boolean.class);
         mappings.put("character", String.class);
+        mappings.put("varchar", String.class);
         mappings.put("float8", Double.class);
         mappings.put("int", Integer.class);
         mappings.put("float4", Float.class);
@@ -1332,7 +1453,25 @@ public class PostGISDialect extends BasicSQLDialect {
             }
         }
 
+        if (type.isArray() && value != null) {
+            this.encodeArray(value, type, sql);
+            return;
+        }
+
         super.encodeValue(value, type, sql);
+    }
+
+    private void encodeArray(Object value, Class type, StringBuffer sql) {
+        int length = Array.getLength(value);
+        sql.append("ARRAY[");
+        for (int i = 0; i < length; i++) {
+            Object element = Array.get(value, i);
+            encodeValue(element, type.getComponentType(), sql);
+            if (i < (length - 1)) {
+                sql.append(", ");
+            }
+        }
+        sql.append("]");
     }
 
     void encodeByteArrayAsHex(byte[] input, StringBuffer sql) {

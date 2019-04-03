@@ -31,7 +31,6 @@ import org.opengis.filter.spatial.Touches;
 import org.opengis.filter.spatial.Within;
 import org.opengis.geometry.Geometry;
 
-/** @source $URL$ */
 public class PostPreProcessFilterSplittingVisitorSpatialTest
         extends AbstractPostPreProcessFilterSplittingVisitorTests {
 
@@ -69,7 +68,7 @@ public class PostPreProcessFilterSplittingVisitorSpatialTest
         runTest(f, new FilterCapabilities(Disjoint.class), geomAtt);
     }
 
-    public void tesDWITHINt() throws Exception {
+    public void testDWITHIN() throws Exception {
         Filter f = ff.dwithin(geomAtt, geom, 10, "");
         runTest(f, new FilterCapabilities(DWithin.class), geomAtt);
     }

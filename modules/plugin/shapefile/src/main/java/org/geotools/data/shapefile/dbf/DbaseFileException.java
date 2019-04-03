@@ -18,11 +18,7 @@ package org.geotools.data.shapefile.dbf;
 
 import org.geotools.data.DataSourceException;
 
-/**
- * Thrown when an error relating to the shapefile occurs.
- *
- * @source $URL$
- */
+/** Thrown when an error relating to the shapefile occurs. */
 public class DbaseFileException extends DataSourceException {
 
     private static final long serialVersionUID = -6890880438911014652L;

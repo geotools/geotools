@@ -19,8 +19,8 @@ package org.geotools.geometry;
 import java.awt.geom.Point2D;
 import java.io.Serializable;
 import java.util.Arrays;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -44,7 +44,6 @@ import org.opengis.util.Cloneable;
  * <p>Most methods in this implementation are final for performance reason.
  *
  * @since 2.0
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @see DirectPosition1D
@@ -277,6 +276,7 @@ public class GeneralDirectPosition extends AbstractDirectPosition
 
     /** Returns a hash value for this coordinate. */
     @Override
+    @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int hashCode() {
         int code = Arrays.hashCode(ordinates);
         if (crs != null) {
@@ -289,6 +289,12 @@ public class GeneralDirectPosition extends AbstractDirectPosition
     /** Returns a deep copy of this position. */
     @Override
     public GeneralDirectPosition clone() {
+        try {
+            super.clone();
+        } catch (CloneNotSupportedException e) {
+            // should not happen
+            throw new RuntimeException(e);
+        }
         return new GeneralDirectPosition(ordinates);
     }
 }

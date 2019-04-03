@@ -26,10 +26,10 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-import org.geotools.factory.FactoryCreator;
-import org.geotools.factory.FactoryRegistry;
-import org.geotools.factory.GeoTools;
-import org.geotools.factory.Hints;
+import org.geotools.util.factory.FactoryCreator;
+import org.geotools.util.factory.FactoryRegistry;
+import org.geotools.util.factory.GeoTools;
+import org.geotools.util.factory.Hints;
 import org.opengis.coverage.grid.Format;
 import org.opengis.coverage.grid.GridCoverage;
 
@@ -48,11 +48,10 @@ import org.opengis.coverage.grid.GridCoverage;
  * <code>org.geotools.data.mytype.MyTypeDataStoreFacotry</code>
  *
  * @author Simone Giannecchini, GeoSolutions
- * @source $URL$
  */
 public final class GridFormatFinder {
     /** The service registry for this manager. Will be initialized only when first needed. */
-    private static FactoryRegistry registry;
+    private static volatile FactoryRegistry registry;
 
     /** Do not allows any instantiation of this class. */
     private GridFormatFinder() {

@@ -28,7 +28,6 @@ import org.opengis.filter.FilterFactory;
 import org.opengis.filter.sort.SortBy;
 import org.opengis.filter.sort.SortOrder;
 
-/** @source $URL$ */
 public class SortedReaderTest {
 
     SimpleFeatureReader fr;
@@ -85,10 +84,10 @@ public class SortedReaderTest {
             point.setUserData(DefaultGeographicCRS.WGS84);
 
             builder.add(point);
-            builder.add(new Integer(i));
-            builder.add(new Byte((byte) i));
-            builder.add(new Short((short) i));
-            builder.add(new Long(i));
+            builder.add(Integer.valueOf(i));
+            builder.add(Byte.valueOf((byte) i));
+            builder.add(Short.valueOf((short) i));
+            builder.add(Long.valueOf(i));
             builder.add(new Float(i));
             builder.add(new Double(i));
             builder.add(new Date());
@@ -109,7 +108,7 @@ public class SortedReaderTest {
 
         // add a feature with a null geometry
         builder.add(null);
-        builder.add(new Integer(-1));
+        builder.add(Integer.valueOf(-1));
         builder.add(null);
         fc.add(builder.buildFeature((features + 1) + ""));
 

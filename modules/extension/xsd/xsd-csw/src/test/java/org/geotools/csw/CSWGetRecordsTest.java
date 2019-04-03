@@ -18,7 +18,7 @@ import net.opengis.cat.csw20.RecordType;
 import net.opengis.cat.csw20.ResultType;
 import org.eclipse.emf.common.util.EList;
 import org.geotools.filter.text.cql2.CQL;
-import org.geotools.xml.Parser;
+import org.geotools.xsd.Parser;
 import org.junit.Test;
 import org.opengis.filter.Filter;
 import org.opengis.filter.sort.SortBy;
@@ -76,8 +76,8 @@ public class CSWGetRecordsTest {
         assertEquals("2.0.2", gr.getVersion());
         assertEquals("application/xml", gr.getOutputFormat());
         assertEquals("http://www.opengis.net/cat/csw/2.0.2", gr.getOutputSchema());
-        assertEquals(new Integer(1), gr.getStartPosition());
-        assertEquals(new Integer(5), gr.getMaxRecords());
+        assertEquals(Integer.valueOf(1), gr.getStartPosition());
+        assertEquals(Integer.valueOf(5), gr.getMaxRecords());
         assertEquals(ResultType.RESULTS, gr.getResultType());
 
         // the query

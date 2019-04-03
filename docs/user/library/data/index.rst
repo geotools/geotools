@@ -8,22 +8,21 @@ The Data module is all about hoisting data (usually in the form of features) off
 services, disk files etc... into your application. This is where you can finally start putting
 the toolkit to work.
 
-.. image:: /images/gt-data.png
+.. image:: /images/gt-main.png
 
-The gt-data module is the foundation for implementing additional :doc:`gt-api <../api/index>`
-DataStore formats:
+The gt-main module is the foundation for implementing additional :doc:`DataStore <../main/datastore>`
+ formats:
 
-* Abstract classes for :doc:`gt-api <../api/index>` DataStore implementors to start from such
+* Abstract classes for :doc:`DataStore <../main/datastore>` implementors to start from such
   as **ContentDataStore** and **DirectoryDataStore**
 
-The gt-data module requires plug ins for different formats to be supplied. This module does not
-define any additional interfaces beyond those provided by *gt-api*.
+The gt-main module requires plug ins for different formats to be supplied.
 
 **Maven**::
    
     <dependency>
       <groupId>org.geotools</groupId>
-      <artifactId>gt-data</artifactId>
+      <artifactId>gt-main</artifactId>
       <version>${geotools.version}</version>
     </dependency>
 
@@ -66,13 +65,11 @@ Unsupported plugins:
 .. toctree::
    :maxdepth: 1
    
-   caching
    csv
    dxf
    edigeo
    excel
    georest
    kml
-   sfs
    solr
    wfs-ng

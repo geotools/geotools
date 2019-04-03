@@ -1,0 +1,75 @@
+// Test points for the Equal Earth projection
+//
+// (C) 2018, Open Source Geospatial Foundation (OSGeo)
+//
+//
+// --------------------------------------------------------------------------
+// How to run this script:
+//
+//    chdir org/geotools/referencing/test-data/scripts
+//    java -ea org.geotools.referencing.ScriptRunner EqualEarth.txt
+//
+// A test is performed every time a "target pt" statement occurs. If the target point computed
+// by Geotools is different from the target point declared in this script by an amount greater
+// than the value specified in the last "test tolerance" statement, then a failure is reported.
+// Inverse transforms are tested if java assertions are enabled.
+// If some test fails, "print" statements can be added in this script for debugging purpose:
+//
+//    print crs            (prints the source and target CRS, and the transform between them)
+//    print pts            (prints the source and target points, and their transformed points)
+
+
+// CRS used for the test 
+set _WGS84_  = GEOGCS["WGS84",  DATUM["WGS84",  SPHEROID["WGS84",  6378137.0, 298.257223563]], PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]]
+
+////////////////////////////////////////////
+// EqualEarth
+
+set _equalEarth_ = PROJCS["EqualEarth", _WGS84_, PROJECTION["Equal Earth"], UNIT["m", 1.0], AXIS["Easting", EAST], AXIS["Northing", NORTH]]
+
+source crs = _WGS84_
+target crs = _equalEarth_
+test tolerance = (1e-2, 1e-2)
+
+source pt = (-180, 90)
+target pt = (-10227908.09, 8402320.16)
+
+source pt = (0, 90)
+target pt = (0, 8402320.16)
+
+source pt = (180, 90)
+target pt = (10227908.09, 8402320.16)
+
+source pt = (180, 45)
+target pt = (14795421.79, 5486671.72)
+
+source pt = (180, 0)
+target pt = (17263256.84, 0)
+
+source pt = (-70, -31.2)
+target pt = (-6244707.88, -3924893.29)
+
+source crs = _equalEarth_
+target crs =  _WGS84_
+test tolerance = (1e-5, 1e-5)
+
+source pt = (-6244707.88, -3924893.29)
+target pt = (-70, -31.2)
+
+source pt = (17263256.84, 0)
+target pt = (180, 0)
+
+source pt = (14795421.79, 5486671.72)
+target pt = (180, 45)
+
+source pt = (0, 0)
+target pt = (0, 0)
+
+source pt = (-10227908.09, 8402320.16)
+target pt = (-180, 90)
+
+source pt = (0, 8402320.16)
+target pt = (0, 90)
+
+source pt = (10227908.09, 8402320.16)
+target pt = (180, 90)

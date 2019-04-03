@@ -31,7 +31,6 @@ import org.geotools.graph.structure.GraphVisitor;
 import org.geotools.graph.structure.Graphable;
 import org.geotools.graph.structure.Node;
 
-/** @source $URL$ */
 public class DirectedGraphSerializerTest extends BasicGraphSerializerTest {
 
     public DirectedGraphSerializerTest(String name) {
@@ -100,7 +99,7 @@ public class DirectedGraphSerializerTest extends BasicGraphSerializerTest {
             after.visitNodes(visitor);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             assertTrue(false);
         }
     }
@@ -198,7 +197,7 @@ public class DirectedGraphSerializerTest extends BasicGraphSerializerTest {
             after.visitNodes(visitor);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             assertTrue(false);
         }
     }
@@ -253,7 +252,7 @@ public class DirectedGraphSerializerTest extends BasicGraphSerializerTest {
                     };
             after.visitNodes(visitor);
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             assertTrue(false);
         }
     }

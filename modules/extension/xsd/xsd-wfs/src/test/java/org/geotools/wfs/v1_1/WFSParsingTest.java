@@ -63,10 +63,11 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.util.URLs;
 import org.geotools.wfs.WFSConfiguration;
-import org.geotools.xml.Parser;
-import org.geotools.xml.Schemas;
-import org.geotools.xml.StreamingParser;
+import org.geotools.xsd.Parser;
+import org.geotools.xsd.Schemas;
+import org.geotools.xsd.StreamingParser;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.locationtech.jts.geom.Point;
 import org.opengis.feature.simple.SimpleFeature;
@@ -75,7 +76,6 @@ import org.opengis.filter.capability.SpatialOperators;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
-/** @source $URL$ */
 public class WFSParsingTest {
     WFSConfiguration configuration;
 
@@ -108,7 +108,9 @@ public class WFSParsingTest {
      *
      * @throws Exception
      */
-    public void _testParseGetCapabilitiesDeegree() throws Exception {
+    @Test
+    @Ignore
+    public void testParseGetCapabilitiesDeegree() throws Exception {
         Parser parser = new Parser(configuration);
         WFSCapabilitiesType caps =
                 (WFSCapabilitiesType)

@@ -29,12 +29,12 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
-import org.geotools.io.TableWriter;
-import org.geotools.resources.Classes;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
-import org.geotools.resources.i18n.Vocabulary;
-import org.geotools.resources.i18n.VocabularyKeys;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
+import org.geotools.metadata.i18n.Vocabulary;
+import org.geotools.metadata.i18n.VocabularyKeys;
+import org.geotools.util.Classes;
+import org.geotools.util.TableWriter;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.IdentifiedObject;
 import org.opengis.referencing.NoSuchIdentifierException;
@@ -58,7 +58,6 @@ import org.opengis.referencing.operation.MathTransform;
  * </blockquote>
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
@@ -337,7 +336,7 @@ public class Preprocessor extends Format {
         }
         value = substitute(value);
         final Definition newDef = new Definition(value, forwardParse(value));
-        final Definition oldDef = (Definition) definitions.put(name, newDef);
+        definitions.put(name, newDef);
     }
 
     /**

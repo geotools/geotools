@@ -19,11 +19,9 @@ package org.geotools.filter.v1_0;
 import java.util.ArrayList;
 import java.util.List;
 import javax.xml.namespace.QName;
-import org.geotools.xml.AbstractComplexBinding;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
-import org.locationtech.jts.geom.GeometryFactory;
-import org.opengis.filter.FilterFactory2;
+import org.geotools.xsd.AbstractComplexBinding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 import org.opengis.filter.expression.Function;
 import org.opengis.filter.spatial.BinarySpatialOperator;
 import org.picocontainer.MutablePicoContainer;
@@ -53,16 +51,8 @@ import org.picocontainer.MutablePicoContainer;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class OGCBinarySpatialOpTypeBinding extends AbstractComplexBinding {
-    private FilterFactory2 factory;
-    private GeometryFactory gFactory;
-
-    public OGCBinarySpatialOpTypeBinding(FilterFactory2 factory, GeometryFactory gFactory) {
-        this.factory = factory;
-        this.gFactory = gFactory;
-    }
 
     /** @generated */
     public QName getTarget() {

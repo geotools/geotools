@@ -50,7 +50,6 @@ import org.opengis.filter.temporal.Before;
  *
  * @since 2.5
  * @author Mauricio Pazos (Axios Engineering)
- * @source $URL$
  */
 public class CQLTemporalPredicateTest {
 
@@ -688,7 +687,8 @@ public class CQLTemporalPredicateTest {
                             Filter filter = CompilerUtil.parseFilter(language, predicate);
                             Assert.assertNotNull(filter);
                         } catch (CQLException e) {
-                            e.printStackTrace();
+                            java.util.logging.Logger.getGlobal()
+                                    .log(java.util.logging.Level.INFO, "", e);
                         }
                     }
                 };

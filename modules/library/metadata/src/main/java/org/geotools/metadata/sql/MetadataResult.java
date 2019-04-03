@@ -30,7 +30,6 @@ import org.geotools.util.logging.Logging;
  * for the same record, then the same {@link ResultSet} is reused.
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @todo Automatically close the ResultSet after some delay (e.g. 2 minutes).

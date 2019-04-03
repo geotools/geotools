@@ -21,12 +21,7 @@ import org.geotools.xml.schema.Choice;
 import org.geotools.xml.schema.Element;
 import org.geotools.xml.schema.ElementGrouping;
 
-/**
- * DOCUMENT ME!
- *
- * @author dzwiers
- * @source $URL$
- */
+/** @author dzwiers */
 public class ChoiceGT implements Choice {
     private String id;
     private int min;
@@ -37,14 +32,7 @@ public class ChoiceGT implements Choice {
         // do nothing
     }
 
-    /**
-     * Creates a new ChoiceGT object.
-     *
-     * @param id DOCUMENT ME!
-     * @param min DOCUMENT ME!
-     * @param max DOCUMENT ME!
-     * @param children DOCUMENT ME!
-     */
+    /** Creates a new ChoiceGT object. */
     public ChoiceGT(String id, int min, int max, ElementGrouping[] children) {
         this.id = id;
         this.min = min;

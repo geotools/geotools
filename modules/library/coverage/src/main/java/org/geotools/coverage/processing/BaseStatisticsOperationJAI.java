@@ -60,7 +60,6 @@ import org.opengis.referencing.operation.TransformException;
  *
  * @author Simone Giannecchini
  * @since 2.4.x
- * @source $URL$
  */
 public abstract class BaseStatisticsOperationJAI extends OperationJAI {
 
@@ -68,7 +67,7 @@ public abstract class BaseStatisticsOperationJAI extends OperationJAI {
     private static final long serialVersionUID = 6830028735162290160L;
 
     /** {@link Logger} for this class. */
-    public static final Logger LOGGER = Logging.getLogger("org.geotools.coverage.processing");
+    public static final Logger LOGGER = Logging.getLogger(BaseStatisticsOperationJAI.class);
 
     /** The parameter descriptor for the SPATIAL_SUBSAMPLING_X */
     public static final ParameterDescriptor<Double> SPATIAL_SUBSAMPLING_X =

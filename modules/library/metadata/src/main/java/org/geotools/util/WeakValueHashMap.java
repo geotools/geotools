@@ -38,7 +38,6 @@ import org.geotools.util.logging.Logging;
  * @param <K> The class of key elements.
  * @param <V> The class of value elements.
  * @since 2.0
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @see java.util.WeakHashMap
@@ -263,7 +262,7 @@ public class WeakValueHashMap<K, V> extends AbstractMap<K, V> {
                 }
             }
         }
-        final Logger logger = Logging.getLogger("org.geotools.util");
+        final Logger logger = Logging.getLogger(WeakValueHashMap.class);
         final Level level = Level.FINEST;
         if (logger.isLoggable(level)) {
             final LogRecord record =

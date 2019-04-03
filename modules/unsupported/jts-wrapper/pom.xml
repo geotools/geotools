@@ -12,7 +12,7 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>unsupported</artifactId>
-    <version>20-SNAPSHOT</version>
+    <version>22-SNAPSHOT</version>
   </parent>
 
   <properties>
@@ -82,8 +82,7 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <!-- The version number is specified in the parent POM. -->
-      <scope>provided</scope>   <!-- Needed for compilation, not for running -->
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>commons-logging</groupId>

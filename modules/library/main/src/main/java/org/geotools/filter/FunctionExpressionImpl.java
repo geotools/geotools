@@ -37,7 +37,6 @@ import org.opengis.filter.expression.Literal;
  * function please override the {@link #evaluate(Object)} method.
  *
  * @author James Macgill, PSU
- * @source $URL$
  */
 public abstract class FunctionExpressionImpl extends org.geotools.filter.DefaultExpression
         implements FunctionExpression {
@@ -108,7 +107,7 @@ public abstract class FunctionExpressionImpl extends org.geotools.filter.Default
 
     public synchronized FunctionName getFunctionName() {
         if (functionName == null) {
-            functionName = new FunctionNameImpl(getName(), functionName.getArgumentCount());
+            functionName = new FunctionNameImpl(getName(), getParameters().size());
         }
         return functionName;
     }

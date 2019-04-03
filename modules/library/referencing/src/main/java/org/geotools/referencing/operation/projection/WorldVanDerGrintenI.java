@@ -1,3 +1,19 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2019, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
 package org.geotools.referencing.operation.projection;
 
 import static java.lang.Math.*;
@@ -29,7 +45,6 @@ public class WorldVanDerGrintenI extends MapProjection {
 
     private static final double TOL = 1.e-10;
     private static final double THIRD = .33333333333333333333;
-    private static final double TWO_THRD = .66666666666666666666;
     private static final double C2_27 = .07407407407407407407;
     private static final double PI4_3 = 4.18879020478639098458;
     private static final double PISQ = 9.86960440108935861869;

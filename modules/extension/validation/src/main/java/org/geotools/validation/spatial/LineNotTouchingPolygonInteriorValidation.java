@@ -35,7 +35,6 @@ import org.opengis.feature.simple.SimpleFeature;
  *
  * @author dzwiers, Refractions Research, Inc.
  * @author $Author: dmzwiers $ (last modification)
- * @source $URL$
  * @version $Id$
  */
 public class LineNotTouchingPolygonInteriorValidation extends LinePolygonAbstractValidation {
@@ -55,7 +54,6 @@ public class LineNotTouchingPolygonInteriorValidation extends LinePolygonAbstrac
      * @param envelope The bounding box that encloses the unvalidated data
      * @param results Used to coallate results information
      * @return <code>true</code> if all the features pass this test.
-     * @throws Exception DOCUMENT ME!
      */
     public boolean validate(Map layers, Envelope envelope, ValidationResults results)
             throws Exception {

@@ -29,7 +29,6 @@ import org.opengis.geometry.coordinate.PolyhedralSurface;
  *     <p>A Polygon (Figure 21) is a surface patch that is defined by a set of boundary curves and
  *     an underlying surface to which these curves adhere. The default is that the curves are
  *     coplanar and the polygon uses planar interpolation in its interior.
- * @source $URL$
  */
 public class PolygonImpl extends SurfacePatchImpl implements Polygon {
 

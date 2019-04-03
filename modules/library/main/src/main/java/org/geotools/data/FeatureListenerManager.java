@@ -37,11 +37,10 @@ import org.opengis.feature.type.FeatureType;
  * order to cut down on memory leaks.
  *
  * @author Jody Garnett, Refractions Research
- * @source $URL$
  */
 public class FeatureListenerManager {
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.data");
+            org.geotools.util.logging.Logging.getLogger(FeatureListenerManager.class);
     /**
      * Hold on to provided FeatureListener using a weak reference.
      *

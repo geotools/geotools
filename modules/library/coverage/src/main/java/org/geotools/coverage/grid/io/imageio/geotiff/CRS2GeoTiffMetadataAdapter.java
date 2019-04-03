@@ -30,6 +30,8 @@ import org.geotools.coverage.grid.io.imageio.geotiff.codes.GeoTiffGCSCodes;
 import org.geotools.coverage.grid.io.imageio.geotiff.codes.GeoTiffPCSCodes;
 import org.geotools.coverage.grid.io.imageio.geotiff.codes.GeoTiffUoMCodes;
 import org.geotools.measure.Units;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.AbstractIdentifiedObject;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
@@ -51,9 +53,7 @@ import org.geotools.referencing.operation.projection.Stereographic;
 import org.geotools.referencing.operation.projection.TransverseMercator;
 import org.geotools.referencing.operation.projection.WorldVanDerGrintenI;
 import org.geotools.referencing.operation.transform.ConcatenatedTransform;
-import org.geotools.resources.CRSUtilities;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
+import org.geotools.referencing.util.CRSUtilities;
 import org.opengis.metadata.Identifier;
 import org.opengis.metadata.citation.Citation;
 import org.opengis.parameter.GeneralParameterValue;
@@ -61,11 +61,7 @@ import org.opengis.parameter.ParameterValue;
 import org.opengis.parameter.ParameterValueGroup;
 import org.opengis.referencing.IdentifiedObject;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.crs.GeographicCRS;
 import org.opengis.referencing.crs.ProjectedCRS;
-import org.opengis.referencing.datum.Ellipsoid;
-import org.opengis.referencing.datum.GeodeticDatum;
-import org.opengis.referencing.datum.PrimeMeridian;
 import org.opengis.referencing.operation.Conversion;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.OperationMethod;
@@ -84,7 +80,6 @@ import tec.uom.se.AbstractUnit;
  *
  * @author Simone Giannecchini
  * @since 2.2
- * @source $URL$
  */
 public final class CRS2GeoTiffMetadataAdapter {
 
@@ -207,7 +202,6 @@ public final class CRS2GeoTiffMetadataAdapter {
      *
      * @param projectedCRS The parent element.
      * @param metadata
-     * @return The "PROJCS" element as a {@link ProjectedCRS} object.
      * @throws ParseException if the "GEOGCS" element can't be parsed.
      */
     private void parseProjCRS(final ProjectedCRS projectedCRS, GeoTiffIIOMetadataEncoder metadata) {
@@ -841,7 +835,6 @@ public final class CRS2GeoTiffMetadataAdapter {
      *
      * @param geographicCRS The parent element.
      * @param metadata
-     * @return The "GEOGCS" element as a {@link GeographicCRS} object.
      */
     private void parseGeoGCS(
             DefaultGeographicCRS geographicCRS, GeoTiffIIOMetadataEncoder metadata) {
@@ -893,8 +886,6 @@ public final class CRS2GeoTiffMetadataAdapter {
      *
      * @param datum The parent element.
      * @param metadata
-     * @param meridian the prime meridian.
-     * @return The "DATUM" element as a {@link GeodeticDatum} object.
      */
     private void parseDatum(final DefaultGeodeticDatum datum, GeoTiffIIOMetadataEncoder metadata) {
 
@@ -928,8 +919,6 @@ public final class CRS2GeoTiffMetadataAdapter {
      * </blockquote>
      *
      * @param metadata
-     * @param parent The parent element.
-     * @return The "SPHEROID" element as an {@link Ellipsoid} object.
      */
     private void parseSpheroid(
             final DefaultEllipsoid ellipsoid, GeoTiffIIOMetadataEncoder metadata) {
@@ -967,9 +956,6 @@ public final class CRS2GeoTiffMetadataAdapter {
      * </blockquote>
      *
      * @param metadata
-     * @param parent The parent element.
-     * @param angularUnit The contextual unit.
-     * @return The "PRIMEM" element as a {@link PrimeMeridian} object.
      */
     private void parsePrimem(final DefaultPrimeMeridian pm, GeoTiffIIOMetadataEncoder metadata) {
         // looking for an EPSG code
@@ -1001,10 +987,8 @@ public final class CRS2GeoTiffMetadataAdapter {
      *
      * </blockquote>
      *
-     * @param unit The parent element.
      * @param unit The contextual unit. Usually {@link SI#METRE} or {@link SI#RADIAN}.
      * @param metadata
-     * @return The "UNIT" element as an {@link Unit} object.
      */
     private void parseUnit(Unit<?> unit, int model, GeoTiffIIOMetadataEncoder metadata) {
 

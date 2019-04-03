@@ -2,6 +2,24 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
+ *    (C) 2019, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ *
+ */
+
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
  *    (C) 2005-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -22,7 +40,7 @@
 package org.geotools.geometry.jts.spatialschema.geometry;
 
 import java.io.Serializable;
-import org.geotools.geometry.jts.GeometryUtils;
+import java.util.Objects;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -30,7 +48,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 /**
  * Holds the coordinates for a one-dimensional position within some coordinate reference system.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  */
@@ -179,6 +196,14 @@ public class DirectPosition1D implements DirectPosition, Serializable, Cloneable
     @Override
     public String toString() {
         return DirectPosition2D.toString(this, getCoordinates());
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        DirectPosition1D that = (DirectPosition1D) o;
+        return Double.compare(that.ordinate, ordinate) == 0 && Objects.equals(crs, that.crs);
     }
 
     /**

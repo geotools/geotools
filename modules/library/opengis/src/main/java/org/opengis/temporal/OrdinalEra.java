@@ -21,7 +21,6 @@ import org.opengis.util.InternationalString;
  * Provides a reference to the ordinal era in which the instant occurs.
  *
  * @author Alexander Petkov
- * @source $URL$
  */
 @UML(identifier = "TM_OrdinalEra", specification = ISO_19108)
 public interface OrdinalEra {

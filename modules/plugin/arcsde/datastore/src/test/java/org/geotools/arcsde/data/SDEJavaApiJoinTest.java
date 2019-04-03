@@ -61,8 +61,8 @@ import org.opengis.referencing.NoSuchAuthorityCodeException;
 
 /**
  * ArcSDEDAtaStore test case for a master-child joining
- * <p>
- * This test will create an sde layer (table + spatial table) as master and a business table as
+ *
+ * <p>This test will create an sde layer (table + spatial table) as master and a business table as
  * child:
  *
  * <pre>
@@ -128,19 +128,9 @@ import org.opengis.referencing.NoSuchAuthorityCodeException;
  * </code>
  * </ul>
  * </p>
+ * </pre>
  *
- * &#064;author Gabriel Roldan, Axios Engineering &#064;source $URL:
- * http://gtsvn.refractions.net/branches
- * /2.5.x/modules/plugin/arcsde/datastore/src/test/java/org/geotools
- * /arcsde/data/SDEJavaApiJoinTest.java $ &#064;version $Id: SDEJavaApiJoinTest.java 31903
- * 2008-11-22 20:44:25Z groldan $ &#064;since 2.3.x
- *
- *
- *
- *
- * @source $URL$
- *         http://svn.osgeo.org/geotools/trunk/modules/plugin/arcsde/datastore/src/test/java/org
- *         /geotools/arcsde/data/SDEJavaApiJoinTest.java $
+ * @author Gabriel Roldan, Axios Engineering
  */
 @Ignore
 public class SDEJavaApiJoinTest {
@@ -204,7 +194,7 @@ public class SDEJavaApiJoinTest {
      * G.BSUFF AND B.RT = G.RT)" + " ORDER BY B.QS, B.RT, B.NUMB, B.BSUFF";
      *
      * try { store.registerView(typeName, definitionQuery); } catch (Exception e) {
-     * e.printStackTrace(); throw e; }
+     *java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e); throw e; }
      *
      * SimpleFeatureType type = (SimpleFeatureType) store.getSchema(typeName); assertNotNull(type);
      *
@@ -498,13 +488,13 @@ public class SDEJavaApiJoinTest {
         queryInfo.setByClause(" ORDER BY " + InProcessViewSupportTestData.CHILD + ".ID DESC");
 
         final Integer[] expectedChildIds = {
-            new Integer(7),
-            new Integer(6),
-            new Integer(5),
-            new Integer(4),
-            new Integer(3),
-            new Integer(2),
-            new Integer(1)
+            Integer.valueOf(7),
+            Integer.valueOf(6),
+            Integer.valueOf(5),
+            Integer.valueOf(4),
+            Integer.valueOf(3),
+            Integer.valueOf(2),
+            Integer.valueOf(1)
         };
 
         // final int[] expectedShapeIndicators = { SeRow.SE_IS_NOT_NULL_VALUE, // child7
@@ -558,7 +548,7 @@ public class SDEJavaApiJoinTest {
             }
             assertEquals(expectedCount, count);
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             throw e;
         } finally {
             session.dispose();
@@ -625,7 +615,7 @@ public class SDEJavaApiJoinTest {
             }
             assertEquals(expectedCount, count);
         } catch (IOException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             throw e;
         } finally {
             session.dispose();
@@ -722,7 +712,7 @@ public class SDEJavaApiJoinTest {
             }
             assertEquals(expectedCount, count);
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             throw e;
         } finally {
             session.dispose();
@@ -785,7 +775,7 @@ public class SDEJavaApiJoinTest {
             }
             assertEquals(expectedCount, count);
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             throw e;
         } finally {
             session.dispose();

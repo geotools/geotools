@@ -33,7 +33,7 @@ import java.util.logging.Logger;
 
 import org.eclipse.xsd.XSDNamedComponent;
 import org.eclipse.xsd.XSDSchema;
-import org.geotools.xml.Schemas;
+import org.geotools.xsd.Schemas;
 
 
 /**
@@ -43,7 +43,7 @@ import org.geotools.xml.Schemas;
  *
  */
 public abstract class AbstractGenerator {
-    static Logger logger = org.geotools.util.logging.Logging.getLogger("org.geotools.xml");
+    static Logger logger = org.geotools.util.logging.Logging.getLogger(AbstractGenerator.class);
 
     /**
      * Package base
@@ -104,7 +104,7 @@ public abstract class AbstractGenerator {
     /**
      * Sets the location to write out generated source files.
      *
-     * @param location A file path.
+     * @param sourceLocation A file path.
      */
     public void setSourceLocation(String sourceLocation) {
         this.sourceLocation = sourceLocation;

@@ -29,13 +29,12 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
-import org.geotools.factory.Hints;
-import org.geotools.factory.Hints.Key;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCTestSetup;
 import org.geotools.jdbc.JDBCTestSupport;
+import org.geotools.util.factory.Hints;
+import org.geotools.util.factory.Hints.Key;
 
-/** @source $URL$ */
 public class PostgisNGDataStoreFactoryOnlineTest extends JDBCTestSupport {
 
     @Override

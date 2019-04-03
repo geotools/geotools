@@ -22,10 +22,7 @@ import org.geotools.geometry.iso.UnsupportedDimensionException;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.opengis.geometry.DirectPosition;
 
-/**
- * @author sanjay
- * @source $URL$
- */
+/** @author sanjay */
 public class EnvelopeTest extends TestCase {
 
     public void testMain() {
@@ -125,13 +122,13 @@ public class EnvelopeTest extends TestCase {
         try {
             assertTrue(impl.getSECorner().equals(dp4));
         } catch (UnsupportedDimensionException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             fail();
         }
         try {
             assertTrue(impl.getNWCornerOld().equals(dp0));
         } catch (UnsupportedDimensionException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             fail();
         }
     }

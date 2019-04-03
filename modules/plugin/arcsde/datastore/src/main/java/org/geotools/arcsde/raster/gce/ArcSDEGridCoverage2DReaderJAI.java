@@ -60,11 +60,11 @@ import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.coverage.grid.io.OverviewPolicy;
 import org.geotools.data.DefaultServiceInfo;
 import org.geotools.data.ServiceInfo;
-import org.geotools.factory.Hints;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.ImageWorker;
 import org.geotools.referencing.CRS;
+import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
 import org.opengis.coverage.ColorInterpretation;
 import org.opengis.coverage.grid.Format;
@@ -83,16 +83,12 @@ import org.opengis.referencing.operation.TransformException;
 /**
  * @author Gabriel Roldan (OpenGeo)
  * @since 2.5.4
- * @version $Id$
- * @source $URL$
- *     http://svn.osgeo.org/geotools/trunk/modules/plugin/arcsde/datastore/src/main/java/org
- *     /geotools/arcsde/gce/ArcSDEGridCoverage2DReaderJAI.java $
  */
 @SuppressWarnings("nls")
 public final class ArcSDEGridCoverage2DReaderJAI extends AbstractGridCoverage2DReader
         implements GridCoverage2DReader {
 
-    private static final Logger LOGGER = Logging.getLogger("org.geotools.arcsde.gce");
+    private static final Logger LOGGER = Logging.getLogger(ArcSDEGridCoverage2DReaderJAI.class);
 
     /** @see LoggingHelper#log(RenderedImage, Long, String) */
     private static final boolean DEBUG_TO_DISK =
@@ -263,10 +259,7 @@ public final class ArcSDEGridCoverage2DReaderJAI extends AbstractGridCoverage2DR
          */
         final TiledRasterReader rasterReader = rasterReaderFactory.create(rasterInfo);
 
-        try {
-            readAllTiledRasters(queries, rasterReader, log);
-        } finally {
-        }
+        readAllTiledRasters(queries, rasterReader, log);
 
         log.log(LoggingHelper.REQ_ENV);
         log.log(LoggingHelper.RES_ENV);
@@ -292,18 +285,6 @@ public final class ArcSDEGridCoverage2DReaderJAI extends AbstractGridCoverage2DR
                         coverageName, coverageRaster, resultEnvelope, bands, null, null);
 
         return resultCoverage;
-    }
-
-    private GeneralEnvelope toPixelCenter(double[] resolution, GeneralEnvelope pixelCornerEnv) {
-        double deltaX = resolution[0] / 2;
-        double deltaY = resolution[1] / 2;
-        GeneralEnvelope env = new GeneralEnvelope(pixelCornerEnv.getCoordinateReferenceSystem());
-        env.setEnvelope(
-                pixelCornerEnv.getMinimum(0) + deltaX,
-                pixelCornerEnv.getMinimum(1) + deltaY,
-                pixelCornerEnv.getMaximum(0) - deltaX,
-                pixelCornerEnv.getMaximum(1) - deltaY);
-        return env;
     }
 
     private GridSampleDimension[] getSampleDimensions(final RenderedImage coverageRaster)
@@ -897,7 +878,7 @@ public final class ArcSDEGridCoverage2DReaderJAI extends AbstractGridCoverage2DR
                             "TIFF",
                             new File(debugDir, rasterId.longValue() + fileName + ".tiff"));
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
                 }
             }
         }

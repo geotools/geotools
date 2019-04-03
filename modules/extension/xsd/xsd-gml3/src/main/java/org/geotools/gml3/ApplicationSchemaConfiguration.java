@@ -16,8 +16,8 @@
  */
 package org.geotools.gml3;
 
-import org.geotools.xml.Configuration;
 import org.geotools.xs.XSConfiguration;
+import org.geotools.xsd.Configuration;
 import org.picocontainer.MutablePicoContainer;
 
 /**
@@ -30,7 +30,6 @@ import org.picocontainer.MutablePicoContainer;
  *
  * @author Justin Deoliveira, The Open Planning Project
  * @author Gabriel Roldan, Axios Engineering
- * @source $URL$
  * @version $Id$
  * @since 2.4
  */

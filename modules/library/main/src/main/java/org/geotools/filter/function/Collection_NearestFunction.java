@@ -24,11 +24,11 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.data.util.NullProgressListener;
 import org.geotools.feature.visitor.NearestVisitor;
 import org.geotools.filter.FunctionImpl;
 import org.geotools.filter.IllegalFilterException;
 import org.geotools.filter.capability.FunctionNameImpl;
-import org.geotools.util.NullProgressListener;
 import org.opengis.filter.capability.FunctionName;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
@@ -38,13 +38,12 @@ import org.opengis.filter.expression.Literal;
  *
  * @author Jody Garnett
  * @since 12.0
- * @source $URL$
  */
 public class Collection_NearestFunction extends FunctionImpl {
 
     /** The logger for the filter module. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.filter.function");
+            org.geotools.util.logging.Logging.getLogger(Collection_NearestFunction.class);
 
     SimpleFeatureCollection previousFeatureCollection = null;
 
@@ -64,8 +63,8 @@ public class Collection_NearestFunction extends FunctionImpl {
     /**
      * Calculate nearest using {@link NearestVisitor}.
      *
-     * @param Collection collection to calculate the maximum
-     * @param Expression Single Expression argument
+     * @param collection collection to calculate the maximum
+     * @param expression Single Expression argument
      * @param value Attribute value used for nearest search
      * @return An object containing the maximum value of the attributes
      * @throws IllegalFilterException

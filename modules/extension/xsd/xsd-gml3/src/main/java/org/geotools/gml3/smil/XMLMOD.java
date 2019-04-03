@@ -16,9 +16,8 @@
  */
 package org.geotools.gml3.smil;
 
-import org.geotools.xml.XSD;
+import org.geotools.xsd.XSD;
 
-/** @source $URL$ */
 public class XMLMOD extends XSD {
     /** Singleton instance. */
     private static XMLMOD instance = new XMLMOD();

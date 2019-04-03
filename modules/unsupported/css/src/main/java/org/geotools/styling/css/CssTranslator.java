@@ -37,36 +37,36 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import javax.xml.transform.TransformerException;
 import org.apache.commons.io.FileUtils;
+import org.geotools.brewer.styling.builder.ChannelSelectionBuilder;
+import org.geotools.brewer.styling.builder.ColorMapBuilder;
+import org.geotools.brewer.styling.builder.ColorMapEntryBuilder;
+import org.geotools.brewer.styling.builder.ContrastEnhancementBuilder;
+import org.geotools.brewer.styling.builder.FeatureTypeStyleBuilder;
+import org.geotools.brewer.styling.builder.FillBuilder;
+import org.geotools.brewer.styling.builder.FontBuilder;
+import org.geotools.brewer.styling.builder.GraphicBuilder;
+import org.geotools.brewer.styling.builder.HaloBuilder;
+import org.geotools.brewer.styling.builder.LineSymbolizerBuilder;
+import org.geotools.brewer.styling.builder.MarkBuilder;
+import org.geotools.brewer.styling.builder.PointPlacementBuilder;
+import org.geotools.brewer.styling.builder.PointSymbolizerBuilder;
+import org.geotools.brewer.styling.builder.PolygonSymbolizerBuilder;
+import org.geotools.brewer.styling.builder.RasterSymbolizerBuilder;
+import org.geotools.brewer.styling.builder.RuleBuilder;
+import org.geotools.brewer.styling.builder.StrokeBuilder;
+import org.geotools.brewer.styling.builder.StyleBuilder;
+import org.geotools.brewer.styling.builder.SymbolizerBuilder;
+import org.geotools.brewer.styling.builder.TextSymbolizerBuilder;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.NameImpl;
+import org.geotools.filter.visitor.SimplifyingFilterVisitor;
 import org.geotools.styling.ColorMap;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.NamedLayer;
 import org.geotools.styling.Rule;
-import org.geotools.styling.SLDTransformer;
 import org.geotools.styling.StyleFactory;
 import org.geotools.styling.StyledLayerDescriptor;
 import org.geotools.styling.TextSymbolizer;
-import org.geotools.styling.builder.ChannelSelectionBuilder;
-import org.geotools.styling.builder.ColorMapBuilder;
-import org.geotools.styling.builder.ColorMapEntryBuilder;
-import org.geotools.styling.builder.ContrastEnhancementBuilder;
-import org.geotools.styling.builder.FeatureTypeStyleBuilder;
-import org.geotools.styling.builder.FillBuilder;
-import org.geotools.styling.builder.FontBuilder;
-import org.geotools.styling.builder.GraphicBuilder;
-import org.geotools.styling.builder.HaloBuilder;
-import org.geotools.styling.builder.LineSymbolizerBuilder;
-import org.geotools.styling.builder.MarkBuilder;
-import org.geotools.styling.builder.PointPlacementBuilder;
-import org.geotools.styling.builder.PointSymbolizerBuilder;
-import org.geotools.styling.builder.PolygonSymbolizerBuilder;
-import org.geotools.styling.builder.RasterSymbolizerBuilder;
-import org.geotools.styling.builder.RuleBuilder;
-import org.geotools.styling.builder.StrokeBuilder;
-import org.geotools.styling.builder.StyleBuilder;
-import org.geotools.styling.builder.SymbolizerBuilder;
-import org.geotools.styling.builder.TextSymbolizerBuilder;
 import org.geotools.styling.css.Value.Function;
 import org.geotools.styling.css.Value.Literal;
 import org.geotools.styling.css.Value.MultiValue;
@@ -86,13 +86,13 @@ import org.geotools.styling.css.util.UnboundSimplifyingFilterVisitor;
 import org.geotools.util.Converters;
 import org.geotools.util.Range;
 import org.geotools.util.logging.Logging;
+import org.geotools.xml.styling.SLDTransformer;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
 import org.opengis.style.Style;
-import org.w3c.dom.css.CSSRule;
 
 /**
  * Transforms a GeoCSS into an equivalent GeoTools {@link Style} object
@@ -294,11 +294,6 @@ public class CssTranslator {
         int autoThreshold = getAutoThreshold(stylesheet);
 
         List<CssRule> topRules = stylesheet.getRules();
-        List<CssRule> allRules = expandNested(topRules);
-
-        if (LOGGER.isLoggable(Level.FINE)) {
-            LOGGER.fine("Starting with " + allRules.size() + "  rules in the stylesheet");
-        }
 
         // prepare the full SLD builder
         StyleBuilder styleBuilder = new StyleBuilder();
@@ -308,8 +303,26 @@ public class CssTranslator {
 
         int translatedRuleCount = 0;
         if (mode == TranslationMode.Flat) {
+            final List<CssRule> flattened =
+                    topRules.stream()
+                            .map(CssRule::flattenPseudoSelectors)
+                            .collect(Collectors.toList());
+            List<CssRule> allRules = expandNested(flattened);
+            if (LOGGER.isLoggable(Level.FINE)) {
+                LOGGER.fine(
+                        "Starting cascaded translation with "
+                                + allRules.size()
+                                + "  rules in the stylesheet");
+            }
             translatedRuleCount = translateFlat(allRules, styleBuilder);
         } else {
+            List<CssRule> allRules = expandNested(topRules);
+            if (LOGGER.isLoggable(Level.FINE)) {
+                LOGGER.fine(
+                        "Starting cascaded translation with "
+                                + allRules.size()
+                                + "  rules in the stylesheet");
+            }
             translatedRuleCount =
                     translateCss(mode, allRules, styleBuilder, maxCombinations, autoThreshold);
         }
@@ -488,7 +501,11 @@ public class CssTranslator {
                                         + derivedRules);
                     }
                     for (CssRule derived : derivedRules) {
-                        buildSldRule(derived, ftsBuilder, targetFeatureType);
+                        if (!derived.hasNonNullSymbolizerProperty()) {
+                            continue;
+                        }
+                        buildSldRule(derived, ftsBuilder, targetFeatureType, null);
+
                         translatedRuleCount++;
 
                         // Reminder about why this is done the way it's done. These are all rule
@@ -574,6 +591,9 @@ public class CssTranslator {
         Map<PseudoClass, List<Property>> properties = null;
         Set<PseudoClass> mixablePseudoClasses = null;
 
+        // this is to support pseudo rules at top level being merged with the previous rule, as
+        // described in the docs... not going to be used with nested rules, eventually it will
+        // have to go, just kept for backwards compatibility
         int translatedRuleCount = 0;
         for (CssRule rule : allRules) {
             if (rule.getProperties().get(PseudoClass.ROOT) == null) {
@@ -634,50 +654,57 @@ public class CssTranslator {
                 String sortByGroup = null;
 
                 // generate the SLD rules
+                CachedSimplifyingFilterVisitor cachedSimplifier =
+                        new CachedSimplifyingFilterVisitor(targetFeatureType);
                 for (CssRule cssRule : flattenedRules) {
-                    if (!cssRule.hasSymbolizerProperty()) {
+                    if (!cssRule.hasNonNullSymbolizerProperty()) {
                         continue;
                     }
 
-                    buildSldRule(cssRule, ftsBuilder, targetFeatureType);
-                    translatedRuleCount++;
+                    List<CssRule> derivedRules =
+                            removeNested(cssRule, targetFeatureType, cachedSimplifier);
+                    for (CssRule derived : derivedRules) {
+                        buildSldRule(derived, ftsBuilder, targetFeatureType, cachedSimplifier);
+                        translatedRuleCount++;
 
-                    // check if we have global composition going, and use the value of
-                    // the first rule providing the information (the one with the highest
-                    // priority)
-                    if (composite == null) {
-                        List<Value> values =
-                                cssRule.getPropertyValues(PseudoClass.ROOT, COMPOSITE)
-                                        .get(COMPOSITE);
-                        if (values != null && !values.isEmpty()) {
-                            composite = values.get(0).toLiteral();
+                        // check if we have global composition going, and use the value of
+                        // the first rule providing the information (the one with the highest
+                        // priority)
+                        if (composite == null) {
+                            List<Value> values =
+                                    derived.getPropertyValues(PseudoClass.ROOT, COMPOSITE)
+                                            .get(COMPOSITE);
+                            if (values != null && !values.isEmpty()) {
+                                composite = values.get(0).toLiteral();
+                            }
                         }
-                    }
-                    if (compositeBase == null) {
-                        List<Value> values =
-                                cssRule.getPropertyValues(PseudoClass.ROOT, COMPOSITE_BASE)
-                                        .get(COMPOSITE_BASE);
-                        if (values != null && !values.isEmpty()) {
-                            compositeBase = Boolean.valueOf(values.get(0).toLiteral());
+                        if (compositeBase == null) {
+                            List<Value> values =
+                                    derived.getPropertyValues(PseudoClass.ROOT, COMPOSITE_BASE)
+                                            .get(COMPOSITE_BASE);
+                            if (values != null && !values.isEmpty()) {
+                                compositeBase = Boolean.valueOf(values.get(0).toLiteral());
+                            }
                         }
-                    }
 
-                    // check if we have any sort-by
-                    if (sortBy == null) {
-                        List<Value> values =
-                                cssRule.getPropertyValues(PseudoClass.ROOT, SORT_BY).get(SORT_BY);
-                        if (values != null && !values.isEmpty()) {
-                            sortBy = values.get(0).toLiteral();
+                        // check if we have any sort-by
+                        if (sortBy == null) {
+                            List<Value> values =
+                                    derived.getPropertyValues(PseudoClass.ROOT, SORT_BY)
+                                            .get(SORT_BY);
+                            if (values != null && !values.isEmpty()) {
+                                sortBy = values.get(0).toLiteral();
+                            }
                         }
-                    }
 
-                    // check if we have any sort-by-group
-                    if (sortByGroup == null) {
-                        List<Value> values =
-                                cssRule.getPropertyValues(PseudoClass.ROOT, SORT_BY_GROUP)
-                                        .get(SORT_BY_GROUP);
-                        if (values != null && !values.isEmpty()) {
-                            sortByGroup = values.get(0).toLiteral();
+                        // check if we have any sort-by-group
+                        if (sortByGroup == null) {
+                            List<Value> values =
+                                    derived.getPropertyValues(PseudoClass.ROOT, SORT_BY_GROUP)
+                                            .get(SORT_BY_GROUP);
+                            if (values != null && !values.isEmpty()) {
+                                sortByGroup = values.get(0).toLiteral();
+                            }
                         }
                     }
                 }
@@ -697,6 +724,30 @@ public class CssTranslator {
         }
 
         return translatedRuleCount;
+    }
+
+    /**
+     * Flat modes assumes the master rules applies to whatever was not caught by the child rules
+     *
+     * @param cssRule
+     * @return
+     */
+    private List<CssRule> removeNested(
+            CssRule cssRule, FeatureType featureType, UnboundSimplifyingFilterVisitor simplifier) {
+        List<CssRule> nested = cssRule.getNestedRules();
+        if (nested == null || nested.isEmpty()) {
+            return Collections.singletonList(cssRule);
+        }
+
+        // add covered by all directly nested rules
+        final DomainCoverage coverage = new DomainCoverage(featureType, simplifier);
+        coverage.setExclusiveRulesEnabled(true);
+        for (CssRule r : cssRule.getNestedRules()) {
+            coverage.addRule(r);
+        }
+
+        // get the residuals to be encoded
+        return coverage.addRule(cssRule);
     }
 
     private TranslationMode getTranslationMode(Stylesheet stylesheet) {
@@ -770,14 +821,16 @@ public class CssTranslator {
                     if (range == null) {
                         others.add(child);
                     } else {
-                        result.add(new CssRule(child, rule.getProperties(), rule.getComment()));
+                        final CssRule r = deriveWithSelector(rule, child);
+                        result.add(r);
                     }
                 }
                 if (others.size() == 1) {
-                    result.add(new CssRule(others.get(0), rule.getProperties(), rule.getComment()));
+                    final CssRule r = deriveWithSelector(rule, others.get(0));
+                    result.add(r);
                 } else if (others.size() > 0) {
-                    result.add(
-                            new CssRule(new Or(others), rule.getProperties(), rule.getComment()));
+                    final CssRule r = deriveWithSelector(rule, new Or(others));
+                    result.add(r);
                 }
             } else {
                 result.add(rule);
@@ -785,6 +838,12 @@ public class CssTranslator {
         }
 
         return result;
+    }
+
+    private CssRule deriveWithSelector(CssRule rule, Selector child) {
+        final CssRule r = new CssRule(child, rule.getProperties(), rule.getComment());
+        r.nestedRules = rule.nestedRules;
+        return r;
     }
 
     /**
@@ -825,9 +884,31 @@ public class CssTranslator {
             for (CssRule rule : rules) {
                 TypeNameSimplifier simplifier = new TypeNameSimplifier(tn);
                 Selector simplified = (Selector) rule.getSelector().accept(simplifier);
-                if (simplified != Selector.REJECT) {
-                    typeNameRules.add(
-                            new CssRule(simplified, rule.getProperties(), rule.getComment()));
+                if (simplified != Selector.REJECT
+                        && !simplified.equals(rule.getSelector())
+                        && rule.getSelector() instanceof Or) {
+                    // work bit by bit, some might refer to a typename and others not
+                    Or or = (Or) rule.getSelector();
+                    List<CssRule> reduced = new ArrayList<>();
+                    for (Selector child : or.getChildren()) {
+                        Selector cs = (Selector) child.accept(simplifier);
+                        if (cs != Selector.REJECT) {
+                            final CssRule r = deriveWithSelector(rule, cs);
+                            reduced.add(r);
+                        }
+                    }
+                    // change the structure of the OR only if necessary
+                    if (reduced.size() > or.getChildren().size()) {
+                        typeNameRules.addAll(reduced);
+                    } else {
+                        final CssRule r = deriveWithSelector(rule, simplified);
+                        typeNameRules.add(r);
+                    }
+                } else {
+                    if (simplified != Selector.REJECT) {
+                        final CssRule r = deriveWithSelector(rule, simplified);
+                        typeNameRules.add(r);
+                    }
                 }
             }
             result.put(tn.name, typeNameRules);
@@ -888,14 +969,18 @@ public class CssTranslator {
     }
 
     /**
-     * Turns an SLD compatible {@link CSSRule} into a {@link Rule}, appending it to the {@link
+     * Turns an SLD compatible {@link CssRule} into a {@link Rule}, appending it to the {@link
      * FeatureTypeStyleBuilder}
      *
      * @param cssRule
      * @param fts
      * @param targetFeatureType
      */
-    void buildSldRule(CssRule cssRule, FeatureTypeStyleBuilder fts, FeatureType targetFeatureType) {
+    void buildSldRule(
+            CssRule cssRule,
+            FeatureTypeStyleBuilder fts,
+            FeatureType targetFeatureType,
+            SimplifyingFilterVisitor visitor) {
         // check we have a valid scale range
         Range<Double> scaleRange = ScaleRangeExtractor.getScaleRange(cssRule);
         if (scaleRange != null && scaleRange.isEmpty()) {
@@ -904,6 +989,9 @@ public class CssTranslator {
 
         // check we have a valid filter
         Filter filter = OgcFilterBuilder.buildFilter(cssRule.getSelector(), targetFeatureType);
+        if (visitor != null) {
+            filter = (Filter) filter.accept(visitor, null);
+        }
         if (filter == Filter.EXCLUDE) {
             return;
         }
@@ -1016,6 +1104,10 @@ public class CssTranslator {
         }
         int repeatCount = getMaxRepeatCount(values);
         for (int i = 0; i < repeatCount; i++) {
+            Value fill = getValue(values, "fill", i);
+            if (fill == null) {
+                continue;
+            }
             PolygonSymbolizerBuilder pb = ruleBuilder.polygon();
             Expression fillGeometry = getExpression(values, "fill-geometry", i);
             if (fillGeometry != null) {
@@ -1254,7 +1346,7 @@ public class CssTranslator {
                     constrastParameters.put(sldKey, getExpression(values, cssKey, i));
                 }
             }
-            double[] gammas = getDoubleArray(values, "raster-gamma", i);
+            Expression[] gammas = getExpressionArray(values, "raster-gamma", i);
             if (!"auto".equals(channelExpressions[0].evaluate(null, String.class))) {
                 ChannelSelectionBuilder cs = rb.channelSelection();
                 if (channelExpressions.length == 1) {
@@ -1366,7 +1458,6 @@ public class CssTranslator {
      *
      * @param ceb
      * @param constrastEnhancements
-     * @param constrastAlgorithms
      * @param constrastParameters
      * @param gammas
      * @param i
@@ -1375,7 +1466,7 @@ public class CssTranslator {
             ContrastEnhancementBuilder ceb,
             String[] constrastEnhancements,
             Map<String, Expression> constrastParameters,
-            double[] gammas,
+            Expression[] gammas,
             int i) {
         if (constrastEnhancements != null && constrastEnhancements.length > 0) {
             String contrastEnhancementName;
@@ -1405,7 +1496,7 @@ public class CssTranslator {
             ceb.unset();
         }
         if (gammas != null && gammas.length > 0) {
-            double gamma;
+            Expression gamma;
             if (gammas.length > i) {
                 gamma = gammas[0];
             } else {
@@ -1460,8 +1551,8 @@ public class CssTranslator {
                 if (size != null) {
                     gb.size(size);
                 }
-                double[] anchor = getDoubleArray(values, propertyName + "-anchor", i);
-                double[] offsets = getDoubleArray(values, propertyName + "-offset", i);
+                Expression[] anchor = getExpressionArray(values, propertyName + "-anchor", i);
+                Expression[] offsets = getExpressionArray(values, propertyName + "-offset", i);
                 if (anchor != null) {
                     if (anchor.length == 2) {
                         gb.anchor().x(anchor[0]);
@@ -1661,7 +1752,7 @@ public class CssTranslator {
      * Returns true if the value is a {@link Literal}, or a {@link MultiValue} made of {@link
      * Literal}
      *
-     * @param dasharrayValue
+     * @param value
      * @return
      */
     private boolean isLiterals(Value value) {
@@ -1859,13 +1950,17 @@ public class CssTranslator {
             return null;
         }
 
+        Value result = null;
         if (values.size() == 1) {
-            return values.get(0);
-        } else if (i > values.size()) {
-            return null;
-        } else {
-            return values.get(i);
+            result = values.get(0);
+        } else if (i < values.size()) {
+            result = values.get(i);
         }
+
+        if (result == null || result instanceof Value.None) {
+            return null;
+        }
+        return result;
     }
 
     private List<Value> getMultiValue(Map<String, List<Value>> valueMap, String name, int i) {
@@ -2053,6 +2148,7 @@ public class CssTranslator {
         return max;
     }
 
+    @SuppressWarnings("PMD.SystemPrintln")
     public static void main(String[] args) throws IOException, TransformerException {
         if (args.length != 2) {
             System.err.println("Usage: CssTranslator <input.css> <output.sld>");
@@ -2080,9 +2176,9 @@ public class CssTranslator {
         java.util.logging.ConsoleHandler handler = new java.util.logging.ConsoleHandler();
         handler.setLevel(java.util.logging.Level.FINE);
 
-        org.geotools.util.logging.Logging.getLogger("org.geotools.styling.css")
+        org.geotools.util.logging.Logging.getLogger(CssTranslator.class)
                 .setLevel(java.util.logging.Level.FINE);
-        org.geotools.util.logging.Logging.getLogger("org.geotools.styling.css").addHandler(handler);
+        org.geotools.util.logging.Logging.getLogger(CssTranslator.class).addHandler(handler);
 
         CssTranslator translator = new CssTranslator();
         Style style = translator.translate(styleSheet);

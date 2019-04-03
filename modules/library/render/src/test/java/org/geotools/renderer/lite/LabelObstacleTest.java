@@ -38,8 +38,8 @@ import org.geotools.image.ImageWorker;
 import org.geotools.image.test.ImageAssert;
 import org.geotools.map.DefaultMapContext;
 import org.geotools.referencing.CRS;
-import org.geotools.styling.SLDParser;
 import org.geotools.styling.Style;
+import org.geotools.xml.styling.SLDParser;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.locationtech.jts.geom.LineString;
@@ -51,7 +51,6 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.GeometryDescriptor;
 
-/** @source $URL$ */
 public class LabelObstacleTest {
 
     static MemoryDataStore mem;
@@ -90,6 +89,8 @@ public class LabelObstacleTest {
         loadData(mem, "lines");
         loadData(mem, "polys");
         loadData(mem, "lines2");
+
+        RendererBaseTest.setupVeraFonts();
     }
 
     static void loadData(MemoryDataStore mem, String name) throws Exception {

@@ -38,11 +38,7 @@ import org.opengis.filter.Filter;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.util.ProgressListener;
 
-/**
- * Test ForceCoordinateSystemFeatureResults feature collection wrapper.
- *
- * @source $URL$
- */
+/** Test ForceCoordinateSystemFeatureResults feature collection wrapper. */
 public class ForceCoordinateFeatureResultsTest extends TestCase {
 
     private static final String FEATURE_TYPE_NAME = "testType";

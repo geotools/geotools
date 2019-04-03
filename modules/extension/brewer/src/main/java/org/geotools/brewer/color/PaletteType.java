@@ -16,11 +16,9 @@
  */
 package org.geotools.brewer.color;
 
-/**
- * This class doubles as a filter and an identifier for colour palettes.
- *
- * @source $URL$
- */
+import java.util.Objects;
+
+/** This class doubles as a filter and an identifier for colour palettes. */
 public class PaletteType {
     /** name of the type, if null this will match any name */
     String name;
@@ -141,5 +139,10 @@ public class PaletteType {
         }
 
         return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, suitableRanged, suitableUnique, isEmpty);
     }
 }

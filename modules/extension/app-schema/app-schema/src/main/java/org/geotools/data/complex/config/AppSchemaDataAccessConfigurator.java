@@ -34,37 +34,40 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.geotools.appschema.filter.FilterFactoryImplReportInvalidProperty;
 import org.geotools.data.DataAccess;
 import org.geotools.data.DataAccessFinder;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.complex.AppSchemaDataAccessRegistry;
 import org.geotools.data.complex.AttributeMapping;
-import org.geotools.data.complex.ComplexFeatureConstants;
 import org.geotools.data.complex.FeatureTypeMapping;
 import org.geotools.data.complex.FeatureTypeMappingFactory;
 import org.geotools.data.complex.NestedAttributeMapping;
+import org.geotools.data.complex.expression.FeaturePropertyAccessorFactory;
+import org.geotools.data.complex.feature.type.ComplexFeatureTypeFactoryImpl;
+import org.geotools.data.complex.feature.type.Types;
 import org.geotools.data.complex.filter.XPath;
-import org.geotools.data.complex.filter.XPathUtil.Step;
-import org.geotools.data.complex.filter.XPathUtil.StepList;
 import org.geotools.data.complex.spi.CustomImplementationsFinder;
 import org.geotools.data.complex.spi.CustomSourceDataStore;
+import org.geotools.data.complex.util.ComplexFeatureConstants;
+import org.geotools.data.complex.util.EmfComplexFeatureReader;
+import org.geotools.data.complex.util.XPathUtil.Step;
+import org.geotools.data.complex.util.XPathUtil.StepList;
 import org.geotools.data.complex.xml.XmlFeatureSource;
 import org.geotools.data.joining.JoiningNestedAttributeMapping;
-import org.geotools.factory.Hints;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.type.AttributeDescriptorImpl;
-import org.geotools.feature.type.ComplexFeatureTypeFactoryImpl;
 import org.geotools.feature.type.FeatureTypeFactoryImpl;
 import org.geotools.filter.AttributeExpressionImpl;
-import org.geotools.filter.FilterFactoryImplReportInvalidProperty;
-import org.geotools.filter.expression.FeaturePropertyAccessorFactory;
 import org.geotools.filter.expression.PropertyAccessor;
 import org.geotools.filter.expression.PropertyAccessorFactory;
 import org.geotools.filter.text.cql2.CQL;
@@ -72,10 +75,11 @@ import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.jdbc.JDBCFeatureSource;
 import org.geotools.jdbc.JDBCFeatureStore;
 import org.geotools.util.URLs;
-import org.geotools.xml.SchemaIndex;
+import org.geotools.util.factory.Hints;
 import org.geotools.xml.resolver.SchemaCache;
 import org.geotools.xml.resolver.SchemaCatalog;
 import org.geotools.xml.resolver.SchemaResolver;
+import org.geotools.xsd.SchemaIndex;
 import org.opengis.feature.Feature;
 import org.opengis.feature.GeometryAttribute;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -97,23 +101,19 @@ import org.xml.sax.helpers.NamespaceSupport;
  * @author Gabriel Roldan (Axios Engineering)
  * @author Rini Angreani (CSIRO Earth Science and Resource Engineering)
  * @author Russell Petty (GeoScience Victoria)
- * @version $Id$
- * @source $URL$
- *     http://svn.osgeo.org/geotools/trunk/modules/unsupported/app-schema/app-schema/src/main
- *     /java/org/geotools/data/complex/config/AppSchemaDataAccessConfigurator.java $
  * @since 2.4
  */
 public class AppSchemaDataAccessConfigurator {
-    /** DOCUMENT ME! */
+
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(
-                    AppSchemaDataAccessConfigurator.class.getPackage().getName());
+            org.geotools.util.logging.Logging.getLogger(AppSchemaDataAccessConfigurator.class);
 
     public static String PROPERTY_JOINING = "app-schema.joining";
 
     public static String PROPERTY_ENCODE_NESTED_FILTERS = "app-schema.encodeNestedFilters";
 
-    /** DOCUMENT ME! */
+    public static final String PROPERTY_REPLACE_OR_UNION = "app-schema.orUnionReplace";
+
     private AppSchemaDataAccessDTO config;
 
     private AppSchemaFeatureTypeRegistry typeRegistry;
@@ -147,6 +147,13 @@ public class AppSchemaDataAccessConfigurator {
         return s != null;
     }
 
+    public static boolean isOrUnionReplacementEnabled() {
+        final String orUnionReplacement =
+                AppSchemaDataAccessRegistry.getAppSchemaProperties()
+                        .getProperty(PROPERTY_REPLACE_OR_UNION);
+        return (!"false".equalsIgnoreCase(orUnionReplacement));
+    }
+
     /**
      * Convenience method to check whether native encoding of nested filters is enabled.
      *
@@ -160,11 +167,7 @@ public class AppSchemaDataAccessConfigurator {
         return propValue == null || propValue.equalsIgnoreCase("true");
     }
 
-    /**
-     * Creates a new ComplexDataStoreConfigurator object.
-     *
-     * @param config DOCUMENT ME!
-     */
+    /** Creates a new ComplexDataStoreConfigurator object. */
     private AppSchemaDataAccessConfigurator(
             AppSchemaDataAccessDTO config, DataAccessMap dataStoreMap) {
         this.config = config;
@@ -186,7 +189,6 @@ public class AppSchemaDataAccessConfigurator {
      * connect to source datastores and build the mapping objects from source FeatureTypes to the
      * target ones.
      *
-     * @param config DOCUMENT ME!
      * @return a Set of {@link org.geotools.data.complex.FeatureTypeMapping} source to target
      *     FeatureType mapping definitions
      * @throws IOException if any error occurs while creating the mappings
@@ -221,7 +223,6 @@ public class AppSchemaDataAccessConfigurator {
      * mappings
      *
      * @return
-     * @throws IOException DOCUMENT ME!
      */
     private Set<FeatureTypeMapping> buildMappings() throws IOException {
         // -parse target xml schemas, let parsed types on <code>registry</code>
@@ -265,7 +266,10 @@ public class AppSchemaDataAccessConfigurator {
             for (DataAccess<FeatureType, Feature> dataAccess : sourceDataStores.values()) {
                 boolean usedDataAccess = false;
                 for (FeatureTypeMapping mapping : featureTypeMappings) {
-                    if (mapping.getSource().getDataStore() == dataAccess) {
+                    if (mapping.getSource().getDataStore() == dataAccess
+                            || (mapping.getIndexSource() != null
+                                    && Objects.equals(
+                                            mapping.getIndexSource().getDataStore(), dataAccess))) {
                         usedDataAccess = true;
                         break;
                     }
@@ -312,11 +316,15 @@ public class AppSchemaDataAccessConfigurator {
                                 crs,
                                 isDatabaseBackend);
 
+                // if an external index (e.g. Solr) is used in the mappings, get its data store
+                FeatureSource indexFeatureSource = getIndexFeatureSource(dto, sourceDataStores);
+
                 FeatureTypeMapping mapping;
 
                 mapping =
                         FeatureTypeMappingFactory.getInstance(
                                 featureSource,
+                                indexFeatureSource,
                                 target,
                                 dto.getDefaultGeometryXPath(),
                                 attMappings,
@@ -596,7 +604,8 @@ public class AppSchemaDataAccessConfigurator {
                                 targetXPathSteps,
                                 expectedInstanceOf,
                                 isMultiValued,
-                                clientProperties);
+                                clientProperties,
+                                attDto.getMultipleValue());
             }
 
             if (attDto.isList()) {
@@ -617,6 +626,10 @@ public class AppSchemaDataAccessConfigurator {
             if (attDto.getInstancePath() != null) {
                 attMapping.setInstanceXpath(attDto.getInstancePath());
             }
+
+            // sets the external index (e.g. Solr) field for the current attribute mapping
+            // the value will be NULL if no external index is being used
+            attMapping.setIndexField(attDto.getIndexField());
 
             attMappings.add(attMapping);
         }
@@ -676,7 +689,7 @@ public class AppSchemaDataAccessConfigurator {
                                 + ":\n"
                                 + formattedErrorMessage);
             } catch (Exception e) {
-                e.printStackTrace();
+                java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
                 String msg = "parsing expression " + sourceExpr;
                 AppSchemaDataAccessConfigurator.LOGGER.log(Level.SEVERE, msg, e);
                 throw new DataSourceException(msg + ": " + e.getMessage(), e);
@@ -847,12 +860,9 @@ public class AppSchemaDataAccessConfigurator {
     }
 
     /**
-     * DOCUMENT ME!
-     *
      * @return a Map&lt;String,DataStore&gt; where the key is the id given to the datastore in the
      *     configuration.
      * @throws IOException
-     * @throws DataSourceException DOCUMENT ME!
      */
     private Map<String, DataAccess<FeatureType, Feature>> acquireSourceDatastores()
             throws IOException {
@@ -876,20 +886,23 @@ public class AppSchemaDataAccessConfigurator {
             AppSchemaDataAccessConfigurator.LOGGER.fine("looking for datastore " + id);
 
             DataAccess<FeatureType, Feature> dataStore = null;
-            if (dataStoreMap != null && dataStoreMap.containsKey(datastoreParams)) {
-                dataStore = dataStoreMap.get(datastoreParams);
-            } else {
-                // let's check if any data store provided a custom syntax for its configuration
-                List<CustomSourceDataStore> extensions = CustomSourceDataStore.loadExtensions();
-                dataStore = buildDataStore(extensions, dsconfig, config);
-                // if no custom data store handled this configuration let's fallback on the default
-                // constructor
-                dataStore =
-                        dataStore == null
-                                ? DataAccessFinder.getDataStore(datastoreParams)
-                                : dataStore;
-                // store the store in the data stores map
-                dataStoreMap.put(datastoreParams, dataStore);
+            if (dataStoreMap != null) {
+                if (dataStoreMap.containsKey(datastoreParams)) {
+                    dataStore = dataStoreMap.get(datastoreParams);
+                } else {
+                    // let's check if any data store provided a custom syntax for its configuration
+                    List<CustomSourceDataStore> extensions = CustomSourceDataStore.loadExtensions();
+                    dataStore = buildDataStore(extensions, dsconfig, config);
+                    // if no custom data store handled this configuration let's fallback on the
+                    // default
+                    // constructor
+                    dataStore =
+                            dataStore == null
+                                    ? DataAccessFinder.getDataStore(datastoreParams)
+                                    : dataStore;
+                    // store the store in the data stores map
+                    dataStoreMap.put(datastoreParams, dataStore);
+                }
             }
 
             if (dataStore == null) {
@@ -1058,5 +1071,36 @@ public class AppSchemaDataAccessConfigurator {
             resolvedParams.put(key, value);
         }
         return resolvedParams;
+    }
+
+    /**
+     * If an external index (e.g. Solr) is used by the provided feature type mapping, this method
+     * will retrieve the corresponding data store definition, otherwise NULL will be returned. If
+     * the data source cannot be found an exception will be throw.
+     */
+    private FeatureSource<FeatureType, Feature> getIndexFeatureSource(
+            TypeMapping dto, Map<String, DataAccess<FeatureType, Feature>> sourceDataStores)
+            throws IOException {
+        String dsId = dto.getIndexDataStore();
+        String typeName = dto.getIndexTypeName();
+
+        // let's check if an external index (e.g. Solr) was configured
+        if (StringUtils.isEmpty(dsId) || StringUtils.isEmpty(typeName)) return null;
+
+        DataAccess<FeatureType, Feature> sourceDataStore = sourceDataStores.get(dsId);
+        if (sourceDataStore == null) {
+            throw new DataSourceException(
+                    "datastore " + dsId + " not found for type mapping " + dto);
+        }
+
+        Name name = Types.degloseName(typeName, namespaces);
+        FeatureSource fSource = sourceDataStore.getFeatureSource(name);
+        if (fSource == null) {
+            throw new RuntimeException("Feature source not found '" + typeName + "'.");
+        }
+        if (fSource instanceof XmlFeatureSource) {
+            ((XmlFeatureSource) fSource).setNamespaces(namespaces);
+        }
+        return fSource;
     }
 }

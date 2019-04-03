@@ -31,7 +31,6 @@ import org.geotools.ysld.ProcessUtil;
 import org.geotools.ysld.YamlMap;
 import org.geotools.ysld.YamlObject;
 import org.opengis.feature.type.Name;
-import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;
 
@@ -87,8 +86,6 @@ public class TransformHandler extends YsldParseHandler {
         }
 
         boolean wmsParams = ProcessUtil.hasWMSParams(processInfo);
-
-        FilterFactory filterFactory = factory.filter;
 
         // turn properties into inputs for ProcessFunction
         List<Expression> processArgs = new ArrayList<>();

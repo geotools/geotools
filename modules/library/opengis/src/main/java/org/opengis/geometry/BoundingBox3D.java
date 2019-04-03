@@ -26,7 +26,6 @@ import org.opengis.referencing.operation.TransformException;
  * <p>This object contains no additional information beyond that provided by {@link Envelope}.
  *
  * @author Niels Charlier
- * @source $URL$
  */
 @Extension
 public interface BoundingBox3D extends BoundingBox {

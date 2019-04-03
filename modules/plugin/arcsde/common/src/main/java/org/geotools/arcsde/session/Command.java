@@ -30,9 +30,6 @@ import java.io.IOException;
  * try/catch/finally code.
  *
  * @author Jody Garnett
- * @source $URL$
- *     http://svn.osgeo.org/geotools/trunk/modules/plugin/arcsde/common/src/main/java/org/geotools
- *     /arcsde/session/Command.java $
  */
 public abstract class Command<R> {
     /**

@@ -24,7 +24,6 @@ import org.junit.*;
 /**
  * Tests the {@link Utilities} static methods.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  */
@@ -92,13 +91,13 @@ public final class UtilitiesTest {
          */
         Character C1 = c1, C2 = new Character(c2);
         assertTrue(Utilities.equals(C1, C2));
-        Byte B1 = b1, B2 = new Byte(b2);
+        Byte B1 = b1, B2 = Byte.valueOf(b2);
         assertTrue(Utilities.equals(B1, B2));
-        Short S1 = s1, S2 = new Short(s2);
+        Short S1 = s1, S2 = Short.valueOf(s2);
         assertTrue(Utilities.equals(S1, S2));
-        Integer I1 = i1, I2 = new Integer(i2);
+        Integer I1 = i1, I2 = Integer.valueOf(i2);
         assertTrue(Utilities.equals(I1, I2));
-        Long L1 = l1, L2 = new Long(l2);
+        Long L1 = l1, L2 = Long.valueOf(l2);
         assertTrue(Utilities.equals(L1, L2));
         Float F1 = f1, F2 = new Float(f2);
         assertTrue(Utilities.equals(F1, F2));

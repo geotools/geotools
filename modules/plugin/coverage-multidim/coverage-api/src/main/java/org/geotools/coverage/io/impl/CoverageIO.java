@@ -35,9 +35,9 @@ import java.util.logging.Logger;
 import org.geotools.coverage.io.CoverageAccess;
 import org.geotools.coverage.io.Driver;
 import org.geotools.coverage.io.Driver.DriverCapabilities;
-import org.geotools.factory.FactoryCreator;
-import org.geotools.factory.FactoryRegistry;
-import org.geotools.factory.Hints;
+import org.geotools.util.factory.FactoryCreator;
+import org.geotools.util.factory.FactoryRegistry;
+import org.geotools.util.factory.Hints;
 import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.util.ProgressListener;
 
@@ -50,7 +50,6 @@ import org.opengis.util.ProgressListener;
  * @todo add caching mechanism
  * @todo add method for removing and creating connections to access
  * @todo fix javadocs
- * @source $URL$
  */
 public class CoverageIO {
     /** The {@link Logger}. */
@@ -58,7 +57,7 @@ public class CoverageIO {
             org.geotools.util.logging.Logging.getLogger(CoverageIO.class);
 
     /** The service registry for this manager. Will be initialized only when first needed. */
-    private static FactoryRegistry REGISTRY;
+    private static volatile FactoryRegistry REGISTRY;
 
     /** Private constructor, this class cannot be instantiated nor subclassed. */
     private CoverageIO() {

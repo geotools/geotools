@@ -59,7 +59,6 @@ import org.geotools.swt.utils.Messages;
  *
  * @author Jody Garnett
  * @since 1.0.0
- * @source $URL$
  */
 public class FillViewer {
     boolean enabled;
@@ -104,7 +103,7 @@ public class FillViewer {
                 }
                 fire(selectionEvent); // everything worked
             } catch (Throwable t) {
-                t.printStackTrace();
+                java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", t);
             } finally {
                 FillViewer.this.chooser.setEnabled(FillViewer.this.enabled);
                 FillViewer.this.percent.setEnabled(FillViewer.this.enabled);

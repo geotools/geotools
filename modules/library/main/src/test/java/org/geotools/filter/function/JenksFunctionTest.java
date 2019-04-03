@@ -28,12 +28,7 @@ import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
 
-/**
- * @author Cory Horner, Refractions Research Inc.
- * @source $URL$
- *     http://svn.osgeo.org/geotools/trunk/modules/library/main/src/test/java/org/geotools/
- *     filter/function/QuantileFunctionTest.java $
- */
+/** @author Cory Horner, Refractions Research Inc. */
 public class JenksFunctionTest extends FunctionTestSupport {
 
     public JenksFunctionTest(String testName) {
@@ -132,7 +127,7 @@ public class JenksFunctionTest extends FunctionTestSupport {
             myfeatures[i] =
                     SimpleFeatureBuilder.build(
                             dataType,
-                            new Object[] {new Integer(i + 1), new Integer(iVal[i])},
+                            new Object[] {Integer.valueOf(i + 1), Integer.valueOf(iVal[i])},
                             "classification.test1" + (i + 1));
         }
         SimpleFeatureSource source = DataUtilities.source(myfeatures);
@@ -172,7 +167,7 @@ public class JenksFunctionTest extends FunctionTestSupport {
             myfeatures[i] =
                     SimpleFeatureBuilder.build(
                             dataType,
-                            new Object[] {new Integer(i + 1), new Integer(iVal[i])},
+                            new Object[] {Integer.valueOf(i + 1), Integer.valueOf(iVal[i])},
                             "classification.t" + (i + 1));
         }
         SimpleFeatureSource source = DataUtilities.source(myfeatures);
@@ -192,12 +187,12 @@ public class JenksFunctionTest extends FunctionTestSupport {
                 DataUtilities.createType("classification.nullnan", "id:0,foo:int,bar:double");
         Integer iVal[] =
                 new Integer[] {
-                    new Integer(0),
-                    new Integer(0),
-                    new Integer(0),
-                    new Integer(13),
-                    new Integer(13),
-                    new Integer(13),
+                    Integer.valueOf(0),
+                    Integer.valueOf(0),
+                    Integer.valueOf(0),
+                    Integer.valueOf(13),
+                    Integer.valueOf(13),
+                    Integer.valueOf(13),
                     null,
                     null,
                     null
@@ -222,7 +217,7 @@ public class JenksFunctionTest extends FunctionTestSupport {
                     SimpleFeatureBuilder.build(
                             ft,
                             new Object[] {
-                                new Integer(i + 1), iVal[i], dVal[i],
+                                Integer.valueOf(i + 1), iVal[i], dVal[i],
                             },
                             "nantest.t" + (i + 1));
         }
@@ -238,5 +233,14 @@ public class JenksFunctionTest extends FunctionTestSupport {
         assertEquals(3, range.getSize()); // 2 or 3?
         assertEquals("0..0", range.getTitle(0));
         assertEquals("0..0", range.getTitle(1));
+    }
+
+    public void testConstantValuesNumeric() {
+        Function function = ff.function("jenks", ff.property("v"), ff.literal(12));
+        RangedClassifier classifier = (RangedClassifier) function.evaluate(constantCollection);
+        assertNotNull(classifier);
+        assertEquals(1, classifier.getSize());
+        assertEquals(123.123, (Double) classifier.getMin(0), 0d);
+        assertEquals(123.123, (Double) classifier.getMax(0), 0d);
     }
 }

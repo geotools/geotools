@@ -1,0 +1,6 @@
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="ehcache.xsd"
+	name="s3-geotiff-cache-manager"
+	>
+	<!-- doesn't define a cache named default-cache, which is the one gt-s3-geotiff looks for -->
+</ehcache>

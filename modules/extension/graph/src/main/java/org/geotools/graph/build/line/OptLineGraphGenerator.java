@@ -52,7 +52,6 @@ import org.locationtech.jts.geom.LineSegment;
  * @see org.geotools.graph.structure.opt.OptEdge
  * @see org.geotools.graph.structure.line.OptXYNode
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
- * @source $URL$
  */
 public class OptLineGraphGenerator implements LineGraphGenerator {
 
@@ -86,13 +85,13 @@ public class OptLineGraphGenerator implements LineGraphGenerator {
 
         // update count of first coordinate
         if ((count = (Integer) m_coord2count.get(line.p0)) == null) {
-            m_coord2count.put(line.p0, new Integer(1));
-        } else m_coord2count.put(line.p0, new Integer(count.intValue() + 1));
+            m_coord2count.put(line.p0, Integer.valueOf(1));
+        } else m_coord2count.put(line.p0, Integer.valueOf(count.intValue() + 1));
 
         // update count of second coordinate
         if ((count = (Integer) m_coord2count.get(line.p1)) == null) {
-            m_coord2count.put(line.p1, new Integer(1));
-        } else m_coord2count.put(line.p1, new Integer(count.intValue() + 1));
+            m_coord2count.put(line.p1, Integer.valueOf(1));
+        } else m_coord2count.put(line.p1, Integer.valueOf(count.intValue() + 1));
 
         // hold onto a reference to the line
         m_lines.add(line);
@@ -207,7 +206,6 @@ public class OptLineGraphGenerator implements LineGraphGenerator {
         return (edge);
     }
 
-    // TODO DOCUMENT ME!
     public Node getNode(Coordinate c) {
         return ((Node) m_coord2count.get(c));
     }

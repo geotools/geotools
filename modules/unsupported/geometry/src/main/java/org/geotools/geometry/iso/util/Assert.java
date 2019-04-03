@@ -2,8 +2,8 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2001-2006  Vivid Solutions
  *    (C) 2001-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2001-2006  Vivid Solutions
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -20,11 +20,7 @@ package org.geotools.geometry.iso.util;
 // TODO SJ: It has to be discussed whether the Implementation uses Asserts or Throwable Exceptions;
 // probably the Exceptions are the better solutions.
 
-/**
- * A utility for making programming assertions.
- *
- * @source $URL$
- */
+/** A utility for making programming assertions. */
 public class Assert {
 
     /**

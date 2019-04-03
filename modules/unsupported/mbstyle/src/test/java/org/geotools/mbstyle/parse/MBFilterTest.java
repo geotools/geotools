@@ -215,7 +215,7 @@ public class MBFilterTest {
 
         MBFilter mbfilter = new MBFilter(json);
         Filter filter = mbfilter.filter();
-        System.out.println(ECQL.toCQL(filter));
+        // System.out.println(ECQL.toCQL(filter));
         assertEquals("in(a,1,2,3) = true", ECQL.toCQL(filter));
 
         json = array("['!in', 'a', 1, 2, 3]");

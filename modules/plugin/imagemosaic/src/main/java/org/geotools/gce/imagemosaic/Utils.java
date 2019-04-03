@@ -74,6 +74,7 @@ import javax.media.jai.TileScheduler;
 import javax.media.jai.remote.SerializableRenderedImage;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.Element;
@@ -81,13 +82,12 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.filefilter.FileFilterUtils;
 import org.apache.commons.io.filefilter.IOFileFilter;
+import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.data.DataAccessFactory.Param;
 import org.geotools.data.DataStoreFactorySpi;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.shapefile.ShapefileDataStoreFactory;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.factory.Hints;
-import org.geotools.factory.Hints.Key;
 import org.geotools.filter.visitor.DefaultFilterVisitor;
 import org.geotools.gce.imagemosaic.catalog.CatalogConfigurationBean;
 import org.geotools.gce.imagemosaic.catalog.index.Indexer;
@@ -101,22 +101,22 @@ import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.LiteCoordinateSequence;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.io.ImageIOExt;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.CRS.AxisOrder;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.renderer.crs.ProjectionHandler;
 import org.geotools.renderer.crs.ProjectionHandlerFinder;
-import org.geotools.resources.coverage.CoverageUtilities;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
 import org.geotools.util.Converters;
 import org.geotools.util.Range;
 import org.geotools.util.URLs;
 import org.geotools.util.Utilities;
+import org.geotools.util.factory.Hints;
+import org.geotools.util.factory.Hints.Key;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.TopologyException;
 import org.locationtech.jts.operation.overlay.snap.GeometrySnapper;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -134,13 +134,10 @@ import org.opengis.referencing.operation.TransformException;
  * places.
  *
  * @author Simone Giannecchini, GeoSolutions S.A.S.
- * @source $URL$
  */
 public class Utils {
 
     public static final FilterFactory2 FF = CommonFactoryFinder.getFilterFactory2();
-
-    private static GeometryFactory GEOM_FACTORY = new GeometryFactory();
 
     private static final String DATABASE_KEY = "database";
 
@@ -191,8 +188,7 @@ public class Utils {
     private static final int COORDS_DECIMATION_THRESHOLD;
 
     /** Logger. */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(Utils.class.toString());
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(Utils.class);
 
     static {
         final String prop = System.getProperty("org.geotools.imagemosaic.optimizecrop");
@@ -1007,7 +1003,6 @@ public class Utils {
      * or an {@link IllegalArgumentException} will be thrown.
      *
      * @param imageIndex the index of the image to get the dimensions for.
-     * @param inStream the {@link ImageInputStream} to use as an input
      * @param reader the {@link ImageReader} to decode the image dimensions.
      * @return a {@link Rectangle} that contains the dimensions for the image at index <code>
      *     imageIndex</code>
@@ -1538,10 +1533,6 @@ public class Utils {
                                     ? URLs.fileToUrl(dataStoreProperties)
                                     : URLs.fileToUrl(shapeFile);
             }
-        } else {
-            // SK: We don't set SourceURL to null now, just because it doesn't
-            // point to a file
-            // sourceURL=null;
         }
         return sourceURL;
     }
@@ -2018,17 +2009,8 @@ public class Utils {
             final String tempSource = (String) source;
             File tempFile = new File(tempSource);
             if (!tempFile.exists()) {
-                // is it a URL
-                try {
-                    sourceURL = new URL(tempSource);
-                    source = URLs.urlToFile(sourceURL);
-                } catch (MalformedURLException e) {
-                    sourceURL = null;
-                    source = null;
-                }
+                return false;
             } else {
-                sourceURL = URLs.fileToUrl(tempFile);
-
                 // so that we can do our magic here below
                 sourceFile = tempFile;
             }
@@ -2080,6 +2062,19 @@ public class Utils {
             indexer = (Indexer) unmarshaller.unmarshal(indexerFile);
         }
         return indexer;
+    }
+
+    /**
+     * Marshals the Indexer object to the specified file
+     *
+     * @param indexerFile
+     * @return
+     * @throws JAXBException
+     */
+    public static void marshal(Indexer indexer, File indexerFile) throws JAXBException {
+        Marshaller marshaller = CONTEXT.createMarshaller();
+        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+        marshaller.marshal(indexer, indexerFile);
     }
 
     /**

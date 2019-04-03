@@ -18,11 +18,11 @@ package org.geotools.validation.attributes;
 
 import junit.framework.TestCase;
 import org.geotools.data.DataUtilities;
-import org.geotools.feature.IllegalAttributeException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.validation.RoadValidationResults;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
+import org.opengis.feature.IllegalAttributeException;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
@@ -45,7 +45,6 @@ import org.opengis.feature.simple.SimpleFeatureType;
  *
  * @author bowens, Refractions Research, Inc.
  * @author $Author: sploreg $ (last modification)
- * @source $URL$
  * @version $Id$
  */
 public class RangeFeatureValidationTest extends TestCase {
@@ -92,7 +91,7 @@ public class RangeFeatureValidationTest extends TestCase {
         return SimpleFeatureBuilder.build(
                 type,
                 new Object[] {
-                    new Integer(id), gf.createLineString(coords), name,
+                    Integer.valueOf(id), gf.createLineString(coords), name,
                 },
                 type.getTypeName() + "." + road);
     }

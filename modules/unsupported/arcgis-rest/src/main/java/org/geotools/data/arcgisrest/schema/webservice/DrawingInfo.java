@@ -1,53 +1,59 @@
+
 package org.geotools.data.arcgisrest.schema.webservice;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
 
 public class DrawingInfo {
 
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("renderer")
     @Expose
     private Renderer renderer;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("transparency")
     @Expose
     private Integer transparency;
 
     /**
+     * 
      * (Required)
-     *
-     * @return The renderer
+     * 
      */
     public Renderer getRenderer() {
         return renderer;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param renderer The renderer
+     * 
      */
     public void setRenderer(Renderer renderer) {
         this.renderer = renderer;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The transparency
+     * 
      */
     public Integer getTransparency() {
         return transparency;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param transparency The transparency
+     * 
      */
     public void setTransparency(Integer transparency) {
         this.transparency = transparency;
@@ -55,12 +61,30 @@ public class DrawingInfo {
 
     @Override
     public String toString() {
-        return ToStringBuilder.reflectionToString(this);
+        StringBuilder sb = new StringBuilder();
+        sb.append(DrawingInfo.class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this))).append('[');
+        sb.append("renderer");
+        sb.append('=');
+        sb.append(((this.renderer == null)?"<null>":this.renderer));
+        sb.append(',');
+        sb.append("transparency");
+        sb.append('=');
+        sb.append(((this.transparency == null)?"<null>":this.transparency));
+        sb.append(',');
+        if (sb.charAt((sb.length()- 1)) == ',') {
+            sb.setCharAt((sb.length()- 1), ']');
+        } else {
+            sb.append(']');
+        }
+        return sb.toString();
     }
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(renderer).append(transparency).toHashCode();
+        int result = 1;
+        result = ((result* 31)+((this.renderer == null)? 0 :this.renderer.hashCode()));
+        result = ((result* 31)+((this.transparency == null)? 0 :this.transparency.hashCode()));
+        return result;
     }
 
     @Override
@@ -72,9 +96,7 @@ public class DrawingInfo {
             return false;
         }
         DrawingInfo rhs = ((DrawingInfo) other);
-        return new EqualsBuilder()
-                .append(renderer, rhs.renderer)
-                .append(transparency, rhs.transparency)
-                .isEquals();
+        return (((this.renderer == rhs.renderer)||((this.renderer!= null)&&this.renderer.equals(rhs.renderer)))&&((this.transparency == rhs.transparency)||((this.transparency!= null)&&this.transparency.equals(rhs.transparency))));
     }
+
 }

@@ -43,6 +43,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -67,8 +68,6 @@ import org.geotools.data.store.ContentDataStore;
 import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.data.store.ContentState;
-import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.factory.Hints;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.visitor.CountVisitor;
@@ -80,6 +79,7 @@ import org.geotools.jdbc.JoinInfo.JoinPart;
 import org.geotools.referencing.CRS;
 import org.geotools.util.Converters;
 import org.geotools.util.SoftValueHashMap;
+import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.Point;
@@ -90,7 +90,6 @@ import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.Id;
 import org.opengis.filter.PropertyIsLessThanOrEqualTo;
 import org.opengis.filter.expression.BinaryExpression;
@@ -144,15 +143,12 @@ import org.opengis.referencing.operation.TransformException;
  * #setFilterCapabilities(FilterCapabilities)}.
  *
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL$
  */
 public final class JDBCDataStore extends ContentDataStore implements GmlObjectStore {
 
     /** Caches the "setValue" method in various aggregate visitors */
     private static SoftValueHashMap<Class, Method> AGGREGATE_SETVALUE_CACHE =
             new SoftValueHashMap<>(1000);
-
-    private static final FilterFactory2 FF2 = CommonFactoryFinder.getFilterFactory2();
 
     /**
      * When true, record a stack trace documenting who disposed the JDBCDataStore. If dispose() is
@@ -178,6 +174,12 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
      * type.
      */
     public static final String JDBC_NATIVE_TYPENAME = "org.geotools.jdbc.nativeTypeName";
+
+    /**
+     * The key for attribute descriptor user data which specifies the original database column data
+     * type, as a {@link Types} value.
+     */
+    public static final String JDBC_NATIVE_TYPE = "org.geotools.jdbc.nativeType";
 
     /** Used to specify the column alias to use when encoding a column in a select */
     public static final String JDBC_COLUMN_ALIAS = "org.geotools.jdbc.columnAlias";
@@ -220,7 +222,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
     private Throwable disposedBy = null;
 
     /** the dialect of sql */
-    protected SQLDialect dialect;
+    public SQLDialect dialect;
 
     /** The database schema. */
     protected String databaseSchema;
@@ -253,7 +255,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
      * The fetch size for this datastore, defaulting to 1000. Set to a value less or equal to 0 to
      * disable fetch size limit and grab all the records in one shot.
      */
-    protected int fetchSize;
+    public int fetchSize;
 
     /**
      * The number of features to bufferize while inserting in order to do batch inserts.
@@ -674,7 +676,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
      * @return The mapped java class, or <code>null</code>. if no such mapping exists.
      */
     public Class<?> getMapping(int sqlType) {
-        return getSqlTypeToClassMappings().get(new Integer(sqlType));
+        return getSqlTypeToClassMappings().get(Integer.valueOf(sqlType));
     }
 
     /**
@@ -699,6 +701,11 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
      */
     public Integer getMapping(Class<?> clazz) {
         Integer mapping = getClassToSqlTypeMappings().get(clazz);
+
+        // check for arrays, but don't get fooled by BLOB/CLOB java counterparts
+        if (mapping == null && clazz.isArray()) {
+            mapping = Types.ARRAY;
+        }
 
         if (mapping == null) {
             // no match, try a "fuzzy" match in which we find the super class which matches best
@@ -1014,11 +1021,10 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
                             escapeNamePattern(metaData, databaseSchema),
                             "%",
                             queryTypes.toArray(new String[0]));
-            if (fetchSize > 1) {
-                tables.setFetchSize(fetchSize);
-            }
-
             try {
+                if (fetchSize > 1) {
+                    tables.setFetchSize(fetchSize);
+                }
                 while (tables.next()) {
                     String schemaName = tables.getString("TABLE_SCHEM");
                     String tableName = tables.getString("TABLE_NAME");
@@ -1243,7 +1249,9 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
                             escapeNamePattern(metaData, databaseSchema),
                             escapeNamePattern(metaData, tableName),
                             escapeNamePattern(metaData, columnName));
-            columns.next();
+            if (!columns.next()) {
+                throw new SQLException("Could not find metadata for column");
+            }
 
             int binding = columns.getInt("DATA_TYPE");
             Class columnType = getMapping(binding);
@@ -1255,7 +1263,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
 
             return columnType;
         } finally {
-            columns.close();
+            closeSafe(columns);
         }
     }
 
@@ -1263,7 +1271,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
      * Returns the primary key object for a particular feature type / table, deriving it from the
      * underlying database metadata.
      */
-    protected PrimaryKey getPrimaryKey(SimpleFeatureType featureType) throws IOException {
+    public PrimaryKey getPrimaryKey(SimpleFeatureType featureType) throws IOException {
         return getPrimaryKey(ensureEntry(featureType.getName()));
     }
 
@@ -1831,6 +1839,8 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
                         int srid = getGeometrySRID(g, att);
                         int dimension = getGeometryDimension(g, att);
                         dialect.setGeometryValue(g, dimension, srid, binding, ps, i);
+                    } else if (isArray(att)) {
+                        dialect.setArrayValue(value, att, ps, i, cx);
                     } else {
                         dialect.setValue(value, binding, ps, i, cx);
                     }
@@ -2116,7 +2126,9 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
         if (t == Transaction.AUTO_COMMIT) {
             Connection cx = createConnection();
             try {
-                cx.setAutoCommit(true);
+                if (!cx.getAutoCommit()) {
+                    cx.setAutoCommit(true);
+                }
             } catch (SQLException e) {
                 throw (IOException) new IOException().initCause(e);
             }
@@ -2218,7 +2230,6 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
         // more than one
         List<Object> keyValues = new ArrayList<Object>();
         for (int i = 0; i < columns.size(); i++) {
-            PrimaryKeyColumn column = columns.get(i);
             String o = dialect.getPkColumnValue(rs, columns.get(0), offset + i + 1);
             keyValues.add(o);
         }
@@ -3331,10 +3342,8 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
      *
      * @param featureType the feature type that the query must return (may contain less attributes
      *     than the native one)
-     * @param attributes the properties queried, or {@link Query#ALL_NAMES} to gather all of them
      * @param query the query to be run. The type name and property will be ignored, as they are
      *     supposed to have been already embedded into the provided feature type
-     * @param sort sort conditions
      */
     protected String selectSQL(SimpleFeatureType featureType, Query query)
             throws IOException, SQLException {
@@ -3481,7 +3490,6 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
         try {
             // grab the full feature type, as we might be encoding a filter
             // that uses attributes that aren't returned in the results
-            SimpleFeatureType fullSchema = getSchema(featureType.getTypeName());
             toSQL.setInline(true);
             String filterSql = toSQL.encodeToString(filter);
             int whereClauseIndex = sql.indexOf(WHERE_CLAUSE_PLACE_HOLDER);
@@ -3557,7 +3565,6 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
      *
      * @param featureType the feature type that the query must return (may contain less attributes
      *     than the native one)
-     * @param attributes the properties queried, or {@link Query#ALL_NAMES} to gather all of them
      * @param query the query to be run. The type name and property will be ignored, as they are
      *     supposed to have been already embedded into the provided feature type
      * @param cx The database connection to be used to create the prepared statement
@@ -3665,7 +3672,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
     }
 
     /** Helper method for setting the values of the WHERE class of a prepared statement. */
-    protected void setPreparedFilterValues(
+    public void setPreparedFilterValues(
             PreparedStatement ps, PreparedFilterToSQL toSQL, int offset, Connection cx)
             throws SQLException {
         PreparedStatementSQLDialect dialect = (PreparedStatementSQLDialect) getSQLDialect();
@@ -3675,6 +3682,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
             Class binding = toSQL.getLiteralTypes().get(i);
             Integer srid = toSQL.getSRIDs().get(i);
             Integer dimension = toSQL.getDimensions().get(i);
+            AttributeDescriptor ad = toSQL.getDescriptors().get(i);
             if (srid == null) {
                 srid = -1;
             }
@@ -3682,14 +3690,29 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
                 dimension = 2;
             }
 
-            if (binding != null && Geometry.class.isAssignableFrom(binding))
+            if (binding != null && Geometry.class.isAssignableFrom(binding)) {
                 dialect.setGeometryValue(
                         (Geometry) value, dimension, srid, binding, ps, offset + i + 1);
-            else dialect.setValue(value, binding, ps, offset + i + 1, cx);
+            } else if (ad != null && isArray(ad)) {
+                dialect.setArrayValue(value, ad, ps, offset + i + 1, cx);
+            } else {
+                dialect.setValue(value, binding, ps, offset + i + 1, cx);
+            }
             if (LOGGER.isLoggable(Level.FINE)) {
                 LOGGER.fine((i + 1) + " = " + value);
             }
         }
+    }
+
+    /**
+     * Returns true if the attribute descriptor matches a native SQL array (as recorded in its user
+     * data via {@link #JDBC_NATIVE_TYPE}
+     *
+     * @return
+     */
+    private boolean isArray(AttributeDescriptor att) {
+        Integer nativeType = (Integer) att.getUserData().get(JDBC_NATIVE_TYPE);
+        return Objects.equals(Types.ARRAY, nativeType);
     }
 
     /**
@@ -3805,7 +3828,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
                             "AND " + toSQL.encodeToString(filter));
                     toSQL.setInline(false);
                 } else {
-                    sql.append(toSQL.encodeToString(filter));
+                    sql.append(" ").append(toSQL.encodeToString(filter));
                 }
             } catch (FilterToSQLException e) {
                 throw new RuntimeException(e);
@@ -3869,10 +3892,6 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
         StringBuffer sql = new StringBuffer();
         doSelectAggregateSQL(function, att, groupByExpressions, featureType, query, visitor, sql);
         return sql.toString();
-    }
-
-    private Expression expressionFromAttribute(AttributeDescriptor att) {
-        return FF2.property(att.getName());
     }
 
     protected PreparedStatement selectAggregateSQLPS(
@@ -4071,7 +4090,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
      * Helper method that adds a group by statement to the SQL query. If the list of group by
      * attributes is empty or NULL no group by statement is add.
      *
-     * @param attributes the group by attributes to be encoded
+     * @param groupByExpressions the group by attributes to be encoded
      * @param sql the sql query buffer
      */
     protected void encodeGroupByStatement(
@@ -4499,12 +4518,12 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
      * <p>The <tt>featureType</tt> may be null but it is not recommended. Such a case where this may
      * neccessary is when a literal needs to be encoded in isolation.
      */
-    protected FilterToSQL createFilterToSQL(SimpleFeatureType featureType) {
+    public FilterToSQL createFilterToSQL(SimpleFeatureType featureType) {
         return initializeFilterToSQL(((BasicSQLDialect) dialect).createFilterToSQL(), featureType);
     }
 
     /** Creates a new instance of a filter to sql encoder to be used in a prepared statement. */
-    protected PreparedFilterToSQL createPreparedFilterToSQL(SimpleFeatureType featureType) {
+    public PreparedFilterToSQL createPreparedFilterToSQL(SimpleFeatureType featureType) {
         return initializeFilterToSQL(
                 ((PreparedStatementSQLDialect) dialect).createPreparedFilterToSQL(), featureType);
     }
@@ -4596,7 +4615,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
      * Helper method to encode table name which checks if a schema is set and prefixes the table
      * name with it.
      */
-    protected void encodeTableName(String tableName, StringBuffer sql, Hints hints)
+    public void encodeTableName(String tableName, StringBuffer sql, Hints hints)
             throws SQLException {
         encodeAliasedTableName(tableName, sql, hints, null);
     }
@@ -4605,7 +4624,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
      * Helper method to encode table name which checks if a schema is set and prefixes the table
      * name with it, with the addition of an alias to the name
      */
-    protected void encodeAliasedTableName(
+    public void encodeAliasedTableName(
             String tableName, StringBuffer sql, Hints hints, String alias) throws SQLException {
         VirtualTable vtDefinition = virtualTables.get(tableName);
         if (vtDefinition != null) {
@@ -4745,9 +4764,9 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
      * supports them
      *
      * @param sql The sql to be modified
-     * @param the query that holds the limit and offset parameters
+     * @param query the query that holds the limit and offset parameters
      */
-    void applyLimitOffset(StringBuffer sql, Query query) {
+    public void applyLimitOffset(StringBuffer sql, Query query) {
         applyLimitOffset(sql, query.getStartIndex(), query.getMaxFeatures());
     }
 
@@ -4905,7 +4924,8 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
             Hints hints, GeometryDescriptor gatt, Hints.Key param) {
         if (hints == null) return false;
         if (hints.containsKey(param) == false) return false;
-        if (gatt.getType().getBinding() == Point.class) return false;
+        if (gatt.getType().getBinding() == Point.class && !dialect.canSimplifyPoints())
+            return false;
         return true;
     }
 
@@ -4917,7 +4937,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
      * @param sql
      * @param hints , may be null
      */
-    protected void encodeGeometryColumn(GeometryDescriptor gatt, StringBuffer sql, Hints hints) {
+    public void encodeGeometryColumn(GeometryDescriptor gatt, StringBuffer sql, Hints hints) {
         encodeGeometryColumn(gatt, null, sql, hints);
     }
 
@@ -4950,7 +4970,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
      * Transaction#close()} will not result in corresponding calls to the provided {@link
      * Connection} object.
      *
-     * @param conn The externally managed connection
+     * @param cx The externally managed connection
      */
     public Transaction buildTransaction(Connection cx) {
         DefaultTransaction tx = new DefaultTransaction();

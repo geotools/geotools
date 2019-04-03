@@ -31,13 +31,13 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+import org.geotools.coverage.util.FeatureUtilities;
 import org.geotools.data.Query;
 import org.geotools.data.QueryCapabilities;
 import org.geotools.data.Transaction;
 import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.sort.SortedFeatureReader;
-import org.geotools.factory.Hints;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.SchemaException;
 import org.geotools.feature.visitor.FeatureCalc;
@@ -45,8 +45,9 @@ import org.geotools.gce.imagemosaic.GranuleDescriptor;
 import org.geotools.gce.imagemosaic.ImageMosaicReader;
 import org.geotools.gce.imagemosaic.Utils;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.resources.coverage.FeatureUtilities;
+import org.geotools.util.SuppressFBWarnings;
 import org.geotools.util.Utilities;
+import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.index.ItemVisitor;
 import org.locationtech.jts.index.strtree.STRtree;
@@ -67,7 +68,6 @@ import org.opengis.geometry.BoundingBox;
  *     jar:file:foo.jar/bar.properties URLs
  * @since 2.5
  * @version 10.0
- * @source $URL$
  */
 @SuppressWarnings("unused")
 class STRTreeGranuleCatalog extends GranuleCatalog {
@@ -86,7 +86,6 @@ class STRTreeGranuleCatalog extends GranuleCatalog {
 
         private int granuleIndex = 0;
 
-        /** @param indexLocation */
         public JTSIndexVisitorAdapter(final GranuleCatalogVisitor adaptee) {
             this(adaptee, (Query) null);
         }
@@ -94,10 +93,9 @@ class STRTreeGranuleCatalog extends GranuleCatalog {
         public JTSIndexVisitorAdapter(final GranuleCatalogVisitor adaptee, Query q) {
             this.adaptee = adaptee;
             this.filter = q == null ? Query.ALL.getFilter() : q.getFilter();
-            this.maxGranules = q.getMaxFeatures();
+            this.maxGranules = q == null ? -1 : q.getMaxFeatures();
         }
 
-        /** @param indexLocation */
         public JTSIndexVisitorAdapter(final GranuleCatalogVisitor adaptee, Filter filter) {
             this.adaptee = adaptee;
             this.filter = filter == null ? Query.ALL.getFilter() : filter;
@@ -157,6 +155,7 @@ class STRTreeGranuleCatalog extends GranuleCatalog {
      * @param features
      * @throws IOException
      */
+    @SuppressFBWarnings("UL_UNRELEASED_LOCK")
     private void checkIndex(Lock readLock) throws IOException {
         final Lock writeLock = rwLock.writeLock();
         try {
@@ -173,10 +172,13 @@ class STRTreeGranuleCatalog extends GranuleCatalog {
                 LOGGER.fine("Index does not need to be created...");
 
         } finally {
-            // get read lock again
-            readLock.lock();
-            // leave write lock
-            writeLock.unlock();
+            try {
+                // get read lock again
+                readLock.lock();
+            } finally {
+                // leave write lock
+                writeLock.unlock();
+            }
         }
     }
 

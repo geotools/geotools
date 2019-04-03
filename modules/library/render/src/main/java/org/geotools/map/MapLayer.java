@@ -23,11 +23,11 @@ import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.Query;
 import org.geotools.data.memory.CollectionSource;
-import org.geotools.factory.FactoryRegistryException;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.SchemaException;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.styling.Style;
+import org.geotools.util.factory.FactoryRegistryException;
 import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.referencing.operation.TransformException;
@@ -40,10 +40,6 @@ import org.opengis.referencing.operation.TransformException;
  *
  * @author Cameron Shorter
  * @author Martin Desruisseaux
- * @source $URL$
- *     http://svn.osgeo.org/geotools/trunk/modules/library/render/src/main/java/org/geotools
- *     /map/MapLayer.java $
- * @version $Id$
  * @deprecated Use an appropriate Layer such as FeatureLayer, GridCoverageLayer or GridReaderLayer
  * @since 2.0
  * @version 8.0
@@ -66,7 +62,6 @@ public class MapLayer {
      * @param featureSource the data source for this layer
      * @param style the style used to represent this layer
      * @param title the layer title
-     * @throws NullPointerException DOCUMENT ME!
      */
     @SuppressWarnings("unchecked")
     public MapLayer(FeatureSource featureSource, Style style, String title) {
@@ -456,7 +451,7 @@ public class MapLayer {
      *
      * @param listener The listener to register.
      */
-    public synchronized void addMapLayerListener(org.geotools.map.event.MapLayerListener listener) {
+    public synchronized void addMapLayerListener(MapLayerListener listener) {
         internal.addMapLayerListener(listener);
     }
 
@@ -465,8 +460,7 @@ public class MapLayer {
      *
      * @param listener The listener to remove.
      */
-    public synchronized void removeMapLayerListener(
-            org.geotools.map.event.MapLayerListener listener) {
+    public synchronized void removeMapLayerListener(MapLayerListener listener) {
         internal.removeMapLayerListener(listener);
     }
 

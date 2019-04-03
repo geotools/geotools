@@ -50,15 +50,13 @@ public class AsyncTileLayer extends TileLayer {
             ReferencedEnvelope viewportExtent,
             AffineTransform worldToImageTransform) {
 
-        long t = System.currentTimeMillis();
-
         this.countDownLatch = new CountDownLatch(tiles.size());
 
         localRenderTiles(tiles, g2d, viewportExtent, worldToImageTransform);
         try {
             this.countDownLatch.await();
         } catch (InterruptedException ie) {
-            ie.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", ie);
         }
         this.countDownLatch = null;
     }

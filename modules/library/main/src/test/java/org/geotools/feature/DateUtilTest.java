@@ -21,7 +21,6 @@ import java.util.Date;
 import junit.framework.TestCase;
 import org.geotools.feature.type.DateUtil;
 
-/** @source $URL$ */
 public class DateUtilTest extends TestCase {
 
     public void testJavaUtilDate() {
@@ -54,9 +53,9 @@ public class DateUtilTest extends TestCase {
 
         long lngTime = cal.getTime().getTime();
         java.sql.Time time = new java.sql.Time(lngTime);
-        System.out.println(time);
+        // System.out.println(time);
         String t = DateUtil.serializeSqlTime(time);
-        System.out.println(t);
+        // System.out.println(t);
         assertEquals("01:15:00", t);
     }
 }

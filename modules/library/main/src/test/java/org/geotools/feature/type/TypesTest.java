@@ -30,11 +30,7 @@ import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.PropertyIsEqualTo;
 
-/**
- * Test classes used to create and build {@link FeatureType} data structure.
- *
- * @source $URL$
- */
+/** Test classes used to create and build {@link FeatureType} data structure. */
 public class TypesTest extends TestCase {
 
     public void testAttributeBuilder() {

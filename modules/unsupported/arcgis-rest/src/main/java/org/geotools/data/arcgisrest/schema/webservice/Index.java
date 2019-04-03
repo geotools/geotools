@@ -1,119 +1,137 @@
+
 package org.geotools.data.arcgisrest.schema.webservice;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
 
 public class Index {
 
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("name")
     @Expose
     private String name;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("fields")
     @Expose
     private String fields;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("isAscending")
     @Expose
     private Boolean isAscending;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("isUnique")
     @Expose
     private Boolean isUnique;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("description")
     @Expose
     private String description;
 
     /**
+     * 
      * (Required)
-     *
-     * @return The name
+     * 
      */
     public String getName() {
         return name;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param name The name
+     * 
      */
     public void setName(String name) {
         this.name = name;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The fields
+     * 
      */
     public String getFields() {
         return fields;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param fields The fields
+     * 
      */
     public void setFields(String fields) {
         this.fields = fields;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The isAscending
+     * 
      */
     public Boolean getIsAscending() {
         return isAscending;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param isAscending The isAscending
+     * 
      */
     public void setIsAscending(Boolean isAscending) {
         this.isAscending = isAscending;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The isUnique
+     * 
      */
     public Boolean getIsUnique() {
         return isUnique;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param isUnique The isUnique
+     * 
      */
     public void setIsUnique(Boolean isUnique) {
         this.isUnique = isUnique;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The description
+     * 
      */
     public String getDescription() {
         return description;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param description The description
+     * 
      */
     public void setDescription(String description) {
         this.description = description;
@@ -121,18 +139,45 @@ public class Index {
 
     @Override
     public String toString() {
-        return ToStringBuilder.reflectionToString(this);
+        StringBuilder sb = new StringBuilder();
+        sb.append(Index.class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this))).append('[');
+        sb.append("name");
+        sb.append('=');
+        sb.append(((this.name == null)?"<null>":this.name));
+        sb.append(',');
+        sb.append("fields");
+        sb.append('=');
+        sb.append(((this.fields == null)?"<null>":this.fields));
+        sb.append(',');
+        sb.append("isAscending");
+        sb.append('=');
+        sb.append(((this.isAscending == null)?"<null>":this.isAscending));
+        sb.append(',');
+        sb.append("isUnique");
+        sb.append('=');
+        sb.append(((this.isUnique == null)?"<null>":this.isUnique));
+        sb.append(',');
+        sb.append("description");
+        sb.append('=');
+        sb.append(((this.description == null)?"<null>":this.description));
+        sb.append(',');
+        if (sb.charAt((sb.length()- 1)) == ',') {
+            sb.setCharAt((sb.length()- 1), ']');
+        } else {
+            sb.append(']');
+        }
+        return sb.toString();
     }
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder()
-                .append(name)
-                .append(fields)
-                .append(isAscending)
-                .append(isUnique)
-                .append(description)
-                .toHashCode();
+        int result = 1;
+        result = ((result* 31)+((this.name == null)? 0 :this.name.hashCode()));
+        result = ((result* 31)+((this.isUnique == null)? 0 :this.isUnique.hashCode()));
+        result = ((result* 31)+((this.description == null)? 0 :this.description.hashCode()));
+        result = ((result* 31)+((this.fields == null)? 0 :this.fields.hashCode()));
+        result = ((result* 31)+((this.isAscending == null)? 0 :this.isAscending.hashCode()));
+        return result;
     }
 
     @Override
@@ -144,12 +189,7 @@ public class Index {
             return false;
         }
         Index rhs = ((Index) other);
-        return new EqualsBuilder()
-                .append(name, rhs.name)
-                .append(fields, rhs.fields)
-                .append(isAscending, rhs.isAscending)
-                .append(isUnique, rhs.isUnique)
-                .append(description, rhs.description)
-                .isEquals();
+        return ((((((this.name == rhs.name)||((this.name!= null)&&this.name.equals(rhs.name)))&&((this.isUnique == rhs.isUnique)||((this.isUnique!= null)&&this.isUnique.equals(rhs.isUnique))))&&((this.description == rhs.description)||((this.description!= null)&&this.description.equals(rhs.description))))&&((this.fields == rhs.fields)||((this.fields!= null)&&this.fields.equals(rhs.fields))))&&((this.isAscending == rhs.isAscending)||((this.isAscending!= null)&&this.isAscending.equals(rhs.isAscending))));
     }
+
 }

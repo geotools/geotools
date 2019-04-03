@@ -20,13 +20,12 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import javax.xml.namespace.QName;
-import org.geotools.xml.AbstractComplexBinding;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
+import org.geotools.xsd.AbstractComplexBinding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 import org.opengis.filter.BinaryComparisonOperator;
 import org.opengis.filter.BinaryLogicOperator;
 import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory;
 import org.opengis.filter.Id;
 import org.opengis.filter.Not;
 import org.opengis.filter.PropertyIsBetween;
@@ -61,14 +60,8 @@ import org.picocontainer.MutablePicoContainer;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class OGCBinaryLogicOpTypeBinding extends AbstractComplexBinding {
-    private FilterFactory factory;
-
-    public OGCBinaryLogicOpTypeBinding(FilterFactory factory) {
-        this.factory = factory;
-    }
 
     /** @generated */
     public QName getTarget() {

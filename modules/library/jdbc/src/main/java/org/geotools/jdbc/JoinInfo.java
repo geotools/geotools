@@ -304,7 +304,7 @@ public class JoinInfo {
         }
     }
 
-    static class JoinQualifier extends DuplicatingFilterVisitor {
+    public static class JoinQualifier extends DuplicatingFilterVisitor {
 
         SimpleFeatureType ft1, ft2;
         String alias1, alias2;

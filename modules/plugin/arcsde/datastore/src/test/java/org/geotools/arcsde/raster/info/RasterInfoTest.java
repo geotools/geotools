@@ -50,10 +50,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * database
  *
  * @author Saul Farber, (based on ArcSDEPoolTest by Gabriel Roldan)
- * @source $URL$
- *     http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/test/java
- *     /org/geotools/arcsde/gce/ArcSDEPyramidTest.java $
- * @version $Id$
  */
 public class RasterInfoTest {
 
@@ -181,7 +177,7 @@ public class RasterInfoTest {
     @Ignore
     public void testArcSDEPyramidHypothetical() throws Exception {
         RasterInfo pyramid = createPyramid();
-        System.out.println(pyramid);
+        // System.out.println(pyramid);
 
         RasterTestData testData = new RasterTestData();
         testData.setUp();
@@ -234,7 +230,7 @@ public class RasterInfoTest {
             conn.dispose();
         }
 
-        System.out.println(pyramid);
+        // System.out.println(pyramid);
 
         /*
          * ArcSDEPyramid pyramid = new ArcSDEPyramid(10, 10); pyramid.addPyramidLevel(0, new

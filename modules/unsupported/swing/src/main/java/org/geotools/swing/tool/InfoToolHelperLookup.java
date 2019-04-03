@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ServiceLoader;
-import java.util.logging.Logger;
 import org.geotools.map.Layer;
 
 /**
@@ -29,12 +28,9 @@ import org.geotools.map.Layer;
  *
  * @author Michael Bedward
  * @since 8.0
- * @source $URL$
  * @version $URL$
  */
 class InfoToolHelperLookup {
-    private static final Logger LOGGER = Logger.getLogger("org.geotools.swing");
-
     private static List<InfoToolHelper> cachedInstances;
 
     public static InfoToolHelper getHelper(Layer layer) {
@@ -56,17 +52,16 @@ class InfoToolHelperLookup {
 
     /** Caches available classes which implement the InfoToolHelper SPI. */
     private static void loadProviders() {
-        List<Class> providers = null;
-
         if (cachedInstances == null) {
-            cachedInstances = new ArrayList<InfoToolHelper>();
+            List<InfoToolHelper> instances = new ArrayList<InfoToolHelper>();
 
             ServiceLoader<InfoToolHelper> loader = ServiceLoader.load(InfoToolHelper.class);
 
             Iterator<InfoToolHelper> iter = loader.iterator();
             while (iter.hasNext()) {
-                cachedInstances.add(iter.next());
+                instances.add(iter.next());
             }
+            cachedInstances = instances;
         }
     }
 }

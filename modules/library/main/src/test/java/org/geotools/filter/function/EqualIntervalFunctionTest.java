@@ -22,10 +22,7 @@ import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
 
-/**
- * @author James
- * @source $URL$
- */
+/** @author James */
 public class EqualIntervalFunctionTest extends FunctionTestSupport {
 
     private static final org.opengis.filter.FilterFactory ff =
@@ -121,6 +118,25 @@ public class EqualIntervalFunctionTest extends FunctionTestSupport {
         Function classify = ff.function("classify", ff.property("foo"), ff.literal(split));
 
         SimpleFeature victim = testFeatures[2]; // foo = 20
-        assertEquals("Feature was placed in wrong bin", new Integer(2), classify.evaluate(victim));
+        assertEquals(
+                "Feature was placed in wrong bin", Integer.valueOf(2), classify.evaluate(victim));
+    }
+
+    public void testConstantValuesNumeric() {
+        Function function = ff.function("equalInterval", ff.property("v"), ff.literal(12));
+        RangedClassifier classifier = (RangedClassifier) function.evaluate(constantCollection);
+        assertNotNull(classifier);
+        assertEquals(1, classifier.getSize());
+        assertEquals(123.123, (Double) classifier.getMin(0), 0d);
+        assertEquals(123.123, (Double) classifier.getMax(0), 0d);
+    }
+
+    public void testConstantValuesString() {
+        Function function = ff.function("equalInterval", ff.property("s"), ff.literal(12));
+        RangedClassifier classifier = (RangedClassifier) function.evaluate(constantCollection);
+        assertNotNull(classifier);
+        assertEquals(1, classifier.getSize());
+        assertEquals("abc", classifier.getMin(0));
+        assertEquals("abc", classifier.getMax(0));
     }
 }

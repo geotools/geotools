@@ -16,7 +16,7 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>library</artifactId>
-    <version>20-SNAPSHOT</version>
+    <version>22-SNAPSHOT</version>
   </parent>
 
 
@@ -27,13 +27,15 @@
   <artifactId>gt-cql</artifactId>
   <packaging>jar</packaging>
   <name>OGC CQL to Filter parser</name>
-  
-
 
   <description>
     A parser that takes a Constraint Query Language input string and produces
     an equivalent org.opengis.filter.Filter.
   </description>
+
+  <properties>
+    <moduleIdentifier>org.geotools.text.cql</moduleIdentifier>
+  </properties>
 
   <licenses>
     <license>
@@ -91,6 +93,11 @@
       <artifactId>gt-epsg-wkt</artifactId>
       <version>${project.version}</version>
       <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-xml</artifactId>
+      <version>${project.version}</version>
     </dependency>
   </dependencies>
 

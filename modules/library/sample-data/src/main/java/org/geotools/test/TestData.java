@@ -74,12 +74,9 @@ import java.util.zip.ZipFile;
  * from the {@code sample-module} instead of this one.
  *
  * @since 2.4
- * @source $URL$
- * @version $Id$
  * @author James McGill
  * @author Simone Giannecchiin
  * @author Martin Desruisseaux
- * @tutorial http://www.geotools.org/display/GEOT/5.8+Test+Data
  */
 @SuppressWarnings("unchecked")
 public class TestData implements Runnable {
@@ -551,6 +548,7 @@ public class TestData implements Runnable {
      * Deletes all temporary files. This method is invoked automatically at shutdown time and should
      * not be invoked directly. It is public only as an implementation side effect.
      */
+    @SuppressWarnings("PMD.SystemPrintln")
     public void run() {
         int iteration = 5; // Maximum number of iterations
         synchronized (toDelete) {

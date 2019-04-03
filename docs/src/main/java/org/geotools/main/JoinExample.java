@@ -19,8 +19,9 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.factory.GeoTools;
 import org.geotools.swing.data.JFileDataStoreChooser;
+import org.geotools.util.SuppressFBWarnings;
+import org.geotools.util.factory.GeoTools;
 import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -31,8 +32,8 @@ import org.opengis.filter.FilterFactory2;
  * This class shows how to "join" two feature sources.
  *
  * @author Jody
- * @source $URL$
  */
+@SuppressFBWarnings("DLS_DEAD_LOCAL_STORE")
 public class JoinExample {
 
     /** @param args shapefile to use, if not provided the user will be prompted */

@@ -27,10 +27,10 @@ import java.text.ParsePosition;
 import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.geotools.math.XMath;
-import org.geotools.resources.Classes;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
+import org.geotools.metadata.math.XMath;
+import org.geotools.util.Classes;
 import org.geotools.util.Utilities;
 import org.geotools.util.logging.LoggedFormat;
 
@@ -91,7 +91,6 @@ import org.geotools.util.logging.LoggedFormat;
  * @see Latitude
  * @see Longitude
  * @since 2.0
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (PMO, IRD)
  */
@@ -387,6 +386,10 @@ public class AngleFormat extends Format {
                 case ROUND_HALF_UP:
                     rounded = Math.round(scaledValue);
                     return rounded / scale;
+
+                    // Include impossible case to allow detection of new entries in RoundingMethod.
+                case ROUND_HALF_EVEN:
+                    throw new AssertionError(rm);
             }
         }
 

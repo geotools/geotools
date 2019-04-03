@@ -39,6 +39,7 @@ import org.geotools.feature.collection.SimpleFeatureIteratorImpl;
 import org.geotools.feature.collection.SubFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.opengis.feature.IllegalAttributeException;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
@@ -52,13 +53,12 @@ import org.opengis.geometry.BoundingBox;
  * <p>This should be considered a MemoryFeatureCollection.
  *
  * @author Ian Schneider
- * @source $URL$
  * @version $Id$
  */
 public class DefaultFeatureCollection
         implements SimpleFeatureCollection, Collection<SimpleFeature> {
     protected static Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.feature");
+            org.geotools.util.logging.Logging.getLogger(DefaultFeatureCollection.class);
 
     /**
      * Contents of collection, referenced by FeatureID.
@@ -113,7 +113,7 @@ public class DefaultFeatureCollection
      * Used to create a feature collection to stage content in memory.
      *
      * @param id may be null ... feature id
-     * @param featureType optional, may be null
+     * @param memberType optional, may be null
      */
     public DefaultFeatureCollection(String id, SimpleFeatureType memberType) {
         this.id = id == null ? "featureCollection" : id;
@@ -577,8 +577,6 @@ public class DefaultFeatureCollection
     public SimpleFeatureCollection sort(SortBy order) {
         if (order == SortBy.NATURAL_ORDER) {
             return this;
-        } else if (order == SortBy.REVERSE_ORDER) {
-            // backwards
         }
         return null; // new OrderedFeatureList( order, compare );
     }

@@ -22,14 +22,14 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.geotools.data.util.ColorConverterFactory;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.factory.Hints;
 import org.geotools.mbstyle.expression.MBExpression;
 import org.geotools.mbstyle.layer.LineMBLayer.LineJoin;
 import org.geotools.styling.Displacement;
 import org.geotools.styling.StyleFactory2;
-import org.geotools.util.ColorConverterFactory;
 import org.geotools.util.Converters;
+import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -834,7 +834,7 @@ public class MBObjectParser {
                             returnArray[i] = (T) new Double(((Number) value).doubleValue());
                             continue;
                         } else if (type == Integer.class) {
-                            returnArray[i] = (T) new Integer(((Number) value).intValue());
+                            returnArray[i] = (T) Integer.valueOf(((Number) value).intValue());
                             continue;
                         }
                     }

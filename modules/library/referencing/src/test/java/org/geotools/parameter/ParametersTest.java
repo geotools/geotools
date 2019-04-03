@@ -62,7 +62,6 @@ import tec.uom.se.unit.MetricPrefix;
 /**
  * Tests the <code>org.geotools.parameter</code> package.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

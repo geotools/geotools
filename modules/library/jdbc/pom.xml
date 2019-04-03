@@ -16,7 +16,7 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>library</artifactId>
-    <version>20-SNAPSHOT</version>
+    <version>22-SNAPSHOT</version>
   </parent>
   
 
@@ -27,14 +27,16 @@
   <artifactId>gt-jdbc</artifactId>
   <packaging>jar</packaging>
   <name>JDBC DataStore Support</name>
-  
-
 
   <description>
     Abstract datastore implementation and helper classes / apis to be extended
     by datastores backed by releational databases accesible via jdbc.
   </description>
-
+  
+  <properties>
+    <moduleIdentifier>org.geotools.jdbc</moduleIdentifier>
+  </properties>
+  
   <licenses>
     <license>
       <name>Lesser General Public License (LGPL)</name>
@@ -74,17 +76,7 @@
   <dependencies>
     <dependency>
       <groupId>org.geotools</groupId>
-      <artifactId>gt-api</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.geotools</groupId>
       <artifactId>gt-main</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.geotools</groupId>
-      <artifactId>gt-data</artifactId>
       <version>${project.version}</version>
     </dependency>
      <dependency>
@@ -101,10 +93,9 @@
       <version>${project.version}</version>
       <scope>test</scope>
     </dependency>
-    <dependency>
+    <dependency>    
       <groupId>com.mockrunner</groupId>
-      <artifactId>mockrunner</artifactId>
-      <!-- The version number is specified in the parent POM. -->
+      <artifactId>mockrunner-jdbc</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>

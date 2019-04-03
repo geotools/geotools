@@ -2,8 +2,8 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2001-2006  Vivid Solutions
  *    (C) 2001-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2001-2006  Vivid Solutions
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -50,8 +50,6 @@ import org.opengis.geometry.Geometry;
  *   <li>Zero-dimensional geometries (points) are simple iff they have no repeated points.
  *   <li>Empty <code>Geometry</code>s are always simple
  *       <ul>
- *
- * @source $URL$
  */
 public class IsSimpleOp {
 
@@ -154,7 +152,6 @@ public class IsSimpleOp {
         Map endPoints = new TreeMap();
         for (Iterator i = graph.getEdgeIterator(); i.hasNext(); ) {
             Edge e = (Edge) i.next();
-            int maxSegmentIndex = e.getMaximumSegmentIndex();
             boolean isClosed = e.isClosed();
             Coordinate p0 = e.getCoordinate(0);
             addEndpoint(endPoints, p0, isClosed);

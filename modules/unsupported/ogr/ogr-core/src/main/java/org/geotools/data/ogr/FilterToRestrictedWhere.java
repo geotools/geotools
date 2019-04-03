@@ -19,9 +19,12 @@ package org.geotools.data.ogr;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.Iterator;
-import org.geotools.factory.Hints;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.geotools.util.ConverterFactory;
 import org.geotools.util.Converters;
+import org.geotools.util.factory.Hints;
+import org.geotools.util.logging.Logging;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.filter.And;
@@ -98,6 +101,9 @@ import org.opengis.filter.temporal.TOverlaps;
  * @author Andrea Aime - GeoSolutions
  */
 class FilterToRestrictedWhere implements FilterVisitor, ExpressionVisitor {
+
+    static final Logger LOGGER = Logging.getLogger(FilterToRestrictedWhere.class);
+
     /** error message for exceptions */
     protected static final String IO_ERROR = "io problem writing filter";
 
@@ -251,7 +257,7 @@ class FilterToRestrictedWhere implements FilterVisitor, ExpressionVisitor {
             attribute = (AttributeDescriptor) expression.evaluate(featureType);
         } catch (Exception e) {
             // just log and fall back on just encoding propertyName straight up
-            String msg = "Error occured mapping " + expression + " to feature type";
+            LOGGER.log(Level.FINE, "Error occurred mapping " + expression + " to feature type", e);
         }
         String name = null;
         if (attribute != null) {

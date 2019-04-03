@@ -31,8 +31,8 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
-import org.geotools.resources.i18n.LoggingKeys;
-import org.geotools.resources.i18n.Loggings;
+import org.geotools.metadata.i18n.LoggingKeys;
+import org.geotools.metadata.i18n.Loggings;
 import org.geotools.util.logging.Logging;
 import org.opengis.referencing.operation.Projection;
 
@@ -45,11 +45,10 @@ import org.opengis.referencing.operation.Projection;
  * preserve any connection to the database.
  *
  * @since 2.2
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
-final class AuthorityCodes extends AbstractSet<String> implements Serializable {
+public final class AuthorityCodes extends AbstractSet<String> implements Serializable {
     /** For compatibility with different versions. */
     private static final long serialVersionUID = 7105664579449680562L;
 
@@ -104,7 +103,6 @@ final class AuthorityCodes extends AbstractSet<String> implements Serializable {
     /**
      * Creates a new set of authority codes for the specified type.
      *
-     * @param connection The provider of connection to the EPSG database.
      * @param table The table to query.
      * @param type The type to query.
      * @param factory The factory originator.
@@ -148,6 +146,7 @@ final class AuthorityCodes extends AbstractSet<String> implements Serializable {
         sqlSingle = factory.adaptSQL(buffer.toString());
     }
 
+    @SuppressWarnings("PMD.CloseResource")
     protected PreparedStatement validateStatement(PreparedStatement stmt, String sql)
             throws SQLException {
         Connection conn = null;
@@ -236,15 +235,13 @@ final class AuthorityCodes extends AbstractSet<String> implements Serializable {
             return size == 0;
         }
         boolean empty = true;
-        try {
-            final ResultSet results = getAll();
+        try (ResultSet results = getAll()) {
             while (results.next()) {
                 if (isAcceptable(results)) {
                     empty = false;
                     break;
                 }
             }
-            results.close();
         } catch (SQLException exception) {
             unexpectedException("isEmpty", exception);
         }
@@ -259,13 +256,13 @@ final class AuthorityCodes extends AbstractSet<String> implements Serializable {
         }
         int count = 0;
         try {
-            final ResultSet results = getAll();
-            while (results.next()) {
-                if (isAcceptable(results)) {
-                    count++;
+            try (ResultSet results = getAll()) {
+                while (results.next()) {
+                    if (isAcceptable(results)) {
+                        count++;
+                    }
                 }
             }
-            results.close();
         } catch (SQLException exception) {
             unexpectedException("size", exception);
         }
@@ -279,14 +276,14 @@ final class AuthorityCodes extends AbstractSet<String> implements Serializable {
         boolean exists = false;
         if (code != null)
             try {
-                final ResultSet results = getSingle(code);
-                while (results.next()) {
-                    if (isAcceptable(results)) {
-                        exists = true;
-                        break;
+                try (ResultSet results = getSingle(code)) {
+                    while (results.next()) {
+                        if (isAcceptable(results)) {
+                            exists = true;
+                            break;
+                        }
                     }
                 }
-                results.close();
             } catch (SQLException exception) {
                 unexpectedException("contains", exception);
             }
@@ -477,14 +474,14 @@ final class AuthorityCodes extends AbstractSet<String> implements Serializable {
             if (code != null)
                 try {
                     synchronized (AuthorityCodes.this) {
-                        final ResultSet results = getSingle(code);
-                        while (results.next()) {
-                            if (isAcceptable(results)) {
-                                value = results.getString(2);
-                                break;
+                        try (ResultSet results = getSingle(code)) {
+                            while (results.next()) {
+                                if (isAcceptable(results)) {
+                                    value = results.getString(2);
+                                    break;
+                                }
                             }
                         }
-                        results.close();
                     }
                 } catch (SQLException exception) {
                     unexpectedException("get", exception);

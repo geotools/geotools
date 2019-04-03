@@ -21,7 +21,6 @@ import javax.xml.namespace.QName;
 import org.geotools.xs.TestSchema;
 import org.geotools.xs.XS;
 
-/** @source $URL$ */
 public class XSNonPositiveIntegerStrategyTest extends TestSchema {
     /**
      * nonPositiveInteger has a lexical representation consisting of an optional preceding sign
@@ -75,7 +74,7 @@ public class XSNonPositiveIntegerStrategyTest extends TestSchema {
     }
 
     public void testNegativeNumber() throws Exception {
-        validateValues("-100000", new Integer("-100000"));
+        validateValues("-100000", Integer.valueOf("-100000"));
     }
 
     protected QName getQName() {

@@ -30,7 +30,6 @@ import org.xml.sax.SAXException;
  * Big dataset tests ... more than you want for regular testing @
  *
  * @author dzwiers www.refractions.net
- * @source $URL$
  */
 public class GMLParser2Test extends TestCase {
     public void testBlank() {
@@ -61,7 +60,7 @@ public class GMLParser2Test extends TestCase {
             assertNotNull("Document missing", doc);
             // System.out.println(doc);
         } catch (Throwable e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             fail(e.toString());
         }
     }

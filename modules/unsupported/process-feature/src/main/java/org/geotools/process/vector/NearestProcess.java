@@ -35,7 +35,6 @@ import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.operation.distance.DistanceOp;
 import org.opengis.feature.Feature;
@@ -55,11 +54,8 @@ import systems.uom.common.USCustomary;
     description =
             "Returns the feature in a given feature collection that has the smallest distance to a given point."
 )
-/** @source $URL$ */
 public class NearestProcess implements VectorProcess {
     private static final Logger LOGGER = Logging.getLogger(NearestProcess.class);
-
-    private GeometryFactory geometryFactory = new GeometryFactory();
 
     /**
      * Process the input data set.

@@ -38,15 +38,11 @@ import junit.framework.TestCase;
 
 // TODO: add more tests as needed
 
-/**
- * Purpose: these tests ensure that the output of CalcResult converts as expected.
- *
- * @source $URL$
- */
+/** Purpose: these tests ensure that the output of CalcResult converts as expected. */
 public class CalcResultTest extends TestCase {
     MockCalcResult result = new MockCalcResult();
-    Integer val1 = new Integer(4);
-    Long val2 = new Long(5);
+    Integer val1 = Integer.valueOf(4);
+    Long val2 = Long.valueOf(5);
     Float val3 = new Float(6.0);
     Double val4 = new Double(7.0);
     String val5 = new String("8");

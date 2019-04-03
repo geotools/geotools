@@ -48,12 +48,7 @@ import org.opengis.feature.simple.SimpleFeature;
  * <p>Description of Validator ...
  *
  * @author dzwiers, Refractions Research, Inc.
- * @author $Author: dmzwiers $ (last modification)
  * @author bowens
- * @source $URL$
- *     http://svn.geotools.org/trunk/modules/extension/validation/src/test/java/org/geotools
- *     /validation/BatchValidator.java $
- * @version $Id$
  */
 public class BatchValidator {
     private static Properties dataStoreProp;
@@ -96,7 +91,7 @@ public class BatchValidator {
             try {
                 dataRepository.register(typeRef, ds);
             } catch (IOException e) {
-                e.printStackTrace();
+                java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             }
         }
         validator = new Validator(dataRepository, v);
@@ -109,7 +104,7 @@ public class BatchValidator {
             try {
                 typeNames = store.getTypeNames();
             } catch (IOException e) {
-                e.printStackTrace();
+                java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             }
             // HACK: get ALL feature types and smash through their features
             // this is really really slow and will be fixed
@@ -118,9 +113,9 @@ public class BatchValidator {
                     validator.featureValidation(
                             typeNames[p], store.getFeatureSource(typeNames[p]).getFeatures(), null);
                 } catch (IOException e1) {
-                    e1.printStackTrace();
+                    java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e1);
                 } catch (Exception e1) {
-                    e1.printStackTrace();
+                    java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e1);
                 }
             }
         }
@@ -131,9 +126,9 @@ public class BatchValidator {
         try {
             validator.integrityValidation(dsm, envelope, null);
         } catch (IOException e1) {
-            e1.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e1);
         } catch (Exception e1) {
-            e1.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e1);
         }
 
         if (true) // HACK premature evacuation
@@ -168,7 +163,7 @@ public class BatchValidator {
                     // + ss[j]);
                     // System.out.println(vr.toString());
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
                 }
             }
 
@@ -201,7 +196,7 @@ public class BatchValidator {
                 System.out.println("Feature Integrety Test Results");
                 System.out.println(vr.toString());
             } catch (Exception e) {
-                e.printStackTrace();
+                java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             }
         }
     }
@@ -367,12 +362,12 @@ public class BatchValidator {
         } catch (FileNotFoundException e) {
             System.err.println("DataStore file was does not exist");
             System.err.println(dsProp.toString());
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             System.exit(1);
         } catch (IOException e) {
             System.err.println("DataStore file had errors reading");
             System.err.println(dsProp.toString());
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             System.exit(1);
         }
 
@@ -381,12 +376,12 @@ public class BatchValidator {
         } catch (FileNotFoundException e) {
             System.err.println("Transaction file was does not exist");
             System.err.println(trProp.toString());
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             System.exit(1);
         } catch (IOException e) {
             System.err.println("Transaction file had errors reading");
             System.err.println(trProp.toString());
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             System.exit(1);
         }
     }
@@ -425,7 +420,7 @@ public class BatchValidator {
             try {
                 dataStore = DataStoreFinder.getDataStore(m);
             } catch (Throwable ex) {
-                ex.printStackTrace();
+                java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", ex);
                 System.err.println(
                         "DataStore " + ids[i] + " incured an error and will not be used.");
             }
@@ -475,7 +470,7 @@ public class BatchValidator {
         } catch (ValidationException e) {
             System.err.println("PlugIn load had errors.");
             System.err.println(plugInDir.toString());
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             System.exit(1);
         }
 
@@ -520,7 +515,7 @@ public class BatchValidator {
             testSuite = new File(tsPath);
         } catch (Exception e) {
             System.err.println(tsPath);
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             return;
         }
 
@@ -554,12 +549,12 @@ public class BatchValidator {
         } catch (FileNotFoundException e) {
             System.err.println("TestSuite file was not found.");
             System.err.println(testSuite.toString());
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             System.exit(1);
         } catch (ValidationException e) {
             System.err.println("TestSuite load had errors.");
             System.err.println(testSuite.toString());
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             System.exit(1);
         }
 
@@ -680,7 +675,7 @@ class BatchValidatorProcessor extends ValidationProcessor {
             } catch (ClassNotFoundException e) {
                 // Error, using default.
                 errors.put(dto, e);
-                e.printStackTrace();
+                java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             }
 
             if (plugInClass == null) {
@@ -699,7 +694,7 @@ class BatchValidatorProcessor extends ValidationProcessor {
                                 plugInName, plugInClass, dto.getDescription(), plugInArgs);
                 defaultPlugIns.put(plugInName, plugIn);
             } catch (ValidationException e) {
-                e.printStackTrace();
+                java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
                 errors.put(dto, e);
 
                 // error should log here
@@ -753,7 +748,7 @@ class BatchValidatorProcessor extends ValidationProcessor {
                         addValidation((IntegrityValidation) validation);
                     }
                 } catch (ValidationException e) {
-                    e.printStackTrace();
+                    java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
                     errors.put(dto, e);
 
                     // error should log here

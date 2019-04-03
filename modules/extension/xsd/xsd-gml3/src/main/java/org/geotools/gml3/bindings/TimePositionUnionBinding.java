@@ -21,10 +21,10 @@ import java.util.Date;
 import javax.xml.namespace.QName;
 import org.geotools.gml3.GML;
 import org.geotools.temporal.object.DefaultPosition;
-import org.geotools.xml.AbstractSimpleBinding;
-import org.geotools.xml.InstanceComponent;
 import org.geotools.xs.bindings.XSDateBinding;
 import org.geotools.xs.bindings.XSDateTimeBinding;
+import org.geotools.xsd.AbstractSimpleBinding;
+import org.geotools.xsd.InstanceComponent;
 import org.opengis.temporal.Position;
 
 /**
@@ -98,9 +98,8 @@ public class TimePositionUnionBinding extends AbstractSimpleBinding {
             try {
                 date = (Date) new XSDateBinding().parse(instance, value);
             } catch (Exception e) {
-                e.printStackTrace();
+                java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             }
-            ;
         }
 
         if (date == null) {

@@ -32,7 +32,6 @@ import org.geotools.styling.visitor.DuplicatingStyleVisitor;
  * <p>Also, see {@link AbstractGridFormat#BANDS} for the reader band selection parameter
  * description.
  *
- * @source $URL$
  * @version $Id$
  */
 public class ChannelSelectionUpdateStyleVisitor extends DuplicatingStyleVisitor {
@@ -68,6 +67,7 @@ public class ChannelSelectionUpdateStyleVisitor extends DuplicatingStyleVisitor 
             if (channels != null) {
                 bandIndices = new int[channels.length];
                 for (int i = 0; i < channels.length; i++) {
+                    if (channels[i] == null) return null;
                     // Note that in channel selection, channels start at index 1
                     bandIndices[i] = channels[i].getChannelName().evaluate(null, Integer.class) - 1;
                 }

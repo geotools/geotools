@@ -17,7 +17,8 @@
 package org.geotools.sld.bindings;
 
 import javax.xml.namespace.QName;
-import org.geotools.xml.*;
+import org.geotools.xsd.InstanceComponent;
+import org.geotools.xsd.SimpleBinding;
 
 /**
  * Binding object for the element http://www.opengis.net/sld:GammaValue.
@@ -32,7 +33,6 @@ import org.geotools.xml.*;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class SLDGammaValueBinding implements SimpleBinding {
     /** @generated */

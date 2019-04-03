@@ -1,5 +1,3 @@
-package org.geotools.filter.function;
-
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
@@ -16,6 +14,7 @@ package org.geotools.filter.function;
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
+package org.geotools.filter.function;
 
 import static org.geotools.filter.capability.FunctionNameImpl.*;
 
@@ -32,7 +31,6 @@ import org.opengis.filter.expression.VolatileFunction;
  * Extracts a property from a feature, taking the property name as a parameter
  *
  * @author Andrea Aime - GeoSolutions
- * @source $URL$
  */
 public class FilterFunction_property extends FunctionExpressionImpl implements VolatileFunction {
 

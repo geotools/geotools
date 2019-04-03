@@ -68,14 +68,10 @@ import org.opengis.geometry.BoundingBox;
  * problems between threads when debugging. It is excellent for its intended purpose of test cases.
  *
  * @author Ian Schneider
- * @source $URL$
- *     http://svn.osgeo.org/geotools/trunk/modules/library/main/src/main/java/org/geotools/
- *     data/collection/TreeSetFeatureCollection.java $
- * @version $Id$
  */
 public class TreeSetFeatureCollection implements SimpleFeatureCollection {
     protected static Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.data.collection");
+            org.geotools.util.logging.Logging.getLogger(TreeSetFeatureCollection.class);
 
     /**
      * Contents of collection, referenced by FeatureID.
@@ -122,7 +118,7 @@ public class TreeSetFeatureCollection implements SimpleFeatureCollection {
      * customize any generated collections.
      *
      * @param id may be null ... feature id
-     * @param featureType optional, may be null
+     * @param memberType optional, may be null
      */
     public TreeSetFeatureCollection(String id, SimpleFeatureType memberType) {
         this.id = id == null ? "featureCollection" : id;
@@ -167,7 +163,7 @@ public class TreeSetFeatureCollection implements SimpleFeatureCollection {
      * <tt>false</tt> ). This preserves the invariant that a collection always contains the
      * specified element after this call returns.
      *
-     * @param o element whose presence in this collection is to be ensured.
+     * @param feature element whose presence in this collection is to be ensured.
      * @return <tt>true</tt> if this collection changed as a result of the call
      */
     public boolean add(SimpleFeature feature) {

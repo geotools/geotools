@@ -51,7 +51,6 @@ import org.opengis.referencing.operation.MathTransform;
  * @author Andrea Antonello - www.hydrologis.com
  * @since 3.0
  * @see {@link JGrassMapEnvironment}
- * @source $URL$
  */
 public class JGrassRegion {
 
@@ -253,7 +252,7 @@ public class JGrassRegion {
     /**
      * Sets the extent of this window using another window.
      *
-     * @param win another window object
+     * @param region another window object
      */
     public void setExtent(JGrassRegion region) {
         west = region.getWest();
@@ -800,8 +799,8 @@ public class JGrassRegion {
         store.put(
                 "e-w resol",
                 new java.lang.Double(region.getWEResolution()).toString()); // $NON-NLS-1$
-        store.put("cols", new java.lang.Integer(region.getCols()).toString()); // $NON-NLS-1$
-        store.put("rows", new java.lang.Integer(region.getRows()).toString()); // $NON-NLS-1$
+        store.put("cols", Integer.valueOf(region.getCols()).toString()); // $NON-NLS-1$
+        store.put("rows", Integer.valueOf(region.getRows()).toString()); // $NON-NLS-1$
         windReader.close();
         windReader = null;
 

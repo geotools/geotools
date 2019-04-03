@@ -54,10 +54,10 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
 
 /**
- * SimpleFeatureCollection decorator that reprojects the default geometry.
+ * SimpleFeatureCollection decorator that reprojects all geometries of the features within the
+ * feature collection.
  *
  * @author Justin
- * @source $URL$
  */
 public class ReprojectingFeatureCollection extends DecoratingSimpleFeatureCollection {
     static final FilterFactory2 FF = CommonFactoryFinder.getFilterFactory2(null);

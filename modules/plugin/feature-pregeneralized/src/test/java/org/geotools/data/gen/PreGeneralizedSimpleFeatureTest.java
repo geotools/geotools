@@ -29,15 +29,14 @@ import org.geotools.data.gen.info.GeneralizationInfosProviderImpl;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
-import org.geotools.factory.Hints;
-import org.geotools.factory.Hints.Key;
 import org.geotools.feature.NameImpl;
+import org.geotools.util.factory.Hints;
+import org.geotools.util.factory.Hints.Key;
 import org.junit.Assert;
 import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.Property;
 import org.opengis.feature.simple.SimpleFeature;
 
-/** @source $URL$ */
 public class PreGeneralizedSimpleFeatureTest extends TestCase {
 
     @Override
@@ -99,7 +98,7 @@ public class PreGeneralizedSimpleFeatureTest extends TestCase {
             }
             return original.getNumPoints() > simplified.getNumPoints();
         } catch (IOException ex) {
-            ex.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", ex);
             Assert.fail();
             return false;
         }
@@ -117,7 +116,7 @@ public class PreGeneralizedSimpleFeatureTest extends TestCase {
             ds = new PreGeneralizedDataStore(ginfos, TestSetup.REPOSITORY);
             fCollection = ds.getFeatureSource(typeName).getFeatures();
         } catch (IOException ex) {
-            ex.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", ex);
             Assert.fail();
         }
 
@@ -223,7 +222,7 @@ public class PreGeneralizedSimpleFeatureTest extends TestCase {
             ds = new PreGeneralizedDataStore(ginfos, TestSetup.REPOSITORY);
             fCollection = ds.getFeatureSource(typeName).getFeatures();
         } catch (IOException ex) {
-            ex.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", ex);
             Assert.fail();
         }
 

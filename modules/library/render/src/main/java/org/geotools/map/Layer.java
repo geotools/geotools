@@ -29,8 +29,6 @@ import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.map.event.MapLayerEvent;
-import org.geotools.map.event.MapLayerListener;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleFactory;
 import org.geotools.util.logging.Logging;
@@ -42,14 +40,13 @@ import org.opengis.style.FeatureTypeStyle;
  *
  * <p>Layers usually represent a single dataset; and arranged into a z-order by a Map for display.
  *
- * @source $URL$
  * @since 2.7
  * @version 8.0
  */
 public abstract class Layer {
 
     /** The logger for the map module. */
-    protected static final Logger LOGGER = Logging.getLogger("org.geotools.map");
+    protected static final Logger LOGGER = Logging.getLogger(Layer.class);
 
     /** Human readable title for the layer. */
     protected String title;
@@ -72,7 +69,7 @@ public abstract class Layer {
     /**
      * Notifies all registered listeners about the event.
      *
-     * @param event The event to be fired
+     * @param eventType The event to be fired
      */
     protected void fireMapLayerListenerLayerChanged(int eventType) {
         if (listenerList == null) {
@@ -90,11 +87,7 @@ public abstract class Layer {
         }
     }
 
-    /**
-     * Notifies all registered listeners about the event.
-     *
-     * @param event The event to be fired
-     */
+    /** Notifies all registered listeners about the event. */
     protected void fireMapLayerListenerLayerShown() {
         if (listenerList == null) {
             return;
@@ -111,11 +104,7 @@ public abstract class Layer {
         }
     }
 
-    /**
-     * Notifies all registered listeners about the event.
-     *
-     * @param event The event to be fired
-     */
+    /** Notifies all registered listeners about the event. */
     protected void fireMapLayerListenerLayerHidden() {
         if (listenerList == null) {
             return;
@@ -132,11 +121,7 @@ public abstract class Layer {
         }
     }
 
-    /**
-     * Notifies all registered listeners about the selection event.
-     *
-     * @param event The event to be fired
-     */
+    /** Notifies all registered listeners about the selection event. */
     protected void fireMapLayerListenerLayerSelected() {
         if (listenerList == null) {
             return;
@@ -153,11 +138,7 @@ public abstract class Layer {
         }
     }
 
-    /**
-     * Notifies all registered listeners about the deselection event.
-     *
-     * @param event The event to be fired
-     */
+    /** Notifies all registered listeners about the deselection event. */
     protected void fireMapLayerListenerLayerDeselected() {
         if (listenerList == null) {
             return;
@@ -174,11 +155,7 @@ public abstract class Layer {
         }
     }
 
-    /**
-     * Notifies all registered listeners that the layer is scheduled to be disposed.
-     *
-     * @param event The event to be fired
-     */
+    /** Notifies all registered listeners that the layer is scheduled to be disposed. */
     protected void fireMapLayerListenerLayerPreDispose() {
         if (listenerList == null) {
             return;

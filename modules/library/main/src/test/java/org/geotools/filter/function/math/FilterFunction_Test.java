@@ -18,13 +18,12 @@ package org.geotools.filter.function.math;
 
 import junit.framework.TestCase;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.factory.FactoryRegistryException;
 import org.geotools.filter.FilterFactoryImpl;
+import org.geotools.util.factory.FactoryRegistryException;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
 
-/** @source $URL$ */
 public class FilterFunction_Test extends TestCase {
 
     private Literal literal_1 = null;
@@ -158,7 +157,7 @@ public class FilterFunction_Test extends TestCase {
                         0.00001);
             }
         } catch (FactoryRegistryException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             fail("Unexpected exception: " + e.getMessage());
         }
     }
@@ -256,7 +255,7 @@ public class FilterFunction_Test extends TestCase {
                         0.00001);
             }
         } catch (FactoryRegistryException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             fail("Unexpected exception: " + e.getMessage());
         }
     }
@@ -354,7 +353,7 @@ public class FilterFunction_Test extends TestCase {
                         0.00001);
             }
         } catch (FactoryRegistryException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             fail("Unexpected exception: " + e.getMessage());
         }
     }
@@ -454,7 +453,7 @@ public class FilterFunction_Test extends TestCase {
                         0.00001);
             }
         } catch (FactoryRegistryException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             fail("Unexpected exception: " + e.getMessage());
         }
     }
@@ -551,7 +550,7 @@ public class FilterFunction_Test extends TestCase {
                         0.00001);
             }
         } catch (FactoryRegistryException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             fail("Unexpected exception: " + e.getMessage());
         }
     }
@@ -651,7 +650,7 @@ public class FilterFunction_Test extends TestCase {
                         0.00001);
             }
         } catch (FactoryRegistryException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             fail("Unexpected exception: " + e.getMessage());
         }
     }
@@ -706,7 +705,7 @@ public class FilterFunction_Test extends TestCase {
                     ((Integer) min_4Function.evaluate(null)).intValue(),
                     0.00001);
         } catch (FactoryRegistryException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             fail("Unexpected exception: " + e.getMessage());
         }
     }
@@ -761,7 +760,7 @@ public class FilterFunction_Test extends TestCase {
                     ((Long) min_2Function.evaluate(null)).longValue(),
                     0.00001);
         } catch (FactoryRegistryException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             fail("Unexpected exception: " + e.getMessage());
         }
     }
@@ -816,7 +815,7 @@ public class FilterFunction_Test extends TestCase {
                     ((Float) min_3Function.evaluate(null)).floatValue(),
                     0.00001);
         } catch (FactoryRegistryException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             fail("Unexpected exception: " + e.getMessage());
         }
     }
@@ -871,7 +870,7 @@ public class FilterFunction_Test extends TestCase {
                     ((Double) minFunction.evaluate(null)).doubleValue(),
                     0.00001);
         } catch (FactoryRegistryException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             fail("Unexpected exception: " + e.getMessage());
         }
     }
@@ -926,7 +925,7 @@ public class FilterFunction_Test extends TestCase {
                     ((Integer) max_4Function.evaluate(null)).intValue(),
                     0.00001);
         } catch (FactoryRegistryException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             fail("Unexpected exception: " + e.getMessage());
         }
     }
@@ -981,7 +980,7 @@ public class FilterFunction_Test extends TestCase {
                     ((Long) max_2Function.evaluate(null)).longValue(),
                     0.00001);
         } catch (FactoryRegistryException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             fail("Unexpected exception: " + e.getMessage());
         }
     }
@@ -1036,7 +1035,7 @@ public class FilterFunction_Test extends TestCase {
                     ((Float) max_3Function.evaluate(null)).floatValue(),
                     0.00001);
         } catch (FactoryRegistryException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             fail("Unexpected exception: " + e.getMessage());
         }
     }
@@ -1091,7 +1090,7 @@ public class FilterFunction_Test extends TestCase {
                     ((Double) maxFunction.evaluate(null)).doubleValue(),
                     0.00001);
         } catch (FactoryRegistryException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             fail("Unexpected exception: " + e.getMessage());
         }
     }
@@ -1146,7 +1145,7 @@ public class FilterFunction_Test extends TestCase {
                     ((Integer) absFunction.evaluate(null)).intValue(),
                     0.00001);
         } catch (FactoryRegistryException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             fail("Unexpected exception: " + e.getMessage());
         }
     }
@@ -1201,7 +1200,7 @@ public class FilterFunction_Test extends TestCase {
                     ((Double) abs_4Function.evaluate(null)).doubleValue(),
                     0.00001);
         } catch (FactoryRegistryException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             fail("Unexpected exception: " + e.getMessage());
         }
     }
@@ -1256,7 +1255,7 @@ public class FilterFunction_Test extends TestCase {
                     ((Float) abs_3Function.evaluate(null)).floatValue(),
                     0.00001);
         } catch (FactoryRegistryException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             fail("Unexpected exception: " + e.getMessage());
         }
     }
@@ -1311,7 +1310,7 @@ public class FilterFunction_Test extends TestCase {
                     ((Long) abs_2Function.evaluate(null)).longValue(),
                     0.00001);
         } catch (FactoryRegistryException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             fail("Unexpected exception: " + e.getMessage());
         }
     }
@@ -1418,7 +1417,7 @@ public class FilterFunction_Test extends TestCase {
                         0.00001);
             }
         } catch (FactoryRegistryException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             fail("Unexpected exception: " + e.getMessage());
         }
     }
@@ -1515,7 +1514,7 @@ public class FilterFunction_Test extends TestCase {
                         0.00001);
             }
         } catch (FactoryRegistryException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             fail("Unexpected exception: " + e.getMessage());
         }
     }
@@ -1612,7 +1611,7 @@ public class FilterFunction_Test extends TestCase {
                         0.00001);
             }
         } catch (FactoryRegistryException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             fail("Unexpected exception: " + e.getMessage());
         }
     }
@@ -1709,7 +1708,7 @@ public class FilterFunction_Test extends TestCase {
                         0.00001);
             }
         } catch (FactoryRegistryException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             fail("Unexpected exception: " + e.getMessage());
         }
     }
@@ -1806,7 +1805,7 @@ public class FilterFunction_Test extends TestCase {
                         0.00001);
             }
         } catch (FactoryRegistryException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             fail("Unexpected exception: " + e.getMessage());
         }
     }
@@ -1903,7 +1902,7 @@ public class FilterFunction_Test extends TestCase {
                         0.00001);
             }
         } catch (FactoryRegistryException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             fail("Unexpected exception: " + e.getMessage());
         }
     }
@@ -2000,7 +1999,7 @@ public class FilterFunction_Test extends TestCase {
                         0.00001);
             }
         } catch (FactoryRegistryException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             fail("Unexpected exception: " + e.getMessage());
         }
     }
@@ -2097,7 +2096,7 @@ public class FilterFunction_Test extends TestCase {
                         0.00001);
             }
         } catch (FactoryRegistryException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             fail("Unexpected exception: " + e.getMessage());
         }
     }
@@ -2114,7 +2113,7 @@ public class FilterFunction_Test extends TestCase {
                     0,
                     randomFunction.getFunctionName().getArgumentCount());
         } catch (FactoryRegistryException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             fail("Unexpected exception: " + e.getMessage());
         }
     }
@@ -2211,7 +2210,7 @@ public class FilterFunction_Test extends TestCase {
                         0.00001);
             }
         } catch (FactoryRegistryException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             fail("Unexpected exception: " + e.getMessage());
         }
     }
@@ -2266,7 +2265,7 @@ public class FilterFunction_Test extends TestCase {
                     ((Integer) roundFunction.evaluate(null)).intValue(),
                     0.00001);
         } catch (FactoryRegistryException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             fail("Unexpected exception: " + e.getMessage());
         }
     }
@@ -2321,7 +2320,7 @@ public class FilterFunction_Test extends TestCase {
                     ((Long) round_2Function.evaluate(null)).longValue(),
                     0.00001);
         } catch (FactoryRegistryException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             fail("Unexpected exception: " + e.getMessage());
         }
     }
@@ -2419,7 +2418,7 @@ public class FilterFunction_Test extends TestCase {
                         0.00001);
             }
         } catch (FactoryRegistryException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             fail("Unexpected exception: " + e.getMessage());
         }
     }
@@ -2517,7 +2516,7 @@ public class FilterFunction_Test extends TestCase {
                         0.00001);
             }
         } catch (FactoryRegistryException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             fail("Unexpected exception: " + e.getMessage());
         }
     }

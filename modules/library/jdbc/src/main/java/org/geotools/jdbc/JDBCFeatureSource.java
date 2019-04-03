@@ -42,8 +42,6 @@ import org.geotools.data.ReTypeFeatureReader;
 import org.geotools.data.Transaction;
 import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentFeatureSource;
-import org.geotools.factory.Hints;
-import org.geotools.factory.Hints.Key;
 import org.geotools.feature.AttributeTypeBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.feature.visitor.MaxVisitor;
@@ -53,6 +51,8 @@ import org.geotools.filter.FilterAttributeExtractor;
 import org.geotools.filter.visitor.SimplifyingFilterVisitor;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
+import org.geotools.util.factory.Hints;
+import org.geotools.util.factory.Hints.Key;
 import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.Association;
@@ -66,7 +66,6 @@ import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-/** @source $URL$ */
 public class JDBCFeatureSource extends ContentFeatureSource {
 
     private static final Logger LOGGER = Logging.getLogger(JDBCFeatureSource.class);
@@ -199,14 +198,11 @@ public class JDBCFeatureSource extends ContentFeatureSource {
                 String name = column.name;
 
                 // do not include primary key in the type if not exposing primary key columns
-                boolean pkColumn = false;
                 for (PrimaryKeyColumn pkeycol : pkey.getColumns()) {
                     if (name.equals(pkeycol.getName())) {
                         if (!state.isExposePrimaryKeyColumns()) {
                             name = null;
                             break;
-                        } else {
-                            pkColumn = true;
                         }
                     }
                     // in views we don't know the pk type, grab it now
@@ -277,6 +273,7 @@ public class JDBCFeatureSource extends ContentFeatureSource {
 
                 // store the native database type in the attribute descriptor user data
                 ab.addUserData(JDBCDataStore.JDBC_NATIVE_TYPENAME, column.typeName);
+                ab.addUserData(JDBCDataStore.JDBC_NATIVE_TYPE, column.sqlType);
 
                 // nullability
                 if (!column.nullable) {
@@ -397,7 +394,7 @@ public class JDBCFeatureSource extends ContentFeatureSource {
     }
 
     protected int getCountInternal(Query query) throws IOException {
-        JDBCDataStore dataStore = getDataStore();
+        JDBCDataStore store = getDataStore();
 
         // split the filter
         Filter[] split = splitFilter(query.getFilter());
@@ -439,14 +436,14 @@ public class JDBCFeatureSource extends ContentFeatureSource {
         } else {
             // no post filter, we have a preFilter, or preFilter is null..
             // either way we can use the datastore optimization
-            Connection cx = dataStore.getConnection(getState());
+            Connection cx = store.getConnection(getState());
             try {
                 DefaultQuery q = new DefaultQuery(query);
                 q.setFilter(preFilter);
-                int count = dataStore.getCount(getSchema(), q, cx);
+                int count = store.getCount(getSchema(), q, cx);
                 // if native support for limit and offset is not implemented, we have to ajust the
                 // result
-                if (!dataStore.getSQLDialect().isLimitOffsetSupported()) {
+                if (!store.getSQLDialect().isLimitOffsetSupported()) {
                     if (query.getStartIndex() != null && query.getStartIndex() > 0) {
                         if (query.getStartIndex() > count) count = 0;
                         else count -= query.getStartIndex();
@@ -456,7 +453,7 @@ public class JDBCFeatureSource extends ContentFeatureSource {
                 }
                 return count;
             } finally {
-                dataStore.releaseConnection(cx, getState());
+                store.releaseConnection(cx, getState());
             }
         }
     }
@@ -547,6 +544,7 @@ public class JDBCFeatureSource extends ContentFeatureSource {
         return true;
     }
 
+    @SuppressWarnings("PMD.CloseResource") // the cx is passed to the reader which will close it
     protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query)
             throws IOException {
         // split the filter
@@ -714,7 +712,6 @@ public class JDBCFeatureSource extends ContentFeatureSource {
      *
      * @param query
      * @param visitor
-     * @param nearest value, or null if not supported
      * @throws IOException
      */
     private boolean handleNearestVisitor(Query query, FeatureVisitor visitor) throws IOException {
@@ -815,11 +812,10 @@ public class JDBCFeatureSource extends ContentFeatureSource {
                         getDataStore().escapeNamePattern(metaData, databaseSchema),
                         getDataStore().escapeNamePattern(metaData, tableName),
                         "%");
-        if (getDataStore().getFetchSize() > 0) {
-            columns.setFetchSize(getDataStore().getFetchSize());
-        }
-
         try {
+            if (getDataStore().getFetchSize() > 0) {
+                columns.setFetchSize(getDataStore().getFetchSize());
+            }
             while (columns.next()) {
                 ColumnMetadata column = new ColumnMetadata();
                 column.name = columns.getString("COLUMN_NAME");

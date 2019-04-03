@@ -1,5 +1,3 @@
-package org.geotools.filter.function;
-
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
@@ -16,6 +14,7 @@ package org.geotools.filter.function;
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
+package org.geotools.filter.function;
 
 import static org.geotools.filter.capability.FunctionNameImpl.*;
 
@@ -28,9 +27,6 @@ import org.opengis.filter.capability.FunctionName;
  * A FilterFunction that expects a Geometry and returns it's minimum diameter.
  *
  * @author Jared Erickson
- * @source $URL:
- *     http://svn.osgeo.org/geotools/trunk/modules/library/main/src/main/java/org/geotools/filter/function/FilterFunction_minimumDiameter.java
- *     $
  */
 public class FilterFunction_minimumDiameter extends FunctionExpressionImpl {
 

@@ -18,11 +18,15 @@
 package org.geotools.gce.imagemosaic;
 
 import static org.geotools.referencing.crs.DefaultGeographicCRS.WGS84;
+import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
-import java.awt.Color;
+import com.sun.media.jai.operator.ImageReadDescriptor;
+import it.geosolutions.imageio.stream.input.FileImageInputStreamExtImpl;
+import java.awt.*;
 import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.FileWriter;
@@ -35,6 +39,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import javax.imageio.ImageReader;
+import javax.imageio.stream.ImageInputStream;
 import javax.media.jai.Interpolation;
 import javax.media.jai.PlanarImage;
 import org.apache.commons.io.FileUtils;
@@ -50,16 +56,16 @@ import org.geotools.data.DataUtilities;
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
-import org.geotools.factory.Hints;
 import org.geotools.filter.text.cql2.CQL;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.test.ImageAssert;
+import org.geotools.image.util.ImageUtilities;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.operation.projection.MapProjection;
-import org.geotools.resources.image.ImageUtilities;
 import org.geotools.test.TestData;
+import org.geotools.util.factory.Hints;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -68,6 +74,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.locationtech.jts.geom.Geometry;
+import org.opengis.coverage.grid.GridEnvelope;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.Filter;
 import org.opengis.parameter.GeneralParameterValue;
@@ -600,5 +607,84 @@ public class HeterogenousCRSTest {
         // now rebuild mosaic (used to fail)
         imReader = new ImageMosaicReader(testDirectory, null);
         imReader.dispose();
+    }
+
+    @Test
+    public void testHeteroExternalOverviews() throws Exception {
+        String testLocation = "hetero_s2_ovr";
+        URL storeUrl = TestData.url(this, testLocation);
+
+        File testDataFolder = new File(storeUrl.toURI());
+        File testDirectory = crsMosaicFolder.newFolder(testLocation);
+        FileUtils.copyDirectory(testDataFolder, testDirectory);
+
+        ImageMosaicReader imReader = new ImageMosaicReader(testDirectory, null);
+        Assert.assertNotNull(imReader);
+
+        // check what gets used for source file for native resolution
+        List<String> filesNativeRes = getSourceFilesForParams(imReader);
+        assertThat(filesNativeRes, containsInAnyOrder("g1.tif", "g2.tif", "g4.tif", "g3.tif"));
+
+        // check what gets used for source file at half resolution
+        ParameterValue<GridGeometry2D> ggp = AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
+        GridEnvelope originalRange = imReader.getOriginalGridRange();
+        GridEnvelope readRange =
+                new GridEnvelope2D(
+                        0, 0, originalRange.getSpan(0) / 4, originalRange.getSpan(1) / 4);
+        GridGeometry2D gg = new GridGeometry2D(readRange, imReader.getOriginalEnvelope());
+        ggp.setValue(gg);
+        List<String> filesExtOvr = getSourceFilesForParams(imReader, ggp);
+        assertThat(
+                filesExtOvr,
+                containsInAnyOrder("g1.tif.ovr", "g2.tif.ovr", "g4.tif.ovr", "g3.tif.ovr"));
+
+        imReader.dispose();
+    }
+
+    public List<String> getSourceFilesForParams(
+            ImageMosaicReader imReader, GeneralParameterValue... params) throws IOException {
+        GridCoverage2D coverage = imReader.read(params);
+        RenderedImage ri = coverage.getRenderedImage();
+        return getInputFileNames(ri);
+    }
+
+    private List<String> getInputFileNames(RenderedImage inputImage) {
+        List<String> files = new ArrayList<>();
+        if (inputImage instanceof PlanarImage) {
+            PlanarImage planarImage = (PlanarImage) inputImage;
+
+            final int nSources = planarImage.getNumSources();
+            if (nSources > 0) {
+                for (int k = 0; k < nSources; k++) {
+                    Object source = null;
+                    try {
+                        source = planarImage.getSourceObject(k);
+                    } catch (ArrayIndexOutOfBoundsException e) {
+                        // Ignore
+                    }
+                    if (source != null) {
+                        if (source instanceof PlanarImage) {
+                            List<String> piFiles = getInputFileNames((RenderedImage) source);
+                            files.addAll(piFiles);
+                        }
+                    }
+                }
+            } else {
+                // grab the streams from the reader, the particular implementation being
+                // used has an accessor for the source files
+                Object imageReader =
+                        inputImage.getProperty(ImageReadDescriptor.PROPERTY_NAME_IMAGE_READER);
+                if ((imageReader != null) && (imageReader instanceof ImageReader)) {
+                    final ImageReader reader = (ImageReader) imageReader;
+                    final ImageInputStream stream = (ImageInputStream) reader.getInput();
+                    if (stream instanceof FileImageInputStreamExtImpl) {
+                        FileImageInputStreamExtImpl fis = (FileImageInputStreamExtImpl) stream;
+                        File file = fis.getFile();
+                        files.add(file.getName());
+                    }
+                }
+            }
+        }
+        return files;
     }
 }

@@ -37,7 +37,6 @@ import org.geotools.data.CloseableIterator;
 import org.geotools.data.FileGroupProvider.FileGroup;
 import org.geotools.data.FileServiceInfo;
 import org.geotools.data.ServiceInfo;
-import org.geotools.factory.Hints;
 import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -45,6 +44,7 @@ import org.geotools.parameter.Parameter;
 import org.geotools.referencing.crs.DefaultEngineeringCRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.test.TestData;
+import org.geotools.util.factory.Hints;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.ParameterValue;
 
@@ -54,12 +54,10 @@ import org.opengis.parameter.ParameterValue;
  * @author Simone Giannecchini
  * @author Alessio Fabiani
  * @author rgould
- * @source $URL$
  */
 public class WorldImageReaderTest extends WorldImageBaseTestCase {
 
-    private Logger logger =
-            org.geotools.util.logging.Logging.getLogger(WorldImageReaderTest.class.toString());
+    private Logger logger = org.geotools.util.logging.Logging.getLogger(WorldImageReaderTest.class);
 
     /**
      * Constructor for WorldImageReaderTest.
@@ -344,9 +342,6 @@ public class WorldImageReaderTest extends WorldImageBaseTestCase {
      * Read, test and show a coverage from the supplied source.
      *
      * @param source Object
-     * @throws FileNotFoundException DOCUMENT ME!
-     * @throws IOException DOCUMENT ME!
-     * @throws IllegalArgumentException DOCUMENT ME!
      */
     private void read(Object source)
             throws FileNotFoundException, IOException, IllegalArgumentException {

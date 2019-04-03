@@ -40,7 +40,6 @@ import org.opengis.annotation.UML;
  *
  * </blockquote>
  *
- * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/as#01-111">ISO 19115</A>
  * @author Ely Conn (Leica Geosystems Geospatial Imaging, LLC)
  * @since GeoAPI 2.1

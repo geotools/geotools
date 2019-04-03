@@ -57,7 +57,6 @@ import org.opengis.referencing.operation.Transformation;
  * thrown on instantiation.
  *
  * @see {@link IdentifiedObjectSet IdentifiedObjectSet exception handling}.
- * @source $URL$
  * @version $Id$
  * @author Oscar Fonts
  */
@@ -67,7 +66,7 @@ public class NTv2Transform extends AbstractMathTransform implements MathTransfor
     private static final long serialVersionUID = -3082112044314062512L;
 
     /** Logger */
-    protected static final Logger LOGGER = Logging.getLogger("org.geotools.referencing");
+    protected static final Logger LOGGER = Logging.getLogger(NTv2Transform.class);
 
     /** The original grid name */
     private URI grid = null;
@@ -118,7 +117,6 @@ public class NTv2Transform extends AbstractMathTransform implements MathTransfor
                 return result;
             }
         }
-        ;
 
         return null;
     }
@@ -341,13 +339,7 @@ public class NTv2Transform extends AbstractMathTransform implements MathTransfor
             return (MathTransform2D) super.inverse();
         }
 
-        /**
-         * Restore reference to this object after deserialization.
-         *
-         * @param in DOCUMENT ME!
-         * @throws IOException DOCUMENT ME!
-         * @throws ClassNotFoundException DOCUMENT ME!
-         */
+        /** Restore reference to this object after deserialization. */
         private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
             in.defaultReadObject();
             NTv2Transform.this.inverse = this;

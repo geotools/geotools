@@ -28,7 +28,6 @@ import org.opengis.feature.type.AttributeDescriptor;
  *
  * @author Justin Deoliveira, The Open Planning Project
  * @deprecated Please use {@link ReTypingFeatureIterator}
- * @source $URL$
  */
 public class ReTypingIterator implements Iterator<SimpleFeature> {
 
@@ -85,7 +84,7 @@ public class ReTypingIterator implements Iterator<SimpleFeature> {
      * <p>Will also ensure that origional can cover target
      *
      * @param target Desired FeatureType
-     * @param origional Origional FeatureType
+     * @param original Origional FeatureType
      * @return Mapping from originoal to target FeatureType
      * @throws IllegalArgumentException if unable to provide a mapping
      */

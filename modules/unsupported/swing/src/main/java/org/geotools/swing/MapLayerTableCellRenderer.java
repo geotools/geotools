@@ -35,7 +35,6 @@ import org.geotools.map.Layer;
  *
  * @author Michael Bedward
  * @since 2.6
- * @source $URL$
  * @version $Id$
  */
 public class MapLayerTableCellRenderer extends JPanel implements ListCellRenderer {

@@ -17,7 +17,7 @@
 package org.geotools.coverage.grid.io;
 
 import java.io.IOException;
-import org.geotools.factory.OptionalFactory;
+import org.geotools.util.factory.OptionalFactory;
 
 /**
  * Constructs a live GridCoverageFormat.
@@ -36,7 +36,6 @@ import org.geotools.factory.OptionalFactory;
  *
  * @author Jody Garnett, Refractions Research
  * @author Simone Giannecchini, GeoSolutions
- * @source $URL$
  */
 public interface GridFormatFactorySpi extends OptionalFactory {
     /**

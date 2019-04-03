@@ -19,12 +19,16 @@ package org.geotools.data.mongodb.complex;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
+import javax.xml.namespace.QName;
 import org.geotools.data.complex.AttributeMapping;
 import org.geotools.data.complex.FeatureTypeMapping;
 import org.geotools.data.complex.NestedAttributeMapping;
-import org.geotools.data.complex.filter.XPathUtil;
 import org.geotools.data.complex.spi.CustomAttributeExpressionFactory;
+import org.geotools.data.complex.util.XPathUtil;
+import org.geotools.data.mongodb.MongoFeatureStore;
+import org.geotools.feature.type.Types;
 import org.geotools.filter.ConstantExpression;
+import org.opengis.feature.type.Name;
 import org.opengis.filter.expression.Expression;
 
 /** Custom nested attribute expressions builder for MongoDB. */
@@ -42,6 +46,10 @@ public class MongoNestedAttributeExpressionFactory implements CustomAttributeExp
             FeatureTypeMapping mappings,
             XPathUtil.StepList xpath,
             NestedAttributeMapping nestedMapping) {
+        if (!(mappings.getSource() instanceof MongoFeatureStore)) {
+            // nothing to do here
+            return null;
+        }
         if (!nestedMapping
                 .getTargetXPath()
                 .equalsIgnoreIndex(xpath.subList(0, nestedMapping.getTargetXPath().size()))) {
@@ -55,6 +63,19 @@ public class MongoNestedAttributeExpressionFactory implements CustomAttributeExp
         int start = 0;
         while (end > start) {
             try {
+                // let's check if the feature type name was provided
+                FeatureTypeMapping featureTypeMapping =
+                        ((NestedAttributeMapping) attributeMapping).getFeatureTypeMapping(null);
+                Name featureTypeName = featureTypeMapping.getTargetFeature().getName();
+                QName name = finalXpath.get(start).getName();
+                if (Types.equals(featureTypeName, name)) {
+                    // feature type name provided, let's skip it
+                    start++;
+                    if (start >= end) {
+                        // looks like only the feature type name was provided, we are done
+                        break;
+                    }
+                }
                 SearchResult result = search(finalXpath.subList(start, end), attributeMapping);
                 if (!result.found) {
                     break;

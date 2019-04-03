@@ -26,7 +26,6 @@ import org.geotools.jdbc.JDBCJNDIDataStoreFactory;
  * JNDI DataStoreFactory for H2.
  *
  * @author Christian Mueller
- * @source $URL$
  */
 public class H2JNDIDataStoreFactory extends JDBCJNDIDataStoreFactory {
 

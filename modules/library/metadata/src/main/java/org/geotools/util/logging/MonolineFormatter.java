@@ -30,7 +30,7 @@ import java.util.logging.LogManager;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
-import org.geotools.io.LineWriter;
+import org.geotools.util.LineWriter;
 import org.geotools.util.Utilities;
 
 /**
@@ -89,7 +89,6 @@ import org.geotools.util.Utilities;
  * </blockquote>
  *
  * @since 2.0
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
@@ -177,6 +176,7 @@ public class MonolineFormatter extends Formatter {
     private final LineWriter writer;
 
     /** Constructs a default {@code MonolineFormatter}. */
+    @SuppressWarnings("PMD.SystemPrintln")
     public MonolineFormatter() {
         this.startMillis = System.currentTimeMillis();
         this.margin = DEFAULT_WIDTH;
@@ -263,7 +263,7 @@ public class MonolineFormatter extends Formatter {
      *
      * @return The source pattern, or {@code null} if source is not formatted.
      */
-    public String getSourceFormat() {
+    public synchronized String getSourceFormat() {
         return FORMAT_LABELS[sourceFormat];
     }
 
@@ -291,12 +291,10 @@ public class MonolineFormatter extends Formatter {
          * Formats the level (e.g. "FINE"). We do not provide
          * the option to turn level off for now.
          */
-        if (true) {
-            int offset = buffer.length();
-            buffer.append(record.getLevel().getLocalizedName());
-            offset = buffer.length() - offset;
-            buffer.append(Utilities.spaces(margin - offset));
-        }
+        int offset = buffer.length();
+        buffer.append(record.getLevel().getLocalizedName());
+        offset = buffer.length() - offset;
+        buffer.append(Utilities.spaces(margin - offset));
         /*
          * Adds the source. It may be either the source logger or the source class name.
          */

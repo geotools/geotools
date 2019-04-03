@@ -95,7 +95,7 @@ Adding the map tools as view actions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Right now we have only the map view. The best place to put the tools like pan and zoom is probably
-the toolbar of the map view. To do so, we can add a viewActions extention point to our view, then
+the toolbar of the map view. To do so, we can add a viewActions extension point to our view, then
 add a viewContribution to the viewActions and finally all the actions we need there.
 
 1. To add the Info Tool action, you add::

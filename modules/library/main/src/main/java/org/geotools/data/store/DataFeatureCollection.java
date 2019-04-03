@@ -40,7 +40,6 @@ import org.geotools.feature.FeatureReaderIterator;
 import org.geotools.feature.collection.DelegateSimpleFeatureIterator;
 import org.geotools.feature.collection.SubFeatureCollection;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.opengis.feature.Feature;
 import org.opengis.feature.IllegalAttributeException;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -65,12 +64,11 @@ import org.opengis.filter.sort.SortBy;
  *
  * @author jgarnett
  * @since 2.1.RC0
- * @source $URL$
  */
 public abstract class DataFeatureCollection implements SimpleFeatureCollection {
 
     /** logger */
-    static Logger LOGGER = org.geotools.util.logging.Logging.getLogger("org.geotools.data");
+    static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(DataFeatureCollection.class);
 
     private static int unique = 0;
 
@@ -220,9 +218,7 @@ public abstract class DataFeatureCollection implements SimpleFeatureCollection {
     }
 
     protected void closeIterator(Iterator<SimpleFeature> close) throws IOException {
-        if (close == null) {
-            // iterator probably failed during consturction !
-        } else if (close instanceof FeatureReaderIterator) {
+        if (close instanceof FeatureReaderIterator) {
             FeatureReaderIterator<SimpleFeature> iterator =
                     (FeatureReaderIterator<SimpleFeature>) close;
             iterator.close(); // only needs package visability
@@ -389,7 +385,7 @@ public abstract class DataFeatureCollection implements SimpleFeatureCollection {
             try {
                 // skip to end
                 while (writer.hasNext()) {
-                    Feature feature = writer.next();
+                    writer.next();
                 }
                 for (Object obj : collection) {
                     if (obj instanceof SimpleFeature) {

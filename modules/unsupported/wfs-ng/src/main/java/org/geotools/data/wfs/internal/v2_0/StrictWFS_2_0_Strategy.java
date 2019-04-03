@@ -90,11 +90,11 @@ import org.geotools.data.wfs.internal.WFSResponseFactory;
 import org.geotools.data.wfs.internal.WFSStrategy;
 import org.geotools.data.wfs.internal.v2_0.storedquery.ParameterTypeFactory;
 import org.geotools.data.wfs.internal.v2_0.storedquery.StoredQueryConfiguration;
-import org.geotools.factory.Hints;
-import org.geotools.factory.Hints.ConfigurationMetadataKey;
 import org.geotools.util.Version;
+import org.geotools.util.factory.Hints;
+import org.geotools.util.factory.Hints.ConfigurationMetadataKey;
 import org.geotools.wfs.v2_0.WFS;
-import org.geotools.xml.Configuration;
+import org.geotools.xsd.Configuration;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.Filter;
 import org.opengis.filter.capability.FilterCapabilities;
@@ -213,6 +213,7 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
     }
 
     @Override
+    @SuppressWarnings("CollectionIncompatibleType")
     protected Map<String, String> buildGetFeatureParametersForGET(GetFeatureRequest query) {
         Map<String, String> kvp = null;
         if (query.isStoredQuery()) {
@@ -236,10 +237,9 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
             Map<String, String> viewParams = null;
             if (query.getRequestHints() != null) {
                 viewParams =
-                        (Map<String, String>)
-                                query.getRequestHints().get(Hints.VIRTUAL_TABLE_PARAMETERS);
+                        (Map<String, String>) query.getHints().get(Hints.VIRTUAL_TABLE_PARAMETERS);
 
-                config = (StoredQueryConfiguration) query.getRequestHints().get(CONFIG_KEY);
+                config = (StoredQueryConfiguration) query.getHints().get(CONFIG_KEY);
             }
 
             List<ParameterType> params =
@@ -287,6 +287,7 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
     }
 
     @Override
+    @SuppressWarnings("CollectionIncompatibleType")
     protected EObject createGetFeatureRequestPost(GetFeatureRequest query) throws IOException {
         final QName typeName = query.getTypeName();
         final FeatureTypeInfoImpl featureTypeInfo =
@@ -328,10 +329,9 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
 
             if (query.getRequestHints() != null) {
                 viewParams =
-                        (Map<String, String>)
-                                query.getRequestHints().get(Hints.VIRTUAL_TABLE_PARAMETERS);
+                        (Map<String, String>) query.getHints().get(Hints.VIRTUAL_TABLE_PARAMETERS);
 
-                config = (StoredQueryConfiguration) query.getRequestHints().get(CONFIG_KEY);
+                config = (StoredQueryConfiguration) query.getHints().get(CONFIG_KEY);
             }
 
             List<ParameterType> params =

@@ -31,7 +31,6 @@ import org.opengis.geometry.coordinate.Position;
 import org.opengis.geometry.primitive.CurveSegment;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-/** @source $URL$ */
 public class IsSimpleOperationTest extends TestCase {
 
     private GeometryBuilder builder = null;
@@ -149,7 +148,7 @@ public class IsSimpleOperationTest extends TestCase {
         try {
             rSurface = (SurfaceImpl) wktReader.read(aWKTsurface);
         } catch (ParseException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
         return rSurface;
     }
@@ -160,7 +159,7 @@ public class IsSimpleOperationTest extends TestCase {
         try {
             rCurve = (CurveImpl) wktReader.read(aWKTcurve);
         } catch (ParseException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
         return rCurve;
     }

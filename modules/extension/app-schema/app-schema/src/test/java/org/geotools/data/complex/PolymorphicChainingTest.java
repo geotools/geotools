@@ -21,13 +21,13 @@ import static org.junit.Assert.*;
 
 import java.net.URL;
 import java.util.*;
+import org.geotools.appschema.filter.FilterFactoryImplNamespaceAware;
 import org.geotools.data.DataAccess;
 import org.geotools.data.DataAccessFinder;
 import org.geotools.data.FeatureSource;
-import org.geotools.data.complex.config.Types;
+import org.geotools.data.complex.feature.type.Types;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
-import org.geotools.filter.FilterFactoryImplNamespaceAware;
 import org.geotools.test.AppSchemaTestSupport;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -40,10 +40,7 @@ import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
 import org.xml.sax.helpers.NamespaceSupport;
 
-/**
- * @author Eric Sword
- * @source $URL$
- */
+/** @author Eric Sword */
 public class PolymorphicChainingTest extends AppSchemaTestSupport {
     static final String EX_NS = "urn:example:xmlns:ArtifactML:1.0";
 
@@ -68,7 +65,7 @@ public class PolymorphicChainingTest extends AppSchemaTestSupport {
         sw.start();
         loadDataAccesses();
         sw.stop();
-        System.out.println("Set up time: " + sw.getTimeString());
+        // System.out.println("Set up time: " + sw.getTimeString());
     }
 
     /**

@@ -19,7 +19,6 @@ package org.geotools.data.postgis;
 import org.geotools.jdbc.JDBCGeometryTestSetup;
 import org.geotools.jdbc.JDBCTestSetup;
 
-/** @source $URL$ */
 public class PostgisGeometryTestSetup extends JDBCGeometryTestSetup {
 
     public PostgisGeometryTestSetup(JDBCTestSetup delegate) {

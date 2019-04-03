@@ -29,7 +29,6 @@ import org.opengis.geometry.DirectPosition;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.operation.TransformException;
 
-/** @source $URL$ */
 public final class BursaWolfTransformBuilderTest {
     /** Test {@link BursaWolfTransformBuilder}. */
     @Test
@@ -85,7 +84,6 @@ public final class BursaWolfTransformBuilderTest {
      * points are calculated using generated parameters. Then the parameters are computed by the
      * builder and compared against original.
      *
-     * @throws FactoryException DOCUMENT ME!
      * @throws TransformException
      */
     @Test

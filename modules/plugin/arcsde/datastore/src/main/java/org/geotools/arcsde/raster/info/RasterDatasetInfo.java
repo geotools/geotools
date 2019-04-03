@@ -32,10 +32,10 @@ import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.grid.GeneralGridEnvelope;
 import org.geotools.coverage.grid.io.OverviewPolicy;
 import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.metadata.i18n.Vocabulary;
+import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.operation.builder.GridToEnvelopeMapper;
-import org.geotools.resources.i18n.Vocabulary;
-import org.geotools.resources.i18n.VocabularyKeys;
 import org.geotools.util.NumberRange;
 import org.opengis.coverage.grid.GridEnvelope;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -54,10 +54,6 @@ import org.opengis.referencing.operation.TransformException;
  *
  * @author Gabriel Roldan (OpenGeo)
  * @since 2.5.4
- * @version $Id$
- * @source $URL$
- *     http://svn.osgeo.org/geotools/trunk/modules/plugin/arcsde/datastore/src/main/java/org
- *     /geotools/arcsde/gce/RasterDatasetInfo.java $
  */
 @SuppressWarnings({"nls"})
 public final class RasterDatasetInfo {
@@ -76,7 +72,7 @@ public final class RasterDatasetInfo {
 
     private GridEnvelope originalGridRange;
 
-    private List<GridSampleDimension> gridSampleDimensions;
+    private volatile List<GridSampleDimension> gridSampleDimensions;
 
     private final Map<Integer, ImageTypeSpecifier> renderedImageSpec =
             new HashMap<Integer, ImageTypeSpecifier>();

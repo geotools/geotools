@@ -37,9 +37,9 @@ import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 import org.geotools.map.Layer;
 import org.geotools.map.MapContent;
+import org.geotools.map.MapLayerListEvent;
+import org.geotools.map.MapLayerListListener;
 import org.geotools.map.StyleLayer;
-import org.geotools.map.event.MapLayerListEvent;
-import org.geotools.map.event.MapLayerListListener;
 import org.geotools.styling.Style;
 import org.geotools.swing.control.DnDList;
 import org.geotools.swing.control.DnDListModel;
@@ -59,7 +59,6 @@ import org.geotools.swing.styling.JSimpleStyleDialog;
  *
  * @author Michael Bedward
  * @since 2.6
- * @source $URL$
  * @version $Id$
  */
 public class MapLayerTable extends JPanel {

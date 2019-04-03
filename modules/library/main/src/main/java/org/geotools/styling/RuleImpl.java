@@ -35,7 +35,6 @@ import org.opengis.util.Cloneable;
  *
  * @author James Macgill
  * @author Johann Sorel (Geomatys)
- * @source $URL$
  * @version $Id$
  */
 public class RuleImpl implements org.geotools.styling.Rule, Cloneable {
@@ -55,11 +54,7 @@ public class RuleImpl implements org.geotools.styling.Rule, Cloneable {
     /** Creates a new instance of DefaultRule */
     protected RuleImpl() {}
 
-    /**
-     * Creates a new instance of DefaultRule
-     *
-     * @param symbolizers DOCUMENT ME!
-     */
+    /** Creates a new instance of DefaultRule */
     protected RuleImpl(Symbolizer[] symbolizers) {
         this.symbolizers.addAll(Arrays.asList(symbolizers));
     }

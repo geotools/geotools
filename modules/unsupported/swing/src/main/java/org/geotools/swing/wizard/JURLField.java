@@ -37,7 +37,6 @@ import org.geotools.util.URLs;
  * Widget for URL; provides a "Browse" button to open a file dialog.
  *
  * @author Jody Garnett
- * @source $URL$
  */
 public class JURLField extends ParamField {
 

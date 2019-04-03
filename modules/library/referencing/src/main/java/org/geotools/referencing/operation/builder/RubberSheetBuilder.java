@@ -40,7 +40,6 @@ import org.opengis.referencing.operation.MathTransform;
  * ="http://planner.t.u-tokyo.ac.jp/member/fuse/rubber_sheeting.pdf">here</a>.
  *
  * @since 2.4
- * @source $URL$
  * @version $Id$
  * @author Jan Jezek
  * @author Adrian Custer
@@ -183,7 +182,7 @@ public class RubberSheetBuilder extends MathTransformBuilder {
             } catch (Exception e) {
                 // should never reach here because AffineTransformBuilder(pts)
                 // should not throw any Exception.
-                e.printStackTrace();
+                java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             }
         }
 

@@ -27,7 +27,6 @@ import org.geotools.grid.PolygonElement;
  *
  * @author mbedward
  * @since 2.7
- * @source $URL$
  * @version $Id$
  */
 public class HexagonBuilder extends PolygonBuilder {
@@ -62,7 +61,6 @@ public class HexagonBuilder extends PolygonBuilder {
      * neighbour position and hexagon orientation are invalid. For example, a {@code FLAT} hexagon
      * does not have a {@code LEFT}, rather it has {@code UPPER_LEFT} and {@code LOWER_LEFT}.
      *
-     * @param orientation hexagon orientation
      * @param neighbor neighbor position
      * @return {@code true} if the combination is valid; {@code false} otherwise
      */

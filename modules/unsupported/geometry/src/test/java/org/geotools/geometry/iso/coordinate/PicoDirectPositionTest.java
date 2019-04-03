@@ -33,7 +33,6 @@ import org.opengis.util.Cloneable;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
-/** @source $URL$ */
 public class PicoDirectPositionTest extends TestCase {
 
     PicoContainer c;

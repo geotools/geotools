@@ -42,13 +42,12 @@ import org.xml.sax.Attributes;
  *
  * @author Rob Hranac, Vision for New York<br>
  * @author Chris Holmes, TOPP
- * @source $URL$
  * @version $Id$
  */
 public class FilterSAXParser {
     /** The logger for the filter module. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.filter");
+            org.geotools.util.logging.Logging.getLogger(FilterSAXParser.class);
 
     /** The number of attributes to be found in a like filter */
     private static final int NUM_LIKE_ATTS = 3;
@@ -63,6 +62,7 @@ public class FilterSAXParser {
     private short filterType;
 
     /** factory for creating filters. */
+    @SuppressWarnings("PMD.UnusedPrivateField")
     private FilterFactory2 ff;
 
     /** the Attributes of the filter (only applicable to LIKE filters, I think) */
@@ -333,7 +333,7 @@ public class FilterSAXParser {
     }
 
     /**
-     * Sets the state that shall be expected next based on the fitlerType. So if a between, null or
+     * Sets the state that shall be expected next based on the filterType. So if a between, null or
      * like is the currentFilter then attribute should be next, if an fid filter then fid should be
      * next. If it's a comparison, geometry or not, then leftValue should be next.
      *

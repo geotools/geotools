@@ -1,3 +1,21 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2019, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ *
+ */
+
 package org.geotools.referencing;
 
 import java.awt.RenderingHints.Key;
@@ -6,8 +24,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import org.geotools.factory.GeoTools;
-import org.geotools.factory.Hints;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.datum.BursaWolfParameters;
@@ -15,6 +31,9 @@ import org.geotools.referencing.datum.DefaultGeodeticDatum;
 import org.geotools.referencing.factory.ReferencingFactoryContainer;
 import org.geotools.referencing.operation.DefiningConversion;
 import org.geotools.referencing.wkt.Formattable;
+import org.geotools.util.SuppressFBWarnings;
+import org.geotools.util.factory.GeoTools;
+import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.Coordinate;
 import org.opengis.metadata.Identifier;
 import org.opengis.parameter.ParameterValueGroup;
@@ -46,6 +65,7 @@ import si.uom.SI;
  *
  * @author Jody Garnett
  */
+@SuppressFBWarnings("DLS_DEAD_LOCAL_STORE")
 public class ReferencingExamples {
 
     @SuppressWarnings("unused")
@@ -134,10 +154,9 @@ public class ReferencingExamples {
     }
 
     /**
-     * An example of creating a CRS from a WKT string. Additional examples of WKT strings can be
-     * found in
-     * http://svn.geotools.org/geotools/trunk/gt/module/referencing/test/org/geotools/referencing
-     * /test-data/
+     * An example of creating a CRS from a WKT string.
+     *
+     * <p>Additional examples of WKT strings can be found in the test data.
      *
      * @throws Exception
      */
@@ -276,10 +295,8 @@ public class ReferencingExamples {
     /**
      * Creates a NAD 27 geographic CRS. Notice that the datum factory automatically adds aliase
      * names to the datum (because "North American Datum 1927" has an entry in
-     * http://svn.geotools.org
-     * /geotools/trunk/gt/module/referencing/src/org/geotools/referencing/factory
-     * /DatumAliasesTable.txt ). Also notice that toWGS84 information (used in a datum transform)
-     * was also added to the datum.
+     * module/referencing/src/org/geotools/referencing/factory/DatumAliasesTable.txt ). Also notice
+     * that toWGS84 information (used in a datum transform) was also added to the datum.
      */
     void createCRSByHand2() throws Exception {
         System.out.println("------------------------------------------");

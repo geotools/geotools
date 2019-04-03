@@ -33,284 +33,284 @@ import org.geotools.feature.FeatureCollection;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link net.opengis.wfs.impl.FeatureCollectionTypeImpl#getLockId <em>Lock Id</em>}</li>
  *   <li>{@link net.opengis.wfs.impl.FeatureCollectionTypeImpl#getTimeStamp <em>Time Stamp</em>}</li>
  *   <li>{@link net.opengis.wfs.impl.FeatureCollectionTypeImpl#getNumberOfFeatures <em>Number Of Features</em>}</li>
  *   <li>{@link net.opengis.wfs.impl.FeatureCollectionTypeImpl#getFeature <em>Feature</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
 public class FeatureCollectionTypeImpl extends EObjectImpl implements FeatureCollectionType {
 	/**
-     * The default value of the '{@link #getLockId() <em>Lock Id</em>}' attribute.
-     * <!-- begin-user-doc -->
+   * The default value of the '{@link #getLockId() <em>Lock Id</em>}' attribute.
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @see #getLockId()
-     * @generated
-     * @ordered
-     */
+   * @see #getLockId()
+   * @generated
+   * @ordered
+   */
 	protected static final String LOCK_ID_EDEFAULT = null;
 
 	/**
-     * The cached value of the '{@link #getLockId() <em>Lock Id</em>}' attribute.
-     * <!-- begin-user-doc -->
+   * The cached value of the '{@link #getLockId() <em>Lock Id</em>}' attribute.
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @see #getLockId()
-     * @generated
-     * @ordered
-     */
+   * @see #getLockId()
+   * @generated
+   * @ordered
+   */
 	protected String lockId = LOCK_ID_EDEFAULT;
 
 	/**
-     * The default value of the '{@link #getTimeStamp() <em>Time Stamp</em>}' attribute.
-     * <!-- begin-user-doc -->
+   * The default value of the '{@link #getTimeStamp() <em>Time Stamp</em>}' attribute.
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @see #getTimeStamp()
-     * @generated
-     * @ordered
-     */
+   * @see #getTimeStamp()
+   * @generated
+   * @ordered
+   */
 	protected static final Calendar TIME_STAMP_EDEFAULT = null;
 
 	/**
-     * The cached value of the '{@link #getTimeStamp() <em>Time Stamp</em>}' attribute.
-     * <!-- begin-user-doc -->
+   * The cached value of the '{@link #getTimeStamp() <em>Time Stamp</em>}' attribute.
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @see #getTimeStamp()
-     * @generated
-     * @ordered
-     */
+   * @see #getTimeStamp()
+   * @generated
+   * @ordered
+   */
 	protected Calendar timeStamp = TIME_STAMP_EDEFAULT;
 
 	/**
-     * The default value of the '{@link #getNumberOfFeatures() <em>Number Of Features</em>}' attribute.
-     * <!-- begin-user-doc -->
+   * The default value of the '{@link #getNumberOfFeatures() <em>Number Of Features</em>}' attribute.
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @see #getNumberOfFeatures()
-     * @generated
-     * @ordered
-     */
+   * @see #getNumberOfFeatures()
+   * @generated
+   * @ordered
+   */
 	protected static final BigInteger NUMBER_OF_FEATURES_EDEFAULT = null;
 
 	/**
-     * The cached value of the '{@link #getNumberOfFeatures() <em>Number Of Features</em>}' attribute.
-     * <!-- begin-user-doc -->
+   * The cached value of the '{@link #getNumberOfFeatures() <em>Number Of Features</em>}' attribute.
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @see #getNumberOfFeatures()
-     * @generated
-     * @ordered
-     */
+   * @see #getNumberOfFeatures()
+   * @generated
+   * @ordered
+   */
 	protected BigInteger numberOfFeatures = NUMBER_OF_FEATURES_EDEFAULT;
 
 	/**
-     * The cached value of the '{@link #getFeature() <em>Feature</em>}' attribute list.
-     * <!-- begin-user-doc -->
+   * The cached value of the '{@link #getFeature() <em>Feature</em>}' attribute list.
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @see #getFeature()
-     * @generated
-     * @ordered
-     */
+   * @see #getFeature()
+   * @generated
+   * @ordered
+   */
 	protected EList feature;
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	protected FeatureCollectionTypeImpl() {
-        super();
-    }
+    super();
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	protected EClass eStaticClass() {
-        return WfsPackage.Literals.FEATURE_COLLECTION_TYPE;
-    }
+    return WfsPackage.Literals.FEATURE_COLLECTION_TYPE;
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public String getLockId() {
-        return lockId;
-    }
+    return lockId;
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public void setLockId(String newLockId) {
-        String oldLockId = lockId;
-        lockId = newLockId;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, WfsPackage.FEATURE_COLLECTION_TYPE__LOCK_ID, oldLockId, lockId));
-    }
+    String oldLockId = lockId;
+    lockId = newLockId;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, WfsPackage.FEATURE_COLLECTION_TYPE__LOCK_ID, oldLockId, lockId));
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public Calendar getTimeStamp() {
-        return timeStamp;
-    }
+    return timeStamp;
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public void setTimeStamp(Calendar newTimeStamp) {
-        Calendar oldTimeStamp = timeStamp;
-        timeStamp = newTimeStamp;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, WfsPackage.FEATURE_COLLECTION_TYPE__TIME_STAMP, oldTimeStamp, timeStamp));
-    }
+    Calendar oldTimeStamp = timeStamp;
+    timeStamp = newTimeStamp;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, WfsPackage.FEATURE_COLLECTION_TYPE__TIME_STAMP, oldTimeStamp, timeStamp));
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public BigInteger getNumberOfFeatures() {
-        return numberOfFeatures;
-    }
+    return numberOfFeatures;
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public void setNumberOfFeatures(BigInteger newNumberOfFeatures) {
-        BigInteger oldNumberOfFeatures = numberOfFeatures;
-        numberOfFeatures = newNumberOfFeatures;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, WfsPackage.FEATURE_COLLECTION_TYPE__NUMBER_OF_FEATURES, oldNumberOfFeatures, numberOfFeatures));
-    }
+    BigInteger oldNumberOfFeatures = numberOfFeatures;
+    numberOfFeatures = newNumberOfFeatures;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, WfsPackage.FEATURE_COLLECTION_TYPE__NUMBER_OF_FEATURES, oldNumberOfFeatures, numberOfFeatures));
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public EList getFeature() {
-        if (feature == null) {
-            feature = new EDataTypeUniqueEList(FeatureCollection.class, this, WfsPackage.FEATURE_COLLECTION_TYPE__FEATURE);
-        }
-        return feature;
+    if (feature == null) {
+      feature = new EDataTypeUniqueEList(FeatureCollection.class, this, WfsPackage.FEATURE_COLLECTION_TYPE__FEATURE);
     }
+    return feature;
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case WfsPackage.FEATURE_COLLECTION_TYPE__LOCK_ID:
-                return getLockId();
-            case WfsPackage.FEATURE_COLLECTION_TYPE__TIME_STAMP:
-                return getTimeStamp();
-            case WfsPackage.FEATURE_COLLECTION_TYPE__NUMBER_OF_FEATURES:
-                return getNumberOfFeatures();
-            case WfsPackage.FEATURE_COLLECTION_TYPE__FEATURE:
-                return getFeature();
-        }
-        return super.eGet(featureID, resolve, coreType);
+    switch (featureID) {
+      case WfsPackage.FEATURE_COLLECTION_TYPE__LOCK_ID:
+        return getLockId();
+      case WfsPackage.FEATURE_COLLECTION_TYPE__TIME_STAMP:
+        return getTimeStamp();
+      case WfsPackage.FEATURE_COLLECTION_TYPE__NUMBER_OF_FEATURES:
+        return getNumberOfFeatures();
+      case WfsPackage.FEATURE_COLLECTION_TYPE__FEATURE:
+        return getFeature();
     }
+    return super.eGet(featureID, resolve, coreType);
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case WfsPackage.FEATURE_COLLECTION_TYPE__LOCK_ID:
-                setLockId((String)newValue);
-                return;
-            case WfsPackage.FEATURE_COLLECTION_TYPE__TIME_STAMP:
-                setTimeStamp((Calendar)newValue);
-                return;
-            case WfsPackage.FEATURE_COLLECTION_TYPE__NUMBER_OF_FEATURES:
-                setNumberOfFeatures((BigInteger)newValue);
-                return;
-            case WfsPackage.FEATURE_COLLECTION_TYPE__FEATURE:
-                getFeature().clear();
-                getFeature().addAll((Collection)newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
+    switch (featureID) {
+      case WfsPackage.FEATURE_COLLECTION_TYPE__LOCK_ID:
+        setLockId((String)newValue);
+        return;
+      case WfsPackage.FEATURE_COLLECTION_TYPE__TIME_STAMP:
+        setTimeStamp((Calendar)newValue);
+        return;
+      case WfsPackage.FEATURE_COLLECTION_TYPE__NUMBER_OF_FEATURES:
+        setNumberOfFeatures((BigInteger)newValue);
+        return;
+      case WfsPackage.FEATURE_COLLECTION_TYPE__FEATURE:
+        getFeature().clear();
+        getFeature().addAll((Collection)newValue);
+        return;
     }
+    super.eSet(featureID, newValue);
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public void eUnset(int featureID) {
-        switch (featureID) {
-            case WfsPackage.FEATURE_COLLECTION_TYPE__LOCK_ID:
-                setLockId(LOCK_ID_EDEFAULT);
-                return;
-            case WfsPackage.FEATURE_COLLECTION_TYPE__TIME_STAMP:
-                setTimeStamp(TIME_STAMP_EDEFAULT);
-                return;
-            case WfsPackage.FEATURE_COLLECTION_TYPE__NUMBER_OF_FEATURES:
-                setNumberOfFeatures(NUMBER_OF_FEATURES_EDEFAULT);
-                return;
-            case WfsPackage.FEATURE_COLLECTION_TYPE__FEATURE:
-                getFeature().clear();
-                return;
-        }
-        super.eUnset(featureID);
+    switch (featureID) {
+      case WfsPackage.FEATURE_COLLECTION_TYPE__LOCK_ID:
+        setLockId(LOCK_ID_EDEFAULT);
+        return;
+      case WfsPackage.FEATURE_COLLECTION_TYPE__TIME_STAMP:
+        setTimeStamp(TIME_STAMP_EDEFAULT);
+        return;
+      case WfsPackage.FEATURE_COLLECTION_TYPE__NUMBER_OF_FEATURES:
+        setNumberOfFeatures(NUMBER_OF_FEATURES_EDEFAULT);
+        return;
+      case WfsPackage.FEATURE_COLLECTION_TYPE__FEATURE:
+        getFeature().clear();
+        return;
     }
+    super.eUnset(featureID);
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case WfsPackage.FEATURE_COLLECTION_TYPE__LOCK_ID:
-                return LOCK_ID_EDEFAULT == null ? lockId != null : !LOCK_ID_EDEFAULT.equals(lockId);
-            case WfsPackage.FEATURE_COLLECTION_TYPE__TIME_STAMP:
-                return TIME_STAMP_EDEFAULT == null ? timeStamp != null : !TIME_STAMP_EDEFAULT.equals(timeStamp);
-            case WfsPackage.FEATURE_COLLECTION_TYPE__NUMBER_OF_FEATURES:
-                return NUMBER_OF_FEATURES_EDEFAULT == null ? numberOfFeatures != null : !NUMBER_OF_FEATURES_EDEFAULT.equals(numberOfFeatures);
-            case WfsPackage.FEATURE_COLLECTION_TYPE__FEATURE:
-                return feature != null && !feature.isEmpty();
-        }
-        return super.eIsSet(featureID);
+    switch (featureID) {
+      case WfsPackage.FEATURE_COLLECTION_TYPE__LOCK_ID:
+        return LOCK_ID_EDEFAULT == null ? lockId != null : !LOCK_ID_EDEFAULT.equals(lockId);
+      case WfsPackage.FEATURE_COLLECTION_TYPE__TIME_STAMP:
+        return TIME_STAMP_EDEFAULT == null ? timeStamp != null : !TIME_STAMP_EDEFAULT.equals(timeStamp);
+      case WfsPackage.FEATURE_COLLECTION_TYPE__NUMBER_OF_FEATURES:
+        return NUMBER_OF_FEATURES_EDEFAULT == null ? numberOfFeatures != null : !NUMBER_OF_FEATURES_EDEFAULT.equals(numberOfFeatures);
+      case WfsPackage.FEATURE_COLLECTION_TYPE__FEATURE:
+        return feature != null && !feature.isEmpty();
     }
+    return super.eIsSet(featureID);
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public String toString() {
-        if (eIsProxy()) return super.toString();
+    if (eIsProxy()) return super.toString();
 
-        StringBuffer result = new StringBuffer(super.toString());
-        result.append(" (lockId: ");
-        result.append(lockId);
-        result.append(", timeStamp: ");
-        result.append(timeStamp);
-        result.append(", numberOfFeatures: ");
-        result.append(numberOfFeatures);
-        result.append(", feature: ");
-        result.append(feature);
-        result.append(')');
-        return result.toString();
-    }
+    StringBuffer result = new StringBuffer(super.toString());
+    result.append(" (lockId: ");
+    result.append(lockId);
+    result.append(", timeStamp: ");
+    result.append(timeStamp);
+    result.append(", numberOfFeatures: ");
+    result.append(numberOfFeatures);
+    result.append(", feature: ");
+    result.append(feature);
+    result.append(')');
+    return result.toString();
+  }
 
 } //FeatureCollectionTypeImpl

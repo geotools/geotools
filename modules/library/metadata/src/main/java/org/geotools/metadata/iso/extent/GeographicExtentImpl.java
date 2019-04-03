@@ -25,7 +25,6 @@ import org.opengis.metadata.extent.GeographicExtent;
 /**
  * Base class for geographic area of the dataset.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @author Touraïvane
@@ -72,7 +71,7 @@ public class GeographicExtentImpl extends MetadataEntity implements GeographicEx
      * Set whether the bounding polygon encompasses an area covered by the data
      * (<cite>inclusion</cite>) or an area where data is not present (<cite>exclusion</cite>).
      */
-    public synchronized void setInclusion(final Boolean newValue) {
+    public void setInclusion(final Boolean newValue) {
         checkWritePermission();
         inclusion = newValue;
     }

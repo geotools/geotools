@@ -2,8 +2,8 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2001-2006  Vivid Solutions
  *    (C) 2001-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2001-2006  Vivid Solutions
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -49,6 +49,7 @@ import org.geotools.geometry.iso.topograph2D.CoordinateList;
 import org.geotools.geometry.iso.topograph2D.util.CoordinateArrays;
 import org.geotools.geometry.iso.topograph2D.util.UniqueCoordinateArrayFilter;
 import org.geotools.geometry.iso.util.Assert;
+import org.geotools.util.SuppressFBWarnings;
 import org.opengis.geometry.Geometry;
 import org.opengis.geometry.coordinate.Position;
 import org.opengis.geometry.primitive.CurveSegment;
@@ -63,8 +64,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * that contains all the points in the input Geometry.
  *
  * <p>Uses the Graham Scan algorithm. Asymptotic running time: O(n*log(n))
- *
- * @source $URL$
  */
 public class ConvexHull {
     // private FeatGeomFactoryImpl geomFactory;
@@ -89,6 +88,8 @@ public class ConvexHull {
      * @param geom
      * @return
      */
+    // positions might actually go NPE, just ignoring it as the module is generally broken
+    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH")
     private static Coordinate[] extractCoordinates(GeometryImpl geom) {
         // Get relevant coordinates from the geometry instance
 
@@ -100,21 +101,17 @@ public class ConvexHull {
             positions.add(((PointImpl) geom).getPosition());
         } else if (geom instanceof CurveImpl) {
             // Add control points
-            positions = new ArrayList<DirectPositionImpl>();
             positions = ((CurveImpl) geom).asDirectPositions();
         } else if (geom instanceof RingImpl) {
             // Add control points
-            positions = new ArrayList<DirectPositionImpl>();
             positions = ((RingImplUnsafe) geom).asDirectPositions();
         } else if (geom instanceof SurfaceImpl) {
             // Add control points of exterior ring of boundary
-            positions = new ArrayList<DirectPositionImpl>();
             positions =
                     ((RingImplUnsafe) ((SurfaceImpl) geom).getBoundary().getExterior())
                             .asDirectPositions();
         } else if (geom instanceof MultiPointImpl) {
             // Add all points of the set
-            positions = new HashSet<PointImpl>();
             positions = ((MultiPointImpl) geom).getElements();
         } else if (geom instanceof MultiCurveImpl) {
             // Add all curves of the set
@@ -197,7 +194,6 @@ public class ConvexHull {
             positions.add(((CurveBoundaryImpl) geom).getEndPoint());
         } else if (geom instanceof SurfaceBoundaryImpl) {
             // Add control points of exterior ring
-            positions = new ArrayList<DirectPositionImpl>();
             positions =
                     ((RingImplUnsafe) ((SurfaceBoundaryImpl) geom).getExterior())
                             .asDirectPositions();
@@ -436,7 +432,7 @@ public class ConvexHull {
     }
 
     /**
-     * @param vertices the vertices of a linear ring, which may or may not be flattened (i.e.
+     * @param coordinates the vertices of a linear ring, which may or may not be flattened (i.e.
      *     vertices collinear)
      * @return a 2-vertex <code>LineString</code> if the vertices are collinear; otherwise, a <code>
      *     Polygon</code> with unnecessary (collinear) vertices removed
@@ -474,7 +470,7 @@ public class ConvexHull {
     }
 
     /**
-     * @param vertices the vertices of a linear ring, which may or may not be flattened (i.e.
+     * @param original the vertices of a linear ring, which may or may not be flattened (i.e.
      *     vertices collinear)
      * @return the coordinates with unnecessary (collinear) vertices removed
      */

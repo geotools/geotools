@@ -22,7 +22,6 @@ import org.geotools.gml3.v3_2.GML;
 import org.geotools.gml3.v3_2.GML32TestSupport;
 import org.w3c.dom.Document;
 
-/** @source $URL$ */
 public class MultiCurveTypeBindingTest extends GML32TestSupport {
     public void testEncode() throws Exception {
         Document dom = encode(GML3MockData.multiLineString(), GML.MultiCurve);

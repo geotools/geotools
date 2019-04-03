@@ -27,7 +27,6 @@ import org.opengis.geometry.DirectPosition;
  * insertion.
  *
  * @since 2.4
- * @source $URL$
  * @version $Id$
  * @author Jan Jezek
  */
@@ -118,7 +117,6 @@ class TriangulationFactory {
      *
      * @param triangle to be tested
      * @return List of changed triangles
-     * @throws TriangulationException DOCUMENT ME!
      */
     private List delaunayCircleTest(TINTriangle triangle) throws TriangulationException {
         List changedTriangles = new ArrayList();

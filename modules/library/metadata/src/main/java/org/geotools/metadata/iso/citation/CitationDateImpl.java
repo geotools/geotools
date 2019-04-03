@@ -27,7 +27,6 @@ import org.opengis.metadata.citation.DateType;
 /**
  * Reference date and event used to describe it.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @since 2.1
@@ -64,12 +63,12 @@ public class CitationDateImpl extends MetadataEntity implements CitationDate {
     }
 
     /** Returns the reference date for the cited resource. */
-    public synchronized Date getDate() {
+    public Date getDate() {
         return (date != Long.MIN_VALUE) ? new Date(date) : null;
     }
 
     /** Set the reference date for the cited resource. */
-    public synchronized void setDate(final Date newValue) {
+    public void setDate(final Date newValue) {
         checkWritePermission();
         date = (newValue != null) ? newValue.getTime() : Long.MIN_VALUE;
     }
@@ -80,7 +79,7 @@ public class CitationDateImpl extends MetadataEntity implements CitationDate {
     }
 
     /** Set the event used for reference date. */
-    public synchronized void setDateType(final DateType newValue) {
+    public void setDateType(final DateType newValue) {
         checkWritePermission();
         dateType = newValue;
     }

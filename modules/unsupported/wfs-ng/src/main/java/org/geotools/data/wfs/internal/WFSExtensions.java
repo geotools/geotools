@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.ServiceLoader;
 import java.util.Set;
 import org.geotools.data.wfs.WFSDataStoreFactory;
-import org.geotools.factory.FactoryNotFoundException;
+import org.geotools.util.factory.FactoryNotFoundException;
 
 /**
  * Utility class to look up for a parser that can deal with a given WFS response and process it.
@@ -34,16 +34,12 @@ import org.geotools.factory.FactoryNotFoundException;
  * /META-INF/services/org.geotools.data.wfs.protocol.wfs.WFSResponseParserFactory} text file.
  *
  * @author Gabriel Roldan (OpenGeo)
- * @version $Id$
  * @since 2.6
- * @source $URL$
- *     http://svn.osgeo.org/geotools/trunk/modules/unsupported/wfs/src/main/java/org/geotools
- *     /data/wfs/protocol/wfs/WFSExtensions.java $
  */
 @SuppressWarnings("nls")
 public class WFSExtensions {
     /** The service registry for this manager. Will be initialized only when first needed. */
-    private static Set<WFSResponseFactory> registry;
+    private static volatile Set<WFSResponseFactory> registry;
 
     /**
      * Processes the result of a WFS operation and returns the parsed object.
@@ -138,11 +134,12 @@ public class WFSExtensions {
                         Iterator<WFSResponseFactory> providers;
 
                         providers = ServiceLoader.load(WFSResponseFactory.class).iterator();
-                        registry = new HashSet<>();
+                        Set<WFSResponseFactory> tmp = new HashSet<>();
                         while (providers.hasNext()) {
                             WFSResponseFactory provider = providers.next();
-                            registry.add(provider);
+                            tmp.add(provider);
                         }
+                        registry = tmp;
                     } finally {
                         /*
                          * And finally restore the original thread's class loader

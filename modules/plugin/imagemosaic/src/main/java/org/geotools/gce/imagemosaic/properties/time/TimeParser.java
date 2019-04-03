@@ -100,11 +100,7 @@ public class TimeParser {
     /** Amount of milliseconds in a day. */
     static final long MILLIS_IN_DAY = 24 * 60 * 60 * 1000;
 
-    /**
-     * Creates the parser specifying the name of the key to latch to.
-     *
-     * @param key The key whose associated value to parse.
-     */
+    /** Creates the parser */
     public TimeParser() {}
 
     /**

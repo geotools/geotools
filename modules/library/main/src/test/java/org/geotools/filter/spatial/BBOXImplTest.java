@@ -23,7 +23,6 @@ import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-/** @source $URL$ */
 public class BBOXImplTest {
 
     FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
@@ -45,7 +44,7 @@ public class BBOXImplTest {
             type = DataUtilities.createType("testSchema", "name:String,*geom:Geometry");
         } catch (SchemaException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
         ArrayList<Object> attributes = new ArrayList<Object>();
         attributes.add("testFeature");

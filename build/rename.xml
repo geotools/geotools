@@ -1,5 +1,22 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <project name="Rename" default="rename">
+  <!--
+  Examples:
+
+    ant -f rename.xml -Drelease=22-M0
+    ant -f rename.xml -Drelease=21.2 -Dseries=stable
+    ant -f rename.xml -Drelease=21.2 -Dseries=stable -Ddate='Monday January 17th, 2019`
+  -->
+  <tstamp/>
+  <property name="release" value="21-SNAPSHOT"/>
+  <property name="date" value="${TODAY}"/>
+  <property name="series" value="latest"/>
+  
+  <target name="test">
+     <echo>release: ${release}</echo>
+     <echo>DATE: ${date}</echo>
+     <echo>LINK: ${series}</echo>
+  </target>
   
   <target name="rename" depends="code, readme"
           description="Update the version references in code and readme"
@@ -10,14 +27,16 @@
       <include name="**/pom.xml"/>
       <include name="**/GeoTools.java"/>
       <include name="**/common.py"/>
-      <replacefilter token="20-SNAPSHOT" value="@VERSION@"/>
+      <replacefilter token="22-SNAPSHOT" value="@VERSION@"/>
+      <replacefilter token="22-SNAPSHOT" value="${release}"/>
     </replace>
   </target>
   
   <target name="readme">
-    <replace file="../README.html">
-      <replacefilter token="@RELEASE@" value="@VERSION@"/>
-      <replacefilter token="@DATE@" value="@RELEASE_DATE@"/>
+    <replace file="README.html">
+      <replacefilter token="@RELEASE@" value="${release}"/>
+      <replacefilter token="@DATE@" value="${date}"/>
+      <replacefilter token="@LINK@" value="${series}"/>
     </replace>
   </target>
 

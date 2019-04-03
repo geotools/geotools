@@ -39,15 +39,15 @@ import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
-import org.geotools.math.XMath;
 import org.geotools.measure.Latitude;
 import org.geotools.measure.Longitude;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.iso.citation.Citations;
+import org.geotools.metadata.math.XMath;
 import org.geotools.referencing.NamedIdentifier;
 import org.geotools.referencing.operation.MathTransformProvider;
 import org.geotools.referencing.operation.transform.AbstractMathTransform;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
 import org.geotools.util.Utilities;
 import org.geotools.util.logging.Logging;
 import org.opengis.parameter.GeneralParameterDescriptor;
@@ -80,8 +80,6 @@ import tec.uom.se.AbstractUnit;
  * Know Text) or XML (not yet implemented) are more appropriate.
  *
  * @since 2.0
- * @version $Id$
- * @source $URL$
  * @author André Gosselin
  * @author Martin Desruisseaux (PMO, IRD)
  * @author Rueben Schulz
@@ -89,7 +87,6 @@ import tec.uom.se.AbstractUnit;
  * @see <A
  *     HREF="http://atlas.gc.ca/site/english/learningresources/carto_corner/map_projections.html">Map
  *     projections on the atlas of Canada</A>
- * @tutorial http://www.geotools.org/display/GEOTOOLS/How+to+add+new+projections
  */
 public abstract class MapProjection extends AbstractMathTransform
         implements MathTransform2D, Serializable {

@@ -24,9 +24,9 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.data.DataUtilities;
-import org.geotools.factory.Hints;
 import org.geotools.gce.imagemosaic.ImageMosaicReader;
 import org.geotools.util.URLs;
+import org.geotools.util.factory.Hints;
 
 /**
  * Parse imagePyramid property files and setup the mapping to provide the proper {@link
@@ -49,7 +49,7 @@ class ImageLevelsMapper {
 
     /** Logger. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(ImageLevelsMapper.class.toString());
+            org.geotools.util.logging.Logging.getLogger(ImageLevelsMapper.class);
 
     /**
      * The whole number of overviews in the pyramid.
@@ -159,9 +159,14 @@ class ImageLevelsMapper {
             Integer imageChoice, String coverageName, URL sourceURL, Hints hints)
             throws IOException {
         int imageIndex = getImageReaderIndex(imageChoice);
+        // light check to see if this reader had been disposed, not synching for performance.
+        if (readers == null) {
+            throw new IllegalStateException("This ImagePyramidReader has already been disposed");
+        }
         ImageMosaicReader reader = readers.get(imageIndex);
 
         if (reader == null) {
+
             //
             // we must create the underlying mosaic
             //
@@ -198,11 +203,6 @@ class ImageLevelsMapper {
 
                 // use the other one
                 reader = putByOtherThreadJustNow;
-            }
-            // light check to see if this reader had been disposed, not synching for performance.
-            if (readers == null) {
-                throw new IllegalStateException(
-                        "This ImagePyramidReader has already been disposed");
             }
         }
         return reader;

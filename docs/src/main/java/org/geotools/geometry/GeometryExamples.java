@@ -1,3 +1,21 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2019, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ *
+ */
+
 package org.geotools.geometry;
 
 import org.geotools.geometry.jts.CircularString;
@@ -6,10 +24,11 @@ import org.geotools.geometry.jts.Geometries;
 import org.geotools.geometry.jts.JTSFactoryFinder;
 import org.geotools.geometry.jts.WKTReader2;
 import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.CoordinateSequence;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
-import org.locationtech.jts.geom.impl.PackedCoordinateSequence;
+import org.locationtech.jts.geom.impl.PackedCoordinateSequenceFactory;
 import org.locationtech.jts.io.ParseException;
 import org.locationtech.jts.io.WKTReader;
 
@@ -21,8 +40,9 @@ public class GeometryExamples {
         CurvedGeometryFactory curvedFactory =
                 new CurvedGeometryFactory(geometryFactory, Double.MAX_VALUE);
 
-        PackedCoordinateSequence coords =
-                new PackedCoordinateSequence.Double(new double[] {10, 14, 6, 10, 14, 10}, 2);
+        CoordinateSequence coords =
+                PackedCoordinateSequenceFactory.DOUBLE_FACTORY.create(
+                        new double[] {10, 14, 6, 10, 14, 10}, 2);
 
         CircularString arc = (CircularString) curvedFactory.createCurvedGeometry(coords);
         // createCurve end

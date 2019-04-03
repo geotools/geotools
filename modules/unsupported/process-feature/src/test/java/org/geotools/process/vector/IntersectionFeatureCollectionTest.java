@@ -48,7 +48,6 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.FilterFactory;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-/** @source $URL$ */
 public class IntersectionFeatureCollectionTest {
     private static final Logger logger =
             Logger.getLogger("org.geotools.process.feature.gs.VectoralZonalStatisticalProcessTest");
@@ -201,7 +200,7 @@ public class IntersectionFeatureCollectionTest {
                         true,
                         true);
 
-        System.out.println("count " + output2.getSchema().getAttributeCount());
+        // System.out.println("count " + output2.getSchema().getAttributeCount());
         assertNotNull(output2.getSchema().getDescriptor("the_geom"));
         assertNotNull(output2.getSchema().getDescriptor("zones_str1"));
         assertNotNull(output2.getSchema().getDescriptor("features_str2"));

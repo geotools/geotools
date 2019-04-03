@@ -2,8 +2,8 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2001-2006  Vivid Solutions
  *    (C) 2001-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2001-2006  Vivid Solutions
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -24,8 +24,6 @@ import java.io.PrintStream;
  *
  * <p>The intersection may either be a single point, or a line segment (in which case this point is
  * the start of the line segment) The intersection point must be precise.
- *
- * @source $URL$
  */
 public class EdgeIntersection implements Comparable {
 
@@ -49,9 +47,9 @@ public class EdgeIntersection implements Comparable {
     }
 
     /**
-     * @return -1 this EdgeIntersection is located before the argument location
-     * @return 0 this EdgeIntersection is at the argument location
-     * @return 1 this EdgeIntersection is located after the argument location
+     * @return -1 this EdgeIntersection is located before the argument location, 0 this
+     *     EdgeIntersection is at the argument location, 1 this EdgeIntersection is located after
+     *     the argument location
      */
     public int compare(int segmentIndex, double dist) {
         if (this.segmentIndex < segmentIndex) return -1;

@@ -32,7 +32,7 @@ public class DefaultResourceLocator implements ResourceLocator {
     URL sourceUrl;
 
     private static final java.util.logging.Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.styling");
+            org.geotools.util.logging.Logging.getLogger(DefaultResourceLocator.class);
 
     public void setSourceUrl(URL sourceUrl) {
         this.sourceUrl = sourceUrl;
@@ -92,14 +92,14 @@ public class DefaultResourceLocator implements ResourceLocator {
     protected URL validateRelativeURL(URL relativeUrl) {
         File f;
         f = URLs.urlToFile(relativeUrl);
-        if (f.exists()) {
+        if (f != null && f.exists()) {
             // bingo!
             return relativeUrl;
         }
         return null;
     }
 
-    URL makeRelativeURL(String uri, String query) {
+    protected URL makeRelativeURL(String uri, String query) {
         try {
             if (query != null) {
                 return new URL(sourceUrl, uri + "?" + query);

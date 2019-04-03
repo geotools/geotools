@@ -24,7 +24,6 @@ import org.opengis.util.InternationalString;
  * given its grid coordinate and the grid origin, cell spacing, and orientation indication of
  * whether or not geographic.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/as#01-111">ISO 19115</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 2.0

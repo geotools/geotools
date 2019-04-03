@@ -35,7 +35,6 @@ import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
 import org.opengis.feature.Feature;
 
-/** @source $URL$ */
 public class LRSMeasureProcessTest {
     private DataStore featureSource;
 

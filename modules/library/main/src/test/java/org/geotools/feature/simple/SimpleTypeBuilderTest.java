@@ -30,7 +30,6 @@ import org.opengis.feature.type.GeometryType;
 import org.opengis.feature.type.Schema;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-/** @source $URL$ */
 public class SimpleTypeBuilderTest extends TestCase {
 
     static final String URI = "gopher://localhost/test";
@@ -121,7 +120,7 @@ public class SimpleTypeBuilderTest extends TestCase {
         assertNull(featureType.getDescriptor("attrWithoutDefault").getDefaultValue());
     }
 
-    public void testMaintainDefaultGeometry() {
+    public void testMaintainDefaultGeometryOnRetype() {
         builder.setName("testGeometries");
         builder.add("geo1", Point.class, DefaultGeographicCRS.WGS84);
         builder.add("geo2", Polygon.class, DefaultGeographicCRS.WGS84);
@@ -133,5 +132,67 @@ public class SimpleTypeBuilderTest extends TestCase {
         SimpleFeatureType retyped =
                 SimpleFeatureTypeBuilder.retype(type, new String[] {"geo2", "geo1"});
         assertEquals("geo1", retyped.getGeometryDescriptor().getLocalName());
+    }
+
+    public void testRetypeGeometryless() {
+        builder.setName("testGeometryless");
+        builder.add("geo1", Point.class, DefaultGeographicCRS.WGS84);
+        builder.add("integer", Integer.class);
+        builder.setDefaultGeometry("geo1");
+        SimpleFeatureType type = builder.buildFeatureType();
+
+        // performing an attribute selection, even changing order, should not change
+        // the default geometry, that had a special meaning in the original source
+        SimpleFeatureType retyped = SimpleFeatureTypeBuilder.retype(type, new String[] {"integer"});
+        assertNotNull(retyped);
+        assertNull(retyped.getGeometryDescriptor());
+        assertEquals(1, retyped.getAttributeCount());
+        assertEquals("integer", retyped.getAttributeDescriptors().get(0).getLocalName());
+    }
+
+    public void testInitGeometryless() {
+        SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
+        builder.setName("testGeometryless");
+        builder.add("integer", Integer.class);
+        SimpleFeatureType type1 = builder.buildFeatureType();
+
+        builder = new SimpleFeatureTypeBuilder();
+        builder.init(type1);
+        SimpleFeatureType type2 = builder.buildFeatureType();
+
+        assertEquals(type1, type2);
+    }
+
+    public void testMaintainDefaultGeometryOnInit() {
+        SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
+        builder.setName("testGeometries");
+        builder.add("geo1", Point.class, DefaultGeographicCRS.WGS84);
+        builder.add("geo2", Polygon.class, DefaultGeographicCRS.WGS84);
+        builder.setDefaultGeometry("geo2");
+        SimpleFeatureType type1 = builder.buildFeatureType();
+
+        builder = new SimpleFeatureTypeBuilder();
+        builder.init(type1);
+        SimpleFeatureType type2 = builder.buildFeatureType();
+
+        assertEquals("geo2", type1.getGeometryDescriptor().getLocalName());
+        assertEquals("geo2", type2.getGeometryDescriptor().getLocalName());
+    }
+
+    public void testRemoveDefaultGeometryAfterInit() {
+        SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
+        builder.setName("testGeometries");
+        builder.add("geo1", Point.class, DefaultGeographicCRS.WGS84);
+        builder.add("geo2", Polygon.class, DefaultGeographicCRS.WGS84);
+        builder.setDefaultGeometry("geo2");
+        SimpleFeatureType type1 = builder.buildFeatureType();
+
+        builder = new SimpleFeatureTypeBuilder();
+        builder.init(type1);
+        builder.remove("geo2");
+        SimpleFeatureType type2 = builder.buildFeatureType();
+
+        assertEquals("geo2", type1.getGeometryDescriptor().getLocalName());
+        assertEquals("geo1", type2.getGeometryDescriptor().getLocalName());
     }
 }

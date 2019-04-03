@@ -21,13 +21,13 @@ import static org.geotools.util.Utilities.toInstanceByClassNameMap;
 
 import java.util.Arrays;
 import java.util.Map;
-import org.geotools.factory.FactoryCreator;
-import org.geotools.factory.FactoryRegistry;
+import org.geotools.util.factory.FactoryCreator;
+import org.geotools.util.factory.FactoryRegistry;
 
 /** Helper to find GranuleFactorySPI instances */
 public class GranuleAcceptorFactorySPIFinder {
 
-    private static FactoryCreator registry;
+    private static volatile FactoryCreator registry;
 
     public static synchronized Map<String, GranuleAcceptorFactorySPI>
             getGranuleAcceptorFactorySPI() {

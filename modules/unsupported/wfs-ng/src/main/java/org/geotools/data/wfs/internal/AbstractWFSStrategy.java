@@ -49,10 +49,11 @@ import org.geotools.filter.Capabilities;
 import org.geotools.filter.visitor.CapabilitiesFilterSplitter;
 import org.geotools.filter.visitor.SimplifyingFilterVisitor;
 import org.geotools.util.Version;
-import org.geotools.xml.Configuration;
-import org.geotools.xml.Encoder;
+import org.geotools.wfs.v1_0.WFSConfiguration_1_0;
 import org.geotools.xml.XMLHandlerHints;
 import org.geotools.xml.filter.FilterCompliancePreProcessor;
+import org.geotools.xsd.Configuration;
+import org.geotools.xsd.Encoder;
 import org.opengis.filter.Filter;
 import org.opengis.filter.Id;
 import org.opengis.filter.capability.FilterCapabilities;
@@ -111,8 +112,7 @@ public abstract class AbstractWFSStrategy extends WFSStrategy {
     public static final Configuration WFS_1_0_CAPABILITIES_CONFIGURATION =
             new org.geotools.wfs.v1_0.WFSCapabilitiesConfiguration();
 
-    public static final Configuration WFS_1_0_CONFIGURATION =
-            new org.geotools.wfs.v1_0.WFSConfiguration();
+    public static final Configuration WFS_1_0_CONFIGURATION = new WFSConfiguration_1_0();
 
     public static final Configuration FILTER_1_1_CONFIGURATION =
             new org.geotools.filter.v1_1.OGCConfiguration();

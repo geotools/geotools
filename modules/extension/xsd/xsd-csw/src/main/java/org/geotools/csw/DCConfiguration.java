@@ -1,3 +1,19 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2019, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
 package org.geotools.csw;
 
 import java.lang.reflect.Field;
@@ -6,8 +22,8 @@ import java.util.Map;
 import javax.xml.namespace.QName;
 import net.opengis.cat.csw20.Csw20Factory;
 import org.geotools.csw.bindings.SimpleLiteralBinding;
-import org.geotools.xml.Configuration;
-import org.geotools.xml.SimpleContentComplexEMFBinding;
+import org.geotools.xsd.Configuration;
+import org.geotools.xsd.SimpleContentComplexEMFBinding;
 import org.picocontainer.MutablePicoContainer;
 
 /**
@@ -65,6 +81,7 @@ public class DCConfiguration extends Configuration {
      *
      * @param args
      */
+    @SuppressWarnings("PMD.SystemPrintln")
     public static void main(String[] args) {
         for (Field f : DC.class.getFields()) {
             if ((f.getModifiers() & (Modifier.STATIC | Modifier.FINAL)) != 0

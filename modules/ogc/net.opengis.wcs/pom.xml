@@ -5,7 +5,7 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>ogc</artifactId>
-    <version>20-SNAPSHOT</version>
+    <version>22-SNAPSHOT</version>
   </parent>
 
   <groupId>org.geotools.ogc</groupId>
@@ -13,10 +13,10 @@
   <packaging>jar</packaging>
 
   <name>Web Coverage Service Model</name>
-  
-
-
-  <description>Web Coverage Service Schema EMF Model</description>
+  <description>Web Coverage Service Schema EMF ModelL</description>
+  <properties>
+    <moduleIdentifier>net.opengis.wcs</moduleIdentifier>
+  </properties>
 
   <dependencies>
     <dependency>

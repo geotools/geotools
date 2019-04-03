@@ -23,7 +23,6 @@ package org.geotools.data.excel;
  * @author iant
  */
 
-import org.locationtech.jts.geom.GeometryFactory;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -43,6 +42,7 @@ import org.geotools.feature.NameImpl;
 import org.geotools.geometry.jts.JTSFactoryFinder;
 import org.geotools.referencing.CRS;
 import org.geotools.util.logging.Logging;
+import org.locationtech.jts.geom.GeometryFactory;
 import org.opengis.feature.type.Name;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
@@ -71,7 +71,7 @@ public class ExcelDataStore extends ContentDataStore {
 
     private CoordinateReferenceSystem projection;
 
-    private static final Logger logger = Logging.getLogger("org.geotools.excel");
+    private static final Logger logger = Logging.getLogger(ExcelDataStore.class);
 
     public ExcelDataStore(
             URL url,
@@ -90,7 +90,7 @@ public class ExcelDataStore extends ContentDataStore {
 
         } catch (InvalidFormatException e1) {
             // TODO Auto-generated catch block
-            e1.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e1);
         }
         sheet = workbook.getSheet(sheet2);
         headerRowIndex = headerRow;
@@ -101,10 +101,10 @@ public class ExcelDataStore extends ContentDataStore {
             setProjection(CRS.decode(projectionString));
         } catch (NoSuchAuthorityCodeException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         } catch (FactoryException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
     }
 

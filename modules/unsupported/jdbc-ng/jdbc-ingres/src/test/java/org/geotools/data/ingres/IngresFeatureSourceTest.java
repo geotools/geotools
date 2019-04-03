@@ -33,7 +33,7 @@ import org.locationtech.jts.geom.GeometryFactory;
 /**
  * 
  *
- * @source $URL$
+
  */
 public class IngresFeatureSourceTest extends JDBCFeatureSourceTest {
 

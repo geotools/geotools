@@ -18,6 +18,7 @@ package org.geotools.styling;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.logging.Logger;
 import org.geotools.util.Utilities;
 
@@ -45,13 +46,11 @@ import org.geotools.util.Utilities;
  *       individual service. We hope that specifications are always adaptive, and will be forced to
  *       throw unsupported exceptions when functionality is removed from a specification.
  * </ul>
- *
- * @source $URL$
  */
 public class StyledLayerDescriptorImpl implements StyledLayerDescriptor {
     /** The logger for the default core module. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.styling");
+            org.geotools.util.logging.Logging.getLogger(StyledLayerDescriptorImpl.class);
 
     /** Holds value of property name. */
     private String name;
@@ -187,5 +186,10 @@ public class StyledLayerDescriptorImpl implements StyledLayerDescriptor {
         }
 
         return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, title, abstractStr, layers);
     }
 }

@@ -24,7 +24,6 @@ import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.MultiPoint;
 
-/** @source $URL$ */
 public class MultiPointHandler extends GeometryHandlerBase<MultiPoint> {
 
     List<Coordinate> coordinates;

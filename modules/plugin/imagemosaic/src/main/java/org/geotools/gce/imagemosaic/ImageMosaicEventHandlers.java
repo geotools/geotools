@@ -192,7 +192,7 @@ public class ImageMosaicEventHandlers {
      * percentage of work already carried out.
      *
      * @param level
-     * @param message The message to show.
+     * @param inMessage The message to show.
      * @param percentage The percentage for the process.
      */
     protected void fireEvent(Level level, final String inMessage, final double percentage) {
@@ -216,8 +216,7 @@ public class ImageMosaicEventHandlers {
      * Firing an event to listeners in order to inform them about what we are doing and about the
      * percentage of work already carried out.
      *
-     * @param level
-     * @param message The message to show.
+     * @param inMessage The message to show.
      * @param percentage The percentage for the process.
      */
     protected void fireFileEvent(

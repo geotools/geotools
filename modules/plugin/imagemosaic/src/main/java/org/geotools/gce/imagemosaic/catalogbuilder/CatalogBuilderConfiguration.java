@@ -18,8 +18,8 @@ package org.geotools.gce.imagemosaic.catalogbuilder;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
+import java.util.Objects;
 import org.apache.commons.beanutils.BeanUtils;
-import org.geotools.factory.Hints;
 import org.geotools.gce.imagemosaic.Utils;
 import org.geotools.gce.imagemosaic.Utils.Prop;
 import org.geotools.gce.imagemosaic.catalog.index.Indexer;
@@ -28,15 +28,15 @@ import org.geotools.gce.imagemosaic.catalog.index.ParametersType.Parameter;
 import org.geotools.gce.imagemosaic.catalog.index.SchemaType;
 import org.geotools.gce.imagemosaic.catalog.index.SchemasType;
 import org.geotools.util.Utilities;
+import org.geotools.util.factory.Hints;
 
 /**
  * Simple bean that conveys the information needed by the CatalogBuilder to create a catalogue of
  * granules
  *
  * @author Simone Giannecchini, GeoSolutions SAS
- * @source $URL$
  */
-public class CatalogBuilderConfiguration {
+public class CatalogBuilderConfiguration implements Cloneable {
 
     private Hints hints;
 
@@ -238,7 +238,7 @@ public class CatalogBuilderConfiguration {
             String parameterName) {
         String thisValue = thisConfig.getParameter(parameterName);
         String thatValue = thatConfig.getParameter(parameterName);
-        if (!(thisValue == null && thatValue == null) && !thisValue.equals(thatValue)) {
+        if (!(thisValue == null && thatValue == null) && !Objects.equals(thisValue, thatValue)) {
             return false;
         }
         return true;

@@ -24,6 +24,7 @@ import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.text.ParseException;
@@ -41,7 +42,6 @@ import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.data.DataSourceException;
-import org.geotools.factory.Hints;
 import org.geotools.gce.imagemosaic.ImageMosaicFormat;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -50,6 +50,7 @@ import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.test.TestData;
 import org.geotools.util.DateRange;
 import org.geotools.util.URLs;
+import org.geotools.util.factory.Hints;
 import org.junit.Test;
 import org.opengis.coverage.grid.GridEnvelope;
 import org.opengis.geometry.MismatchedDimensionException;
@@ -65,7 +66,6 @@ import org.opengis.referencing.NoSuchAuthorityCodeException;
  * @author Stefan Alfons Krueger (alfonx), Wikisquare.de : Test coverage for pyramids stored in JARs
  *     and referenced by URLs
  * @since 2.3
- * @source $URL$
  */
 public class ImagePyramidReaderTest extends ImageLevelsMapperTest {
 
@@ -113,10 +113,33 @@ public class ImagePyramidReaderTest extends ImageLevelsMapperTest {
     @Test
     public void testAutomaticBuildGdalRetile() throws IOException {
         final URL testFile = TestData.getResource(this, "goodpyramid/" + TEST_FILE);
+        buildPyramid(testFile, "goodpyramid");
+    }
+
+    /**
+     * Tests automatic building of all the mosaic and pyramid files from a gdal_retile like
+     * directory structure
+     *
+     * @throws IOException
+     */
+    @Test
+    public void testWindowsPath() throws IOException {
+        final URL testFile = TestData.getResource(this, "goodpyramid/" + TEST_FILE);
+        buildPyramid(testFile, "good pyramid");
+    }
+
+    /**
+     * @param testFile
+     * @throws IOException
+     * @throws FileNotFoundException
+     */
+    private void buildPyramid(final URL testFile, String targetName)
+            throws IOException, FileNotFoundException {
         File sourceDir = URLs.urlToFile(testFile).getParentFile();
-        File targetDir = File.createTempFile("pyramid", "tst", TestData.file(this, "."));
+        File targetDir = File.createTempFile(targetName, "tst", TestData.file(this, "."));
         targetDir.delete();
         targetDir.mkdir();
+
         try {
             prepareEmptyMosaic(sourceDir, targetDir);
 

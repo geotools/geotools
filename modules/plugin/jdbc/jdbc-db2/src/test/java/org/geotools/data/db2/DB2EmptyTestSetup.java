@@ -19,7 +19,6 @@ package org.geotools.data.db2;
 import java.sql.Connection;
 import org.geotools.jdbc.JDBCEmptyTestSetup;
 
-/** @source $URL$ */
 public class DB2EmptyTestSetup extends JDBCEmptyTestSetup {
     public DB2EmptyTestSetup() {
         super(new DB2TestSetup());

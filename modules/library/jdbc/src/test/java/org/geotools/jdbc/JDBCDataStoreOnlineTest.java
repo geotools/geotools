@@ -46,7 +46,6 @@ import org.opengis.filter.FilterFactory;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-/** @source $URL$ */
 public abstract class JDBCDataStoreOnlineTest extends JDBCTestSupport {
     public void testGetNames() throws IOException {
         String[] typeNames = dataStore.getTypeNames();
@@ -138,7 +137,7 @@ public abstract class JDBCDataStoreOnlineTest extends JDBCTestSupport {
             w.hasNext();
 
             SimpleFeature f = w.next();
-            f.setAttribute(1, new Integer(0));
+            f.setAttribute(1, Integer.valueOf(0));
             f.setAttribute(2, "hello");
             w.write();
 
@@ -151,7 +150,7 @@ public abstract class JDBCDataStoreOnlineTest extends JDBCTestSupport {
             } catch (Exception e) {
             }
 
-            f.setAttribute(1, new Integer(1));
+            f.setAttribute(1, Integer.valueOf(1));
             f.setAttribute(2, "hello!");
             try {
                 w.write();
@@ -286,7 +285,7 @@ public abstract class JDBCDataStoreOnlineTest extends JDBCTestSupport {
             g.setSRID(26713);
 
             f.setAttribute(0, g);
-            f.setAttribute(1, new Integer(0));
+            f.setAttribute(1, Integer.valueOf(0));
             f.setAttribute(2, "hello");
             w.write();
         }
@@ -460,7 +459,7 @@ public abstract class JDBCDataStoreOnlineTest extends JDBCTestSupport {
                 dataStore.getFeatureWriter(tname("ft1"), f, Transaction.AUTO_COMMIT)) {
             while (writer.hasNext()) {
                 SimpleFeature feature = writer.next();
-                feature.setAttribute(aname("intProperty"), new Integer(100));
+                feature.setAttribute(aname("intProperty"), Integer.valueOf(100));
                 writer.write();
             }
         }
@@ -475,7 +474,7 @@ public abstract class JDBCDataStoreOnlineTest extends JDBCTestSupport {
                 dataStore.getFeatureWriterAppend(tname("ft1"), Transaction.AUTO_COMMIT)) {
             for (int i = 3; i < 6; i++) {
                 SimpleFeature feature = writer.next();
-                feature.setAttribute(aname("intProperty"), new Integer(i));
+                feature.setAttribute(aname("intProperty"), Integer.valueOf(i));
                 writer.write();
             }
         }

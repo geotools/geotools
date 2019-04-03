@@ -25,10 +25,10 @@ import javax.media.jai.InterpolationNearest;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.footprint.FootprintBehavior;
 import org.geotools.coverage.grid.io.imageio.GeoToolsWriteParams;
-import org.geotools.factory.GeoTools;
-import org.geotools.factory.Hints;
 import org.geotools.parameter.DefaultParameterDescriptor;
 import org.geotools.referencing.factory.epsg.CartesianAuthorityFactory;
+import org.geotools.util.factory.GeoTools;
+import org.geotools.util.factory.Hints;
 import org.opengis.coverage.grid.Format;
 import org.opengis.coverage.grid.GridCoverageReader;
 import org.opengis.coverage.grid.GridCoverageWriter;
@@ -57,7 +57,6 @@ import org.opengis.util.ProgressListener;
  *
  * @author jeichar
  * @author Simone Giannecchini, GeoSolutions
- * @source $URL$
  */
 public abstract class AbstractGridFormat implements Format {
 
@@ -90,8 +89,8 @@ public abstract class AbstractGridFormat implements Format {
     private static CoordinateReferenceSystem crs = CartesianAuthorityFactory.GENERIC_2D;
 
     /**
-     * This {@link GeneralParameterValue} ccn be provided to the {@link GridCoverageReader}s through
-     * the {@link GridCoverageReader#read(GeneralParameterValue[])} method in order to pick up the
+     * This {@link GeneralParameterValue} can be provided to the {@link GridCoverageReader}s through
+     * the {@code GridCoverageReader#read(GeneralParameterValue[])} method in order to pick up the
      * best matching resolution level and (soon) the best matching area.
      */
     public static final DefaultParameterDescriptor<GridGeometry2D> READ_GRIDGEOMETRY2D =
@@ -100,7 +99,7 @@ public abstract class AbstractGridFormat implements Format {
 
     /**
      * This {@link GeneralParameterValue} can be provided to the {@link GridCoverageReader}s through
-     * the {@link GridCoverageReader#write(GeneralParameterValue[])} method in order to monitor a
+     * the {@code GridCoverageReader#write(GeneralParameterValue[])} method in order to monitor a
      * writing process
      */
     public static final DefaultParameterDescriptor<ProgressListener> PROGRESS_LISTENER =
@@ -108,8 +107,8 @@ public abstract class AbstractGridFormat implements Format {
                     "Listener", ProgressListener.class, null, null);
 
     /**
-     * This {@link GeneralParameterValue} cacn be provided to the {@link GridCoverageWriter}s
-     * through the {@link GridCoverageWriter#write(org.opengis.coverage.grid.GridCoverage,
+     * This {@link GeneralParameterValue} can be provided to the {@link GridCoverageWriter}s through
+     * the {@code GridCoverageWriter#write(org.opengis.coverage.grid.GridCoverage,
      * GeneralParameterValue[])} method in order to control the writing process in terms of
      * compression, tiling, etc.GridGeometry2D
      */
@@ -118,7 +117,7 @@ public abstract class AbstractGridFormat implements Format {
                     "WriteParameters", GeoToolsWriteParams.class, null, null);
 
     /**
-     * This {@link GeneralParameterValue} can be provided to the {@link GridCoverageReader}s through
+     * This {@code GeneralParameterValue} can be provided to the {@link GridCoverageReader}s through
      * the {@link GridCoverageReader#read(GeneralParameterValue[])} method in order to specify the
      * type of image read operation requested: using a JAI ImageRead operation (leveraging on
      * Deferred Execution Model, Tile Caching,...), or the direct {@code ImageReader}'s read
@@ -133,7 +132,7 @@ public abstract class AbstractGridFormat implements Format {
 
     /**
      * This {@link GeneralParameterValue} can be provided to the {@link GridCoverageReader}s through
-     * the {@link GridCoverageReader#read(GeneralParameterValue[])} method in order to specify the
+     * the {@code GridCoverageReader#read(GeneralParameterValue[])} method in order to specify the
      * policy a reader should adopt when choosing the right overview during a read operation.
      */
     public static final DefaultParameterDescriptor<OverviewPolicy> OVERVIEW_POLICY =
@@ -150,7 +149,7 @@ public abstract class AbstractGridFormat implements Format {
 
     /**
      * This {@link GeneralParameterValue} can be provided to the {@link GridCoverageReader}s through
-     * the {@link GridCoverageReader#read(GeneralParameterValue[])} method in order to specify the
+     * the {@code GridCoverageReader#read(GeneralParameterValue[])} method in order to specify the
      * policy a reader should adopt when setting read parameters when evaluating a needed
      * resolution.
      */
@@ -166,7 +165,7 @@ public abstract class AbstractGridFormat implements Format {
 
     /**
      * This {@link GeneralParameterValue} can be provided to the {@link GridCoverageReader}s through
-     * the {@link GridCoverageReader#read(GeneralParameterValue[])} method in order to specify the
+     * the {@code GridCoverageReader#read(GeneralParameterValue[])} method in order to specify the
      * suggested size of tiles to avoid long time reading occurring with JAI ImageRead on striped
      * images. (Images with tiles Nx1) Value should be a String in the form of "W,H" (without
      * quotes) where W is a number representing the suggested tileWidth and H is a number
@@ -178,7 +177,7 @@ public abstract class AbstractGridFormat implements Format {
 
     /**
      * This {@link GeneralParameterValue} can be provided to the {@link GridCoverageReader}s through
-     * the {@link GridCoverageReader#read(GeneralParameterValue[])} method to specify the band
+     * the {@code GridCoverageReader#read(GeneralParameterValue[])} method to specify the band
      * indices of the input grid coverage that are going to be in the resulting coverage. The order
      * of the bands on the output coverage is the order of the indices in the parameter. Value
      * should be an integer array (int[]) containing the band indices in the desired order.
@@ -289,7 +288,7 @@ public abstract class AbstractGridFormat implements Format {
     /**
      * Tells me if this {@link Format} can read the provided <code>input</code>.
      *
-     * @param input The input object to test for suitability.
+     * @param source The input object to test for suitability.
      * @return True if this format can read this object, False otherwise.
      */
     public boolean accepts(Object source) {
@@ -299,7 +298,7 @@ public abstract class AbstractGridFormat implements Format {
     /**
      * Tells me if this {@link Format} can read the provided <code>input</code>.
      *
-     * @param input The input object to test for suitability.
+     * @param source The input object to test for suitability.
      * @param hints {@link Hints} to control the accepts internal machinery.
      * @return True if this format can read this object, False otherwise.
      */

@@ -14,7 +14,6 @@ import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.spatial.Beyond;
 import org.opengis.filter.spatial.DWithin;
 
-/** @source $URL$ */
 public abstract class JDBCDistanceFiltersTest extends JDBCTestSupport {
 
     // a point far away from all others (100+ km)

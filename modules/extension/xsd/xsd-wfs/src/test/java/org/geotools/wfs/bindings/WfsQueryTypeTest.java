@@ -22,7 +22,7 @@ import javax.xml.namespace.QName;
 import net.opengis.wfs.QueryType;
 import org.geotools.wfs.WFSTestSupport;
 import org.geotools.wfs.v1_1.WFS;
-import org.geotools.xml.Binding;
+import org.geotools.xsd.Binding;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 

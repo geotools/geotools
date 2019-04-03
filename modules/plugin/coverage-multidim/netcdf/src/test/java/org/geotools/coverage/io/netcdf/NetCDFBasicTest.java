@@ -66,7 +66,6 @@ import ucar.nc2.dataset.NetcdfDataset;
  * Testing Low level reader infrastructure.
  *
  * @author Simone Giannecchini, GeoSolutions SAS
- * @source $URL$
  */
 public final class NetCDFBasicTest extends Assert {
 
@@ -713,6 +712,7 @@ public final class NetCDFBasicTest extends Assert {
         }
     }
 
+    @Test
     public void testReadRegularNetCDF() throws IOException {
         NetCDFImageReaderSpi readerSpi = new NetCDFImageReaderSpi();
         File file = null;

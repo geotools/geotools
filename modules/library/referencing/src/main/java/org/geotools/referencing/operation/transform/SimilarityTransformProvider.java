@@ -33,7 +33,6 @@ import tec.uom.se.AbstractUnit;
  *
  * <p>Note that similarity transform is a special case of an Affine transform 2D.
  *
- * @source $URL$
  * @version $Id$
  * @author Oscar Fonts
  */

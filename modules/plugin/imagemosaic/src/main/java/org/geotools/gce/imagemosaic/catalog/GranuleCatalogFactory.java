@@ -18,18 +18,22 @@ package org.geotools.gce.imagemosaic.catalog;
 
 import java.io.File;
 import java.net.URL;
+import java.util.Optional;
 import java.util.Properties;
 import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.io.FilenameUtils;
+import org.geotools.coverage.util.CoverageUtilities;
+import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFactorySpi;
 import org.geotools.data.Repository;
 import org.geotools.data.shapefile.ShapefileDataStoreFactory;
-import org.geotools.factory.Hints;
 import org.geotools.gce.imagemosaic.Utils;
-import org.geotools.resources.coverage.CoverageUtilities;
+import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.util.URLs;
+import org.geotools.util.decorate.Wrapper;
+import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
 
 /**
@@ -37,11 +41,10 @@ import org.geotools.util.logging.Logging;
  * granules for this mosaic.
  *
  * @author Simone Giannecchini, GeoSolutions SAS
- * @source $URL$
  */
 public abstract class GranuleCatalogFactory {
 
-    private static final Logger LOGGER = Logging.getLogger("GranuleCatalogFactory");
+    private static final Logger LOGGER = Logging.getLogger(GranuleCatalogFactory.class);
 
     /** Default private constructor to enforce singleton */
     private GranuleCatalogFactory() {}
@@ -55,7 +58,7 @@ public abstract class GranuleCatalogFactory {
         // build the catalog
         Repository repository = (Repository) hints.get(Hints.REPOSITORY);
         String storeName = (String) params.get(Utils.Prop.STORE_NAME);
-        AbstractGTDataStoreGranuleCatalog catalog;
+        AbstractGTDataStoreGranuleCatalog gtCatalog;
         if (storeName != null && !storeName.trim().isEmpty()) {
             if (repository == null) {
                 throw new IllegalArgumentException(
@@ -63,20 +66,34 @@ public abstract class GranuleCatalogFactory {
                                 + storeName
                                 + " but there is no Repository to resolve it");
             } else {
-                catalog =
+                gtCatalog =
                         new RepositoryDataStoreCatalog(
                                 params, create, repository, storeName, spi, hints);
             }
         } else {
-            catalog = new GTDataStoreGranuleCatalog(params, create, spi, hints);
+            gtCatalog = new GTDataStoreGranuleCatalog(params, create, spi, hints);
         }
+        DataStore store = gtCatalog.getTileIndexStore();
 
         // caching wrappers
+        GranuleCatalog catalog;
         if (caching) {
-            return new STRTreeGranuleCatalog(params, catalog, hints);
+            catalog = new STRTreeGranuleCatalog(params, gtCatalog, hints);
         } else {
-            return new CachingDataStoreGranuleCatalog(catalog);
+            catalog = new CachingDataStoreGranuleCatalog(gtCatalog);
         }
+
+        // locking wrappers
+        if (store instanceof Wrapper) {
+            store =
+                    Optional.ofNullable((DataStore) ((Wrapper) store).unwrap(JDBCDataStore.class))
+                            .orElse(store);
+        }
+        if (!(store instanceof JDBCDataStore)) {
+            catalog = new LockingGranuleCatalog(catalog, hints);
+        }
+
+        return catalog;
     }
 
     public static GranuleCatalog createGranuleCatalog(
@@ -111,7 +128,7 @@ public abstract class GranuleCatalogFactory {
             File parentDirectory = URLs.urlToFile(sourceURL);
             if (parentDirectory.isFile()) parentDirectory = parentDirectory.getParentFile();
             params.put(Utils.Prop.PARENT_LOCATION, URLs.fileToUrl(parentDirectory).toString());
-        } else params.put(Utils.Prop.PARENT_LOCATION, null);
+        }
         // add typename
         String typeName = catalogConfigurationBean.getTypeName();
         if (typeName != null) {

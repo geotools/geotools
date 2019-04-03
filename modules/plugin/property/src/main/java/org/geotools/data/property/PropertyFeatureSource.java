@@ -28,10 +28,10 @@ import org.geotools.data.Query;
 import org.geotools.data.QueryCapabilities;
 import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentFeatureSource;
-import org.geotools.factory.Hints;
 import org.geotools.feature.SchemaException;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.geometry.jts.WKTReader2;
+import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.CoordinateSequenceFactory;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.opengis.feature.FeatureVisitor;
@@ -42,7 +42,6 @@ import org.opengis.filter.Filter;
 /**
  * @author Jody Garnett
  * @author Torben Barsballe (Boundless)
- * @source $URL$
  */
 public class PropertyFeatureSource extends ContentFeatureSource {
     String typeName;
@@ -123,7 +122,7 @@ public class PropertyFeatureSource extends ContentFeatureSource {
         try {
             return DataUtilities.createType(namespace, typeName, typeSpec);
         } catch (SchemaException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             throw new DataSourceException(typeName + " schema not available", e);
         }
     }

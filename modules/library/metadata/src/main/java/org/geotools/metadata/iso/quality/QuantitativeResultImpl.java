@@ -30,7 +30,6 @@ import org.opengis.util.RecordType;
 /**
  * Information about the value (or set of values) obtained from applying a data quality measure.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @author Touraïvane
@@ -70,7 +69,7 @@ public class QuantitativeResultImpl extends ResultImpl implements QuantitativeRe
     }
 
     /** Quantitative value or values, content determined by the evaluation procedure used. */
-    public synchronized List<Record> getValues() {
+    public List<Record> getValues() {
         return values = nonNullList(values, Record.class);
     }
 
@@ -79,14 +78,14 @@ public class QuantitativeResultImpl extends ResultImpl implements QuantitativeRe
      *
      * @since 2.4
      */
-    public synchronized void setValues(final List<Record> newValues) {
+    public void setValues(final List<Record> newValues) {
         values = copyList(newValues, values, Record.class);
     }
 
     /**
      * Set the quantitative value or values, content determined by the evaluation procedure used.
      */
-    public synchronized void setValues(final double[] newValues) {
+    public void setValues(final double[] newValues) {
         final List<Record> records;
         if (newValues == null) {
             records = null;
@@ -150,7 +149,7 @@ public class QuantitativeResultImpl extends ResultImpl implements QuantitativeRe
     }
 
     /** Set the value type for reporting a data quality result, or {@code null} if none. */
-    public synchronized void setValueType(final RecordType newValue) {
+    public void setValueType(final RecordType newValue) {
         checkWritePermission();
         valueType = newValue;
     }
@@ -161,7 +160,7 @@ public class QuantitativeResultImpl extends ResultImpl implements QuantitativeRe
     }
 
     /** Set the value unit for reporting a data quality result, or {@code null} if none. */
-    public synchronized void setValueUnit(final Unit newValue) {
+    public void setValueUnit(final Unit newValue) {
         checkWritePermission();
         valueUnit = newValue;
     }
@@ -172,7 +171,7 @@ public class QuantitativeResultImpl extends ResultImpl implements QuantitativeRe
     }
 
     /** Set the statistical method used to determine the value, or {@code null} if none. */
-    public synchronized void setErrorStatistic(final InternationalString newValue) {
+    public void setErrorStatistic(final InternationalString newValue) {
         checkWritePermission();
         errorStatistic = newValue;
     }

@@ -32,9 +32,6 @@ import java.util.concurrent.locks.ReentrantLock;
  * <p>Values are held in a WeakReference, the garbage collector may reclaim them at any time.
  *
  * @since 2.5
- * @version $Id$
- * @source $URL: http://svn.geotools.org/trunk/modules/library/metadata/src/main/
- *     java/org/geotools/util/WeakObjectCache.java $
  * @author Cory Horner (Refractions Research)
  * @author Jody Garnett (Refractions Research)
  * @author Martin Desruisseaux (Geomatys)

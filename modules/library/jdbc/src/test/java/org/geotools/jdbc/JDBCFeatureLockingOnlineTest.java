@@ -32,7 +32,6 @@ import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.PropertyIsEqualTo;
 
-/** @source $URL$ */
 public abstract class JDBCFeatureLockingOnlineTest extends JDBCTestSupport {
 
     JDBCFeatureStore store;
@@ -75,7 +74,7 @@ public abstract class JDBCFeatureLockingOnlineTest extends JDBCTestSupport {
                 assertTrue(writer.hasNext());
                 SimpleFeature feature = writer.next();
 
-                feature.setAttribute(aname("intProperty"), new Integer(100));
+                feature.setAttribute(aname("intProperty"), Integer.valueOf(100));
                 try {
                     writer.write();
                     fail("should have thrown feature lock exception");
@@ -89,7 +88,7 @@ public abstract class JDBCFeatureLockingOnlineTest extends JDBCTestSupport {
                     dataStore.getFeatureWriter(tname("ft1"), tx)) {
                 assertTrue(writer.hasNext());
                 SimpleFeature feature = writer.next();
-                feature.setAttribute(aname("intProperty"), new Integer(100));
+                feature.setAttribute(aname("intProperty"), Integer.valueOf(100));
                 writer.write();
             }
         }
@@ -118,8 +117,8 @@ public abstract class JDBCFeatureLockingOnlineTest extends JDBCTestSupport {
                     SimpleFeature feature = (SimpleFeature) writer.next();
                     Number old = (Number) feature.getAttribute(aname("intProperty"));
 
-                    feature.setAttribute(aname("intProperty"), new Integer(100));
-                    if (new Integer(1).equals(old.intValue())) {
+                    feature.setAttribute(aname("intProperty"), Integer.valueOf(100));
+                    if (Integer.valueOf(1).equals(old.intValue())) {
                         try {
                             writer.write();
                             fail("writer should have thrown exception for locked feature");
@@ -190,7 +189,7 @@ public abstract class JDBCFeatureLockingOnlineTest extends JDBCTestSupport {
                     dataStore.getFeatureWriter(tname("ft1"), tx)) {
                 assertTrue(writer.hasNext());
                 SimpleFeature feature = writer.next();
-                feature.setAttribute(aname("intProperty"), new Integer(100));
+                feature.setAttribute(aname("intProperty"), Integer.valueOf(100));
                 try {
                     writer.write();
                     fail("write should have thrown exception");
@@ -213,7 +212,7 @@ public abstract class JDBCFeatureLockingOnlineTest extends JDBCTestSupport {
                 assertTrue(writer.hasNext());
 
                 SimpleFeature feature = writer.next();
-                feature.setAttribute(aname("intProperty"), new Integer(100));
+                feature.setAttribute(aname("intProperty"), Integer.valueOf(100));
 
                 writer.write();
             }
@@ -296,7 +295,7 @@ public abstract class JDBCFeatureLockingOnlineTest extends JDBCTestSupport {
                 store.setTransaction(tx1);
 
                 ad = store.getSchema().getDescriptor(aname("intProperty"));
-                v = new Integer(1000);
+                v = Integer.valueOf(1000);
 
                 try {
                     store.modifyFeatures(ad, v, f1);

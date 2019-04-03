@@ -23,12 +23,15 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.xml.parsers.ParserConfigurationException;
 import net.opengis.wmts.v_1.CapabilitiesType;
 import net.opengis.wmts.v_1.ContentsType;
 import net.opengis.wmts.v_1.LayerType;
+import org.geotools.util.logging.Logging;
 import org.geotools.wmts.WMTSConfiguration;
-import org.geotools.xml.Parser;
+import org.geotools.xsd.Parser;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.xml.sax.SAXException;
@@ -36,6 +39,8 @@ import org.xml.sax.SAXParseException;
 
 /** @author Emanuele Tajariol (etj at geo-solutions dot it) */
 public class WMTSConfigurationTest {
+
+    static final Logger LOGGER = Logging.getLogger(WMTSConfigurationTest.class);
 
     public WMTSConfigurationTest() {}
 
@@ -95,7 +100,8 @@ public class WMTSConfigurationTest {
         if (!p.getValidationErrors().isEmpty()) {
             for (Iterator e = p.getValidationErrors().iterator(); e.hasNext(); ) {
                 SAXParseException ex = (SAXParseException) e.next();
-                System.out.println(
+                LOGGER.log(
+                        Level.SEVERE,
                         ex.getLineNumber() + "," + ex.getColumnNumber() + " -" + ex.toString());
             }
             fail("Document did not validate.");

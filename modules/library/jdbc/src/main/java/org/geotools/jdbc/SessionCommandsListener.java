@@ -73,14 +73,16 @@ public class SessionCommandsListener implements ConnectionLifecycleListener {
     }
 
     public void onBorrow(JDBCDataStore store, Connection cx) throws SQLException {
-        if (sqlOnBorrow != null && !"".equals(sqlOnBorrow)) {
+        if (sqlOnBorrow != null) {
             String command = sqlOnBorrow.evaluate(null, String.class);
-            Statement st = null;
-            try {
-                st = cx.createStatement();
-                st.execute(command);
-            } finally {
-                store.closeSafe(st);
+            if (!"".equals(command)) {
+                Statement st = null;
+                try {
+                    st = cx.createStatement();
+                    st.execute(command);
+                } finally {
+                    store.closeSafe(st);
+                }
             }
         }
     }

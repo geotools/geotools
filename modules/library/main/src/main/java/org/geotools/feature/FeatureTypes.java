@@ -23,15 +23,17 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
-import org.geotools.factory.FactoryRegistryException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeImpl;
 import org.geotools.filter.LengthFunction;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.util.Utilities;
+import org.geotools.util.factory.FactoryRegistryException;
 import org.locationtech.jts.geom.Geometry;
+import org.opengis.feature.IllegalAttributeException;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -64,7 +66,6 @@ import org.opengis.referencing.operation.TransformException;
  *
  * @author Jody Garnett, Refractions Research
  * @since 2.1.M3
- * @source $URL$
  */
 public class FeatureTypes {
 
@@ -77,7 +78,7 @@ public class FeatureTypes {
         try {
             uri = new URI("http://www.opengis.net/gml");
         } catch (URISyntaxException e) {
-            uri = null; // will never happen
+            throw new RuntimeException("Unexpected URI syntax exception", e);
         }
         DEFAULT_NAMESPACE = uri;
     }
@@ -122,7 +123,7 @@ public class FeatureTypes {
      * <p>This code is copied from the ShapefileDataStore where it was written (probably by
      * dzwiers). Cholmes is providing documentation.
      *
-     * @param type the AttributeType
+     * @param descriptor the descriptor whose lenght is to be investigated
      * @return an int indicating the max length of field in characters, or ANY_LENGTH
      */
     public static int getFieldLength(PropertyDescriptor descriptor) {
@@ -206,12 +207,10 @@ public class FeatureTypes {
         tb.setNamespaceURI(schema.getName().getNamespaceURI());
         tb.setAbstract(schema.isAbstract());
 
-        GeometryDescriptor defaultGeometryType = null;
         for (int i = 0; i < schema.getAttributeCount(); i++) {
             AttributeDescriptor attributeType = schema.getDescriptor(i);
             if (attributeType instanceof GeometryDescriptor) {
                 GeometryDescriptor geometryType = (GeometryDescriptor) attributeType;
-                AttributeDescriptor forced;
 
                 tb.descriptor(geometryType);
                 if (!forceOnlyMissing || geometryType.getCoordinateReferenceSystem() == null) {
@@ -619,16 +618,10 @@ public class FeatureTypes {
 
         String typeNameA = typeA.getTypeName();
         String typeNameB = typeB.getTypeName();
-        if (typeNameA == null && typeNameB != null) return false;
-        else if (!typeNameA.equals(typeNameB)) return false;
+        if (!Objects.equals(typeNameA, typeNameB)) return false;
 
         String namespaceA = typeA.getName().getNamespaceURI();
         String namespaceB = typeB.getName().getNamespaceURI();
-        if (namespaceA == null && namespaceB == null) return true;
-
-        if (namespaceA == null && namespaceB != null) return false;
-        else if (!namespaceA.equals(namespaceB)) return false;
-
-        return true;
+        return Objects.equals(namespaceA, namespaceB);
     }
 }

@@ -51,18 +51,18 @@ import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.processing.operation.Mosaic;
 import org.geotools.coverage.processing.operation.Mosaic.GridGeometryPolicy;
+import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.data.WorldFileReader;
-import org.geotools.factory.GeoTools;
-import org.geotools.factory.Hints;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.image.util.ImageUtilities;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.operation.builder.GridToEnvelopeMapper;
-import org.geotools.resources.coverage.CoverageUtilities;
-import org.geotools.resources.image.ImageUtilities;
+import org.geotools.util.factory.GeoTools;
+import org.geotools.util.factory.Hints;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -193,7 +193,6 @@ public class MosaicTest extends GridProcessingTestBase {
         GridCoverage2D mosaic = simpleMosaic(coverage1, coverage2);
 
         // Coverage and RenderedImage disposal
-        mosaic.dispose(true);
         disposeCoveragePlanarImage(mosaic);
     }
 
@@ -302,7 +301,6 @@ public class MosaicTest extends GridProcessingTestBase {
         assertEquals(boundsMosaic, roi.getBounds());
 
         // Coverage and RenderedImage disposal
-        mosaic.dispose(true);
         disposeCoveragePlanarImage(mosaic);
     }
 
@@ -396,7 +394,6 @@ public class MosaicTest extends GridProcessingTestBase {
         Assert.assertNotEquals(nodata, result, TOLERANCE);
 
         // Coverage and RenderedImage disposal
-        mosaic.dispose(true);
         disposeCoveragePlanarImage(mosaic);
     }
 
@@ -456,7 +453,6 @@ public class MosaicTest extends GridProcessingTestBase {
         Assert.assertNotEquals(nodata, result, TOLERANCE);
 
         // Coverage and RenderedImage disposal
-        mosaic.dispose(true);
         disposeCoveragePlanarImage(mosaic);
     }
 
@@ -528,7 +524,6 @@ public class MosaicTest extends GridProcessingTestBase {
         Assert.assertNotEquals(nodata, result, TOLERANCE);
 
         // Coverage and RenderedImage disposal
-        mosaic.dispose(true);
         disposeCoveragePlanarImage(mosaic);
     }
 
@@ -617,10 +612,8 @@ public class MosaicTest extends GridProcessingTestBase {
         Assert.assertNotEquals(nodata, result, TOLERANCE);
 
         // Coverage and RenderedImage disposal
-        mosaic.dispose(true);
-        resampled.dispose(true);
-        disposeCoveragePlanarImage(mosaic);
         disposeCoveragePlanarImage(resampled);
+        disposeCoveragePlanarImage(mosaic);
     }
 
     // Test which mosaics two input coverages and creates a final GridCoverage with the best
@@ -688,8 +681,6 @@ public class MosaicTest extends GridProcessingTestBase {
         Assert.assertNotEquals(nodata, result, TOLERANCE);
 
         // Coverage and RenderedImage disposal
-        mosaic.dispose(true);
-        resampled.dispose(true);
         disposeCoveragePlanarImage(mosaic);
         disposeCoveragePlanarImage(resampled);
     }
@@ -790,7 +781,6 @@ public class MosaicTest extends GridProcessingTestBase {
         Assert.assertNotEquals(nodata, result, TOLERANCE);
 
         // Coverage and RenderedImage disposal
-        mosaic.dispose(true);
         disposeCoveragePlanarImage(mosaic);
     }
 
@@ -858,7 +848,6 @@ public class MosaicTest extends GridProcessingTestBase {
         Assert.assertNotEquals(nodata, result, TOLERANCE);
 
         // Coverage and RenderedImage disposal
-        mosaic.dispose(true);
         disposeCoveragePlanarImage(mosaic);
     }
 
@@ -915,8 +904,6 @@ public class MosaicTest extends GridProcessingTestBase {
     @AfterClass
     public static void finalStep() {
         // Coverage and RenderedImage disposal
-        coverage1.dispose(true);
-        coverage2.dispose(true);
         disposeCoveragePlanarImage(coverage1);
         disposeCoveragePlanarImage(coverage2);
     }
@@ -927,7 +914,9 @@ public class MosaicTest extends GridProcessingTestBase {
      * @param coverage
      */
     private static void disposeCoveragePlanarImage(GridCoverage2D coverage) {
-        ImageUtilities.disposePlanarImageChain(
+        // Dispose the single planar image since some images are input of other tests and
+        // disposing the whole chain may therefore throw exceptions
+        ImageUtilities.disposeSinglePlanarImage(
                 PlanarImage.wrapRenderedImage(coverage.getRenderedImage()));
     }
 
@@ -1064,5 +1053,34 @@ public class MosaicTest extends GridProcessingTestBase {
                     }
                 });
         return coverages;
+    }
+
+    @Test
+    public void testPadding() {
+        ParameterValueGroup param = processor.getOperation("Mosaic").getParameters();
+
+        // Creation of a List of the input Sources
+        List<GridCoverage2D> sources = new ArrayList<GridCoverage2D>(2);
+        sources.add(coverage1);
+        // Setting of the sources
+        param.parameter("Sources").setValue(sources);
+
+        // Compute a padded grid geometry
+        GridGeometry2D gg1 = coverage1.getGridGeometry();
+        GridEnvelope2D range = gg1.getGridRange2D();
+        GridEnvelope2D range2 =
+                new GridEnvelope2D(range.x - 10, range.y - 10, range.width + 20, range.height + 20);
+        GridGeometry2D targetGG =
+                new GridGeometry2D(
+                        range2, gg1.getGridToCRS(), gg1.getCoordinateReferenceSystem2D());
+        param.parameter("geometry").setValue(targetGG);
+        // Mosaic
+        GridCoverage2D mosaic = (GridCoverage2D) processor.doOperation(param);
+
+        // Check that the final grid has been padded
+        assertEquals(targetGG.getEnvelope2D(), mosaic.getEnvelope2D());
+
+        // Coverage and RenderedImage disposal
+        disposeCoveragePlanarImage(mosaic);
     }
 }

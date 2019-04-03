@@ -28,15 +28,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import org.geotools.factory.Factory;
-import org.geotools.factory.FactoryNotFoundException;
-import org.geotools.factory.FactoryRegistryException;
-import org.geotools.factory.GeoTools;
-import org.geotools.factory.Hints;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.GeneralDirectPosition;
 import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.util.XRectangle2D;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.metadata.iso.extent.GeographicBoundingBoxImpl;
 import org.geotools.referencing.crs.DefaultEngineeringCRS;
@@ -51,14 +49,17 @@ import org.geotools.referencing.operation.projection.MapProjection;
 import org.geotools.referencing.operation.projection.PolarStereographic;
 import org.geotools.referencing.operation.transform.ConcatenatedTransform;
 import org.geotools.referencing.operation.transform.IdentityTransform;
+import org.geotools.referencing.util.CRSUtilities;
 import org.geotools.referencing.wkt.Formattable;
-import org.geotools.resources.CRSUtilities;
-import org.geotools.resources.geometry.XRectangle2D;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
 import org.geotools.util.GenericName;
+import org.geotools.util.SoftValueHashMap;
 import org.geotools.util.UnsupportedImplementationException;
 import org.geotools.util.Version;
+import org.geotools.util.factory.Factory;
+import org.geotools.util.factory.FactoryNotFoundException;
+import org.geotools.util.factory.FactoryRegistryException;
+import org.geotools.util.factory.GeoTools;
+import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.Envelope;
@@ -128,13 +129,9 @@ import org.opengis.referencing.operation.TransformException;
  * way math transforms are setup. Use with care.
  *
  * @since 2.1
- * @source $URL$
- * @version $Id$
  * @author Jody Garnett (Refractions Research)
  * @author Martin Desruisseaux
  * @author Andrea Aime
- * @tutorial
- *     http://docs.codehaus.org/display/GEOTOOLS/Coordinate+Transformation+Services+for+Geotools+2.1
  */
 public final class CRS {
 
@@ -191,6 +188,14 @@ public final class CRS {
     /** A factory for default lenient operations. */
     private static volatile CoordinateOperationFactory lenientFactory;
 
+    /** A cache for coordinate reference systems in the default axis order */
+    private static SoftValueHashMap<String, CoordinateReferenceSystem> defaultCache =
+            new SoftValueHashMap<>();
+
+    /** A cache for the coordinate reference systems in the xy (east/north) axis order */
+    private static SoftValueHashMap<String, CoordinateReferenceSystem> xyCache =
+            new SoftValueHashMap<>();
+
     /** Registers a listener automatically invoked when the system-wide configuration changed. */
     static {
         GeoTools.addChangeListener(
@@ -201,6 +206,8 @@ public final class CRS {
                             xyFactory = null;
                             strictFactory = null;
                             lenientFactory = null;
+                            xyCache.clear();
+                            defaultCache.clear();
                         }
                     }
                 });
@@ -514,7 +521,24 @@ public final class CRS {
         // @deprecated: 'toUpperCase()' is required only for epsg-wkt.
         // Remove after we deleted the epsg-wkt module.
         code = code.trim().toUpperCase();
-        return getAuthorityFactory(longitudeFirst).createCoordinateReferenceSystem(code);
+
+        CoordinateReferenceSystem result;
+        if (longitudeFirst) {
+            result = defaultCache.get(code);
+        } else {
+            result = xyCache.get(code);
+        }
+
+        if (result == null) {
+            result = getAuthorityFactory(longitudeFirst).createCoordinateReferenceSystem(code);
+            if (longitudeFirst) {
+                defaultCache.put(code, result);
+            } else {
+                xyCache.put(code, result);
+            }
+        }
+
+        return result;
     }
 
     /**
@@ -1140,7 +1164,7 @@ public final class CRS {
             if (!Citations.identifierMatches(factory.getAuthority(), authority)) {
                 continue;
             }
-            if (factory == null || !(factory instanceof AbstractAuthorityFactory)) {
+            if (!(factory instanceof AbstractAuthorityFactory)) {
                 continue;
             }
             final AbstractAuthorityFactory f = (AbstractAuthorityFactory) factory;
@@ -2109,6 +2133,8 @@ public final class CRS {
                 MapProjection.resetWarnings();
             }
         }
+        xyCache.clear();
+        defaultCache.clear();
         FORCED_LON_LAT = null;
         defaultFactory = null;
         xyFactory = null;

@@ -17,14 +17,14 @@
 package org.geotools.referencing.factory;
 
 import java.util.*;
-import org.geotools.factory.Factory;
-import org.geotools.factory.FactoryRegistryException;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
+import org.geotools.metadata.i18n.Vocabulary;
+import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.metadata.iso.citation.Citations;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
-import org.geotools.resources.i18n.Vocabulary;
-import org.geotools.resources.i18n.VocabularyKeys;
 import org.geotools.util.GenericName;
+import org.geotools.util.factory.Factory;
+import org.geotools.util.factory.FactoryRegistryException;
 import org.opengis.metadata.citation.Citation;
 import org.opengis.referencing.*;
 import org.opengis.referencing.crs.*;
@@ -51,7 +51,6 @@ import org.opengis.util.InternationalString;
  * set of names determined from all available authority factories.
  *
  * @since 2.4
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
@@ -127,7 +126,7 @@ public class ManyAuthoritiesFactory extends AuthorityFactoryAdapter
      * Returns the factories. This method should not be public since it returns directly the
      * internal instance. This method is to be overriden by {@link AllAuthoritiesFactory} only.
      */
-    Collection<AuthorityFactory> getFactories() {
+    synchronized Collection<AuthorityFactory> getFactories() {
         return factories;
     }
 

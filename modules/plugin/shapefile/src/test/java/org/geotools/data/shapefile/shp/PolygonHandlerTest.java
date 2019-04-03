@@ -28,7 +28,6 @@ import org.locationtech.jts.geom.LinearRing;
 import org.locationtech.jts.geom.PrecisionModel;
 
 /**
- * @source $URL$
  * @version $Id$
  * @author Ian Schneider
  */

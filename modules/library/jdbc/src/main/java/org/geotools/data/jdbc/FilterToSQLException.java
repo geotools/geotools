@@ -21,7 +21,6 @@ package org.geotools.data.jdbc;
  * used, or that there were io problems.
  *
  * @author Chris Holmes, TOPP
- * @source $URL$
  */
 public class FilterToSQLException extends Exception {
     private static final long serialVersionUID = -2394509611777950167L;

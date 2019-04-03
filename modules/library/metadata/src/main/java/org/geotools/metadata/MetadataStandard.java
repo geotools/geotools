@@ -20,8 +20,8 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeModel;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 
 /**
  * Enumeration of some metadata standards. A standard is defined by a set of Java interfaces in a
@@ -44,7 +44,6 @@ import org.geotools.resources.i18n.Errors;
  * </ul>
  *
  * @since 2.4
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (Geomatys)
  */
@@ -142,7 +141,7 @@ public final class MetadataStandard {
      * Returns the metadata interface implemented by the specified implementation. Only one metadata
      * interface can be implemented.
      *
-     * @param metadata The metadata implementation to wraps.
+     * @param implementation The metadata implementation to wraps.
      * @return The single interface, or {@code null} if none where found.
      */
     private Class<?> getType(final Class<?> implementation) {

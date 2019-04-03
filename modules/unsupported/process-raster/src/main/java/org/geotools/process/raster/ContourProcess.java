@@ -32,12 +32,12 @@ import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.image.jai.Registry;
+import org.geotools.metadata.i18n.Vocabulary;
+import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.process.ProcessException;
 import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
-import org.geotools.resources.i18n.Vocabulary;
-import org.geotools.resources.i18n.VocabularyKeys;
 import org.geotools.util.NumberRange;
 import org.jaitools.media.jai.contour.ContourDescriptor;
 import org.jaitools.media.jai.contour.ContourRIF;
@@ -64,7 +64,6 @@ import org.opengis.util.ProgressListener;
  *
  * @author Simone Giannecchini, GeoSolutions
  * @since 8.0
- * @source $URL$
  * @version $Id$
  */
 @DescribeProcess(
@@ -93,7 +92,7 @@ public class ContourProcess implements RasterProcess {
      * will be integer multiples of the specified interval. If both {@code levels} and {@code
      * interval} are supplied the {@code interval} argument is ignored.
      *
-     * @param data the input grid coverage
+     * @param gc2d the input grid coverage
      * @param band the coverage band to process; defaults to 0 if {@code null}
      * @param levels the values for which contours should be generated
      * @param interval the interval between contour values (if {@code levels} is not provided)
@@ -129,7 +128,7 @@ public class ContourProcess implements RasterProcess {
             @DescribeParameter(name = "data", description = "Input raster") GridCoverage2D gc2d,
             @DescribeParameter(
                         name = "band",
-                        description = "Band number to use for values to be contoured",
+                        description = "Band number (zero base) to use for values to be contoured",
                         min = 0,
                         max = 1
                     )

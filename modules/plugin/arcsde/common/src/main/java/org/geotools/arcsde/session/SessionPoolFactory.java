@@ -23,10 +23,6 @@ import java.io.IOException;
  * {@link SessionPool} factory.
  *
  * @author Gabriel Roldan
- * @source $URL$
- *     http://svn.geotools.org/geotools/trunk/gt/modules/unsupported/arcsde/datastore/src/main
- *     /java/org/geotools/arcsde/pool/SessionPoolFactory.java $
- * @version $Id$
  */
 public class SessionPoolFactory implements ISessionPoolFactory {
 

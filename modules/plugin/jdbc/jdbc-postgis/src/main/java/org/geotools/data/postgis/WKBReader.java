@@ -1,8 +1,8 @@
 /*
- *  GeoTools - The Open Source Java GIS Toolkit
- *  http://geotools.org
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
  *
- *  (C) 2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2015, Open Source Geospatial Foundation (OSGeo)
  *
  * The JTS Topology Suite is a collection of Java classes that
  * implement the fundamental operations required to validate a given
@@ -123,9 +123,9 @@ public class WKBReader {
     // default dimension - will be set on read
     private int inputDimension = 2;
 
-    private boolean hasSRID = false;
+    private int inputMeasures = 0;
 
-    private int SRID = 0;
+    private boolean hasSRID = false;
 
     /**
      * true if structurally invalid input should be reported rather than repaired. At some point
@@ -134,8 +134,6 @@ public class WKBReader {
     private boolean isStrict = false;
 
     private ByteOrderDataInStream dis = new ByteOrderDataInStream();
-
-    private double[] ordValues;
 
     public WKBReader() {
         this(new GeometryFactory());
@@ -193,6 +191,13 @@ public class WKBReader {
         // determine if Z values are present
         boolean hasZ = (typeInt & 0x80000000) != 0;
         inputDimension = hasZ ? 3 : 2;
+        // determine if M values are present
+        boolean hasM = (typeInt & 0x40000000) != 0;
+        if (hasM) {
+            // the coordinates will have a single measure
+            inputMeasures = 1;
+            inputDimension += 1;
+        }
         // determine if SRIDs are present
         hasSRID = (typeInt & 0x20000000) != 0;
 
@@ -200,10 +205,6 @@ public class WKBReader {
         if (hasSRID) {
             SRID = dis.readInt();
         }
-
-        // only allocate ordValues buffer if necessary
-        if (ordValues == null || ordValues.length < inputDimension)
-            ordValues = new double[inputDimension];
 
         Geometry geom = readGeometry(geometryType);
         setSRID(geom, SRID);
@@ -402,13 +403,17 @@ public class WKBReader {
     }
 
     private CoordinateSequence readCoordinateSequence(int size) throws IOException {
-        CoordinateSequence seq = JTS.createCS(csFactory, size, inputDimension);
+        CoordinateSequence seq = JTS.createCS(csFactory, size, inputDimension, inputMeasures);
         int targetDim = seq.getDimension();
         if (targetDim > inputDimension) targetDim = inputDimension;
         for (int i = 0; i < size; i++) {
-            readCoordinate();
             for (int j = 0; j < targetDim; j++) {
-                seq.setOrdinate(i, j, ordValues[j]);
+                seq.setOrdinate(i, j, readCoordinate(j));
+            }
+            if (targetDim < inputDimension) {
+                for (int j = targetDim; j < inputDimension; j++) {
+                    readCoordinate(j);
+                }
             }
         }
         return seq;
@@ -439,13 +444,11 @@ public class WKBReader {
      * Reads a coordinate value with the specified dimensionality. Makes the X and Y ordinates
      * precise according to the precision model in use.
      */
-    private void readCoordinate() throws IOException {
-        for (int i = 0; i < inputDimension; i++) {
-            if (i <= 1) {
-                ordValues[i] = precisionModel.makePrecise(dis.readDouble());
-            } else {
-                ordValues[i] = dis.readDouble();
-            }
+    private double readCoordinate(int i) throws IOException {
+        if (i <= 1) {
+            return precisionModel.makePrecise(dis.readDouble());
+        } else {
+            return dis.readDouble();
         }
     }
 

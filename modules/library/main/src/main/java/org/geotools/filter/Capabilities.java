@@ -108,7 +108,6 @@ import org.opengis.filter.temporal.TOverlaps;
  * Right now the class gives no indication as to what part of the provided filter was in error.
  *
  * @author Jody Garnett
- * @source $URL$
  */
 public class Capabilities {
     private static Map<Class<?>, String> scalarNames;
@@ -445,7 +444,7 @@ public class Capabilities {
      * <p>
      *
      * @see IsFullySupportedFilterVisitor
-     * @param filter the filter to be tested.
+     * @param expression the expression to be tested.
      * @return true if all sub filters are supported, false otherwise.
      */
     public boolean fullySupports(Expression expression) {

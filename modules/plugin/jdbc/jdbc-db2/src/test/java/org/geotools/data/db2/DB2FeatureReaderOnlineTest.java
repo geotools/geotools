@@ -19,7 +19,6 @@ package org.geotools.data.db2;
 import org.geotools.jdbc.JDBCFeatureReaderOnlineTest;
 import org.geotools.jdbc.JDBCTestSetup;
 
-/** @source $URL$ */
 public class DB2FeatureReaderOnlineTest extends JDBCFeatureReaderOnlineTest {
 
     @Override

@@ -35,12 +35,11 @@ import org.opengis.geometry.BoundingBox;
  *
  * @author jdeolive
  * @author jgarnett
- * @source $URL$
  */
 public class FeatureImpl extends ComplexAttributeImpl implements Feature {
 
     /** Default geometry attribute */
-    GeometryAttribute defaultGeometry;
+    volatile GeometryAttribute defaultGeometry;
 
     /**
      * Create a Feature with the following content.

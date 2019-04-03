@@ -16,19 +16,25 @@
  */
 package org.geotools.coverage.io.netcdf;
 
-import static org.hamcrest.CoreMatchers.*;
+import static org.geotools.gce.imagemosaic.Utils.FF;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.Matchers.arrayWithSize;
+import static org.hamcrest.Matchers.emptyArray;
 
 import it.geosolutions.imageio.utilities.ImageIOUtilities;
 import it.geosolutions.jaiext.range.NoDataContainer;
-import java.awt.Dimension;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.awt.geom.Point2D;
 import java.awt.image.DataBuffer;
 import java.awt.image.RenderedImage;
 import java.awt.image.SampleModel;
 import java.io.File;
+import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -45,7 +51,7 @@ import java.util.TimeZone;
 import java.util.concurrent.atomic.AtomicBoolean;
 import javax.media.jai.ImageLayout;
 import javax.media.jai.PlanarImage;
-import javax.swing.JFrame;
+import javax.swing.*;
 import junit.framework.JUnit4TestAdapter;
 import junit.textui.TestRunner;
 import org.apache.commons.io.FileUtils;
@@ -53,38 +59,48 @@ import org.apache.commons.io.IOUtils;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
-import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
+import org.geotools.coverage.grid.io.GranuleRemovalPolicy;
 import org.geotools.coverage.grid.io.GranuleSource;
+import org.geotools.coverage.grid.io.GranuleStore;
 import org.geotools.coverage.grid.io.HarvestedSource;
 import org.geotools.data.DefaultRepository;
 import org.geotools.data.Query;
 import org.geotools.data.directory.DirectoryDataStore;
+import org.geotools.data.h2.H2DataStoreFactory;
 import org.geotools.data.shapefile.ShapefileDataStoreFactory;
 import org.geotools.data.shapefile.ShapefileDataStoreFactory.ShpFileStoreFactory;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.factory.Hints;
 import org.geotools.feature.NameImpl;
 import org.geotools.gce.imagemosaic.ImageMosaicFormat;
 import org.geotools.gce.imagemosaic.ImageMosaicReader;
 import org.geotools.gce.imagemosaic.Utils;
 import org.geotools.gce.imagemosaic.Utils.Prop;
 import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.image.util.ImageUtilities;
 import org.geotools.imageio.netcdf.NetCDFImageReader;
 import org.geotools.imageio.netcdf.NetCDFImageReaderSpi;
 import org.geotools.imageio.netcdf.utilities.NetCDFUtilities;
+import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
-import org.geotools.resources.image.ImageUtilities;
 import org.geotools.test.TestData;
 import org.geotools.util.URLs;
-import org.junit.*;
+import org.geotools.util.factory.Hints;
+import org.hamcrest.Matchers;
+import org.junit.AfterClass;
+import org.junit.Assert;
+import org.junit.BeforeClass;
+import org.junit.Ignore;
+import org.junit.Rule;
+import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.FilterFactory2;
+import org.opengis.filter.PropertyIsLike;
 import org.opengis.filter.sort.SortBy;
 import org.opengis.filter.sort.SortOrder;
 import org.opengis.geometry.DirectPosition;
@@ -102,11 +118,23 @@ import ucar.nc2.Variable;
  * @author Simone Giannecchini, GeoSolutions
  * @author Stefan Alfons Krueger (alfonx), Wikisquare.de
  * @since 2.3
- * @source $URL$
  */
 public class NetCDFMosaicReaderTest extends Assert {
 
     @Rule public TemporaryFolder tempFolder = new TemporaryFolder();
+
+    public static ParameterValue<Boolean> NO_DEFERRED_LOADING_PARAM;
+
+    static {
+        final ParameterValue<Boolean> imageRead =
+                AbstractGridFormat.USE_JAI_IMAGEREAD.createValue();
+        imageRead.setValue(false);
+        NO_DEFERRED_LOADING_PARAM = imageRead;
+    }
+
+    public static final GeneralParameterValue[] NO_DEFERRED_LOADING_PARAMS = {
+        NO_DEFERRED_LOADING_PARAM
+    };
 
     public static junit.framework.Test suite() {
         return new JUnit4TestAdapter(NetCDFMosaicReaderTest.class);
@@ -269,12 +297,10 @@ public class NetCDFMosaicReaderTest extends Assert {
         reader = format.getReader(mosaic);
         try {
             // prepare params
-            final ParameterValue<Boolean> useJai =
-                    AbstractGridFormat.USE_JAI_IMAGEREAD.createValue();
-            useJai.setValue(false);
             ParameterValue<List> time = ImageMosaicFormat.TIME.createValue();
             time.setValue(Arrays.asList(parseTimeStamp(t1)));
-            GeneralParameterValue[] params = new GeneralParameterValue[] {useJai, time};
+            GeneralParameterValue[] params =
+                    new GeneralParameterValue[] {NO_DEFERRED_LOADING_PARAM, time};
             // read first
             GridCoverage2D coverage1 = reader.read(params);
             time.setValue(Arrays.asList(parseTimeStamp(t2)));
@@ -442,7 +468,7 @@ public class NetCDFMosaicReaderTest extends Assert {
             assertEquals(name, names[0]);
 
             // check we can read
-            coverage = reader.read(null);
+            coverage = reader.read(NO_DEFERRED_LOADING_PARAMS);
 
             // check we have the 4 granules we expect
             GranuleSource source = reader.getGranules(name, true);
@@ -590,7 +616,7 @@ public class NetCDFMosaicReaderTest extends Assert {
             assertEquals("NO2", names[0]);
 
             // check we can read
-            coverage = reader.read(null);
+            coverage = reader.read(NO_DEFERRED_LOADING_PARAMS);
 
             // check we have the two granules we expect
             GranuleSource source = reader.getGranules("NO2", true);
@@ -779,7 +805,7 @@ public class NetCDFMosaicReaderTest extends Assert {
         // simply test if the mosaic can be read without exceptions
         ImageMosaicFormat format = new ImageMosaicFormat();
         ImageMosaicReader reader = format.getReader(mosaic);
-        reader.read("L1_V2", null);
+        reader.read("L1_V2", NO_DEFERRED_LOADING_PARAMS);
         reader.dispose();
     }
 
@@ -919,7 +945,8 @@ public class NetCDFMosaicReaderTest extends Assert {
                             add(timeD);
                         }
                     });
-            GeneralParameterValue[] params = new GeneralParameterValue[] {time};
+            GeneralParameterValue[] params =
+                    new GeneralParameterValue[] {time, NO_DEFERRED_LOADING_PARAM};
             GridCoverage2D coverage1 = reader.read(params);
             assertNotData(coverage1, -999d);
             // Specify a new time (Check if two times returns two different coverages)
@@ -930,7 +957,7 @@ public class NetCDFMosaicReaderTest extends Assert {
                             add(timeD2);
                         }
                     });
-            params = new GeneralParameterValue[] {time};
+            params = new GeneralParameterValue[] {time, NO_DEFERRED_LOADING_PARAM};
             GridCoverage2D coverage2 = reader.read(params);
             assertNotData(coverage2, -999d);
             // Ensure that the two images are different (different location)
@@ -1119,12 +1146,12 @@ public class NetCDFMosaicReaderTest extends Assert {
             assertEquals(180, envelope.getMaximum(1), 0d);
 
             // check we can read a coverage out of it
-            coverage = reader.read(null);
+            coverage = reader.read(NO_DEFERRED_LOADING_PARAMS);
             reader.dispose();
 
             // Checking we can read again from the coverage once it has been configured.
             reader = format.getReader(mosaic);
-            coverage = reader.read(null);
+            coverage = reader.read(NO_DEFERRED_LOADING_PARAMS);
             assertNotNull(coverage);
 
         } finally {
@@ -1151,10 +1178,10 @@ public class NetCDFMosaicReaderTest extends Assert {
         GridCoverage2D coverage = null;
         try {
             reader = format.getReader(mosaic, hints);
-            coverage = reader.read("O3", null);
+            coverage = reader.read("O3", NO_DEFERRED_LOADING_PARAMS);
             reader.dispose();
             reader = format.getReader(mosaic, hints);
-            coverage = reader.read("NO2", null);
+            coverage = reader.read("NO2", NO_DEFERRED_LOADING_PARAMS);
             assertNotNull(coverage);
         } finally {
             if (coverage != null) {
@@ -1330,13 +1357,13 @@ public class NetCDFMosaicReaderTest extends Assert {
             assertEquals(180, envelope.getMaximum(1), 0d);
 
             // check we can read a coverage out of it
-            coverage = reader.read("NO2", null);
+            coverage = reader.read("NO2", NO_DEFERRED_LOADING_PARAMS);
             reader.dispose();
 
             // Checking we can read again from the coverage (using a different name this time) once
             // it has been configured.
             reader = format.getReader(mosaic);
-            coverage = reader.read("BrO", null);
+            coverage = reader.read("BrO", NO_DEFERRED_LOADING_PARAMS);
             assertNotNull(coverage);
 
         } finally {
@@ -1432,9 +1459,6 @@ public class NetCDFMosaicReaderTest extends Assert {
         final GridEnvelope2D range = new GridEnvelope2D(rasterArea);
         gg.setValue(new GridGeometry2D(range, envelope));
 
-        final ParameterValue<Boolean> direct = ImageMosaicFormat.USE_JAI_IMAGEREAD.createValue();
-        direct.setValue(false);
-
         final ParameterValue<double[]> bkg = ImageMosaicFormat.BACKGROUND_VALUES.createValue();
         bkg.setValue(new double[] {-9999.0});
 
@@ -1465,7 +1489,10 @@ public class NetCDFMosaicReaderTest extends Assert {
         // Test the output coverage
         GridCoverage2D coverage =
                 reader.read(
-                        name, new GeneralParameterValue[] {gg, bkg, direct, sigmaValue, dateValue});
+                        name,
+                        new GeneralParameterValue[] {
+                            gg, bkg, NO_DEFERRED_LOADING_PARAM, sigmaValue, dateValue
+                        });
         assertNotNull(coverage);
         reader.dispose();
     }
@@ -1518,12 +1545,11 @@ public class NetCDFMosaicReaderTest extends Assert {
             String timestamp,
             double expected)
             throws Exception {
-        ParameterValue<Boolean> useJai = AbstractGridFormat.USE_JAI_IMAGEREAD.createValue();
-        useJai.setValue(false);
         @SuppressWarnings("rawtypes")
         ParameterValue<List> time = ImageMosaicFormat.TIME.createValue();
         time.setValue(Arrays.asList(new Date[] {parseTimeStamp(timestamp)}));
-        GeneralParameterValue[] params = new GeneralParameterValue[] {useJai, time};
+        GeneralParameterValue[] params =
+                new GeneralParameterValue[] {NO_DEFERRED_LOADING_PARAM, time};
         GridCoverage2D coverage = reader.read(coverageName, params);
         assertNotNull(coverage);
         // delta is zero because an exact match is expected
@@ -1555,9 +1581,8 @@ public class NetCDFMosaicReaderTest extends Assert {
         TestRunner.run(NetCDFMosaicReaderTest.suite());
     }
 
-    @Before
-    public void init() {
-
+    @BeforeClass
+    public static void init() {
         // make sure CRS ordering is correct
         System.setProperty("org.geotools.referencing.forceXY", "true");
         System.setProperty("user.timezone", "GMT");
@@ -1573,29 +1598,180 @@ public class NetCDFMosaicReaderTest extends Assert {
         CRS.reset("all");
     }
 
-    /**
-     * returns an {@link AbstractGridCoverage2DReader} for the provided {@link URL} and for the
-     * providede {@link AbstractGridFormat}.
-     *
-     * @param testURL points to a valid object to create an {@link AbstractGridCoverage2DReader}
-     *     for.
-     * @param format to use for instantiating such a reader.
-     * @return a suitable {@link ImageMosaicReader}.
-     * @throws FactoryException
-     * @throws NoSuchAuthorityCodeException
-     */
-    static ImageMosaicReader getReader(URL testURL, final AbstractGridFormat format)
-            throws NoSuchAuthorityCodeException, FactoryException {
-
-        // final Hints hints= new Hints(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM,
-        // CRS.decode("EPSG:4326", true));
-        return getReader(testURL, format, null);
-    }
-
     static ImageMosaicReader getReader(URL testURL, final AbstractGridFormat format, Hints hints) {
         // Get a reader
         final ImageMosaicReader reader = (ImageMosaicReader) format.getReader(testURL, hints);
         Assert.assertNotNull(reader);
         return reader;
+    }
+
+    /** Cleanup granules metadata */
+    @Test
+    public void testMultiCoverageCleanupMetadata() throws Exception {
+        String folder = "gome-clean-meta";
+        Hints hints = new Hints(Hints.GRANULE_REMOVAL_POLICY, GranuleRemovalPolicy.METADATA);
+
+        File[] filesAfter = runNO2Removal(folder, hints);
+        assertThat(filesAfter, arrayWithSize(1));
+        assertThat(filesAfter[0].getName(), equalTo("20130101.NO2.DUMMY.nc"));
+    }
+
+    /** Cleanup granules metadata and data */
+    @Test
+    public void testMultiCoverageCleanupAll() throws Exception {
+        String folder = "gome-clean-all";
+        Hints hints = new Hints(Hints.GRANULE_REMOVAL_POLICY, GranuleRemovalPolicy.ALL);
+
+        File[] filesAfter = runNO2Removal(folder, hints);
+        assertThat(Arrays.toString(filesAfter), filesAfter, emptyArray());
+    }
+
+    private File[] runNO2Removal(String folder, Hints hints) throws IOException {
+        File testDir = tempFolder.newFolder(folder);
+        URL testUrl = URLs.fileToUrl(testDir);
+        FileUtils.copyDirectory(TestData.file(this, "gome"), testDir);
+        ImageMosaicReader reader = null;
+        try {
+            reader = new ImageMosaicReader(testUrl);
+            assertNotNull(reader);
+            // read and dispose the coverages to make sure sidecars are created
+            reader.read("NO2", NO_DEFERRED_LOADING_PARAMS).dispose(true);
+            reader.read("BrO", NO_DEFERRED_LOADING_PARAMS).dispose(true);
+            FileFilter no2_20130101_filter = f -> f.getName().contains("20130101.NO2.DUMMY");
+            File[] fileBefore = testDir.listFiles(no2_20130101_filter);
+            assertEquals(2, fileBefore.length);
+
+            // remove granule
+            GranuleStore store = (GranuleStore) reader.getGranules("NO2", false);
+
+            int removed =
+                    store.removeGranules(FF.like(FF.property("location"), "*20130101*"), hints);
+            assertEquals(1, removed);
+
+            // return files after
+            return testDir.listFiles(no2_20130101_filter);
+        } finally {
+            if (reader != null) {
+                reader.dispose();
+            }
+        }
+    }
+
+    /** Cleanup granules metadata, fully */
+    @Test
+    public void testMultiCoverageCleanupAllInAuxDB() throws Exception {
+        String folder = "poliaux-db-full";
+        Hints hints = new Hints(Hints.GRANULE_REMOVAL_POLICY, GranuleRemovalPolicy.ALL);
+
+        // clean up the netcdf aux database folder
+        File netcdfAux = new File("target/clean-test");
+        FileUtils.deleteQuietly(netcdfAux);
+
+        File testDir = tempFolder.newFolder(folder);
+        URL testUrl = URLs.fileToUrl(testDir);
+        FileUtils.copyDirectory(TestData.file(this, "poliaux"), testDir);
+        ImageMosaicReader reader = null;
+        PropertyIsLike locationFilter = FF.like(FF.property("location"), "*Poli1*");
+        try {
+            reader = new ImageMosaicReader(testUrl);
+            assertNotNull(reader);
+
+            // read and dispose the coverages to make sure sidecars are created
+            reader.read("NO2", NO_DEFERRED_LOADING_PARAMS).dispose(true);
+            reader.read("O3", NO_DEFERRED_LOADING_PARAMS).dispose(true);
+            FileFilter no2_20130101_filter = f -> f.getName().contains("Poli1");
+            File[] fileBefore = testDir.listFiles(no2_20130101_filter);
+            assertEquals(2, fileBefore.length);
+
+            // remove granule from NO2
+            GranuleStore no2store = (GranuleStore) reader.getGranules("NO2", false);
+            int no2removed = no2store.removeGranules(locationFilter, hints);
+            assertEquals(2, no2removed);
+
+            // the poli1 file has not been removed, the other variable is still referencing it
+            File[] filePartialRemoval = testDir.listFiles(no2_20130101_filter);
+            assertThat(filePartialRemoval, arrayWithSize(2));
+            // now to the same from 03
+            GranuleStore o3store = (GranuleStore) reader.getGranules("O3", false);
+            int o3removed = o3store.removeGranules(locationFilter, hints);
+            assertEquals(2, o3removed);
+
+            // the poli1 file has now been removed, nothing left to reference it
+            File[] fileFullRemoval = testDir.listFiles(no2_20130101_filter);
+            assertThat(Arrays.toString(fileFullRemoval), fileFullRemoval, emptyArray());
+        } finally {
+            if (reader != null) {
+                reader.dispose();
+            }
+        }
+
+        // check that the NetCDF database has been cleaned too
+        Properties connectionParams = new Properties();
+        try (FileReader fr = new FileReader(new File(testDir, "netcdf_datastore.properties"))) {
+            connectionParams.load(fr);
+        }
+        JDBCDataStore store = new H2DataStoreFactory().createDataStore(connectionParams);
+        assertEquals(0, store.getFeatureSource("NO2").getFeatures(locationFilter).size());
+        assertEquals(0, store.getFeatureSource("O3").getFeatures(locationFilter).size());
+    }
+
+    /** Cleanup granules metadata, fully */
+    @Test
+    public void testMultiCoverageCleanupMetadataInAuxDB() throws Exception {
+        String folder = "poliaux-db-meta";
+        Hints hints = new Hints(Hints.GRANULE_REMOVAL_POLICY, GranuleRemovalPolicy.METADATA);
+
+        // clean up the netcdf aux database folder
+        File netcdfAux = new File("target/clean-test");
+        FileUtils.deleteQuietly(netcdfAux);
+
+        File testDir = tempFolder.newFolder(folder);
+        URL testUrl = URLs.fileToUrl(testDir);
+        FileUtils.copyDirectory(TestData.file(this, "poliaux"), testDir);
+        ImageMosaicReader reader = null;
+        PropertyIsLike locationFilter = FF.like(FF.property("location"), "*Poli1*");
+        try {
+            reader = new ImageMosaicReader(testUrl);
+            assertNotNull(reader);
+            // read and dispose the coverages to make sure sidecars are created
+            reader.read("NO2", NO_DEFERRED_LOADING_PARAMS).dispose(true);
+            reader.read("O3", NO_DEFERRED_LOADING_PARAMS).dispose(true);
+
+            FileFilter no2_20130101_filter = f -> f.getName().contains("Poli1");
+            File[] fileBefore = testDir.listFiles(no2_20130101_filter);
+            assertEquals(2, fileBefore.length);
+
+            // remove granule from NO2
+            GranuleStore no2store = (GranuleStore) reader.getGranules("NO2", false);
+            int no2removed = no2store.removeGranules(locationFilter, hints);
+            assertEquals(2, no2removed);
+
+            // the poli1 file has not been removed, the other variable is still referencing it
+            File[] filePartialRemoval = testDir.listFiles(no2_20130101_filter);
+            assertEquals(2, filePartialRemoval.length);
+
+            // now to the same from 03
+            GranuleStore o3store = (GranuleStore) reader.getGranules("O3", false);
+            int o3removed = o3store.removeGranules(locationFilter, hints);
+            assertEquals(2, o3removed);
+
+            // the poli1 file is left, the metadata is gone
+            File[] fileFullRemoval = testDir.listFiles(no2_20130101_filter);
+            assertThat(fileFullRemoval, Matchers.arrayWithSize(1));
+            assertEquals(fileFullRemoval[0].getName(), "Poli1.nc");
+        } finally {
+            if (reader != null) {
+                reader.dispose();
+            }
+        }
+
+        // check that the NetCDF database has been cleaned too
+        Properties connectionParams = new Properties();
+        try (FileReader fr = new FileReader(new File(testDir, "netcdf_datastore.properties"))) {
+            connectionParams.load(fr);
+        }
+        JDBCDataStore store = new H2DataStoreFactory().createDataStore(connectionParams);
+        assertEquals(0, store.getFeatureSource("NO2").getFeatures(locationFilter).size());
+        assertEquals(0, store.getFeatureSource("O3").getFeatures(locationFilter).size());
     }
 }

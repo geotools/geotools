@@ -56,7 +56,7 @@ dates on the copyright statement, the boilerplate itself covers project name and
         *    http://geotools.org
         *    
         *    (C) 2006, Open Source Geospatial Foundation (OSGeo)
-        *    (C) 2002, Navel Ltd.
+        *    (C) 2002, MyCompany Ltd.
         *
         *    This library is free software; you can redistribute it and/or
         *    modify it under the terms of the GNU Lesser General Public
@@ -69,9 +69,8 @@ dates on the copyright statement, the boilerplate itself covers project name and
         *    Lesser General Public License for more details.
         */
 
-  The the above example from the gt-caching module some of the spatial index functionality
-  has been produced using of code from Navel Ltd that was published under the LGPL license in 2002.
-  The work was contributed to GeoTools 2006.
+  The the above example assumes a fictious class that has been developed by "MyCompany"
+  and then published LGPL license in 2002.  The work was contributed to GeoTools 2006.
 
 * When reusing code published under another compatible license do not modify the header at all (if you make a chance you can add the GeoTools header on top).
 
@@ -112,3 +111,6 @@ the coding conventions. Please always build before committing!.
 
 The `google-java-format <https://github.com/google/google-java-format>`_ project also offers plugins for various IDEs,
 if your IDE is not supported, please just build once on the command line before committing.
+
+Also you could use a `modified version <https://github.com/fernandor777/google-java-format/releases/download/1.7-gsgt/google-java-format-eclipse-plugin-1.6.0.jar>`__ 
+with 4 spaces indent by default, putting the jar file on Eclipse dropins folder.

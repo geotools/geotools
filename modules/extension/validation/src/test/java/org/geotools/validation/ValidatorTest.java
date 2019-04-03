@@ -45,7 +45,6 @@ import org.opengis.filter.Filter;
  *
  * @author bowens<br>
  *     Created Jun 28, 2004<br>
- * @source $URL$
  * @version <br>
  *     <b>Puropse:</b><br>
  *     <p><b>Description:</b><br>
@@ -190,7 +189,7 @@ public class ValidatorTest extends TestCase {
         DefaultFeatureResults results = new DefaultFeatureResults();
         fixture.processor.runFeatureTests("LAKES", add, results);
 
-        System.out.println(results.error);
+        // System.out.println(results.error);
         assertEquals("lakes test", 2, results.error.size());
 
         // results = new DefaultFeatureResults();

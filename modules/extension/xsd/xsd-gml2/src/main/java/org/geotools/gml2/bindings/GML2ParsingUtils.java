@@ -35,13 +35,13 @@ import org.geotools.gml2.GML;
 import org.geotools.referencing.CRS;
 import org.geotools.util.Converters;
 import org.geotools.util.logging.Logging;
-import org.geotools.xml.Binding;
-import org.geotools.xml.BindingWalkerFactory;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
-import org.geotools.xml.Schemas;
-import org.geotools.xml.impl.BindingWalker;
 import org.geotools.xs.bindings.XSAnyTypeBinding;
+import org.geotools.xsd.Binding;
+import org.geotools.xsd.BindingWalkerFactory;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
+import org.geotools.xsd.Schemas;
+import org.geotools.xsd.impl.BindingWalker;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryCollection;
 import org.locationtech.jts.geom.GeometryFactory;
@@ -64,11 +64,10 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * Utility methods used by gml2 bindings when parsing.
  *
  * @author Justin Deoliveira, The Open Planning Project, jdeolive@openplans.org
- * @source $URL$
  */
 public class GML2ParsingUtils {
     /** logging instance */
-    static Logger LOGGER = Logging.getLogger("org.geotools.gml");
+    static Logger LOGGER = Logging.getLogger(GML2ParsingUtils.class);
 
     /**
      * Metadata key used to indicate if a feature type has been parsed from a XML schema, or
@@ -208,14 +207,14 @@ public class GML2ParsingUtils {
         for (Iterator c = node.getChildren().iterator(); c.hasNext(); ) {
             Node child = (Node) c.next();
             String name = child.getComponent().getName();
-            Object valu = child.getValue();
+            Object value = child.getValue();
 
             // if the next property is of type geometry, let's set its CRS
-            if (Geometry.class.isAssignableFrom(valu.getClass()) && crs != null) {
+            if (value != null && Geometry.class.isAssignableFrom(value.getClass()) && crs != null) {
                 ftBuilder.crs(crs);
             }
 
-            ftBuilder.add(name, (valu != null) ? valu.getClass() : Object.class);
+            ftBuilder.add(name, (value != null) ? value.getClass() : Object.class);
         }
         ftBuilder.userData(PARSED_FROM_SCHEMA_KEY, false);
 

@@ -42,12 +42,11 @@ import org.opengis.filter.expression.Expression;
  *
  * @author Cory Horner
  * @since 2.2M2
- * @source $URL$
  */
 public class Collection_MedianFunction extends FunctionExpressionImpl {
     /** The logger for the filter module. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.filter.function");
+            org.geotools.util.logging.Logging.getLogger(Collection_MedianFunction.class);
 
     FeatureCollection<? extends FeatureType, ? extends Feature> previousFeatureCollection = null;
     Object median = null;
@@ -89,9 +88,6 @@ public class Collection_MedianFunction extends FunctionExpressionImpl {
      * to featureMember content.
      *
      * <p>To refer to all 'X': <code>featureMember/asterisk/X</code>
-     *
-     * @param args DOCUMENT ME!
-     * @throws IllegalArgumentException DOCUMENT ME!
      */
     public void setParameters(List args) {
         // if we see "featureMembers/*/ATTRIBUTE" change to "ATTRIBUTE"
@@ -106,7 +102,7 @@ public class Collection_MedianFunction extends FunctionExpressionImpl {
 
     public Object evaluate(Object feature) {
         if (feature == null) {
-            return new Integer(0); // no features were visited in the making of this answer
+            return Integer.valueOf(0); // no features were visited in the making of this answer
         }
         Expression expr = (Expression) getExpression(0);
         FeatureCollection<? extends FeatureType, ? extends Feature> featureCollection =

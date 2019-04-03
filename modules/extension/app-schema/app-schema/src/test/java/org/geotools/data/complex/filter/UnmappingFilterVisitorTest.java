@@ -34,6 +34,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import javax.xml.namespace.QName;
+import org.geotools.appschema.filter.FilterFactoryImplNamespaceAware;
 import org.geotools.data.DataAccess;
 import org.geotools.data.DataAccessFinder;
 import org.geotools.data.DataUtilities;
@@ -42,17 +43,16 @@ import org.geotools.data.complex.AppSchemaDataAccess;
 import org.geotools.data.complex.AttributeMapping;
 import org.geotools.data.complex.FeatureTypeMapping;
 import org.geotools.data.complex.TestData;
-import org.geotools.data.complex.config.Types;
-import org.geotools.data.complex.filter.XPathUtil.Step;
-import org.geotools.data.complex.filter.XPathUtil.StepList;
+import org.geotools.data.complex.feature.type.Types;
+import org.geotools.data.complex.feature.type.UniqueNameFeatureTypeFactoryImpl;
+import org.geotools.data.complex.util.XPathUtil.Step;
+import org.geotools.data.complex.util.XPathUtil.StepList;
 import org.geotools.data.memory.MemoryDataStore;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.TypeBuilder;
-import org.geotools.feature.type.UniqueNameFeatureTypeFactoryImpl;
-import org.geotools.filter.FilterFactoryImplNamespaceAware;
 import org.geotools.filter.IsEqualsToImpl;
 import org.geotools.filter.OrImpl;
 import org.geotools.filter.spatial.BBOX3DImpl;
@@ -99,7 +99,6 @@ import org.xml.sax.helpers.NamespaceSupport;
 /**
  * @author Gabriel Roldan (Axios Engineering)
  * @version $Id$
- * @source $URL$
  * @since 2.4
  */
 public class UnmappingFilterVisitorTest extends AppSchemaTestSupport {
@@ -686,7 +685,7 @@ public class UnmappingFilterVisitorTest extends AppSchemaTestSupport {
 
     @Test
     public void testLiteralExpression() throws Exception {
-        Expression literal = ff.literal(new Integer(0));
+        Expression literal = ff.literal(Integer.valueOf(0));
         List unrolledExpressions = (List) literal.accept(visitor, null);
         assertEquals(1, unrolledExpressions.size());
         assertSame(literal, unrolledExpressions.get(0));
@@ -701,7 +700,7 @@ public class UnmappingFilterVisitorTest extends AppSchemaTestSupport {
     private void testLogicFilter(Class<?> filterType) throws Exception {
         BinaryLogicOperator complexLogicFilter;
         PropertyIsGreaterThan resultFilter =
-                ff.greater(ff.property("measurement/result"), ff.literal(new Integer(5)));
+                ff.greater(ff.property("measurement/result"), ff.literal(Integer.valueOf(5)));
 
         PropertyIsBetween determFilter =
                 ff.between(
@@ -734,7 +733,7 @@ public class UnmappingFilterVisitorTest extends AppSchemaTestSupport {
                 "results_value",
                 ((PropertyName) unmappedResult.getExpression1()).getPropertyName());
 
-        assertEquals(new Integer(5), ((Literal) unmappedResult.getExpression2()).getValue());
+        assertEquals(Integer.valueOf(5), ((Literal) unmappedResult.getExpression2()).getValue());
 
         assertEquals(
                 "determinand_description",
@@ -749,7 +748,7 @@ public class UnmappingFilterVisitorTest extends AppSchemaTestSupport {
 
     @Test
     public void testMathExpression() throws Exception {
-        Literal literal = ff.literal(new Integer(2));
+        Literal literal = ff.literal(Integer.valueOf(2));
         Multiply mathExp = ff.multiply(ff.property("measurement/result"), literal);
 
         List unrolledExpressions = (List) mathExp.accept(visitor, null);

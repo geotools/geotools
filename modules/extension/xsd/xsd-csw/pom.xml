@@ -16,7 +16,7 @@
  <parent>
     <groupId>org.geotools.xsd</groupId>
     <artifactId>xsd</artifactId>
-    <version>20-SNAPSHOT</version>
+    <version>22-SNAPSHOT</version>
   </parent>
   
   <!-- =========================================================== -->
@@ -105,7 +105,7 @@
             <schemaLookupDirectory>${basedir}/../../../extension/xsd/xsd-ows/src/main/resources/org/geotools/ows/</schemaLookupDirectory>
             <schemaLookupDirectory>${basedir}/../../../extension/xsd/xsd-filter/src/main/resources/org/geotools/filter/v1_1/</schemaLookupDirectory>
           </schemaLookupDirectories>
-          <complexBindingBaseClass>org.geotools.xml.AbstractComplexEMFBinding</complexBindingBaseClass>
+          <complexBindingBaseClass>org.geotools.xsd.AbstractComplexEMFBinding</complexBindingBaseClass>
           <generateElementBindings>true</generateElementBindings>
           <bindingConstructorArguments>
             <bindingConstructorArgument>
@@ -122,7 +122,7 @@
         <configuration>
           <schemaLocation>rec-dcmes.xsd</schemaLocation>
           <schemaSourceDirectory>${basedir}/src/main/resources/org/geotools/csw/</schemaSourceDirectory>
-          <complexBindingBaseClass>org.geotools.xml.AbstractComplexEMFBinding</complexBindingBaseClass>
+          <complexBindingBaseClass>org.geotools.xsd.AbstractComplexEMFBinding</complexBindingBaseClass>
           <generateElementBindings>true</generateElementBindings>
           <bindingConstructorArguments>
             <bindingConstructorArgument>

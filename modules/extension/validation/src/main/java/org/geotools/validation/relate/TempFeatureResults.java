@@ -22,7 +22,6 @@ import org.geotools.validation.Validation;
 import org.geotools.validation.ValidationResults;
 import org.opengis.feature.simple.SimpleFeature;
 
-/** @source $URL$ */
 final class TempFeatureResults implements ValidationResults {
     Validation trial;
     List error = new ArrayList();
@@ -35,12 +34,12 @@ final class TempFeatureResults implements ValidationResults {
     public void error(SimpleFeature feature, String message) {
         String where = feature != null ? feature.getID() : "all";
         error.add(where + ":" + message);
-        System.err.println(where + ":" + message);
+        // System.err.println(where + ":" + message);
     }
 
     public void warning(SimpleFeature feature, String message) {
         String where = feature != null ? feature.getID() : "all";
         warning.add(where + ":" + message);
-        System.out.println(where + ":" + message);
+        // System.out.println(where + ":" + message);
     }
 }

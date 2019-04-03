@@ -31,8 +31,6 @@ import org.opengis.feature.simple.SimpleFeatureType;
 /**
  * The indexed version of the shapefile feature reader, will only read the records specified in the
  * constructor
- *
- * @source $URL$
  */
 class IndexedShapefileFeatureReader extends ShapefileFeatureReader {
 
@@ -40,12 +38,10 @@ class IndexedShapefileFeatureReader extends ShapefileFeatureReader {
 
     private Data next;
 
-    private IndexedFidReader fidReader;
-
     /**
      * Create the shape reader
      *
-     * @param atts - the attributes that we are going to read.
+     * @param schema - the schema that we are going to read.
      * @param shp - the shape reader, required
      * @param dbf - the dbf file reader. May be null, in this case no attributes will be read from
      *     the dbf file

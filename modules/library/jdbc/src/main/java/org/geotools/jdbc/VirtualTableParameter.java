@@ -25,7 +25,6 @@ import java.io.Serializable;
  * <p>The class includes some default validators
  *
  * @author Andrea Aime - OpenGeo
- * @source $URL$
  */
 public class VirtualTableParameter implements Serializable {
     String name;

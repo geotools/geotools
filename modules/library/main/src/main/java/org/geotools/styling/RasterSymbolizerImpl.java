@@ -21,7 +21,7 @@ package org.geotools.styling;
 import javax.measure.Unit;
 import javax.measure.quantity.Length;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.factory.GeoTools;
+import org.geotools.util.factory.GeoTools;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Expression;
 import org.opengis.style.OverlapBehavior;
@@ -32,9 +32,9 @@ import org.opengis.style.StyleVisitor;
  *
  * @author iant
  * @author Johann Sorel (Geomatys)
- * @source $URL$
  */
-public class RasterSymbolizerImpl extends AbstractSymbolizer implements RasterSymbolizer {
+public class RasterSymbolizerImpl extends AbstractSymbolizer
+        implements RasterSymbolizer, Cloneable {
 
     private OverlapBehavior behavior;
 
@@ -44,7 +44,6 @@ public class RasterSymbolizerImpl extends AbstractSymbolizer implements RasterSy
     private ColorMapImpl colorMap = new ColorMapImpl();
     private ContrastEnhancementImpl contrastEnhancement = new ContrastEnhancementImpl();
     private ShadedReliefImpl shadedRelief;
-    private String geometryName;
     private Symbolizer symbolizer;
     private Expression opacity;
 
@@ -331,7 +330,6 @@ public class RasterSymbolizerImpl extends AbstractSymbolizer implements RasterSy
      *
      * @param symbolizer the symbolizer to be used. If this is <B>not</B> a polygon or a line
      *     symbolizer an unexpected argument exception may be thrown by an implementing class.
-     * @throws IllegalArgumentException DOCUMENT ME!
      */
     public void setImageOutline(org.opengis.style.Symbolizer symbolizer) {
         if (symbolizer == null) {
@@ -415,7 +413,6 @@ public class RasterSymbolizerImpl extends AbstractSymbolizer implements RasterSy
      * Creates a deep copy clone. TODO: Need to complete the deep copy, currently only shallow copy.
      *
      * @return The deep copy clone.
-     * @throws RuntimeException DOCUMENT ME!
      */
     public Object clone() {
         Object clone;

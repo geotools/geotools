@@ -71,8 +71,8 @@ import org.geotools.gml3.v3_2.bindings.DoubleListBinding;
 import org.geotools.gml3.v3_2.bindings.EnvelopeTypeBinding;
 import org.geotools.gml3.v3_2.bindings.GML32EncodingUtils;
 import org.geotools.gml3.v3_2.bindings.LinearRingTypeBinding;
-import org.geotools.xml.Configuration;
 import org.geotools.xs.XS;
+import org.geotools.xsd.Configuration;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.picocontainer.MutablePicoContainer;
 
@@ -80,7 +80,6 @@ import org.picocontainer.MutablePicoContainer;
  * Parser configuration for the http://www.opengis.net/gml/3.2 schema.
  *
  * @generated
- * @source $URL$
  */
 public class GMLConfiguration extends Configuration {
 
@@ -308,6 +307,24 @@ public class GMLConfiguration extends Configuration {
     }
 
     /**
+     * Controls if coordinates measures should be included in WFS outputs.
+     *
+     * @return TRUE if measures should be encoded, otherwise FALSE
+     */
+    public boolean getEncodeMeasures() {
+        return delegate.getEncodeMeasures();
+    }
+
+    /**
+     * Sets if coordinates measures should be included in WFS outputs.
+     *
+     * @param encodeMeasures TRUE if measures should be encoded, otherwise FALSE
+     */
+    public void setEncodeMeasures(boolean encodeMeasures) {
+        delegate.setEncodeMeasures(encodeMeasures);
+    }
+
+    /**
      * Retrieves the geometry factory used to build geometries
      *
      * @return the geometryFactory
@@ -323,5 +340,43 @@ public class GMLConfiguration extends Configuration {
      */
     public void setGeometryFactory(GeometryFactory geometryFactory) {
         delegate.setGeometryFactory(geometryFactory);
+    }
+
+    /**
+     * Formats decimals of coordinates padding with zeros up to the configured number of decimals.
+     *
+     * @param padWithZeros right pad decimals with zeros
+     */
+    public void setPadWithZeros(boolean padWithZeros) {
+        delegate.setPadWithZeros(padWithZeros);
+    }
+
+    /**
+     * Forces usage of decimal notation, avoiding scientific notations to encode coordinates.
+     *
+     * @param forceDecimalEncoding avoid scientific notation, always use decimal
+     */
+    public void setForceDecimalEncoding(boolean forceDecimalEncoding) {
+        delegate.setForceDecimalEncoding(forceDecimalEncoding);
+    }
+
+    /**
+     * Returns true if decimals of coordinates are padded with zeros up to the configured number of
+     * decimals.
+     *
+     * @return true if decimals are right-padded with zeros
+     */
+    public boolean getPadWithZeros() {
+        return delegate.getPadWithZeros();
+    }
+
+    /**
+     * Returns true if decimal notation should always be used, and scientific notation always
+     * avoided.
+     *
+     * @return true if decimal notation is always used for encoding coordinates
+     */
+    public boolean getForceDecimalEncoding() {
+        return delegate.getForceDecimalEncoding();
     }
 }

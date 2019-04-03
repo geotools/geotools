@@ -27,7 +27,6 @@ import si.uom.SI;
 /**
  * Tests the {@link CartesianCS} class.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  */

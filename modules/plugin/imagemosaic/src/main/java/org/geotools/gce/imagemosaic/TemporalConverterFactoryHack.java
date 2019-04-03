@@ -22,9 +22,9 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 import javax.xml.datatype.XMLGregorianCalendar;
-import org.geotools.factory.Hints;
 import org.geotools.util.Converter;
 import org.geotools.util.ConverterFactory;
+import org.geotools.util.factory.Hints;
 
 /**
  * Converter factory which created converting between temporal types and {@link String}
@@ -44,19 +44,10 @@ import org.geotools.util.ConverterFactory;
  *
  * @author Simone Giannecchini, GeoSolutions
  * @since 9.0
- * @source $URL$
  */
 class TemporalConverterFactoryHack implements ConverterFactory {
 
     public Converter createConverter(Class source, Class target, Hints hints) {
-        boolean isSafeOnly = false;
-
-        if (hints != null) {
-            Object safe = hints.get(ConverterFactory.SAFE_CONVERSION);
-            if (safe instanceof Boolean && ((Boolean) safe).booleanValue()) {
-                isSafeOnly = true;
-            }
-        }
 
         if (Date.class.isAssignableFrom(source)) {
 

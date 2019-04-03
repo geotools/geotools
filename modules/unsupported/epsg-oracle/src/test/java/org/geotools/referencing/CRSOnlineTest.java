@@ -19,11 +19,11 @@ package org.geotools.referencing;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.Set;
-import org.geotools.factory.GeoTools;
-import org.geotools.factory.Hints;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.factory.OrderedAxisAuthorityFactory;
 import org.geotools.referencing.factory.epsg.oracle.OracleOnlineTestCase;
+import org.geotools.util.factory.GeoTools;
+import org.geotools.util.factory.Hints;
 import org.opengis.metadata.citation.Citation;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
@@ -35,7 +35,6 @@ import org.opengis.referencing.cs.CoordinateSystemAxis;
 /**
  * Tests if the CRS utility class is functioning correctly when using EPSG-Oracle datastore.
  *
- * @source $URL$
  * @version $Id$
  * @author Jody Garnett
  * @author Martin Desruisseaux
@@ -259,9 +258,10 @@ public class CRSOnlineTest extends OracleOnlineTestCase {
                 assertNotNull(crs);
                 count++;
             } catch (FactoryException e) {
-                System.err.println("WARNING (CRS: " + code + " ):" + e.getMessage());
+                // System.err.println("WARNING (CRS: " + code + " ):" + e.getMessage());
             }
         }
-        System.out.println("Success: " + count + "/" + total + " (" + (count * 100) / total + "%)");
+        // System.out.println("Success: " + count + "/" + total + " (" + (count * 100) / total +
+        // "%)");
     }
 }

@@ -64,13 +64,11 @@ import org.locationtech.jts.geom.Polygon;
  *     href="http://otn.oracle.com/pls/db10g/db10g.to_toc?pathname=appdev.101%2Fb10826%2Ftoc.htm&remark=portal+%28Unstructured+data%29">Spatial
  *     User's Guide (10.1)</a>
  * @author Jody Garnett, Refractions Reasearch Inc.
- * @source $URL$
  * @version CVS Version
  * @see net.refractions.jspatial.jts
  */
 public final class SDO {
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.data.oracle.sdo");
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(SDO.class);
     public static final int SRID_NULL = -1;
 
     //
@@ -115,7 +113,8 @@ public final class SDO {
      * @return <code>3</code>
      */
     public static int D(Geometry geom) {
-        CoordinateSequenceFactory f = geom.getFactory().getCoordinateSequenceFactory();
+        CoordinateSequenceFactory f =
+                geom != null ? geom.getFactory().getCoordinateSequenceFactory() : null;
 
         if (f instanceof CoordinateAccessFactory) {
             return ((CoordinateAccessFactory) f).getDimension();
@@ -442,20 +441,8 @@ public final class SDO {
         }
     }
 
-    /**
-     * Adds contents of array to the list as Interger objects
-     *
-     * @param list List to append the contents of array to
-     * @param array Array of ints to append
-     */
-    private static void addInts(List list, int[] array) {
-        for (int i = 0; i < array.length; i++) {
-            list.add(new Integer(array[i]));
-        }
-    }
-
     private static void addInt(List list, int i) {
-        list.add(new Integer(i));
+        list.add(Integer.valueOf(i));
     }
 
     /**
@@ -869,27 +856,6 @@ public final class SDO {
     }
 
     /**
-     * ordinateArray purpose.
-     *
-     * <p>Description ...
-     *
-     * @param access
-     * @param index
-     */
-    private static double[] doubleOrdinateArray(CoordinateAccess access, int index) {
-        final int D = access.getDimension();
-        final int L = access.getNumAttributes();
-        final int LEN = D + L;
-        double[] ords = new double[LEN];
-
-        for (int i = 0; i < LEN; i++) {
-            ords[i] = access.getOrdinate(index, i);
-        }
-
-        return ords;
-    }
-
-    /**
      * Used with ELEM_INFO <code>( 1, 1, 1)</code>
      *
      * @param list List to add coordiantes to
@@ -950,7 +916,7 @@ public final class SDO {
      * <p>
      *
      * @param list List to add coordiantes to
-     * @param polygon Polygon to be encoded
+     * @param poly Polygon to be encoded
      */
     private static void addCoordinatesInterpretation3(List list, Polygon poly) {
         Envelope e = poly.getEnvelopeInternal();
@@ -1404,22 +1370,6 @@ public final class SDO {
         return Coordinates.reverse(factory, ring);
     }
 
-    /**
-     * Reverse the Orientationwise orientation of the ring of Coordinates.
-     *
-     * @param ring Ring of Coordinates
-     * @return coords Copy of <code>ring</code> in reversed order
-     */
-    private static Coordinate[] reverse(Coordinate[] ring) {
-        int length = ring.length;
-        Coordinate[] reverse = new Coordinate[length];
-
-        for (int i = 0; i < length; i++) {
-            reverse[i] = ring[length - i - 1];
-        }
-        return reverse;
-    }
-
     // Utility Functions
     //
     //
@@ -1661,32 +1611,17 @@ public final class SDO {
         return array;
     }
 
-    /**
-     * Access D (for dimension) as encoded in GTYPE
-     *
-     * @param GTYPE DOCUMENT ME!
-     * @return DOCUMENT ME!
-     */
+    /** Access D (for dimension) as encoded in GTYPE */
     public static int D(final int GTYPE) {
         return GTYPE / 1000;
     }
 
-    /**
-     * Access L (for LRS) as encoded in GTYPE
-     *
-     * @param GTYPE DOCUMENT ME!
-     * @return DOCUMENT ME!
-     */
+    /** Access L (for LRS) as encoded in GTYPE */
     public static int L(final int GTYPE) {
         return (GTYPE - (D(GTYPE) * 1000)) / 100;
     }
 
-    /**
-     * Access TT (for geometry type) as encoded in GTYPE
-     *
-     * @param GTYPE DOCUMENT ME!
-     * @return DOCUMENT ME!
-     */
+    /** Access TT (for geometry type) as encoded in GTYPE */
     public static int TT(final int GTYPE) {
         return GTYPE - (D(GTYPE) * 1000) - (L(GTYPE) * 100);
     }
@@ -1695,10 +1630,6 @@ public final class SDO {
      * Access STARTING_OFFSET from elemInfo, or -1 if not available.
      *
      * <p>
-     *
-     * @param elemInfo DOCUMENT ME!
-     * @param triplet DOCUMENT ME!
-     * @return DOCUMENT ME!
      */
     private static int STARTING_OFFSET(int[] elemInfo, int triplet) {
         if (((triplet * 3) + 0) >= elemInfo.length) {
@@ -1731,7 +1662,9 @@ public final class SDO {
             String msg =
                     MessageFormat.format(
                             condition,
-                            new Object[] {new Integer(min), new Integer(actual), new Integer(max)});
+                            new Object[] {
+                                Integer.valueOf(min), Integer.valueOf(actual), Integer.valueOf(max)
+                            });
             throw new IllegalArgumentException(msg);
         }
     }
@@ -1764,7 +1697,7 @@ public final class SDO {
                 array.append(",");
             }
         }
-        String msg = MessageFormat.format(condition, new Object[] {new Integer(actual), array});
+        String msg = MessageFormat.format(condition, new Object[] {Integer.valueOf(actual), array});
         throw new IllegalArgumentException(msg);
     }
     /**
@@ -1820,23 +1753,12 @@ public final class SDO {
         return elemInfo[(triplet * 3) + 2];
     }
 
-    /**
-     * Coordinates from <code>(x,y,x2,y2,...)</code> ordinates.
-     *
-     * @param ordinates DOCUMENT ME!
-     * @return DOCUMENT ME!
-     */
+    /** Coordinates from <code>(x,y,x2,y2,...)</code> ordinates. */
     public static Coordinate[] asCoordinates(double[] ordinates) {
         return asCoordinates(ordinates, 2);
     }
 
-    /**
-     * Coordinates from a <code>(x,y,i3..,id,x2,y2...)</code> ordinates.
-     *
-     * @param ordinates DOCUMENT ME!
-     * @param d DOCUMENT ME!
-     * @return DOCUMENT ME!
-     */
+    /** Coordinates from a <code>(x,y,i3..,id,x2,y2...)</code> ordinates. */
     public static Coordinate[] asCoordinates(double[] ordinates, int d) {
         int length = ordinates.length / d;
         Coordinate[] coords = new Coordinate[length];
@@ -1870,7 +1792,6 @@ public final class SDO {
      * @param f CoordinateSequenceFactory used to encode ordiantes for JTS
      * @param GTYPE Encoding of <b>D</b>imension, <b>L</b>RS and <b>TT</b>ype
      * @param ordinates
-     * @throws IllegalArgumentException DOCUMENT ME!
      */
     public static CoordinateSequence coordinates(
             CoordinateSequenceFactory f, final int GTYPE, double[] ordinates) {
@@ -1922,8 +1843,6 @@ public final class SDO {
             return ((LiteCoordinateSequenceFactory) f).create(ordinates);
         }
 
-        final int LENGTH = ordinates.length / LEN;
-
         OrdinateList x = new OrdinateList(ordinates, 0, LEN);
         OrdinateList y = new OrdinateList(ordinates, 1, LEN);
         OrdinateList z = null;
@@ -1949,12 +1868,6 @@ public final class SDO {
      * Construct CoordinateSequence with no LRS measures.
      *
      * <p>To produce two dimension Coordinates pass in <code>null</code> for z
-     *
-     * @param f DOCUMENT ME!
-     * @param x DOCUMENT ME!
-     * @param y DOCUMENT ME!
-     * @param z DOCUMENT ME!
-     * @return DOCUMENT ME!
      */
     public static CoordinateSequence coordiantes(
             CoordinateSequenceFactory f, OrdinateList x, OrdinateList y, OrdinateList z) {
@@ -1982,12 +1895,6 @@ public final class SDO {
      * Construct CoordinateSequence with no LRS measures.
      *
      * <p>To produce two dimension Coordinates pass in <code>null</code> for z
-     *
-     * @param f DOCUMENT ME!
-     * @param x DOCUMENT ME!
-     * @param y DOCUMENT ME!
-     * @param z DOCUMENT ME!
-     * @return DOCUMENT ME!
      */
     public static CoordinateSequence coordiantes(
             CoordinateSequenceFactory f, AttributeList x, AttributeList y, AttributeList z) {
@@ -2056,12 +1963,10 @@ public final class SDO {
      *     OrdinateList) coordiantes() with just a OrdinateList of measures}! Construct
      *     SpatialCoordinates, with LRS measure information.
      *     <p>To produce two dimension Coordinates pass in <code>null</code> for z
-     * @param f DOCUMENT ME!
      * @param x x-ordinates
      * @param y y-ordinates
      * @param z z-ordinates, <code>null</code> for 2D
      * @param m column major measure information
-     * @return DOCUMENT ME!
      */
     @Deprecated
     public static CoordinateSequence coordiantes(
@@ -2101,12 +2006,10 @@ public final class SDO {
      *     OrdinateList) coordiantes() with just a OrdinateList of measures}! Construct
      *     SpatialCoordinates, with LRS measure information.
      *     <p>To produce two dimension Coordinates pass in <code>null</code> for z
-     * @param f DOCUMENT ME!
      * @param x x-ordinates
      * @param y y-ordinates
      * @param z z-ordinates, <code>null</code> for 2D
      * @param m column major measure information
-     * @return DOCUMENT ME!
      */
     @Deprecated
     public static CoordinateSequence coordiantes(
@@ -2212,7 +2115,6 @@ public final class SDO {
      * @param GTYPE Encoding of <b>D</b>imension, <b>L</b>RS and <b>TT</b>ype
      * @param SRID
      * @param elemInfo
-     * @param triplet DOCUMENT ME!
      * @param coords
      * @param N Number of triplets (-1 for unknown/don't care)
      * @return Geometry as encoded, or null w/ log if it cannot be represented via JTS
@@ -2499,7 +2401,7 @@ public final class SDO {
             } else if (etype == ETYPE.COMPOUND_POLYGON_INTERIOR) {
                 int subelements = INTERPRETATION(elemInfo, i);
                 rings.add(createLinearRing(gf, GTYPE, SRID, elemInfo, i, coords));
-                i += subelements;
+                i = i + subelements + 1;
             } else if (etype
                     == ETYPE.POLYGON) { // nead to test Orientationwiseness of Ring to see if it
                 // is

@@ -27,7 +27,7 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 
 public class LoggerTest {
-    private static final Logger LOGGER = Logging.getLogger("org.geotools.map");
+    private static final Logger LOGGER = Logging.getLogger(LoggerTest.class);
     private static Level oldLevel;
     protected Handler logHandler;
     protected ByteArrayOutputStream logStream;

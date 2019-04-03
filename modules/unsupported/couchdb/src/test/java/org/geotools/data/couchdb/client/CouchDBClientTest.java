@@ -25,7 +25,7 @@ import org.junit.Test;
 
 /**
  * @author Ian Schneider (OpenGeo)
- * @source $URL$
+
  */
 public class CouchDBClientTest extends CouchDBTestSupport {
 
@@ -82,13 +82,13 @@ public class CouchDBClientTest extends CouchDBTestSupport {
          *
          * <p>JSONObject post = new JSONObject(); JSONArray vals = new JSONArray();
          * vals.addAll(Arrays.asList(ids)); post.put("keys",vals);
-         * System.out.println(post.toJSONString()); resp = client.post(TEST_DB_NAME +
+         * // System.out.println(post.toJSONString()); resp = client.post(TEST_DB_NAME +
          * "/_design/main/_view/counties", post.toJSONString()); JSONObject bodyAsJSONObject =
          * resp.getBodyAsJSONObject(); JSONArray rows = (JSONArray) bodyAsJSONObject.get("rows");
          * for (int i =0 ;i <rows.size(); i++) { JSONObject row = (JSONObject) rows.get(i);
          * JSONObject val = (JSONObject) row.get("value");
-         * System.out.println(val.get("properties")); }
-         * System.out.println(System.currentTimeMillis() - time);
+         * // System.out.println(val.get("properties")); }
+         * // System.out.println(System.currentTimeMillis() - time);
          */
     }
 }

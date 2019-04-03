@@ -36,10 +36,10 @@ import org.geotools.coverage.grid.io.imageio.ReadType;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;
-import org.geotools.factory.Hints;
 import org.geotools.gce.imagemosaic.SpatialRequestHelper.CoverageProperties;
 import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.filter.Filter;
@@ -893,9 +893,6 @@ public class RasterLayerRequest {
      * Check the type of read operation which will be performed and return {@code true} if a JAI
      * imageRead operation need to be performed or {@code false} if a simple read operation is
      * needed.
-     *
-     * @return {@code true} if the read operation will use a JAI ImageRead operation instead of a
-     *     simple {@code ImageReader.read(...)} call.
      */
     private void checkReadType() {
         // //

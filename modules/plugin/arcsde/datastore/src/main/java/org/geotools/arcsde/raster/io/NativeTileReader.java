@@ -45,15 +45,11 @@ import org.opengis.coverage.grid.GridEnvelope;
  *
  * @author Gabriel Roldan (OpenGeo)
  * @since 2.5.4
- * @version $Id$
- * @source $URL:
- *     http://svn.osgeo.org/geotools/trunk/modules/plugin/arcsde/datastore/src/main/java/org
- *     /geotools/arcsde/gce/NativeTileReader.java $
  */
 @SuppressWarnings({"nls"})
 final class NativeTileReader implements TileReader {
 
-    private static final Logger LOGGER = Logging.getLogger("org.geotools.arcsde.gce");
+    private static final Logger LOGGER = Logging.getLogger(NativeTileReader.class);
 
     private final RasterDatasetInfo rasterInfo;
 
@@ -156,15 +152,6 @@ final class NativeTileReader implements TileReader {
      * <p>As for any object that receives a {@link ISession session}, the same rule applies: this
      * class is not responsible of {@link ISession#dispose() disposing} the session, but the calling
      * code is.
-     *
-     * @param preparedQuery the query stream to close when done
-     * @param row
-     * @param imageDimensions the image size, x and y are the offsets, width and height the actual
-     *     width and height, used to ignore incomming pixel data as appropriate to fit the image
-     *     dimensions
-     * @param bitsPerSample
-     * @param numberOfBands2
-     * @param tileRange
      */
     NativeTileReader(
             final ISessionPool sessionPool,

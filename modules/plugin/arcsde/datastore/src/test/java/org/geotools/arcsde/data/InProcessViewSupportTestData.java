@@ -41,17 +41,12 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * Data setup and utilities for testing the support of in-process views
  *
  * @author Gabriel Roldan, Axios Engineering
- * @source $URL$
- *     http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/test/java
- *     /org/geotools/arcsde/data/InProcessViewSupportTestData.java $
- * @version $Id$
  * @since 2.4.x
  */
 public class InProcessViewSupportTestData {
 
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(
-                    InProcessViewSupportTestData.class.getPackage().getName());
+            org.geotools.util.logging.Logging.getLogger(InProcessViewSupportTestData.class);
 
     public static final String MASTER_UNQUALIFIED = "GT_SDE_TEST_MASTER";
 
@@ -344,8 +339,8 @@ public class InProcessViewSupportTestData {
                         insert.setWriteMode(true);
                         SeRow row = insert.getRowToSet();
 
-                        row.setInteger(0, new Integer(7));
-                        row.setInteger(1, new Integer(3));
+                        row.setInteger(0, Integer.valueOf(7));
+                        row.setInteger(1, Integer.valueOf(3));
                         row.setString(2, "child6");
                         row.setString(3, "description7");
                         insert.execute();

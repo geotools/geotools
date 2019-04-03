@@ -22,7 +22,6 @@ import static java.lang.Math.atan2;
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
 import static java.lang.Math.tan;
-import static java.lang.Math.toDegrees;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -503,7 +502,6 @@ public class OffsetCurveBuilder {
                         Math.max(squaredDistance(dx10, dy10), squaredDistance(dx12, dy12)));
         if (squaredDistance(px - x, py - y) > maxAllowedDistanceSquared) {
             double angle = atan2(py - y, px - x);
-            System.out.println(toDegrees(angle));
             double maxAllowedDistance = Math.sqrt(maxAllowedDistanceSquared);
             px = x + maxAllowedDistance * cos(angle);
             py = y + maxAllowedDistance * sin(angle);

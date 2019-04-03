@@ -16,9 +16,10 @@
  */
 package org.geotools.data.wfs.internal.parsers;
 
-import static org.geotools.data.wfs.WFSTestData.*;
+import static org.geotools.data.wfs.WFSTestData.CUBEWERX_GOVUNITCE;
 import static org.geotools.data.wfs.WFSTestData.CUBEWERX_ROADSEG;
 import static org.geotools.data.wfs.WFSTestData.GEOS_ARCHSITES_11;
+import static org.geotools.data.wfs.WFSTestData.GEOS_ROADS_10;
 import static org.geotools.data.wfs.WFSTestData.GEOS_ROADS_11;
 import static org.geotools.data.wfs.WFSTestData.GEOS_STATES_10;
 import static org.geotools.data.wfs.WFSTestData.GEOS_STATES_11;
@@ -31,13 +32,19 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import javax.xml.namespace.QName;
 import org.geotools.data.DataUtilities;
+import org.geotools.data.wfs.WFSDataStoreFactory;
 import org.geotools.data.wfs.internal.GetFeatureParser;
 import org.geotools.referencing.CRS;
 import org.geotools.wfs.v1_1.WFSConfiguration;
-import org.geotools.xml.Configuration;
+import org.geotools.xsd.Configuration;
 import org.junit.Test;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Polygon;
 import org.opengis.feature.Feature;
@@ -47,6 +54,7 @@ import org.opengis.feature.Property;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
+import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
@@ -61,8 +69,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  *
  * @author Gabriel Roldan
  * @version $Id$
- * @since 2.5.x
- * @source $URL$ java/org/geotools/wfs/v_1_1_0/data/StreamingParserFeatureReaderTest .java $
+ * @since 2.5.x java/org/geotools/wfs/v_1_1_0/data/StreamingParserFeatureReaderTest .java $
  * @see XmlSimpleFeatureParserTest
  * @see StreamingParserFeatureReaderTest
  */
@@ -70,6 +77,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 public abstract class AbstractGetFeatureParserTest {
 
     private boolean supportsCount = true;
+    private static final GeometryFactory GF = new GeometryFactory();
 
     protected void setSupportsCount(boolean supportsCount) {
         this.supportsCount = supportsCount;
@@ -86,14 +94,13 @@ public abstract class AbstractGetFeatureParserTest {
      * A feature visitor used to assert the parsed features
      *
      * @author Gabriel Roldan (TOPP)
-     * @version $Id$
      * @since 2.5.x
-     * @source $URL: http://svn.geotools.org/geotools/trunk/gt/modules/plugin/wfs /src/test
-     *     /java/org/geotools/wfs/v_1_1_0/data/AbstractGetFeatureParserTest .java $
      */
     private static class FeatureAssertor implements FeatureVisitor {
 
         private SimpleFeatureType featureType;
+        private List<Geometry> expectedGeometries;
+        private int featureCount = 0;
 
         /**
          * A featuretype which might be a subset of the actual FeatureType whose attributes will be
@@ -105,6 +112,10 @@ public abstract class AbstractGetFeatureParserTest {
             this.featureType = featureType;
         }
 
+        public void setExpectedGeometries(List<Geometry> expectedGeometries) {
+            this.expectedGeometries = expectedGeometries;
+        }
+
         public void visit(final Feature feature) {
             assertNotNull(feature);
             assertNotNull(feature.getIdentifier().getID());
@@ -113,7 +124,17 @@ public abstract class AbstractGetFeatureParserTest {
                 Property property = feature.getProperty(name);
                 assertNotNull(name + " property was not parsed", property);
                 assertNotNull("got null value for property " + name, property.getValue());
+                if (descriptor instanceof GeometryDescriptor) {
+                    GeometryDescriptor gd = (GeometryDescriptor) descriptor;
+                    Geometry geometry = (Geometry) property.getValue();
+                    assertNotNull(geometry);
+                    if (expectedGeometries != null && featureCount < expectedGeometries.size()) {
+                        assertEquals(
+                                expectedGeometries.get(featureCount).toText(), geometry.toText());
+                    }
+                }
             }
+            featureCount++;
         }
     }
 
@@ -206,7 +227,8 @@ public abstract class AbstractGetFeatureParserTest {
             QName featureName,
             URL schemaLocation,
             SimpleFeatureType featureType,
-            URL getFeaturesRequest)
+            URL getFeaturesRequest,
+            String axisOrder)
             throws IOException;
 
     /**
@@ -227,9 +249,11 @@ public abstract class AbstractGetFeatureParserTest {
         final SimpleFeatureType featureType;
         featureType = getTypeView(featureName, schemaLocation, GEOS_ARCHSITES_11.CRS, properties);
 
-        final FeatureVisitor assertor = new FeatureAssertor(featureType);
-
-        GetFeatureParser parser = getParser(featureName, schemaLocation, featureType, data);
+        final FeatureAssertor assertor = new FeatureAssertor(featureType);
+        List<Geometry> geometries = new ArrayList<Geometry>();
+        geometries.add(GF.createPoint(new Coordinate(593493, 4914730)));
+        assertor.setExpectedGeometries(geometries);
+        GetFeatureParser parser = getParser(featureName, schemaLocation, featureType, data, null);
 
         if (supportsCount) {
             int nof = parser.getNumberOfFeatures();
@@ -239,23 +263,41 @@ public abstract class AbstractGetFeatureParserTest {
         testParseGetFeatures(featureName, featureType, parser, assertor, expectedCount);
     }
 
+    /**
+     * Verifies correctness on parsing a normal geoserver WFS 1.1.0 GetFeature response.
+     *
+     * <p>Test method for {@link PullParserFeatureReader#parse()}.
+     *
+     * @throws Exception
+     */
     @Test
-    public void testParseGeoServer_Poi_100() throws Exception {
-        final QName featureName = GEOS_POI_10.TYPENAME;
+    public void testParseGeoServer_ArchSites_Point_NorthEastAxis() throws Exception {
+        final QName featureName = GEOS_ARCHSITES_11.TYPENAME;
         final int expectedCount = 3;
-        final URL schemaLocation = GEOS_POI_10.SCHEMA;
-        final URL data = GEOS_POI_10.DATA;
+        final URL schemaLocation = GEOS_ARCHSITES_11.SCHEMA;
+        final URL data = GEOS_ARCHSITES_11.DATA;
 
-        final String[] properties = {"the_geom", "NAME", "THUMBNAIL", "MAINPAGE"};
+        final String[] properties = {"cat", "str1", "the_geom"};
         final SimpleFeatureType featureType;
-        featureType = getTypeView(featureName, schemaLocation, GEOS_POI_10.CRS, properties);
+        featureType = getTypeView(featureName, schemaLocation, GEOS_ARCHSITES_11.CRS, properties);
 
-        final FeatureVisitor assertor = new FeatureAssertor(featureType);
+        final FeatureAssertor assertor = new FeatureAssertor(featureType);
+        List<Geometry> geometries = new ArrayList<Geometry>();
+        geometries.add(GF.createPoint(new Coordinate(4914730, 593493)));
+        assertor.setExpectedGeometries(geometries);
+        GetFeatureParser parser =
+                getParser(
+                        featureName,
+                        schemaLocation,
+                        featureType,
+                        data,
+                        WFSDataStoreFactory.AXIS_ORDER_NORTH_EAST);
 
-        GetFeatureParser parser = getParser(featureName, schemaLocation, featureType, data);
+        if (supportsCount) {
+            int nof = parser.getNumberOfFeatures();
+            assertEquals(expectedCount, nof);
+        }
 
-        int nof = parser.getNumberOfFeatures();
-        assertEquals(-1, nof);
         testParseGetFeatures(featureName, featureType, parser, assertor, expectedCount);
     }
 
@@ -314,7 +356,7 @@ public abstract class AbstractGetFeatureParserTest {
                 };
 
         GetFeatureParser parser =
-                getParser(featureName, schemaLocation, featureType, GEOS_STATES_11.DATA);
+                getParser(featureName, schemaLocation, featureType, GEOS_STATES_11.DATA, null);
 
         if (supportsCount) {
             int nof = parser.getNumberOfFeatures();
@@ -374,7 +416,7 @@ public abstract class AbstractGetFeatureParserTest {
                 };
 
         GetFeatureParser parser =
-                getParser(featureName, schemaLocation, featureType, GEOS_STATES_10.DATA);
+                getParser(featureName, schemaLocation, featureType, GEOS_STATES_10.DATA, null);
 
         int nof = parser.getNumberOfFeatures();
         assertEquals(-1, nof);
@@ -395,7 +437,7 @@ public abstract class AbstractGetFeatureParserTest {
         final FeatureVisitor assertor = new FeatureAssertor(featureType);
 
         GetFeatureParser parser =
-                getParser(featureName, schemaLocation, featureType, GEOS_ROADS_11.DATA);
+                getParser(featureName, schemaLocation, featureType, GEOS_ROADS_11.DATA, null);
 
         if (supportsCount) {
             int nof = parser.getNumberOfFeatures();
@@ -418,7 +460,7 @@ public abstract class AbstractGetFeatureParserTest {
         final FeatureVisitor assertor = new FeatureAssertor(featureType);
 
         GetFeatureParser parser =
-                getParser(featureName, schemaLocation, featureType, GEOS_ROADS_10.DATA);
+                getParser(featureName, schemaLocation, featureType, GEOS_ROADS_10.DATA, null);
 
         int nof = parser.getNumberOfFeatures();
         assertEquals(-1, nof);
@@ -440,7 +482,12 @@ public abstract class AbstractGetFeatureParserTest {
         final FeatureVisitor assertor = new FeatureAssertor(featureType);
 
         GetFeatureParser parser =
-                getParser(featureName, schemaLocation, featureType, GEOS_TASMANIA_CITIES_11.DATA);
+                getParser(
+                        featureName,
+                        schemaLocation,
+                        featureType,
+                        GEOS_TASMANIA_CITIES_11.DATA,
+                        null);
 
         if (supportsCount) {
             int nof = parser.getNumberOfFeatures();
@@ -471,7 +518,7 @@ public abstract class AbstractGetFeatureParserTest {
         final FeatureVisitor assertor = new FeatureAssertor(featureType);
 
         GetFeatureParser parser =
-                getParser(featureName, schemaLocation, featureType, CUBEWERX_GOVUNITCE.DATA);
+                getParser(featureName, schemaLocation, featureType, CUBEWERX_GOVUNITCE.DATA, null);
         int nof = parser.getNumberOfFeatures();
         assertEquals(-1, nof);
         testParseGetFeatures(featureName, featureType, parser, assertor, expectedCount);
@@ -486,12 +533,97 @@ public abstract class AbstractGetFeatureParserTest {
                 getTypeView(featureName, schemaLocation, CUBEWERX_ROADSEG.CRS, properties);
 
         final GetFeatureParser parser =
-                getParser(featureName, schemaLocation, featureType, CUBEWERX_ROADSEG.DATA);
+                getParser(featureName, schemaLocation, featureType, CUBEWERX_ROADSEG.DATA, null);
 
         int nof = parser.getNumberOfFeatures();
         assertEquals(-1, nof);
 
-        FeatureVisitor assertor = new FeatureAssertor(featureType);
+        final FeatureAssertor assertor = new FeatureAssertor(featureType);
+        List<Geometry> geometries = new ArrayList<Geometry>();
+        geometries.add(
+                GF.createLineString(
+                        new Coordinate[] {
+                            new Coordinate(-160.230234, 21.87064403),
+                            new Coordinate(-160.22929, 21.87069903),
+                            new Coordinate(-160.227474, 21.87080403),
+                            new Coordinate(-160.227439, 21.86885203),
+                            new Coordinate(-160.225335, 21.86891603),
+                            new Coordinate(-160.225266, 21.86722003),
+                            new Coordinate(-160.224406, 21.86724603)
+                        }));
+        assertor.setExpectedGeometries(geometries);
+        testParseGetFeatures(featureName, featureType, parser, assertor, 3);
+    }
+
+    @Test
+    public void testParseCubeWerx_RoadSeg_NorthEastAxis() throws Exception {
+        final String[] properties = {"lastUpdateDate", "geometry", "status", "isAnchorSection"};
+        final QName featureName = CUBEWERX_ROADSEG.TYPENAME;
+        final URL schemaLocation = CUBEWERX_ROADSEG.SCHEMA;
+        final SimpleFeatureType featureType =
+                getTypeView(featureName, schemaLocation, CUBEWERX_ROADSEG.CRS, properties);
+
+        final GetFeatureParser parser =
+                getParser(
+                        featureName,
+                        schemaLocation,
+                        featureType,
+                        CUBEWERX_ROADSEG.DATA,
+                        WFSDataStoreFactory.AXIS_ORDER_NORTH_EAST);
+
+        int nof = parser.getNumberOfFeatures();
+        assertEquals(-1, nof);
+
+        final FeatureAssertor assertor = new FeatureAssertor(featureType);
+        List<Geometry> geometries = new ArrayList<Geometry>();
+        geometries.add(
+                GF.createLineString(
+                        new Coordinate[] {
+                            new Coordinate(-160.230234, 21.87064403),
+                            new Coordinate(-160.22929, 21.87069903),
+                            new Coordinate(-160.227474, 21.87080403),
+                            new Coordinate(-160.227439, 21.86885203),
+                            new Coordinate(-160.225335, 21.86891603),
+                            new Coordinate(-160.225266, 21.86722003),
+                            new Coordinate(-160.224406, 21.86724603)
+                        }));
+        assertor.setExpectedGeometries(geometries);
+        testParseGetFeatures(featureName, featureType, parser, assertor, 3);
+    }
+
+    @Test
+    public void testParseCubeWerx_RoadSeg_EastNorthAxis() throws Exception {
+        final String[] properties = {"lastUpdateDate", "geometry", "status", "isAnchorSection"};
+        final QName featureName = CUBEWERX_ROADSEG.TYPENAME;
+        final URL schemaLocation = CUBEWERX_ROADSEG.SCHEMA;
+        final SimpleFeatureType featureType =
+                getTypeView(featureName, schemaLocation, CUBEWERX_ROADSEG.CRS, properties);
+
+        final GetFeatureParser parser =
+                getParser(
+                        featureName,
+                        schemaLocation,
+                        featureType,
+                        CUBEWERX_ROADSEG.DATA,
+                        WFSDataStoreFactory.AXIS_ORDER_EAST_NORTH);
+
+        int nof = parser.getNumberOfFeatures();
+        assertEquals(-1, nof);
+
+        final FeatureAssertor assertor = new FeatureAssertor(featureType);
+        List<Geometry> geometries = new ArrayList<Geometry>();
+        geometries.add(
+                GF.createLineString(
+                        new Coordinate[] {
+                            new Coordinate(21.87064403, -160.230234),
+                            new Coordinate(21.87069903, -160.22929),
+                            new Coordinate(21.87080403, -160.227474),
+                            new Coordinate(21.86885203, -160.227439),
+                            new Coordinate(21.86891603, -160.225335),
+                            new Coordinate(21.86722003, -160.225266),
+                            new Coordinate(21.86724603, -160.224406)
+                        }));
+        assertor.setExpectedGeometries(geometries);
         testParseGetFeatures(featureName, featureType, parser, assertor, 3);
     }
 
@@ -504,7 +636,12 @@ public abstract class AbstractGetFeatureParserTest {
                 getTypeView(featureName, schemaLocation, CUBEWERX_ROADSEG.CRS, properties);
 
         final GetFeatureParser parser =
-                getParser(featureName, schemaLocation, featureType, IONIC_STATISTICAL_UNIT.DATA);
+                getParser(
+                        featureName,
+                        schemaLocation,
+                        featureType,
+                        IONIC_STATISTICAL_UNIT.DATA,
+                        null);
 
         int nof = parser.getNumberOfFeatures();
         assertEquals(-1, nof);

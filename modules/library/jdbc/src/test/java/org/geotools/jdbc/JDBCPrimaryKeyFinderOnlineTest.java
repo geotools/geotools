@@ -26,7 +26,6 @@ import org.locationtech.jts.geom.GeometryFactory;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
-/** @source $URL$ */
 public abstract class JDBCPrimaryKeyFinderOnlineTest extends JDBCTestSupport {
 
     @Override
@@ -35,7 +34,9 @@ public abstract class JDBCPrimaryKeyFinderOnlineTest extends JDBCTestSupport {
     @Override
     protected void connect() throws Exception {
         super.connect();
-        dataStore.setDatabaseSchema(null);
+        if (setup.canResetSchema()) {
+            dataStore.setDatabaseSchema(null);
+        }
     }
 
     public void testSequencedPrimaryKey() throws Exception {

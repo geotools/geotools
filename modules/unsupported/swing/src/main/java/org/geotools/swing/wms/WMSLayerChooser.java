@@ -1,3 +1,19 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
 package org.geotools.swing.wms;
 
 import java.awt.BorderLayout;
@@ -23,17 +39,15 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
-import org.geotools.data.ows.Layer;
-import org.geotools.data.ows.WMSCapabilities;
-import org.geotools.data.wms.WMSUtils;
-import org.geotools.data.wms.WebMapServer;
+import org.geotools.ows.wms.Layer;
+import org.geotools.ows.wms.WMSCapabilities;
+import org.geotools.ows.wms.WMSUtils;
+import org.geotools.ows.wms.WebMapServer;
 
 /**
  * Dialog providing a chance to chose a WMSLayer.
  *
  * <p>Initially we are going to work with a JList, we will switch to a JTree when we get a chance.
- *
- * @source $URL$
  */
 public class WMSLayerChooser extends JDialog implements ActionListener {
     private static final long serialVersionUID = -409825958139086013L;

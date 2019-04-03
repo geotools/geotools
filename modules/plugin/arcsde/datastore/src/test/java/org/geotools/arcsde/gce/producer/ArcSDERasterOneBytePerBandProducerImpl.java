@@ -25,7 +25,6 @@ import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.awt.image.SampleModel;
 
-/** @source $URL$ */
 public class ArcSDERasterOneBytePerBandProducerImpl extends ArcSDERasterProducer {
 
     public ArcSDERasterOneBytePerBandProducerImpl() {
@@ -86,7 +85,8 @@ public class ArcSDERasterOneBytePerBandProducerImpl extends ArcSDERasterProducer
                                 }
                                 consumer.rasterComplete(SeRasterConsumer.STATICIMAGEDONE);
                             } catch (Exception se) {
-                                se.printStackTrace();
+                                java.util.logging.Logger.getGlobal()
+                                        .log(java.util.logging.Level.INFO, "", se);
                                 consumer.rasterComplete(SeRasterConsumer.IMAGEERROR);
                             }
                         }

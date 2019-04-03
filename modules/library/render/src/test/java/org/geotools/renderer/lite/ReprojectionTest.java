@@ -22,7 +22,6 @@ import java.awt.image.BufferedImage;
 import junit.framework.TestCase;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.DefaultFeatureCollection;
-import org.geotools.feature.IllegalAttributeException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -37,6 +36,7 @@ import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LineString;
+import org.opengis.feature.IllegalAttributeException;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -45,7 +45,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * Tests for rendering and reprojection
  *
  * @author wolf
- * @source $URL$
  */
 public class ReprojectionTest extends TestCase {
 
@@ -97,7 +96,7 @@ public class ReprojectionTest extends TestCase {
                 new ReferencedEnvelope(
                         new Envelope(-180, -170, 20, 40), DefaultGeographicCRS.WGS84);
         CoordinateReferenceSystem utm1N = CRS.decode("EPSG:32601");
-        System.out.println(CRS.getGeographicBoundingBox(utm1N));
+        // System.out.println(CRS.getGeographicBoundingBox(utm1N));
         ReferencedEnvelope reUtm = reWgs.transform(utm1N, true);
 
         BufferedImage image = new BufferedImage(200, 200, BufferedImage.TYPE_4BYTE_ABGR);
@@ -110,7 +109,8 @@ public class ReprojectionTest extends TestCase {
                     public void featureRenderer(SimpleFeature feature) {}
 
                     public void errorOccurred(Exception e) {
-                        e.printStackTrace();
+                        java.util.logging.Logger.getGlobal()
+                                .log(java.util.logging.Level.INFO, "", e);
                         errors++;
                     }
                 });

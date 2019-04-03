@@ -27,7 +27,6 @@ import org.opengis.geometry.primitive.CurveSegment;
 import org.opengis.geometry.primitive.OrientableCurve;
 import org.opengis.geometry.primitive.Ring;
 
-/** @source $URL$ */
 public class DisplayCurve {
 
     /** @param args */
@@ -86,9 +85,9 @@ public class DisplayCurve {
 
         Ring ring1 = tPrimFactory.createRing(curveList);
 
-        System.out.println(ring1);
+        // System.out.println(ring1);
 
-        System.out.println(ring1.getEnvelope());
+        // System.out.println(ring1.getEnvelope());
 
         PaintGMObject.paint(curve1);
     }

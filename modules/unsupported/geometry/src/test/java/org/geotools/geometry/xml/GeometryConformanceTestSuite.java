@@ -27,7 +27,7 @@ import junit.framework.TestSuite;
 import org.geotools.geometry.GeometryBuilder;
 import org.geotools.geometry.iso.primitive.PointImpl;
 import org.geotools.geometry.iso.root.GeometryImpl;
-import org.geotools.geometry.text.WKTParser;
+import org.geotools.geometry.iso.text.WKTParser;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.test.TestData;
 import org.opengis.geometry.Boundary;
@@ -49,8 +49,6 @@ import org.xml.sax.InputSource;
  * intersection and union operations.
  *
  * <p>notes: - spaces must be replaced by "_" in description - "No_description" is the default
- *
- * @source $URL$
  */
 public class GeometryConformanceTestSuite extends TestSuite {
 
@@ -75,7 +73,7 @@ public class GeometryConformanceTestSuite extends TestSuite {
             for (int i = 0; i < tests.length; i++) {
                 File testFile = tests[i];
                 Properties excludes = findExclusions(testFile);
-                System.out.println("file: " + testFile.getName());
+                // System.out.println("file: " + testFile.getName());
                 if (!isAllExcluded(excludes)) {
                     InputStream inputStream = testFile.toURI().toURL().openStream();
                     try {
@@ -188,7 +186,8 @@ public class GeometryConformanceTestSuite extends TestSuite {
                                 op.setExpectedResult(expectedResult);
                                 testCase.addTestOperation(op);
                             } catch (ParseException e) {
-                                e.printStackTrace();
+                                java.util.logging.Logger.getGlobal()
+                                        .log(java.util.logging.Level.INFO, "", e);
                             }
                         }
                     }

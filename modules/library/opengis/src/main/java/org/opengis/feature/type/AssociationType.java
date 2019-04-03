@@ -23,7 +23,6 @@ import org.opengis.feature.Association;
  *
  * @author Jody Garnett, Refractions Research, Inc.
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL$
  */
 public interface AssociationType extends PropertyType {
 

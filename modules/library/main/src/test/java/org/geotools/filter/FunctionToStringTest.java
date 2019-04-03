@@ -51,7 +51,6 @@ import org.opengis.parameter.Parameter;
  * Test that all functions in the DefaultFunctionFactory have the toString() method implemented.
  *
  * @author Rob Ward
- * @source $URL$
  */
 public class FunctionToStringTest {
     static org.opengis.filter.FilterFactory ff;
@@ -102,15 +101,16 @@ public class FunctionToStringTest {
                     String result = expression.toString();
 
                     if (result.contains("@")) {
-                        System.err.println(functionName.getName() + "\t\t\t" + "TOSTRING MISSING");
+                        // System.err.println(functionName.getName() + "\t\t\t" + "TOSTRING
+                        // MISSING");
                     }
                 } else {
                     fail = true;
-                    System.err.println(functionName.getName() + "\t\t\t" + "TOSTRING FAIL");
+                    // System.err.println(functionName.getName() + "\t\t\t" + "TOSTRING FAIL");
                 }
             } catch (Exception e) {
                 fail = true;
-                System.err.println(functionName.getName() + "\t\t\t" + "TOSTRING FAIL");
+                // System.err.println(functionName.getName() + "\t\t\t" + "TOSTRING FAIL");
             }
         }
 
@@ -210,9 +210,11 @@ public class FunctionToStringTest {
                     try {
                         newObj = type.newInstance();
                     } catch (InstantiationException e) {
-                        e.printStackTrace();
+                        java.util.logging.Logger.getGlobal()
+                                .log(java.util.logging.Level.INFO, "", e);
                     } catch (IllegalAccessException e) {
-                        e.printStackTrace();
+                        java.util.logging.Logger.getGlobal()
+                                .log(java.util.logging.Level.INFO, "", e);
                     }
 
                     parameters.add(ff.literal(newObj));

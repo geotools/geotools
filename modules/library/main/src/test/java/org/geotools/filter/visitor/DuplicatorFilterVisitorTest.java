@@ -34,7 +34,6 @@ import org.opengis.filter.expression.InternalFunction;
  * Unit test for DuplicatorFilterVisitor.
  *
  * @author Cory Horner, Refractions Research Inc.
- * @source $URL$
  */
 public class DuplicatorFilterVisitorTest extends TestCase {
     FilterFactory fac;

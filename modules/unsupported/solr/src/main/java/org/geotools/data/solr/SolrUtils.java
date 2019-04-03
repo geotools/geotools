@@ -77,7 +77,7 @@ public class SolrUtils {
                 if (fn.equals(fieldName)) {
                     NamedList om = entry.getValue();
                     if (om.get("uniqueKey") != null) {
-                        this.uniqueKey = new Boolean(om.get("uniqueKey").toString());
+                        this.uniqueKey = Boolean.valueOf(om.get("uniqueKey").toString());
                     } else {
                         this.uniqueKey = false;
                     }

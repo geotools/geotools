@@ -2,8 +2,8 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2001-2006  Vivid Solutions
  *    (C) 2001-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2001-2006  Vivid Solutions
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -28,8 +28,6 @@ import org.geotools.geometry.iso.topograph2D.Edge;
  * conjunction with Monotone Chains. While still O(n^2) in the worst case, this algorithm
  * drastically improves the average-case time. The use of MonotoneChains as the items in the index
  * seems to offer an improvement in performance over a sweep-line alone.
- *
- * @source $URL$
  */
 public class SimpleMonotoneChainSweepLineIntersector extends EdgeSetIntersector {
 

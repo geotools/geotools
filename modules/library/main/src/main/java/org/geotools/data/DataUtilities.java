@@ -59,9 +59,9 @@ import org.geotools.data.simple.SimpleFeatureLocking;
 import org.geotools.data.simple.SimpleFeatureReader;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.simple.SimpleFeatureStore;
+import org.geotools.data.util.NullProgressListener;
 import org.geotools.data.view.DefaultView;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.factory.Hints;
 import org.geotools.feature.AttributeImpl;
 import org.geotools.feature.AttributeTypeBuilder;
 import org.geotools.feature.DefaultFeatureCollection;
@@ -87,9 +87,9 @@ import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.CRS;
 import org.geotools.styling.UserLayer;
 import org.geotools.util.Converters;
-import org.geotools.util.NullProgressListener;
 import org.geotools.util.URLs;
 import org.geotools.util.Utilities;
+import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryCollection;
@@ -190,9 +190,6 @@ import org.opengis.util.ProgressListener;
  * </ul>
  *
  * @author Jody Garnett, Refractions Research
- * @source $URL$
- *     http://svn.osgeo.org/geotools/trunk/modules/library/main/src/main/java/org/geotools/
- *     data/DataUtilities.java $
  */
 public class DataUtilities {
     /** Typemap used by {@link #createType(String, String)} methods */
@@ -234,27 +231,43 @@ public class DataUtilities {
 
         typeEncode.put(Geometry.class, "Geometry");
         typeMap.put("Geometry", Geometry.class);
+        typeMap.put("com.vividsolutions.jts.geom.Geometry", Geometry.class);
+        typeMap.put("org.locationtech.jts.geom.Geometry", Geometry.class);
 
         typeEncode.put(Point.class, "Point");
         typeMap.put("Point", Point.class);
+        typeMap.put("com.vividsolutions.jts.geom.Point", Point.class);
+        typeMap.put("org.locationtech.jts.geom.Point", Point.class);
 
         typeEncode.put(LineString.class, "LineString");
         typeMap.put("LineString", LineString.class);
+        typeMap.put("com.vividsolutions.jts.geom.LineString", LineString.class);
+        typeMap.put("org.locationtech.jts.geom.LineString", LineString.class);
 
         typeEncode.put(Polygon.class, "Polygon");
         typeMap.put("Polygon", Polygon.class);
+        typeMap.put("com.vividsolutions.jts.geom.Polygon", Polygon.class);
+        typeMap.put("org.locationtech.jts.geom.Polygon", Polygon.class);
 
         typeEncode.put(MultiPoint.class, "MultiPoint");
         typeMap.put("MultiPoint", MultiPoint.class);
+        typeMap.put("com.vividsolutions.jts.geom.MultiPoint", MultiPoint.class);
+        typeMap.put("org.locationtech.jts.geom.MultiPoint", MultiPoint.class);
 
         typeEncode.put(MultiLineString.class, "MultiLineString");
         typeMap.put("MultiLineString", MultiLineString.class);
+        typeMap.put("com.vividsolutions.jts.geom.MultiPoint", MultiLineString.class);
+        typeMap.put("org.locationtech.jts.geom.MultiPoint", MultiLineString.class);
 
         typeEncode.put(MultiPolygon.class, "MultiPolygon");
         typeMap.put("MultiPolygon", MultiPolygon.class);
+        typeMap.put("com.vividsolutions.jts.geom.MultiPolygon", MultiPolygon.class);
+        typeMap.put("org.locationtech.jts.geom.MultiPolygon", MultiPolygon.class);
 
         typeEncode.put(GeometryCollection.class, "GeometryCollection");
         typeMap.put("GeometryCollection", GeometryCollection.class);
+        typeMap.put("com.vividsolutions.jts.geom.GeometryCollection", GeometryCollection.class);
+        typeMap.put("org.locationtech.jts.geom.GeometryCollection", GeometryCollection.class);
 
         typeEncode.put(Date.class, "Date");
         typeMap.put("Date", Date.class);
@@ -426,9 +439,7 @@ public class DataUtilities {
 
             if (isMatch(a, typeB.getDescriptor(i))) {
                 match++;
-            } else if (isMatch(a, typeB.getDescriptor(a.getLocalName()))) {
-                // match was found in a different position
-            } else {
+            } else if (!isMatch(a, typeB.getDescriptor(a.getLocalName()))) {
                 // cannot find any match for Attribute in typeA
                 return -1;
             }
@@ -546,7 +557,6 @@ public class DataUtilities {
         String id = feature.getID();
         int numAtts = featureType.getAttributeCount();
         Object[] attributes = new Object[numAtts];
-        String xpath;
 
         for (int i = 0; i < numAtts; i++) {
             AttributeDescriptor curAttType = featureType.getDescriptor(i);
@@ -802,7 +812,7 @@ public class DataUtilities {
 
     /**
      * Returns a non-null default value for the class that is passed in. This is a helper class an
-     * can't create a default class for any type but it does support:
+     * can't create a default class for all types but it does support:
      *
      * <ul>
      *   <li>String
@@ -822,6 +832,7 @@ public class DataUtilities {
      *   <li>java.sql.Time
      *   <li>java.util.Date
      *   <li>JTS Geometries
+     *   <li>Arrays - will return an empty array of the appropriate type
      * </ul>
      *
      * @param type
@@ -832,16 +843,16 @@ public class DataUtilities {
             return "";
         }
         if (type == Integer.class) {
-            return new Integer(0);
+            return Integer.valueOf(0);
         }
         if (type == Double.class) {
             return new Double(0);
         }
         if (type == Long.class) {
-            return new Long(0);
+            return Long.valueOf(0);
         }
         if (type == Short.class) {
-            return new Short((short) 0);
+            return Short.valueOf((short) 0);
         }
         if (type == Float.class) {
             return new Float(0.0f);
@@ -904,6 +915,10 @@ public class DataUtilities {
             return fac.createMultiPolygon(new Polygon[] {polygon});
         }
 
+        if (type.isArray()) {
+            return Array.newInstance(type.getComponentType(), 0);
+        }
+
         throw new IllegalArgumentException(type + " is not supported by this method");
     }
 
@@ -913,7 +928,6 @@ public class DataUtilities {
      * @param features Array of features
      * @return FeatureReader<SimpleFeatureType, SimpleFeature> spaning provided feature array
      * @throws IOException If provided features Are null or empty
-     * @throws NoSuchElementException DOCUMENT ME!
      */
     public static FeatureReader<SimpleFeatureType, SimpleFeature> reader(
             final SimpleFeature[] features) throws IOException {
@@ -1121,7 +1135,7 @@ public class DataUtilities {
      *
      * <p>Often used when gathering a SimpleFeatureCollection into memory.
      *
-     * @param SimpleFeatureCollection the features to add to a new feature collection.
+     * @param featureCollection the features to add to a new feature collection.
      * @return FeatureCollection
      */
     public static DefaultFeatureCollection collection(
@@ -2094,7 +2108,7 @@ public class DataUtilities {
             // read the value and decode any interesting characters
             stringValue = decodeEscapedCharacters(rawText);
         } catch (RuntimeException huh) {
-            huh.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", huh);
             stringValue = null;
         }
         // check for special <null> flag
@@ -2344,8 +2358,6 @@ public class DataUtilities {
      * </ul>
      *
      * @param firstQuery Query against this DataStore
-     * @param secondQuery DOCUMENT ME!
-     * @param handle DOCUMENT ME!
      * @return Query restricted to the limits of definitionQuery
      * @throws NullPointerException if some of the queries is null
      * @throws IllegalArgumentException if the type names of both queries do not match
@@ -2435,12 +2447,16 @@ public class DataUtilities {
      * This method changes the query object by simplifying the filter using SimplifyingFilterVisitor
      */
     public static Query simplifyFilter(Query query) {
-        if (query == null) {
+        if (query == null || query == Query.ALL) {
             return query;
         }
         Filter filter = SimplifyingFilterVisitor.simplify(query.getFilter());
-        query.setFilter(filter);
-        return query;
+        if (filter.equals(query.getFilter())) {
+            return query;
+        }
+        Query result = new Query(query);
+        result.setFilter(filter);
+        return result;
     }
 
     /**
@@ -2507,7 +2523,7 @@ public class DataUtilities {
      * list, and all mandatory (minoccurs > 0) added.
      *
      * @param type feature type
-     * @param propNames given list of properties
+     * @param oldProps given list of properties
      * @return list of properties including all mandatory properties
      * @throws IOException
      */
@@ -2582,7 +2598,7 @@ public class DataUtilities {
                     if (h.equals("nillable")) {
                         nillable = true;
                     }
-                    // spatial reference identieger?
+                    // spatial reference identifier
                     if (h.startsWith("srid=")) {
                         String srid = h.split("=")[1];
                         Integer.parseInt(srid);
@@ -2596,7 +2612,7 @@ public class DataUtilities {
                 }
             }
 
-            Class clazz = type(type);
+            Class<?> clazz = type(type);
             if (Geometry.class.isAssignableFrom(clazz)) {
                 GeometryType at =
                         new GeometryTypeImpl(
@@ -2605,7 +2621,7 @@ public class DataUtilities {
                                 crs,
                                 false,
                                 false,
-                                Collections.EMPTY_LIST,
+                                Collections.emptyList(),
                                 null,
                                 null);
                 return new GeometryDescriptorImpl(at, new NameImpl(name), 0, 1, nillable, null);
@@ -2616,7 +2632,7 @@ public class DataUtilities {
                                 clazz,
                                 false,
                                 false,
-                                Collections.EMPTY_LIST,
+                                Collections.emptyList(),
                                 null,
                                 null);
                 return new AttributeDescriptorImpl(at, new NameImpl(name), 0, 1, nillable, null);
@@ -2755,9 +2771,6 @@ public class DataUtilities {
      * <p>This method is intended to assist FeatureCollection implementors, and used to verify
      * test-case results. Client code should always call {@link
      * FeatureCollection#accepts(FeatureVisitor, ProgressListener)}
-     *
-     * @param collection
-     * @return bounds of features in feature collection
      */
     public static void visit(
             FeatureCollection<?, ?> collection, FeatureVisitor visitor, ProgressListener progress)
@@ -2851,7 +2864,7 @@ public class DataUtilities {
      * followed by the separator char if missing ({@code '/'} On UNIX systems; {@code '\\} on
      * Microsoft Windows systems.
      *
-     * @param directoryPath the input directory path. Must not be null.
+     * @param file the input file. Must not be null.
      * @return the re-formatted directory path.
      * @throws IllegalArgumentException in case the specified path doesn't rely on a
      *     existing/readable directory.

@@ -73,7 +73,7 @@ import org.opengis.geometry.BoundingBox;
 
 abstract class ArcSdeFeatureWriter implements FeatureWriter<SimpleFeatureType, SimpleFeature> {
 
-    protected static final Logger LOGGER = Logging.getLogger(ArcSdeFeatureWriter.class.getName());
+    protected static final Logger LOGGER = Logging.getLogger(ArcSdeFeatureWriter.class);
 
     /** Fid prefix used for just created and not yet committed features */
     private static final String NEW_FID_PREFIX = "@NEW_";
@@ -379,8 +379,6 @@ abstract class ArcSdeFeatureWriter implements FeatureWriter<SimpleFeatureType, S
      * <p>The db row to modify is obtained from the feature id.
      *
      * @param modifiedFeature the newly create Feature to insert.
-     * @param session the connection to use for the insert operation. Its auto commit mode
-     *     determines whether the operation takes effect immediately or not.
      * @throws IOException
      * @throws SeException if thrown by any sde stream method
      * @throws IOException
@@ -436,8 +434,6 @@ abstract class ArcSdeFeatureWriter implements FeatureWriter<SimpleFeatureType, S
      * Inserts a feature into an SeLayer.
      *
      * @param newFeature the newly create Feature to insert.
-     * @param session the connection to use for the insert operation. Its auto commit mode
-     *     determines whether the operation takes effect immediately or not.
      * @throws IOException
      */
     private Number insertSeRow(final SimpleFeature newFeature) throws IOException {
@@ -762,7 +758,7 @@ abstract class ArcSdeFeatureWriter implements FeatureWriter<SimpleFeatureType, S
                 // ignore SeColumns for which we don't have a known mapping
                 final int sdeType = columnDefinition.getType();
                 if (SeColumnDefinition.TYPE_SHAPE != sdeType
-                        && null == ArcSDEAdapter.getJavaBinding(new Integer(sdeType))) {
+                        && null == ArcSDEAdapter.getJavaBinding(Integer.valueOf(sdeType))) {
                     continue;
                 }
 
@@ -886,7 +882,7 @@ abstract class ArcSdeFeatureWriter implements FeatureWriter<SimpleFeatureType, S
          * <p>I would love to protect this for safety reason, i.e. so client classes can't use it by
          * casting to it.
          *
-         * @param id The fid to set.
+         * @param fid The fid to set.
          */
         public void setID(String fid) {
             ((FeatureIdImpl) id).setID(fid);

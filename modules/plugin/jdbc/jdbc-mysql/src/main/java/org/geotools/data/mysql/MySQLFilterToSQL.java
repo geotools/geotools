@@ -38,7 +38,6 @@ import org.opengis.filter.spatial.Overlaps;
 import org.opengis.filter.spatial.Touches;
 import org.opengis.filter.spatial.Within;
 
-/** @source $URL$ */
 public class MySQLFilterToSQL extends FilterToSQL {
 
     protected boolean usePreciseSpatialOps;
@@ -148,10 +147,7 @@ public class MySQLFilterToSQL extends FilterToSQL {
                     throw new RuntimeException("Unknown distance operator");
                 }
                 out.write(Double.toString(((DistanceBufferOperator) filter).getDistance()));
-            } else if (filter instanceof BBOX) {
-
-            } else {
-
+            } else if (!(filter instanceof BBOX)) {
                 if (filter instanceof Contains) {
                     out.write("Contains(");
                 } else if (filter instanceof Crosses) {

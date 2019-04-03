@@ -35,7 +35,6 @@ import org.opengis.filter.expression.Expression;
  *
  * @author Cory Horner, Refractions
  * @since 2.2.M2
- * @source $URL$
  */
 public class SumVisitor implements FeatureCalc, FeatureAttributeVisitor {
     private Expression expr;
@@ -97,7 +96,7 @@ public class SumVisitor implements FeatureCalc, FeatureAttributeVisitor {
     }
 
     public void visit(SimpleFeature feature) {
-        visit(feature);
+        visit((Feature) feature);
     }
 
     public void visit(Feature feature) {
@@ -174,7 +173,7 @@ public class SumVisitor implements FeatureCalc, FeatureAttributeVisitor {
         }
 
         public Object getResult() {
-            return new Long(number);
+            return Long.valueOf(number);
         }
     }
 
@@ -186,7 +185,7 @@ public class SumVisitor implements FeatureCalc, FeatureAttributeVisitor {
         }
 
         public Object getResult() {
-            return new Integer(number);
+            return Integer.valueOf(number);
         }
     }
 

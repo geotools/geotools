@@ -30,7 +30,6 @@ import org.opengis.filter.expression.Expression;
  * <p>The result contains an array of lists with the expression values in each.
  *
  * @author Cory Horner, Refractions Research Inc.
- * @source $URL$
  */
 public class QuantileListVisitor implements FeatureCalc {
     private Expression expr;

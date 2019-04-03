@@ -30,7 +30,6 @@ import org.geotools.graph.traverse.standard.DijkstraIterator;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.LineSegment;
 
-/** @source $URL$ */
 public class DijkstraShortestPathFinderWithTurnCostsTest extends TestCase {
 
     private Graph graph;
@@ -64,7 +63,7 @@ public class DijkstraShortestPathFinderWithTurnCostsTest extends TestCase {
 
         this.graph = graphGen.getGraph();
 
-        System.out.println(graph);
+        // System.out.println(graph);
     }
 
     public void test1() {

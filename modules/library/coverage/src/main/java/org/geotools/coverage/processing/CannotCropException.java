@@ -20,7 +20,6 @@ package org.geotools.coverage.processing;
  * Throws when a "crop" operation has been requested but the specified grid coverage can't be
  * scaled.
  *
- * @source $URL$
  * @version $Id$
  * @author Simone Giannecchini
  * @since 2.3
@@ -47,7 +46,7 @@ public class CannotCropException extends CoverageProcessingException {
      * @param message the detail message.
      * @param cause The cause of this exception.
      */
-    public CannotCropException(String message, Throwable exception) {
-        super(message, exception);
+    public CannotCropException(String message, Throwable cause) {
+        super(message, cause);
     }
 }

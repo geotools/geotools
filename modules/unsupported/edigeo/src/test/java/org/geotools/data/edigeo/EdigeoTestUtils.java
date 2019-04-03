@@ -19,13 +19,13 @@ import java.io.File;
 import java.io.IOException;
 import org.geotools.test.TestData;
 
-/** @source $URL$ */
+
 public class EdigeoTestUtils {
 
     /**
-     * DOCUMENT ME!
+
      *
-     * @return DOCUMENT ME!
+
      */
     private static File getDataPath() {
         try {

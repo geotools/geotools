@@ -19,9 +19,9 @@ package org.geotools.geometry.jts.spatialschema.geometry.aggregate;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
-import org.geotools.factory.Factory;
-import org.geotools.factory.Hints;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.geotools.util.factory.Factory;
+import org.geotools.util.factory.Hints;
 import org.opengis.geometry.aggregate.AggregateFactory;
 import org.opengis.geometry.aggregate.MultiCurve;
 import org.opengis.geometry.aggregate.MultiPoint;
@@ -33,7 +33,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * Implementation of AggregateFactory able to make MultiPointImpl but little else.
  *
  * @author Jody Garnett
- * @source $URL$
  */
 public class JTSAggregateFactory implements Factory, AggregateFactory {
     private CoordinateReferenceSystem crs;

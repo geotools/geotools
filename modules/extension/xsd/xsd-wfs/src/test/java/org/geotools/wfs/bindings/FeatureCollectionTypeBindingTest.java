@@ -27,7 +27,7 @@ import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.test.TestData;
 import org.geotools.wfs.WFS;
 import org.geotools.wfs.WFSTestSupport;
-import org.geotools.xml.Binding;
+import org.geotools.xsd.Binding;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LineString;
@@ -37,7 +37,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-/** @source $URL$ */
 public class FeatureCollectionTypeBindingTest extends WFSTestSupport {
 
     public FeatureCollectionTypeBindingTest() {

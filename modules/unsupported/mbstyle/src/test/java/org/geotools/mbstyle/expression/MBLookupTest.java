@@ -22,7 +22,7 @@ import java.util.List;
 import org.geotools.mbstyle.MBStyle;
 import org.geotools.mbstyle.layer.SymbolMBLayer;
 import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.SLDTransformer;
+import org.geotools.xml.styling.SLDTransformer;
 import org.json.simple.JSONObject;
 import org.junit.Test;
 

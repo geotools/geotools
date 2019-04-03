@@ -2,8 +2,8 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2001-2006  Vivid Solutions
  *    (C) 2001-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2001-2006  Vivid Solutions
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -20,8 +20,6 @@ package org.geotools.geometry.iso.topograph2D;
 /**
  * A Position indicates the position of a Location relative to a graph component (Node, Edge, or
  * Area).
- *
- * @source $URL$
  */
 public class Position {
 

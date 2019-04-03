@@ -32,7 +32,6 @@ import org.eclipse.swt.widgets.Display;
  * A singleton cache for images.
  *
  * @author Andrea Antonello (www.hydrologis.com)
- * @source $URL$
  */
 @SuppressWarnings("nls")
 public class ImageCache {
@@ -105,7 +104,7 @@ public class ImageCache {
             // e.printStackTrace();
         } catch (IOException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
         return image;
     }

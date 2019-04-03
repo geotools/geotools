@@ -4,12 +4,11 @@ import java.util.HashMap;
 import org.custommonkey.xmlunit.SimpleNamespaceContext;
 import org.custommonkey.xmlunit.XMLUnit;
 import org.geotools.gml3.bindings.GML3MockData;
-import org.geotools.xml.Configuration;
-import org.geotools.xml.test.XMLTestSupport;
+import org.geotools.xsd.Configuration;
+import org.geotools.xsd.test.XMLTestSupport;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
-/** @source $URL$ */
 public abstract class GML32TestSupport extends XMLTestSupport {
 
     static {

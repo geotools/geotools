@@ -50,7 +50,6 @@ import org.opengis.util.ProgressListener;
  * @see ImageReader
  * @see GrassBinaryRasterReadHandler
  * @see GrassBinaryImageMetadata
- * @source $URL$
  */
 public class GrassBinaryImageReader extends ImageReader {
 
@@ -142,7 +141,6 @@ public class GrassBinaryImageReader extends ImageReader {
      * <p>This method has to be called before any data access, in order to already have the native
      * raster data metadata available.
      *
-     * @return <code>true</code> if everything is consistent
      * @throws IIOException
      */
     private void ensureOpen() throws IOException {

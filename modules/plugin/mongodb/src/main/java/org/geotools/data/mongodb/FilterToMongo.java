@@ -29,13 +29,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
-import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import org.bson.types.ObjectId;
 import org.geotools.data.mongodb.complex.JsonSelectAllFunction;
 import org.geotools.data.mongodb.complex.JsonSelectFunction;
 import org.geotools.util.Converters;
-import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -102,13 +100,10 @@ import org.opengis.filter.temporal.TOverlaps;
  *
  * @author Gerald Gay, Data Tactics Corp.
  * @author Alan Mangan, Data Tactics Corp.
- * @author Tom Kunicki, Boundless Spatial Inc.
- * @source $URL$ (C) 2011, Open Source Geospatial Foundation (OSGeo)
+ * @author Tom Kunicki, Boundless Spatial Inc. (C) 2011, Open Source Geospatial Foundation (OSGeo)
  * @see The GNU Lesser General Public License (LGPL)
  */
 public class FilterToMongo implements FilterVisitor, ExpressionVisitor {
-
-    private static final Logger LOGGER = Logging.getLogger(FilterToMongo.class);
 
     final CollectionMapper mapper;
 
@@ -127,7 +122,7 @@ public class FilterToMongo implements FilterVisitor, ExpressionVisitor {
     }
 
     protected BasicDBObject asDBObject(Object extraData) {
-        if ((extraData != null) || (extraData instanceof BasicDBObject)) {
+        if (extraData instanceof BasicDBObject) {
             return (BasicDBObject) extraData;
         }
         return new BasicDBObject();

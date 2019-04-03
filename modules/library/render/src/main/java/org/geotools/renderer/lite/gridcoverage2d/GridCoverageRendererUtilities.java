@@ -31,7 +31,6 @@ import org.geotools.coverage.processing.CoverageProcessor;
 import org.geotools.coverage.processing.operation.Crop;
 import org.geotools.coverage.processing.operation.Mosaic;
 import org.geotools.coverage.processing.operation.Resample;
-import org.geotools.factory.Hints;
 import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -39,6 +38,7 @@ import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.renderer.i18n.ErrorKeys;
 import org.geotools.renderer.i18n.Errors;
+import org.geotools.util.factory.Hints;
 import org.opengis.coverage.grid.GridEnvelope;
 import org.opengis.parameter.ParameterValueGroup;
 import org.opengis.referencing.FactoryException;
@@ -52,16 +52,6 @@ final class GridCoverageRendererUtilities {
 
     private static final CoverageProcessor processor =
             CoverageProcessor.getInstance(new Hints(Hints.LENIENT_DATUM_SHIFT, Boolean.TRUE));
-
-    static {
-
-        // ///////////////////////////////////////////////////////////////////
-        //
-        // Caching parameters for performing the various operations.
-        //
-        // ///////////////////////////////////////////////////////////////////
-
-    }
 
     // FORMULAE FOR FORWARD MAP are derived as follows
     //     Nearest
@@ -127,7 +117,7 @@ final class GridCoverageRendererUtilities {
      * IllegalArgumentException} exception.
      *
      * @param source the object to check.
-     * @param node the operation we are trying to run.
+     * @param name the operation we are trying to run.
      */
     static void ensureNotNull(final Object source, final String name) {
         if (source == null)
@@ -139,7 +129,7 @@ final class GridCoverageRendererUtilities {
      * IllegalArgumentException} exception.
      *
      * @param source the object to check.
-     * @param node the operation we are trying to run.
+     * @param name the operation we are trying to run.
      */
     static void ensureSourceNotNull(final Object source, final String name) {
         if (source == null)
@@ -432,7 +422,6 @@ final class GridCoverageRendererUtilities {
             throws Exception {
 
         GeneralEnvelope outputEnvelope = null;
-        ;
         CoordinateReferenceSystem inputCRS = inputEnvelope.getCoordinateReferenceSystem();
         if (!CRS.equalsIgnoreMetadata(inputCRS, outputCRS)) {
             outputEnvelope = CRS.transform(inputEnvelope, outputCRS);

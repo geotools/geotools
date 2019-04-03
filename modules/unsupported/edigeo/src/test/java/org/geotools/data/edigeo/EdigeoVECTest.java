@@ -28,7 +28,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-/** @source $URL$ */
+
 public class EdigeoVECTest extends TestCase {
     private EdigeoVEC eVecS1;
     private EdigeoVEC eVecT1;

@@ -5,11 +5,17 @@ import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 <<<<<<< HEAD
+<<<<<<< HEAD
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 =======
 >>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
+=======
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
+>>>>>>> db04a836af... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
 
 /**
  * Project Open Data Distribution
@@ -113,6 +119,7 @@ public class Distribution {
     /**
      * Metadata Context
 <<<<<<< HEAD
+<<<<<<< HEAD
      * <p>
      * IRI for the JSON-LD data type. This should be dcat:Distribution for each Distribution
      * 
@@ -120,6 +127,11 @@ public class Distribution {
      *
      * <p>IRI for the JSON-LD data type. This should be dcat:Distribution for each Distribution
 >>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
+=======
+     * <p>
+     * IRI for the JSON-LD data type. This should be dcat:Distribution for each Distribution
+     * 
+>>>>>>> db04a836af... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
      */
     public Distribution.Type getType() {
         return type;
@@ -128,6 +140,7 @@ public class Distribution {
     /**
      * Metadata Context
 <<<<<<< HEAD
+<<<<<<< HEAD
      * <p>
      * IRI for the JSON-LD data type. This should be dcat:Distribution for each Distribution
      * 
@@ -135,6 +148,11 @@ public class Distribution {
      *
      * <p>IRI for the JSON-LD data type. This should be dcat:Distribution for each Distribution
 >>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
+=======
+     * <p>
+     * IRI for the JSON-LD data type. This should be dcat:Distribution for each Distribution
+     * 
+>>>>>>> db04a836af... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
      */
     public void setType(Distribution.Type type) {
         this.type = type;
@@ -143,6 +161,7 @@ public class Distribution {
     /**
      * Download URL
 <<<<<<< HEAD
+<<<<<<< HEAD
      * <p>
      * URL providing direct access to a downloadable file of a dataset
      * 
@@ -150,6 +169,11 @@ public class Distribution {
      *
      * <p>URL providing direct access to a downloadable file of a dataset
 >>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
+=======
+     * <p>
+     * URL providing direct access to a downloadable file of a dataset
+     * 
+>>>>>>> db04a836af... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
      */
     public URI getDownloadURL() {
         return downloadURL;
@@ -158,6 +182,7 @@ public class Distribution {
     /**
      * Download URL
 <<<<<<< HEAD
+<<<<<<< HEAD
      * <p>
      * URL providing direct access to a downloadable file of a dataset
      * 
@@ -165,6 +190,11 @@ public class Distribution {
      *
      * <p>URL providing direct access to a downloadable file of a dataset
 >>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
+=======
+     * <p>
+     * URL providing direct access to a downloadable file of a dataset
+     * 
+>>>>>>> db04a836af... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
      */
     public void setDownloadURL(URI downloadURL) {
         this.downloadURL = downloadURL;
@@ -173,6 +203,7 @@ public class Distribution {
     /**
      * Media Type
 <<<<<<< HEAD
+<<<<<<< HEAD
      * <p>
      * The machine-readable file format (IANA Media Type or MIME Type) of the distribution’s downloadURL
      * 
@@ -181,6 +212,11 @@ public class Distribution {
      * <p>The machine-readable file format (IANA Media Type or MIME Type) of the distribution’s
      * downloadURL
 >>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
+=======
+     * <p>
+     * The machine-readable file format (IANA Media Type or MIME Type) of the distribution’s downloadURL
+     * 
+>>>>>>> db04a836af... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
      */
     public Object getMediaType() {
         return mediaType;
@@ -189,6 +225,7 @@ public class Distribution {
     /**
      * Media Type
 <<<<<<< HEAD
+<<<<<<< HEAD
      * <p>
      * The machine-readable file format (IANA Media Type or MIME Type) of the distribution’s downloadURL
      * 
@@ -197,6 +234,11 @@ public class Distribution {
      * <p>The machine-readable file format (IANA Media Type or MIME Type) of the distribution’s
      * downloadURL
 >>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
+=======
+     * <p>
+     * The machine-readable file format (IANA Media Type or MIME Type) of the distribution’s downloadURL
+     * 
+>>>>>>> db04a836af... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
      */
     public void setMediaType(Object mediaType) {
         this.mediaType = mediaType;
@@ -205,6 +247,7 @@ public class Distribution {
     /**
      * Format
 <<<<<<< HEAD
+<<<<<<< HEAD
      * <p>
      * A human-readable description of the file format of a distribution
      * 
@@ -212,6 +255,11 @@ public class Distribution {
      *
      * <p>A human-readable description of the file format of a distribution
 >>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
+=======
+     * <p>
+     * A human-readable description of the file format of a distribution
+     * 
+>>>>>>> db04a836af... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
      */
     public Object getFormat() {
         return format;
@@ -220,6 +268,7 @@ public class Distribution {
     /**
      * Format
 <<<<<<< HEAD
+<<<<<<< HEAD
      * <p>
      * A human-readable description of the file format of a distribution
      * 
@@ -227,6 +276,11 @@ public class Distribution {
      *
      * <p>A human-readable description of the file format of a distribution
 >>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
+=======
+     * <p>
+     * A human-readable description of the file format of a distribution
+     * 
+>>>>>>> db04a836af... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
      */
     public void setFormat(Object format) {
         this.format = format;
@@ -235,6 +289,7 @@ public class Distribution {
     /**
      * Access URL
 <<<<<<< HEAD
+<<<<<<< HEAD
      * <p>
      * URL providing indirect access to a dataset
      * 
@@ -242,6 +297,11 @@ public class Distribution {
      *
      * <p>URL providing indirect access to a dataset
 >>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
+=======
+     * <p>
+     * URL providing indirect access to a dataset
+     * 
+>>>>>>> db04a836af... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
      */
     public Object getAccessURL() {
         return accessURL;
@@ -250,6 +310,7 @@ public class Distribution {
     /**
      * Access URL
 <<<<<<< HEAD
+<<<<<<< HEAD
      * <p>
      * URL providing indirect access to a dataset
      * 
@@ -257,6 +318,11 @@ public class Distribution {
      *
      * <p>URL providing indirect access to a dataset
 >>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
+=======
+     * <p>
+     * URL providing indirect access to a dataset
+     * 
+>>>>>>> db04a836af... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
      */
     public void setAccessURL(Object accessURL) {
         this.accessURL = accessURL;
@@ -265,6 +331,7 @@ public class Distribution {
     /**
      * Description
 <<<<<<< HEAD
+<<<<<<< HEAD
      * <p>
      * Human-readable description of the distribution
      * 
@@ -272,6 +339,11 @@ public class Distribution {
      *
      * <p>Human-readable description of the distribution
 >>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
+=======
+     * <p>
+     * Human-readable description of the distribution
+     * 
+>>>>>>> db04a836af... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
      */
     public Object getDescription() {
         return description;
@@ -280,6 +352,7 @@ public class Distribution {
     /**
      * Description
 <<<<<<< HEAD
+<<<<<<< HEAD
      * <p>
      * Human-readable description of the distribution
      * 
@@ -287,6 +360,11 @@ public class Distribution {
      *
      * <p>Human-readable description of the distribution
 >>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
+=======
+     * <p>
+     * Human-readable description of the distribution
+     * 
+>>>>>>> db04a836af... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
      */
     public void setDescription(Object description) {
         this.description = description;
@@ -295,6 +373,7 @@ public class Distribution {
     /**
      * Title
 <<<<<<< HEAD
+<<<<<<< HEAD
      * <p>
      * Human-readable name of the distribution
      * 
@@ -302,6 +381,11 @@ public class Distribution {
      *
      * <p>Human-readable name of the distribution
 >>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
+=======
+     * <p>
+     * Human-readable name of the distribution
+     * 
+>>>>>>> db04a836af... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
      */
     public Object getTitle() {
         return title;
@@ -310,6 +394,7 @@ public class Distribution {
     /**
      * Title
 <<<<<<< HEAD
+<<<<<<< HEAD
      * <p>
      * Human-readable name of the distribution
      * 
@@ -317,6 +402,11 @@ public class Distribution {
      *
      * <p>Human-readable name of the distribution
 >>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
+=======
+     * <p>
+     * Human-readable name of the distribution
+     * 
+>>>>>>> db04a836af... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
      */
     public void setTitle(Object title) {
         this.title = title;
@@ -325,6 +415,7 @@ public class Distribution {
     /**
      * Data Standard
 <<<<<<< HEAD
+<<<<<<< HEAD
      * <p>
      * URL providing indirect access to a dataset
      * 
@@ -332,6 +423,11 @@ public class Distribution {
      *
      * <p>URL providing indirect access to a dataset
 >>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
+=======
+     * <p>
+     * URL providing indirect access to a dataset
+     * 
+>>>>>>> db04a836af... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
      */
     public Object getConformsTo() {
         return conformsTo;
@@ -340,6 +436,7 @@ public class Distribution {
     /**
      * Data Standard
 <<<<<<< HEAD
+<<<<<<< HEAD
      * <p>
      * URL providing indirect access to a dataset
      * 
@@ -347,6 +444,11 @@ public class Distribution {
      *
      * <p>URL providing indirect access to a dataset
 >>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
+=======
+     * <p>
+     * URL providing indirect access to a dataset
+     * 
+>>>>>>> db04a836af... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
      */
     public void setConformsTo(Object conformsTo) {
         this.conformsTo = conformsTo;
@@ -355,6 +457,7 @@ public class Distribution {
     /**
      * Data Dictionary
 <<<<<<< HEAD
+<<<<<<< HEAD
      * <p>
      * URL to the data dictionary for the distribution found at the downloadURL
      * 
@@ -362,6 +465,11 @@ public class Distribution {
      *
      * <p>URL to the data dictionary for the distribution found at the downloadURL
 >>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
+=======
+     * <p>
+     * URL to the data dictionary for the distribution found at the downloadURL
+     * 
+>>>>>>> db04a836af... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
      */
     public Object getDescribedBy() {
         return describedBy;
@@ -370,6 +478,7 @@ public class Distribution {
     /**
      * Data Dictionary
 <<<<<<< HEAD
+<<<<<<< HEAD
      * <p>
      * URL to the data dictionary for the distribution found at the downloadURL
      * 
@@ -377,6 +486,11 @@ public class Distribution {
      *
      * <p>URL to the data dictionary for the distribution found at the downloadURL
 >>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
+=======
+     * <p>
+     * URL to the data dictionary for the distribution found at the downloadURL
+     * 
+>>>>>>> db04a836af... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
      */
     public void setDescribedBy(Object describedBy) {
         this.describedBy = describedBy;
@@ -385,21 +499,6 @@ public class Distribution {
     /**
      * Data Dictionary Type
 <<<<<<< HEAD
-     * <p>
-     * The machine-readable file format (IANA Media Type or MIME Type) of the distribution’s describedBy URL
-     * 
-=======
-     *
-     * <p>The machine-readable file format (IANA Media Type or MIME Type) of the distribution’s
-     * describedBy URL
->>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
-     */
-    public Object getDescribedByType() {
-        return describedByType;
-    }
-
-    /**
-     * Data Dictionary Type
 <<<<<<< HEAD
      * <p>
      * The machine-readable file format (IANA Media Type or MIME Type) of the distribution’s describedBy URL
@@ -409,6 +508,33 @@ public class Distribution {
      * <p>The machine-readable file format (IANA Media Type or MIME Type) of the distribution’s
      * describedBy URL
 >>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
+=======
+     * <p>
+     * The machine-readable file format (IANA Media Type or MIME Type) of the distribution’s describedBy URL
+     * 
+>>>>>>> db04a836af... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
+     */
+    public Object getDescribedByType() {
+        return describedByType;
+    }
+
+    /**
+     * Data Dictionary Type
+<<<<<<< HEAD
+<<<<<<< HEAD
+     * <p>
+     * The machine-readable file format (IANA Media Type or MIME Type) of the distribution’s describedBy URL
+     * 
+=======
+     *
+     * <p>The machine-readable file format (IANA Media Type or MIME Type) of the distribution’s
+     * describedBy URL
+>>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
+=======
+     * <p>
+     * The machine-readable file format (IANA Media Type or MIME Type) of the distribution’s describedBy URL
+     * 
+>>>>>>> db04a836af... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
      */
     public void setDescribedByType(Object describedByType) {
         this.describedByType = describedByType;
@@ -417,6 +543,7 @@ public class Distribution {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
+<<<<<<< HEAD
 <<<<<<< HEAD
         sb.append(Distribution.class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this))).append('[');
         sb.append("type");
@@ -466,49 +593,57 @@ public class Distribution {
                 .append('@')
                 .append(Integer.toHexString(System.identityHashCode(this)))
                 .append('[');
+=======
+        sb.append(Distribution.class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this))).append('[');
+>>>>>>> db04a836af... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
         sb.append("type");
         sb.append('=');
-        sb.append(((this.type == null) ? "<null>" : this.type));
+        sb.append(((this.type == null)?"<null>":this.type));
         sb.append(',');
         sb.append("downloadURL");
         sb.append('=');
-        sb.append(((this.downloadURL == null) ? "<null>" : this.downloadURL));
+        sb.append(((this.downloadURL == null)?"<null>":this.downloadURL));
         sb.append(',');
         sb.append("mediaType");
         sb.append('=');
-        sb.append(((this.mediaType == null) ? "<null>" : this.mediaType));
+        sb.append(((this.mediaType == null)?"<null>":this.mediaType));
         sb.append(',');
         sb.append("format");
         sb.append('=');
-        sb.append(((this.format == null) ? "<null>" : this.format));
+        sb.append(((this.format == null)?"<null>":this.format));
         sb.append(',');
         sb.append("accessURL");
         sb.append('=');
-        sb.append(((this.accessURL == null) ? "<null>" : this.accessURL));
+        sb.append(((this.accessURL == null)?"<null>":this.accessURL));
         sb.append(',');
         sb.append("description");
         sb.append('=');
-        sb.append(((this.description == null) ? "<null>" : this.description));
+        sb.append(((this.description == null)?"<null>":this.description));
         sb.append(',');
         sb.append("title");
         sb.append('=');
-        sb.append(((this.title == null) ? "<null>" : this.title));
+        sb.append(((this.title == null)?"<null>":this.title));
         sb.append(',');
         sb.append("conformsTo");
         sb.append('=');
-        sb.append(((this.conformsTo == null) ? "<null>" : this.conformsTo));
+        sb.append(((this.conformsTo == null)?"<null>":this.conformsTo));
         sb.append(',');
         sb.append("describedBy");
         sb.append('=');
-        sb.append(((this.describedBy == null) ? "<null>" : this.describedBy));
+        sb.append(((this.describedBy == null)?"<null>":this.describedBy));
         sb.append(',');
         sb.append("describedByType");
         sb.append('=');
-        sb.append(((this.describedByType == null) ? "<null>" : this.describedByType));
+        sb.append(((this.describedByType == null)?"<null>":this.describedByType));
         sb.append(',');
+<<<<<<< HEAD
         if (sb.charAt((sb.length() - 1)) == ',') {
             sb.setCharAt((sb.length() - 1), ']');
 >>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
+=======
+        if (sb.charAt((sb.length()- 1)) == ',') {
+            sb.setCharAt((sb.length()- 1), ']');
+>>>>>>> db04a836af... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
         } else {
             sb.append(']');
         }
@@ -519,6 +654,9 @@ public class Distribution {
     public int hashCode() {
         int result = 1;
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> db04a836af... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
         result = ((result* 31)+((this.accessURL == null)? 0 :this.accessURL.hashCode()));
         result = ((result* 31)+((this.downloadURL == null)? 0 :this.downloadURL.hashCode()));
         result = ((result* 31)+((this.format == null)? 0 :this.format.hashCode()));
@@ -529,6 +667,7 @@ public class Distribution {
         result = ((result* 31)+((this.type == null)? 0 :this.type.hashCode()));
         result = ((result* 31)+((this.title == null)? 0 :this.title.hashCode()));
         result = ((result* 31)+((this.describedByType == null)? 0 :this.describedByType.hashCode()));
+<<<<<<< HEAD
 =======
         result = ((result * 31) + ((this.accessURL == null) ? 0 : this.accessURL.hashCode()));
         result = ((result * 31) + ((this.downloadURL == null) ? 0 : this.downloadURL.hashCode()));
@@ -543,6 +682,8 @@ public class Distribution {
                 ((result * 31)
                         + ((this.describedByType == null) ? 0 : this.describedByType.hashCode()));
 >>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
+=======
+>>>>>>> db04a836af... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
         return result;
     }
 
@@ -555,6 +696,7 @@ public class Distribution {
             return false;
         }
         Distribution rhs = ((Distribution) other);
+<<<<<<< HEAD
 <<<<<<< HEAD
         return (((((((((((this.accessURL == rhs.accessURL)||((this.accessURL!= null)&&this.accessURL.equals(rhs.accessURL)))&&((this.downloadURL == rhs.downloadURL)||((this.downloadURL!= null)&&this.downloadURL.equals(rhs.downloadURL))))&&((this.format == rhs.format)||((this.format!= null)&&this.format.equals(rhs.format))))&&((this.description == rhs.description)||((this.description!= null)&&this.description.equals(rhs.description))))&&((this.describedBy == rhs.describedBy)||((this.describedBy!= null)&&this.describedBy.equals(rhs.describedBy))))&&((this.mediaType == rhs.mediaType)||((this.mediaType!= null)&&this.mediaType.equals(rhs.mediaType))))&&((this.conformsTo == rhs.conformsTo)||((this.conformsTo!= null)&&this.conformsTo.equals(rhs.conformsTo))))&&((this.type == rhs.type)||((this.type!= null)&&this.type.equals(rhs.type))))&&((this.title == rhs.title)||((this.title!= null)&&this.title.equals(rhs.title))))&&((this.describedByType == rhs.describedByType)||((this.describedByType!= null)&&this.describedByType.equals(rhs.describedByType))));
 =======
@@ -610,6 +752,9 @@ public class Distribution {
                         || ((this.describedByType != null)
                                 && this.describedByType.equals(rhs.describedByType))));
 >>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
+=======
+        return (((((((((((this.accessURL == rhs.accessURL)||((this.accessURL!= null)&&this.accessURL.equals(rhs.accessURL)))&&((this.downloadURL == rhs.downloadURL)||((this.downloadURL!= null)&&this.downloadURL.equals(rhs.downloadURL))))&&((this.format == rhs.format)||((this.format!= null)&&this.format.equals(rhs.format))))&&((this.description == rhs.description)||((this.description!= null)&&this.description.equals(rhs.description))))&&((this.describedBy == rhs.describedBy)||((this.describedBy!= null)&&this.describedBy.equals(rhs.describedBy))))&&((this.mediaType == rhs.mediaType)||((this.mediaType!= null)&&this.mediaType.equals(rhs.mediaType))))&&((this.conformsTo == rhs.conformsTo)||((this.conformsTo!= null)&&this.conformsTo.equals(rhs.conformsTo))))&&((this.type == rhs.type)||((this.type!= null)&&this.type.equals(rhs.type))))&&((this.title == rhs.title)||((this.title!= null)&&this.title.equals(rhs.title))))&&((this.describedByType == rhs.describedByType)||((this.describedByType!= null)&&this.describedByType.equals(rhs.describedByType))));
+>>>>>>> db04a836af... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
     }
 
     public enum Type {

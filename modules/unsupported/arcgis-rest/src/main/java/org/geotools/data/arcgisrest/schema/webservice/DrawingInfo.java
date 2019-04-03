@@ -24,53 +24,77 @@ public class DrawingInfo {
     private Integer transparency;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> db04a836af... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
     /**
      * 
      * (Required)
      * 
      */
+<<<<<<< HEAD
 =======
     /** (Required) */
 >>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
+=======
+>>>>>>> db04a836af... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
     public Renderer getRenderer() {
         return renderer;
     }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> db04a836af... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
     /**
      * 
      * (Required)
      * 
      */
+<<<<<<< HEAD
 =======
     /** (Required) */
 >>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
+=======
+>>>>>>> db04a836af... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
     public void setRenderer(Renderer renderer) {
         this.renderer = renderer;
     }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> db04a836af... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
     /**
      * 
      * (Required)
      * 
      */
+<<<<<<< HEAD
 =======
     /** (Required) */
 >>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
+=======
+>>>>>>> db04a836af... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
     public Integer getTransparency() {
         return transparency;
     }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> db04a836af... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
     /**
      * 
      * (Required)
      * 
      */
+<<<<<<< HEAD
 =======
     /** (Required) */
 >>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
+=======
+>>>>>>> db04a836af... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
     public void setTransparency(Integer transparency) {
         this.transparency = transparency;
     }
@@ -78,6 +102,7 @@ public class DrawingInfo {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
+<<<<<<< HEAD
 <<<<<<< HEAD
         sb.append(DrawingInfo.class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this))).append('[');
         sb.append("renderer");
@@ -95,17 +120,25 @@ public class DrawingInfo {
                 .append('@')
                 .append(Integer.toHexString(System.identityHashCode(this)))
                 .append('[');
+=======
+        sb.append(DrawingInfo.class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this))).append('[');
+>>>>>>> db04a836af... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
         sb.append("renderer");
         sb.append('=');
-        sb.append(((this.renderer == null) ? "<null>" : this.renderer));
+        sb.append(((this.renderer == null)?"<null>":this.renderer));
         sb.append(',');
         sb.append("transparency");
         sb.append('=');
-        sb.append(((this.transparency == null) ? "<null>" : this.transparency));
+        sb.append(((this.transparency == null)?"<null>":this.transparency));
         sb.append(',');
+<<<<<<< HEAD
         if (sb.charAt((sb.length() - 1)) == ',') {
             sb.setCharAt((sb.length() - 1), ']');
 >>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
+=======
+        if (sb.charAt((sb.length()- 1)) == ',') {
+            sb.setCharAt((sb.length()- 1), ']');
+>>>>>>> db04a836af... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
         } else {
             sb.append(']');
         }
@@ -116,12 +149,17 @@ public class DrawingInfo {
     public int hashCode() {
         int result = 1;
 <<<<<<< HEAD
+<<<<<<< HEAD
         result = ((result* 31)+((this.renderer == null)? 0 :this.renderer.hashCode()));
         result = ((result* 31)+((this.transparency == null)? 0 :this.transparency.hashCode()));
 =======
         result = ((result * 31) + ((this.renderer == null) ? 0 : this.renderer.hashCode()));
         result = ((result * 31) + ((this.transparency == null) ? 0 : this.transparency.hashCode()));
 >>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
+=======
+        result = ((result* 31)+((this.renderer == null)? 0 :this.renderer.hashCode()));
+        result = ((result* 31)+((this.transparency == null)? 0 :this.transparency.hashCode()));
+>>>>>>> db04a836af... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
         return result;
     }
 
@@ -135,6 +173,7 @@ public class DrawingInfo {
         }
         DrawingInfo rhs = ((DrawingInfo) other);
 <<<<<<< HEAD
+<<<<<<< HEAD
         return (((this.renderer == rhs.renderer)||((this.renderer!= null)&&this.renderer.equals(rhs.renderer)))&&((this.transparency == rhs.transparency)||((this.transparency!= null)&&this.transparency.equals(rhs.transparency))));
 =======
         return (((this.renderer == rhs.renderer)
@@ -143,6 +182,9 @@ public class DrawingInfo {
                         || ((this.transparency != null)
                                 && this.transparency.equals(rhs.transparency))));
 >>>>>>> 5fb8ab8508... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
+=======
+        return (((this.renderer == rhs.renderer)||((this.renderer!= null)&&this.renderer.equals(rhs.renderer)))&&((this.transparency == rhs.transparency)||((this.transparency!= null)&&this.transparency.equals(rhs.transparency))));
+>>>>>>> db04a836af... [AUR-5856] Geoserver ArcGIS datastore Fails to Recognize CRS
     }
 
 }

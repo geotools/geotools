@@ -116,8 +116,11 @@ import org.xml.sax.SAXException;
  *    }
  *  </pre>
  *
+ * {@link PullParser} offers similar functionality out of a pull parser instead of a SAX parser,
+ * it's supposed to be better, but won't (yet) cover the entire functionality offered by {@link
+ * StreamingParser}
+ *
  * @author Justin Deoliveira, The Open Planning Project
- * @deprecated {@link PullParser} is meant as a better replacement.
  */
 public class StreamingParser {
     /** The sax driver / handler. */

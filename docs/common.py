@@ -24,7 +24,7 @@ import datetime
 
 # Add any Sphinx extension module names here, as strings. They can be extensions
 # coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
-extensions = ['sphinx.ext.todo','sphinx.ext.extlinks']
+extensions = ['sphinx.ext.todo','sphinx.ext.extlinks', 'sphinxcontrib.spelling']
 
 extlinks = { 
     'wiki': ('https://github.com/geotools/geotools/wiki/%s',''),
@@ -112,6 +112,11 @@ pygments_style = 'sphinx'
 # A list of ignored prefixes for module index sorting.
 #modindex_common_prefix = []
 
+# Spelling options
+
+spelling_lang='en_US'
+spelling_show_suggestions=True
+spelling_word_list_filename='/home/ian/code/geotools/docs/spelling/local.dict'
 
 # -- Options for HTML output ---------------------------------------------------
 

@@ -44,11 +44,19 @@
 	<target name="index" depends="init">
 		<antcall target="sphinx-ignore-warnings">
 			<param name="id" value="index"/>
+			<param name="build" value="spelling"/>
+		</antcall>	
+		<antcall target="sphinx-ignore-warnings">
+			<param name="id" value="index"/>
 			<param name="build" value="html"/>
 		</antcall>	
 	</target>
 
 	<target name="user" depends="init">
+		<antcall target="sphinx">
+			<param name="id" value="user" />
+			<param name="build" value="spelling" />
+		</antcall>
 		<antcall target="sphinx">
 			<param name="id" value="user" />
 			<param name="build" value="html" />
@@ -58,11 +66,19 @@
 	<target name="web" depends="init">
 		<antcall target="sphinx">
 			<param name="id" value="web"/>
+			<param name="build" value="spelling"/>
+		</antcall>
+		<antcall target="sphinx">
+			<param name="id" value="web"/>
 			<param name="build" value="html"/>
 		</antcall>
 	</target>
 
 	<target name="developer" depends="init">
+		<antcall target="sphinx">
+			<param name="id" value="developer"/>
+			<param name="build" value="spelling"/>
+		</antcall>
 		<antcall target="sphinx">
 			<param name="id" value="developer"/>
 			<param name="build" value="html"/>

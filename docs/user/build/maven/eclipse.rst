@@ -4,7 +4,7 @@ Maven Eclipse Plugin
 Maven can be used to work with the Eclipse IDE. While direct integration is currently underway (thanks to Sonyatype) we are documenting the traditional approach here for reference.
 Creating .project and .classpath files
 
-#. You can use maven to set up the files needed for eclipse::
+#. You can use Maven to set up the files needed for eclipse::
 
      mvn eclipse:eclipse
 
@@ -13,7 +13,7 @@ Creating .project and .classpath files
    * .classpath file
    * .project file
 
-   The way to read the above line is we are using the eclipse plugin, and we are asking it to do the goal eclipse. The -Dall switch is used to include the unsupported modules.
+   The way to read the above line is we are using the eclipse plugin, and we are asking it to do the goal eclipse. The ``-Dall`` switch is used to include the unsupported modules.
 
 #. You can then import all the GeoTools projects into your Eclipse IDE.
    
@@ -21,11 +21,11 @@ Creating .project and .classpath files
    
    From the :guilabel:`Import` dialog navigate to :menuselection:`General --> Existing projects into workspace`
    
-   Select your geotools checkout directory, the modules (with generated .project files) will be listed allowing you to import them all.
+   Select your ``geotools`` checkout directory, the modules (with generated .project files) will be listed allowing you to import them all.
 
 #. It will take a moment to compile the first time.
 
-   Note: Because maven and eclipse will both use **target/classes** you will need to perform a clean when switching between maven and eclipse for building.
+   Note: Because Maven and Eclipse will both use **target/classes** you will need to perform a clean when switching between Maven and Eclipse for building.
 
 #. You will need to run `mvn eclipse:eclipse` again if any dependencies change.
 
@@ -38,10 +38,10 @@ Creating .project and .classpath files
    The other options are to specify a default output directory (so that eclipse and maven do not both use target/classes and trip on each other).
 
 
-Customising the Name of the Generated Projects
+Customizing the Name of the Generated Projects
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-You can customise the generated project names a little bit (useful you have an existing project like GeoServer with its own "main" project)::
+You can customize the generated project names a little bit (useful you have an existing project like GeoServer with its own "main" project)::
    
    mvn eclipse:eclipse -Declipse.projectNameTemplate="[groupId].[artifactId]"
 
@@ -49,7 +49,7 @@ An alternative approach could be::
    
    mvn eclipse:eclipse -Declipse.projectNameTemplate="gt2-trunk-[artifactId]"
 
-For more information see the maven eclipse plugin documentation.
+For more information see the Maven eclipse plugin documentation.
 
 Working With Many Projects
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -66,7 +66,7 @@ For better performance in your IDE you can the open projects to those you are wo
 Creating .project and .classpath files with source code
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-In addition to downloading jars, maven can also download the associated source code. As source code is often much larger you are warned:
+In addition to downloading jars, Maven can also download the associated source code. As source code is often much larger you are warned:
 1. Generate with source code (THIS MAY TAKE TWO HOURS)::
       
       mvn eclipse:eclipse -DdownloadSources=true
@@ -95,4 +95,4 @@ Tips and Tricks for working with Eclipse
    
 3. GeoTools has defined templates you can import:
    
-   * build/eclipse/codetemplates.xml
+   * ``build/eclipse/codetemplates.xml``

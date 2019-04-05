@@ -18,8 +18,8 @@ Complete build instructions are provided in the user guide:
 
 * :doc:`/build/index`
 
-GeoTools makes use of the maven build system (in part to help us reused code from
-a number of other java projects).
+GeoTools makes use of the Maven build system (in part to help us reused code from
+a number of other Java projects).
 
 To build all the modules::
  
@@ -42,7 +42,7 @@ To load the modules into the eclipse IDE.
        Linux and Mac:   :file:`~/.m2/repository`
     ==================  ========================================================
 
-2. Generate the .project and .classpath files needed for eclipse::
+2. Generate the ``.project`` and ``.classpath`` files needed for eclipse::
       
       mvn eclipse:eclipse -Dall
 
@@ -53,7 +53,7 @@ Why is Maven 3 Slower?
 
 Maven 3 is not faster out of the box with the default settings.
 
-Gowever what is new is that you can ask it to use more than one core::
+However what is new is that you can ask it to use more than one core::
   
   mvn install -Dall -T 2C
   
@@ -68,11 +68,13 @@ This is the fastest build on my machine::
 
 The above options:
 
-* install (without clean) only recompiles modified code
-* no profiles or flags are used to build optional code; onlt the core library is built
-* skipTests - the tests are still built; they are just not run
-* o - allows the build to work "offline" (thus no external servers are checked during the build)
-* T 2C - builds with two threads per core
+  + install (without clean) only re-compiles modified code 
+  + no profiles or flags are used to build optional code; only the core library
+    is built 
+  + ``skipTests`` - the tests are still built; they are just not run 
+  + ``o`` - allows the build to work "offline" (thus no external servers are
+    checked during the build) 
+  + T 2C - builds with two threads per core
 
 I use this configuration to quickly push all local changes into my local maven repository so I can
 test in a downstream application such as uDig or GeoServer.
@@ -82,15 +84,18 @@ How do I create an executable jar for my GeoTools app?
 
 If you're familiar with Maven you might have used the `assembly plugin
 <http://maven.apache.org/plugins/maven-assembly-plugin/>`_ to create self-contained, executable jars. The bad news is
-that this generally won't work with GeoTools. The problem is that GeoTools modules often define one or more files in its
-META-INF/services directory with the same names as files defined in other modules.  The assembly plugin just copies
-files with the same name over the top of each other rather than merging their contents.
+that this generally won't work with GeoTools. The problem is that GeoTools
+modules often define one or more files in its ``META-INF/services`` directory
+with the same names as files defined in other modules.  The assembly plugin just
+copies files with the same name over the top of each other rather than merging
+their contents.
 
-The good news is that the `Maven shade plugin <http://maven.apache.org/plugins/maven-shade-plugin/index.html>`_ can be
-used instead and it will correctly merge the META-INF/services files from each of the GeoTools modules used by your
-application.
+The good news is that the `Maven shade plugin
+<http://maven.apache.org/plugins/maven-shade-plugin/index.html>`_ can be used
+instead and it will correctly merge the ``META-INF/services`` files from each of
+the GeoTools modules used by your application.
 
-The POM below will create an executable jar for the GeoTools :doc:`/tutorial/quickstart/index` module which includes all of the required
+The pom below will create an executable jar for the GeoTools :doc:`/tutorial/quickstart/index` module which includes all of the required
 GeoTools modules and their dependencies.
 
 .. sourcecode:: xml

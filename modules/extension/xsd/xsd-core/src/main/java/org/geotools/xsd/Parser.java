@@ -545,44 +545,4 @@ public class Parser {
         parser.setProperty(SAX_PROPERTY_PREFIX + LEXICAL_HANDLER_PROPERTY, handler);
         return parser;
     }
-
-    /**
-     * Properties used to control the parser behaviour.
-     *
-     * <p>Parser properties are set in the configuration of a parser.
-     *
-     * <pre>
-     * Configuration configuration = new ....
-     * configuration.getProperties().add( Parser.Properties.PARSE_UNKNOWN_ELEMENTS );
-     * configuration.getProperties().add( Parser.Properties.PARSE_UNKNOWN_ATTRIBUTES );
-     * </pre>
-     *
-     * @author Justin Deoliveira, The Open Planning Project
-     * @deprecated
-     */
-    public static interface Properties {
-        /**
-         * If set, the parser will continue to parse when it finds an element and cannot determine
-         * its type.
-         *
-         * @deprecated use {@link Parser#setStrict(boolean)}
-         */
-        QName PARSE_UNKNOWN_ELEMENTS = new QName("http://www.geotools.org", "parseUnknownElements");
-
-        /**
-         * If set, the parser will continue to parse when it finds an attribute and cannot determine
-         * its type.
-         *
-         * @deprecated use {@link Parser#setStrict(boolean)}
-         */
-        QName PARSE_UNKNOWN_ATTRIBUTES =
-                new QName("http://www.geotools.org", "parseUnknownAttributes");
-
-        /**
-         * If set, the parser will ignore the schemaLocation attribute of an instance document.
-         *
-         * @deprecated use {@link Parser#setStrict(boolean)}
-         */
-        QName IGNORE_SCHEMA_LOCATION = new QName("http://www.geotools.org", "ignoreSchemaLocation");
-    }
 }

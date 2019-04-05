@@ -26,7 +26,6 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import junit.framework.TestCase;
-import org.geotools.xsd.Parser;
 import org.geotools.xsd.StreamingParser;
 import org.locationtech.jts.geom.Point;
 import org.opengis.feature.simple.SimpleFeature;
@@ -55,9 +54,6 @@ public class GMLApplicationSchemaParsingTest extends TestCase {
         in = new FileInputStream(schemaFile);
 
         GMLConfiguration configuration = new GMLConfiguration();
-        configuration.getProperties().add(Parser.Properties.IGNORE_SCHEMA_LOCATION);
-        configuration.getProperties().add(Parser.Properties.PARSE_UNKNOWN_ELEMENTS);
-
         StreamingParser parser = new StreamingParser(configuration, in, "//TestFeature");
 
         for (int i = 0; i < 3; i++) {
@@ -97,9 +93,6 @@ public class GMLApplicationSchemaParsingTest extends TestCase {
         in = new FileInputStream(schemaFile);
 
         GMLConfiguration configuration = new GMLConfiguration();
-        configuration.getProperties().add(Parser.Properties.IGNORE_SCHEMA_LOCATION);
-        configuration.getProperties().add(Parser.Properties.PARSE_UNKNOWN_ELEMENTS);
-
         StreamingParser parser = new StreamingParser(configuration, in, "//Point");
 
         for (int i = 0; i < 3; i++) {

@@ -72,6 +72,7 @@
     <pmd.skip>true</pmd.skip>
     <spotbugs.skip>true</spotbugs.skip>
     <checkstyle.skip>true</checkstyle.skip>
+	<lint>none</lint>
   </properties>
 
 

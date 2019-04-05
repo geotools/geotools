@@ -34,9 +34,9 @@ public class GMLMultiPointTypeBindingTest extends AbstractGMLBindingTest {
     protected void setUp() throws Exception {
         super.setUp();
 
-        point1 = createElement(GML.NAMESPACE, "myPoint", GML.POINTMEMBERTYPE, null);
-        point2 = createElement(GML.NAMESPACE, "myPoint", GML.POINTMEMBERTYPE, null);
-        mp = createElement(GML.NAMESPACE, "myMultiPoint", GML.MULTIPOINTTYPE, null);
+        point1 = createElement(GML.NAMESPACE, "myPoint", GML.PointMemberType, null);
+        point2 = createElement(GML.NAMESPACE, "myPoint", GML.PointMemberType, null);
+        mp = createElement(GML.NAMESPACE, "myMultiPoint", GML.MultiPointType, null);
 
         container = new DefaultPicoContainer();
         container.registerComponentImplementation(GeometryFactory.class);

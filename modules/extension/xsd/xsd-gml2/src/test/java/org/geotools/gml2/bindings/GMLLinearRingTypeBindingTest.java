@@ -39,14 +39,14 @@ public class GMLLinearRingTypeBindingTest extends AbstractGMLBindingTest {
     protected void setUp() throws Exception {
         super.setUp();
 
-        ring = createElement(GML.NAMESPACE, "myLineString", GML.LINEARRINGTYPE, null);
-        coord1 = createElement(GML.NAMESPACE, "coord", GML.COORDTYPE, null);
-        coord2 = createElement(GML.NAMESPACE, "coord", GML.COORDTYPE, null);
-        coord3 = createElement(GML.NAMESPACE, "coord", GML.COORDTYPE, null);
-        coord4 = createElement(GML.NAMESPACE, "coord", GML.COORDTYPE, null);
-        coord5 = createElement(GML.NAMESPACE, "coord", GML.COORDTYPE, null);
+        ring = createElement(GML.NAMESPACE, "myLineString", GML.LinearRingType, null);
+        coord1 = createElement(GML.NAMESPACE, "coord", GML.CoordType, null);
+        coord2 = createElement(GML.NAMESPACE, "coord", GML.CoordType, null);
+        coord3 = createElement(GML.NAMESPACE, "coord", GML.CoordType, null);
+        coord4 = createElement(GML.NAMESPACE, "coord", GML.CoordType, null);
+        coord5 = createElement(GML.NAMESPACE, "coord", GML.CoordType, null);
 
-        coords = createElement(GML.NAMESPACE, "coordinates", GML.COORDINATESTYPE, null);
+        coords = createElement(GML.NAMESPACE, "coordinates", GML.CoordinatesType, null);
 
         container = new DefaultPicoContainer();
         container.registerComponentInstance(CoordinateArraySequenceFactory.instance());

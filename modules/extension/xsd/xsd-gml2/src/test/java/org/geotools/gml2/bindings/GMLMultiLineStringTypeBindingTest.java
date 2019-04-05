@@ -16,6 +16,7 @@
  */
 package org.geotools.gml2.bindings;
 
+import javax.xml.namespace.QName;
 import org.geotools.gml2.GML;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
@@ -33,9 +34,19 @@ public class GMLMultiLineStringTypeBindingTest extends AbstractGMLBindingTest {
     protected void setUp() throws Exception {
         super.setUp();
 
-        line1 = createElement(GML.NAMESPACE, "myLine", GML.LINESTRINGMEMBERTYPE, null);
-        line2 = createElement(GML.NAMESPACE, "myLine", GML.LINESTRINGMEMBERTYPE, null);
-        ml = createElement(GML.NAMESPACE, "myMultiLine", GML.MULTILINESTRINGTYPE, null);
+        line1 =
+                createElement(
+                        GML.NAMESPACE,
+                        "myLine",
+                        new QName("http://www.opengis.net/gml", "LineStringMemberType"),
+                        null);
+        line2 =
+                createElement(
+                        GML.NAMESPACE,
+                        "myLine",
+                        new QName("http://www.opengis.net/gml", "LineStringMemberType"),
+                        null);
+        ml = createElement(GML.NAMESPACE, "myMultiLine", GML.MultiLineStringType, null);
 
         container = new DefaultPicoContainer();
         container.registerComponentImplementation(GeometryFactory.class);

@@ -29,8 +29,8 @@ public class GMLFeatureAssociationTypeBindingTest extends AbstractGMLBindingTest
 
         featureAssociation =
                 createElement(
-                        GML.NAMESPACE, "myFeatureAssociation", GML.FEATUREASSOCIATIONTYPE, null);
-        feature = createElement(GML.NAMESPACE, "myFeature", GML.ABSTRACTFEATURETYPE, null);
+                        GML.NAMESPACE, "myFeatureAssociation", GML.FeatureAssociationType, null);
+        feature = createElement(GML.NAMESPACE, "myFeature", GML.AbstractFeatureType, null);
     }
 
     //	public void testWithFeature() throws Exception {
@@ -54,7 +54,7 @@ public class GMLFeatureAssociationTypeBindingTest extends AbstractGMLBindingTest
         Node node = createNode(featureAssociation, null, null, null, null);
 
         GMLFeatureAssociationTypeBinding s =
-                (GMLFeatureAssociationTypeBinding) getBinding(GML.FEATUREASSOCIATIONTYPE);
+                (GMLFeatureAssociationTypeBinding) getBinding(GML.FeatureAssociationType);
 
         try {
             assertNull(s.parse(featureAssociation, node, null));

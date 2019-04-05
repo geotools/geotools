@@ -125,7 +125,7 @@ public class OGCBBOXTypeBinding extends AbstractComplexBinding {
             String srs = (srsNode != null) ? srsNode.getValue().toString() : null;
 
             if ((srs == null) && (crs != null)) {
-                srs = GML2EncodingUtils.crs(crs);
+                srs = GML2EncodingUtils.toURI(crs);
             }
 
             return factory.bbox(

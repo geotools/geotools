@@ -122,7 +122,7 @@ public class GMLAbstractGeometryTypeBinding extends AbstractComplexBinding {
             Geometry geometry = (Geometry) object;
 
             if (geometry.getUserData() instanceof CoordinateReferenceSystem) {
-                return GML2EncodingUtils.crs((CoordinateReferenceSystem) geometry.getUserData());
+                return GML2EncodingUtils.toURI((CoordinateReferenceSystem) geometry.getUserData());
             }
         }
 

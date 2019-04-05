@@ -77,11 +77,6 @@ public class GML2EncodingUtils {
         return null;
     }
 
-    /** @deprecated use {@link #toURI(CoordinateReferenceSystem)}. */
-    public static String crs(CoordinateReferenceSystem crs) {
-        return toURI(crs);
-    }
-
     /** Encodes the crs object as a uri. */
     public static String toURI(CoordinateReferenceSystem crs) {
         return toURI(crs, false);

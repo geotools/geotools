@@ -821,7 +821,7 @@ public class GeoPackageTest {
         for (String ext : exts) {
             if ("prj".equals(ext)) {
                 String wkt = CRS.decode("EPSG:26713", true).toWKT();
-                FileUtils.writeStringToFile(new File(d, "bugsites.prj"), wkt);
+                FileUtils.writeStringToFile(new File(d, "bugsites.prj"), wkt, "UTF-8");
             } else {
                 FileUtils.copyURLToFile(
                         TestData.url("shapes/bugsites." + ext), new File(d, "bugsites." + ext));
@@ -840,7 +840,7 @@ public class GeoPackageTest {
         for (String ext : exts) {
             if ("prj".equals(ext)) {
                 String wkt = CRS.decode("EPSG:4326", true).toWKT();
-                FileUtils.writeStringToFile(new File(d, "BooleanTest.prj"), wkt);
+                FileUtils.writeStringToFile(new File(d, "BooleanTest.prj"), wkt, "UTF-8");
             } else {
                 FileUtils.copyURLToFile(
                         TestData.url("shapes/BooleanTest." + ext),

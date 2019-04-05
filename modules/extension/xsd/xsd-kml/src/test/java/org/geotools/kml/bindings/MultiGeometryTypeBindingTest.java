@@ -29,6 +29,7 @@ import org.locationtech.jts.geom.MultiPoint;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
+import org.locationtech.jts.geom.impl.CoordinateArraySequence;
 import org.w3c.dom.Document;
 
 public class MultiGeometryTypeBindingTest extends KMLTestSupport {
@@ -57,7 +58,9 @@ public class MultiGeometryTypeBindingTest extends KMLTestSupport {
     public void testEncodeMultiPoint() throws Exception {
         GeometryFactory gf = new GeometryFactory();
         MultiPoint mp =
-                gf.createMultiPoint(new Coordinate[] {new Coordinate(0, 0), new Coordinate(1, 1)});
+                gf.createMultiPoint(
+                        new CoordinateArraySequence(
+                                new Coordinate[] {new Coordinate(0, 0), new Coordinate(1, 1)}));
         Document dom = encode(mp, KML.MultiGeometry);
         assertEquals(2, getElementsByQName(dom, KML.Point).getLength());
     }

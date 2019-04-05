@@ -31,8 +31,8 @@ public class GMLPointMemberTypeBindingTest extends AbstractGMLBindingTest {
     protected void setUp() throws Exception {
         super.setUp();
 
-        association = createElement(GML.NAMESPACE, "myAssociation", GML.POINTMEMBERTYPE, null);
-        geometry = createElement(GML.NAMESPACE, "myGeometry", GML.POINTTYPE, null);
+        association = createElement(GML.NAMESPACE, "myAssociation", GML.PointMemberType, null);
+        geometry = createElement(GML.NAMESPACE, "myGeometry", GML.PointType, null);
     }
 
     public void testWithGeometry() throws Exception {
@@ -44,10 +44,10 @@ public class GMLPointMemberTypeBindingTest extends AbstractGMLBindingTest {
                         null,
                         null);
         GMLGeometryAssociationTypeBinding s1 =
-                (GMLGeometryAssociationTypeBinding) getBinding(GML.GEOMETRYASSOCIATIONTYPE);
+                (GMLGeometryAssociationTypeBinding) getBinding(GML.GeometryAssociationType);
         Geometry g = (Geometry) s1.parse(association, node, null);
 
-        GMLPointMemberTypeBinding s2 = (GMLPointMemberTypeBinding) getBinding(GML.POINTMEMBERTYPE);
+        GMLPointMemberTypeBinding s2 = (GMLPointMemberTypeBinding) getBinding(GML.PointMemberType);
         g = (Geometry) s2.parse(association, node, g);
 
         assertNotNull(g);

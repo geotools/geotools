@@ -34,9 +34,9 @@ public class GMLPolygonTypeBindingTest extends AbstractGMLBindingTest {
     protected void setUp() throws Exception {
         super.setUp();
 
-        poly = createElement(GML.NAMESPACE, "myPolygon", GML.POLYGONTYPE, null);
-        oring = createElement(GML.NAMESPACE, "outerBoundaryIs", GML.LINEARRINGTYPE, null);
-        iring = createElement(GML.NAMESPACE, "innerBoundaryIs", GML.LINEARRINGTYPE, null);
+        poly = createElement(GML.NAMESPACE, "myPolygon", GML.PolygonType, null);
+        oring = createElement(GML.NAMESPACE, "outerBoundaryIs", GML.LinearRingType, null);
+        iring = createElement(GML.NAMESPACE, "innerBoundaryIs", GML.LinearRingType, null);
 
         container = new DefaultPicoContainer();
         container.registerComponentImplementation(GeometryFactory.class);

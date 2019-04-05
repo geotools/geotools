@@ -34,8 +34,8 @@ public class GMLMultiPointPropertyTypeBindingTest extends AbstractGMLBindingTest
 
         association =
                 createElement(
-                        GML.NAMESPACE, "myMultiPointProperty", GML.MULTIPOINTPROPERTYTYPE, null);
-        geometry = createElement(GML.NAMESPACE, "myMultiPoint", GML.MULTIPOINTTYPE, null);
+                        GML.NAMESPACE, "myMultiPointProperty", GML.MultiPointPropertyType, null);
+        geometry = createElement(GML.NAMESPACE, "myMultiPoint", GML.MultiPointType, null);
 
         container = new DefaultPicoContainer();
         container.registerComponentImplementation(GeometryFactory.class);

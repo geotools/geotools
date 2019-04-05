@@ -63,7 +63,7 @@ public class GMLAbstractGeometryTypeBinding extends AbstractComplexBinding {
 
     /** @generated */
     public QName getTarget() {
-        return GML.ABSTRACTGEOMETRYTYPE;
+        return GML.AbstractGeometryType;
     }
 
     /**

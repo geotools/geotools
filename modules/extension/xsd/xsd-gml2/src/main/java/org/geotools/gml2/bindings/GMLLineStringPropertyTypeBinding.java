@@ -56,7 +56,7 @@ import org.locationtech.jts.geom.LineString;
 public class GMLLineStringPropertyTypeBinding extends AbstractComplexBinding {
     /** @generated */
     public QName getTarget() {
-        return GML.LINESTRINGPROPERTYTYPE;
+        return GML.LineStringPropertyType;
     }
 
     /**

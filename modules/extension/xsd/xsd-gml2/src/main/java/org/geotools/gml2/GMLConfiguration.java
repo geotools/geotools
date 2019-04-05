@@ -51,7 +51,6 @@ import org.geotools.gml2.bindings.GMLPolygonPropertyTypeBinding;
 import org.geotools.gml2.bindings.GMLPolygonTypeBinding;
 import org.geotools.xlink.XLINKConfiguration;
 import org.geotools.xsd.Configuration;
-import org.geotools.xsd.Parser;
 import org.locationtech.jts.geom.CoordinateSequenceFactory;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.impl.CoordinateArraySequenceFactory;
@@ -101,11 +100,6 @@ public class GMLConfiguration extends Configuration {
 
         // add xlink cdependency
         addDependency(new XLINKConfiguration());
-
-        // add the parse unknown attributes property, this is mostly for
-        // the "fid" attribute
-        getProperties().add(Parser.Properties.PARSE_UNKNOWN_ELEMENTS);
-        getProperties().add(Parser.Properties.PARSE_UNKNOWN_ATTRIBUTES);
     }
 
     /**

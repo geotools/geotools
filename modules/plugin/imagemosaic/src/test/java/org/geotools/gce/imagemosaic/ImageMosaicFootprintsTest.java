@@ -25,6 +25,23 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
+import it.geosolutions.jaiext.vectorbin.ROIGeometry;
+import it.geosolutions.rendered.viewer.RenderedImageBrowser;
+import java.awt.*;
+import java.awt.image.Raster;
+import java.awt.image.RenderedImage;
+import java.io.File;
+import java.io.FileFilter;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
+import javax.media.jai.PlanarImage;
+import javax.media.jai.ROI;
 import org.apache.commons.io.FileUtils;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
@@ -86,26 +103,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.datum.PixelInCell;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.MathTransform2D;
-
-import java.awt.*;
-import java.awt.image.Raster;
-import java.awt.image.RenderedImage;
-import java.io.File;
-import java.io.FileFilter;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.IOException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
-
-import javax.media.jai.PlanarImage;
-import javax.media.jai.ROI;
-
-import it.geosolutions.jaiext.vectorbin.ROIGeometry;
-import it.geosolutions.rendered.viewer.RenderedImageBrowser;
 
 public class ImageMosaicFootprintsTest {
 

@@ -22,6 +22,9 @@ public class SpatialReference__1 {
     @SerializedName("latestWkid")
     @Expose
     private Integer latestWkid;
+    @SerializedName("wkt")
+    @Expose
+    private String wkt;
 
     /**
      * 
@@ -59,6 +62,14 @@ public class SpatialReference__1 {
         this.latestWkid = latestWkid;
     }
 
+    public String getWkt() {
+        return wkt;
+    }
+
+    public void setWkt(String wkt) {
+        this.wkt = wkt;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -70,6 +81,10 @@ public class SpatialReference__1 {
         sb.append("latestWkid");
         sb.append('=');
         sb.append(((this.latestWkid == null)?"<null>":this.latestWkid));
+        sb.append(',');
+        sb.append("wkt");
+        sb.append('=');
+        sb.append(((this.wkt == null)?"<null>":this.wkt));
         sb.append(',');
         if (sb.charAt((sb.length()- 1)) == ',') {
             sb.setCharAt((sb.length()- 1), ']');
@@ -83,6 +98,7 @@ public class SpatialReference__1 {
     public int hashCode() {
         int result = 1;
         result = ((result* 31)+((this.wkid == null)? 0 :this.wkid.hashCode()));
+        result = ((result* 31)+((this.wkt == null)? 0 :this.wkt.hashCode()));
         result = ((result* 31)+((this.latestWkid == null)? 0 :this.latestWkid.hashCode()));
         return result;
     }
@@ -96,7 +112,7 @@ public class SpatialReference__1 {
             return false;
         }
         SpatialReference__1 rhs = ((SpatialReference__1) other);
-        return (((this.wkid == rhs.wkid)||((this.wkid!= null)&&this.wkid.equals(rhs.wkid)))&&((this.latestWkid == rhs.latestWkid)||((this.latestWkid!= null)&&this.latestWkid.equals(rhs.latestWkid))));
+        return ((((this.wkid == rhs.wkid)||((this.wkid!= null)&&this.wkid.equals(rhs.wkid)))&&((this.wkt == rhs.wkt)||((this.wkt!= null)&&this.wkt.equals(rhs.wkt))))&&((this.latestWkid == rhs.latestWkid)||((this.latestWkid!= null)&&this.latestWkid.equals(rhs.latestWkid))));
     }
 
 }

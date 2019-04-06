@@ -76,9 +76,6 @@ public class Parser {
     /** the sax parser driving the handler */
     private SAXParser parser;
 
-    /** the instance document being parsed */
-    private InputStream input;
-
     /**
      * Creates a new instance of the parser.
      *
@@ -95,33 +92,6 @@ public class Parser {
         configuration.setupParser(this);
     }
 
-    /**
-     * Creates a new instance of the parser.
-     *
-     * @param configuration Object representing the configuration of the parser.
-     * @param input A uri representing the instance document to be parsed.
-     * @throws ParserConfigurationException
-     * @throws SAXException If a sax parser can not be created.
-     * @throws URISyntaxException If <code>input</code> is not a valid uri.
-     * @deprecated use {@link #Parser(Configuration)} and {@link #parse(InputStream)}.
-     */
-    public Parser(Configuration configuration, String input)
-            throws IOException, URISyntaxException {
-        this(configuration, new BufferedInputStream(new FileInputStream(new File(new URI(input)))));
-    }
-
-    /**
-     * Creates a new instance of the parser.
-     *
-     * @param configuration Object representing the configuration of the parser.
-     * @param input The stream representing the instance document to be parsed.
-     * @deprecated use {@link #Parser(Configuration)} and {@link #parse(InputStream)}.
-     */
-    public Parser(Configuration configuration, InputStream input) {
-        this(configuration);
-        this.input = input;
-    }
-
     /** @return The underlying parser handler. */
     ParserHandler getParserHandler() {
         return handler;
@@ -134,21 +104,6 @@ public class Parser {
      */
     public void setContextCustomizer(ContextCustomizer contextCustomizer) {
         handler.setContextCustomizer(contextCustomizer);
-    }
-
-    /**
-     * Signals the parser to parse the entire instance document. The object returned from the parse
-     * is the object which has been bound to the root element of the document. This method should
-     * only be called once for a single instance document.
-     *
-     * @return The object representation of the root element of the document.
-     * @throws IOException
-     * @throws SAXException
-     * @throws ParserConfigurationException
-     * @deprecated use {@link #parse(InputStream)}
-     */
-    public Object parse() throws IOException, SAXException, ParserConfigurationException {
-        return parse(input);
     }
 
     /**

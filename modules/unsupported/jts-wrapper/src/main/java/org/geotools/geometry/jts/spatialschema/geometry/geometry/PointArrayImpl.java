@@ -32,6 +32,7 @@ import org.geotools.geometry.jts.spatialschema.geometry.DirectPositionImpl;
 import org.geotools.geometry.jts.spatialschema.geometry.JTSGeometry;
 import org.geotools.geometry.jts.spatialschema.geometry.JTSUtils;
 import org.geotools.geometry.jts.spatialschema.geometry.NotifyingArrayList;
+import org.locationtech.jts.geom.impl.CoordinateArraySequence;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.coordinate.PointArray;
 import org.opengis.geometry.coordinate.PointGrid;
@@ -224,6 +225,6 @@ public class PointArrayImpl extends NotifyingArrayList<Position>
         for (int i = 0; i < n; i++) {
             coords[i] = JTSUtils.directPositionToCoordinate((DirectPosition) super.get(i));
         }
-        return JTSUtils.GEOMETRY_FACTORY.createMultiPoint(coords);
+        return JTSUtils.GEOMETRY_FACTORY.createMultiPoint(new CoordinateArraySequence(coords));
     }
 }

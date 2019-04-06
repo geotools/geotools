@@ -64,6 +64,7 @@ import org.locationtech.jts.geom.MultiPoint;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
+import org.locationtech.jts.geom.impl.CoordinateArraySequence;
 import org.locationtech.jts.io.ParseException;
 import org.locationtech.jts.io.WKTReader;
 import org.locationtech.jts.operation.valid.IsValidOp;
@@ -863,7 +864,7 @@ public class TestData {
     private static MultiPoint createTestMultiPoint(GeometryFactory gf, int index) {
         Coordinate[] coords = {new Coordinate(index, index), new Coordinate(-index, -index)};
 
-        return gf.createMultiPoint(coords);
+        return gf.createMultiPoint(new CoordinateArraySequence(coords));
     }
 
     private static LineString createTestLineString(final GeometryFactory gf, final int index) {

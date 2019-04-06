@@ -36,6 +36,7 @@ import org.locationtech.jts.geom.MultiPoint;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
+import org.locationtech.jts.geom.impl.CoordinateArraySequence;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.GeometryDescriptor;
@@ -246,7 +247,7 @@ final class ArcSDEAttributeReader implements AttributeReader {
 
         Geometry adapted;
         if (MultiPoint.class == targetType && Point.class == currentClass) {
-            adapted = factory.createMultiPoint(value.getCoordinates());
+            adapted = factory.createMultiPoint(new CoordinateArraySequence(value.getCoordinates()));
         } else if (MultiLineString.class == targetType && LineString.class == currentClass) {
             adapted = factory.createMultiLineString(new LineString[] {(LineString) value});
         } else if (MultiPolygon.class == targetType && Polygon.class == currentClass) {

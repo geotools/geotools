@@ -57,6 +57,7 @@ import org.locationtech.jts.geom.LinearRing;
 import org.locationtech.jts.geom.MultiPoint;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
+import org.locationtech.jts.geom.impl.CoordinateArraySequence;
 import org.locationtech.jts.geom.prep.PreparedGeometry;
 import org.locationtech.jts.geom.prep.PreparedGeometryFactory;
 import org.opengis.geometry.MismatchedDimensionException;
@@ -798,7 +799,7 @@ public final class RendererUtilities {
             for (int t = 0; t < length; t++) {
                 pts[t] = pointInGeometry(gc.getGeometryN(t)).getCoordinate();
             }
-            return g.getFactory().createMultiPoint(pts);
+            return g.getFactory().createMultiPoint(new CoordinateArraySequence(pts));
         } else if (g != null) {
             return pointInGeometry(g);
         }

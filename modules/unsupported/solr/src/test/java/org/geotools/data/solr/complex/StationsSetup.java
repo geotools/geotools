@@ -139,7 +139,7 @@ public final class StationsSetup {
                 IOUtils.copy(input, output);
             } else {
                 // we have context, substitute placeholders with the provided context
-                String content = IOUtils.toString(input);
+                String content = IOUtils.toString(input, "UTF-8");
                 content = replace(content, context);
                 IOUtils.write(content, output);
             }

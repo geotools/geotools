@@ -32,7 +32,7 @@ public class AbstractFeatureCollectionTypeBindingTest extends GML3TestSupport {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        registerNamespaceMapping("xmlns:test", TEST.NAMESPACE);
+        registerNamespaceMapping("test", TEST.NAMESPACE);
     }
 
     public void testFeatureMember() throws Exception {

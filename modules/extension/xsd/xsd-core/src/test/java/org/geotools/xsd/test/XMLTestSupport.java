@@ -201,6 +201,7 @@ public abstract class XMLTestSupport extends TestCase {
         }
 
         // register additional namespaces
+        root.setAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
         for (Iterator e = namespaceMappings.entrySet().iterator(); e.hasNext(); ) {
             Map.Entry mapping = (Map.Entry) e.next();
             String prefix = (String) mapping.getKey();

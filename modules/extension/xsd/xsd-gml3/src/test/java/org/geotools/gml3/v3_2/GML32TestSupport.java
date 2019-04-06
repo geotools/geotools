@@ -6,7 +6,6 @@ import org.custommonkey.xmlunit.XMLUnit;
 import org.geotools.gml3.bindings.GML3MockData;
 import org.geotools.xsd.Configuration;
 import org.geotools.xsd.test.XMLTestSupport;
-import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
 public abstract class GML32TestSupport extends XMLTestSupport {
@@ -34,7 +33,7 @@ public abstract class GML32TestSupport extends XMLTestSupport {
         super.setUp();
         GML3MockData.setGML(GML.getInstance());
 
-        registerNamespaceMapping("xmlns:gml", GML.NAMESPACE );
+        registerNamespaceMapping("gml", GML.NAMESPACE);
     }
 
     @Override

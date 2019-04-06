@@ -34,12 +34,14 @@ import org.geotools.feature.NameImpl;
 import org.geotools.feature.type.AttributeDescriptorImpl;
 import org.geotools.feature.type.GeometryDescriptorImpl;
 import org.geotools.feature.type.GeometryTypeImpl;
-import org.geotools.geometry.jts.EmptyGeometry;
 import org.geotools.gml3.GMLSchema;
 import org.geotools.util.Converters;
 import org.geotools.xs.XSSchema;
 import org.hamcrest.CoreMatchers;
 import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryCollection;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.PrecisionModel;
 import org.opengis.feature.Attribute;
 import org.opengis.feature.ComplexAttribute;
 import org.opengis.feature.GeometryAttribute;
@@ -112,14 +114,16 @@ public class ComplexAttributeConverterFactoryTest extends TestCase {
 
     /** Test extracting geometry from geometryattribute should be successful. */
     public void testGeometry() {
-        Geometry geometry = new EmptyGeometry();
+        Geometry geometry =
+                new GeometryFactory(new PrecisionModel(PrecisionModel.FLOATING))
+                        .createGeometryCollection();
         GeometryAttribute geoatt =
                 new GeometryAttributeImpl(
                         geometry,
                         new GeometryDescriptorImpl(
                                 new GeometryTypeImpl(
                                         new NameImpl(""),
-                                        EmptyGeometry.class,
+                                        GeometryCollection.class,
                                         null,
                                         false,
                                         false,

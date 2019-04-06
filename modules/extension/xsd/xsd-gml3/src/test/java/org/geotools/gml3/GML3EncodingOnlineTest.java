@@ -88,7 +88,7 @@ public class GML3EncodingOnlineTest extends TestCase {
 
         Encoder encoder = new Encoder(configuration, schema);
         ByteArrayOutputStream output = new ByteArrayOutputStream();
-        encoder.write(fc, TEST.TestFeatureCollection, output);
+        encoder.encode(fc, TEST.TestFeatureCollection, output);
 
         validate(output.toByteArray(), configuration);
     }
@@ -117,7 +117,7 @@ public class GML3EncodingOnlineTest extends TestCase {
         Encoder encoder = new Encoder(configuration, schema);
 
         ByteArrayOutputStream output = new ByteArrayOutputStream();
-        encoder.write(fc, TEST.TestFeatureCollection, output);
+        encoder.encode(fc, TEST.TestFeatureCollection, output);
 
         validate(output.toByteArray(), configuration);
     }

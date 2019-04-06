@@ -459,17 +459,6 @@ public class Encoder {
     }
 
     /**
-     * True if we are encoding a full document, false if the xml headers should be omitted (the
-     * encoder is used to generate part of a large document)
-     *
-     * @param encodeFullDocument
-     * @deprecated use {@link #setInline(boolean)}.
-     */
-    public void setEncodeFullDocument(boolean encodeFullDocument) {
-        this.inline = !encodeFullDocument;
-    }
-
-    /**
      * Sets the encoder to "inline" mode.
      *
      * <p>When this flag is set {@link #encode(Object, QName, ContentHandler)} should be used to
@@ -519,12 +508,6 @@ public class Encoder {
     /** @return the schema. */
     public XSDSchema getSchema() {
         return schema;
-    }
-
-    /** @deprecated use {@link #encode(Object, QName, OutputStream)}. */
-    public void write(Object object, QName name, OutputStream out)
-            throws IOException, SAXException {
-        encode(object, name, out);
     }
 
     /** @return The document used as a factory to create dom nodes. */

@@ -34,7 +34,7 @@ public class GMLAbstractFeatureTypeBindingTest extends GMLTestSupport {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        registerNamespaceMapping("xmlns:test", TEST.NAMESPACE);
+        registerNamespaceMapping("test", TEST.NAMESPACE);
     }
 
     public void testType() {

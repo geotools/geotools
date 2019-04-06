@@ -18,20 +18,6 @@ package org.geotools.gce.imagemosaic;
 
 import static org.junit.Assert.assertEquals;
 
-import java.awt.RenderingHints;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.net.URL;
-import java.util.AbstractMap.SimpleEntry;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Properties;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.geotools.coverage.grid.GridCoverage2D;
@@ -57,6 +43,21 @@ import org.junit.Test;
 import org.opengis.filter.Filter;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.ParameterValue;
+
+import java.awt.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.net.URL;
+import java.util.AbstractMap.SimpleEntry;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Properties;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class ImageMosaicEgrTest {
 
@@ -147,12 +148,9 @@ public class ImageMosaicEgrTest {
         Properties p = new Properties();
         // Setting Raster property
         p.put(MultiLevelROIProviderFactory.SOURCE_PROPERTY, "raster");
-        FileOutputStream fos = null;
-        try {
-            fos = new FileOutputStream(new File(testMosaicRaster, "footprints.properties"));
+        try (FileOutputStream fos =
+                new FileOutputStream(new File(testMosaicRaster, "footprints.properties"))) {
             p.store(fos, null);
-        } finally {
-            IOUtils.closeQuietly(fos);
         }
     }
 
@@ -163,12 +161,9 @@ public class ImageMosaicEgrTest {
         p.put(MultiLevelROIProviderFactory.SOURCE_PROPERTY, "sidecar");
         // the vector is not an exact match, that would result in black artifacts
         p.put("footprint_inset", "0.01");
-        FileOutputStream fos = null;
-        try {
-            fos = new FileOutputStream(new File(testMosaicRaster, "footprints.properties"));
+        try (FileOutputStream fos =
+                new FileOutputStream(new File(testMosaicRaster, "footprints.properties"))) {
             p.store(fos, null);
-        } finally {
-            IOUtils.closeQuietly(fos);
         }
     }
 

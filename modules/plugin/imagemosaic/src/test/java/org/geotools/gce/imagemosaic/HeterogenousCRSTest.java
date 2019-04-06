@@ -457,11 +457,11 @@ public class HeterogenousCRSTest {
                         "MosaicCRS=EPSG\\:3857\n"
                         + // the reprojection bit
                         "Schema=*the_geom:Polygon,location:String,crs:String";
-        FileUtils.writeStringToFile(new File(testDirectory, "indexer.properties"), indexer);
+        FileUtils.writeStringToFile(new File(testDirectory, "indexer.properties"), indexer, "UTF-8");
 
         // footprint management
         String footprints = "footprint_source=raster";
-        FileUtils.writeStringToFile(new File(testDirectory, "footprints.properties"), footprints);
+        FileUtils.writeStringToFile(new File(testDirectory, "footprints.properties"), footprints, "UTF-8");
 
         ImageMosaicReader imReader = new ImageMosaicReader(testDirectory, new Hints());
         Assert.assertNotNull(imReader);
@@ -592,16 +592,10 @@ public class HeterogenousCRSTest {
         imReader.dispose();
 
         // append the CrsAttribute to the indexer.properties
-        FileWriter out = null;
-        try {
-            out = new FileWriter(new File(testDirectory, "hetero_utm.properties"), true);
+        try (FileWriter out = new FileWriter(new File(testDirectory, "hetero_utm.properties"), true)) {
             out.write("UseExistingSchema=true\n");
             out.write("CrsAttribute=crs\n");
             out.flush();
-        } finally {
-            if (out != null) {
-                IOUtils.closeQuietly(out);
-            }
         }
 
         // now rebuild mosaic (used to fail)

@@ -102,7 +102,7 @@ public class RepeatedLabelTest {
     @Test
     public void testLabelSquareBordersWithHoles() throws Exception {
         checkRepeatedLabelsPolygonBorder(
-                squareHoles, "repeatedLabelsAlongLine", "polyHole", null, 2100);
+                squareHoles, "repeatedLabelsAlongLine", "polyHole", null, 2200);
     }
 
     @Test
@@ -123,7 +123,7 @@ public class RepeatedLabelTest {
     public void testLabelSquareBordersHolesPositiveOffset() throws Exception {
         PerpendicularOffsetVisitor visitor = new PerpendicularOffsetVisitor(5);
         checkRepeatedLabelsPolygonBorder(
-                squareHoles, "repeatedLabelsAlongLine", "poly-hole-perp-offset", visitor, 2100);
+                squareHoles, "repeatedLabelsAlongLine", "poly-hole-perp-offset", visitor, 2200);
     }
 
     @Test

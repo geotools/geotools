@@ -206,8 +206,8 @@ class IndexManager {
             throw new IllegalStateException(
                     "This method only applies if the files are local and the file can be created");
 
-        URL indexURL = shpFiles.acquireRead(indexType, writer);
         URL shpURL = shpFiles.acquireRead(SHP, writer);
+        URL indexURL = shpFiles.acquireRead(indexType, writer);
         try {
 
             if (indexURL == null) {

@@ -362,9 +362,7 @@ class ShapefileFeatureSource extends ContentFeatureSource {
 
         // get the .fix file reader, if we have a .fix file
         IndexedFidReader fidReader = null;
-        if (getDataStore().isFidIndexed()
-                /* && filter instanceof Id*/
-                && indexManager.hasFidIndex(false)) {
+        if (getDataStore().isFidIndexed() && indexManager.hasFidIndex(false)) {
             fidReader = new IndexedFidReader(shpFiles);
         }
 

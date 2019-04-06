@@ -220,14 +220,13 @@ public class FidQueryTest extends FIDTestCase {
             assertFalse("found fid", features.hasNext());
         }
 
-        // when we fetch the features again the first feature is archsites.1 again!
-        // yet the IndexedShapeReader tries very hard to avoid this!
+        allfeatures = featureStore.getFeatures();
         try (SimpleFeatureIterator features = allfeatures.features()) {
 
             SimpleFeature f = (SimpleFeature) features.next();
             assertFalse(fidFilter.evaluate(f));
         }
-        // but not if we use the fid filter
+
         features2 = featureStore.getFeatures(fidFilter);
         assertEquals("wrong number of features", 0, features2.size());
         try (SimpleFeatureIterator features = features2.features()) {

@@ -219,7 +219,7 @@ public class FidQueryTest extends FIDTestCase {
         try (SimpleFeatureIterator features = features2.features()) {
             assertFalse("found fid", features.hasNext());
         }
-
+        // refresh the features using the new datastore
         allfeatures = featureStore.getFeatures();
         try (SimpleFeatureIterator features = allfeatures.features()) {
 

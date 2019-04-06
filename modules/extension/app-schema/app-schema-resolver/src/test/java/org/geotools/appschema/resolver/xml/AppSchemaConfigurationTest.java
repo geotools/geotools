@@ -24,7 +24,7 @@ import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 import javax.xml.namespace.QName;
-import junit.framework.Assert;
+import org.junit.Assert;
 import org.eclipse.xsd.XSDSchema;
 import org.geotools.util.URLs;
 import org.geotools.xml.resolver.SchemaCache;

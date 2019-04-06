@@ -46,14 +46,6 @@ public class CatalogBuilderConfiguration implements Cloneable {
 
     private Indexer indexer;
 
-    /**
-     * @deprecated parse indexer parameters instead.
-     * @return
-     */
-    public String getEnvelope2D() {
-        return getParameter(Prop.ENVELOPE2D);
-    }
-
     public CatalogBuilderConfiguration() {
         initDefaultsParam();
     }
@@ -80,22 +72,6 @@ public class CatalogBuilderConfiguration implements Cloneable {
     /** @param hints the hints to set */
     public void setHints(Hints hints) {
         this.hints = hints;
-    }
-
-    /**
-     * @deprecated parse indexer parameters instead.
-     * @return
-     */
-    public boolean isRecursive() {
-        return Boolean.parseBoolean(getParameter(Prop.RECURSIVE));
-    }
-
-    /**
-     * @deprecated parse indexer parameters instead.
-     * @return
-     */
-    public boolean isCaching() {
-        return Boolean.parseBoolean(getParameter(Prop.CACHING));
     }
 
     /**
@@ -161,54 +137,6 @@ public class CatalogBuilderConfiguration implements Cloneable {
 
     public void setRuntimeAttribute(String runtimeAttribute) {
         this.runtimeAttribute = runtimeAttribute;
-    }
-
-    /**
-     * @deprecated parse indexer parameters instead.
-     * @return
-     */
-    public String getIndexName() {
-        return getParameter(Prop.INDEX_NAME);
-    }
-
-    /**
-     * @deprecated parse indexer parameters instead.
-     * @return
-     */
-    public boolean isFootprintManagement() {
-        return Boolean.parseBoolean(getParameter(Prop.FOOTPRINT_MANAGEMENT));
-    }
-
-    /**
-     * @deprecated parse indexer parameters instead.
-     * @return
-     */
-    public String getLocationAttribute() {
-        return getParameter(Prop.LOCATION_ATTRIBUTE);
-    }
-
-    /**
-     * @deprecated parse indexer parameters instead.
-     * @return
-     */
-    public String getRootMosaicDirectory() {
-        return getParameter(Prop.ROOT_MOSAIC_DIR);
-    }
-
-    /**
-     * @deprecated parse Indexer parameters instead.
-     * @return
-     */
-    public String getWildcard() {
-        return getParameter(Prop.WILDCARD);
-    }
-
-    /**
-     * @deprecated parse Indexer parameters instead.
-     * @return
-     */
-    public boolean isAbsolute() {
-        return Boolean.parseBoolean(getParameter(Prop.ABSOLUTE_PATH));
     }
 
     @Override

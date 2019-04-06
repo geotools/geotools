@@ -292,12 +292,9 @@ public class ImageMosaicPostgisIndexOnlineTest extends OnlineTestCase {
 
     private void setupDataStoreProperties(String folder) throws IOException, FileNotFoundException {
         // place datastore.properties file in the dir for the indexing
-        FileWriter out = null;
-        try {
-            out =
+        try (FileWriter  out =
                     new FileWriter(
-                            new File(TestData.file(this, "."), folder + "/datastore.properties"));
-
+                            new File(TestData.file(this, "."), folder + "/datastore.properties"))) {
             final Set<Object> keyset = fixture.keySet();
             for (Object key : keyset) {
                 final String key_ = (String) key;
@@ -309,10 +306,6 @@ public class ImageMosaicPostgisIndexOnlineTest extends OnlineTestCase {
                 out.write(key_.replace(" ", "\\ ") + "=" + value.replace(" ", "\\ ") + "\n");
             }
             out.flush();
-        } finally {
-            if (out != null) {
-                IOUtils.closeQuietly(out);
-            }
         }
     }
 

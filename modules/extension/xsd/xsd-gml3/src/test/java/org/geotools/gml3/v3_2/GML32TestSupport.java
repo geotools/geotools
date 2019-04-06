@@ -17,11 +17,6 @@ public abstract class GML32TestSupport extends XMLTestSupport {
         XMLUnit.setXpathNamespaceContext(new SimpleNamespaceContext(namespaces));
     }
 
-    protected void registerNamespaces(Element root) {
-        super.registerNamespaces(root);
-        root.setAttribute("xmlns:gml", GML.NAMESPACE);
-    }
-
     protected Configuration createConfiguration() {
         return new GMLConfiguration(enableArcSurfaceSupport());
     }
@@ -38,6 +33,8 @@ public abstract class GML32TestSupport extends XMLTestSupport {
     protected void setUp() throws Exception {
         super.setUp();
         GML3MockData.setGML(GML.getInstance());
+
+        registerNamespaceMapping("xmlns:gml", GML.NAMESPACE );
     }
 
     @Override

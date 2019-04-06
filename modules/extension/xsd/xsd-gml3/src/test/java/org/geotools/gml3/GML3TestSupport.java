@@ -83,12 +83,10 @@ public abstract class GML3TestSupport extends XMLTestSupport {
         namespaces.put("xlink", "http://www.w3.org/1999/xlink");
         namespaces.put("xsi", "http://www.w3.org/2001/XMLSchema-instance");
         XMLUnit.setXpathNamespaceContext(new SimpleNamespaceContext(namespaces));
+
+        registerNamespaceMapping("xmlns:gml", "http://www.opengis.net/gml");
     }
 
-    protected void registerNamespaces(Element root) {
-        super.registerNamespaces(root);
-        root.setAttribute("xmlns:gml", "http://www.opengis.net/gml");
-    }
 
     /*
      * binds to the GMLConfiguration in the current package

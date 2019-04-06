@@ -30,6 +30,7 @@ import org.locationtech.jts.geom.MultiPoint;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
+import org.locationtech.jts.geom.impl.CoordinateArraySequence;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.spatial.BBOX;
@@ -118,7 +119,8 @@ public class InvertAxisFilterVisitor extends DuplicatingFilterVisitor {
             }
             return geometryFactory.createPolygon(invertedShell, invertedHoles);
         } else if (geom instanceof MultiPoint) {
-            return geometryFactory.createMultiPoint(invertCoordinates(geom.getCoordinates()));
+            return geometryFactory.createMultiPoint(
+                    new CoordinateArraySequence(invertCoordinates(geom.getCoordinates())));
         } else if (geom instanceof MultiLineString) {
             MultiLineString multiLineString = (MultiLineString) geom;
             LineString[] inverted = new LineString[multiLineString.getNumGeometries()];

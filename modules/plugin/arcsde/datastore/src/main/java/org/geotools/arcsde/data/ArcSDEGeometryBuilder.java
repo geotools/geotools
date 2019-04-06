@@ -45,6 +45,7 @@ import org.locationtech.jts.geom.MultiPoint;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
+import org.locationtech.jts.geom.impl.CoordinateArraySequence;
 
 /**
  * Creates proper JTS Geometry objects from <code>SeShape</code> objects and vice versa.
@@ -487,7 +488,7 @@ public abstract class ArcSDEGeometryBuilder {
                 points[i] = new Coordinate(x, y);
             }
 
-            return geometryFactory.createMultiPoint(points);
+            return geometryFactory.createMultiPoint(new CoordinateArraySequence(points));
         }
     }
 

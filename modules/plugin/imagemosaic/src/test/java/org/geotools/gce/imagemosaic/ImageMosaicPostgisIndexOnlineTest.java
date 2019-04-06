@@ -41,7 +41,6 @@ import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
@@ -292,9 +291,9 @@ public class ImageMosaicPostgisIndexOnlineTest extends OnlineTestCase {
 
     private void setupDataStoreProperties(String folder) throws IOException, FileNotFoundException {
         // place datastore.properties file in the dir for the indexing
-        try (FileWriter  out =
-                    new FileWriter(
-                            new File(TestData.file(this, "."), folder + "/datastore.properties"))) {
+        try (FileWriter out =
+                new FileWriter(
+                        new File(TestData.file(this, "."), folder + "/datastore.properties"))) {
             final Set<Object> keyset = fixture.keySet();
             for (Object key : keyset) {
                 final String key_ = (String) key;

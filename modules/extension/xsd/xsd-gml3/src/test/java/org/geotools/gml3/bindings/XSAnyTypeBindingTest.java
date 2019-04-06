@@ -103,9 +103,9 @@ public class XSAnyTypeBindingTest extends GML3TestSupport {
     }
 
     @Override
-    protected void registerNamespaces(Element root) {
-        super.registerNamespaces(root);
-        root.setAttribute("xmlns:test", "http://www.geotools.org/anytypetest");
+    protected void setUp() throws Exception {
+        super.setUp();
+        registerNamespaceMapping("xmlns:test", "http://www.geotools.org/anytypetest" );
     }
 
     @Override

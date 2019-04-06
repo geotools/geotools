@@ -160,31 +160,6 @@ public abstract class XMLTestSupport extends TestCase {
     }
 
     /**
-     * Template method for subclasses to register namespace mappings on the root element of an
-     * instance document.
-     *
-     * <p>Namespace mappings should be set as follows:
-     *
-     * <pre>
-     * <code>
-     *        root.setAttribute( "xmlns:gml", http://www.opengis.net/gml" );
-     * </code>
-     * </pre>
-     *
-     * <p>Subclasses of this method should register the default namespace, the default namesapce is
-     * the one returned by the configuration.
-     *
-     * <p>This method is intended to be extended or overiden. This implementation registers the
-     * <code>xsi,http://www.w3.org/2001/XMLSchema-instance</code> namespace.
-     *
-     * @param root The root node of the instance document.
-     * @deprecated use {@link #registerNamespaceMapping(String, String)}
-     */
-    protected void registerNamespaces(Element root) {
-        root.setAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
-    }
-
-    /**
      * Registers a namespace mapping.
      *
      * <p>This mapping will be included in the "namespace context" of both the parser and the
@@ -226,7 +201,6 @@ public abstract class XMLTestSupport extends TestCase {
         }
 
         // register additional namespaces
-        registerNamespaces(root);
         for (Iterator e = namespaceMappings.entrySet().iterator(); e.hasNext(); ) {
             Map.Entry mapping = (Map.Entry) e.next();
             String prefix = (String) mapping.getKey();

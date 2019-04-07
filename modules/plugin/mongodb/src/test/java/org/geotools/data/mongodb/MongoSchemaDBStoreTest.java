@@ -27,13 +27,6 @@ import static org.junit.Assume.assumeThat;
 
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
-
-import org.geotools.util.logging.Logging;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.HashMap;
@@ -41,6 +34,11 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Logger;
 import java.util.stream.StreamSupport;
+import org.geotools.util.logging.Logging;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 /** @author tkunicki@boundlessgeo.com */
 @SuppressWarnings("deprecation") // DB was replaced by MongoDatabase but API is not the same

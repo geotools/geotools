@@ -26,7 +26,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
-
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.ExpressionDOMParser;
 import org.geotools.filter.FilterDOMParser;

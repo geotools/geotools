@@ -27,7 +27,6 @@ import java.net.URL;
 import java.util.Set;
 import javax.xml.parsers.ParserConfigurationException;
 import net.opengis.wmts.v_1.CapabilitiesType;
-import org.apache.commons.io.IOUtils;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.ows.ServiceException;
 import org.geotools.ows.wmts.WebMapTileServer;

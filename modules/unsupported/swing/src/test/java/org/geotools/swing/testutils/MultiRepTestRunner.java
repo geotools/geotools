@@ -41,7 +41,8 @@ public class MultiRepTestRunner extends org.junit.internal.runners.JUnit4ClassRu
 
     int numFailures;
 
-    public MultiRepTestRunner(Class<?> klass) throws org.junit.internal.runners.InitializationError {
+    public MultiRepTestRunner(Class<?> klass)
+            throws org.junit.internal.runners.InitializationError {
         super(klass);
     }
 

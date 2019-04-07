@@ -39,7 +39,8 @@ public class GraphicsTestRunner extends org.junit.internal.runners.JUnit4ClassRu
 
     private static final Boolean INTERACTIVE = Boolean.getBoolean("org.geotools.test.interactive");
 
-    public GraphicsTestRunner(Class<?> klass) throws org.junit.internal.runners.InitializationError {
+    public GraphicsTestRunner(Class<?> klass)
+            throws org.junit.internal.runners.InitializationError {
         super(klass);
     }
 

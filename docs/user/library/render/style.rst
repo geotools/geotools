@@ -243,7 +243,7 @@ Here is a quick example that will draw any "Feature" using a PointSymbolizer:
    :start-after: // featureTypeStyleExample start
    :end-before: // featureTypeStyleExample end
 
-Of note is how the PointSymbolizer will first try and use C:\images\house.gif (i.e.an external graphic) and if that fails it will use a circle (i.e.a mark).
+Of note is how the PointSymbolizer will first try and use C:\images\house.gif (i.e. an external graphic) and if that fails it will use a circle (i.e. a mark).
 
 Notes on handling of features:
 

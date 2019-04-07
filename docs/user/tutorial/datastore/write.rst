@@ -102,7 +102,7 @@ Resulting in the following file:
    * Notice how the transactions only reflect the changes the user made relative to
      the current file contents.
      
-     This is shown after t1 commit, where transaction t2 is seeing 4 features (i.e.the
+     This is shown after t1 commit, where transaction t2 is seeing 4 features (i.e. the
      current file contents plus the one feature that has been added on t2).
      
    * This really shows that FeatureSource and FeatureStore are "views" into your data.

@@ -88,7 +88,7 @@ extract information.
         Expression expression = ff.literal("#FFFFFF");
         Color color = expression.evaluate( feature, Color.class );
     
-  * You can also use a Filter on normal Java objects (i.e.POJOs)
+  * You can also use a Filter on normal Java objects (i.e. POJOs)
     
     If you are willing to write custom code you can define your own PropertyAccessor
     to teach filters how to work with your own data structures

@@ -111,7 +111,7 @@ In turn here is what we would like you to do when writing your application.
 URN Syntax
 ^^^^^^^^^^
 
-You can make use of the OGC supplied urn syntax (i.e.urn:x-ogc:def:crs:EPSG:<version>:<code>) rather than just an EPSG code::
+You can make use of the OGC supplied urn syntax (i.e. urn:x-ogc:def:crs:EPSG:<version>:<code>) rather than just an EPSG code::
   
   CoordinateReferenceSystem crs = factory.createCoordinateReferenceSystem("urn:x-ogc:def:crs:EPSG:4326");
 

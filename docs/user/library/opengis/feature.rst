@@ -45,7 +45,7 @@ Simple Feature
 
 Most GIS data does not need a full dynamic type system with associations, operations, multiple values. With this in mind we have a "simple" extension of Feature and FeatureType providing to represent this kind of information.
 
-A "simple" feature is an object that can be drawn on a map (i.e.a feature) that does not contain any complicated internal structure. A SimpleFeature is "flat" recording of key value pairs. At least one of the values should be a Geometry, and the list of keys is known ahead of time.
+A "simple" feature is an object that can be drawn on a map (i.e. a feature) that does not contain any complicated internal structure. A SimpleFeature is "flat" recording of key value pairs. At least one of the values should be a Geometry, and the list of keys is known ahead of time.
 
 SimpleFeature may be used when:
 

@@ -138,7 +138,7 @@ The question is of course why a high priority thread?
 
 First some background - our collection classes do not directly use WeakReference - instead they work with a subclass in which the clean method has been overridden to:
 
-* throw away the value (i.e.normal behaviour)
+* throw away the value (i.e. normal behaviour)
 * remove itself from the collection
 
 WeakCollectionCleaner is a fast thread that spends most of its time asleep (so your application can do its work), when it does wake up we want it to be a high priority so it can get in there and recover memory .. so your application is not starved for resources.

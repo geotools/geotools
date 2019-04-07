@@ -131,7 +131,7 @@ Q: What does gt-referencing do?
 You will eventually care about this as it defines how 2D data actually means 3D
 data.
 
-You can take a measurement (i.e.a coordinate) plus a coordinate reference system (the
+You can take a measurement (i.e. a coordinate) plus a coordinate reference system (the
 meaning) and figure out where a position on the earth is in 3D space.
 
 It is easy to assume that Coordinates are recorded in double[] as repeating x/y values
@@ -265,7 +265,7 @@ with any of the other gt-epsg-h2, or gt-epsg-hsql plugins as they will end up in
 conflict.
 
 If you want to add a few more definitions over and above those provided by the
-official database (i.e.epsg-hsql or epsg-h2) please use the following (taken from the
+official database (i.e. epsg-hsql or epsg-h2) please use the following (taken from the
 uDig application)::
   
      URL url = new URL(url, "epsg.properties");

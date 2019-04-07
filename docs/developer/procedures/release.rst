@@ -129,7 +129,7 @@ Run the `geotools-release <https://build.geoserver.org/view/geotools/job/geotool
      
 **REV**
 
-  The Git revision number to release from. eg, "24ae10fe662c....". If left blank the latest revision (i.e.HEAD) on the ``BRANCH`` being released is used.
+  The Git revision number to release from. eg, "24ae10fe662c....". If left blank the latest revision (i.e. HEAD) on the ``BRANCH`` being released is used.
   
 **VERSION**
    

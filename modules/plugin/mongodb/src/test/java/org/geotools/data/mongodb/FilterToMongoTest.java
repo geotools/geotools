@@ -31,7 +31,7 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.junit.Test;
-import org.locationtech.jts.algorithm.CGAlgorithms;
+import org.locationtech.jts.algorithm.Orientation;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
@@ -96,7 +96,7 @@ public class FilterToMongoTest extends TestCase {
         assertNotNull(filterIntersectsGeometry);
 
         Geometry geometry = geometryBuilder.toGeometry(filterIntersectsGeometry);
-        assertTrue(CGAlgorithms.isCCW(geometry.getCoordinates()));
+        assertTrue(Orientation.isCCW(geometry.getCoordinates()));
 
         BasicDBObject filterIntersectsCrs = (BasicDBObject) filterIntersectsGeometry.get("crs");
         assertNotNull(filterIntersectsCrs);
@@ -139,7 +139,7 @@ public class FilterToMongoTest extends TestCase {
         assertNotNull(filterIntersectsGeometry);
 
         Geometry geometry = geometryBuilder.toGeometry(filterIntersectsGeometry);
-        assertTrue(CGAlgorithms.isCCW(geometry.getCoordinates()));
+        assertTrue(Orientation.isCCW(geometry.getCoordinates()));
 
         BasicDBObject filterIntersectsCrs = (BasicDBObject) filterIntersectsGeometry.get("crs");
         assertNotNull(filterIntersectsCrs);
@@ -182,7 +182,7 @@ public class FilterToMongoTest extends TestCase {
         assertNotNull(filterIntersectsGeometry);
 
         Geometry geometry = geometryBuilder.toGeometry(filterIntersectsGeometry);
-        assertTrue(CGAlgorithms.isCCW(geometry.getCoordinates()));
+        assertTrue(Orientation.isCCW(geometry.getCoordinates()));
 
         BasicDBObject filterIntersectsCrs = (BasicDBObject) filterIntersectsGeometry.get("crs");
         assertNotNull(filterIntersectsCrs);

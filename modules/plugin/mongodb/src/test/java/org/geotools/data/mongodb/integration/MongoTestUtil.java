@@ -43,6 +43,7 @@ import org.opengis.feature.GeometryAttribute;
 import org.opengis.feature.Property;
 
 /** @author tkunicki@boundlessgeo.com */
+@SuppressWarnings("deprecation") // DB was replaced by MongoDatabase but API is not the same
 public class MongoTestUtil {
 
     static final int PORT;

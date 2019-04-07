@@ -23,7 +23,7 @@ import com.mongodb.DBObject;
 import java.util.ArrayList;
 import java.util.List;
 import org.geotools.geometry.jts.Geometries;
-import org.locationtech.jts.algorithm.CGAlgorithms;
+import org.locationtech.jts.algorithm.Orientation;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.CoordinateSequence;
 import org.locationtech.jts.geom.Envelope;
@@ -272,7 +272,7 @@ public class MongoGeometryBuilder {
     List<?> toList(Polygon p) {
         BasicDBList l = new BasicDBList();
 
-        if (!CGAlgorithms.isCCW(p.getExteriorRing().getCoordinates())) {
+        if (!Orientation.isCCW(p.getExteriorRing().getCoordinates())) {
             l.add(toList(p.getExteriorRing().reverse().getCoordinates()));
         } else {
             l.add(toList(p.getExteriorRing().getCoordinateSequence()));

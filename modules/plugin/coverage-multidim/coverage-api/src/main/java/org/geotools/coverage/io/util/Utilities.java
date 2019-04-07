@@ -16,7 +16,7 @@
  */
 package org.geotools.coverage.io.util;
 
-import it.geosolutions.imageio.stream.input.FileImageInputStreamExt;
+import it.geosolutions.imageio.stream.AccessibleStream;
 import it.geosolutions.imageio.stream.input.FileImageInputStreamExtImpl;
 import it.geosolutions.imageio.stream.input.URIImageInputStream;
 import it.geosolutions.imageio.stream.input.URIImageInputStreamImpl;
@@ -74,6 +74,7 @@ import org.geotools.referencing.operation.builder.GridToEnvelopeMapper;
 import org.geotools.referencing.operation.transform.ConcatenatedTransform;
 import org.geotools.referencing.operation.transform.IdentityTransform;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
+import org.geotools.util.URLs;
 import org.geotools.util.factory.Hints;
 import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.coverage.grid.GridEnvelope;
@@ -958,8 +959,8 @@ public class Utilities {
         ImageInputStream paramInput = null;
         if (input instanceof File) {
             paramInput = new FileImageInputStreamExtImpl((File) input);
-        } else if (input instanceof FileImageInputStreamExt) {
-            paramInput = (FileImageInputStreamExt) input;
+        } else if (input instanceof AccessibleStream && input instanceof ImageInputStream) {
+            paramInput = (ImageInputStream) input;
         } else if (input instanceof URIImageInputStream) {
             paramInput = (URIImageInputStream) input;
         } else if (input instanceof URL) {
@@ -967,7 +968,7 @@ public class Utilities {
             String protocol = tempURL.getProtocol();
             if (protocol.equalsIgnoreCase("file")) {
                 try {
-                    File file = it.geosolutions.imageio.utilities.Utilities.urlToFile(tempURL);
+                    File file = URLs.urlToFile(tempURL);
                     paramInput = new FileImageInputStreamExtImpl(file);
                 } catch (IOException e) {
                     throw new RuntimeException("Failed to create a valid input stream ", e);
@@ -1301,12 +1302,8 @@ public class Utilities {
 
     public static Properties loadPropertiesFromURL(URL propsURL) {
         final Properties properties = new Properties();
-        InputStream stream = null;
-        InputStream openStream = null;
-        try {
-            openStream = propsURL.openStream();
-            stream = new BufferedInputStream(openStream);
-            properties.load(stream);
+        try (InputStream openStream = propsURL.openStream()) {
+            properties.load(openStream);
         } catch (FileNotFoundException e) {
             if (LOGGER.isLoggable(Level.SEVERE))
                 LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
@@ -1315,14 +1312,6 @@ public class Utilities {
             if (LOGGER.isLoggable(Level.SEVERE))
                 LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
             return null;
-        } finally {
-
-            if (stream != null) {
-                IOUtils.closeQuietly(stream);
-            }
-            if (openStream != null) {
-                IOUtils.closeQuietly(openStream);
-            }
         }
         return properties;
     }

@@ -92,8 +92,6 @@ import org.geotools.image.util.ImageUtilities;
 import org.geotools.map.DirectLayer;
 import org.geotools.map.Layer;
 import org.geotools.map.MapContent;
-import org.geotools.map.MapContext;
-import org.geotools.map.MapLayer;
 import org.geotools.map.StyleLayer;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
@@ -1022,7 +1020,6 @@ public class StreamingRenderer implements GTRenderer {
      *     source
      * @throws IllegalFilterException if something goes wrong constructing the bbox filter
      * @throws IOException
-     * @see MapLayer#setQuery(org.geotools.data.Query)
      */
     /*
      * Default visibility for testing purposes
@@ -1709,8 +1706,8 @@ public class StreamingRenderer implements GTRenderer {
     }
 
     /**
-     * Inspects the <code>MapLayer</code>'s style and retrieves it's needed attribute names,
-     * returning at least the default geometry attribute name.
+     * Inspects the <code>Layer</code>'s style and retrieves it's needed attribute names, returning
+     * at least the default geometry attribute name.
      *
      * @param styles the <code>styles</code> to determine the needed attributes from
      * @param schema the <code>layer</code>'s FeatureSource<SimpleFeatureType, SimpleFeature> schema
@@ -2062,7 +2059,7 @@ public class StreamingRenderer implements GTRenderer {
      * When drawing in optimized mode a 32bit surface is created for each FeatureTypeStyle other
      * than the first in order to draw features in parallel while respecting the feature draw
      * ordering multiple FTS impose. This method allows to estimate how many megabytes will be
-     * needed, in terms of back buffers, to draw the current {@link MapContext}, assuming the
+     * needed, in terms of back buffers, to draw the current {@link MapContent}, assuming the
      * feature type style optimizations are turned on (in the case they are off, no extra memory
      * will be used).
      *
@@ -3191,32 +3188,6 @@ public class StreamingRenderer implements GTRenderer {
      */
     public Map getRendererHints() {
         return rendererHints;
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @deprecated The {@code MapContext} class is being phased out. Please use {@link
-     *     #setMapContent}.
-     */
-    public void setContext(MapContext context) {
-        // MapContext isA MapContent
-        mapContent = context;
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @deprecated The {@code MapContext} class is being phased out. Please use {@link
-     *     #setMapContent}.
-     */
-    public MapContext getContext() {
-        if (mapContent instanceof MapContext) {
-            return (MapContext) mapContent;
-        } else {
-            MapContext context = new MapContext(mapContent);
-            return context;
-        }
     }
 
     public void setMapContent(MapContent mapContent) {

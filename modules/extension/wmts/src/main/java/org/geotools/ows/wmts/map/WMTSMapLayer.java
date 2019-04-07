@@ -20,7 +20,6 @@ import java.util.logging.Logger;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.GridReaderLayer;
-import org.geotools.map.MapLayer;
 import org.geotools.ows.wms.Layer;
 import org.geotools.ows.wmts.WebMapTileServer;
 import org.geotools.ows.wmts.request.GetTileRequest;
@@ -33,7 +32,7 @@ import org.geotools.styling.StyleFactory;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
- * Wraps a WMTS layer into a {@link MapLayer} for interactive rendering usage.
+ * Wraps a WMTS layer into a {@link Layer} for interactive rendering usage.
  *
  * <p>TODO: expose a GetFeatureInfo that returns a feature collection
  *

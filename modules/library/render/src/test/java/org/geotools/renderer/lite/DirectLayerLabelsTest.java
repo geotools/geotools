@@ -27,10 +27,9 @@ import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.map.DefaultMapContext;
 import org.geotools.map.DirectLayer;
+import org.geotools.map.FeatureLayer;
 import org.geotools.map.MapContent;
-import org.geotools.map.MapContext;
 import org.geotools.map.MapViewport;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.styling.Style;
@@ -65,8 +64,8 @@ public class DirectLayerLabelsTest extends TestCase {
         FeatureCollection collection = createPointFeatureCollection();
         Style style = loadStyle("PointStyle.sld");
         assertNotNull(style);
-        MapContext map = new DefaultMapContext(DefaultGeographicCRS.WGS84);
-        map.addLayer(collection, style);
+        MapContent map = new MapContent();
+        map.addLayer(new FeatureLayer(collection, style));
         DirectLayer dl =
                 new DirectLayer() {
 
@@ -84,8 +83,8 @@ public class DirectLayerLabelsTest extends TestCase {
                 };
         map.addLayer(dl);
         StreamingRenderer renderer = new StreamingRenderer();
-        renderer.setContext(map);
-        ReferencedEnvelope env = map.getLayerBounds();
+        renderer.setMapContent(map);
+        ReferencedEnvelope env = map.getMaxBounds();
         int boundary = 10;
         env =
                 new ReferencedEnvelope(

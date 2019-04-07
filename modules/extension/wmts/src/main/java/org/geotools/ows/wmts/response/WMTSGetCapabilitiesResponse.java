@@ -61,7 +61,6 @@ public class WMTSGetCapabilitiesResponse extends GetCapabilitiesResponse {
 
             Object object;
             try (InputStream inputStream = response.getResponseStream()) {
-
                 Parser parser = new Parser(WMTS_CONFIGURATION);
                 if (LOGGER.isLoggable(Level.FINEST)) {
                     StringBuilder stringBuilder = new StringBuilder();

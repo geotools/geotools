@@ -26,7 +26,6 @@ import java.io.BufferedOutputStream;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -41,7 +40,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.data.DataStoreFactorySpi;
 import org.geotools.data.DefaultTransaction;
@@ -107,13 +105,11 @@ public class FootprintExtractionProcessTest {
             void write(Geometry geometry, File outputFile, CoordinateReferenceSystem crs)
                     throws IOException {
                 final WKBWriter wkbWriter = new WKBWriter(2);
-                final OutputStream outputStream = new FileOutputStream(outputFile);
-                final BufferedOutputStream bufferedStream = new BufferedOutputStream(outputStream);
-                final OutStream outStream = new OutputStreamOutStream(bufferedStream);
-                try {
+                try (final OutputStream outputStream = new FileOutputStream(outputFile);
+                        final BufferedOutputStream bufferedStream =
+                                new BufferedOutputStream(outputStream)) {
+                    final OutStream outStream = new OutputStreamOutStream(bufferedStream);
                     wkbWriter.write(geometry, outStream);
-                } finally {
-                    IOUtils.closeQuietly(bufferedStream);
                 }
             }
         },
@@ -123,21 +119,15 @@ public class FootprintExtractionProcessTest {
                     throws IOException {
                 final WKTWriter wktWriter = new WKTWriter(2);
                 final StringWriter wkt = new StringWriter();
-                BufferedWriter bufferedWriter = new BufferedWriter(wkt);
-                try {
-                    wktWriter.write(geometry, bufferedWriter);
-                } finally {
-                    IOUtils.closeQuietly(bufferedWriter);
-                }
 
+                try (BufferedWriter bufferedWriter = new BufferedWriter(wkt)) {
+                    wktWriter.write(geometry, bufferedWriter);
+                }
                 // write to file
                 if (outputFile != null) {
-
-                    bufferedWriter = new BufferedWriter(new FileWriter(outputFile));
-                    try {
+                    try (BufferedWriter bufferedWriter =
+                            new BufferedWriter(new FileWriter(outputFile))) {
                         bufferedWriter.write(wkt.toString());
-                    } finally {
-                        IOUtils.closeQuietly(bufferedWriter);
                     }
                 }
             }
@@ -224,28 +214,20 @@ public class FootprintExtractionProcessTest {
         referenceGeometry = wktRead(geometryFile);
     }
 
-    private static Geometry wktRead(File geometryFile)
-            throws FileNotFoundException, ParseException {
-        FileReader fileReader = null;
-        try {
+    private static Geometry wktRead(File geometryFile) throws IOException, ParseException {
+        try (FileReader fileReader = new FileReader(geometryFile)) {
             WKTReader wktReader = new WKTReader();
-            fileReader = new FileReader(geometryFile);
             return wktReader.read(fileReader);
-        } finally {
-            IOUtils.closeQuietly(fileReader);
         }
     }
 
     private static Geometry wkbRead(File geometryFile) throws ParseException, IOException {
-        BufferedInputStream bufferedStream = null;
-        try {
+
+        try (final InputStream inputStream = new FileInputStream(geometryFile);
+                BufferedInputStream bufferedStream = new BufferedInputStream(inputStream)) {
             WKBReader wkbReader = new WKBReader();
-            final InputStream inputStream = new FileInputStream(geometryFile);
-            bufferedStream = new BufferedInputStream(inputStream);
             final InStream inStream = new InputStreamInStream(bufferedStream);
             return wkbReader.read(inStream);
-        } finally {
-            IOUtils.closeQuietly(bufferedStream);
         }
     }
 

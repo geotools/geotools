@@ -18,7 +18,6 @@
 package org.geotools.process.vector;
 
 import junit.framework.TestCase;
-
 import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;

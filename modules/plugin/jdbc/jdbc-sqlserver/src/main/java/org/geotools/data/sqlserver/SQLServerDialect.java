@@ -75,8 +75,6 @@ public class SQLServerDialect extends BasicSQLDialect {
     private static final int DEFAULT_AXIS_MIN = -10000000;
     static final String SPATIAL_INDEX_KEY = "SpatialIndex";
 
-    private static final String AREA_FUNCTION = "STArea";
-
     /**
      * Pattern used to match the first FROM element in a SQL query, without matching also attributes
      * containing FROM inside the name. We require to locate

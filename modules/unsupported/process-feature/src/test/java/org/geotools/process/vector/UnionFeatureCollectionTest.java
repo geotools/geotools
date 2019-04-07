@@ -17,7 +17,8 @@
  */
 package org.geotools.process.vector;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
@@ -31,7 +32,7 @@ import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryCollection;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LinearRing;
-import org.locationtech.jts.geom.PrecisionModel;
+import org.locationtech.jts.geom.impl.CoordinateArraySequence;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.FilterFactory;
 
@@ -60,7 +61,7 @@ public class UnionFeatureCollectionTest {
                 firstArray[j] = new Coordinate(j + numFeatures, j + numFeatures);
             }
             firstArray[4] = new Coordinate(0 + numFeatures, 0 + numFeatures);
-            LinearRing shell = new LinearRing(firstArray, new PrecisionModel(), 0);
+            LinearRing shell = gf.createLinearRing(new CoordinateArraySequence(firstArray));
             b.add(gf.createPolygon(shell, null));
             b.add(0);
             firstArrayGeometry[numFeatures] = gf.createPolygon(shell, null);
@@ -72,7 +73,7 @@ public class UnionFeatureCollectionTest {
                 array[j] = new Coordinate(j + numFeatures + 50, j + numFeatures + 50);
             }
             array[4] = new Coordinate(0 + numFeatures + 50, 0 + numFeatures + 50);
-            LinearRing shell = new LinearRing(array, new PrecisionModel(), 0);
+            LinearRing shell = gf.createLinearRing(new CoordinateArraySequence(array));
             b.add(gf.createPolygon(shell, null));
             b.add(0);
             secondArrayGeometry[numFeatures] = gf.createPolygon(shell, null);

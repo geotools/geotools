@@ -25,8 +25,10 @@ The Grids utility class provides methods to create grids of rectangular or hexag
 Creating square grids
 ^^^^^^^^^^^^^^^^^^^^^
 
-The easiest way to create a basic grid is with the static methods in the **Grids** utility class.
-This example creates a lat-lon grid with squares 10 degrees wide to display over a map of Australia:
+The easiest way to create a basic grid is with the static methods in the
+**Grids** utility class. This example creates a latitude longitude grid with
+squares
+10 degrees wide to display over a map of Australia:
 
 .. literalinclude:: /../src/main/java/org/geotools/grid/GridExamples.java
    :language: java
@@ -40,13 +42,15 @@ Here is the resulting grid:
 Grids for display in different map projections
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The grid created in the previous section consists of SimpleFeatures, each of which has a minimal
-polygon, ie. one represented by four corner vertices. This is fine if you only need to display it in
-the one map projection. But say we need to display the above map in EPSG:4462 (Lambert's Conformal
-Conic for Australia). The image below shows a square grid created in WGS84 (lat-lon) and then
-transformed into Lambert's Conformal Conic. Because we only have vertices for the grid cell corners
-the cell edges appear straight rather than curved. We've used 20 degree wide grid squares in this
-example to make this effect obvious: 
+The grid created in the previous section consists of SimpleFeatures, each of
+which has a minimal polygon, i.e. one represented by four corner vertices. This
+is fine if you only need to display it in the one map projection. But say we
+need to display the above map in EPSG:4462 (Lambert's Conformal Conic for
+Australia). The image below shows a square grid created in WGS84 (latitude
+longitude) and then transformed into Lambert's Conformal Conic. Because we only
+have vertices for the grid cell corners the cell edges appear straight rather
+than curved. We've used 20 degree wide grid squares in this example to make this
+effect obvious: 
 
 .. image:: /images/grid_transformed.png
 
@@ -65,9 +69,9 @@ Creating hexagonal grids
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
 The Grids class also has methods to create hexagonal grids. These have the property that all six
-neighbours of a grid element lie at an equal distance, in contrast to rectangular grids where the
-diagonal neighbours are more distant than the orthogonal neighbours. This makes hexagonal grids
-useful for analysing contagious spatial processes such as disease spread, wildfire, urban
+neighbors of a grid element lie at an equal distance, in contrast to rectangular grids where the
+diagonal neighbors are more distant than the orthogonal neighbors. This makes hexagonal grids
+useful for analyzing contagious spatial processes such as disease spread, wildfire, urban
 development and animal movement.
 
 Creating a basic hexagonal grid is simple:
@@ -81,8 +85,8 @@ Which gives this result:
 
 .. image:: /images/grid_hex.png
 
-As with square grids, there is also a version of the createHexagonalGrid method that takes an
-additional double argument for vertex spacing.
+As with square grids, there is also a version of the ``createHexagonalGrid``
+method that takes an additional double argument for vertex spacing.
 
 Working with a user-defined feature type
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -142,9 +146,10 @@ elements you can go down to the next level and use the Oblongs and Hexagons clas
 Oblongs
 '''''''
 
-This class is responsible for creating rectangular grid elements and grids (its name was chosen to
-avoid confusion with java.awt.Rectangle). You can use this class directly when you want to create a
-grid with rectangular, rather than square, elements as in this example:
+This class is responsible for creating rectangular grid elements and grids (its
+name was chosen to avoid confusion with ``java.awt.Rectangle``). You can use
+this class directly when you want to create a grid with rectangular, rather than
+square, elements as in this example:
 
 .. literalinclude:: /../src/main/java/org/geotools/grid/GridExamples.java
    :language: java
@@ -180,10 +185,11 @@ Line grids
 
 For displaying a map grid over features you don't really need polygons. Lines will suffice and also
 have the advantage that they can be more flexibly styled, e.g. different line thickness, color and
-labelling for major vs minor grid lines.
+labeling for major vs minor grid lines.
 
-The **Lines** utility class provides method to create *ortho-lines*, ie. lines parallel to the map
-projection axes. In the example below, we create a grid of lines at two *levels*: major lines at
+The **Lines** utility class provides method to create *ortho-lines*, i.e. lines
+parallel to the map projection axes. In the example below, we create a grid of
+lines at two *levels*: major lines at
 10 degree spacing and minor lines at 2 degree spacing. The levels are indicated by integer values
 with larger values taking precedence over smaller (values are arbitrary, only their rank order
 matters):

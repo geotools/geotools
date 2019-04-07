@@ -69,7 +69,7 @@ For more information check the java docs for:
 * DB2NGJNDIDataStoreFactory
 * DB2NGDataStoreFactory
 
-Advanced Geotools Parameters
+Advanced GeoTools Parameters
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 +-------------------+------------------------------------------+

@@ -14,7 +14,7 @@ The Plugin will unpack the database somewhere on your machine, usually where tem
 
 On my Windows XP machine it is located here:
 
-* C:\Documents and Settings\Jody\Local Settings\Temp\Geotools\Databases\HSQL
+* C:\Documents and Settings\Jody\Local Settings\Temp\GeoTools\Databases\HSQL
 
 The following contents are usually in this folder::
   

@@ -72,10 +72,10 @@ Example contents of a world file are as follows:
 |      |                | down from the upper left corner                               |
 +------+----------------+---------------------------------------------------------------+
 |5     |-179.9820349282 | Translation, usually "easting" location of the upper left     |
-|      |                | pixel (ie column 0)                                           |
+|      |                | pixel (i.e.column 0)                                          |
 +------+----------------+---------------------------------------------------------------+
 |6     |89.9820359281   | Translation, usually "northing" location of the upper left    |
-|      |                | pixel (ie row 0)                                              |
+|      |                | pixel (i.e.row 0)                                             |
 +------+----------------+---------------------------------------------------------------+
 
 The Translation information can be thought of as the location of the upper left pixel, this

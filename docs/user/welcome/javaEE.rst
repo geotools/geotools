@@ -33,14 +33,14 @@ For the parts of GeoTools that use databases they have provided two mechanisms f
 
 Spring Framework Configuration
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Spring typically provides all services through Dependency Injection (DI). Geotools uses the FactoryFinder strategy to look up factories. Both can be combined by injecting Geotools factories as Spring bean factories or simply looking up Geotools factories in the bean constructor.
+Spring typically provides all services through Dependency Injection (DI). GeoTools uses the FactoryFinder strategy to look up factories. Both can be combined by injecting GeoTools factories as Spring bean factories or simply looking up GeoTools factories in the bean constructor.
 
-Geotools transaction management can be performed programmatically in the application code, but Spring provides its own transaction support as well. 
+GeoTools transaction management can be performed programmatically in the application code, but Spring provides its own transaction support as well. 
 With the declarative model, developers typically write little or no code related to transaction management, and even do not depend on the Spring Framework transaction API, or any other transaction API.
-For using the declarative model with Geotools, it is necessary that Geotools simply uses the transaction/connection state provided by the Spring transaction manager and does not try to intervene with it.
-This is a possibly problem for JDBC datastores, but fortunately Geotools provides an API to pass external connections to it's internal transaction state (using the buildTransaction() method), which is ideally suited for this case.
+For using the declarative model with GeoTools, it is necessary that GeoTools simply uses the transaction/connection state provided by the Spring transaction manager and does not try to intervene with it.
+This is a possibly problem for JDBC datastores, but fortunately GeoTools provides an API to pass external connections to it's internal transaction state (using the buildTransaction() method), which is ideally suited for this case.
 
-To use Geotools in conjunction with Spring transaction management, datastore operations in transactional methods must call the setTransaction() method with a request-scoped transaction object.
+To use GeoTools in conjunction with Spring transaction management, datastore operations in transactional methods must call the setTransaction() method with a request-scoped transaction object.
 This transaction should be created when an actual Spring transaction is started and contain the current connection of the active transaction.
 Possible approaches are creating a custom TransactionManager or implementing a TransactionSynchronization object that works irrespective of the actual transaction manager.
 Example code for the latter can be found `here <https://svn.geomajas.org/majas/trunk/plugin/geomajas-layer-geotools/geotools/src/main/java/org/geomajas/layer/geotools/GeoToolsTransactionSynchronization.java>`_. 

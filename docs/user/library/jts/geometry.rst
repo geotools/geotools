@@ -178,7 +178,7 @@ Here's an example of some randomly orientated and shaped curves generated in thi
 
 .. image:: /images/geometry_curve.gif
 
-Sometimes you need to generate a smooth curve that is guaranteed to pass through a specified set of points. The tried and true approach here is to use a spline function. This generates a set of polynomial (cubic) curves, each of which fits a part of the data and joins smoothly to its neighbouring curves.
+Sometimes you need to generate a smooth curve that is guaranteed to pass through a specified set of points. The tried and true approach here is to use a spline function. This generates a set of polynomial (cubic) curves, each of which fits a part of the data and joins smoothly to its neighboring curves.
 
 Splines::
    

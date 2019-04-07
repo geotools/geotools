@@ -154,7 +154,7 @@ Notes:
 * SRS
   
   Internally in GeoTools we use real CoordinateReferenceSystem instances to record
-  what the numbers mean. In GML they use a simple string called "SRS" (ie Spatial
+  what the numbers mean. In GML they use a simple string called "SRS" (i.e.Spatial
   Reference System).::
     
     transform.setSrsName( "EPSG:4326" );

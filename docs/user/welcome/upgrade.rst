@@ -1721,7 +1721,7 @@ h4. After (GeoTools 2.4 Code)::
 
 Note regarding different Geometries
 
-* Geotools was formally limited to only JTS Geometry
+* GeoTools was formally limited to only JTS Geometry
 * GeoTools filter nows can take either JTS Geometry or ISO Geometry
 
 * If you need to convert from one to the other::

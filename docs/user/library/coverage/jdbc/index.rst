@@ -183,7 +183,7 @@ Example file map.xml::
   <config version="1.0">
      <coverageName name="oek"/>
      <coordsys name="EPSG:31287"/>
-     <!-- interpolation 1 = nearest neighbour, 2 = bipolar, 3 = bicubic -->
+     <!-- interpolation 1 = nearest neighbor, 2 = bipolar, 3 = bicubic -->
      <scaleop interpolation="1"/>
      <axisOrder ignore="false"/>
      <verify cardinality="false"/>
@@ -205,7 +205,7 @@ coordsys
   The name of a coordinate reference system, will be referenced by CRS.decode() of the geotools library.
 
 scaleop
-  The interpolation method to use (1 = nearest neighbour, 2 = bipolar, 3 = bicubic)
+  The interpolation method to use (1 = nearest neighbor, 2 = bipolar, 3 = bicubic)
 
 axisOrder
    The module compares the CRS from the read request to the CRS stored in the configuration. If the axis order differ, an x axis switch is performed.

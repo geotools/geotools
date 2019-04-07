@@ -66,7 +66,7 @@ geographic CRS -> WGS84 (constant) -> user selected output geographic CRS.
 
 * GeoTools version 2.0 followed the OpenGIS specification 01-009 (Coordinate Transformation Services
   (CT)).
-* Geotools 2.1 and latter use the more recent coordinate system concepts described in the OpenGIS
+* GeoTools 2.1 and latter use the more recent coordinate system concepts described in the OpenGIS
   abstract specification 03-073r1 (Spatial Referencing by Coordinates).
 
 Although the EPSG database already contains the new structures described therein, the database v6.x

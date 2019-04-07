@@ -18,7 +18,7 @@ License management
 YourKit is a commercial product, which provides open source project
 committers with free licenses.
 
-Geotools PMC has been granted 10 licenses, each one can be used by at most
+GeoTools PMC has been granted 10 licenses, each one can be used by at most
 one developer in a given period of time.
 Andrea Aime is managing the licenses now, so if you feel like using
 YourKit for profiling the gt2 source code base please:

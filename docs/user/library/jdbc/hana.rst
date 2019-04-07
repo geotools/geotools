@@ -54,7 +54,7 @@ Here is an example of connecting::
   
   DataStore datastore = DataStoreFinder.getDataStore(params);
 
-Advanced Geotools Parameters
+Advanced GeoTools Parameters
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 +--------------------+-------------------------------------------+

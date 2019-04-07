@@ -98,7 +98,7 @@ To create an issue:
    * Besides a description of the problem, some additional information can make the
      difference between your issue being looked at or it being put off for a rainy
      day
-   * The version of Geotools you are using? (a release or nightly build?)
+   * The version of GeoTools you are using? (a release or nightly build?)
    * Example code that reproduces the problem?
    * A stack trace indicating where the failure occurred?
    * The Java Version and operating system you are using?

@@ -138,10 +138,10 @@ same classloader (e.g. outside of OSGi with all jars on the CLASSPATH).
 
 One of the main points of OSGi is providing a module system with strict visibility rules, so putting
 a collection of jars into one bundle rather defeats the purpose of modularity. It would be more
-natural to have a separate bundle for each Geotools jar, but this requires some trickery to make the
+natural to have a separate bundle for each GeoTools jar, but this requires some trickery to make the
 Factory SPI system work.
 
-Hopefully, this will be supported out of the box in a future Geotools release. The next section
+Hopefully, this will be supported out of the box in a future GeoTools release. The next section
 explains how to create a bundle per jar manually.
 
 One Bundle per Jar
@@ -166,7 +166,7 @@ Factory SPI system work.
    Eclipse 3.4 has a new wizard for rebundling JARs. Search the Eclipse Help
    for Convert Jars to Plug-in Projects.
 
-There are runtime dependencies between the Geotools JARs, e.g. gt-main.jar depends on gt-metadata.jar. These need to be translated to corresponding Import-Bundle header in the bundle manifest. For instance, if you turn these two JARs into bundles org.geotools.main and org.geotools.metadata, then the MANIFEST.MF of org.geotools.main will have to contain the following information::
+There are runtime dependencies between the GeoTools JARs, e.g. gt-main.jar depends on gt-metadata.jar. These need to be translated to corresponding Import-Bundle header in the bundle manifest. For instance, if you turn these two JARs into bundles org.geotools.main and org.geotools.metadata, then the MANIFEST.MF of org.geotools.main will have to contain the following information::
   
   Bundle-SymbolicName: org.geotools.main
   Bundle-Version: 2.6.0
@@ -181,11 +181,11 @@ There are runtime dependencies between the Geotools JARs, e.g. gt-main.jar depen
    
    It is considered good practice for OSGi to use Import-Package rather than
    Require-Bundle to minimize coupling between bundles. Unfortunately, it is
-   currently difficult to make this work with Geotools, due to a considerable
+   currently difficult to make this work with GeoTools, due to a considerable
    number of split packages. A split package is a Java package occurring in
    more than one bundle, like org.geotools.factory occurring both in
    gt-main.jar and gt-metadata.jar. So for the time being, you should use
-   Require-Bundle to define the dependencies between Geotools bundles.
+   Require-Bundle to define the dependencies between GeoTools bundles.
 
 The central method of the Factory SPI system is FactoryRegistry.scanForPlugins() in bundle org.geotools.metadata. You need to ensure that this bundle will have access to all META-INF/services resources from service provider bundles like org.geotools.main and others.
 
@@ -208,7 +208,7 @@ To turn org.geotools.main into a buddy of org.geotools.metadata, add the followi
   
     Eclipse-RegisterBuddy: org.geotools.metadata
 
-If your OSGi framework is not Equinox, you may try to use fragments instead. (This has not yet been tested with Geotools, and it may not be supported by all OSGi implementations, even though this is a standard feature.)
+If your OSGi framework is not Equinox, you may try to use fragments instead. (This has not yet been tested with GeoTools, and it may not be supported by all OSGi implementations, even though this is a standard feature.)
 
 A fragment looks like a bundle, but it depends on a bundle host. Fragments are a way of adding classes or resources to the host bundle.
 
@@ -226,7 +226,7 @@ This should also solve the Factory SPI problem. The fragment requires the servic
    work in an OSGi environment in a way that is backward compatible, i.e. you
    can still use your bundle JARs as plain old JARs on the classpath.
 
-If at some point in future Geotools should decide to go the OSGi way (and allow itself to become
+If at some point in future GeoTools should decide to go the OSGi way (and allow itself to become
 dependent on OSGi), the Factory SPI approach should be dropped in favour of the OSGi service
 registry. Service providers would register their services under the class name of the implemented
 interface. Clients would use the OSGi service registry to look up the available services for an
@@ -236,10 +236,10 @@ Third-Party Dependencies
 ''''''''''''''''''''''''
 
 In either approach, all-in-one or bundle-per-JAR, you also have to deal with external dependencies
-of Geotools, like vecmath, jdom, geoapi, and many others.
+of GeoTools, like vecmath, jdom, geoapi, and many others.
 
 You could further blow up your all-in-one bundle by also including the JARs for these external
-dependencies. Chances are high that some of these are also used by other non-Geotools bundles in
+dependencies. Chances are high that some of these are also used by other non-GeoTools bundles in
 your application, so this is likely to cause classloader problems, say if you already have a JDOM
 bundle in your system.
 

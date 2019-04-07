@@ -88,7 +88,7 @@ Here are the instructions:
 
 1. Open access to the new database (SA):
    
-   Geotools CTS will need to access the database through a JDBC driver.
+   GeoTools CTS will need to access the database through a JDBC driver.
    Modify the access configuration file
    var/lib/pgsql/data/hb_pga.conf/ (SA) add::
      
@@ -137,7 +137,7 @@ Here are the instructions:
      it graphically!
    
    * Installing PostGIS (and some of the following steps) are not necessary to use the
-     EPSG database with Geotools.
+     EPSG database with GeoTools.
    
    The user (administrator) begins by creating a new postgreSQL database::
      
@@ -259,7 +259,7 @@ Here are the instructions:
    * user         = ...
    * password     = ...
    
-   If the Geotools libraries are installed, a better test will be::
+   If the GeoTools libraries are installed, a better test will be::
      
      $ java -cp gt-epsg-postgresql-2.5.1.jar org.geotools.referencing.CRS EPSG:4326 EPSG:2154 EPSG:7412
      

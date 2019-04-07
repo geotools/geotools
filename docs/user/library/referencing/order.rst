@@ -17,7 +17,7 @@ Now that your program is working you can read the rest of this page.
 History
 ^^^^^^^
 
-When the OGC defined the WMS specification, they were very much focused on making things simple for web developers. So they basically decided that all images would appear "correctly" as far as appearance on the screen was concerned. Computer guys understand that to be x first, and then y (the same assumption is used by the JTS geometries in Geotools). The geographically empowered understand this to be easting and then northing.
+When the OGC defined the WMS specification, they were very much focused on making things simple for web developers. So they basically decided that all images would appear "correctly" as far as appearance on the screen was concerned. Computer guys understand that to be x first, and then y (the same assumption is used by the JTS geometries in GeoTools). The geographically empowered understand this to be easting and then northing.
 
 This was a great idea in the short term, WMS is a great success. However this was not a good idea as we moved over to working with data. How should things appear when we are looking at Antarctica? Which way is north? More specifically we have problem with the most common data latitude and longitude. The screen order would be (east, north) axis order, but the geographers would expect it the other way around.
 
@@ -97,8 +97,8 @@ In turn here is what we would like you to do when writing your application.
 * If you are in charge of your own data collection, please follow the EPSG database directly.
 * If using (longitude, latitude) ordered data all the time, then:
   
-  * Geotools 2.2: use the epsg-wkt plugin to the referencing system.
-  * Geotools 2.3: use the epsg-hsql plugin and set the org.geotools.referencing.forceXY system property to true.
+  * GeoTools 2.2: use the epsg-wkt plugin to the referencing system.
+  * GeoTools 2.3: use the epsg-hsql plugin and set the org.geotools.referencing.forceXY system property to true.
 
 * If using (latitude,longitude) ordered data all the time, then use the epsg-hsql plugin to the referencing system.
 * If using mixed data, then please configure the CRSAuthorityFactory used by your DataStore with assumptions matching your data requirements. The CRS
@@ -111,7 +111,7 @@ In turn here is what we would like you to do when writing your application.
 URN Syntax
 ^^^^^^^^^^
 
-You can make use of the OGC supplied urn syntax (ie urn:x-ogc:def:crs:EPSG:<version>:<code>) rather than just an EPSG code::
+You can make use of the OGC supplied urn syntax (i.e.urn:x-ogc:def:crs:EPSG:<version>:<code>) rather than just an EPSG code::
   
   CoordinateReferenceSystem crs = factory.createCoordinateReferenceSystem("urn:x-ogc:def:crs:EPSG:4326");
 

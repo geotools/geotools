@@ -10,7 +10,7 @@ References:
 ArcSDE Raster
 ^^^^^^^^^^^^^
 
-Since Geotools 2.3.x and 2.4.x.
+Since GeoTools 2.3.x and 2.4.x.
 
 ESRI's ArcSDE spatial database product allows raster data to be stored inside a host RDBMS. ArcSDE then provides a standard API to access the raster data. It's worth noting that the merits of storing large chunks of raster data inside an RDBMS are arguable. Perhaps the DBMS is better at handling Disk I/O, and perhaps there are enterprise or data-management advantages. However, many people actually store raster data inside ArcSDE, so there is a need to support it.
 
@@ -82,7 +82,7 @@ Also make sure that the port number specified is the same as in the services fil
   There is limited support for different kinds of rasters (see the Raster Support Features section
   below for specific details) and the code has only been used in one ArcSDE environment.
     
-  The 'Raster Support Plan' section, below, outlines a plan to make the Geotools ArcSDE raster
+  The 'Raster Support Plan' section, below, outlines a plan to make the GeoTools ArcSDE raster
   code both support more formats, as well as enter the mainline development tree/process.
   
   Raster Support Plan:

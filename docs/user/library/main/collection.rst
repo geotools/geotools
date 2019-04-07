@@ -106,7 +106,7 @@ In Java 7 this becomes easier with the try-with-resource syntax::
 SimpleFeatureCollection 
 ^^^^^^^^^^^^^^^^^^^^^^^
 
-Because Java Generics (ie <T> and <F>) are a little hard to read we introduced SimpleFeatureCollection to cover the common case::
+Because Java Generics (i.e.<T> and <F>) are a little hard to read we introduced SimpleFeatureCollection to cover the common case::
   
   public interface SimpleFeatureCollection extends FeatureCollection<SimpleFeatureType,SimpleFeature> {
     // feature access - close when done!

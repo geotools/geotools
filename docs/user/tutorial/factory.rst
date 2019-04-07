@@ -139,7 +139,7 @@ To continue with our implementation we will define ExampleFunctionFactory:
 Step 3 FactoryRegistry
 ^^^^^^^^^^^^^^^^^^^^^^^
 
-Geotools 2.2 uses javax.imageio.ServiceRegistry magic (where this plug-in system originated from).
+GeoTools 2.2 uses javax.imageio.ServiceRegistry magic (where this plug-in system originated from).
 Please note that the FactoryRegistry will cache the factories already found. Since factories
 are stateless this should not be a problem.
 
@@ -224,7 +224,7 @@ Abstract
 Now that we have helped client code make use of our interface, the next step is to provide
 an abstract class to help those developing an implementation.
 
-Most Geotools Factories are kind enough to give you an Abstract superclass to start your
+Most GeoTools Factories are kind enough to give you an Abstract superclass to start your
 implementation efforts from. When making your own Factories this is a good example to follow.
 
 .. note::

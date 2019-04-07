@@ -106,7 +106,7 @@ THe ValidationProcessor is configured using:
   * One of these is a reference the the **Is Valid Geometry** plugin defined above. Note that this
     test is restricted to the typeRef "LAKES:lakes" 
   
-  * The second test is an integrity test that needs to make reference to another layer (ie typeRef "STREAMS.streams").
+  * The second test is an integrity test that needs to make reference to another layer (i.e.typeRef "STREAMS.streams").
     The test is defined to prevent lakes and streams being used to describe the same water work.
 
 Feature Validation Example

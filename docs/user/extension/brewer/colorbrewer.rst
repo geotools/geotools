@@ -11,8 +11,8 @@ The class that does the work is called StyleGenerator.
 
 .. image:: /images/StyleGenerator.PNG
 
-StyleGenerator takes a Color[] (either from ColorBrewer or provided by you!) and
-will create a Style containing a Rule for entry indicated by a Classifier.
+StyleGenerator takes a ``Color[]`` (either from ColorBrewer or provided by you!)
+and will create a Style containing a Rule for entry indicated by a Classifier.
 
    .. literalinclude:: /../src/main/java/org/geotools/brewer/BrewerExamples.java
      :language: java
@@ -22,7 +22,9 @@ will create a Style containing a Rule for entry indicated by a Classifier.
 ColorBrewer
 ^^^^^^^^^^^
 
-The colorbrewer project defines a "good" set of palettes backed a description of how appropriate each set of colours is for different uses (grayscale printing, display with a projector, friendly to color a blind audience or all three!).
+The ColorBrewer project defines a "good" set of palettes backed a description of
+how appropriate each set of colors is for different uses (gray-scale printing,
+display with a projector, friendly to color blind audience or all three!).
 
 Website
 '''''''
@@ -50,7 +52,10 @@ on suitability and the number of samples that are able to be represented.
 
 .. image:: /images/ColorBrewer.PNG
 
-The palettes used for these styles are defined by the colorbrewer project and are defined with a range of metadata allowing you to select an appropriate palette for different uses (grayscale printing, display with a projector, friendly to color a blind audience or all three!).
+The palettes used for these styles are defined by the ColorBrewer project and 
+are defined with a range of metadata allowing you to select an appropriate
+palette for different uses (gray-scale printing, display with a projector,
+friendly to color a blind audience or all three!).
 
 1. Create ColorBrewer (it will load the built-in palettes).
    
@@ -70,7 +75,9 @@ The palettes used for these styles are defined by the colorbrewer project and ar
 Example
 '''''''
 
-Here is a complete example showing the steps required to generate a FeatureTypeStyle with a predefined palette for the provided SimpleFeatureCollection.
+Here is a complete example showing the steps required to generate a 
+FeatureTypeStyle with a predefined palette for the provided
+SimpleFeatureCollection.
 
   .. literalinclude:: /../src/main/java/org/geotools/brewer/BrewerExamples.java
     :language: java

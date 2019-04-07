@@ -16,7 +16,7 @@ This is especially important when using either of the tools at the end of this p
 Changing public API
 ^^^^^^^^^^^^^^^^^^^
 
-Before to refactor a method, make sure that it did not have public access in the previous Geotools release.
+Before to refactor a method, make sure that it did not have public access in the previous GeoTools release.
 
 * If it was public, then we need to go through a "deprecate, then remove" cycle.
 * If not was not public, go ahead with with the refactoring. 
@@ -30,7 +30,7 @@ For example consider the following method::
        // Do something
    }
 
-Suppose that Geotools 2.3 is already released and we are working on Geotools 2.4. Suppose that we want to add a String argument to the above method. Do not refactor this method directly like this:
+Suppose that GeoTools 2.3 is already released and we are working on GeoTools 2.4. Suppose that we want to add a String argument to the above method. Do not refactor this method directly like this:
 
 WRONG::
    
@@ -41,7 +41,7 @@ WRONG::
        // Do something
    }
 
-Instead, duplicate the method for at least one Geotools release:
+Instead, duplicate the method for at least one GeoTools release:
 
 Better::
    
@@ -63,7 +63,7 @@ Better::
        // Do something
    }
 
-Note the @since 2.4 javadoc tag. It is an important hint for both users and the module maintainer, so do not forget it. The deprecated method can be removed in Geotools 2.5.
+Note the @since 2.4 javadoc tag. It is an important hint for both users and the module maintainer, so do not forget it. The deprecated method can be removed in GeoTools 2.5.
 
 Keep methods private
 ^^^^^^^^^^^^^^^^^^^^^
@@ -84,7 +84,7 @@ RefactorIt
    * and provide code metrics.
    * More details can be found from the online help.
    
-   RefactorIt is commercial, but provides free licences for Open Source projects like Geotools.
+   RefactorIt is commercial, but provides free licences for Open Source projects like GeoTools.
    See the RefactorIt web pages for details. It can be plugged into a variety of IDEs, including
    Netbeans.
    

@@ -1,7 +1,7 @@
 Transform
 ---------
 
-The following is a list of the projection parameters used in the Geotools referencing module. These try to follow the OGC Coordinate Transformation Services specification (OGC 01-009), but this document only specified the parameters for a few projections. When in doubt we have followed the EPSG Guidance Note Number 7 and suggestions from the Projections Transform List.
+The following is a list of the projection parameters used in the GeoTools referencing module. These try to follow the OGC Coordinate Transformation Services specification (OGC 01-009), but this document only specified the parameters for a few projections. When in doubt we have followed the EPSG Guidance Note Number 7 and suggestions from the Projections Transform List.
 
 Parameter Names
 ^^^^^^^^^^^^^^^
@@ -14,7 +14,7 @@ In addition to OGC 01-009, we used an other source of very valuable references f
 
 http://www.remotesensing.org/geotiff/proj_list/
 
-This list provides both GeoTIFF and OGC classification and parameter names. This web site was actually one of our main sources for classification and parameter names in Geotools. The "Mercator (1SP)" projection in this list provides the "latitude_of_origin" and similar parameters.
+This list provides both GeoTIFF and OGC classification and parameter names. This web site was actually one of our main sources for classification and parameter names in GeoTools. The "Mercator (1SP)" projection in this list provides the "latitude_of_origin" and similar parameters.
 
 **Custom parameter names**
 
@@ -24,7 +24,7 @@ But let's say I'm a developer and I want to develop something that has no "offic
 
 However, each name is always associated to an authority (or a "scope" in the context of scoped names). Thats said, the full name of "semi_major" is actually "OGC:semi_major", where "semi_major" is the LocalName (from the org.opengis.util package) and "OGC" is the scope. The mechanism is similar to fully qualified names in Java packages.
 
-It should always be possible to know if a particular name is an OGC's name or a GeoTIFF one: just look at the scope. For our own transformation, we use "Geotools:" scope. If we find an official name from OGC later, we will add that "OGC:" scoped name.
+It should always be possible to know if a particular name is an OGC's name or a GeoTIFF one: just look at the scope. For our own transformation, we use "GeoTools:" scope. If we find an official name from OGC later, we will add that "OGC:" scoped name.
 
 **Multiple names for Parameters**
 
@@ -32,17 +32,17 @@ A single physical parameter can have more than one name. Each classification/par
   
   java org.geotools.referencing.operation.DefaultMathTransformFactory Mercator_1SP
 
-Geotools will tells you that it know all of the above names for this transformation:
+GeoTools will tells you that it know all of the above names for this transformation:
 
 * OGC:Mercator_1SP
 * EPSG:Mercator (1SP)
 * EPSG:9804
 * GeoTIFF:CT_Mercator
-* Geotools:Projection Mercator cylindrique
+* GeoTools:Projection Mercator cylindrique
 
-Note the Geotools name is localised, so it may appears in another language depending on how you have your machine set up.
+Note the GeoTools name is localised, so it may appears in another language depending on how you have your machine set up.
 
-One can use any of those names. Geotools will recognizes "CT_Mercator" as well as "Mercator_1SP". However, if one wants to be sure that he is looking for a GeoTIFF name and not an OGC name, we can always use the fully qualified name.
+One can use any of those names. GeoTools will recognizes "CT_Mercator" as well as "Mercator_1SP". However, if one wants to be sure that he is looking for a GeoTIFF name and not an OGC name, we can always use the fully qualified name.
 
 For example GeoTools:
 
@@ -170,7 +170,7 @@ Notes
 
 * For the "Lambert_Conformal_Conic_1SP", the standard parallel is equal to the latitude of origin.
 * The "latitude_true_scale" parameter of the "Polar_Stereographic" is not a standard EPSG parameter. "Polar_Stereographic_Series" uses the correct EPSG parameters (but a non-standard name).
-* For more information, see the javadocs for the projection classes in Geotools.
+* For more information, see the javadocs for the projection classes in GeoTools.
 
 Notes about projections in ESRI's ArcGIS 8.x
 

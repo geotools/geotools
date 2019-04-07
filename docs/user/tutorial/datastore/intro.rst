@@ -70,7 +70,7 @@ Here is our strategy for representing GeoTools concepts with a CSV file.
 
 # CoordinateReferenceSystem
 
-  Look for a :file:`prj` sidecar file (ie :file:`locations.prj` for :file:`locations.csv` .)
+  Look for a :file:`prj` sidecar file (i.e.:file:`locations.prj` for :file:`locations.csv` .)
 
 JavaCSV Reader
 ^^^^^^^^^^^^^^

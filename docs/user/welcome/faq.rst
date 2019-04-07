@@ -227,7 +227,7 @@ Q: What restrictions are there on my re-distribution of GeoTools?
 
 Technically, you have to provide everyone who receives a copy of GeoTools from
 you with some way to get the source code to the library. In practice, pointing
-those users to the Geotools project itself is considered an adequate solution.
+those users to the GeoTools project itself is considered an adequate solution.
    
 However, if you are re-distributing a modified version of GeoTools then you
 need to provide users with access to the modified code. This means that you

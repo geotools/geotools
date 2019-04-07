@@ -2,7 +2,7 @@
 Brewer
 ======
 
-The Brewer module helps you create interesting or appropriate content based on your data. This is as close to the concept of a "theme" as we come to in the GeoTools library with this extension using categorisation functions defined by gt-main  as a basis for the generation of styles. 
+The Brewer module helps you create interesting or appropriate content based on your data. This is as close to the concept of a "theme" as we come to in the GeoTools library with this extension using categorization functions defined by ``gt-main``  as a basis for the generation of styles. 
 
 .. sidebar:: Details
    

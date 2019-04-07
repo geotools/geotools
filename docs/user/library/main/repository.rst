@@ -1,7 +1,7 @@
 Repository
 ----------
 
-Applications based on Geotools must keep track of the geographic data accessed by the application. It is important not to create and throw away DataStores at runtime; as they often contain JDBC connections or open file handles.
+Applications based on GeoTools must keep track of the geographic data accessed by the application. It is important not to create and throw away DataStores at runtime; as they often contain JDBC connections or open file handles.
 
 If there is only one or are only a few sources of data, the application can easily keep track directly the data being handled. However, geographic information systems often handle large volumes of data and it can become complex to keep track of all the different sources of data. GeoTools has developed several approaches to track multiple sources of data but not all of these have matured to be fully functional.
 

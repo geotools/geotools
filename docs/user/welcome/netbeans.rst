@@ -5,10 +5,10 @@ NetBeans is an Integrated Development Environment (IDE), a software package whic
 
 The GeoTools project offers a great "Netbeans Quickstart" describing how to set things up. NetBeans provides strong maven integration making it an ideal environment to work with GeoTools smoothly and easily.
 
-Finding Geotools artifact containing a Class
+Finding GeoTools artifact containing a Class
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-When working on a Geotools / Maven project within Netbeans you can take advantage of the repository search facility to find the Geotools artifact that you need to add to your project for a given class.
+When working on a GeoTools / Maven project within Netbeans you can take advantage of the repository search facility to find the GeoTools artifact that you need to add to your project for a given class.
 
 1. For instance, say you want to use the ShapefileDataStore class but don't know the 
    name of the artifact that contains it. In your code, enter the class name followed
@@ -24,12 +24,12 @@ When working on a Geotools / Maven project within Netbeans you can take advantag
 3. In this example it shows the artifact is gt-shapefile and that there are a number of versions available in the local repository.
 4. Select the required version, click the Add button and it will be added as a dependency to your project.
 
-Unfortunately, because the Geotools repository doesn't use the indexing system required by Netbeans/Maven, the search dialog will show matching artifacts that are available to download.
+Unfortunately, because the GeoTools repository doesn't use the indexing system required by Netbeans/Maven, the search dialog will show matching artifacts that are available to download.
 
 Artifact added to POM but imports still not found
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-1. When you want to use Geotools class X.from artifact Y (say ShapeFileDataStore from gt-shape).
+1. When you want to use GeoTools class X.from artifact Y (say ShapeFileDataStore from gt-shape).
 
 2. Add the artifact as a dependency in your ``pom.xml`` file, either:
    

@@ -32,7 +32,7 @@ Here is what that looks like::
      ...
   }
 
-In this case you are only comparing the name (ie metadata) of the two objects. You are trusting that the two objects are the same, if they are called the same name.
+In this case you are only comparing the name (i.e.metadata) of the two objects. You are trusting that the two objects are the same, if they are called the same name.
 
 Compare Equals
 ^^^^^^^^^^^^^^
@@ -49,7 +49,7 @@ Equals comparison is used to check when a CoordinateReferenceSystem, and all its
 
 While the above makes sense, if it not often exactly what you want.
 
-Often it does not matter what name (ie metadata) the data structure goes by, so far it numerically represents the same idea.
+Often it does not matter what name (i.e.metadata) the data structure goes by, so far it numerically represents the same idea.
 
 You can check if two objects are equal, while ignoring metadata (such as the exact name used for the CoordinateReferenceSystem). This technique compares significant values only, i.e. mostly (with a few exception) the ones that would changes the numerical results when transforming a position from one CRS to the other.::
   

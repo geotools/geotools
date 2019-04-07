@@ -84,7 +84,7 @@ The Config file::
   <config version="1.0">
     coverageName name="oek"/>
     <coordsys name="EPSG:4326"/>
-    <!-- interpolation 1 = nearest neighbour, 2 = bipolar, 3 = bicubic -->
+    <!-- interpolation 1 = nearest neighbor, 2 = bipolar, 3 = bicubic -->
     <scaleop  interpolation="1"/>
     <axisOrder ignore="false"/>
     <spatialExtension name="georaster"/>

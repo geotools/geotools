@@ -41,6 +41,7 @@ import org.geotools.data.wfs.internal.GetFeatureParser;
 import org.geotools.data.wfs.internal.GetFeatureRequest;
 import org.geotools.data.wfs.internal.GetFeatureRequest.ResultType;
 import org.geotools.data.wfs.internal.GetFeatureResponse;
+import org.geotools.data.wfs.internal.GetParser;
 import org.geotools.data.wfs.internal.WFSClient;
 import org.geotools.data.wfs.internal.WFSConfig;
 import org.geotools.factory.CommonFactoryFinder;
@@ -176,7 +177,7 @@ class WFSFeatureSource extends ContentFeatureSource {
         GetFeatureRequest request = createGetFeature(query, ResultType.HITS);
 
         GetFeatureResponse response = client.issueRequest(request);
-        GetFeatureParser featureParser = response.getFeatures(null);
+        GetParser<SimpleFeature> featureParser = response.getFeatures(null);
         int resultCount = featureParser.getNumberOfFeatures();
         return resultCount;
     }
@@ -260,7 +261,7 @@ class WFSFeatureSource extends ContentFeatureSource {
         GetFeatureResponse response = client.issueRequest(request);
 
         GeometryFactory geometryFactory = findGeometryFactory(localQuery.getHints());
-        GetFeatureParser features = response.getSimpleFeatures(geometryFactory);
+        GetParser<SimpleFeature> features = response.getSimpleFeatures(geometryFactory);
 
         FeatureReader<SimpleFeatureType, SimpleFeature> reader;
         reader = new WFSFeatureReader(features);

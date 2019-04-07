@@ -102,10 +102,6 @@ public class Layer implements Comparable<Layer> {
      */
     private int cascaded;
 
-    private double scaleHintMin = Double.NaN;
-
-    private double scaleHintMax = Double.NaN;
-
     private double scaleDenominatorMin = Double.NaN;
 
     private double scaleDenominatorMax = Double.NaN;

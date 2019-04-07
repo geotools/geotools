@@ -414,7 +414,7 @@ public class LocalGeoServerOnlineTest extends TestCase {
         assertEquals("text/html", response.getContentType());
         InputStream stream = response.getInputStream();
         StringBuilderWriter writer = new StringBuilderWriter();
-        IOUtils.copy(stream, writer);
+        IOUtils.copy(stream, writer, "UTF-8");
 
         String info = writer.toString();
         assertTrue("response available", !info.isEmpty());

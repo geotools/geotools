@@ -151,7 +151,7 @@ public class NetCDFMosaicReaderTest extends Assert {
         String indexer =
                 "TimeAttribute=time\n"
                         + "Schema=the_geom:Polygon,location:String,imageindex:Integer,time:java.util.Date\n";
-        FileUtils.writeStringToFile(new File(mosaic, "indexer.properties"), indexer);
+        FileUtils.writeStringToFile(new File(mosaic, "indexer.properties"), indexer, "UTF-8");
 
         // the datastore.properties file is also mandatory...
         File dsp = TestData.file(this, "datastore.properties");
@@ -268,7 +268,7 @@ public class NetCDFMosaicReaderTest extends Assert {
         String indexer =
                 "TimeAttribute=time\n"
                         + "Schema=the_geom:Polygon,location:String,imageindex:Integer,time:java.util.Date\n";
-        FileUtils.writeStringToFile(new File(mosaic, "indexer.properties"), indexer);
+        FileUtils.writeStringToFile(new File(mosaic, "indexer.properties"), indexer, "UTF-8");
 
         // the datastore.properties file is also mandatory...
         File dsp = TestData.file(this, "datastore.properties");
@@ -333,7 +333,7 @@ public class NetCDFMosaicReaderTest extends Assert {
         File nc1Aux = TestData.file(this, "polyphemus_20130301_NO2_time2.xml");
         FileUtils.copyFileToDirectory(nc1Aux, auxiliaryFileDir);
 
-        FileUtils.writeStringToFile(new File(mosaic, "indexer.properties"), indexer);
+        FileUtils.writeStringToFile(new File(mosaic, "indexer.properties"), indexer, "UTF-8");
         File dsp = TestData.file(this, "datastore.properties");
         FileUtils.copyFileToDirectory(dsp, mosaic);
 
@@ -354,7 +354,7 @@ public class NetCDFMosaicReaderTest extends Assert {
         File auxiliaryDataStoreFile = new File(indexDirectory, "test.properties");
         String theStoreName = "testStore";
         FileUtils.writeStringToFile(
-                auxiliaryDataStoreFile, NetCDFUtilities.STORE_NAME + "=" + theStoreName);
+                auxiliaryDataStoreFile, NetCDFUtilities.STORE_NAME + "=" + theStoreName, "UTF-8");
 
         DirectoryDataStore dataStore = new DirectoryDataStore(indexDirectory, dialect);
 
@@ -410,7 +410,7 @@ public class NetCDFMosaicReaderTest extends Assert {
         File auxiliaryDataStoreFile = new File(indexDirectory, "test.properties");
         String theStoreName = "testStore";
         FileUtils.writeStringToFile(
-                auxiliaryDataStoreFile, NetCDFUtilities.STORE_NAME + "=" + theStoreName);
+                auxiliaryDataStoreFile, NetCDFUtilities.STORE_NAME + "=" + theStoreName, "UTF-8");
 
         AtomicBoolean disposed = new AtomicBoolean();
         DirectoryDataStore dataStore =
@@ -526,7 +526,7 @@ public class NetCDFMosaicReaderTest extends Assert {
         File auxiliaryDataStoreFile = new File(indexDirectory, "test.properties");
         String theStoreName = "testStore";
         FileUtils.writeStringToFile(
-                auxiliaryDataStoreFile, NetCDFUtilities.STORE_NAME + "=" + theStoreName);
+                auxiliaryDataStoreFile, NetCDFUtilities.STORE_NAME + "=" + theStoreName, "UTF-8");
 
         DirectoryDataStore dataStore = new DirectoryDataStore(indexDirectory, dialect);
         DefaultRepository repository = new DefaultRepository();
@@ -679,7 +679,7 @@ public class NetCDFMosaicReaderTest extends Assert {
         String indexer =
                 "TimeAttribute=time\n"
                         + "Schema=the_geom:Polygon,location:String,imageindex:Integer,time:java.util.Date\n";
-        FileUtils.writeStringToFile(new File(mosaic, "indexer.properties"), indexer);
+        FileUtils.writeStringToFile(new File(mosaic, "indexer.properties"), indexer, "UTF-8");
 
         // the datastore.properties file is also mandatory...
         File dsp = TestData.file(this, "datastore.properties");
@@ -800,7 +800,7 @@ public class NetCDFMosaicReaderTest extends Assert {
                         + "Schema=the_geom:Polygon,location:String,imageindex:Integer,time:java.util.Date\n";
         //  + "PropertyCollectors=TimestampFileNameExtractorSPI[timeregex](time)\n";
         indexer += Prop.AUXILIARY_FILE + "=" + "hdf5Coverage2D.xml";
-        FileUtils.writeStringToFile(new File(mosaic, "indexer.properties"), indexer);
+        FileUtils.writeStringToFile(new File(mosaic, "indexer.properties"), indexer, "UTF-8");
 
         // simply test if the mosaic can be read without exceptions
         ImageMosaicFormat format = new ImageMosaicFormat();
@@ -820,7 +820,7 @@ public class NetCDFMosaicReaderTest extends Assert {
         String indexer =
                 "TimeAttribute=time\n"
                         + "Schema=the_geom:Polygon,location:String,imageindex:Integer,time:java.util.Date\n";
-        FileUtils.writeStringToFile(new File(mosaic, "indexer.properties"), indexer);
+        FileUtils.writeStringToFile(new File(mosaic, "indexer.properties"), indexer, "UTF-8");
 
         // the datastore.properties file is also mandatory...
         File dsp = TestData.file(this, "datastore.properties");
@@ -921,10 +921,10 @@ public class NetCDFMosaicReaderTest extends Assert {
                         + "Schema=the_geom:Polygon,location:String,imageindex:Integer,time:java.util.Date\n"
                         + "PropertyCollectors=TimestampFileNameExtractorSPI[timeregex](time)\n";
         indexer += Prop.AUXILIARY_FILE + "=" + "GOME2.NO2_new.xml";
-        FileUtils.writeStringToFile(new File(mosaic, "indexer.properties"), indexer);
+        FileUtils.writeStringToFile(new File(mosaic, "indexer.properties"), indexer, "UTF-8");
 
         String timeregex = "regex=[0-9]{8}";
-        FileUtils.writeStringToFile(new File(mosaic, "timeregex.properties"), timeregex);
+        FileUtils.writeStringToFile(new File(mosaic, "timeregex.properties"), timeregex, "UTF-8");
 
         // the datastore.properties file is also mandatory...
         File dsp = TestData.file(this, "datastore.properties");
@@ -1004,10 +1004,10 @@ public class NetCDFMosaicReaderTest extends Assert {
                         + "Schema=the_geom:Polygon,location:String,imageindex:Integer,time:java.util.Date\n"
                         + "PropertyCollectors=TimestampFileNameExtractorSPI[timeregex](time)\n";
         indexer += Prop.AUXILIARY_FILE + "=" + "GOME2.NO2.xml";
-        FileUtils.writeStringToFile(new File(mosaic, "indexer.properties"), indexer);
+        FileUtils.writeStringToFile(new File(mosaic, "indexer.properties"), indexer, "UTF-8");
 
         String timeregex = "regex=[0-9]{8}";
-        FileUtils.writeStringToFile(new File(mosaic, "timeregex.properties"), timeregex);
+        FileUtils.writeStringToFile(new File(mosaic, "timeregex.properties"), timeregex, "UTF-8");
 
         // the datastore.properties file is also mandatory...
         File dsp = TestData.file(this, "datastore.properties");
@@ -1113,10 +1113,10 @@ public class NetCDFMosaicReaderTest extends Assert {
                         + "Schema=the_geom:Polygon,location:String,imageindex:Integer,time:java.util.Date\n"
                         + "PropertyCollectors=TimestampFileNameExtractorSPI[timeregex](time)\n";
         indexer += Prop.AUXILIARY_FILE + "=" + "GOME2.NO2.xml";
-        FileUtils.writeStringToFile(new File(mosaic, "indexer.properties"), indexer);
+        FileUtils.writeStringToFile(new File(mosaic, "indexer.properties"), indexer, "UTF-8");
 
         String timeregex = "regex=[0-9]{8}";
-        FileUtils.writeStringToFile(new File(mosaic, "timeregex.properties"), timeregex);
+        FileUtils.writeStringToFile(new File(mosaic, "timeregex.properties"), timeregex, "UTF-8");
 
         // the datastore.properties file is also mandatory...
         File dsp = TestData.file(this, "datastore.properties");
@@ -1212,10 +1212,10 @@ public class NetCDFMosaicReaderTest extends Assert {
 
         // Setting RelativePath behavior
         indexer += Prop.ABSOLUTE_PATH + "=" + "false";
-        FileUtils.writeStringToFile(new File(mosaic, "indexer.properties"), indexer);
+        FileUtils.writeStringToFile(new File(mosaic, "indexer.properties"), indexer, "UTF-8");
 
         String timeregex = "regex=[0-9]{8}";
-        FileUtils.writeStringToFile(new File(mosaic, "timeregex.properties"), timeregex);
+        FileUtils.writeStringToFile(new File(mosaic, "timeregex.properties"), timeregex, "UTF-8");
 
         // the datastore.properties file is also mandatory...
         File dsp = TestData.file(this, "datastore.properties");
@@ -1270,7 +1270,7 @@ public class NetCDFMosaicReaderTest extends Assert {
                 "TimeAttribute=time\n"
                         + "Schema=the_geom:Polygon,location:String,imageindex:Integer,time:java.util.Date\n";
         indexer += Prop.AUXILIARY_FILE + "=" + "O3-NO2.xml";
-        FileUtils.writeStringToFile(new File(mosaic, "indexer.properties"), indexer);
+        FileUtils.writeStringToFile(new File(mosaic, "indexer.properties"), indexer, "UTF-8");
 
         // the datastore.properties file is also mandatory...
         File dsp = TestData.file(this, "datastore.properties");
@@ -1322,10 +1322,10 @@ public class NetCDFMosaicReaderTest extends Assert {
                         + "Schema=the_geom:Polygon,location:String,imageindex:Integer,time:java.util.Date\n"
                         + "PropertyCollectors=TimestampFileNameExtractorSPI[timeregex](time)\n";
         indexer += Prop.AUXILIARY_FILE + "=" + "DUMMYGOME2.xml";
-        FileUtils.writeStringToFile(new File(mosaic, "indexer.properties"), indexer);
+        FileUtils.writeStringToFile(new File(mosaic, "indexer.properties"), indexer, "UTF-8");
 
         String timeregex = "regex=[0-9]{8}";
-        FileUtils.writeStringToFile(new File(mosaic, "timeregex.properties"), timeregex);
+        FileUtils.writeStringToFile(new File(mosaic, "timeregex.properties"), timeregex, "UTF-8");
 
         // the datastore.properties file is also mandatory...
         File dsp = TestData.file(this, "datastore.properties");
@@ -1394,10 +1394,10 @@ public class NetCDFMosaicReaderTest extends Assert {
                         + "Schema=the_geom:Polygon,location:String,imageindex:Integer,time:java.util.Date\n"
                         + "PropertyCollectors=TimestampFileNameExtractorSPI[timeregex](time)\n";
         indexer += Prop.AUXILIARY_FILE + "=" + "DUMMYGOME2.xml";
-        FileUtils.writeStringToFile(new File(mosaic, "indexer.properties"), indexer);
+        FileUtils.writeStringToFile(new File(mosaic, "indexer.properties"), indexer, "UTF-8");
 
         String timeregex = "regex=[0-9]{8}";
-        FileUtils.writeStringToFile(new File(mosaic, "timeregex.properties"), timeregex);
+        FileUtils.writeStringToFile(new File(mosaic, "timeregex.properties"), timeregex, "UTF-8");
 
         // the datastore.properties file is also mandatory...
         File dsp = TestData.file(this, "datastore.properties");

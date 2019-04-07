@@ -324,7 +324,7 @@ public final class PostGisIndexTest extends OnlineTestCase {
                 "TimeAttribute=time\n"
                         + "Schema=the_geom:Polygon,location:String,imageindex:Integer,time:java.util.Date\n"
                         + "AuxiliaryDatastoreFile=mddatastore.properties";
-        FileUtils.writeStringToFile(new File(mosaic, "indexer.properties"), indexer);
+        FileUtils.writeStringToFile(new File(mosaic, "indexer.properties"), indexer, "UTF-8");
 
         // using an H2 based datastore for imageMosaic index
         File dsp = TestData.file(this, "datastore.properties");

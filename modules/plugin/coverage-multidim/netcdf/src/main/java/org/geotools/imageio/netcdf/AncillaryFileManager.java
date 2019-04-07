@@ -291,7 +291,7 @@ public class AncillaryFileManager implements FileSetManager {
             createdDir = destinationDir.mkdirs();
             // Creation of an origin.txt file with the absolute file path internally written
             File origin = new File(destinationDir, "origin.txt");
-            FileUtils.write(origin, ncFile.getAbsolutePath());
+            FileUtils.write(origin, ncFile.getAbsolutePath(), "UTF-8");
         }
 
         // Init auxiliary file names

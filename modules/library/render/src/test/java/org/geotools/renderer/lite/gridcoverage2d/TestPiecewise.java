@@ -41,7 +41,7 @@ import javax.media.jai.JAI;
 import javax.media.jai.ParameterBlockJAI;
 import javax.media.jai.ROI;
 import javax.media.jai.RenderedOp;
-import junit.framework.Assert;
+import org.junit.Assert;
 import org.geotools.TestData;
 import org.geotools.image.ImageWorker;
 import org.junit.Before;

@@ -18,7 +18,7 @@ package org.geotools.renderer.lite.gridcoverage2d;
 
 import java.awt.Color;
 import javax.media.jai.PlanarImage;
-import junit.framework.Assert;
+import org.junit.Assert;
 import junit.framework.TestCase;
 import org.geotools.coverage.Category;
 import org.geotools.coverage.CoverageFactoryFinder;

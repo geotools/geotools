@@ -553,7 +553,7 @@ public class StreamingRendererTest {
                 new BufferedImage(screen.width, screen.height, BufferedImage.TYPE_4BYTE_ABGR);
         final StreamingRenderer sr = new StreamingRenderer();
         sr.setMapContent(map);
-        sr.paint(image.createGraphics(), screen, worldToScreen);
+        sr.paint(image.createGraphics(), screen, map.getMaxBounds(), worldToScreen);
         assertTrue("Pixel should be drawn at 0,0 ", image.getRGB(0, 0) != 0);
         assertTrue(
                 "Pixel should not be drawn in image centre ",

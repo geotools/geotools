@@ -216,13 +216,9 @@ public final class PostGisIndexTest extends OnlineTestCase {
 
     private File createDatastoreProperties(File dir, Map<String, String> override)
             throws IOException {
-        FileWriter out = null;
-        File outFile = null;
-        try {
-
+        File outFile = new File(dir, "mddatastore.properties");
+        try (FileWriter out = new FileWriter(outFile)){
             // Preparing custom multidim datastore properties
-            outFile = new File(dir, "mddatastore.properties");
-            out = new FileWriter(outFile);
             final Properties props = createExampleFixture();
             if (override != null && !override.isEmpty()) {
                 Set<String> mapKeys = override.keySet();
@@ -239,10 +235,6 @@ public final class PostGisIndexTest extends OnlineTestCase {
                 out.write(key_.replace(" ", "\\ ") + "=" + value.replace(" ", "\\ ") + "\n");
             }
             out.flush();
-        } finally {
-            if (out != null) {
-                IOUtils.closeQuietly(out);
-            }
         }
         return outFile;
     }

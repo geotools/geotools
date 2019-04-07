@@ -15,7 +15,7 @@ The general idea:
 * create a file test/org/geotools/module/HelloWorldTest.java
 * any public void methods starting with test will be run by JUnit
 * maven will run all tests for your module using: mvn test 
-* tests can be ignored using you pom.xml file
+* tests can be ignored using you ``pom.xml`` file
 * maven will not "release" your module into the repository while it still fails unit testing
 
 Example TestCase

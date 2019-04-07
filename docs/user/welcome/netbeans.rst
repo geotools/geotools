@@ -31,7 +31,7 @@ Artifact added to POM but imports still not found
 
 1. When you want to use Geotools class X.from artifact Y (say ShapeFileDataStore from gt-shape).
 
-2. Add the artifact as a dependency in your pom.xml file, either:
+2. Add the artifact as a dependency in your ``pom.xml`` file, either:
    
    * Directly; or
    * Right-clicking on Libraries and selecting Add Library

@@ -84,7 +84,7 @@ Adding Jars to Your Project
    #. Choose Build, Execution, Deployment -> Build Tools -> Maven
    #. Check the *Work Offline* option
    
-The pom.xml file describes the structure, configuration, dependencies and many other facets of your project. We are going to focus
+The ``pom.xml`` file describes the structure, configuration, dependencies and many other facets of your project. We are going to focus
 on the dependencies needed for your project.
 
 When downloading jars Maven makes use of a "local repository" to store copies if the dependencies it downloads.
@@ -264,7 +264,7 @@ It will pull in the following import:
 
 
 * Important: GeoTools is an active open source project - you can quickly use maven to try out the
-  latest nightly build by changing your pom.xml file to use a "SNAPSHOT" release.
+  latest nightly build by changing your ``pom.xml`` file to use a "SNAPSHOT" release.
 
 At the time of writing |branch|-SNAPSHOT is under active development.
 
@@ -273,7 +273,7 @@ At the time of writing |branch|-SNAPSHOT is under active development.
      :start-after: <url>http://maven.apache.org</url>
      :end-before: <dependencies>
 
-You will also need to change your pom.xml file to include the following snapshot repository:
+You will also need to change your ``pom.xml`` file to include the following snapshot repository:
 
     .. literalinclude:: artifacts/pom2.xml
      :language: xml

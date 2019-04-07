@@ -2,7 +2,7 @@ Remote Repositories
 -------------------
 
 There are repositories of jars required by GeoTools stored online. These repositories are listed
-in the root pom.xml file.
+in the root ``pom.xml`` file.
 
 You can browse them online at:
 

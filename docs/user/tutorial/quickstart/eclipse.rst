@@ -219,7 +219,7 @@ such as GeoTools publish their work.
 2. This editor allows you to describe all kinds of things; in the interest of time we are going to
    skip the long drawn out explanation and ask you to click on the :guilabel:`pom.xml` tab.
 
-3. To make use of GeoTools we are going to add three things to this pom.xml file.
+3. To make use of GeoTools we are going to add three things to this ``pom.xml`` file.
    
 4. At the top after moduleVersion add a *properties* element defining the version of GeoTools we
    want to use. This workbook was written for |release| although you may wish to try a different
@@ -379,7 +379,7 @@ Here are some additional challenges for you to try:
      
 
 * Important: GeoTools is an active open source project - you can quickly use maven to try out the
-  latest nightly build by changing your pom.xml file to use a "SNAPSHOT" release.
+  latest nightly build by changing your ``pom.xml`` file to use a "SNAPSHOT" release.
   
   At the time of writing |branch|-SNAPSHOT is under active development.
 
@@ -388,7 +388,7 @@ Here are some additional challenges for you to try:
    :start-after: <url>http://maven.apache.org</url>
    :end-before: <dependencies>
 
-  You will also need to change your pom.xml file to include the following snapshot repository:
+  You will also need to change your ``pom.xml`` file to include the following snapshot repository:
 
   .. literalinclude:: artifacts/pom2.xml
      :language: xml
@@ -495,7 +495,7 @@ generating eclipse :file:`.project` and :file:`.classpath` files.
 
 15. Select the project you created: :file:`C:\java\tutorial`
 16. Press :guilabel:`Finish` to import your project
-17. Navigate to the pom.xml file and double click to open it up.
+17. Navigate to the ``pom.xml`` file and double click to open it up.
 18. We are going to start by defining the version number of GeoTools we wish to use. This workbook
     was written for |release| although you may wish to try a newer version, or make use of a
     nightly build by using 15-SNAPSHOT.

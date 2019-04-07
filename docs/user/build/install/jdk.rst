@@ -40,7 +40,7 @@ GeoTools 21.x built with Java 8 can be used in a Java 11 environment. Each jar i
 GeoTools Java 8 development is supported on both OpenJDK and Oracle JDK as downloaded from:
 
 ========================= =================== ===== ====== ======= ======= ==============
-Java 8 Provider           License             Linux mac OS Solaris Windows Free Updates
+Java 8 Provider           License             Linux macOS  Solaris Windows Free Updates
 ========================= =================== ===== ====== ======= ======= ==============
 Oracle JDK                Binary Code License x     x      x       x       2019 January
 Oracle OpenJDK            GPL                 x                            reference only
@@ -74,7 +74,7 @@ GeoTools 21.x built with Java 11 can only be used in a Java 11 environment (and 
 GeoTools Java 11 development is supported on both OpenJDK and Oracle JDK as downloaded from:
 
 ========================= =================== ===== ====== ======= ======= ==============
-Java 11 Provider          License             Linux mac OS Solaris Windows Free Updates
+Java 11 Provider          License             Linux macOS  Solaris Windows Free Updates
 ========================= =================== ===== ====== ======= ======= ==============
 Oracle JDK                Binary Code License x     x      x       x       2019 March
 Oracle OpenJDK            GPL                 x     x              x       2019 March

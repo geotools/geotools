@@ -52,6 +52,6 @@ install the latest version manually by following the `official installation inst
 Maven and Home Brew
 ^^^^^^^^^^^^^^^^^^^
 
-On MacOS the homebrew package manager provides a "formula" to install Maven::
+On macOS the homebrew package manager provides a "formula" to install Maven::
 
   brew install maven

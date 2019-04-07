@@ -38,7 +38,7 @@ The first step is to come up with an object model to work with. There are a numb
 
 For this tutorial we will use JAXB.
 
-First we must configure the pom.xml file of our project to use the `maven-jaxb2-plugin <http://java.net/projects/maven-jaxb2-plugin/>`_ plugin, and also depend on jaxb as it will add some annotations.
+First we must configure the ``pom.xml`` file of our project to use the `maven-jaxb2-plugin <http://java.net/projects/maven-jaxb2-plugin/>`_ plugin, and also depend on jaxb as it will add some annotations.
 
 .. note::
 

@@ -50,7 +50,7 @@ We are going to be using connection parameters to connect to our DataStore this 
 and you will have a chance to try it out using PostGIS or a Web Feature Server at the end of this
 example.
 
-1. Please ensure your pom.xml includes the following:
+1. Please ensure your ``pom.xml`` includes the following:
    
    .. literalinclude:: artifacts/pom.xml
       :language: xml

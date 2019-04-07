@@ -37,7 +37,7 @@ This tutorial gives a visual demonstration of coordinate reference systems by
 displaying a shapefile and shows how changing the map projection morphs
 the geometry of the features.
 
-1. Please ensure your pom.xml includes the following:
+1. Please ensure your ``pom.xml`` includes the following:
 
 .. literalinclude:: ./artifacts/pom.xml
         :language: xml

@@ -145,9 +145,9 @@ The transitive dependency will correctly bring in the required jars::
 
 This release changes the package names from ``com.vividsolutions.jts`` to ``org.locationtech.jts``. To update your own code follow the `JTS Upgrade Guide <https://github.com/locationtech/jts/blob/master/MIGRATION.md>`__ instructions.
 
-Using the command line to update your own pom.xml files::
+Using the command line to update your own ``pom.xml`` files::
 
-   git grep -l com.vividsolutions | grep pom.xml | xargs sed -i "s/com.vividsolutions/org.locationtech.jts/g"
+   git grep -l com.vividsolutions | grep ``pom.xml`` | xargs sed -i "s/com.vividsolutions/org.locationtech.jts/g"
    
 And codebase::
 

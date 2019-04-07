@@ -41,7 +41,7 @@ In the earlier examples we looked at reading and displaying shapefiles. For
 going to add raster data into the mix by displaying a three-band global satellite image,
 and overlaying it with country boundaries from a shapefile.
 
-1. Please ensure your pom.xml includes the following.
+1. Please ensure your ``pom.xml`` includes the following.
 
    We have already encountered most of these dependencies in earlier examples. The new modules we
    have added are **gt-geotiff** which allows us to read raster map data from a GeoTIFF file

@@ -33,7 +33,7 @@ processing a little simpler. We will be creating a simple utility application to
 Pre-requisites
 --------------
 
-Many of these may already be in our pom.xml from earlier examples, but at a minimum ensure that
+Many of these may already be in our ``pom.xml`` from earlier examples, but at a minimum ensure that
 the following dependencies are available
 
 .. literalinclude:: artifacts/pom.xml

@@ -58,7 +58,7 @@ To start with you will need a CSV file.
 Dependencies
 ------------
 
-Please ensure your pom.xml includes the following:
+Please ensure your ``pom.xml`` includes the following:
 
 .. literalinclude:: ./artifacts/pom.xml
    :language: xml

@@ -17,7 +17,7 @@ Style is all about looking good. In this lab we are going to learn the basics of
 Style
 ======
  
-Please ensure your pom.xml includes the following:
+Please ensure your ``pom.xml`` includes the following:
 
 .. literalinclude:: ./artifacts/pom.xml
         :language: xml
@@ -115,7 +115,7 @@ We are going to:
 Dependencies
 ------------
  
-Please ensure your pom.xml includes the following::
+Please ensure your ``pom.xml`` includes the following::
 
   <properties>
       <geotools.version>14.0</geotools.version>

@@ -77,10 +77,10 @@ When creating the first release candidate of a series, there are some extra step
 
 * Enable `GitHub branch protection <https://github.com/geotools/geotools/settings/branches>`_ for the new stable branch: tick "Protect this branch" (only) and press "Save changes".
 
-* Checkout the master branch and update the version in all pom.xml files and a few miscellaneous files; for example, if changing master from ``17-SNAPSHOT`` to ``18-SNAPSHOT``::
+* Checkout the master branch and update the version in all ``pom.xml`` files and a few miscellaneous files; for example, if changing master from ``17-SNAPSHOT`` to ``18-SNAPSHOT``::
 
     git checkout master
-    find . -name pom.xml -exec sed -i 's/17-SNAPSHOT/18-SNAPSHOT/g' {} \;
+    find . -name ``pom.xml`` -exec sed -i 's/17-SNAPSHOT/18-SNAPSHOT/g' {} \;
     sed -i 's/17-SNAPSHOT/18-SNAPSHOT/g' \
         build/rename.xml \
         docs/build.xml \

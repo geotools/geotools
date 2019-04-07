@@ -219,7 +219,7 @@ Now we are ready to create the application.
    .. literalinclude:: /../src/main/java/org/geotools/tutorial/quickstart/Quickstart.java
       :language: java
 
-#. Go back to the top project directory (the one that contains your pom.xml file) and build the
+#. Go back to the top project directory (the one that contains your ``pom.xml`` file) and build the
    application with the command::
 
      mvn clean install

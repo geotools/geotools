@@ -11,7 +11,7 @@ Since this tutorial has been written the result has been broken out into a disti
 To get an idea of what kind of "extra work" is required for an unsupported plugin:
 
 #. Ask on the email list - a Project Steering Committee member can often reply with a +1 and go about getting you commit access on GitHub. The project is fairly relaxed with a safe "unsupported" area for new experiments.
-#. Set up a pom.xml and hook the module in to the build
+#. Set up a ``pom.xml`` and hook the module in to the build
 #. Use a profile in unsupported/pom.xml to include your module in the build
 
 To get the module supported (and included in each GeoTools release):

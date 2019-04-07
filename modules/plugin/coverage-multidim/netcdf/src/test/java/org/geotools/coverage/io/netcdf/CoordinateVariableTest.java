@@ -344,7 +344,7 @@ public class CoordinateVariableTest extends Assert {
         assertEquals("degrees_north", cv.getUnit());
         assertTrue(cv.isRegular());
         assertEquals(cv.getMinimum(), cv.getStart());
-        assertEquals(0.2184437770469516, cv.getIncrement());
+        assertEquals(0.2184437770469516, cv.getIncrement(), 0d);
 
         //
         // lon is float

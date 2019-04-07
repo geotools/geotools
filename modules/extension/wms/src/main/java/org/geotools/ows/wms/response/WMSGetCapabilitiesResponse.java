@@ -57,7 +57,7 @@ public class WMSGetCapabilitiesResponse extends GetCapabilitiesResponse {
             } catch (SAXException e) {
                 throw (ServiceException)
                         new ServiceException("Error while parsing XML.").initCause(e);
-            } 
+            }
 
             if (object instanceof ServiceException) {
                 throw (ServiceException) object;

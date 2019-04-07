@@ -2803,8 +2803,8 @@ public class WMSComplexTypes {
                 if (sameName(elems[21], value[i])) {
                     double[] scaleHint = (double[]) value[i].getValue();
 
-                    layer.setScaleHintMin(scaleHint[0]);
-                    layer.setScaleHintMax(scaleHint[1]);
+                    layer.setScaleDenominatorMin(scaleHint[0]);
+                    layer.setScaleDenominatorMax(scaleHint[1]);
                 }
             }
 

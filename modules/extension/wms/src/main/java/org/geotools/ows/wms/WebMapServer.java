@@ -354,7 +354,10 @@ public class WebMapServer extends AbstractOpenWebService<WMSCapabilities, Layer>
      * @throws ServiceException
      */
     public WebMapServer(WMSCapabilities capabilities) throws IOException, ServiceException {
-        super(capabilities.getRequest().getGetCapabilities().getGet(), new SimpleHttpClient(), capabilities);
+        super(
+                capabilities.getRequest().getGetCapabilities().getGet(),
+                new SimpleHttpClient(),
+                capabilities);
     }
 
     /**

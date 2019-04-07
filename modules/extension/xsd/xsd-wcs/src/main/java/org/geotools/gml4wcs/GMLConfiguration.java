@@ -22,7 +22,6 @@ import java.util.Map;
 import javax.xml.namespace.QName;
 import net.opengis.gml.Gml4wcsFactory;
 import org.eclipse.emf.ecore.EFactory;
-import org.geotools.gml2.FeaturePropertyExtractor;
 import org.geotools.gml2.FeatureTypeCache;
 import org.geotools.gml4wcs.bindings.AbstractGeometricPrimitiveTypeBinding;
 import org.geotools.gml4wcs.bindings.AbstractGeometryBaseTypeBinding;
@@ -193,7 +192,6 @@ public class GMLConfiguration extends Configuration {
         container.registerComponentInstance(Gml4wcsFactory.eINSTANCE);
 
         container.registerComponentInstance(new FeatureTypeCache());
-        container.registerComponentImplementation(FeaturePropertyExtractor.class);
 
         // factories
         container.registerComponentInstance(

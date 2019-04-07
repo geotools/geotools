@@ -75,11 +75,6 @@ public class GML3EncodingUtils {
         }
     }
 
-    /** @deprecated use {@link #toURI(CoordinateReferenceSystem)}. */
-    static URI crs(CoordinateReferenceSystem crs) {
-        return toURI(crs);
-    }
-
     static CoordinateReferenceSystem getCRS(Geometry g) {
         return GML2EncodingUtils.getCRS(g);
     }

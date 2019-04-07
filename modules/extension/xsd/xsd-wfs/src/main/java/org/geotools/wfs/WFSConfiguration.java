@@ -48,7 +48,6 @@ import org.geotools.wfs.bindings.QueryTypeBinding;
 import org.geotools.wfs.bindings.ResultTypeTypeBinding;
 import org.geotools.wfs.bindings.TransactionSummaryTypeBinding;
 import org.geotools.wfs.bindings.TransactionTypeBinding;
-import org.geotools.wfs.bindings.TypeNameListTypeBinding;
 import org.geotools.wfs.bindings.UpdateElementTypeBinding;
 import org.geotools.wfs.bindings.WFS_CapabilitiesTypeBinding;
 import org.geotools.wfs.bindings._XlinkPropertyNameBinding;
@@ -134,8 +133,6 @@ public abstract class WFSConfiguration extends Configuration {
                 WFS.TransactionSummaryType, TransactionSummaryTypeBinding.class);
         container.registerComponentImplementation(
                 WFS.TransactionType, TransactionTypeBinding.class);
-        container.registerComponentImplementation(
-                WFS.TypeNameListType, TypeNameListTypeBinding.class);
         container.registerComponentImplementation(
                 WFS.UpdateElementType, UpdateElementTypeBinding.class);
         container.registerComponentImplementation(

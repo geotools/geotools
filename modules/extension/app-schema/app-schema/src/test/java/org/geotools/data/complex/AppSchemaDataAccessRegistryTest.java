@@ -42,6 +42,7 @@ import org.geotools.data.complex.config.SourceDataStore;
 import org.geotools.data.complex.config.TypeMapping;
 import org.geotools.data.complex.feature.type.Types;
 import org.geotools.test.AppSchemaTestSupport;
+import org.geotools.util.URLs;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.opengis.feature.Feature;
@@ -200,13 +201,7 @@ public class AppSchemaDataAccessRegistryTest extends AppSchemaTestSupport {
         assertNotNull(url);
         final SourceDataStore ds = new SourceDataStore();
         ds.setId(SOURCE_ID);
-        try {
-            dsParams.put("directory", new File(url.toURI()).toURL().toString());
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
-        }
+            dsParams.put("directory", URLs.urlToFile(url).getPath());
         ds.setParams(dsParams);
         config = new AppSchemaDataAccessDTO();
         config.setSourceDataStores(

@@ -28,7 +28,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
-import junit.framework.AssertionFailedError;
+import org.junit.AssertionFailedError;
 import junit.framework.TestCase;
 import org.geotools.filter.FilterHandler;
 import org.geotools.filter.LogicFilterImpl;

@@ -24,7 +24,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.logging.Level;
-import junit.framework.Assert;
+import org.junit.Assert;
 
 class DB2TestUtil {
 

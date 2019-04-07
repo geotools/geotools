@@ -27,7 +27,7 @@ import java.net.MalformedURLException;
 import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
-import junit.framework.AssertionFailedError;
+import org.junit.AssertionFailedError;
 import org.geotools.TestData;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;

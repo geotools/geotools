@@ -19,7 +19,7 @@ package org.geotools.geometry.xml;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
-import junit.framework.Assert;
+import org.junit.Assert;
 import org.geotools.geometry.iso.UnsupportedDimensionException;
 import org.geotools.geometry.iso.root.GeometryImpl;
 import org.opengis.geometry.DirectPosition;

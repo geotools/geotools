@@ -21,7 +21,7 @@ import java.io.InputStream;
 import java.text.ParseException;
 import java.util.Enumeration;
 import java.util.Properties;
-import junit.framework.AssertionFailedError;
+import org.junit.AssertionFailedError;
 import junit.framework.TestCase;
 import junit.framework.TestResult;
 import org.geotools.geometry.GeometryBuilder;

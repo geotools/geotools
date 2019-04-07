@@ -30,7 +30,6 @@ import org.apache.commons.collections.MapUtils;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpMethod;
 import org.apache.commons.httpclient.methods.GetMethod;
-import org.apache.commons.io.IOUtils;
 import org.geotools.image.io.ImageIOExt;
 import org.geotools.ows.wmts.model.WMTSServiceType;
 import org.geotools.tile.Tile;
@@ -227,12 +226,8 @@ class WMTSTile extends Tile {
         Map<String, String> headers =
                 (Map<String, String>)
                         this.service.getExtrainfo().get(WMTSTileService.EXTRA_HEADERS);
-        InputStream is = null;
-        try {
-            is = setupInputStream(getUrl(), headers);
+        try (InputStream is = setupInputStream(getUrl(), headers)) {
             return ImageIOExt.readBufferedImage(is);
-        } finally {
-            IOUtils.closeQuietly(is);
         }
     }
 

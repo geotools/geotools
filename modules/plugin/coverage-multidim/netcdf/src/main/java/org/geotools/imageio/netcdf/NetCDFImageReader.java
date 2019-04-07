@@ -463,7 +463,7 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
             }
 
             if (imageInputStream != null) {
-                IOUtils.closeQuietly(imageInputStream);
+                imageInputStream.close();
             }
 
         } catch (IOException e) {

@@ -52,7 +52,7 @@ method in question.
 By convention the last parameter is a progress monitor you can use to report back
 what is going on to your user - and let them cancel.
 
-Since processes can take minuets to hours this is a good plan.::
+Since processes can take minutes to hours this is a good plan.::
 
     features = RasterToVectorProcess.process( gridCoverage, 2, Collections.EMPTY, monitor );
 

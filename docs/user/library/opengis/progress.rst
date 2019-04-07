@@ -9,7 +9,7 @@ There are several implementations available in GeoTools:
 * ProgressPrinter - reports operation progress to standard out
 * ProgressMailer - will email when the operation is completed
 
-As you can see these really are intended for operations that may take minuets to complete.
+As you can see these really are intended for operations that may take minutes to complete.
 
 There are a couple implementations of direct interest to implementors:
 

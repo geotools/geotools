@@ -40,7 +40,7 @@ Your First Build
       [INFO] ------------------------------------------------------------------------
       [INFO] BUILD SUCCESSFUL
       [INFO] ------------------------------------------------------------------------
-      [INFO] Total time: 9 months, 3 weeks, 12 hours, 3 minuets, and 43 seconds
+      [INFO] Total time: 9 months, 3 weeks, 12 hours, 3 minutes, and 43 seconds
       [INFO] Finished at: Sat Feb 12 16:05:08 EST 2011
       [INFO] Final Memory: 41M/87M
       [INFO] ------------------------------------------------------------------------
@@ -80,10 +80,10 @@ Expected Build times
 
 Depending on your hardware and internet connection:
 
-* Building the first time, where maven needs to download everything, may take 20 to 30 minuets.
-* Future builds check for the most recent .jar files from the internet. The checking is based on an md5 checksum and does not take long. Building subsequently may take 10 minuets depending on your hardware and internet connection.
-* After everything is downloaded can build "offline" and avoid the checking of md5 checksums resulting in a faster build of 5-7 minuets.
-* Finally you can turn off tests (danger!) and build offline to get a build under 2 minuets
+* Building the first time, where maven needs to download everything, may take 20 to 30 minutes.
+* Future builds check for the most recent .jar files from the internet. The checking is based on an md5 checksum and does not take long. Building subsequently may take 10 minutes depending on your hardware and internet connection.
+* After everything is downloaded can build "offline" and avoid the checking of md5 checksums resulting in a faster build of 5-7 minutes.
+* Finally you can turn off tests (danger!) and build offline to get a build under 2 minutes
 
 Tips to speed up a build:
 

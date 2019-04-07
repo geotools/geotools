@@ -22,7 +22,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
-import junit.framework.Assert;
+import org.junit.Assert;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 

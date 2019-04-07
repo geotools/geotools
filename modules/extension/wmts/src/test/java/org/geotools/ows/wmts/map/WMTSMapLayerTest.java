@@ -117,7 +117,7 @@ public class WMTSMapLayerTest extends OnlineTestCase {
         Rectangle paintArea = new Rectangle(0, 0, 100, 100);
         AffineTransform transform =
                 RendererUtilities.worldToScreenTransform(kvpMapLayer.getBounds(), paintArea);
-        renderer.paint(image.createGraphics(), paintArea, transform);
+        renderer.paint(image.createGraphics(), paintArea, kvpMapLayer.getBounds(), transform);
         assertNotNull(kvpMapLayer.getLastGetMap());
     }
 

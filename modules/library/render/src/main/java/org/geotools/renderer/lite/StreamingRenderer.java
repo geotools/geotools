@@ -554,9 +554,6 @@ public class StreamingRenderer implements GTRenderer {
      * @param worldToScreen A transform which converts World coordinates to Screen coordinates.
      * @task Need to check if the Layer CoordinateSystem is different to the BoundingBox rendering
      *     CoordinateSystem and if so, then transform the coordinates.
-     * @deprecated Use paint(Graphics2D graphics, Rectangle paintArea, ReferencedEnvelope mapArea)
-     *     or paint(Graphics2D graphics, Rectangle paintArea, ReferencedEnvelope mapArea,
-     *     AffineTransform worldToScreen) instead.
      */
     public void paint(Graphics2D graphics, Rectangle paintArea, AffineTransform worldToScreen) {
         if (worldToScreen == null || paintArea == null) {

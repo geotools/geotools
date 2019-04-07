@@ -201,8 +201,9 @@ public class StyledShapePainterTest extends TestCase {
         StyledShapePainter painter = new StyledShapePainter();
         GraphicImpl legend =
                 new GraphicImpl(CommonFactoryFinder.getFilterFactory(GeoTools.getDefaultHints()));
-        legend.setRotation(0);
-        legend.setOpacity(1);
+        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        legend.setRotation(ff.literal(0));
+        legend.setOpacity(ff.literal(1));
         Style pStyle = RendererBaseTest.loadStyle(this, "externalGraphic.sld");
         URL url = StreamingRenderer.class.getResource("test-data/");
         StyleFactory sf = CommonFactoryFinder.getStyleFactory(null);

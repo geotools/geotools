@@ -21,7 +21,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import junit.framework.Assert;
+import org.junit.Assert;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.LineSymbolizer;

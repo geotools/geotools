@@ -59,20 +59,17 @@ import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.feature.DefaultFeatureCollection;
-import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.LiteCoordinateSequence;
 import org.geotools.geometry.jts.LiteShape2;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.map.DefaultMapContext;
 import org.geotools.map.DirectLayer;
 import org.geotools.map.FeatureLayer;
 import org.geotools.map.GridCoverageLayer;
 import org.geotools.map.Layer;
 import org.geotools.map.MapContent;
-import org.geotools.map.MapContext;
 import org.geotools.map.MapViewport;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
@@ -428,12 +425,12 @@ public class StreamingRendererTest {
         replay(fs);
 
         // build map context
-        MapContext mapContext = new DefaultMapContext(DefaultGeographicCRS.WGS84);
-        mapContext.addLayer(fs, createLineStyle());
+        MapContent mapContext = new MapContent();
+        mapContext.addLayer(new FeatureLayer(fs, createLineStyle()));
 
         // setup the renderer and listen for errors
         final StreamingRenderer sr = new StreamingRenderer();
-        sr.setContext(mapContext);
+        sr.setMapContent(mapContext);
         sr.addRenderListener(
                 new RenderListener() {
                     public void featureRenderer(SimpleFeature feature) {
@@ -550,12 +547,12 @@ public class StreamingRendererTest {
         DefaultFeatureCollection fc = new DefaultFeatureCollection();
         fc.add(createPoint(0, 0));
         fc.add(createPoint(world.getMaxX(), world.getMinY()));
-        MapContext mapContext = new DefaultMapContext(DefaultGeographicCRS.WGS84);
-        mapContext.addLayer((FeatureCollection) fc, createPointStyle());
+        MapContent map = new MapContent();
+        map.addLayer(new FeatureLayer(fc, createPointStyle()));
         BufferedImage image =
                 new BufferedImage(screen.width, screen.height, BufferedImage.TYPE_4BYTE_ABGR);
         final StreamingRenderer sr = new StreamingRenderer();
-        sr.setContext(mapContext);
+        sr.setMapContent(map);
         sr.paint(image.createGraphics(), screen, worldToScreen);
         assertTrue("Pixel should be drawn at 0,0 ", image.getRGB(0, 0) != 0);
         assertTrue(

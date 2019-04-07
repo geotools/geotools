@@ -12,7 +12,8 @@ import junit.framework.TestCase;
 import org.geotools.data.property.PropertyDataStore;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.map.DefaultMapContext;
+import org.geotools.map.FeatureLayer;
+import org.geotools.map.MapContent;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.renderer.label.LabelCacheImpl;
 import org.geotools.renderer.style.FontCache;
@@ -51,12 +52,12 @@ public class PointPlacementTest extends TestCase {
         Style pStyle = RendererBaseTest.loadStyle(this, "textAnchorRotation.sld");
         Style lStyle = RendererBaseTest.loadStyle(this, "lineGray.sld");
 
-        DefaultMapContext mc = new DefaultMapContext(DefaultGeographicCRS.WGS84);
-        mc.addLayer(lineFS, lStyle);
-        mc.addLayer(pointFS, pStyle);
+        MapContent mc = new MapContent();
+        mc.addLayer(new FeatureLayer(lineFS, lStyle));
+        mc.addLayer(new FeatureLayer(pointFS, pStyle));
 
         StreamingRenderer renderer = new StreamingRenderer();
-        renderer.setContext(mc);
+        renderer.setMapContent(mc);
         renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
 
         RendererBaseTest.showRender("Old labeller", renderer, TIME, bounds);
@@ -66,12 +67,12 @@ public class PointPlacementTest extends TestCase {
         Style pStyle = RendererBaseTest.loadStyle(this, "textAnchorRotation.sld");
         Style lStyle = RendererBaseTest.loadStyle(this, "lineGray.sld");
 
-        DefaultMapContext mc = new DefaultMapContext(DefaultGeographicCRS.WGS84);
-        mc.addLayer(lineFS, lStyle);
-        mc.addLayer(pointFS, pStyle);
+        MapContent mc = new MapContent();
+        mc.addLayer(new FeatureLayer(lineFS, lStyle));
+        mc.addLayer(new FeatureLayer(pointFS, pStyle));
 
         StreamingRenderer renderer = new StreamingRenderer();
-        renderer.setContext(mc);
+        renderer.setMapContent(mc);
         renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
         Map rendererParams = new HashMap();
         LabelCacheImpl labelCache = new LabelCacheImpl();

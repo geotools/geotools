@@ -36,8 +36,8 @@ import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.filter.IllegalFilterException;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.map.DefaultMapContext;
-import org.geotools.map.MapContext;
+import org.geotools.map.FeatureLayer;
+import org.geotools.map.MapContent;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.renderer.RenderListener;
@@ -290,9 +290,8 @@ public class Rendering2DTest extends TestCase {
         // CREATING MAP CONTEXT
         //
         // ////////////////////////////////////////////////////////////////////
-        final MapContext map = new DefaultMapContext(DefaultGeographicCRS.WGS84);
-        map.addLayer(ft, style);
-        map.setAreaOfInterest(map.getLayerBounds());
+        final MapContent map = new MapContent();
+        map.addLayer(new FeatureLayer(ft, style));
 
         // ////////////////////////////////////////////////////////////////////
         //
@@ -300,7 +299,7 @@ public class Rendering2DTest extends TestCase {
         //
         // ////////////////////////////////////////////////////////////////////
         final StreamingRenderer renderer = new StreamingRenderer();
-        renderer.setContext(map);
+        renderer.setMapContent(map);
         renderer.setRendererHints(rendererHints);
 
         // ////////////////////////////////////////////////////////////////////
@@ -308,8 +307,7 @@ public class Rendering2DTest extends TestCase {
         // SHOWING RENDERER
         //
         // ////////////////////////////////////////////////////////////////////
-        RendererBaseTest.showRender(
-                "testSimplePolygonRender", renderer, 1000, map.getLayerBounds());
+        RendererBaseTest.showRender("testSimplePolygonRender", renderer, 1000, map.getMaxBounds());
     }
 
     // public void testRenderLoadedStyle() throws Exception {
@@ -320,10 +318,10 @@ public class Rendering2DTest extends TestCase {
     // SimpleFeatureCollection ft = createTestFeatureCollection(null, POLYGON);
     // Style style = loadTestStyle();
     //
-    // MapContext map = new DefaultMapContext();
-    // map.addLayer(ft, style);
+    // MapContent map = new DefaultMapContent();
+    // map.addLayer(new FeatureLayer(ft, style));
     // LiteRenderer2 renderer = new LiteRenderer2(map);
-    // Envelope env = map.getLayerBounds();
+    // Envelope env = map.getMaxBounds();
     // env = new Envelope(env.getMinX() - 20, env.getMaxX() + 20, env.getMinY()
     // - 20, env
     // .getMaxY() + 20);
@@ -353,9 +351,8 @@ public class Rendering2DTest extends TestCase {
         // CREATING MAP CONTEXT
         //
         // ////////////////////////////////////////////////////////////////////
-        final MapContext map = new DefaultMapContext(DefaultGeographicCRS.WGS84);
-        map.addLayer(ft, style);
-        map.setAreaOfInterest(map.getLayerBounds());
+        final MapContent map = new MapContent();
+        map.addLayer(new FeatureLayer(ft, style));
 
         // ////////////////////////////////////////////////////////////////////
         //
@@ -363,7 +360,7 @@ public class Rendering2DTest extends TestCase {
         //
         // ////////////////////////////////////////////////////////////////////
         final StreamingRenderer renderer = new StreamingRenderer();
-        renderer.setContext(map);
+        renderer.setMapContent(map);
         renderer.setRendererHints(rendererHints);
 
         // ////////////////////////////////////////////////////////////////////
@@ -371,7 +368,7 @@ public class Rendering2DTest extends TestCase {
         // SHOWING RENDERER
         //
         // ////////////////////////////////////////////////////////////////////
-        ReferencedEnvelope env = map.getLayerBounds();
+        ReferencedEnvelope env = map.getMaxBounds();
         env =
                 new ReferencedEnvelope(
                         env.getMinX() - 20,
@@ -404,9 +401,8 @@ public class Rendering2DTest extends TestCase {
         // CREATING MAP CONTEXT
         //
         // ////////////////////////////////////////////////////////////////////
-        final MapContext map = new DefaultMapContext(DefaultGeographicCRS.WGS84);
-        map.addLayer(ft, style);
-        map.setAreaOfInterest(map.getLayerBounds());
+        final MapContent map = new MapContent();
+        map.addLayer(new FeatureLayer(ft, style));
 
         // ////////////////////////////////////////////////////////////////////
         //
@@ -414,7 +410,7 @@ public class Rendering2DTest extends TestCase {
         //
         // ////////////////////////////////////////////////////////////////////
         final StreamingRenderer renderer = new StreamingRenderer();
-        renderer.setContext(map);
+        renderer.setMapContent(map);
         renderer.setRendererHints(rendererHints);
 
         // ////////////////////////////////////////////////////////////////////
@@ -422,7 +418,7 @@ public class Rendering2DTest extends TestCase {
         // SHOWING RENDERER
         //
         // ////////////////////////////////////////////////////////////////////
-        ReferencedEnvelope env = map.getLayerBounds();
+        ReferencedEnvelope env = map.getMaxBounds();
         env =
                 new ReferencedEnvelope(
                         env.getMinX() - 20,
@@ -455,10 +451,8 @@ public class Rendering2DTest extends TestCase {
         // Create the map context
         //
         // //
-        MapContext map = new DefaultMapContext();
-        map.setCoordinateReferenceSystem(DefaultGeographicCRS.WGS84);
-        map.addLayer(ft, style);
-        map.setAreaOfInterest(map.getLayerBounds());
+        MapContent map = new MapContent();
+        map.addLayer(new FeatureLayer(ft, style));
 
         // //
         //
@@ -466,7 +460,7 @@ public class Rendering2DTest extends TestCase {
         //
         // //
         StreamingRenderer renderer = new StreamingRenderer();
-        renderer.setContext(map);
+        renderer.setMapContent(map);
         renderer.setRendererHints(rendererHints);
 
         // //
@@ -499,7 +493,7 @@ public class Rendering2DTest extends TestCase {
         // Set the new AOI
         //
         // //
-        final ReferencedEnvelope env = (ReferencedEnvelope) map.getLayerBounds();
+        final ReferencedEnvelope env = (ReferencedEnvelope) map.getMaxBounds();
         final ReferencedEnvelope bounds =
                 new ReferencedEnvelope(JTS.transform(env, null, t, 10), crs);
 
@@ -529,8 +523,8 @@ public class Rendering2DTest extends TestCase {
         //
         //
         // /////////////////////////////////////////////////////////////////
-        final MapContext map = new DefaultMapContext(DefaultGeographicCRS.WGS84);
-        map.addLayer(ft, style);
+        final MapContent map = new MapContent();
+        map.addLayer(new FeatureLayer(ft, style));
 
         // ///////////////////////////////////////////////////////////////////
         //
@@ -565,9 +559,9 @@ public class Rendering2DTest extends TestCase {
         // /////////////////////////////////////////////////////////////////
         final StreamingRenderer renderer = new StreamingRenderer();
         renderer.setRendererHints(rendererHints);
-        renderer.setContext(map);
+        renderer.setMapContent(map);
 
-        ReferencedEnvelope env = map.getLayerBounds();
+        ReferencedEnvelope env = map.getMaxBounds();
         env =
                 new ReferencedEnvelope(
                         env.getMinX() - 20,
@@ -601,8 +595,8 @@ public class Rendering2DTest extends TestCase {
         //
         //
         // /////////////////////////////////////////////////////////////////
-        final MapContext map = new DefaultMapContext(DefaultGeographicCRS.WGS84);
-        map.addLayer(ft, style);
+        final MapContent map = new MapContent();
+        map.addLayer(new FeatureLayer(ft, style));
 
         // ///////////////////////////////////////////////////////////////////
         //
@@ -642,9 +636,9 @@ public class Rendering2DTest extends TestCase {
         // /////////////////////////////////////////////////////////////////
         final StreamingRenderer renderer = new StreamingRenderer();
         renderer.setRendererHints(rendererHints);
-        renderer.setContext(map);
+        renderer.setMapContent(map);
 
-        ReferencedEnvelope env = map.getLayerBounds();
+        ReferencedEnvelope env = map.getMaxBounds();
         env =
                 new ReferencedEnvelope(
                         env.getMinX() - 20,
@@ -675,11 +669,11 @@ public class Rendering2DTest extends TestCase {
         // Query layerQuery;
         //
         // MapLayer layer = new DefaultMapLayer(ft, style);
-        // MapContext map = new DefaultMapContext(new MapLayer[] { layer });
+        // MapContent map = new DefaultMapContent(new MapLayer[] { layer });
         // map.setAreaOfInterest(envelope, ft.getFeatureType()
         // .getDefaultGeometry().getCoordinateSystem());
         // StreamingRenderer renderer = new StreamingRenderer();
-        // renderer.setContext(map);
+        // renderer.setMapContent(map);
         // renderer.setRendererHints(rendererHints);
         //
         // // this is the reader that StreamingRenderer obtains after applying
@@ -789,10 +783,10 @@ public class Rendering2DTest extends TestCase {
         // Query layerQuery;
         //
         // MapLayer layer = new DefaultMapLayer(ft, style);
-        // MapContext map = new DefaultMapContext(new MapLayer[] { layer });
+        // MapContent map = new DefaultMapContent(new MapLayer[] { layer });
         // map.setAreaOfInterest(envelope);
         // StreamingRenderer renderer = new StreamingRenderer();
-        // renderer.setContext(map);
+        // renderer.setMapContent(map);
         // renderer.setRendererHints(rendererHints);
         //
         // // this is the reader that StreamingRenderer obtains after applying
@@ -1161,10 +1155,10 @@ public class Rendering2DTest extends TestCase {
 
     private void renderEmptyGeometry(SimpleFeature f, Style style) {
         SimpleFeatureCollection fc = DataUtilities.collection(f);
-        MapContext mc = new DefaultMapContext();
-        mc.addLayer(fc, style);
+        MapContent mc = new MapContent();
+        mc.addLayer(new FeatureLayer(fc, style));
         StreamingRenderer sr = new StreamingRenderer();
-        sr.setContext(mc);
+        sr.setMapContent(mc);
         BufferedImage bi = new BufferedImage(640, 480, BufferedImage.TYPE_4BYTE_ABGR);
         sr.addRenderListener(
                 new RenderListener() {

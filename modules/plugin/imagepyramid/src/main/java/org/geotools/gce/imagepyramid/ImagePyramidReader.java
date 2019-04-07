@@ -16,25 +16,6 @@
  */
 package org.geotools.gce.imagepyramid;
 
-import it.geosolutions.imageio.maskband.DatasetLayout;
-import java.awt.*;
-import java.io.BufferedInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.URL;
-import java.nio.channels.Channels;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Properties;
-import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.imageio.ImageReadParam;
-import javax.media.jai.ImageLayout;
-import org.apache.commons.io.IOUtils;
 import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
@@ -62,6 +43,27 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.datum.PixelInCell;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.TransformException;
+
+import java.awt.*;
+import java.io.BufferedInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URL;
+import java.nio.channels.Channels;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Properties;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.imageio.ImageReadParam;
+import javax.media.jai.ImageLayout;
+
+import it.geosolutions.imageio.maskband.DatasetLayout;
 
 /**
  * This reader is responsible for providing access to a pyramid of mosaics of georeferenced
@@ -210,11 +212,8 @@ public final class ImagePyramidReader extends AbstractGridCoverage2DReader
         if (LOGGER.isLoggable(Level.FINE)) {
             LOGGER.fine("Parsing pyramid properties file at:" + sourceURL.toExternalForm());
         }
-        BufferedInputStream propertyStream = null;
-        InputStream openStream = null;
-        try {
-            openStream = sourceURL.openStream();
-            propertyStream = new BufferedInputStream(openStream);
+        try (InputStream in = sourceURL.openStream();
+                BufferedInputStream propertyStream = new BufferedInputStream(in)) {
             final Properties properties = new Properties();
             properties.load(propertyStream);
 
@@ -263,11 +262,6 @@ public final class ImagePyramidReader extends AbstractGridCoverage2DReader
             if (LOGGER.isLoggable(Level.FINE)) {
                 LOGGER.fine("Parsed pyramid properties file at:" + sourceURL.toExternalForm());
             }
-        } finally {
-            // close input stream
-            if (propertyStream != null) IOUtils.closeQuietly(propertyStream);
-
-            if (openStream != null) IOUtils.closeQuietly(openStream);
         }
     }
 

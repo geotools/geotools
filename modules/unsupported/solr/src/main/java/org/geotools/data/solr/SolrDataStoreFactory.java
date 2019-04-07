@@ -17,20 +17,19 @@
 
 package org.geotools.data.solr;
 
-import java.awt.RenderingHints.Key;
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.Map;
-import org.geotools.data.AbstractDataStoreFactory;
 import org.geotools.data.DataStore;
+import org.geotools.data.DataStoreFactorySpi;
 import org.geotools.data.solr.SolrLayerMapper.Type;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.util.KVP;
 
 /** Implementation of DataStoreFactory for SOLR server */
-public class SolrDataStoreFactory extends AbstractDataStoreFactory {
+public class SolrDataStoreFactory implements DataStoreFactorySpi {
 
     /** Url to the SOLR server core */
     public static final Param URL =
@@ -109,25 +108,12 @@ public class SolrDataStoreFactory extends AbstractDataStoreFactory {
     }
 
     @Override
-    public Map<Key, ?> getImplementationHints() {
-        return null;
-    }
-
-    @Override
     public Param[] getParametersInfo() {
         return new Param[] {URL, LAYER_MAPPER, FIELD, NAMESPACE};
     }
 
     @Override
     public boolean isAvailable() {
-        return true;
-    }
-
-    @Override
-    public boolean canProcess(Map params) {
-        if (!super.canProcess(params)) {
-            return false; // fail basic param check
-        }
         return true;
     }
 }

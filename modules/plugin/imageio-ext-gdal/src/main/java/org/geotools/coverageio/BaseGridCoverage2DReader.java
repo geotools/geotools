@@ -18,7 +18,6 @@ package org.geotools.coverageio;
 
 import it.geosolutions.imageio.imageioimpl.imagereadmt.ImageReadDescriptorMT;
 import it.geosolutions.imageio.stream.AccessibleStream;
-
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.io.File;
@@ -286,7 +285,6 @@ public abstract class BaseGridCoverage2DReader extends AbstractGridCoverage2DRea
                 inputFile = (File) accessible.getTarget();
                 input = inputFile;
             }
-            
         }
 
         // string to file conversion attempt (other readers do it too)

@@ -32,7 +32,6 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.filefilter.FileFilterUtils;
 import org.apache.commons.io.filefilter.IOFileFilter;
 import org.geotools.gce.imagemosaic.ImageMosaicFormat;
@@ -283,7 +282,7 @@ class Utils {
                         + envelope.getMaximum(0)
                         + ","
                         + envelope.getMaximum(1));
-        
+
         try (OutputStream os = new FileOutputStream(sourceFile)) {
             properties.store(os, "Automatically generated");
         } catch (IOException e) {
@@ -292,7 +291,7 @@ class Utils {
                     "We could not generate the pyramid property file " + sourceFile.getPath(),
                     e);
             return null;
-        } 
+        }
 
         // build the .prj file if possible
         if (envelope.getCoordinateReferenceSystem() != null) {

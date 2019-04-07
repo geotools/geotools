@@ -39,7 +39,6 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.logging.Logger;
-import org.junit.AssertionFailedError;
 import org.geotools.arcsde.ArcSdeException;
 import org.geotools.arcsde.session.Command;
 import org.geotools.arcsde.session.ISession;
@@ -1356,10 +1355,7 @@ public class ArcSDEFeatureStoreTest {
             transaction.commit();
             countNoTransaction = sourceNoTransaction.getCount(Query.ALL);
             assertEquals(5, countNoTransaction);
-        } catch (Exception e) {
-            transaction.rollback();
-            throw e;
-        } catch (AssertionFailedError e) {
+        } catch (Exception | Error e) {
             transaction.rollback();
             throw e;
         } finally {

@@ -179,7 +179,7 @@ public class GeometryConformanceTestSuite extends TestSuite {
                                     new WKTParser(
                                             geomFact,
                                             primFact,
-                                            null,
+                                            builder.getPositionFactory(),
                                             builder.getAggregateFactory());
                             try {
                                 Object expectedResult = wktFactory.parse(operationValue);

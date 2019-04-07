@@ -16,22 +16,19 @@
  */
 package org.geotools.renderer.lite;
 
+import java.awt.*;
+import java.awt.geom.AffineTransform;
+import java.util.HashMap;
 import junit.framework.TestCase;
-
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultEngineeringCRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
-import org.geotools.util.XMath;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.io.WKTReader;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
-
-import java.awt.*;
-import java.awt.geom.AffineTransform;
-import java.util.HashMap;
 
 public class RenderUtilitiesTest extends TestCase {
 

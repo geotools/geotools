@@ -26,13 +26,13 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.sql.PreparedStatement;
 import javax.imageio.ImageIO;
-import org.junit.Assert;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 import org.geotools.gce.imagemosaic.jdbc.AbstractTest;
 import org.geotools.gce.imagemosaic.jdbc.Config;
 import org.geotools.gce.imagemosaic.jdbc.DBDialect;
 import org.geotools.gce.imagemosaic.jdbc.UniversalDialect;
+import org.junit.Assert;
 
 /** @author mcr */
 public class H2CustomTest extends AbstractTest {

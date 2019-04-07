@@ -48,7 +48,10 @@ public class GDALTestCase {
         if (TestData.isInteractiveTest()) {
             final JFrame frame = new JFrame();
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.getContentPane().add(new javax.media.jai.widget.ScrollingImagePanel(gc.getRenderedImage(), 800, 800));
+            frame.getContentPane()
+                    .add(
+                            new javax.media.jai.widget.ScrollingImagePanel(
+                                    gc.getRenderedImage(), 800, 800));
             frame.pack();
             SwingUtilities.invokeLater(
                     new Runnable() {

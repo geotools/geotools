@@ -17,7 +17,7 @@
 package org.geotools.gce.imagepyramid;
 
 import java.util.Iterator;
-import junit.framework.Assert;
+import org.junit.Assert;
 import org.geotools.coverage.grid.io.GridFormatFactorySpi;
 import org.geotools.coverage.grid.io.GridFormatFinder;
 import org.junit.Test;

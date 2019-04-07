@@ -34,7 +34,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.io.IOUtils;
 import org.geotools.coverage.grid.io.GranuleSource;
 import org.geotools.coverage.grid.io.HarvestedSource;
 import org.geotools.coverage.io.catalog.CoverageSlice;
@@ -217,7 +216,7 @@ public final class PostGisIndexTest extends OnlineTestCase {
     private File createDatastoreProperties(File dir, Map<String, String> override)
             throws IOException {
         File outFile = new File(dir, "mddatastore.properties");
-        try (FileWriter out = new FileWriter(outFile)){
+        try (FileWriter out = new FileWriter(outFile)) {
             // Preparing custom multidim datastore properties
             final Properties props = createExampleFixture();
             if (override != null && !override.isEmpty()) {

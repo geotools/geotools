@@ -17,13 +17,14 @@
  */
 package org.geotools.data.mongodb;
 
+import java.awt.*;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.Map;
-import org.geotools.data.AbstractDataStoreFactory;
 import org.geotools.data.DataStore;
+import org.geotools.data.DataStoreFactorySpi;
 
-public class MongoDataStoreFactory extends AbstractDataStoreFactory {
+public class MongoDataStoreFactory implements DataStoreFactorySpi {
 
     public static final Param NAMESPACE =
             new Param("namespace", String.class, "Namespace prefix", false);
@@ -55,6 +56,11 @@ public class MongoDataStoreFactory extends AbstractDataStoreFactory {
     @Override
     public Param[] getParametersInfo() {
         return new Param[] {NAMESPACE, DATASTORE_URI, SCHEMASTORE_URI};
+    }
+
+    @Override
+    public boolean isAvailable() {
+        return true;
     }
 
     @Override

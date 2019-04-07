@@ -16,7 +16,7 @@
  */
 package org.geotools.util.factory;
 
-import java.awt.RenderingHints;
+import java.util.Collections;
 import java.util.Map;
 
 /**
@@ -120,5 +120,7 @@ public interface Factory {
      * @return The map of hints, or an {@linkplain java.util.Collections#EMPTY_MAP empty map} if
      *     none.
      */
-    Map<RenderingHints.Key, ?> getImplementationHints();
+    default Map<java.awt.RenderingHints.Key, ?> getImplementationHints() {
+        return Collections.EMPTY_MAP;
+    }
 }

@@ -33,7 +33,6 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.GeneralEnvelope;
-import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
@@ -67,7 +66,6 @@ import org.opengis.referencing.crs.EngineeringCRS;
 import org.opengis.referencing.crs.GeographicCRS;
 import org.opengis.referencing.cs.AxisDirection;
 import org.opengis.referencing.datum.PixelInCell;
-import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.TransformException;
 import si.uom.SI;
 
@@ -350,8 +348,8 @@ public final class RendererUtilities {
 
     /**
      * First searches the hints for the scale denominator hint otherwise calls {@link
-     * #calculateScale(org.geotools.util.SoftValueHashMap.Reference, int, int, double)}. If the hints
-     * contains a DPI then that DPI is used otherwise 90 is used (the OGS default).
+     * #calculateScale(org.geotools.util.SoftValueHashMap.Reference, int, int, double)}. If the
+     * hints contains a DPI then that DPI is used otherwise 90 is used (the OGS default).
      */
     public static double calculateScale(
             ReferencedEnvelope envelope, int imageWidth, int imageHeight, Map hints)

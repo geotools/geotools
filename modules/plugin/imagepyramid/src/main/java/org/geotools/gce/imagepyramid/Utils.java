@@ -283,9 +283,8 @@ class Utils {
                         + envelope.getMaximum(0)
                         + ","
                         + envelope.getMaximum(1));
-        OutputStream os = null;
-        try {
-            os = new FileOutputStream(sourceFile);
+        
+        try (OutputStream os = new FileOutputStream(sourceFile)) {
             properties.store(os, "Automatically generated");
         } catch (IOException e) {
             LOGGER.log(
@@ -293,11 +292,7 @@ class Utils {
                     "We could not generate the pyramid property file " + sourceFile.getPath(),
                     e);
             return null;
-        } finally {
-            if (os != null) {
-                IOUtils.closeQuietly(os);
-            }
-        }
+        } 
 
         // build the .prj file if possible
         if (envelope.getCoordinateReferenceSystem() != null) {

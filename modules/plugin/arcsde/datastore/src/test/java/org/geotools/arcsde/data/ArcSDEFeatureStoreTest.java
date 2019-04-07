@@ -175,7 +175,7 @@ public class ArcSDEFeatureStoreTest {
                 },
                 progress);
         assertTrue("visitor completed", progress.completed);
-        assertEquals("visitor 100%", 100f, progress.progress);
+        assertEquals("visitor 100%", 100f, progress.progress, 0f);
         assertNull("visitor no problems", progress.exception);
 
         // we are going to use this transaction to modify and commit
@@ -215,7 +215,7 @@ public class ArcSDEFeatureStoreTest {
                 },
                 progress);
         assertTrue("visitor completed", progress.completed);
-        assertEquals("visitor 100%", 100f, progress.progress);
+        assertEquals("visitor 100%", 100f, progress.progress, 0f);
         assertNull("visitor no problems", progress.exception);
 
         assertEquals(1, fids.size());

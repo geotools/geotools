@@ -147,7 +147,7 @@ This release changes the package names from ``com.vividsolutions.jts`` to ``org.
 
 Using the command line to update your own ``pom.xml`` files::
 
-   git grep -l com.vividsolutions | grep ``pom.xml`` | xargs sed -i "s/com.vividsolutions/org.locationtech.jts/g"
+   git grep -l com.vividsolutions | grep pom.xml | xargs sed -i "s/com.vividsolutions/org.locationtech.jts/g"
    
 And codebase::
 

@@ -30,10 +30,10 @@ The **trunk/pom.xml** file contains the javadoc:javadoc goal configuration. This
 
 Excluded packages are:
 
-* ``com.\*`` * ``org.geotools.maven.\*`` 
-* ``org.geotools.referencing.util.\*`` 
-* ``org.geotools.maven.\*`` 
-* ``org.geotools.referencing.util.\*``
+  * ``com.\*`` 
+  * ``org.geotools.maven.\*`` 
+  * ``org.geotools.referencing.util.\*`` 
+  * ``org.geotools.maven.\*`` * ``org.geotools.referencing.util.\*``
 
 When Maven fails to generate the javadoc
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

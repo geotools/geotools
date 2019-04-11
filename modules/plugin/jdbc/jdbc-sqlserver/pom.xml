@@ -90,15 +90,25 @@
 			<dependencies>
 				<dependency>
 					<groupId>com.microsoft.sqlserver</groupId>
-					<artifactId>sqljdbc41</artifactId>
+					<artifactId>mssql-jdbc</artifactId>
 					<version>${sqlServerDriverVersion}</version>
+				</dependency>
+				<dependency>
+					<groupId>com.microsoft.azure</groupId>
+					<artifactId>adal4j</artifactId>
+					<version>1.6.3</version>
+				</dependency>
+				<dependency>
+					<groupId>com.microsoft.rest</groupId>
+					<artifactId>client-runtime</artifactId>
+					<version>1.6.5</version>
 				</dependency>
 			</dependencies>
 		</profile>
 	</profiles>
 
 	<properties>
-		<sqlServerDriverVersion>4.1</sqlServerDriverVersion>
+		<sqlServerDriverVersion>7.2.1.jre8</sqlServerDriverVersion>
 		<jtdsDriverVersion>1.3.1</jtdsDriverVersion>
 	</properties>
 </project>

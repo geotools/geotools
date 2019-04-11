@@ -103,6 +103,14 @@ public class SQLServerDataStoreFactory extends JDBCDataStoreFactory {
     public static final Param INSTANCE =
             new Param("instance", String.class, "Instance Name", false);
 
+    /** parameter for controlling sql server authentication mechanism */
+    public static final Param AUTHENTICATION =
+            new Param(
+                    "SQL Server Authentication Type",
+                    String.class,
+                    "Possible values are ActiveDirectoryIntegrated, ActiveDirectoryPassword, ActiveDirectoryMSI, SqlPassword, and the default NotSpecified",
+                    false);
+
     @Override
     protected SQLDialect createSQLDialect(JDBCDataStore dataStore) {
         return new SQLServerDialect(dataStore);
@@ -141,6 +149,7 @@ public class SQLServerDataStoreFactory extends JDBCDataStoreFactory {
         parameters.put(FORCE_SPATIAL_INDEX.key, FORCE_SPATIAL_INDEX);
         parameters.put(TABLE_HINTS.key, TABLE_HINTS);
         parameters.put(INSTANCE.key, INSTANCE);
+        parameters.put(AUTHENTICATION.key, AUTHENTICATION);
     }
 
     /** Builds up the JDBC url in a jdbc:<database>://<host>:<port>;DatabaseName=<dbname> */
@@ -151,6 +160,7 @@ public class SQLServerDataStoreFactory extends JDBCDataStoreFactory {
         Integer port = (Integer) PORT.lookUp(params);
         String db = (String) DATABASE.lookUp(params);
         String instance = (String) INSTANCE.lookUp(params);
+        String authentication = (String) AUTHENTICATION.lookUp(params);
 
         String url = "jdbc:" + getDatabaseID() + "://" + host;
         if (port != null) {
@@ -172,6 +182,10 @@ public class SQLServerDataStoreFactory extends JDBCDataStoreFactory {
 
         if (intsec != null && intsec.booleanValue()) {
             url = url + ";integratedSecurity=true";
+        }
+
+        if (authentication != null) {
+            url = url + ";authentication=" + authentication;
         }
 
         return url;

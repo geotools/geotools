@@ -21,7 +21,6 @@ import java.io.InputStream;
 import java.util.List;
 import net.opengis.wfs.GetFeatureType;
 import org.geotools.data.ows.HTTPResponse;
-import org.geotools.data.wfs.internal.GetFeatureParser;
 import org.geotools.data.wfs.internal.GetFeatureRequest;
 import org.geotools.data.wfs.internal.GetFeatureResponse;
 import org.geotools.data.wfs.internal.GetParser;

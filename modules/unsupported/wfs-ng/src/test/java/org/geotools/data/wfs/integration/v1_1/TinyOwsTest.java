@@ -102,7 +102,7 @@ public class TinyOwsTest {
     }
 
     private void assertXMLEqual(String expectedXmlResource, String actualXml) throws IOException {
-        String control = IOUtils.toString(url(expectedXmlResource));
+        String control = IOUtils.toString(url(expectedXmlResource), "UTF-8");
         control = control.replace("${getfeature.handle}", newRequestHandle());
         try {
             XMLAssert.assertXMLEqual(control, actualXml);

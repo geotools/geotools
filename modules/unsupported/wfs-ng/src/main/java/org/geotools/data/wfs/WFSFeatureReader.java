@@ -19,7 +19,6 @@ package org.geotools.data.wfs;
 import java.io.IOException;
 import java.util.NoSuchElementException;
 import org.geotools.data.FeatureReader;
-import org.geotools.data.wfs.internal.GetFeatureParser;
 import org.geotools.data.wfs.internal.GetParser;
 import org.geotools.data.wfs.internal.parsers.EmfAppSchemaParser;
 import org.opengis.feature.simple.SimpleFeature;
@@ -27,8 +26,8 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.FeatureType;
 
 /**
- * Adapts a {@link GetFeatureParser} to the geotools {@link FeatureReader} interface, being the base
- * for all the data content related implementations in the WFS module.
+ * Adapts a {@link GetParser<SimpleFeature>} to the geotools {@link FeatureReader} interface, being
+ * the base for all the data content related implementations in the WFS module.
  */
 class WFSFeatureReader implements FeatureReader<SimpleFeatureType, SimpleFeature> {
 

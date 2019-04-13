@@ -37,7 +37,6 @@ import org.geotools.data.crs.ForceCoordinateSystemFeatureReader;
 import org.geotools.data.crs.ReprojectFeatureReader;
 import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentFeatureSource;
-import org.geotools.data.wfs.internal.GetFeatureParser;
 import org.geotools.data.wfs.internal.GetFeatureRequest;
 import org.geotools.data.wfs.internal.GetFeatureRequest.ResultType;
 import org.geotools.data.wfs.internal.GetFeatureResponse;

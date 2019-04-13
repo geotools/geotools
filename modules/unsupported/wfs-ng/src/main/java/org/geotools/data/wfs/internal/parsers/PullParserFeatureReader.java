@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
-import org.geotools.data.wfs.internal.GetFeatureParser;
+import org.geotools.data.wfs.internal.GetParser;
 import org.geotools.data.wfs.internal.WFSConfig;
 import org.geotools.geometry.jts.GeometryCoordinateSequenceTransformer;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
@@ -36,12 +36,12 @@ import org.opengis.referencing.operation.TransformException;
 import org.xml.sax.SAXException;
 
 /**
- * {@link GetFeatureParser} for {@link WFSFeatureReader} that uses the geotools {@link PullParser}
- * to fetch Features out of a WFS GetFeature response.
+ * {@link GetParser<SimpleFeature>} for {@link WFSFeatureReader} that uses the geotools {@link
+ * PullParser} to fetch Features out of a WFS GetFeature response.
  *
  * @author Niels Charlier
  */
-public class PullParserFeatureReader implements GetFeatureParser {
+public class PullParserFeatureReader implements GetParser<SimpleFeature> {
 
     private PullParser parser;
 
@@ -74,7 +74,7 @@ public class PullParserFeatureReader implements GetFeatureParser {
         transformer.setMathTransform(new AffineTransform2D(0, 1, 1, 0, 0, 0));
     }
 
-    /** @see GetFeatureParser#close() */
+    /** @see GetParser<SimpleFeature>#close() */
     public void close() throws IOException {
         if (inputStream != null) {
             try {
@@ -86,7 +86,7 @@ public class PullParserFeatureReader implements GetFeatureParser {
         }
     }
 
-    /** @see GetFeatureParser#parse() */
+    /** @see GetParser<SimpleFeature>#parse() */
     public SimpleFeature parse() throws IOException {
         Object parsed;
         try {
@@ -115,7 +115,7 @@ public class PullParserFeatureReader implements GetFeatureParser {
         return transformer.transform(geometry);
     }
 
-    /** @see GetFeatureParser#getNumberOfFeatures() */
+    /** @see GetParser<SimpleFeature>#getNumberOfFeatures() */
     public int getNumberOfFeatures() {
         return -1;
     }

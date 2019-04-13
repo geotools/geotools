@@ -40,6 +40,7 @@ import org.geotools.data.ServiceInfo;
 import org.geotools.data.ows.GetCapabilitiesRequest;
 import org.geotools.data.ows.HTTPClient;
 import org.geotools.data.ows.HTTPResponse;
+import org.geotools.data.ows.SimpleHttpClient;
 import org.geotools.data.ows.Specification;
 import org.geotools.data.wps.request.DescribeProcessRequest;
 import org.geotools.data.wps.request.ExecuteProcessRequest;
@@ -144,8 +145,10 @@ public class WebProcessingService extends AbstractWPS<WPSCapabilitiesType, Objec
      */
     public WebProcessingService(WPSCapabilitiesType capabilities)
             throws IOException, ServiceException {
-        super(capabilities, getOperationURL("getcapabilities", capabilities, true));
-        // super( capabilities, ((Service)capabilities.getService()).getOnlineResource() );
+        super(
+                getOperationURL("getcapabilities", capabilities, true),
+                new SimpleHttpClient(),
+                capabilities);
     }
 
     /**

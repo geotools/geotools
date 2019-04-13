@@ -98,7 +98,7 @@ public class ConvexHull {
         if (geom instanceof PointImpl) {
             // Add point
             positions = new ArrayList<DirectPositionImpl>();
-            positions.add(((PointImpl) geom).getPosition());
+            positions.add(((PointImpl) geom).getDirectPosition());
         } else if (geom instanceof CurveImpl) {
             // Add control points
             positions = ((CurveImpl) geom).asDirectPositions();
@@ -208,7 +208,8 @@ public class ConvexHull {
             if (pos instanceof DirectPositionImpl) {
                 filter.filter(new Coordinate(((DirectPositionImpl) pos).getCoordinate()));
             } else if (pos instanceof PointImpl) {
-                filter.filter(new Coordinate(((PointImpl) pos).getPosition().getCoordinate()));
+                filter.filter(
+                        new Coordinate(((PointImpl) pos).getDirectPosition().getCoordinate()));
             } else Assert.isTrue(false, "Invalid coordinate type");
         }
 

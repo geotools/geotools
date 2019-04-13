@@ -136,7 +136,7 @@ public class CompositePointImpl extends CompositeImpl<PointImpl> implements Comp
      */
     public DirectPosition getRepresentativePoint() {
         // Return the point which defines this CompositePoint
-        return ((PointImpl) this.elements.get(0)).getPosition();
+        return ((PointImpl) this.elements.get(0)).getDirectPosition();
     }
 
     /* (non-Javadoc)

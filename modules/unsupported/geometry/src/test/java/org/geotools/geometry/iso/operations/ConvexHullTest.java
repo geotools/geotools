@@ -68,12 +68,12 @@ public class ConvexHullTest extends TestCase {
         // Point
 
         Geometry res = this.createPointA().getConvexHull();
-        double coord[] = ((PointImpl) res).getPosition().getCoordinate();
+        double coord[] = ((PointImpl) res).getDirectPosition().getCoordinate();
         assertTrue(coord[0] == 30);
         assertTrue(coord[1] == 50);
 
         res = this.createPointB().getConvexHull();
-        coord = ((PointImpl) res).getPosition().getCoordinate();
+        coord = ((PointImpl) res).getDirectPosition().getCoordinate();
         assertTrue(coord[0] == 100);
         assertTrue(coord[1] == 120);
 

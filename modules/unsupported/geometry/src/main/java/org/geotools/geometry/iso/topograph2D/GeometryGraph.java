@@ -265,7 +265,7 @@ public class GeometryGraph extends PlanarGraph {
 
     /** Add a Point to the graph. */
     private void addPoint(PointImpl p) {
-        Coordinate coord = new Coordinate(p.getPosition().getCoordinate());
+        Coordinate coord = new Coordinate(p.getDirectPosition().getCoordinate());
         this.insertPoint(argIndex, coord, Location.INTERIOR);
     }
 

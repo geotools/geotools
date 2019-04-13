@@ -196,7 +196,6 @@ public final class JTSUtils {
             org.locationtech.jts.geom.Coordinate c, CoordinateReferenceSystem crs) {
 
         Hints hints = new Hints(Hints.CRS, crs);
-        GeometryFactory gf = GeometryFactoryFinder.getGeometryFactory(hints);
         PositionFactory pf = GeometryFactoryFinder.getPositionFactory(hints);
 
         double[] vertices;

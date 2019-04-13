@@ -374,7 +374,7 @@ public abstract class GeometryImpl implements Geometry, Serializable, Cloneable,
         // Get the JTS geometry
         org.locationtech.jts.geom.Geometry jtsGeom = getJTSGeometry();
         // Make a copy since we're going to modify its values
-        jtsGeom = (org.locationtech.jts.geom.Geometry) jtsGeom.clone();
+        jtsGeom = jtsGeom.copy();
         // Get a local variable that has the src CRS
         CoordinateReferenceSystem oldCRS = getCoordinateReferenceSystem();
         // Do the actual work of transforming the vertices

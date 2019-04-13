@@ -130,10 +130,10 @@ public class SolrDataStore extends ContentDataStore {
                 new HttpSolrClient.Builder()
                         .withBaseSolrUrl(url.toString())
                         .allowCompression(true)
+                        .withConnectionTimeout(10000)
+                        .withSocketTimeout(10000)
                         .build();
-        this.solrServer.setConnectionTimeout(10000);
         this.solrServer.setFollowRedirects(true);
-        this.solrServer.setSoTimeout(10000);
     }
 
     /**

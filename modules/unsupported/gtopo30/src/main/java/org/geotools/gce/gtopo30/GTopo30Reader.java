@@ -531,6 +531,7 @@ public final class GTopo30Reader extends AbstractGridCoverage2DReader
      * @throws IOException
      * @throws FactoryException
      */
+    @SuppressWarnings("deprecation")
     private CoordinateReferenceSystem initCRS() {
         BufferedReader reader = null;
         try {

@@ -16,7 +16,6 @@
  */
 package org.geotools.data.wfs.internal;
 
-import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -58,12 +57,9 @@ public class DescribeFeatureTypeResponse extends WFSResponse {
                 prefix += "zzz";
             }
             File tmpSchemaFile = File.createTempFile(prefix, ".xsd");
-            OutputStream output = new BufferedOutputStream(new FileOutputStream(tmpSchemaFile));
-            try {
+            try (OutputStream output = new FileOutputStream(tmpSchemaFile)) {
                 IOUtils.copy(responseStream, output);
-            } finally {
                 output.flush();
-                IOUtils.closeQuietly(output);
             }
             try {
                 URL schemaLocation = tmpSchemaFile.toURI().toURL();

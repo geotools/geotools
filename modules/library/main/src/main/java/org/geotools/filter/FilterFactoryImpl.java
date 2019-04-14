@@ -74,6 +74,7 @@ import org.geotools.filter.temporal.OverlappedByImpl;
 import org.geotools.filter.temporal.TContainsImpl;
 import org.geotools.filter.temporal.TEqualsImpl;
 import org.geotools.filter.temporal.TOverlapsImpl;
+import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope3D;
 import org.geotools.referencing.CRS;
@@ -413,11 +414,21 @@ public class FilterFactoryImpl implements Factory, org.opengis.filter.FilterFact
     }
 
     public BBOX bbox(Expression geometry, Expression bounds, MatchAction machAction) {
-        if (bounds instanceof Literal && ((Literal) bounds).getValue() instanceof BoundingBox3D) {
-            return bbox(geometry, (BoundingBox3D) ((Literal) bounds).getValue(), machAction);
-        } else {
-            return new BBOXImpl(geometry, bounds, machAction);
+        if (bounds instanceof Literal) {
+            Object value = ((Literal) bounds).getValue();
+            if (value instanceof BoundingBox3D) {
+                return bbox(geometry, (BoundingBox3D) value, machAction);
+            } else if (value instanceof org.locationtech.jts.geom.Geometry
+                    && geometry instanceof PropertyName) {
+                org.locationtech.jts.geom.Geometry g = (org.locationtech.jts.geom.Geometry) value;
+                if (g.getUserData() instanceof CoordinateReferenceSystem) {
+                    CoordinateReferenceSystem crs = (CoordinateReferenceSystem) g.getUserData();
+                    ReferencedEnvelope3D envelope = (ReferencedEnvelope3D) JTS.bounds(g, crs);
+                    return new BBOX3DImpl((PropertyName) geometry, envelope, this);
+                }
+            }
         }
+        return new BBOXImpl(geometry, bounds, machAction);
     }
 
     public BBOX bbox(Expression geometry, BoundingBox bounds) {

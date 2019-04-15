@@ -1992,9 +1992,10 @@ public class StreamingRenderer implements GTRenderer {
         // TODO: find a complex feature equivalent for this check
         return fts.featureTypeNames().isEmpty()
                 || ((ftype.getName().getLocalPart() != null)
-                        && fts.featureTypeNames()
-                                .stream()
-                                .anyMatch(tn -> FeatureTypes.matches(ftype, tn)));
+                        && (fts.featureTypeNames().isEmpty()
+                                || fts.featureTypeNames()
+                                        .stream()
+                                        .anyMatch(tn -> FeatureTypes.matches(ftype, tn))));
     }
 
     private List<List<Rule>> splitRules(FeatureTypeStyle fts) {

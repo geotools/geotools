@@ -5,10 +5,11 @@ Supports direct access to a HANA database.
 
 A free version of HANA (HANA Express Edition) can be downloaded at the link below.
 
-You need HANA's JDBC driver ``ngdbc.jar`` to connect to HANA. Its license does not allow redistribution, so you have to download it separately. It is part of HANA Express Edition.
+You need HANA's JDBC driver ``ngdbc.jar`` to connect to HANA. Its license does not allow redistribution, so you have to download it separately. It can be downloaded from SAP's Development Tools site and is also part of HANA Express Edition.
 
 **References**
 
+* https://tools.hana.ondemand.com/#hanatools
 * https://www.sap.com/cmp/ft/crm-xu16-dat-hddedft/index.html
 
 **Maven**
@@ -31,11 +32,13 @@ Parameter      Description
 ============== ============================================
 "dbtype"       Must be the string "hana"
 "host"         Machine name or IP address to connect to
-"instance"     Instance of the database
-"database"     Database to connect to. Leave empty in case of single-container databases. Set to ``SYSTEMDB`` to connect to the system database of a multi-container database.
+"port"         Port to connect to. If set and different from 0, parameters "instance" and "database" are ignored. If not set or 0, the "instance" parameter must be set.
+"instance"     Instance of the database. Ignored if a port is set.
+"database"     Database to connect to. Leave empty in case of single-container databases. Set to ``SYSTEMDB`` to connect to the system database of a multi-container database. Ignored if a port is set.
 "schema"       The database schema to access
 "user"         User name
 "passwd"       Password
+"use ssl"      Use SSL to connect
 ============== ============================================
 
 Creating
@@ -74,10 +77,18 @@ On Windows::
 
   java -cp <path to gt-jdbc-hana.jar>;<path to ngdbc.jar> \
     org.geotools.data.hana.metadata.MetadataImport \
-    <username> <host> <instance> [<dbname>]
+    <username> <host> <instance> [<dbname>] [--ssl]
+
+  java -cp <path to gt-jdbc-hana.jar>;<path to ngdbc.jar> \
+    org.geotools.data.hana.metadata.MetadataImport \
+    <username> <host>:<port> [--ssl]
 
 On Linux and Mac::
 
   java -cp <path to gt-jdbc-hana.jar>:<path to ngdbc.jar> \
     org.geotools.data.hana.metadata.MetadataImport \
-    <username> <host> <instance> [<dbname>]
+    <username> <host> <instance> [<dbname>] [--ssl]
+
+  java -cp <path to gt-jdbc-hana.jar>:<path to ngdbc.jar> \
+    org.geotools.data.hana.metadata.MetadataImport \
+    <username> <host>:<port> [--ssl]

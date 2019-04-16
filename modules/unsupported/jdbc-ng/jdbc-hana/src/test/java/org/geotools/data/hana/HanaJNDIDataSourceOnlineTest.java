@@ -46,6 +46,7 @@ public class HanaJNDIDataSourceOnlineTest extends JDBCJNDIDataSourceOnlineTest {
         standardParams.remove(JDBCDataStoreFactory.VALIDATECONN.key);
         standardParams.remove(JDBCDataStoreFactory.MAX_OPEN_PREPARED_STATEMENTS.key);
         standardParams.remove(HanaDataStoreFactory.INSTANCE.key);
+        standardParams.remove(HanaDataStoreFactory.USE_SSL.key);
         standardParams.removeAll(baseParams);
         List<String> baseJndiParams = getBaseJNDIParams();
         List<String> jndiParams = getParamKeys(getJNDIStoreFactory());

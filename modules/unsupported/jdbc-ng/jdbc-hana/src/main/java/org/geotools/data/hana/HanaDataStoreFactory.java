@@ -18,6 +18,7 @@ package org.geotools.data.hana;
 
 import java.io.IOException;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import org.geotools.data.Parameter;
 import org.geotools.jdbc.JDBCDataStore;
@@ -40,15 +41,12 @@ public class HanaDataStoreFactory extends JDBCDataStoreFactory {
                     "hana",
                     Collections.singletonMap(Parameter.LEVEL, "program"));
 
-    public static final Param INSTANCE =
-            new Param("instance", Integer.class, "Instance Number", true);
+    public static final Param PORT = new Param("port", Integer.class, "Port", false);
 
-    /**
-     * Leave empty/null in case of single-container databases, set to the tenant database name in
-     * case of multi-container databases, set to SYSTEMDB to connect to the system database in a
-     * multi-container database.
-     */
-    public static final Param DATABASE = new Param("database", String.class, "Database", false);
+    public static final Param INSTANCE =
+            new Param("instance", Integer.class, "Instance Number", false);
+
+    public static final Param USE_SSL = new Param("use ssl", Boolean.class, "Use SSL", false);
 
     /** Enables direct encoding of selected filter functions in sql */
     public static final Param ENCODE_FUNCTIONS =
@@ -96,9 +94,11 @@ public class HanaDataStoreFactory extends JDBCDataStoreFactory {
     @Override
     protected void setupParameters(Map parameters) {
         super.setupParameters(parameters);
+
         parameters.put(DBTYPE.key, DBTYPE);
+        parameters.put(PORT.key, PORT);
         parameters.put(INSTANCE.key, INSTANCE);
-        parameters.put(DATABASE.key, DATABASE);
+        parameters.put(USE_SSL.key, USE_SSL);
         parameters.put(ENCODE_FUNCTIONS.key, ENCODE_FUNCTIONS);
     }
 
@@ -106,10 +106,27 @@ public class HanaDataStoreFactory extends JDBCDataStoreFactory {
     @Override
     protected String getJDBCUrl(Map params) throws IOException {
         String host = (String) HOST.lookUp(params);
-        int instance = (Integer) INSTANCE.lookUp(params);
+        Integer port = (Integer) PORT.lookUp(params);
+        Integer instance = (Integer) INSTANCE.lookUp(params);
         String database = (String) DATABASE.lookUp(params);
-        HanaConnectionParameters cp = new HanaConnectionParameters(host, instance, database);
-        return cp.buildUrl();
+        Boolean useSsl = (Boolean) USE_SSL.lookUp(params);
+
+        HashMap<String, String> options = new HashMap<String, String>();
+        if ((useSsl != null) && (useSsl == true)) {
+            options.put("encrypt", "true");
+        }
+        if ((port != null) && (port != 0)) {
+            return HanaConnectionParameters.forPort(host, port, options).buildUrl();
+        }
+        if (instance == null) {
+            throw new IOException(
+                    "Either a port or an instance number must be given in the connection properties");
+        }
+        if ((database != null) && (!database.isEmpty())) {
+            return HanaConnectionParameters.forMultiContainer(host, instance, database, options)
+                    .buildUrl();
+        }
+        return HanaConnectionParameters.forSingleContainer(host, instance, options).buildUrl();
     }
 
     @SuppressWarnings({"rawtypes", "unchecked"})

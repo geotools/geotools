@@ -16,45 +16,91 @@
  */
 package org.geotools.data.hana;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * SAP HANA connection parameters.
  *
  * @author Stefan Uhrig, SAP SE
  */
-public class HanaConnectionParameters {
+public final class HanaConnectionParameters {
 
-    /**
-     * SAP HANA connection parameters constructor.
-     *
-     * @param host The database host.
-     * @param instance The database instance.
-     * @param database The name of the tenant database. Set to null or empty string if the database
-     *     is a single-container system. Set to SYSTEMDB to connect to the system database of a
-     *     multi-container system.
-     */
-    public HanaConnectionParameters(String host, int instance, String database) {
-        super();
+    public static HanaConnectionParameters forPort(String host, int port) {
+        return forPort(host, port, null);
+    }
+
+    public static HanaConnectionParameters forPort(
+            String host, int port, Map<String, String> additionalOptions) {
+        return new HanaConnectionParameters(host, port, additionalOptions);
+    }
+
+    public static HanaConnectionParameters forSingleContainer(String host, int instance) {
+        return forSingleContainer(host, instance, null);
+    }
+
+    public static HanaConnectionParameters forSingleContainer(
+            String host, int instance, Map<String, String> additionalOptions) {
+        Map<String, String> options = new HashMap<String, String>();
+        if (additionalOptions != null) {
+            options.putAll(additionalOptions);
+        }
+        options.put("instanceNumber", Integer.toString(instance));
+        return new HanaConnectionParameters(host, null, options);
+    }
+
+    public static HanaConnectionParameters forMultiContainerSystemDatabase(
+            String host, int instance) {
+        return forMultiContainer(host, instance, "SYSTEMDB");
+    }
+
+    public static HanaConnectionParameters forMultiContainerSystemDatabase(
+            String host, int instance, Map<String, String> additionalOptions) {
+        return forMultiContainer(host, instance, "SYSTEMDB", additionalOptions);
+    }
+
+    public static HanaConnectionParameters forMultiContainer(
+            String host, int instance, String database) {
+        return forMultiContainer(host, instance, database, null);
+    }
+
+    public static HanaConnectionParameters forMultiContainer(
+            String host, int instance, String database, Map<String, String> additionalOptions) {
+        Map<String, String> options = new HashMap<String, String>();
+        if (additionalOptions != null) {
+            options.putAll(additionalOptions);
+        }
+        options.put("instanceNumber", Integer.toString(instance));
+        options.put("databaseName", database);
+        return new HanaConnectionParameters(host, null, options);
+    }
+
+    private HanaConnectionParameters(
+            String host, Integer port, Map<String, String> additionalOptions) {
         this.host = host;
-        this.instance = instance;
-        this.database = database;
+        this.port = port;
+        this.additionalOptions = additionalOptions;
     }
 
     private String host;
 
-    private int instance;
+    private Integer port;
 
-    private String database;
+    private Map<String, String> additionalOptions;
 
     public String getHost() {
         return host;
     }
 
-    public int getInstance() {
-        return instance;
+    public Integer getPort() {
+        return port;
     }
 
-    public String getDatabase() {
-        return database;
+    public Map<String, String> getAdditionalOptions() {
+        return (additionalOptions == null) ? null : Collections.unmodifiableMap(additionalOptions);
     }
 
     /**
@@ -66,11 +112,27 @@ public class HanaConnectionParameters {
         StringBuilder sb = new StringBuilder();
         sb.append("jdbc:sap://");
         sb.append(host);
-        sb.append("/?instanceNumber=");
-        sb.append(Integer.toString(instance));
-        if ((database != null) && !database.isEmpty()) {
-            sb.append("&databaseName=");
-            sb.append(database);
+        if (port != null) {
+            sb.append(":");
+            sb.append(port.toString());
+        }
+        if ((additionalOptions != null) && !additionalOptions.isEmpty()) {
+            sb.append("/?");
+            boolean first = true;
+            for (Map.Entry<String, String> option : additionalOptions.entrySet()) {
+                if (first) {
+                    first = false;
+                } else {
+                    sb.append('&');
+                }
+                try {
+                    sb.append(URLEncoder.encode(option.getKey(), "UTF-8"));
+                    sb.append('=');
+                    sb.append(URLEncoder.encode(option.getValue(), "UTF-8"));
+                } catch (UnsupportedEncodingException e) {
+                    throw new AssertionError(e);
+                }
+            }
         }
         return sb.toString();
     }

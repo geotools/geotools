@@ -18,32 +18,81 @@ package org.geotools.data.hana.metadata;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.util.Map;
 import junit.framework.TestCase;
 import org.geotools.data.hana.HanaConnectionParameters;
 
 /** @author Stefan Uhrig, SAP SE */
 public class CommandLineArgumentsTest extends TestCase {
 
-    public void testValidArgs() {
+    public void testValidArgsUsePort() {
+        String[] args = {"user", "host:1234"};
+        CommandLineArguments cla = CommandLineArguments.parse(args);
+        assertNotNull(cla);
+        assertEquals("user", cla.getUser());
+        HanaConnectionParameters hcp = cla.getConnectionParameters();
+        assertEquals("host", hcp.getHost());
+        assertEquals(1234, hcp.getPort().intValue());
+    }
+
+    public void testValidArgsUsePortSsl() {
+        String[] args = {"user", "host:1234", "--ssl"};
+        CommandLineArguments cla = CommandLineArguments.parse(args);
+        assertNotNull(cla);
+        assertEquals("user", cla.getUser());
+        HanaConnectionParameters hcp = cla.getConnectionParameters();
+        assertEquals("host", hcp.getHost());
+        assertEquals(1234, hcp.getPort().intValue());
+        Map<String, String> options = hcp.getAdditionalOptions();
+        assertEquals("true", options.get("encrypt"));
+    }
+
+    public void testValidArgsSingleContainer() {
         String[] args = {"user", "host", "0"};
         CommandLineArguments cla = CommandLineArguments.parse(args);
         assertNotNull(cla);
         assertEquals("user", cla.getUser());
         HanaConnectionParameters hcp = cla.getConnectionParameters();
         assertEquals("host", hcp.getHost());
-        assertEquals(0, hcp.getInstance());
-        assertNull(hcp.getDatabase());
+        Map<String, String> options = hcp.getAdditionalOptions();
+        assertEquals("0", options.get("instanceNumber"));
     }
 
-    public void testValidArgsWithDatabase() {
+    public void testValidArgsSingleContainerSsl() {
+        String[] args = {"user", "host", "0", "--ssl"};
+        CommandLineArguments cla = CommandLineArguments.parse(args);
+        assertNotNull(cla);
+        assertEquals("user", cla.getUser());
+        HanaConnectionParameters hcp = cla.getConnectionParameters();
+        assertEquals("host", hcp.getHost());
+        Map<String, String> options = hcp.getAdditionalOptions();
+        assertEquals("0", options.get("instanceNumber"));
+        assertEquals("true", options.get("encrypt"));
+    }
+
+    public void testValidArgsMultiContainer() {
         String[] args = {"user", "host", "0", "DTB"};
         CommandLineArguments cla = CommandLineArguments.parse(args);
         assertNotNull(cla);
         assertEquals("user", cla.getUser());
         HanaConnectionParameters hcp = cla.getConnectionParameters();
         assertEquals("host", hcp.getHost());
-        assertEquals(0, hcp.getInstance());
-        assertEquals("DTB", hcp.getDatabase());
+        Map<String, String> options = hcp.getAdditionalOptions();
+        assertEquals("0", options.get("instanceNumber"));
+        assertEquals("DTB", options.get("databaseName"));
+    }
+
+    public void testValidArgsMultiContainerSsl() {
+        String[] args = {"user", "host", "0", "DTB", "--ssl"};
+        CommandLineArguments cla = CommandLineArguments.parse(args);
+        assertNotNull(cla);
+        assertEquals("user", cla.getUser());
+        HanaConnectionParameters hcp = cla.getConnectionParameters();
+        assertEquals("host", hcp.getHost());
+        Map<String, String> options = hcp.getAdditionalOptions();
+        assertEquals("0", options.get("instanceNumber"));
+        assertEquals("DTB", options.get("databaseName"));
+        assertEquals("true", options.get("encrypt"));
     }
 
     public void testInvalidArgs() {

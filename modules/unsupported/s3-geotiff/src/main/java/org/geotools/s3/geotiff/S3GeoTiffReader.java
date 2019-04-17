@@ -18,8 +18,7 @@ package org.geotools.s3.geotiff;
 
 import org.geotools.data.DataSourceException;
 import org.geotools.gce.geotiff.GeoTiffReader;
-import org.geotools.s3.S3ImageInputStreamImpl;
-import org.geotools.s3.S3ImageInputStreamImplSpi;
+import org.geotools.s3.*;
 import org.geotools.util.factory.Hints;
 
 /**
@@ -28,6 +27,11 @@ import org.geotools.util.factory.Hints;
  */
 public class S3GeoTiffReader extends GeoTiffReader {
     public S3GeoTiffReader(Object input) throws DataSourceException {
+        this(input, new S3ConnectorFactoryImpl());
+    }
+
+    public S3GeoTiffReader(Object input, S3ConnectorFactory s3ConnectorFactory)
+            throws DataSourceException {
         super(input);
 
         /*
@@ -35,15 +39,20 @@ public class S3GeoTiffReader extends GeoTiffReader {
          * gets set (because the reader doesn't need to look for it). We set it hear so that
          * subsequent calls that rely on it pass.
          */
-        this.inStreamSPI = new S3ImageInputStreamImplSpi();
+        this.inStreamSPI = new S3ImageInputStreamImplSpi(s3ConnectorFactory);
         // Needs close me, since we're using a stream and it should not be reused.
         closeMe = true;
     }
 
     public S3GeoTiffReader(Object input, Hints uHints) throws DataSourceException {
+        this(input, uHints, new S3ConnectorFactoryImpl());
+    }
+
+    public S3GeoTiffReader(Object input, Hints uHints, S3ConnectorFactory s3ConnectorFactory)
+            throws DataSourceException {
         super(input, uHints);
         closeMe = true;
-        this.inStreamSPI = new S3ImageInputStreamImplSpi();
+        this.inStreamSPI = new S3ImageInputStreamImplSpi(s3ConnectorFactory);
         if (input instanceof S3ImageInputStreamImpl) {
             String fileName = ((S3ImageInputStreamImpl) input).getFileName();
             final int dotIndex = fileName.lastIndexOf('.');

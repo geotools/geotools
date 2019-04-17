@@ -49,13 +49,20 @@ public class S3ImageInputStreamImplSpi extends ImageInputStreamSpi {
 
     private static final Class<String> inputClass = String.class;
 
+    private final S3ConnectorFactory s3ConnectorFactory;
+
     /**
      * Constructs a blank {@link ImageInputStreamSpi}. It is up to the subclass to initialize
      * instance variables and/or override method implementations in order to provide working
      * versions of all methods.
      */
     public S3ImageInputStreamImplSpi() {
+        this(new S3ConnectorFactoryImpl());
+    }
+
+    public S3ImageInputStreamImplSpi(S3ConnectorFactory s3ConnectorFactory) {
         super(vendorName, version, inputClass);
+        this.s3ConnectorFactory = s3ConnectorFactory;
     }
 
     /** @see ImageInputStreamSpi#getDescription(Locale). */
@@ -96,7 +103,8 @@ public class S3ImageInputStreamImplSpi extends ImageInputStreamSpi {
         }
         if (input instanceof S3ImageInputStreamImpl) {
             try {
-                return new S3ImageInputStreamImpl(((S3ImageInputStreamImpl) input).getUrl());
+                String url = ((S3ImageInputStreamImpl) input).getUrl();
+                return new S3ImageInputStreamImpl(url, s3ConnectorFactory.createConnector(url));
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -104,7 +112,7 @@ public class S3ImageInputStreamImplSpi extends ImageInputStreamSpi {
 
         try {
             String path = (String) input;
-            return new S3ImageInputStreamImpl(path);
+            return new S3ImageInputStreamImpl(path, s3ConnectorFactory.createConnector(path));
         } catch (FileNotFoundException e) {
             if (LOGGER.isLoggable(Level.FINE)) LOGGER.log(Level.FINE, e.getLocalizedMessage(), e);
             return null;

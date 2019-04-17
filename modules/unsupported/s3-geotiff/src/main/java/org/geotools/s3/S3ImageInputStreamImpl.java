@@ -51,7 +51,11 @@ public class S3ImageInputStreamImpl extends ImageInputStreamImpl {
     }
 
     public S3ImageInputStreamImpl(String input) throws IOException {
-        this.connector = new S3Connector(input);
+        this(input, new S3Connector(input));
+    }
+
+    public S3ImageInputStreamImpl(String input, S3Connector connector) throws IOException {
+        this.connector = connector;
         this.url = input;
         String urlWithoutQueryString = input.split("\\?")[0];
         String parts[] = urlWithoutQueryString.split("/");

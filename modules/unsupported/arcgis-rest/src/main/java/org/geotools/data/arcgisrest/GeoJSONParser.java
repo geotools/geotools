@@ -26,11 +26,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.NoSuchElementException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.data.arcgisrest.schema.catalog.Error__1;
@@ -57,6 +54,7 @@ public class GeoJSONParser implements SimpleFeatureIterator {
     /** GeoJSON format constants */
     public static final String ENCODING = "UTF-8";
 
+    public static final String DATETIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ssZ"; // ISO-8601
     public static final String ERROR = "error";
     public static final String ERROR_CODE = "code";
     public static final String ERROR_MESSAGE = "message";
@@ -521,7 +519,21 @@ public class GeoJSONParser implements SimpleFeatureIterator {
                         break;
 
                     case NUMBER:
-                        props.put(name, this.reader.nextDouble());
+                        // Numbers could be just that, or datetimes expressed in POSIX time
+                        if (this.featureType.getDescriptor(name) != null
+                                && this.featureType
+                                        .getDescriptor(name)
+                                        .getType()
+                                        .getBinding()
+                                        .getName()
+                                        .equalsIgnoreCase("java.util.Date")) {
+                            props.put(
+                                    name,
+                                    (new SimpleDateFormat(GeoJSONParser.DATETIME_FORMAT))
+                                            .format(new Date(this.reader.nextLong())));
+                        } else {
+                            props.put(name, this.reader.nextDouble());
+                        }
                         break;
 
                     case STRING:

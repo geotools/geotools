@@ -16,6 +16,7 @@
  */
 package org.geotools.data.hana.metadata;
 
+import java.util.HashMap;
 import org.geotools.data.hana.HanaConnectionParameters;
 
 /**
@@ -25,27 +26,86 @@ import org.geotools.data.hana.HanaConnectionParameters;
  */
 class CommandLineArguments {
 
+    private static enum ConnectionType {
+        USING_PORT,
+        SINGLE_CONTAINER,
+        MULTI_CONTAINER
+    }
+
     public static CommandLineArguments parse(String[] args) {
-        if ((args.length < 3) || (args.length > 4)) {
-            showUsage();
-            return null;
-        }
-        String user = args[0];
-        String host = args[1];
-        int instance;
-        try {
-            instance = Integer.parseInt(args[2]);
-        } catch (NumberFormatException e) {
-            showUsage();
-            return null;
-        }
+
+        ConnectionType connType;
+        String user;
+        String host;
+        int port = 0;
+        int instance = 0;
         String database = null;
-        if (args.length == 4) {
-            database = args[3];
+        HashMap<String, String> options = new HashMap<String, String>();
+
+        int aidx = 0;
+        if (args.length < 2) {
+            showUsage();
+            return null;
         }
-        HanaConnectionParameters connectionParameters =
-                new HanaConnectionParameters(host, instance, database);
-        return new CommandLineArguments(user, connectionParameters);
+        user = args[aidx++];
+        host = args[aidx++];
+        int colonIdx = host.indexOf(':');
+        if (colonIdx != -1) {
+            connType = ConnectionType.USING_PORT;
+            String sport = host.substring(colonIdx + 1);
+            try {
+                port = Integer.parseInt(sport);
+            } catch (NumberFormatException e) {
+                showUsage();
+                return null;
+            }
+            host = host.substring(0, colonIdx);
+        } else {
+            if (aidx == args.length) {
+                showUsage();
+                return null;
+            }
+            try {
+                instance = Integer.parseInt(args[aidx++]);
+            } catch (NumberFormatException e) {
+                showUsage();
+                return null;
+            }
+            if ((aidx < args.length) && !args[aidx].startsWith("--")) {
+                database = args[aidx++];
+                connType = ConnectionType.MULTI_CONTAINER;
+            } else {
+                connType = ConnectionType.SINGLE_CONTAINER;
+            }
+        }
+        if (aidx < args.length) {
+            String option = args[aidx++];
+            if (!option.equals("--ssl")) {
+                showUsage();
+                return null;
+            }
+            options.put("encrypt", "true");
+        }
+        if (aidx != args.length) {
+            showUsage();
+            return null;
+        }
+
+        switch (connType) {
+            case USING_PORT:
+                return new CommandLineArguments(
+                        user, HanaConnectionParameters.forPort(host, port, options));
+            case SINGLE_CONTAINER:
+                return new CommandLineArguments(
+                        user, HanaConnectionParameters.forSingleContainer(host, instance, options));
+            case MULTI_CONTAINER:
+                return new CommandLineArguments(
+                        user,
+                        HanaConnectionParameters.forMultiContainer(
+                                host, instance, database, options));
+            default:
+                throw new AssertionError();
+        }
     }
 
     private CommandLineArguments(String user, HanaConnectionParameters connectionParameters) {
@@ -71,12 +131,15 @@ class CommandLineArguments {
         System.out.println("HANA Metadata Importer");
         System.out.println();
         System.out.println(
-                "This tool import spatial unit of measures and spatial reference systems into a");
+                "This tool imports spatial unit of measures and spatial reference systems into a");
         System.out.println("HANA database.");
         System.out.println();
-        System.out.println("Usage: import_metadata username host instance [database]");
+        System.out.println("Usage:");
+        System.out.println("  import_metadata <username> <host>:<port> [--ssl]");
+        System.out.println("  import_metadata <username> <host> <instance> [<database>] [--ssl]");
         System.out.println();
         System.out.println("  username - The database user that is used to connect");
+        System.out.println("  port     - The port to connect to");
         System.out.println("  host     - The database host to connect to");
         System.out.println("  instance - The number of the instance to connect to");
         System.out.println(
@@ -86,6 +149,7 @@ class CommandLineArguments {
         System.out.println(
                 "             SYSTEMDB to connect to the system database or to the name of the");
         System.out.println("             tenant database");
+        System.out.println("  --ssl    - Use SSL to connect to the database");
         System.out.println();
     }
 }

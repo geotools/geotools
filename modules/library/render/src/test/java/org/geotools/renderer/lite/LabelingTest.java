@@ -251,7 +251,7 @@ public class LabelingTest extends TestCase {
                         env.getMaxY() + boundary,
                         null);
 
-        BufferedImage image = RendererBaseTest.showRender("U turn label", renderer, 1000, env);
+        BufferedImage image = RendererBaseTest.showRender("U turn label", renderer, 1100, env);
         String refPath =
                 "./src/test/resources/org/geotools/renderer/lite/test-data/lineLabelSharpTurn2.png";
         // small tolerance

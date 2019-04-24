@@ -50,7 +50,9 @@ public class DescribeFeatureTypeResponse extends WFSResponse {
 
         InputStream responseStream = httpResponse.getResponseStream();
         try {
-            File tmpSchemaFile = File.createTempFile(remoteTypeName.getLocalPart() + System.currentTimeMillis(), ".xsd");
+            File tmpSchemaFile =
+                    File.createTempFile(
+                            remoteTypeName.getLocalPart() + System.currentTimeMillis(), ".xsd");
             OutputStream output = new BufferedOutputStream(new FileOutputStream(tmpSchemaFile));
             try {
                 IOUtils.copy(responseStream, output);

@@ -347,7 +347,6 @@ public class DrawTest {
                 1000);
     }
 
-
     @Test
     public void testLineJoinMiter() throws Exception {
 
@@ -367,7 +366,12 @@ public class DrawTest {
         ReferencedEnvelope myTestBounds = lineJoins.getBounds();
         myTestBounds.expandBy(2);
         BufferedImage image =
-                RendererBaseTest.showRender("lineJoinMiter", renderer, TIME, new ReferencedEnvelope[]{myTestBounds}, listener);
+                RendererBaseTest.showRender(
+                        "lineJoinMiter",
+                        renderer,
+                        TIME,
+                        new ReferencedEnvelope[] {myTestBounds},
+                        listener);
 
         ImageAssert.assertEquals(
                 new File(
@@ -375,7 +379,6 @@ public class DrawTest {
                 image,
                 50);
     }
-
 
     private StreamingRenderer setupPointRenderer(String pointStyle) throws IOException {
         Style pStyle = RendererBaseTest.loadStyle(this, pointStyle);

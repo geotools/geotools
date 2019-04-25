@@ -402,18 +402,6 @@ public class EMFUtils {
     }
 
     /**
-     * Clones an eobject.
-     *
-     * @param prototype The object to be cloned from.
-     * @param factory The factory used to create the clone.
-     * @return THe cloned object, with all properties the same to the original.
-     * @deprecated use {@link #clone(EObject, EFactory, boolean)}.
-     */
-    public static EObject clone(EObject prototype, EFactory factory) {
-        return clone(prototype, factory, false);
-    }
-
-    /**
      * Clones an eobject, with the option of performing a deep clone in which referenced eobjects
      * are also cloned.
      *

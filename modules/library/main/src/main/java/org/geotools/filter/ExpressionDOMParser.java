@@ -487,7 +487,8 @@ public final class ExpressionDOMParser {
         }
 
         if (childName.equalsIgnoreCase("gml:box")) {
-            coordList = parseCoords(child);
+            coordList =
+                    new ExpressionDOMParser(CommonFactoryFinder.getFilterFactory2()).coords(child);
 
             org.locationtech.jts.geom.Envelope env = new org.locationtech.jts.geom.Envelope();
 
@@ -580,7 +581,8 @@ public final class ExpressionDOMParser {
 
         if (childName.equalsIgnoreCase("gml:linearRing")) {
             LOGGER.finer("LinearRing");
-            coordList = parseCoords(child);
+            coordList =
+                    new ExpressionDOMParser(CommonFactoryFinder.getFilterFactory2()).coords(child);
 
             org.locationtech.jts.geom.LinearRing ring = null;
 
@@ -597,7 +599,8 @@ public final class ExpressionDOMParser {
 
         if (childName.equalsIgnoreCase("gml:linestring")) {
             LOGGER.finer("linestring");
-            coordList = parseCoords(child);
+            coordList =
+                    new ExpressionDOMParser(CommonFactoryFinder.getFilterFactory2()).coords(child);
 
             org.locationtech.jts.geom.LineString line = null;
             line = gfac.createLineString((Coordinate[]) coordList.toArray(new Coordinate[] {}));
@@ -607,7 +610,8 @@ public final class ExpressionDOMParser {
 
         if (childName.equalsIgnoreCase("gml:point")) {
             LOGGER.finer("point");
-            coordList = parseCoords(child);
+            coordList =
+                    new ExpressionDOMParser(CommonFactoryFinder.getFilterFactory2()).coords(child);
 
             org.locationtech.jts.geom.Point point = null;
             point = gfac.createPoint((Coordinate) coordList.get(0));
@@ -645,17 +649,6 @@ public final class ExpressionDOMParser {
         return null;
     }
 
-    /**
-     * Parse a DOM node into a coordiante list.
-     *
-     * @deprecated please use ExpressionDOMParser.coords()
-     * @param root the root node representation of gml:coordinates.
-     * @return the coordinates in a list.
-     */
-    public static java.util.List parseCoords(Node root) {
-        ExpressionDOMParser parser = new ExpressionDOMParser();
-        return parser.coords(root);
-    }
     /**
      * Parses a dom node into a coordinate list.
      *

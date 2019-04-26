@@ -221,6 +221,43 @@ public class SEExampleTest extends SETestSupport {
         assertNull(em.getOnlineResource());
     }
 
+    public void testParsePointSymbolizerRelativeURL() throws Exception {
+        /*<PointSymbolizer version="1.1.0" xsi:schemaLocation="http://www.opengis.net/se http://www.opengis.net/se/1.1.0/Symbolizer.xsd" xmlns="http://www.opengis.net/se" xmlns:ogc="http://www.opengis.net/ogc" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="http://www.opengeospatial.org/se/units/pixel">
+            <Name>MyPointSymbolizer</Name>
+            <Description>
+                <Title>Example Pointsymbolizer</Title>
+                <Abstract>This is just a simple example of a point symbolizer.</Abstract>
+            </Description>
+            <Graphic>
+                <ExternalGraphic>
+                  <OnlineResource xlink:type="simple" xlink:href="2267.svg"/>
+                  <Format>image/svg+xml</Format>
+                </ExternalGraphic>
+                <ExternalGraphic>
+                  <OnlineResource xlink:type="simple" xlink:href="2267.png"/>
+                  <Format>image/png</Format>
+                </ExternalGraphic>
+                <Mark/>
+                <Size>15.0</Size>
+            </Graphic>
+        </PointSymbolizer>*/
+
+        PointSymbolizer sym = (PointSymbolizer) parse("example-pointsymbolizer6.xml");
+        assertEquals("MyPointSymbolizer", sym.getName());
+        assertEquals("Example Pointsymbolizer", sym.getDescription().getTitle().toString());
+        assertEquals(
+                "This is just a simple example of a point symbolizer.",
+                sym.getDescription().getAbstract().toString());
+
+        Graphic g = sym.getGraphic();
+        assertEquals(15.0, g.getSize().evaluate(null, Double.class));
+        assertEquals(1, g.getExternalGraphics().length);
+
+        ExternalGraphic eg = g.getExternalGraphics()[0];
+        assertEquals("inlineContent-image.png", eg.getURI().toString());
+        assertEquals("image/png", eg.getFormat());
+    }
+
     public void testParsePointSymbolizerAnchorDisplacement() throws Exception {
         PointSymbolizer sym = (PointSymbolizer) parse("example-pointsymbolizer5.xml");
 

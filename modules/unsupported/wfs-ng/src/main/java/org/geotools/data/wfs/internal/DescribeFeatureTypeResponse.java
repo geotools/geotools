@@ -50,7 +50,14 @@ public class DescribeFeatureTypeResponse extends WFSResponse {
 
         InputStream responseStream = httpResponse.getResponseStream();
         try {
-            File tmpSchemaFile = File.createTempFile(remoteTypeName.getLocalPart(), ".xsd");
+            String prefix = remoteTypeName.getLocalPart();
+            if (prefix.length() < 3) {
+                /*
+                 * CreateTempFile will throw an exception if the prefix is less that 3 chars long
+                 */
+                prefix += "zzz";
+            }
+            File tmpSchemaFile = File.createTempFile(prefix, ".xsd");
             OutputStream output = new BufferedOutputStream(new FileOutputStream(tmpSchemaFile));
             try {
                 IOUtils.copy(responseStream, output);

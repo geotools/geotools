@@ -22,7 +22,6 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.locks.AbstractQueuedSynchronizer;
-import org.geotools.util.SimpleInternationalString;
 import org.opengis.util.InternationalString;
 import org.opengis.util.ProgressListener;
 
@@ -317,11 +316,6 @@ public class ProgressTask implements Runnable, Progress {
             innerSetException(t);
         }
 
-        @Deprecated
-        public String getDescription() {
-            return getTask().toString();
-        }
-
         public float getProgress() {
             return percentComplete;
         }
@@ -342,13 +336,8 @@ public class ProgressTask implements Runnable, Progress {
             innerCancel(stop);
         }
 
-        @Deprecated
-        public void setDescription(String description) {
-            processName = new SimpleInternationalString(description);
-        }
-
-        public void setTask(InternationalString arg0) {
-            this.processName = arg0;
+        public void setTask(InternationalString name) {
+            this.processName = name;
         }
 
         public void started() {

@@ -277,7 +277,7 @@ public class FilterExamples {
 
     // distance start
     SimpleFeatureCollection distance(MapMouseEvent ev) throws Exception {
-        DirectPosition2D worldPosition = ev.getMapPosition();
+        DirectPosition2D worldPosition = ev.getWorldPos();
 
         // get the unit of measurement
         SimpleFeatureType schema = featureSource.getSchema();

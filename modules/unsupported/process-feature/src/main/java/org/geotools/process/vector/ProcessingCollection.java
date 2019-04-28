@@ -17,9 +17,7 @@
  */
 package org.geotools.process.vector;
 
-import java.util.List;
 import java.util.UUID;
-import org.geotools.data.DataUtilities;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.collection.BaseFeatureCollection;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -77,34 +75,6 @@ public abstract class ProcessingCollection<T extends FeatureType, F extends Feat
      */
     @Override
     public abstract int size();
-
-    /**
-     * Convenience method that counts features by traversing the feature iterator.
-     *
-     * @return number of features using {@link #features()}
-     * @deprecated Use {@link DataUtilities#count(org.geotools.feature.FeatureCollection)
-     */
-    protected int getFeatureCount() {
-        return DataUtilities.count(this);
-    }
-
-    /**
-     * Utility to get all the features to implement the toArray methods
-     *
-     * @deprecated Use {@link DataUtilities#list(org.geotools.feature.FeatureCollection)}
-     */
-    protected List<F> toList() {
-        return DataUtilities.list(this);
-    }
-    /**
-     * Convenience method that computes the feature bounds by traversing the feature iterator.
-     *
-     * @return bounds calculated using {@link #features()}
-     * @deprecated Use {@link DataUtilities#bounds(FeatureIterator)
-     */
-    protected ReferencedEnvelope getFeatureBounds() {
-        return DataUtilities.bounds(features());
-    }
 
     @Override
     public T getSchema() {

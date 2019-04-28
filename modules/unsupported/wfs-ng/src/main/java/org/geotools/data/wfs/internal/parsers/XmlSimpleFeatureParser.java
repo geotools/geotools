@@ -65,7 +65,7 @@ import org.xmlpull.v1.XmlPullParserException;
  * @author Gabriel Roldan (TOPP)
  * @version $Id$
  * @since 2.5.x
- *     <p>//@deprecated should be removed as long as {@link PullParserFeatureReader} works well
+ *     <p>
  */
 @SuppressWarnings("nls")
 public class XmlSimpleFeatureParser implements GetParser<SimpleFeature> {

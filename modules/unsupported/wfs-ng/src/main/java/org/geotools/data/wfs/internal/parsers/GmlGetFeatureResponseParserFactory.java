@@ -34,7 +34,7 @@ import org.opengis.feature.type.FeatureType;
  *
  * <p>Supports only GML 2 and GML 3.1
  *
- * <p>//@deprecated should be removed as long as {@link GetFeatureResponseParserFactory} works well
+ * <p>
  */
 @SuppressWarnings("nls")
 public class GmlGetFeatureResponseParserFactory extends AbstractGetFeatureResponseParserFactory {

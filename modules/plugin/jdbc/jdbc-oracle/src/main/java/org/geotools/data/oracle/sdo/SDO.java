@@ -1136,66 +1136,6 @@ public final class SDO {
     }
 
     /**
-     * Do not use me, I am broken
-     *
-     * <p>Do not use me, I am broken
-     *
-     * @deprecated Do not use me, I am broken
-     * @param list
-     * @param ordinate
-     */
-    /*
-    //TODO: check if I am correct
-    public static Object[] attributeArray(List list, int ordinate) {
-        if (list == null) {
-            return null;
-        }
-
-        final int LENGTH = list.size();
-        Object[] ords = new Object[LENGTH];
-        Coordinate c;
-        Double d;
-        String s;
-
-        if (ordinate == 0) {
-            for (int i = 0; i < LENGTH; i++) {
-                c = (Coordinate) list.get(i);
-                ords[i] = (c != null) ? new Double(c.x) : new Double(Double.NaN);
-            }
-        } else if (ordinate == 1) {
-            for (int i = 0; i < LENGTH; i++) {
-                c = (Coordinate) list.get(i);
-                ords[i] = (c != null) ? new Double(c.y) : new Double(Double.NaN);
-            }
-        } else if (ordinate == 2) {
-            for (int i = 0; i < LENGTH; i++) {
-                c = (Coordinate) list.get(i);
-                ords[i] = (c != null) ? new Double(c.z) : new Double(Double.NaN);
-            }
-        }
-        else if (ordinate == 3) {       //BUG I am broken, do not use me our own Z
-            for (int i = 0; i < LENGTH; i++) {
-                c = (Coordinate) list.get(i);
-                ords[i] = (c != null) ? new Double(Double.NaN) : new Double(Double.NaN);
-            }
-        }
-        else if (ordinate == 4) {       // our own T (a String)
-            for (int i = 0; i < LENGTH; i++) {
-                c = (Coordinate) list.get(i);
-                ords[i] = (c != null) ? new Double(Double.NaN) : new Double(Double.NaN);
-            }
-        }else {
-            // default to NaN
-            for (int i = 0; i < LENGTH; i++) {
-                ords[i] = list.get(i);
-            }
-        }
-
-        return ords;
-    }
-    */
-
-    /**
      * Package up <code>array</code> in correct manner for <code>geom</code>.
      *
      * <p>Ordinates are placed into an array based on:

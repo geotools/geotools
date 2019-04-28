@@ -334,13 +334,6 @@ public interface TextSymbolizer extends org.opengis.style.TextSymbolizer, Symbol
     List<Font> fonts();
 
     /**
-     * Returns a device independent Font object that is to be used to render the label.
-     *
-     * @deprecated use fonts()
-     */
-    Font[] getFonts();
-
-    /**
      * Initial Font to use when rendering this symbolizer. For alternatives see {@link #fonts()}.
      *
      * @return Initial Font used to render label, or null if unavailable.
@@ -356,13 +349,6 @@ public interface TextSymbolizer extends org.opengis.style.TextSymbolizer, Symbol
     public void setFont(org.opengis.style.Font font);
 
     /**
-     * Sets a list of device independent Font objects to be used to render the label.
-     *
-     * @deprecated use fonts() to directly modify list of fonts in place
-     */
-    void setFonts(Font[] fonts);
-
-    /**
      * A LabelPlacement specifies how a text element should be rendered relative to its geometric
      * point or line.
      */
@@ -373,22 +359,6 @@ public interface TextSymbolizer extends org.opengis.style.TextSymbolizer, Symbol
      * point or line.
      */
     void setLabelPlacement(org.opengis.style.LabelPlacement labelPlacement);
-
-    /**
-     * A LabelPlacement specifies how a text element should be rendered relative to its geometric
-     * point or line.
-     *
-     * @deprecated Please use setLabelPlacement
-     */
-    void setPlacement(LabelPlacement labelPlacement);
-
-    /**
-     * A LabelPlacement specifies how a text element should be rendered relative to its geometric
-     * point or line.
-     *
-     * @deprecated Please use getLabelPlacement()
-     */
-    LabelPlacement getPlacement();
 
     /**
      * A halo fills an extended area outside the glyphs of a rendered text label to make the label

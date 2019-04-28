@@ -681,38 +681,6 @@ public abstract class ArcSDEGeometryBuilder {
 
             return p;
         }
-
-        @Deprecated
-        protected Polygon buildPolygon(
-                final double[][] parts, final GeometryFactory geometryFactory) {
-            Polygon p = null;
-
-            double[] linearCoordArray = parts[0];
-
-            int nHoles = parts.length - 1;
-
-            final CoordinateSequenceFactory coordinateSequenceFactory =
-                    geometryFactory.getCoordinateSequenceFactory();
-            LinearRing shell =
-                    geometryFactory.createLinearRing(
-                            toCoords(linearCoordArray, coordinateSequenceFactory));
-
-            LinearRing[] holes = new LinearRing[nHoles];
-
-            if (nHoles > 0) {
-                for (int i = 0; i < nHoles; i++) {
-                    linearCoordArray = parts[i + 1];
-
-                    holes[i] =
-                            geometryFactory.createLinearRing(
-                                    toCoords(linearCoordArray, coordinateSequenceFactory));
-                }
-            }
-
-            p = geometryFactory.createPolygon(shell, holes);
-
-            return p;
-        }
     }
 
     /**
@@ -777,6 +745,37 @@ public abstract class ArcSDEGeometryBuilder {
             MultiPolygon multiPoly = geometryFactory.createMultiPolygon(polys);
 
             return multiPoly;
+        }
+
+        private Polygon buildPolygon(
+                final double[][] parts, final GeometryFactory geometryFactory) {
+            Polygon p = null;
+
+            double[] linearCoordArray = parts[0];
+
+            int nHoles = parts.length - 1;
+
+            final CoordinateSequenceFactory coordinateSequenceFactory =
+                    geometryFactory.getCoordinateSequenceFactory();
+            LinearRing shell =
+                    geometryFactory.createLinearRing(
+                            toCoords(linearCoordArray, coordinateSequenceFactory));
+
+            LinearRing[] holes = new LinearRing[nHoles];
+
+            if (nHoles > 0) {
+                for (int i = 0; i < nHoles; i++) {
+                    linearCoordArray = parts[i + 1];
+
+                    holes[i] =
+                            geometryFactory.createLinearRing(
+                                    toCoords(linearCoordArray, coordinateSequenceFactory));
+                }
+            }
+
+            p = geometryFactory.createPolygon(shell, holes);
+
+            return p;
         }
     }
 }

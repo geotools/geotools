@@ -159,25 +159,4 @@ public class ApplicationSchemaInformationImpl extends MetadataEntity
         checkWritePermission();
         softwareDevelopmentFileFormat = newValue;
     }
-
-    /**
-     * Information about the spatial attributes in the application schema for the feature types.
-     *
-     * @deprecated removed from ISO 19115
-     */
-    @Deprecated
-    public SpatialAttributeSupplement getFeatureCatalogueSupplement() {
-        return featureCatalogueSupplement;
-    }
-
-    /**
-     * Set information about the spatial attributes in the application schema for the feature types.
-     *
-     * @deprecated removed from ISO 19115
-     */
-    @Deprecated
-    public void setFeatureCatalogueSupplement(final SpatialAttributeSupplement newValue) {
-        checkWritePermission();
-        featureCatalogueSupplement = newValue;
-    }
 }

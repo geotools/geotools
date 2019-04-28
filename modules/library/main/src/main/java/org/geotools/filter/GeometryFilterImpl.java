@@ -66,9 +66,6 @@ public abstract class GeometryFilterImpl extends BinaryComparisonAbstract
 
     protected MatchAction matchAction;
 
-    @Deprecated
-    protected GeometryFilterImpl() throws IllegalFilterException {}
-
     protected GeometryFilterImpl(MatchAction matchAction) {
         this.matchAction = matchAction;
     }

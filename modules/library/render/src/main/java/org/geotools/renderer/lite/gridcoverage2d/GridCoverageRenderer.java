@@ -721,7 +721,7 @@ public final class GridCoverageRenderer {
      *     bounds
      * @throws FactoryException
      * @throws TransformException
-     * @throws NoninvertibleTransformException @Deprecated
+     * @throws NoninvertibleTransformException
      */
     public RenderedImage renderImage(
             final GridCoverage2D gridCoverage,

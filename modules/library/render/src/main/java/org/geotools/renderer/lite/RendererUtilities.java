@@ -111,32 +111,6 @@ public final class RendererUtilities {
     /**
      * Sets up the affine transform
      *
-     * <p>((Taken from the old LiteRenderer))
-     *
-     * @param mapExtent the map extent
-     * @param paintArea the size of the rendering output area
-     * @return a transform that maps from real world coordinates to the screen
-     * @deprecated Uses the alternative based on <code>ReferencedEnvelope</code> that doe not assume
-     *     anything on axes order.
-     */
-    public static AffineTransform worldToScreenTransform(Envelope mapExtent, Rectangle paintArea) {
-        double scaleX = paintArea.getWidth() / mapExtent.getWidth();
-        double scaleY = paintArea.getHeight() / mapExtent.getHeight();
-
-        double tx = -mapExtent.getMinX() * scaleX;
-        double ty = (mapExtent.getMinY() * scaleY) + paintArea.getHeight();
-
-        AffineTransform at = new AffineTransform(scaleX, 0.0d, 0.0d, -scaleY, tx, ty);
-        AffineTransform originTranslation =
-                AffineTransform.getTranslateInstance(paintArea.x, paintArea.y);
-        originTranslation.concatenate(at);
-
-        return originTranslation != null ? originTranslation : at;
-    }
-
-    /**
-     * Sets up the affine transform
-     *
      * <p>NOTE It is worth to note that here we do not take into account the half a pixel
      * translation stated by ogc for coverages bounds. One reason is that WMS 1.1.1 does not follow
      * it!!!

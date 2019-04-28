@@ -774,11 +774,6 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
             return dirty[index];
         }
 
-        /** @deprecated use {@link #isDirty(String)} instead */
-        public boolean isDirrty(String name) {
-            return isDirty(name);
-        }
-
         public boolean isDirty(String name) {
             return isDirty(index.get(name));
         }

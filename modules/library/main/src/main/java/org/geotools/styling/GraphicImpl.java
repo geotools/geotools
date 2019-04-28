@@ -48,7 +48,6 @@ public class GraphicImpl implements Graphic, Cloneable {
     private Expression gap;
     private Expression initialGap;
 
-    private FilterFactory filterFactory;
     private Expression rotation = null;
     private Expression size = null;
     private DisplacementImpl displacement = null;
@@ -65,7 +64,6 @@ public class GraphicImpl implements Graphic, Cloneable {
 
     public GraphicImpl(
             FilterFactory factory, AnchorPoint anchor, Expression gap, Expression initialGap) {
-        filterFactory = factory;
         this.anchor = AnchorPointImpl.cast(anchor);
 
         if (gap == null) this.gap = ConstantExpression.constant(0);

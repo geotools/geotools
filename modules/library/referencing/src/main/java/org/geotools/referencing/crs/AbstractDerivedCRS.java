@@ -207,11 +207,6 @@ public class AbstractDerivedCRS extends AbstractSingleCRS implements GeneralDeri
         this(properties, new DefaultOperationMethod(baseToDerived), base, baseToDerived, derivedCS);
     }
 
-    /**
-     * @deprecated Create explicitly a {@link DefiningConversion} instead.
-     * @todo Move the implementation in the previous constructor after we removed the deprecated
-     *     signature.
-     */
     AbstractDerivedCRS(
             final Map<String, ?> properties,
             final OperationMethod method,

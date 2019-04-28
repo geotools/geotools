@@ -67,6 +67,7 @@ import org.geotools.referencing.datum.DefaultEllipsoid;
 import org.geotools.referencing.datum.DefaultGeodeticDatum;
 import org.geotools.referencing.datum.DefaultPrimeMeridian;
 import org.geotools.referencing.factory.ReferencingFactoryContainer;
+import org.geotools.referencing.factory.ReferencingObjectFactory;
 import org.geotools.referencing.operation.DefaultMathTransformFactory;
 import org.geotools.referencing.operation.builder.GridToEnvelopeMapper;
 import org.geotools.referencing.operation.transform.ConcatenatedTransform;
@@ -86,6 +87,7 @@ import org.opengis.referencing.datum.PixelInCell;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.MathTransform2D;
 import org.opengis.referencing.operation.MathTransformFactory;
+import org.opengis.referencing.operation.OperationMethod;
 import org.opengis.referencing.operation.TransformException;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -220,9 +222,17 @@ public class Utilities {
 
             final Map<String, String> props = new HashMap<String, String>();
             props.put("name", "Mercator CRS");
+            OperationMethod method = null;
+            final MathTransform mt =
+                    fg.getMathTransformFactory()
+                            .createBaseToDerived(sourceCRS, params, DefaultCartesianCS.PROJECTED);
+            if (method == null) {
+                method = fg.getMathTransformFactory().getLastMethodUsed();
+            }
             projectedCRS =
-                    fg.createProjectedCRS(
-                            props, sourceCRS, null, params, DefaultCartesianCS.PROJECTED);
+                    ((ReferencingObjectFactory) fg.getCRSFactory())
+                            .createProjectedCRS(
+                                    props, method, sourceCRS, mt, DefaultCartesianCS.PROJECTED);
         } catch (FactoryException e) {
             throw new DataSourceException(e);
         }

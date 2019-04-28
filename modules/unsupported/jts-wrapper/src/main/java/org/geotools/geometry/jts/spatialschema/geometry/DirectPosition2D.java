@@ -149,11 +149,6 @@ public class DirectPosition2D extends Point2D.Double implements DirectPosition, 
         return new double[] {x, y};
     }
 
-    @Deprecated
-    public double[] getCoordinates() {
-        return getCoordinate();
-    }
-
     /**
      * Returns the ordinate at the specified dimension.
      *
@@ -219,7 +214,7 @@ public class DirectPosition2D extends Point2D.Double implements DirectPosition, 
      * dependent. It is usually provided for debugging purposes.
      */
     public String toString() {
-        return toString(this, getCoordinates());
+        return toString(this, getCoordinate());
     }
 
     @Override

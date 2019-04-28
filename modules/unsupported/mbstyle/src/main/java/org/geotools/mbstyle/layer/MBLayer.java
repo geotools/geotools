@@ -324,18 +324,6 @@ public abstract class MBLayer {
     }
 
     /**
-     * Class-specific "paint.*" properties for this layer. The class name is the part after the
-     * first dot.
-     *
-     * @return class specific "paint.*" properties
-     * @deprecated style classes are deprecated and will be removed in the next version of this
-     *     spec.
-     */
-    public JSONObject getPaintProperties() {
-        return new JSONObject();
-    }
-
-    /**
      * Transforms a given {@link MBLayer} to a GeoTools {@link FeatureTypeStyle}.
      *
      * @param minScaleDenominator Used to determine zoom level restrictions for generated rules

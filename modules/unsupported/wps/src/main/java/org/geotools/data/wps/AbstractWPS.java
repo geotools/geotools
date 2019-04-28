@@ -31,7 +31,6 @@ import java.util.logging.Logger;
 import net.opengis.wps10.WPSCapabilitiesType;
 import org.geotools.data.ResourceInfo;
 import org.geotools.data.ServiceInfo;
-import org.geotools.data.ows.Capabilities;
 import org.geotools.data.ows.GetCapabilitiesRequest;
 import org.geotools.data.ows.HTTPClient;
 import org.geotools.data.ows.HTTPResponse;
@@ -80,23 +79,6 @@ public abstract class AbstractWPS<C extends WPSCapabilitiesType, R extends Objec
         } else if (capabilities != null) {
             setupSpecification(capabilities);
         }
-    }
-
-    /**
-     * @throws IOException
-     * @throws ServiceException
-     * @deprecated use {@link #AbstractWPS(OWSConfig)}
-     */
-    public AbstractWPS(final URL serverURL, int requestTimeout)
-            throws ServiceException, IOException {
-        this(serverURL, new SimpleHttpClient(), null);
-        this.httpClient.setConnectTimeout(requestTimeout);
-        this.httpClient.setReadTimeout(requestTimeout);
-    }
-
-    /** @deprecated use {@link #AbstractWPS(OWSConfig, Capabilities)} */
-    public AbstractWPS(C capabilties, URL serverURL) throws ServiceException, IOException {
-        this(serverURL, new SimpleHttpClient(), capabilties);
     }
 
     public AbstractWPS(final URL serverURL, final HTTPClient httpClient, final C capabilities)

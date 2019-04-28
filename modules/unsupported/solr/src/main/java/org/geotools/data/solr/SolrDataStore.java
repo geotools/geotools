@@ -274,20 +274,6 @@ public class SolrDataStore extends ContentDataStore {
     }
 
     /**
-     * Get the field used to filter the types that the datastore provides.
-     *
-     * @deprecated
-     */
-    public String getField() {
-        if (layerMapper instanceof FieldLayerMapper) {
-            return ((FieldLayerMapper) layerMapper).getField();
-        }
-
-        throw new IllegalStateException(
-                "Layer mapper not instance of " + FieldLayerMapper.class.getName());
-    }
-
-    /**
      * Gets the document loader controlling how documents are mapped to layers from the solr index.
      */
     public SolrLayerMapper getLayerMapper() {

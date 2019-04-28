@@ -580,9 +580,6 @@ public class StreamingRenderer implements GTRenderer {
      * @param graphics The graphics object to draw to.
      * @param paintArea The size of the output area in output units (eg: pixels).
      * @param mapArea the map's visible area (viewport) in map coordinates.
-     * @deprecated Use paint(Graphics2D graphics, Rectangle paintArea, ReferencedEnvelope mapArea)
-     *     or paint(Graphics2D graphics, Rectangle paintArea, ReferencedEnvelope mapArea,
-     *     AffineTransform worldToScreen) instead.
      */
     public void paint(Graphics2D graphics, Rectangle paintArea, Envelope mapArea) {
         if (mapArea == null || paintArea == null) {

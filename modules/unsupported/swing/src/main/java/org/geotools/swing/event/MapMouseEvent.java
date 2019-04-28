@@ -107,16 +107,6 @@ public final class MapMouseEvent extends MouseEvent {
     }
 
     /**
-     * Gets the position, in map (world) coordinates of this mouse event
-     *
-     * @return a new DirectPosition2D object for the world coordinates
-     * @deprecated Please use {@link #getWorldPos} instead
-     */
-    public DirectPosition2D getMapPosition() {
-        return getWorldPos();
-    }
-
-    /**
      * Gets the mouse position in world coordinates.
      *
      * @return world position

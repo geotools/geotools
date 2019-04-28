@@ -289,11 +289,6 @@ public final class Geobuf {
                 private IdTypeCase(int value) {
                     this.value = value;
                 }
-                /** @deprecated Use {@link #forNumber(int)} instead. */
-                @java.lang.Deprecated
-                public static IdTypeCase valueOf(int value) {
-                    return forNumber(value);
-                }
 
                 public static IdTypeCase forNumber(int value) {
                     switch (value) {
@@ -1890,12 +1885,6 @@ public final class Geobuf {
 
                 public final int getNumber() {
                     return value;
-                }
-
-                /** @deprecated Use {@link #forNumber(int)} instead. */
-                @java.lang.Deprecated
-                public static Type valueOf(int value) {
-                    return forNumber(value);
                 }
 
                 public static Type forNumber(int value) {
@@ -4140,11 +4129,6 @@ public final class Geobuf {
                 private ValueTypeCase(int value) {
                     this.value = value;
                 }
-                /** @deprecated Use {@link #forNumber(int)} instead. */
-                @java.lang.Deprecated
-                public static ValueTypeCase valueOf(int value) {
-                    return forNumber(value);
-                }
 
                 public static ValueTypeCase forNumber(int value) {
                     switch (value) {
@@ -4909,11 +4893,6 @@ public final class Geobuf {
 
             private DataTypeCase(int value) {
                 this.value = value;
-            }
-            /** @deprecated Use {@link #forNumber(int)} instead. */
-            @java.lang.Deprecated
-            public static DataTypeCase valueOf(int value) {
-                return forNumber(value);
             }
 
             public static DataTypeCase forNumber(int value) {

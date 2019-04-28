@@ -378,26 +378,6 @@ public abstract class Configuration {
     }
 
     /**
-     * Configures a container which houses all the bindings used during a parse.
-     *
-     * @param container The container housing the binding objects.
-     * @deprecated use {@link #setupBindings()}.
-     */
-    public final MutablePicoContainer setupBindings(MutablePicoContainer container) {
-        // configure bindings of all dependencies
-        for (Iterator d = allDependencies().iterator(); d.hasNext(); ) {
-            Configuration dependency = (Configuration) d.next();
-            dependency.registerBindings(container);
-        }
-
-        // call template method, create a new container to allow subclass to override bindings
-        container = container.makeChildContainer();
-        configureBindings(container);
-
-        return container;
-    }
-
-    /**
      * Creates the map of QName to Binding which is used during parsing to attach bindings to an
      * element,attribute, or type.
      *

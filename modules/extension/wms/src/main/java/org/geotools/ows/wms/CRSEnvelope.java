@@ -155,19 +155,7 @@ public class CRSEnvelope implements Envelope {
         return srsName;
     }
 
-    /**
-     * The CRS is bounding box's Coordinate Reference System.
-     *
-     * <p>Examples from WMS specification:
-     *
-     * <ul>
-     *   <li>CRS:84: default in lon / lat order
-     * </ul>
-     *
-     * @param srsName The SRSName for this envelope; usually an EPSG code
-     * @deprecated Please use setSRSName(String,boolean) to explicitly indicate axis handling
-     */
-    public void setSRSName(String srsName) {
+    private void setSRSName(String srsName) {
         this.srsName = srsName;
         this.forceXY = null;
     }

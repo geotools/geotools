@@ -57,17 +57,6 @@ public abstract class DerivedSet<B, E> extends AbstractSet<E>
      * Creates a new derived set from the specified base set.
      *
      * @param base The base set.
-     * @deprecated Use {@link #DerivedSet(Set,Class)} instead.
-     */
-    @SuppressWarnings("unchecked")
-    public DerivedSet(final Set<B> base) {
-        this(base, (Class) Object.class);
-    }
-
-    /**
-     * Creates a new derived set from the specified base set.
-     *
-     * @param base The base set.
      * @param derivedType The type of elements in this derived set.
      * @since 2.5
      */

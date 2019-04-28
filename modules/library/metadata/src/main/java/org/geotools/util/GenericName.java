@@ -23,7 +23,6 @@ import java.io.Serializable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
-import java.util.Set;
 import org.opengis.util.InternationalString;
 import org.opengis.util.LocalName;
 import org.opengis.util.NameSpace;
@@ -86,11 +85,6 @@ public abstract class GenericName implements org.opengis.util.GenericName, Seria
 
                         public org.opengis.util.GenericName name() {
                             return getInternalScope();
-                        }
-
-                        @Deprecated
-                        public Set<org.opengis.util.GenericName> getNames() {
-                            throw new UnsupportedOperationException();
                         }
                     };
         }

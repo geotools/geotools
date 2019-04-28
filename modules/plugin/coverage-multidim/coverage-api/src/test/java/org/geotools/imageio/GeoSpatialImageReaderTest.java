@@ -247,11 +247,7 @@ public class GeoSpatialImageReaderTest {
         public void setInput(Object input) {
             super.setInput(input);
             numImages = 1;
-            try {
-                initCatalog(parentLocation, databaseName);
-            } catch (IOException e) {
-                LOGGER.log(Level.FINER, e.getMessage(), e);
-            }
+            slicesCatalog = new CoverageSlicesCatalog(databaseName, parentLocation, repository);
         }
     }
 

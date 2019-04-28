@@ -45,15 +45,6 @@ public abstract class CompareFilterImpl extends BinaryComparisonAbstract {
     static final Logger LOGGER =
             org.geotools.util.logging.Logging.getLogger(CompareFilterImpl.class);
 
-    /**
-     * Constructor
-     *
-     * @throws IllegalFilterException Non-compare type.
-     * @deprecated use {@link #CompareFilterImpl(org.opengis.filter.FilterFactory,
-     *     org.opengis.filter.expression.Expression, org.opengis.filter.expression.Expression)}
-     */
-    protected CompareFilterImpl() throws IllegalFilterException {}
-
     protected CompareFilterImpl(
             org.opengis.filter.expression.Expression e1,
             org.opengis.filter.expression.Expression e2) {

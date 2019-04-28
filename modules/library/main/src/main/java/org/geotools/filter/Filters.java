@@ -383,61 +383,6 @@ public class Filters {
     }
 
     /**
-     * Navigate through the expression searching for something that can be a TYPE.
-     *
-     * <p>This will work even with dynamic expression that would normally require a feature. It
-     * works especially well when the Expression is a Literal literal (which is usually the case).
-     *
-     * <p>If you have a specific Feature, please do this:
-     *
-     * <pre><code>
-     * Color value = expr.evaualte( feature, Color.class );
-     * return value instanceof Color ? (Color) value : null;
-     * </code></pre>
-     *
-     * @param expr This only really works for down casting literals to a value
-     * @param type Target type
-     * @return expr smunched into indicated type
-     * @deprecated This is not a good idea; use expr.evaulate( null, TYPE )
-     */
-    public static <T> T asType(Expression expr, Class<T> type) {
-        if (expr == null) {
-            return null;
-        }
-        if (STRICT) {
-            return expr.evaluate(null, type);
-        } else if (expr instanceof Literal) {
-            Literal literal = (Literal) expr;
-            return (T) literal.evaluate(null, type);
-        } else if (expr instanceof Function) {
-            Function function = (Function) expr;
-            List<Expression> params = function.getParameters();
-            if (params != null && params.size() != 0) {
-                for (int i = 0; i < params.size(); i++) {
-                    Expression e = (Expression) params.get(i);
-                    T value = asType(e, type);
-
-                    if (value != null) {
-                        return value;
-                    }
-                }
-            }
-        } else {
-            try { // this is a bad idea, not expected to work much
-                T value = expr.evaluate(null, type);
-
-                if (type.isInstance(value)) {
-                    return value;
-                }
-            } catch (NullPointerException expected) {
-                return null; // well that was not unexpected
-            } catch (Throwable ignore) { // I did say that was a bad idea
-            }
-        }
-        return null; // really need a Feature to acomplish this one
-    }
-
-    /**
      * Treat provided value as a Number, used for math opperations.
      *
      * <p>This function allows for the non stongly typed Math Opperations favoured by the Expression

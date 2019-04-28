@@ -107,19 +107,9 @@ public abstract class ClassificationFunction extends DefaultExpression
         this.progress = progress;
     }
 
-    /** @deprecated use getClasses() */
-    public int getNumberOfClasses() {
-        return getClasses();
-    }
-
     public int getClasses() {
         Literal classes = (Literal) getParameters().get(1);
         return ((Integer) classes.evaluate(null, Integer.class)).intValue();
-    }
-
-    /** @deprecated use setClasses() */
-    public void setNumberOfClasses(int classes) {
-        setClasses(classes);
     }
 
     public void setClasses(int classes) {

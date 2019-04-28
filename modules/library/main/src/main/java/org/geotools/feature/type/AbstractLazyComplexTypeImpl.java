@@ -135,7 +135,6 @@ public abstract class AbstractLazyComplexTypeImpl extends AbstractLazyAttributeT
      *
      * @see org.opengis.feature.type.ComplexType#getDescriptor(java.lang.String)
      */
-    @Deprecated
     public PropertyDescriptor getDescriptor(String name) {
         requireDescriptors();
         PropertyDescriptor result = getDescriptor(new NameImpl(name));

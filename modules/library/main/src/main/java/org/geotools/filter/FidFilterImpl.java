@@ -55,16 +55,6 @@ public class FidFilterImpl extends AbstractFilter implements Id {
 
     private Set<String> ids = new LinkedHashSet<>();
 
-    /**
-     * Constructor with first fid set
-     *
-     * @param initialFid The type of comparison.
-     * @deprecated use {@link #FidFilterImpl(Set)}
-     */
-    protected FidFilterImpl(String initialFid) {
-        addFid(initialFid);
-    }
-
     /** Constructor which takes {@link org.opengis.filter.identity.Identifier}, not String. */
     protected FidFilterImpl(Set /* <Identifier> */ fids) {
         // check these are really identifiers
@@ -78,16 +68,6 @@ public class FidFilterImpl extends AbstractFilter implements Id {
         for (Identifier identifier : this.fids) {
             ids.add(identifier.getID().toString());
         }
-    }
-
-    /**
-     * Returns all the fids in this filter.
-     *
-     * @return An array of all the fids in this filter.
-     * @deprecated use {@link #getIDs()}
-     */
-    public final String[] getFids() {
-        return (String[]) fids().toArray(new String[0]);
     }
 
     /** @see org.opengis.filter.Id#getIDs() */

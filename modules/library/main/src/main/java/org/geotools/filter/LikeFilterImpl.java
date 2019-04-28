@@ -22,7 +22,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.opengis.filter.FilterVisitor;
 import org.opengis.filter.PropertyIsLike;
-import org.opengis.filter.expression.Expression;
 
 /**
  * Defines a like filter, which checks to see if an attribute matches a REGEXP.
@@ -222,17 +221,6 @@ public class LikeFilterImpl extends AbstractFilter implements PropertyIsLike {
     }
 
     /**
-     * Sets the expression to be evalutated as being like the pattern
-     *
-     * @param attribute The value of the attribute for comparison.
-     * @throws IllegalFilterException Filter is illegal.
-     * @deprecated Use {@link #setExpression(org.opengis.filter.expression.Expression)}
-     */
-    public final void setValue(Expression attribute) throws IllegalFilterException {
-        setExpression(attribute);
-    }
-
-    /**
      * Gets the expression for hte filter.
      *
      * <p>This method calls th deprecated {@link #getValue()} for backwards compatability with
@@ -244,16 +232,6 @@ public class LikeFilterImpl extends AbstractFilter implements PropertyIsLike {
 
     public void setExpression(org.opengis.filter.expression.Expression e) {
         this.attribute = e;
-    }
-
-    /**
-     * Accessor method to retrieve the pattern.
-     *
-     * @return the pattern being matched.
-     * @deprecated use {@link #getLiteral()}
-     */
-    public final String getPattern() {
-        return getLiteral();
     }
 
     /** Returns the pattern. */

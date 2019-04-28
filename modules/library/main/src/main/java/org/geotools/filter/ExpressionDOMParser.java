@@ -101,14 +101,6 @@ public final class ExpressionDOMParser {
     }
 
     /**
-     * @deprecated Please use ExpressionDOMParser.expression
-     * @param root
-     */
-    public static Expression parseExpression(Node root) {
-        ExpressionDOMParser parser = new ExpressionDOMParser();
-        return parser.expression(root);
-    }
-    /**
      * parses an expression for a filter.
      *
      * @param root the root node to parse, should be an filter expression.
@@ -161,7 +153,7 @@ public final class ExpressionDOMParser {
                     LOGGER.fine("a literal gml string?");
 
                     try {
-                        Geometry geom = parseGML(kid);
+                        Geometry geom = gml(kid);
 
                         if (geom != null) {
                             LOGGER.finer("built a " + geom.getGeometryType() + " from gml");
@@ -233,7 +225,7 @@ public final class ExpressionDOMParser {
                 }
 
                 LOGGER.finer("add left value -> " + value + "<-");
-                Expression left = parseExpression(value);
+                Expression left = expression(value);
                 value = value.getNextSibling();
 
                 while (value.getNodeType() != Node.ELEMENT_NODE) {
@@ -241,7 +233,7 @@ public final class ExpressionDOMParser {
                 }
 
                 LOGGER.finer("add right value -> " + value + "<-");
-                Expression right = parseExpression(value);
+                Expression right = expression(value);
 
                 return ff.add(left, right);
             } catch (IllegalFilterException ife) {
@@ -259,7 +251,7 @@ public final class ExpressionDOMParser {
                     value = value.getNextSibling();
                 }
                 LOGGER.finer("add left value -> " + value + "<-");
-                Expression left = parseExpression(value);
+                Expression left = expression(value);
                 value = value.getNextSibling();
 
                 while (value.getNodeType() != Node.ELEMENT_NODE) {
@@ -267,7 +259,7 @@ public final class ExpressionDOMParser {
                 }
 
                 LOGGER.finer("add right value -> " + value + "<-");
-                Expression right = parseExpression(value);
+                Expression right = expression(value);
 
                 return ff.subtract(left, right);
             } catch (IllegalFilterException ife) {
@@ -287,7 +279,7 @@ public final class ExpressionDOMParser {
                 }
 
                 LOGGER.finer("add left value -> " + value + "<-");
-                Expression left = parseExpression(value);
+                Expression left = expression(value);
                 value = value.getNextSibling();
 
                 while (value.getNodeType() != Node.ELEMENT_NODE) {
@@ -295,7 +287,7 @@ public final class ExpressionDOMParser {
                 }
 
                 LOGGER.finer("add right value -> " + value + "<-");
-                Expression right = parseExpression(value);
+                Expression right = expression(value);
 
                 return ff.multiply(left, right);
             } catch (IllegalFilterException ife) {
@@ -314,7 +306,7 @@ public final class ExpressionDOMParser {
                 }
 
                 LOGGER.finer("add left value -> " + value + "<-");
-                Expression left = parseExpression(value);
+                Expression left = expression(value);
                 value = value.getNextSibling();
 
                 while (value.getNodeType() != Node.ELEMENT_NODE) {
@@ -322,7 +314,7 @@ public final class ExpressionDOMParser {
                 }
 
                 LOGGER.finer("add right value -> " + value + "<-");
-                Expression right = parseExpression(value);
+                Expression right = expression(value);
 
                 return ff.divide(left, right);
             } catch (IllegalFilterException ife) {
@@ -387,7 +379,7 @@ public final class ExpressionDOMParser {
                     value = value.getNextSibling();
                     if (value == null) break ARGS;
                 }
-                args.add(parseExpression(value));
+                args.add(expression(value));
                 value = value.getNextSibling();
             }
             Expression[] array = args.toArray(new Expression[0]);
@@ -425,16 +417,6 @@ public final class ExpressionDOMParser {
         }
 
         return null;
-    }
-
-    /**
-     * @deprecated Please use ExpressionDOMParser.gml
-     * @param root
-     * @return the java representation of the geometry contained in root.
-     */
-    public static Geometry parseGML(Node root) {
-        ExpressionDOMParser parser = new ExpressionDOMParser();
-        return parser.gml(root);
     }
 
     public Geometry gml(Node root) {
@@ -555,11 +537,11 @@ public final class ExpressionDOMParser {
                 }
 
                 if (kidName.equalsIgnoreCase("gml:outerBoundaryIs")) {
-                    outer = (LinearRing) parseGML(kid);
+                    outer = (LinearRing) gml(kid);
                 }
 
                 if (kidName.equalsIgnoreCase("gml:innerBoundaryIs")) {
-                    inner.add((LinearRing) parseGML(kid));
+                    inner.add((LinearRing) gml(kid));
                 }
             }
 
@@ -576,7 +558,7 @@ public final class ExpressionDOMParser {
 
             NodeList kids = ((Element) child).getElementsByTagName("gml:LinearRing");
             if (kids.getLength() == 0) kids = ((Element) child).getElementsByTagName("LinearRing");
-            return parseGML(kids.item(0));
+            return gml(kids.item(0));
         }
 
         if (childName.equalsIgnoreCase("gml:linearRing")) {
@@ -630,7 +612,7 @@ public final class ExpressionDOMParser {
 
             for (int i = 0; i < kids.getLength(); i++) {
                 if (kids.item(i).getNodeType() == Node.ELEMENT_NODE) {
-                    multi.add(parseGML(kids.item(i)));
+                    multi.add(gml(kids.item(i)));
                 }
             }
 

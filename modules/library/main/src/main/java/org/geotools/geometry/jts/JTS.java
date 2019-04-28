@@ -732,20 +732,6 @@ public final class JTS {
      * Converts an arbitrary Java2D shape into a JTS geometry. The created JTS geometry may be any
      * of {@link LineString}, {@link LinearRing} or {@link MultiLineString}.
      *
-     * @param shape The Java2D shape to create.
-     * @param factory The JTS factory to use for creating geometry.
-     * @return The JTS geometry.
-     * @deprecated Please use {@link #toGeometry(Shape)} or {@link #toGeometry(Shape,
-     *     GeometryFactory)}
-     */
-    public static Geometry shapeToGeometry(final Shape shape, final GeometryFactory factory) {
-        return toGeometry(shape, factory);
-    }
-
-    /**
-     * Converts an arbitrary Java2D shape into a JTS geometry. The created JTS geometry may be any
-     * of {@link LineString}, {@link LinearRing} or {@link MultiLineString}.
-     *
      * @param shape the input shape
      * @return A new JTS geometry instance
      * @throws IllegalArgumentException if {@code shape} is {@code null}

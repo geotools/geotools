@@ -91,12 +91,6 @@ public class FiltersTest {
     }
 
     @Test
-    public void testAsType() {
-        assertEquals(1.0, Filters.asType(ff.literal("1"), double.class), DELTA);
-        assertEquals(Color.BLUE, Filters.asType(ff.literal("#0000FF"), Color.class));
-    }
-
-    @Test
     public void testNumber() {
         assertEquals(1.0, Filters.number("1.0"), DELTA);
         assertEquals(1, Filters.number("1"), DELTA);

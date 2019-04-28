@@ -836,16 +836,6 @@ public class FilterFactoryImpl implements Factory, org.opengis.filter.FilterFact
         return function;
     }
 
-    /** @deprecated Pending see org.opengis.filter.Factory2 */
-    public Function function(
-            String name,
-            List<org.opengis.filter.expression.Expression> parameters,
-            Literal fallback) {
-        Function function = functionFinder.findFunction(name, parameters, fallback);
-
-        return function;
-    }
-
     public Function function(String name, Expression arg1, Expression arg2, Expression arg3) {
         Function function =
                 functionFinder.findFunction(

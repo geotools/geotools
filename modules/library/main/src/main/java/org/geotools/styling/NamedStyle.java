@@ -41,48 +41,4 @@ package org.geotools.styling;
  *
  * @author James Macgill
  */
-public interface NamedStyle extends Style {
-
-    // public String getName();
-
-    // public void setName(String name);
-
-    /**
-     * Human readible title.
-     *
-     * @return getDescription().getTitle().toString()
-     * @deprecated Use getDescription().getTitle().toString()
-     */
-    // public String getTitle();
-
-    /**
-     * @param title Human readible title
-     * @deprecated Use getDescription().setTitle()
-     */
-    // public void setTitle(String title);
-
-    /**
-     * @return getDescription().getAbstract()
-     * @deprecated Use getDescription().getAbstract()
-     */
-    // public String getAbstract();
-
-    /**
-     * @param abstractStr Description of this style
-     * @deprecated Use getDescription().setAbstract()
-     */
-    // public void setAbstract(String abstractStr);
-
-    /** @return true if this is the default style to use */
-    // public boolean isDefault();
-
-    // public void setDefault(boolean isDefault);
-
-    // public FeatureTypeStyle[] getFeatureTypeStyles();
-
-    // public void setFeatureTypeStyles(FeatureTypeStyle[] types);
-
-    // public void addFeatureTypeStyle(FeatureTypeStyle type);
-
-    // public void accept(org.geotools.styling.StyleVisitor visitor);
-}
+public interface NamedStyle extends Style {}

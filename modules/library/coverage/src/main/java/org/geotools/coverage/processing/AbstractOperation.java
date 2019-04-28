@@ -71,7 +71,6 @@ public abstract class AbstractOperation implements Operation, Serializable {
      * Returns the description of the processing operation. If there is no description, returns
      * {@code null}. The default implementation returns the {@linkplain #descriptor} remarks.
      */
-    @Deprecated
     public String getDescription() {
         final InternationalString remarks = descriptor.getRemarks();
         return (remarks != null) ? remarks.toString() : null;

@@ -966,11 +966,6 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
         }
     }
 
-    /** @deprecated use {@link #getGridCoverageNames()} */
-    public String[] listSubNames() {
-        return getGridCoverageNames();
-    }
-
     @Override
     public String[] getGridCoverageNames() {
         return new String[] {coverageName};

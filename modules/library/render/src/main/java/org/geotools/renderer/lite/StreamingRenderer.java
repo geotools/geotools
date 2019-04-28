@@ -589,11 +589,22 @@ public class StreamingRenderer implements GTRenderer {
             LOGGER.info("renderer passed null arguments");
             return;
         } // Other arguments get checked later
-        paint(
-                graphics,
-                paintArea,
-                mapArea,
-                RendererUtilities.worldToScreenTransform(mapArea, paintArea));
+        paint(graphics, paintArea, mapArea, worldToScreenTransform(mapArea, paintArea));
+    }
+
+    private static AffineTransform worldToScreenTransform(Envelope mapExtent, Rectangle paintArea) {
+        double scaleX = paintArea.getWidth() / mapExtent.getWidth();
+        double scaleY = paintArea.getHeight() / mapExtent.getHeight();
+
+        double tx = -mapExtent.getMinX() * scaleX;
+        double ty = (mapExtent.getMinY() * scaleY) + paintArea.getHeight();
+
+        AffineTransform at = new AffineTransform(scaleX, 0.0d, 0.0d, -scaleY, tx, ty);
+        AffineTransform originTranslation =
+                AffineTransform.getTranslateInstance(paintArea.x, paintArea.y);
+        originTranslation.concatenate(at);
+
+        return originTranslation != null ? originTranslation : at;
     }
 
     /**
@@ -631,9 +642,6 @@ public class StreamingRenderer implements GTRenderer {
      * @param paintArea The size of the output area in output units (eg: pixels).
      * @param mapArea the map's visible area (viewport) in map coordinates.
      * @param worldToScreen A transform which converts World coordinates to Screen coordinates.
-     * @deprecated Use paint(Graphics2D graphics, Rectangle paintArea, ReferencedEnvelope mapArea)
-     *     or paint(Graphics2D graphics, Rectangle paintArea, ReferencedEnvelope mapArea,
-     *     AffineTransform worldToScreen) instead.
      */
     public void paint(
             Graphics2D graphics,

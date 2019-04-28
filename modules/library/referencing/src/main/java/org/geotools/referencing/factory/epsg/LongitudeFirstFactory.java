@@ -67,30 +67,6 @@ public class LongitudeFirstFactory extends DeferredAuthorityFactory
      */
 
     /**
-     * The {@linkplain System#getProperty(String) system property} key for setting the default
-     * {@link Hints#FORCE_LONGITUDE_FIRST_AXIS_ORDER FORCE_LONGITUDE_FIRST_AXIS_ORDER} hint value.
-     * This setting can provide a transition path for projects expecting a (<var>longitude</var>,
-     * <var>latitude</var>) axis order on a system-wide level. Application developpers can set the
-     * default value as below:
-     *
-     * <blockquote>
-     *
-     * <pre>
-     * System.setProperty(SYSTEM_DEFAULT_KEY, "true");
-     * </pre>
-     *
-     * </blockquote>
-     *
-     * Note that this system property applies mostly to the default EPSG factory. Most other
-     * factories ({@code "CRS"}, {@code "AUTO"}, <cite>etc.</cite>) don't need this property since
-     * they use (<var>longitude</var>, <var>latitude</var>) axis order by design.
-     *
-     * @see Hints#FORCE_LONGITUDE_FIRST_AXIS_ORDER
-     * @deprecated Moved to {@link GeoTools#FORCE_LONGITUDE_FIRST_AXIS_ORDER}.
-     */
-    public static final String SYSTEM_DEFAULT_KEY = GeoTools.FORCE_LONGITUDE_FIRST_AXIS_ORDER;
-
-    /**
      * Creates a default factory. The {@link Hints#FORCE_LONGITUDE_FIRST_AXIS_ORDER
      * FORCE_LONGITUDE_FIRST_AXIS_ORDER} hint is always set to {@link Boolean#TRUE TRUE}. The {@link
      * Hints#FORCE_STANDARD_AXIS_DIRECTIONS FORCE_STANDARD_AXIS_DIRECTIONS} and {@link
@@ -129,10 +105,9 @@ public class LongitudeFirstFactory extends DeferredAuthorityFactory
 
     /**
      * Returns the priority to use relative to the {@link ThreadedEpsgFactory} priority. The default
-     * priority should be lower, except if the <code>{@value #SYSTEM_DEFAULT_KEY}</code> system
-     * property is set to {@code true}.
-     *
-     * @deprecated Not needed anymore since {@link GeoTools#getDefaultHints}.
+     * priority should be lower, except if the <code>
+     * {@value GeoTools#FORCE_LONGITUDE_FIRST_AXIS_ORDER}</code> system property is set to {@code
+     * true}.
      */
     private static int relativePriority() {
         try {

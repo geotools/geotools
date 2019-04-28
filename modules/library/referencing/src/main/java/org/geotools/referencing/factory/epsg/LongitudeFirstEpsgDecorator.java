@@ -109,21 +109,12 @@ public class LongitudeFirstEpsgDecorator extends DeferredAuthorityFactory
      * Returns the priority to use relative to the {@link ThreadedEpsgFactory} priority. The default
      * priority should be lower, except if the <code>{@value #SYSTEM_DEFAULT_KEY}</code> system
      * property is set to {@code true}.
-     *
-     * @deprecated Not needed anymore since {@link GeoTools#getDefaultHints}.
      */
     private static int relativePriority(Hints userHints) {
         try {
             if (Boolean.getBoolean(GeoTools.FORCE_LONGITUDE_FIRST_AXIS_ORDER)) {
                 return +10;
             }
-            //            if( userHints != null && Boolean.TRUE == userHints.get(
-            // Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER ) ){
-            //                return 10;
-            //            }
-            //            else {
-            //                return -10;
-            //            }
         } catch (SecurityException e) {
             // Fall back on default value.
         }

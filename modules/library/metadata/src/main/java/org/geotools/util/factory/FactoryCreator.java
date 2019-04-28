@@ -20,9 +20,14 @@ import java.lang.ref.Reference;
 import java.lang.ref.WeakReference;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.function.Predicate;
-import javax.imageio.spi.ServiceRegistry.Filter;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
 import org.geotools.util.logging.Logging;
@@ -32,8 +37,8 @@ import org.geotools.util.logging.Logging;
  * instance was found in the registry.
  *
  * <p>This class maintains a cache of previously created factories, as {@linkplain WeakReference
- * weak references}. Calls to {@link #getServiceProvider getServiceProvider} first check if a
- * previously created factory can fit.
+ * weak references}. Calls to {@link #getFactory(Class, Predicate, Hints, Hints.Key)}} first check
+ * if a previously created factory can fit.
  *
  * @since 2.1
  * @version $Id$
@@ -105,21 +110,12 @@ public class FactoryCreator extends FactoryRegistry {
         getCachedFactories(category).add(new WeakReference<T>(factory));
     }
 
-    /** @deprecated Replaced with {@link #getFactories(Class, Predicate, boolean)} */
-    @Override
-    @Deprecated
-    public <T> T getServiceProvider(
-            final Class<T> category, final Filter filter, final Hints hints, final Hints.Key key)
-            throws FactoryRegistryException {
-        Predicate<T> predicate = filter == null ? null : filter::filter;
-        return getFactory(category, predicate, hints, key);
-    }
-
     /**
      * Factory for the specified category, using the specified map of hints (if any). If a provider
      * matching the requirements is found in the registry, it is returned. Otherwise, a new provider
      * is created and returned. This creation step is the only difference between this method and
-     * the {@linkplain FactoryRegistry#getServiceProvider super-class method}.
+     * the {@linkplain FactoryRegistry#getFactory(Class, Predicate, Hints, Hints.Key)} super-class
+     * method}.
      *
      * @param category The category to look for.
      * @param filter Optional predicate, or {@code null} if none.

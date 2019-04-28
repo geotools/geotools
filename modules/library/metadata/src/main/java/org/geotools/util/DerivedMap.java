@@ -72,17 +72,6 @@ public abstract class DerivedMap<BK, K, V> extends AbstractMap<K, V> implements 
      * Creates a new derived map from the specified base map.
      *
      * @param base The base map.
-     * @deprecated Use {@link #DerivedMap(Map, Class} instead.
-     */
-    @SuppressWarnings("unchecked")
-    public DerivedMap(final Map<BK, V> base) {
-        this(base, (Class) Object.class);
-    }
-
-    /**
-     * Creates a new derived map from the specified base map.
-     *
-     * @param base The base map.
      * @param keyType the type of keys in the derived map.
      * @since 2.5
      */

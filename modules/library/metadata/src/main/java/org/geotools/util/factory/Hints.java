@@ -580,15 +580,6 @@ public class Hints extends RenderingHints {
             new ClassKey("org.geotools.feature.FeatureCollections");
 
     /**
-     * Used to provide the <cite>type name</cite> for the returned {@link
-     * org.geotools.feature.FeatureTypeFactory}. Values should be instances of {@link String}.
-     *
-     * @deprecated This hint controls FeatureTypeBuilder which is now deprecated
-     * @since 2.4
-     */
-    public static final Key FEATURE_TYPE_FACTORY_NAME = new Key(String.class);
-
-    /**
      * Indicates the features returned by the feature collections should be considered detached from
      * the datastore. If true the features can be udpated without altering the backing store.
      *

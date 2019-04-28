@@ -353,14 +353,6 @@ public class ReferencedEnvelope3D extends ReferencedEnvelope implements Bounding
     }
 
     /**
-     * @deprecated Use #intersects instead. In the future, #overlaps may be changed to be a true
-     *     overlap check; that is, whether the intersection is two-dimensional.
-     */
-    public boolean overlaps(ReferencedEnvelope3D other) {
-        return intersects(other);
-    }
-
-    /**
      * Check if the point <code>p</code> overlaps (lies inside) the region of this <code>Envelope
      * </code>.
      *
@@ -372,6 +364,7 @@ public class ReferencedEnvelope3D extends ReferencedEnvelope implements Bounding
     }
 
     /** @deprecated Use #intersects instead. */
+    @SuppressWarnings("deprecation")
     public boolean overlaps(Coordinate p) {
         return intersects(p);
     }
@@ -388,11 +381,6 @@ public class ReferencedEnvelope3D extends ReferencedEnvelope implements Bounding
     public boolean intersects(double x, double y, double z) {
         if (isNull()) return false;
         return intersects(x, y) && !(z > maxz || z < minz);
-    }
-
-    /** @deprecated Use #intersects instead. */
-    public boolean overlaps(double x, double y, double z) {
-        return intersects(x, y, z);
     }
 
     /**

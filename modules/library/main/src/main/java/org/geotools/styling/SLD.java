@@ -231,7 +231,6 @@ public class SLD {
      *
      * @param mark the Mark object
      * @return size or {@linkplain #NOTFOUND} if not available
-     * @deprecated please check graphic as an indication of mark size
      */
     public static int size(Mark mark) {
         return NOTFOUND;

@@ -157,16 +157,6 @@ public class TextSymbolizerImpl extends AbstractSymbolizer implements TextSymbol
     }
 
     /**
-     * Setter for property labelPlacement.
-     *
-     * @param labelPlacement New value of property labelPlacement.
-     * @deprecated Use setLabelPlacement
-     */
-    public void setPlacement(LabelPlacement labelPlacement) {
-        setLabelPlacement(labelPlacement);
-    }
-
-    /**
      * A pointPlacement specifies how a text element should be rendered relative to its geometric
      * point.
      *

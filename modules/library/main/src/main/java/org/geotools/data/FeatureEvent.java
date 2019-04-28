@@ -57,10 +57,8 @@ public class FeatureEvent extends EventObject {
      *
      * <p>FeatureEvent.getBounds() should reflect the the Bounding Box of the newly created
      * Features.
-     *
-     * @deprecated Please use FeatureEvent.getType() == Type.ADDED
      */
-    public static final int FEATURES_ADDED = 1;
+    private static final int FEATURES_ADDED = 1;
 
     /**
      * Event type constant denoting that features in the collection has been modified.
@@ -82,11 +80,9 @@ public class FeatureEvent extends EventObject {
      *
      * <p>FeatureEvent.getBounds() should reflect the the BoundingBox of the FeatureWriter modified
      * Features. This may not be possible during a <code>commit()</code> or <code>rollback()</code>
-     * opperation.
-     *
-     * @deprecated Please use FeatureEvent.getType() == Type.CHANGED
+     * operation.
      */
-    public static final int FEATURES_CHANGED = 0;
+    private static final int FEATURES_CHANGED = 0;
 
     /**
      * Event type constant denoting the removal of a feature.
@@ -103,8 +99,6 @@ public class FeatureEvent extends EventObject {
      * on the FeatureSource.
      *
      * <p>FeatureEvent.getBounds() should reflect the the Bounding Box of the removed Features.
-     *
-     * @deprecated Please use FeatureEvent.getType() == Type.REMOVED
      */
     public static final int FEATURES_REMOVED = -1;
 

@@ -278,18 +278,6 @@ public class FilterCapabilities {
     }
 
     /**
-     * Adds a new support type to capabilities.
-     *
-     * @param type The {@link FilterType} type that is supported
-     * @deprecated
-     * @see #convertFilterTypeToMask(short)
-     * @see #addType(long)
-     */
-    public void addType(short type) {
-        addAll(convertFilterTypeToMask(type));
-    }
-
-    /**
      * Returns the mask that is equivalent to the FilterType constant.
      *
      * @param type a constant from {@link FilterType}

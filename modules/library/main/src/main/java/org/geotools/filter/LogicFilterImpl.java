@@ -92,16 +92,6 @@ public abstract class LogicFilterImpl extends BinaryLogicAbstract {
     }
 
     /**
-     * package private method to get the internal storage of filters.
-     *
-     * @return the internal sub filter list.
-     * @deprecated use {@link #getChildren()}
-     */
-    List getSubFilters() {
-        return children;
-    }
-
-    /**
      * Returns a string representation of this filter.
      *
      * @return String representation of the logic filter.

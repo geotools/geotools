@@ -111,9 +111,6 @@ public class Filters {
      */
     private static Filters STATIC = new Filters();
 
-    /** Set to true to start throwing exceptions when org.geotools.filter.Filter is used. */
-    private static final boolean STRICT = false;
-
     org.opengis.filter.FilterFactory2 ff;
 
     /** Create Filters helper object using global FilterFactory provided by CommonFactoryFinder */

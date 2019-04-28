@@ -47,8 +47,6 @@ public final class RasterQueryInfo {
 
     private GeneralEnvelope resultEnvelope;
 
-    private GridEnvelope resultDimension;
-
     private Long rasterId;
 
     private GridEnvelope mosaicLocation;
@@ -64,7 +62,6 @@ public final class RasterQueryInfo {
     private GridEnvelope resultGridRange;
 
     public RasterQueryInfo() {
-        setResultDimensionInsideTiledImage(new GridEnvelope2D(0, 0, 0, 0));
         setMatchingTiles(new GridEnvelope2D(0, 0, 0, 0));
         setResultEnvelope(null);
     }
@@ -144,10 +141,6 @@ public final class RasterQueryInfo {
 
     void setMatchingTiles(GridEnvelope matchingTiles) {
         this.matchingTiles = matchingTiles;
-    }
-
-    void setResultDimensionInsideTiledImage(GridEnvelope resultDimensionInsideTiledImage) {
-        this.resultDimension = resultDimensionInsideTiledImage;
     }
 
     void setMosaicLocation(GridEnvelope targetRasterGridRange) {

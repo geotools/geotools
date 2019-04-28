@@ -46,18 +46,6 @@ public abstract class LogicFilterImpl extends BinaryLogicAbstract {
     }
 
     /**
-     * Convenience constructor to create a NOT logic filter.
-     *
-     * @param filter The initial sub filter.
-     * @throws IllegalFilterException Does not conform to logic filter structure
-     */
-    @Deprecated
-    protected LogicFilterImpl(Filter filter) throws IllegalFilterException {
-        this(new ArrayList<Filter>());
-        children.add(filter);
-    }
-
-    /**
      * Convenience constructor to create an AND/OR logic filter.
      *
      * @param filter1 An initial sub filter.

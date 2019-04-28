@@ -189,11 +189,6 @@ public class TreeSetFeatureCollection implements SimpleFeatureCollection {
         return true;
     }
 
-    @Deprecated
-    protected boolean add(SimpleFeature feature, boolean fire) {
-        return add(feature);
-    }
-
     /**
      * Adds all of the elements in the specified collection to this collection (optional operation).
      * The behavior of this operation is undefined if the specified collection is modified while the

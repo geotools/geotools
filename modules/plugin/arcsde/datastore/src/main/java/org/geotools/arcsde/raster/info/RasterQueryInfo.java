@@ -61,9 +61,6 @@ public final class RasterQueryInfo {
 
     private int rasterIndex;
 
-    /** The full tile range for the matching pyramid level */
-    private GridEnvelope levelTileRange;
-
     private GridEnvelope resultGridRange;
 
     public RasterQueryInfo() {
@@ -91,7 +88,6 @@ public final class RasterQueryInfo {
         //                + ltr.getHigh(1);
         s.append("\n\tMatching tiles       : ").append(mt).append(" out of ").append("level");
         s.append("\n\tTiled image size     : ").append(getTiledImageGridRange());
-        s.append("\n\tResult dimension     : ").append(getResultDimensionInsideTiledImage());
         s.append("\n\tMosaiced dimension   : ").append(getMosaicLocation());
         s.append("\n\tResult envelope      : ").append(getResultEnvelope());
         s.append("\n]");
@@ -124,11 +120,6 @@ public final class RasterQueryInfo {
 
     public GeneralEnvelope getResultEnvelope() {
         return resultEnvelope;
-    }
-
-    @Deprecated
-    public GridEnvelope getResultDimensionInsideTiledImage() {
-        return resultDimension;
     }
 
     void setRasterId(Long rasterId) {
@@ -203,16 +194,6 @@ public final class RasterQueryInfo {
 
     public int getRasterIndex() {
         return rasterIndex;
-    }
-
-    @Deprecated
-    void setLevelTileRange(GridEnvelope levelTileRange2) {
-        this.levelTileRange = levelTileRange2;
-    }
-
-    @Deprecated
-    public GridEnvelope getLevelTileRange() {
-        return levelTileRange;
     }
 
     void setResultGridRange(GridEnvelope resultGridRange) {

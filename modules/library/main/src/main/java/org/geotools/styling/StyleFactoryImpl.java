@@ -205,25 +205,6 @@ public class StyleFactoryImpl extends AbstractStyleFactory
         return new RuleImpl();
     }
 
-    @Deprecated
-    public Rule createRule(
-            org.geotools.styling.Symbolizer[] symbolizers,
-            Description desc,
-            Graphic[] legends,
-            String name,
-            Filter filter,
-            boolean isElseFilter,
-            double maxScale,
-            double minScale) {
-
-        GraphicLegend legend = legends != null && legends.length > 0 ? legends[0] : null;
-        Rule r =
-                new RuleImpl(
-                        symbolizers, desc, legend, name, filter, isElseFilter, maxScale, minScale);
-
-        return r;
-    }
-
     public Rule createRule(
             org.geotools.styling.Symbolizer[] symbolizers,
             Description desc,

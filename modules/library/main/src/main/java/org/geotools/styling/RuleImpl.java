@@ -155,11 +155,6 @@ public class RuleImpl implements org.geotools.styling.Rule, Cloneable {
     public void setElseFilter(boolean defaultb) {
         hasElseFilter = defaultb;
     }
-    /** @deprecated use setIsElseFilter(true) */
-    @Deprecated
-    public void setHasElseFilter() {
-        hasElseFilter = true;
-    }
 
     /**
      * Getter for property maxScaleDenominator.

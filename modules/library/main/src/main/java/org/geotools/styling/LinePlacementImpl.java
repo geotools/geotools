@@ -79,12 +79,6 @@ public class LinePlacementImpl implements LinePlacement, Cloneable {
         init();
     }
 
-    @Deprecated
-    public void setFilterFactory(FilterFactory factory) {
-        filterFactory = factory;
-        init();
-    }
-
     /** Creates a new instance of DefaultLinePlacement */
     private void init() {
         try {

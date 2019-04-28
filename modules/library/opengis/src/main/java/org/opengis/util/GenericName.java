@@ -214,14 +214,6 @@ public interface GenericName extends Comparable<GenericName> {
     LocalName tip();
 
     /**
-     * @deprecated Renamed as {@link #tip}.
-     * @return The last element in the list of {@linkplain #getParsedNames parsed names}.
-     */
-    @Extension
-    @Deprecated
-    LocalName name();
-
-    /**
      * Returns a view of this name as a fully-qualified name. The {@linkplain #scope scope} of a
      * fully qualified name must be {@linkplain NameSpace#isGlobal global}. If the scope of this
      * name is already global, then this method shall returns {@code this}.

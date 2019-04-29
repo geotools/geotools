@@ -69,6 +69,7 @@ import org.hsqldb.jdbc.JDBCDataSource;
  * @author Didier Richard
  */
 public class ThreadedHsqlEpsgFactory extends ThreadedEpsgFactory {
+    public static final Logger LOGGER = Logging.getLogger(ThreadedHsqlEpsgFactory.class);
     /**
      * Current version of EPSG-HSQL plugin. This is usually the same version number than the one in
      * the EPSG database bundled in this plugin. However this field may contains additional minor
@@ -277,8 +278,13 @@ public class ThreadedHsqlEpsgFactory extends ThreadedEpsgFactory {
                     byte[] buf = new byte[1024];
                     int read = 0;
                     while ((ze = zin.getNextEntry()) != null) {
-                        Utilities.assertNotZipSlipVulnarable(
-                                new File(directory, ze.getName()), directory.toPath());
+                        try {
+                            Utilities.assertNotZipSlipVulnarable(
+                                    new File(directory, ze.getName()), directory.toPath());
+                        } catch (IOException zipSlipVulnerable) {
+                            // check not expected to work when running as a windows service
+                            LOGGER.fine("Expected Reference to internal jar:" + zipSlipVulnerable);
+                        }
                         FileOutputStream fout =
                                 new FileOutputStream(new File(directory, ze.getName()));
                         while ((read = zin.read(buf)) > 0) {

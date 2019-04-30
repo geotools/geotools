@@ -18,6 +18,7 @@ package org.geotools.renderer.crs;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.locationtech.jts.geom.Envelope;
@@ -41,6 +42,7 @@ public class WrappingProjectionHandler extends ProjectionHandler {
     private int maxWraps;
 
     private boolean datelineWrappingCheckEnabled = true;
+    public static final String DATELINE_WRAPPING_CHECK_ENABLED = "datelineWrappingCheckEnabled";
 
     /**
      * Provides the strategy with the area we want to render and its CRS (the SPI lookup will do
@@ -61,6 +63,21 @@ public class WrappingProjectionHandler extends ProjectionHandler {
         this.queryAcrossDateline = true;
         // this will compute the radius
         setCentralMeridian(centralMeridian);
+    }
+
+    /**
+     * Set one of the supported projection parameters: - datelineWrappingCheckEnabled (boolean) if
+     * false disables the heuristic for dateline wrapping check (true by default)
+     *
+     * @param projectionParameters
+     */
+    @Override
+    public void setProjectionParameters(Map projectionParameters) {
+        super.setProjectionParameters(projectionParameters);
+        if (projectionParameters.containsKey(DATELINE_WRAPPING_CHECK_ENABLED)) {
+            datelineWrappingCheckEnabled =
+                    (Boolean) projectionParameters.get(DATELINE_WRAPPING_CHECK_ENABLED);
+        }
     }
 
     @Override

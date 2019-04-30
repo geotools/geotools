@@ -17,6 +17,7 @@
 package org.geotools.coverage.grid.io.imageio;
 
 import it.geosolutions.imageio.maskband.DatasetLayout;
+import it.geosolutions.imageio.utilities.ImageIOUtilities;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.awt.image.RenderedImage;
@@ -127,45 +128,48 @@ public class MaskOverviewProvider {
         this.layout = layout;
 
         // Handling Overviews
-        ovrURL = new URL(inputFile.toString() + OVR_EXTENSION);
         hasDatasetLayout = layout != null;
-        if (hasDatasetLayout && layout.getExternalOverviews() != null) {
-            ovrURL = URLs.fileToUrl(layout.getExternalOverviews());
-        }
-        // Creating overview file URL
-        overviewStreamSpi =
-                suggestedStreamSPI == null ? getInputStreamSPIFromURL(ovrURL) : suggestedStreamSPI;
-        ImageInputStream ovrStream = null;
         boolean hasExternalOverviews = false;
-        try {
-            ovrStream =
-                    overviewStreamSpi.createInputStreamInstance(
-                            ovrURL, ImageIO.getUseCache(), ImageIO.getCacheDirectory());
-            if (ovrStream == null) {
-                // No Overview file so we fall back to the original file spis
-                overviewStreamSpi = streamSpi;
-                overviewReaderSpi = readerSpi;
-            } else {
-                overviewReaderSpi = getReaderSpiFromStream(null, ovrStream);
-                hasExternalOverviews = true;
+        if (!ImageIOUtilities.isSkipExternalFilesLookup()) {
+            ovrURL = new URL(inputFile.toString() + OVR_EXTENSION);
+            if (hasDatasetLayout && layout.getExternalOverviews() != null) {
+                ovrURL = URLs.fileToUrl(layout.getExternalOverviews());
             }
-        } catch (Exception e) {
-            if (LOGGER.isLoggable(Level.WARNING)) {
-                LOGGER.log(Level.WARNING, "Unable to create a Reader for File: " + ovrURL, e);
-            }
-            throw new IllegalArgumentException(e);
-        } finally {
-            if (ovrStream != null) {
-                try {
-                    ovrStream.close();
-                } catch (Exception e) {
-                    if (LOGGER.isLoggable(Level.SEVERE)) {
-                        LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            // Creating overview file URL
+            overviewStreamSpi =
+                    suggestedStreamSPI == null
+                            ? getInputStreamSPIFromURL(ovrURL)
+                            : suggestedStreamSPI;
+            ImageInputStream ovrStream = null;
+            try {
+                ovrStream =
+                        overviewStreamSpi.createInputStreamInstance(
+                                ovrURL, ImageIO.getUseCache(), ImageIO.getCacheDirectory());
+                if (ovrStream == null) {
+                    // No Overview file so we fall back to the original file spis
+                    overviewStreamSpi = streamSpi;
+                    overviewReaderSpi = readerSpi;
+                } else {
+                    overviewReaderSpi = getReaderSpiFromStream(null, ovrStream);
+                    hasExternalOverviews = true;
+                }
+            } catch (Exception e) {
+                if (LOGGER.isLoggable(Level.WARNING)) {
+                    LOGGER.log(Level.WARNING, "Unable to create a Reader for File: " + ovrURL, e);
+                }
+                throw new IllegalArgumentException(e);
+            } finally {
+                if (ovrStream != null) {
+                    try {
+                        ovrStream.close();
+                    } catch (Exception e) {
+                        if (LOGGER.isLoggable(Level.SEVERE)) {
+                            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+                        }
                     }
                 }
             }
         }
-
         // Getting number of Overviews
         int numOverviews = 0;
         if (hasDatasetLayout) {

@@ -34,7 +34,7 @@ Your First Build
 
      C:\java\geotools>mvn install
 
-5. If all is well, Maven should download the required .jar files and build GeoTools modules.
+5. If all is well, Maven should download the required ``.jar`` files and build GeoTools modules.
 6. At the end of this process it will display a list of all the modules which were built and installed correctly.::
 
       [INFO] ------------------------------------------------------------------------
@@ -45,7 +45,7 @@ Your First Build
       [INFO] Final Memory: 41M/87M
       [INFO] ------------------------------------------------------------------------
 
-7. The first build takes a while due to the download time for the .jar files.
+7. The first build takes a while due to the download time for the ``.jar`` files.
 
 If you have any trouble check the common build failures at the bottom of this page.
 
@@ -81,7 +81,7 @@ Expected Build times
 Depending on your hardware and internet connection:
 
 * Building the first time, where maven needs to download everything, may take 20 to 30 minutes.
-* Future builds check for the most recent .jar files from the internet. The checking is based on an md5 checksum and does not take long. Building subsequently may take 10 minutes depending on your hardware and internet connection.
+* Future builds check for the most recent ``.jar`` files from the internet. The checking is based on an md5 checksum and does not take long. Building subsequently may take 10 minutes depending on your hardware and internet connection.
 * After everything is downloaded can build "offline" and avoid the checking of md5 checksums resulting in a faster build of 5-7 minutes.
 * Finally you can turn off tests (danger!) and build offline to get a build under 2 minutes
 
@@ -117,7 +117,7 @@ To fix you need to build the javadoc jar by hand.
 
 3. You can now return to the root of the project and restart your build.
 
-Note that this plugin requires your JAVA_HOME to be set to a JDK as it makes use of the tools.jar (in order to build javadocs).
+Note that this plugin requires your JAVA_HOME to be set to a JDK as it makes use of the ``tools.jar`` (in order to build javadocs).
 
 Unable to Delete Directory on Windows
 '''''''''''''''''''''''''''''''''''''

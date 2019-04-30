@@ -26,7 +26,7 @@ The GeoTools library provides predefined constants for the usual suspects, using
 * OGC
 * Oracle
 
-All of these organisations have published documentation, or specifications, that you may wish to offer as a citation when describing your own information.
+All of these organizations have published documentation, or specifications, that you may wish to offer as a citation when describing your own information.
 
 The **Citations** class rounds up these constants, and a few more, for you to reuse::
   

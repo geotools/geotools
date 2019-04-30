@@ -53,43 +53,43 @@ Q: Okay what data formats does GeoTools support?
 GeoTools supports additional formats through the use of plug-ins. You can control the formats supported
 by your application by only including the plug-ins you require.
 
-* arcgrid
-* arcsde
-* db2
+* ``arcgrid`` 
+* ``arcsde`` 
+* ``db2`` 
 * raster formats
   
-  * geotiff
-  * grassraster
-  * gtopo30
-  * image - world plus image files using common image formats such as JPEG, TIFF, GIF and PNG
-  * imageio-ext-gdal (allows access to additional GDAL formats thanks to the ImageIO project)
-  * imagemoasaic
-  * imagepyramid
-  * JP2K
+  * ``geotiff`` 
+  * ``grassraster`` 
+  * ``gtopo30`` 
+  * ``image``  - world plus image files using common image formats such as JPEG, TIFF, GIF and PNG
+  * ``imageio-ext-gdal`` (allows access to additional GDAL formats thanks to the ImageIO project)
+  * ``imagemoasaic`` 
+  * ``imagepyramid`` 
+  * ``JP2K`` 
   
-* Database "jdbc-ng" support
+* Database ``gt-jdbc-ng`` `` support
   
-  * h2
-  * mysql
-  * oracle
-  * postgis
-  * spatialite
-  * sqlserver
+  * ``h2`` 
+  * ``mysql`` 
+  * ``oracle`` 
+  * ``postgis`` 
+  * ``spatialite`` 
+  * ``sqlserver`` 
 
-* postgis
-* property - simple text file format often used for testing
-* shapefile
+* ``postgis`` 
+* ``property``  - simple text file format often used for testing
+* ``shapefile`` 
 
 Perhaps one of the unsupported modules or plugins may have what you need. These modules
 are supplied by the community and do not yet meet the quality expected by the library:
 
 There are also some "unsupported" formats that are either popular or under development:
 
-* app-schema (under development) - allows the remapping and combining of one or more data sources into a provided application schema
-* dfx
-* edigeo
-* geojson
-* wfs
+* ``app-schema`` - allows the remapping and combining of one or more data sources into a provided application schema
+* ``dfx`` 
+* ``edigeo`` 
+* ``geojson`` 
+* ``wfs`` 
 
 The current authoritative list of plugins is of course the source code: 
 
@@ -140,7 +140,7 @@ one associated with the most recent formal release (e.g GeoTools 14-SNAPSHOT) an
 being maintained (e.g. GeoTools 13-SNAPSHOT).
 
 New snapshot jars are built nightly and deployed to a repository separate from the one used for formal releases. If you
-are using Maven as your build tool you can work with a snapshot release by adding the following to your pom.xml::
+are using Maven as your build tool you can work with a snapshot release by adding the following to your ``pom.xml`` ::
 
     <repository>
         <id>opengeo</id>
@@ -161,7 +161,7 @@ You can now build your project against a snapshot release by setting it as the y
 Common License Questions
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-Q: What licence does GeoTools use?
+Q: What license does GeoTools use?
 ''''''''''''''''''''''''''''''''''
 
 All GeoTools modules are released under the GNU Lesser General Public License (LGPL). GeoTools can be used for

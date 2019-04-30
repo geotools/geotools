@@ -70,4 +70,4 @@ Unsupported Referencing implementations:
    (and has been done).
 
    If you really do need one of these modules cleaned up, perhaps for a deadline, please check out our support page - a
-   range of commercial support options are available. Any one of these organisations can be hired to bring these modules up to speed.
+   range of commercial support options are available. Any one of these organizations can be hired to bring these modules up to speed.

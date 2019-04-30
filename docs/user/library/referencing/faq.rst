@@ -1,11 +1,11 @@
 Referencing FAQ
 ---------------
 
-Q: Why can't I display shapefile over a WMS layer?
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Q: Why can't I display a shapefile over a WMS layer?
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-This can happen when the axis definition (ie. which way is X ?) differs between the coordinate reference system used by
-the shapefile and that used by the WMS layer.  It can be fixed by requesting GeoTools to enforce lon - lat axis order by 
+This can happen when the axis definition (i.e. which way is X ?) differs between the coordinate reference system used by
+the shapefile and that used by the WMS layer.  It can be fixed by requesting GeoTools to enforce lonigtude - latitude axis order by 
 including this statement in your code prior to displaying layers...
 
 .. sourcecode:: java
@@ -29,26 +29,26 @@ Q: How to choose an EPSG Authority?
 The referencing module does not do very much out of the box - it needs someone
  to tell it what all the funny codes mean (such as "EPSG:4326").
 
-You need to choose a single "epsg" jar to have on your classpath; if you have
-several epsg jars on your classpath you will get a FactoryException.
+You need to choose a single EPSG jar to have on your classpath; if you have
+several EPSG jars on your classpath you will get a FactoryException.
   
-For most needs just use the **gt-epsg-hsql** plugin:
+For most needs just use the ``gt-epsg-hsql`` plugin:
 
-* **gt-epsgh-hsql**: will unpack an hsql database containing the official epsg
+* ``gt-epsgh-hsql``: will unpack an hsql database containing the official epsg
   database into a temp directory, a great solution for desktop applications.
 
 There are several alternatives:
 
-* **gt-epsg-wkt**: uses an internal property file and is lightweight rather than
+* ``gt-epsg-wkt``: uses an internal property file and is lightweight rather than
   official and correct. A great solution for applets
-* **gt-epsg-postgres**: uses the official epsg database which you have to load
+* ``gt-epsg-postgres``: uses the official epsg database which you have to load
   into PostgreSQL yourself. A great solution for Java EE applications.  
-* **gt-epsg-access**: irectly use an the official epsg database as distributed.
+* ``gt-epsg-access``: directly use an the official epsg database as distributed.
   A great solution for windows users that need the latest official database.
 
 Unsupported:
 
-* **gt-epsg-oracle**: Load the official epsg database into oracle to use this plugin
+* ``gt-epsg-oracle``: Load the official epsg database into oracle to use this plugin
 * **gt-epsgh-h2**: use this popular pure java database
 
 Q: Are other authorities other than EPSG supported?
@@ -60,7 +60,7 @@ inspired ideas.
 Q: What Jars does gt-referencing need?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-As an example to use **gt-epsg-hsql** you will need::
+As an example to use ``gt-epsg-hsql`` you will need::
     
     C:\geotools\trunk\modules\plugin\epsg-hsql>mvn dependency:tree
     ...
@@ -230,7 +230,7 @@ the system.
 This is often used by those working with a national standards body that maintains its
 own set of official codes.
 
-You can use the **gt-epsg-wkt** plugin as an example of the following options:
+You can use the ``gt-epsg-wkt`` plugin as an example of the following options:
 
 * Through a property file and programatic registration of the factory
   
@@ -246,7 +246,7 @@ You can use the **gt-epsg-wkt** plugin as an example of the following options:
      method
   
   After that, the desired CRS can be invoked as "CUSTOM:someUniqueCodeValue" so, for
-  example, a CRS object can be created using the CRS.decode(..) method with the string
+  example, a CRS object can be created using the ``CRS.decode(..)`` method with the string
   nomenclature of authority-colon-code. The CRS's defined in this way will also be taken
   into consideration by the rest of the referencing subsystem.
 

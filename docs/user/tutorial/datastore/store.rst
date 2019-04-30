@@ -13,7 +13,7 @@ will have a full functional CSVDataStore supporting both read and write operatio
    
    CSVDataStore Read-Write
    
-The DataStore API provides three categories of public methods involved in making content writeable.
+The DataStore API provides three categories of public methods involved in making content writable.
 
 * DataStore.createSchema( featureType ) - sets up a new entry for content of the provided type
 * DataStore.getFeatureWriter( typeName ) - a low-level iterator that allows writing

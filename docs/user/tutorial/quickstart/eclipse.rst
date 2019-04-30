@@ -408,7 +408,7 @@ Alternatives to M2Eclipse
 =========================
 
 There are two alternatives to the use of the M2Eclipse plugin; you may find these better suit the
-needs of your organisation.
+needs of your organization.
 
 * :ref:`eclipse-mvn-start`
 * :ref:`eclipse-download-start`

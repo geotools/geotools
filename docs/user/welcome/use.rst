@@ -324,7 +324,7 @@ Here is the GeoTools code that looks up a DataSource for an EPSG authority::
   Context context = JNDI.getInitialContext(null);
   DataSource source = (DataSource) context.lookup("jdbc/EPSG");
 
-The JNDI interfaces are shipped with Java; and two implementations are provided (one to talk to LDAP directories such as organisations deploy for email address information, and another for configuration information stored on the file system with your JRE).
+The JNDI interfaces are shipped with Java; and two implementations are provided (one to talk to LDAP directories such as organizations deploy for email address information, and another for configuration information stored on the file system with your JRE).
 
 The difference between JNDI and a Container:
 

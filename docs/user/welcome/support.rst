@@ -51,7 +51,7 @@ Commercial Support
 ------------------
 
 If you seriously have a deadline, or find you are spending too much time reading this documentation
-please consider setting up a support contract with any of the following organisations.
+please consider setting up a support contract with any of the following organizations.
 
 * `Camptocamp <http://www.camptocamp.com/en/services/support>`_
 * `GeoSolutions <https://www.geo-solutions.it/offer/>`_
@@ -62,7 +62,7 @@ please consider setting up a support contract with any of the following organisa
 
 Please consider this as an option, especially if you do not have a background in Geospatial Science
 or stuck between a bug and a deadline. Remember that the documentation is constructed by volunteers,
-or people like you hiring an organisation to for specific work.
+or people like you hiring an organization to for specific work.
 
 Issue Tracker
 -------------

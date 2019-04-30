@@ -2,7 +2,7 @@
 WMS
 ===
 
-The gt-wms extension offers a full featured web map server client. This allows your application to connect to a range of web map services, review the capabilities and issue requests such as "GetMap" and "GetInfo".
+The ``gt-wms`` extension offers a full featured web map server client. This allows your application to connect to a range of web map services, review the capabilities and issue requests such as "GetMap" and "GetInfo".
 
 .. sidebar:: Details
    

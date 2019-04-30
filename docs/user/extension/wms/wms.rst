@@ -29,7 +29,7 @@ This page contains examples how how to connect and use the GeoTools WebMapServer
       //For example, the capabilities it returned was not valid
     }
   
-  Assuming nothing went wrong, we now have a WebMapServer object "wms"
+  Assuming nothing went wrong, we now have a WebMapServer object ``wms`` 
   that contains the Capabilities document of returned from the server. It
   can also provide further communication with the server.
 
@@ -38,7 +38,7 @@ WMSCapabilities
 
 WMSCapabilities is used to describe the abilities and published information available via a Web Map Service.
 
-You can retrive a WMSCapabilities directly from your WebMapService::
+You can retrieve a WMSCapabilities directly from your WebMapService::
   
   WMSCapabilities capabilities = wms.getCapabilities();
 
@@ -163,7 +163,7 @@ Other common activities:
 
 * Requesting with a style
   
-  If you want to request the map with some of its available styles use the appropriate addLayer method::
+  If you want to request the map with some of its available styles use the appropriate ``addLayer`` method::
      
      Layer[] layers = WMSUtils.getNamedLayers(capabilities);
      List styles = layers[2].getStyles();

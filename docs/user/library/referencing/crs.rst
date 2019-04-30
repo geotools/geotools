@@ -54,7 +54,7 @@ To parse WKT please use the CRS.parseWKT( txt ) method::
 
   CoordinateReferenceSystem crs = CRS.parseWKT(wkt);
 
-The different organisations each have slightly different ideas on how some of the names work in
+The different organizations each have slightly different ideas on how some of the names work in
 the WKT standard. GeoTools does a good job of listing common aliases in order to read WKT
 generated from a range of tools.
 
@@ -293,7 +293,7 @@ A 1D coordinate reference system used for recording heights or depth relative to
    For those into the details; these static final constant CoordinateReferenceSystem cite "GeoTools"
    as the authority responsible for the definition. This is in marked contrast with the
    **CoordinateReferenceSystem** instances produced by an AuthorityFactory (those instances will
-   credit a specific organisation like "EPSG").
+   credit a specific organization like "EPSG").
 
 Examples:
 

@@ -174,4 +174,4 @@ An alternative approach has been created in the coverageio module of the unsuppo
 Multi-dimensional
 '''''''''''''''''
 
-There are also several approaches to handling multi-dimensional data, again with different approaches taken by different groups. Usually these groups are working with NetCDF files from different organisations (and thus have different conventions to contend with).
+There are also several approaches to handling multi-dimensional data, again with different approaches taken by different groups. Usually these groups are working with NetCDF files from different organizations (and thus have different conventions to contend with).

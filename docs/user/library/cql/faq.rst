@@ -15,7 +15,7 @@ Here is the most common use for the CQL class - asking for Features:
    :end-before: // cql comparison end
   
 
-The CQL utility class produced is a Filter; you can create Filters by hand (using a FilterFactory) but this is much easier.
+The CQL utility class produced is a Filter; you can create Filters by hand (using a ``FilterFactory``  but this is much easier.
 
 Q: What version of CQL is implemented?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -29,7 +29,7 @@ of temporal expressions and to leverage its use in the GeoTools library.
 Q: Can I just try CQL out?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-If you're developing with GeoTools, you can easily try out the CQL parser by depending on the **gt-cql**
+If you're developing with GeoTools, you can easily try out the CQL parser by depending on the ``gt-cql`` 
 jar and running the **CQL** class as a normal Java application.
 
 It will present a prompt on the console (standard input) from where you can input CQL strings and

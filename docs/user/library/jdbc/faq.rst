@@ -4,7 +4,7 @@ JDBC FAQ
 Q: How to access a database from Java Enterprise Edition?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Depending on your application container (and organisational polices) you may be restricted to only using database connection pools under control of your administrator.
+Depending on your application container (and organizational polices) you may be restricted to only using database connection pools under control of your administrator.
 
 Your administrator will register the database connection
 pool with the application server and configure your application with the Java Naming and Directory Interface (JNDI) reference.

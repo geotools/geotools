@@ -33,11 +33,12 @@ Because metadata is the "lowest" implementation jar in our software stack; neede
 everyone else. These classes really are not interesting enough to separate out into
 their own module.
 
-Q: Why does gt-metadata contain all this factory stuff?
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Q: Why does ``gt-metadata`` contain all this factory stuff?
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The gt-metadata module introduces some of the "glue code" needed used to hook up GeoTools to services
-provided by your project. You will find pages here covering logging and JNDI integration.
+The ``gt-metadata`` module introduces some of the "glue code" needed
+used to hook up GeoTools to services provided by your project. You will
+find pages here covering logging and JNDI integration.
 
-For a more detailed discussion of how to integrate GeoTools into your application please
-review the advanced section on integration.
+For a more detailed discussion of how to integrate GeoTools into your
+application please review the advanced section on integration.

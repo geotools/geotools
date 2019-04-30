@@ -196,14 +196,14 @@ public class NestedFilterToSQL extends FilterToSQL {
             List<FeatureChainedAttributeDescriptor> attributes =
                     nestedMappingsExtractor.getFeatureChainedAttributes();
             if (attributes.size() >= 1) {
-                out.write("(");
+                if (attributes.size() > 1) out.write("(");
                 boolean first = true;
                 for (FeatureChainedAttributeDescriptor nestedAttrDescr : attributes) {
                     if (first) first = false;
                     else out.write(" OR ");
                     encodeChainedAttribute(filter, xpath, nestedAttrDescr);
                 }
-                out.write(")");
+                if (attributes.size() > 1) out.write(")");
             }
             return extraData;
 

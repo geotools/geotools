@@ -420,7 +420,8 @@ public final class ImageMosaicFormat extends AbstractGridFormat implements Forma
                     final String SPIClass = properties.getProperty("SPI");
                     // create a datastore as instructed
                     final DataStoreFactorySpi spi =
-                            (DataStoreFactorySpi) Class.forName(SPIClass).newInstance();
+                            (DataStoreFactorySpi)
+                                    Class.forName(SPIClass).getDeclaredConstructor().newInstance();
 
                     // get the params
                     final Map<String, Serializable> params = new HashMap<String, Serializable>();

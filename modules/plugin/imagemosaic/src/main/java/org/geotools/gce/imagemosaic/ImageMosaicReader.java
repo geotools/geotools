@@ -811,8 +811,8 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
         if (suggestedSPIClass != null) {
             try {
                 final Class<?> clazz = Class.forName(suggestedSPIClass);
-                if (clazz.newInstance() instanceof ImageReaderSpi)
-                    suggestedSPI = (ImageReaderSpi) clazz.newInstance();
+                if (clazz.getDeclaredConstructor().newInstance() instanceof ImageReaderSpi)
+                    suggestedSPI = (ImageReaderSpi) clazz.getDeclaredConstructor().newInstance();
                 else suggestedSPI = null;
             } catch (Exception e) {
                 if (LOGGER.isLoggable(Level.FINE))

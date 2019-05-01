@@ -1048,18 +1048,14 @@ public class FactoryRegistry {
                         T factory = getFactoryByClass(factoryClass);
                         if (factory == null)
                             try {
-                                factory = factoryClass.newInstance();
+                                factory = factoryClass.getDeclaredConstructor().newInstance();
                                 if (registerFactory(factory, category)) {
                                     message.append(System.getProperty("line.separator", "\n"));
                                     message.append("  ");
                                     message.append(factoryClass.getName());
                                     newFactories = true;
                                 }
-                            } catch (IllegalAccessException exception) {
-                                throw new FactoryRegistryException(
-                                        Errors.format(ErrorKeys.CANT_CREATE_FACTORY_$1, classname),
-                                        exception);
-                            } catch (InstantiationException exception) {
+                            } catch (Exception exception) {
                                 throw new FactoryRegistryException(
                                         Errors.format(ErrorKeys.CANT_CREATE_FACTORY_$1, classname),
                                         exception);

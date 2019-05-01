@@ -211,10 +211,8 @@ public class AnnotatedBeanProcessFactory extends AnnotationDrivenProcessFactory 
             if (processClass == null) {
                 throw new IllegalArgumentException("Process " + name + " is unknown");
             }
-            return processClass.newInstance();
-        } catch (InstantiationException e) {
-            throw new RuntimeException(e);
-        } catch (IllegalAccessException e) {
+            return processClass.getDeclaredConstructor().newInstance();
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }

@@ -121,7 +121,7 @@ public class ComplexAttributeImpl extends AttributeImpl implements ComplexAttrib
 
         Collection clone = null;
         try {
-            clone = original.getClass().newInstance();
+            clone = original.getClass().getDeclaredConstructor().newInstance();
         } catch (Exception e) {
             clone = new ArrayList();
         }

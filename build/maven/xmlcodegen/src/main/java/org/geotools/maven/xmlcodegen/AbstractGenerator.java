@@ -323,7 +323,7 @@ public abstract class AbstractGenerator {
                 + templateName);
 
         try {
-            Object template = c.newInstance();
+            Object template = c.getDeclaredConstructor().newInstance();
 
             Method generate = c.getMethod("generate",
                     new Class[] { Object.class });

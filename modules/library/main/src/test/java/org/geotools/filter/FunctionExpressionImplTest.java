@@ -21,6 +21,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -129,14 +130,14 @@ public class FunctionExpressionImplTest extends TestCase {
 
     public void testImplementations()
             throws IOException, ClassNotFoundException, InstantiationException,
-                    IllegalAccessException {
+                    IllegalAccessException, NoSuchMethodException, InvocationTargetException {
 
         List functionClasses = loadFunctionClasses();
 
         List errors = new LinkedList();
         for (Iterator it = functionClasses.iterator(); it.hasNext(); ) {
             Class functionClass = (Class) it.next();
-            Function function = (Function) functionClass.newInstance();
+            Function function = (Function) functionClass.getDeclaredConstructor().newInstance();
             testFunction(function, errors);
         }
         if (errors.size() > 0) {
@@ -164,7 +165,8 @@ public class FunctionExpressionImplTest extends TestCase {
     }
 
     private void testFunction(Function function, List errors)
-            throws InstantiationException, IllegalAccessException {
+            throws InstantiationException, IllegalAccessException, NoSuchMethodException,
+                    InvocationTargetException {
         final String functionClass = function.getClass().getName();
 
         if (null == function.getName()) {
@@ -214,7 +216,8 @@ public class FunctionExpressionImplTest extends TestCase {
     }
 
     private void testDeprecatedMethods(FunctionExpression function, List<String> errors)
-            throws InstantiationException, IllegalAccessException {
+            throws InstantiationException, IllegalAccessException, NoSuchMethodException,
+                    InvocationTargetException {
         final String functionClass = function.getClass().getName();
         int argCount = function.getFunctionName().getArgumentCount();
         if (argCount < 0) { // unlimited parameters
@@ -245,7 +248,7 @@ public class FunctionExpressionImplTest extends TestCase {
                             + ".getParameters() returned a wrong result when parameters were set through setArgs(Expression[])");
         }
 
-        function = (FunctionExpression) function.getClass().newInstance();
+        function = (FunctionExpression) function.getClass().getDeclaredConstructor().newInstance();
         function.setParameters(expected);
 
         List<Expression> returnedArgs = function.getParameters();

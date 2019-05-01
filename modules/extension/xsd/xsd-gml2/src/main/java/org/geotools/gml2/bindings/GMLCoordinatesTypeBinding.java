@@ -189,13 +189,13 @@ public class GMLCoordinatesTypeBinding extends AbstractComplexBinding {
             Coordinate c = coordinates.getCoordinate(i);
             buf.append(c.x);
 
-            boolean y = (coordinates.getDimension() > 1) && !new Double(c.y).isNaN();
+            boolean y = (coordinates.getDimension() > 1) && !Double.valueOf(c.y).isNaN();
 
             if (y) {
                 buf.append("," + c.y);
             }
 
-            boolean z = y && (coordinates.getDimension() > 2) && !new Double(c.getZ()).isNaN();
+            boolean z = y && (coordinates.getDimension() > 2) && !Double.valueOf(c.getZ()).isNaN();
 
             if (z) {
                 buf.append("," + c.getZ());

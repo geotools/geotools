@@ -47,6 +47,6 @@ public class FilterFunction_area extends FunctionExpressionImpl {
             throw new IllegalArgumentException(
                     "Filter Function problem for function area argument #0 - expected type Geometry");
         }
-        return new Double(StaticGeometry.area(arg0));
+        return Double.valueOf(StaticGeometry.area(arg0));
     }
 }

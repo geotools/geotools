@@ -872,7 +872,7 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
                             Vocabulary.formatInternational(VocabularyKeys.NODATA),
                             new Color[] {new Color(0, 0, 0, 0)},
                             NumberRange.create(noData, noData));
-            CoverageUtilities.setNoDataProperty(properties, new Double(noData));
+            CoverageUtilities.setNoDataProperty(properties, Double.valueOf(noData));
             image.setProperty(NoDataContainer.GC_NODATA, new NoDataContainer(noData));
         }
         // Setting ROI Property

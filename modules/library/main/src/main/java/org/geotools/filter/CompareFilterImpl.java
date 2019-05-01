@@ -102,16 +102,16 @@ public abstract class CompareFilterImpl extends BinaryComparisonAbstract {
                     }
                 } else if (leftObj instanceof Number && (rightObj.getClass() == String.class)) {
                     try {
-                        rightObj = new Double(Double.parseDouble((String) rightObj));
-                        leftObj = new Double(((Number) leftObj).doubleValue());
+                        rightObj = Double.valueOf(Double.parseDouble((String) rightObj));
+                        leftObj = Double.valueOf(((Number) leftObj).doubleValue());
                     } catch (Exception e) {
                         leftObj = leftObj.toString();
                         rightObj = rightObj.toString();
                     }
                 } else if ((leftObj.getClass() == String.class) && rightObj instanceof Number) {
                     try {
-                        leftObj = new Double(Double.parseDouble((String) leftObj));
-                        rightObj = new Double(((Number) rightObj).doubleValue());
+                        leftObj = Double.valueOf(Double.parseDouble((String) leftObj));
+                        rightObj = Double.valueOf(((Number) rightObj).doubleValue());
                     } catch (Exception e) {
                         leftObj = leftObj.toString();
                         rightObj = rightObj.toString();
@@ -123,8 +123,8 @@ public abstract class CompareFilterImpl extends BinaryComparisonAbstract {
             } else if (leftObj instanceof String && rightObj instanceof String) {
                 // Check for case of strings that can both be converted to Numbers
                 try {
-                    leftObj = new Double(Double.parseDouble((String) leftObj));
-                    rightObj = new Double(Double.parseDouble((String) rightObj));
+                    leftObj = Double.valueOf(Double.parseDouble((String) leftObj));
+                    rightObj = Double.valueOf(Double.parseDouble((String) rightObj));
                 } catch (Exception e) {
                     leftObj = leftObj.toString();
                     rightObj = rightObj.toString();

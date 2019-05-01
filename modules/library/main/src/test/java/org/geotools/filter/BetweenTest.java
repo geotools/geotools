@@ -57,8 +57,8 @@ public class BetweenTest {
         ftb.setName("testSchema");
         SimpleFeatureType schema = ftb.buildFeatureType();
 
-        a.setExpression1(new LiteralExpressionImpl(new Double(5)));
-        a.setExpression2(new LiteralExpressionImpl(new Double(15)));
+        a.setExpression1(new LiteralExpressionImpl(Double.valueOf(5)));
+        a.setExpression2(new LiteralExpressionImpl(Double.valueOf(15)));
         a.setExpression(new AttributeExpressionImpl(schema, "value"));
 
         // FlatFeatureFactory fFac = new FlatFeatureFactory(schema);

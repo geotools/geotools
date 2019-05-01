@@ -221,7 +221,7 @@ public class EqualAreaFunctionTest {
                     less = FF.lessOrEqual(PERSONS, FF.literal(rangedClassifier.getMax(i)));
                 }
                 Filter filter = FF.and(greater, less);
-                filterMap.put(filter, new Double(0));
+                filterMap.put(filter, Double.valueOf(0));
             }
             for (SimpleFeature feature : fc) {
                 boolean found = false;

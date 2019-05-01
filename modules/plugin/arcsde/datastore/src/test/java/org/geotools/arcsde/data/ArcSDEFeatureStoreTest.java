@@ -283,8 +283,8 @@ public class ArcSDEFeatureStoreTest {
         int value = 24;
         build.add(Integer.valueOf(value));
         build.add(Short.valueOf((short) value));
-        build.add(new Float(value / 10.0F));
-        build.add(new Double(value / 10D));
+        build.add(Float.valueOf(value / 10.0F));
+        build.add(Double.valueOf(value / 10D));
         build.add("FEATURE_" + value);
 
         Calendar cal = Calendar.getInstance();

@@ -343,7 +343,7 @@ public class WFSParsingTest {
 
             assertEquals(BigInteger.valueOf(155), intProperty);
             assertEquals(new URI("http://www.opengeospatial.org/"), f.getAttribute("uriProperty"));
-            assertEquals(new Float(12765.0), f.getAttribute("measurand"));
+            assertEquals(Float.valueOf(12765.0f), f.getAttribute("measurand"));
             assertTrue(f.getAttribute("dateProperty") instanceof Date);
             assertEquals(BigDecimal.valueOf(5.03), f.getAttribute("decimalProperty"));
         } finally {

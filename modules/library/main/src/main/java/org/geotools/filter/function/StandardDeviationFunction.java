@@ -89,11 +89,11 @@ public class StandardDeviationFunction extends ClassificationFunction {
 
     private Double getMin(int index, int numClasses, double average, double standardDeviation) {
         if (index <= 0 || index >= numClasses) return null;
-        return new Double(average - (((numClasses / 2.0) - index) * standardDeviation));
+        return Double.valueOf(average - (((numClasses / 2.0) - index) * standardDeviation));
     }
 
     private Double getMax(int index, int numClasses, double average, double standardDeviation) {
         if (index < 0 || index >= numClasses - 1) return null;
-        return new Double(average - (((numClasses / 2.0) - 1 - index) * standardDeviation));
+        return Double.valueOf(average - (((numClasses / 2.0) - 1 - index) * standardDeviation));
     }
 }

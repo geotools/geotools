@@ -20,6 +20,7 @@ import static org.junit.Assert.*;
 
 import java.util.HashMap;
 import java.util.Random;
+import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -89,16 +90,16 @@ public final class SoftValueHashMapTest {
     @Test
     public void testSoftReferences() throws InterruptedException {
         final Random random = getRandom();
-        final SoftValueHashMap<Integer, Integer> softMap = new SoftValueHashMap<Integer, Integer>();
-        final HashMap<Integer, Integer> strongMap = new HashMap<Integer, Integer>();
+        final SoftValueHashMap<UUID, UUID> softMap = new SoftValueHashMap<>();
+        final HashMap<UUID, UUID> strongMap = new HashMap<>();
         for (int pass = 0; pass < 2; pass++) {
             int count = 0;
             softMap.clear();
             strongMap.clear();
             for (int i = 0; i < SAMPLE_SIZE; i++) {
                 // We really want new instances below.
-                Integer key = new Integer(random.nextInt(SAMPLE_SIZE));
-                final Integer value = new Integer(random.nextInt(SAMPLE_SIZE));
+                UUID key = UUID.randomUUID();
+                final UUID value = UUID.randomUUID();
                 if (random.nextBoolean()) // test from time to time with the null key
                 key = null;
 
@@ -106,8 +107,8 @@ public final class SoftValueHashMapTest {
                     /*
                      * Test addition.
                      */
-                    final Integer softPrevious = softMap.put(key, value);
-                    final Integer strongPrevious = strongMap.put(key, value);
+                    final UUID softPrevious = softMap.put(key, value);
+                    final UUID strongPrevious = strongMap.put(key, value);
                     if (softPrevious == null) {
                         // If the element was not in the SoftValueHashMap (i.e. if the garbage
                         // collector has cleared it), then it must not been in HashMap neither
@@ -126,8 +127,8 @@ public final class SoftValueHashMapTest {
                     /*
                      * Test remove
                      */
-                    final Integer softPrevious = softMap.get(key);
-                    final Integer strongPrevious = strongMap.remove(key);
+                    final UUID softPrevious = softMap.get(key);
+                    final UUID strongPrevious = strongMap.remove(key);
                     if (strongPrevious != null) {
                         assertSame("remove:", strongPrevious, softPrevious);
                     }
@@ -147,7 +148,7 @@ public final class SoftValueHashMapTest {
              * want to make sure that we didn't forget to convert some Reference object.
              */
             for (Object value : softMap.values()) {
-                assertTrue(value instanceof Integer);
+                assertTrue(value instanceof UUID);
                 assertNotNull(value);
             }
         }

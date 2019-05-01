@@ -488,7 +488,7 @@ public class UnmappingFilterVisitorTest extends AppSchemaTestSupport {
         PropertyName attExp = (PropertyName) left;
         String expectedAtt = "results_value";
         assertEquals(expectedAtt, attExp.getPropertyName());
-        assertEquals(new Double(1.1), ((Literal) right).getValue());
+        assertEquals(Double.valueOf(1.1), ((Literal) right).getValue());
     }
 
     /**
@@ -593,7 +593,7 @@ public class UnmappingFilterVisitorTest extends AppSchemaTestSupport {
         assertTrue(right instanceof Literal);
 
         assertEquals("results_value", ((PropertyName) left).getPropertyName());
-        assertEquals(new Double(1.1), ((Literal) right).getValue());
+        assertEquals(Double.valueOf(1.1), ((Literal) right).getValue());
 
         Filter sourceGreater = (Filter) sourceAnd.getChildren().get(1);
         assertTrue(sourceGreater instanceof PropertyIsGreaterThan);

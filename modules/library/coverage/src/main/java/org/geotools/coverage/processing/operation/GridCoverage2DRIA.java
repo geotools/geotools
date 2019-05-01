@@ -1556,7 +1556,7 @@ public class GridCoverage2DRIA extends GeometricOpImage {
 
                 final PlanarImage constantImage =
                         ConstantDescriptor.create(
-                                new Float(w), new Float(h), new Byte[] {(byte) 255}, hints);
+                                Float.valueOf(w), Float.valueOf(h), new Byte[] {(byte) 255}, hints);
 
                 GridCoverage2D input =
                         new GridCoverageFactory(GeoTools.getDefaultHints())

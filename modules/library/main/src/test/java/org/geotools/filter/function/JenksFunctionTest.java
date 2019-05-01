@@ -199,14 +199,14 @@ public class JenksFunctionTest extends FunctionTestSupport {
                 };
         Double dVal[] =
                 new Double[] {
-                    new Double(0.0),
-                    new Double(50.01),
+                    Double.valueOf(0.0),
+                    Double.valueOf(50.01),
                     null,
-                    new Double(0.0),
-                    new Double(50.01),
+                    Double.valueOf(0.0),
+                    Double.valueOf(50.01),
                     null,
-                    new Double(0.0),
-                    new Double(50.01),
+                    Double.valueOf(0.0),
+                    Double.valueOf(50.01),
                     null
                 };
 

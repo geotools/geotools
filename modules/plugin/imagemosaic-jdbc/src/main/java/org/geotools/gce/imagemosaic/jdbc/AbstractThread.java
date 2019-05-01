@@ -93,8 +93,8 @@ abstract class AbstractThread extends Thread {
 
         ImageWorker w = new ImageWorker(planarImage);
         w.scale(
-                new Float(rescaleX),
-                new Float(rescaleY),
+                Float.valueOf((float) rescaleX),
+                Float.valueOf((float) rescaleY),
                 0.0f,
                 0.0f,
                 Interpolation.getInstance(interpolation));

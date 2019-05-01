@@ -44,6 +44,6 @@ public class FilterFunction_int2ddouble extends FunctionExpressionImpl {
                     "Filter Function problem for function int2ddouble argument #0 - expected type int");
         }
 
-        return new Double(StaticGeometry.int2ddouble(arg0));
+        return Double.valueOf(StaticGeometry.int2ddouble(arg0));
     }
 }

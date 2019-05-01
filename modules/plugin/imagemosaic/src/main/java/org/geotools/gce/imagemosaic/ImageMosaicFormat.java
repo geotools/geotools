@@ -94,7 +94,8 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  *       i.e., intensity is really low and transform them into transparent areas. It is obvious that
  *       depending on the nature of the input images it might interfere with the original values.
  *   <li>---ALPHA_THRESHOLD = new DefaultParameterDescriptor( "AlphaThreshold", Double.class, null,
- *       new Double(1));--- Controls the transparency addition by specifying the treshold to use.
+ *       Double.valueOf(1));--- Controls the transparency addition by specifying the treshold to
+ *       use.
  *   <li>INPUT_IMAGE_THRESHOLD = new DefaultParameterDescriptor( "InputImageROI", Boolean.class,
  *       null, Boolean.FALSE)--- INPUT_IMAGE_THRESHOLD_VALUE = new DefaultParameterDescriptor(
  *       "InputImageROIThreshold", Integer.class, null, Integer.valueOf(1));--- These two can be

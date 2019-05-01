@@ -1065,8 +1065,8 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
             build.add(new GeometryFactory().createPoint(new Coordinate(1, -1)));
             build.add(Byte.valueOf((byte) i));
             build.add(Short.valueOf((short) i));
-            build.add(new Double(i));
-            build.add(new Float(i));
+            build.add(Double.valueOf(i));
+            build.add(Float.valueOf(i));
             build.add(new String(i + " "));
             build.add(new Date(i));
             build.add(Boolean.valueOf(true));

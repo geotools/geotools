@@ -47,6 +47,6 @@ public class FilterFunction_parseDouble extends FunctionExpressionImpl {
                     "Filter Function problem for function parseDouble argument #0 - expected type String");
         }
 
-        return new Double(StaticGeometry.parseDouble(arg0));
+        return Double.valueOf(StaticGeometry.parseDouble(arg0));
     }
 }

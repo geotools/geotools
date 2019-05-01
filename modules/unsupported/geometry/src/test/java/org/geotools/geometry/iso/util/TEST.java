@@ -30,7 +30,7 @@ import org.geotools.geometry.iso.util.algorithm2D.AlgoRectangle2D;
 public class TEST {
 
     public static void main(String[] args) {
-        Double dd = new Double(1.0);
+        Double dd = Double.valueOf(1.0);
         double aa = dd.doubleValue();
         int ii = 1;
         Integer iii = Integer.valueOf(ii);

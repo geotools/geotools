@@ -98,7 +98,7 @@ public class TextSymbolTest extends TestCase {
                         SimpleFeatureBuilder.build(
                                 pointType,
                                 new Object[] {
-                                    point, new Double(size), new Double(rotation), symbol[i]
+                                    point, Double.valueOf(size), Double.valueOf(rotation), symbol[i]
                                 },
                                 null);
                 data.add(pointFeature);

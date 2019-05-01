@@ -84,7 +84,7 @@ public class UnitRescaleTest {
         }
 
         Map hints = new HashMap();
-        hints.put("dpi", new Double(dpi));
+        hints.put("dpi", Double.valueOf(dpi));
 
         StreamingRenderer renderer = new StreamingRenderer();
         renderer.scaleDenominator = 1;

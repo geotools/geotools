@@ -82,7 +82,7 @@ public class LiteralExpressionImpl extends DefaultExpression implements Literal 
      */
     protected LiteralExpressionImpl(double value) {
         try {
-            this.setValue(new Double(value));
+            this.setValue(Double.valueOf(value));
         } catch (IllegalFilterException ile) {
             // this is imposible as this is only thrown for
             // invalid types, and Double is a valid type

@@ -48,7 +48,7 @@ public class SimpleFeatureBuilderTest extends TestCase {
         GeometryFactory gf = new GeometryFactory();
         builder.add(gf.createPoint(new Coordinate(0, 0)));
         builder.add(Integer.valueOf(1));
-        builder.add(new Float(2.0));
+        builder.add(Float.valueOf(2.0f));
 
         SimpleFeature feature = builder.buildFeature("fid");
         assertNotNull(feature);
@@ -57,7 +57,7 @@ public class SimpleFeatureBuilderTest extends TestCase {
 
         assertTrue(gf.createPoint(new Coordinate(0, 0)).equals(feature.getAttribute("point")));
         assertEquals(Integer.valueOf(1), feature.getAttribute("integer"));
-        assertEquals(new Float(2.0), feature.getAttribute("float"));
+        assertEquals(Float.valueOf(2.0f), feature.getAttribute("float"));
     }
 
     public void testTooFewAttributes() throws Exception {
@@ -79,7 +79,7 @@ public class SimpleFeatureBuilderTest extends TestCase {
         GeometryFactory gf = new GeometryFactory();
         builder.set("point", gf.createPoint(new Coordinate(0, 0)));
         builder.set("integer", Integer.valueOf(1));
-        builder.set("float", new Float(2.0));
+        builder.set("float", Float.valueOf(2.0f));
 
         SimpleFeature feature = builder.buildFeature("fid");
         assertNotNull(feature);
@@ -88,12 +88,12 @@ public class SimpleFeatureBuilderTest extends TestCase {
 
         assertTrue(gf.createPoint(new Coordinate(0, 0)).equals(feature.getAttribute(0)));
         assertEquals(Integer.valueOf(1), feature.getAttribute(1));
-        assertEquals(new Float(2.0), feature.getAttribute(2));
+        assertEquals(Float.valueOf(2.0f), feature.getAttribute(2));
     }
 
     public void testSetNonSequential() throws Exception {
         GeometryFactory gf = new GeometryFactory();
-        builder.set("float", new Float(2.0));
+        builder.set("float", Float.valueOf(2.0f));
         builder.set("point", gf.createPoint(new Coordinate(0, 0)));
         builder.set("integer", Integer.valueOf(1));
 
@@ -104,7 +104,7 @@ public class SimpleFeatureBuilderTest extends TestCase {
 
         assertTrue(gf.createPoint(new Coordinate(0, 0)).equals(feature.getAttribute(0)));
         assertEquals(Integer.valueOf(1), feature.getAttribute(1));
-        assertEquals(new Float(2.0), feature.getAttribute(2));
+        assertEquals(Float.valueOf(2.0f), feature.getAttribute(2));
     }
 
     public void testSetTooFew() throws Exception {
@@ -180,7 +180,7 @@ public class SimpleFeatureBuilderTest extends TestCase {
         GeometryFactory gf = new GeometryFactory();
         builder.add(gf.createPoint(new Coordinate(0, 0)));
         builder.add(Integer.valueOf(1));
-        builder.add(new Float(2.0));
+        builder.add(Float.valueOf(2.0f));
         builder.featureUserData("foo", "bar");
 
         SimpleFeature feature = builder.buildFeature("fid");

@@ -45,6 +45,6 @@ public class FilterFunction_getY extends FunctionExpressionImpl {
                     "Filter Function problem for function getY argument #0 - expected type Geometry");
         }
 
-        return new Double(StaticGeometry.getY(arg0));
+        return Double.valueOf(StaticGeometry.getY(arg0));
     }
 }

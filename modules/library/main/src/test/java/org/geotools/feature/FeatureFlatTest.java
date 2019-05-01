@@ -72,7 +72,8 @@ public class FeatureFlatTest extends TestCase {
                 ((Boolean) testFeature.getAttribute("testBoolean")).equals(Boolean.valueOf(true)));
         assertTrue(
                 "character retrieval and match",
-                ((Character) testFeature.getAttribute("testCharacter")).equals(new Character('t')));
+                ((Character) testFeature.getAttribute("testCharacter"))
+                        .equals(Character.valueOf('t')));
         assertTrue(
                 "byte retrieval and match",
                 ((Byte) testFeature.getAttribute("testByte")).equals(Byte.valueOf("10")));
@@ -87,10 +88,10 @@ public class FeatureFlatTest extends TestCase {
                 ((Long) testFeature.getAttribute("testLong")).equals(Long.valueOf(10003)));
         assertTrue(
                 "float retrieval and match",
-                ((Float) testFeature.getAttribute("testFloat")).equals(new Float(10000.4)));
+                ((Float) testFeature.getAttribute("testFloat")).equals(Float.valueOf(10000.4f)));
         assertTrue(
                 "double retrieval and match",
-                ((Double) testFeature.getAttribute("testDouble")).equals(new Double(100000.5)));
+                ((Double) testFeature.getAttribute("testDouble")).equals(Double.valueOf(100000.5)));
         assertTrue(
                 "string retrieval and match",
                 ((String) testFeature.getAttribute("testString")).equals("test string data"));

@@ -187,7 +187,7 @@ public class TestData {
                                         {7, 5, 9, 3, 11, 3}
                                     }),
                             "rv1",
-                            new Double(4.5)
+                            Double.valueOf(4.5)
                         },
                         RIVER + "." + (initialFidValue));
 
@@ -203,7 +203,7 @@ public class TestData {
                             Integer.valueOf(2),
                             lines(new int[][] {{4, 6, 4, 8, 6, 10}}),
                             "rv2",
-                            new Double(3.0)
+                            Double.valueOf(3.0)
                         },
                         RIVER + "." + (initialFidValue + 1));
         riverBounds = new ReferencedEnvelope(CRS.decode("EPSG:4326", forceLongitudeFirst));
@@ -225,7 +225,7 @@ public class TestData {
                             Integer.valueOf(3),
                             lines(new int[][] {{9, 5, 11, 5, 13, 3}}),
                             "rv3",
-                            new Double(1.5)
+                            Double.valueOf(1.5)
                         },
                         RIVER + "." + (initialFidValue + 2));
     }

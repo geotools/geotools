@@ -410,7 +410,9 @@ public class ImageMosaicConfigHandler {
                 }
             } else {
                 // create a datastore as instructed
-                spi = (DataStoreFactorySpi) Class.forName(SPIClass).newInstance();
+                spi =
+                        (DataStoreFactorySpi)
+                                Class.forName(SPIClass).getDeclaredConstructor().newInstance();
             }
             // set ParentLocation parameter since for embedded database like H2 we must change the
             // database

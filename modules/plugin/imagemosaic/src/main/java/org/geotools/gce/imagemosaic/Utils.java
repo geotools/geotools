@@ -1183,7 +1183,8 @@ public class Utils {
         try {
             // create a datastore as instructed
             final DataStoreFactorySpi spi =
-                    (DataStoreFactorySpi) Class.forName(SPIClass).newInstance();
+                    (DataStoreFactorySpi)
+                            Class.forName(SPIClass).getDeclaredConstructor().newInstance();
             return createDataStoreParamsFromPropertiesFile(properties, spi);
         } catch (Exception e) {
             final IOException ioe = new IOException();

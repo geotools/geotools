@@ -221,7 +221,7 @@ public class ImageWorker {
 
             Class<?> clazz = Class.forName("com.sun.imageio.plugins.jpeg.JPEGImageWriterSpi");
             if (clazz != null) {
-                temp = (ImageWriterSpi) clazz.newInstance();
+                temp = (ImageWriterSpi) clazz.getDeclaredConstructor().newInstance();
             } else {
                 temp = null;
             }
@@ -243,7 +243,7 @@ public class ImageWorker {
             Class<?> clazz =
                     Class.forName("com.sun.media.imageioimpl.plugins.gif.GIFImageWriterSpi");
             if (clazz != null) {
-                temp = (ImageWriterSpi) clazz.newInstance();
+                temp = (ImageWriterSpi) clazz.getDeclaredConstructor().newInstance();
             } else {
                 temp = null;
             }
@@ -266,7 +266,7 @@ public class ImageWorker {
             Class<?> clazz =
                     Class.forName("com.sun.media.imageioimpl.plugins.jpeg.CLibJPEGImageWriterSpi");
             if (clazz != null && PackageUtil.isCodecLibAvailable()) {
-                temp = (ImageWriterSpi) clazz.newInstance();
+                temp = (ImageWriterSpi) clazz.getDeclaredConstructor().newInstance();
             } else {
                 temp = null;
             }
@@ -289,7 +289,7 @@ public class ImageWorker {
             Class<?> clazz =
                     Class.forName("it.geosolutions.imageioimpl.plugins.tiff.TIFFImageWriterSpi");
             if (clazz != null) {
-                temp = (ImageWriterSpi) clazz.newInstance();
+                temp = (ImageWriterSpi) clazz.getDeclaredConstructor().newInstance();
             } else {
                 temp = null;
             }
@@ -312,7 +312,7 @@ public class ImageWorker {
             Class<?> clazz =
                     Class.forName("com.sun.media.imageioimpl.plugins.png.CLibPNGImageWriterSpi");
             if (clazz != null && PackageUtil.isCodecLibAvailable()) {
-                temp = (ImageWriterSpi) clazz.newInstance();
+                temp = (ImageWriterSpi) clazz.getDeclaredConstructor().newInstance();
             } else {
                 temp = null;
             }

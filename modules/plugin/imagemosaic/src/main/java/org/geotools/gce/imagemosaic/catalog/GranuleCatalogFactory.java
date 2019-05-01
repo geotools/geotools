@@ -163,7 +163,9 @@ public abstract class GranuleCatalogFactory {
             final String SPIClass = properties.getProperty("SPI");
             try {
                 // create a datastore as instructed
-                spi = (DataStoreFactorySpi) Class.forName(SPIClass).newInstance();
+                spi =
+                        (DataStoreFactorySpi)
+                                Class.forName(SPIClass).getDeclaredConstructor().newInstance();
             } catch (Exception e) {
                 // if we are directed to use a pre-existing store then don't complain about lack of
                 // SPI

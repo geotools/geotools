@@ -146,14 +146,12 @@ public class ArcSDEConnectionFactory implements ObjectFactory {
         final ISessionPoolFactory newFactory;
         try {
             Class<?> factoryClass = Class.forName(poolFactoryClassName);
-            newFactory = (ISessionPoolFactory) factoryClass.newInstance();
+            newFactory = (ISessionPoolFactory) factoryClass.getDeclaredConstructor().newInstance();
 
         } catch (ClassNotFoundException e) {
             throw new IllegalArgumentException(
                     "Alternate SessionPoolFactory class not found: " + poolFactoryClassName);
-        } catch (InstantiationException e) {
-            throw new IllegalArgumentException(e);
-        } catch (IllegalAccessException e) {
+        } catch (Exception e) {
             throw new IllegalArgumentException(e);
         }
         setClosableSessionPoolFactory(newFactory);

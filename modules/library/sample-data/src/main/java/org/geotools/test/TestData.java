@@ -148,7 +148,9 @@ public class TestData implements Runnable {
                                                 // invoke
                                                 final Object paramsObj[] = {};
 
-                                                final Object o = mImage.newInstance();
+                                                final Object o =
+                                                        mImage.getDeclaredConstructor()
+                                                                .newInstance();
                                                 return (Boolean) method.invoke(o, paramsObj);
                                             } catch (Throwable e) {
                                                 return false;

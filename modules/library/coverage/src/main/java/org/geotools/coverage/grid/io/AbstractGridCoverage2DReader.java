@@ -1113,6 +1113,7 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
      * ImageInputStream} open.
      */
     @Override
+    @SuppressWarnings("deprecation") // finalize is deprecated in Java 9
     protected void finalize() throws Throwable {
         dispose();
         super.finalize();

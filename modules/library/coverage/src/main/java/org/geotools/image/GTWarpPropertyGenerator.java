@@ -139,7 +139,7 @@ public class GTWarpPropertyGenerator extends PropertyGeneratorImpl {
 
             final PlanarImage constantImage =
                     ConstantDescriptor.create(
-                            new Float(w), new Float(h), new Byte[] {(byte) 255}, hints);
+                            Float.valueOf(w), Float.valueOf(h), new Byte[] {(byte) 255}, hints);
 
             PlanarImage roiImage = null;
 

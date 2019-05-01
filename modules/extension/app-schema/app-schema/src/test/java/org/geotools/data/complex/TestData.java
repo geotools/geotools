@@ -446,7 +446,7 @@ public class TestData {
                 fb.add("id" + sufix);
                 fb.add("sample_collection_date" + sufix);
                 fb.add("determinand_description" + sufix);
-                fb.add(new Float(groupValue + "." + measurement));
+                fb.add(Float.valueOf(groupValue + "." + measurement));
 
                 fb.add(gf.createPoint(new Coordinate(groupValue, groupValue)));
 

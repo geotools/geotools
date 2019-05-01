@@ -177,7 +177,7 @@ public class ConstantExpression implements Literal, Cloneable {
     }
 
     public static ConstantExpression constant(double number) {
-        return new ConstantExpression(new Double(number));
+        return new ConstantExpression(Double.valueOf(number));
     }
 
     public static ConstantExpression constant(int number) {

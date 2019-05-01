@@ -33,17 +33,17 @@ public class XSFloatStrategyTest extends TestSchema {
      * @throws Exception
      */
     public void testWhiteSpace() throws Exception {
-        validateValues(" \n12", new Float(12));
+        validateValues(" \n12", Float.valueOf(12));
     }
 
     public void testParse() throws Exception {
-        validateValues("-1E4", new Float(-1E4));
-        validateValues("1267.43233E12", new Float(1267.43233E12));
-        validateValues("12.78e-2", new Float(12.78e-2));
-        validateValues("12", new Float(12));
-        validateValues("-0", new Float("-0"));
-        validateValues("0", new Float(0));
-        validateValues("INF", new Float(Float.POSITIVE_INFINITY));
+        validateValues("-1E4", Float.valueOf(-1E4f));
+        validateValues("1267.43233E12", Float.valueOf(1267.43233E12f));
+        validateValues("12.78e-2", Float.valueOf(12.78e-2f));
+        validateValues("12", Float.valueOf(12));
+        validateValues("-0", Float.valueOf("-0"));
+        validateValues("0", Float.valueOf(0));
+        validateValues("INF", Float.valueOf(Float.POSITIVE_INFINITY));
     }
 
     protected QName getQName() {

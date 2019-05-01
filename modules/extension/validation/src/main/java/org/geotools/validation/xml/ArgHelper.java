@@ -982,7 +982,7 @@ public class ArgHelper {
                 throw new NullPointerException("The float passed in was null");
             }
 
-            return new Float(ReaderUtils.getElementText(elem));
+            return Float.valueOf(ReaderUtils.getElementText(elem));
         }
 
         public Object getInstance(String elem) {
@@ -990,7 +990,7 @@ public class ArgHelper {
                 throw new NullPointerException("The float passed in was null");
             }
 
-            return new Float(elem);
+            return Float.valueOf(elem);
         }
 
         /**
@@ -1075,7 +1075,7 @@ public class ArgHelper {
                 throw new NullPointerException("The double passed in was null");
             }
 
-            return new Double(ReaderUtils.getElementText(elem));
+            return Double.valueOf(ReaderUtils.getElementText(elem));
         }
 
         public Object getInstance(String elem) {
@@ -1083,7 +1083,7 @@ public class ArgHelper {
                 throw new NullPointerException("The double passed in was null");
             }
 
-            return new Double(elem);
+            return Double.valueOf(elem);
         }
 
         /**

@@ -55,14 +55,16 @@ public class FilterFunction_Test extends TestCase {
         literal_05pi = ff.literal(String.valueOf(0.5 * Math.PI));
         literal_null = ff.literal(null);
         assertEquals(
-                "Literal Expression 0.0", new Double(1.0), literal_1.evaluate(null, Double.class));
+                "Literal Expression 0.0",
+                Double.valueOf(1.0),
+                literal_1.evaluate(null, Double.class));
         assertEquals(
                 "Literal Expression pi",
-                new Double(Math.PI),
+                Double.valueOf(Math.PI),
                 literal_pi.evaluate(null, Double.class));
         assertEquals(
                 "Literal Expression 05pi",
-                new Double(0.5 * Math.PI),
+                Double.valueOf(0.5 * Math.PI),
                 literal_05pi.evaluate(null, Double.class));
     }
 

@@ -457,7 +457,7 @@ public class WPSFactoryOnlineTest extends OnlineTestCase {
         assertNotNull(results);
 
         Double result = (Double) results.get("result");
-        // Double result = new Double(value);
+        // Double result = Double.valueOf(value);
         Double expected = 77.84 + 40039.229;
         // System.out.println(expected);
         // System.out.println(result);

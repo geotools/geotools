@@ -188,7 +188,7 @@ public class MBFunctionTest {
         assertEquals("temperature", ECQL.toCQL(property));
 
         Literal base = (Literal) fn.getParameters().get(1);
-        assertEquals(new Double(1.1), base.evaluate(null, Double.class));
+        assertEquals(Double.valueOf(1.1), base.evaluate(null, Double.class));
 
         Literal stop1 = (Literal) fn.getParameters().get(2);
         assertEquals(Integer.valueOf(0), stop1.evaluate(null, Integer.class));

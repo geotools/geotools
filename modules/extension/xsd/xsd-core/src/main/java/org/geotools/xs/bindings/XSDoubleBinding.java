@@ -95,10 +95,10 @@ public class XSDoubleBinding implements SimpleBinding {
      */
     public Object parse(InstanceComponent instance, Object value) throws Exception {
         if ("INF".equals(value)) {
-            return new Double(Double.POSITIVE_INFINITY);
+            return Double.valueOf(Double.POSITIVE_INFINITY);
         }
 
-        return new Double((String) value);
+        return Double.valueOf((String) value);
     }
 
     /**

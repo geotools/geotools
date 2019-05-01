@@ -225,7 +225,9 @@ public final class NoDataReplacerOpImage extends PointOpImage {
                     new String[] {"oldNoData", "newNoData", "EPS"}, // Argument names
                     new Class[] {Number.class, Short.class, Double.class}, // Argument classes
                     new Object[] {
-                        new Double(Double.NaN), Short.valueOf((short) -9999), new Double(10.0E-6)
+                        Double.valueOf(Double.NaN),
+                        Short.valueOf((short) -9999),
+                        Double.valueOf(10.0E-6)
                     }, // Default values for parameters,
                     null // No restriction on valid parameter values.
                     );

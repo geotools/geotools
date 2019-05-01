@@ -92,11 +92,11 @@ public class NumericConverterFactory implements ConverterFactory {
                     if (c != BigDecimal.class && c != BigInteger.class) {
                         if (c == Float.class) {
                             // this is done to avoid coordinate drift
-                            return (T) new Double(number.toString());
+                            return (T) Double.valueOf(number.toString());
                         }
 
                         return (T) Double.valueOf(number.doubleValue());
-                        // return (T) new Double(source.toString());
+                        // return (T) Double.valueOf(source.toString());
                     }
                 } else if (Float.class.equals(target)) {
                     if (c == Float.class
@@ -104,7 +104,7 @@ public class NumericConverterFactory implements ConverterFactory {
                             || c == Short.class
                             || c == Byte.class) {
                         return (T) Float.valueOf(number.floatValue());
-                        // return (T) new Float(source.toString());
+                        // return (T) Float.valueOf(source.toString());
                     }
                 } else if (BigInteger.class.equals(target)) {
                     if (BigInteger.class.isAssignableFrom(c)
@@ -147,10 +147,10 @@ public class NumericConverterFactory implements ConverterFactory {
                         // if (x.toString().equals(src))
                         //    return (T) x;
                     } else if (target == Double.class) {
-                        Double x = new Double(src);
+                        Double x = Double.valueOf(src);
                         if (x.toString().equals(src)) return (T) x;
                     } else if (target == Float.class) {
-                        Float x = new Float(src);
+                        Float x = Float.valueOf(src);
                         if (x.toString().equals(src)) return (T) x;
                     } else if (BigInteger.class.isAssignableFrom(target)) {
                         BigInteger x = new BigInteger(src);
@@ -206,10 +206,10 @@ public class NumericConverterFactory implements ConverterFactory {
                 // drift due to precision issues, there could be some
                 // performance issues with this.
                 if (Double.class.equals(target)) {
-                    return new Double(s.toString());
+                    return Double.valueOf(s.toString());
                 }
                 if (Float.class.equals(target)) {
-                    return new Float(s.toString());
+                    return Float.valueOf(s.toString());
                 }
                 if (BigDecimal.class.equals(target)) {
                     return new BigDecimal(s.toString());
@@ -227,7 +227,7 @@ public class NumericConverterFactory implements ConverterFactory {
                     }
 
                     try {
-                        return new Double(s.toString());
+                        return Double.valueOf(s.toString());
                     } catch (Exception e) {
                     }
 
@@ -245,10 +245,10 @@ public class NumericConverterFactory implements ConverterFactory {
 
                 // floating point
                 if (Double.class.equals(target)) {
-                    return new Double(s);
+                    return Double.valueOf(s);
                 }
                 if (Float.class.equals(target)) {
-                    return new Float(s);
+                    return Float.valueOf(s);
                 }
                 if (BigDecimal.class.equals(target)) {
                     return new BigDecimal(s);
@@ -286,7 +286,7 @@ public class NumericConverterFactory implements ConverterFactory {
                         }
                     }
                     try {
-                        return new Double(s);
+                        return Double.valueOf(s);
                     } catch (Exception e) {
                     }
 

@@ -138,7 +138,7 @@ public abstract class ClassificationFunction extends DefaultExpression
                 str = str.substring(0, str.length() - 1);
             }
         }
-        int intPart = new Double(Math.floor(slotWidth)).intValue();
+        int intPart = Double.valueOf(Math.floor(slotWidth)).intValue();
         double decPart = slotWidth - intPart;
         int intPoints = Integer.toString(intPart).length();
         int decPoints = str.length() - intPoints;

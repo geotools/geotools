@@ -108,24 +108,26 @@ public abstract class AbstractQuantityClassificationFunction extends Classificat
             decPlaces = Math.max(decPlaces, decimalPlaces(((Number) localMax[i]).doubleValue()));
             // clean up truncation error
             if (decPlaces > -1) {
-                localMin[i] = new Double(round(((Number) localMin[i]).doubleValue(), decPlaces));
-                localMax[i] = new Double(round(((Number) localMax[i]).doubleValue(), decPlaces));
+                localMin[i] =
+                        Double.valueOf(round(((Number) localMin[i]).doubleValue(), decPlaces));
+                localMax[i] =
+                        Double.valueOf(round(((Number) localMax[i]).doubleValue(), decPlaces));
             }
 
             if (i == 0) {
                 // ensure first min is less than or equal to globalMin
-                if (localMin[i].compareTo(new Double(((Number) globalMin).doubleValue())) > 0)
+                if (localMin[i].compareTo(Double.valueOf(((Number) globalMin).doubleValue())) > 0)
                     localMin[i] =
-                            new Double(
+                            Double.valueOf(
                                     fixRound(
                                             ((Number) localMin[i]).doubleValue(),
                                             decPlaces,
                                             false));
             } else if (i == classNum - 1) {
                 // ensure last max is greater than or equal to globalMax
-                if (localMax[i].compareTo(new Double(((Number) globalMax).doubleValue())) < 0)
+                if (localMax[i].compareTo(Double.valueOf(((Number) globalMax).doubleValue())) < 0)
                     localMax[i] =
-                            new Double(
+                            Double.valueOf(
                                     fixRound(
                                             ((Number) localMax[i]).doubleValue(), decPlaces, true));
             }

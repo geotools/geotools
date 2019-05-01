@@ -264,8 +264,8 @@ final class GT30Header {
         propertyMap.put(NODATA, Integer.valueOf(0));
         propertyMap.put(ULXMAP, null);
         propertyMap.put(ULYMAP, null);
-        propertyMap.put(XDIM, new Double(STD_CELL_SIZE));
-        propertyMap.put(YDIM, new Double(STD_CELL_SIZE));
+        propertyMap.put(XDIM, Double.valueOf(STD_CELL_SIZE));
+        propertyMap.put(YDIM, Double.valueOf(STD_CELL_SIZE));
     }
 
     /**

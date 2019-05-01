@@ -36,7 +36,7 @@ public class AttributeExpressionTest extends TestCase {
 
         SimpleFeatureBuilder builder = new SimpleFeatureBuilder(type);
         builder.add(Integer.valueOf(1));
-        builder.add(new Double(2.0));
+        builder.add(Double.valueOf(2.0));
 
         SimpleFeature feature = builder.buildFeature("fid");
 

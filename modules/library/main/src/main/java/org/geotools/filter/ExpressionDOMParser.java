@@ -403,7 +403,7 @@ public final class ExpressionDOMParser {
                 }
 
                 try {
-                    Double doubleLit = new Double(nodeValue);
+                    Double doubleLit = Double.valueOf(nodeValue);
 
                     return ff.literal(doubleLit);
                 } catch (NumberFormatException e) {

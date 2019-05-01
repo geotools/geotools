@@ -116,7 +116,7 @@ public class GlyphPropertiesList {
     }
 
     public void setPropertyValue(String name, double value) {
-        setPropertyValue(name, new Double(value));
+        setPropertyValue(name, Double.valueOf(value));
     }
 
     public void setPropertyValue(String name, Object value) {

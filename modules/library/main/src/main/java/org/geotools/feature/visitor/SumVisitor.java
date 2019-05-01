@@ -149,7 +149,7 @@ public class SumVisitor implements FeatureCalc, FeatureAttributeVisitor {
         }
 
         public Object getResult() {
-            return new Double(number);
+            return Double.valueOf(number);
         }
     }
 
@@ -161,7 +161,7 @@ public class SumVisitor implements FeatureCalc, FeatureAttributeVisitor {
         }
 
         public Object getResult() {
-            return new Float(number);
+            return Float.valueOf(number);
         }
     }
 

@@ -135,13 +135,13 @@ public class FilterEqualsTest extends TestCase {
         GeometryFactory gf = new GeometryFactory(new PrecisionModel());
         attributes[0] = gf.createLineString(coords);
         attributes[1] = Boolean.valueOf(true);
-        attributes[2] = new Character('t');
+        attributes[2] = Character.valueOf('t');
         attributes[3] = Byte.valueOf("10");
         attributes[4] = Short.valueOf("101");
         attributes[5] = Integer.valueOf(1002);
         attributes[6] = Long.valueOf(10003);
-        attributes[7] = new Float(10000.4);
-        attributes[8] = new Double(100000.5);
+        attributes[7] = Float.valueOf(10000.4f);
+        attributes[8] = Double.valueOf(100000.5);
         attributes[9] = "test string data";
         attributes[10] = "0.0";
 
@@ -189,8 +189,8 @@ public class FilterEqualsTest extends TestCase {
         try {
             MathExpressionImpl testMath1;
             MathExpressionImpl testMath2;
-            testExp1 = new LiteralExpressionImpl(new Double(5));
-            testExp2 = new LiteralExpressionImpl(new Double(5));
+            testExp1 = new LiteralExpressionImpl(Double.valueOf(5));
+            testExp2 = new LiteralExpressionImpl(Double.valueOf(5));
             testMath1 = new AddImpl(null, null);
             testMath1.setExpression1(testExp1);
             testMath1.setExpression2(testExp2);
@@ -246,7 +246,7 @@ public class FilterEqualsTest extends TestCase {
         cFilter2 = ff.equals(testExp2, testExp4);
         assertTrue(cFilter1.equals(cFilter2));
         // see if converters make this work
-        cFilter2 = ff.equals(ff.literal(new Double(45.0)), testExp3);
+        cFilter2 = ff.equals(ff.literal(Double.valueOf(45.0)), testExp3);
         assertTrue(cFilter1.equals(cFilter2));
         tFilter1 = ff.between(testExp1, testExp2, testExp3);
         assertTrue(!cFilter1.equals(tFilter1));
@@ -364,7 +364,7 @@ public class FilterEqualsTest extends TestCase {
         Disjoint geomFilter1 = ff.disjoint(testExp1, testExp4);
         Disjoint geomFilter2 = ff.disjoint(testExp2, testExp4);
         assertTrue(geomFilter1.equals(geomFilter2));
-        geomFilter2 = ff.disjoint(testExp2, new LiteralExpressionImpl(new Double(45)));
+        geomFilter2 = ff.disjoint(testExp2, new LiteralExpressionImpl(Double.valueOf(45)));
         assertTrue(!geomFilter1.equals(geomFilter2));
         tFilter1 = ff.between(ff.literal(1), ff.literal(-1), ff.literal(3));
         assertTrue(!geomFilter1.equals(tFilter1));

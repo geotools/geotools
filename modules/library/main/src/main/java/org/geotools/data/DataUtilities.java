@@ -814,7 +814,7 @@ public class DataUtilities {
             return Integer.valueOf(0);
         }
         if (type == Double.class) {
-            return new Double(0);
+            return Double.valueOf(0);
         }
         if (type == Long.class) {
             return Long.valueOf(0);
@@ -823,7 +823,7 @@ public class DataUtilities {
             return Short.valueOf((short) 0);
         }
         if (type == Float.class) {
-            return new Float(0.0f);
+            return Float.valueOf(0.0f);
         }
         if (type == BigDecimal.class) {
             return BigDecimal.valueOf(0);
@@ -832,7 +832,7 @@ public class DataUtilities {
             return BigInteger.valueOf(0);
         }
         if (type == Character.class) {
-            return new Character(' ');
+            return Character.valueOf(' ');
         }
         if (type == Boolean.class) {
             return Boolean.FALSE;

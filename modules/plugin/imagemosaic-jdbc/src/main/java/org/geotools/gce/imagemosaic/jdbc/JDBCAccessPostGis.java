@@ -192,8 +192,8 @@ class JDBCAccessPostGis extends JDBCAccessBase {
                 String[] upper = coords[1].split(" ");
                 extent =
                         new Envelope(
-                                new Coordinate(new Double(lower[0]), new Double(lower[1])),
-                                new Coordinate(new Double(upper[0]), new Double(upper[1])));
+                                new Coordinate(Double.valueOf(lower[0]), Double.valueOf(lower[1])),
+                                new Coordinate(Double.valueOf(upper[0]), Double.valueOf(upper[1])));
             }
         }
 

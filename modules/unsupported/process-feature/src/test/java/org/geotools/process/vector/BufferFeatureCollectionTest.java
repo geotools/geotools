@@ -53,7 +53,7 @@ public class BufferFeatureCollectionTest extends TestCase {
             b.add(i);
             features.add(b.buildFeature(i + ""));
         }
-        Double distance = new Double(500);
+        Double distance = Double.valueOf(500);
         BufferFeatureCollection process = new BufferFeatureCollection();
         SimpleFeatureCollection output = process.execute(features, distance, null);
         assertEquals(2, output.size());
@@ -90,7 +90,7 @@ public class BufferFeatureCollectionTest extends TestCase {
             b.add(0);
             features.add(b.buildFeature(numFeatures + ""));
         }
-        Double distance = new Double(500);
+        Double distance = Double.valueOf(500);
         BufferFeatureCollection process = new BufferFeatureCollection();
         SimpleFeatureCollection output = process.execute(features, distance, null);
         assertEquals(5, output.size());
@@ -134,7 +134,7 @@ public class BufferFeatureCollectionTest extends TestCase {
             b.add(0);
             features.add(b.buildFeature(numFeatures + ""));
         }
-        Double distance = new Double(500);
+        Double distance = Double.valueOf(500);
         BufferFeatureCollection process = new BufferFeatureCollection();
         SimpleFeatureCollection output = process.execute(features, distance, null);
         assertEquals(5, output.size());

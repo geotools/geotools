@@ -80,7 +80,7 @@ public class JenksNaturalBreaksFunction extends ClassificationFunction {
                 final Object result = getParameters().get(0).evaluate(feature);
                 logger.finest("importing " + result);
                 if (result != null) {
-                    final Double e = new Double(result.toString());
+                    final Double e = Double.valueOf(result.toString());
                     if (!e.isInfinite() && !e.isNaN()) data.add(e);
                 }
             }

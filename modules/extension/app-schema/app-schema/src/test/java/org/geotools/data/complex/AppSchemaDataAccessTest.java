@@ -435,7 +435,7 @@ public class AppSchemaDataAccessTest extends AppSchemaTestSupport {
             fbuilder.add("watersample." + i);
             fbuilder.add(Integer.valueOf(i));
             fbuilder.add(Integer.valueOf(10 + i));
-            fbuilder.add(new Float(i));
+            fbuilder.add(Float.valueOf(i));
 
             SimpleFeature f = fbuilder.buildFeature(fid);
             dataStore.addFeature(f);

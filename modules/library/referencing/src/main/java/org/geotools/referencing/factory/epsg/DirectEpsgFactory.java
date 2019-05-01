@@ -3527,6 +3527,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
      * @throws Throwable if an error occured while closing the connection.
      */
     @Override
+    @SuppressWarnings("deprecation") // finalize is deprecated in Java 9
     protected final void finalize() throws Throwable {
         dispose();
         super.finalize();

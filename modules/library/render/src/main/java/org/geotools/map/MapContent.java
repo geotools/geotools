@@ -100,6 +100,7 @@ public class MapContent {
 
     /** Checks that dispose has been called; producing a warning if needed. */
     @Override
+    @SuppressWarnings("deprecation") // finalize is deprecated in Java 9
     protected void finalize() throws Throwable {
         if (this.layerList != null) {
             if (!this.layerList.isEmpty()) {

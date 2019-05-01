@@ -195,6 +195,7 @@ public abstract class GeoSpatialImageReader extends ImageReader implements FileS
     }
 
     @Override
+    @SuppressWarnings("deprecation") // finalize is deprecated in Java 9
     protected void finalize() throws Throwable {
         dispose();
         super.finalize();

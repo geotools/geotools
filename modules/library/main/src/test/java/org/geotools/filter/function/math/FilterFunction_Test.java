@@ -25,9 +25,6 @@ import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 public class FilterFunction_Test extends TestCase {
 
     private Literal literal_1 = null;
@@ -75,13 +72,9 @@ public class FilterFunction_Test extends TestCase {
 
     public void testsin() {
         try {
-            FilterFunction_sin sin =
-                    (FilterFunction_sin)
-                            ff.function("sin", Expression.NIL);
+            FilterFunction_sin sin = (FilterFunction_sin) ff.function("sin", Expression.NIL);
             assertEquals("Name is, ", "sin", sin.getName());
             assertEquals("Number of arguments, ", 1, sin.getFunctionName().getArgumentCount());
-
-
 
             Function sinFunction = ff.function("sin", literal_1);
             double good0 = Math.sin(1.0);
@@ -475,14 +468,13 @@ public class FilterFunction_Test extends TestCase {
             }
 
             atan2Function = ff.function("atan2", literal_null, literal_1);
-            assertNull((Double)  atan2Function.evaluate(null));
+            assertNull((Double) atan2Function.evaluate(null));
 
             atan2Function = ff.function("atan2", literal_1, literal_null);
-            assertNull((Double)  atan2Function.evaluate(null));
+            assertNull((Double) atan2Function.evaluate(null));
 
             atan2Function = ff.function("atan2", literal_null, literal_null);
-            assertNull((Double)  atan2Function.evaluate(null));
-
+            assertNull((Double) atan2Function.evaluate(null));
 
         } catch (FactoryRegistryException e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
@@ -583,7 +575,7 @@ public class FilterFunction_Test extends TestCase {
             }
 
             sqrtFunction = ff.function("sqrt", literal_null);
-            assertNull((Double)  sqrtFunction.evaluate(null));
+            assertNull((Double) sqrtFunction.evaluate(null));
 
         } catch (FactoryRegistryException e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
@@ -687,14 +679,13 @@ public class FilterFunction_Test extends TestCase {
             }
 
             powFunction = ff.function("pow", literal_null, literal_1);
-            assertNull((Double)  powFunction.evaluate(null));
+            assertNull((Double) powFunction.evaluate(null));
 
             powFunction = ff.function("pow", literal_1, literal_null);
-            assertNull((Double)  powFunction.evaluate(null));
+            assertNull((Double) powFunction.evaluate(null));
 
             powFunction = ff.function("pow", literal_null, literal_null);
-            assertNull((Double)  powFunction.evaluate(null));
-
+            assertNull((Double) powFunction.evaluate(null));
 
         } catch (FactoryRegistryException e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
@@ -753,13 +744,13 @@ public class FilterFunction_Test extends TestCase {
                     0.00001);
 
             min_4Function = ff.function("min_4", literal_null, literal_1);
-            assertNull((Long)  min_4Function.evaluate(null));
+            assertNull((Long) min_4Function.evaluate(null));
 
             min_4Function = ff.function("min_4", literal_1, literal_null);
-            assertNull((Long)  min_4Function.evaluate(null));
+            assertNull((Long) min_4Function.evaluate(null));
 
             min_4Function = ff.function("min_4", literal_null, literal_null);
-            assertNull((Long)  min_4Function.evaluate(null));
+            assertNull((Long) min_4Function.evaluate(null));
 
         } catch (FactoryRegistryException e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
@@ -818,13 +809,13 @@ public class FilterFunction_Test extends TestCase {
                     0.00001);
 
             min_2Function = ff.function("min_2", literal_null, literal_1);
-            assertNull((Long)  min_2Function.evaluate(null));
+            assertNull((Long) min_2Function.evaluate(null));
 
             min_2Function = ff.function("min_2", literal_1, literal_null);
-            assertNull((Long)  min_2Function.evaluate(null));
+            assertNull((Long) min_2Function.evaluate(null));
 
             min_2Function = ff.function("min_2", literal_null, literal_null);
-            assertNull((Long)  min_2Function.evaluate(null));
+            assertNull((Long) min_2Function.evaluate(null));
 
         } catch (FactoryRegistryException e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
@@ -883,13 +874,13 @@ public class FilterFunction_Test extends TestCase {
                     0.00001);
 
             min_3Function = ff.function("min_3", literal_null, literal_1);
-            assertNull((Float)  min_3Function.evaluate(null));
+            assertNull((Float) min_3Function.evaluate(null));
 
             min_3Function = ff.function("min_3", literal_1, literal_null);
-            assertNull((Float)  min_3Function.evaluate(null));
+            assertNull((Float) min_3Function.evaluate(null));
 
             min_3Function = ff.function("min_3", literal_null, literal_null);
-            assertNull((Float)  min_3Function.evaluate(null));
+            assertNull((Float) min_3Function.evaluate(null));
 
         } catch (FactoryRegistryException e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
@@ -947,15 +938,14 @@ public class FilterFunction_Test extends TestCase {
                     ((Double) minFunction.evaluate(null)).doubleValue(),
                     0.00001);
 
-
             minFunction = ff.function("min", literal_null, literal_1);
-            assertNull((Double)  minFunction.evaluate(null));
+            assertNull((Double) minFunction.evaluate(null));
 
             minFunction = ff.function("min", literal_1, literal_null);
-            assertNull((Double)  minFunction.evaluate(null));
+            assertNull((Double) minFunction.evaluate(null));
 
             minFunction = ff.function("min", literal_null, literal_null);
-            assertNull((Double)  minFunction.evaluate(null));
+            assertNull((Double) minFunction.evaluate(null));
 
         } catch (FactoryRegistryException e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
@@ -1014,13 +1004,13 @@ public class FilterFunction_Test extends TestCase {
                     0.00001);
 
             max_4Function = ff.function("max_4", literal_null, literal_1);
-            assertNull((Integer)  max_4Function.evaluate(null));
+            assertNull((Integer) max_4Function.evaluate(null));
 
             max_4Function = ff.function("max_4", literal_1, literal_null);
-            assertNull((Integer)  max_4Function.evaluate(null));
+            assertNull((Integer) max_4Function.evaluate(null));
 
             max_4Function = ff.function("max_4", literal_null, literal_null);
-            assertNull((Integer)  max_4Function.evaluate(null));
+            assertNull((Integer) max_4Function.evaluate(null));
 
         } catch (FactoryRegistryException e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
@@ -1079,13 +1069,13 @@ public class FilterFunction_Test extends TestCase {
                     0.00001);
 
             max_2Function = ff.function("max_2", literal_null, literal_1);
-            assertNull((Long)  max_2Function.evaluate(null));
+            assertNull((Long) max_2Function.evaluate(null));
 
             max_2Function = ff.function("max_2", literal_1, literal_null);
-            assertNull((Long)  max_2Function.evaluate(null));
+            assertNull((Long) max_2Function.evaluate(null));
 
             max_2Function = ff.function("max_2", literal_null, literal_null);
-            assertNull((Long)  max_2Function.evaluate(null));
+            assertNull((Long) max_2Function.evaluate(null));
 
         } catch (FactoryRegistryException e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
@@ -1144,13 +1134,13 @@ public class FilterFunction_Test extends TestCase {
                     0.00001);
 
             max_3Function = ff.function("max_3", literal_null, literal_1);
-            assertNull((Float)  max_3Function.evaluate(null));
+            assertNull((Float) max_3Function.evaluate(null));
 
             max_3Function = ff.function("max_3", literal_1, literal_null);
-            assertNull((Float)  max_3Function.evaluate(null));
+            assertNull((Float) max_3Function.evaluate(null));
 
             max_3Function = ff.function("max_3", literal_null, literal_null);
-            assertNull((Float)  max_3Function.evaluate(null));
+            assertNull((Float) max_3Function.evaluate(null));
 
         } catch (FactoryRegistryException e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
@@ -1209,13 +1199,13 @@ public class FilterFunction_Test extends TestCase {
                     0.00001);
 
             maxFunction = ff.function("max", literal_null, literal_1);
-            assertNull((Integer)  maxFunction.evaluate(null));
+            assertNull((Integer) maxFunction.evaluate(null));
 
             maxFunction = ff.function("max", literal_1, literal_null);
-            assertNull((Integer)  maxFunction.evaluate(null));
+            assertNull((Integer) maxFunction.evaluate(null));
 
             maxFunction = ff.function("max", literal_null, literal_null);
-            assertNull((Integer)  maxFunction.evaluate(null));
+            assertNull((Integer) maxFunction.evaluate(null));
         } catch (FactoryRegistryException e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             fail("Unexpected exception: " + e.getMessage());
@@ -1273,7 +1263,7 @@ public class FilterFunction_Test extends TestCase {
                     0.00001);
 
             absFunction = ff.function("abs", literal_null);
-            assertNull((Integer)  absFunction.evaluate(null));
+            assertNull((Integer) absFunction.evaluate(null));
 
         } catch (FactoryRegistryException e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
@@ -1332,7 +1322,7 @@ public class FilterFunction_Test extends TestCase {
                     0.00001);
 
             abs_4Function = ff.function("abs_4", literal_null);
-            assertNull((Double)  abs_4Function.evaluate(null));
+            assertNull((Double) abs_4Function.evaluate(null));
 
         } catch (FactoryRegistryException e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
@@ -1391,7 +1381,7 @@ public class FilterFunction_Test extends TestCase {
                     0.00001);
 
             abs_3Function = ff.function("abs_3", literal_null);
-            assertNull((Float)  abs_3Function.evaluate(null));
+            assertNull((Float) abs_3Function.evaluate(null));
         } catch (FactoryRegistryException e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             fail("Unexpected exception: " + e.getMessage());
@@ -1449,8 +1439,8 @@ public class FilterFunction_Test extends TestCase {
                     0.00001);
 
             abs_2Function = ff.function("abs_2", literal_null);
-            assertNull((Long)  abs_2Function.evaluate(null));
-            
+            assertNull((Long) abs_2Function.evaluate(null));
+
         } catch (FactoryRegistryException e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             fail("Unexpected exception: " + e.getMessage());
@@ -1560,14 +1550,13 @@ public class FilterFunction_Test extends TestCase {
             }
 
             IEEEremainderFunction = ff.function("IEEEremainder", literal_null, literal_1);
-            assertNull((Double)   IEEEremainderFunction.evaluate(null));
-
+            assertNull((Double) IEEEremainderFunction.evaluate(null));
 
             IEEEremainderFunction = ff.function("IEEEremainder", literal_1, literal_null);
-            assertNull((Double)   IEEEremainderFunction.evaluate(null));
+            assertNull((Double) IEEEremainderFunction.evaluate(null));
 
             IEEEremainderFunction = ff.function("IEEEremainder", literal_null, literal_null);
-            assertNull((Double)   IEEEremainderFunction.evaluate(null));
+            assertNull((Double) IEEEremainderFunction.evaluate(null));
 
         } catch (FactoryRegistryException e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
@@ -1667,9 +1656,8 @@ public class FilterFunction_Test extends TestCase {
                         0.00001);
             }
 
-
             acosFunction = ff.function("acos", literal_null);
-            assertNull((Double)   acosFunction.evaluate(null));
+            assertNull((Double) acosFunction.evaluate(null));
 
         } catch (FactoryRegistryException e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
@@ -1770,7 +1758,7 @@ public class FilterFunction_Test extends TestCase {
             }
 
             asinFunction = ff.function("asin", literal_null);
-            assertNull((Double)   asinFunction.evaluate(null));
+            assertNull((Double) asinFunction.evaluate(null));
 
         } catch (FactoryRegistryException e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
@@ -1869,10 +1857,10 @@ public class FilterFunction_Test extends TestCase {
                         ((Double) atanFunction.evaluate(null)).doubleValue(),
                         0.00001);
             }
-            
+
             atanFunction = ff.function("atan", literal_null);
-            assertNull((Double)   atanFunction.evaluate(null));
-            
+            assertNull((Double) atanFunction.evaluate(null));
+
         } catch (FactoryRegistryException e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             fail("Unexpected exception: " + e.getMessage());
@@ -1972,8 +1960,8 @@ public class FilterFunction_Test extends TestCase {
             }
 
             ceilFunction = ff.function("ceil", literal_null);
-            assertNull((Double)   ceilFunction.evaluate(null));
-            
+            assertNull((Double) ceilFunction.evaluate(null));
+
         } catch (FactoryRegistryException e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             fail("Unexpected exception: " + e.getMessage());
@@ -2073,8 +2061,8 @@ public class FilterFunction_Test extends TestCase {
             }
 
             expFunction = ff.function("exp", literal_null);
-            assertNull((Double)   expFunction.evaluate(null));
-            
+            assertNull((Double) expFunction.evaluate(null));
+
         } catch (FactoryRegistryException e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             fail("Unexpected exception: " + e.getMessage());
@@ -2174,8 +2162,8 @@ public class FilterFunction_Test extends TestCase {
             }
 
             floorFunction = ff.function("floor", literal_null);
-            assertNull((Double)   floorFunction.evaluate(null));
-            
+            assertNull((Double) floorFunction.evaluate(null));
+
         } catch (FactoryRegistryException e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             fail("Unexpected exception: " + e.getMessage());
@@ -2275,8 +2263,8 @@ public class FilterFunction_Test extends TestCase {
             }
 
             logFunction = ff.function("log", literal_null);
-            assertNull((Double)   logFunction.evaluate(null));
-            
+            assertNull((Double) logFunction.evaluate(null));
+
         } catch (FactoryRegistryException e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             fail("Unexpected exception: " + e.getMessage());
@@ -2391,10 +2379,10 @@ public class FilterFunction_Test extends TestCase {
                         ((Double) rintFunction.evaluate(null)).doubleValue(),
                         0.00001);
             }
-            
+
             rintFunction = ff.function("rint", literal_null);
-            assertNull((Double)   rintFunction.evaluate(null));
-            
+            assertNull((Double) rintFunction.evaluate(null));
+
         } catch (FactoryRegistryException e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             fail("Unexpected exception: " + e.getMessage());
@@ -2452,8 +2440,8 @@ public class FilterFunction_Test extends TestCase {
                     0.00001);
 
             roundFunction = ff.function("round", literal_null);
-            assertNull((Integer)   roundFunction.evaluate(null));
-            
+            assertNull((Integer) roundFunction.evaluate(null));
+
         } catch (FactoryRegistryException e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             fail("Unexpected exception: " + e.getMessage());
@@ -2509,10 +2497,10 @@ public class FilterFunction_Test extends TestCase {
                     (long) Math.round(1.5707963267948966),
                     ((Long) round_2Function.evaluate(null)).longValue(),
                     0.00001);
-            
+
             round_2Function = ff.function("round_2", literal_null);
-            assertNull((Long)   round_2Function.evaluate(null));
-            
+            assertNull((Long) round_2Function.evaluate(null));
+
         } catch (FactoryRegistryException e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             fail("Unexpected exception: " + e.getMessage());
@@ -2613,8 +2601,8 @@ public class FilterFunction_Test extends TestCase {
             }
 
             toDegreesFunction = ff.function("toDegrees", literal_null);
-            assertNull((Double)   toDegreesFunction.evaluate(null));
-            
+            assertNull((Double) toDegreesFunction.evaluate(null));
+
         } catch (FactoryRegistryException e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             fail("Unexpected exception: " + e.getMessage());
@@ -2715,8 +2703,8 @@ public class FilterFunction_Test extends TestCase {
             }
 
             toRadiansFunction = ff.function("toRadians", literal_null);
-            assertNull((Double)   toRadiansFunction.evaluate(null));
-            
+            assertNull((Double) toRadiansFunction.evaluate(null));
+
         } catch (FactoryRegistryException e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             fail("Unexpected exception: " + e.getMessage());

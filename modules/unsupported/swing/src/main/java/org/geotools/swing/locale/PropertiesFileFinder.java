@@ -102,6 +102,9 @@ public class PropertiesFileFinder {
             try {
                 urlFile = (URL) toFileURLMethod.invoke(null, url);
                 // try to load
+                if (urlFile == null)
+                    throw new RuntimeException(
+                            "error while converting the url " + url + " to a file");
                 mydirectory = new File(urlFile.getFile());
             } catch (IllegalAccessException
                     | IllegalArgumentException
@@ -110,13 +113,16 @@ public class PropertiesFileFinder {
                 throw new RuntimeException(
                         "error while converting the url " + url + " to a file", e);
             }
+
             // list files
-            File[] children = mydirectory.listFiles();
-            if (children != null) {
-                for (File child : mydirectory.listFiles()) {
-                    String name = child.getName();
-                    if (name.endsWith(".properties")) {
-                        infoList.add(parseEntry(0, name));
+            if (mydirectory != null) {
+                File[] children = mydirectory.listFiles();
+                if (children != null) {
+                    for (File child : mydirectory.listFiles()) {
+                        String name = child.getName();
+                        if (name.endsWith(".properties")) {
+                            infoList.add(parseEntry(0, name));
+                        }
                     }
                 }
             }

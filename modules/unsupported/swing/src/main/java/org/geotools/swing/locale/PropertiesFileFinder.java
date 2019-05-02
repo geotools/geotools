@@ -103,7 +103,9 @@ public class PropertiesFileFinder {
                 urlFile = (URL) toFileURLMethod.invoke(null, url);
                 // try to load
                 mydirectory = new File(urlFile.getFile());
-            } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+            } catch (IllegalAccessException
+                    | IllegalArgumentException
+                    | InvocationTargetException e) {
                 e.printStackTrace();
                 throw new RuntimeException(
                         "error while converting the url " + url + " to a file", e);

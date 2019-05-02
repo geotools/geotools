@@ -41,8 +41,8 @@ public class FilterFunction_abs extends FunctionExpressionImpl {
         if (arg0 == null) {
             return null;
         }
-        Hints hints = new Hints();
-        arg0 = Converters.convert(arg0, Integer.class, hints);
+
+        arg0 = Converters.convert(arg0, Integer.class, new Hints());
         if (arg0 == null) {
             throw new IllegalArgumentException(
                     "Filter Function problem for function abs argument #0 - expected type int");

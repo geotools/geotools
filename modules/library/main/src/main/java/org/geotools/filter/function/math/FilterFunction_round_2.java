@@ -43,8 +43,8 @@ public class FilterFunction_round_2 extends FunctionExpressionImpl {
         if (arg0 == null) {
             return null;
         }
-        Hints hints = new Hints();
-        arg0 = Converters.convert(arg0, Double.class, hints);
+
+        arg0 = Converters.convert(arg0, Double.class, new Hints());
         if (arg0 == null) {
             throw new IllegalArgumentException(
                     "Filter Function problem for function round argument #0 - expected type double");

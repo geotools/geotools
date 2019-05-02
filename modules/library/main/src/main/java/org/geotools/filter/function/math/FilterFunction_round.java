@@ -44,8 +44,8 @@ public class FilterFunction_round extends FunctionExpressionImpl {
         if (arg0 == null) {
             return null;
         }
-        Hints hints = new Hints();
-        arg0 = Converters.convert(arg0, Float.class, hints);
+
+        arg0 = Converters.convert(arg0, Float.class, new Hints());
         if (arg0 == null) {
             throw new IllegalArgumentException(
                     "Filter Function problem for function round argument #0 - expected type float");

@@ -48,11 +48,13 @@ public class FilterFunction_IEEEremainder extends FunctionExpressionImpl {
         if (arg0 == null || arg1 == null) {
             return null;
         }
-        Hints hints0 = new Hints();
+
         arg0 =
                 Converters.convert(
-                        arg0, Double.class, hints0); // attempt to get value and perform conversion
-        arg1 = Converters.convert(arg1, Double.class, hints0);
+                        arg0,
+                        Double.class,
+                        new Hints()); // attempt to get value and perform conversion
+        arg1 = Converters.convert(arg1, Double.class, new Hints());
 
         if (arg0 == null) {
             // probably a type error

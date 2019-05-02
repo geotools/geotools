@@ -44,8 +44,8 @@ public class FilterFunction_abs_2 extends FunctionExpressionImpl {
         if (arg0 == null) {
             return null;
         }
-        Hints hints = new Hints();
-        arg0 = Converters.convert(arg0, Long.class, hints);
+
+        arg0 = Converters.convert(arg0, Long.class, new Hints());
         if (arg0 == null) {
             throw new IllegalArgumentException(
                     "Filter Function problem for function abs argument #0 - expected type long");

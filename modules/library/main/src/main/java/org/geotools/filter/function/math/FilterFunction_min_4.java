@@ -50,9 +50,8 @@ public class FilterFunction_min_4 extends FunctionExpressionImpl {
             return null;
         }
 
-        Hints hints0 = new Hints();
-        arg0 = Converters.convert(arg0, Integer.class, hints0);
-        arg1 = Converters.convert(arg1, Integer.class, hints0);
+        arg0 = Converters.convert(arg0, Integer.class, new Hints());
+        arg1 = Converters.convert(arg1, Integer.class, new Hints());
 
         if (arg0 == null) {
             throw new IllegalArgumentException(

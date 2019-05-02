@@ -22,7 +22,6 @@ import static org.geotools.filter.capability.FunctionNameImpl.parameter;
 
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
-import org.geotools.util.ConverterFactory;
 import org.geotools.util.Converters;
 import org.geotools.util.factory.Hints;
 import org.opengis.filter.capability.FunctionName;
@@ -48,8 +47,8 @@ public class FilterFunction_acos extends FunctionExpressionImpl {
         if (arg0 == null) {
             return null;
         }
-        Hints hints = new Hints(ConverterFactory.SAFE_CONVERSION, true);
-        arg0 = Converters.convert(arg0, Double.class, hints);
+
+        arg0 = Converters.convert(arg0, Double.class, new Hints());
         if (arg0 == null) {
             throw new IllegalArgumentException(
                     "Filter Function problem for function acos argument #0 - expected type double");

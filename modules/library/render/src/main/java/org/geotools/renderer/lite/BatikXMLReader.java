@@ -18,6 +18,9 @@ package org.geotools.renderer.lite;
 
 import java.io.IOException;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+
 import org.xml.sax.ContentHandler;
 import org.xml.sax.DTDHandler;
 import org.xml.sax.EntityResolver;
@@ -45,7 +48,10 @@ public class BatikXMLReader implements XMLReader {
     XMLReader reader;
 
     public BatikXMLReader() throws ParserConfigurationException, SAXException {
-        reader = XMLReaderFactory.createXMLReader();
+        SAXParserFactory parserFactory = SAXParserFactory.newInstance();
+        parserFactory.setNamespaceAware(true);
+        SAXParser parser = parserFactory.newSAXParser();
+        reader = parser.getXMLReader();
     }
 
     public ContentHandler getContentHandler() {

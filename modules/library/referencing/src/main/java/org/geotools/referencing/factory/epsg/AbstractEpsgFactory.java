@@ -3470,6 +3470,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
          * implementation of this method can be executed an arbitrary amount of times.
          */
         @Override
+        @SuppressWarnings("deprecation") // finalize is deprecated in Java 9
         protected synchronized void finalize() throws SQLException {
             if (querySingle != null) {
                 querySingle.close();
@@ -3560,6 +3561,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
 
             /** Closes the underlying result set. */
             @Override
+            @SuppressWarnings("deprecation") // finalize is deprecated in Java 9
             protected void finalize() throws SQLException {
                 next = null;
                 if (results != null) {

@@ -82,7 +82,7 @@ public class RasterInfoTest {
         final CoordinateReferenceSystem crs = DefaultEngineeringCRS.CARTESIAN_2D;
 
         final Point imageOffset = new Point(0, 0);
-        final Point2D extentOffset = new Double(0, 0);
+        final Point2D extentOffset = new Doubleda(0, 0);
 
         pyramid.addPyramidLevel(
                 0,

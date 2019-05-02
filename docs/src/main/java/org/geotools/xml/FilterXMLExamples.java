@@ -29,6 +29,9 @@ import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
 import org.xml.sax.helpers.XMLReaderFactory;
 
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+
 @SuppressWarnings("unused")
 public class FilterXMLExamples {
 
@@ -51,7 +54,10 @@ public class FilterXMLExamples {
         GMLFilterDocument filterDocument = new GMLFilterDocument(filterGeometry);
 
         // parse xml
-        XMLReader reader = XMLReaderFactory.createXMLReader();
+        SAXParserFactory parserFactory = SAXParserFactory.newInstance();
+        parserFactory.setNamespaceAware(true);
+        SAXParser parser = parserFactory.newSAXParser();
+        XMLReader reader = parser.getXMLReader();
         reader.setContentHandler(filterDocument);
         reader.parse(input);
         Filter filter = simpleFilterHandler.filter;

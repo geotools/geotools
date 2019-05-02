@@ -119,6 +119,7 @@ public class PropertiesFileFinder {
                 File[] children = mydirectory.listFiles();
                 if (children != null) {
                     for (File child : mydirectory.listFiles()) {
+                        if (child == null) continue;
                         String name = child.getName();
                         if (name.endsWith(".properties")) {
                             infoList.add(parseEntry(0, name));

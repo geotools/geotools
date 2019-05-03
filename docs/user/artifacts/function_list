@@ -1,7 +1,7 @@
 DefaultFunctionFactory
 ^^^^^^^^^^^^^^^^^^^^^^
 
-Contains 198 functions.
+Contains 202 functions.
 
 Area(geometry): area
 ''''''''''''''''''''
@@ -1014,6 +1014,15 @@ isometric(geometry, extrusion): isometric
 
 * isometric: Geometry 1:1 required
 
+lapply(source, expression): result
+''''''''''''''''''''''''''''''''''
+
+* source: List 1:1 required
+
+* expression
+
+* result: List 1:1 required
+
 length(string): length
 ''''''''''''''''''''''
 
@@ -1065,6 +1074,26 @@ listMultiply(factor, list): listMultiply
 * list: String 1:1 required
 
 * listMultiply: String 1:1 required
+
+litem(source, index): result
+''''''''''''''''''''''''''''
+
+* source: List 1:1 required
+
+* index: Integer 1:1 required
+
+* result
+
+literate(index, times, expression): result
+''''''''''''''''''''''''''''''''''''''''''
+
+* index
+
+* times: Integer 1:1 required
+
+* expression
+
+* result: List 1:1 required
 
 log(value): logarithm
 '''''''''''''''''''''
@@ -1445,6 +1474,13 @@ sin(radians): sine
 
 * sine: Double 1:1 required
 
+size(source): result
+''''''''''''''''''''
+
+* source: Collection 1:1 required
+
+* result: Integer 1:1 required
+
 spin(color, amount): result
 '''''''''''''''''''''''''''
 
@@ -1762,7 +1798,7 @@ within(geometry, geometry): within
 ProcessFunctionFactory
 ^^^^^^^^^^^^^^^^^^^^^^
 
-Jan 05, 2019 4:32:34 PM org.geotools.image.ImageWorker <clinit>
+May 03, 2019 12:32:04 PM org.geotools.image.ImageWorker <clinit>
 INFO: Warp/affine reduction enabled: true
 Contains 102 functions.
 

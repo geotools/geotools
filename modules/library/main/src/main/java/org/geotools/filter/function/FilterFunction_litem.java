@@ -25,7 +25,7 @@ import org.opengis.filter.capability.FunctionName;
 
 /**
  * Select one item for a list. Allows expressions to be used as index (as opposed to the []
- * notation).
+ * notation). The first item in the list is 0.
  *
  * @author Niels Charlier
  */

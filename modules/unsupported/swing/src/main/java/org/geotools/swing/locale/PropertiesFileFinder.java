@@ -20,6 +20,8 @@ package org.geotools.swing.locale;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -72,6 +74,59 @@ public class PropertiesFileFinder {
             }
             jarFile.close();
 
+        } else if (isBundle(path)) {
+            // try to load the eclipse classes which enable to solve bundle:/ urls
+            // we use reflection in order to avoid adding a dependency between geotools to eclipse
+            Class<?> classFileLocator = null;
+            Method toFileURLMethod = null;
+            try {
+                classFileLocator = Class.forName("org.eclipse.core.runtime.FileLocator");
+                toFileURLMethod = classFileLocator.getMethod("toFileURL", URL.class);
+            } catch (LinkageError | ClassNotFoundException ex) {
+                ex.printStackTrace();
+                throw new IllegalArgumentException(
+                        "trying to load a bundle resource "
+                                + resourceDir
+                                + " whilst the org.eclipse.core.runtime.FileLocator is not available",
+                        ex);
+            } catch (NoSuchMethodException | SecurityException ex) {
+                ex.printStackTrace();
+                throw new IllegalArgumentException(
+                        "did not found method toFileUTL in class the org.eclipse.core.runtime.FileLocator",
+                        ex);
+            }
+            // convert to a directory we can list
+            URL url = new URL(path);
+            URL urlFile;
+            File mydirectory;
+            try {
+                urlFile = (URL) toFileURLMethod.invoke(null, url);
+                // try to load
+                if (urlFile == null)
+                    throw new RuntimeException(
+                            "error while converting the url " + url + " to a file");
+                mydirectory = new File(urlFile.getFile());
+            } catch (IllegalAccessException
+                    | IllegalArgumentException
+                    | InvocationTargetException e) {
+                e.printStackTrace();
+                throw new RuntimeException(
+                        "error while converting the url " + url + " to a file", e);
+            }
+
+            // list files
+            if (mydirectory != null) {
+                File[] children = mydirectory.listFiles();
+                if (children != null) {
+                    for (File child : children) {
+                        if (child == null) continue;
+                        String name = child.getName();
+                        if (name.endsWith(".properties")) {
+                            infoList.add(parseEntry(0, name));
+                        }
+                    }
+                }
+            }
         } else { // must be running locally
             File localDir = getAsLocalDir(path);
             File[] children = localDir.listFiles();
@@ -116,6 +171,10 @@ public class PropertiesFileFinder {
      */
     private boolean isJarPath(String path) {
         return path.contains(".jar!");
+    }
+
+    private boolean isBundle(String path) {
+        return path.toLowerCase().startsWith("bundleresource:/");
     }
 
     /**

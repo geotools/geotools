@@ -3612,18 +3612,23 @@ public class StreamingRenderer implements GTRenderer {
                 // straight, so we don't need to compose it back in.
                 final Graphics2D ftsGraphics = currentLayer.graphics;
                 if (ftsGraphics instanceof DelayedBackbufferGraphic && !(ftsGraphics == graphics)) {
-                    final BufferedImage image = ((DelayedBackbufferGraphic) ftsGraphics).image;
+                    BufferedImage image = ((DelayedBackbufferGraphic) ftsGraphics).image;
                     // we may have not found anything to paint, in that case the delegate
                     // has not been initialized
-                    if (image != null) {
-                        if (currentLayer.composite == null) {
-                            graphics.setComposite(AlphaComposite.SrcOver);
-                        } else {
-                            graphics.setComposite(currentLayer.composite);
-                        }
-                        graphics.drawImage(image, 0, 0, null);
-                        ftsGraphics.dispose();
+                    if (image == null) {
+                        Rectangle size = ((DelayedBackbufferGraphic) ftsGraphics).screenSize;
+                        image =
+                                new BufferedImage(
+                                        size.width, size.height, BufferedImage.TYPE_4BYTE_ABGR);
                     }
+
+                    if (currentLayer.composite == null) {
+                        graphics.setComposite(AlphaComposite.SrcOver);
+                    } else {
+                        graphics.setComposite(currentLayer.composite);
+                    }
+                    graphics.drawImage(image, 0, 0, null);
+                    ftsGraphics.dispose();
                 }
             }
         }

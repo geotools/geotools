@@ -24,6 +24,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
+import java.awt.AlphaComposite;
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.Shape;
@@ -65,11 +67,13 @@ import org.geotools.geometry.jts.LiteCoordinateSequence;
 import org.geotools.geometry.jts.LiteShape2;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.DefaultMapContext;
+import org.geotools.map.DirectLayer;
 import org.geotools.map.FeatureLayer;
 import org.geotools.map.GridCoverageLayer;
 import org.geotools.map.Layer;
 import org.geotools.map.MapContent;
 import org.geotools.map.MapContext;
+import org.geotools.map.MapViewport;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.renderer.RenderListener;
@@ -116,6 +120,23 @@ public class StreamingRendererTest {
     private GeometryFactory gf = new GeometryFactory();
     protected int errors;
     protected int features;
+
+    private static final class MergeLayerRequestTester extends StreamingRenderer {
+        Graphics2D graphics;
+        List<LiteFeatureTypeStyle> styles;
+
+        public MergeLayerRequestTester(Graphics2D graphics, List<LiteFeatureTypeStyle> styles) {
+            super();
+            this.graphics = graphics;
+            this.styles = styles;
+        }
+
+        public void mergeRequest() {
+
+            MergeLayersRequest request = new MergeLayersRequest(graphics, styles);
+            request.execute();
+        }
+    }
 
     @Before
     public void setUp() throws Exception {
@@ -792,5 +813,44 @@ public class StreamingRendererTest {
         // correctly handled no geometries were selected and so no features were rendered
         Assert.assertEquals(features, 4);
         Assert.assertEquals(errors, 0);
+    }
+
+    @Test
+    public void testMergeLayerWithNullImage() {
+        BufferedImage finalImage = new BufferedImage(100, 100, BufferedImage.TYPE_INT_RGB);
+        Graphics2D finalGraphics = (Graphics2D) finalImage.getGraphics();
+        finalGraphics.setColor(Color.RED);
+        finalGraphics.fillRect(0, 0, 100, 100);
+
+        List<LiteFeatureTypeStyle> lfts = new ArrayList<LiteFeatureTypeStyle>();
+        Layer layer =
+                new DirectLayer() {
+
+                    @Override
+                    public void draw(Graphics2D graphics, MapContent map, MapViewport viewport) {}
+
+                    @Override
+                    public ReferencedEnvelope getBounds() {
+                        return null;
+                    }
+                };
+
+        // style with empty (null) image
+        DelayedBackbufferGraphic graphics =
+                new DelayedBackbufferGraphic(finalGraphics, new Rectangle(100, 100));
+        LiteFeatureTypeStyle style1 =
+                new LiteFeatureTypeStyle(layer, graphics, new ArrayList(), new ArrayList(), null);
+        style1.composite = AlphaComposite.DstIn;
+        lfts.add(style1);
+
+        MergeLayerRequestTester renderer = new MergeLayerRequestTester(finalGraphics, lfts);
+        renderer.mergeRequest();
+        int color = finalImage.getRGB(0, 0);
+        int red = (color & 0x00ff0000) >> 16;
+        int green = (color & 0x0000ff00) >> 8;
+        int blue = color & 0x000000ff;
+        assertEquals(0, red);
+        assertEquals(0, green);
+        assertEquals(0, blue);
     }
 }

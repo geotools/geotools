@@ -43,6 +43,7 @@ public final class MapMouseEvent extends MouseEvent {
      * @param pane the source map pane
      * @param event the source mouse event
      */
+    @SuppressWarnings("deprecation")
     public MapMouseEvent(MapPane pane, MouseEvent event) {
         super(
                 (Component) pane,
@@ -66,6 +67,7 @@ public final class MapMouseEvent extends MouseEvent {
      * @param pane the source map pane
      * @param event the source mouse wheel event
      */
+    @SuppressWarnings("deprecation")
     public MapMouseEvent(MapPane pane, MouseWheelEvent event) {
         super(
                 (Component) pane,

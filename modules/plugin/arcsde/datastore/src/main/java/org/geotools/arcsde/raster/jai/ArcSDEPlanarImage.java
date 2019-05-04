@@ -17,7 +17,7 @@
 package org.geotools.arcsde.raster.jai;
 
 import com.sun.media.jai.util.ImageUtil;
-import java.awt.Point;
+import java.awt.*;
 import java.awt.image.ColorModel;
 import java.awt.image.DataBuffer;
 import java.awt.image.DataBufferByte;
@@ -31,7 +31,6 @@ import java.awt.image.SampleModel;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.util.Objects;
-import java.util.Observable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.media.jai.JAI;
@@ -66,6 +65,7 @@ public class ArcSDEPlanarImage extends PlanarImage {
      */
     private final TileCache tileCache;
 
+    @SuppressWarnings("deprecation")
     public ArcSDEPlanarImage(
             TileReader tileReader,
             int minX,
@@ -136,8 +136,8 @@ public class ArcSDEPlanarImage extends PlanarImage {
         final JAI jai = JAI.getDefaultInstance();
         TileFactory tileFactory = (TileFactory) jai.getRenderingHint(JAI.KEY_TILE_FACTORY);
         if (tileFactory == null) {
-            if (tileCache instanceof Observable) {
-                super.tileFactory = new RecyclingTileFactory((Observable) tileCache);
+            if (tileCache instanceof java.util.Observable) {
+                super.tileFactory = new RecyclingTileFactory((java.util.Observable) tileCache);
             } else {
                 // not a SunTileCache?
                 super.tileFactory = new javax.media.jai.RecyclingTileFactory();

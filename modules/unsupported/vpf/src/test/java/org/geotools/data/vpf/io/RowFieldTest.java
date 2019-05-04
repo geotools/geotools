@@ -100,7 +100,7 @@ public class RowFieldTest extends TestCase implements DataTypesDefinition {
     public void testGetAsShort() {
         short[] testVals = {Short.MAX_VALUE, Short.MIN_VALUE, 0};
         for (int i = 0; i < testVals.length; i++) {
-            varRowField = new RowField(new Short(testVals[i]), DATA_SHORT_INTEGER);
+            varRowField = new RowField(Short.valueOf(testVals[i]), DATA_SHORT_INTEGER);
             assertEquals(
                     "Testing RowField for short value: " + testVals[i],
                     testVals[i],

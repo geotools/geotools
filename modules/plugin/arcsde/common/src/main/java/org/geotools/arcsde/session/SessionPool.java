@@ -225,6 +225,7 @@ class SessionPool implements ISessionPool {
 
     /** Ensures proper closure of connection pool at this object's finalization stage. */
     @Override
+    @SuppressWarnings("deprecation") // finalize is deprecated in Java 9
     protected void finalize() {
         close();
     }

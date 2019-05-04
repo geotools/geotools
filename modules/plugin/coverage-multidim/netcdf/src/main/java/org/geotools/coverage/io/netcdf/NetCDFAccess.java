@@ -246,6 +246,7 @@ public class NetCDFAccess extends DefaultFileCoverageAccess
     }
 
     @Override
+    @SuppressWarnings("deprecation") // finalize is deprecated in Java 9
     protected void finalize() throws Throwable {
         if (reader != null) {
             LOGGER.warning(

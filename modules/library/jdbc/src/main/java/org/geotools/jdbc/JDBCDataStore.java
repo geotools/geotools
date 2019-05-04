@@ -4767,6 +4767,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
         }
     }
 
+    @SuppressWarnings("deprecation") // finalize is deprecated in Java 9
     protected void finalize() throws Throwable {
         if (dataSource != null) {
             LOGGER.severe(

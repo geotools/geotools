@@ -18,6 +18,7 @@
 package org.geotools.process.vector;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -423,7 +424,7 @@ public class ClipProcess implements VectorProcess {
                 // apply safe rounding to avoid numerical issues with the above calculation due
                 // to the weights being, often, very small numbers
                 BigDecimal bd = BigDecimal.valueOf(z);
-                double rz = bd.setScale(scale, BigDecimal.ROUND_HALF_EVEN).doubleValue();
+                double rz = bd.setScale(scale, RoundingMode.HALF_EVEN).doubleValue();
                 seq.setOrdinate(i, 2, rz);
             }
         }

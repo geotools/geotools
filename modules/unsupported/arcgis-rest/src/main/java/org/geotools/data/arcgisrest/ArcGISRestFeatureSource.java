@@ -103,7 +103,7 @@ public class ArcGISRestFeatureSource extends ContentFeatureSource {
     @Override
     protected SimpleFeatureType buildFeatureType() throws IOException {
 
-        // Extracts informaton about the type name (as per this.entry) from the API
+        // Extracts information about the type name (as per this.entry) from the API
         Dataset ds = this.dataStore.getDataset(this.entry.getName());
         Webservice ws =
                 (new Gson())
@@ -116,7 +116,7 @@ public class ArcGISRestFeatureSource extends ContentFeatureSource {
                                 Webservice.class);
 
         if (ws == null) {
-            throw new IOException("Type name " + entry.getName() + " not found");
+            throw new IOException(String.format("Type name %s not found", entry.getName()));
         }
 
         // Sets the information about the resource
@@ -185,7 +185,7 @@ public class ArcGISRestFeatureSource extends ContentFeatureSource {
                             if (clazz == null) {
                                 this.getDataStore()
                                         .getLogger()
-                                        .severe("Type " + fld.getType() + " not found");
+                                        .severe(String.format("Type %s not found", fld.getType()));
                             }
                             builder.add(fld.getName(), clazz);
                         });
@@ -195,7 +195,7 @@ public class ArcGISRestFeatureSource extends ContentFeatureSource {
         if (clazz == null) {
             this.getDataStore()
                     .getLogger()
-                    .severe("Geometry type " + ws.getGeometryType() + " not found");
+                    .severe(String.format("Geometry type %s not found", ws.getGeometryType()));
         }
 
         builder.add(ArcGISRestDataStore.GEOMETRY_ATTR, clazz);
@@ -257,7 +257,7 @@ public class ArcGISRestFeatureSource extends ContentFeatureSource {
                                                     params)),
                                     Count.class);
         } catch (HTTPException e) {
-            throw new IOException("Error " + e.getStatusCode() + " " + e.getMessage());
+            throw new IOException(String.format("Error %d %s", e.getStatusCode(), e.getMessage()));
         }
 
         return cnt == null ? -1 : cnt.getCount();
@@ -286,7 +286,7 @@ public class ArcGISRestFeatureSource extends ContentFeatureSource {
         try {
             result = this.dataStore.retrieveJSON("POST", (new URL(this.composeQueryURL())), params);
         } catch (HTTPException e) {
-            throw new IOException("Error " + e.getStatusCode() + " " + e.getMessage());
+            throw new IOException(String.format("Error %d %s", e.getStatusCode(), e.getMessage()));
         }
 
         // Returns a reader for the result
@@ -310,7 +310,7 @@ public class ArcGISRestFeatureSource extends ContentFeatureSource {
     /**
      * Helper method to return an extent as the API expects it
      *
-     * @param ext Extent (as expressed in the JSON describing the layer)
+     * @param env Extent (as expressed in the JSON describing the layer)
      */
     protected String composeExtent(ReferencedEnvelope env) {
         Extent ext = new Extent();

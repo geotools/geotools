@@ -29,16 +29,20 @@ import org.opengis.filter.capability.FunctionName;
  *
  * @author Niels Charlier
  */
-public class FilterFunction_litem extends FunctionExpressionImpl {
+public class LitemFunction extends FunctionExpressionImpl {
 
     public static FunctionName NAME =
             new FunctionNameImpl(
                     "litem",
-                    parameter("result", Object.class),
-                    parameter("source", List.class),
-                    parameter("index", Integer.class));
+                    parameter(
+                            "result",
+                            Object.class,
+                            "Result",
+                            "The item in the list on this position"),
+                    parameter("source", List.class, "Source", "The list"),
+                    parameter("index", Integer.class, "Index", "Zero-based position index"));
 
-    public FilterFunction_litem() {
+    public LitemFunction() {
         super(NAME);
     }
 

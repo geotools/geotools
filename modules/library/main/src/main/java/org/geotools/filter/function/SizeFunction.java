@@ -18,44 +18,35 @@ package org.geotools.filter.function;
 
 import static org.geotools.filter.capability.FunctionNameImpl.parameter;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.opengis.filter.capability.FunctionName;
 
 /**
- * Apply an expression to each item of a list, resulting in a new list. Provide a list and an
- * expression as input, returns a new list as output. Use the "." symbol inside the expression to
- * refer to each item of the list.
+ * Return the size of a list (or other collection).
  *
  * @author Niels Charlier
  */
-public class FilterFunction_lapply extends FunctionExpressionImpl {
+public class SizeFunction extends FunctionExpressionImpl {
 
     public static FunctionName NAME =
             new FunctionNameImpl(
-                    "lapply",
-                    parameter("result", List.class),
-                    parameter("source", List.class),
-                    parameter("expression", Object.class));
+                    "size",
+                    parameter("result", Integer.class, "Result", "Size of collection"),
+                    parameter("source", Collection.class, "Source", "Collection"));
 
-    public FilterFunction_lapply() {
+    public SizeFunction() {
         super(NAME);
     }
 
     @Override
     public Object evaluate(Object feature) {
-        List<?> source = getExpression(0).evaluate(feature, List.class);
+        Collection<?> source = getExpression(0).evaluate(feature, Collection.class);
         if (source == null) {
             return null;
         }
 
-        List<Object> result = new ArrayList<Object>();
-        for (Object item : source) {
-            result.add(getExpression(1).evaluate(item));
-        }
-
-        return result;
+        return source.size();
     }
 }

@@ -36,17 +36,29 @@ import org.opengis.filter.expression.PropertyName;
  *
  * @author Niels Charlier
  */
-public class FilterFunction_literate extends FunctionExpressionImpl {
+public class LiterateFunction extends FunctionExpressionImpl {
 
     public static FunctionName NAME =
             new FunctionNameImpl(
                     "literate",
-                    parameter("result", List.class),
-                    parameter("index", Object.class),
-                    parameter("times", Integer.class),
-                    parameter("expression", Object.class));
+                    parameter(
+                            "result",
+                            List.class,
+                            "Result",
+                            "List of items resulted from iteration."),
+                    parameter(
+                            "index",
+                            Object.class,
+                            "Index",
+                            "The index identifier in the expression"),
+                    parameter("times", Integer.class, "Times", "Number of iterations"),
+                    parameter(
+                            "expression",
+                            Object.class,
+                            "Expression",
+                            "Expression to be applied to each index of the iteration."));
 
-    public FilterFunction_literate() {
+    public LiterateFunction() {
         super(NAME);
     }
 

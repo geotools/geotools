@@ -21,8 +21,10 @@ package org.geotools.filter.function.math;
 
 import static org.geotools.filter.capability.FunctionNameImpl.parameter;
 
+import org.geotools.factory.Hints;
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
+import org.geotools.util.Converters;
 import org.opengis.filter.capability.FunctionName;
 
 /** @source $URL$ */
@@ -39,17 +41,19 @@ public class FilterFunction_rint extends FunctionExpressionImpl {
     }
 
     public Object evaluate(Object feature) {
-        double arg0;
 
-        try { // attempt to get value and perform conversion
-            Number number = getExpression(0).evaluate(feature, Double.class);
-            arg0 = number.doubleValue();
-        } catch (Exception e) {
-            // probably a type error
+        Object arg0 = getExpression(0).evaluate(feature);
+
+        if (arg0 == null) {
+            return null;
+        }
+
+        arg0 = Converters.convert(arg0, Double.class, new Hints());
+        if (arg0 == null) {
             throw new IllegalArgumentException(
                     "Filter Function problem for function rint argument #0 - expected type double");
         }
 
-        return new Double(Math.rint(arg0));
+        return Math.rint((Double) arg0);
     }
 }

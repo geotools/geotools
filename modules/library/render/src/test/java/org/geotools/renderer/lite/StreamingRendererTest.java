@@ -233,6 +233,43 @@ public class StreamingRendererTest {
     }
 
     @Test
+    public void testDensificationWithInvalidDomain() throws Exception {
+        // build a feature source with two zig-zag line occupying the same position
+        LiteCoordinateSequence cs = new LiteCoordinateSequence(new double[] {10, 10, 10, 40});
+        SimpleFeature line =
+                SimpleFeatureBuilder.build(
+                        testLineFeatureType, new Object[] {gf.createLineString(cs)}, "zz1");
+        DefaultFeatureCollection fc = new DefaultFeatureCollection();
+        fc.add(line);
+        SimpleFeatureSource zzSource = new CollectionFeatureSource(fc);
+
+        // prepare the map
+        MapContent mc = new MapContent();
+        StyleBuilder sb = new StyleBuilder();
+        mc.addLayer(new FeatureLayer(zzSource, sb.createStyle(sb.createLineSymbolizer())));
+        StreamingRenderer sr = new StreamingRenderer();
+        Map hints = new HashMap();
+        hints.put(StreamingRenderer.ADVANCED_PROJECTION_HANDLING_KEY, true);
+        hints.put(StreamingRenderer.ADVANCED_PROJECTION_DENSIFICATION_KEY, true);
+        sr.setRendererHints(hints);
+        sr.setMapContent(mc);
+
+        /*BufferedImage bi = new BufferedImage(1, 1, BufferedImage.TYPE_3BYTE_BGR);
+        Graphics2D graphics = bi.createGraphics();*/
+        Graphics2D graphics = Mockito.mock(Graphics2D.class);
+        CoordinateReferenceSystem utm32n = CRS.decode("EPSG:32632", true);
+        ReferencedEnvelope env =
+                new ReferencedEnvelope(10, 10.5, 39, 39.5, DefaultGeographicCRS.WGS84);
+        ReferencedEnvelope mapEnv = env.transform(utm32n, true);
+        sr.paint(graphics, new Rectangle(0, 0, 100, 100), mapEnv);
+        ArgumentCaptor<Shape> shape = ArgumentCaptor.forClass(Shape.class);
+        Mockito.verify(graphics).draw(shape.capture());
+        LiteShape2 drawnShape = (LiteShape2) shape.getValue();
+        assertTrue(drawnShape.getGeometry().getCoordinates().length > 2);
+        graphics.dispose();
+    }
+
+    @Test
     public void testInterpolationByLayer() throws Exception {
         StreamingRenderer sr = new StreamingRenderer();
         Layer layer = new FeatureLayer(createLineCollection(), createLineStyle());

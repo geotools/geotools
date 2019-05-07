@@ -1123,7 +1123,10 @@ public class StreamingRenderer implements GTRenderer {
                                         sourceEnvelope.getHeight());
                         WarpBuilder wb = new WarpBuilder(tolerance);
                         double densifyDistance = 0.0;
-                        int[] actualSplit = wb.getRowColsSplit(fullTranform, sourceDomain);
+                        int[] actualSplit =
+                                wb.isValidDomain(sourceDomain)
+                                        ? wb.getRowColsSplit(fullTranform, sourceDomain)
+                                        : null;
                         double minDistance =
                                 Math.min(
                                         MAX_PIXELS_DENSIFY

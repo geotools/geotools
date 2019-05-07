@@ -85,6 +85,26 @@ public class WarpBuilder {
     }
 
     /**
+     * Returns true if the given domain is valid for the splitting alghoritm.
+     * Can be called before getRowColsSplit to prevent exceptions.
+     *  
+     * @param domain domain to check
+     * @return
+     */
+    public boolean isValidDomain(Rectangle2D.Double domain) {
+    	return isValidDomain(domain.getMinX(), domain.getMaxX(), domain.getMinY(), domain.getMaxY());
+    }
+    
+    private boolean isValidDomain(double minx, double maxx, double miny, double maxy) {
+    	final int width = (int) (maxx - minx);
+        final int height = (int) (maxy - miny);
+        if (abs(width) == 0 || height == 0) {
+            return false;
+        }
+        return true;
+    }
+    
+    /**
      * Given a math transform and a source domain, return the number of rows and cols by which the
      * domain should be split to avoid transform linearity issues, or null if it could not be found.
      *
@@ -108,9 +128,7 @@ public class WarpBuilder {
         final double maxx = domain.getMaxX();
         final double miny = domain.getMinY();
         final double maxy = domain.getMaxY();
-        final int width = (int) (maxx - minx);
-        final int height = (int) (maxy - miny);
-        if (abs(width) == 0 || height == 0) {
+        if (!isValidDomain(minx, maxx, miny, maxy)) {
             throw new IllegalArgumentException("The domain is empty!");
         }
 

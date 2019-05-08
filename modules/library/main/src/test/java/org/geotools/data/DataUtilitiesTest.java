@@ -47,8 +47,10 @@ import org.geotools.geometry.jts.GeometryBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryCollection;
+import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.MultiLineString;
 import org.locationtech.jts.geom.MultiPoint;
@@ -511,6 +513,13 @@ public class DataUtilitiesTest extends DataTestCase {
         assertNull(DataUtilities.defaultValue(roadType.getDescriptor("name")));
         assertNull(DataUtilities.defaultValue(roadType.getDescriptor("id")));
         assertNull(DataUtilities.defaultValue(roadType.getDescriptor("geom")));
+
+        GeometryFactory fac = new GeometryFactory();
+        Coordinate coordinate = new Coordinate(0, 0);
+        Point point = fac.createPoint(coordinate);
+
+        Geometry geometry = fac.createGeometry(point);
+        assertEquals(geometry, DataUtilities.defaultValue(Geometry.class));
     }
 
     public void testDefaultValueArray() throws Exception {

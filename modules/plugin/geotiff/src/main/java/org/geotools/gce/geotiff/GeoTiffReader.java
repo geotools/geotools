@@ -35,6 +35,7 @@
 package org.geotools.gce.geotiff;
 
 import it.geosolutions.imageio.maskband.DatasetLayout;
+import it.geosolutions.imageio.utilities.ImageIOUtilities;
 import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReaderSpi;
 import it.geosolutions.imageioimpl.plugins.tiff.TiffDatasetLayoutImpl;
 import it.geosolutions.jaiext.range.NoDataContainer;
@@ -319,7 +320,9 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
             } else {
 
                 // check external prj first
-                crs = getCRS(source);
+                if (!ImageIOUtilities.isSkipExternalFilesLookup()) {
+                    crs = getCRS(source);
+                }
 
                 // now, if we did not want to override the inner CRS or we did not have any external
                 // PRJ at hand

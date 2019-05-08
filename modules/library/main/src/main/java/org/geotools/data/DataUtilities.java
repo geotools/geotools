@@ -918,6 +918,9 @@ public class DataUtilities {
         if (type.isArray()) {
             return Array.newInstance(type.getComponentType(), 0);
         }
+        if (type == Geometry.class) { // return a point as default coordinate
+            return fac.createGeometry(point);
+        }
 
         throw new IllegalArgumentException(type + " is not supported by this method");
     }

@@ -2256,8 +2256,8 @@
     <repository>
       <uniqueVersion>false</uniqueVersion>
       <id>osgeo</id>
-      <name>Open Source Geospatial Foundation - Maven 2 repo</name>
-      <url>dav:http://download.osgeo.org/webdav/geotools/</url>
+      <name>Open Source Geospatial Foundation - WeebDAV upload</name>
+      <url>dav:http://download.osgeo.org/upload/geotools/</url>
     </repository>
     <snapshotRepository>
         <id>boundless</id>

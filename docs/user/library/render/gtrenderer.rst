@@ -5,7 +5,7 @@ GTRenderer renderer is the reason why you signed up for this whole GeoTools expe
 
 GTRenderer is actually an interface; currently there are two implementations:
 
-* StreamingRenderer - a great implementation that does not cache anything. This decision makes it easier to understand and allows it to tackle that large datasets without running out of memory.
+* StreamingRenderer - a great implementation that does not cache anything. This decision makes it easier to understand and allows it to tackle that large data sets without running out of memory.
 * ShapefileRenderer - (unsupported) restricted to shapefiles as a playground for trying out speed improvements. However all the good optimisations have been picked up by StreamingRenderer.
 
 

@@ -300,7 +300,7 @@ Now that your environment is setup we can put together a simple Quickstart. This
 
    Please unzip the above data into a location you can find easily such as the desktop.
 
-#. Run the application to open a file chooser. Choose a shapefile from the example dataset.
+#. Run the application to open a file chooser. Choose a shapefile from the example data set.
 
    .. image:: images/QuickstartOpen.png
       :scale: 60

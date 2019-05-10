@@ -74,7 +74,7 @@ to call you.
 * Reuse of a SAX parser is possible, but is very tricky to reuse
 
 As a result SAX parsers are rather "brittle" and difficult to maintain
-are currently hardcoded to pass control between themselves, making support for
+are currently hard coded to pass control between themselves, making support for
 new specifications tricky.
 
 Example: while parsing a Filter control will be need to be handed over to
@@ -123,7 +123,7 @@ Yes we did.
 
 This idea of "Schema Assisted" parsers is a GeoTools specific piece of 
 technology. Then general idea is to makes use of XML Schema information to
-minimise the amount of code you need to write.
+minimize the amount of code you need to write.
 
 A parser is supplied a configuration of bindings; each binding maps an XML
 elements or XML attributes to Java class.
@@ -180,7 +180,7 @@ Q: For WFS why does Parser return a Map?
 
 This shows up as the following error:
 
-* ClassCastException "java.util.HashMap cannot be cast to FeatureCollection".
+* ``ClassCastException java.util.HashMap cannot be cast to FeatureCollection`` 
 
 
 To understand this error please remember that the GML returned by a WFS GetFeatures
@@ -190,7 +190,7 @@ For a WFS GetFeature response the schema reference is usually a DescribeFeatureT
 an XML Schema.
 
 If this schema is incorrectly configured (common with MapServer) or cannot be reached (common with restricted
-environments) our Parser will give up guessing what is a Feature and just return the values in a HashMap.
+environments) our parser will give up guessing what is a Feature and just return the values in a ``HashMap`` .
 
 .. note::
    
@@ -204,28 +204,29 @@ environments) our Parser will give up guessing what is a Feature and just return
    This is similar to the approach taken by OGR; OGR figures out where the "geometry" is; and then
    goes up two levels and assumes those things are features.
 
-   Both of these approaches are strictly a work around for a common problem of misconfigured WFS servers.
+   Both of these approaches are strictly a work around for a common problem of 
+   misconfigured WFS servers.
    
 Here is how to review the configuration of your WFS Server:
 
-1. If you are having a problem with a HashMap being returned when you expect a Feature, you should check
+1. If you are having a problem with a ``HashMap``  being returned when you expect a Feature, you should check
    GetCapabilities responses for remote server e.g. with browser::
    
       http://{URL}?SERVICE=WFS&VERSION=1.1.0&REQUEST=GetCapabilities
 
-2. After that, ensure that <ows:Operation> elements contain urls that actually work
+2. After that, ensure that ``<ows:Operation>`` elements contain URLs that actually work
 
-3. In particular check that DescribeFeatureType responds with the expected XML Schema
+3. In particular check that ``DescribeFeatureType``  responds with the expected XML Schema
 
 
 Q: I am in a restricted environment, how to configure SchemaLocator?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-You can configure the Parser with a SchemaLocator (we use this internally to force the parser
+You can configure the Parser with a ``SchemaLocator``  (we use this internally to force the parser
 to a copy of the GML schema included in the GeoTools jars; rather than force the Parser to download
 the GML schema each time).
 
-1. To customise how XML Schemas are located in a restricted environment (such as web portal for multiple
+1. To customize how XML Schemas are located in a restricted environment (such as web portal for multiple
    WFS services that require authorization, or require the use of an HTTP proxy for schema requests).
 
 2. Create custom SchemaLocator we start with configuration like so::

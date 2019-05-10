@@ -3,7 +3,7 @@ Point Set Theory and the DE-9IM Matrix
 
 This page covers some of what the JTS Topology is made up of, and how you can use this information to increase the performance of your queries.
 
-This page has as little math as possible, quickly moving on to a normal String which we can do regular expression on. This page gives you enough information to optimise your own spatial relationship tests.
+This page has as little math as possible, quickly moving on to a normal String which we can do regular expression on. This page gives you enough information to optimize your own spatial relationship tests.
 
 Related:
 
@@ -40,7 +40,7 @@ A Line     l          |l0|      |dl|     |-l|
 .. |-p| replace:: -p
 
 We have an intuitive idea of what a dimension is, for point set theory it is going to act as a 
-number summarising the shape of a geometry.
+number summarizing the shape of a geometry.
 
 ========= ======================= =======================================
 Shape     Dimension               Non-empty

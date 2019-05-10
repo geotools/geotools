@@ -27,7 +27,7 @@ ContentDataStore is extended with a concrete JDBCDataStore that:
 
 .. image:: /images/jdbcDataStore.PNG
 
-You will find a careful attention to details and steps taken to minimise any duplication of code. The FeatureStore implementation maintains an internal delegate JDBCFeatureSource in order to smoothly handle getFeature() requests without duplicating code.
+You will find a careful attention to details and steps taken to minimize any duplication of code. The FeatureStore implementation maintains an internal delegate JDBCFeatureSource in order to smoothly handle getFeature() requests without duplicating code.
 
 SQLDialect
 ^^^^^^^^^^

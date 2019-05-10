@@ -71,7 +71,7 @@ There are three techniques commonly employed for threadsafety:
 * Synchronise: really safe, but you pay a performance hit when reading values from many threads
 * Immutable: super safe as you can only configure the object during creation, allowing it to be quickly read from many threads at once. It is however inconvenient to setup. 
 
-With the limitations of those two ideas in mind, the metadata has an interesting compromise:
+With the limitations of those two ideas in mind, the metadata has an interesting compromize:
 
 * Freeze: set up the object in one thread, and freeze it into a read-only mode
 

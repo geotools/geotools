@@ -1,7 +1,7 @@
 Unit
 ----
 
-GeoTools makes use of a formal Unit library in order to safely work with values, and minimise accidentally confusing distance with angle (for example).
+GeoTools makes use of a formal Unit library in order to safely work with values, and minimize accidentally confusing distance with angle (for example).
 
 GeoTools has patiently waited for the Java Community Process to agree on adding a Unit library into Java and has sat through. These efforts have stalled out repeatedly, but have produced working code - in part thanks to the excellent **JScience** project.
 

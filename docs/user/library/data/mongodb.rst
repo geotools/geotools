@@ -160,7 +160,7 @@ Implementation Notes
   MongoDBDataStore from functioning. Please note that self-intersection
   may arise due to the transformation to WGS84 coordinates (which is a necessary 
   preliminary step for importing data into MongoDB), even
-  if they did not exist in the original dataset.
+  if they did not exist in the original data set.
 
 * All 2dsphere indexes and spatial operations assume the WGS84 datum. All 
   indexed GeoJSON data stored in a MongoDB document collection is assumed to be 

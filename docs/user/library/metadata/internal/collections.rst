@@ -15,7 +15,7 @@ We do have a number of custom collections, or collections provided by third part
   
   Can be used to create an internal pool of objects so a factory
   does not hand out duplicates. This works in a manner similar to
-  the String.intern() method and is useful for optimising memory
+  the String.intern() method and is useful for optimizing memory
   use.
 
   Here is an example::
@@ -33,7 +33,7 @@ We do have a number of custom collections, or collections provided by third part
   At a technical level this class is an AbstractSet in which the entries are weak references. This means that CanonicalSet will not
   hold onto created objects when they are no longer in active use by your application.
 
-  Please note this is not a "cache" as the intended use is different. We are optimising for memory use here rather than speed.
+  Please note this is not a "cache" as the intended use is different. We are optimizing for memory use here rather than speed.
 
 * DisjointSet
   
@@ -104,7 +104,7 @@ We do have a number of custom collections, or collections provided by third part
   While many applications are content to let the garbage collector
   get around to cleaning up memory. GeoTools has had to introduce
   a background thread in order to keep memory size in check when
-  working with large datasets.
+  working with large data sets.
 
 * KeySortedList
   

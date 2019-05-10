@@ -363,7 +363,7 @@ have **FeatureIterator** when working on Java 1.4 code before generics were avai
   Currently GeoTools follows a "fail first" policy; that is if the data does not exactly
   meet the requirements of the SimpleFeatureType a RuntimeException will be thrown.
   
-  However often you may in want to just "skip" the troubled Feature and carry on; very few datasets are perfect.::
+  However often you may in want to just "skip" the troubled Feature and carry on; very few data sets are perfect.::
     
     SimpleFeatureCollection featureCollection = featureSource.getFeatures(filter);
     FeatureIterator iterator = null;
@@ -445,7 +445,7 @@ Traditionally functions that work on a collection are called "aggregate function
 In the world of databases and SQL these functions include "min", "max", "average" and "count". GeoTools supports
 these basic concepts, and a few additions such as bounding box or unique values.
 
-Internally these functions are implemented as a FeatureVisitor; and are often optimised into raw SQL on supporting DataStores.
+Internally these functions are implemented as a FeatureVisitor; and are often optimized into raw SQL on supporting DataStores.
 
 Here are the aggregate functions that ship with GeoTools at the time of writing. For the authoritative list check javadocs.
 
@@ -655,7 +655,7 @@ Here are some examples of defining and working with classifiers:
    
    These functions produce the Java object **Classifier** as an output.
 
-3. Customising your Classifier
+3. Customizing your Classifier
    
    You can think of the Classifier as a series of groups or bins into which you
    will sort Features.
@@ -723,7 +723,7 @@ References:
     :start-after: // joinExample start
     :end-before: // joinExample end
   
-  When run on the uDig sample dataset available here:
+  When run on the uDig sample data set available here:
   
   * http://udig.refractions.net/docs/data-v1_1.zip
   

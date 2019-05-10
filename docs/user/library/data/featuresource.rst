@@ -213,7 +213,7 @@ Hints:
   Recently a few DataStore implementations (JDBCNG and Property) added support for a "Hint" allowing
   you to define your own FeatureID::
     
-    if( featureStore.getQueryCapabilities().isUseExisingFIDSupported() ){
+    if( featureStore.getQueryCapabilities().isUseExizingFIDSupported() ){
         // featureStore allows us to create our own featureIDs
         SimpleFeatureBuilder b = new SimpleFeatureBuilder(featureStore.getSchema());
         DefaultFeatureCollection collection = new DefaultFeatureCollection(null,featureStore.getSchema());

@@ -186,7 +186,7 @@ Now we can run the application and try out some of these ideas:
    the File menu.
 
    The **JDataStoreWizard** will prompt you for a file. Please select the **cities.shp**
-   shapefile available as part of the `uDig sample dataset <http://udig.refractions.net/docs/data-v1_2.zip>`_ used in previous tutorials.
+   shapefile available as part of the `uDig sample data set <http://udig.refractions.net/docs/data-v1_2.zip>`_ used in previous tutorials.
 
    .. image:: images/shapeWizard1.png
 

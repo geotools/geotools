@@ -1,7 +1,7 @@
 Range
 -----
 
-GeoTools inlcudes a **Range** class to represent a numeric, or value, range. This is handy when expressing scales a dataset is useful for.
+GeoTools inlcudes a **Range** class to represent a numeric, or value, range. This is handy when expressing scales a data set is useful for.
 
 .. literalinclude:: /../src/main/java/org/geotools/metadata/MetadataExamples.java
    :language: java

@@ -96,7 +96,7 @@ The data dimension values will be mapped to three bands called quality, pressure
 
 Default Enhance Mode
 ++++++++++++++++++++
-The default `Enhance <https://www.unidata.ucar.edu/software/thredds/v4.3/netcdf-java/v4.3/javadoc/ucar/nc2/dataset/NetcdfDataset.Enhance.html>`_ mode used
+The default `Enhance <https://www.unidata.ucar.edu/software/thredds/v4.3/netcdf-java/v4.3/javadoc/ucar/nc2/data set/NetcdfData set.Enhance.html>`_ mode used
 by GeoTools is `Enhance.CoordSys`, in order to change the enhance mode use the following system properties:
 
 - org.geotools.coverage.io.netcdf.enhance.CoordSystems

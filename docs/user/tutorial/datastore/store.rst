@@ -356,7 +356,7 @@ Now that we have some idea of what is riding on top, lets implement our CSVFeatu
       :start-after: // remove start
       :end-before: // remove end
 
-6. Add write() implementation, note how we have to keep track of the axis order (surprisingly this is not fixed):
+6. Add write() implementation, note how we have to keep track of the axis order (surprizingly this is not fixed):
    
    .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv2/CSVFeatureWriter.java
       :language: java

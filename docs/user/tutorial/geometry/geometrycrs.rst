@@ -163,7 +163,7 @@ To switch between map projections:
 
 1. When you start the application you will be prompted for a shapefile to display.
    In the screenshots below we are using the *bc_border* map which can be
-   downloaded as part of the `uDig sample dataset <http://udig.refractions.net/docs/data-v1_2.zip>`_
+   downloaded as part of the `uDig sample data set <http://udig.refractions.net/docs/data-v1_2.zip>`_
 
 .. image:: images/CRSLab_start.png
    :width: 60%

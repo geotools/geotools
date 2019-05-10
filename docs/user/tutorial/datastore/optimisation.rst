@@ -29,7 +29,7 @@ At the time of writing the following hints are supported:
 
 * Hints.FEATURE_DETACHED: indicates returned features are a copy (can can be modified without side-effect)
 * Hints.JTS_GEOMETRY_FACTORY: control of geometry representation
-* Hints.JTS_COORDINATE_SEQUENCE_FACTORY: control of coordinate storage (you may be able to optimise read performance by directly using the binary data provided by your dataformat, or you may wish to optimise for memory use).
+* Hints.JTS_COORDINATE_SEQUENCE_FACTORY: control of coordinate storage (you may be able to optimize read performance by directly using the binary data provided by your dataformat, or you may wish to optimize for memory use).
 * Hints.JTS_PRECISION_MODEL: configure to match precision maintained by coordinate sequence factory
 * Hints.JTS_SRID: for compatibility with systems using a spatial reference system identifier (such as PostGIS)
 * Hints.GEOMETRY_DISTANCE: used to select a geometry of appropriate generalization. Your datastore may wish to simplify "on the fly" while reading the geometry

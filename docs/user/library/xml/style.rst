@@ -142,7 +142,7 @@ Example of SLDTransofrmer::
   SLDTransformer transformer = new SLDTransformer();
   String xml = transformer.transform( sld );
 
-You can customise the output as well::
+You can customize the output as well::
 
   FeatureTransformer transform = new FeatureTranformer();
   

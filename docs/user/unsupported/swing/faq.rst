@@ -4,7 +4,7 @@ Swing FAQ
 Q: What is JMapPane for?
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-The JMapPane class is primiarly used as a teaching aid for the
+The JMapPane class is primarily used as a teaching aid for the
 :doc:`tutorials </tutorial/index>` used to explore the GeoTools library.
 
 It is developed in collaboration with the user list, and while not a intended as a
@@ -26,7 +26,7 @@ Q: JMapPane is Slow how do I make it faster?
 This really comes down to how you use the GeoTools renderer. Remember that the GeoTools renderer
 is doing a lot of calculation and data access; not what you want in the middle of animation.
 
-The ``gt-renderer`` is optimised for memory use; it does not loading your data into memory
+The ``gt-renderer`` is optimized for memory use; it does not loading your data into memory
 (it is drawing from disk, or database, each time). You can experiment with loading your data
 into memory (specifically into a spatial index) if you want faster performance out of it.
 

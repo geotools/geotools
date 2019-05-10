@@ -68,7 +68,7 @@ Service contains metadata information about the server:
 Request
 ^^^^^^^
 
-The WMTS Operations describe the requests entrypoints:
+The WMTS Operations describe the requests entry points:
 
 .. code-block:: java
 

@@ -5819,7 +5819,7 @@ Returns the remainder after integer division of the first input by the second.
 ^
 ^
 
-Returns the result of raising the first input to the power specified by the second.
+Returns the result of raizing the first input to the power specified by the second.
 
 ::
 

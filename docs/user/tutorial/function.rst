@@ -65,7 +65,7 @@ Things to Try
   
   Have a check if you can detect the use of a literal MultiLineStinrg; and cache your
   LocationIndexedLine between calls to the function. A lot of GeoTools functions have been
-  optimised in this fashion.
+  optimized in this fashion.
 
 * A fair bit of the code above is "boilerplate" and could be simplified with an appropriate
   "AbstractFunction" class.

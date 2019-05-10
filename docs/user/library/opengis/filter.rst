@@ -338,7 +338,7 @@ value for Query.getFilter() is Filter.INCLUDES.
      :start-after: // includeExclude start
      :end-before: // includeExclude end
 
-* You can check for these values when optimising::
+* You can check for these values when optimizing::
     
     public void draw( Filter filter ){
        if( filter == Filter.EXCLUDES ) return; // draw nothing

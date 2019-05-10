@@ -140,7 +140,7 @@ Next we can create the **CSVFeatureSource** mentioned above. This class is respo
    
    In database terms the schema for a table is defined by the columns and the order they are declared in.
    
-   The FeatureType generated here is based on the CSV Header, along with a few educated guesses to recognise LAT and LON columns as comprising a single Location.
+   The FeatureType generated here is based on the CSV Header, along with a few educated guesses to recognise LAT and LON columns as comprizing a single Location.
 
    .. literalinclude:: /../src/main/java/org/geotools/tutorial/csv/CSVFeatureSource.java
       :language: java

@@ -143,7 +143,7 @@ These interfaces are used internally by the eclipse XSD library to parse schemas
 Configuration Dependency
 ''''''''''''''''''''''''
 
-Just like a schema has dependencies on other schemas, a configuration has dependencies on other configurations. Not surprisingly the configuration dependencies mirror the schema dependencies.
+Just like a schema has dependencies on other schemas, a configuration has dependencies on other configurations. Not surprizingly the configuration dependencies mirror the schema dependencies.
 
 Configuration dependencies are added with the addDependency method.::
   

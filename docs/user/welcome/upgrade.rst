@@ -418,7 +418,7 @@ GeoTools 9.0
    For background details on any API changes review the change proposals above.
 
 GeoTools 9 has resolved a long standing conflict between FeatureCollection acting as a "result" set capable of
-streaming large datasets vs. acting as a familiar Java Collection. The Java 5 "for each" syntax prevents
+streaming large data sets vs. acting as a familiar Java Collection. The Java 5 "for each" syntax prevents
 the safe use of Iterator (as we cannot ensure it will be closed). As a result FeatureCollection no longer
 can extend java Collection and is acting as a pure "result set" with streaming access provided by FeatureIterator.
 

@@ -245,7 +245,7 @@ FeatureSource is a very capable class, in the worst case the wrappers provided h
   
   In a similar fashion a FeatureSource is wrapped around the provided collection.
   
-  There are optimised implementations for:
+  There are optimized implementations for:
   
   * ListFeatureCollection
   * SpatialIndexFeatureCollection
@@ -310,7 +310,7 @@ boilerplate code that you would otherwise need to cut and paste into your applic
   
   There are methods to quickly get the bounds from a FeatureSource or FeatureCollection,
   but these methods are implementation dependent often making use of header information
-  or summarising the spatial index in order to get you an answer quickly.
+  or summarizing the spatial index in order to get you an answer quickly.
   
   Use this method to go through each feature one by one and compute a bounds.
 

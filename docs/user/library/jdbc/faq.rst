@@ -17,4 +17,4 @@ To use GeoTools with a JNDI name::
   
   DataStore store =  DataStoreFinder.getDataStore(map);
 
-The specific "dbtype" marks the plugin you will use to communicate with the database.
+The specific ``dbtype`` marks the plugin you will use to communicate with the database.

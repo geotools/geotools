@@ -219,7 +219,7 @@ FeatureCollection defines:
 * DataUtilities.collection( featureCollection ) - used to load features into memory
 
 FeatureCollection is the closest thing we have to a prepared request. Many DataStores are able to
-provide optimised implementations that handles the above methods natively.
+provide optimized implementations that handles the above methods natively.
 
 * FeatureCollection Example:
   

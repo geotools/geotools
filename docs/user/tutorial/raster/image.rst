@@ -147,7 +147,7 @@ and pass it to a **JMapFrame**.
 Running the application
 =======================
 
-If you need some sample data to display you can download the `uDig sample dataset <http://udig.refractions.net/docs/data-v1_2.zip>`_ which contains:
+If you need some sample data to display you can download the `uDig sample data set <http://udig.refractions.net/docs/data-v1_2.zip>`_ which contains:
 
 * clouds.jpg
 * countries.shp

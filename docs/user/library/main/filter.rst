@@ -312,7 +312,7 @@ Function is a little special as it is your chance to add new functions to the sy
 You accomplish this by providing three peices of information:
 
 * Function - implementation of Function
-* FunctionName - description of Function including name and argument names advertising that a Function is available
+* FunctionName - description of Function including name and argument names advertizing that a Function is available
 * FunctionFactory - used to construct a Function on request by FilterFactory.function( name, expression ... )
 
 If you are interested in implementing a function and registering it with GeoTools

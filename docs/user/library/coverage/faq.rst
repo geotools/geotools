@@ -39,7 +39,7 @@ To get the most out of the ``gt-coverage`` module developers should be familiar 
 Q: How to make raster data work in a NetBeans based application?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Reporterly, the NetBeans classloader breaks ImageIO plugin mechanism which is used
+Reportedly, the NetBeans class loader breaks ImageIO plugin mechanism which is used
 to locate image format readers, image input and output streams, and the like.
 To work around it, run the following line of code, only once, before any raster
 access::

@@ -44,7 +44,7 @@ Notes:
 
 Standard JP2K readers
 
-In case you will use the SUN's ImageIO JP2K plugins (as an instance, in case you don't have a copy of the Kakadu software), we have not yet implemented full support to the georeferencing information contained within the JP2K metadata. For this reason, you need to add a PRJ and a WorldFile (J2W file or WLD file) beside your JP2K dataset, in case you want to be able to serve it as a geospatial dataset.
+In case you will use the SUN's ImageIO JP2K plugins (as an instance, in case you don't have a copy of the Kakadu software), we have not yet implemented full support to the georeferencing information contained within the JP2K metadata. For this reason, you need to add a PRJ and a WorldFile (J2W file or WLD file) beside your JP2K data set, in case you want to be able to serve it as a geospatial data set.
 
 Format parameters
 

@@ -28,8 +28,23 @@ import org.xml.sax.SAXException;
 public class PreventLocalEntityResolverTest {
 
     @Test
-    public void testValidAbsoluteSystemIdWithoutBase() throws Exception {
+    public void testValidAbsoluteSystemIdWithoutBaseHTTP() throws Exception {
         assertNull(INSTANCE.resolveEntity(null, "http://xyz/a.xsd"));
+    }
+
+    @Test
+    public void testValidAbsoluteSystemIdWithoutBaseHTTPS() throws Exception {
+        assertNull(INSTANCE.resolveEntity(null, "https://xyz/a.xsd"));
+    }
+
+    @Test
+    public void testValidAbsoluteSystemIdWithoutBaseJAR() throws Exception {
+        assertNull(INSTANCE.resolveEntity(null, "jar:file:/xyz/foo.jar!/bar/a.xsd"));
+    }
+
+    @Test
+    public void testValidAbsoluteSystemIdWithoutBaseVFS() throws Exception {
+        assertNull(INSTANCE.resolveEntity(null, "vfs:/xyz/foo.jar/bar/a.xsd"));
     }
 
     @Test
@@ -38,9 +53,22 @@ public class PreventLocalEntityResolverTest {
     }
 
     @Test
-    public void testValidRelativeSystemId() throws Exception {
+    public void testValidRelativeSystemIdHTTP() throws Exception {
         assertNull(INSTANCE.resolveEntity(null, null, "http://xyz/a.xsd", "b.xsd"));
     }
+
+    @Test
+    public void testValidRelativeSystemIdHTTPS() throws Exception {
+        assertNull(INSTANCE.resolveEntity(null, null, "https://xyz/a.xsd", "b.xsd"));
+    }
+
+    @Test
+    public void testValidRelativeSystemIdJAR() throws Exception {
+        assertNull(INSTANCE.resolveEntity(null, null, "jar:file:/xyz/foo.jar!/bar/a.xsd", "b.xsd"));
+    }
+
+    // Relative VFS URL is not unit tested because it requires a
+    // custom URL stream handler that is a part of JBoss/WildFly.
 
     @Test
     public void testRelativeSystemIdWithoutBase() throws Exception {

@@ -19,9 +19,12 @@ package org.geotools.xml;
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.URI;
+import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.regex.Pattern;import org.geotools.factory.GeoTools;import org.geotools.util.logging.Logging;
+import java.util.regex.Pattern;
+import org.geotools.factory.GeoTools;
+import org.geotools.util.logging.Logging;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.ext.EntityResolver2;
@@ -92,14 +95,14 @@ public class PreventLocalEntityResolver implements EntityResolver2, Serializable
         }
 
         try {
-            URI uri = URI.create(systemId);
+            String uri = systemId;
             // ignore the baseURI if the systemId is absolute
-            if (!uri.isAbsolute()) {
+            if (!URI.create(systemId).isAbsolute()) {
                 // use the baseURI to convert a relative systemId to absolute
-                uri = URI.create(baseURI).resolve(uri);
+                uri = new URL(new URL(baseURI), systemId).toString();
             }
             // check if the absolute systemId is an allowed URI
-            if (ALLOWED_URIS.matcher(uri.toString()).matches()) {
+            if (ALLOWED_URIS.matcher(uri).matches()) {
             return null;
         }
         } catch (Exception e) {

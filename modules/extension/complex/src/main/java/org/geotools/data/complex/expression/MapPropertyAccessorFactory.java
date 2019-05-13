@@ -15,7 +15,7 @@
  *    Lesser General Public License for more details.
  */
 
-package org.geotools.data.complex.filter;
+package org.geotools.data.complex.expression;
 
 import java.util.Map;
 import org.apache.commons.jxpath.JXPathContext;

@@ -212,7 +212,7 @@ public class ShapefileDumper {
      * @throws IOException
      */
     public boolean dump(SimpleFeatureCollection fc) throws IOException {
-        return dump(fc.getSchema().getTypeName(), fc);
+        return dump(null, fc);
     }
 
     /**
@@ -511,9 +511,9 @@ public class ShapefileDumper {
             // we need to associate the geometry type to the file name only if we can have be
             // multiple types
             if (multiWriter) {
-                fileName = getShapeName(fileName, geometryType);
+                fileName = getShapeName(fileName, original, geometryType);
             } else {
-                fileName = getShapeName(fileName, null);
+                fileName = getShapeName(fileName, original, null);
             }
             builder.setName(fileName);
 
@@ -532,12 +532,42 @@ public class ShapefileDumper {
      * Returns the shapefile name from the given schema and geometry type. By default it's simple
      * typeName and geometryType concatenated, subclasses can override this behavior
      *
+     * <p>This method will only be called if a custom name was not provided.
+     *
      * @param schema
      * @param geometryType The name of the geometry type, will be null if there is no need for a
      *     geometry type suffix
      * @return
      */
-    protected String getShapeName(String fileName, String geometryType) {
+    protected String getShapeName(SimpleFeatureType schema, String geometryType) {
+        return getShapeName(schema.getTypeName(), geometryType);
+    }
+
+    /**
+     * Returns the shape name from the given suggested name (if available), schema and geometry
+     * type.
+     *
+     * @param fileName
+     * @param schema
+     * @param geometryType
+     * @return
+     */
+    private String getShapeName(String fileName, SimpleFeatureType schema, String geometryType) {
+        if (fileName == null) {
+            return getShapeName(schema, geometryType);
+        } else {
+            return getShapeName(fileName, geometryType);
+        }
+    }
+
+    /**
+     * Returns the shape name from the given suggested name and geometry type.
+     *
+     * @param fileName
+     * @param geometryType
+     * @return
+     */
+    private String getShapeName(String fileName, String geometryType) {
         if (geometryType == null) {
             return fileName;
         } else {

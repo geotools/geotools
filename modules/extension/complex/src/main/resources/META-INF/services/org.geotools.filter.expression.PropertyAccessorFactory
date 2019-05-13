@@ -1,1 +1,2 @@
 org.geotools.data.complex.expression.FeaturePropertyAccessorFactory
+org.geotools.data.complex.expression.MapPropertyAccessorFactory

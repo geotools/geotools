@@ -344,7 +344,9 @@ public class ShapefileDumper {
     }
 
     /**
-     * Allows subsclasses to perform extra actions against a shapefile that was completely written
+     * Allows subsclasses to perform extra actions against a shapefile that was completely written.
+     *
+     * <p>By default, this method calls {@link #shapefileDumped(SimpleFeatureType)}.
      *
      * @param fileName
      * @param remappedSchema
@@ -355,9 +357,11 @@ public class ShapefileDumper {
     }
 
     /**
-     * Allows subsclasses to perform extra actions against a shapefile that was completely written
+     * Allows subsclasses to perform extra actions against a shapefile that was completely written.
      *
-     * @param fileName
+     * <p>This method will not be called if {@link #shapefileDumped(String, SimpleFeatureType)} is
+     * overwritten.
+     *
      * @param remappedSchema
      */
     protected void shapefileDumped(SimpleFeatureType remappedSchema) throws IOException {

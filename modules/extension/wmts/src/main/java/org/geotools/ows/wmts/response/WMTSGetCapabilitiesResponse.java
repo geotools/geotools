@@ -17,12 +17,14 @@
 
 package org.geotools.ows.wmts.response;
 
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Map;
 import javax.xml.parsers.ParserConfigurationException;
 import net.opengis.wmts.v_1.CapabilitiesType;
-import org.apache.commons.io.IOUtils;
 import org.geotools.data.ows.GetCapabilitiesResponse;
 import org.geotools.data.ows.HTTPResponse;
 import org.geotools.ows.ServiceException;
@@ -55,18 +57,25 @@ public class WMTSGetCapabilitiesResponse extends GetCapabilitiesResponse {
         try {
 
             Object object;
-            InputStream inputStream = null;
-            try {
-                inputStream = response.getResponseStream();
+            try (InputStream inputStream = response.getResponseStream()) {
 
                 Parser parser = new Parser(WMTS_CONFIGURATION);
-                object = parser.parse(new InputSource(inputStream));
+                StringBuilder stringBuilder = new StringBuilder();
+                String line = null;
+
+                try (BufferedReader bufferedReader =
+                        new BufferedReader(new InputStreamReader(inputStream, "utf-8"))) {
+                    while ((line = bufferedReader.readLine()) != null) {
+                        stringBuilder.append(line + "\n");
+                    }
+                }
+                String string = stringBuilder.toString();
+                System.out.println(string);
+                object = parser.parse(new InputSource(new ByteArrayInputStream(string.getBytes())));
 
             } catch (SAXException | ParserConfigurationException e) {
                 throw (ServiceException)
                         new ServiceException("Error while parsing XML.").initCause(e);
-            } finally {
-                IOUtils.closeQuietly(inputStream);
             }
 
             if (object instanceof ServiceException) {

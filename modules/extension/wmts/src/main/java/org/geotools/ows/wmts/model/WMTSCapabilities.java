@@ -181,7 +181,10 @@ public class WMTSCapabilities extends Capabilities {
                 if (wmtsLayer.getLatLonBoundingBox() == null) {
                     // We did not find any good bbox
                     LOGGER.warning("No good Bbox found for layer " + l.getName());
-                    throw new ServiceException("No good Bbox found for layer " + l.getName());
+                    // throw new ServiceException("No good Bbox found for layer " + l.getName());
+                    CRSEnvelope latLonBoundingBox = new CRSEnvelope("CRS:84", -180, -90, 180, 90);
+                    wmtsLayer.setLatLonBoundingBox(latLonBoundingBox);
+                    wmtsLayer.setBoundingBoxes(latLonBoundingBox);
                 }
             }
 

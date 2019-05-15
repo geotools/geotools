@@ -14,10 +14,10 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.util;
+package org.geotools.xml;
 
-import static org.geotools.util.PreventLocalEntityResolver.ERROR_MESSAGE_BASE;
-import static org.geotools.util.PreventLocalEntityResolver.INSTANCE;
+import static org.geotools.xml.PreventLocalEntityResolver.ERROR_MESSAGE_BASE;
+import static org.geotools.xml.PreventLocalEntityResolver.INSTANCE;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;

@@ -69,7 +69,7 @@ public class PreventLocalEntityResolver implements EntityResolver2, Serializable
     public InputSource resolveEntity(String publicId, String systemId)
             throws SAXException, IOException {
         return resolveEntity(null, publicId, null, systemId);
-        }
+    }
 
     @Override
     public InputSource getExternalSubset(String name, String baseURI)
@@ -103,13 +103,13 @@ public class PreventLocalEntityResolver implements EntityResolver2, Serializable
             }
             // check if the absolute systemId is an allowed URI
             if (ALLOWED_URIS.matcher(uri).matches()) {
-            return null;
-        }
+                return null;
+            }
         } catch (Exception e) {
             // do nothing
-    }
+        }
 
         // do not allow external entities
         throw new SAXException(ERROR_MESSAGE_BASE + systemId);
-}
+    }
 }

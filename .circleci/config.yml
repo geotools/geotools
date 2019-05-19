@@ -42,7 +42,8 @@ jobs:
       - run:
           name: Build GeoServer with tests (and community modules without)
           command: |
-            mvn -B -f geoserver/src/pom.xml install -nsu -DargLine="-Xmx256m -XX:+UseStringDeduplication -XX:+UseG1GC -XX:MaxHeapFreeRatio=30 -XX:MinHeapFreeRatio=10" -Prelease,communityRelease -Dfmt.skip=true -DskipTests
+            mvn -B -f geoserver/src/pom.xml install -nsu -DargLine="-Xmx256m -XX:+UseStringDeduplication -XX:+UseG1GC -XX:MaxHeapFreeRatio=30 -XX:MinHeapFreeRatio=10" -Prelease -Dfmt.skip=true -DskipTests
+            mvn -B -f geoserver/src/community/pom.xml install -nsu -DargLine="-Xmx256m -XX:+UseStringDeduplication -XX:+UseG1GC -XX:MaxHeapFreeRatio=30 -XX:MinHeapFreeRatio=10" -communityRelease -Dfmt.skip=true -DskipTests
             mvn -B -f geoserver/src/pom.xml test -T2 -nsu -DargLine="-Xmx256m -XX:+UseStringDeduplication -XX:+UseG1GC -XX:MaxHeapFreeRatio=30 -XX:MinHeapFreeRatio=10" -Dtest.maxHeapSize=256m -Djvm.opts="-XX:+UseStringDeduplication -XX:+UseG1GC -XX:MaxHeapFreeRatio=30 -XX:MinHeapFreeRatio=10" -Prelease -Dfmt.skip=true
 
       - run:

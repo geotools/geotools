@@ -26,7 +26,7 @@ jobs:
             find geotools geowebcache geoserver -name "pom.xml" | sort | xargs md5sum > /tmp/checksum.txt
            
       - restore_cache:
-          keys: gt_gwc_gs-{{ checksum "/tmp/checksum.txt" }}
+          key: gt_gwc_gs-{{ checksum "/tmp/checksum.txt" }}
 
       - run:
           name: Build GeoTools (no tests, prepare fresh artifacts)
@@ -53,6 +53,6 @@ jobs:
             rm -rf ~/.m2/repository/org/geoserver
 
       - save_cache:
-          keys: gt_gwc_gs-{{ checksum "/tmp/checksum.txt" }}
+          key: gt_gwc_gs-{{ checksum "/tmp/checksum.txt" }}
           paths:
             - ~/.m2/repository

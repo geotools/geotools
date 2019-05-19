@@ -5,15 +5,18 @@ jobs: # a collection of steps
     docker: 
       - image: circleci/openjdk:8u212-jdk-stretch
         command: ["/bin/bash"]
+    environment:
+      MAVEN_OPTS="-Xmx256m"
     steps: 
       - checkout # check out source code to working directory
-      - run: mvn install -Da  -DskipTests # run the build and prepare fresh geotools artifacts
-     
+      - run: mvn install -Dall -Dfmt.skip=true -DskipTests # run the build and prepare fresh geotools artifacts
   geowebcache:
     working_directory: ~/geowebcache 
     docker: 
       - image: circleci/openjdk:8u212-jdk-stretch
         command: ["/bin/bash"]
+    environment:
+      MAVEN_OPTS="-Xmx256m"
     steps:  
       - run:
           name: Avoid hosts unknown for github
@@ -23,7 +26,7 @@ jobs: # a collection of steps
           command: |
             git clone git@github.com:GeoWebCache/geowebcache.git ~/geowebcache
             cd ~/geowebcache
-            mvn install
+            mvn install -Dfmt.skip=true
 workflows:
   version: 2
   build_geotools_dependencies:

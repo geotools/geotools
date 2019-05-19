@@ -22,7 +22,7 @@ jobs:
 
       - run:
           name: Build GeoTools (no tests, prepare fresh artifacts)
-          command: mvn -f ~geotools/pom.xml install -DargLine="-Xmx256m" -Dall -Dfmt.skip=true -DskipTests
+          command: mvn -f geotools/pom.xml install -DargLine="-Xmx256m" -Dall -Dfmt.skip=true -DskipTests
 
       - run:
           name: Build GeoWebCache with tests

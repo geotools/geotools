@@ -31,13 +31,25 @@ jobs:
 
       - run:
           name: Build GeoTools (no tests, prepare fresh artifacts)
-          command: mvn -f geotools/pom.xml install dependency:resolve-plugins dependency:go-offline -DargLine="-Xmx256m -XX:+UseStringDeduplication -XX:+UseG1GC" -Dall -Dfmt.skip=true -DskipTests
+          command: mvn -f geotools/pom.xml install -DargLine="-Xmx256m -XX:+UseStringDeduplication -XX:+UseG1GC" -Dall -Dfmt.skip=true -DskipTests
 
       - run:
           name: Build GeoWebCache with tests
           command: |
             mvn -f geowebcache/geowebcache/pom.xml install -nsu -DargLine="-Xmx256m -XX:+UseStringDeduplication -XX:+UseG1GC" -Dfmt.skip=true -DskipTests
             mvn -f geowebcache/geowebcache/pom.xml test -nsu -T2 -DargLine="-Xmx128m" -Dfmt.skip=true
+
+      - run:
+          name: Cleanup repository (remove snapshots)
+          command: |
+            rm -rf ~/.m2/repository/org/geotools
+            rm -rf ~/.m2/repository/org/geowebcache
+            rm -rf ~/.m2/repository/org/geoserver
+
+       - save_cache:
+          key: gt_gwc_gs-{{ checksum "/tmp/checksum.txt" }}
+          paths:
+            - ~/.m2/repository
 
       - run:
           name: Build GeoServer with tests (and community modules without)

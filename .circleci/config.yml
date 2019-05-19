@@ -21,9 +21,9 @@ jobs:
             git clone git@github.com:geoserver/geoserver.git geoserver
 
       - run:
-        name: Generate cache key
-        command: |
-          find geotools geowebcache geoserver -name "pom.xml" | sort | xargs md5sum > /tmp/checksum.txt
+          name: Generate cache key
+          command: |
+            find geotools geowebcache geoserver -name "pom.xml" | sort | xargs md5sum > /tmp/checksum.txt
            
       - restore_cache:
           keys: gt_gwc_gs-{{ checksum "/tmp/checksum.txt" }}

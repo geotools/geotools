@@ -31,19 +31,19 @@ jobs:
 
       - run:
           name: Build GeoTools (no tests, prepare fresh artifacts)
-          command: mvn -B -f geotools/pom.xml install -DargLine="-Xmx256m -XX:+UseStringDeduplication -XX:+UseG1GC" -Dall -Dfmt.skip=true -DskipTests
+          command: mvn -B -f geotools/pom.xml install -DargLine="-Xmx256m -XX:+UseStringDeduplication -XX:+UseG1GC -XX:MaxHeapFreeRatio=30 -XX:MinHeapFreeRatio=10" -Dall -Dfmt.skip=true -DskipTests
 
       - run:
           name: Build GeoWebCache with tests
           command: |
-            mvn -B -f geowebcache/geowebcache/pom.xml install -nsu -DargLine="-Xmx256m -XX:+UseStringDeduplication -XX:+UseG1GC" -Dfmt.skip=true -DskipTests
+            mvn -B -f geowebcache/geowebcache/pom.xml install -nsu -DargLine="-Xmx256m -XX:+UseStringDeduplication -XX:+UseG1GC -XX:MaxHeapFreeRatio=30 -XX:MinHeapFreeRatio=10" -Dfmt.skip=true -DskipTests
             mvn -B -f geowebcache/geowebcache/pom.xml test -nsu -T2 -DargLine="-Xmx128m" -Dfmt.skip=true
 
       - run:
           name: Build GeoServer with tests (and community modules without)
           command: |
-            mvn -B -f geoserver/src/pom.xml install -nsu -DargLine="-Xmx256m -XX:+UseStringDeduplication -XX:+UseG1GC" -Prelease,communityRelease -Dfmt.skip=true -DskipTests
-            mvn -B -f geoserver/src/pom.xml test -T2 -nsu -DargLine="-Xmx256m -XX:+UseStringDeduplication -XX:+UseG1GC" -Dtest.maxHeapSize=256m-Djvm.opts="-XX:+UseStringDeduplication -XX:+UseG1GC" -Prelease -Dfmt.skip=true
+            mvn -B -f geoserver/src/pom.xml install -nsu -DargLine="-Xmx256m -XX:+UseStringDeduplication -XX:+UseG1GC -XX:MaxHeapFreeRatio=30 -XX:MinHeapFreeRatio=10" -Prelease,communityRelease -Dfmt.skip=true -DskipTests
+            mvn -B -f geoserver/src/pom.xml test -T2 -nsu -DargLine="-Xmx256m -XX:+UseStringDeduplication -XX:+UseG1GC -XX:MaxHeapFreeRatio=30 -XX:MinHeapFreeRatio=10" -Dtest.maxHeapSize=256m -Djvm.opts="-XX:+UseStringDeduplication -XX:+UseG1GC -XX:MaxHeapFreeRatio=30 -XX:MinHeapFreeRatio=10" -Prelease -Dfmt.skip=true
 
       - run:
           name: Cleanup repository (remove snapshots)

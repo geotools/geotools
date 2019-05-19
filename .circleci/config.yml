@@ -27,12 +27,12 @@ jobs:
       - run:
           name: Build GeoWebCache with tests
           command: |
-            mvn -f geowebcache/geowebcache/pom.xml install -DargLine="-Xmx256m" -Dfmt.skip=true -DskipTests
-            mvn -f geowebcache/geowebcache/pom.xml test -T2 -DargLine="-Xmx128m" -Dfmt.skip=true
+            mvn -f geowebcache/geowebcache/pom.xml install -nsu -DargLine="-Xmx256m" -Dfmt.skip=true -DskipTests
+            mvn -f geowebcache/geowebcache/pom.xml test -o -T2 -DargLine="-Xmx128m" -Dfmt.skip=true
 
       - run:
           name: Build GeoServer with tests (and community modules without)
           command: |
-            mvn -f geoserver/src/pom.xml install -DargLine="-Xmx256m" -Prelease -Dfmt.skip=true -DskipTests
-            mvn -f geoserver/src/pom.xml test -T2 -DargLine="-Xmx128m" -Prelease -Dfmt.skip=true
-            mvn -f geoserver/src/community/pom.xml test -T2 -DargLine="-Xmx128m" -PcommunityRelease -Dfmt.skip=true -DskipTests
+            mvn -f geoserver/src/pom.xml install -nsu -DargLine="-Xmx256m -XX:+UseStringDeduplication -XX:+UseG1GC" -Prelease,communityRelease -Dfmt.skip=true -DskipTests
+            mvn -f geoserver/src/pom.xml test -T2 -o -DargLine="-Xmx128m" -Prelease -Dfmt.skip=true
+            mvn -f geoserver/src/community/pom.xml test -o -T2 -DargLine="-Xmx128m" -PcommunityRelease -Dfmt.skip=true -DskipTests

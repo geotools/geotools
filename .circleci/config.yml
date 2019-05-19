@@ -11,14 +11,14 @@ jobs:
             echo "Preparing git ssh checkouts"
             mkdir ~/.ssh/ && echo -e "Host github.com\n\tStrictHostKeyChecking no\n" > ~/.ssh/config
             echo "Checking out GeoTools"
-            mkdir ~/geotools
-            git clone git@github.com:geotools/geotools.git ~/geotools
+            mkdir geotools
+            git clone git@github.com:geotools/geotools.git geotools
             echo "Checking out GeoWebCache"
-            mkdir ~/geowebcache
-            git clone git@github.com:GeoWebCache/geowebcache.git ~/geowebcache
+            mkdir geowebcache
+            git clone git@github.com:GeoWebCache/geowebcache.git geowebcache
             echo "Checking out GeoServer"
-            mkdir ~/geoserver
-            git clone git@github.com:geoserver/geoserver.git ~/geoserver
+            mkdir geoserver
+            git clone git@github.com:geoserver/geoserver.git geoserver
 
       - run:
           name: Build GeoTools (no tests, prepare fresh artifacts)

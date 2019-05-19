@@ -8,9 +8,6 @@ jobs:
       - run:
           name: Checkout GeoTools, GeoWebCache and GeoServer
           command: |
-            echo "Setting up JVM flags"
-            export TEST_OPTS="-XX:+UseStringDeduplication -XX:+UseG1GC -XX:MaxHeapFreeRatio=30 -XX:MinHeapFreeRatio=10"
-            export MAVEN_OPTS="-Xmx256m $TEST_OPTS"
             echo "Preparing git ssh checkouts"
             mkdir ~/.ssh/ && echo -e "Host github.com\n\tStrictHostKeyChecking no\n" > ~/.ssh/config
             echo "Checking out GeoTools"
@@ -34,17 +31,24 @@ jobs:
 
       - run:
           name: Build GeoTools (no tests, prepare fresh artifacts)
-          command: mvn -B -f geotools/pom.xml install -Dall -Dfmt.skip=true -DskipTests
+          command: |
+            export TEST_OPTS="-XX:+UseStringDeduplication -XX:+UseG1GC -XX:MaxHeapFreeRatio=30 -XX:MinHeapFreeRatio=10"
+            export MAVEN_OPTS="-Xmx256m $TEST_OPTS"
+            mvn -B -f geotools/pom.xml install -Dall -Dfmt.skip=true -DskipTests
 
       - run:
           name: Build GeoWebCache with tests
           command: |
+            export TEST_OPTS="-XX:+UseStringDeduplication -XX:+UseG1GC -XX:MaxHeapFreeRatio=30 -XX:MinHeapFreeRatio=10"
+            export MAVEN_OPTS="-Xmx256m $TEST_OPTS"
             mvn -B -f geowebcache/geowebcache/pom.xml install -nsu -Dfmt.skip=true -DskipTests
             mvn -B -f geowebcache/geowebcache/pom.xml test -nsu -T2 -Dfmt.skip=true
 
       - run:
           name: Build GeoServer with tests (and community modules without)
           command: |
+            export TEST_OPTS="-XX:+UseStringDeduplication -XX:+UseG1GC -XX:MaxHeapFreeRatio=30 -XX:MinHeapFreeRatio=10"
+            export MAVEN_OPTS="-Xmx256m $TEST_OPTS"
             mvn -B -f geoserver/src/pom.xml install -nsu -Prelease -Dfmt.skip=true -DskipTests
             mvn -B -f geoserver/src/community/pom.xml install -nsu -communityRelease -Dfmt.skip=true -DskipTests
             mvn -B -f geoserver/src/pom.xml test -T2 -nsu -Dtest.maxHeapSize=256m -Djvm.opts="$TEST_OPTS" -Prelease -Dfmt.skip=true

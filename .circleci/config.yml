@@ -14,10 +14,10 @@ jobs:
             mkdir ~/geotools
             git clone git@github.com:geotools/geotools.git ~/geotools
             cd ~/geotools
-            mvn install -T2 -DargLine="-Xmx128m" -Dall -Dfmt.skip=true -DskipTests # run the build and prepare fresh geotools artifacts
+            mvn install -DargLine="-Xmx256m" -Dall -Dfmt.skip=true -DskipTests # run the build and prepare fresh geotools artifacts
             echo "Checking out and building GeoWebCache with tests"
             mkdir ~/geowebcache
             git clone git@github.com:GeoWebCache/geowebcache.git ~/geowebcache
             cd ~/geowebcache/geowebcache
-            mvn install -T2 -DargLine="-Xmx128m" -Dfmt.skip=true -DskipTests
-            mvn test -T2 -DargLine="-Xmx128m" -Dfmt.skip=true 
+            mvn install -DargLine="-Xmx256m" -Dfmt.skip=true -DskipTests
+            mvn test -DargLine="-Xmx256m" -Dfmt.skip=true 

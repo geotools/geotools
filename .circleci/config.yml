@@ -8,11 +8,14 @@ jobs: # a collection of steps
       - run:
           name: Avoid hosts unknown for github
           command: |
+            echo "Preparing git ssh checkouts"
             mkdir ~/.ssh/ && echo -e "Host github.com\n\tStrictHostKeyChecking no\n" > ~/.ssh/config
+            echo "Checking out and building GeoTools without tests"
             mkdir ~/geotools
-            git clone git@github.com:geotools/geotools.git ~/geowebcache
-            cd ~/geotols
+            git clone git@github.com:geotools/geotools.git ~/geotools
+            cd ~/geotools
             mvn install -DargLine="-Xmx256m" -Dall -Dfmt.skip=true -DskipTests # run the build and prepare fresh geotools artifacts
+            echo "Checking out and building GeoWebCache with tests"
             mkdir ~/geowebcache
             git clone git@github.com:GeoWebCache/geowebcache.git ~/geowebcache
             cd ~/geowebcache

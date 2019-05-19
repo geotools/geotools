@@ -24,6 +24,7 @@ jobs:
           name: Generate cache key
           command: |
             find geotools geowebcache geoserver -name "pom.xml" | sort | xargs md5sum > /tmp/checksum.txt
+            cat /tmp/checksum.txt
            
       - restore_cache:
           key: gt_gwc_gs-{{ checksum "/tmp/checksum.txt" }}
@@ -35,15 +36,15 @@ jobs:
       - run:
           name: Build GeoWebCache with tests
           command: |
-            mvn -f geowebcache/geowebcache/pom.xml install dependency:resolve-plugins dependency:go-offline -nsu -DargLine="-Xmx256m -XX:+UseStringDeduplication -XX:+UseG1GC" -Dfmt.skip=true -DskipTests
-            mvn -f geowebcache/geowebcache/pom.xml test -o -T2 -DargLine="-Xmx128m" -Dfmt.skip=true
+            mvn -f geowebcache/geowebcache/pom.xml install -nsu -DargLine="-Xmx256m -XX:+UseStringDeduplication -XX:+UseG1GC" -Dfmt.skip=true -DskipTests
+            mvn -f geowebcache/geowebcache/pom.xml test -nsu -T2 -DargLine="-Xmx128m" -Dfmt.skip=true
 
       - run:
           name: Build GeoServer with tests (and community modules without)
           command: |
-            mvn -f geoserver/src/pom.xml install dependency:resolve-plugins dependency:go-offline -nsu -DargLine="-Xmx256m -XX:+UseStringDeduplication -XX:+UseG1GC" -Prelease,communityRelease -Dfmt.skip=true -DskipTests
-            mvn -f geoserver/src/pom.xml test -T2 -o -DargLine="-Xmx128m" -Prelease -Dfmt.skip=true
-            mvn -f geoserver/src/community/pom.xml test -o -T2 -DargLine="-Xmx128m" -PcommunityRelease -Dfmt.skip=true -DskipTests
+            mvn -f geoserver/src/pom.xml install -nsu -DargLine="-Xmx256m -XX:+UseStringDeduplication -XX:+UseG1GC" -Prelease,communityRelease -Dfmt.skip=true -DskipTests
+            mvn -f geoserver/src/pom.xml test -T2 -nsu -DargLine="-Xmx128m" -Prelease -Dfmt.skip=true
+            mvn -f geoserver/src/community/pom.xml test -nsu -T2 -DargLine="-Xmx128m" -PcommunityRelease -Dfmt.skip=true -DskipTests
 
       - run:
           name: Cleanup repository (remove snapshots)

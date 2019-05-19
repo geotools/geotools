@@ -6,18 +6,33 @@ jobs:
         command: ["/bin/bash"]
     steps: 
       - run:
-          name: Build GeoTools and run downstream integrations
+          name: Checkout GeoTools, GeoWebCache and GeoServer
           command: |
             echo "Preparing git ssh checkouts"
             mkdir ~/.ssh/ && echo -e "Host github.com\n\tStrictHostKeyChecking no\n" > ~/.ssh/config
-            echo "Checking out and building GeoTools without tests"
+            echo "Checking out GeoTools"
             mkdir ~/geotools
             git clone git@github.com:geotools/geotools.git ~/geotools
-            cd ~/geotools
-            mvn install -DargLine="-Xmx256m" -Dall -Dfmt.skip=true -DskipTests # run the build and prepare fresh geotools artifacts
-            echo "Checking out and building GeoWebCache with tests"
+            echo "Checking out GeoWebCache"
             mkdir ~/geowebcache
             git clone git@github.com:GeoWebCache/geowebcache.git ~/geowebcache
-            cd ~/geowebcache/geowebcache
-            mvn install -DargLine="-Xmx256m" -Dfmt.skip=true -DskipTests
-            mvn test -DargLine="-Xmx256m" -Dfmt.skip=true 
+            echo "Checking out GeoServer"
+            mkdir ~/geoserver
+            git clone git@github.com:geoserver/geoserver.git ~/geoserver
+
+      - run:
+          name: Build GeoTools (no tests, prepare fresh artifacts)
+          command: mvn -f ~geotools/pom.xml install -DargLine="-Xmx256m" -Dall -Dfmt.skip=true -DskipTests
+
+      - run:
+          name: Build GeoWebCache with tests
+          command: |
+            mvn -f ~geowebcache/geowebcache/pom.xml install -DargLine="-Xmx256m" -Dfmt.skip=true -DskipTests
+            mvn -f ~geowebcache/geowebcache/pom.xml test -T2 -DargLine="-Xmx128m" -Dfmt.skip=true
+
+      - run:
+          name: Build GeoServer with tests (and community modules without)
+          command: |
+            mvn -f ~geoserver/src/pom.xml install -DargLine="-Xmx256m" -Prelease -Dfmt.skip=true -DskipTests
+            mvn -f ~geoserver/src/pom.xml test -T2 -DargLine="-Xmx128m" -Prelease -Dfmt.skip=true
+            mvn -f ~geoserver/src/community/pom.xml test -T2 -DargLine="-Xmx128m" -PcommunityRelease -Dfmt.skip=true -DskipTests

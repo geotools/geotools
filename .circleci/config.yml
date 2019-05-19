@@ -44,7 +44,6 @@ jobs:
           command: |
             mvn -B -f geoserver/src/pom.xml install -nsu -DargLine="-Xmx256m -XX:+UseStringDeduplication -XX:+UseG1GC" -Prelease,communityRelease -Dfmt.skip=true -DskipTests
             mvn -B -f geoserver/src/pom.xml test -T2 -nsu -DargLine="-Xmx256m -XX:+UseStringDeduplication -XX:+UseG1GC" -Dtest.maxHeapSize=256m-Djvm.opts="-XX:+UseStringDeduplication -XX:+UseG1GC" -Prelease -Dfmt.skip=true
-            mvn -B -f geoserver/src/community/pom.xml test -nsu -T2 -DargLine="-Xmx256m -XX:+UseStringDeduplication -XX:+UseG1GC" -PcommunityRelease -Dfmt.skip=true -DskipTests
 
       - run:
           name: Cleanup repository (remove snapshots)

@@ -46,7 +46,7 @@ jobs:
             rm -rf ~/.m2/repository/org/geowebcache
             rm -rf ~/.m2/repository/org/geoserver
 
-       - save_cache:
+      - save_cache:
           key: gt_gwc_gs-{{ checksum "/tmp/checksum.txt" }}
           paths:
             - ~/.m2/repository

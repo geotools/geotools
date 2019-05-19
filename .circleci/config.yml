@@ -22,12 +22,12 @@ jobs:
 
       - run:
           name: Build GeoTools (no tests, prepare fresh artifacts)
-          command: mvn -f geotools/pom.xml install -DargLine="-Xmx256m" -Dall -Dfmt.skip=true -DskipTests
+          command: mvn -f geotools/pom.xml install -DargLine="-Xmx256m -XX:+UseStringDeduplication -XX:+UseG1GC" -Dall -Dfmt.skip=true -DskipTests
 
       - run:
           name: Build GeoWebCache with tests
           command: |
-            mvn -f geowebcache/geowebcache/pom.xml install -nsu -DargLine="-Xmx256m" -Dfmt.skip=true -DskipTests
+            mvn -f geowebcache/geowebcache/pom.xml install -nsu -DargLine="-Xmx256m -XX:+UseStringDeduplication -XX:+UseG1GC" -Dfmt.skip=true -DskipTests
             mvn -f geowebcache/geowebcache/pom.xml test -o -T2 -DargLine="-Xmx128m" -Dfmt.skip=true
 
       - run:

@@ -1,12 +1,12 @@
 version: 2 
-jobs: # a collection of steps
+jobs: 
   build: 
     docker: 
       - image: circleci/openjdk:8u212-jdk-stretch
         command: ["/bin/bash"]
     steps: 
       - run:
-          name: Avoid hosts unknown for github
+          name: Build GeoTools and run downstream integrations
           command: |
             echo "Preparing git ssh checkouts"
             mkdir ~/.ssh/ && echo -e "Host github.com\n\tStrictHostKeyChecking no\n" > ~/.ssh/config
@@ -14,10 +14,10 @@ jobs: # a collection of steps
             mkdir ~/geotools
             git clone git@github.com:geotools/geotools.git ~/geotools
             cd ~/geotools
-            mvn install -T2 -DargLine="-Xmx256m" -Dall -Dfmt.skip=true -DskipTests # run the build and prepare fresh geotools artifacts
+            mvn install -T2 -DargLine="-Xmx128m" -Dall -Dfmt.skip=true -DskipTests # run the build and prepare fresh geotools artifacts
             echo "Checking out and building GeoWebCache with tests"
             mkdir ~/geowebcache
             git clone git@github.com:GeoWebCache/geowebcache.git ~/geowebcache
             cd ~/geowebcache/geowebcache
-            mvn install -T2 -DargLine="-Xmx256m" -Dfmt.skip=true -DskipTests
-            mvn test -T2 -DargLine="-Xmx256m" -Dfmt.skip=true 
+            mvn install -T2 -DargLine="-Xmx128m" -Dfmt.skip=true -DskipTests
+            mvn test -T2 -DargLine="-Xmx128m" -Dfmt.skip=true 

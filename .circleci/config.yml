@@ -64,3 +64,8 @@ jobs:
           key: gt_gwc_gs-{{ checksum "/tmp/checksum.txt" }}
           paths:
             - ~/.m2/repository
+  workflows:
+    version: 2
+    build:
+      jobs:
+        - build

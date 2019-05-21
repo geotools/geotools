@@ -23,10 +23,6 @@ import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertThat;
 
-import org.geotools.image.ImageWorker;
-import org.hamcrest.CoreMatchers;
-import org.junit.Test;
-
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
@@ -34,8 +30,10 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
-
 import javax.media.jai.ROI;
+import org.geotools.image.ImageWorker;
+import org.hamcrest.CoreMatchers;
+import org.junit.Test;
 
 public class FootprintBehaviorTest {
 

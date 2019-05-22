@@ -36,7 +36,13 @@ import org.geotools.image.ImageWorker;
  * @author Simone Giannecchini, GeoSolutions SAS
  */
 public enum FootprintBehavior {
-    None(false),
+    None(false) {
+        @Override
+        public RenderedImage postProcessBlankResponse(
+                RenderedImage finalImage, RenderingHints hints) {
+            return finalImage;
+        }
+    },
     Cut(true),
     Transparent(true) {
         @Override

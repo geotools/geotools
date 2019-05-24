@@ -55,7 +55,7 @@ public class EpaVicFeatureSource extends ContentFeatureSource {
 
     public static String MONITORID = "MonitorId";
 
-    public static String TIMEBASEID = "TimeBaseId";
+    public static String TIMEBASEID = "TimeBasisId";
 
     public static String FROMDATE = "FromDate";
 

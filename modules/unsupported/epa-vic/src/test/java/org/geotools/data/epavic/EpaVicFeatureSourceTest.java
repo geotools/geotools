@@ -69,7 +69,7 @@ public class EpaVicFeatureSourceTest {
         fSource.composeRequestParameters(
                 ECQL.toFilter(
                         "BBOX(SHAPE, 144.79309207663,-37.790887782994,144.82828265916,-37.766134928431)"
-                                + "AND Xxxx='1' AND MonitorId='PM10' AND TimeBaseId='24HR_RAV' "
+                                + "AND Xxxx='1' AND MonitorId='PM10' AND TimeBasisId='24HR_RAV' "
                                 + "AND DateTimeRecorded BETWEEN '2018-03-21T10:00:00' AND '2019-03-23T10:00:00'"));
     }
 
@@ -78,7 +78,7 @@ public class EpaVicFeatureSourceTest {
         fSource.composeRequestParameters(
                 ECQL.toFilter(
                         "BBOX(SHAPE, 144.79309207663,-37.790887782994,144.82828265916,-37.766134928431) "
-                                + "OR MonitorId='PM10' OR TimeBaseId='24HR_RAV' "
+                                + "OR MonitorId='PM10' OR TimeBasisId='24HR_RAV' "
                                 + "AND fromDate='2015-12-01T00:10:59' AND toDate='2016-12-29T12:59:00'"));
     }
 
@@ -87,7 +87,7 @@ public class EpaVicFeatureSourceTest {
         fSource.composeRequestParameters(
                 ECQL.toFilter(
                         "BBOX(SHAPE, 144.79309207663,-37.790887782994,144.82828265916,-37.766134928431) "
-                                + "AND MonitorId='PM10' AND TimeBaseId='24HR_RAV' "
+                                + "AND MonitorId='PM10' AND TimeBasisId='24HR_RAV' "
                                 + "AND DateTimeRecorded BETWEEN '2018-03-21' AND '2019-03-23'"));
     }
 
@@ -98,7 +98,7 @@ public class EpaVicFeatureSourceTest {
                 fSource.composeRequestParameters(
                         ECQL.toFilter(
                                 "BBOX(SHAPE, 144.79309207663,-37.790887782994,144.82828265916,-37.766134928431) "
-                                        + "AND MonitorId='PM10' AND TimeBaseId='24HR_RAV' "
+                                        + "AND MonitorId='PM10' AND TimeBasisId='24HR_RAV' "
                                         + "AND DateTimeRecorded BETWEEN '2018-03-21T10:00:00' AND '2019-03-23T10:00:00'"));
         Envelope env = (Envelope) params.get(EpaVicFeatureSource.BBOXPARAM);
         assertEquals(EpaVicFeatureSource.FILTERREQUIREDPARAMS + 1, params.size());
@@ -122,7 +122,7 @@ public class EpaVicFeatureSourceTest {
         Map<String, Object> params =
                 fSource.composeRequestParameters(
                         ECQL.toFilter(
-                                "MonitorId='PM10' AND TimeBaseId='24HR_RAV' "
+                                "MonitorId='PM10' AND TimeBasisId='24HR_RAV' "
                                         + "AND DateTimeRecorded BETWEEN '2018-03-21T10:00:00' AND '2019-03-23T10:00:00'"));
         Envelope env = (Envelope) params.get(EpaVicFeatureSource.BBOXPARAM);
         assertEquals(EpaVicFeatureSource.FILTERREQUIREDPARAMS, params.size());
@@ -139,7 +139,7 @@ public class EpaVicFeatureSourceTest {
                 fSource.composeRequestParameters(
                         ECQL.toFilter(
                                 "BBOX(ShaPe, 144.79309207663,-37.790887782994,144.82828265916,-37.766134928431) "
-                                        + "AND MoNiToRId='PM10' AND TiMeBaSEID='24HR_RAV' "
+                                        + "AND MoNiToRId='PM10' AND TiMeBaSiSID='24HR_RAV' "
                                         + "AND DateTimeRecorded BETWEEN '2018-03-21T10:00:00' AND '2019-03-23T10:00:00'"));
         assertEquals(EpaVicFeatureSource.FILTERREQUIREDPARAMS + 1, params.size());
         assertEquals("PM10", params.get(EpaVicFeatureSource.MONITORID));

@@ -72,7 +72,7 @@ public class EpaVicDataStoreTest {
                 new Query(
                         "measurement",
                         ECQL.toFilter(
-                                "MonitorId='PM10' AND TimeBaseId='24HR_RAV' "
+                                "MonitorId='PM10' AND TimeBasisId='24HR_RAV' "
                                         + "AND DateTimeRecorded BETWEEN '2018-03-21T10:00:00' AND '2019-03-23T10:00:00'"));
     }
 

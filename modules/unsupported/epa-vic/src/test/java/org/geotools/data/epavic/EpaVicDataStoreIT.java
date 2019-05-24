@@ -45,7 +45,7 @@ public class EpaVicDataStoreIT {
                 new Query(
                         "measurement",
                         ECQL.toFilter(
-                                "BBOX(geometry, -43, 96, -9, 160) AND MonitorId='CO' AND TimeBaseId='24HR_AV' "
+                                "BBOX(geometry, -43, 96, -9, 160) AND MonitorId='CO' AND TimeBasisId='24HR_AV' "
                                         + "AND DateTimeRecorded BETWEEN '2018-03-21T10:00:00' AND '2019-03-23T10:00:00'"));
         EpaVicDatastore ds = EpaVicDataStoreFactoryTest.createDefaultEPAServerTestDataStore();
         ContentFeatureSource featureSource = ds.getFeatureSource("measurement");
@@ -77,7 +77,7 @@ public class EpaVicDataStoreIT {
                         "measurement",
                         ECQL.toFilter(
                                 "BBOX(geometry,96.816766,-43.740510,159.109219,-9.142176,'EPSG:4283') "
-                                        + "AND (MonitorId IN ('PM10')) AND (TimeBaseId IN ('24HR_RAV')) "
+                                        + "AND (MonitorId IN ('PM10')) AND (TimeBasisId IN ('24HR_RAV')) "
                                         + "AND (DateTimeRecorded BETWEEN '2018-03-21T00:00:00' AND '2019-03-23T00:00:00')"));
         ds = EpaVicDataStoreFactoryTest.createDefaultEPAServerTestDataStore();
         featureSource = ds.getFeatureSource("measurement");

@@ -98,7 +98,8 @@
     <imageio.ext.version>1.3.1</imageio.ext.version>
     <jts.version>1.16.1</jts.version>
     <jaiext.version>1.1.9</jaiext.version>
-    <netcdf.version>4.6.11</netcdf.version>
+    <!-- Check overrides on upgrade of netcdf -->
+    <netcdf.version>4.6.13</netcdf.version>
     <jt.version>1.5.0</jt.version>
     <jaxb.api.version>2.4.0-b180830.0359</jaxb.api.version>
     <jaxb.runtime.version>2.4.0-b180830.0438</jaxb.runtime.version>
@@ -129,7 +130,7 @@
     <pmd.version>6.11.0</pmd.version>
     <checkstyle.skip>false</checkstyle.skip>
     <qa>false</qa>
-    <jackson2.version>2.9.7</jackson2.version>
+    <jackson2.version>2.9.9</jackson2.version>
   </properties>
 
   <!-- Profiles set on the command-line overwrite default properties. -->
@@ -225,7 +226,7 @@
           <plugin>
             <groupId>org.owasp</groupId>
             <artifactId>dependency-check-maven</artifactId>
-            <version>3.2.1</version>
+            <version>4.0.2</version>
             <configuration>
               <failBuildOnCVSS>8</failBuildOnCVSS>
               <suppressionFile>${geotoolsBaseDir}/build/qa/dependency-check-suppression.xml</suppressionFile>

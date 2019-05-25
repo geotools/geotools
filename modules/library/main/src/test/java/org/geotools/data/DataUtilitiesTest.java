@@ -32,6 +32,7 @@ import java.util.Set;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.feature.FakeTypes;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureTypes;
 import org.geotools.feature.IllegalAttributeException;
@@ -111,6 +112,11 @@ public class DataUtilitiesTest extends DataTestCase {
         FeatureSource<SimpleFeatureType, SimpleFeature> source = DataUtilities.source(collection);
         SimpleFeatureSource simple = DataUtilities.simple(source);
         assertSame(simple, source);
+    }
+
+    public void testSimpleType() throws DataSourceException {
+        SimpleFeatureType simpleFeatureType = DataUtilities.simple(FakeTypes.Mine.MINETYPE_TYPE);
+        assertEquals(null, simpleFeatureType.getGeometryDescriptor());
     }
 
     public void testDataStore() throws IOException {

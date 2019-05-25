@@ -1363,8 +1363,11 @@ public class DataUtilities {
                 SimpleFeatureTypeBuilder build = new SimpleFeatureTypeBuilder();
                 build.setName(featureType.getName());
                 build.setAttributes(simpleAttributes);
-                build.setDefaultGeometry(featureType.getGeometryDescriptor().getLocalName());
 
+                GeometryDescriptor defaultGeometry = featureType.getGeometryDescriptor();
+                if (defaultGeometry != null) {
+                    build.setDefaultGeometry(defaultGeometry.getLocalName());
+                }
                 simpleFeatureType = build.buildFeatureType();
             }
         } catch (SchemaException e) {

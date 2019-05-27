@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE convert [ <!ENTITY lol "lol"><!ENTITY lol1 "&lol;&lol;&lol;&lol;&lol;&lol;&lol;"> ]>
+<foo xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://geotools.org/test mixed.xsd"
+ xmlns="http://geotools.org/test">
+ Hello <bar>&lol1;</bar>
+ </foo>

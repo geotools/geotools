@@ -351,6 +351,9 @@ public class GranuleDescriptor {
 
     private NoDataContainer noData;
 
+    private Double[] scales;
+    private Double[] offsets;
+
     protected void init(
             final BoundingBox granuleBBOX,
             final URL granuleUrl,
@@ -505,8 +508,8 @@ public class GranuleDescriptor {
                 }
             }
 
-            // handle the nodata if available
-            setupNoData(reader);
+            // handle the nodata and rescaling if available
+            initFromImageMetadata(reader);
         } catch (IllegalStateException e) {
             throw new IllegalArgumentException(e);
 
@@ -535,7 +538,7 @@ public class GranuleDescriptor {
         }
     }
 
-    private void setupNoData(ImageReader reader) throws IOException {
+    private void initFromImageMetadata(ImageReader reader) throws IOException {
         // grabbing the nodata if possible
         int index = 0;
         if (originator != null) {
@@ -547,10 +550,15 @@ public class GranuleDescriptor {
         try {
             IIOMetadata metadata = reader.getImageMetadata(index);
             if (metadata instanceof CoreCommonImageMetadata) {
-                double[] noData = ((CoreCommonImageMetadata) metadata).getNoData();
+                CoreCommonImageMetadata ccm = (CoreCommonImageMetadata) metadata;
+
+                double[] noData = ccm.getNoData();
                 if (noData != null) {
                     this.noData = new NoDataContainer(noData);
                 }
+
+                this.scales = ccm.getScales();
+                this.offsets = ccm.getOffsets();
             }
         } catch (UnsupportedOperationException e) {
             // some imageio-ext plugin throw this because they do not support getting the metadata
@@ -739,7 +747,6 @@ public class GranuleDescriptor {
             final boolean heterogeneousGranules,
             final boolean handleArtifactsFiltering,
             final Hints hints) {
-
         this.maxDecimationFactor = maxDecimationFactor;
         final URL rasterFile = URLs.fileToUrl(new File(granuleLocation));
 
@@ -1236,6 +1243,11 @@ public class GranuleDescriptor {
                             e);
                 }
                 return null;
+            }
+
+            // apply rescaling
+            if (request.isRescalingEnabled()) {
+                raster = ImageUtilities.applyRescaling(scales, offsets, raster, hints);
             }
 
             // perform band selection if necessary, so far netcdf is the only low level reader that

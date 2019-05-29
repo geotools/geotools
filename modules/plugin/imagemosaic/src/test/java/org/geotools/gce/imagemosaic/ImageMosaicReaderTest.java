@@ -5628,4 +5628,56 @@ public class ImageMosaicReaderTest extends Assert {
             reader.dispose();
         }
     }
+
+    @Test
+    public void testScaleOffsetEnabled() throws Exception {
+        URL scaleOffsetURL = TestData.url(this, "scaleOffset");
+        final AbstractGridFormat format = TestUtils.getFormat(scaleOffsetURL);
+
+        final ImageMosaicReader reader = getReader(scaleOffsetURL, format);
+        try {
+            // test one, read with scale/offset rescaling
+            ParameterValue<Boolean> rescalePixels = AbstractGridFormat.RESCALE_PIXELS.createValue();
+            rescalePixels.setValue(true);
+            GridCoverage2D gc = reader.read(new GeneralParameterValue[] {rescalePixels});
+            RenderedImage imScaled = gc.getRenderedImage();
+            assertEquals(DataBuffer.TYPE_DOUBLE, imScaled.getSampleModel().getDataType());
+            // ... checking pixels in the first image
+            double[] pixelDouble = new double[6];
+            imScaled.getData().getPixel(0, 0, pixelDouble);
+            assertArrayEquals(new double[] {0.116, 0.116, 0.116, 0, 0, 1}, pixelDouble, 0d);
+            // ... checking pixels in the second image
+            imScaled.getData().getPixel(19, 9, pixelDouble);
+            assertArrayEquals(new double[] {0.1957, 0.1957, 0.1957, 0, 0, 1}, pixelDouble, 0d);
+            gc.dispose(true);
+        } finally {
+            reader.dispose();
+        }
+    }
+
+    @Test
+    public void testScaleOffsetDisabled() throws Exception {
+        URL scaleOffsetURL = TestData.url(this, "scaleOffset");
+        final AbstractGridFormat format = TestUtils.getFormat(scaleOffsetURL);
+
+        final ImageMosaicReader reader = getReader(scaleOffsetURL, format);
+        try {
+            // test one, read with scale/offset rescaling
+            ParameterValue<Boolean> rescalePixels = AbstractGridFormat.RESCALE_PIXELS.createValue();
+            rescalePixels.setValue(false);
+            GridCoverage2D gc = reader.read(new GeneralParameterValue[] {rescalePixels});
+            RenderedImage imScaled = gc.getRenderedImage();
+            assertEquals(DataBuffer.TYPE_INT, imScaled.getSampleModel().getDataType());
+            // ... checking pixels in the first image
+            double[] pixelDouble = new double[6];
+            imScaled.getData().getPixel(0, 0, pixelDouble);
+            assertArrayEquals(new double[] {1160, 1160, 1160, 0, 0, 10000}, pixelDouble, 0d);
+            // ... checking pixels in the second image
+            imScaled.getData().getPixel(19, 9, pixelDouble);
+            assertArrayEquals(new double[] {1957, 1957, 1957, 0, 0, 10000}, pixelDouble, 0d);
+            gc.dispose(true);
+        } finally {
+            reader.dispose();
+        }
+    }
 }

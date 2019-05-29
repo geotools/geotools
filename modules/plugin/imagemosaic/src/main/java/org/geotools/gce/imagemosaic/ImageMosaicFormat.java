@@ -293,7 +293,8 @@ public final class ImageMosaicFormat extends AbstractGridFormat implements Forma
                                     FOOTPRINT_BEHAVIOR,
                                     OVERVIEW_POLICY,
                                     BANDS,
-                                    EXCESS_GRANULE_REMOVAL
+                                    EXCESS_GRANULE_REMOVAL,
+                                    RESCALE_PIXELS
                                 }));
 
         // reading parameters

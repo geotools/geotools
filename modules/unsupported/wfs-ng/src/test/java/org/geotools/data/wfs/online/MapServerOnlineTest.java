@@ -229,4 +229,49 @@ public class MapServerOnlineTest {
             iterator.close();
         }
     }
+    
+    private void testWFSFilter() throws IOException, NoSuchElementException {
+        //Set the capabilities URL to the backend I am referencing
+        String getCapabilities = "https://cartowfs.nationalmap.gov/arcgis/services/structures/MapServer/WFSServer?request=GetCapabilities&service=WFS";
+
+    	Map connectionParameters = new HashMap();
+    	connectionParameters.put("WFSDataStoreFactory:GET_CAPABILITIES_URL", getCapabilities );
+        
+        //Attempt to connect to the datastore.
+    	DataStore data = DataStoreFinder.getDataStore( connectionParameters );
+
+    	String typeNames[] = data.getTypeNames();
+        //Get the typenames layer.
+        String typeName = typeNames[0];
+    	SimpleFeatureType schema = data.getSchema( typeName );
+    	
+    	SimpleFeatureSource source = data.getFeatureSource(typeName);
+    	source.getBounds();
+    	
+    	SimpleFeatureCollection features = source.getFeatures();
+        features.getBounds();
+        features.getSchema();
+        
+        //Create a property is equal to filter.
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory( GeoTools.getDefaultHints() );
+        PropertyIsEqualTo filter = ff.equals(ff.property("STATE"), ff.literal("MO"));
+        	
+        //Create a query with the filter, typename, and max features.
+        Query query = new Query();
+        query.setTypeName(typeName);
+        query.setMaxFeatures(10);
+        query.setFilter(filter);
+        features = source.getFeatures(query);
+        
+        //Iterator through all the features and print them out.
+        SimpleFeatureIterator iterator = features.features();
+        try {
+            while (iterator.hasNext()) {
+                SimpleFeature feature = iterator.next();
+                System.out.println(feature.getID());
+            }
+        } finally {
+            iterator.close();
+        }
+    }
 }

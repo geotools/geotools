@@ -370,10 +370,10 @@ public class MBFilter {
         //
 
         // Existential Filters
-        if ("has".equals(operator)) {
+        if ("!has".equals(operator)) {
             String key = parse.get(json, 1);
             return ff.isNull(ff.property(key)); // null is the same as no value present
-        } else if ("!has".equals(operator)) {
+        } else if ("has".equals(operator)) {
             String key = parse.get(json, 1);
             return ff.not(ff.isNull(ff.property(key)));
             // Comparison Filters

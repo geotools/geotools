@@ -1,7 +1,3 @@
-pregenerated
-rescale
-mosaicing
-tilings
 affine
 affines
 arcgrid
@@ -18,7 +14,9 @@ codebase
 colormapped
 conformal
 coverages
+CRS
 datastore
+ddl
 Deegree
 dom
 easting
@@ -27,6 +25,11 @@ Erdas
 exe
 gdal
 geolocate
+cardinality
+rescale
+rescales
+retile
+reproject
 georeferenced
 georeferencing
 GeoSolutions
@@ -36,7 +39,9 @@ GeoTools
 GOF
 Goh
 gtopo
+selectable
 gzipped
+H2
 Harrower
 hoc
 homebrew
@@ -59,7 +64,9 @@ md
 md5
 misconfigured
 mosaicing
+mosaicing
 multiline
+MySQL
 namespace
 NaN
 Netbeans
@@ -73,8 +80,11 @@ placemark
 placemarks
 pluggable
 Polexis
+Postgis
+PostgreSQL
 precompiled
 preflight
+pregenerated
 programmatically
 quadkey
 quantile
@@ -88,6 +98,7 @@ reprojected
 reprojection
 resample
 resampling
+rescale
 rst
 runtime
 scalable
@@ -102,6 +113,7 @@ symbolizer
 symbolizers
 symbology
 Sys
+tilings
 uDig
 undirected
 validator

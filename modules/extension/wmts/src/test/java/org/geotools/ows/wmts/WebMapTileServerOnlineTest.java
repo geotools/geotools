@@ -72,7 +72,9 @@ public class WebMapTileServerOnlineTest extends OnlineTestCase {
      */
     @Override
     protected void setUpInternal() throws Exception {
-        serverURL = new URL(fixture.getProperty("kvp_server"));
+        String kvp_prop = fixture.getProperty("kvp_server");
+        System.out.println(kvp_prop);
+        serverURL = new URL(kvp_prop);
         brokenURL = new URL("http://afjklda.com");
         restWMTS = new URL(fixture.getProperty("rest_server"));
         esriWMTS = new URL(fixture.getProperty("esri_server"));
@@ -162,6 +164,7 @@ public class WebMapTileServerOnlineTest extends OnlineTestCase {
         WMTSCapabilities caps = wms.getCapabilities();
 
         Layer layer = (Layer) caps.getLayer("topp:states");
+        assertNotNull("test server doesn't have topp:states", layer);
         CoordinateReferenceSystem crs = CRS.decode("EPSG:4326");
 
         GeneralEnvelope envelope = wms.getEnvelope(layer, crs);

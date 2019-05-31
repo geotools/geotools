@@ -19,13 +19,15 @@ package org.geotools.renderer.lite;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
-import java.awt.Color;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 import java.awt.image.Raster;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import org.geotools.TestData;
 import org.geotools.coverage.grid.GridCoverage2D;
@@ -39,10 +41,7 @@ import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.gce.geotiff.GeoTiffReader;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.ImageWorker;
-import org.geotools.map.FeatureLayer;
-import org.geotools.map.GridCoverageLayer;
-import org.geotools.map.GridReaderLayer;
-import org.geotools.map.MapContent;
+import org.geotools.map.*;
 import org.geotools.referencing.CRS;
 import org.geotools.renderer.RenderListener;
 import org.geotools.styling.Style;
@@ -131,6 +130,73 @@ public class RenderingTransformationTest {
         // incorrect, it shouldn't be
         assertNotEquals(Color.WHITE, getPixelColor(image, 299, 0));
         assertEquals(new Color(133, 130, 188), getPixelColor(image, 299, 0));
+    }
+
+    @Test
+    public void testRasterToVectorTransformAcrossDateline() throws Exception {
+        Style style = RendererBaseTest.loadStyle(this, "coverageCenter.sld");
+
+        GeoTiffReader reader = new GeoTiffReader(TestData.copy(this, "geotiff/world.tiff"));
+
+        MapContent mc = new MapContent();
+        mc.addLayer(new GridCoverageLayer(reader.read(null), style));
+
+        StreamingRenderer renderer = new StreamingRenderer();
+        Map<Object, Object> rendererParams = new HashMap<>();
+        rendererParams.put(StreamingRenderer.ADVANCED_PROJECTION_HANDLING_KEY, true);
+        rendererParams.put(StreamingRenderer.CONTINUOUS_MAP_WRAPPING, true);
+        renderer.setRendererHints(rendererParams);
+        renderer.setMapContent(mc);
+
+        ReferencedEnvelope reWgs84 =
+                new ReferencedEnvelope(-90, 90, 0, 360, CRS.decode("EPSG:4326"));
+
+        BufferedImage image =
+                RendererBaseTest.showRender("Lines with circle stroke", renderer, TIME, reWgs84);
+        // we are straddling the dateline, so the center of the coverage should be
+        // a red dot vertically centered at at the edges of the image
+        assertEquals(Color.RED, getPixelColor(image, 0, image.getHeight() / 2));
+        assertEquals(Color.RED, getPixelColor(image, image.getWidth() - 1, image.getHeight() / 2));
+        // there should NOT be a red dot at the center
+        assertEquals(
+                Color.WHITE, getPixelColor(image, image.getWidth() / 2, image.getHeight() / 2));
+        assertEquals(
+                Color.WHITE, getPixelColor(image, image.getWidth() - 1, image.getHeight() / 4));
+        assertEquals(Color.WHITE, getPixelColor(image, 0, image.getHeight() / 4));
+        assertEquals(
+                Color.WHITE, getPixelColor(image, image.getWidth() / 4, image.getHeight() / 4));
+    }
+
+    @Test
+    public void testRasterToTransformVectorPastDateline() throws Exception {
+        Style style = RendererBaseTest.loadStyle(this, "coverageCenter.sld");
+
+        GeoTiffReader reader = new GeoTiffReader(TestData.copy(this, "geotiff/world.tiff"));
+
+        MapContent mc = new MapContent();
+        mc.addLayer(new GridCoverageLayer(reader.read(null), style));
+
+        StreamingRenderer renderer = new StreamingRenderer();
+        Map<Object, Object> rendererParams = new HashMap<>();
+        rendererParams.put(StreamingRenderer.ADVANCED_PROJECTION_HANDLING_KEY, true);
+        rendererParams.put(StreamingRenderer.CONTINUOUS_MAP_WRAPPING, true);
+        renderer.setRendererHints(rendererParams);
+        renderer.setMapContent(mc);
+
+        ReferencedEnvelope reWgs84 =
+                new ReferencedEnvelope(-70, 70, 200, 520, CRS.decode("EPSG:4326"));
+        ReferencedEnvelope re = reWgs84.transform(CRS.decode("EPSG:3857"), true);
+
+        BufferedImage image =
+                RendererBaseTest.showRender("Lines with circle stroke", renderer, TIME, re);
+        // if everything worked we are going to have a red dot in the middle of the map
+        assertEquals(Color.RED, getPixelColor(image, image.getWidth() / 2, image.getHeight() / 2));
+        assertEquals(
+                Color.WHITE, getPixelColor(image, image.getWidth() / 4, image.getHeight() / 2));
+        assertEquals(
+                Color.WHITE, getPixelColor(image, image.getWidth() / 2, image.getHeight() / 4));
+        assertEquals(
+                Color.WHITE, getPixelColor(image, image.getWidth() / 4, image.getHeight() / 4));
     }
 
     @Test

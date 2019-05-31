@@ -101,11 +101,9 @@ public class EpaVicFeatureReader implements FeatureReader<SimpleFeatureType, Sim
         }
         this.featIndex = 0;
 
-        if (siteStreams.isEmpty()) {
-            throw new IllegalArgumentException("Reader requires an input stream");
+        if (!siteStreams.isEmpty()) {
+            initJParser();
         }
-
-        initJParser();
     }
 
     private void initJParser() throws IOException, JsonParseException {
@@ -142,6 +140,11 @@ public class EpaVicFeatureReader implements FeatureReader<SimpleFeatureType, Sim
      */
     @Override
     public boolean hasNext() throws IOException {
+
+        if (siteStreams.isEmpty() && this.jParser == null) {
+            return false;
+        }
+
         if (isParserCurrent(jParser)) {
             return true;
         }
@@ -257,9 +260,11 @@ public class EpaVicFeatureReader implements FeatureReader<SimpleFeatureType, Sim
 
     @Override
     public void close() {
-        try {
-            this.jParser.close();
-        } catch (IOException e) {
+        if (this.jParser != null) {
+            try {
+                this.jParser.close();
+            } catch (IOException e) {
+            }
         }
     }
 }

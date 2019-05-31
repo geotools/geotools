@@ -113,8 +113,8 @@ public class MonitorTimeBasis {
     }
 
     @JsonProperty("TimeBasisId")
-    public void setTimeBasisId(String timeBasisId) {
-        this.timeBasisId = timeBasisId;
+    public void setTimeBasisId(String TimeBasisId) {
+        this.timeBasisId = TimeBasisId;
     }
 
     @Override

@@ -19,6 +19,8 @@ public class Measurement {
 
     public static final String TIME_BASE_ID = "TimeBaseId";
 
+    public static final String TIME_BASIS_ID = "TimeBasisId";
+
     public static final String QUALITY_STATUS = "QualityStatus";
 
     public static final String MONITOR_TIME_BASIS = "MonitorTimeBasis";
@@ -95,6 +97,9 @@ public class Measurement {
 
     @JsonProperty(TIME_BASE_ID)
     private String timeBaseId;
+
+    @JsonProperty(TIME_BASIS_ID)
+    private String timeBasisId;
 
     @JsonProperty(VALUE)
     private String value;
@@ -249,6 +254,16 @@ public class Measurement {
         this.siteId = siteId;
     }
 
+    @JsonProperty(TIME_BASIS_ID)
+    public String getTimeBasisId() {
+        return timeBasisId;
+    }
+
+    @JsonProperty(TIME_BASIS_ID)
+    public void setTimeBasisId(String timeBasisId) {
+        this.timeBasisId = timeBasisId;
+    }
+
     @JsonProperty(TIME_BASE_ID)
     public String getTimeBaseId() {
         return timeBaseId;
@@ -312,6 +327,7 @@ public class Measurement {
                 .append(qualityStatus)
                 .append(siteId)
                 .append(timeBaseId)
+                .append(timeBasisId)
                 .append(value)
                 .append(additionalProperties)
                 .toHashCode();
@@ -374,6 +390,7 @@ public class Measurement {
                 .append(qualityStatus, rhs.qualityStatus)
                 .append(siteId, rhs.siteId)
                 .append(timeBaseId, rhs.timeBaseId)
+                .append(timeBasisId, rhs.timeBasisId)
                 .append(value, rhs.value)
                 .append(additionalProperties, rhs.additionalProperties)
                 .isEquals();

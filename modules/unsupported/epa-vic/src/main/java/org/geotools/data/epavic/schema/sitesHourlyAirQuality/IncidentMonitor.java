@@ -21,7 +21,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
     "Precision",
     "ShortName",
     "TimeBasis",
-    "TimeBasisID",
+    "TimeBasisId",
     "UnitOfMeasure"
 })
 public class IncidentMonitor {
@@ -47,8 +47,8 @@ public class IncidentMonitor {
     @JsonProperty("TimeBasis")
     private String timeBasis;
 
-    @JsonProperty("TimeBasisID")
-    private String timeBasisID;
+    @JsonProperty("TimeBasisId")
+    private String TimeBasisId;
 
     @JsonProperty("UnitOfMeasure")
     private String unitOfMeasure;
@@ -125,14 +125,14 @@ public class IncidentMonitor {
         this.timeBasis = timeBasis;
     }
 
-    @JsonProperty("TimeBasisID")
-    public String getTimeBasisID() {
-        return timeBasisID;
+    @JsonProperty("TimeBasisId")
+    public String getTimeBasisId() {
+        return TimeBasisId;
     }
 
-    @JsonProperty("TimeBasisID")
-    public void setTimeBasisID(String timeBasisID) {
-        this.timeBasisID = timeBasisID;
+    @JsonProperty("TimeBasisId")
+    public void setTimeBasisId(String TimeBasisId) {
+        this.TimeBasisId = TimeBasisId;
     }
 
     @JsonProperty("UnitOfMeasure")
@@ -170,7 +170,7 @@ public class IncidentMonitor {
                 .append(precision)
                 .append(shortName)
                 .append(timeBasis)
-                .append(timeBasisID)
+                .append(TimeBasisId)
                 .append(unitOfMeasure)
                 .append(additionalProperties)
                 .toHashCode();
@@ -193,7 +193,7 @@ public class IncidentMonitor {
                 .append(precision, rhs.precision)
                 .append(shortName, rhs.shortName)
                 .append(timeBasis, rhs.timeBasis)
-                .append(timeBasisID, rhs.timeBasisID)
+                .append(TimeBasisId, rhs.TimeBasisId)
                 .append(unitOfMeasure, rhs.unitOfMeasure)
                 .append(additionalProperties, rhs.additionalProperties)
                 .isEquals();

@@ -28,6 +28,7 @@ import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.filter.visitor.DefaultFilterVisitor;
 import org.geotools.gce.imagemosaic.Utils.BBOXFilterExtractor;
+import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.locationtech.jts.geom.Point;
@@ -74,6 +75,10 @@ public class EpaVicFeatureSource extends ContentFeatureSource {
     protected DefaultResourceInfo resInfo;
 
     protected String objectIdField;
+
+    protected ReferencedEnvelope bounds;
+
+    private Query query;
 
     /**
      * Inner class used to build the request parameters. Only "And" logical connectors with equality
@@ -144,6 +149,23 @@ public class EpaVicFeatureSource extends ContentFeatureSource {
         super(entry, query);
         this.dataStore = (EpaVicDatastore) entry.getDataStore();
         this.schema = this.buildFeatureType();
+    }
+
+    protected ReferencedEnvelope getBoundsInternal() {
+        return this.bounds;
+    }
+
+    protected ReferencedEnvelope getBoundsInternal(Query query) throws IOException {
+        if (this.bounds != null) {
+            return this.getBoundsInternal();
+        }
+
+        try {
+            loadSiteStreams(query, dataStore.retrieveSitesJSON());
+            return this.getBoundsInternal();
+        } catch (CQLException | ParseException e) {
+            throw new IllegalArgumentException(e);
+        }
     }
 
     protected static String composeErrorMessage(Filter filter, String msg) {
@@ -228,11 +250,6 @@ public class EpaVicFeatureSource extends ContentFeatureSource {
     }
 
     @Override
-    protected ReferencedEnvelope getBoundsInternal(Query arg0) throws IOException {
-        return this.getInfo().getBounds();
-    }
-
-    @Override
     protected int getCountInternal(Query query) throws IOException {
 
         try {
@@ -282,26 +299,28 @@ public class EpaVicFeatureSource extends ContentFeatureSource {
         ReferencedEnvelope bbox = (ReferencedEnvelope) params.get(BBOXPARAM);
 
         List<Site> sitesToRetrieve = Collections.emptyList();
+        this.bounds = new ReferencedEnvelope(this.resInfo.getCRS());
         if (bbox != null) {
             sitesToRetrieve =
                     sites.getSites()
                             .stream()
-                            .filter(site -> bbox.contains(site.getLongitude(), site.getLatitude()))
+                            .filter(site -> bbox.contains(site.getLatitude(), site.getLongitude()))
                             .collect(Collectors.toList());
         } else {
             sitesToRetrieve = sites.getSites();
         }
 
         Queue<InputStream> siteStreams = new LinkedList<>();
-        if (sitesToRetrieve.isEmpty()) {
-            siteStreams.add(this.dataStore.retrieveJSON(params));
-        } else {
+        params.remove(EpaVicFeatureSource.BBOXPARAM);
+        if (!sitesToRetrieve.isEmpty()) {
             for (Site s : sitesToRetrieve) {
-                Map<String, Object> p = new HashMap<>(params);
-                p.put(SITEID, s.getSiteId().toString());
+                params.put(SITEID, s.getSiteId().toString());
+                this.bounds.expandToInclude(
+                        new DirectPosition2D(s.getLongitude(), s.getLatitude()));
                 siteStreams.add(this.dataStore.retrieveJSON(params));
             }
         }
+
         return siteStreams;
     }
 
@@ -377,7 +396,9 @@ public class EpaVicFeatureSource extends ContentFeatureSource {
 
         // Checks that all required parameters are present
         if (requestParams.size() < FILTERREQUIREDPARAMS) {
-            throw new CQLException(composeErrorMessage(filter, "There are too few parameters"));
+            throw new CQLException(
+                    composeErrorMessage(
+                            filter, "There are too few parameters " + requestParams.keySet()));
         }
 
         // Checks that no parameter other than the allowed ones is present
@@ -393,7 +414,9 @@ public class EpaVicFeatureSource extends ContentFeatureSource {
                         }
                     });
         } catch (IllegalArgumentException e) {
-            throw new CQLException(composeErrorMessage(filter, "Some parameters are missing"));
+            throw new CQLException(
+                    composeErrorMessage(
+                            filter, "Some parameters are missing " + requestParams.keySet()));
         }
 
         // Converts dates into EPA format

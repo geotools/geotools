@@ -3,6 +3,7 @@ package org.geotools.data.epavic.schema;
 public enum MeasurementFields {
     VALUE(Measurement.VALUE, String.class),
     TIME_BASE_ID(Measurement.TIME_BASE_ID, String.class),
+    TIME_BASIS_ID(Measurement.TIME_BASIS_ID, String.class),
     SITE_ID(Site.SITE_ID, Integer.class),
     QUALITY_STATUS(Measurement.QUALITY_STATUS, Integer.class),
     MONITOR_ID(Measurement.MONITOR_ID, String.class),

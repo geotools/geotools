@@ -16,12 +16,9 @@
  */
 package org.geotools.data.epavic;
 
-import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.io.IOException;
@@ -29,10 +26,10 @@ import java.util.List;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpMethod;
 import org.apache.commons.httpclient.HttpStatus;
-import org.apache.commons.httpclient.NameValuePair;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.Query;
+import org.geotools.data.epavic.schema.Measurement;
 import org.geotools.data.epavic.schema.Sites;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
@@ -44,7 +41,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.locationtech.jts.geom.Point;
-import org.mockito.ArgumentCaptor;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.Name;
@@ -73,7 +69,7 @@ public class EpaVicDataStoreTest {
                         "measurement",
                         ECQL.toFilter(
                                 "MonitorId='PM10' AND TimeBasisId='24HR_RAV' "
-                                        + "AND DateTimeRecorded BETWEEN '2018-03-21T10:00:00' AND '2019-03-23T10:00:00'"));
+                                        + "AND DateTimeRecorded BETWEEN '2019-03-21T10:00:00' AND '2019-03-23T10:00:00'"));
     }
 
     @After
@@ -160,6 +156,15 @@ public class EpaVicDataStoreTest {
         assertNotNull(
                 this.dataStore.getEntry(
                         new NameImpl(EpaVicDataStoreFactoryTest.NAMESPACE, TYPENAME1)));
+
+        FeatureSource<SimpleFeatureType, SimpleFeature> src =
+                this.dataStore.createFeatureSource(
+                        this.dataStore.getEntry(
+                                new NameImpl(EpaVicDataStoreFactoryTest.NAMESPACE, TYPENAME1)));
+
+        // Test both time baseis attribute are created
+        assertNotNull(src.getSchema().getDescriptor(Measurement.TIME_BASE_ID));
+        assertNotNull(src.getSchema().getDescriptor(Measurement.TIME_BASIS_ID));
     }
 
     @Test
@@ -178,9 +183,11 @@ public class EpaVicDataStoreTest {
         when(clientMock.executeMethod(getMock))
                 .thenReturn(HttpStatus.SC_OK)
                 .thenReturn(HttpStatus.SC_OK)
+                .thenReturn(HttpStatus.SC_OK)
                 .thenReturn(HttpStatus.SC_OK);
         when(getMock.getResponseBodyAsStream())
                 .thenReturn(EpaVicDataStoreFactoryTest.readJSONAsStream("test-data/sites.json"))
+                .thenReturn(EpaVicDataStoreFactoryTest.readJSONAsStream("test-data/monitors.json"))
                 .thenReturn(
                         EpaVicDataStoreFactoryTest.readJSONAsStream("test-data/9measurements.json"))
                 .thenReturn(
@@ -196,13 +203,26 @@ public class EpaVicDataStoreTest {
                         this.dataStore.getEntry(
                                 new NameImpl(EpaVicDataStoreFactoryTest.NAMESPACE, TYPENAME1)));
         src.getSchema();
+
         assertTrue(src instanceof EpaVicFeatureSource);
         assertEquals("measurement", src.getInfo().getName());
         assertEquals(EpaVicDataStoreFactoryTest.NAMESPACE, src.getInfo().getSchema().toString());
         assertEquals(CRS.decode("EPSG:4283"), src.getInfo().getCRS());
 
         // Feature count test
-        assertEquals(18, src.getCount(q));
+        FeatureCollection<SimpleFeatureType, SimpleFeature> fc = src.getFeatures(q);
+
+        FeatureIterator iter = fc.features();
+        int count = 0;
+        while (iter.hasNext()) {
+            iter.next();
+            count++;
+        }
+
+        assertEquals(18, count);
+
+        // Feature extent test
+        assertNotNull(fc.getBounds());
     }
 
     @Test
@@ -219,6 +239,7 @@ public class EpaVicDataStoreTest {
                 .thenReturn(getMock)
                 .thenReturn(getMock);
         when(clientMock.executeMethod(getMock))
+                .thenReturn(HttpStatus.SC_OK)
                 .thenReturn(HttpStatus.SC_OK)
                 .thenReturn(HttpStatus.SC_OK)
                 .thenReturn(HttpStatus.SC_OK);
@@ -253,9 +274,13 @@ public class EpaVicDataStoreTest {
         assertEquals(-37.77832, p.getY(), 0.001);
         assertEquals(true, iter.hasNext());
 
+        int count = 1;
         while (iter.hasNext()) {
             iter.next();
+            count++;
         }
+
+        assertEquals(18, count);
     }
 
     @Test
@@ -326,23 +351,12 @@ public class EpaVicDataStoreTest {
         // Test feature iteration
         FeatureCollection<SimpleFeatureType, SimpleFeature> fc = src.getFeatures(q);
         FeatureIterator iter = fc.features();
-        if (iter.hasNext()) {
-            iter.next();
-        }
-
-        NameValuePair[] check = new NameValuePair[4];
-        check[0] = new NameValuePair(EpaVicFeatureSource.FROMDATE, "2018032110");
-        check[1] = new NameValuePair(EpaVicFeatureSource.MONITORID, "PM10");
-        check[2] = new NameValuePair(EpaVicFeatureSource.TIMEBASEID, "24HR_RAV");
-        check[3] = new NameValuePair(EpaVicFeatureSource.TODATE, "2019032310");
-
-        ArgumentCaptor<NameValuePair[]> captor = ArgumentCaptor.forClass(NameValuePair[].class);
-        verify(getMock, times(2)).setQueryString(captor.capture());
-        NameValuePair[] getMethodCalled = captor.getValue();
-        assertArrayEquals(check, getMethodCalled);
-
+        int count = 0;
         while (iter.hasNext()) {
             iter.next();
+            count++;
         }
+
+        assertEquals(18, count);
     }
 }

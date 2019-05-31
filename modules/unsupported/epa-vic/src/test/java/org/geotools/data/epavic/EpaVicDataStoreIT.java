@@ -17,6 +17,7 @@
 package org.geotools.data.epavic;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.geotools.data.Query;
@@ -39,19 +40,17 @@ public class EpaVicDataStoreIT {
     public void tearDown() throws Exception {}
 
     @Test
-    public void testGetMeasurementBBOX() throws Exception {
+    public void testGetMeasurementBBOXAllSites() throws Exception {
 
         Query q =
                 new Query(
                         "measurement",
                         ECQL.toFilter(
-                                "BBOX(geometry, -43, 96, -9, 160) AND MonitorId='CO' AND TimeBasisId='24HR_AV' "
-                                        + "AND DateTimeRecorded BETWEEN '2018-03-21T10:00:00' AND '2019-03-23T10:00:00'"));
+                                "BBOX(geometry, -43, 96, -9, 160) "
+                                        + "AND MonitorId='CO' AND TimeBasisId='1HR_AV' "
+                                        + "AND DateTimeRecorded BETWEEN '2019-03-21T10:00:00' AND '2019-03-23T10:00:00'"));
         EpaVicDatastore ds = EpaVicDataStoreFactoryTest.createDefaultEPAServerTestDataStore();
         ContentFeatureSource featureSource = ds.getFeatureSource("measurement");
-        int count = featureSource.getCount(q);
-
-        assertTrue(count > 3000);
 
         SimpleFeatureIterator it = featureSource.getFeatures(q).features();
 
@@ -61,29 +60,83 @@ public class EpaVicDataStoreIT {
                 "EAST",
                 (String) feat.getAttribute(MeasurementFields.SITE_LIST_NAME.getFieldName()));
         assertEquals(
-                "Beta attenuation monitoring",
+                "Infra-red Absorption",
                 (String) feat.getAttribute(MeasurementFields.EQUIPMENT_TYPE.getFieldName()));
 
-        int count2 = 1;
         while (it.hasNext()) {
             feat = it.next();
-            count2++;
+            assertEquals(
+                    "1HR_AV",
+                    (String) feat.getAttribute(MeasurementFields.TIME_BASE_ID.getFieldName()));
         }
+    }
 
-        assertEquals(count, count2);
+    @Test
+    public void testGetMeasurementBBOXSmallArea() throws Exception {
 
-        q =
+        Query q =
                 new Query(
                         "measurement",
                         ECQL.toFilter(
-                                "BBOX(geometry,96.816766,-43.740510,159.109219,-9.142176,'EPSG:4283') "
-                                        + "AND (MonitorId IN ('PM10')) AND (TimeBasisId IN ('24HR_RAV')) "
-                                        + "AND (DateTimeRecorded BETWEEN '2018-03-21T00:00:00' AND '2019-03-23T00:00:00')"));
-        ds = EpaVicDataStoreFactoryTest.createDefaultEPAServerTestDataStore();
-        featureSource = ds.getFeatureSource("measurement");
-        count = featureSource.getCount(q);
+                                "BBOX(geometry,-38.0,144.0,-37.0,146.0,'EPSG:4283') "
+                                        + "AND (MonitorId IN ('PM10')) AND (TimeBasisId IN ('1HR_AV')) "
+                                        + "AND (DateTimeRecorded BETWEEN '2019-03-21T00:00:00' AND '2019-03-23T00:00:00')"));
+        EpaVicDatastore ds = EpaVicDataStoreFactoryTest.createDefaultEPAServerTestDataStore();
+        ContentFeatureSource featureSource = ds.getFeatureSource("measurement");
 
-        assertTrue(count > 3000);
+        SimpleFeatureIterator it = featureSource.getFeatures(q).features();
+
+        assertTrue(it.hasNext());
+        SimpleFeature feat = it.next();
+        assertEquals(
+                "EAST",
+                (String) feat.getAttribute(MeasurementFields.SITE_LIST_NAME.getFieldName()));
+        assertEquals(
+                "TEOM Continuous Sampler",
+                (String) feat.getAttribute(MeasurementFields.EQUIPMENT_TYPE.getFieldName()));
+
+        while (it.hasNext()) {
+            feat = it.next();
+            assertEquals(
+                    "1HR_AV",
+                    (String) feat.getAttribute(MeasurementFields.TIME_BASE_ID.getFieldName()));
+        }
+    }
+
+    @Test
+    public void testGetMeasurementBBOXNoExistingTimeBasis() throws Exception {
+
+        Query q =
+                new Query(
+                        "measurement",
+                        ECQL.toFilter(
+                                "BBOX(geometry,145.03,-37.8,146.0,-37.6,'EPSG:4283') "
+                                        + "AND (MonitorId IN ('PM10')) AND (TimeBasisId IN ('24HR_AV')) "
+                                        + "AND (DateTimeRecorded BETWEEN '2019-03-21T00:00:00' AND '2019-03-23T00:00:00')"));
+        EpaVicDatastore ds = EpaVicDataStoreFactoryTest.createDefaultEPAServerTestDataStore();
+        ContentFeatureSource featureSource = ds.getFeatureSource("measurement");
+
+        SimpleFeatureIterator it = featureSource.getFeatures(q).features();
+
+        assertFalse(it.hasNext());
+    }
+
+    @Test
+    public void testGetMeasurementBBOXNoSiteSelected() throws Exception {
+
+        Query q =
+                new Query(
+                        "measurement",
+                        ECQL.toFilter(
+                                "BBOX(geometry,-60.0,144.0,-50.0,146.0,'EPSG:4283') "
+                                        + "AND (MonitorId IN ('PM10')) AND (TimeBasisId IN ('1HR_AV')) "
+                                        + "AND (DateTimeRecorded BETWEEN '2019-03-21T00:00:00' AND '2019-03-23T00:00:00')"));
+        EpaVicDatastore ds = EpaVicDataStoreFactoryTest.createDefaultEPAServerTestDataStore();
+        ContentFeatureSource featureSource = ds.getFeatureSource("measurement");
+
+        SimpleFeatureIterator it = featureSource.getFeatures(q).features();
+
+        assertFalse(it.hasNext());
     }
 
     @Test

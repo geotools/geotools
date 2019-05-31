@@ -62,7 +62,9 @@ public class WMTSConfigurationTest {
         CapabilitiesType caps = (CapabilitiesType) parsed;
         ServiceIdentificationType service = caps.getServiceIdentification();
         assertNotNull(service);
-        assertEquals("http://www.opengis.net/spec/wmts-simple/1.0/conf/simple-profile/CRS84", service.getProfile());
+        assertEquals(
+                "http://www.opengis.net/spec/wmts-simple/1.0/conf/simple-profile/CRS84",
+                service.getProfile());
         ContentsType contents = caps.getContents();
         assertNotNull(contents);
     }

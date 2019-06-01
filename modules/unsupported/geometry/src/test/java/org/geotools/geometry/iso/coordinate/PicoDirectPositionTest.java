@@ -26,6 +26,7 @@ import org.geotools.geometry.iso.primitive.PrimitiveFactoryImpl;
 import org.geotools.geometry.iso.util.elem2D.Geo2DFactory;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.opengis.geometry.DirectPosition;
+import org.opengis.geometry.PositionFactory;
 import org.opengis.geometry.Precision;
 import org.opengis.geometry.coordinate.GeometryFactory;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -83,7 +84,8 @@ public class PicoDirectPositionTest extends TestCase {
         // Creating a DP
         GeometryFactoryImpl gf =
                 (GeometryFactoryImpl) c.getComponentInstanceOfType(GeometryFactory.class);
-        DirectPosition dp1 = gf.createDirectPosition(coords1);
+        PositionFactory pf = (PositionFactory) c.getComponentInstanceOfType(PositionFactory.class);
+        DirectPosition dp1 = pf.createDirectPosition(coords1);
 
         // getCoordinate()
         resultCoords = dp1.getCoordinate();

@@ -21,6 +21,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import junit.framework.TestCase;
+import org.geotools.geometry.jts.spatialschema.PositionFactoryImpl;
 import org.geotools.geometry.jts.spatialschema.geometry.geometry.GeometryFactoryImpl;
 import org.geotools.geometry.jts.spatialschema.geometry.primitive.PrimitiveFactoryImpl;
 import org.geotools.referencing.ReferencingFactoryFinder;
@@ -54,6 +55,7 @@ public abstract class AbstractGeometryTest extends TestCase {
             "GEOGCS[\"WGS84\", DATUM[\"WGS84\", SPHEROID[\"WGS84\", 6378137.0, 298.257223563]],"
                     + "PRIMEM[\"Greenwich\", 0.0], UNIT[\"degree\",0.017453292519943295], "
                     + "AXIS[\"Longitude\",EAST], AXIS[\"Latitude\",NORTH]]";
+    private PositionFactoryImpl posFact;
 
     /**
      * setUp Called before each test.
@@ -65,6 +67,7 @@ public abstract class AbstractGeometryTest extends TestCase {
         crs = crsFact.createFromWKT(WGS84_WKT);
         gFact = new GeometryFactoryImpl(crs);
         pFact = new PrimitiveFactoryImpl(crs);
+        posFact = new PositionFactoryImpl(crs);
     }
 
     protected GeometryFactory getGeometryFactory() {
@@ -79,7 +82,7 @@ public abstract class AbstractGeometryTest extends TestCase {
         double[] coords = new double[2];
         coords[0] = x;
         coords[1] = y;
-        return gFact.createDirectPosition(coords);
+        return posFact.createDirectPosition(coords);
     }
 
     /**

@@ -164,7 +164,7 @@ public class SchemaGeneratorMojo extends AbstractGeneratorMojo {
 		        getLog().info("Loading import schema: " + schemaClassName);
 		        Schema gtSchema = null;
 		        try {
-                    gtSchema = (Schema) schemaClass.newInstance();
+                    gtSchema = (Schema) schemaClass.getDeclaredConstructor().newInstance();
                 } 
 		        catch( Exception e ) {
 		            getLog().error("Could not insantiate class: " + schemaClass.getName());

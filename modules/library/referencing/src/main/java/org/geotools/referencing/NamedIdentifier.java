@@ -559,23 +559,6 @@ public class NamedIdentifier
         return getName().tip();
     }
 
-    /** @deprecated Replaced by {@link #tip()}. */
-    @Deprecated
-    public LocalName name() {
-        return tip();
-    }
-
-    /**
-     * Returns a view of this object as a local name. The local name returned by this method will
-     * have the same {@linkplain LocalName#getScope scope} than this generic name.
-     *
-     * @deprecated Replaced by {@link #tip()}.
-     */
-    @Deprecated
-    public LocalName asLocalName() {
-        return tip();
-    }
-
     /**
      * Returns the scope (name space) in which this name is local.
      *
@@ -583,16 +566,6 @@ public class NamedIdentifier
      */
     public NameSpace scope() {
         return getName().scope();
-    }
-
-    /**
-     * Returns the scope (name space) of this generic name. If this name has no scope (e.g. is the
-     * root), then this method returns {@code null}.
-     *
-     * @deprecated Replaced by {@link #scope()}.
-     */
-    public GenericName getScope() {
-        return getName().scope().name();
     }
 
     /**
@@ -631,17 +604,6 @@ public class NamedIdentifier
      */
     public GenericName toFullyQualifiedName() {
         return getName().toFullyQualifiedName();
-    }
-
-    /**
-     * Returns a view of this object as a scoped name, or {@code null} if this name has no scope.
-     *
-     * @deprecated Replaced by {@link #toFullyQualifiedName()}.
-     */
-    @Deprecated
-    public ScopedName asScopedName() {
-        final GenericName name = toFullyQualifiedName();
-        return (name instanceof ScopedName) ? (ScopedName) name : null;
     }
 
     /**

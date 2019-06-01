@@ -222,37 +222,41 @@ abstract class JDBCAccessBase implements JDBCAccess {
                     }
                 }
 
-                imageLevelInfo.setExtentMaxX(new Double(res.getDouble(config.getMaxXAttribute())));
+                imageLevelInfo.setExtentMaxX(
+                        Double.valueOf(res.getDouble(config.getMaxXAttribute())));
 
                 if (res.wasNull()) {
                     imageLevelInfo.setExtentMaxX(null);
                 }
 
-                imageLevelInfo.setExtentMaxY(new Double(res.getDouble(config.getMaxYAttribute())));
+                imageLevelInfo.setExtentMaxY(
+                        Double.valueOf(res.getDouble(config.getMaxYAttribute())));
 
                 if (res.wasNull()) {
                     imageLevelInfo.setExtentMaxY(null);
                 }
 
-                imageLevelInfo.setExtentMinX(new Double(res.getDouble(config.getMinXAttribute())));
+                imageLevelInfo.setExtentMinX(
+                        Double.valueOf(res.getDouble(config.getMinXAttribute())));
 
                 if (res.wasNull()) {
                     imageLevelInfo.setExtentMinX(null);
                 }
 
-                imageLevelInfo.setExtentMinY(new Double(res.getDouble(config.getMinYAttribute())));
+                imageLevelInfo.setExtentMinY(
+                        Double.valueOf(res.getDouble(config.getMinYAttribute())));
 
                 if (res.wasNull()) {
                     imageLevelInfo.setExtentMinY(null);
                 }
 
-                imageLevelInfo.setResX(new Double(res.getDouble(config.getResXAttribute())));
+                imageLevelInfo.setResX(Double.valueOf(res.getDouble(config.getResXAttribute())));
 
                 if (res.wasNull()) {
                     imageLevelInfo.setResX(null);
                 }
 
-                imageLevelInfo.setResY(new Double(res.getDouble(config.getResYAttribute())));
+                imageLevelInfo.setResY(Double.valueOf(res.getDouble(config.getResYAttribute())));
 
                 if (res.wasNull()) {
                     imageLevelInfo.setResY(null);
@@ -378,10 +382,10 @@ abstract class JDBCAccessBase implements JDBCAccess {
                 continue;
             }
 
-            li.setExtentMaxX(new Double(env.getMaxX()));
-            li.setExtentMaxY(new Double(env.getMaxY()));
-            li.setExtentMinX(new Double(env.getMinX()));
-            li.setExtentMinY(new Double(env.getMinY()));
+            li.setExtentMaxX(Double.valueOf(env.getMaxX()));
+            li.setExtentMaxY(Double.valueOf(env.getMaxY()));
+            li.setExtentMinX(Double.valueOf(env.getMinX()));
+            li.setExtentMinY(Double.valueOf(env.getMinY()));
 
             stmt.setDouble(1, li.getExtentMaxX().doubleValue());
             stmt.setDouble(2, li.getExtentMaxY().doubleValue());

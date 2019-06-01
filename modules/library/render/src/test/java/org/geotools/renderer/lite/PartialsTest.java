@@ -36,7 +36,8 @@ import junit.framework.TestCase;
 import org.geotools.data.property.PropertyDataStore;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.map.DefaultMapContext;
+import org.geotools.map.FeatureLayer;
+import org.geotools.map.MapContent;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.renderer.label.LabelCacheImpl;
 import org.geotools.styling.Style;
@@ -84,10 +85,10 @@ public class PartialsTest extends TestCase {
     public void testLabelNatural() throws Exception {
         Style style = RendererBaseTest.loadStyle(this, "partialPointLabelNo.sld");
 
-        DefaultMapContext mc = new DefaultMapContext(DefaultGeographicCRS.WGS84);
-        mc.addLayer(fs_point, style);
+        MapContent mc = new MapContent();
+        mc.addLayer(new FeatureLayer(fs_point, style));
 
-        renderer.setContext(mc);
+        renderer.setMapContent(mc);
 
         RendererBaseTest.showRender("Lines with circle stroke", renderer, TIME, bounds);
     }
@@ -98,10 +99,10 @@ public class PartialsTest extends TestCase {
         Thread.sleep(1000);
         Style style = RendererBaseTest.loadStyle(this, "partialPointLabelNo.sld");
 
-        DefaultMapContext mc = new DefaultMapContext(DefaultGeographicCRS.WGS84);
-        mc.addLayer(fs_point, style);
+        MapContent mc = new MapContent();
+        mc.addLayer(new FeatureLayer(fs_point, style));
 
-        renderer.setContext(mc);
+        renderer.setMapContent(mc);
         final BufferedImage image = RendererBaseTest.renderImage(renderer, bounds, null);
         RendererBaseTest.assertPixel(image, 282, 152, Color.WHITE);
 
@@ -116,10 +117,10 @@ public class PartialsTest extends TestCase {
         Thread.sleep(1000);
         Style style = RendererBaseTest.loadStyle(this, "partialPointLabelFalse.sld");
 
-        DefaultMapContext mc = new DefaultMapContext(DefaultGeographicCRS.WGS84);
-        mc.addLayer(fs_point, style);
+        MapContent mc = new MapContent();
+        mc.addLayer(new FeatureLayer(fs_point, style));
 
-        renderer.setContext(mc);
+        renderer.setMapContent(mc);
         final BufferedImage image = RendererBaseTest.renderImage(renderer, bounds, null);
         RendererBaseTest.assertPixel(image, 282, 152, Color.WHITE);
 
@@ -134,10 +135,10 @@ public class PartialsTest extends TestCase {
         Thread.sleep(1000);
         Style style = RendererBaseTest.loadStyle(this, "partialPointLabelTrue.sld");
 
-        DefaultMapContext mc = new DefaultMapContext(DefaultGeographicCRS.WGS84);
-        mc.addLayer(fs_point, style);
+        MapContent mc = new MapContent();
+        mc.addLayer(new FeatureLayer(fs_point, style));
 
-        renderer.setContext(mc);
+        renderer.setMapContent(mc);
 
         final BufferedImage image = RendererBaseTest.renderImage(renderer, bounds, null);
         RendererBaseTest.assertPixel(image, 282, 152, Color.BLACK);
@@ -153,10 +154,10 @@ public class PartialsTest extends TestCase {
         Thread.sleep(1000);
         Style style = RendererBaseTest.loadStyle(this, "partialLineLabelNo.sld");
 
-        DefaultMapContext mc = new DefaultMapContext(DefaultGeographicCRS.WGS84);
-        mc.addLayer(fs_line, style);
+        MapContent mc = new MapContent();
+        mc.addLayer(new FeatureLayer(fs_line, style));
 
-        renderer.setContext(mc);
+        renderer.setMapContent(mc);
 
         final BufferedImage image = RendererBaseTest.renderImage(renderer, bounds, null);
         RendererBaseTest.assertPixel(image, 282, 155, Color.WHITE);
@@ -172,10 +173,10 @@ public class PartialsTest extends TestCase {
         Thread.sleep(1000);
         Style style = RendererBaseTest.loadStyle(this, "partialLineLabelFalse.sld");
 
-        DefaultMapContext mc = new DefaultMapContext(DefaultGeographicCRS.WGS84);
-        mc.addLayer(fs_line, style);
+        MapContent mc = new MapContent();
+        mc.addLayer(new FeatureLayer(fs_line, style));
 
-        renderer.setContext(mc);
+        renderer.setMapContent(mc);
 
         final BufferedImage image = RendererBaseTest.renderImage(renderer, bounds, null);
         RendererBaseTest.assertPixel(image, 282, 155, Color.WHITE);
@@ -191,10 +192,10 @@ public class PartialsTest extends TestCase {
         Thread.sleep(1000);
         Style style = RendererBaseTest.loadStyle(this, "partialLineLabelTrue.sld");
 
-        DefaultMapContext mc = new DefaultMapContext(DefaultGeographicCRS.WGS84);
-        mc.addLayer(fs_line, style);
+        MapContent mc = new MapContent();
+        mc.addLayer(new FeatureLayer(fs_line, style));
 
-        renderer.setContext(mc);
+        renderer.setMapContent(mc);
 
         final BufferedImage image = RendererBaseTest.renderImage(renderer, bounds, null);
         // RenderedImageBrowser.showChain(image);
@@ -206,10 +207,10 @@ public class PartialsTest extends TestCase {
         Thread.sleep(1000);
         Style style = RendererBaseTest.loadStyle(this, "partialAreaLabelNo.sld");
 
-        DefaultMapContext mc = new DefaultMapContext(DefaultGeographicCRS.WGS84);
-        mc.addLayer(fs_area, style);
+        MapContent mc = new MapContent();
+        mc.addLayer(new FeatureLayer(fs_area, style));
 
-        renderer.setContext(mc);
+        renderer.setMapContent(mc);
 
         final BufferedImage image = RendererBaseTest.renderImage(renderer, bounds, null);
         RendererBaseTest.assertPixel(image, 282, 152, Color.WHITE);
@@ -225,10 +226,10 @@ public class PartialsTest extends TestCase {
         Thread.sleep(1000);
         Style style = RendererBaseTest.loadStyle(this, "partialAreaLabelFalse.sld");
 
-        DefaultMapContext mc = new DefaultMapContext(DefaultGeographicCRS.WGS84);
-        mc.addLayer(fs_area, style);
+        MapContent mc = new MapContent();
+        mc.addLayer(new FeatureLayer(fs_area, style));
 
-        renderer.setContext(mc);
+        renderer.setMapContent(mc);
 
         final BufferedImage image = RendererBaseTest.renderImage(renderer, bounds, null);
         RendererBaseTest.assertPixel(image, 282, 152, Color.WHITE);
@@ -244,10 +245,10 @@ public class PartialsTest extends TestCase {
         Thread.sleep(1000);
         Style style = RendererBaseTest.loadStyle(this, "partialAreaLabelTrue.sld");
 
-        DefaultMapContext mc = new DefaultMapContext(DefaultGeographicCRS.WGS84);
-        mc.addLayer(fs_area, style);
+        MapContent mc = new MapContent();
+        mc.addLayer(new FeatureLayer(fs_area, style));
 
-        renderer.setContext(mc);
+        renderer.setMapContent(mc);
 
         final BufferedImage image = RendererBaseTest.renderImage(renderer, bounds, null);
         RendererBaseTest.assertPixel(image, 282, 152, Color.BLACK);

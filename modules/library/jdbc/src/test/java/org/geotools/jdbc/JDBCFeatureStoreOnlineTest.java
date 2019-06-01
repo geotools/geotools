@@ -40,6 +40,7 @@ import org.geotools.data.store.ContentFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.AttributeTypeBuilder;
 import org.geotools.feature.DefaultFeatureCollection;
+import org.geotools.feature.NameImpl;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.Coordinate;
@@ -48,7 +49,7 @@ import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.AttributeDescriptor;
+import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.Id;
@@ -338,7 +339,7 @@ public abstract class JDBCFeatureStoreOnlineTest extends JDBCTestSupport {
 
         featureStore.addFeatureListener(watcher);
         featureStore.modifyFeatures(
-                new AttributeDescriptor[] {t.getDescriptor(aname("stringProperty"))},
+                new Name[] {new NameImpl(aname("stringProperty"))},
                 new Object[] {"foo"},
                 Filter.INCLUDE);
 
@@ -363,9 +364,7 @@ public abstract class JDBCFeatureStoreOnlineTest extends JDBCTestSupport {
         GeometryFactory gf = new GeometryFactory();
         Point point = gf.createPoint(new Coordinate(-10, 0));
         featureStore.modifyFeatures(
-                new AttributeDescriptor[] {t.getDescriptor(aname("geometry"))},
-                new Object[] {point},
-                Filter.INCLUDE);
+                new Name[] {new NameImpl(aname("geometry"))}, new Object[] {point}, Filter.INCLUDE);
 
         SimpleFeatureCollection features = featureStore.getFeatures();
         try (SimpleFeatureIterator i = features.features()) {
@@ -388,10 +387,8 @@ public abstract class JDBCFeatureStoreOnlineTest extends JDBCTestSupport {
         // in chains of retyping where attributes are rebuilt
         AttributeTypeBuilder ab = new AttributeTypeBuilder();
         ab.binding(Point.class);
-        AttributeDescriptor madeUp = ab.buildDescriptor(aname("geometry"));
 
-        featureStore.modifyFeatures(
-                new AttributeDescriptor[] {madeUp}, new Object[] {point}, Filter.INCLUDE);
+        featureStore.modifyFeatures(new NameImpl(aname("geometry")), point, Filter.INCLUDE);
 
         SimpleFeatureCollection features = featureStore.getFeatures();
         try (SimpleFeatureIterator i = features.features()) {
@@ -406,8 +403,7 @@ public abstract class JDBCFeatureStoreOnlineTest extends JDBCTestSupport {
 
     public void testModifyFeaturesSingleAttribute() throws IOException {
         SimpleFeatureType t = featureStore.getSchema();
-        featureStore.modifyFeatures(
-                t.getDescriptor(aname("stringProperty")), "foo", Filter.INCLUDE);
+        featureStore.modifyFeatures(new NameImpl(aname("stringProperty")), "foo", Filter.INCLUDE);
 
         SimpleFeatureCollection features = featureStore.getFeatures();
         try (SimpleFeatureIterator i = features.features()) {
@@ -426,10 +422,7 @@ public abstract class JDBCFeatureStoreOnlineTest extends JDBCTestSupport {
         PropertyIsEqualTo f = ff.equals(ff.property("invalidAttribute"), ff.literal(5));
 
         try {
-            featureStore.modifyFeatures(
-                    new AttributeDescriptor[] {t.getDescriptor(aname("stringProperty"))},
-                    new Object[] {"foo"},
-                    f);
+            featureStore.modifyFeatures(new NameImpl(aname("stringProperty")), "foo", f);
             fail("This should have failed with an exception reporting the invalid filter");
         } catch (Exception e) {
             //  fine

@@ -39,7 +39,7 @@ class InfoToolHelperLookup {
         for (InfoToolHelper helper : cachedInstances) {
             try {
                 if (helper.isSupportedLayer(layer)) {
-                    return helper.getClass().newInstance();
+                    return helper.getClass().getDeclaredConstructor().newInstance();
                 }
 
             } catch (Exception ex) {

@@ -252,7 +252,6 @@ public class RasterMBLayer extends MBLayer {
                         Arrays.asList(symbolizer),
                         filter.filter());
         rules.add(rule);
-        rule.setLegendGraphic(new Graphic[0]);
 
         return Collections.singletonList(
                 sf.featureTypeStyle(

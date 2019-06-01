@@ -66,7 +66,7 @@ public class DataExamples {
 
                             builder.init((SimpleFeature) feature);
                             for (AttributeDescriptor descriptor : newTypes) {
-                                builder.add(DataUtilities.defaultValue(descriptor));
+                                builder.add(descriptor.getDefaultValue());
                             }
 
                             SimpleFeature newFeature =

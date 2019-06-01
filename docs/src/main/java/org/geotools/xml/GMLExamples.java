@@ -27,6 +27,9 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import javax.xml.namespace.QName;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -50,9 +53,9 @@ import org.opengis.feature.type.FeatureType;
 import org.opengis.feature.type.Name;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLFilterImpl;
-import org.xml.sax.helpers.XMLReaderFactory;
 
 public class GMLExamples {
 
@@ -66,7 +69,7 @@ public class GMLExamples {
         GMLFilterDocument filterDocument = new GMLFilterDocument(filterGeometry);
 
         // parse xml
-        XMLReader reader = XMLReaderFactory.createXMLReader();
+        XMLReader reader = getXMLReader();
         reader.setContentHandler(filterDocument);
         reader.parse(input);
 
@@ -90,7 +93,7 @@ public class GMLExamples {
         GMLFilterDocument filterDocument = new GMLFilterDocument(filterGeometry);
 
         // parse xml
-        XMLReader reader = XMLReaderFactory.createXMLReader();
+        XMLReader reader = getXMLReader();
         reader.setContentHandler(filterDocument);
         reader.parse(input);
 
@@ -175,7 +178,7 @@ public class GMLExamples {
 
     private void xdoExample() throws Exception {
         // xdoExample start
-        XMLReader reader = XMLReaderFactory.createXMLReader();
+        XMLReader reader = getXMLReader();
         URI schemaLoc =
                 new java.net.URI(
                         "http://giswebservices.massgis.state.ma.us/geoserver/wfs?request=describefeaturetype&service=wfs&version=1.0.0&typename=massgis:GISDATA.COUNTIES_POLY");
@@ -189,6 +192,13 @@ public class GMLExamples {
         SimpleFeatureType ft =
                 GMLComplexTypes.createFeatureType(schemaHandler.getSchema().getElements()[0]);
         // xdoExample end
+    }
+
+    private XMLReader getXMLReader() throws ParserConfigurationException, SAXException {
+        SAXParserFactory parserFactory = SAXParserFactory.newInstance();
+        parserFactory.setNamespaceAware(true);
+        SAXParser parser = parserFactory.newSAXParser();
+        return parser.getXMLReader();
     }
 
     private void rawSchemaExample() throws Exception {

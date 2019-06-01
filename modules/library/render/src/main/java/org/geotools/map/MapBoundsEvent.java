@@ -76,7 +76,7 @@ public class MapBoundsEvent extends EventObject {
      * @throws IllegalArgumentException if type is invalid
      */
     public MapBoundsEvent(
-            MapContext source,
+            MapContent source,
             int type,
             ReferencedEnvelope oldAreaOfInterest,
             ReferencedEnvelope newAreaOfInterest) {

@@ -100,6 +100,7 @@ public class MapContent {
 
     /** Checks that dispose has been called; producing a warning if needed. */
     @Override
+    @SuppressWarnings("deprecation") // finalize is deprecated in Java 9
     protected void finalize() throws Throwable {
         if (this.layerList != null) {
             if (!this.layerList.isEmpty()) {
@@ -145,92 +146,6 @@ public class MapContent {
             // remove property listeners prior to removing userData
             this.userData.clear();
             this.userData = null;
-        }
-    }
-
-    public MapContent(MapContext context) {
-        this();
-
-        for (MapLayer mapLayer : context.getLayers()) {
-            layerList.add(mapLayer.toLayer());
-        }
-        if (context.getTitle() != null) {
-            setTitle(context.getTitle());
-        }
-        if (context.getAbstract() != null) {
-            getUserData().put("abstract", context.getAbstract());
-        }
-        if (context.getContactInformation() != null) {
-            getUserData().put("contact", context.getContactInformation());
-        }
-        if (context.getKeywords() != null) {
-            getUserData().put("keywords", context.getKeywords());
-        }
-        if (context.getAreaOfInterest() != null) {
-            getViewport().setBounds(context.getAreaOfInterest());
-        }
-    }
-
-    @Deprecated
-    public MapContent(CoordinateReferenceSystem crs) {
-        this();
-        getViewport().setCoordinateReferenceSystem(crs);
-    }
-
-    @Deprecated
-    public MapContent(MapLayer[] array) {
-        this(array, null);
-    }
-
-    @Deprecated
-    public MapContent(MapLayer[] array, CoordinateReferenceSystem crs) {
-        this(array, "Untitled", "", "", null, crs);
-    }
-
-    @Deprecated
-    public MapContent(
-            MapLayer[] array,
-            String title,
-            String contextAbstract,
-            String contactInformation,
-            String[] keywords) {
-        this(array, title, contextAbstract, contactInformation, keywords, null);
-    }
-
-    @Deprecated
-    public MapContent(
-            MapLayer[] array,
-            String title,
-            String contextAbstract,
-            String contactInformation,
-            String[] keywords,
-            final CoordinateReferenceSystem crs) {
-        this();
-
-        if (array != null) {
-            for (MapLayer mapLayer : array) {
-
-                if (mapLayer == null) {
-                    continue;
-                }
-                Layer layer = mapLayer.toLayer();
-                layerList.add(layer);
-            }
-        }
-        if (title != null) {
-            setTitle(title);
-        }
-        if (contextAbstract != null) {
-            getUserData().put("abstract", contextAbstract);
-        }
-        if (contactInformation != null) {
-            getUserData().put("contact", contactInformation);
-        }
-        if (keywords != null) {
-            getUserData().put("keywords", keywords);
-        }
-        if (crs != null) {
-            getViewport().setCoordinateReferenceSystem(crs);
         }
     }
 

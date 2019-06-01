@@ -291,6 +291,7 @@ final class DelayedBackbufferGraphic extends Graphics2D {
         return delegate.getClipBounds(r);
     }
 
+    @SuppressWarnings("deprecation")
     public Rectangle getClipRect() {
         return delegate.getClipRect();
     }

@@ -1241,7 +1241,7 @@ public class FilterComplexTypes {
                 Object literal = string;
                 try {
                     if (string.indexOf('.') != -1) {
-                        literal = new Double(Double.parseDouble(string));
+                        literal = Double.valueOf(Double.parseDouble(string));
                     } else {
                         literal = Integer.valueOf(Integer.parseInt(string));
                     }

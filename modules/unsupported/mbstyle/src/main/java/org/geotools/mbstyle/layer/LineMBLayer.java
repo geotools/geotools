@@ -596,7 +596,6 @@ public class LineMBLayer extends MBLayer {
                         Double.POSITIVE_INFINITY,
                         symbolizers,
                         filter.filter());
-        rule.setLegendGraphic(new Graphic[0]);
         rules.add(rule);
 
         return Collections.singletonList(

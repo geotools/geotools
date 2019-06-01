@@ -178,13 +178,13 @@ public class NestedFilterToSQL extends FilterToSQL {
             throw new RuntimeException(e);
         }
         sql.append(" ON ");
-        store.dialect.encodeColumnName(nestedAttribute.getLastLink().getAlias(), sql);
+        store.dialect.encodeColumnName(null, nestedAttribute.getLastLink().getAlias(), sql);
         sql.append(".");
-        store.dialect.encodeColumnName(multipleValue.getSourceColumn(), sql);
+        store.dialect.encodeColumnName(null, multipleValue.getSourceColumn(), sql);
         sql.append(" = ");
         store.dialect.encodeTableName(alias, sql);
         sql.append(".");
-        store.dialect.encodeColumnName(multipleValue.getTargetColumn(), sql);
+        store.dialect.encodeColumnName(null, multipleValue.getTargetColumn(), sql);
         sql.append(" ");
     }
 
@@ -376,7 +376,7 @@ public class NestedFilterToSQL extends FilterToSQL {
             throws SQLException {
         store.encodeTableName(typeName, sql, hints);
         sql.append(".");
-        store.dialect.encodeColumnName(colName, sql);
+        store.dialect.encodeColumnName(null, colName, sql);
     }
 
     private void encodeAliasedColumnName(
@@ -384,7 +384,7 @@ public class NestedFilterToSQL extends FilterToSQL {
             throws SQLException {
         store.dialect.encodeTableName(typeName, sql);
         sql.append(".");
-        store.dialect.encodeColumnName(colName, sql);
+        store.dialect.encodeColumnName(null, colName, sql);
     }
 
     @Override

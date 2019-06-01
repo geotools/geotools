@@ -18,7 +18,7 @@ package org.geotools.map.legend;
 
 import java.awt.Color;
 import javax.swing.Icon;
-import org.geotools.map.MapLayer;
+import org.geotools.map.Layer;
 import org.geotools.styling.Rule;
 import org.opengis.feature.simple.SimpleFeatureType;
 
@@ -120,5 +120,5 @@ public interface GlyphFactory {
      * @param layer
      * @return Icon For the provided layer
      */
-    Icon icon(MapLayer layer);
+    Icon icon(Layer layer);
 }

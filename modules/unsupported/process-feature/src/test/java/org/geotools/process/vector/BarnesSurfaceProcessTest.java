@@ -87,7 +87,7 @@ public class BarnesSurfaceProcessTest {
 
         for (Coordinate p : data) {
             float covval = coverageValue(cov, p.x, p.y);
-            double error = Math.abs(p.z - covval);
+            double error = Math.abs(p.getZ() - covval);
             assertTrue(error < ERROR_TOL);
         }
 
@@ -119,7 +119,7 @@ public class BarnesSurfaceProcessTest {
         for (Coordinate p : pts) {
             Geometry point = factory.createPoint(p);
             fb.add(point);
-            fb.add(p.z);
+            fb.add(p.getZ());
             fc.add(fb.buildFeature(null));
         }
 

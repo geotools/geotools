@@ -33,7 +33,6 @@ import org.geotools.util.factory.Hints;
  *     instantiated by the user, we need some way to pass the schema information to this class. one
  *     possible approach is to set the schema in preferences. Maybe a better was is to look for a
  *     place in the Oracle {@link javax.sql.DataSource} for that.
- * @deprecated Please use {@link OracleDialectEpsgFactory}.
  */
 public class FactoryUsingOracleSQL extends FactoryUsingAnsiSQL {
     /** The pattern to use for removing <code>" as "</code> elements from the SQL statements. */

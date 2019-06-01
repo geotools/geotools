@@ -56,7 +56,7 @@ public class DescriptionImpl implements Description {
     }
 
     public void setTitle(String title) {
-        this.title = new SimpleInternationalString(title);
+        this.title = title != null ? new SimpleInternationalString(title) : null;
     }
 
     public InternationalString getAbstract() {
@@ -67,8 +67,8 @@ public class DescriptionImpl implements Description {
         this.description = description;
     }
 
-    public void setAbstract(String title) {
-        this.description = new SimpleInternationalString(title);
+    public void setAbstract(String description) {
+        this.description = description != null ? new SimpleInternationalString(description) : null;
     }
 
     public Object accept(org.opengis.style.StyleVisitor visitor, Object extraData) {

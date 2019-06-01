@@ -16,11 +16,12 @@
  */
 package org.geotools.styling;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.Arrays;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.feature.NameImpl;
 import org.geotools.filter.IllegalFilterException;
 import org.geotools.util.factory.GeoTools;
 import org.opengis.feature.simple.SimpleFeature;
@@ -250,7 +251,6 @@ public class StyleBuilder {
     public Fill createFill() {
         Fill f = sf.getDefaultFill();
         f.setColor(literalExpression("#808080"));
-        f.setBackgroundColor(literalExpression("#808080"));
         f.setOpacity(literalExpression(1.0));
 
         return f;
@@ -468,7 +468,7 @@ public class StyleBuilder {
         Graphic gr = sf.getDefaultGraphic();
 
         Mark mark = createMark(MARK_SQUARE, Color.decode("#808080"), Color.BLACK, 1);
-        gr.setMarks(new Mark[] {mark});
+        gr.graphicalSymbols().add(mark);
         gr.setSize(Expression.NIL);
 
         return gr;
@@ -484,21 +484,18 @@ public class StyleBuilder {
      */
     public Graphic createGraphic(ExternalGraphic externalGraphic, Mark mark, Symbol symbol) {
         Graphic gr = sf.getDefaultGraphic();
+        gr.graphicalSymbols().clear();
 
         if (symbol != null) {
-            gr.setSymbols(new Symbol[] {symbol});
-        } else {
-            gr.setSymbols(new Symbol[0]);
+            gr.graphicalSymbols().add(symbol);
         }
 
         if (externalGraphic != null) {
-            gr.setExternalGraphics(new ExternalGraphic[] {externalGraphic});
+            gr.graphicalSymbols().add(externalGraphic);
         }
 
         if (mark != null) {
-            gr.setMarks(new Mark[] {mark});
-        } else {
-            gr.setMarks(new Mark[0]);
+            gr.graphicalSymbols().add(mark);
         }
 
         return gr;
@@ -1239,7 +1236,7 @@ public class StyleBuilder {
     public Rule createRule(
             Symbolizer[] symbolizers, double minScaleDenominator, double maxScaleDenominator) {
         Rule r = sf.createRule();
-        r.setSymbolizers(symbolizers);
+        r.symbolizers().addAll(Arrays.asList(symbolizers));
 
         if (!Double.isNaN(maxScaleDenominator)) {
             r.setMaxScaleDenominator(maxScaleDenominator);
@@ -1343,10 +1340,10 @@ public class StyleBuilder {
 
         // setup the feature type style
         FeatureTypeStyle fts = sf.createFeatureTypeStyle();
-        fts.setRules(new Rule[] {r});
+        fts.rules().add(r);
 
         if (typeName != null) {
-            fts.setFeatureTypeName(typeName);
+            fts.featureTypeNames().add(new NameImpl(typeName));
         }
 
         return fts;
@@ -1363,10 +1360,10 @@ public class StyleBuilder {
     public FeatureTypeStyle createFeatureTypeStyle(String typeName, Rule r) {
         // setup the feature type style
         FeatureTypeStyle fts = sf.createFeatureTypeStyle();
-        fts.setRules(new Rule[] {r});
+        fts.rules().add(r);
 
         if (typeName != null) {
-            fts.setFeatureTypeName(typeName);
+            fts.featureTypeNames().add(new NameImpl(typeName));
         }
 
         return fts;
@@ -1382,10 +1379,10 @@ public class StyleBuilder {
      */
     public FeatureTypeStyle createFeatureTypeStyle(String typeName, Rule[] rules) {
         FeatureTypeStyle fts = sf.createFeatureTypeStyle();
-        fts.setRules(rules);
+        fts.rules().addAll(Arrays.asList(rules));
 
         if (typeName != null) {
-            fts.setFeatureTypeName(typeName);
+            fts.featureTypeNames().add(new NameImpl(typeName));
         }
 
         return fts;
@@ -1448,7 +1445,7 @@ public class StyleBuilder {
 
         // and finally create the style
         Style style = sf.createStyle();
-        style.addFeatureTypeStyle(fts);
+        style.featureTypeStyles().add(fts);
 
         return style;
     }
@@ -1604,7 +1601,7 @@ public class StyleBuilder {
 
         // @todo: this should set the geometry name but currently this breaks the legend
         //        symb1.setGeometryPropertyName(geomName);
-        rules[0].setSymbolizers(new Symbolizer[] {symb1});
+        rules[0].symbolizers().add(symb1);
         LOGGER.fine("added low class " + breaks[0] + " " + colors[0]);
 
         //        LOGGER.fine(rules[0].toString());
@@ -1623,7 +1620,7 @@ public class StyleBuilder {
             PolygonSymbolizer symb = createPolygonSymbolizer(c, Color.black, 1.0);
 
             //            symb.setGeometryPropertyName(geomName);
-            rules[i].setSymbolizers(new Symbolizer[] {symb});
+            rules[i].symbolizers().add(symb);
             rules[i].setFilter(cf);
 
             //            rules[i].setName("class "+i);
@@ -1641,7 +1638,7 @@ public class StyleBuilder {
         PolygonSymbolizer symb2 = createPolygonSymbolizer(c, Color.black, 1.0);
 
         //        symb2.setGeometryPropertyName(geomName);
-        rules[colors.length - 1].setSymbolizers(new Symbolizer[] {symb2});
+        rules[colors.length - 1].symbolizers().add(symb2);
         LOGGER.fine(
                 "added upper class "
                         + breaks[colors.length - 2]
@@ -1650,13 +1647,13 @@ public class StyleBuilder {
         rules[colors.length] = sf.createRule();
 
         PolygonSymbolizer elsePoly = createPolygonSymbolizer(Color.black, 1.0);
-        rules[colors.length].setSymbolizers(new Symbolizer[] {elsePoly});
+        rules[colors.length].symbolizers().add(elsePoly);
         rules[colors.length].setElseFilter(true);
 
         FeatureTypeStyle ft = sf.createFeatureTypeStyle(rules);
-        ft.setFeatureTypeName("Feature");
+        ft.featureTypeNames().add(new NameImpl("Feature"));
         ft.setName(name);
-        ret.addFeatureTypeStyle(ft);
+        ret.featureTypeStyles().add(ft);
 
         return ret;
     }

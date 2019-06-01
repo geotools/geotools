@@ -29,9 +29,9 @@ public class SLDUserStyleBindingTest extends SLDTestSupport {
         Style style = (Style) parse();
         assertNotNull(style);
         assertEquals("theName", style.getName());
-        assertEquals("theAbstract", style.getAbstract());
-        assertEquals("theTitle", style.getTitle());
+        assertEquals("theAbstract", style.getDescription().getAbstract().toString());
+        assertEquals("theTitle", style.getDescription().getTitle().toString());
 
-        assertEquals(2, style.getFeatureTypeStyles().length);
+        assertEquals(2, style.featureTypeStyles().size());
     }
 }

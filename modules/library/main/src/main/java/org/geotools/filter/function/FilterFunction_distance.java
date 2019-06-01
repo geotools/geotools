@@ -58,6 +58,6 @@ public class FilterFunction_distance extends FunctionExpressionImpl {
                     "Filter Function problem for function distance argument #1 - expected type Geometry");
         }
 
-        return new Double(StaticGeometry.distance(arg0, arg1));
+        return Double.valueOf(StaticGeometry.distance(arg0, arg1));
     }
 }

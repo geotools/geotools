@@ -18,6 +18,7 @@ package org.geotools.brewer.styling.builder;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.Style;
 import org.geotools.util.SimpleInternationalString;
@@ -114,8 +115,14 @@ public class StyleBuilder extends AbstractStyleBuilder<Style> {
             fts.add(new FeatureTypeStyleBuilder(this).reset(ft));
         }
         name = style.getName();
-        styleAbstract = style.getAbstract();
-        title = style.getTitle();
+        styleAbstract =
+                Optional.ofNullable(style.getDescription().getAbstract())
+                        .map(Object::toString)
+                        .orElse(null);
+        title =
+                Optional.ofNullable(style.getDescription().getTitle())
+                        .map(Object::toString)
+                        .orElse(null);
         isDefault = style.isDefault();
         unset = false;
         return this;

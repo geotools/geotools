@@ -16,14 +16,11 @@
  */
 package org.geotools.feature;
 
-import org.geotools.data.FeatureListener;
-
 /**
  * Interface to be implemented by all listeners of CollectionEvents.
  *
  * @author Ray Gallagher
  * @version $Id$
- * @deprecated Use {@link FeatureListener}
  */
 public interface CollectionListener {
     /**

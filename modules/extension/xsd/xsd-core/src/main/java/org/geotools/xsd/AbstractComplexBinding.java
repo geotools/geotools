@@ -83,23 +83,6 @@ public abstract class AbstractComplexBinding implements ComplexBinding {
      *
      * <p>Note that this method only needs to be implemented for schema types which are open-ended
      * in which the contents are not specifically specified by the schema.
-     *
-     * @see ComplexBinding#getProperties(Object)
-     * @deprecated use {@link #getProperties(Object, XSDElementDeclaration)}
-     */
-    public List getProperties(Object object) throws Exception {
-        // do nothing, subclasses should override.
-        return null;
-    }
-
-    /**
-     * Subclasses should override this method if need be, the default implementation returns <code>
-     * null</code>.
-     *
-     * <p>Note that this method only needs to be implemented for schema types which are open-ended
-     * in which the contents are not specifically specified by the schema.
-     *
-     * @see ComplexBinding#getProperties(Object)
      */
     public List getProperties(Object object, XSDElementDeclaration element) throws Exception {
         // do nothing, subclasses should override

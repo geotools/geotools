@@ -21,13 +21,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import javax.xml.namespace.QName;
-import org.geotools.data.wfs.internal.GetFeatureParser;
+import org.geotools.data.wfs.internal.GetParser;
+import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
 public class XmlSimpleFeatureParserTest extends AbstractGetFeatureParserTest {
 
     @Override
-    protected GetFeatureParser getParser(
+    protected GetParser<SimpleFeature> getParser(
             final QName featureName,
             final URL schemaLocation,
             final SimpleFeatureType featureType,
@@ -36,7 +37,7 @@ public class XmlSimpleFeatureParserTest extends AbstractGetFeatureParserTest {
             throws IOException {
 
         InputStream inputStream = new BufferedInputStream(getFeaturesRequest.openStream());
-        GetFeatureParser parser =
+        GetParser<SimpleFeature> parser =
                 new XmlSimpleFeatureParser(inputStream, featureType, featureName, axisOrder);
         return parser;
     }

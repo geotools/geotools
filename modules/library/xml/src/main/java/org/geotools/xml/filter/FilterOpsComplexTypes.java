@@ -27,6 +27,7 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.FilterCapabilities;
 import org.geotools.filter.Filters;
 import org.geotools.filter.IllegalFilterException;
+import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.xml.PrintHandler;
 import org.geotools.xml.XMLHandlerHints;
 import org.geotools.xml.filter.FilterComplexTypes.ExpressionType;
@@ -49,22 +50,40 @@ import org.geotools.xml.schema.impl.SequenceGT;
 import org.geotools.xml.xsi.XSISimpleTypes;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
+import org.opengis.filter.And;
 import org.opengis.filter.BinaryComparisonOperator;
 import org.opengis.filter.BinaryLogicOperator;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.Id;
 import org.opengis.filter.Not;
+import org.opengis.filter.Or;
 import org.opengis.filter.PropertyIsBetween;
+import org.opengis.filter.PropertyIsEqualTo;
+import org.opengis.filter.PropertyIsGreaterThan;
+import org.opengis.filter.PropertyIsGreaterThanOrEqualTo;
+import org.opengis.filter.PropertyIsLessThan;
+import org.opengis.filter.PropertyIsLessThanOrEqualTo;
 import org.opengis.filter.PropertyIsLike;
+import org.opengis.filter.PropertyIsNotEqualTo;
 import org.opengis.filter.PropertyIsNull;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.identity.FeatureId;
 import org.opengis.filter.identity.Identifier;
+import org.opengis.filter.spatial.BBOX;
+import org.opengis.filter.spatial.Beyond;
 import org.opengis.filter.spatial.BinarySpatialOperator;
+import org.opengis.filter.spatial.Contains;
+import org.opengis.filter.spatial.Crosses;
+import org.opengis.filter.spatial.DWithin;
 import org.opengis.filter.spatial.Disjoint;
 import org.opengis.filter.spatial.DistanceBufferOperator;
+import org.opengis.filter.spatial.Equals;
+import org.opengis.filter.spatial.Intersects;
+import org.opengis.filter.spatial.Overlaps;
+import org.opengis.filter.spatial.Touches;
+import org.opengis.filter.spatial.Within;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXNotSupportedException;
@@ -354,127 +373,100 @@ public class FilterOpsComplexTypes {
 
             Filter lf = (Filter) value;
 
-            switch (Filters.getFilterType(lf)) {
-                case COMPARE_EQUALS:
-                    BinaryComparisonOpType.getInstance()
-                            .encode(
-                                    new FilterElement(
-                                            "PropertyIsEqualTo",
-                                            BinaryComparisonOpType.getInstance(),
-                                            element),
-                                    value,
-                                    output,
-                                    hints);
-
-                    return;
-
-                case COMPARE_GREATER_THAN:
-                    BinaryComparisonOpType.getInstance()
-                            .encode(
-                                    new FilterElement(
-                                            "PropertyIsGreaterThan",
-                                            BinaryComparisonOpType.getInstance(),
-                                            element),
-                                    value,
-                                    output,
-                                    hints);
-
-                    return;
-
-                case COMPARE_GREATER_THAN_EQUAL:
-                    BinaryComparisonOpType.getInstance()
-                            .encode(
-                                    new FilterElement(
-                                            "PropertyIsGreaterThanOrEqualTo",
-                                            BinaryComparisonOpType.getInstance(),
-                                            element),
-                                    value,
-                                    output,
-                                    hints);
-
-                    return;
-
-                case COMPARE_LESS_THAN:
-                    BinaryComparisonOpType.getInstance()
-                            .encode(
-                                    new FilterElement(
-                                            "PropertyIsLessThan",
-                                            BinaryComparisonOpType.getInstance(),
-                                            element),
-                                    value,
-                                    output,
-                                    hints);
-
-                    return;
-
-                case COMPARE_LESS_THAN_EQUAL:
-                    BinaryComparisonOpType.getInstance()
-                            .encode(
-                                    new FilterElement(
-                                            "PropertyIsLessThanOrEqualTo",
-                                            BinaryComparisonOpType.getInstance(),
-                                            element),
-                                    value,
-                                    output,
-                                    hints);
-
-                    return;
-
-                case COMPARE_NOT_EQUALS:
-                    BinaryComparisonOpType.getInstance()
-                            .encode(
-                                    new FilterElement(
-                                            "PropertyIsNotEqualTo",
-                                            BinaryComparisonOpType.getInstance(),
-                                            element),
-                                    value,
-                                    output,
-                                    hints);
-
-                    return;
-
-                case LIKE:
-                    PropertyIsLikeType.getInstance()
-                            .encode(
-                                    new FilterElement(
-                                            "PropertyIsLike",
-                                            PropertyIsLikeType.getInstance(),
-                                            element),
-                                    value,
-                                    output,
-                                    hints);
-
-                    return;
-
-                case NULL:
-                    PropertyIsNullType.getInstance()
-                            .encode(
-                                    new FilterElement(
-                                            "PropertyIsNull",
-                                            PropertyIsNullType.getInstance(),
-                                            element),
-                                    value,
-                                    output,
-                                    hints);
-
-                    return;
-
-                case BETWEEN:
-                    PropertyIsBetweenType.getInstance()
-                            .encode(
-                                    new FilterElement(
-                                            "PropertyIsBetween",
-                                            PropertyIsBetweenType.getInstance(),
-                                            element),
-                                    value,
-                                    output,
-                                    hints);
-
-                    return;
+            if (lf instanceof PropertyIsEqualTo) {
+                BinaryComparisonOpType.getInstance()
+                        .encode(
+                                new FilterElement(
+                                        "PropertyIsEqualTo",
+                                        BinaryComparisonOpType.getInstance(),
+                                        element),
+                                value,
+                                output,
+                                hints);
+            } else if (lf instanceof PropertyIsGreaterThan) {
+                BinaryComparisonOpType.getInstance()
+                        .encode(
+                                new FilterElement(
+                                        "PropertyIsGreaterThan",
+                                        BinaryComparisonOpType.getInstance(),
+                                        element),
+                                value,
+                                output,
+                                hints);
+            } else if (lf instanceof PropertyIsGreaterThanOrEqualTo) {
+                BinaryComparisonOpType.getInstance()
+                        .encode(
+                                new FilterElement(
+                                        "PropertyIsGreaterThanOrEqualTo",
+                                        BinaryComparisonOpType.getInstance(),
+                                        element),
+                                value,
+                                output,
+                                hints);
+            } else if (lf instanceof PropertyIsLessThan) {
+                BinaryComparisonOpType.getInstance()
+                        .encode(
+                                new FilterElement(
+                                        "PropertyIsLessThan",
+                                        BinaryComparisonOpType.getInstance(),
+                                        element),
+                                value,
+                                output,
+                                hints);
+            } else if (lf instanceof PropertyIsLessThanOrEqualTo) {
+                BinaryComparisonOpType.getInstance()
+                        .encode(
+                                new FilterElement(
+                                        "PropertyIsLessThanOrEqualTo",
+                                        BinaryComparisonOpType.getInstance(),
+                                        element),
+                                value,
+                                output,
+                                hints);
+            } else if (lf instanceof PropertyIsNotEqualTo) {
+                BinaryComparisonOpType.getInstance()
+                        .encode(
+                                new FilterElement(
+                                        "PropertyIsNotEqualTo",
+                                        BinaryComparisonOpType.getInstance(),
+                                        element),
+                                value,
+                                output,
+                                hints);
+            } else if (lf instanceof PropertyIsLike) {
+                PropertyIsLikeType.getInstance()
+                        .encode(
+                                new FilterElement(
+                                        "PropertyIsLike",
+                                        PropertyIsLikeType.getInstance(),
+                                        element),
+                                value,
+                                output,
+                                hints);
+            } else if (lf instanceof PropertyIsNull) {
+                PropertyIsNullType.getInstance()
+                        .encode(
+                                new FilterElement(
+                                        "PropertyIsNull",
+                                        PropertyIsNullType.getInstance(),
+                                        element),
+                                value,
+                                output,
+                                hints);
+            } else if (lf instanceof PropertyIsBetween) {
+                PropertyIsBetweenType.getInstance()
+                        .encode(
+                                new FilterElement(
+                                        "PropertyIsBetween",
+                                        PropertyIsBetweenType.getInstance(),
+                                        element),
+                                value,
+                                output,
+                                hints);
+            } else {
+                throw new OperationNotSupportedException(
+                        "Unknown filter type in ComparisonFilter: " + lf.getClass().getName());
             }
-
-            throw new OperationNotSupportedException(
-                    "Unknown filter type in ComparisonFilter: " + lf.getClass().getName());
         }
     }
 
@@ -610,132 +602,98 @@ public class FilterOpsComplexTypes {
 
             BinarySpatialOperator lf = (BinarySpatialOperator) value;
 
-            switch (Filters.getFilterType(lf)) {
-                case GEOMETRY_BBOX:
-                    BBOXType.getInstance()
-                            .encode(
-                                    new FilterElement("BBOX", BBOXType.getInstance(), element),
-                                    value,
-                                    output,
-                                    hints);
+            if (lf instanceof BBOX) {
+                BBOXType.getInstance()
+                        .encode(
+                                new FilterElement("BBOX", BBOXType.getInstance(), element),
+                                value,
+                                output,
+                                hints);
+            } else if (lf instanceof Beyond) {
+                DistanceBufferType.getInstance()
+                        .encode(
+                                new FilterElement(
+                                        "Beyond", DistanceBufferType.getInstance(), element),
+                                value,
+                                output,
+                                hints);
+            } else if (lf instanceof Contains) {
+                BinarySpatialOpType.getInstance()
+                        .encode(
+                                new FilterElement(
+                                        "Contains", BinarySpatialOpType.getInstance(), element),
+                                value,
+                                output,
+                                hints);
+            } else if (lf instanceof Crosses) {
+                BinarySpatialOpType.getInstance()
+                        .encode(
+                                new FilterElement(
+                                        "Crosses", BinarySpatialOpType.getInstance(), element),
+                                value,
+                                output,
+                                hints);
+            } else if (lf instanceof Disjoint) {
+                BinarySpatialOpType.getInstance()
+                        .encode(
+                                new FilterElement(
+                                        "Disjoint", BinarySpatialOpType.getInstance(), element),
+                                value,
+                                output,
+                                hints);
+            } else if (lf instanceof DWithin) {
+                DistanceBufferType.getInstance()
+                        .encode(
+                                new FilterElement(
+                                        "DWithin", DistanceBufferType.getInstance(), element),
+                                value,
+                                output,
+                                hints);
+            } else if (lf instanceof Equals) {
+                BinarySpatialOpType.getInstance()
+                        .encode(
+                                new FilterElement(
+                                        "Equals", BinarySpatialOpType.getInstance(), element),
+                                value,
+                                output,
+                                hints);
+            } else if (lf instanceof Intersects) {
+                BinarySpatialOpType.getInstance()
+                        .encode(
+                                new FilterElement(
+                                        "Intersects", BinarySpatialOpType.getInstance(), element),
+                                value,
+                                output,
+                                hints);
+            } else if (lf instanceof Overlaps) {
+                BinarySpatialOpType.getInstance()
+                        .encode(
+                                new FilterElement(
+                                        "Overlaps", BinarySpatialOpType.getInstance(), element),
+                                value,
+                                output,
+                                hints);
+            } else if (lf instanceof Touches) {
+                BinarySpatialOpType.getInstance()
+                        .encode(
+                                new FilterElement(
+                                        "Touches", BinarySpatialOpType.getInstance(), element),
+                                value,
+                                output,
+                                hints);
+            } else if (lf instanceof Within) {
+                BinarySpatialOpType.getInstance()
+                        .encode(
+                                new FilterElement(
+                                        "Within", BinarySpatialOpType.getInstance(), element),
+                                value,
+                                output,
+                                hints);
+            } else {
 
-                    return;
-
-                case GEOMETRY_BEYOND:
-                    DistanceBufferType.getInstance()
-                            .encode(
-                                    new FilterElement(
-                                            "Beyond", DistanceBufferType.getInstance(), element),
-                                    value,
-                                    output,
-                                    hints);
-
-                    return;
-
-                case GEOMETRY_CONTAINS:
-                    BinarySpatialOpType.getInstance()
-                            .encode(
-                                    new FilterElement(
-                                            "Contains", BinarySpatialOpType.getInstance(), element),
-                                    value,
-                                    output,
-                                    hints);
-
-                    return;
-
-                case GEOMETRY_CROSSES:
-                    BinarySpatialOpType.getInstance()
-                            .encode(
-                                    new FilterElement(
-                                            "Crosses", BinarySpatialOpType.getInstance(), element),
-                                    value,
-                                    output,
-                                    hints);
-
-                    return;
-
-                case GEOMETRY_DISJOINT:
-                    BinarySpatialOpType.getInstance()
-                            .encode(
-                                    new FilterElement(
-                                            "Disjoint", BinarySpatialOpType.getInstance(), element),
-                                    value,
-                                    output,
-                                    hints);
-
-                    return;
-
-                case GEOMETRY_DWITHIN:
-                    DistanceBufferType.getInstance()
-                            .encode(
-                                    new FilterElement(
-                                            "DWithin", DistanceBufferType.getInstance(), element),
-                                    value,
-                                    output,
-                                    hints);
-
-                    return;
-
-                case GEOMETRY_EQUALS:
-                    BinarySpatialOpType.getInstance()
-                            .encode(
-                                    new FilterElement(
-                                            "Equals", BinarySpatialOpType.getInstance(), element),
-                                    value,
-                                    output,
-                                    hints);
-
-                    return;
-
-                case GEOMETRY_INTERSECTS:
-                    BinarySpatialOpType.getInstance()
-                            .encode(
-                                    new FilterElement(
-                                            "Intersects",
-                                            BinarySpatialOpType.getInstance(),
-                                            element),
-                                    value,
-                                    output,
-                                    hints);
-
-                    return;
-
-                case GEOMETRY_OVERLAPS:
-                    BinarySpatialOpType.getInstance()
-                            .encode(
-                                    new FilterElement(
-                                            "Overlaps", BinarySpatialOpType.getInstance(), element),
-                                    value,
-                                    output,
-                                    hints);
-
-                    return;
-
-                case GEOMETRY_TOUCHES:
-                    BinarySpatialOpType.getInstance()
-                            .encode(
-                                    new FilterElement(
-                                            "Touches", BinarySpatialOpType.getInstance(), element),
-                                    value,
-                                    output,
-                                    hints);
-
-                    return;
-
-                case GEOMETRY_WITHIN:
-                    BinarySpatialOpType.getInstance()
-                            .encode(
-                                    new FilterElement(
-                                            "Within", BinarySpatialOpType.getInstance(), element),
-                                    value,
-                                    output,
-                                    hints);
-
-                    return;
+                throw new OperationNotSupportedException(
+                        "Unknown filter type in ComparisonFilter: " + lf.getClass().getName());
             }
-
-            throw new OperationNotSupportedException(
-                    "Unknown filter type in ComparisonFilter: " + lf.getClass().getName());
         }
     }
 
@@ -805,32 +763,21 @@ public class FilterOpsComplexTypes {
             if (!canEncode(element, value, hints)) {
                 return;
             }
-            if (value instanceof BinaryLogicOperator) {
-                BinaryLogicOperator lf = (BinaryLogicOperator) value;
+            if (value instanceof And) {
+                BinaryLogicOpType.getInstance()
+                        .encode(
+                                new FilterElement("And", BinaryLogicOpType.getInstance(), element),
+                                value,
+                                output,
+                                hints);
+            } else if (value instanceof Or) {
+                BinaryLogicOpType.getInstance()
+                        .encode(
+                                new FilterElement("Or", BinaryLogicOpType.getInstance(), element),
+                                value,
+                                output,
+                                hints);
 
-                switch (Filters.getFilterType(lf)) {
-                    case LOGIC_AND:
-                        BinaryLogicOpType.getInstance()
-                                .encode(
-                                        new FilterElement(
-                                                "And", BinaryLogicOpType.getInstance(), element),
-                                        value,
-                                        output,
-                                        hints);
-
-                        return;
-
-                    case LOGIC_OR:
-                        BinaryLogicOpType.getInstance()
-                                .encode(
-                                        new FilterElement(
-                                                "Or", BinaryLogicOpType.getInstance(), element),
-                                        value,
-                                        output,
-                                        hints);
-
-                        return;
-                }
             } else if (value instanceof Not) {
                 UnaryLogicOpType.getInstance()
                         .encode(
@@ -838,11 +785,10 @@ public class FilterOpsComplexTypes {
                                 value,
                                 output,
                                 hints);
-                return;
+            } else {
+                throw new OperationNotSupportedException(
+                        "Unknown filter type in LogicFilter: " + value.getClass().getName());
             }
-
-            throw new OperationNotSupportedException(
-                    "Unknown filter type in LogicFilter: " + value.getClass().getName());
         }
 
         /* (non-Javadoc)
@@ -959,11 +905,7 @@ public class FilterOpsComplexTypes {
                     ((element != null)
                             && (element.getType() != null)
                             && getName().equals(element.getType().getName()));
-            r =
-                    (r
-                            && (value != null)
-                            && value instanceof Filter
-                            && Filters.getFilterType((Filter) value) != 0);
+            r = (r && (value != null) && value instanceof Filter);
 
             return r;
         }
@@ -2150,9 +2092,9 @@ public class FilterOpsComplexTypes {
                     elems[0].getType()
                             .encode(elems[0], lf.getExpression1(), output, hints); // prop name
 
-                    Geometry g =
-                            ((Geometry) ((Literal) lf.getExpression2()).getValue()).getEnvelope();
-                    elems[1].getType().encode(elems[1], g, output, hints); // geom
+                    ReferencedEnvelope re =
+                            ((ReferencedEnvelope) ((Literal) lf.getExpression2()).getValue());
+                    elems[1].getType().encode(elems[1], re, output, hints); // geom
                 } else {
                     throw new OperationNotSupportedException(
                             "Either the left or right expr must be a literal for the property name : BBOXType");

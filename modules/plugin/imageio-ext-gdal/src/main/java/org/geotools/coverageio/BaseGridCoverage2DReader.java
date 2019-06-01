@@ -17,7 +17,7 @@
 package org.geotools.coverageio;
 
 import it.geosolutions.imageio.imageioimpl.imagereadmt.ImageReadDescriptorMT;
-import it.geosolutions.imageio.stream.input.FileImageInputStreamExt;
+import it.geosolutions.imageio.stream.AccessibleStream;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.io.File;
@@ -247,7 +247,7 @@ public abstract class BaseGridCoverage2DReader extends AbstractGridCoverage2DRea
      *
      * @param input provided to this {@link BaseGridCoverage2DReader}. Actually supported input
      *     types for the underlying ImageIO-Ext GDAL framework are: {@code File}, {@code URL}
-     *     pointing to a file and {@link FileImageInputStreamExt}
+     *     pointing to a file and {@link AccessibleStream}
      * @throws UnsupportedEncodingException
      * @throws DataSourceException
      * @throws IOException
@@ -275,13 +275,16 @@ public abstract class BaseGridCoverage2DReader extends AbstractGridCoverage2DRea
             }
         }
 
-        if (input instanceof FileImageInputStreamExt) {
+        if (input instanceof AccessibleStream) {
             if (source == null) {
                 source = input;
             }
 
-            inputFile = ((FileImageInputStreamExt) input).getFile();
-            input = inputFile;
+            AccessibleStream accessible = (AccessibleStream) input;
+            if (accessible.getTarget() instanceof File) {
+                inputFile = (File) accessible.getTarget();
+                input = inputFile;
+            }
         }
 
         // string to file conversion attempt (other readers do it too)
@@ -584,7 +587,7 @@ public abstract class BaseGridCoverage2DReader extends AbstractGridCoverage2DRea
         resourceInfo = localInfo;
         localInfo.setName(subname);
         localInfo.setBounds(new ReferencedEnvelope(this.getOriginalEnvelope()));
-        localInfo.setCRS(this.getCrs());
+        localInfo.setCRS(getCoordinateReferenceSystem());
         localInfo.setTitle(subname);
 
         return new DefaultResourceInfo(this.resourceInfo);
@@ -623,11 +626,6 @@ public abstract class BaseGridCoverage2DReader extends AbstractGridCoverage2DRea
     /** @return the gridCoverage count */
     public int getGridCoverageCount() {
         return 1;
-    }
-
-    /** @see org.opengis.coverage.grid.GridCoverageReader#hasMoreGridCoverages() */
-    public boolean hasMoreGridCoverages() {
-        return false;
     }
 
     protected MultiLevelROI getMultiLevelRoi() {

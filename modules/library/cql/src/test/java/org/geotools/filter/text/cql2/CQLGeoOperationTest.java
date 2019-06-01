@@ -17,9 +17,14 @@
 
 package org.geotools.filter.text.cql2;
 
+import static org.junit.Assert.assertTrue;
+
 import org.geotools.filter.function.FilterFunction_relatePattern;
 import org.geotools.filter.text.commons.CompilerUtil;
 import org.geotools.filter.text.commons.Language;
+import org.geotools.geometry.jts.JTS;
+import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.referencing.CRS;
 import org.junit.Assert;
 import org.junit.Test;
 import org.opengis.filter.Filter;
@@ -35,6 +40,7 @@ import org.opengis.filter.spatial.Intersects;
 import org.opengis.filter.spatial.Overlaps;
 import org.opengis.filter.spatial.Touches;
 import org.opengis.filter.spatial.Within;
+import org.opengis.referencing.FactoryException;
 
 /**
  * Test Geo Operations.
@@ -95,7 +101,7 @@ public class CQLGeoOperationTest {
 
         Filter resultFilter = CompilerUtil.parseFilter(language, "DISJOINT(ATTR1, POINT(1 2))");
 
-        Assert.assertTrue("Disjoint was expected", resultFilter instanceof Disjoint);
+        assertTrue("Disjoint was expected", resultFilter instanceof Disjoint);
     }
 
     /**
@@ -111,13 +117,13 @@ public class CQLGeoOperationTest {
 
         resultFilter = CompilerUtil.parseFilter(language, "INTERSECTS(ATTR1, POINT(1 2))");
 
-        Assert.assertTrue("Intersects was expected", resultFilter instanceof Intersects);
+        assertTrue("Intersects was expected", resultFilter instanceof Intersects);
 
         // test bug GEOT-1980
         resultFilter =
                 CompilerUtil.parseFilter(language, "INTERSECTS(GEOLOC, POINT(615358 312185))");
 
-        Assert.assertTrue("Intersects was expected", resultFilter instanceof Intersects);
+        assertTrue("Intersects was expected", resultFilter instanceof Intersects);
     }
 
     /** @throws CQLException */
@@ -133,10 +139,10 @@ public class CQLGeoOperationTest {
                                 "RELATE(the_geom, LINESTRING (-134.921387 58.687767, -135.303391 59.092838), T*****FF*)");
 
         Expression relateFunction = resultFilter.getExpression1();
-        Assert.assertTrue(relateFunction instanceof FilterFunction_relatePattern);
+        assertTrue(relateFunction instanceof FilterFunction_relatePattern);
 
         Literal trueLiteral = (Literal) resultFilter.getExpression2();
-        Assert.assertTrue(trueLiteral.getValue() instanceof Boolean);
+        assertTrue(trueLiteral.getValue() instanceof Boolean);
     }
 
     @Test
@@ -164,10 +170,10 @@ public class CQLGeoOperationTest {
                                         + ")");
 
         Expression relateFunction = resultFilter.getExpression1();
-        Assert.assertTrue(relateFunction instanceof FilterFunction_relatePattern);
+        assertTrue(relateFunction instanceof FilterFunction_relatePattern);
 
         Literal trueLiteral = (Literal) resultFilter.getExpression2();
-        Assert.assertTrue(trueLiteral.getValue() instanceof Boolean);
+        assertTrue(trueLiteral.getValue() instanceof Boolean);
     }
 
     /**
@@ -229,7 +235,7 @@ public class CQLGeoOperationTest {
         // TOUCHES
         resultFilter = CompilerUtil.parseFilter(language, "TOUCHES(ATTR1, POINT(1 2))");
 
-        Assert.assertTrue("Touches was expected", resultFilter instanceof Touches);
+        assertTrue("Touches was expected", resultFilter instanceof Touches);
     }
 
     /**
@@ -244,14 +250,14 @@ public class CQLGeoOperationTest {
 
         resultFilter = CompilerUtil.parseFilter(language, "CROSSES(ATTR1, POINT(1 2))");
 
-        Assert.assertTrue("Crosses was expected", resultFilter instanceof Crosses);
+        assertTrue("Crosses was expected", resultFilter instanceof Crosses);
     }
 
     @Test
     public void contains() throws CQLException {
         Filter resultFilter = CompilerUtil.parseFilter(language, "CONTAINS(ATTR1, POINT(1 2))");
 
-        Assert.assertTrue("Contains was expected", resultFilter instanceof Contains);
+        assertTrue("Contains was expected", resultFilter instanceof Contains);
     }
 
     /**
@@ -265,7 +271,7 @@ public class CQLGeoOperationTest {
 
         resultFilter = CompilerUtil.parseFilter(language, "OVERLAPS(ATTR1, POINT(1 2))");
 
-        Assert.assertTrue("Overlaps was expected", resultFilter instanceof Overlaps);
+        assertTrue("Overlaps was expected", resultFilter instanceof Overlaps);
     }
 
     /**
@@ -280,7 +286,7 @@ public class CQLGeoOperationTest {
         // EQUALS
         resultFilter = CompilerUtil.parseFilter(language, "EQUALS(ATTR1, POINT(1 2))");
 
-        Assert.assertTrue("not an instance of Equals", resultFilter instanceof Equals);
+        assertTrue("not an instance of Equals", resultFilter instanceof Equals);
     }
 
     /**
@@ -295,7 +301,7 @@ public class CQLGeoOperationTest {
                 CompilerUtil.parseFilter(
                         language, "WITHIN(ATTR1, POLYGON((1 2, 1 10, 5 10, 1 2)) )");
 
-        Assert.assertTrue("Within was expected", resultFilter instanceof Within);
+        assertTrue("Within was expected", resultFilter instanceof Within);
     }
 
     /**
@@ -304,25 +310,25 @@ public class CQLGeoOperationTest {
      * @throws CQLException
      */
     @Test
-    public void bbox() throws CQLException {
+    public void bbox() throws CQLException, FactoryException {
 
         Filter resultFilter;
 
         // BBOX
         resultFilter = CompilerUtil.parseFilter(language, "BBOX(ATTR1, 10.0,20.0,30.0,40.0)");
-        Assert.assertTrue("BBox was expected", resultFilter instanceof BBOX);
+        assertTrue("BBox was expected", resultFilter instanceof BBOX);
         BBOX bboxFilter = (BBOX) resultFilter;
-        Assert.assertEquals(bboxFilter.getMinX(), 10.0, 0.1);
-        Assert.assertEquals(bboxFilter.getMinY(), 20.0, 0.1);
-        Assert.assertEquals(bboxFilter.getMaxX(), 30.0, 0.1);
-        Assert.assertEquals(bboxFilter.getMaxY(), 40.0, 0.1);
-        Assert.assertEquals(null, bboxFilter.getSRS());
+        assertTrue(
+                JTS.equals(
+                        new ReferencedEnvelope(10, 30, 20, 40, null), bboxFilter.getBounds(), 0.1));
 
         // BBOX using EPSG
         resultFilter =
                 CompilerUtil.parseFilter(language, "BBOX(ATTR1, 10.0,20.0,30.0,40.0, 'EPSG:4326')");
-        Assert.assertTrue("BBox was expected", resultFilter instanceof BBOX);
+        assertTrue("BBox was expected", resultFilter instanceof BBOX);
         bboxFilter = (BBOX) resultFilter;
-        Assert.assertEquals("EPSG:4326", bboxFilter.getSRS());
+        Assert.assertEquals(
+                CRS.decode("EPSG:4326", false),
+                bboxFilter.getBounds().getCoordinateReferenceSystem());
     }
 }

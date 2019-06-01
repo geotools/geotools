@@ -16,6 +16,7 @@
  */
 package org.geotools.filter;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -34,6 +35,7 @@ import org.geotools.filter.spatial.WithinImpl;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
+import org.opengis.filter.expression.Literal;
 import org.xml.sax.Attributes;
 
 /**
@@ -93,7 +95,7 @@ public class FilterSAXParser {
 
         if ((filterType == AbstractFilter.FID) && !curState.equals("fid")) {
             LOGGER.finer("creating the FID filter");
-            curFilter = new FidFilterImpl();
+            curFilter = new FidFilterImpl(Collections.emptySet());
         } else if (AbstractFilter.isGeometryDistanceFilter(filterType)) {
             switch (filterType) {
                 case FilterType.GEOMETRY_BEYOND:
@@ -146,33 +148,33 @@ public class FilterSAXParser {
                             "Not one of the accepted spatial filter types.");
             }
         } else if (filterType == AbstractFilter.BETWEEN) {
-            curFilter = new BetweenFilterImpl();
+            curFilter = new IsBetweenImpl(null, null, null);
         } else if (filterType == AbstractFilter.NULL) {
-            curFilter = new NullFilterImpl();
+            curFilter = new NullFilterImpl(Expression.NIL);
         } else if (filterType == AbstractFilter.LIKE) {
             curFilter = new LikeFilterImpl();
         } else if (AbstractFilter.isCompareFilter(filterType)) {
             switch (filterType) {
                 case FilterType.COMPARE_EQUALS:
-                    curFilter = new IsEqualsToImpl();
+                    curFilter = new IsEqualsToImpl(null, null);
                     break;
                 case FilterType.COMPARE_NOT_EQUALS:
-                    curFilter = new IsNotEqualToImpl();
+                    curFilter = new IsNotEqualToImpl(null, null);
                     break;
                 case FilterType.COMPARE_GREATER_THAN:
-                    curFilter = new IsGreaterThanImpl();
+                    curFilter = new IsGreaterThanImpl(null, null);
                     break;
                 case FilterType.COMPARE_GREATER_THAN_EQUAL:
-                    curFilter = new IsGreaterThanOrEqualToImpl();
+                    curFilter = new IsGreaterThanOrEqualToImpl(null, null);
                     break;
                 case FilterType.COMPARE_LESS_THAN:
-                    curFilter = new IsLessThenImpl();
+                    curFilter = new IsLessThenImpl(null, null);
                     break;
                 case FilterType.COMPARE_LESS_THAN_EQUAL:
-                    curFilter = new IsLessThenOrEqualToImpl();
+                    curFilter = new IsLessThenOrEqualToImpl(null, null);
                     break;
                 case FilterType.BETWEEN:
-                    curFilter = new BetweenFilterImpl();
+                    curFilter = new IsBetweenImpl(null, null, null);
                     break;
                 default:
                     throw new IllegalFilterException("Must be one of <,<=,==,>,>=,<>");
@@ -209,7 +211,7 @@ public class FilterSAXParser {
         // Handle all filter compare states and expressions
         if (filterType == FilterType.BETWEEN) {
             if (curState.equals("attribute")) {
-                ((BetweenFilterImpl) curFilter).setExpression(expression);
+                ((IsBetweenImpl) curFilter).setExpression(expression);
                 curState = "LowerBoundary";
             } else if (curState.equals("LowerBoundary")) {
                 ((BinaryComparisonAbstract) curFilter).setExpression1(expression);
@@ -300,8 +302,22 @@ public class FilterSAXParser {
                     ((LikeFilterImpl) curFilter).setMatchingCase(Boolean.parseBoolean(matchCase));
                 }
 
-                ((LikeFilterImpl) curFilter)
-                        .setPattern(expression, wildcard, singleChar, escapeChar);
+                if (expression instanceof Literal) {
+                    Literal literal = (Literal) expression;
+                    Object value = literal.getValue();
+                    if (value != null && value instanceof String) {
+                        String pattern = (String) value;
+
+                        ((LikeFilterImpl) curFilter).setLiteral(pattern);
+                        ((LikeFilterImpl) curFilter).setWildCard(wildcard);
+                        ((LikeFilterImpl) curFilter).setSingleChar(singleChar);
+                        ((LikeFilterImpl) curFilter).setEscape(escapeChar);
+                    } else {
+                        throw new ClassCastException("Pattern Literal must be a string:" + value);
+                    }
+                } else {
+                    throw new ClassCastException("Pattern must be a literal String");
+                }
                 curState = "complete";
             } else {
                 throw new IllegalFilterException(

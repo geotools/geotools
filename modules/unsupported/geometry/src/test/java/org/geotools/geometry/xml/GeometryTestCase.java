@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
-import junit.framework.AssertionFailedError;
 import junit.framework.Protectable;
 import junit.framework.Test;
 import junit.framework.TestResult;
@@ -128,6 +127,7 @@ public class GeometryTestCase implements Test {
      * @param result2
      * @return result
      */
+    @SuppressWarnings("deprecation")
     public boolean runTestCases(TestResult result2) {
         boolean result = true;
         result2.startTest(this);
@@ -141,7 +141,8 @@ public class GeometryTestCase implements Test {
                                 + " actual result: "
                                 + op.getActualResult()
                                 + " failed");
-                result2.addFailure(this, new AssertionFailedError(op.toString() + " failed"));
+                result2.addFailure(
+                        this, new junit.framework.AssertionFailedError(op.toString() + " failed"));
                 result = false;
             }
         }

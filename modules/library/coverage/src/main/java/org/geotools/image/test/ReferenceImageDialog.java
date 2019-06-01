@@ -21,7 +21,6 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.RenderedImage;
-import javax.media.jai.widget.ScrollingImagePanel;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -32,6 +31,7 @@ class ReferenceImageDialog extends JDialog {
 
     boolean accept = false;
 
+    @SuppressWarnings("deprecation")
     public ReferenceImageDialog(RenderedImage image) {
         JPanel content = new JPanel(new BorderLayout());
         this.setContentPane(content);
@@ -41,7 +41,7 @@ class ReferenceImageDialog extends JDialog {
                         "<html><body>Reference image file is missing.<br>"
                                 + "This is the result, do you want to make it the referecence?</html></body>");
         content.add(topLabel, BorderLayout.NORTH);
-        content.add(new ScrollingImagePanel(image, 400, 400));
+        content.add(new javax.media.jai.widget.ScrollingImagePanel(image, 400, 400));
         JPanel commands = new JPanel(new FlowLayout(FlowLayout.CENTER));
         JButton accept = new JButton("Accept as reference");
         accept.addActionListener(

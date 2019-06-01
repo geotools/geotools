@@ -46,13 +46,6 @@ import org.opengis.annotation.UML;
  */
 @UML(identifier = "MD_RepresentativeFraction", specification = ISO_19115)
 public interface RepresentativeFraction {
-    /**
-     * @deprecated Replaced by {@link #doubleValue}, which is both consistent with {@link
-     *     java.lang.Number} naming and avoid the idea that a representative fraction is only for
-     *     scales - it could be used for any quantity conveniently represented as a ratio.
-     */
-    @Deprecated
-    double toScale();
 
     /**
      * Returns the scale value in a form usable for computation.

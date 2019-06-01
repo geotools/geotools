@@ -112,7 +112,7 @@ public class CQLComparisonPredicateTest {
      * Equals predicate sample
      *
      * @see ECQLComparisonPredicateTest
-     * @throws Exception @Deprecated
+     * @throws Exception
      */
     @Test
     public void deprecatedPredicate() throws Exception {

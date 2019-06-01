@@ -48,7 +48,7 @@ public class RowFieldTest extends TestCase implements DataTypesDefinition {
             0
         };
         for (int i = 0; i < testVals.length; i++) {
-            varRowField = new RowField(new Double(testVals[i]), DATA_LONG_FLOAT);
+            varRowField = new RowField(Double.valueOf(testVals[i]), DATA_LONG_FLOAT);
             assertEquals(
                     "Test RowField for double value: " + testVals[i],
                     testVals[i],
@@ -63,7 +63,7 @@ public class RowFieldTest extends TestCase implements DataTypesDefinition {
             Float.MAX_VALUE, Float.MIN_VALUE, Float.NEGATIVE_INFINITY, Float.POSITIVE_INFINITY, 0
         };
         for (int i = 0; i < testVals.length; i++) {
-            varRowField = new RowField(new Float(testVals[i]), DATA_SHORT_FLOAT);
+            varRowField = new RowField(Float.valueOf(testVals[i]), DATA_SHORT_FLOAT);
             assertEquals(
                     "Test RowField for float value: " + testVals[i],
                     testVals[i],
@@ -76,7 +76,7 @@ public class RowFieldTest extends TestCase implements DataTypesDefinition {
     public void testGetAsInt() {
         int[] testVals = {Integer.MAX_VALUE, Integer.MIN_VALUE, 0};
         for (int i = 0; i < testVals.length; i++) {
-            varRowField = new RowField(new Integer(testVals[i]), DATA_LONG_INTEGER);
+            varRowField = new RowField(Integer.valueOf(testVals[i]), DATA_LONG_INTEGER);
             assertEquals(
                     "Testing RowField for integer value: " + testVals[i],
                     testVals[i],
@@ -88,7 +88,7 @@ public class RowFieldTest extends TestCase implements DataTypesDefinition {
     public void testGetAsLong() {
         long[] testVals = {Long.MAX_VALUE, Long.MIN_VALUE, 0};
         for (int i = 0; i < testVals.length; i++) {
-            varRowField = new RowField(new Long(testVals[i]), DATA_LONG_INTEGER);
+            varRowField = new RowField(Long.valueOf(testVals[i]), DATA_LONG_INTEGER);
             assertEquals(
                     "Testing RowField for long value: " + testVals[i],
                     testVals[i],
@@ -100,7 +100,7 @@ public class RowFieldTest extends TestCase implements DataTypesDefinition {
     public void testGetAsShort() {
         short[] testVals = {Short.MAX_VALUE, Short.MIN_VALUE, 0};
         for (int i = 0; i < testVals.length; i++) {
-            varRowField = new RowField(new Short(testVals[i]), DATA_SHORT_INTEGER);
+            varRowField = new RowField(Short.valueOf(testVals[i]), DATA_SHORT_INTEGER);
             assertEquals(
                     "Testing RowField for short value: " + testVals[i],
                     testVals[i],

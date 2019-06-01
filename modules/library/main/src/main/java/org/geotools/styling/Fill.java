@@ -78,10 +78,6 @@ public interface Fill extends org.opengis.style.Fill {
                     return COLOR;
                 }
 
-                public Expression getBackgroundColor() {
-                    return BGCOLOR;
-                }
-
                 public Expression getOpacity() {
                     return OPACITY;
                 }
@@ -103,10 +99,6 @@ public interface Fill extends org.opengis.style.Fill {
                 }
 
                 public Expression getColor() {
-                    return ConstantExpression.NULL;
-                }
-
-                public Expression getBackgroundColor() {
                     return ConstantExpression.NULL;
                 }
 
@@ -146,30 +138,6 @@ public interface Fill extends org.opengis.style.Fill {
      * @param color solid color that will be used for a Fill
      */
     void setColor(Expression color);
-
-    /**
-     * This parameter gives the solid color that will be used as a background for a Fill.<br>
-     * The color value is RGB-encoded using two hexidecimal digits per primary-color component, in
-     * the order Red, Green, Blue, prefixed with the hash (#) sign. The hexidecimal digits beetween
-     * A and F may be in either upper or lower case. For example, full red is encoded as "#ff0000"
-     * (with no quotation marks). The default color is defined to be transparent.
-     *
-     * @return The background color of the Fill encoded as a hexidecimal RGB value.
-     * @deprecated value is not used, please use getColor()
-     */
-    Expression getBackgroundColor();
-
-    /**
-     * This parameter gives the solid color that will be used as a background for a Fill.<br>
-     * The color value is RGB-encoded using two hexidecimal digits per primary-color component, in
-     * the order Red, Green, Blue, prefixed with the hash (#) sign. The hexidecimal digits beetween
-     * A and F may be in either upper or lower case. For example, full red is encoded as "#ff0000"
-     * (with no quotation marks).
-     *
-     * @param backgroundColor solid color that will be used as a background
-     * @deprecated Please use setColor( Expression )
-     */
-    void setBackgroundColor(Expression backgroundColor);
 
     /**
      * This specifies the level of translucency to use when rendering the fill. <br>

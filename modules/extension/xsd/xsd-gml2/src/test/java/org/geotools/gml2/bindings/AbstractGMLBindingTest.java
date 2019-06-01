@@ -16,6 +16,7 @@
  */
 package org.geotools.gml2.bindings;
 
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 import javax.xml.namespace.QName;
@@ -55,7 +56,13 @@ public class AbstractGMLBindingTest extends TestCase {
         String loc = GMLConfiguration.class.getResource("feature.xsd").toString();
 
         GMLConfiguration configuration = new GMLConfiguration();
-        schema = configuration.schema();
+        XSDSchema result;
+        try {
+            result = configuration.getXSD().getSchema();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        schema = result;
         container = new DefaultPicoContainer();
 
         configuration.registerBindings(container);

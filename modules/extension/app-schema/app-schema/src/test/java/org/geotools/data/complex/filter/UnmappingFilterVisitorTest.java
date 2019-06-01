@@ -56,6 +56,7 @@ import org.geotools.feature.TypeBuilder;
 import org.geotools.filter.IsEqualsToImpl;
 import org.geotools.filter.OrImpl;
 import org.geotools.filter.spatial.BBOX3DImpl;
+import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope3D;
 import org.geotools.gml3.GML;
 import org.geotools.test.AppSchemaTestSupport;
@@ -487,7 +488,7 @@ public class UnmappingFilterVisitorTest extends AppSchemaTestSupport {
         PropertyName attExp = (PropertyName) left;
         String expectedAtt = "results_value";
         assertEquals(expectedAtt, attExp.getPropertyName());
-        assertEquals(new Double(1.1), ((Literal) right).getValue());
+        assertEquals(Double.valueOf(1.1), ((Literal) right).getValue());
     }
 
     /**
@@ -592,7 +593,7 @@ public class UnmappingFilterVisitorTest extends AppSchemaTestSupport {
         assertTrue(right instanceof Literal);
 
         assertEquals("results_value", ((PropertyName) left).getPropertyName());
-        assertEquals(new Double(1.1), ((Literal) right).getValue());
+        assertEquals(Double.valueOf(1.1), ((Literal) right).getValue());
 
         Filter sourceGreater = (Filter) sourceAnd.getChildren().get(1);
         assertTrue(sourceGreater instanceof PropertyIsGreaterThan);
@@ -788,11 +789,6 @@ public class UnmappingFilterVisitorTest extends AppSchemaTestSupport {
 
         assertTrue(unrolled instanceof BBOX3DImpl);
         BBOX3DImpl unrolled3d = (BBOX3DImpl) unrolled;
-        assertEquals(bbox3d.getMinX(), unrolled3d.getMinX(), 0.0);
-        assertEquals(bbox3d.getMaxX(), unrolled3d.getMaxX(), 0.0);
-        assertEquals(bbox3d.getMinY(), unrolled3d.getMinY(), 0.0);
-        assertEquals(bbox3d.getMaxY(), unrolled3d.getMaxY(), 0.0);
-        assertEquals(bbox3d.getMinZ(), unrolled3d.getMinZ(), 0.0);
-        assertEquals(bbox3d.getMaxZ(), unrolled3d.getMaxZ(), 0.0);
+        assertTrue(JTS.equals(bbox3d.getBounds(), unrolled3d.getBounds(), 0));
     }
 }

@@ -43,7 +43,6 @@ import java.util.Properties;
 import javax.media.jai.PlanarImage;
 import javax.media.jai.ROI;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
@@ -203,7 +202,7 @@ public class ImageMosaicFootprintsTest {
                                                     testMosaic,
                                                     fileName.substring(0, idx) + ".wkt");
                                     String wkt = new WKTWriter().write(g);
-                                    FileUtils.writeStringToFile(wkbFile, wkt);
+                                    FileUtils.writeStringToFile(wkbFile, wkt, "UTF-8");
                                 } catch (IOException e) {
                                     throw new RuntimeException(e);
                                 }
@@ -314,12 +313,9 @@ public class ImageMosaicFootprintsTest {
         if (loaderClassName != null) {
             p.put(MultiLevelROIGeometryOverviewsProvider.FOOTPRINT_LOADER_SPI, loaderClassName);
         }
-        FileOutputStream fos = null;
-        try {
-            fos = new FileOutputStream(new File(multiWkbs, "footprints.properties"));
+        try (FileOutputStream fos =
+                new FileOutputStream(new File(multiWkbs, "footprints.properties"))) {
             p.store(fos, null);
-        } finally {
-            IOUtils.closeQuietly(fos);
         }
 
         ImageMosaicFormat format = new ImageMosaicFormat();
@@ -463,12 +459,9 @@ public class ImageMosaicFootprintsTest {
         p.put(
                 MultiLevelROIProviderFactory.SOURCE_PROPERTY,
                 MultiLevelROIProviderFactory.TYPE_MULTIPLE_SIDECAR);
-        FileOutputStream fos = null;
-        try {
-            fos = new FileOutputStream(new File(multiWkts, "footprints.properties"));
+        try (FileOutputStream fos =
+                new FileOutputStream(new File(multiWkts, "footprints.properties"))) {
             p.store(fos, null);
-        } finally {
-            IOUtils.closeQuietly(fos);
         }
 
         ImageMosaicFormat format = new ImageMosaicFormat();
@@ -592,12 +585,9 @@ public class ImageMosaicFootprintsTest {
         p.put(
                 MultiLevelROIProviderFactory.SOURCE_PROPERTY,
                 MultiLevelROIProviderFactory.TYPE_MULTIPLE_SIDECAR);
-        FileOutputStream fos = null;
-        try {
-            fos = new FileOutputStream(new File(multiWkts, "footprints.properties"));
+        try (FileOutputStream fos =
+                new FileOutputStream(new File(multiWkts, "footprints.properties"))) {
             p.store(fos, null);
-        } finally {
-            IOUtils.closeQuietly(fos);
         }
 
         ImageMosaicFormat format = new ImageMosaicFormat();
@@ -1088,12 +1078,9 @@ public class ImageMosaicFootprintsTest {
     }
 
     private void saveFootprintProperties(Properties p) throws FileNotFoundException, IOException {
-        FileOutputStream fos = null;
-        try {
-            fos = new FileOutputStream(new File(testMosaic, "footprints.properties"));
+        try (FileOutputStream fos =
+                new FileOutputStream(new File(testMosaic, "footprints.properties"))) {
             p.store(fos, null);
-        } finally {
-            IOUtils.closeQuietly(fos);
         }
     }
 
@@ -1469,12 +1456,9 @@ public class ImageMosaicFootprintsTest {
         Properties p = new Properties();
         // Setting Raster property
         p.put(MultiLevelROIProviderFactory.SOURCE_PROPERTY, "raster");
-        FileOutputStream fos = null;
-        try {
-            fos = new FileOutputStream(new File(testMosaicRaster, "footprints.properties"));
+        try (FileOutputStream fos =
+                new FileOutputStream(new File(testMosaicRaster, "footprints.properties"))) {
             p.store(fos, null);
-        } finally {
-            IOUtils.closeQuietly(fos);
         }
         final AbstractGridFormat format = TestUtils.getFormat(testMosaicRasterUrl);
         final ImageMosaicReader reader = TestUtils.getReader(testMosaicRasterUrl, format);

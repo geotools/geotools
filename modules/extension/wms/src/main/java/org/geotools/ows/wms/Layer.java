@@ -102,10 +102,6 @@ public class Layer implements Comparable<Layer> {
      */
     private int cascaded;
 
-    private double scaleHintMin = Double.NaN;
-
-    private double scaleHintMax = Double.NaN;
-
     private double scaleDenominatorMin = Double.NaN;
 
     private double scaleDenominatorMax = Double.NaN;
@@ -720,65 +716,6 @@ public class Layer implements Comparable<Layer> {
      */
     public double getScaleDenominatorMin() {
         return scaleDenominatorMin;
-    }
-
-    /**
-     * Maximum scale for which this layer is considered good.
-     *
-     * <p>We assume this calculation is done in a similar manner to getScaleDenominatorMax(); but a
-     * look at common web services such as JPL show this not to be the case.
-     *
-     * <p>
-     *
-     * @return The second scale hint value (understood to mean the max value)
-     * @deprecated Use getScaleDenomiatorMax() as there is less confusion over meaning
-     */
-    public double getScaleHintMax() {
-        return scaleHintMax;
-    }
-
-    /**
-     * Maximum scale for which this layer is considered good.
-     *
-     * <p>We assume this calculation is done in a similar manner to setScaleDenominatorMax(); but a
-     * look at common web services such as JPL show this not to be the case.
-     *
-     * <p>
-     *
-     * @param scaleHintMax The second scale hint value (understood to mean the max value)
-     * @deprecated Use setScaleDenomiatorMax() as there is less confusion over meaning
-     */
-    public void setScaleHintMax(double scaleHintMax) {
-        this.scaleHintMax = scaleHintMax;
-    }
-
-    /**
-     * Minimum scale for which this layer is considered good.
-     *
-     * <p>We assume this calculation is done in a similar manner to getScaleDenominatorMin(); but a
-     * look at common web services such as JPL show this not to be the case.
-     *
-     * <p>
-     *
-     * @return The first scale hint value (understood to mean the min value)
-     * @deprecated Use getScaleDenomiatorMin() as there is less confusion over meaning
-     */
-    public double getScaleHintMin() {
-        return scaleHintMin;
-    }
-
-    /**
-     * Minimum scale for which this layer is considered good.
-     *
-     * <p>We assume this calculation is done in a similar manner to setScaleDenominatorMin(); but a
-     * look at common web services such as JPL show this not to be the case.
-     *
-     * <p>param The first scale hint value (understood to mean the min value)
-     *
-     * @deprecated Use setScaleDenomiatorMin() as there is less confusion over meaning
-     */
-    public void setScaleHintMin(double scaleHintMin) {
-        this.scaleHintMin = scaleHintMin;
     }
 
     /**

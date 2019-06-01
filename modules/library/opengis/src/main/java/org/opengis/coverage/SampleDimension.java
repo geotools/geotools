@@ -68,43 +68,6 @@ public interface SampleDimension {
     InternationalString[] getCategoryNames();
 
     /**
-     * Color interpretation of the sample dimension. A sample dimension can be an index into a color
-     * palette or be a color model component. If the sample dimension is not assigned a color
-     * interpretation the value is {@link ColorInterpretation#UNDEFINED UNDEFINED}.
-     *
-     * @return The color interpretation of the sample dimension.
-     * @deprecated No replacement.
-     */
-    @UML(identifier = "colorInterpretation", obligation = MANDATORY, specification = OGC_01004)
-    ColorInterpretation getColorInterpretation();
-
-    /**
-     * Indicates the type of color palette entry for sample dimensions which have a palette. If a
-     * sample dimension has a palette, the color interpretation must be {@link
-     * ColorInterpretation#GRAY_INDEX GRAY_INDEX} or {@link ColorInterpretation#PALETTE_INDEX
-     * PALETTE_INDEX}. A palette entry type can be Gray, RGB, CMYK or HLS.
-     *
-     * @return The type of color palette entry for sample dimensions which have a palette.
-     * @deprecated No replacement.
-     */
-    @UML(identifier = "paletteInterpretation", obligation = MANDATORY, specification = OGC_01004)
-    PaletteInterpretation getPaletteInterpretation();
-
-    /**
-     * Color palette associated with the sample dimension. A color palette can have any number of
-     * colors. See palette interpretation for meaning of the palette entries. If the grid coverage
-     * has no color palette, {@code null} will be returned.
-     *
-     * @return The color palette associated with the sample dimension.
-     * @see #getPaletteInterpretation
-     * @see #getColorInterpretation
-     * @see java.awt.image.IndexColorModel
-     * @deprecated No replacement.
-     */
-    @UML(identifier = "palette", obligation = MANDATORY, specification = OGC_01004)
-    int[][] getPalette();
-
-    /**
      * Values to indicate no data values for the sample dimension. For low precision sample
      * dimensions, this will often be no data values.
      *

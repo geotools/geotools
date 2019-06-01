@@ -27,7 +27,6 @@ import java.net.URL;
 import java.util.Set;
 import javax.xml.parsers.ParserConfigurationException;
 import net.opengis.wmts.v_1.CapabilitiesType;
-import org.apache.commons.io.IOUtils;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.ows.ServiceException;
 import org.geotools.ows.wmts.WebMapTileServer;
@@ -97,19 +96,14 @@ public class WMTSCoverageReaderTest {
 
     private WMTSCapabilities createCapabilities(File capa) throws ServiceException {
         Object object;
-        InputStream inputStream = null;
-        try {
-            inputStream = new FileInputStream(capa);
+        try (InputStream inputStream = new FileInputStream(capa)) {
             Parser parser = new Parser(new WMTSConfiguration());
 
             object = parser.parse(new InputSource(inputStream));
 
         } catch (SAXException | ParserConfigurationException | IOException e) {
             throw (ServiceException) new ServiceException("Error while parsing XML.").initCause(e);
-        } finally {
-            IOUtils.closeQuietly(inputStream);
         }
-
         if (object instanceof ServiceException) {
             throw (ServiceException) object;
         }

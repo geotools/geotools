@@ -23,7 +23,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import junit.framework.TestCase;
-import org.geotools.data.DefaultQuery;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.Query;
 import org.geotools.data.Repository;
@@ -92,11 +91,11 @@ public abstract class AbstractPreGeneralizedFeatureSourceTest extends TestCase {
 
             Filter filter = CQL.toFilter("CAT_ID = 2");
 
-            DefaultQuery[] queries = new DefaultQuery[2];
-            queries[0] = new DefaultQuery("GenStreams");
-            queries[1] = new DefaultQuery("GenStreams", filter);
+            Query[] queries = new Query[2];
+            queries[0] = new Query("GenStreams");
+            queries[1] = new Query("GenStreams", filter);
 
-            for (DefaultQuery q : queries) {
+            for (Query q : queries) {
 
                 q.getHints().put(Hints.GEOMETRY_DISTANCE, 1.0);
                 int count = fs.getCount(q);
@@ -128,15 +127,15 @@ public abstract class AbstractPreGeneralizedFeatureSourceTest extends TestCase {
 
             Filter filter = CQL.toFilter("CAT_ID = 2");
 
-            DefaultQuery[] queries = new DefaultQuery[2];
-            queries[0] = new DefaultQuery("GenStreams");
-            queries[1] = new DefaultQuery("GenStreams", filter);
+            Query[] queries = new Query[2];
+            queries[0] = new Query("GenStreams");
+            queries[1] = new Query("GenStreams", filter);
 
             ReferencedEnvelope env = null;
             ReferencedEnvelope envOrig = fs.getBounds();
             assertTrue(envOrig.isEmpty() == false);
 
-            for (DefaultQuery q : queries) {
+            for (Query q : queries) {
 
                 q.getHints().put(Hints.GEOMETRY_DISTANCE, 1.0);
                 env = fs.getBounds(q);
@@ -173,12 +172,11 @@ public abstract class AbstractPreGeneralizedFeatureSourceTest extends TestCase {
 
             Filter filter = CQL.toFilter("CAT_ID = 2");
 
-            DefaultQuery[] queries = new DefaultQuery[2];
-            queries[0] = new DefaultQuery("GenStreams");
-            queries[1] =
-                    new DefaultQuery("GenStreams", filter, new String[] {"the_geom", "CAT_ID"});
+            Query[] queries = new Query[2];
+            queries[0] = new Query("GenStreams");
+            queries[1] = new Query("GenStreams", filter, new String[] {"the_geom", "CAT_ID"});
 
-            for (DefaultQuery q : queries) {
+            for (Query q : queries) {
 
                 FeatureReader<SimpleFeatureType, SimpleFeature> reader;
                 String typeName;
@@ -279,7 +277,7 @@ public abstract class AbstractPreGeneralizedFeatureSourceTest extends TestCase {
 
             Filter filter = CQL.toFilter("CAT_ID = 2");
 
-            Query q = new DefaultQuery("GenStreams", filter, new String[] {"CAT_ID"});
+            Query q = new Query("GenStreams", filter, new String[] {"CAT_ID"});
 
             for (Double distance : new Double[] {1.0, 5.0, 10.0, 20.0, 50.0}) {
                 FeatureReader<SimpleFeatureType, SimpleFeature> reader;
@@ -307,12 +305,11 @@ public abstract class AbstractPreGeneralizedFeatureSourceTest extends TestCase {
 
             Filter filter = CQL.toFilter("CAT_ID = 2");
 
-            DefaultQuery[] queries = new DefaultQuery[2];
-            queries[0] = new DefaultQuery("GenStreams");
-            queries[1] =
-                    new DefaultQuery("GenStreams", filter, new String[] {"the_geom", "CAT_ID"});
+            Query[] queries = new Query[2];
+            queries[0] = new Query("GenStreams");
+            queries[1] = new Query("GenStreams", filter, new String[] {"the_geom", "CAT_ID"});
 
-            for (DefaultQuery q : queries) {
+            for (Query q : queries) {
 
                 SimpleFeatureCollection fCollection;
                 String typeName;

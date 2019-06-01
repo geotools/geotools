@@ -62,7 +62,7 @@ public abstract class AbstractLabelLineTest {
         StyleFactory factory = CommonFactoryFinder.getStyleFactory(null);
 
         java.net.URL url = TestData.getResource(loader, sldFilename);
-        String styleTemplate = IOUtils.toString(url);
+        String styleTemplate = IOUtils.toString(url, "UTF-8");
         for (int i = 0; i < parameters.length; i += 2) {
             String key = parameters[i];
             String value = parameters[i + 1];

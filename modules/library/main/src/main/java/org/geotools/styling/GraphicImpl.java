@@ -17,9 +17,8 @@
 package org.geotools.styling;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.ConstantExpression;
 import org.geotools.util.Utilities;
@@ -49,7 +48,6 @@ public class GraphicImpl implements Graphic, Cloneable {
     private Expression gap;
     private Expression initialGap;
 
-    private FilterFactory filterFactory;
     private Expression rotation = null;
     private Expression size = null;
     private DisplacementImpl displacement = null;
@@ -66,7 +64,6 @@ public class GraphicImpl implements Graphic, Cloneable {
 
     public GraphicImpl(
             FilterFactory factory, AnchorPoint anchor, Expression gap, Expression initialGap) {
-        filterFactory = factory;
         this.anchor = AnchorPointImpl.cast(anchor);
 
         if (gap == null) this.gap = ConstantExpression.constant(0);
@@ -75,140 +72,8 @@ public class GraphicImpl implements Graphic, Cloneable {
         else this.initialGap = initialGap;
     }
 
-    @Deprecated
-    public void setFilterFactory(FilterFactory factory) {
-        filterFactory = factory;
-    }
-
     public List<GraphicalSymbol> graphicalSymbols() {
         return graphics;
-    }
-
-    /**
-     * Provides a list of external graphics which can be used to represent this graphic. Each one
-     * should be an equivalent representation but in a different format. If none are provided, or if
-     * none of the formats are supported, then the list of Marks should be used instead.
-     *
-     * @return An array of ExternalGraphics objects which should be equivalents but in different
-     *     formats. If null is returned use getMarks instead.
-     */
-    @Deprecated
-    public ExternalGraphic[] getExternalGraphics() {
-        Collection<ExternalGraphic> exts = new ArrayList<ExternalGraphic>();
-
-        for (GraphicalSymbol s : graphics) {
-            if (s instanceof ExternalGraphic) {
-                exts.add((ExternalGraphic) s);
-            }
-        }
-
-        return exts.toArray(new ExternalGraphic[0]);
-    }
-
-    @Deprecated
-    public void setExternalGraphics(ExternalGraphic[] externalGraphics) {
-        Collection<GraphicalSymbol> currExternalGraphics = new ArrayList<GraphicalSymbol>();
-        for (GraphicalSymbol s : graphics) {
-            if (s instanceof ExternalGraphic) {
-                currExternalGraphics.add(s);
-            }
-        }
-        graphics.removeAll(currExternalGraphics);
-
-        for (ExternalGraphic g : externalGraphics) {
-            graphics.add(g);
-        }
-    }
-
-    @Deprecated
-    public void addExternalGraphic(ExternalGraphic externalGraphic) {
-        graphics.add(externalGraphic);
-    }
-
-    /**
-     * Provides a list of suitable marks which can be used to represent this graphic. These should
-     * only be used if no ExternalGraphic is provided, or if none of the external graphics formats
-     * are supported.
-     *
-     * @return An array of marks to use when displaying this Graphic. By default, a "square" with
-     *     50% gray fill and black outline with a size of 6 pixels (unless a size is specified) is
-     *     provided.
-     */
-    @Deprecated
-    public Mark[] getMarks() {
-        Collection<Mark> exts = new ArrayList<Mark>();
-
-        for (GraphicalSymbol s : graphics) {
-            if (s instanceof Mark) {
-                exts.add((Mark) s);
-            }
-        }
-
-        return exts.toArray(new Mark[0]);
-    }
-
-    @Deprecated
-    public void setMarks(Mark[] marks) {
-        Collection<GraphicalSymbol> currMarks = new ArrayList<GraphicalSymbol>();
-        for (GraphicalSymbol s : graphics) {
-            if (s instanceof Mark) {
-                currMarks.add(s);
-            }
-        }
-        graphics.removeAll(currMarks);
-
-        for (Mark g : marks) {
-            graphics.add(g);
-        }
-    }
-
-    @Deprecated
-    public void addMark(Mark mark) {
-        graphics.add(mark);
-    }
-
-    /**
-     * Provides a list of all the symbols which can be used to represent this graphic
-     *
-     * <p>A symbol is an ExternalGraphic, Mark or any other object which implements the Symbol
-     * interface. These are returned in the order they were set.
-     *
-     * <p>This class operates as a "view" on getMarks() and getExternalGraphics() with the added
-     * magic that if nothing has been set ever a single default MarkImpl will be provided. This
-     * default will not effect the internal state it is only there as a sensible default for
-     * rendering.
-     *
-     * @return An array of symbols to use when displaying this Graphic. By default, a "square" with
-     *     50% gray fill and black outline with a size of 6 pixels (unless a size is specified) is
-     *     provided.
-     */
-    @Deprecated
-    public Symbol[] getSymbols() {
-        ArrayList<Symbol> symbols = new ArrayList<Symbol>();
-        for (GraphicalSymbol graphic : graphics) {
-            if (graphic instanceof Symbol) {
-                symbols.add((Symbol) graphic);
-            }
-        }
-        return symbols.toArray(new Symbol[0]);
-    }
-
-    //    public List<Symbol> graphicalSymbols() {
-    //        return symbols;
-    //    }
-
-    @Deprecated
-    public void setSymbols(Symbol[] symbols) {
-        graphics.clear();
-
-        for (Symbol g : symbols) {
-            graphics.add(g);
-        }
-    }
-
-    @Deprecated
-    public void addSymbol(Symbol symbol) {
-        graphics.add(symbol);
     }
 
     public AnchorPointImpl getAnchorPoint() {
@@ -292,11 +157,6 @@ public class GraphicImpl implements Graphic, Cloneable {
         this.opacity = opacity;
     }
 
-    @Deprecated
-    public void setOpacity(double opacity) {
-        setOpacity(filterFactory.literal(opacity));
-    }
-
     /**
      * Setter for property rotation.
      *
@@ -306,11 +166,6 @@ public class GraphicImpl implements Graphic, Cloneable {
         this.rotation = rotation;
     }
 
-    @Deprecated
-    public void setRotation(double rotation) {
-        setRotation(filterFactory.literal(rotation));
-    }
-
     /**
      * Setter for property size.
      *
@@ -318,11 +173,6 @@ public class GraphicImpl implements Graphic, Cloneable {
      */
     public void setSize(Expression size) {
         this.size = size;
-    }
-
-    @Deprecated
-    public void setSize(int size) {
-        setSize(filterFactory.literal(size));
     }
 
     public Object accept(StyleVisitor visitor, Object data) {
@@ -409,20 +259,7 @@ public class GraphicImpl implements Graphic, Cloneable {
             return Utilities.equals(this.size, other.size)
                     && Utilities.equals(this.rotation, other.rotation)
                     && Utilities.equals(this.opacity, other.opacity)
-                    && Arrays.equals(this.getMarks(), other.getMarks())
-                    && Arrays.equals(this.getExternalGraphics(), other.getExternalGraphics())
-                    && Arrays.equals(this.getSymbols(), other.getSymbols());
-
-            //                        return
-            //            Utilities.equals(this.geometryPropertyName,other.geometryPropertyName)
-            //            && Utilities.equals(this.size, other.size)
-            //            && Utilities.equals(this.rotation, other.rotation)
-            //            && Utilities.equals(this.opacity, other.opacity)
-            //            && Utilities.equals(this.graphics, other.graphics )
-            //            && Utilities.equals(this.anchor, other.anchor)
-            //            && Utilities.equals(this.gap, other.gap)
-            //            && Utilities.equals(this.initialGap, other.initialGap);
-
+                    && Objects.equals(this.graphicalSymbols(), other.graphicalSymbols());
         }
 
         return false;

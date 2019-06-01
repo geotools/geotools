@@ -18,6 +18,8 @@
 
 package org.geotools.xml;
 
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
 import org.geotools.filter.FilterHandler;
 import org.geotools.gml.GMLFilterDocument;
 import org.geotools.gml.GMLFilterGeometry;
@@ -27,7 +29,6 @@ import org.opengis.filter.Filter;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
-import org.xml.sax.helpers.XMLReaderFactory;
 
 @SuppressWarnings("unused")
 public class FilterXMLExamples {
@@ -51,7 +52,10 @@ public class FilterXMLExamples {
         GMLFilterDocument filterDocument = new GMLFilterDocument(filterGeometry);
 
         // parse xml
-        XMLReader reader = XMLReaderFactory.createXMLReader();
+        SAXParserFactory parserFactory = SAXParserFactory.newInstance();
+        parserFactory.setNamespaceAware(true);
+        SAXParser parser = parserFactory.newSAXParser();
+        XMLReader reader = parser.getXMLReader();
         reader.setContentHandler(filterDocument);
         reader.parse(input);
         Filter filter = simpleFilterHandler.filter;

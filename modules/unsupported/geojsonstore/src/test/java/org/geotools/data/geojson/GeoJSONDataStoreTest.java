@@ -21,8 +21,8 @@ import static org.junit.Assert.assertNotNull;
 
 import java.io.IOException;
 import java.net.URL;
-import org.geotools.data.DefaultQuery;
 import org.geotools.data.FeatureReader;
+import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
@@ -47,7 +47,7 @@ public class GeoJSONDataStoreTest {
     public void testSource() throws IOException {
 
         String type = ds.getNames().get(0).getLocalPart();
-        DefaultQuery query = new DefaultQuery(type);
+        Query query = new Query(type);
         SimpleFeatureSource source = ds.getFeatureSource(ds.getNames().get(0));
 
         assertEquals(51, source.getCount(query)); // includes DC
@@ -69,7 +69,7 @@ public class GeoJSONDataStoreTest {
     @Test
     public void testReader() throws IOException {
         String type = ds.getNames().get(0).getLocalPart();
-        DefaultQuery query = new DefaultQuery(type);
+        Query query = new Query(type);
         FeatureReader<SimpleFeatureType, SimpleFeature> reader = ds.getFeatureReader(query, null);
         SimpleFeatureType schema = reader.getFeatureType();
         assertNotNull(schema);
@@ -86,7 +86,7 @@ public class GeoJSONDataStoreTest {
         // URL("http://geojson.xyz/naturalearth-3.3.0/ne_110m_admin_1_states_provinces.geojson");
         GeoJSONDataStore fds = new GeoJSONDataStore(url);
         String type = fds.getNames().get(0).getLocalPart();
-        DefaultQuery query = new DefaultQuery(type);
+        Query query = new Query(type);
         FeatureReader<SimpleFeatureType, SimpleFeature> reader = fds.getFeatureReader(query, null);
         SimpleFeatureType schema = reader.getFeatureType();
         // System.out.println(schema);
@@ -110,7 +110,7 @@ public class GeoJSONDataStoreTest {
         GeoJSONDataStore fds = new GeoJSONDataStore(url);
         String type = fds.getNames().get(0).getLocalPart();
         // System.out.println(type);
-        DefaultQuery query = new DefaultQuery(type);
+        Query query = new Query(type);
         // System.out.println(query);
         FeatureReader<SimpleFeatureType, SimpleFeature> reader = fds.getFeatureReader(query, null);
         SimpleFeatureType schema = reader.getFeatureType();

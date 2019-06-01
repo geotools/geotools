@@ -157,7 +157,8 @@ public final class NetCDFBasicTest extends Assert {
         indexDirectory.mkdir();
         File properties = new File(indexDirectory, "test.properties");
         String theStoreName = "testStore";
-        FileUtils.writeStringToFile(properties, NetCDFUtilities.STORE_NAME + "=" + theStoreName);
+        FileUtils.writeStringToFile(
+                properties, NetCDFUtilities.STORE_NAME + "=" + theStoreName, "UTF-8");
 
         DirectoryDataStore dataStore = new DirectoryDataStore(indexDirectory, dialect);
 

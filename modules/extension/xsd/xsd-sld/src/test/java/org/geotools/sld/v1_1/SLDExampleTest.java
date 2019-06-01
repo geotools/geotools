@@ -87,10 +87,10 @@ public class SLDExampleTest extends TestCase {
         assertEquals("GEOSYM", s.getName());
         assertTrue(s.isDefault());
 
-        assertEquals(1, s.getFeatureTypeStyles().length);
-        FeatureTypeStyle fts = s.getFeatureTypeStyles()[0];
+        assertEquals(1, s.featureTypeStyles().size());
+        FeatureTypeStyle fts = s.featureTypeStyles().get(0);
 
-        assertEquals("Foundation", fts.getFeatureTypeName());
+        assertEquals("Foundation", fts.featureTypeNames().iterator().next().getLocalPart());
         assertEquals(1, fts.rules().size());
 
         Rule r = fts.rules().get(0);

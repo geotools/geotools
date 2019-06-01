@@ -19,7 +19,7 @@
 package org.geotools.filter.function;
 
 import java.util.HashSet;
-import org.geotools.feature.FeatureCollections;
+import org.geotools.feature.DefaultFeatureCollection;
 import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.PropertyName;
 
@@ -36,13 +36,12 @@ public class Collection_FunctionsTest extends FunctionTestSupport {
     }
 
     public void testInstance() {
-        Function cmin =
-                ff.function("Collection_Min", ff.literal(FeatureCollections.newCollection()));
+        Function cmin = ff.function("Collection_Min", ff.literal(new DefaultFeatureCollection()));
         assertNotNull(cmin);
     }
 
     public void testAverage() throws Exception {
-        performNumberTest("Collection_Average", new Double(33.375));
+        performNumberTest("Collection_Average", Double.valueOf(33.375));
     }
 
     public void testCount() throws Exception {
@@ -54,7 +53,7 @@ public class Collection_FunctionsTest extends FunctionTestSupport {
     }
 
     public void testMedian() throws Exception {
-        performNumberTest("Collection_Median", new Double(24.5));
+        performNumberTest("Collection_Median", Double.valueOf(24.5));
     }
 
     public void testMax() throws Exception {

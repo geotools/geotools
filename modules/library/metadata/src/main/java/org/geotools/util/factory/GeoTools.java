@@ -22,6 +22,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -897,11 +898,14 @@ public final class GeoTools {
             }
             // step 2 no argument constructor
             try {
-                Object value = kind.newInstance();
+                Object value = kind.getDeclaredConstructor().newInstance();
                 if (type.isInstance(value)) {
                     return type.cast(value);
                 }
-            } catch (InstantiationException | IllegalAccessException e) {
+            } catch (InstantiationException
+                    | IllegalAccessException
+                    | NoSuchMethodException
+                    | InvocationTargetException e) {
                 LOGGER.log(
                         Level.FINER, "Unable to instantiate ENTITY_RESOLVER: " + e.getMessage(), e);
             }

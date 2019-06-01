@@ -743,7 +743,7 @@ public abstract class AbstractMapPane extends JPanel
     public void layerAdded(MapLayerListEvent event) {
         paramsLock.writeLock().lock();
         try {
-            Layer layer = event.getElement();
+            Layer layer = event.getLayer();
 
             if (layer instanceof ComponentListener) {
                 addComponentListener((ComponentListener) layer);
@@ -768,7 +768,7 @@ public abstract class AbstractMapPane extends JPanel
     public void layerRemoved(MapLayerListEvent event) {
         paramsLock.writeLock().lock();
         try {
-            Layer layer = event.getElement();
+            Layer layer = event.getLayer();
 
             if (layer instanceof ComponentListener) {
                 removeComponentListener((ComponentListener) layer);

@@ -352,12 +352,12 @@ public abstract class VPFInputStream implements FileConstants, DataTypesDefiniti
                 break;
 
             case DATA_SHORT_FLOAT:
-                result = new Float(readFloat());
+                result = Float.valueOf(readFloat());
 
                 break;
 
             case DATA_LONG_FLOAT:
-                result = new Double(readDouble());
+                result = Double.valueOf(readDouble());
 
                 break;
 

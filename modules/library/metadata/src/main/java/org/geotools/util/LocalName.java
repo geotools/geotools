@@ -94,7 +94,7 @@ public class LocalName extends org.geotools.util.GenericName implements org.open
      * Returns the scope (name space) of this generic name. This method is protected from overriding
      * by the user.
      */
-    private GenericName getInternalScope() {
+    protected GenericName getInternalScope() {
         if (asScopedName != null) {
             final NameSpace scope = asScopedName.scope();
             if (scope != null) {
@@ -105,16 +105,6 @@ public class LocalName extends org.geotools.util.GenericName implements org.open
     }
 
     /**
-     * Returns the scope (name space) of this generic name.
-     *
-     * @deprecated Replaced by {@link #scope}.
-     */
-    @Deprecated
-    public GenericName getScope() {
-        return getInternalScope();
-    }
-
-    /**
      * Returns the scope (name space) in which this name is local. The scope is set on creation and
      * is not modifiable. The scope of a name determines where a name "starts". For instance, if a
      * name has a {@linkplain #depth depth} of two ({@code "util.GenericName"}) and is associated
@@ -122,10 +112,6 @@ public class LocalName extends org.geotools.util.GenericName implements org.open
      * fully qualified name would be {@code "org.opengis.util.GenericName"}.
      *
      * @since 2.3
-     * @todo To be strict, maybe we should returns {@code null} if there is no namespace. Current
-     *     implementation returns a namespace instance whith a null name. This behavior is for
-     *     transition from legacy API to later ISO 19103 revision and may change in future GeoTools
-     *     version.
      */
     public NameSpace scope() {
         return (asScopedName != null) ? asScopedName.scope() : super.scope();
@@ -163,16 +149,6 @@ public class LocalName extends org.geotools.util.GenericName implements org.open
     @Override
     public org.opengis.util.LocalName tip() {
         return this;
-    }
-
-    /**
-     * Returns a view of this object as a scoped name, or {@code null} if this name has no scope.
-     *
-     * @deprecated Replaced by {@link #toFullyQualifiedName}.
-     */
-    @Deprecated
-    public ScopedName asScopedName() {
-        return asScopedName;
     }
 
     /**

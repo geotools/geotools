@@ -316,7 +316,7 @@ public class ShapefileDumperTest {
      */
     private void assertCst(String typeName, String expectedCharset) throws IOException {
         File cst = new File(dumperFolder, typeName + ".cst");
-        String actualCharset = FileUtils.readFileToString(cst);
+        String actualCharset = FileUtils.readFileToString(cst, "UTF-8");
         assertEquals(expectedCharset, actualCharset);
     }
 

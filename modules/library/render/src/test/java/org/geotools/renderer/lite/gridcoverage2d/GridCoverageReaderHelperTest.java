@@ -34,7 +34,6 @@ import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
-import org.geotools.data.DataUtilities;
 import org.geotools.gce.geotiff.GeoTiffReader;
 import org.geotools.gce.imagemosaic.ImageMosaicReader;
 import org.geotools.geometry.Envelope2D;
@@ -331,7 +330,7 @@ public class GridCoverageReaderHelperTest {
     @Test
     public void testReadResolution3003InvalidArea() throws Exception {
         coverageFile =
-                DataUtilities.urlToFile(
+                URLs.urlToFile(
                         GridCoverageRendererTest.class.getResource("test-data/test3003.tif"));
         assertTrue(coverageFile.exists());
         GeoTiffReader reader = new GeoTiffReader(coverageFile);
@@ -374,8 +373,7 @@ public class GridCoverageReaderHelperTest {
      */
     @Test
     public void testReadOffDatelineBothSides() throws Exception {
-        coverageFile =
-                DataUtilities.urlToFile(getClass().getResource("test-data/off_dateline.tif"));
+        coverageFile = URLs.urlToFile(getClass().getResource("test-data/off_dateline.tif"));
         assertTrue(coverageFile.exists());
         GeoTiffReader reader = new GeoTiffReader(coverageFile);
         try {

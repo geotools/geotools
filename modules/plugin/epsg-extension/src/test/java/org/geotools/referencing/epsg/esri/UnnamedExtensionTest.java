@@ -16,14 +16,12 @@
  */
 package org.geotools.referencing.epsg.esri;
 
+import static org.junit.Assert.*;
+
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Collection;
 import java.util.Set;
-import junit.framework.Assert;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.CRS;
@@ -31,6 +29,8 @@ import org.geotools.referencing.NamedIdentifier;
 import org.geotools.referencing.ReferencingFactoryFinder;
 import org.geotools.referencing.factory.OrderedAxisAuthorityFactory;
 import org.geotools.util.factory.Hints;
+import org.junit.Before;
+import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.opengis.metadata.citation.Citation;
 import org.opengis.referencing.FactoryException;
@@ -47,33 +47,14 @@ import org.opengis.referencing.operation.MathTransform;
  * @author Martin Desruisseaux
  * @author Jody Garnett
  */
-public class UnnamedExtensionTest extends TestCase {
+public class UnnamedExtensionTest {
     /** The factory to test. */
     private UnnamedExtension factory;
 
-    /** Returns the test suite. */
-    public static Test suite() {
-        return new TestSuite(UnnamedExtensionTest.class);
-    }
-
-    /**
-     * Run the test from the command line. Options: {@code -verbose}.
-     *
-     * @param args the command line arguments.
-     */
-    public static void main(final String[] args) {
-        junit.textui.TestRunner.run(suite());
-    }
-
-    /** Creates a test case with the specified name. */
-    public UnnamedExtensionTest(final String name) {
-        super(name);
-    }
-
     /** Gets the authority factory for ESRI. */
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
+    @Before
+    public void setUp() throws Exception {
+
         factory =
                 (UnnamedExtension)
                         ReferencingFactoryFinder.getCRSAuthorityFactory(
@@ -82,6 +63,7 @@ public class UnnamedExtensionTest extends TestCase {
     }
 
     /** Tests the authority code. */
+    @Test
     public void testAuthority() {
         final Citation authority = factory.getAuthority();
         assertNotNull(authority);
@@ -92,6 +74,7 @@ public class UnnamedExtensionTest extends TestCase {
     }
 
     /** Tests the vendor. */
+    @Test
     public void testVendor() {
         final Citation vendor = factory.getVendor();
         assertNotNull(vendor);
@@ -99,6 +82,7 @@ public class UnnamedExtensionTest extends TestCase {
     }
 
     /** Checks for duplication with EPSG-HSQL. */
+    @Test
     public void testDuplication() throws FactoryException {
         final StringWriter buffer = new StringWriter();
         final PrintWriter writer = new PrintWriter(buffer);
@@ -107,6 +91,7 @@ public class UnnamedExtensionTest extends TestCase {
     }
 
     /** Checks for CRS instantiations. */
+    @Test
     public void testInstantiation() throws FactoryException {
         final StringWriter buffer = new StringWriter();
         final PrintWriter writer = new PrintWriter(buffer);
@@ -115,6 +100,7 @@ public class UnnamedExtensionTest extends TestCase {
     }
 
     /** Tests the {@code 41001} code. */
+    @Test
     public void test41001() throws FactoryException {
         CoordinateReferenceSystem actual, expected;
         expected = factory.createCoordinateReferenceSystem("41001");
@@ -127,6 +113,7 @@ public class UnnamedExtensionTest extends TestCase {
     }
 
     /** UDIG requires this to work. */
+    @Test
     public void test42102() throws FactoryException {
         final Hints hints = new Hints(Hints.CRS_AUTHORITY_FACTORY, UnnamedExtension.class);
         final CRSAuthorityFactory factory = new OrderedAxisAuthorityFactory("EPSG", hints, null);
@@ -139,6 +126,7 @@ public class UnnamedExtensionTest extends TestCase {
     }
 
     /** WFS requires this to work. */
+    @Test
     public void test42102Lower() throws FactoryException {
         CoordinateReferenceSystem crs = CRS.decode("epsg:42102");
         assertNotNull(crs);
@@ -149,6 +137,7 @@ public class UnnamedExtensionTest extends TestCase {
     }
 
     /** WFS requires this to work. */
+    @Test
     public void test42304Lower() throws FactoryException {
         CoordinateReferenceSystem crs = CRS.decode("epsg:42304");
         assertNotNull(crs);
@@ -160,6 +149,7 @@ public class UnnamedExtensionTest extends TestCase {
      * <p>The official supported code for that projection is EPSG:3857, and both should be
      * equivalent.
      */
+    @Test
     public void test900913() {
         try {
             CoordinateReferenceSystem sourceCRS;
@@ -174,17 +164,19 @@ public class UnnamedExtensionTest extends TestCase {
             Coordinate destCoordGoogle = JTS.transform(sourceCoord, null, transformGoogle);
             Coordinate destCoordOfficial = JTS.transform(sourceCoord, null, transformOfficial);
 
-            Assert.assertEquals(destCoordOfficial, destCoordGoogle);
+            assertEquals(destCoordOfficial, destCoordGoogle);
         } catch (Exception e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
-            Assert.fail(e.getClass().getSimpleName() + " should not be thrown.");
+            fail(e.getClass().getSimpleName() + " should not be thrown.");
         }
     }
+
     /**
      * Tests the extensions through a URI.
      *
      * @see http://jira.codehaus.org/browse/GEOT-1563
      */
+    @Test
     public void testURI() throws FactoryException {
         final String id = "100001";
         final CoordinateReferenceSystem crs = CRS.decode("EPSG:" + id);

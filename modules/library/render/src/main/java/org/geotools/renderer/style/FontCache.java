@@ -54,15 +54,6 @@ public class FontCache {
     /**
      * Returns the default, system wide font cache
      *
-     * @deprecated Use {@link #getDefaultInstance()} instead
-     */
-    public static FontCache getDefaultInsance() {
-        return getDefaultInstance();
-    }
-
-    /**
-     * Returns the default, system wide font cache
-     *
      * @since 2.6
      */
     public static FontCache getDefaultInstance() {

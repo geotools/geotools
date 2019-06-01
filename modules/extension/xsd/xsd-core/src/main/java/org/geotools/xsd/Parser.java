@@ -16,16 +16,11 @@
  */
 package org.geotools.xsd;
 
-import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.Iterator;
 import java.util.List;
 import javax.xml.namespace.QName;
@@ -76,9 +71,6 @@ public class Parser {
     /** the sax parser driving the handler */
     private SAXParser parser;
 
-    /** the instance document being parsed */
-    private InputStream input;
-
     /**
      * Creates a new instance of the parser.
      *
@@ -95,33 +87,6 @@ public class Parser {
         configuration.setupParser(this);
     }
 
-    /**
-     * Creates a new instance of the parser.
-     *
-     * @param configuration Object representing the configuration of the parser.
-     * @param input A uri representing the instance document to be parsed.
-     * @throws ParserConfigurationException
-     * @throws SAXException If a sax parser can not be created.
-     * @throws URISyntaxException If <code>input</code> is not a valid uri.
-     * @deprecated use {@link #Parser(Configuration)} and {@link #parse(InputStream)}.
-     */
-    public Parser(Configuration configuration, String input)
-            throws IOException, URISyntaxException {
-        this(configuration, new BufferedInputStream(new FileInputStream(new File(new URI(input)))));
-    }
-
-    /**
-     * Creates a new instance of the parser.
-     *
-     * @param configuration Object representing the configuration of the parser.
-     * @param input The stream representing the instance document to be parsed.
-     * @deprecated use {@link #Parser(Configuration)} and {@link #parse(InputStream)}.
-     */
-    public Parser(Configuration configuration, InputStream input) {
-        this(configuration);
-        this.input = input;
-    }
-
     /** @return The underlying parser handler. */
     ParserHandler getParserHandler() {
         return handler;
@@ -134,21 +99,6 @@ public class Parser {
      */
     public void setContextCustomizer(ContextCustomizer contextCustomizer) {
         handler.setContextCustomizer(contextCustomizer);
-    }
-
-    /**
-     * Signals the parser to parse the entire instance document. The object returned from the parse
-     * is the object which has been bound to the root element of the document. This method should
-     * only be called once for a single instance document.
-     *
-     * @return The object representation of the root element of the document.
-     * @throws IOException
-     * @throws SAXException
-     * @throws ParserConfigurationException
-     * @deprecated use {@link #parse(InputStream)}
-     */
-    public Object parse() throws IOException, SAXException, ParserConfigurationException {
-        return parse(input);
     }
 
     /**
@@ -534,7 +484,7 @@ public class Parser {
             // add the entry
             schemaLocation.append(dependency.getNamespaceURI());
             schemaLocation.append(" ");
-            schemaLocation.append(dependency.getSchemaFileURL());
+            schemaLocation.append(dependency.getXSD().getSchemaLocation());
         }
 
         // set the property to map namespaces to schema locations
@@ -544,45 +494,5 @@ public class Parser {
         // add the handler as a LexicalHandler too.
         parser.setProperty(SAX_PROPERTY_PREFIX + LEXICAL_HANDLER_PROPERTY, handler);
         return parser;
-    }
-
-    /**
-     * Properties used to control the parser behaviour.
-     *
-     * <p>Parser properties are set in the configuration of a parser.
-     *
-     * <pre>
-     * Configuration configuration = new ....
-     * configuration.getProperties().add( Parser.Properties.PARSE_UNKNOWN_ELEMENTS );
-     * configuration.getProperties().add( Parser.Properties.PARSE_UNKNOWN_ATTRIBUTES );
-     * </pre>
-     *
-     * @author Justin Deoliveira, The Open Planning Project
-     * @deprecated
-     */
-    public static interface Properties {
-        /**
-         * If set, the parser will continue to parse when it finds an element and cannot determine
-         * its type.
-         *
-         * @deprecated use {@link Parser#setStrict(boolean)}
-         */
-        QName PARSE_UNKNOWN_ELEMENTS = new QName("http://www.geotools.org", "parseUnknownElements");
-
-        /**
-         * If set, the parser will continue to parse when it finds an attribute and cannot determine
-         * its type.
-         *
-         * @deprecated use {@link Parser#setStrict(boolean)}
-         */
-        QName PARSE_UNKNOWN_ATTRIBUTES =
-                new QName("http://www.geotools.org", "parseUnknownAttributes");
-
-        /**
-         * If set, the parser will ignore the schemaLocation attribute of an instance document.
-         *
-         * @deprecated use {@link Parser#setStrict(boolean)}
-         */
-        QName IGNORE_SCHEMA_LOCATION = new QName("http://www.geotools.org", "ignoreSchemaLocation");
     }
 }

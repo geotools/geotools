@@ -123,17 +123,6 @@ public class GeometryBuilder {
      * Set the CoordinateReferenceSystem for the geometries that will be produced.
      *
      * @param crs the CoordinateReferenceSystem to set
-     * @deprecated Use setCoordinateReferenceSystem() instead.
-     */
-    @Deprecated
-    public void setCoordianteReferenceSystem(CoordinateReferenceSystem crs) {
-        setCoordinateReferenceSystem(crs);
-    }
-
-    /**
-     * Set the CoordinateReferenceSystem for the geometries that will be produced.
-     *
-     * @param crs the CoordinateReferenceSystem to set
      */
     public void setCoordinateReferenceSystem(CoordinateReferenceSystem crs) {
         if (this.crs != crs) {
@@ -268,12 +257,6 @@ public class GeometryBuilder {
         // - The curve will be set as parent curves for the Curve segments
         // - Start and end params for the CurveSegments will be set
         return getPrimitiveFactory().createCurve(segments);
-    }
-
-    @Deprecated
-    public Curve createCurve(PointArray points)
-            throws MismatchedReferenceSystemException, MismatchedDimensionException {
-        return createCurve(points, true);
     }
 
     public Curve createCurve(PointArray points, boolean closed)
@@ -460,7 +443,7 @@ public class GeometryBuilder {
 
     public SurfaceBoundary createSurfaceBoundary(PointArray points)
             throws MismatchedReferenceSystemException, MismatchedDimensionException {
-        Curve curve = createCurve(points);
+        Curve curve = createCurve(points, true);
         return createSurfaceBoundary(curve);
     }
 
@@ -567,6 +550,7 @@ public class GeometryBuilder {
         return getGeometryFactory().createLineSegment(from, to);
     }
 
+    @SuppressWarnings("deprecation")
     public MultiPrimitive createMultiPrimitive() {
         return getGeometryFactory().createMultiPrimitive();
     }

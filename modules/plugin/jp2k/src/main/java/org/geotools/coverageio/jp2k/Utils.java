@@ -16,7 +16,7 @@
  */
 package org.geotools.coverageio.jp2k;
 
-import it.geosolutions.imageio.stream.input.FileImageInputStreamExt;
+import it.geosolutions.imageio.stream.AccessibleStream;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -74,8 +74,9 @@ class Utils {
                 sourceURL = URLs.fileToUrl(tempFile);
                 source = tempFile;
             }
-        } else if (source instanceof FileImageInputStreamExt) {
-            final File inputFile = ((FileImageInputStreamExt) source).getFile();
+        } else if (source instanceof AccessibleStream
+                && ((AccessibleStream) source).getTarget() instanceof File) {
+            final File inputFile = (File) ((AccessibleStream) source).getTarget();
             source = inputFile;
         }
 
@@ -104,8 +105,9 @@ class Utils {
         // get a reader
         //		inStream.mark();
         try {
-            if (inStream instanceof FileImageInputStreamExt) {
-                final File file = ((FileImageInputStreamExt) inStream).getFile();
+            if (inStream instanceof AccessibleStream
+                    && ((AccessibleStream) inStream).getTarget() instanceof File) {
+                final File file = (File) ((AccessibleStream) inStream).getTarget();
                 if (FILEFILTER.accept(file))
                     return JP2KFormatFactory.getCachedSpi().createReaderInstance();
             }
@@ -198,8 +200,7 @@ class Utils {
     static IOFileFilter excludeFilters(final IOFileFilter inputFilter, IOFileFilter... filters) {
         IOFileFilter retFilter = inputFilter;
         for (IOFileFilter filter : filters) {
-            retFilter =
-                    FileFilterUtils.andFileFilter(retFilter, FileFilterUtils.notFileFilter(filter));
+            retFilter = FileFilterUtils.and(retFilter, FileFilterUtils.notFileFilter(filter));
         }
         return retFilter;
     }
@@ -207,7 +208,7 @@ class Utils {
     static IOFileFilter includeFilters(final IOFileFilter inputFilter, IOFileFilter... filters) {
         IOFileFilter retFilter = inputFilter;
         for (IOFileFilter filter : filters) {
-            retFilter = FileFilterUtils.orFileFilter(retFilter, filter);
+            retFilter = FileFilterUtils.or(retFilter, filter);
         }
         return retFilter;
     }

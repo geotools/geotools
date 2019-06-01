@@ -149,7 +149,7 @@ public class SLDStyleFactoryTest extends TestCase {
 
         myMark.setFill(sf.createFill(ff.literal("#ffff00")));
         symb.getGraphic().setSize(ff.literal(10));
-        symb.getGraphic().addMark(myMark);
+        symb.getGraphic().graphicalSymbols().add(myMark);
         symb.getGraphic().setOpacity(ff.literal(1));
         symb.getGraphic().setRotation(ff.literal(0));
         sld.createPointStyle(null, symb, range);
@@ -162,7 +162,7 @@ public class SLDStyleFactoryTest extends TestCase {
         symb = sf.createPointSymbolizer();
         myMark = sf.createMark();
 
-        symb.getGraphic().addMark(myMark);
+        symb.getGraphic().graphicalSymbols().add(myMark);
 
         sld.createPointStyle(null, symb, range);
     }
@@ -172,7 +172,7 @@ public class SLDStyleFactoryTest extends TestCase {
         Mark myMark = sf.createMark();
         final String ttfUrl = "ttf://Serif#${symb}";
         myMark.setWellKnownName(ff.literal(ttfUrl));
-        symb.getGraphic().addMark(myMark);
+        symb.getGraphic().graphicalSymbols().add(myMark);
 
         MarkStyle2D ms = (MarkStyle2D) sld.createStyle(feature, symb, range);
         assertNotNull(ms.getShape());
@@ -204,7 +204,7 @@ public class SLDStyleFactoryTest extends TestCase {
         URL url = StreamingRenderer.class.getResource("test-data/");
         PointSymbolizer symb = sf.createPointSymbolizer();
         ExternalGraphic eg = sf.createExternalGraphic(url + "${icon}", "image/png");
-        symb.getGraphic().addExternalGraphic(eg);
+        symb.getGraphic().graphicalSymbols().add(eg);
 
         GraphicStyle2D gs = (GraphicStyle2D) sld.createStyle(feature, symb, range);
         // make sure the style has been recognized as dynamic
@@ -224,7 +224,7 @@ public class SLDStyleFactoryTest extends TestCase {
         URL url = StreamingRenderer.class.getResource("test-data/");
         PointSymbolizer symb = sf.createPointSymbolizer();
         ExternalGraphic eg = sf.createExternalGraphic(url + "${icon}", "image/png");
-        symb.getGraphic().addExternalGraphic(eg);
+        symb.getGraphic().graphicalSymbols().add(eg);
         sld.setVectorRenderingEnabled(true);
 
         GraphicStyle2D gs = (GraphicStyle2D) sld.createStyle(feature, symb, range);
@@ -242,7 +242,7 @@ public class SLDStyleFactoryTest extends TestCase {
         URL url = StreamingRenderer.class.getResource("test-data/");
         PointSymbolizer symb = sf.createPointSymbolizer();
         ExternalGraphic eg = sf.createExternalGraphic(url + "icon64.png", "image/png");
-        symb.getGraphic().addExternalGraphic(eg);
+        symb.getGraphic().graphicalSymbols().add(eg);
 
         GraphicStyle2D gs = (GraphicStyle2D) sld.createPointStyle(feature, symb, range);
         BufferedImage img = gs.getImage();
@@ -255,7 +255,7 @@ public class SLDStyleFactoryTest extends TestCase {
         URL url = StreamingRenderer.class.getResource("test-data/");
         PointSymbolizer symb = sf.createPointSymbolizer();
         ExternalGraphic eg = sf.createExternalGraphic(url + "${icon}", "${symb}");
-        symb.getGraphic().addExternalGraphic(eg);
+        symb.getGraphic().graphicalSymbols().add(eg);
 
         GraphicStyle2D gs = (GraphicStyle2D) sld.createStyle(feature, symb, range);
         // make sure the style has been recognized as dynamic
@@ -304,7 +304,7 @@ public class SLDStyleFactoryTest extends TestCase {
         PointSymbolizer symb = sf.createPointSymbolizer();
         Mark myMark = sf.createMark();
         myMark.setWellKnownName(ff.literal("square"));
-        symb.getGraphic().addMark(myMark);
+        symb.getGraphic().graphicalSymbols().add(myMark);
 
         MarkStyle2D ms = (MarkStyle2D) sld.createPointStyle(feature, symb, range);
         assertEquals(16.0, ms.getSize());

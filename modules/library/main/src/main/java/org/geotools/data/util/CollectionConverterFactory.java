@@ -148,7 +148,7 @@ public class CollectionConverterFactory implements ConverterFactory {
             return null;
         } else {
             // instantiate directly
-            return (Collection) target.newInstance();
+            return (Collection) target.getDeclaredConstructor().newInstance();
         }
     }
 

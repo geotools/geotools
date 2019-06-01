@@ -27,6 +27,7 @@ import org.geotools.geometry.iso.primitive.CurveImpl;
 import org.geotools.geometry.iso.primitive.PrimitiveFactoryImpl;
 import org.geotools.geometry.iso.primitive.SurfaceImpl;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.opengis.geometry.PositionFactory;
 import org.opengis.geometry.coordinate.Position;
 import org.opengis.geometry.primitive.CurveSegment;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -95,18 +96,19 @@ public class IsSimpleOperationTest extends TestCase {
     private CurveImpl createCurveA(GeometryBuilder builder) {
 
         GeometryFactoryImpl tCoordFactory = (GeometryFactoryImpl) builder.getGeometryFactory();
+        PositionFactory pf = builder.getPositionFactory();
         PrimitiveFactoryImpl tPrimFactory = (PrimitiveFactoryImpl) builder.getPrimitiveFactory();
 
         // Self-Intersecting Curve
         // CURVE(30 20, 10 50, 100 120, 100 70, 10 140)
         ArrayList<Position> line1 = new ArrayList<Position>();
-        line1.add(new PositionImpl(tCoordFactory.createDirectPosition(new double[] {30, 20})));
-        line1.add(new PositionImpl(tCoordFactory.createDirectPosition(new double[] {10, 50})));
-        line1.add(new PositionImpl(tCoordFactory.createDirectPosition(new double[] {100, 120})));
+        line1.add(new PositionImpl(pf.createDirectPosition(new double[] {30, 20})));
+        line1.add(new PositionImpl(pf.createDirectPosition(new double[] {10, 50})));
+        line1.add(new PositionImpl(pf.createDirectPosition(new double[] {100, 120})));
         ArrayList<Position> line2 = new ArrayList<Position>();
-        line2.add(new PositionImpl(tCoordFactory.createDirectPosition(new double[] {100, 120})));
-        line2.add(new PositionImpl(tCoordFactory.createDirectPosition(new double[] {100, 70})));
-        line2.add(new PositionImpl(tCoordFactory.createDirectPosition(new double[] {10, 140})));
+        line2.add(new PositionImpl(pf.createDirectPosition(new double[] {100, 120})));
+        line2.add(new PositionImpl(pf.createDirectPosition(new double[] {100, 70})));
+        line2.add(new PositionImpl(pf.createDirectPosition(new double[] {10, 140})));
 
         /* Setting up Array of these LineStrings */
         ArrayList<CurveSegment> tLineList1 = new ArrayList<CurveSegment>();
@@ -119,19 +121,21 @@ public class IsSimpleOperationTest extends TestCase {
 
     private CurveImpl createCurveB(GeometryBuilder builder) {
 
+        GeometryFactoryImpl gf = (GeometryFactoryImpl) builder.getGeometryFactory();
+        PositionFactory pf = builder.getPositionFactory();
         GeometryFactoryImpl tCoordFactory = (GeometryFactoryImpl) builder.getGeometryFactory();
         PrimitiveFactoryImpl tPrimFactory = (PrimitiveFactoryImpl) builder.getPrimitiveFactory();
 
         // Non-Self-Intersecting Curve
         // CURVE(30 20, 10 50, 100 70, 100 120, 10 140)
         ArrayList<Position> line1 = new ArrayList<Position>();
-        line1.add(new PositionImpl(tCoordFactory.createDirectPosition(new double[] {30, 20})));
-        line1.add(new PositionImpl(tCoordFactory.createDirectPosition(new double[] {10, 50})));
-        line1.add(new PositionImpl(tCoordFactory.createDirectPosition(new double[] {100, 70})));
+        line1.add(new PositionImpl(pf.createDirectPosition(new double[] {30, 20})));
+        line1.add(new PositionImpl(pf.createDirectPosition(new double[] {10, 50})));
+        line1.add(new PositionImpl(pf.createDirectPosition(new double[] {100, 70})));
         ArrayList<Position> line2 = new ArrayList<Position>();
-        line2.add(new PositionImpl(tCoordFactory.createDirectPosition(new double[] {100, 70})));
-        line2.add(new PositionImpl(tCoordFactory.createDirectPosition(new double[] {100, 120})));
-        line2.add(new PositionImpl(tCoordFactory.createDirectPosition(new double[] {10, 140})));
+        line2.add(new PositionImpl(pf.createDirectPosition(new double[] {100, 70})));
+        line2.add(new PositionImpl(pf.createDirectPosition(new double[] {100, 120})));
+        line2.add(new PositionImpl(pf.createDirectPosition(new double[] {10, 140})));
 
         /* Setting up Array of these LineStrings */
         ArrayList<CurveSegment> tLineList1 = new ArrayList<CurveSegment>();

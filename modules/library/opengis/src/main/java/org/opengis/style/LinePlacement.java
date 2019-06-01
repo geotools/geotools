@@ -71,7 +71,7 @@ public interface LinePlacement extends LabelPlacement {
      * @return boolean
      */
     @XmlElement("IsAligned")
-    boolean IsAligned();
+    boolean isAligned();
 
     /**
      * GeneralizeLine allows the actual geometry, be it a linestring or polygon to be generalized

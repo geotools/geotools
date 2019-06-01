@@ -104,8 +104,7 @@ public class ResponsiblePartyImpl extends MetadataEntity implements ResponsibleP
         try {
             return OGC(role, function, new URI(onlineResource));
         } catch (URISyntaxException badContact) {
-            Logging.unexpectedException(
-                    "org.geotools.metadata.iso", ResponsibleParty.class, "OGC", badContact);
+            Logging.unexpectedException(LOGGER, ResponsibleParty.class, "OGC", badContact);
             return OGC;
         }
     }

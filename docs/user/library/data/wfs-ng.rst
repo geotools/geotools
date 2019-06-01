@@ -144,7 +144,7 @@ You can connect to a Web Feature Server via the DataStore API; the connection pa
   Object polygon = JTS.toGeometry( bbox );
   Intersects filter = ff.intersects( ff.property( geomName ), ff.literal( polygon ) );
   
-  Query query = new DefaultQuery( typeName, filter, new String[]{ geomName } );
+  Query query = new Query( typeName, filter, new String[]{ geomName } );
   FeatureCollection<SimpleFeatureType, SimpleFeature> features = source.getFeatures( query );
   
   ReferencedEnvelope bounds = new ReferencedEnvelope();

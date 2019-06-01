@@ -43,7 +43,7 @@ public class HanaGeographyOnlineTest extends JDBCGeographyOnlineTest {
         // We have to override to use the proper schema in the select-statement.
         VirtualTable vt =
                 new VirtualTable("geopoint_vt", "SELECT * FROM \"geotools\".\"geopoint\"");
-        dataStore.addVirtualTable(vt);
+        dataStore.createVirtualTable(vt);
 
         SimpleFeatureType featureType = dataStore.getSchema("geopoint_vt");
         assertNotNull(featureType);

@@ -221,16 +221,6 @@ produce an error (rather than an empty collection) if the input is null or empty
 In GeoTools 2.0 FeatureCollection was called **FeatureResults**, these methods are
 left over from that time.
   
-**FeatureCollections**
-
-Internally these methods use the **FeatureCollections** class to create collection
-to hold the content::
-     
-     SimpleFeatureCollection collection = FeatureCollections.newCollection();
-     for (SimpleFeature feature : list) {
-        collection.add(feature);
-     }
-
 FeatureSource
 '''''''''''''
 

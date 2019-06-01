@@ -349,12 +349,6 @@ public class HanaDialect extends PreparedStatementSQLDialect {
 
     @Override
     public void encodeGeometryColumn(
-            GeometryDescriptor gatt, String prefix, int srid, StringBuffer sql) {
-        encodeGeometryColumn(gatt, prefix, srid, null, sql);
-    }
-
-    @Override
-    public void encodeGeometryColumn(
             GeometryDescriptor gatt,
             String prefix,
             int srid,

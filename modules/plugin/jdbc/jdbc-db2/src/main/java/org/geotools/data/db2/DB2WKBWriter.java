@@ -44,7 +44,7 @@ public class DB2WKBWriter {
         public void filter(Coordinate coord) {
             if (dimension == 3) // no further testing needed
             return;
-            if (!(Double.isNaN(coord.z))) dimension = 3;
+            if (!(Double.isNaN(coord.getZ()))) dimension = 3;
         }
 
         int getDimension() {

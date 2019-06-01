@@ -28,7 +28,7 @@ import java.util.TreeMap;
 import java.util.logging.Logger;
 import javax.xml.namespace.QName;
 import org.geotools.data.DataSourceException;
-import org.geotools.data.wfs.internal.GetFeatureParser;
+import org.geotools.data.wfs.internal.GetParser;
 import org.geotools.data.wfs.internal.Loggers;
 import org.geotools.data.wfs.internal.WFSConfig;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
@@ -59,16 +59,16 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
 /**
- * A {@link GetFeatureParser} implementation that uses plain xml pull to parse a GetFeature
+ * A {@link GetParser<SimpleFeature>} implementation that uses plain xml pull to parse a GetFeature
  * response.
  *
  * @author Gabriel Roldan (TOPP)
  * @version $Id$
  * @since 2.5.x
- *     <p>//@deprecated should be removed as long as {@link PullParserFeatureReader} works well
+ *     <p>
  */
 @SuppressWarnings("nls")
-public class XmlSimpleFeatureParser implements GetFeatureParser {
+public class XmlSimpleFeatureParser implements GetParser<SimpleFeature> {
 
     private static final Logger LOGGER = Loggers.RESPONSES;
 

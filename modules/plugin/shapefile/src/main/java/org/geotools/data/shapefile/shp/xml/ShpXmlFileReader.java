@@ -24,7 +24,10 @@ import org.geotools.data.shapefile.files.ShpFiles;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
+import org.jdom2.JDOMFactory;
 import org.jdom2.input.SAXBuilder;
+import org.jdom2.input.sax.SAXHandlerFactory;
+import org.jdom2.input.sax.XMLReaders;
 import org.locationtech.jts.geom.Envelope;
 
 public class ShpXmlFileReader implements FileReader {
@@ -41,7 +44,9 @@ public class ShpXmlFileReader implements FileReader {
      * @throws IOException
      */
     public ShpXmlFileReader(ShpFiles shapefileFiles) throws JDOMException, IOException {
-        SAXBuilder builder = new SAXBuilder(false);
+        SAXBuilder builder =
+                new SAXBuilder(
+                        XMLReaders.NONVALIDATING, (SAXHandlerFactory) null, (JDOMFactory) null);
 
         InputStream inputStream = shapefileFiles.getInputStream(ShpFileType.SHP_XML, this);
         try {

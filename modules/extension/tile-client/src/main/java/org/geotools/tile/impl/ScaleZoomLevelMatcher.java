@@ -84,37 +84,6 @@ public class ScaleZoomLevelMatcher {
         this.scale = scale;
     }
 
-    /** @deprecated is wmtSource.getTileCrs() really meaningful? */
-    @Deprecated
-    public static ScaleZoomLevelMatcher createMatcher(
-            ReferencedEnvelope mapExtentMapCrs, double scale, TileService wmtSource)
-            throws Exception {
-
-        CoordinateReferenceSystem crsMap = mapExtentMapCrs.getCoordinateReferenceSystem();
-        // the CRS used for the tile cutting
-        CoordinateReferenceSystem crsTiles = wmtSource.getTileCrs();
-
-        // Transformation: MapCrs -> TileCrs (mostly WGS_84)
-        MathTransform transformMapToTileCrs = CRS.findMathTransform(crsMap, crsTiles);
-
-        // Transformation: TileCrs (mostly WGS_84) -> MapCrs (needed for the
-        // blank tiles)
-        MathTransform transformTileCrsToMap = CRS.findMathTransform(crsTiles, crsMap);
-
-        // Get the mapExtent in the tiles CRS
-        ReferencedEnvelope mapExtentTileCrs =
-                getProjectedEnvelope(mapExtentMapCrs, crsTiles, transformMapToTileCrs);
-
-        return new ScaleZoomLevelMatcher(
-                crsMap,
-                crsTiles,
-                transformMapToTileCrs,
-                transformTileCrsToMap,
-                mapExtentTileCrs,
-                mapExtentMapCrs,
-                scale);
-    }
-
     public static ScaleZoomLevelMatcher createMatcher(
             ReferencedEnvelope requestExtent, CoordinateReferenceSystem crsTiles, double scale)
             throws FactoryException, TransformException {

@@ -24,11 +24,6 @@ import org.opengis.filter.expression.Expression;
 public class IsGreaterThanOrEqualToImpl extends MultiCompareFilterImpl
         implements PropertyIsGreaterThanOrEqualTo {
 
-    @Deprecated
-    protected IsGreaterThanOrEqualToImpl() {
-        this(null, null);
-    }
-
     protected IsGreaterThanOrEqualToImpl(Expression expression1, Expression expression2) {
         this(expression1, expression2, false);
     }

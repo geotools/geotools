@@ -27,6 +27,7 @@ import junit.framework.TestCase;
 import org.geotools.ml.MLConfiguration;
 import org.geotools.ml.Mail;
 import org.geotools.ml.bindings.MLSchemaLocationResolver;
+import org.geotools.xsd.impl.Handler;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.Locator;
@@ -122,7 +123,7 @@ public class ParserTest extends TestCase {
         assertTrue(delegate.bar);
     }
 
-    static class MyParserDelegate implements ParserDelegate {
+    static class MyParserDelegate implements ParserDelegate, ParserDelegate2 {
 
         boolean foo = false;
         boolean bar = false;
@@ -167,6 +168,12 @@ public class ParserTest extends TestCase {
         }
 
         public void startPrefixMapping(String prefix, String uri) throws SAXException {}
+
+        @Override
+        public boolean canHandle(
+                QName elementName, Attributes attributes, Handler handler, Handler parent) {
+            return canHandle(elementName);
+        }
     }
 
     public void testMixedContent() throws Exception {

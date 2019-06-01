@@ -140,8 +140,8 @@ public class EnvelopeTypeBinding extends AbstractComplexBinding {
             Coordinate c1 = (Coordinate) c.get(0);
             Coordinate c2 = (Coordinate) c.get(1);
 
-            if (!Double.isNaN(c1.z)) {
-                return new ReferencedEnvelope3D(c1.x, c2.x, c1.y, c2.y, c1.z, c1.z, crs);
+            if (!Double.isNaN(c1.getZ())) {
+                return new ReferencedEnvelope3D(c1.x, c2.x, c1.y, c2.y, c1.getZ(), c1.getZ(), crs);
             } else {
                 return new ReferencedEnvelope(c1.x, c2.x, c1.y, c2.y, crs);
             }

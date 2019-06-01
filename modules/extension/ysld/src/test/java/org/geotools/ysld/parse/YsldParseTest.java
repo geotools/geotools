@@ -17,10 +17,10 @@
  */
 package org.geotools.ysld.parse;
 
+import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.expect;
-import static org.easymock.classextension.EasyMock.createMock;
-import static org.easymock.classextension.EasyMock.replay;
-import static org.easymock.classextension.EasyMock.verify;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
 import static org.geotools.ysld.TestUtils.appliesToScale;
 import static org.geotools.ysld.TestUtils.attribute;
 import static org.geotools.ysld.TestUtils.function;
@@ -57,7 +57,7 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import org.easymock.classextension.EasyMock;
+import org.easymock.EasyMock;
 import org.geotools.filter.function.RecodeFunction;
 import org.geotools.filter.function.string.ConcatenateFunction;
 import org.geotools.process.function.ProcessFunction;

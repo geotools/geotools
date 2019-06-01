@@ -16,11 +16,11 @@
  */
 package org.geotools.renderer.lite;
 
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -29,14 +29,15 @@ import org.geotools.data.DataUtilities;
 import org.geotools.data.memory.MemoryDataStore;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.feature.NameImpl;
 import org.geotools.feature.SchemaException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.filter.IllegalFilterException;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.map.DefaultMapContext;
-import org.geotools.map.MapContext;
+import org.geotools.map.FeatureLayer;
+import org.geotools.map.MapContent;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.renderer.RenderListener;
@@ -50,9 +51,7 @@ import org.geotools.styling.Stroke;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleBuilder;
 import org.geotools.styling.StyleFactory;
-import org.geotools.styling.StyleFactoryFinder;
 import org.geotools.styling.StyledLayerDescriptor;
-import org.geotools.styling.Symbolizer;
 import org.geotools.styling.UserLayer;
 import org.geotools.test.TestData;
 import org.geotools.xml.styling.SLDParser;
@@ -127,41 +126,41 @@ public class Rendering2DTest extends TestCase {
         pointsym.setGraphic(sFac.getDefaultGraphic());
 
         Rule rule = sFac.createRule();
-        rule.setSymbolizers(new Symbolizer[] {polysym(sFac)});
+        rule.symbolizers().add(polysym(sFac));
         FeatureTypeStyle fts = sFac.createFeatureTypeStyle(new Rule[] {rule});
-        fts.setFeatureTypeName("polygonfeature");
+        fts.featureTypeNames().add(new NameImpl("polygonfeature"));
 
         Rule rule1 = sFac.createRule();
-        rule.setSymbolizers(new Symbolizer[] {polysym(sFac)});
+        rule.symbolizers().add(polysym(sFac));
         FeatureTypeStyle fts1 = sFac.createFeatureTypeStyle(new Rule[] {rule1});
-        fts1.setFeatureTypeName("polygonfeature");
+        fts1.featureTypeNames().add(new NameImpl("polygonfeature"));
 
         Rule rule2 = sFac.createRule();
-        rule2.setSymbolizers(new Symbolizer[] {linesym(sFac)});
+        rule2.symbolizers().add(linesym(sFac));
         FeatureTypeStyle fts2 = sFac.createFeatureTypeStyle();
-        fts2.setRules(new Rule[] {rule2});
-        fts2.setFeatureTypeName("linefeature");
+        fts2.rules().add(rule2);
+        fts2.featureTypeNames().add(new NameImpl("linefeature"));
 
         Rule rule3 = sFac.createRule();
-        rule3.setSymbolizers(new Symbolizer[] {pointsym});
+        rule3.symbolizers().add(pointsym);
         FeatureTypeStyle fts3 = sFac.createFeatureTypeStyle();
-        fts3.setRules(new Rule[] {rule3});
-        fts3.setFeatureTypeName("pointfeature");
+        fts3.rules().add(rule3);
+        fts3.featureTypeNames().add(new NameImpl("pointfeature"));
 
         Rule rule4 = sFac.createRule();
-        rule4.setSymbolizers(new Symbolizer[] {polysym(sFac), linesym(sFac)});
+        rule4.symbolizers().addAll(Arrays.asList(polysym(sFac), linesym(sFac)));
         FeatureTypeStyle fts4 = sFac.createFeatureTypeStyle();
-        fts4.setRules(new Rule[] {rule4});
-        fts4.setFeatureTypeName("collFeature");
+        fts4.rules().add(rule4);
+        fts4.featureTypeNames().add(new NameImpl("collFeature"));
 
         Rule rule5 = sFac.createRule();
-        rule5.setSymbolizers(new Symbolizer[] {linesym(sFac)});
+        rule5.symbolizers().add(linesym(sFac));
         FeatureTypeStyle fts5 = sFac.createFeatureTypeStyle();
-        fts5.setRules(new Rule[] {rule5});
-        fts5.setFeatureTypeName("ringFeature");
+        fts5.rules().add(rule5);
+        fts5.featureTypeNames().add(new NameImpl("ringFeature"));
 
         Style style = sFac.createStyle();
-        style.setFeatureTypeStyles(new FeatureTypeStyle[] {fts1, fts, fts2, fts3, fts4, fts5});
+        style.featureTypeStyles().addAll(Arrays.asList(fts1, fts, fts2, fts3, fts4, fts5));
         return style;
     }
 
@@ -291,9 +290,8 @@ public class Rendering2DTest extends TestCase {
         // CREATING MAP CONTEXT
         //
         // ////////////////////////////////////////////////////////////////////
-        final MapContext map = new DefaultMapContext(DefaultGeographicCRS.WGS84);
-        map.addLayer(ft, style);
-        map.setAreaOfInterest(map.getLayerBounds());
+        final MapContent map = new MapContent();
+        map.addLayer(new FeatureLayer(ft, style));
 
         // ////////////////////////////////////////////////////////////////////
         //
@@ -301,7 +299,7 @@ public class Rendering2DTest extends TestCase {
         //
         // ////////////////////////////////////////////////////////////////////
         final StreamingRenderer renderer = new StreamingRenderer();
-        renderer.setContext(map);
+        renderer.setMapContent(map);
         renderer.setRendererHints(rendererHints);
 
         // ////////////////////////////////////////////////////////////////////
@@ -309,8 +307,7 @@ public class Rendering2DTest extends TestCase {
         // SHOWING RENDERER
         //
         // ////////////////////////////////////////////////////////////////////
-        RendererBaseTest.showRender(
-                "testSimplePolygonRender", renderer, 1000, map.getLayerBounds());
+        RendererBaseTest.showRender("testSimplePolygonRender", renderer, 1000, map.getMaxBounds());
     }
 
     // public void testRenderLoadedStyle() throws Exception {
@@ -321,10 +318,10 @@ public class Rendering2DTest extends TestCase {
     // SimpleFeatureCollection ft = createTestFeatureCollection(null, POLYGON);
     // Style style = loadTestStyle();
     //
-    // MapContext map = new DefaultMapContext();
-    // map.addLayer(ft, style);
+    // MapContent map = new DefaultMapContent();
+    // map.addLayer(new FeatureLayer(ft, style));
     // LiteRenderer2 renderer = new LiteRenderer2(map);
-    // Envelope env = map.getLayerBounds();
+    // Envelope env = map.getMaxBounds();
     // env = new Envelope(env.getMinX() - 20, env.getMaxX() + 20, env.getMinY()
     // - 20, env
     // .getMaxY() + 20);
@@ -354,9 +351,8 @@ public class Rendering2DTest extends TestCase {
         // CREATING MAP CONTEXT
         //
         // ////////////////////////////////////////////////////////////////////
-        final MapContext map = new DefaultMapContext(DefaultGeographicCRS.WGS84);
-        map.addLayer(ft, style);
-        map.setAreaOfInterest(map.getLayerBounds());
+        final MapContent map = new MapContent();
+        map.addLayer(new FeatureLayer(ft, style));
 
         // ////////////////////////////////////////////////////////////////////
         //
@@ -364,7 +360,7 @@ public class Rendering2DTest extends TestCase {
         //
         // ////////////////////////////////////////////////////////////////////
         final StreamingRenderer renderer = new StreamingRenderer();
-        renderer.setContext(map);
+        renderer.setMapContent(map);
         renderer.setRendererHints(rendererHints);
 
         // ////////////////////////////////////////////////////////////////////
@@ -372,7 +368,7 @@ public class Rendering2DTest extends TestCase {
         // SHOWING RENDERER
         //
         // ////////////////////////////////////////////////////////////////////
-        ReferencedEnvelope env = map.getLayerBounds();
+        ReferencedEnvelope env = map.getMaxBounds();
         env =
                 new ReferencedEnvelope(
                         env.getMinX() - 20,
@@ -405,9 +401,8 @@ public class Rendering2DTest extends TestCase {
         // CREATING MAP CONTEXT
         //
         // ////////////////////////////////////////////////////////////////////
-        final MapContext map = new DefaultMapContext(DefaultGeographicCRS.WGS84);
-        map.addLayer(ft, style);
-        map.setAreaOfInterest(map.getLayerBounds());
+        final MapContent map = new MapContent();
+        map.addLayer(new FeatureLayer(ft, style));
 
         // ////////////////////////////////////////////////////////////////////
         //
@@ -415,7 +410,7 @@ public class Rendering2DTest extends TestCase {
         //
         // ////////////////////////////////////////////////////////////////////
         final StreamingRenderer renderer = new StreamingRenderer();
-        renderer.setContext(map);
+        renderer.setMapContent(map);
         renderer.setRendererHints(rendererHints);
 
         // ////////////////////////////////////////////////////////////////////
@@ -423,7 +418,7 @@ public class Rendering2DTest extends TestCase {
         // SHOWING RENDERER
         //
         // ////////////////////////////////////////////////////////////////////
-        ReferencedEnvelope env = map.getLayerBounds();
+        ReferencedEnvelope env = map.getMaxBounds();
         env =
                 new ReferencedEnvelope(
                         env.getMinX() - 20,
@@ -456,10 +451,8 @@ public class Rendering2DTest extends TestCase {
         // Create the map context
         //
         // //
-        MapContext map = new DefaultMapContext();
-        map.setCoordinateReferenceSystem(DefaultGeographicCRS.WGS84);
-        map.addLayer(ft, style);
-        map.setAreaOfInterest(map.getLayerBounds());
+        MapContent map = new MapContent();
+        map.addLayer(new FeatureLayer(ft, style));
 
         // //
         //
@@ -467,7 +460,7 @@ public class Rendering2DTest extends TestCase {
         //
         // //
         StreamingRenderer renderer = new StreamingRenderer();
-        renderer.setContext(map);
+        renderer.setMapContent(map);
         renderer.setRendererHints(rendererHints);
 
         // //
@@ -500,7 +493,7 @@ public class Rendering2DTest extends TestCase {
         // Set the new AOI
         //
         // //
-        final ReferencedEnvelope env = (ReferencedEnvelope) map.getLayerBounds();
+        final ReferencedEnvelope env = (ReferencedEnvelope) map.getMaxBounds();
         final ReferencedEnvelope bounds =
                 new ReferencedEnvelope(JTS.transform(env, null, t, 10), crs);
 
@@ -530,8 +523,8 @@ public class Rendering2DTest extends TestCase {
         //
         //
         // /////////////////////////////////////////////////////////////////
-        final MapContext map = new DefaultMapContext(DefaultGeographicCRS.WGS84);
-        map.addLayer(ft, style);
+        final MapContent map = new MapContent();
+        map.addLayer(new FeatureLayer(ft, style));
 
         // ///////////////////////////////////////////////////////////////////
         //
@@ -566,9 +559,9 @@ public class Rendering2DTest extends TestCase {
         // /////////////////////////////////////////////////////////////////
         final StreamingRenderer renderer = new StreamingRenderer();
         renderer.setRendererHints(rendererHints);
-        renderer.setContext(map);
+        renderer.setMapContent(map);
 
-        ReferencedEnvelope env = map.getLayerBounds();
+        ReferencedEnvelope env = map.getMaxBounds();
         env =
                 new ReferencedEnvelope(
                         env.getMinX() - 20,
@@ -602,8 +595,8 @@ public class Rendering2DTest extends TestCase {
         //
         //
         // /////////////////////////////////////////////////////////////////
-        final MapContext map = new DefaultMapContext(DefaultGeographicCRS.WGS84);
-        map.addLayer(ft, style);
+        final MapContent map = new MapContent();
+        map.addLayer(new FeatureLayer(ft, style));
 
         // ///////////////////////////////////////////////////////////////////
         //
@@ -643,9 +636,9 @@ public class Rendering2DTest extends TestCase {
         // /////////////////////////////////////////////////////////////////
         final StreamingRenderer renderer = new StreamingRenderer();
         renderer.setRendererHints(rendererHints);
-        renderer.setContext(map);
+        renderer.setMapContent(map);
 
-        ReferencedEnvelope env = map.getLayerBounds();
+        ReferencedEnvelope env = map.getMaxBounds();
         env =
                 new ReferencedEnvelope(
                         env.getMinX() - 20,
@@ -676,11 +669,11 @@ public class Rendering2DTest extends TestCase {
         // Query layerQuery;
         //
         // MapLayer layer = new DefaultMapLayer(ft, style);
-        // MapContext map = new DefaultMapContext(new MapLayer[] { layer });
+        // MapContent map = new DefaultMapContent(new MapLayer[] { layer });
         // map.setAreaOfInterest(envelope, ft.getFeatureType()
         // .getDefaultGeometry().getCoordinateSystem());
         // StreamingRenderer renderer = new StreamingRenderer();
-        // renderer.setContext(map);
+        // renderer.setMapContent(map);
         // renderer.setRendererHints(rendererHints);
         //
         // // this is the reader that StreamingRenderer obtains after applying
@@ -689,7 +682,7 @@ public class Rendering2DTest extends TestCase {
         // FilterFactory ffac = FilterFactoryFinder.createFilterFactory();
         //
         // // test maxFeatures, render just the first 2 features
-        // layerQuery = new DefaultQuery("querytest", filter, 2, null,
+        // layerQuery = new Query("querytest", filter, 2, null,
         // "handle");
         // layer.setQuery(layerQuery);
         //
@@ -718,7 +711,7 @@ public class Rendering2DTest extends TestCase {
         // // the performance gain of
         // // renderer.setOptimizedDataLoadingEnabled(true),
         // // but we should test it anyway
-        // layerQuery = new DefaultQuery("querytest", filter, Integer.MAX_VALUE,
+        // layerQuery = new Query("querytest", filter, Integer.MAX_VALUE,
         // new String[] { "id" }, "handle");
         // layer.setQuery(layerQuery);
         //
@@ -764,7 +757,7 @@ public class Rendering2DTest extends TestCase {
         //
         // System.err.println("trying with filter: " + filter);
         //
-        // layerQuery = new DefaultQuery("querytest", filter, Integer.MAX_VALUE,
+        // layerQuery = new Query("querytest", filter, Integer.MAX_VALUE,
         // null, "handle");
         // layer.setQuery(layerQuery);
         //
@@ -790,10 +783,10 @@ public class Rendering2DTest extends TestCase {
         // Query layerQuery;
         //
         // MapLayer layer = new DefaultMapLayer(ft, style);
-        // MapContext map = new DefaultMapContext(new MapLayer[] { layer });
+        // MapContent map = new DefaultMapContent(new MapLayer[] { layer });
         // map.setAreaOfInterest(envelope);
         // StreamingRenderer renderer = new StreamingRenderer();
-        // renderer.setContext(map);
+        // renderer.setMapContent(map);
         // renderer.setRendererHints(rendererHints);
         //
         // // this is the reader that StreamingRenderer obtains after applying
@@ -803,7 +796,7 @@ public class Rendering2DTest extends TestCase {
         // FilterFactory ffac = FilterFactoryFinder.createFilterFactory();
         //
         // // test maxFeatures, render just the first 2 features
-        // layerQuery = new DefaultQuery("querytest", filter);
+        // layerQuery = new Query("querytest", filter);
         // layer.setQuery(layerQuery);
         //
         // ArrayList rules = new ArrayList();
@@ -889,17 +882,17 @@ public class Rendering2DTest extends TestCase {
     }
 
     private Style createDefQueryTestStyle() throws IllegalFilterException {
-        StyleFactory sFac = StyleFactoryFinder.createStyleFactory();
+        StyleFactory sFac = CommonFactoryFinder.getStyleFactory();
 
         PointSymbolizer pointsym = sFac.createPointSymbolizer();
         pointsym.setGraphic(sFac.getDefaultGraphic());
         pointsym.setGeometryPropertyName("point");
 
         Rule rulep = sFac.createRule();
-        rulep.setSymbolizers(new Symbolizer[] {pointsym});
+        rulep.symbolizers().add(pointsym);
         FeatureTypeStyle ftsP = sFac.createFeatureTypeStyle();
-        ftsP.setRules(new Rule[] {rulep});
-        ftsP.setFeatureTypeName("querytest");
+        ftsP.rules().add(rulep);
+        ftsP.featureTypeNames().add(new NameImpl("querytest"));
 
         LineSymbolizer linesym = sFac.createLineSymbolizer();
         linesym.setGeometryPropertyName("line");
@@ -911,10 +904,10 @@ public class Rendering2DTest extends TestCase {
         linesym.setStroke(myStroke);
 
         Rule rule2 = sFac.createRule();
-        rule2.setSymbolizers(new Symbolizer[] {linesym});
+        rule2.symbolizers().add(linesym);
         FeatureTypeStyle ftsL = sFac.createFeatureTypeStyle();
-        ftsL.setRules(new Rule[] {rule2});
-        ftsL.setFeatureTypeName("querytest");
+        ftsL.rules().add(rule2);
+        ftsL.featureTypeNames().add(new NameImpl("querytest"));
 
         PolygonSymbolizer polysym = sFac.createPolygonSymbolizer();
         polysym.setGeometryPropertyName("polygon");
@@ -923,13 +916,13 @@ public class Rendering2DTest extends TestCase {
         polysym.setFill(myFill);
         polysym.setStroke(sFac.getDefaultStroke());
         Rule rule = sFac.createRule();
-        rule.setSymbolizers(new Symbolizer[] {polysym});
+        rule.symbolizers().add(polysym);
         FeatureTypeStyle ftsPoly = sFac.createFeatureTypeStyle(new Rule[] {rule});
         // ftsPoly.setRules(new Rule[]{rule});
-        ftsPoly.setFeatureTypeName("querytest");
+        ftsPoly.featureTypeNames().add(new NameImpl("querytest"));
 
         Style style = sFac.createStyle();
-        style.setFeatureTypeStyles(new FeatureTypeStyle[] {ftsPoly, ftsL, ftsP});
+        style.featureTypeStyles().addAll(Arrays.asList(ftsPoly, ftsL, ftsP));
 
         return style;
     }
@@ -1162,10 +1155,10 @@ public class Rendering2DTest extends TestCase {
 
     private void renderEmptyGeometry(SimpleFeature f, Style style) {
         SimpleFeatureCollection fc = DataUtilities.collection(f);
-        MapContext mc = new DefaultMapContext();
-        mc.addLayer(fc, style);
+        MapContent mc = new MapContent();
+        mc.addLayer(new FeatureLayer(fc, style));
         StreamingRenderer sr = new StreamingRenderer();
-        sr.setContext(mc);
+        sr.setMapContent(mc);
         BufferedImage bi = new BufferedImage(640, 480, BufferedImage.TYPE_4BYTE_ABGR);
         sr.addRenderListener(
                 new RenderListener() {

@@ -208,11 +208,8 @@ public class FunctionToStringTest {
                 } else {
                     Object newObj = null;
                     try {
-                        newObj = type.newInstance();
-                    } catch (InstantiationException e) {
-                        java.util.logging.Logger.getGlobal()
-                                .log(java.util.logging.Level.INFO, "", e);
-                    } catch (IllegalAccessException e) {
+                        newObj = type.getDeclaredConstructor().newInstance();
+                    } catch (Exception e) {
                         java.util.logging.Logger.getGlobal()
                                 .log(java.util.logging.Level.INFO, "", e);
                     }

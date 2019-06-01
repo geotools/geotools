@@ -22,19 +22,18 @@ import java.io.IOException;
 import junit.framework.TestCase;
 import org.geotools.data.memory.MemoryDataStore;
 import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.map.DefaultMapContext;
 import org.geotools.map.DirectLayer;
+import org.geotools.map.FeatureLayer;
 import org.geotools.map.MapContent;
-import org.geotools.map.MapContext;
 import org.geotools.map.MapViewport;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleFactory;
-import org.geotools.styling.StyleFactoryFinder;
 import org.geotools.test.TestData;
 import org.geotools.xml.styling.SLDParser;
 import org.junit.Before;
@@ -65,8 +64,8 @@ public class DirectLayerLabelsTest extends TestCase {
         FeatureCollection collection = createPointFeatureCollection();
         Style style = loadStyle("PointStyle.sld");
         assertNotNull(style);
-        MapContext map = new DefaultMapContext(DefaultGeographicCRS.WGS84);
-        map.addLayer(collection, style);
+        MapContent map = new MapContent();
+        map.addLayer(new FeatureLayer(collection, style));
         DirectLayer dl =
                 new DirectLayer() {
 
@@ -84,8 +83,8 @@ public class DirectLayerLabelsTest extends TestCase {
                 };
         map.addLayer(dl);
         StreamingRenderer renderer = new StreamingRenderer();
-        renderer.setContext(map);
-        ReferencedEnvelope env = map.getLayerBounds();
+        renderer.setMapContent(map);
+        ReferencedEnvelope env = map.getMaxBounds();
         int boundary = 10;
         env =
                 new ReferencedEnvelope(
@@ -99,7 +98,7 @@ public class DirectLayerLabelsTest extends TestCase {
     }
 
     private Style loadStyle(String sldFilename) throws IOException {
-        StyleFactory factory = StyleFactoryFinder.createStyleFactory();
+        StyleFactory factory = CommonFactoryFinder.getStyleFactory();
 
         java.net.URL surl = TestData.getResource(this, sldFilename);
         SLDParser stylereader = new SLDParser(factory, surl);

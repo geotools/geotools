@@ -27,6 +27,7 @@ import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.MultiPoint;
 import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.geom.impl.CoordinateArraySequence;
 
 /**
  * @author aaime
@@ -96,8 +97,7 @@ public class MultiPointHandler implements ShapeHandler {
     }
 
     private Object createNull() {
-        Coordinate[] c = null;
-        return geometryFactory.createMultiPoint(c);
+        return geometryFactory.createMultiPoint((CoordinateSequence) null);
     }
 
     public Object read(ByteBuffer buffer, ShapeType type, boolean flatGeometry) {
@@ -151,7 +151,9 @@ public class MultiPointHandler implements ShapeHandler {
         }
 
         if (shapeType == ShapeType.MULTIPOINTZ) {
-            double[] zExtreame = JTSUtilities.zMinMax(mp.getCoordinates());
+            double[] result = {Double.NaN, Double.NaN};
+            JTSUtilities.zMinMax(new CoordinateArraySequence(mp.getCoordinates()), result);
+            double[] zExtreame = result;
 
             if (Double.isNaN(zExtreame[0])) {
                 buffer.putDouble(0.0);
@@ -163,7 +165,7 @@ public class MultiPointHandler implements ShapeHandler {
 
             for (int t = 0; t < mp.getNumGeometries(); t++) {
                 Coordinate c = (mp.getGeometryN(t)).getCoordinate();
-                double z = c.z;
+                double z = c.getZ();
 
                 if (Double.isNaN(z)) {
                     buffer.putDouble(0.0);

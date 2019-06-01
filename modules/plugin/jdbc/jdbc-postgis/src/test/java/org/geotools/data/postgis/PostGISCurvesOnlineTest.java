@@ -326,7 +326,7 @@ public class PostGISCurvesOnlineTest extends JDBCTestSupport {
     public void testSimplify() throws Exception {
         ContentFeatureSource fs = dataStore.getFeatureSource(tname("curves"));
         Query q = new Query();
-        q.getHints().put(Hints.GEOMETRY_SIMPLIFICATION, new Double(0.1));
+        q.getHints().put(Hints.GEOMETRY_SIMPLIFICATION, Double.valueOf(0.1));
         ContentFeatureCollection fc = fs.getFeatures(q);
         try (SimpleFeatureIterator fi = fc.features()) {
             // check they have not been simplified

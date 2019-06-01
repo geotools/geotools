@@ -18,6 +18,7 @@
 package org.geotools.process.vector;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -307,7 +308,8 @@ public class ClipProcess implements VectorProcess {
 
         protected boolean hasElevations(CoordinateSequence seq) {
             return (seq instanceof CoordinateArraySequence
-                            && !Double.isNaN(((CoordinateArraySequence) seq).getCoordinate(0).z))
+                            && !Double.isNaN(
+                                    ((CoordinateArraySequence) seq).getCoordinate(0).getZ()))
                     || (!(seq instanceof CoordinateArraySequence) && seq.getDimension() > 2);
         }
 
@@ -360,7 +362,7 @@ public class ClipProcess implements VectorProcess {
                                         // un-balancing the
                                         // weights (the fist/last coordinate would be counted twice)
                                         if ((j < coords.length - 1 || !c.equals(coords[0]))
-                                                && !Double.isNaN(c.z)) {
+                                                && !Double.isNaN(c.getZ())) {
                                             results.add(new PointDistance(c));
                                         }
                                     }
@@ -403,7 +405,7 @@ public class ClipProcess implements VectorProcess {
                     // did we match an existing point?
                     if (distance < PointDistance.EPS_METERS) {
                         // copy over the z and bail out
-                        seq.setOrdinate(i, 2, pd.c.z);
+                        seq.setOrdinate(i, 2, pd.c.getZ());
                         return;
                     }
                 }
@@ -415,14 +417,14 @@ public class ClipProcess implements VectorProcess {
                 final int usedPoints = Math.min(MAX_POINTS, elevations.size());
                 for (int j = 0; j < usedPoints; j++) {
                     PointDistance pd = elevations.get(j);
-                    sum += pd.c.z / pd.squareDistance;
+                    sum += pd.c.getZ() / pd.squareDistance;
                     weights += 1 / pd.squareDistance;
                 }
                 double z = sum / weights;
                 // apply safe rounding to avoid numerical issues with the above calculation due
                 // to the weights being, often, very small numbers
                 BigDecimal bd = BigDecimal.valueOf(z);
-                double rz = bd.setScale(scale, BigDecimal.ROUND_HALF_EVEN).doubleValue();
+                double rz = bd.setScale(scale, RoundingMode.HALF_EVEN).doubleValue();
                 seq.setOrdinate(i, 2, rz);
             }
         }
@@ -469,7 +471,7 @@ public class ClipProcess implements VectorProcess {
 
             @Override
             public String toString() {
-                return "[" + c.x + " " + c.y + " " + c.z + "] - " + squareDistance;
+                return "[" + c.x + " " + c.y + " " + c.getZ() + "] - " + squareDistance;
             }
         }
 

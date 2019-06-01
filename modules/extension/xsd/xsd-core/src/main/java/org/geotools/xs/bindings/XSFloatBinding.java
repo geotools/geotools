@@ -96,10 +96,10 @@ public class XSFloatBinding implements SimpleBinding {
         String text = (String) value;
 
         if ("INF".equals(text)) {
-            return new Float(Float.POSITIVE_INFINITY);
+            return Float.valueOf(Float.POSITIVE_INFINITY);
         }
 
-        return new Float((String) text);
+        return Float.valueOf((String) text);
     }
 
     /**

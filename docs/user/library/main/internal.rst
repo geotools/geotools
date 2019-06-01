@@ -19,12 +19,6 @@ A few public exceptions:
 * FeatureLockException
 * SchemaNotFoundException
 
-And a couple that are no longer used:
-
-* DefaultFeatureLock
-* DefaultFeatureLockFactory
-* DefaultQuery
-
 AbstractDataStore
 ^^^^^^^^^^^^^^^^^
 
@@ -103,7 +97,7 @@ Lots of abstract and utility classes are available when working with FeatureColl
 * SubFeatureCollection / FilteredIterator
 * SubFeatureList
 
-FeatureCollections often form a pair with the iterator they use to make contents available:
+Feature collections often form a pair with the iterator they use to make contents available:
 * DataFeatureCollection / FeatureWriterIterator / FeatureReaderIterator
 * EmptyFeatureCollection / EmptyIterator
 * FilteringFeatureCollection / FilteringFeatureIterator

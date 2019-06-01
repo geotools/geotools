@@ -80,7 +80,7 @@ public abstract class TestCaseSupport extends TestCase {
 
     protected OGRDataStoreFactory createDataStoreFactory() {
         try {
-            return dataStoreFactoryClass.newInstance();
+            return dataStoreFactoryClass.getDeclaredConstructor().newInstance();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

@@ -19,6 +19,7 @@ package org.geotools.filter;
 import static org.geotools.filter.Filters.getExpressionType;
 
 import org.geotools.util.Converters;
+import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 import org.opengis.filter.expression.ExpressionVisitor;
 import org.opengis.filter.expression.Literal;
@@ -81,7 +82,7 @@ public class LiteralExpressionImpl extends DefaultExpression implements Literal 
      */
     protected LiteralExpressionImpl(double value) {
         try {
-            this.setValue(new Double(value));
+            this.setValue(Double.valueOf(value));
         } catch (IllegalFilterException ile) {
             // this is imposible as this is only thrown for
             // invalid types, and Double is a valid type
@@ -174,8 +175,12 @@ public class LiteralExpressionImpl extends DefaultExpression implements Literal 
 
             // do the conversion dance
             int expressionType = getExpressionType(this);
-            if (expressionType == ExpressionType.LITERAL_GEOMETRY) {
+            if (expressionType == ExpressionType.LITERAL_GEOMETRY
+                    && this.literal instanceof Geometry) {
                 return ((Geometry) this.literal).equalsExact(expLit.evaluate(null, Geometry.class));
+            } else if (expressionType == ExpressionType.LITERAL_GEOMETRY
+                    && this.literal instanceof Envelope) {
+                return ((Envelope) this.literal).equals(expLit.evaluate(null, Envelope.class));
             } else if (expressionType == ExpressionType.LITERAL_INTEGER) {
                 return ((Integer) this.literal).equals(expLit.evaluate(null, Integer.class));
             } else if (expressionType == ExpressionType.LITERAL_STRING) {

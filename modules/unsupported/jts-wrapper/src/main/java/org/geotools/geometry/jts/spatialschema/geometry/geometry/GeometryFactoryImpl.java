@@ -35,7 +35,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * @author SYS Technologies
  * @author crossley
  * @version $Revision $
- * @deprecated Use GeometryFactoryFinder
  */
 public class GeometryFactoryImpl extends JTSGeometryFactory {
     public GeometryFactoryImpl(CoordinateReferenceSystem crs) {

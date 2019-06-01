@@ -67,19 +67,6 @@ public class StandardDeviationVisitor implements FeatureCalc, FeatureAttributeVi
     double m2 = 0;
 
     /**
-     * Constructor left for backwards compatibility. The current algorithm uses a on line
-     * computation that does not require the average to be calculated in advance
-     *
-     * @param expr
-     * @param average
-     * @deprecated use {@link StandardDeviationVisitor(Expression)} insteads
-     */
-    @Deprecated
-    public StandardDeviationVisitor(Expression expr, double average) {
-        this.expr = expr;
-    }
-
-    /**
      * Constructs a standard deviation visitor based on the specified expression
      *
      * @param expr

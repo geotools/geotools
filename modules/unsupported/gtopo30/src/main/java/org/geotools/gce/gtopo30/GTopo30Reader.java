@@ -66,6 +66,7 @@ import org.geotools.referencing.CRS;
 import org.geotools.referencing.ReferencingFactoryFinder;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.factory.ReferencingFactoryContainer;
+import org.geotools.referencing.factory.ReferencingObjectFactory;
 import org.geotools.referencing.operation.builder.GridToEnvelopeMapper;
 import org.geotools.util.NumberRange;
 import org.geotools.util.URLs;
@@ -79,7 +80,9 @@ import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.cs.CartesianCS;
 import org.opengis.referencing.datum.PixelInCell;
+import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.MathTransformFactory;
+import org.opengis.referencing.operation.OperationMethod;
 import org.opengis.referencing.operation.TransformException;
 import si.uom.SI;
 
@@ -531,6 +534,7 @@ public final class GTopo30Reader extends AbstractGridCoverage2DReader
      * @throws IOException
      * @throws FactoryException
      */
+    @SuppressWarnings("deprecation")
     private CoordinateReferenceSystem initCRS() {
         BufferedReader reader = null;
         try {
@@ -577,8 +581,16 @@ public final class GTopo30Reader extends AbstractGridCoverage2DReader
                             Collections.singletonMap(
                                     "name", "WGS 84 / Antartic Polar Stereographic");
 
-                    return factories.createProjectedCRS(
-                            properties, geoCRS, null, parameters, cartCS);
+                    OperationMethod method = null;
+                    final MathTransform mt =
+                            factories
+                                    .getMathTransformFactory()
+                                    .createBaseToDerived(geoCRS, parameters, cartCS);
+                    if (method == null) {
+                        method = factories.getMathTransformFactory().getLastMethodUsed();
+                    }
+                    return ((ReferencingObjectFactory) factories.getCRSFactory())
+                            .createProjectedCRS(properties, method, geoCRS, mt, cartCS);
                 }
 
                 if (crsDescription.endsWith("GEOGRAPHIC")) {

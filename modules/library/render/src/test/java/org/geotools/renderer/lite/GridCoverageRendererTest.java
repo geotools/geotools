@@ -59,7 +59,6 @@ import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.coverage.grid.io.imageio.GeoToolsWriteParams;
 import org.geotools.coverage.processing.CoverageProcessor;
 import org.geotools.coverage.processing.operation.Crop;
-import org.geotools.data.DataUtilities;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.function.EnvFunction;
 import org.geotools.gce.arcgrid.ArcGridReader;
@@ -74,11 +73,10 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.ImageWorker;
 import org.geotools.image.test.ImageAssert;
 import org.geotools.image.util.ImageUtilities;
-import org.geotools.map.DefaultMapContext;
+import org.geotools.map.GridCoverageLayer;
 import org.geotools.map.GridReaderLayer;
 import org.geotools.map.Layer;
 import org.geotools.map.MapContent;
-import org.geotools.map.MapContext;
 import org.geotools.parameter.DefaultParameterDescriptorGroup;
 import org.geotools.parameter.ParameterGroup;
 import org.geotools.referencing.CRS;
@@ -199,14 +197,14 @@ public class GridCoverageRendererTest {
 
         // sampleGrib.tif has longitudes from 302 to 308 degrees East
         coverageFile =
-                DataUtilities.urlToFile(
+                URLs.urlToFile(
                         GridCoverageRendererTest.class.getResource("test-data/sampleGrib.tif"));
         assertTrue(coverageFile.exists());
         sampleGribReader = new GeoTiffReader(coverageFile);
 
         // multi pixel packed sample model test case, two bits per pixel
         coverageFile =
-                DataUtilities.urlToFile(
+                URLs.urlToFile(
                         GridCoverageRendererTest.class.getResource(
                                 "test-data/multi_pixel_packed.tif"));
         assertTrue(coverageFile.exists());
@@ -309,9 +307,9 @@ public class GridCoverageRendererTest {
         //
         //
         // /////////////////////////////////////////////////////////////////
-        final MapContext context = new DefaultMapContext(DefaultGeographicCRS.WGS84);
+        final MapContent map = new MapContent();
         final Style style = getStyle();
-        context.addLayer(gc, style);
+        map.addLayer(new GridCoverageLayer(gc, style));
 
         // /////////////////////////////////////////////////////////////////
         //
@@ -320,8 +318,8 @@ public class GridCoverageRendererTest {
         //
         // ///////////////////////////////////////////////////////////////
         final StreamingRenderer renderer = new StreamingRenderer();
-        renderer.setContext(context);
-        RendererBaseTest.showRender("testGridCoverage", renderer, 1000, context.getLayerBounds());
+        renderer.setMapContent(map);
+        RendererBaseTest.showRender("testGridCoverage", renderer, 1000, map.getMaxBounds());
     }
 
     /**
@@ -333,21 +331,21 @@ public class GridCoverageRendererTest {
     @Test
     public void paintWrongStyle() throws Exception {
         final GridCoverage2D gc = getGC();
-        final MapContext context = new DefaultMapContext(DefaultGeographicCRS.WGS84);
+        final MapContent map = new MapContent();
 
         // final Style style = new StyleBuilder().createStyle((Symbolizer) null);
         final Style style = RendererBaseTest.loadStyle(this, "empty.sld");
-        context.addLayer(gc, style);
+        map.addLayer(new GridCoverageLayer(gc, style));
 
         final StreamingRenderer renderer = new StreamingRenderer();
         CountingRenderListener counter = new CountingRenderListener();
         renderer.addRenderListener(counter);
-        renderer.setContext(context);
+        renderer.setMapContent(map);
         BufferedImage image = new BufferedImage(300, 300, BufferedImage.TYPE_4BYTE_ABGR);
         Graphics2D g2d = (Graphics2D) image.getGraphics();
-        renderer.paint(g2d, new Rectangle(0, 0, 300, 300), context.getLayerBounds());
+        renderer.paint(g2d, new Rectangle(0, 0, 300, 300), map.getMaxBounds());
         g2d.dispose();
-        context.dispose();
+        map.dispose();
         // make sure no errors and no features
         assertEquals(0, counter.errors);
         assertEquals(0, counter.features);
@@ -371,9 +369,9 @@ public class GridCoverageRendererTest {
         //
         //
         // /////////////////////////////////////////////////////////////////
-        final MapContext context = new DefaultMapContext(DefaultGeographicCRS.WGS84);
+        final MapContent map = new MapContent();
         final Style style = getStyle();
-        context.addLayer(coverage, style);
+        map.addLayer(new GridCoverageLayer(coverage, style));
 
         // transform to a new crs
         final CoordinateReferenceSystem destCRS = getProjectedCRS(coverage);
@@ -384,9 +382,9 @@ public class GridCoverageRendererTest {
         //
         // /////////////////////////////////////////////////////////////////
         final StreamingRenderer renderer = new StreamingRenderer();
-        renderer.setContext(context);
+        renderer.setMapContent(map);
 
-        ReferencedEnvelope env = context.getLayerBounds();
+        ReferencedEnvelope env = map.getMaxBounds();
         env =
                 new ReferencedEnvelope(
                         env.getMinX(),
@@ -1790,7 +1788,7 @@ public class GridCoverageRendererTest {
     @Test
     public void testRenderOffDateline() throws Exception {
         File coverageFile =
-                DataUtilities.urlToFile(
+                URLs.urlToFile(
                         GridCoverageReaderHelperTest.class.getResource(
                                 "test-data/off_dateline.tif"));
         assertTrue(coverageFile.exists());

@@ -19,7 +19,7 @@ package org.geotools.filter.function;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureSource;
-import org.geotools.feature.FeatureCollections;
+import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -44,12 +44,12 @@ public class JenksFunctionTest extends FunctionTestSupport {
     }
 
     public void testInstance() {
-        Function equInt = ff.function("Jenks", ff.literal(FeatureCollections.newCollection()));
+        Function equInt = ff.function("Jenks", ff.literal(new DefaultFeatureCollection()));
         assertNotNull(equInt);
     }
 
     public void testGetName() {
-        Function qInt = ff.function("Jenks", ff.literal(FeatureCollections.newCollection()));
+        Function qInt = ff.function("Jenks", ff.literal(new DefaultFeatureCollection()));
         assertEquals("Jenks", qInt.getName());
     }
 
@@ -199,14 +199,14 @@ public class JenksFunctionTest extends FunctionTestSupport {
                 };
         Double dVal[] =
                 new Double[] {
-                    new Double(0.0),
-                    new Double(50.01),
+                    Double.valueOf(0.0),
+                    Double.valueOf(50.01),
                     null,
-                    new Double(0.0),
-                    new Double(50.01),
+                    Double.valueOf(0.0),
+                    Double.valueOf(50.01),
                     null,
-                    new Double(0.0),
-                    new Double(50.01),
+                    Double.valueOf(0.0),
+                    Double.valueOf(50.01),
                     null
                 };
 

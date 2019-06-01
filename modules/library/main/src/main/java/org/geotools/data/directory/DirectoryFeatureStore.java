@@ -25,7 +25,6 @@ import org.geotools.data.simple.SimpleFeatureStore;
 import org.geotools.feature.FeatureCollection;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
 import org.opengis.filter.identity.FeatureId;
@@ -48,11 +47,6 @@ public class DirectoryFeatureStore extends DirectoryFeatureSource implements Sim
         fstore.modifyFeatures(attributeName, attributeValue, filter);
     }
 
-    public void modifyFeatures(AttributeDescriptor type, Object value, Filter filter)
-            throws IOException {
-        fstore.modifyFeatures(type, value, filter);
-    }
-
     public void modifyFeatures(Name[] name, Object[] value, Filter filter) throws IOException {
         fstore.modifyFeatures(name, value, filter);
     }
@@ -63,11 +57,6 @@ public class DirectoryFeatureStore extends DirectoryFeatureSource implements Sim
 
     public void modifyFeatures(String[] names, Object[] values, Filter filter) throws IOException {
         fstore.modifyFeatures(names, values, filter);
-    }
-
-    public void modifyFeatures(AttributeDescriptor[] type, Object[] value, Filter filter)
-            throws IOException {
-        fstore.modifyFeatures(type, value, filter);
     }
 
     public void removeFeatureListener(FeatureListener listener) {

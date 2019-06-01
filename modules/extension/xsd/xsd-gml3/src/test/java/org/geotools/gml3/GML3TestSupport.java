@@ -23,7 +23,6 @@ import org.custommonkey.xmlunit.XMLUnit;
 import org.geotools.xsd.Configuration;
 import org.geotools.xsd.test.XMLTestSupport;
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -83,11 +82,8 @@ public abstract class GML3TestSupport extends XMLTestSupport {
         namespaces.put("xlink", "http://www.w3.org/1999/xlink");
         namespaces.put("xsi", "http://www.w3.org/2001/XMLSchema-instance");
         XMLUnit.setXpathNamespaceContext(new SimpleNamespaceContext(namespaces));
-    }
 
-    protected void registerNamespaces(Element root) {
-        super.registerNamespaces(root);
-        root.setAttribute("xmlns:gml", "http://www.opengis.net/gml");
+        registerNamespaceMapping("gml", "http://www.opengis.net/gml");
     }
 
     /*

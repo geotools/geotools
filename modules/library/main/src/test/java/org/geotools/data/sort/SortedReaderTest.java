@@ -88,8 +88,8 @@ public class SortedReaderTest {
             builder.add(Byte.valueOf((byte) i));
             builder.add(Short.valueOf((short) i));
             builder.add(Long.valueOf(i));
-            builder.add(new Float(i));
-            builder.add(new Double(i));
+            builder.add(Float.valueOf(i));
+            builder.add(Double.valueOf(i));
             builder.add(new Date());
             builder.add(new java.sql.Date(System.currentTimeMillis()));
             builder.add(new java.sql.Time(System.currentTimeMillis()));

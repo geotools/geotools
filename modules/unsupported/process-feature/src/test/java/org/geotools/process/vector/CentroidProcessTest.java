@@ -1,6 +1,6 @@
 package org.geotools.process.vector;
 
-import static junit.framework.Assert.*;
+import static org.junit.Assert.*;
 
 import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureCollection;

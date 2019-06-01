@@ -40,6 +40,7 @@ import org.locationtech.jts.geom.MultiPoint;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
+import org.locationtech.jts.geom.impl.CoordinateArraySequence;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -447,7 +448,9 @@ public class GML3MockData {
     }
 
     public static MultiPoint multiPoint() {
-        return gf.createMultiPoint(new Coordinate[] {new Coordinate(1, 1), new Coordinate(2, 2)});
+        return gf.createMultiPoint(
+                new CoordinateArraySequence(
+                        new Coordinate[] {new Coordinate(1, 1), new Coordinate(2, 2)}));
     }
 
     public static Element multiPoint(Document document, Node parent) {

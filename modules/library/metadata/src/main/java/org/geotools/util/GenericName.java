@@ -23,7 +23,6 @@ import java.io.Serializable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
-import java.util.Set;
 import org.opengis.util.InternationalString;
 import org.opengis.util.LocalName;
 import org.opengis.util.NameSpace;
@@ -75,10 +74,6 @@ public abstract class GenericName implements org.opengis.util.GenericName, Seria
      *
      * @return The name space.
      * @since 2.3
-     * @todo To be strict, maybe we should returns {@code null} if there is no namespace. Current
-     *     implementation returns a namespace instance whith a null name. This behavior is for
-     *     transition from legacy API to later ISO 19103 revision and may change in future GeoTools
-     *     version.
      */
     public NameSpace scope() {
         if (namespace == null) {
@@ -89,12 +84,7 @@ public abstract class GenericName implements org.opengis.util.GenericName, Seria
                         }
 
                         public org.opengis.util.GenericName name() {
-                            return getScope();
-                        }
-
-                        @Deprecated
-                        public Set<org.opengis.util.GenericName> getNames() {
-                            throw new UnsupportedOperationException();
+                            return getInternalScope();
                         }
                     };
         }
@@ -102,14 +92,13 @@ public abstract class GenericName implements org.opengis.util.GenericName, Seria
     }
 
     /**
-     * Returns the scope (name space) of this generic name. If this name has no scope (e.g. is the
-     * root), then this method returns {@code null}.
+     * Returns the scope (name space) of this generic name. If this name has no scope (e.g. is the *
+     * root), then this method returns {@code null}. Can be a no-op if the subclass overrides {@link
+     * #scope()}
      *
-     * @return The name space of this name.
-     * @deprecated Replaced by {@link #scope}.
+     * @return
      */
-    @Deprecated
-    public abstract org.opengis.util.GenericName getScope();
+    protected abstract org.opengis.util.GenericName getInternalScope();
 
     /**
      * Returns the depth of this name within the namespace hierarchy. This indicates the number of
@@ -158,41 +147,6 @@ public abstract class GenericName implements org.opengis.util.GenericName, Seria
         final List<? extends LocalName> names = getParsedNames();
         return names.get(names.size() - 1);
     }
-
-    /**
-     * Returns a view of this object as a local name.
-     *
-     * @return The local part of this name.
-     * @deprecated Renamed as {@link #tip()}.
-     */
-    @Deprecated
-    public LocalName asLocalName() {
-        return tip();
-    }
-
-    /**
-     * @deprecated Renamed as {@link #tip()}.
-     * @since 2.3
-     */
-    @Deprecated
-    public LocalName name() {
-        return tip();
-    }
-
-    /**
-     * Returns a view of this name as a fully-qualified name, or {@code null} if none. The
-     * {@linkplain #scope scope} of a fully qualified name must be {@linkplain NameSpace#isGlobal
-     * global}.
-     *
-     * <p>If this name is a {@linkplain LocalName local name} and the {@linkplain #scope scope} is
-     * already {@linkplain NameSpace#isGlobal global}, returns {@code null} since it is not possible
-     * to derive a scoped name.
-     *
-     * @return The fully-qualified name.
-     * @deprecated Replaced by {@link #toFullyQualifiedName}.
-     */
-    @Deprecated
-    public abstract ScopedName asScopedName();
 
     /**
      * Returns the separator character. Default to <code>':'</code>. This method is overridden by

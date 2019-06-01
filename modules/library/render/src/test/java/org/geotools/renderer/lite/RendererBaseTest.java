@@ -24,10 +24,9 @@ import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 import java.awt.image.Raster;
 import java.io.IOException;
-import junit.framework.Assert;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.map.MapContext;
+import org.geotools.map.MapContent;
 import org.geotools.renderer.GTRenderer;
 import org.geotools.renderer.RenderListener;
 import org.geotools.renderer.style.FontCache;
@@ -43,6 +42,7 @@ import org.geotools.styling.UserLayer;
 import org.geotools.test.TestData;
 import org.geotools.xml.styling.SLDParser;
 import org.geotools.xsd.Parser;
+import org.junit.Assert;
 
 /**
  * Used to test a renderer implementation.
@@ -229,11 +229,11 @@ public abstract class RendererBaseTest {
      * @return
      * @throws Exception
      */
-    public static BufferedImage render(MapContext map) throws Exception {
+    public static BufferedImage render(MapContent map) throws Exception {
         StreamingRenderer r = new StreamingRenderer();
-        r.setContext(map);
+        r.setMapContent(map);
 
-        return RendererBaseTest.showRender("testPointLabeling", r, 5000, map.getLayerBounds());
+        return RendererBaseTest.showRender("testPointLabeling", r, 5000, map.getMaxBounds());
     }
 
     /**

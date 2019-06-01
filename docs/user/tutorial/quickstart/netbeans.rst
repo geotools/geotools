@@ -313,16 +313,7 @@ Here are some additional challenges for you to try:
      :start-after: // docs start cache
      :end-before:  // docs end cache
   
-  For the above example to compile you will need the following import:
-    
-  .. code-block:: java
-
-       import org.geotools.data.CachingFeatureSource;
-  
-  .. Note::
-
-     When building you may see a message that CachingFeatureSource is deprecated. It's ok to ignore
-     it, it's just a warning. The class is still under test but usable.
+  For the above example to compile you will need to add the necessary imports.
      
 * Try and sort out what all the different "side car" files are – and what they are for. The sample
   data set includes "shp", "dbf" and "shx". How many other side car files are there?

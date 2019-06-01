@@ -272,11 +272,6 @@ class DoubleDirectPosition implements DirectPosition, Serializable {
         array[index + dimension] = value;
     }
 
-    @Deprecated
-    public DirectPosition getPosition() {
-        return this;
-    }
-
     public DirectPosition getDirectPosition() {
         return this;
     }

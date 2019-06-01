@@ -62,29 +62,6 @@ public interface Style extends org.opengis.style.Style {
     Description getDescription();
 
     /**
-     * Style Title (human readable name for user interfaces)
-     *
-     * @deprecated use getDescription().getTitle().toString()
-     */
-    String getTitle();
-
-    /**
-     * @param title
-     * @deprecated please use getDescription().setTitle( new SimpleInternationalString( text ) );
-     */
-    void setTitle(String title);
-
-    /**
-     * Description of this style
-     *
-     * @deprecated use getDesciption().getAbstract().toString()
-     */
-    String getAbstract();
-
-    /** @deprecated use getDescription().setAbstract( new SimpleInternationalString( text ) ); */
-    void setAbstract(String abstractStr);
-
-    /**
      * Indicates that this is the default style.
      *
      * <p>Assume this is kept for GeoServer enabling a WMS to track which style is considered the
@@ -111,23 +88,6 @@ public interface Style extends org.opengis.style.Style {
 
     /** @param defaultSymbolizer To be used if a feature is not rendered by any of the rules */
     public void setDefaultSpecification(Symbolizer defaultSymbolizer);
-
-    /**
-     * Array of FeatureTypeStyles in portrayal order.
-     *
-     * <p>FeatureTypeStyle entries are rendered in order of appearance in this list.
-     *
-     * <p><i>Note: We are using a Array here to continue with Java 1.4 deployment.</i>
-     *
-     * @deprecated use featureTypeStyles().toArray( new FeatureTypeStyle[0] )
-     */
-    FeatureTypeStyle[] getFeatureTypeStyles();
-
-    /** @deprecated Use featureTypeStyles().clear(); featureTypeStyles.addAll( ... ) */
-    void setFeatureTypeStyles(FeatureTypeStyle[] types);
-
-    /** @deprecated Use featureTypeStyles().add( type ) */
-    void addFeatureTypeStyle(FeatureTypeStyle type);
 
     /**
      * Used to navigate Style information during portrayal.

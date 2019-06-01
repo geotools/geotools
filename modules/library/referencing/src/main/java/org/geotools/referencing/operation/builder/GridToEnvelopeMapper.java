@@ -205,17 +205,6 @@ public class GridToEnvelopeMapper {
 
     /**
      * Returns whatever the grid range maps {@linkplain PixelInCell#CELL_CENTER pixel center} or
-     * {@linkplain PixelInCell#CELL_CORNER pixel corner}.
-     *
-     * @deprecated Renamed {@link #getPixelAnchor}.
-     */
-    @Deprecated
-    public PixelInCell getGridType() {
-        return getPixelAnchor();
-    }
-
-    /**
-     * Returns whatever the grid range maps {@linkplain PixelInCell#CELL_CENTER pixel center} or
      * {@linkplain PixelInCell#CELL_CORNER pixel corner}. The former is OGC convention while the
      * later is Java2D/JAI convention. The default is cell center (OGC convention).
      *
@@ -224,17 +213,6 @@ public class GridToEnvelopeMapper {
      */
     public PixelInCell getPixelAnchor() {
         return anchor;
-    }
-
-    /**
-     * Set whatever the grid range maps {@linkplain PixelInCell#CELL_CENTER pixel center} or
-     * {@linkplain PixelInCell#CELL_CORNER pixel corner}.
-     *
-     * @deprecated Renamed {@link #setPixelAnchor}.
-     */
-    @Deprecated
-    public void setGridType(final PixelInCell anchor) {
-        setPixelAnchor(anchor);
     }
 
     /**

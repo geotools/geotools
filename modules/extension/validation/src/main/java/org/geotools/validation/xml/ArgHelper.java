@@ -26,6 +26,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
+import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.ExpressionDOMParser;
 import org.geotools.filter.FilterDOMParser;
 import org.geotools.gml.producer.GeometryTransformer;
@@ -33,6 +34,7 @@ import org.geotools.xml.filter.FilterTransformer;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 import org.opengis.filter.Filter;
+import org.opengis.filter.FilterFactory2;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
@@ -50,6 +52,7 @@ public class ArgHelper {
         new FloatMapping(), new DoubleMapping(), new DateMapping(),
         new URIMapping(), new BooleanMapping(), new StringMapping()
     };
+    public static final FilterFactory2 FF = CommonFactoryFinder.getFilterFactory2();
 
     /**
      * getArgumentInstance purpose.
@@ -426,7 +429,7 @@ public class ArgHelper {
          * @see org.geotools.validation.xml.ArgHelper.Mapping#getInstance(org.w3c.dom.Element)
          */
         public Object getInstance(Element value) {
-            return ExpressionDOMParser.parseGML(value);
+            return new ExpressionDOMParser(FF).gml(value);
         }
 
         public Object getInstance(String value) {
@@ -453,7 +456,7 @@ public class ArgHelper {
                 return null;
             }
 
-            return ExpressionDOMParser.parseGML(elem);
+            return new ExpressionDOMParser(FF).gml(elem);
         }
 
         /**
@@ -979,7 +982,7 @@ public class ArgHelper {
                 throw new NullPointerException("The float passed in was null");
             }
 
-            return new Float(ReaderUtils.getElementText(elem));
+            return Float.valueOf(ReaderUtils.getElementText(elem));
         }
 
         public Object getInstance(String elem) {
@@ -987,7 +990,7 @@ public class ArgHelper {
                 throw new NullPointerException("The float passed in was null");
             }
 
-            return new Float(elem);
+            return Float.valueOf(elem);
         }
 
         /**
@@ -1072,7 +1075,7 @@ public class ArgHelper {
                 throw new NullPointerException("The double passed in was null");
             }
 
-            return new Double(ReaderUtils.getElementText(elem));
+            return Double.valueOf(ReaderUtils.getElementText(elem));
         }
 
         public Object getInstance(String elem) {
@@ -1080,7 +1083,7 @@ public class ArgHelper {
                 throw new NullPointerException("The double passed in was null");
             }
 
-            return new Double(elem);
+            return Double.valueOf(elem);
         }
 
         /**

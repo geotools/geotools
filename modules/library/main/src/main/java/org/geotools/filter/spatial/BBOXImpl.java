@@ -33,7 +33,6 @@ import org.locationtech.jts.geom.prep.PreparedGeometry;
 import org.opengis.filter.FilterVisitor;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
-import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.spatial.BBOX;
 import org.opengis.geometry.BoundingBox;
 import org.opengis.geometry.MismatchedDimensionException;
@@ -86,80 +85,8 @@ public class BBOXImpl extends AbstractPreparedGeometryFilter implements BBOX {
         this.srs = srs;
     }
 
-    public String getPropertyName() {
-        // BBOX filters can be also created setting the expressions directly, and some
-        // old code sets the property name the other way around, try to handle this silliness
-        if (getExpression1() instanceof PropertyName) {
-            PropertyName propertyName = (PropertyName) getExpression1();
-            return propertyName.getPropertyName();
-        } else if (getExpression2() instanceof PropertyName) {
-            PropertyName propertyName = (PropertyName) getExpression2();
-            return propertyName.getPropertyName();
-        } else {
-            return null;
-        }
-    }
-
     public void setPropertyName(String propertyName) {
         setExpression1(new AttributeExpressionImpl(propertyName));
-    }
-
-    public String getSRS() {
-        return srs;
-    }
-
-    /** @deprecated use the constructor or setExpression2 */
-    public void setSRS(String srs) {
-        this.srs = srs;
-        updateExpression2();
-    }
-
-    public double getMinX() {
-        return minx;
-    }
-
-    /** @deprecated use the constructor or setExpression2 */
-    public void setMinX(double minx) {
-        this.minx = minx;
-        updateExpression2();
-    }
-
-    public double getMinY() {
-        return miny;
-    }
-
-    /** @deprecated use the constructor or setExpression2 */
-    public void setMinY(double miny) {
-        this.miny = miny;
-        updateExpression2();
-    }
-
-    public double getMaxX() {
-        return maxx;
-    }
-
-    /** @deprecated use the constructor or setExpression2 */
-    public void setMaxX(double maxx) {
-        this.maxx = maxx;
-        updateExpression2();
-    }
-
-    public double getMaxY() {
-        return maxy;
-    }
-
-    /** @deprecated use the constructor or setExpression2 */
-    public void setMaxY(double maxy) {
-        this.maxy = maxy;
-        updateExpression2();
-    }
-
-    private void updateExpression2() {
-        // this is temporary until set...XY are removed
-        Literal expression =
-                new LiteralExpressionImpl(
-                        boundingPolygon(buildEnvelope(minx, maxx, miny, maxy, srs)));
-        super.setExpression2(expression);
     }
 
     @Override

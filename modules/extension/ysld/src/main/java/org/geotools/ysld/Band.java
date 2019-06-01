@@ -20,6 +20,7 @@ package org.geotools.ysld;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import org.opengis.style.ChannelSelection;
 import org.opengis.style.SelectedChannelType;
 
@@ -43,7 +44,7 @@ public enum Band {
     RED("red") {
         @Override
         public SelectedChannelType getFrom(ChannelSelection sel) {
-            return sel.getRGBChannels()[0];
+            return Optional.ofNullable(sel.getRGBChannels()).map(a -> a[0]).orElse(null);
         }
 
         @Override
@@ -58,7 +59,7 @@ public enum Band {
     GREEN("green") {
         @Override
         public SelectedChannelType getFrom(ChannelSelection sel) {
-            return sel.getRGBChannels()[1];
+            return Optional.ofNullable(sel.getRGBChannels()).map(a -> a[1]).orElse(null);
         }
 
         @Override
@@ -73,7 +74,7 @@ public enum Band {
     BLUE("blue") {
         @Override
         public SelectedChannelType getFrom(ChannelSelection sel) {
-            return sel.getRGBChannels()[2];
+            return Optional.ofNullable(sel.getRGBChannels()).map(a -> a[2]).orElse(null);
         }
 
         @Override

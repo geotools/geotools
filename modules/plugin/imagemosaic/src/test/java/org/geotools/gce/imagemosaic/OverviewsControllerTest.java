@@ -196,7 +196,7 @@ public class OverviewsControllerTest extends Assert {
         Assert.assertNotNull(reader);
 
         final String name = reader.getGridCoverageNames()[0];
-        final int nOv = reader.getNumOverviews();
+        final int nOv = reader.getDatasetLayout().getNumInternalOverviews();
         final double[][] hRes = reader.getResolutionLevels();
         final RasterManager rasterManager = reader.getRasterManager(name);
 

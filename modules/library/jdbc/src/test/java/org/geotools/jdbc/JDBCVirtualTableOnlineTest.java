@@ -47,24 +47,24 @@ public abstract class JDBCVirtualTableOnlineTest extends JDBCTestSupport {
         }
         dialect.encodeTableName(tname("river"), sb);
         VirtualTable vt = new VirtualTable("riverFull", sb.toString());
-        dataStore.addVirtualTable(vt);
+        dataStore.createVirtualTable(vt);
 
         sb.append(" where 1 = 1 :where_clause:");
         vt = new VirtualTable("riverFullPlaceHolder", sb.toString());
-        dataStore.addVirtualTable(vt);
+        dataStore.createVirtualTable(vt);
 
         // a first vt with a condition, computing a new field
         sb = new StringBuffer();
         sb.append("select ");
-        dialect.encodeColumnName(aname("id"), sb);
+        dialect.encodeColumnName(null, aname("id"), sb);
         sb.append(", ");
-        dialect.encodeColumnName(aname("geom"), sb);
+        dialect.encodeColumnName(null, aname("geom"), sb);
         sb.append(", ");
-        dialect.encodeColumnName(aname("river"), sb);
+        dialect.encodeColumnName(null, aname("river"), sb);
         sb.append(", ");
-        dialect.encodeColumnName(aname("flow"), sb);
+        dialect.encodeColumnName(null, aname("flow"), sb);
         sb.append(" * 2 as ");
-        dialect.encodeColumnName(aname("doubleFlow"), sb);
+        dialect.encodeColumnName(null, aname("doubleFlow"), sb);
         sb.append(" from ");
         if (dbSchemaName != null) {
             dialect.encodeSchemaName(dbSchemaName, sb);
@@ -72,34 +72,34 @@ public abstract class JDBCVirtualTableOnlineTest extends JDBCTestSupport {
         }
         dialect.encodeTableName(tname("river"), sb);
         sb.append(" where ");
-        dialect.encodeColumnName(aname("flow"), sb);
+        dialect.encodeColumnName(null, aname("flow"), sb);
         sb.append(" > 4");
         vt = new VirtualTable("riverReduced", sb.toString());
         vt.addGeometryMetadatata(aname("geom"), LineString.class, 4326);
-        dataStore.addVirtualTable(vt);
+        dataStore.createVirtualTable(vt);
 
         // same vt, this time with a sql comment
         sb.append("\n--This is a comment");
         vt = new VirtualTable("riverReducedComment", sb.toString());
         vt.addGeometryMetadatata(aname("geom"), LineString.class, 4326);
-        dataStore.addVirtualTable(vt);
+        dataStore.createVirtualTable(vt);
 
         // the same vt, but with a id specification
         vt = new VirtualTable("riverReducedPk", sb.toString());
         vt.addGeometryMetadatata(aname("geom"), LineString.class, 4326);
         vt.setPrimaryKeyColumns(Arrays.asList(aname("id")));
-        dataStore.addVirtualTable(vt);
+        dataStore.createVirtualTable(vt);
 
         // a final vt with some parameters
         sb = new StringBuffer();
         sb.append("select ");
-        dialect.encodeColumnName(aname("id"), sb);
+        dialect.encodeColumnName(null, aname("id"), sb);
         sb.append(", ");
-        dialect.encodeColumnName(aname("geom"), sb);
+        dialect.encodeColumnName(null, aname("geom"), sb);
         sb.append(", ");
-        dialect.encodeColumnName("flow", sb);
+        dialect.encodeColumnName(null, "flow", sb);
         sb.append(" * %mul% as ");
-        dialect.encodeColumnName("mulflow", sb);
+        dialect.encodeColumnName(null, "mulflow", sb);
         sb.append(" from ");
         if (dbSchemaName != null) {
             dialect.encodeSchemaName(dbSchemaName, sb);
@@ -112,7 +112,7 @@ public abstract class JDBCVirtualTableOnlineTest extends JDBCTestSupport {
         vt.addParameter(
                 new VirtualTableParameter("mul", "1", new RegexpValidator("[\\d\\.e\\+-]+")));
         vt.addParameter(new VirtualTableParameter("where", ""));
-        dataStore.addVirtualTable(vt);
+        dataStore.createVirtualTable(vt);
     }
 
     public void testGuessGeometry() throws Exception {
@@ -188,7 +188,7 @@ public abstract class JDBCVirtualTableOnlineTest extends JDBCTestSupport {
         VirtualTable vt = new VirtualTable("riverPolluted", "SOME EXTRA GARBAGE " + sql);
         vt.addGeometryMetadatata("geom", LineString.class, -1);
         try {
-            dataStore.addVirtualTable(vt);
+            dataStore.createVirtualTable(vt);
             fail("Should have failed with invalid sql definition");
         } catch (IOException e) {
             // ok, that's what we expected
@@ -237,7 +237,7 @@ public abstract class JDBCVirtualTableOnlineTest extends JDBCTestSupport {
         Query q = new Query(Query.ALL);
         StringBuffer sb = new StringBuffer();
         sb.append(" where ");
-        dialect.encodeColumnName(aname("flow"), sb);
+        dialect.encodeColumnName(null, aname("flow"), sb);
         sb.append(" > 4");
         q.setHints(
                 new Hints(

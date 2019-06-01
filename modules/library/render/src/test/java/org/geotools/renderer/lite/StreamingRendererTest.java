@@ -59,27 +59,23 @@ import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.feature.DefaultFeatureCollection;
-import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.LiteCoordinateSequence;
 import org.geotools.geometry.jts.LiteShape2;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.map.DefaultMapContext;
 import org.geotools.map.DirectLayer;
 import org.geotools.map.FeatureLayer;
 import org.geotools.map.GridCoverageLayer;
 import org.geotools.map.Layer;
 import org.geotools.map.MapContent;
-import org.geotools.map.MapContext;
 import org.geotools.map.MapViewport;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.renderer.RenderListener;
 import org.geotools.renderer.lite.StreamingRenderer.RenderingRequest;
 import org.geotools.styling.DescriptionImpl;
-import org.geotools.styling.Graphic;
 import org.geotools.styling.Rule;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleBuilder;
@@ -104,6 +100,7 @@ import org.opengis.filter.spatial.BBOX;
 import org.opengis.geometry.BoundingBox;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.style.GraphicLegend;
 
 /**
  * Test the inner workings of StreamingRenderer.
@@ -428,12 +425,12 @@ public class StreamingRendererTest {
         replay(fs);
 
         // build map context
-        MapContext mapContext = new DefaultMapContext(DefaultGeographicCRS.WGS84);
-        mapContext.addLayer(fs, createLineStyle());
+        MapContent mapContext = new MapContent();
+        mapContext.addLayer(new FeatureLayer(fs, createLineStyle()));
 
         // setup the renderer and listen for errors
         final StreamingRenderer sr = new StreamingRenderer();
-        sr.setContext(mapContext);
+        sr.setMapContent(mapContext);
         sr.addRenderListener(
                 new RenderListener() {
                     public void featureRenderer(SimpleFeature feature) {
@@ -550,13 +547,13 @@ public class StreamingRendererTest {
         DefaultFeatureCollection fc = new DefaultFeatureCollection();
         fc.add(createPoint(0, 0));
         fc.add(createPoint(world.getMaxX(), world.getMinY()));
-        MapContext mapContext = new DefaultMapContext(DefaultGeographicCRS.WGS84);
-        mapContext.addLayer((FeatureCollection) fc, createPointStyle());
+        MapContent map = new MapContent();
+        map.addLayer(new FeatureLayer(fc, createPointStyle()));
         BufferedImage image =
                 new BufferedImage(screen.width, screen.height, BufferedImage.TYPE_4BYTE_ABGR);
         final StreamingRenderer sr = new StreamingRenderer();
-        sr.setContext(mapContext);
-        sr.paint(image.createGraphics(), screen, worldToScreen);
+        sr.setMapContent(map);
+        sr.paint(image.createGraphics(), screen, map.getMaxBounds(), worldToScreen);
         assertTrue("Pixel should be drawn at 0,0 ", image.getRGB(0, 0) != 0);
         assertTrue(
                 "Pixel should not be drawn in image centre ",
@@ -708,13 +705,13 @@ public class StreamingRendererTest {
                 new ReferencedEnvelope(0, 100, 0, 100, DefaultGeographicCRS.WGS84);
 
         // simulate geofence adding a bbox
-        BBOX bbox = StreamingRenderer.filterFactory.bbox("", 30, 60, 30, 60, "WGS84");
+        BBOX bbox = StreamingRenderer.filterFactory.bbox("", 30, 60, 30, 60, "EPSG:4326");
         StyleFactoryImpl sf = new StyleFactoryImpl();
         Rule bboxRule =
                 sf.createRule(
                         new Symbolizer[0],
                         new DescriptionImpl(),
-                        new Graphic[0],
+                        (GraphicLegend) null,
                         "bbox",
                         bbox,
                         false,

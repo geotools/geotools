@@ -23,8 +23,8 @@ import java.util.Set;
 import junit.framework.TestCase;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataUtilities;
-import org.geotools.data.DefaultQuery;
 import org.geotools.data.FeatureSource;
+import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
@@ -96,7 +96,7 @@ public class ValidatorTest extends TestCase {
         SimpleFeatureSource lakes = fixture.repository.source("LAKES", "lakes");
 
         SimpleFeatureIterator features =
-                lakes.getFeatures(new DefaultQuery("lakes", Filter.INCLUDE, 1, null, null))
+                lakes.getFeatures(new Query("lakes", Filter.INCLUDE, 1, (String[]) null, null))
                         .features();
         SimpleFeature feature = features.next();
         features.close();

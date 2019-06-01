@@ -106,9 +106,9 @@ public class SEExampleTest extends SETestSupport {
 
         Graphic g = sym.getGraphic();
         assertEquals(8.0, g.getSize().evaluate(null, Double.class));
-        assertEquals(1, g.getMarks().length);
+        assertEquals(1, g.graphicalSymbols().size());
 
-        Mark m = g.getMarks()[0];
+        Mark m = (Mark) g.graphicalSymbols().get(0);
         assertEquals("star", m.getWellKnownName().evaluate(null, String.class));
         Color c = m.getFill().getColor().evaluate(null, Color.class);
         assertEquals(255, c.getRed());
@@ -145,13 +145,13 @@ public class SEExampleTest extends SETestSupport {
 
         Graphic g = sym.getGraphic();
         assertEquals(15.0, g.getSize().evaluate(null, Double.class));
-        assertEquals(2, g.getExternalGraphics().length);
+        assertEquals(2, g.graphicalSymbols().size());
 
-        ExternalGraphic eg = g.getExternalGraphics()[0];
+        ExternalGraphic eg = (ExternalGraphic) g.graphicalSymbols().get(0);
         assertEquals("http://www.vendor.com/geosym/2267.svg", eg.getLocation().toString());
         assertEquals("image/svg+xml", eg.getFormat());
 
-        eg = g.getExternalGraphics()[1];
+        eg = (ExternalGraphic) g.graphicalSymbols().get(1);
         assertEquals("http://www.vendor.com/geosym/2267.png", eg.getLocation().toString());
         assertEquals("image/png", eg.getFormat());
     }
@@ -599,7 +599,8 @@ public class SEExampleTest extends SETestSupport {
         </FeatureTypeStyle>*/
 
         FeatureTypeStyle fts = (FeatureTypeStyle) parse("example-featurestyle.xml");
-        assertEquals("oceansea:Foundation", fts.getFeatureTypeName());
+        assertEquals(
+                "oceansea:Foundation", fts.featureTypeNames().iterator().next().getLocalPart());
         assertEquals(1, fts.rules().size());
 
         Rule rule = fts.rules().get(0);

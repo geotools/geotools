@@ -18,6 +18,7 @@
 package org.geotools.process.vector;
 
 import org.geotools.filter.visitor.DuplicatingFilterVisitor;
+import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.spatial.BBOX;
 
@@ -53,26 +54,20 @@ public class BBOXExpandingFilterVisitor extends DuplicatingFilterVisitor {
     }
 
     /** Expands the BBOX in the Filter. */
-    @SuppressWarnings("deprecation")
     @Override
     public Object visit(BBOX filter, Object extraData) {
         // no need to change the property name
         Expression propertyName = filter.getExpression1();
 
-        /** Using the deprecated methods since they are too useful... */
-        double minx = filter.getMinX();
-        double miny = filter.getMinY();
-        double maxx = filter.getMaxX();
-        double maxy = filter.getMaxY();
-        String srs = filter.getSRS();
+        ReferencedEnvelope envelope = ReferencedEnvelope.reference(filter.getBounds());
+        ReferencedEnvelope expanded =
+                new ReferencedEnvelope(
+                        envelope.getMinX() - expandMinX,
+                        envelope.getMaxX() + expandMinY,
+                        envelope.getMinY() - expandMaxX,
+                        envelope.getMaxY() + expandMaxY,
+                        envelope.getCoordinateReferenceSystem());
 
-        return getFactory(extraData)
-                .bbox(
-                        propertyName,
-                        minx - expandMinX,
-                        miny - expandMaxX,
-                        maxx + expandMinY,
-                        maxy + expandMaxY,
-                        srs);
+        return getFactory(extraData).bbox(propertyName, ff.literal(expanded));
     }
 }

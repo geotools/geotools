@@ -21,13 +21,13 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import junit.framework.Assert;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.LineSymbolizer;
 import org.geotools.styling.Rule;
 import org.geotools.styling.StyleFactory2;
 import org.geotools.styling.UomOgcMapping;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.opengis.filter.FilterFactory2;
@@ -84,7 +84,7 @@ public class UnitRescaleTest {
         }
 
         Map hints = new HashMap();
-        hints.put("dpi", new Double(dpi));
+        hints.put("dpi", Double.valueOf(dpi));
 
         StreamingRenderer renderer = new StreamingRenderer();
         renderer.scaleDenominator = 1;
@@ -93,7 +93,7 @@ public class UnitRescaleTest {
 
         for (LiteFeatureTypeStyle s : lfts) {
             Rule r = s.ruleList[0];
-            LineSymbolizer rescaledLineSymbolizer = (LineSymbolizer) r.getSymbolizers()[0];
+            LineSymbolizer rescaledLineSymbolizer = (LineSymbolizer) r.symbolizers().get(0);
             return rescaledLineSymbolizer.getStroke().getWidth().evaluate(null, Double.class);
         }
 

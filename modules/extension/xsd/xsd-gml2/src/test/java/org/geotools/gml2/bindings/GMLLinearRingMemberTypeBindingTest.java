@@ -31,8 +31,8 @@ public class GMLLinearRingMemberTypeBindingTest extends AbstractGMLBindingTest {
     protected void setUp() throws Exception {
         super.setUp();
 
-        association = createElement(GML.NAMESPACE, "myAssociation", GML.LINEARRINGMEMBERTYPE, null);
-        geometry = createElement(GML.NAMESPACE, "myGeometry", GML.LINEARRINGTYPE, null);
+        association = createElement(GML.NAMESPACE, "myAssociation", GML.LinearRingMemberType, null);
+        geometry = createElement(GML.NAMESPACE, "myGeometry", GML.LinearRingType, null);
     }
 
     public void testWithGeometry() throws Exception {
@@ -53,11 +53,11 @@ public class GMLLinearRingMemberTypeBindingTest extends AbstractGMLBindingTest {
                         null,
                         null);
         GMLGeometryAssociationTypeBinding s1 =
-                (GMLGeometryAssociationTypeBinding) getBinding(GML.GEOMETRYASSOCIATIONTYPE);
+                (GMLGeometryAssociationTypeBinding) getBinding(GML.GeometryAssociationType);
         Geometry g = (Geometry) s1.parse(association, node, null);
 
         GMLLinearRingMemberTypeBinding s2 =
-                (GMLLinearRingMemberTypeBinding) getBinding(GML.LINEARRINGMEMBERTYPE);
+                (GMLLinearRingMemberTypeBinding) getBinding(GML.LinearRingMemberType);
         g = (Geometry) s2.parse(association, node, g);
 
         assertNotNull(g);

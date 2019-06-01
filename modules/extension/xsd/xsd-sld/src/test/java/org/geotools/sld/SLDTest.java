@@ -49,16 +49,16 @@ public class SLDTest {
         Style style = layer.getStyles()[0];
         assertEquals("GEOSYM", style.getName());
         assertTrue(style.isDefault());
-        assertEquals(1, style.getFeatureTypeStyles().length);
+        assertEquals(1, style.featureTypeStyles().size());
 
-        FeatureTypeStyle ftStyle = (FeatureTypeStyle) style.getFeatureTypeStyles()[0];
-        assertEquals(1, ftStyle.getRules().length);
+        FeatureTypeStyle ftStyle = style.featureTypeStyles().get(0);
+        assertEquals(1, ftStyle.rules().size());
 
-        Rule rule = ftStyle.getRules()[0];
+        Rule rule = ftStyle.rules().get(0);
         assertEquals("main", rule.getName());
-        assertEquals(1, rule.getSymbolizers().length);
+        assertEquals(1, rule.symbolizers().size());
 
-        PolygonSymbolizer ps = (PolygonSymbolizer) rule.getSymbolizers()[0];
+        PolygonSymbolizer ps = (PolygonSymbolizer) rule.symbolizers().get(0);
         assertEquals("GEOMETRY", ps.getGeometryPropertyName());
 
         Color color = SLD.color(ps.getFill().getColor());
@@ -127,7 +127,7 @@ public class SLDTest {
         Configuration config = new SLDConfiguration();
         Parser parser = new Parser(config);
         StyledLayerDescriptor sld =
-                (StyledLayerDescriptor) parser.parse(IOUtils.toInputStream(sldText));
+                (StyledLayerDescriptor) parser.parse(IOUtils.toInputStream(sldText, "UTF-8"));
 
         Style s = ((UserLayer) (sld.layers().get(0))).getUserStyles()[0];
         TextSymbolizer symbolizer =

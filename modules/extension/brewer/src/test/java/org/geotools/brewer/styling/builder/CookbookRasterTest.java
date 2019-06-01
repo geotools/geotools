@@ -224,9 +224,7 @@ public class CookbookRasterTest extends AbstractStyleTest {
         // check the symbolizer
         RasterSymbolizer rs = (RasterSymbolizer) collector.symbolizers.get(0);
         final SelectedChannelType[] rgbChannels = rs.getChannelSelection().getRGBChannels();
-        assertNull(rgbChannels[0]);
-        assertNull(rgbChannels[1]);
-        assertNull(rgbChannels[2]);
+        assertNull(rgbChannels);
         assertEquals(
                 "BAND1",
                 rs.getChannelSelection()

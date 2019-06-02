@@ -138,7 +138,7 @@ public class H2DataStoreFactoryTest {
     public void testDefaultFetchSizeDataStore() throws Exception {
         JDBCDataStore ds = null;
         try {
-        	assertNull(params.get(H2DataStoreFactory.FETCHSIZE));
+            assertNull(params.get(H2DataStoreFactory.FETCHSIZE));
             ds = factory.createDataStore(params);
             assertNotNull(ds);
             assertTrue(ds.getFetchSize() == 1000);

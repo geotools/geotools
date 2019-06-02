@@ -209,14 +209,14 @@ public abstract class ClassChanger<S extends Comparable<S>, T extends Number> {
      * @throws ClassNotFoundException if {@code object} is not an instance of a registered class.
      */
     @SuppressWarnings("unchecked")
-    public static Number toNumber(final Comparable<?> object) throws ClassNotFoundException {
+    public static <K> K toNumber(final Comparable<K> object) throws ClassNotFoundException {
         if (object != null) {
             if (object instanceof Number) {
-                return (Number) object;
+                return (K) object;
             }
             @SuppressWarnings("rawtypes")
             ClassChanger changer = getClassChanger(object.getClass());
-            return changer.convert(object);
+            return (K) changer.convert(object);
         }
         return null;
     }

@@ -42,10 +42,10 @@ import java.util.concurrent.locks.ReentrantLock;
 final class SoftObjectCache implements ObjectCache {
 
     /** The cached values for each key. */
-    private final Map /*<Object,SoftReference<Object>>*/ cache;
+    private final Map<Object, SoftReference<Object>> cache;
 
     /** The locks for keys under construction. */
-    private final Map /*<Object,ReentrantLock>*/ locks;
+    private final Map<Object, ReentrantLock> locks;
 
     /** Creates a new cache. */
     public SoftObjectCache() {
@@ -54,10 +54,8 @@ final class SoftObjectCache implements ObjectCache {
 
     /** Creates a new cache using the indicated initialSize. */
     public SoftObjectCache(final int initialSize) {
-        cache =
-                Collections.synchronizedMap(
-                        new HashMap<Object, SoftReference<Object>>(initialSize));
-        locks = new HashMap<Object, ReentrantLock>();
+        cache = Collections.synchronizedMap(new HashMap<>(initialSize));
+        locks = new HashMap<>();
     }
 
     /** Removes all entries from this map. */
@@ -105,7 +103,7 @@ final class SoftObjectCache implements ObjectCache {
     /** Stores a value */
     public void put(final Object key, final Object object) {
         writeLock(key);
-        SoftReference reference = new SoftReference(object);
+        SoftReference<Object> reference = new SoftReference<>(object);
         cache.put(key, reference);
         writeUnLock(key);
     }
@@ -121,7 +119,7 @@ final class SoftObjectCache implements ObjectCache {
     public void writeLock(final Object key) {
         ReentrantLock lock;
         synchronized (locks) {
-            lock = (ReentrantLock) locks.get(key);
+            lock = locks.get(key);
             if (lock == null) {
                 lock = new ReentrantLock();
                 locks.put(key, lock);
@@ -134,7 +132,7 @@ final class SoftObjectCache implements ObjectCache {
 
     public void writeUnLock(final Object key) {
         synchronized (locks) {
-            final ReentrantLock lock = (ReentrantLock) locks.get(key);
+            final ReentrantLock lock = locks.get(key);
             if (lock == null) {
                 throw new IllegalMonitorStateException("Cannot unlock prior to locking");
             }

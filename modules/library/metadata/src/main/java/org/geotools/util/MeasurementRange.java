@@ -158,7 +158,7 @@ public class MeasurementRange<T extends Number & Comparable<? super T>> extends 
      */
     private MeasurementRange(Class<T> type, Range<? extends Number> range, final Unit<?> units) {
         // TODO: remove the (Range) cast when we will be allowed to compile for Java 6.
-        super(type, (Range) range);
+        super(type, range);
         this.units = units;
     }
 

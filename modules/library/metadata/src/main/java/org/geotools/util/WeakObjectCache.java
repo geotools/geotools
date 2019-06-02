@@ -39,10 +39,10 @@ import java.util.concurrent.locks.ReentrantLock;
 final class WeakObjectCache implements ObjectCache {
 
     /** The cached values for each key. */
-    private final Map /* <Object,WeakReference> */ cache;
+    private final Map<Object, WeakReference> cache;
 
     /** The locks for keys under construction. */
-    private final Map /* <K,ReentrantLock> */ locks;
+    private final Map<Object, ReentrantLock> locks;
 
     /** Creates a new cache. */
     public WeakObjectCache() {
@@ -51,8 +51,8 @@ final class WeakObjectCache implements ObjectCache {
 
     /** Creates a new cache using the indicated initialSize. */
     public WeakObjectCache(final int initialSize) {
-        cache = Collections.synchronizedMap(new HashMap(initialSize));
-        locks = new HashMap();
+        cache = Collections.synchronizedMap(new HashMap<>(initialSize));
+        locks = new HashMap<>();
     }
 
     /** Removes all entries from this map. */
@@ -111,7 +111,7 @@ final class WeakObjectCache implements ObjectCache {
     public void writeLock(final Object key) {
         ReentrantLock lock;
         synchronized (locks) {
-            lock = (ReentrantLock) locks.get(key);
+            lock = locks.get(key);
             if (lock == null) {
                 lock = new ReentrantLock();
                 locks.put(key, lock);
@@ -124,7 +124,7 @@ final class WeakObjectCache implements ObjectCache {
 
     public void writeUnLock(final Object key) {
         synchronized (locks) {
-            final ReentrantLock lock = (ReentrantLock) locks.get(key);
+            final ReentrantLock lock = locks.get(key);
             if (lock == null) {
                 throw new IllegalMonitorStateException("Cannot unlock prior to locking");
             }
@@ -154,7 +154,7 @@ final class WeakObjectCache implements ObjectCache {
     /** Stores a value */
     public void put(final Object key, final Object object) {
         writeLock(key);
-        WeakReference reference = new WeakReference(object);
+        WeakReference<Object> reference = new WeakReference<>(object);
         cache.put(key, reference);
         writeUnLock(key);
     }
@@ -163,7 +163,7 @@ final class WeakObjectCache implements ObjectCache {
     public Set<Object> getKeys() {
         Set<Object> keys = null;
 
-        keys = new HashSet<Object>(cache.keySet());
+        keys = new HashSet<>(cache.keySet());
 
         return keys;
     }

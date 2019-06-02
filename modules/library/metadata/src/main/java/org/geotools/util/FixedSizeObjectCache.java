@@ -34,6 +34,7 @@ import java.util.concurrent.locks.ReentrantLock;
  * @version $Id$
  * @author Jody Garnett (Refractions Research)
  */
+@SuppressWarnings("unchecked")
 final class FixedSizeObjectCache implements ObjectCache {
 
     private final int LIMIT;
@@ -52,7 +53,7 @@ final class FixedSizeObjectCache implements ObjectCache {
     /** Creates a new cache using the indicated initialSize. */
     public FixedSizeObjectCache(final int initialSize) {
         LIMIT = initialSize;
-        cache = Collections.synchronizedMap(new WeakValueHashMap(initialSize));
+        cache = Collections.synchronizedMap(new WeakValueHashMap<>(initialSize));
         locks = new HashMap(initialSize);
     }
 

@@ -130,7 +130,7 @@
     <checkstyle.skip>false</checkstyle.skip>
     <qa>false</qa>
     <jackson2.version>2.9.7</jackson2.version>
-	<lint>deprecation</lint>
+    <lint>deprecation,unchecked</lint>
   </properties>
 
   <!-- Profiles set on the command-line overwrite default properties. -->
@@ -324,6 +324,8 @@
                 <arg>-Xplugin:ErrorProne -XepExcludedPaths:${project.build.directory}/generated-sources/.* ${errorProneFlags}</arg>
                 <arg>-Xlint:${lint}</arg>
                 <arg>-Werror</arg>
+                <arg>-Xmaxwarns</arg>
+                <arg>1000</arg>
               </compilerArgs>
               <annotationProcessorPaths>
                 <path>
@@ -400,7 +402,7 @@
               <jvmArgs>-XX:+TieredCompilation -XX:TieredStopAtLevel=1</jvmArgs>
               <compilerArgs combine.children="append">
                 <arg>-Xlint:${lint}</arg>
-                <arg>-Werror</arg>
+		<arg>-Werror</arg>
               </compilerArgs>
             </configuration>
             <executions>

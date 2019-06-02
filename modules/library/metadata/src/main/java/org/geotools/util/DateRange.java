@@ -76,6 +76,7 @@ public class DateRange extends Range<Date> {
      * @throws ConversionException if the given range doesn't have a {@linkplain
      *     MeasurementRange#getUnits unit} compatible with milliseconds.
      */
+    @SuppressWarnings("unchecked")
     public DateRange(final MeasurementRange<?> range, final Date origin)
             throws IncommensurableException {
         this(range, getConverter((Unit<Time>) range.getUnits()), origin.getTime());

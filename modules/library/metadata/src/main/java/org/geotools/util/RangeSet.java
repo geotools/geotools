@@ -162,7 +162,7 @@ public class RangeSet<T extends Comparable<? super T>> extends AbstractSet<Range
     }
 
     /** Converts a value from an arbitrary type to the wrapper of {@link #arrayElementClass}. */
-    private Comparable<?> toArrayElement(Comparable<?> value) {
+    private <T> Comparable<T> toArrayElement(Comparable<T> value) {
         if (!relaxedClass.isInstance(value)) {
             throw new IllegalArgumentException(
                     value == null
@@ -224,7 +224,7 @@ public class RangeSet<T extends Comparable<? super T>> extends AbstractSet<Range
         if (!range.isMinIncluded() || !range.isMaxIncluded()) {
             throw new UnsupportedOperationException("Open interval not yet supported");
         }
-        return add((Comparable) range.getMinValue(), (Comparable) range.getMaxValue());
+        return add(range.getMinValue(), range.getMaxValue());
     }
 
     /**
@@ -236,6 +236,7 @@ public class RangeSet<T extends Comparable<? super T>> extends AbstractSet<Range
      * @return {@code true} if this set changed as a result of the call.
      * @throws IllegalArgumentException if {@code lower} is greater than {@code upper}.
      */
+    @SuppressWarnings("unchecked")
     public <N> boolean add(final Comparable<? super N> min, final Comparable<? super N> max)
             throws IllegalArgumentException {
         Comparable lower = toArrayElement(min);

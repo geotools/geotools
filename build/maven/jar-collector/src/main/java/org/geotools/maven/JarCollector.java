@@ -133,6 +133,7 @@ public class JarCollector extends AbstractMojo {
             }
         }
         FileUtils.copyFileToDirectory(jarFile, collect);
+        @SuppressWarnings("unchecked")
         Set<Artifact> dependencies = project.getDependencyArtifacts();
         if (dependencies != null) {
             for (final Artifact artifact : dependencies) {

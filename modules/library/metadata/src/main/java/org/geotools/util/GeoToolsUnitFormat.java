@@ -99,6 +99,7 @@ public abstract class GeoToolsUnitFormat extends SimpleUnitFormat {
 
         public BaseGT2Format() {}
 
+        @SuppressWarnings("unchecked")
         protected void initUnits(UnitFormat base) {
             /**
              * Labels and alias are only defined on the DEFAULT format instance, so these

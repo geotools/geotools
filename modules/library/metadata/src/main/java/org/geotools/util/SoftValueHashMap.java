@@ -558,6 +558,7 @@ public class SoftValueHashMap<K, V> extends AbstractMap<K, V> {
          * SoftReference#clear} method because it is invoked by {@link WeakCollectionCleaner}.
          */
         @Override
+        @SuppressWarnings("unchecked")
         public void clear() {
             if (cleaner != null) {
                 final Object value = get();

@@ -1296,7 +1296,6 @@ public class GranuleDescriptor {
                         forceVirtualNativeResolution(
                                 raster, request, virtualNativeResolution, selectedlevel, hints);
             }
-
             double decimationScaleX = ((1.0 * sourceArea.width) / raster.getWidth());
             double decimationScaleY = ((1.0 * sourceArea.height) / raster.getHeight());
             final AffineTransform decimationScaleTranform =
@@ -1468,6 +1467,11 @@ public class GranuleDescriptor {
                 }
 
                 ImageWorker iw = new ImageWorker(raster);
+                if (virtualNativeResolution != null
+                        && !Double.isNaN(virtualNativeResolution[0])
+                        && !Double.isNaN(virtualNativeResolution[1])) {
+                    localHints.add(new RenderingHints(ImageWorker.PRESERVE_CHAINED_AFFINES, true));
+                }
                 iw.setRenderingHints(localHints);
                 if (iw.getNoData() == null && this.noData != null) {
                     iw.setNoData(this.noData.getAsRange());

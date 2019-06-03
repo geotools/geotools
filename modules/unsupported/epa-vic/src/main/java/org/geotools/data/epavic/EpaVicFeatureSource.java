@@ -304,7 +304,12 @@ public class EpaVicFeatureSource extends ContentFeatureSource {
             sitesToRetrieve =
                     sites.getSites()
                             .stream()
-                            .filter(site -> bbox.contains(site.getLatitude(), site.getLongitude()))
+                            .filter(
+                                    (site) -> {
+                                        return bbox.contains(
+                                                new DirectPosition2D(
+                                                        site.getLongitude(), site.getLatitude()));
+                                    })
                             .collect(Collectors.toList());
         } else {
             sitesToRetrieve = sites.getSites();

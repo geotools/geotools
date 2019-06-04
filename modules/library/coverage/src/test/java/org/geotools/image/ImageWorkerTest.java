@@ -533,6 +533,20 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         readWorker.setImage(ImageIO.read(outFile));
         show(readWorker, "Pure Java JPEG");
         outFile.delete();
+
+        // /////////////////////////////////////////////////////////////////////
+        // test alpha channel is removed with nodata value
+        // /////////////////////////////////////////////////////////////////////
+        worker.setImage(getIndexedRGBNodata());
+        worker.forceIndexColorModel(false);
+        worker.writeJPEG(outFile, "JPEG", 0.75f, true);
+        // with the native imageIO, an exception would have been thrown by now.
+        // with non-native, writing the alpha channel to JPEG will work
+        // as well as reading it (!), but this is not generally supported
+        // and will confuse other image readers,
+        // so alpha should be removed for JPEG
+        BufferedImage image = ImageIO.read(outFile);
+        assertFalse(image.getColorModel().hasAlpha());
     }
 
     /**

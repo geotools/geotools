@@ -3920,7 +3920,7 @@ public class ImageWorker {
         // go to component color model if needed
         ColorModel cm = image.getColorModel();
         final boolean hasAlpha = cm.hasAlpha();
-        forceComponentColorModel();
+        forceComponentColorModel(false, true, true);
         cm = image.getColorModel();
 
         // rescale to 8 bit

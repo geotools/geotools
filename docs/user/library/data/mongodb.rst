@@ -59,6 +59,14 @@ following connection parameters:
   are stored as MongoDB documents or files adhering to the JSON schema format with 
   the schema "Type Name" (typeName) as the key.
 
+* max_objs_schema: specifies the maximun integer number of JSON objects on the collection
+  to be used in the schema generation process.  
+  The default value is 1.  This parameter  is not required.
+  
+* objs_id_schema: specifies a collection of comma separated Object IDs to be used 
+  in the schema generation process.  It can be used along 
+  with ``max_objs_schema`` parameter.  Default is empty.  This parameter is not required.
+
 JSON Schema
 -----------
 

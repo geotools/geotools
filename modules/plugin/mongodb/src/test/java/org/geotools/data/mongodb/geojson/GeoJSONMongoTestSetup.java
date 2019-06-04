@@ -22,6 +22,7 @@ import com.mongodb.BasicDBObjectBuilder;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import java.util.Date;
+import org.bson.types.ObjectId;
 import org.geotools.data.mongodb.MongoDataStore;
 import org.geotools.data.mongodb.MongoTestSetup;
 
@@ -45,6 +46,7 @@ public class GeoJSONMongoTestSetup extends MongoTestSetup {
 
         ft1.save(
                 BasicDBObjectBuilder.start()
+                        .add("_id", new ObjectId("58e5889ce4b02461ad5af080"))
                         .add("id", "ft1.0")
                         .push("geometry")
                         .add("type", "Point")
@@ -65,6 +67,7 @@ public class GeoJSONMongoTestSetup extends MongoTestSetup {
                         .get());
         ft1.save(
                 BasicDBObjectBuilder.start()
+                        .add("_id", new ObjectId("58e5889ce4b02461ad5af081"))
                         .add("id", "ft1.1")
                         .push("geometry")
                         .add("type", "Point")
@@ -85,6 +88,7 @@ public class GeoJSONMongoTestSetup extends MongoTestSetup {
                         .get());
         ft1.save(
                 BasicDBObjectBuilder.start()
+                        .add("_id", new ObjectId("58e5889ce4b02461ad5af082"))
                         .add("id", "ft1.2")
                         .push("geometry")
                         .add("type", "Point")
@@ -94,6 +98,7 @@ public class GeoJSONMongoTestSetup extends MongoTestSetup {
                         .add("intProperty", 2)
                         .add("doubleProperty", 2.2)
                         .add("stringProperty", "two")
+                        .add("optionalProperty", "optional")
                         .add(
                                 "listProperty",
                                 list(

@@ -72,7 +72,11 @@ public class MongoFeatureSource extends ContentFeatureSource {
     final void initMapper() {
         // use schema with mapping info if it exists
         SimpleFeatureType type = entry.getState(null).getFeatureType();
-        setMapper(type != null ? new MongoSchemaMapper(type) : new MongoInferredMapper());
+        setMapper(
+                type != null
+                        ? new MongoSchemaMapper(type)
+                        : new MongoInferredMapper(
+                                getDataStore().getSchemaInitParams().orElse(null)));
     }
 
     public DBCollection getCollection() {

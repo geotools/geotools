@@ -331,7 +331,8 @@ public class AppSchemaDataAccessConfigurator {
                                 namespaces,
                                 dto.getItemXpath(),
                                 dto.isXmlDataStore(),
-                                dto.isDenormalised());
+                                dto.isDenormalised(),
+                                dto.getSourceDataStore());
 
                 String mappingName = dto.getMappingName();
                 if (mappingName != null) {

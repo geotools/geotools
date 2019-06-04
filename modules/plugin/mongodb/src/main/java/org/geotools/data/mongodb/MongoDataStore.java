@@ -29,8 +29,10 @@ import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.geotools.data.FeatureWriter;
 import org.geotools.data.Transaction;
 import org.geotools.data.store.ContentDataStore;
@@ -41,6 +43,7 @@ import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.filter.FilterCapabilities;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.geotools.util.logging.Logging;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -59,6 +62,8 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 public class MongoDataStore extends ContentDataStore {
 
+    private static final Logger LOGGER = Logging.getLogger(MongoDataStore.class);
+
     static final String KEY_mapping = "mapping";
     static final String KEY_encoding = "encoding";
     static final String KEY_collection = "collection";
@@ -71,6 +76,9 @@ public class MongoDataStore extends ContentDataStore {
     @SuppressWarnings("deprecation")
     FilterCapabilities filterCapabilities;
 
+    // parameters for precise schema generation from actual mongodb data
+    private MongoSchemaInitParams schemaInitParams;
+
     public MongoDataStore(String dataStoreURI) {
         this(dataStoreURI, null);
     }
@@ -81,6 +89,14 @@ public class MongoDataStore extends ContentDataStore {
 
     public MongoDataStore(
             String dataStoreURI, String schemaStoreURI, boolean createDatabaseIfNeeded) {
+        this(dataStoreURI, schemaStoreURI, createDatabaseIfNeeded, null);
+    }
+
+    public MongoDataStore(
+            String dataStoreURI,
+            String schemaStoreURI,
+            boolean createDatabaseIfNeeded,
+            MongoSchemaInitParams schemaInitParams) {
 
         MongoClientURI dataStoreClientURI = createMongoClientURI(dataStoreURI);
         dataStoreClient = createMongoClient(dataStoreClientURI);
@@ -101,6 +117,9 @@ public class MongoDataStore extends ContentDataStore {
         }
 
         filterCapabilities = createFilterCapabilties();
+
+        if (schemaInitParams != null) this.schemaInitParams = schemaInitParams;
+        else this.schemaInitParams = MongoSchemaInitParams.builder().build();
     }
 
     final MongoClientURI createMongoClientURI(String dataStoreURI) {
@@ -414,7 +433,7 @@ public class MongoDataStore extends ContentDataStore {
         return state;
     }
 
-    final MongoSchemaStore getSchemaStore() {
+    public final MongoSchemaStore getSchemaStore() {
         return schemaStore;
     }
 
@@ -423,5 +442,22 @@ public class MongoDataStore extends ContentDataStore {
         dataStoreClient.close();
         schemaStore.close();
         super.dispose();
+    }
+
+    /** Cleans current memory cached entries. */
+    public void cleanEntries() {
+        LOGGER.info("Proceeding to clean all store cached entries");
+        for (ContentEntry entry : entries.values()) {
+            entry.dispose();
+        }
+        entries.clear();
+    }
+
+    public Optional<MongoSchemaInitParams> getSchemaInitParams() {
+        return Optional.ofNullable(schemaInitParams);
+    }
+
+    public void setSchemaInitParams(MongoSchemaInitParams schemaInitParams) {
+        this.schemaInitParams = schemaInitParams;
     }
 }

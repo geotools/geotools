@@ -33,6 +33,7 @@ public class GeoJSONMongoTestSetup extends MongoTestSetup {
                 parseDate("2015-01-01T16:30:00.000Z"),
                 parseDate("2015-01-01T21:30:00.000Z")
             };
+    static final String NULLABLE_ATTRIBUTE = "nullableAttribute";
 
     @Override
     protected void setUpDataStore(MongoDataStore dataStore) {}
@@ -53,6 +54,7 @@ public class GeoJSONMongoTestSetup extends MongoTestSetup {
                         .add("intProperty", 0)
                         .add("doubleProperty", 0.0)
                         .add("stringProperty", "zero")
+                        .add(NULLABLE_ATTRIBUTE, "A value")
                         .add(
                                 "listProperty",
                                 list(
@@ -72,6 +74,7 @@ public class GeoJSONMongoTestSetup extends MongoTestSetup {
                         .add("intProperty", 1)
                         .add("doubleProperty", 1.1)
                         .add("stringProperty", "one")
+                        .add(NULLABLE_ATTRIBUTE, null)
                         .add(
                                 "listProperty",
                                 list(

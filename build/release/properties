@@ -9,7 +9,7 @@ SF_HOST=frs.sourceforge.net
 
 # parameter defaults
 if [ -z $branch ]; then
-  branch="trunk"
+  branch="master"
 fi
 
 if [ -z $rev ]; then

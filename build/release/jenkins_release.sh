@@ -14,6 +14,10 @@ if [ ! -z $REV ]; then
   OPTS="$OPTS -r $REV"
 fi
 
+# double check default jdk
+jrunscript -e 'java.lang.System.out.println(java.lang.System.getProperty("java.home"));'
+
+# override using our JAVA_HOME
 if [ ! -z $JAVA_HOME ]; then
   export PATH=$JAVA_HOME/bin:$PATH
 fi

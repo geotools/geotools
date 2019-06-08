@@ -40,8 +40,22 @@ pushd ../../ > /dev/null
 
 init_git $git_user $git_email
 
-# switch to the release branch
-git checkout rel_$tag
+# check to see if a release branch already exists
+set +e && git checkout rel_$tag && set -e
+if [ $? == 0 ]; then
+  # release branch already exists, kill it
+  git checkout $branch
+  echo "branch rel_$tag exists, deleting it"
+  git branch -D rel_$tag
+fi
+
+# switch to the release tag
+git fetch --tags
+if [ `git tag --list $tag | wc -l` == 0 ]; then
+  echo "Could not locate tag $tag"
+  exit 1;
+fi
+git checkout tags/$tag -b rel_$tag
 
 # ensure no changes on it
 set +e
@@ -54,8 +68,8 @@ set -e
 
 # deploy the release to maven repo
 if [ "$SKIP_DEPLOY"  != true ]; then
-  mvn clean deploy -DskipTests -Dall
-  mvn clean -P deploy.boundless deploy -DskipTests -Dall
+  mvn clean deploy -Dfmt.skip=true -DskipTests -Dall
+  mvn clean -P deploy.boundless deploy -Dfmt.skip=true -DskipTests -Dall
 fi
 
 # get <major.minor> for sf release dir
@@ -75,10 +89,11 @@ rsync -ave "ssh -i $SF_PK" *.zip $SF_USER@$SF_HOST:"/home/pfs/project/g/ge/geoto
 
 popd > /dev/null
 
+# tagging now handled by build_release.sh
 # tag the release branch
-git tag $tag
-
+# git tag --force $tag
 # push up tag
-git push origin $tag
+# git push --delete origin $tag
+# git push origin $tag
 
 popd > /dev/null

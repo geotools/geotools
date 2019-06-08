@@ -194,7 +194,12 @@ public class GML2MockData {
 
     static MultiPoint multiPoint() {
         return setCRS(
-                gf.createMultiPoint(new Coordinate[] {new Coordinate(1, 1), new Coordinate(2, 2)}));
+                gf.createMultiPoint(
+                        new CoordinateArraySequence(
+                                new CoordinateArraySequence(
+                                        new Coordinate[] {
+                                            new Coordinate(1, 1), new Coordinate(2, 2)
+                                        }))));
     }
 
     static Element multiPoint(Document document, Node parent) {

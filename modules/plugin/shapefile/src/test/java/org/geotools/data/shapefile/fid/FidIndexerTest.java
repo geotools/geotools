@@ -16,7 +16,7 @@
  */
 package org.geotools.data.shapefile.fid;
 
-import static junit.framework.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import org.geotools.data.Query;
 import org.geotools.data.shapefile.ShapefileDataStore;

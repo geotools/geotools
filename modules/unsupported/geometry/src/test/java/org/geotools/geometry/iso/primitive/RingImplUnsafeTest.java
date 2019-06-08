@@ -26,6 +26,7 @@ import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.util.factory.GeoTools;
 import org.geotools.util.factory.Hints;
 import org.opengis.geometry.DirectPosition;
+import org.opengis.geometry.PositionFactory;
 import org.opengis.geometry.coordinate.Position;
 import org.opengis.geometry.primitive.CurveSegment;
 import org.opengis.geometry.primitive.OrientableCurve;
@@ -96,15 +97,16 @@ public class RingImplUnsafeTest extends TestCase {
     public Surface createSurface(GeometryBuilder builder) {
 
         GeometryFactoryImpl tCoordFactory = (GeometryFactoryImpl) builder.getGeometryFactory();
+        PositionFactory pf = builder.getPositionFactory();
         PrimitiveFactoryImpl tPrimFactory = (PrimitiveFactoryImpl) builder.getPrimitiveFactory();
 
         List<DirectPosition> directPositionList = new ArrayList<DirectPosition>();
-        directPositionList.add(tCoordFactory.createDirectPosition(new double[] {20, 10}));
-        directPositionList.add(tCoordFactory.createDirectPosition(new double[] {40, 10}));
-        directPositionList.add(tCoordFactory.createDirectPosition(new double[] {50, 40}));
-        directPositionList.add(tCoordFactory.createDirectPosition(new double[] {30, 50}));
-        directPositionList.add(tCoordFactory.createDirectPosition(new double[] {10, 30}));
-        directPositionList.add(tCoordFactory.createDirectPosition(new double[] {20, 10}));
+        directPositionList.add(pf.createDirectPosition(new double[] {20, 10}));
+        directPositionList.add(pf.createDirectPosition(new double[] {40, 10}));
+        directPositionList.add(pf.createDirectPosition(new double[] {50, 40}));
+        directPositionList.add(pf.createDirectPosition(new double[] {30, 50}));
+        directPositionList.add(pf.createDirectPosition(new double[] {10, 30}));
+        directPositionList.add(pf.createDirectPosition(new double[] {20, 10}));
 
         Ring exteriorRing = (Ring) tPrimFactory.createRingByDirectPositions(directPositionList);
         List<Ring> interiors = new ArrayList<Ring>();
@@ -121,29 +123,30 @@ public class RingImplUnsafeTest extends TestCase {
 
         GeometryFactoryImpl tCoordFactory = (GeometryFactoryImpl) builder.getGeometryFactory();
         PrimitiveFactoryImpl tPrimFactory = (PrimitiveFactoryImpl) builder.getPrimitiveFactory();
+        PositionFactory pf = builder.getPositionFactory();
 
         /* Defining Positions for LineStrings */
         ArrayList<Position> line1 = new ArrayList<Position>();
-        line1.add(new PositionImpl(tCoordFactory.createDirectPosition(new double[] {50, 20})));
-        line1.add(new PositionImpl(tCoordFactory.createDirectPosition(new double[] {30, 30})));
-        line1.add(new PositionImpl(tCoordFactory.createDirectPosition(new double[] {20, 50})));
-        line1.add(new PositionImpl(tCoordFactory.createDirectPosition(new double[] {20, 70})));
+        line1.add(new PositionImpl(pf.createDirectPosition(new double[] {50, 20})));
+        line1.add(new PositionImpl(pf.createDirectPosition(new double[] {30, 30})));
+        line1.add(new PositionImpl(pf.createDirectPosition(new double[] {20, 50})));
+        line1.add(new PositionImpl(pf.createDirectPosition(new double[] {20, 70})));
 
         ArrayList<Position> line2 = new ArrayList<Position>();
-        line2.add(new PositionImpl(tCoordFactory.createDirectPosition(new double[] {20, 70})));
-        line2.add(new PositionImpl(tCoordFactory.createDirectPosition(new double[] {40, 80})));
-        line2.add(new PositionImpl(tCoordFactory.createDirectPosition(new double[] {70, 80})));
+        line2.add(new PositionImpl(pf.createDirectPosition(new double[] {20, 70})));
+        line2.add(new PositionImpl(pf.createDirectPosition(new double[] {40, 80})));
+        line2.add(new PositionImpl(pf.createDirectPosition(new double[] {70, 80})));
 
         ArrayList<Position> line3 = new ArrayList<Position>();
-        line3.add(new PositionImpl(tCoordFactory.createDirectPosition(new double[] {70, 80})));
-        line3.add(new PositionImpl(tCoordFactory.createDirectPosition(new double[] {90, 70})));
-        line3.add(new PositionImpl(tCoordFactory.createDirectPosition(new double[] {100, 60})));
-        line3.add(new PositionImpl(tCoordFactory.createDirectPosition(new double[] {100, 40})));
+        line3.add(new PositionImpl(pf.createDirectPosition(new double[] {70, 80})));
+        line3.add(new PositionImpl(pf.createDirectPosition(new double[] {90, 70})));
+        line3.add(new PositionImpl(pf.createDirectPosition(new double[] {100, 60})));
+        line3.add(new PositionImpl(pf.createDirectPosition(new double[] {100, 40})));
 
         ArrayList<Position> line4 = new ArrayList<Position>();
-        line4.add(new PositionImpl(tCoordFactory.createDirectPosition(new double[] {100, 40})));
-        line4.add(new PositionImpl(tCoordFactory.createDirectPosition(new double[] {80, 30})));
-        line4.add(new PositionImpl(tCoordFactory.createDirectPosition(new double[] {50, 20})));
+        line4.add(new PositionImpl(pf.createDirectPosition(new double[] {100, 40})));
+        line4.add(new PositionImpl(pf.createDirectPosition(new double[] {80, 30})));
+        line4.add(new PositionImpl(pf.createDirectPosition(new double[] {50, 20})));
 
         /* Setting up Array of these LineStrings */
         ArrayList<CurveSegment> tLineList1 = new ArrayList<CurveSegment>();

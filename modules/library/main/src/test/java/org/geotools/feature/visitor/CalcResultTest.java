@@ -43,8 +43,8 @@ public class CalcResultTest extends TestCase {
     MockCalcResult result = new MockCalcResult();
     Integer val1 = Integer.valueOf(4);
     Long val2 = Long.valueOf(5);
-    Float val3 = new Float(6.0);
-    Double val4 = new Double(7.0);
+    Float val3 = Float.valueOf(6f);
+    Double val4 = Double.valueOf(7.0);
     String val5 = new String("8");
     String val6 = new String("Random text of arbitrary complexity.");
 

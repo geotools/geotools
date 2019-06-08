@@ -474,14 +474,6 @@ public class Envelope implements Serializable {
     }
 
     /**
-     * @deprecated Use #intersects instead. In the future, #overlaps may be changed to be a true
-     *     overlap check; that is, whether the intersection is two-dimensional.
-     */
-    public boolean overlaps(Envelope other) {
-        return intersects(other);
-    }
-
-    /**
      * Check if the point <code>p</code> overlaps (lies inside) the region of this <code>Envelope
      * </code>.
      *
@@ -490,11 +482,6 @@ public class Envelope implements Serializable {
      */
     public boolean intersects(Coordinate p) {
         return intersects(p.x, p.y);
-    }
-
-    /** @deprecated Use #intersects instead. */
-    public boolean overlaps(Coordinate p) {
-        return intersects(p);
     }
 
     /**
@@ -507,11 +494,6 @@ public class Envelope implements Serializable {
      */
     public boolean intersects(double x, double y) {
         return !(x > maxx || x < minx || y > maxy || y < miny);
-    }
-
-    /** @deprecated Use #intersects instead. */
-    public boolean overlaps(double x, double y) {
-        return intersects(x, y);
     }
 
     /**

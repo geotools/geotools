@@ -21,7 +21,6 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
-import org.apache.commons.io.IOUtils;
 import org.geotools.data.ows.Capabilities;
 import org.geotools.data.ows.GetCapabilitiesResponse;
 import org.geotools.data.ows.HTTPResponse;
@@ -53,15 +52,11 @@ public class WMSGetCapabilitiesResponse extends GetCapabilitiesResponse {
                 hints.put(DocumentFactory.VALIDATION_HINT, Boolean.FALSE);
             }
             Object object;
-            InputStream inputStream = null;
-            try {
-                inputStream = response.getResponseStream();
+            try (InputStream inputStream = response.getResponseStream()) {
                 object = DocumentFactory.getInstance(inputStream, hints, Level.WARNING);
             } catch (SAXException e) {
                 throw (ServiceException)
                         new ServiceException("Error while parsing XML.").initCause(e);
-            } finally {
-                IOUtils.closeQuietly(inputStream);
             }
 
             if (object instanceof ServiceException) {

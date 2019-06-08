@@ -37,18 +37,8 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.And;
 import org.opengis.filter.BinaryLogicOperator;
 import org.opengis.filter.Filter;
-import org.opengis.filter.Id;
 import org.opengis.filter.Not;
 import org.opengis.filter.Or;
-import org.opengis.filter.PropertyIsBetween;
-import org.opengis.filter.PropertyIsEqualTo;
-import org.opengis.filter.PropertyIsGreaterThan;
-import org.opengis.filter.PropertyIsGreaterThanOrEqualTo;
-import org.opengis.filter.PropertyIsLessThan;
-import org.opengis.filter.PropertyIsLessThanOrEqualTo;
-import org.opengis.filter.PropertyIsLike;
-import org.opengis.filter.PropertyIsNotEqualTo;
-import org.opengis.filter.PropertyIsNull;
 import org.opengis.filter.expression.Add;
 import org.opengis.filter.expression.Divide;
 import org.opengis.filter.expression.Expression;
@@ -57,17 +47,6 @@ import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.Multiply;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.expression.Subtract;
-import org.opengis.filter.spatial.BBOX;
-import org.opengis.filter.spatial.Beyond;
-import org.opengis.filter.spatial.Contains;
-import org.opengis.filter.spatial.Crosses;
-import org.opengis.filter.spatial.DWithin;
-import org.opengis.filter.spatial.Disjoint;
-import org.opengis.filter.spatial.Equals;
-import org.opengis.filter.spatial.Intersects;
-import org.opengis.filter.spatial.Overlaps;
-import org.opengis.filter.spatial.Touches;
-import org.opengis.filter.spatial.Within;
 
 /**
  * Utility class for working with Filters & Expression.
@@ -131,9 +110,6 @@ public class Filters {
      * the current globally configured results.
      */
     private static Filters STATIC = new Filters();
-
-    /** Set to true to start throwing exceptions when org.geotools.filter.Filter is used. */
-    private static final boolean STRICT = false;
 
     org.opengis.filter.FilterFactory2 ff;
 
@@ -323,61 +299,6 @@ public class Filters {
     }
 
     /**
-     * Convert filter to a constant for use in switch statements. This is an alternative to
-     * performing instanceof checks.
-     *
-     * <p>This utility method for those upgrading to a newer version of GeoTools, instance of checks
-     * are preferred as they will take into account new kinds of filters (example temporal filters
-     * added for Filter 2.0 specification). Example:
-     *
-     * <pre>
-     * <code>
-     * BEFORE: filter.getFilterType() == FilterType.GEOMETRY_CONTAINS
-     * QUICK:  Filters.getFilterType( filter ) == FilterType.GEOMETRY_CONTAINS
-     * AFTER: filter instanceof Contains
-     * </code>
-     * </pre>
-     *
-     * @param filter
-     * @deprecated please use instanceof checks
-     */
-    public static short getFilterType(org.opengis.filter.Filter filter) {
-        if (filter == null) return 0;
-        if (filter == org.opengis.filter.Filter.EXCLUDE) return FilterType.ALL;
-        if (filter == org.opengis.filter.Filter.INCLUDE) return FilterType.NONE;
-        if (filter instanceof PropertyIsBetween) return FilterType.BETWEEN;
-        if (filter instanceof PropertyIsEqualTo) return FilterType.COMPARE_EQUALS;
-        if (filter instanceof PropertyIsGreaterThan) return FilterType.COMPARE_GREATER_THAN;
-        if (filter instanceof PropertyIsGreaterThanOrEqualTo)
-            return FilterType.COMPARE_GREATER_THAN_EQUAL;
-        if (filter instanceof PropertyIsLessThan) return FilterType.COMPARE_LESS_THAN;
-        if (filter instanceof PropertyIsLessThanOrEqualTo)
-            return FilterType.COMPARE_LESS_THAN_EQUAL;
-        if (filter instanceof PropertyIsNotEqualTo) return FilterType.COMPARE_NOT_EQUALS;
-        if (filter instanceof Id) return FilterType.FID;
-        if (filter instanceof BBOX) return FilterType.GEOMETRY_BBOX;
-        if (filter instanceof Beyond) return FilterType.GEOMETRY_BEYOND;
-        if (filter instanceof Contains) return FilterType.GEOMETRY_CONTAINS;
-        if (filter instanceof Crosses) return FilterType.GEOMETRY_CROSSES;
-        if (filter instanceof Disjoint) return FilterType.GEOMETRY_DISJOINT;
-        if (filter instanceof DWithin) return FilterType.GEOMETRY_DWITHIN;
-        if (filter instanceof Equals) return FilterType.GEOMETRY_EQUALS;
-        if (filter instanceof Intersects) return FilterType.GEOMETRY_INTERSECTS;
-        if (filter instanceof Overlaps) return FilterType.GEOMETRY_OVERLAPS;
-        if (filter instanceof Touches) return FilterType.GEOMETRY_TOUCHES;
-        if (filter instanceof Within) return FilterType.GEOMETRY_WITHIN;
-        if (filter instanceof PropertyIsLike) return FilterType.LIKE;
-        if (filter instanceof And) return FilterType.LOGIC_AND;
-        if (filter instanceof Not) return FilterType.LOGIC_NOT;
-        if (filter instanceof Or) return FilterType.LOGIC_OR;
-        if (filter instanceof PropertyIsNull) return FilterType.NULL;
-
-        if (filter instanceof Filter) {
-            return 0;
-        }
-        return 0;
-    }
-    /**
      * Obtain the provided Expression as an integer.
      *
      * <p>This method is quickly used to safely check Literal expressions.
@@ -456,61 +377,6 @@ public class Filters {
             // must be a more complicated expression than a literal
             return Double.NaN;
         }
-    }
-
-    /**
-     * Navigate through the expression searching for something that can be a TYPE.
-     *
-     * <p>This will work even with dynamic expression that would normally require a feature. It
-     * works especially well when the Expression is a Literal literal (which is usually the case).
-     *
-     * <p>If you have a specific Feature, please do this:
-     *
-     * <pre><code>
-     * Color value = expr.evaualte( feature, Color.class );
-     * return value instanceof Color ? (Color) value : null;
-     * </code></pre>
-     *
-     * @param expr This only really works for down casting literals to a value
-     * @param type Target type
-     * @return expr smunched into indicated type
-     * @deprecated This is not a good idea; use expr.evaulate( null, TYPE )
-     */
-    public static <T> T asType(Expression expr, Class<T> type) {
-        if (expr == null) {
-            return null;
-        }
-        if (STRICT) {
-            return expr.evaluate(null, type);
-        } else if (expr instanceof Literal) {
-            Literal literal = (Literal) expr;
-            return (T) literal.evaluate(null, type);
-        } else if (expr instanceof Function) {
-            Function function = (Function) expr;
-            List<Expression> params = function.getParameters();
-            if (params != null && params.size() != 0) {
-                for (int i = 0; i < params.size(); i++) {
-                    Expression e = (Expression) params.get(i);
-                    T value = asType(e, type);
-
-                    if (value != null) {
-                        return value;
-                    }
-                }
-            }
-        } else {
-            try { // this is a bad idea, not expected to work much
-                T value = expr.evaluate(null, type);
-
-                if (type.isInstance(value)) {
-                    return value;
-                }
-            } catch (NullPointerException expected) {
-                return null; // well that was not unexpected
-            } catch (Throwable ignore) { // I did say that was a bad idea
-            }
-        }
-        return null; // really need a Feature to acomplish this one
     }
 
     /**

@@ -17,6 +17,7 @@
  */
 package org.geotools.ysld.encode;
 
+import java.util.Optional;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.text.ecql.ECQL;
 import org.geotools.styling.FeatureTypeStyle;
@@ -39,8 +40,18 @@ public class RuleEncoder extends YsldEncodeHandler<Rule> {
     @Override
     protected void encode(Rule rule) {
         put("name", rule.getName());
-        put("title", rule.getTitle());
-        put("abstract", rule.getAbstract());
+        put(
+                "title",
+                Optional.ofNullable(rule.getDescription())
+                        .map(d -> d.getTitle())
+                        .map(t -> t.toString())
+                        .orElse(null));
+        put(
+                "abstract",
+                Optional.ofNullable(rule.getDescription())
+                        .map(d -> d.getAbstract())
+                        .map(t -> t.toString())
+                        .orElse(null));
         if (rule.getLegend() != null) {
             Graphic graphic = null;
             if (rule.getLegend() instanceof Graphic) {

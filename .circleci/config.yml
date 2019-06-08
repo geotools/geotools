@@ -1,0 +1,71 @@
+version: 2 
+jobs: 
+  build: 
+    docker: 
+      - image: circleci/openjdk:8u212-jdk-stretch
+        command: ["/bin/bash"]
+    steps: 
+      - run:
+          name: Checkout GeoTools, GeoWebCache and GeoServer
+          command: |
+            echo "Preparing git ssh checkouts"
+            mkdir ~/.ssh/ && echo -e "Host github.com\n\tStrictHostKeyChecking no\n" > ~/.ssh/config
+            echo "Checking out GeoTools"
+            mkdir geotools
+            git clone git@github.com:geotools/geotools.git geotools
+            echo "Checking out GeoWebCache"
+            mkdir geowebcache
+            git clone git@github.com:GeoWebCache/geowebcache.git geowebcache
+            echo "Checking out GeoServer"
+            mkdir geoserver
+            git clone git@github.com:geoserver/geoserver.git geoserver
+
+      - run:
+          name: Generate cache key
+          command: |
+            find geotools geowebcache geoserver -name "pom.xml" | sort | xargs md5sum > /tmp/checksum.txt
+            cat /tmp/checksum.txt
+           
+      - restore_cache:
+          key: gt_gwc_gs-{{ checksum "/tmp/checksum.txt" }}
+
+      - run:
+          name: Build GeoTools (no tests, prepare fresh artifacts)
+          command: |
+            export TEST_OPTS="-XX:+UseStringDeduplication -XX:+UseG1GC -XX:MaxHeapFreeRatio=30 -XX:MinHeapFreeRatio=10"
+            export MAVEN_OPTS="-Xmx256m $TEST_OPTS"
+            mvn -B -f geotools/pom.xml install -Dall -Dfmt.skip=true -DskipTests
+
+      - run:
+          name: Build GeoWebCache with tests
+          command: |
+            export TEST_OPTS="-XX:+UseStringDeduplication -XX:+UseG1GC -XX:MaxHeapFreeRatio=30 -XX:MinHeapFreeRatio=10"
+            export MAVEN_OPTS="-Xmx512m $TEST_OPTS"
+            mvn -B -f geowebcache/geowebcache/pom.xml install -nsu -Dfmt.skip=true -DskipTests
+            mvn -B -f geowebcache/geowebcache/pom.xml test -nsu -T2 -Dfmt.skip=true
+
+      - run:
+          name: Build GeoServer with tests (and community modules without)
+          command: |
+            export TEST_OPTS="-XX:+UseStringDeduplication -XX:+UseG1GC -XX:MaxHeapFreeRatio=30 -XX:MinHeapFreeRatio=10"
+            export MAVEN_OPTS="-Xmx256m $TEST_OPTS"
+            mvn -B -f geoserver/src/pom.xml install -nsu -Prelease -Dfmt.skip=true -DskipTests
+            mvn -B -f geoserver/src/community/pom.xml install -nsu -DcommunityRelease -Dfmt.skip=true -DskipTests
+            mvn -B -f geoserver/src/pom.xml test -T2 -nsu -Dtest.maxHeapSize=512m -Djvm.opts="$TEST_OPTS" -Prelease -Dfmt.skip=true
+
+      - run:
+          name: Cleanup repository (remove snapshots)
+          command: |
+            rm -rf ~/.m2/repository/org/geotools
+            rm -rf ~/.m2/repository/org/geowebcache
+            rm -rf ~/.m2/repository/org/geoserver
+
+      - save_cache:
+          key: gt_gwc_gs-{{ checksum "/tmp/checksum.txt" }}
+          paths:
+            - ~/.m2/repository
+workflows:
+  version: 2
+  crossProjectIntegrationTests:
+    jobs:
+      - build

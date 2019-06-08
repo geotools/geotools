@@ -40,7 +40,6 @@ import javax.imageio.ImageTypeSpecifier;
 import javax.imageio.metadata.IIOMetadata;
 import javax.imageio.spi.ImageReaderSpi;
 import javax.imageio.stream.ImageInputStream;
-import org.apache.commons.io.IOUtils;
 import org.geotools.coverage.grid.io.FileSetManager;
 import org.geotools.coverage.io.catalog.CoverageSlice;
 import org.geotools.coverage.io.catalog.CoverageSlicesCatalog;
@@ -463,7 +462,7 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
             }
 
             if (imageInputStream != null) {
-                IOUtils.closeQuietly(imageInputStream);
+                imageInputStream.close();
             }
 
         } catch (IOException e) {

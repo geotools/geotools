@@ -96,12 +96,6 @@ public class DB2SQLDialectPrepared extends PreparedStatementSQLDialect {
 
     @Override
     public void encodeGeometryColumn(
-            GeometryDescriptor gatt, String prefix, int srid, StringBuffer sql) {
-        delegate.encodeGeometryColumn(gatt, prefix, srid, sql);
-    }
-
-    @Override
-    public void encodeGeometryColumn(
             GeometryDescriptor gatt, String prefix, int srid, Hints hints, StringBuffer sql) {
         delegate.encodeGeometryColumn(gatt, prefix, srid, hints, sql);
     }

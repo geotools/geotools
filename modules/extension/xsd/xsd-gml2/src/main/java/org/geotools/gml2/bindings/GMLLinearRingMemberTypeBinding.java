@@ -53,7 +53,7 @@ import org.locationtech.jts.geom.LinearRing;
 public class GMLLinearRingMemberTypeBinding extends AbstractComplexBinding {
     /** @generated */
     public QName getTarget() {
-        return GML.LINEARRINGMEMBERTYPE;
+        return GML.LinearRingMemberType;
     }
 
     /**

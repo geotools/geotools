@@ -971,10 +971,10 @@ public class Import extends AbstractCmd {
                 StringTokenizer tok = new StringTokenizer(line, csvDelimiter);
                 currentLocation = tok.nextToken();
 
-                Double minx = new Double(tok.nextToken());
-                Double maxx = new Double(tok.nextToken());
-                Double miny = new Double(tok.nextToken());
-                Double maxy = new Double(tok.nextToken());
+                Double minx = Double.valueOf(tok.nextToken());
+                Double maxx = Double.valueOf(tok.nextToken());
+                Double miny = Double.valueOf(tok.nextToken());
+                Double maxy = Double.valueOf(tok.nextToken());
 
                 currentPos++;
 
@@ -1046,12 +1046,12 @@ public class Import extends AbstractCmd {
             throw new IOException("Cannot find world file for " + imageFile.getAbsolutePath());
 
         BufferedReader in = new BufferedReader(new FileReader(f));
-        Double resx = new Double(in.readLine());
+        Double resx = Double.valueOf(in.readLine());
         in.readLine(); // skip rotate x
         in.readLine(); // skip rotaty y
-        Double resy = new Double(in.readLine());
-        Double ulx = new Double(in.readLine());
-        Double uly = new Double(in.readLine());
+        Double resy = Double.valueOf(in.readLine());
+        Double ulx = Double.valueOf(in.readLine());
+        Double uly = Double.valueOf(in.readLine());
 
         in.close();
 

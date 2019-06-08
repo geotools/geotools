@@ -267,6 +267,7 @@ public class GmlFeatureTypeRegistryConfiguration implements FeatureTypeRegistryC
                     try {
                         return SUPPORTED_GML_KNOWN_TYPE_TO_CONFIGURATION_MAP
                                 .get(name)
+                                .getDeclaredConstructor()
                                 .newInstance();
                     } catch (Exception e) {
                         throw new RuntimeException(e);

@@ -17,6 +17,7 @@
 package org.geotools.se.v1_1.bindings;
 
 import javax.xml.namespace.QName;
+import org.geotools.feature.NameImpl;
 import org.geotools.se.v1_1.SE;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.StyleFactory;
@@ -89,10 +90,12 @@ public class CoverageStyleBinding extends FeatureTypeStyleBinding {
 
         if (node.hasChild("CoverageName")) {
             QName name = (QName) node.getChildValue("CoverageName");
-            fts.setFeatureTypeName(
-                    name.getPrefix() != null
-                            ? name.getPrefix() + ":" + name.getLocalPart()
-                            : name.getLocalPart());
+            fts.featureTypeNames()
+                    .add(
+                            new NameImpl(
+                                    name.getPrefix() != null
+                                            ? name.getPrefix() + ":" + name.getLocalPart()
+                                            : name.getLocalPart()));
         }
 
         return fts;

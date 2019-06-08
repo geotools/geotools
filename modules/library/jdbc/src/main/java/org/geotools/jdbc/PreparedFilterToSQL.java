@@ -51,15 +51,6 @@ public class PreparedFilterToSQL extends FilterToSQL {
     boolean prepareEnabled = true;
 
     /**
-     * Default constructor
-     *
-     * @deprecated Use {@link PreparedFilterToSQL(PreparedStatementSQLDialect)} instead
-     */
-    public PreparedFilterToSQL() {
-        this.dialect = null;
-    }
-
-    /**
      * Contructor taking a reference to the SQL dialect, will use it to encode geometry placeholders
      *
      * @param dialect
@@ -144,41 +135,36 @@ public class PreparedFilterToSQL extends FilterToSQL {
      * @throws RuntimeException If there's a problem writing output
      */
     public Object visit(Id filter, Object extraData) {
-        if (mapper == null) {
-            throw new RuntimeException("Must set a fid mapper before trying to encode FIDFilters");
+
+        if (primaryKey == null) {
+            throw new RuntimeException("Must set a primary key before trying to encode FIDFilters");
         }
 
         Set ids = filter.getIdentifiers();
 
-        // prepare column name array
-        String[] colNames = new String[mapper.getColumnCount()];
-
-        for (int i = 0; i < colNames.length; i++) {
-            colNames[i] = mapper.getColumnName(i);
-        }
-
+        List<PrimaryKeyColumn> columns = primaryKey.getColumns();
         for (Iterator i = ids.iterator(); i.hasNext(); ) {
             try {
                 Identifier id = (Identifier) i.next();
-                Object[] attValues = mapper.getPKAttributes(id.toString());
+                List<Object> attValues = JDBCDataStore.decodeFID(primaryKey, id.toString(), false);
 
                 out.write("(");
 
-                for (int j = 0; j < attValues.length; j++) {
-                    out.write(escapeName(colNames[j]));
+                for (int j = 0; j < attValues.size(); j++) {
+                    out.write(escapeName(columns.get(j).getName()));
                     out.write(" = ");
                     out.write('?');
 
                     // store the value for later usage
-                    literalValues.add(attValues[j]);
+                    literalValues.add(attValues.get(j));
                     // no srid, pk are not formed with geometry values
                     SRIDs.add(-1);
                     dimensions.add(-1);
                     // if it's not null, we can also infer the type
-                    literalTypes.add(attValues[j] != null ? attValues[j].getClass() : null);
+                    literalTypes.add(attValues.get(j) != null ? attValues.get(j).getClass() : null);
                     descriptors.add(null);
 
-                    if (j < (attValues.length - 1)) {
+                    if (j < (attValues.size() - 1)) {
                         out.write(" AND ");
                     }
                 }

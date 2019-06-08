@@ -221,7 +221,7 @@ public class ImageWorker {
 
             Class<?> clazz = Class.forName("com.sun.imageio.plugins.jpeg.JPEGImageWriterSpi");
             if (clazz != null) {
-                temp = (ImageWriterSpi) clazz.newInstance();
+                temp = (ImageWriterSpi) clazz.getDeclaredConstructor().newInstance();
             } else {
                 temp = null;
             }
@@ -243,7 +243,7 @@ public class ImageWorker {
             Class<?> clazz =
                     Class.forName("com.sun.media.imageioimpl.plugins.gif.GIFImageWriterSpi");
             if (clazz != null) {
-                temp = (ImageWriterSpi) clazz.newInstance();
+                temp = (ImageWriterSpi) clazz.getDeclaredConstructor().newInstance();
             } else {
                 temp = null;
             }
@@ -266,7 +266,7 @@ public class ImageWorker {
             Class<?> clazz =
                     Class.forName("com.sun.media.imageioimpl.plugins.jpeg.CLibJPEGImageWriterSpi");
             if (clazz != null && PackageUtil.isCodecLibAvailable()) {
-                temp = (ImageWriterSpi) clazz.newInstance();
+                temp = (ImageWriterSpi) clazz.getDeclaredConstructor().newInstance();
             } else {
                 temp = null;
             }
@@ -289,7 +289,7 @@ public class ImageWorker {
             Class<?> clazz =
                     Class.forName("it.geosolutions.imageioimpl.plugins.tiff.TIFFImageWriterSpi");
             if (clazz != null) {
-                temp = (ImageWriterSpi) clazz.newInstance();
+                temp = (ImageWriterSpi) clazz.getDeclaredConstructor().newInstance();
             } else {
                 temp = null;
             }
@@ -312,7 +312,7 @@ public class ImageWorker {
             Class<?> clazz =
                     Class.forName("com.sun.media.imageioimpl.plugins.png.CLibPNGImageWriterSpi");
             if (clazz != null && PackageUtil.isCodecLibAvailable()) {
-                temp = (ImageWriterSpi) clazz.newInstance();
+                temp = (ImageWriterSpi) clazz.getDeclaredConstructor().newInstance();
             } else {
                 temp = null;
             }
@@ -3914,7 +3914,7 @@ public class ImageWorker {
         // go to component color model if needed
         ColorModel cm = image.getColorModel();
         final boolean hasAlpha = cm.hasAlpha();
-        forceComponentColorModel();
+        forceComponentColorModel(false, true, true);
         cm = image.getColorModel();
 
         // rescale to 8 bit
@@ -5530,7 +5530,7 @@ public class ImageWorker {
                 final ImageWriterSpi spi = writer.getOriginatingProvider();
                 final Class<?>[] outputTypes;
                 if (spi == null) {
-                    outputTypes = ImageWriterSpi.STANDARD_OUTPUT_TYPE;
+                    outputTypes = new Class[] {ImageOutputStream.class};
                 } else {
                     /*
                      * If the encoder is for some format handled in a special way (e.g. GIF), apply the required operation. Note that invoking the

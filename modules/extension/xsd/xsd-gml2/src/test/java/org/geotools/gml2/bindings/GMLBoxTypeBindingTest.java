@@ -32,11 +32,11 @@ public class GMLBoxTypeBindingTest extends AbstractGMLBindingTest {
     protected void setUp() throws Exception {
         super.setUp();
 
-        box = createElement(GML.NAMESPACE, "myBox", GML.BOXTYPE, null);
-        coord1 = createElement(GML.NAMESPACE, "coord", GML.COORDTYPE, null);
-        coord2 = createElement(GML.NAMESPACE, "coord", GML.COORDTYPE, null);
-        coord3 = createElement(GML.NAMESPACE, "coord", GML.COORDTYPE, null);
-        coords = createElement(GML.NAMESPACE, "coordinates", GML.COORDINATESTYPE, null);
+        box = createElement(GML.NAMESPACE, "myBox", GML.BoxType, null);
+        coord1 = createElement(GML.NAMESPACE, "coord", GML.CoordType, null);
+        coord2 = createElement(GML.NAMESPACE, "coord", GML.CoordType, null);
+        coord3 = createElement(GML.NAMESPACE, "coord", GML.CoordType, null);
+        coords = createElement(GML.NAMESPACE, "coordinates", GML.CoordinatesType, null);
     }
 
     public void testTwoCoord() throws Exception {
@@ -48,7 +48,7 @@ public class GMLBoxTypeBindingTest extends AbstractGMLBindingTest {
                         null,
                         null);
 
-        GMLBoxTypeBinding s = (GMLBoxTypeBinding) getBinding(GML.BOXTYPE);
+        GMLBoxTypeBinding s = (GMLBoxTypeBinding) getBinding(GML.BoxType);
         Envelope e = (Envelope) s.parse(box, node, null);
         assertNotNull(e);
         assertEquals(e.getMinX(), 1d, 0d);
@@ -66,7 +66,7 @@ public class GMLBoxTypeBindingTest extends AbstractGMLBindingTest {
                         null,
                         null);
 
-        GMLBoxTypeBinding s = (GMLBoxTypeBinding) getBinding(GML.BOXTYPE);
+        GMLBoxTypeBinding s = (GMLBoxTypeBinding) getBinding(GML.BoxType);
 
         try {
             Envelope e = (Envelope) s.parse(box, node, null);
@@ -89,7 +89,7 @@ public class GMLBoxTypeBindingTest extends AbstractGMLBindingTest {
                         null,
                         null);
 
-        GMLBoxTypeBinding s = (GMLBoxTypeBinding) getBinding(GML.BOXTYPE);
+        GMLBoxTypeBinding s = (GMLBoxTypeBinding) getBinding(GML.BoxType);
 
         try {
             Envelope e = (Envelope) s.parse(box, node, null);
@@ -111,7 +111,7 @@ public class GMLBoxTypeBindingTest extends AbstractGMLBindingTest {
                         null,
                         null);
 
-        GMLBoxTypeBinding s = (GMLBoxTypeBinding) getBinding(GML.BOXTYPE);
+        GMLBoxTypeBinding s = (GMLBoxTypeBinding) getBinding(GML.BoxType);
         Envelope e = (Envelope) s.parse(box, node, null);
         assertNotNull(e);
         assertEquals(e.getMinX(), 1d, 0d);
@@ -129,7 +129,7 @@ public class GMLBoxTypeBindingTest extends AbstractGMLBindingTest {
                         null,
                         null);
 
-        GMLBoxTypeBinding s = (GMLBoxTypeBinding) getBinding(GML.BOXTYPE);
+        GMLBoxTypeBinding s = (GMLBoxTypeBinding) getBinding(GML.BoxType);
 
         try {
             Envelope e = (Envelope) s.parse(box, node, null);
@@ -155,7 +155,7 @@ public class GMLBoxTypeBindingTest extends AbstractGMLBindingTest {
                         null,
                         null);
 
-        GMLBoxTypeBinding s = (GMLBoxTypeBinding) getBinding(GML.BOXTYPE);
+        GMLBoxTypeBinding s = (GMLBoxTypeBinding) getBinding(GML.BoxType);
 
         try {
             Envelope e = (Envelope) s.parse(box, node, null);

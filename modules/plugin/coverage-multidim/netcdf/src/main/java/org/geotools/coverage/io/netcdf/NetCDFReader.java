@@ -834,23 +834,6 @@ public class NetCDFReader extends AbstractGridCoverage2DReader
     }
 
     @Override
-    public int getNumOverviews() {
-        return getNumOverviews(UNSPECIFIED);
-    }
-
-    @Override
-    public int getNumOverviews(String coverageName) {
-        coverageName = checkUnspecifiedCoverage(coverageName);
-        try {
-            getGridCoverageSource(coverageName);
-            // Make sure that coverageName exists
-            return 0;
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Override
     public double[][] getResolutionLevels() throws IOException {
         return getResolutionLevels(UNSPECIFIED);
     }
@@ -1029,12 +1012,6 @@ public class NetCDFReader extends AbstractGridCoverage2DReader
                 file.delete();
             }
         }
-    }
-
-    @Override
-    public boolean removeCoverage(String coverageName)
-            throws IOException, UnsupportedOperationException {
-        return removeCoverage(coverageName, false);
     }
 
     @Override

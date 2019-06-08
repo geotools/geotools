@@ -40,15 +40,6 @@ public abstract class RegExPropertiesCollector extends PropertiesCollector {
         this.fullPath = fullPath;
     }
 
-    /**
-     * @deprecated use {@link RegExPropertiesCollector#RegExPropertiesCollector(PropertiesCollectorSPI, List, String, boolean) instead
-     */
-    @Deprecated
-    public RegExPropertiesCollector(
-            PropertiesCollectorSPI spi, List<String> propertyNames, String regex) {
-        this(spi, propertyNames, regex, false);
-    }
-
     public RegExPropertiesCollector(
             PropertiesCollectorSPI spi,
             List<String> propertyNames,

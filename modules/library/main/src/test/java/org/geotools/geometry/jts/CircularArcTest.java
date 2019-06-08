@@ -16,12 +16,15 @@
  */
 package org.geotools.geometry.jts;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.locationtech.jts.algorithm.CGAlgorithms;
+import org.locationtech.jts.algorithm.Orientation;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.GeometryFactory;
@@ -278,8 +281,7 @@ public class CircularArcTest {
     }
 
     private int getOrientationIndex(LineString ls) {
-        return CGAlgorithms.orientationIndex(
-                ls.getCoordinateN(0), ls.getCoordinateN(1), ls.getCoordinateN(2));
+        return Orientation.index(ls.getCoordinateN(0), ls.getCoordinateN(1), ls.getCoordinateN(2));
     }
 
     private LineString getLinearizedArc(

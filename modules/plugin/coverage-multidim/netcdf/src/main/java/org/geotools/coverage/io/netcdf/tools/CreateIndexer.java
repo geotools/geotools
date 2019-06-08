@@ -45,7 +45,7 @@ import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
-import org.jdom2.xpath.XPath;
+import org.jdom2.xpath.XPathFactory;
 
 /**
  * CommandLine Utility to be used in order to create an ImageMosaic indexer.xml as well as the
@@ -227,7 +227,7 @@ public class CreateIndexer {
 
     private static boolean setCoverages(Element root, StringBuilder builder) throws JDOMException {
         builder.append("  <coverages>\n");
-        List<?> coverages = XPath.selectNodes(root, "coverages/coverage");
+        List<?> coverages = XPathFactory.instance().compile("coverages/coverage").evaluate(root);
         boolean longName = false;
         for (Object cov : coverages) {
             if (cov instanceof Element) {
@@ -242,14 +242,15 @@ public class CreateIndexer {
 
     private static boolean setCoverage(Element cov, StringBuilder builder) throws JDOMException {
         builder.append("    <coverage>\n");
-        Element name = (Element) XPath.selectSingleNode(cov, "name");
+        Element name = (Element) XPathFactory.instance().compile("name").evaluateFirst(cov);
         String coverageName = name.getText();
         builder.append("      <name>" + coverageName + "</name>\n");
 
-        Element schema = (Element) XPath.selectSingleNode(cov, "schema");
+        Element schema = (Element) XPathFactory.instance().compile("schema").evaluateFirst(cov);
         String schemaName = schema.getAttributeValue("name");
         builder.append("      <schema name=\"" + schemaName + "\" >\n");
-        Element schemaAttributesElement = (Element) XPath.selectSingleNode(schema, "attributes");
+        Element schemaAttributesElement =
+                (Element) XPathFactory.instance().compile("attributes").evaluateFirst(cov);
         String schemaAttribs = schemaAttributesElement.getText();
         schemaAttribs =
                 schemaAttribs.replace("imageindex:Integer", "imageindex:Integer,location:String");
@@ -288,7 +289,10 @@ public class CreateIndexer {
     private static void getAttributes(
             Set<String> timeAttributes, Set<String> elevationAttributes, Element root)
             throws JDOMException {
-        List<?> schemaAttributes = XPath.selectNodes(root, "coverages/coverage/schema/attributes");
+        List<?> schemaAttributes =
+                XPathFactory.instance()
+                        .compile("coverages/coverage/schema/attributes")
+                        .evaluate(root);
 
         for (Object e : schemaAttributes) {
             if (e instanceof Element) {

@@ -35,6 +35,7 @@ import org.geotools.data.ows.GetCapabilitiesRequest;
 import org.geotools.data.ows.GetCapabilitiesResponse;
 import org.geotools.data.ows.HTTPClient;
 import org.geotools.data.ows.OperationType;
+import org.geotools.data.ows.SimpleHttpClient;
 import org.geotools.data.ows.Specification;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -353,7 +354,10 @@ public class WebMapServer extends AbstractOpenWebService<WMSCapabilities, Layer>
      * @throws ServiceException
      */
     public WebMapServer(WMSCapabilities capabilities) throws IOException, ServiceException {
-        super(capabilities, capabilities.getRequest().getGetCapabilities().getGet());
+        super(
+                capabilities.getRequest().getGetCapabilities().getGet(),
+                new SimpleHttpClient(),
+                capabilities);
     }
 
     /**
@@ -407,7 +411,13 @@ public class WebMapServer extends AbstractOpenWebService<WMSCapabilities, Layer>
      * @throws ServiceException if the server responds with an error
      */
     public WebMapServer(final URL serverURL, int timeout) throws IOException, ServiceException {
-        super(serverURL, timeout);
+        super(serverURL, getHttpClient(timeout), null);
+    }
+
+    public static SimpleHttpClient getHttpClient(int timeout) {
+        SimpleHttpClient client = new SimpleHttpClient();
+        client.setReadTimeout(timeout);
+        return client;
     }
 
     /** Sets up the specifications/versions that this server is capable of communicating with. */

@@ -721,7 +721,7 @@ public final class GridCoverageRenderer {
      *     bounds
      * @throws FactoryException
      * @throws TransformException
-     * @throws NoninvertibleTransformException @Deprecated
+     * @throws NoninvertibleTransformException
      */
     public RenderedImage renderImage(
             final GridCoverage2D gridCoverage,
@@ -1402,7 +1402,10 @@ public final class GridCoverageRenderer {
      */
     public static RasterSymbolizer setupSymbolizerForBandsSelection(RasterSymbolizer symbolizer) {
         ChannelSelection selection = symbolizer.getChannelSelection();
-        final SelectedChannelType[] originalChannels = selection.getSelectedChannels();
+        SelectedChannelType[] originalChannels = selection.getRGBChannels();
+        if (originalChannels == null && selection.getGrayChannel() != null) {
+            originalChannels = new SelectedChannelType[] {selection.getGrayChannel()};
+        }
         if (originalChannels != null) {
             int i = 0;
             SelectedChannelType[] channels = new SelectedChannelType[originalChannels.length];

@@ -28,8 +28,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
-import org.geotools.data.DefaultQuery;
 import org.geotools.data.FeatureSource;
+import org.geotools.data.Query;
 import org.geotools.data.complex.config.AppSchemaDataAccessConfigurator;
 import org.geotools.data.complex.config.AppSchemaDataAccessDTO;
 import org.geotools.data.complex.config.XMLConfigDigester;
@@ -371,7 +371,7 @@ public class AppSchemaDataAccessTest extends AppSchemaTestSupport {
 
         // Test DefaultMappingFeatureIterator MaxFeatures support [GEOS-1930]
         final int expectedCount2 = 3;
-        DefaultQuery query = new DefaultQuery();
+        Query query = new Query();
         query.setMaxFeatures(expectedCount2);
         FeatureCollection<FeatureType, Feature> content2 = source.getFeatures(query);
         FeatureIterator<Feature> features2 = content2.features();
@@ -435,7 +435,7 @@ public class AppSchemaDataAccessTest extends AppSchemaTestSupport {
             fbuilder.add("watersample." + i);
             fbuilder.add(Integer.valueOf(i));
             fbuilder.add(Integer.valueOf(10 + i));
-            fbuilder.add(new Float(i));
+            fbuilder.add(Float.valueOf(i));
 
             SimpleFeature f = fbuilder.buildFeature(fid);
             dataStore.addFeature(f);

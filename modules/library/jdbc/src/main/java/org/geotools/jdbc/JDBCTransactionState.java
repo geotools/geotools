@@ -96,6 +96,7 @@ final class JDBCTransactionState implements State {
     }
 
     @Override
+    @SuppressWarnings("deprecation") // finalize is deprecated in Java 9
     protected void finalize() throws Throwable {
         if (!external && cx != null && !cx.isClosed()) {
             Logger.getLogger("org.geotools.jdbc").severe("State finalized with open connection.");

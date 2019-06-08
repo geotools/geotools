@@ -29,19 +29,19 @@ public class SLDFontTestBinding extends SLDTestSupport {
 
         Font font = (Font) parse();
         assertNotNull(font);
-        assertEquals("Arial", Filters.asString(font.getFontFamily()));
-        assertEquals("normal", Filters.asString(font.getFontStyle()));
-        assertEquals("normal", Filters.asString(font.getFontWeight()));
-        assertEquals(14, Filters.asInt(font.getFontSize()));
+        assertEquals("Arial", Filters.asString(font.getFamily().get(0)));
+        assertEquals("normal", Filters.asString(font.getStyle()));
+        assertEquals("normal", Filters.asString(font.getWeight()));
+        assertEquals(14, Filters.asInt(font.getSize()));
     }
 
     public void testDefaultFont() throws Exception {
         SLDMockData.element(SLD.FONT, document, document);
         Font font = (Font) parse();
         assertNotNull(font);
-        assertEquals("Serif", Filters.asString(font.getFontFamily()));
-        assertEquals("normal", Filters.asString(font.getFontStyle()));
-        assertEquals("normal", Filters.asString(font.getFontWeight()));
-        assertEquals(10, Filters.asInt(font.getFontSize()));
+        assertEquals("Serif", Filters.asString(font.getFamily().get(0)));
+        assertEquals("normal", Filters.asString(font.getStyle()));
+        assertEquals("normal", Filters.asString(font.getWeight()));
+        assertEquals(10, Filters.asInt(font.getSize()));
     }
 }

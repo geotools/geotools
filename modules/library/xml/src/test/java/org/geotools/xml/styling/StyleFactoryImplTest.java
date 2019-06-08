@@ -22,6 +22,7 @@ import java.util.Random;
 import java.util.logging.Logger;
 import junit.framework.TestCase;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.feature.NameImpl;
 import org.geotools.filter.function.EnvFunction;
 import org.geotools.styling.AnchorPoint;
 import org.geotools.styling.Displacement;
@@ -180,9 +181,6 @@ public class StyleFactoryImplTest extends TestCase {
         f = styleFactory.createFill(null);
         assertEquals(f.getColor(), Fill.DEFAULT.getColor());
         assertSame(f.getColor(), Fill.DEFAULT.getColor());
-
-        assertEquals(f.getBackgroundColor(), Fill.DEFAULT.getBackgroundColor());
-        assertSame(f.getBackgroundColor(), Fill.DEFAULT.getBackgroundColor());
     }
 
     /** Test of createMark method, of class org.geotools.styling.StyleFactoryImpl. */
@@ -257,10 +255,11 @@ public class StyleFactoryImplTest extends TestCase {
 
         assertNotNull("Failed to build font", f);
 
-        assertEquals("Wrong font type ", "Times", f.getFontFamily().evaluate(feature).toString());
-        assertEquals("Wrong font Style ", "Italic", f.getFontStyle().evaluate(feature).toString());
-        assertEquals("Wrong font weight ", "Bold", f.getFontWeight().evaluate(feature).toString());
-        assertEquals("Wrong font size ", "12", f.getFontSize().evaluate(feature).toString());
+        assertEquals(
+                "Wrong font type ", "Times", f.getFamily().get(0).evaluate(feature).toString());
+        assertEquals("Wrong font Style ", "Italic", f.getStyle().evaluate(feature).toString());
+        assertEquals("Wrong font weight ", "Bold", f.getWeight().evaluate(feature).toString());
+        assertEquals("Wrong font size ", "12", f.getSize().evaluate(feature).toString());
     }
 
     /** Test of createLinePlacement method, of class org.geotools.styling.StyleFactoryImpl. */
@@ -333,11 +332,11 @@ public class StyleFactoryImplTest extends TestCase {
         rule.setMaxScaleDenominator(20000);
 
         FeatureTypeStyle style = sf.createFeatureTypeStyle();
-        style.addRule(rule);
-        style.setFeatureTypeName("Feature");
+        style.rules().add(rule);
+        style.featureTypeNames().add(new NameImpl("Feature"));
 
         Style namedStyle = sf.createStyle();
-        namedStyle.addFeatureTypeStyle(style);
+        namedStyle.featureTypeStyles().add(style);
         namedStyle.setName("Feature");
 
         DuplicatingStyleVisitor duplicator = new DuplicatingStyleVisitor();

@@ -34,7 +34,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageReadParam;
 import javax.media.jai.ImageLayout;
-import org.apache.commons.io.IOUtils;
 import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
@@ -43,11 +42,11 @@ import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.OverviewPolicy;
 import org.geotools.data.DataSourceException;
-import org.geotools.data.DataUtilities;
 import org.geotools.data.PrjFileReader;
 import org.geotools.gce.imagemosaic.ImageMosaicReader;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.referencing.operation.builder.GridToEnvelopeMapper;
+import org.geotools.util.URLs;
 import org.geotools.util.factory.Hints;
 import org.opengis.coverage.grid.Format;
 import org.opengis.coverage.grid.GridCoverage;
@@ -163,7 +162,7 @@ public final class ImagePyramidReader extends AbstractGridCoverage2DReader
         }
 
         // get the crs if able to
-        final URL prjURL = DataUtilities.changeUrlExt(sourceURL, "prj");
+        final URL prjURL = URLs.changeUrlExt(sourceURL, "prj");
         PrjFileReader crsReader = null;
         try {
             crsReader = new PrjFileReader(Channels.newChannel(prjURL.openStream()));
@@ -210,11 +209,8 @@ public final class ImagePyramidReader extends AbstractGridCoverage2DReader
         if (LOGGER.isLoggable(Level.FINE)) {
             LOGGER.fine("Parsing pyramid properties file at:" + sourceURL.toExternalForm());
         }
-        BufferedInputStream propertyStream = null;
-        InputStream openStream = null;
-        try {
-            openStream = sourceURL.openStream();
-            propertyStream = new BufferedInputStream(openStream);
+        try (InputStream in = sourceURL.openStream();
+                BufferedInputStream propertyStream = new BufferedInputStream(in)) {
             final Properties properties = new Properties();
             properties.load(propertyStream);
 
@@ -263,11 +259,6 @@ public final class ImagePyramidReader extends AbstractGridCoverage2DReader
             if (LOGGER.isLoggable(Level.FINE)) {
                 LOGGER.fine("Parsed pyramid properties file at:" + sourceURL.toExternalForm());
             }
-        } finally {
-            // close input stream
-            if (propertyStream != null) IOUtils.closeQuietly(propertyStream);
-
-            if (openStream != null) IOUtils.closeQuietly(openStream);
         }
     }
 
@@ -320,12 +311,6 @@ public final class ImagePyramidReader extends AbstractGridCoverage2DReader
     public Set<ParameterDescriptor<List>> getDynamicParameters(String coverageName) {
         return getFirstLevelReader(coverageName, false)
                 .getDynamicParameters(getReaderCoverageName(coverageName));
-    }
-
-    @Override
-    public int getNumOverviews(String coverageName) {
-        return getFirstLevelReader(coverageName, false)
-                .getNumOverviews(getReaderCoverageName(coverageName));
     }
 
     @Override

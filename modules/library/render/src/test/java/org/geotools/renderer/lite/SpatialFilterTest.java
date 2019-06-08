@@ -6,7 +6,7 @@ import java.io.File;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
-import org.geotools.data.DefaultQuery;
+import org.geotools.data.Query;
 import org.geotools.data.property.PropertyDataStore;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
@@ -249,8 +249,7 @@ public class SpatialFilterTest {
         FeatureLayer layer = new FeatureLayer(pointFS, style);
         Polygon polygon = JTS.toGeometry((Envelope) envUTM31N);
         polygon.setUserData(utm31n);
-        layer.setQuery(
-                new DefaultQuery(null, ff.intersects(ff.property("geom"), ff.literal(polygon))));
+        layer.setQuery(new Query(null, ff.intersects(ff.property("geom"), ff.literal(polygon))));
 
         content.addLayer(layer);
 

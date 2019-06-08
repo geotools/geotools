@@ -48,9 +48,6 @@ public abstract class CartesianDistanceFilter extends GeometryFilterImpl
     /** the distnace units */
     private String units;
 
-    @Deprecated
-    protected CartesianDistanceFilter() {}
-
     protected CartesianDistanceFilter(Expression e1, Expression e2) {
         super(e1, e2);
     }

@@ -40,6 +40,10 @@ public class PositionFactoryImpl implements PositionFactory {
         this.crs = crs;
     }
 
+    public DirectPosition createDirectPosition() {
+        return new DirectPositionImpl(crs, new double[crs.getCoordinateSystem().getDimension()]);
+    }
+
     public DirectPosition createDirectPosition(double[] ordiantes)
             throws MismatchedDimensionException {
         return new DirectPositionImpl(crs, ordiantes);

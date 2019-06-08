@@ -127,13 +127,22 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
             this.locationAttribute = (String) params.get(Utils.Prop.LOCATION_ATTRIBUTE);
             final String temp = (String) params.get(Utils.Prop.SUGGESTED_SPI);
             this.suggestedRasterSPI =
-                    temp != null ? (ImageReaderSpi) Class.forName(temp).newInstance() : null;
+                    temp != null
+                            ? (ImageReaderSpi)
+                                    Class.forName(temp).getDeclaredConstructor().newInstance()
+                            : null;
             final String temp2 = (String) params.get(Utils.Prop.SUGGESTED_FORMAT);
             this.suggestedFormat =
-                    temp2 != null ? (AbstractGridFormat) Class.forName(temp2).newInstance() : null;
+                    temp2 != null
+                            ? (AbstractGridFormat)
+                                    Class.forName(temp2).getDeclaredConstructor().newInstance()
+                            : null;
             final String temp3 = (String) params.get(Utils.Prop.SUGGESTED_IS_SPI);
             this.suggestedIsSPI =
-                    temp3 != null ? (ImageInputStreamSpi) Class.forName(temp3).newInstance() : null;
+                    temp3 != null
+                            ? (ImageInputStreamSpi)
+                                    Class.forName(temp3).getDeclaredConstructor().newInstance()
+                            : null;
             this.parentLocation = (String) params.get(Utils.Prop.PARENT_LOCATION);
             if (params.containsKey(Utils.Prop.HETEROGENEOUS)) {
                 this.heterogeneous = (Boolean) params.get(Utils.Prop.HETEROGENEOUS);
@@ -640,6 +649,7 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
     }
 
     @Override
+    @SuppressWarnings("deprecation") // finalize is deprecated in Java 9
     protected void finalize() throws Throwable {
         super.finalize();
 

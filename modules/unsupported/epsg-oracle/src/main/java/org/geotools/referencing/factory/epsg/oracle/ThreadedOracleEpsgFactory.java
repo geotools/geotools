@@ -151,8 +151,7 @@ public class ThreadedOracleEpsgFactory extends ThreadedEpsgFactory {
             p.load(in);
             in.close();
         } catch (IOException exception) {
-            Logging.unexpectedException(
-                    "org.geotools.referencing.factory", DataSource.class, "<init>", exception);
+            Logging.unexpectedException(LOGGER, DataSource.class, "<init>", exception);
             // Continue. We will try to work with whatever properties are available.
         }
         return p;

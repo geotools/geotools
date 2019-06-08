@@ -273,6 +273,7 @@ public class ArcSDEDataStore implements DataStore {
     }
 
     @Override
+    @SuppressWarnings("deprecation") // finalize is deprecated in Java 9
     protected void finalize() {
         dispose();
     }

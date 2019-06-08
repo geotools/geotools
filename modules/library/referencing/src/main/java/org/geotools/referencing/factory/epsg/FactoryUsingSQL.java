@@ -27,7 +27,6 @@ import org.geotools.util.factory.Hints;
  * @since 2.1
  * @version $Id$
  * @author Jody Garnett
- * @deprecated Please use {@link AccessDialectEpsgFactory}.
  */
 public class FactoryUsingSQL extends DirectEpsgFactory {
     /**

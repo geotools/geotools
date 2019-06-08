@@ -181,7 +181,6 @@ CommonFactoryFinder
 * FilterFactory
 * StyleFactory
 * Function
-* FeatureLockFactory
 * FileDataStore - factory used to work with file datastores
 * FeatureFactory - factory used to create features
 * FeatureTypeFactory - factory used to create feature type description

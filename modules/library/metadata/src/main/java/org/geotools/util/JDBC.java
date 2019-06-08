@@ -56,7 +56,11 @@ public final class JDBC {
             synchronized (DRIVERS) {
                 if (!DRIVERS.contains(driver)) {
                     try {
-                        final Driver d = (Driver) Class.forName(driver).newInstance();
+                        final Driver d =
+                                (Driver)
+                                        Class.forName(driver)
+                                                .getDeclaredConstructor()
+                                                .newInstance();
                         log =
                                 Loggings.format(
                                         Level.CONFIG,

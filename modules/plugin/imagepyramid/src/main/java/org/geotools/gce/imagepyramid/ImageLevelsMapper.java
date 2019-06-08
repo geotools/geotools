@@ -23,7 +23,6 @@ import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.geotools.data.DataUtilities;
 import org.geotools.gce.imagemosaic.ImageMosaicReader;
 import org.geotools.util.URLs;
 import org.geotools.util.factory.Hints;
@@ -171,7 +170,7 @@ class ImageLevelsMapper {
             // we must create the underlying mosaic
             //
             final String levelDirName = levelsDirs[imageIndex];
-            final URL parentUrl = DataUtilities.getParentUrl(sourceURL);
+            final URL parentUrl = URLs.getParentUrl(sourceURL);
             // look for a shapefile first
             final String extension =
                     new StringBuilder(levelDirName)
@@ -179,13 +178,11 @@ class ImageLevelsMapper {
                             .append(coverageName)
                             .append(".shp")
                             .toString();
-            final URL shpFileUrl = DataUtilities.extendURL(parentUrl, extension);
+            final URL shpFileUrl = URLs.extendUrl(parentUrl, extension);
             if (shpFileUrl.getProtocol() != null
                     && shpFileUrl.getProtocol().equalsIgnoreCase("file")
                     && !URLs.urlToFile(shpFileUrl).exists()) {
-                reader =
-                        new ImageMosaicReader(
-                                DataUtilities.extendURL(parentUrl, levelDirName), hints);
+                reader = new ImageMosaicReader(URLs.extendUrl(parentUrl, levelDirName), hints);
             } else {
                 reader = new ImageMosaicReader(shpFileUrl, hints);
             }

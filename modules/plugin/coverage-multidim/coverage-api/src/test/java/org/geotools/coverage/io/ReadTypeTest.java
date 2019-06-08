@@ -22,7 +22,7 @@ import static org.junit.Assert.assertNull;
 
 import it.geosolutions.imageio.plugins.tiff.TIFFImageReadParam;
 import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReaderSpi;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.awt.image.RenderedImage;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -30,7 +30,6 @@ import java.net.URL;
 import javax.imageio.ImageReadParam;
 import javax.imageio.ImageReader;
 import javax.imageio.stream.FileImageInputStream;
-import org.apache.commons.io.IOUtils;
 import org.geotools.test.TestData;
 import org.geotools.util.URLs;
 import org.geotools.util.factory.GeoTools;
@@ -229,12 +228,21 @@ public class ReadTypeTest {
             boolean getReader)
             throws IOException {
         ImageReader reader = null;
-        FileImageInputStream in = null;
         try {
             if (getReader && granuleUrl != null) {
-                in = new FileImageInputStream(URLs.urlToFile(granuleUrl));
-                reader = new TIFFImageReaderSpi().createReaderInstance();
-                reader.setInput(in);
+                try (FileImageInputStream in =
+                        new FileImageInputStream(URLs.urlToFile(granuleUrl))) {
+                    reader = new TIFFImageReaderSpi().createReaderInstance();
+                    reader.setInput(in);
+                    return directRead.read(
+                            readParameters,
+                            imageIndex,
+                            granuleUrl,
+                            rasterDimensions,
+                            reader,
+                            hints,
+                            closeElements);
+                }
             }
             return directRead.read(
                     readParameters,
@@ -252,7 +260,6 @@ public class ReadTypeTest {
                     // silent dispose
                 }
             }
-            IOUtils.closeQuietly(in);
         }
     }
 

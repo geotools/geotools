@@ -103,9 +103,14 @@ public class GeoTiffWriterTest extends Assert {
             // System.out.println(iIOMetadataDumper.getMetadata());
         }
         assertTrue(
-                CRS.findMathTransform(reader.getCrs(), DefaultGeographicCRS.WGS84, true)
+                CRS.findMathTransform(
+                                reader.getCoordinateReferenceSystem(),
+                                DefaultGeographicCRS.WGS84,
+                                true)
                         .isIdentity()); // more lenient towards metadata differences
-        assertTrue(CRS.equalsIgnoreMetadata(reader.getCrs(), DefaultGeographicCRS.WGS84));
+        assertTrue(
+                CRS.equalsIgnoreMetadata(
+                        reader.getCoordinateReferenceSystem(), DefaultGeographicCRS.WGS84));
     }
 
     /**
@@ -506,19 +511,7 @@ public class GeoTiffWriterTest extends Assert {
                     }
 
                     @Override
-                    public String getDescription() {
-                        // TODO Auto-generated method stub
-                        return null;
-                    }
-
-                    @Override
                     public void setTask(InternationalString task) {
-                        // TODO Auto-generated method stub
-
-                    }
-
-                    @Override
-                    public void setDescription(String description) {
                         // TODO Auto-generated method stub
 
                     }

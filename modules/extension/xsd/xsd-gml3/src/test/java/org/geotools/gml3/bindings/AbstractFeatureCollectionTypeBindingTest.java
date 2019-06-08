@@ -29,9 +29,10 @@ public class AbstractFeatureCollectionTypeBindingTest extends GML3TestSupport {
         return new TestConfiguration();
     }
 
-    protected void registerNamespaces(Element root) {
-        super.registerNamespaces(root);
-        root.setAttribute("xmlns:test", TEST.NAMESPACE);
+    @Override
+    protected void setUp() throws Exception {
+        super.setUp();
+        registerNamespaceMapping("test", TEST.NAMESPACE);
     }
 
     public void testFeatureMember() throws Exception {

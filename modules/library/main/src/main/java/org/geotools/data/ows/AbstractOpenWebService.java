@@ -73,20 +73,6 @@ public abstract class AbstractOpenWebService<C extends Capabilities, R extends O
         this(serverURL, new SimpleHttpClient(), null);
     }
 
-    /** @deprecated use {@link #AbstractOpenWebService(OWSConfig)} */
-    public AbstractOpenWebService(final URL serverURL, int requestTimeout)
-            throws IOException, ServiceException {
-        this(serverURL, new SimpleHttpClient(), null);
-        this.httpClient.setConnectTimeout(requestTimeout);
-        this.httpClient.setReadTimeout(requestTimeout);
-    }
-
-    /** @deprecated use {@link #AbstractOpenWebService(OWSConfig, Capabilities)} */
-    public AbstractOpenWebService(C capabilties, URL serverURL)
-            throws ServiceException, IOException {
-        this(serverURL, new SimpleHttpClient(), capabilties);
-    }
-
     public AbstractOpenWebService(
             final URL serverURL, final HTTPClient httpClient, final C capabilities)
             throws ServiceException, IOException {

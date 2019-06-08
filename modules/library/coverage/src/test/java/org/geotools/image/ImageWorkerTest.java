@@ -79,7 +79,6 @@ import javax.media.jai.Warp;
 import javax.media.jai.WarpAffine;
 import javax.media.jai.operator.ConstantDescriptor;
 import javax.media.jai.operator.MosaicDescriptor;
-import org.apache.commons.io.IOUtils;
 import org.geotools.TestData;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
@@ -533,6 +532,20 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         readWorker.setImage(ImageIO.read(outFile));
         show(readWorker, "Pure Java JPEG");
         outFile.delete();
+
+        // /////////////////////////////////////////////////////////////////////
+        // test alpha channel is removed with nodata value
+        // /////////////////////////////////////////////////////////////////////
+        worker.setImage(getIndexedRGBNodata());
+        worker.forceIndexColorModel(false);
+        worker.writeJPEG(outFile, "JPEG", 0.75f, true);
+        // with the native imageIO, an exception would have been thrown by now.
+        // with non-native, writing the alpha channel to JPEG will work
+        // as well as reading it (!), but this is not generally supported
+        // and will confuse other image readers,
+        // so alpha should be removed for JPEG
+        BufferedImage image = ImageIO.read(outFile);
+        assertFalse(image.getColorModel().hasAlpha());
     }
 
     /**
@@ -636,10 +649,8 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         // and the palette does not get compressed
         InputStream gzippedStream =
                 ImageWorkerTest.class.getResource("test-data/sf-sfdem.tif.gz").openStream();
-        GZIPInputStream is = new GZIPInputStream(gzippedStream);
-        ImageInputStream iis = null;
-        try {
-            iis = ImageIO.createImageInputStream(is);
+        try (ImageInputStream iis =
+                ImageIO.createImageInputStream(new GZIPInputStream(gzippedStream))) {
             ImageReader reader = new TIFFImageReaderSpi().createReaderInstance(iis);
             reader.setInput(iis);
             BufferedImage bi = reader.read(0);
@@ -671,9 +682,6 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
             icm = (IndexColorModel) back.getColorModel();
             assertEquals(3, icm.getNumColorComponents());
             assertTrue(icm.getMapSize() <= 256);
-        } finally {
-            IOUtils.closeQuietly(is);
-            IOUtils.closeQuietly(iis);
         }
     }
 

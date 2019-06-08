@@ -44,7 +44,7 @@ public class FeatureListenerTest {
     public void testFeatureCount(String sldFilename, int expectedCount) throws Exception {
         Style style = RendererBaseTest.loadStyle(this, sldFilename);
 
-        MapContent mc = new MapContent(DefaultGeographicCRS.WGS84);
+        MapContent mc = new MapContent();
         mc.addLayer(new FeatureLayer(squareFS, style));
 
         StreamingRenderer renderer = new StreamingRenderer();

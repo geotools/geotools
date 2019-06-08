@@ -80,6 +80,7 @@ public final class SharedSessionPool implements ISessionPool {
     }
 
     @Override
+    @SuppressWarnings("deprecation") // finalize is deprecated in Java 9
     protected void finalize() {
         LOGGER.info("Destroying session pool for " + getConfig());
         delegate.close();

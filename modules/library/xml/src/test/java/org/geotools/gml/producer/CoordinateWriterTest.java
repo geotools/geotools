@@ -67,7 +67,7 @@ public class CoordinateWriterTest extends TestCase {
         CoordinateHandler output = new CoordinateHandler();
 
         output.startDocument();
-        writer.writeCoordinates(coords, output);
+        writer.writeCoordinates(new CoordinateArraySequence(coords), output);
         output.endDocument();
 
         assertEquals("<coordinates>1,1 4,4 0,4 1,1</coordinates>", output.received);
@@ -85,7 +85,7 @@ public class CoordinateWriterTest extends TestCase {
         CoordinateHandler output = new CoordinateHandler();
 
         output.startDocument();
-        writer.writeCoordinates(coords, output);
+        writer.writeCoordinates(new CoordinateArraySequence(coords), output);
         output.endDocument();
 
         // System.out.println(output.received);
@@ -117,7 +117,7 @@ public class CoordinateWriterTest extends TestCase {
         CoordinateHandler output = new CoordinateHandler();
 
         output.startDocument();
-        writer.writeCoordinates(coords, output);
+        writer.writeCoordinates(new CoordinateArraySequence(coords), output);
         output.endDocument();
 
         assertEquals("<coordinates>1,1,3 4,4,2 0,4,2 1,1,3</coordinates>", output.received);

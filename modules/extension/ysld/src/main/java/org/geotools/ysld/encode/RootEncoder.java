@@ -18,6 +18,7 @@
 package org.geotools.ysld.encode;
 
 import java.util.Collections;
+import java.util.Optional;
 import org.geotools.styling.SLD;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyledLayerDescriptor;
@@ -37,8 +38,16 @@ public class RootEncoder extends YsldEncodeHandler<StyledLayerDescriptor> {
         Style style = SLD.defaultStyle(sld);
         if (style != null) {
             put("name", style.getName());
-            put("title", style.getTitle());
-            put("abstract", style.getAbstract());
+            put(
+                    "title",
+                    Optional.ofNullable(style.getDescription().getTitle())
+                            .map(Object::toString)
+                            .orElse(null));
+            put(
+                    "abstract",
+                    Optional.ofNullable(style.getDescription().getAbstract())
+                            .map(Object::toString)
+                            .orElse(null));
             put("feature-styles", new FeatureStyleEncoder(style));
         }
     }

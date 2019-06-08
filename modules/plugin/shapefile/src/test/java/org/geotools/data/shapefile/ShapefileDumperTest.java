@@ -97,6 +97,15 @@ public class ShapefileDumperTest {
     }
 
     @Test
+    public void testBasicPolygonsOtherName() throws Exception {
+        SimpleFeatureCollection fc = getFeaturesFromProperties(BASIC_POLYGONS);
+        ShapefileDumper dumper = new ShapefileDumper(dumperFolder);
+        dumper.dump("DaBasicPolygons", fc);
+
+        testBasicPolygonCollection(3, "DaBasicPolygons");
+    }
+
+    @Test
     public void testLongNames() throws Exception {
         SimpleFeatureCollection fc = getFeaturesFromProperties(LONGNAMES);
         ShapefileDumper dumper = new ShapefileDumper(dumperFolder);
@@ -155,7 +164,7 @@ public class ShapefileDumperTest {
         assertEquals(expectedSize, fc.size());
         assertFieldsNotEmpty(fc);
         checkTypeStructure(fc.getSchema(), MultiPolygon.class, "ID");
-        assertCst(BASIC_POLYGONS, "ISO-8859-1");
+        assertCst(typeName, "ISO-8859-1");
         return fc;
     }
 
@@ -307,7 +316,7 @@ public class ShapefileDumperTest {
      */
     private void assertCst(String typeName, String expectedCharset) throws IOException {
         File cst = new File(dumperFolder, typeName + ".cst");
-        String actualCharset = FileUtils.readFileToString(cst);
+        String actualCharset = FileUtils.readFileToString(cst, "UTF-8");
         assertEquals(expectedCharset, actualCharset);
     }
 

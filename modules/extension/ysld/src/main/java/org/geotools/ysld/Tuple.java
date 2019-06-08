@@ -76,8 +76,7 @@ public class Tuple {
         this.pattern = pattern;
     }
 
-    @Deprecated
-    public Tuple parse(String str) throws IllegalArgumentException {
+    private Tuple parse(String str) throws IllegalArgumentException {
         LOG.warning(
                 "The tuple syntax "
                         + str

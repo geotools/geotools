@@ -148,7 +148,7 @@ public final class SRPTest extends GDALTestCase {
                             oldEnvelope.getUpperCorner().getOrdinate(0),
                             oldEnvelope.getUpperCorner().getOrdinate(1)
                         });
-        cropEnvelope.setCoordinateReferenceSystem(reader.getCrs());
+        cropEnvelope.setCoordinateReferenceSystem(reader.getCoordinateReferenceSystem());
 
         final ParameterValue gg = AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
         gg.setValue(

@@ -137,7 +137,7 @@ public class Toolbox {
         String[] distanceStrings = generalizations.split(",");
         Double[] distanceArray = new Double[distanceStrings.length];
         for (int i = 0; i < distanceStrings.length; i++)
-            distanceArray[i] = new Double(distanceStrings[i]);
+            distanceArray[i] = Double.valueOf(distanceStrings[i]);
 
         generalizeShapeFile(shapeFile, shapeDS, targetDir, distanceArray);
         shapeDS.dispose();

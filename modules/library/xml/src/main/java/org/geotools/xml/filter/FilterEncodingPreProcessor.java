@@ -24,8 +24,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.Stack;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.filter.FilterType;
-import org.geotools.filter.Filters;
 import org.geotools.filter.IllegalFilterException;
 import org.geotools.xml.XMLHandlerHints;
 import org.opengis.filter.And;
@@ -230,15 +228,13 @@ public class FilterEncodingPreProcessor implements FilterVisitor {
 
                 case MEDIUM:
                     filter.getFilter().accept(this, null);
-                    current.push(
-                            createMediumLevelLogicFilter(Filters.getFilterType(filter), startSize));
+                    current.push(createMediumLevelLogicFilter(filter, startSize));
 
                     break;
 
                 case HIGH:
                     filter.getFilter().accept(this, null);
-                    current.push(
-                            createHighLevelLogicFilter(Filters.getFilterType(filter), startSize));
+                    current.push(createHighLevelLogicFilter(filter, startSize));
 
                     break;
 
@@ -268,8 +264,7 @@ public class FilterEncodingPreProcessor implements FilterVisitor {
                     for (org.opengis.filter.Filter component : filter.getChildren()) {
                         component.accept(this, null);
                     }
-                    current.push(
-                            createMediumLevelLogicFilter(Filters.getFilterType(filter), startSize));
+                    current.push(createMediumLevelLogicFilter(filter, startSize));
 
                     break;
 
@@ -277,8 +272,7 @@ public class FilterEncodingPreProcessor implements FilterVisitor {
                     for (org.opengis.filter.Filter component : filter.getChildren()) {
                         component.accept(this, null);
                     }
-                    current.push(
-                            createHighLevelLogicFilter(Filters.getFilterType(filter), startSize));
+                    current.push(createHighLevelLogicFilter(filter, startSize));
 
                     break;
 
@@ -294,38 +288,25 @@ public class FilterEncodingPreProcessor implements FilterVisitor {
         }
     }
 
-    private Data createMediumLevelLogicFilter(short filterType, int startOfFilterStack)
+    private Data createMediumLevelLogicFilter(Filter filter, int startOfFilterStack)
             throws IllegalFilterException {
         Data resultingFilter;
 
-        switch (filterType) {
-            case FilterType.LOGIC_AND:
-                {
-                    Set fids = andFids(startOfFilterStack);
-                    resultingFilter = buildFilter(filterType, startOfFilterStack);
-                    resultingFilter.fids.addAll(fids);
+        if (filter instanceof And) {
+            Set fids = andFids(startOfFilterStack);
+            resultingFilter = buildFilter(filter, startOfFilterStack);
+            resultingFilter.fids.addAll(fids);
 
-                    if (resultingFilter.filter != Filter.EXCLUDE && !fids.isEmpty())
-                        requiresPostProcessing = true;
-                    break;
-                }
-
-            case FilterType.LOGIC_OR:
-                {
-                    Set fids = orFids(startOfFilterStack);
-                    resultingFilter = buildFilter(filterType, startOfFilterStack);
-                    resultingFilter.fids.addAll(fids);
-                    break;
-                }
-
-            case FilterType.LOGIC_NOT:
-                resultingFilter = buildFilter(filterType, startOfFilterStack);
-                break;
-
-            default:
-                resultingFilter = buildFilter(filterType, startOfFilterStack);
-
-                break;
+            if (resultingFilter.filter != Filter.EXCLUDE && !fids.isEmpty())
+                requiresPostProcessing = true;
+        } else if (filter instanceof Or) {
+            Set fids = orFids(startOfFilterStack);
+            resultingFilter = buildFilter(filter, startOfFilterStack);
+            resultingFilter.fids.addAll(fids);
+        } else if (filter instanceof Not) {
+            resultingFilter = buildFilter(filter, startOfFilterStack);
+        } else {
+            resultingFilter = buildFilter(filter, startOfFilterStack);
         }
 
         return resultingFilter;
@@ -409,13 +390,12 @@ public class FilterEncodingPreProcessor implements FilterVisitor {
         return true;
     }
 
-    private Data buildFilter(short filterType, int startOfFilterStack)
-            throws IllegalFilterException {
+    private Data buildFilter(Filter filter, int startOfFilterStack) throws IllegalFilterException {
         if (current.isEmpty()) {
             return Data.ALL;
         }
 
-        if (filterType == FilterType.LOGIC_NOT) {
+        if (filter instanceof Not) {
             return buildNotFilter(startOfFilterStack);
         }
 
@@ -434,68 +414,63 @@ public class FilterEncodingPreProcessor implements FilterVisitor {
         }
 
         org.opengis.filter.Filter f;
-        if (filterType == FilterType.LOGIC_AND) {
+        if (filter instanceof And) {
             f = ff.and(filterList);
-        } else if (filterType == FilterType.LOGIC_OR) {
+        } else if (filter instanceof Or) {
             f = ff.or(filterList);
         } else {
             // not expected
             f = null;
         }
-        return new Data(compressFilter(filterType, (BinaryLogicOperator) f));
+        return new Data(compressFilter(filter, (BinaryLogicOperator) f));
     }
 
-    private org.opengis.filter.Filter compressFilter(short filterType, BinaryLogicOperator f)
+    private org.opengis.filter.Filter compressFilter(Filter filter, BinaryLogicOperator f)
             throws IllegalFilterException {
         BinaryLogicOperator result;
         int added = 0;
         List<org.opengis.filter.Filter> resultList = new ArrayList<org.opengis.filter.Filter>();
 
-        switch (filterType) {
-            case FilterType.LOGIC_AND:
-                if (contains(f, Filter.EXCLUDE)) {
-                    return Filter.EXCLUDE;
-                }
-
-                for (org.opengis.filter.Filter filter : f.getChildren()) {
-                    if (filter == org.opengis.filter.Filter.INCLUDE) {
-                        continue;
-                    }
-                    added++;
-                    resultList.add(filter);
-                }
-
-                if (resultList.isEmpty()) {
-                    return Filter.EXCLUDE;
-                }
-
-                result = ff.and(resultList);
-                break;
-
-            case FilterType.LOGIC_OR:
-                if (contains(f, Filter.INCLUDE)) {
-                    return Filter.INCLUDE;
-                }
-
-                for (Object item : f.getChildren()) {
-                    org.opengis.filter.Filter filter = (org.opengis.filter.Filter) item;
-                    if (filter == Filter.EXCLUDE) {
-                        continue;
-                    }
-                    added++;
-                    resultList.add(filter);
-                }
-
-                if (resultList.isEmpty()) {
-                    return Filter.EXCLUDE;
-                }
-
-                result = ff.or(resultList);
-
-                break;
-
-            default:
+        if (filter instanceof And) {
+            if (contains(f, Filter.EXCLUDE)) {
                 return Filter.EXCLUDE;
+            }
+
+            for (org.opengis.filter.Filter child : f.getChildren()) {
+                if (child == org.opengis.filter.Filter.INCLUDE) {
+                    continue;
+                }
+                added++;
+                resultList.add(child);
+            }
+
+            if (resultList.isEmpty()) {
+                return Filter.EXCLUDE;
+            }
+
+            result = ff.and(resultList);
+        } else if (filter instanceof Or) {
+            if (contains(f, Filter.INCLUDE)) {
+                return Filter.INCLUDE;
+            }
+
+            for (Object item : f.getChildren()) {
+                org.opengis.filter.Filter child = (org.opengis.filter.Filter) item;
+                if (child == Filter.EXCLUDE) {
+                    continue;
+                }
+                added++;
+                resultList.add(child);
+            }
+
+            if (resultList.isEmpty()) {
+                return Filter.EXCLUDE;
+            }
+
+            result = ff.or(resultList);
+
+        } else {
+            return Filter.EXCLUDE;
         }
 
         switch (added) {
@@ -503,7 +478,7 @@ public class FilterEncodingPreProcessor implements FilterVisitor {
                 return Filter.EXCLUDE;
 
             case 1:
-                return (Filter) result.getChildren().iterator().next();
+                return result.getChildren().iterator().next();
 
             default:
                 return result;
@@ -523,7 +498,7 @@ public class FilterEncodingPreProcessor implements FilterVisitor {
         if (current.size() > (startOfFilterStack + 1)) {
             throw new UnsupportedFilterException("A not filter cannot have more than one filter");
         } else {
-            Data tmp = (Data) current.pop();
+            Data tmp = current.pop();
 
             Data data = new Data(ff.not(tmp.filter));
 
@@ -537,45 +512,42 @@ public class FilterEncodingPreProcessor implements FilterVisitor {
         }
     }
 
-    private Data createHighLevelLogicFilter(short filterType, int startOfFilterStack)
+    private Data createHighLevelLogicFilter(Filter filter, int startOfFilterStack)
             throws IllegalFilterException {
         if (hasFidFilter(startOfFilterStack)) {
             Set fids;
 
-            switch (filterType) {
-                case FilterType.LOGIC_AND:
-                    fids = andFids(startOfFilterStack);
+            if (filter instanceof And) {
+                fids = andFids(startOfFilterStack);
 
-                    Data filter = buildFilter(filterType, startOfFilterStack);
-                    filter.fids.addAll(fids);
+                Data data = buildFilter(filter, startOfFilterStack);
+                data.fids.addAll(fids);
 
-                    return filter;
+                return data;
 
-                case FilterType.LOGIC_OR:
-                    {
-                        if (hasNonFidFilter(startOfFilterStack)) {
-                            throw new UnsupportedFilterException(
-                                    "Maximum compliance does not allow Logic filters to contain FidFilters");
-                        }
+            } else if (filter instanceof Or) {
+                if (hasNonFidFilter(startOfFilterStack)) {
+                    throw new UnsupportedFilterException(
+                            "Maximum compliance does not allow Logic filters to contain FidFilters");
+                }
 
-                        fids = orFids(startOfFilterStack);
+                fids = orFids(startOfFilterStack);
 
-                        pop(startOfFilterStack);
+                pop(startOfFilterStack);
 
-                        Data data = new Data();
-                        data.fids.addAll(fids);
+                Data data = new Data();
+                data.fids.addAll(fids);
 
-                        return data;
-                    }
+                return data;
+            } else if (filter instanceof Not) {
+                return buildFilter(filter, startOfFilterStack);
+            } else {
 
-                case FilterType.LOGIC_NOT:
-                    return buildFilter(filterType, startOfFilterStack);
-
-                default:
-                    return Data.ALL;
+                return Data.ALL;
             }
+
         } else {
-            return buildFilter(filterType, startOfFilterStack);
+            return buildFilter(filter, startOfFilterStack);
         }
     }
 
@@ -585,7 +557,7 @@ public class FilterEncodingPreProcessor implements FilterVisitor {
 
     private boolean hasNonFidFilter(int startOfFilterStack) {
         for (int i = startOfFilterStack; i < current.size(); i++) {
-            Data data = (Data) current.get(i);
+            Data data = current.get(i);
 
             if (data.filter != Filter.EXCLUDE) {
                 return true;
@@ -597,7 +569,7 @@ public class FilterEncodingPreProcessor implements FilterVisitor {
 
     private boolean hasFidFilter(int startOfFilterStack) {
         for (int i = startOfFilterStack; i < current.size(); i++) {
-            Data data = (Data) current.get(i);
+            Data data = current.get(i);
 
             if (!data.fids.isEmpty()) {
                 return true;

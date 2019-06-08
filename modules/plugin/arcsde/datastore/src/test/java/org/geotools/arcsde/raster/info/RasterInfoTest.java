@@ -31,7 +31,6 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.geom.Point2D;
-import java.awt.geom.Point2D.Double;
 import java.io.IOException;
 import org.geotools.arcsde.raster.gce.RasterTestData;
 import org.geotools.arcsde.session.Command;
@@ -82,7 +81,7 @@ public class RasterInfoTest {
         final CoordinateReferenceSystem crs = DefaultEngineeringCRS.CARTESIAN_2D;
 
         final Point imageOffset = new Point(0, 0);
-        final Point2D extentOffset = new Double(0, 0);
+        final Point2D extentOffset = new Point2D.Double(0, 0);
 
         pyramid.addPyramidLevel(
                 0,

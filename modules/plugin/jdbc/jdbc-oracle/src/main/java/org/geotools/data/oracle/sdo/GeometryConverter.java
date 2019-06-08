@@ -350,7 +350,7 @@ public class GeometryConverter {
     protected final CHAR toCHAR(String s) {
 
         // make sure if the string is larger than one character, only take the first character
-        if (s.length() > 1) s = new String((new Character(s.charAt(0))).toString());
+        if (s.length() > 1) s = new String((Character.valueOf(s.charAt(0))).toString());
         try {
             // BUG: make sure I am correct
             return new CHAR(s, CharacterSet.make(CharacterSet.ISO_LATIN_1_CHARSET));

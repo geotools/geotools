@@ -19,9 +19,10 @@
 package org.geotools.tutorial.quickstart;
 
 import java.io.File;
-import org.geotools.data.CachingFeatureSource;
+import org.geotools.data.DataUtilities;
 import org.geotools.data.FileDataStore;
 import org.geotools.data.FileDataStoreFinder;
+import org.geotools.data.collection.SpatialIndexFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.map.FeatureLayer;
 import org.geotools.map.Layer;
@@ -55,15 +56,15 @@ public class QuickstartCache {
 
         FileDataStore store = FileDataStoreFinder.getDataStore(file);
         SimpleFeatureSource featureSource = store.getFeatureSource();
-
-        // CachingFeatureSource is deprecated as experimental (not yet production ready)
-        CachingFeatureSource cache = new CachingFeatureSource(featureSource);
+        SimpleFeatureSource cachedSource =
+                DataUtilities.source(
+                        new SpatialIndexFeatureCollection(featureSource.getFeatures()));
 
         // Create a map content and add our shapefile to it
         MapContent map = new MapContent();
         map.setTitle("Using cached features");
         Style style = SLD.createSimpleStyle(featureSource.getSchema());
-        Layer layer = new FeatureLayer(cache, style);
+        Layer layer = new FeatureLayer(cachedSource, style);
         map.addLayer(layer);
 
         // Now display the map

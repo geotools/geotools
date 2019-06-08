@@ -291,7 +291,7 @@ public class AncillaryFileManager implements FileSetManager {
             createdDir = destinationDir.mkdirs();
             // Creation of an origin.txt file with the absolute file path internally written
             File origin = new File(destinationDir, "origin.txt");
-            FileUtils.write(origin, ncFile.getAbsolutePath());
+            FileUtils.write(origin, ncFile.getAbsolutePath(), "UTF-8");
         }
 
         // Init auxiliary file names
@@ -834,7 +834,10 @@ public class AncillaryFileManager implements FileSetManager {
                     try {
                         // create a datastore as instructed
                         final DataStoreFactorySpi spi =
-                                (DataStoreFactorySpi) Class.forName(SPIClass).newInstance();
+                                (DataStoreFactorySpi)
+                                        Class.forName(SPIClass)
+                                                .getDeclaredConstructor()
+                                                .newInstance();
                         Map<String, Serializable> datastoreParams =
                                 Utils.filterDataStoreParams(properties, spi);
 

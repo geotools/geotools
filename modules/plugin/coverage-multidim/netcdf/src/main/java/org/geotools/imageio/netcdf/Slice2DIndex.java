@@ -268,6 +268,7 @@ public class Slice2DIndex {
         }
 
         @Override
+        @SuppressWarnings("deprecation") // finalize is deprecated in Java 9
         protected void finalize() throws Throwable {
             if (raf != null) {
                 LOGGER.warning(

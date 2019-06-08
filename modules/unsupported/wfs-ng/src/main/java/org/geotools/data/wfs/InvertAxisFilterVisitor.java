@@ -18,7 +18,6 @@ package org.geotools.data.wfs;
 
 import org.geotools.filter.visitor.DuplicatingFilterVisitor;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.referencing.CRS;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
@@ -31,11 +30,11 @@ import org.locationtech.jts.geom.MultiPoint;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
+import org.locationtech.jts.geom.impl.CoordinateArraySequence;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.spatial.BBOX;
 import org.opengis.geometry.BoundingBox;
-import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
@@ -73,11 +72,6 @@ public class InvertAxisFilterVisitor extends DuplicatingFilterVisitor {
                 CoordinateReferenceSystem crs = null;
                 if (geom.getUserData() instanceof CoordinateReferenceSystem) {
                     crs = (CoordinateReferenceSystem) geom.getUserData();
-                } else if (filter.getSRS() != null) {
-                    try {
-                        crs = CRS.decode(filter.getSRS());
-                    } catch (FactoryException e) {
-                    }
                 }
                 return ff.bbox(
                         filter.getExpression1(),
@@ -125,7 +119,8 @@ public class InvertAxisFilterVisitor extends DuplicatingFilterVisitor {
             }
             return geometryFactory.createPolygon(invertedShell, invertedHoles);
         } else if (geom instanceof MultiPoint) {
-            return geometryFactory.createMultiPoint(invertCoordinates(geom.getCoordinates()));
+            return geometryFactory.createMultiPoint(
+                    new CoordinateArraySequence(invertCoordinates(geom.getCoordinates())));
         } else if (geom instanceof MultiLineString) {
             MultiLineString multiLineString = (MultiLineString) geom;
             LineString[] inverted = new LineString[multiLineString.getNumGeometries()];
@@ -170,6 +165,6 @@ public class InvertAxisFilterVisitor extends DuplicatingFilterVisitor {
      * @return
      */
     private Coordinate invertCoordinate(Coordinate coordinate) {
-        return new Coordinate(coordinate.y, coordinate.x, coordinate.z);
+        return new Coordinate(coordinate.y, coordinate.x, coordinate.getZ());
     }
 }

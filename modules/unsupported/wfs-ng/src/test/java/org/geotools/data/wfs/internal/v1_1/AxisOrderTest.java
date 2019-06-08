@@ -21,6 +21,7 @@ import static org.geotools.data.wfs.WFSTestData.createTestProtocol;
 import static org.geotools.data.wfs.WFSTestData.stream;
 import static org.geotools.data.wfs.WFSTestData.url;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -34,6 +35,9 @@ import org.geotools.data.wfs.WFSDataStoreFactory;
 import org.geotools.data.wfs.WFSTestData.TestWFSClient;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.identity.FeatureIdImpl;
+import org.geotools.geometry.jts.JTS;
+import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.referencing.CRS;
 import org.junit.Test;
 import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.simple.SimpleFeature;
@@ -135,10 +139,12 @@ public class AxisOrderTest {
         BBOX filter = (BBOX) wfs.getRequest().getFilter();
 
         // filter coordinates are NOT inverted
-        assertEquals(815134.0, filter.getMinY(), 0.0);
-        assertEquals(4623055.0, filter.getMinX(), 0.0);
-        assertEquals(820740.0, filter.getMaxY(), 0.0);
-        assertEquals(4629904.0, filter.getMaxX(), 0.0);
+        assertTrue(
+                JTS.equals(
+                        new ReferencedEnvelope(
+                                4623055.0, 4629904.0, 815134.0, 820740.0, CRS.decode("EPSG:3857")),
+                        filter.getBounds(),
+                        1e-6));
     }
 
     @Test
@@ -178,10 +184,12 @@ public class AxisOrderTest {
         // filter coordinates ARE inverted (EPSG:3857 is EAST/NORTH, so if we ask for NORTH/EAST,
         // the filter
         // should be inverted)
-        assertEquals(4623055.0, filter.getMinY(), 0.0);
-        assertEquals(815134.0, filter.getMinX(), 0.0);
-        assertEquals(4629904.0, filter.getMaxY(), 0.0);
-        assertEquals(820740.0, filter.getMaxX(), 0.0);
+        assertTrue(
+                JTS.equals(
+                        new ReferencedEnvelope(
+                                815134.0, 820740.0, 4623055.0, 4629904.0, CRS.decode("EPSG:3857")),
+                        filter.getBounds(),
+                        0));
     }
 
     @Test
@@ -218,10 +226,12 @@ public class AxisOrderTest {
         BBOX filter = (BBOX) wfs.getRequest().getFilter();
 
         // filter coordinates are NOT inverted
-        assertEquals(4623055.0, filter.getMinX(), 0.0);
-        assertEquals(815134.0, filter.getMinY(), 0.0);
-        assertEquals(4629904.0, filter.getMaxX(), 0.0);
-        assertEquals(820740.0, filter.getMaxY(), 0.0);
+        assertTrue(
+                JTS.equals(
+                        new ReferencedEnvelope(
+                                4623055.0, 4629904.0, 815134.0, 820740.0, CRS.decode("EPSG:3857")),
+                        filter.getBounds(),
+                        1e-6));
     }
 
     @Test

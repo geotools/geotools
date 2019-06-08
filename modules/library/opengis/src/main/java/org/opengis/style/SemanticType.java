@@ -76,7 +76,7 @@ public final class SemanticType extends CodeList<SemanticType> {
      *
      * @param name The enum name. This name must not be in use by an other enum of this type.
      */
-    private SemanticType(final String name) {
+    public SemanticType(final String name) {
         super(name, VALUES);
     }
 

@@ -398,8 +398,7 @@ public class PGRasterReader extends AbstractGridCoverage2DReader {
                                                                 .getEnvelopeInternal());
                                             }
                                         } catch (Exception e) {
-                                            Throwables.propagateIfInstanceOf(
-                                                    e, RuntimeException.class);
+                                            Throwables.throwIfInstanceOf(e, RuntimeException.class);
                                             throw new RuntimeException(e);
                                         }
 
@@ -441,7 +440,7 @@ public class PGRasterReader extends AbstractGridCoverage2DReader {
                 Tile tile = new TileDecoder(data, read).call();
                 mosaic.accept(tile);
             } catch (Exception e) {
-                Throwables.propagateIfInstanceOf(e, IOException.class);
+                Throwables.throwIfInstanceOf(e, IOException.class);
                 throw new IOException("Error decoding tile", e);
             }
         }
@@ -466,7 +465,7 @@ public class PGRasterReader extends AbstractGridCoverage2DReader {
                 mosaic.accept(work.take().get());
                 count--;
             } catch (Exception e) {
-                Throwables.propagateIfInstanceOf(e, IOException.class);
+                Throwables.throwIfInstanceOf(e, IOException.class);
                 throw new IOException(e);
             }
         }

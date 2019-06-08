@@ -1225,9 +1225,9 @@ public class RasterSymbolizerTest extends org.junit.Assert {
         // build the RasterSymbolizer
         final UserLayer nl = (UserLayer) sld.getStyledLayers()[0];
         final Style style = nl.getUserStyles()[0];
-        final FeatureTypeStyle fts = style.getFeatureTypeStyles()[0];
-        final Rule rule = fts.getRules()[0];
-        final RasterSymbolizer rs_1 = (RasterSymbolizer) rule.getSymbolizers()[0];
+        final FeatureTypeStyle fts = style.featureTypeStyles().get(0);
+        final Rule rule = fts.rules().get(0);
+        final RasterSymbolizer rs_1 = (RasterSymbolizer) rule.symbolizers().get(0);
 
         // visit the RasterSymbolizer
         rsh.visit(rs_1);
@@ -1520,7 +1520,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
         final Style style = nl.getUserStyles()[0];
         final FeatureTypeStyle fts = style.featureTypeStyles().get(0);
         final Rule rule = fts.rules().get(0);
-        final RasterSymbolizer rs_1 = (RasterSymbolizer) rule.getSymbolizers()[0];
+        final RasterSymbolizer rs_1 = (RasterSymbolizer) rule.symbolizers().get(0);
         return rs_1;
     }
 

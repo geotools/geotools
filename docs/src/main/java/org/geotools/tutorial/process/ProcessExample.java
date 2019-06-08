@@ -94,7 +94,7 @@ public class ProcessExample {
         WKTReader reader = new WKTReader(new GeometryFactory());
 
         Geometry geom1 = (Polygon) reader.read("POLYGON((20 10, 30 0, 40 10, 30 20, 20 10))");
-        Double buffer = new Double(213.78);
+        Double buffer = Double.valueOf(213.78);
 
         Map<String, Object> map = new HashMap<>();
         map.put(BufferFactory.GEOM1.key, geom1);

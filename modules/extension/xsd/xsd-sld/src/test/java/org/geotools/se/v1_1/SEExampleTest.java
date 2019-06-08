@@ -22,6 +22,8 @@ import static org.junit.Assert.assertThat;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 import java.util.Map;
 import org.geotools.factory.CommonFactoryFinder;
@@ -30,6 +32,7 @@ import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.filter.function.EnvFunction;
 import org.geotools.styling.AnchorPoint;
 import org.geotools.styling.ColorMap;
+import org.geotools.styling.DefaultResourceLocator;
 import org.geotools.styling.ExternalGraphic;
 import org.geotools.styling.ExternalMark;
 import org.geotools.styling.FeatureTypeStyle;
@@ -41,12 +44,14 @@ import org.geotools.styling.Mark;
 import org.geotools.styling.PointSymbolizer;
 import org.geotools.styling.PolygonSymbolizer;
 import org.geotools.styling.RasterSymbolizer;
+import org.geotools.styling.ResourceLocator;
 import org.geotools.styling.SLD;
 import org.geotools.styling.SelectedChannelType;
 import org.geotools.styling.Stroke;
 import org.geotools.styling.TextSymbolizer;
 import org.geotools.styling.TextSymbolizer2;
 import org.geotools.styling.UomOgcMapping;
+import org.geotools.xsd.Parser;
 import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.FilterFactory2;
@@ -56,6 +61,7 @@ import org.opengis.style.Displacement;
 import org.opengis.style.GraphicalSymbol;
 import org.opengis.style.OverlapBehavior;
 import org.opengis.style.Rule;
+import org.picocontainer.MutablePicoContainer;
 
 public class SEExampleTest extends SETestSupport {
 
@@ -100,9 +106,9 @@ public class SEExampleTest extends SETestSupport {
 
         Graphic g = sym.getGraphic();
         assertEquals(8.0, g.getSize().evaluate(null, Double.class));
-        assertEquals(1, g.getMarks().length);
+        assertEquals(1, g.graphicalSymbols().size());
 
-        Mark m = g.getMarks()[0];
+        Mark m = (Mark) g.graphicalSymbols().get(0);
         assertEquals("star", m.getWellKnownName().evaluate(null, String.class));
         Color c = m.getFill().getColor().evaluate(null, Color.class);
         assertEquals(255, c.getRed());
@@ -139,13 +145,13 @@ public class SEExampleTest extends SETestSupport {
 
         Graphic g = sym.getGraphic();
         assertEquals(15.0, g.getSize().evaluate(null, Double.class));
-        assertEquals(2, g.getExternalGraphics().length);
+        assertEquals(2, g.graphicalSymbols().size());
 
-        ExternalGraphic eg = g.getExternalGraphics()[0];
+        ExternalGraphic eg = (ExternalGraphic) g.graphicalSymbols().get(0);
         assertEquals("http://www.vendor.com/geosym/2267.svg", eg.getLocation().toString());
         assertEquals("image/svg+xml", eg.getFormat());
 
-        eg = g.getExternalGraphics()[1];
+        eg = (ExternalGraphic) g.graphicalSymbols().get(1);
         assertEquals("http://www.vendor.com/geosym/2267.png", eg.getLocation().toString());
         assertEquals("image/png", eg.getFormat());
     }
@@ -219,6 +225,59 @@ public class SEExampleTest extends SETestSupport {
         assertEquals("image/png", em.getFormat());
         assertImagesEqual(referenceImage, em.getInlineContent());
         assertNull(em.getOnlineResource());
+    }
+
+    public void testParsePointSymbolizerRelativeURL() throws Exception {
+        /*<?xml version="1.0" encoding="ISO-8859-1"?>
+        <PointSymbolizer version="1.1.0" xsi:schemaLocation="http://www.opengis.net/se http://www.opengis.net/se/1.1.0/Symbolizer.xsd" xmlns="http://www.opengis.net/se" xmlns:ogc="http://www.opengis.net/ogc" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="http://www.opengeospatial.org/se/units/pixel">
+        <Name>MyPointSymbolizer</Name>
+        <Description>
+                <Title>Example Pointsymbolizer</Title>
+                <Abstract>This is just a simple example of a point symbolizer.</Abstract>
+        </Description>
+        <Graphic>
+                <ExternalGraphic>
+                        <OnlineResource xlink:type="simple" xlink:href="inlineContent-image.png"/>
+                        <Format>image/png</Format>
+                </ExternalGraphic>
+                <Size>15.0</Size>
+        </Graphic>
+        </PointSymbolizer>
+        */
+
+        SEConfiguration se =
+                new SEConfiguration() {
+                    @Override
+                    protected void configureContext(MutablePicoContainer container) {
+
+                        super.configureContext(container);
+
+                        DefaultResourceLocator locator =
+                                (DefaultResourceLocator)
+                                        container.getComponentInstance(ResourceLocator.class);
+                        try {
+                            locator.setSourceUrl(new URL("http://my.test.host/"));
+                        } catch (MalformedURLException e) {
+                        }
+                    }
+                };
+        Parser p = new Parser(se);
+        PointSymbolizer sym =
+                (PointSymbolizer)
+                        p.parse(getClass().getResourceAsStream("example-pointsymbolizer6.xml"));
+        assertEquals("MyPointSymbolizer", sym.getName());
+        assertEquals("Example Pointsymbolizer", sym.getDescription().getTitle().toString());
+        assertEquals(
+                "This is just a simple example of a point symbolizer.",
+                sym.getDescription().getAbstract().toString());
+
+        Graphic g = sym.getGraphic();
+        assertEquals(15.0, g.getSize().evaluate(null, Double.class));
+        assertEquals(1, g.graphicalSymbols().size());
+
+        ExternalGraphic eg = (ExternalGraphic) g.graphicalSymbols().get(0);
+        assertEquals("http://my.test.host/inlineContent-image.png", eg.getURI().toString());
+        assertEquals("image/png", eg.getFormat());
     }
 
     public void testParsePointSymbolizerAnchorDisplacement() throws Exception {
@@ -540,7 +599,8 @@ public class SEExampleTest extends SETestSupport {
         </FeatureTypeStyle>*/
 
         FeatureTypeStyle fts = (FeatureTypeStyle) parse("example-featurestyle.xml");
-        assertEquals("oceansea:Foundation", fts.getFeatureTypeName());
+        assertEquals(
+                "oceansea:Foundation", fts.featureTypeNames().iterator().next().getLocalPart());
         assertEquals(1, fts.rules().size());
 
         Rule rule = fts.rules().get(0);

@@ -48,10 +48,10 @@ public class StyleGeneratorTest extends DataTestCase {
         super(arg0);
     }
 
-    public void checkFilteredResultNotEmpty(Rule[] rule, SimpleFeatureSource fs, String attribName)
-            throws IOException {
-        for (int i = 0; i < rule.length; i++) {
-            Filter filter = rule[i].getFilter();
+    public void checkFilteredResultNotEmpty(
+            List<Rule> rules, SimpleFeatureSource fs, String attribName) throws IOException {
+        for (Rule rule : rules) {
+            Filter filter = rule.getFilter();
             SimpleFeatureCollection filteredCollection = fs.getFeatures(filter);
             assertTrue(filteredCollection.size() > 0);
 
@@ -126,13 +126,13 @@ public class StyleGeneratorTest extends DataTestCase {
         assertNotNull(fts);
 
         // test each filter
-        Rule[] rule = fts.getRules();
-        assertEquals(2, rule.length);
+        List<Rule> rules = fts.rules();
+        assertEquals(2, rules.size());
         // do a preliminary test to make sure each rule's filter returns some results
-        checkFilteredResultNotEmpty(rule, fs, attribName);
+        checkFilteredResultNotEmpty(rules, fs, attribName);
 
-        assertNotNull(StyleGenerator.toStyleExpression(rule[0].getFilter()));
-        assertNotNull(StyleGenerator.toStyleExpression(rule[1].getFilter()));
+        assertNotNull(StyleGenerator.toStyleExpression(rules.get(0).getFilter()));
+        assertNotNull(StyleGenerator.toStyleExpression(rules.get(1).getFilter()));
     }
 
     /** This test cases test the generation of a style using a ExcplicitClassifier */

@@ -60,6 +60,8 @@ import org.geotools.data.DataSourceException;
 import org.geotools.data.PrjFileReader;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.image.ImageWorker;
+import org.geotools.image.util.ImageUtilities;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
@@ -1032,7 +1034,7 @@ public class GeoTiffReaderTest extends org.junit.Assert {
         assertNotNull(file);
         assertEquals(true, file.exists());
         GeoTiffReader reader = new GeoTiffReader(file);
-        final int nOvrs = reader.getNumOverviews();
+        final int nOvrs = reader.getDatasetLayout().getNumExternalOverviews();
         LOGGER.info("Number of external overviews: " + nOvrs);
         assertEquals(4, nOvrs);
         double[][] availableResolutions = reader.getResolutionLevels();
@@ -1217,6 +1219,46 @@ public class GeoTiffReaderTest extends org.junit.Assert {
         } finally {
             if (reader != null) {
                 reader.dispose();
+            }
+        }
+    }
+
+    @Test
+    public void testScaleOffset() throws IllegalArgumentException, IOException, FactoryException {
+        // prepare reader
+        final File scaleOffset = TestData.file(GeoTiffReaderTest.class, "scaleOffset.tif");
+        GeoTiffReader reader = new GeoTiffReader(scaleOffset);
+
+        // read with explicit request not to rescale
+        GridCoverage2D coverage = null;
+        try {
+            ParameterValue<Boolean> rescalePixels = AbstractGridFormat.RESCALE_PIXELS.createValue();
+            rescalePixels.setValue(false);
+            coverage = reader.read(new GeneralParameterValue[] {rescalePixels});
+            ImageWorker iw = new ImageWorker(coverage.getRenderedImage());
+            double[] maximums = iw.getMaximums();
+            // the max is 255
+            assertArrayEquals(new double[] {6020, 6020, 6020, 1, 0, 10000}, maximums, 0d);
+        } finally {
+            if (coverage != null) {
+                ImageUtilities.disposeImage(coverage.getRenderedImage());
+                coverage.dispose(true);
+            }
+        }
+
+        // do the same with rescaling
+        try {
+            ParameterValue<Boolean> rescalePixels = AbstractGridFormat.RESCALE_PIXELS.createValue();
+            rescalePixels.setValue(true);
+            coverage = reader.read(new GeneralParameterValue[] {rescalePixels});
+            ImageWorker iw = new ImageWorker(coverage.getRenderedImage());
+            double[] maximums = iw.getMaximums();
+            // the max is 255
+            assertArrayEquals(new double[] {0.602, 0.602, 0.602, 0.0001, 0, 1}, maximums, 0d);
+        } finally {
+            if (coverage != null) {
+                ImageUtilities.disposeImage(coverage.getRenderedImage());
+                coverage.dispose(true);
             }
         }
     }

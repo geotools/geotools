@@ -56,14 +56,12 @@ public class OracleDialectEpsgMediator extends AbstractEpsgMediator {
                 new Hints(
                         Hints.AUTHORITY_MAX_ACTIVE,
                         Integer.valueOf(2),
-                        new Object[] {
-                            Hints.AUTHORITY_MIN_EVICT_IDLETIME,
-                            Integer.valueOf(1 * 60 * 1000),
-                            Hints.CACHE_POLICY,
-                            "none",
-                            Hints.EPSG_DATA_SOURCE,
-                            datasource
-                        }),
+                        Hints.AUTHORITY_MIN_EVICT_IDLETIME,
+                        Integer.valueOf(1 * 60 * 1000),
+                        Hints.CACHE_POLICY,
+                        "none",
+                        Hints.EPSG_DATA_SOURCE,
+                        datasource),
                 datasource);
         config = new Hints(Hints.EPSG_DATA_SOURCE, datasource);
     }

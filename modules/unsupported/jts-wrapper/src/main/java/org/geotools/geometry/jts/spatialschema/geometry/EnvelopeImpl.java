@@ -105,28 +105,10 @@ public class EnvelopeImpl implements Envelope {
 
     /**
      * @inheritDoc
-     * @see org.opengis.geometry.coordinate.Envelope#getCenter(int)
-     */
-    @Deprecated
-    public final double getCenter(int dimension) {
-        return 0.5 * (upperCorner.getOrdinate(dimension) + lowerCorner.getOrdinate(dimension));
-    }
-
-    /**
-     * @inheritDoc
      * @see org.opengis.geometry.coordinate.Envelope#getMedian(int)
      */
     public final double getMedian(int dimension) {
         return 0.5 * (upperCorner.getOrdinate(dimension) + lowerCorner.getOrdinate(dimension));
-    }
-
-    /**
-     * @inheritDoc
-     * @see org.opengis.geometry.coordinate.Envelope#getLength(int)
-     */
-    @Deprecated
-    public final double getLength(int dimension) {
-        return upperCorner.getOrdinate(dimension) - lowerCorner.getOrdinate(dimension);
     }
 
     /**

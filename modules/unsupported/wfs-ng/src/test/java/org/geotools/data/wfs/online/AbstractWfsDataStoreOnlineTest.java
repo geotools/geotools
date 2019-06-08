@@ -469,36 +469,6 @@ public abstract class AbstractWfsDataStoreOnlineTest {
                     }
 
                     @Override
-                    public String getSRS() {
-                        return bbox.getSRS();
-                    }
-
-                    @Override
-                    public String getPropertyName() {
-                        return bbox.getPropertyName();
-                    }
-
-                    @Override
-                    public double getMinY() {
-                        return bbox.getMinY();
-                    }
-
-                    @Override
-                    public double getMinX() {
-                        return bbox.getMinX();
-                    }
-
-                    @Override
-                    public double getMaxY() {
-                        return bbox.getMaxY();
-                    }
-
-                    @Override
-                    public double getMaxX() {
-                        return bbox.getMaxX();
-                    }
-
-                    @Override
                     public MatchAction getMatchAction() {
                         return MatchAction.ANY;
                     }

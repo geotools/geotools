@@ -34,6 +34,7 @@ import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureStore;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.DefaultFeatureCollection;
+import org.geotools.feature.NameImpl;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.junit.After;
 import org.junit.Before;
@@ -139,8 +140,7 @@ public class FidQueryTest extends FIDTestCase {
         Id createFidFilter = ff.id(Collections.singleton(ff.featureId(feature.getID())));
 
         SimpleFeatureType schema = feature.getFeatureType();
-        featureStore.modifyFeatures(
-                schema.getDescriptor("ID"), Integer.valueOf(newId), createFidFilter);
+        featureStore.modifyFeatures(new NameImpl("ID"), Integer.valueOf(newId), createFidFilter);
 
         SimpleFeatureIterator features = featureStore.getFeatures(createFidFilter).features();
         try {

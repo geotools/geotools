@@ -30,7 +30,7 @@ public class CSBuilderFactory {
 
     public static CSBuilder getDefaultBuilder() {
         try {
-            return (CSBuilder) getDefaultBuilderClass().newInstance();
+            return (CSBuilder) getDefaultBuilderClass().getDeclaredConstructor().newInstance();
         } catch (Exception e) {
             // TODO: should we throw a better exception here? It's a fatal error anyway...
             throw new RuntimeException("Could not create a coordinate sequence builder", e);

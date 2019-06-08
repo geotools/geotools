@@ -100,15 +100,15 @@ public class GMLCoordTypeBinding extends AbstractComplexBinding {
         Coordinate c = (Coordinate) object;
 
         if ("X".equals(name.getLocalPart())) {
-            return new Double(c.x);
+            return Double.valueOf(c.x);
         }
 
         if ("Y".equals(name.getLocalPart())) {
-            return new Double(c.y);
+            return Double.valueOf(c.y);
         }
 
-        if ("Z".equals(name.getLocalPart()) && !new Double(c.z).isNaN()) {
-            return new Double(c.z);
+        if ("Z".equals(name.getLocalPart()) && !Double.valueOf(c.getZ()).isNaN()) {
+            return Double.valueOf(c.getZ());
         }
 
         return null;

@@ -261,7 +261,7 @@ public class WKTParser {
      */
     private DirectPosition getPreciseCoordinate(StreamTokenizer tokenizer)
             throws IOException, ParseException {
-        DirectPosition pos = geometryFactory.createDirectPosition();
+        DirectPosition pos = positionFactory.createDirectPosition();
         pos.setOrdinate(0, getNextNumber(tokenizer));
         pos.setOrdinate(1, getNextNumber(tokenizer));
         if (isNumberNext(tokenizer)) {

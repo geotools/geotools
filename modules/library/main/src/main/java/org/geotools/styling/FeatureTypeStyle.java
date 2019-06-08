@@ -138,15 +138,6 @@ public interface FeatureTypeStyle extends org.opengis.style.FeatureTypeStyle {
 
     void setName(String name);
 
-    /** @deprecated use getDescription.getTitle().toString() */
-    public String getTitle();
-
-    /**
-     * @param title
-     * @deprecated please use getDescription.setTitle( new SimpleInternationalString( title ))
-     */
-    void setTitle(String title);
-
     /**
      * Description for this style.
      *
@@ -154,93 +145,6 @@ public interface FeatureTypeStyle extends org.opengis.style.FeatureTypeStyle {
      * @since 2.5.x
      */
     Description getDescription();
-
-    /** @deprecated use getDescription().getAbstract().toString() */
-    public String getAbstract();
-
-    /**
-     * @param abstractStr
-     * @deprecated Please use getDescription().setAbstract( new SimpleInternationalString(
-     *     abstractStr ))
-     */
-    void setAbstract(String abstractStr);
-
-    /**
-     * Only features with the type name returned by this method should be styled by this feature
-     * type styler.
-     *
-     * @return The name of types that this styler applies to
-     * @deprecated this method is replaced by a live set featureTypeNames()
-     */
-    String getFeatureTypeName();
-
-    /**
-     * Sets the type name of the features that this styler should be applied to.
-     *
-     * @task REVISIT: should a set method be declared in this interface at all?
-     * @param name The TypeName of the features to be styled by this instance.
-     * @deprecated Use featureTypeNames().clear() and featureTypeNames.add( new NameImpl( name ))
-     */
-    void setFeatureTypeName(String name);
-
-    /**
-     * The SemanticTypeIdentifiers is experimental and is intended to be used to identify, using a
-     * community-controlled name(s), what the style is suitable to be used for. For example, a
-     * single style may be suitable to use with many different feature types. The syntax of the
-     * SemanticTypeIdentifiers string is undefined, but the strings "generic:line_string",
-     * "generic:polygon", "generic:point", "generic:text", "generic:raster", and "generic:any" are
-     * reserved to indicate that a FeatureTypeStyle may be used with any feature type with the
-     * corresponding default geometry type (i.e., no feature properties are referenced in the
-     * feature type style).
-     *
-     * <p>This method will be replaced by a live set semanticIdentifiers() in 2.6.x
-     *
-     * @return An array of strings representing systematic types which could be styled by this
-     *     instance.
-     * @deprecated this method is replaced by a live set semanticIdentifiers()
-     */
-    String[] getSemanticTypeIdentifiers();
-
-    /**
-     * The SemanticTypeIdentifiers is experimental and is intended to be used to identify, using a
-     * community-controlled name(s), what the style is suitable to be used for. For example, a
-     * single style may be suitable to use with many different feature types. The syntax of the
-     * SemanticTypeIdentifiers string is undefined, but the strings "generic:line_string",
-     * "generic:polygon", "generic:point", "generic:text", "generic:raster", and "generic:any" are
-     * reserved to indicate that a FeatureTypeStyle may be used with any feature type with the
-     * corresponding default geometry type (i.e., no feature properties are referenced in the
-     * feature type style).
-     *
-     * @param types An array of strings representing systematic types which could be styled by this
-     *     instance.
-     * @deprecated Please use semanticIdentifiers().addAll()
-     */
-    void setSemanticTypeIdentifiers(String[] types);
-
-    /**
-     * Rules govern the appearance of any given feature to be styled by this styler. Each rule
-     * contains conditions based on scale and feature attribute values. In addition, rules contain
-     * the symbolizers which should be applied when the rule holds true.
-     *
-     * @version SLD 1.0
-     * @version SLD 1.0.20 TODO: GeoAPI getRules(): List<Rule>
-     * @return The full set of rules contained in this styler.
-     * @deprecated use rules().toArray( new Rule[0] )
-     */
-    Rule[] getRules();
-
-    /**
-     * Rules govern the appearance of any given feature to be styled by this styler. Each rule
-     * contains conditions based on scale and feature attribute values. In addition, rules contain
-     * the symbolizers which should be applied when the rule holds true.
-     *
-     * @param rules The set of rules to be set for this styler.
-     * @deprecated Please use rules().clear(); rules.addAll( rules )
-     */
-    void setRules(Rule[] rules);
-
-    /** @deprecated Please use rules().add( rule ) */
-    void addRule(Rule rule);
 
     /**
      * Rules govern the appearance of any given feature to be styled by this styler.

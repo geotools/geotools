@@ -312,13 +312,13 @@ public class GMLFilterDocument extends org.xml.sax.helpers.XMLFilterImpl {
         private int insideInnerFlag = NOT_INSIDE;
 
         /** Remembers last X coordinate read. */
-        private Double x = new Double(Double.NaN);
+        private Double x = Double.valueOf(Double.NaN);
 
         /** Remembers last Y coordinate read. */
-        private Double y = new Double(Double.NaN);
+        private Double y = Double.valueOf(Double.NaN);
 
         /** Remembers last Z coordinate read. */
-        private Double z = new Double(Double.NaN);
+        private Double z = Double.valueOf(Double.NaN);
 
         /** Stores requested delimiter for coordinate separation; default = ',' */
         private String coordinateDelimeter = ",";
@@ -359,11 +359,11 @@ public class GMLFilterDocument extends org.xml.sax.helpers.XMLFilterImpl {
             // call the correct parent coordinate class
             while (coordinateSets.hasMoreElements()) {
                 coordinates = new StringTokenizer(coordinateSets.nextToken(), coordinateDelimeter);
-                x = new Double(coordinates.nextToken().trim());
-                y = new Double(coordinates.nextToken().trim());
+                x = Double.valueOf(coordinates.nextToken().trim());
+                y = Double.valueOf(coordinates.nextToken().trim());
 
                 if (coordinates.hasMoreElements()) {
-                    z = new Double(coordinates.nextToken().trim());
+                    z = Double.valueOf(coordinates.nextToken().trim());
                     parent.gmlCoordinates(x.doubleValue(), y.doubleValue(), z.doubleValue());
                 } else {
                     parent.gmlCoordinates(x.doubleValue(), y.doubleValue());
@@ -388,17 +388,17 @@ public class GMLFilterDocument extends org.xml.sax.helpers.XMLFilterImpl {
             // set internal x,y,z values depending on the return
             switch (insideInnerFlag) {
                 case INSIDE_X:
-                    x = new Double(coordString.trim());
+                    x = Double.valueOf(coordString.trim());
 
                     break;
 
                 case INSIDE_Y:
-                    y = new Double(coordString.trim());
+                    y = Double.valueOf(coordString.trim());
 
                     break;
 
                 case INSIDE_Z:
-                    z = new Double(coordString.trim());
+                    z = Double.valueOf(coordString.trim());
 
                     break;
 
@@ -452,9 +452,9 @@ public class GMLFilterDocument extends org.xml.sax.helpers.XMLFilterImpl {
                 }
 
                 // else {
-                x = new Double(Double.NaN);
-                y = new Double(Double.NaN);
-                z = new Double(Double.NaN);
+                x = Double.valueOf(Double.NaN);
+                y = Double.valueOf(Double.NaN);
+                z = Double.valueOf(Double.NaN);
                 insideOuterFlag = NOT_INSIDE;
             }
         }

@@ -38,17 +38,6 @@ public class UnformattableObjectException extends UnsupportedOperationException 
     /**
      * Constructs an exception with the specified detail message.
      *
-     * @param message The detail message.
-     * @deprecated Replaced by {@link #UnformattableObjectException(String, Class)}.
-     */
-    public UnformattableObjectException(final String message) {
-        super(message);
-        unformattable = Object.class;
-    }
-
-    /**
-     * Constructs an exception with the specified detail message.
-     *
      * @param message The detail message. If {@code null}, a default message will be created.
      * @param unformattable The type of the object that can't be formatted.
      * @since 2.4

@@ -21,7 +21,6 @@ import java.math.BigDecimal;
 import java.util.Date;
 import org.geotools.util.Converters;
 import org.locationtech.jts.geom.Geometry;
-import org.opengis.feature.Feature;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.expression.ExpressionVisitor;
 import org.opengis.filter.expression.Literal;
@@ -54,16 +53,6 @@ public class ConstantExpression implements Literal, Cloneable {
         this.value = value;
     }
 
-    /** @deprecated use {@link #setValue(Object)} */
-    public final void setLiteral(Object literal) throws IllegalFilterException {
-        throw new UnsupportedOperationException("Default value is immutable");
-    }
-
-    /** @deprecated use {@link #evaluate(Feature)} */
-    public final Object getValue(SimpleFeature feature) {
-        return evaluate(feature);
-    }
-
     public Object evaluate(SimpleFeature feature) {
         return getValue();
     }
@@ -86,11 +75,6 @@ public class ConstantExpression implements Literal, Cloneable {
 
     public short getType() {
         return type;
-    }
-
-    /** @deprecated use {@link #getValue()} */
-    public final Object getLiteral() {
-        return getValue();
     }
 
     public Object accept(ExpressionVisitor visitor, Object extraData) {
@@ -193,7 +177,7 @@ public class ConstantExpression implements Literal, Cloneable {
     }
 
     public static ConstantExpression constant(double number) {
-        return new ConstantExpression(new Double(number));
+        return new ConstantExpression(Double.valueOf(number));
     }
 
     public static ConstantExpression constant(int number) {

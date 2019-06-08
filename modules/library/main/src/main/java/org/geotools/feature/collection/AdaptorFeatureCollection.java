@@ -56,7 +56,7 @@ public abstract class AdaptorFeatureCollection implements SimpleFeatureCollectio
     // SimpleFeatureCollection - Feature Access
     //
     public SimpleFeatureIterator features() {
-        SimpleFeatureIterator iter = new DelegateSimpleFeatureIterator(this, openIterator());
+        SimpleFeatureIterator iter = new DelegateSimpleFeatureIterator(openIterator());
         return iter;
     }
 

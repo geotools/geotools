@@ -22,9 +22,9 @@ import java.io.InputStream;
 import java.net.URL;
 import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
-import junit.framework.Assert;
 import junit.framework.Test;
 import junit.framework.TestSuite;
+import org.junit.Assert;
 
 public class GeoRasterOnlineTest extends AbstractTest {
     protected static DBDialect dialect = null;

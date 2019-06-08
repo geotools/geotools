@@ -77,10 +77,8 @@ public class Diff {
      * Failure to follow this advice may result in non-deterministic behavior.
      *
      * <p>The returned map will be serializable if the specified map is serializable.
-     *
-     * @deprecated Please use getModified();
      */
-    public final Map<String, SimpleFeature> modified2;
+    private final Map<String, SimpleFeature> modified2;
 
     /**
      * Unmodifiable view of added features. It is imperative that the user manually synchronize on
@@ -99,10 +97,8 @@ public class Diff {
      * Failure to follow this advice may result in non-deterministic behavior.
      *
      * <p>The returned map will be serializable if the specified map is serializable.
-     *
-     * @deprecated please use getAdded()
      */
-    public final Map<String, SimpleFeature> added;
+    private final Map<String, SimpleFeature> added;
 
     /** counter used to genreate the "next" new feature id */
     public int nextFID = 0;

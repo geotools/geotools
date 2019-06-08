@@ -74,8 +74,10 @@ import org.geotools.filter.temporal.OverlappedByImpl;
 import org.geotools.filter.temporal.TContainsImpl;
 import org.geotools.filter.temporal.TEqualsImpl;
 import org.geotools.filter.temporal.TOverlapsImpl;
+import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope3D;
+import org.geotools.referencing.CRS;
 import org.geotools.util.factory.Factory;
 import org.geotools.util.factory.Hints;
 import org.opengis.feature.type.Name;
@@ -153,7 +155,11 @@ import org.opengis.filter.temporal.TOverlaps;
 import org.opengis.geometry.BoundingBox;
 import org.opengis.geometry.BoundingBox3D;
 import org.opengis.geometry.Geometry;
+import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.parameter.Parameter;
+import org.opengis.referencing.FactoryException;
+import org.opengis.referencing.NoSuchAuthorityCodeException;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.util.InternationalString;
 import org.xml.sax.helpers.NamespaceSupport;
 
@@ -350,7 +356,11 @@ public class FilterFactoryImpl implements Factory, org.opengis.filter.FilterFact
             boolean matchCase) {
         LikeFilterImpl filter = new LikeFilterImpl();
         filter.setExpression(expr);
-        filter.setPattern(pattern, wildcard, singleChar, escape);
+
+        filter.setLiteral(pattern);
+        filter.setWildCard(wildcard);
+        filter.setSingleChar(singleChar);
+        filter.setEscape(escape);
         filter.setMatchingCase(matchCase);
 
         return filter;
@@ -366,7 +376,11 @@ public class FilterFactoryImpl implements Factory, org.opengis.filter.FilterFact
             MatchAction matchAction) {
         LikeFilterImpl filter = new LikeFilterImpl(matchAction);
         filter.setExpression(expr);
-        filter.setPattern(pattern, wildcard, singleChar, escape);
+
+        filter.setLiteral(pattern);
+        filter.setWildCard(wildcard);
+        filter.setSingleChar(singleChar);
+        filter.setEscape(escape);
         filter.setMatchingCase(matchCase);
 
         return filter;
@@ -399,6 +413,24 @@ public class FilterFactoryImpl implements Factory, org.opengis.filter.FilterFact
         return new BBOXImpl(geometry, bounds);
     }
 
+    public BBOX bbox(Expression geometry, Expression bounds, MatchAction machAction) {
+        if (bounds instanceof Literal) {
+            Object value = ((Literal) bounds).getValue();
+            if (value instanceof BoundingBox3D) {
+                return bbox(geometry, (BoundingBox3D) value, machAction);
+            } else if (value instanceof org.locationtech.jts.geom.Geometry
+                    && geometry instanceof PropertyName) {
+                org.locationtech.jts.geom.Geometry g = (org.locationtech.jts.geom.Geometry) value;
+                if (g.getUserData() instanceof CoordinateReferenceSystem) {
+                    CoordinateReferenceSystem crs = (CoordinateReferenceSystem) g.getUserData();
+                    ReferencedEnvelope3D envelope = (ReferencedEnvelope3D) JTS.bounds(g, crs);
+                    return new BBOX3DImpl((PropertyName) geometry, envelope, this);
+                }
+            }
+        }
+        return new BBOXImpl(geometry, bounds, machAction);
+    }
+
     public BBOX bbox(Expression geometry, BoundingBox bounds) {
         if (bounds instanceof BoundingBox3D) {
             return bbox(geometry, (BoundingBox3D) bounds);
@@ -426,7 +458,7 @@ public class FilterFactoryImpl implements Factory, org.opengis.filter.FilterFact
         Literal bbox = null;
         try {
             ReferencedEnvelope env = ReferencedEnvelope.reference(bounds);
-            bbox = literal(BBOXImpl.boundingPolygon(env));
+            bbox = literal(env);
         } catch (IllegalFilterException ife) {
             new IllegalArgumentException("Unable to convert to Polygon:" + bounds).initCause(ife);
         }
@@ -460,8 +492,24 @@ public class FilterFactoryImpl implements Factory, org.opengis.filter.FilterFact
             String srs,
             MatchAction matchAction) {
 
-        BBOXImpl box = bbox2d(e, new ReferencedEnvelope(minx, maxx, miny, maxy, null), matchAction);
-        box.setSRS(srs);
+        BBOXImpl box = null;
+        try {
+            CoordinateReferenceSystem crs;
+            if (srs == null || srs.isEmpty()) {
+                crs = null;
+            } else {
+                try {
+                    crs = CRS.decode(srs);
+                } catch (MismatchedDimensionException ex) {
+                    throw new RuntimeException(ex);
+                } catch (NoSuchAuthorityCodeException ex) {
+                    crs = CRS.parseWKT(srs);
+                }
+            }
+            box = bbox2d(e, new ReferencedEnvelope(minx, maxx, miny, maxy, crs), matchAction);
+        } catch (FactoryException e1) {
+            throw new RuntimeException("Failed to setup bbox SRS", e1);
+        }
 
         return box;
     }
@@ -785,16 +833,6 @@ public class FilterFactoryImpl implements Factory, org.opengis.filter.FilterFact
     public Function function(String name, Expression arg1, Expression arg2) {
         Function function =
                 functionFinder.findFunction(name, Arrays.asList(new Expression[] {arg1, arg2}));
-        return function;
-    }
-
-    /** @deprecated Pending see org.opengis.filter.Factory2 */
-    public Function function(
-            String name,
-            List<org.opengis.filter.expression.Expression> parameters,
-            Literal fallback) {
-        Function function = functionFinder.findFunction(name, parameters, fallback);
-
         return function;
     }
 

@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.logging.Logger;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.coordinatesequence.CoordinateSequences;
-import org.locationtech.jts.algorithm.CGAlgorithms;
+import org.locationtech.jts.algorithm.RayCrossingCounter;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.CoordinateSequence;
 import org.locationtech.jts.geom.Envelope;
@@ -75,7 +75,7 @@ public class PolygonHandler implements ShapeHandler {
             // nan test; x!=x iff x is nan
             if ((testPoint.x == p.x)
                     && (testPoint.y == p.y)
-                    && ((testPoint.z == p.z) || Double.isNaN(testPoint.z))) {
+                    && ((testPoint.getZ() == p.getZ()) || Double.isNaN(testPoint.getZ()))) {
                 return true;
             }
         }
@@ -328,7 +328,7 @@ public class PolygonHandler implements ShapeHandler {
                 Coordinate[] coordList = tryRing.getCoordinates();
 
                 if (tryEnv.contains(testEnv)
-                        && (CGAlgorithms.isPointInRing(testPt, coordList)
+                        && (RayCrossingCounter.locatePointInRing(testPt, coordList) != 2
                                 || (pointInList(testPt, coordList)))) {
                     isContained = true;
                 }

@@ -27,7 +27,6 @@ import java.net.MalformedURLException;
 import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
-import junit.framework.AssertionFailedError;
 import org.geotools.TestData;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
@@ -148,12 +147,6 @@ public class ShapefileReadWriteTest extends TestCaseSupport {
             Thread.sleep(100);
         }
         test(files[0]);
-    }
-
-    private static void fail(String message, Throwable cause) {
-        AssertionFailedError fail = new AssertionFailedError(message);
-        fail.initCause(cause);
-        throw fail;
     }
 
     private void test(String f) throws Exception {

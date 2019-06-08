@@ -120,7 +120,7 @@ public class HeatmapProcessTest {
         for (Coordinate p : pts) {
             Geometry point = factory.createPoint(p);
             fb.add(point);
-            fb.add(p.z);
+            fb.add(p.getZ());
             fc.add(fb.buildFeature(null));
         }
 

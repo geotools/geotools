@@ -18,6 +18,7 @@ package org.geotools.brewer.styling.builder;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import org.geotools.styling.GraphicLegend;
 import org.geotools.styling.Rule;
 import org.geotools.styling.Symbolizer;
@@ -171,8 +172,8 @@ public class RuleBuilder extends AbstractStyleBuilder<Rule> {
         Rule rule = sf.createRule();
         rule.setName(name);
         // TODO: rule's description cannot be set
-        rule.setTitle(title);
-        rule.setAbstract(ruleAbstract);
+        rule.getDescription().setTitle(title);
+        rule.getDescription().setAbstract(ruleAbstract);
         rule.setMinScaleDenominator(minScaleDenominator);
         rule.setMaxScaleDenominator(maxScaleDenominator);
         rule.setFilter(filter);
@@ -212,8 +213,16 @@ public class RuleBuilder extends AbstractStyleBuilder<Rule> {
             return unset();
         }
         name = rule.getName();
-        title = rule.getTitle();
-        ruleAbstract = rule.getAbstract();
+        title =
+                Optional.ofNullable(rule.getDescription())
+                        .map(d -> d.getTitle())
+                        .map(t -> t.toString())
+                        .orElse(null);
+        ruleAbstract =
+                Optional.ofNullable(rule.getDescription())
+                        .map(d -> d.getAbstract())
+                        .map(t -> t.toString())
+                        .orElse(null);
         minScaleDenominator = rule.getMinScaleDenominator();
         maxScaleDenominator = rule.getMaxScaleDenominator();
         filter = rule.getFilter();

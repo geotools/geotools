@@ -55,6 +55,5 @@ public class FilterFunction_acos extends FunctionExpressionImpl {
         }
 
         return Math.acos((Double) arg0);
-        // return new Double(Math.acos(arg0));
     }
 }

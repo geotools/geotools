@@ -58,9 +58,6 @@ public interface ExternalMark extends org.opengis.style.ExternalMark {
      */
     void setInlineContent(Icon inline);
 
-    /** @deprecated use {@link #setInlineContent(Icon)} */
-    void getInlineContent(Icon inline);
-
     /**
      * Mime type of the onlineResource/InlineContent
      *

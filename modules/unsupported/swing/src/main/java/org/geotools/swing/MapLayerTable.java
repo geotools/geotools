@@ -52,10 +52,10 @@ import org.geotools.swing.styling.JSimpleStyleDialog;
  * Displays a list of the map layers in an associated {@linkplain MapPane} and provides controls to
  * set the visibility, selection and style of each layer.
  *
- * <p>Implementation note: DefaultMapContext stores its list of MapLayer objects in rendering order,
- * ie. the layer at index 0 is rendererd first, followed by index 1 etc. MapLayerTable stores its
- * layers in the reverse order since it is more intuitive for the user to think of a layer being 'on
- * top' of other layers.
+ * <p>Implementation note: {@link MapContent} stores its list of {@link Layer} objects in rendering
+ * order, ie. the layer at index 0 is rendererd first, followed by index 1 etc. MapLayerTable stores
+ * its layers in the reverse order since it is more intuitive for the user to think of a layer being
+ * 'on top' of other layers.
  *
  * @author Michael Bedward
  * @since 2.6
@@ -544,24 +544,24 @@ public class MapLayerTable extends JPanel {
 
         @Override
         public void layerAdded(MapLayerListEvent event) {
-            if (event.getElement() == null) {
+            if (event.getLayer() == null) {
                 List<Layer> layers = table.mapPane.getMapContent().layers();
                 for (Layer l : layers.subList(event.getFromIndex(), event.getToIndex() + 1)) {
                     table.onAddLayer(l);
                 }
             } else {
-                table.onAddLayer(event.getElement());
+                table.onAddLayer(event.getLayer());
             }
         }
 
         @Override
         public void layerRemoved(MapLayerListEvent event) {
-            table.onRemoveLayer(event.getElement());
+            table.onRemoveLayer(event.getLayer());
         }
 
         @Override
         public void layerChanged(MapLayerListEvent event) {
-            table.repaint(event.getElement());
+            table.repaint(event.getLayer());
         }
 
         @Override

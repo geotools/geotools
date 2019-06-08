@@ -202,6 +202,7 @@ public class ShpFiles {
 
     /** This verifies that this class has been closed correctly (nothing locking) */
     @Override
+    @SuppressWarnings("deprecation") // finalize is deprecated in Java 9
     protected void finalize() throws Throwable {
         super.finalize();
         dispose();

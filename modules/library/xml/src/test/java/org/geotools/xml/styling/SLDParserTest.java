@@ -22,12 +22,11 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.awt.Color;
+import java.awt.*;
 import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.StringBufferInputStream;
 import java.io.StringReader;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -36,7 +35,6 @@ import java.util.Locale;
 import java.util.Map;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import junit.framework.Assert;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.styling.ContrastEnhancement;
 import org.geotools.styling.ExternalGraphic;
@@ -368,104 +366,130 @@ public class SLDParserTest {
         assertEquals(
                 "sldtitle",
                 styles[0]
-                        .getFeatureTypeStyles()[0]
-                        .getRules()[0]
+                        .featureTypeStyles()
+                        .get(0)
+                        .rules()
+                        .get(0)
                         .getDescription()
                         .getTitle()
                         .toString(Locale.JAPAN));
         assertEquals(
                 "english",
                 styles[0]
-                        .getFeatureTypeStyles()[0]
-                        .getRules()[0]
+                        .featureTypeStyles()
+                        .get(0)
+                        .rules()
+                        .get(0)
                         .getDescription()
                         .getTitle()
                         .toString(Locale.ENGLISH));
         assertEquals(
                 "english",
                 styles[0]
-                        .getFeatureTypeStyles()[0]
-                        .getRules()[0]
+                        .featureTypeStyles()
+                        .get(0)
+                        .rules()
+                        .get(0)
                         .getDescription()
                         .getTitle()
                         .toString(Locale.US));
         assertEquals(
                 "english",
                 styles[0]
-                        .getFeatureTypeStyles()[0]
-                        .getRules()[0]
+                        .featureTypeStyles()
+                        .get(0)
+                        .rules()
+                        .get(0)
                         .getDescription()
                         .getTitle()
                         .toString(Locale.US));
         assertEquals(
                 "italian",
                 styles[0]
-                        .getFeatureTypeStyles()[0]
-                        .getRules()[0]
+                        .featureTypeStyles()
+                        .get(0)
+                        .rules()
+                        .get(0)
                         .getDescription()
                         .getTitle()
                         .toString(Locale.ITALY));
         assertEquals(
                 "french",
                 styles[0]
-                        .getFeatureTypeStyles()[0]
-                        .getRules()[0]
+                        .featureTypeStyles()
+                        .get(0)
+                        .rules()
+                        .get(0)
                         .getDescription()
                         .getTitle()
                         .toString(Locale.FRENCH));
         assertEquals(
                 "canada french",
                 styles[0]
-                        .getFeatureTypeStyles()[0]
-                        .getRules()[0]
+                        .featureTypeStyles()
+                        .get(0)
+                        .rules()
+                        .get(0)
                         .getDescription()
                         .getTitle()
                         .toString(Locale.CANADA_FRENCH));
         assertEquals(
                 "sld abstract",
                 styles[0]
-                        .getFeatureTypeStyles()[0]
-                        .getRules()[0]
+                        .featureTypeStyles()
+                        .get(0)
+                        .rules()
+                        .get(0)
                         .getDescription()
                         .getAbstract()
                         .toString(Locale.JAPAN));
         assertEquals(
                 "english abstract",
                 styles[0]
-                        .getFeatureTypeStyles()[0]
-                        .getRules()[0]
+                        .featureTypeStyles()
+                        .get(0)
+                        .rules()
+                        .get(0)
                         .getDescription()
                         .getAbstract()
                         .toString(Locale.ENGLISH));
         assertEquals(
                 "english abstract",
                 styles[0]
-                        .getFeatureTypeStyles()[0]
-                        .getRules()[0]
+                        .featureTypeStyles()
+                        .get(0)
+                        .rules()
+                        .get(0)
                         .getDescription()
                         .getAbstract()
                         .toString(Locale.US));
         assertEquals(
                 "italian abstract",
                 styles[0]
-                        .getFeatureTypeStyles()[0]
-                        .getRules()[0]
+                        .featureTypeStyles()
+                        .get(0)
+                        .rules()
+                        .get(0)
                         .getDescription()
                         .getAbstract()
                         .toString(Locale.ITALY));
         assertEquals(
                 "french abstract",
                 styles[0]
-                        .getFeatureTypeStyles()[0]
-                        .getRules()[0]
+                        .featureTypeStyles()
+                        .get(0)
+                        .rules()
+                        .get(0)
                         .getDescription()
                         .getAbstract()
                         .toString(Locale.FRENCH));
         assertEquals(
                 "french abstract",
                 styles[0]
-                        .getFeatureTypeStyles()[0]
-                        .getRules()[0]
+                        .featureTypeStyles()
+                        .get(0)
+                        .rules()
+                        .get(0)
                         .getDescription()
                         .getAbstract()
                         .toString(Locale.CANADA_FRENCH));
@@ -479,8 +503,10 @@ public class SLDParserTest {
         assertEquals(
                 "",
                 styles[0]
-                        .getFeatureTypeStyles()[0]
-                        .getRules()[0]
+                        .featureTypeStyles()
+                        .get(0)
+                        .rules()
+                        .get(0)
                         .getDescription()
                         .getTitle()
                         .toString());
@@ -493,8 +519,10 @@ public class SLDParserTest {
         assertEquals(
                 "",
                 styles[0]
-                        .getFeatureTypeStyles()[0]
-                        .getRules()[0]
+                        .featureTypeStyles()
+                        .get(0)
+                        .rules()
+                        .get(0)
                         .getDescription()
                         .getAbstract()
                         .toString());
@@ -577,7 +605,7 @@ public class SLDParserTest {
                 new ResourceLocator() {
 
                     public URL locateResource(String uri) {
-                        Assert.assertEquals("test-data/blob.gif", uri);
+                        assertEquals("test-data/blob.gif", uri);
                         return getClass().getResource(uri);
                     }
                 });
@@ -655,11 +683,12 @@ public class SLDParserTest {
     public void testStrokeColorWithEnv() throws Exception {
         DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
         org.w3c.dom.Document node =
-                builder.parse(new StringBufferInputStream(formattedCssStrokeParameter));
+                builder.parse(
+                        new ByteArrayInputStream(formattedCssStrokeParameter.getBytes("UTF-8")));
         SLDParser parser = new SLDParser(styleFactory);
         Stroke stroke = parser.parseStroke(node.getDocumentElement());
         // <strConcat([#], [env([stroke_color], [" + color + "])])>";
-        Assert.assertEquals("#" + color, stroke.getColor().evaluate(Color.decode("#" + color)));
+        assertEquals("#" + color, stroke.getColor().evaluate(Color.decode("#" + color)));
     }
 
     @Test

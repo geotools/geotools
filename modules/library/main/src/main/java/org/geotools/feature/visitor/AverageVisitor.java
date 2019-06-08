@@ -200,11 +200,11 @@ public class AverageVisitor implements FeatureCalc, FeatureAttributeVisitor {
         }
 
         public Object getResult() {
-            return new Double(number / count);
+            return Double.valueOf(number / count);
         }
 
         public Object getSum() {
-            return new Double(number);
+            return Double.valueOf(number);
         }
 
         public int getCount() {
@@ -228,11 +228,11 @@ public class AverageVisitor implements FeatureCalc, FeatureAttributeVisitor {
         }
 
         public Object getResult() {
-            return new Float((float) number / count);
+            return Float.valueOf((float) number / count);
         }
 
         public Object getSum() {
-            return new Float(number);
+            return Float.valueOf(number);
         }
 
         public int getCount() {
@@ -256,7 +256,7 @@ public class AverageVisitor implements FeatureCalc, FeatureAttributeVisitor {
         }
 
         public Object getResult() {
-            return new Double((double) number / count);
+            return Double.valueOf((double) number / count);
         }
 
         public Object getSum() {
@@ -284,7 +284,7 @@ public class AverageVisitor implements FeatureCalc, FeatureAttributeVisitor {
         }
 
         public Object getResult() {
-            return new Double((double) number / count);
+            return Double.valueOf((double) number / count);
         }
 
         public Object getSum() {

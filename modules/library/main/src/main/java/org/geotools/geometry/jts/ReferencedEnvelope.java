@@ -349,14 +349,6 @@ public class ReferencedEnvelope extends Envelope
         return crs;
     }
 
-    /**
-     * @deprecated Use {@link #getCoordinateReferenceSystem}, since it is the method inherited from
-     *     the interface.
-     */
-    public CoordinateReferenceSystem crs() {
-        return getCoordinateReferenceSystem();
-    }
-
     /** Returns the number of dimensions. */
     public int getDimension() {
         return 2;
@@ -376,16 +368,6 @@ public class ReferencedEnvelope extends Envelope
         }
     }
 
-    /** @deprecated Use {@link #getMinX}. */
-    public double minX() {
-        return getMinX();
-    }
-
-    /** @deprecated Use {@link #getMinY}. */
-    public double minY() {
-        return getMinY();
-    }
-
     /** Returns the maximal ordinate along the specified dimension. */
     public double getMaximum(final int dimension) {
         switch (dimension) {
@@ -400,21 +382,6 @@ public class ReferencedEnvelope extends Envelope
         }
     }
 
-    /** @deprecated Use {@link #getMaxX}. */
-    public double maxX() {
-        return getMaxX();
-    }
-
-    /** @deprecated Use {@link #getMaxY}. */
-    public double maxY() {
-        return getMaxY();
-    }
-
-    /** @deprecated Use {@link #getMedian}. */
-    public double getCenter(final int dimension) {
-        return getMedian(dimension);
-    }
-
     /** Returns the center ordinate along the specified dimension. */
     public double getMedian(final int dimension) {
         switch (dimension) {
@@ -427,11 +394,6 @@ public class ReferencedEnvelope extends Envelope
             default:
                 throw new IndexOutOfBoundsException(String.valueOf(dimension));
         }
-    }
-
-    /** @deprecated Use {@link #getSpan}. */
-    public double getLength(final int dimension) {
-        return getSpan(dimension);
     }
 
     /**

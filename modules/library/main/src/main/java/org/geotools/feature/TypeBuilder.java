@@ -1188,10 +1188,8 @@ public class TypeBuilder {
             return newCollection();
         }
         try {
-            return (Collection) origional.getClass().newInstance();
-        } catch (InstantiationException e) {
-            return newCollection();
-        } catch (IllegalAccessException e) {
+            return (Collection) origional.getClass().getDeclaredConstructor().newInstance();
+        } catch (Exception e) {
             return newCollection();
         }
     }

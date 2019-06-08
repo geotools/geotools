@@ -16,9 +16,11 @@
  */
 package org.geotools.styling;
 
+import java.util.Arrays;
 import java.util.Collections;
 import junit.framework.TestCase;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.feature.NameImpl;
 import org.geotools.metadata.iso.citation.OnLineResourceImpl;
 import org.geotools.styling.visitor.DuplicatingStyleVisitor;
 import org.opengis.filter.FilterFactory;
@@ -48,7 +50,7 @@ public class StyleObjectTest extends TestCase {
      * @see TestCase#setUp()
      */
     protected void setUp() throws Exception {
-        styleFactory = StyleFactoryFinder.createStyleFactory();
+        styleFactory = CommonFactoryFinder.getStyleFactory();
         filterFactory = CommonFactoryFinder.getFilterFactory(null);
     }
 
@@ -61,13 +63,13 @@ public class StyleObjectTest extends TestCase {
 
     public void testStyle() throws Exception {
         FeatureTypeStyle fts = styleFactory.createFeatureTypeStyle();
-        fts.setFeatureTypeName("feature-type-1");
+        fts.featureTypeNames().add(new NameImpl("feature-type-1"));
 
         FeatureTypeStyle fts2 = fts2();
 
         Style style = styleFactory.getDefaultStyle();
-        style.addFeatureTypeStyle(fts);
-        style.addFeatureTypeStyle(fts2);
+        style.featureTypeStyles().add(fts);
+        style.featureTypeStyles().add(fts2);
 
         Style clone = (Style) ((Cloneable) style).clone();
         assertClone(style, clone);
@@ -75,22 +77,22 @@ public class StyleObjectTest extends TestCase {
         Style notEq = styleFactory.getDefaultStyle();
 
         fts2 = fts2();
-        notEq.addFeatureTypeStyle(fts2);
+        notEq.featureTypeStyles().add(fts2);
         assertEqualsContract(clone, notEq, style);
     }
 
     private FeatureTypeStyle fts2() {
         FeatureTypeStyle fts2 = styleFactory.createFeatureTypeStyle();
         Rule rule = styleFactory.createRule();
-        fts2.addRule(rule);
-        fts2.setFeatureTypeName("feature-type-2");
+        fts2.rules().add(rule);
+        fts2.featureTypeNames().add(new NameImpl("feature-type-2"));
 
         return fts2;
     }
 
     public void testFeatureTypeStyle() throws Exception {
         FeatureTypeStyle fts = styleFactory.createFeatureTypeStyle();
-        fts.setFeatureTypeName("feature-type");
+        fts.featureTypeNames().add(new NameImpl("feature-type"));
 
         Rule rule1;
 
@@ -99,10 +101,10 @@ public class StyleObjectTest extends TestCase {
         rule1.setFilter(filterFactory.id(Collections.singleton(filterFactory.featureId("FID"))));
 
         Rule rule2 = styleFactory.createRule();
-        rule2.setIsElseFilter(true);
+        rule2.setElseFilter(true);
         rule2.setName("rule2");
-        fts.addRule(rule1);
-        fts.addRule(rule2);
+        fts.rules().add(rule1);
+        fts.rules().add(rule2);
 
         FeatureTypeStyle clone = (FeatureTypeStyle) ((Cloneable) fts).clone();
         assertClone(fts, clone);
@@ -113,7 +115,7 @@ public class StyleObjectTest extends TestCase {
 
         FeatureTypeStyle notEq = styleFactory.createFeatureTypeStyle();
         notEq.setName("fts-not-equal");
-        notEq.addRule(rule1);
+        notEq.rules().add(rule1);
         assertEqualsContract(clone, notEq, fts);
     }
 
@@ -126,7 +128,7 @@ public class StyleObjectTest extends TestCase {
                         styleFactory.getDefaultStroke(), styleFactory.getDefaultFill(), "shape");
 
         Rule rule = styleFactory.createRule();
-        rule.setSymbolizers(new Symbolizer[] {symb1, symb2});
+        rule.symbolizers().addAll(Arrays.asList(symb1, symb2));
 
         Rule clone = (Rule) ((Cloneable) rule).clone();
         assertClone(rule, clone);
@@ -136,11 +138,12 @@ public class StyleObjectTest extends TestCase {
                         styleFactory.getDefaultStroke(), styleFactory.getDefaultFill(), "shape");
 
         Rule notEq = styleFactory.createRule();
-        notEq.setSymbolizers(new Symbolizer[] {symb2});
+        notEq.symbolizers().add(symb2);
         assertEqualsContract(clone, notEq, rule);
 
         symb1 = styleFactory.createLineSymbolizer(styleFactory.getDefaultStroke(), "geometry");
-        clone.setSymbolizers(new Symbolizer[] {symb1});
+        clone.symbolizers().clear();
+        clone.symbolizers().add(symb1);
         assertTrue(!rule.equals(clone));
     }
 
@@ -260,12 +263,12 @@ public class StyleObjectTest extends TestCase {
 
     public void testGraphic() {
         Graphic graphic = styleFactory.getDefaultGraphic();
-        graphic.addMark(styleFactory.getDefaultMark());
+        graphic.graphicalSymbols().add(styleFactory.getDefaultMark());
 
         Graphic clone = (Graphic) ((Cloneable) graphic).clone();
         assertClone(graphic, clone);
         assertEqualsContract(clone, graphic);
-        assertEquals(clone.getSymbols().length, graphic.getSymbols().length);
+        assertEquals(clone.graphicalSymbols().size(), graphic.graphicalSymbols().size());
 
         Graphic notEq = styleFactory.getDefaultGraphic();
         assertEqualsContract(clone, notEq, graphic);

@@ -667,6 +667,7 @@ final class NativeTileReader implements TileReader {
      * @see java.lang.Object#finalize()
      */
     @Override
+    @SuppressWarnings("deprecation") // finalize is deprecated in Java 9
     protected void finalize() {
         dispose();
     }

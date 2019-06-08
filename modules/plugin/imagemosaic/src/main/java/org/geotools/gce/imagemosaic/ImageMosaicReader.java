@@ -16,6 +16,7 @@
  */
 package org.geotools.gce.imagemosaic;
 
+import it.geosolutions.imageio.maskband.DatasetLayout;
 import java.awt.Rectangle;
 import java.io.File;
 import java.io.FilenameFilter;
@@ -810,8 +811,8 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
         if (suggestedSPIClass != null) {
             try {
                 final Class<?> clazz = Class.forName(suggestedSPIClass);
-                if (clazz.newInstance() instanceof ImageReaderSpi)
-                    suggestedSPI = (ImageReaderSpi) clazz.newInstance();
+                if (clazz.getDeclaredConstructor().newInstance() instanceof ImageReaderSpi)
+                    suggestedSPI = (ImageReaderSpi) clazz.getDeclaredConstructor().newInstance();
                 else suggestedSPI = null;
             } catch (Exception e) {
                 if (LOGGER.isLoggable(Level.FINE))
@@ -1071,28 +1072,20 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
     }
 
     @Override
-    public int getNumOverviews(String coverageName) {
-        coverageName = checkUnspecifiedCoverage(coverageName);
-        RasterManager manager = getRasterManager(coverageName);
-        return manager.overviewsController.getNumberOfOverviews();
-    }
-
-    @Override
-    public int getNumOverviews() {
-        return getNumOverviews(UNSPECIFIED);
-    }
-
-    @Override
-    public double[] getReadingResolutions(OverviewPolicy policy, double[] requestedResolution) {
+    public double[] getReadingResolutions(OverviewPolicy policy, double[] requestedResolution)
+            throws IOException {
         return getReadingResolutions(UNSPECIFIED, policy, requestedResolution);
     }
 
     @Override
     public double[] getReadingResolutions(
-            String coverageName, OverviewPolicy policy, double[] requestedResolution) {
+            String coverageName, OverviewPolicy policy, double[] requestedResolution)
+            throws IOException {
         coverageName = checkUnspecifiedCoverage(coverageName);
         RasterManager manager = getRasterManager(coverageName);
-        final int numOverviews = getNumOverviews(coverageName);
+        DatasetLayout datasetLayout = getDatasetLayout(coverageName);
+        final int numOverviews =
+                datasetLayout.getNumInternalOverviews() + datasetLayout.getNumExternalOverviews();
         OverviewsController overviewsController = manager.overviewsController;
         OverviewLevel level = null;
         if (numOverviews > 0) {
@@ -1141,6 +1134,15 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
             } else {
                 return coverageName;
             }
+        }
+    }
+
+    @Override
+    protected boolean checkName(String coverageName) {
+        if (coverageName.equalsIgnoreCase(UNSPECIFIED)) {
+            return getGridCoverageCount() == 1;
+        } else {
+            return names.contains(coverageName);
         }
     }
 
@@ -1416,12 +1418,6 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
         }
     }
 
-    @Override
-    public boolean removeCoverage(String coverageName)
-            throws IOException, UnsupportedOperationException {
-        return removeCoverage(coverageName, false);
-    }
-
     /**
      * This subclass of the {@link ImageMosaicWalker} cycles around a List of files and for each one
      * calls the superclass handleFile() method. For each file is done a check if it really exists,
@@ -1539,5 +1535,10 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
 
     public ExecutorService getMultiThreadedLoader() {
         return multiThreadedLoader;
+    }
+
+    public DatasetLayout getDatasetLayout() {
+        // Default implementation for backwards compatibility
+        return getDatasetLayout(checkUnspecifiedCoverage(UNSPECIFIED));
     }
 }

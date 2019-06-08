@@ -201,7 +201,8 @@ public class DefaultFunctionFactory implements FunctionFactory {
         Function newFunction(List<Expression> parameters, Literal fallback) throws Exception {
             // cache lookup
             if (FunctionExpression.class.isAssignableFrom(clazz)) {
-                FunctionExpression function = (FunctionExpression) clazz.newInstance();
+                FunctionExpression function =
+                        (FunctionExpression) clazz.getDeclaredConstructor().newInstance();
                 if (parameters != null) {
                     function.setParameters(parameters);
                 }
@@ -211,7 +212,7 @@ public class DefaultFunctionFactory implements FunctionFactory {
                 return function;
             }
             if (FunctionImpl.class.isAssignableFrom(clazz)) {
-                FunctionImpl function = (FunctionImpl) clazz.newInstance();
+                FunctionImpl function = (FunctionImpl) clazz.getDeclaredConstructor().newInstance();
                 if (parameters != null) {
                     function.setParameters(parameters);
                 }

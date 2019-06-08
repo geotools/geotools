@@ -27,6 +27,7 @@ import org.geotools.data.ServiceInfo;
 import org.geotools.data.ows.AbstractOpenWebService;
 import org.geotools.data.ows.HTTPClient;
 import org.geotools.data.ows.OperationType;
+import org.geotools.data.ows.SimpleHttpClient;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.ows.ServiceException;
 import org.geotools.ows.wms.CRSEnvelope;
@@ -102,7 +103,10 @@ public class WebMapTileServer extends AbstractOpenWebService<WMTSCapabilities, L
      * @throws ServiceException
      */
     public WebMapTileServer(WMTSCapabilities capabilities) throws ServiceException, IOException {
-        super(capabilities, capabilities.getRequest().getGetCapabilities().getGet());
+        super(
+                capabilities.getRequest().getGetCapabilities().getGet(),
+                new SimpleHttpClient(),
+                capabilities);
         setType(capabilities.getType());
     }
 

@@ -278,40 +278,42 @@ public class JDBCAccessPGRaster extends JDBCAccessCustom {
                         (res.getString(getConfig().getTileTableNameAtribute())));
 
                 imageLevelInfo.setExtentMaxX(
-                        new Double(res.getDouble(getConfig().getMaxXAttribute())));
+                        Double.valueOf(res.getDouble(getConfig().getMaxXAttribute())));
 
                 if (res.wasNull()) {
                     imageLevelInfo.setExtentMaxX(null);
                 }
 
                 imageLevelInfo.setExtentMaxY(
-                        new Double(res.getDouble(getConfig().getMaxYAttribute())));
+                        Double.valueOf(res.getDouble(getConfig().getMaxYAttribute())));
 
                 if (res.wasNull()) {
                     imageLevelInfo.setExtentMaxY(null);
                 }
 
                 imageLevelInfo.setExtentMinX(
-                        new Double(res.getDouble(getConfig().getMinXAttribute())));
+                        Double.valueOf(res.getDouble(getConfig().getMinXAttribute())));
 
                 if (res.wasNull()) {
                     imageLevelInfo.setExtentMinX(null);
                 }
 
                 imageLevelInfo.setExtentMinY(
-                        new Double(res.getDouble(getConfig().getMinYAttribute())));
+                        Double.valueOf(res.getDouble(getConfig().getMinYAttribute())));
 
                 if (res.wasNull()) {
                     imageLevelInfo.setExtentMinY(null);
                 }
 
-                imageLevelInfo.setResX(new Double(res.getDouble(getConfig().getResXAttribute())));
+                imageLevelInfo.setResX(
+                        Double.valueOf(res.getDouble(getConfig().getResXAttribute())));
 
                 if (res.wasNull()) {
                     imageLevelInfo.setResX(null);
                 }
 
-                imageLevelInfo.setResY(new Double(res.getDouble(getConfig().getResYAttribute())));
+                imageLevelInfo.setResY(
+                        Double.valueOf(res.getDouble(getConfig().getResYAttribute())));
 
                 if (res.wasNull()) {
                     imageLevelInfo.setResY(null);
@@ -461,10 +463,10 @@ public class JDBCAccessPGRaster extends JDBCAccessCustom {
                 continue;
             }
 
-            li.setExtentMaxX(new Double(envelope.getMaxX()));
-            li.setExtentMaxY(new Double(envelope.getMaxY()));
-            li.setExtentMinX(new Double(envelope.getMinX()));
-            li.setExtentMinY(new Double(envelope.getMinY()));
+            li.setExtentMaxX(Double.valueOf(envelope.getMaxX()));
+            li.setExtentMaxY(Double.valueOf(envelope.getMaxY()));
+            li.setExtentMinX(Double.valueOf(envelope.getMinX()));
+            li.setExtentMinY(Double.valueOf(envelope.getMinY()));
 
             stmt.setDouble(1, li.getExtentMaxX().doubleValue());
             stmt.setDouble(2, li.getExtentMaxY().doubleValue());

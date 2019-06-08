@@ -36,7 +36,7 @@ import org.locationtech.jts.geom.impl.PackedCoordinateSequence;
  * @author jeichar
  * @since 2.1.x
  */
-public class LiteCoordinateSequence extends PackedCoordinateSequence {
+public class LiteCoordinateSequence extends PackedCoordinateSequence implements Cloneable {
 
     private static final GeometryFactory geomFac =
             new GeometryFactory(new LiteCoordinateSequenceFactory());
@@ -134,7 +134,7 @@ public class LiteCoordinateSequence extends PackedCoordinateSequence {
             coords[i * this.dimension] = coordinates[i].x;
             if (this.dimension > 2) {
                 coords[i * this.dimension + 1] = coordinates[i].y;
-                coords[i * this.dimension + 2] = coordinates[i].z;
+                coords[i * this.dimension + 2] = coordinates[i].getZ();
             } else if (this.dimension > 1) {
                 coords[i * this.dimension + 1] = coordinates[i].y;
             }
@@ -144,7 +144,7 @@ public class LiteCoordinateSequence extends PackedCoordinateSequence {
 
     private static int guessDimension(Coordinate[] coordinates) {
         for (Coordinate c : coordinates) {
-            if (!java.lang.Double.isNaN(c.z)) {
+            if (!java.lang.Double.isNaN(c.getZ())) {
                 return 3;
             }
         }
@@ -224,7 +224,7 @@ public class LiteCoordinateSequence extends PackedCoordinateSequence {
         return size;
     }
 
-    /** @see java.lang.Object#clone() */
+    @SuppressWarnings("deprecation")
     public Object clone() {
         double[] clone = new double[coords.length];
         System.arraycopy(coords, 0, clone, 0, coords.length);

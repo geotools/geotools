@@ -62,13 +62,11 @@ public class RootParser extends YsldParseHandler {
 
         style.setName(root.str("name"));
         if (root.has("title")) {
-            style.setTitle(root.str("title"));
+            style.getDescription().setTitle(root.str("title"));
         }
         if (root.has("abstract")) {
-            style.setAbstract(root.str("abstract"));
+            style.getDescription().setAbstract(root.str("abstract"));
         }
-        style.setTitle(root.str("title"));
-        style.setAbstract(root.str("abstract"));
         style.setName(root.str("name"));
 
         if (root.has("feature-styles")) {

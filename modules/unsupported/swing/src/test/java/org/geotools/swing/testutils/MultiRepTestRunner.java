@@ -20,8 +20,6 @@ package org.geotools.swing.testutils;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.util.logging.Logging;
-import org.junit.internal.runners.InitializationError;
-import org.junit.internal.runners.JUnit4ClassRunner;
 import org.junit.runner.notification.Failure;
 import org.junit.runner.notification.RunListener;
 import org.junit.runner.notification.RunNotifier;
@@ -34,7 +32,8 @@ import org.junit.runner.notification.RunNotifier;
  * @since 8.0
  * @version $Id$
  */
-public class MultiRepTestRunner extends JUnit4ClassRunner {
+@SuppressWarnings("deprecation")
+public class MultiRepTestRunner extends org.junit.internal.runners.JUnit4ClassRunner {
 
     // Set this to 1 for Hudson builds. Set to larger values when
     // running the relevant tests on a local machine.
@@ -42,7 +41,8 @@ public class MultiRepTestRunner extends JUnit4ClassRunner {
 
     int numFailures;
 
-    public MultiRepTestRunner(Class<?> klass) throws InitializationError {
+    public MultiRepTestRunner(Class<?> klass)
+            throws org.junit.internal.runners.InitializationError {
         super(klass);
     }
 

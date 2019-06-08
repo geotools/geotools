@@ -119,7 +119,7 @@ public class OGCDistanceBufferTypeBinding extends AbstractComplexBinding {
         }
 
         if ("Distance".equals(name.getLocalPart())) {
-            return new Double(operator.getDistance());
+            return Double.valueOf(operator.getDistance());
         }
 
         return null;

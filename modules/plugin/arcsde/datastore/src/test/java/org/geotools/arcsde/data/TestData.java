@@ -64,6 +64,7 @@ import org.locationtech.jts.geom.MultiPoint;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
+import org.locationtech.jts.geom.impl.CoordinateArraySequence;
 import org.locationtech.jts.io.ParseException;
 import org.locationtech.jts.io.WKTReader;
 import org.locationtech.jts.operation.valid.IsValidOp;
@@ -742,8 +743,8 @@ public class TestData {
                                 // col #0 is the sde managed row id
                                 row.setInteger(0, Integer.valueOf(i));
                                 row.setShort(1, Short.valueOf((short) i));
-                                row.setFloat(2, new Float(i / 10.0F));
-                                row.setDouble(3, new Double(i / 10D));
+                                row.setFloat(2, Float.valueOf(i / 10.0F));
+                                row.setDouble(3, Double.valueOf(i / 10D));
                                 row.setString(4, "FEATURE_" + i);
                                 row.setNString(5, "NSTRING_" + i);
                                 cal.set(Calendar.DAY_OF_MONTH, i);
@@ -799,8 +800,8 @@ public class TestData {
 
             // put some nulls
             values[1] = ((i % 2) == 0) ? null : Integer.valueOf(2 * i);
-            values[2] = new Float(0.1 * i);
-            values[3] = new Double(1000 * i);
+            values[2] = Float.valueOf(0.1F * i);
+            values[3] = Double.valueOf(1000 * i);
             values[4] = "String value #" + i;
             values[5] = "NString value #" + i;
 
@@ -863,7 +864,7 @@ public class TestData {
     private static MultiPoint createTestMultiPoint(GeometryFactory gf, int index) {
         Coordinate[] coords = {new Coordinate(index, index), new Coordinate(-index, -index)};
 
-        return gf.createMultiPoint(coords);
+        return gf.createMultiPoint(new CoordinateArraySequence(coords));
     }
 
     private static LineString createTestLineString(final GeometryFactory gf, final int index) {

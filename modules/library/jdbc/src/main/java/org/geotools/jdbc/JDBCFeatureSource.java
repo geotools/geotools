@@ -31,7 +31,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.geotools.data.DefaultQuery;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.FilteringFeatureReader;
@@ -438,7 +437,7 @@ public class JDBCFeatureSource extends ContentFeatureSource {
             // either way we can use the datastore optimization
             Connection cx = store.getConnection(getState());
             try {
-                DefaultQuery q = new DefaultQuery(query);
+                Query q = new Query(query);
                 q.setFilter(preFilter);
                 int count = store.getCount(getSchema(), q, cx);
                 // if native support for limit and offset is not implemented, we have to ajust the
@@ -482,7 +481,7 @@ public class JDBCFeatureSource extends ContentFeatureSource {
                 ReferencedEnvelope bounds = new ReferencedEnvelope(flatCRS);
 
                 // grab a reader
-                DefaultQuery q = new DefaultQuery(query);
+                Query q = new Query(query);
                 q.setFilter(postFilter);
                 FeatureReader<SimpleFeatureType, SimpleFeature> i = getReader(q);
                 try {
@@ -505,7 +504,7 @@ public class JDBCFeatureSource extends ContentFeatureSource {
                 // use datastore optimization
                 Connection cx = dataStore.getConnection(getState());
                 try {
-                    DefaultQuery q = new DefaultQuery(query);
+                    Query q = new Query(query);
                     q.setFilter(preFilter);
                     return dataStore.getBounds(getSchema(), q, cx);
                 } finally {
@@ -554,7 +553,7 @@ public class JDBCFeatureSource extends ContentFeatureSource {
         boolean postFilterRequired = postFilter != null && postFilter != Filter.INCLUDE;
 
         // rebuild a new query with the same params, but just the pre-filter
-        DefaultQuery preQuery = new DefaultQuery(query);
+        Query preQuery = new Query(query);
         preQuery.setFilter(preFilter);
         // in case of post filtering, we cannot do native paging
         if (postFilterRequired) {

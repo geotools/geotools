@@ -264,7 +264,7 @@ public class BarnesSurfaceInterpolator {
             Coordinate dp = inputObs[i];
             float est = (float) estimatedValue(dp.x, dp.y);
             if (!Float.isNaN(est)) estimate[i] = est;
-            else estimate[i] = (float) inputObs[i].z;
+            else estimate[i] = (float) inputObs[i].getZ();
         }
         return estimate;
     }
@@ -275,7 +275,7 @@ public class BarnesSurfaceInterpolator {
             Coordinate dp = inputObs[i];
             float del = (float) refinedDelta(dp.x, dp.y, convergenceFactor);
             if (!Float.isNaN(del)) estimate[i] = (float) currEst[i] + del;
-            else estimate[i] = (float) inputObs[i].z;
+            else estimate[i] = (float) inputObs[i].getZ();
         }
         return estimate;
     }
@@ -361,7 +361,7 @@ public class BarnesSurfaceInterpolator {
             /** Skip observation if unusable due to too great a distance */
             if (Double.isNaN(wgt)) continue;
 
-            sumWgtVal += wgt * inputObs[i].z;
+            sumWgtVal += wgt * inputObs[i].getZ();
             sumWgt += wgt;
             dataCount++;
         }
@@ -390,7 +390,7 @@ public class BarnesSurfaceInterpolator {
             /** Check if observation is unusable (e.g. due to too great a distance) */
             if (Double.isNaN(wgt)) continue;
 
-            sumWgtVal += wgt * (inputObs[i].z - estimatedObs[i]);
+            sumWgtVal += wgt * (inputObs[i].getZ() - estimatedObs[i]);
             sumWgt += wgt;
             dataCount++;
         }

@@ -627,15 +627,6 @@ public class Types {
     }
 
     /**
-     * @param name
-     * @return
-     * @deprecated use {@link #toTypeName(QName}
-     */
-    public static Name toName(QName name) {
-        return toTypeName(name);
-    }
-
-    /**
      * Converts content into a format which is used to store it internally within an attribute of a
      * specific type.
      *

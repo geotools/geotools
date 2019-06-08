@@ -231,7 +231,6 @@ public class SLD {
      *
      * @param mark the Mark object
      * @return size or {@linkplain #NOTFOUND} if not available
-     * @deprecated please check graphic as an indication of mark size
      */
     public static int size(Mark mark) {
         return NOTFOUND;
@@ -936,11 +935,11 @@ public class SLD {
                             }
 
                             private ChannelSelection createChannelSelection() {
-                                if (rgb == null) {
+                                if (rgb != null) {
+                                    return sf.createChannelSelection(rgb);
+                                } else {
                                     return sf.createChannelSelection(
                                             new SelectedChannelType[] {gray});
-                                } else {
-                                    return sf.createChannelSelection(rgb);
                                 }
                             }
                         };

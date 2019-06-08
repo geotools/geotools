@@ -234,16 +234,6 @@ If you would like to ask GeoTools to cache the shapefile in memory try the follo
 
 This code won't compile initially because we're missing an import. IntelliJ should prompt to import
 the missing class immediately. Press Alt-Enter (^-Enter on OS X) to bring up a dialog to import the missing class.
-It will pull in the following import:
-
-    .. code-block:: java
-
-       import org.geotools.data.CachingFeatureSource;
-
-    .. Note::
-
-       When building you may see a message that CachingFeatureSource is deprecated. It's ok to ignore
-       it, it's just a warning. The class is still under test but usable.
 
 ..  The ability to grab figure out what classes to import is a key skill; we are
   starting off here with a simple example with a single import.

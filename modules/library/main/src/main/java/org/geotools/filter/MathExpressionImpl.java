@@ -107,6 +107,6 @@ public abstract class MathExpressionImpl extends DefaultExpression implements Bi
 
     protected Object number(double number) {
         // return Filters.puts( number );  // non strongly typed
-        return new Double(number); // Getools 2.1 style
+        return Double.valueOf(number); // Getools 2.1 style
     }
 }

@@ -30,21 +30,12 @@ public interface Font extends org.opengis.style.Font {
     /** default font-size value * */
     static final int DEFAULT_FONTSIZE = 10;
 
-    /** @deprecated use getFamilly().get(0) for the preferred font */
-    Expression getFontFamily();
-
     /**
      * SVG font-family parameters in preferred order.
      *
      * @return live list of font-family parameters in preferred order
      */
     List<Expression> getFamily();
-
-    /**
-     * @param family Expression indicating the font fact to use
-     * @deprecated Please use getFontFamilly.set( 0, expression )
-     */
-    void setFontFamily(Expression family);
 
     /**
      * The "font-style" SVG parameter should be "normal", "italic", or "oblique".
@@ -82,27 +73,6 @@ public interface Font extends org.opengis.style.Font {
 
     /** @param size the font size in pixels */
     void setSize(Expression size);
-
-    //
-    // Depreciated names used from GeoTools 2.0-2.5
-    //
-    /** @deprecated Please use getStyle in 2.6.x */
-    Expression getFontStyle();
-
-    /** @deprecated Please use setStyle( style ) */
-    void setFontStyle(Expression style);
-
-    /** @deprecated use getWeight */
-    Expression getFontWeight();
-
-    /** @deprecated Please use setWeight( weight ) */
-    void setFontWeight(Expression weight);
-
-    /** @deprecated use getSize */
-    Expression getFontSize();
-
-    /** @deprecated symbolizers and underneath classes will be immutable in 2.6.x */
-    void setFontSize(Expression size);
 
     /**
      * Enumeration of allow font-style values.

@@ -27,6 +27,7 @@ import org.locationtech.jts.geom.CoordinateFilter;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.MultiPoint;
+import org.locationtech.jts.geom.impl.CoordinateArraySequence;
 import org.opengis.filter.capability.FunctionName;
 
 public class FilterFunction_vertices extends FunctionExpressionImpl {
@@ -58,9 +59,8 @@ public class FilterFunction_vertices extends FunctionExpressionImpl {
         }
 
         MultiPoint getMultiPoint() {
-            Coordinate[] coorArray =
-                    (Coordinate[]) coordinates.toArray(new Coordinate[coordinates.size()]);
-            return new GeometryFactory().createMultiPoint(coorArray);
+            Coordinate[] coorArray = coordinates.toArray(new Coordinate[coordinates.size()]);
+            return new GeometryFactory().createMultiPoint(new CoordinateArraySequence(coorArray));
         }
     }
 }

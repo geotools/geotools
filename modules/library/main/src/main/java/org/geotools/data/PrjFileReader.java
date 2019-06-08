@@ -93,15 +93,6 @@ public class PrjFileReader {
     /**
      * Return the Coordinate Reference System retrieved by this reader.
      *
-     * @deprecated use {@link #getCoordinateReferenceSystem()}.
-     */
-    public CoordinateReferenceSystem getCoodinateSystem() {
-        return crs;
-    }
-
-    /**
-     * Return the Coordinate Reference System retrieved by this reader.
-     *
      * @return the Coordinate Reference System
      */
     public CoordinateReferenceSystem getCoordinateReferenceSystem() {

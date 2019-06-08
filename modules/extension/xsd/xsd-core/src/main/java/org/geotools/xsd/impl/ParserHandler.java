@@ -42,7 +42,6 @@ import org.geotools.xsd.BindingFactory;
 import org.geotools.xsd.Configuration;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.ParserDelegate;
-import org.geotools.xsd.ParserDelegate2;
 import org.geotools.xsd.ParserNamespaceSupport;
 import org.geotools.xsd.SchemaIndex;
 import org.geotools.xsd.Schemas;
@@ -365,8 +364,11 @@ public class ParserHandler extends DefaultHandler2 {
                         "No schemaLocation found, using '"
                                 + config.getNamespaceURI()
                                 + " "
-                                + config.getSchemaFileURL());
-                locations = new String[] {config.getNamespaceURI(), config.getSchemaFileURL()};
+                                + config.getXSD().getSchemaLocation());
+                locations =
+                        new String[] {
+                            config.getNamespaceURI(), config.getXSD().getSchemaLocation()
+                        };
             }
 
             // look up schema overrides
@@ -538,7 +540,13 @@ public class ParserHandler extends DefaultHandler2 {
 
                     XSDSchema[] copy = new XSDSchema[schemas.length + 1];
                     System.arraycopy(schemas, 0, copy, 0, schemas.length);
-                    copy[schemas.length] = config.schema();
+                    XSDSchema result;
+                    try {
+                        result = config.getXSD().getSchema();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                    copy[schemas.length] = result;
                     schemas = copy;
                 } else {
                     String msg =
@@ -604,13 +612,7 @@ public class ParserHandler extends DefaultHandler2 {
             for (Iterator a = adapters.iterator(); a.hasNext(); ) {
                 ComponentAdapter adapter = (ComponentAdapter) a.next();
                 ParserDelegate delegate = (ParserDelegate) adapter.getComponentInstance(context);
-
-                // ParserDelegate delegate = (ParserDelegate) d.next();
-                boolean canHandle =
-                        delegate instanceof ParserDelegate2
-                                ? ((ParserDelegate2) delegate)
-                                        .canHandle(qualifiedName, attributes, handler, parent)
-                                : delegate.canHandle(qualifiedName);
+                boolean canHandle = delegate.canHandle(qualifiedName, attributes, handler, parent);
 
                 if (canHandle) {
                     // found one

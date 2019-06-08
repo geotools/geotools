@@ -58,10 +58,10 @@ public final class TestsSolrUtils {
                 new HttpSolrClient.Builder()
                         .withBaseSolrUrl(baseUrl)
                         .allowCompression(true)
+                        .withConnectionTimeout(5000)
+                        .withSocketTimeout(5000)
                         .build();
         // we can use low timeouts values for tests
-        client.setConnectionTimeout(5000);
-        client.setSoTimeout(5000);
         client.setFollowRedirects(true);
         return client;
     }

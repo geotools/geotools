@@ -19,6 +19,7 @@ package org.geotools.filter.v1_0;
 import java.util.ArrayList;
 import java.util.List;
 import javax.xml.namespace.QName;
+import org.eclipse.xsd.XSDElementDeclaration;
 import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
@@ -176,7 +177,8 @@ public class OGCBinarySpatialOpTypeBinding extends AbstractComplexBinding {
         return OGCUtils.property(operator.getExpression1(), operator.getExpression2(), name);
     }
 
-    public List getProperties(Object object) throws Exception {
+    @Override
+    public List getProperties(Object object, XSDElementDeclaration element) throws Exception {
         // special hack for Functions, while not mandated by the spec we handle it
         // here
         BinarySpatialOperator operator = (BinarySpatialOperator) object;
@@ -186,6 +188,6 @@ public class OGCBinarySpatialOpTypeBinding extends AbstractComplexBinding {
             return props;
         }
 
-        return super.getProperties(object);
+        return super.getProperties(object, element);
     }
 }

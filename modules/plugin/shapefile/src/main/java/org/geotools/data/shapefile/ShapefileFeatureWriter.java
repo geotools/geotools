@@ -199,6 +199,7 @@ class ShapefileFeatureWriter implements FeatureWriter<SimpleFeatureType, SimpleF
     }
 
     /** In case someone doesn't close me. */
+    @SuppressWarnings("deprecation") // finalize is deprecated in Java 9
     protected void finalize() throws Throwable {
         if (featureReader != null) {
             try {

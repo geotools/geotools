@@ -63,12 +63,7 @@ class AttributeRenameVisitor extends DuplicatingFilterVisitor {
             FastBBOX fbox = (FastBBOX) filter;
             return new FastBBOX((PropertyName) e1, fbox.getEnvelope(), getFactory(extraData));
         } else {
-            double minx = filter.getMinX();
-            double miny = filter.getMinY();
-            double maxx = filter.getMaxX();
-            double maxy = filter.getMaxY();
-            String srs = filter.getSRS();
-            return getFactory(extraData).bbox(e1, minx, miny, maxx, maxy, srs);
+            return getFactory(extraData).bbox(e1, filter.getExpression2());
         }
     }
 }

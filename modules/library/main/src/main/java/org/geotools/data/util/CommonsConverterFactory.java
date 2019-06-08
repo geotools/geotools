@@ -141,7 +141,7 @@ public class CommonsConverterFactory implements ConverterFactory {
             if (source == null) return null;
             String string = (String) source;
             try {
-                Float parsed = new Float(string);
+                Float parsed = Float.valueOf(string);
                 return target.cast(parsed);
             } catch (Exception e) {
                 return null;
@@ -154,7 +154,7 @@ public class CommonsConverterFactory implements ConverterFactory {
             if (source == null) return null;
             String string = (String) source;
             try {
-                Double parsed = new Double(string);
+                Double parsed = Double.valueOf(string);
                 return target.cast(parsed);
             } catch (Exception e) {
                 return null;

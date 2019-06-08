@@ -39,7 +39,6 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.logging.Logger;
-import junit.framework.AssertionFailedError;
 import org.geotools.arcsde.ArcSdeException;
 import org.geotools.arcsde.session.Command;
 import org.geotools.arcsde.session.ISession;
@@ -175,7 +174,7 @@ public class ArcSDEFeatureStoreTest {
                 },
                 progress);
         assertTrue("visitor completed", progress.completed);
-        assertEquals("visitor 100%", 100f, progress.progress);
+        assertEquals("visitor 100%", 100f, progress.progress, 0f);
         assertNull("visitor no problems", progress.exception);
 
         // we are going to use this transaction to modify and commit
@@ -215,7 +214,7 @@ public class ArcSDEFeatureStoreTest {
                 },
                 progress);
         assertTrue("visitor completed", progress.completed);
-        assertEquals("visitor 100%", 100f, progress.progress);
+        assertEquals("visitor 100%", 100f, progress.progress, 0f);
         assertNull("visitor no problems", progress.exception);
 
         assertEquals(1, fids.size());
@@ -284,8 +283,8 @@ public class ArcSDEFeatureStoreTest {
         int value = 24;
         build.add(Integer.valueOf(value));
         build.add(Short.valueOf((short) value));
-        build.add(new Float(value / 10.0F));
-        build.add(new Double(value / 10D));
+        build.add(Float.valueOf(value / 10.0F));
+        build.add(Double.valueOf(value / 10D));
         build.add("FEATURE_" + value);
 
         Calendar cal = Calendar.getInstance();
@@ -1356,10 +1355,7 @@ public class ArcSDEFeatureStoreTest {
             transaction.commit();
             countNoTransaction = sourceNoTransaction.getCount(Query.ALL);
             assertEquals(5, countNoTransaction);
-        } catch (Exception e) {
-            transaction.rollback();
-            throw e;
-        } catch (AssertionFailedError e) {
+        } catch (Exception | Error e) {
             transaction.rollback();
             throw e;
         } finally {

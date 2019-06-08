@@ -408,6 +408,9 @@ public abstract class AnnotationDrivenProcessFactory implements ProcessFactory {
         }
     }
 
+    @SuppressWarnings(
+            "deprecation") // Method.isAccessible is deprecated but replacement not available in
+    // Java 8
     private Object getConstantValue(String path, Class<?> holder, Class<?> target) {
         Field field = null;
         try {

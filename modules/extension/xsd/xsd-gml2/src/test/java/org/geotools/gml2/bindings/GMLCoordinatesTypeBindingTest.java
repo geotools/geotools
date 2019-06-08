@@ -40,7 +40,7 @@ public class GMLCoordinatesTypeBindingTest extends AbstractGMLBindingTest {
         decimal = createAtribute(GML.NAMESPACE, "decimal", XS.STRING, ".");
         ts = createAtribute(GML.NAMESPACE, "ts", XS.STRING, null);
         cs = createAtribute(GML.NAMESPACE, "cs", XS.STRING, null);
-        coordinates = createElement(GML.NAMESPACE, "myCoordinates", GML.COORDTYPE, null);
+        coordinates = createElement(GML.NAMESPACE, "myCoordinates", GML.CoordType, null);
         container = new DefaultPicoContainer();
         container.registerComponentInstance(CoordinateArraySequenceFactory.instance());
         container.registerComponentImplementation(GMLCoordinatesTypeBinding.class);

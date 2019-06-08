@@ -179,13 +179,13 @@ public class FilterTest extends TestCase {
         GeometryFactory gf = new GeometryFactory(new PrecisionModel());
         attributes[0] = gf.createLineString(coords);
         attributes[1] = Boolean.valueOf(true);
-        attributes[2] = new Character('t');
+        attributes[2] = Character.valueOf('t');
         attributes[3] = Byte.valueOf("10");
         attributes[4] = Short.valueOf("101");
         attributes[5] = Integer.valueOf(1002);
         attributes[6] = Long.valueOf(10003);
-        attributes[7] = new Float(10000.4);
-        attributes[8] = new Double(100000.5);
+        attributes[7] = Float.valueOf(10000.4f);
+        attributes[8] = Double.valueOf(100000.5);
         attributes[9] = "test string data";
         attributes[10] = "cow $10";
 
@@ -394,21 +394,21 @@ public class FilterTest extends TestCase {
             boolean test2,
             boolean test3)
             throws IllegalFilterException {
-        Literal testLiteral = new LiteralExpressionImpl(new Double(1001.0));
+        Literal testLiteral = new LiteralExpressionImpl(Double.valueOf(1001.0));
         org.opengis.filter.Filter filter = compare(filterType, testAttribute, testLiteral);
 
         // LOGGER.finer( filter.toString());
         // LOGGER.finer( "contains feature: " + filter.contains(testFeature));
         assertEquals(filter.evaluate(testFeature), test1);
 
-        testLiteral = new LiteralExpressionImpl(new Double(1002.0));
+        testLiteral = new LiteralExpressionImpl(Double.valueOf(1002.0));
         filter = compare(filterType, testAttribute, testLiteral);
 
         // LOGGER.finer( filter.toString());
         // LOGGER.finer( "contains feature: " + filter.contains(testFeature));
         assertEquals(filter.evaluate(testFeature), test2);
 
-        testLiteral = new LiteralExpressionImpl(new Double(1003.0));
+        testLiteral = new LiteralExpressionImpl(Double.valueOf(1003.0));
         filter = compare(filterType, testAttribute, testLiteral);
 
         // LOGGER.finer( filter.toString());
@@ -1138,7 +1138,7 @@ public class FilterTest extends TestCase {
         LiteralExpressionImpl literal;
         literal = new LiteralExpressionImpl(1.0D);
         assertEquals(ExpressionType.LITERAL_DOUBLE, Filters.getExpressionType(literal));
-        assertEquals(new Double(1.0D), literal.evaluate((Feature) null));
+        assertEquals(Double.valueOf(1.0D), literal.evaluate((Feature) null));
 
         GeometryFactory gf = new GeometryFactory();
         literal = new LiteralExpressionImpl(gf.createPoint(new Coordinate(0, 0)));

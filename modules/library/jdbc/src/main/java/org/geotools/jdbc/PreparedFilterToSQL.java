@@ -23,7 +23,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import org.geotools.data.jdbc.FilterToSQL;
+import org.geotools.geometry.jts.JTS;
+import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.Polygon;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.filter.Id;
 import org.opengis.filter.expression.Literal;
@@ -84,15 +87,23 @@ public class PreparedFilterToSQL extends FilterToSQL {
 
         // evaluate the literal and store it for later
         Object literalValue = evaluateLiteral(expression, clazz);
+
+        // bbox filters have a right side expression that's a ReferencedEnvelope,
+        // but SQL dialects use/want polygons instead
+        if (literalValue instanceof Envelope && convertEnvelopeToPolygon()) {
+            clazz = Polygon.class;
+            literalValue = JTS.toGeometry((Envelope) literalValue);
+        }
+
+        if (clazz == null && literalValue != null) {
+            clazz = literalValue.getClass();
+        }
+
         literalValues.add(literalValue);
         SRIDs.add(currentSRID);
         dimensions.add(currentDimension);
         descriptors.add(
                 context instanceof AttributeDescriptor ? (AttributeDescriptor) context : null);
-
-        if (clazz == null && literalValue != null) {
-            clazz = literalValue.getClass();
-        }
         literalTypes.add(clazz);
 
         try {
@@ -117,6 +128,17 @@ public class PreparedFilterToSQL extends FilterToSQL {
         }
 
         return context;
+    }
+
+    /**
+     * When returning true, the {@link Literal} visit will turn {@link Envelope} objects (typically
+     * coming from {@link org.opengis.filter.spatial.BBOX} filters) into {@link Polygon}. Defaults
+     * to true, subclasses can override.
+     *
+     * @return
+     */
+    protected boolean convertEnvelopeToPolygon() {
+        return true;
     }
 
     private Class getTargetClassFromContext(Object context) {

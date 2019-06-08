@@ -6,7 +6,7 @@ set -e
 function usage() {
   echo "$0 [options] <tag> <user> <email> <series>"
   echo
-  echo " tag :  Release tag (eg: 2.7.5, 8.0-RC1, ...)"
+  echo " tag :  Release tag (eg: 20.1, 21.0-RC1, ...)"
   echo " user:  Git username"
   echo " email: Git email"
   echo " series: Series (stable, maintenance, latest)"
@@ -139,7 +139,7 @@ target=`pwd`/target
 
 # build the javadocs
 pushd modules > /dev/null
-mvn javadoc:aggregate
+mvn -Dfmt.skip=true javadoc:aggregate
 pushd target/site > /dev/null
 zip -r $target/geotools-$tag-doc.zip apidocs
 popd > /dev/null
@@ -163,6 +163,24 @@ init_git $git_user $git_email
 # commit changes 
 git add .
 git commit -m "updating version numbers and README for $tag"
+
+# check to see if tag already exists
+git fetch --tags
+if [ `git tag --list $tag | wc -l` == 1 ]; then
+  echo "tag $tag exists, deleting it"
+  git tag -d $tag
+fi
+
+if  [ `git ls-remote --refs --tags origin tags/$tag | wc -l` == 1 ]; then
+  echo "tag $tag exists on $GIT_ROOT, deleting it"
+  git push --delete origin $tag
+fi
+
+# tag the release branch
+git tag $tag
+
+# push up tag
+git push origin $tag
 
 popd > /dev/null
 

@@ -311,6 +311,11 @@ public class WFSClient extends AbstractOpenWebService<WFSGetCapabilities, QName>
     protected Response internalIssueRequest(Request request) throws IOException {
         Response response;
         try {
+            LOGGER.fine(request.getFinalURL().toString());
+            if (LOGGER.isLoggable(Level.FINE) && request.requiresPost()) {
+                String msg = request.getPostContentType();
+                LOGGER.fine(msg);
+            }
             response = super.internalIssueRequest(request);
         } catch (ServiceException e) {
             throw new IOException(e);

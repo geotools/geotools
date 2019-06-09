@@ -18,13 +18,16 @@
 package org.geotools.data.wfs.online;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.TreeSet;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFinder;
 import org.geotools.data.Query;
@@ -234,7 +237,21 @@ public class MapServerOnlineTest {
     @Test
     public void testWFSFilter() throws IOException, NoSuchElementException {
 
-        // Set the capabilities URL to the backend I am referencing
+        String[] expectedA = {
+            "USGS_TNM_Structures.10",
+            "USGS_TNM_Structures.16",
+            "USGS_TNM_Structures.101",
+            "USGS_TNM_Structures.147",
+            "USGS_TNM_Structures.182",
+            "USGS_TNM_Structures.205",
+            "USGS_TNM_Structures.212",
+            "USGS_TNM_Structures.220",
+            "USGS_TNM_Structures.289",
+            "USGS_TNM_Structures.366"
+        };
+        TreeSet<String> expected = new TreeSet<>();
+        expected.addAll(Arrays.asList(expectedA));
+        // Set the capabilities URL to the back end I am referencing
         String getCapabilities =
                 "http://cartowfs.nationalmap.gov/arcgis/services/structures/MapServer/WFSServer?request=GetCapabilities&service=WFS&version=1.0.0";
 
@@ -242,51 +259,44 @@ public class MapServerOnlineTest {
         connectionParameters.put(WFSDataStoreFactory.URL.key, getCapabilities);
         connectionParameters.put(WFSDataStoreFactory.LENIENT.key, Boolean.TRUE);
         connectionParameters.put(WFSDataStoreFactory.TIMEOUT.key, 60);
-        // connectionParameters.put(WFSDataStoreFactory.PROTOCOL.key, Boolean.FALSE);
+        // uncomment to force GET (sometimes helps).
+        connectionParameters.put(WFSDataStoreFactory.PROTOCOL.key, Boolean.FALSE);
+
         // Attempt to connect to the datastore.
         DataStore data = DataStoreFinder.getDataStore(connectionParameters);
 
         String typeNames[] = data.getTypeNames();
         String typeName = typeNames[0];
 
-        SimpleFeatureType schema = data.getSchema(typeName);
-        //    System.out.println(schema);
         SimpleFeatureSource source = data.getFeatureSource(typeName);
-        // source.getBounds();
 
-        //    SimpleFeatureCollection features = source.getFeatures();
-        // features.getBounds();
-        // features.getSchema();
-        // System.out.println(features.size());
-        // Create a property is equal to filter.
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(GeoTools.getDefaultHints());
         Filter filter = ff.equals(ff.property("STATE"), ff.literal("MO"));
-        // filter = ff.greater(ff.property("GRIDCODE"), ff.literal(32));
-        // Create a query with the filter, typename, and max features.
+
         Query query = new Query();
         query.setTypeName(typeName);
 
         query.setFilter(filter);
         SimpleFeatureCollection features = source.getFeatures(query);
-        System.out.println(features.size());
+        assertTrue(features.size() > 10);
         // Iterator through all the features and print them out.
         int count = 0;
         try (SimpleFeatureIterator iterator = features.features()) {
             while (iterator.hasNext() && count < 10) {
                 SimpleFeature feature = iterator.next();
-                System.out.println(feature.getID());
+                assertTrue(expected.contains(feature.getID()));
                 count++;
             }
         }
 
         query.setMaxFeatures(10);
         features = source.getFeatures(query);
-        System.out.println(features.size());
+        assertEquals(10, features.size());
         // Iterator through all the features and print them out.
         try (SimpleFeatureIterator iterator = features.features()) {
             while (iterator.hasNext()) {
                 SimpleFeature feature = iterator.next();
-                System.out.println(feature.getID());
+                assertTrue(expected.contains(feature.getID()));
             }
         }
     }

@@ -26,6 +26,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import org.geotools.data.DataStore;
+import org.geotools.data.DataStoreFinder;
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
@@ -42,6 +43,7 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.filter.Filter;
+import org.opengis.filter.FilterFactory;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
@@ -228,49 +230,64 @@ public class MapServerOnlineTest {
             iterator.close();
         }
     }
-    
-    private void testWFSFilter() throws IOException, NoSuchElementException {
-        //Set the capabilities URL to the backend I am referencing
-        String getCapabilities = "https://cartowfs.nationalmap.gov/arcgis/services/structures/MapServer/WFSServer?request=GetCapabilities&service=WFS";
 
-    	Map connectionParameters = new HashMap();
-    	connectionParameters.put("WFSDataStoreFactory:GET_CAPABILITIES_URL", getCapabilities );
-        
-        //Attempt to connect to the datastore.
-    	DataStore data = DataStoreFinder.getDataStore( connectionParameters );
+    @Test
+    public void testWFSFilter() throws IOException, NoSuchElementException {
 
-    	String typeNames[] = data.getTypeNames();
-        //Get the typenames layer.
+        // Set the capabilities URL to the backend I am referencing
+        String getCapabilities =
+                "http://cartowfs.nationalmap.gov/arcgis/services/structures/MapServer/WFSServer?request=GetCapabilities&service=WFS&version=1.0.0";
+
+        Map<String, Object> connectionParameters = new HashMap<String, Object>();
+        connectionParameters.put(WFSDataStoreFactory.URL.key, getCapabilities);
+        connectionParameters.put(WFSDataStoreFactory.LENIENT.key, Boolean.TRUE);
+        connectionParameters.put(WFSDataStoreFactory.TIMEOUT.key, 60);
+        // connectionParameters.put(WFSDataStoreFactory.PROTOCOL.key, Boolean.FALSE);
+        // Attempt to connect to the datastore.
+        DataStore data = DataStoreFinder.getDataStore(connectionParameters);
+
+        String typeNames[] = data.getTypeNames();
         String typeName = typeNames[0];
-    	SimpleFeatureType schema = data.getSchema( typeName );
-    	
-    	SimpleFeatureSource source = data.getFeatureSource(typeName);
-    	source.getBounds();
-    	
-    	SimpleFeatureCollection features = source.getFeatures();
-        features.getBounds();
-        features.getSchema();
-        
-        //Create a property is equal to filter.
-        FilterFactory ff = CommonFactoryFinder.getFilterFactory( GeoTools.getDefaultHints() );
-        PropertyIsEqualTo filter = ff.equals(ff.property("STATE"), ff.literal("MO"));
-        	
-        //Create a query with the filter, typename, and max features.
+
+        SimpleFeatureType schema = data.getSchema(typeName);
+        //    System.out.println(schema);
+        SimpleFeatureSource source = data.getFeatureSource(typeName);
+        // source.getBounds();
+
+        //    SimpleFeatureCollection features = source.getFeatures();
+        // features.getBounds();
+        // features.getSchema();
+        // System.out.println(features.size());
+        // Create a property is equal to filter.
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(GeoTools.getDefaultHints());
+        Filter filter = ff.equals(ff.property("STATE"), ff.literal("MO"));
+        // filter = ff.greater(ff.property("GRIDCODE"), ff.literal(32));
+        // Create a query with the filter, typename, and max features.
         Query query = new Query();
         query.setTypeName(typeName);
-        query.setMaxFeatures(10);
+
         query.setFilter(filter);
+        SimpleFeatureCollection features = source.getFeatures(query);
+        System.out.println(features.size());
+        // Iterator through all the features and print them out.
+        int count = 0;
+        try (SimpleFeatureIterator iterator = features.features()) {
+            while (iterator.hasNext() && count < 10) {
+                SimpleFeature feature = iterator.next();
+                System.out.println(feature.getID());
+                count++;
+            }
+        }
+
+        query.setMaxFeatures(10);
         features = source.getFeatures(query);
-        
-        //Iterator through all the features and print them out.
-        SimpleFeatureIterator iterator = features.features();
-        try {
+        System.out.println(features.size());
+        // Iterator through all the features and print them out.
+        try (SimpleFeatureIterator iterator = features.features()) {
             while (iterator.hasNext()) {
                 SimpleFeature feature = iterator.next();
                 System.out.println(feature.getID());
             }
-        } finally {
-            iterator.close();
         }
     }
 }

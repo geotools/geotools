@@ -112,6 +112,9 @@ public class SLDStyleFactory {
     private static final java.util.Map<String, Integer> ALPHA_COMPOSITE_LOOKUP =
             new java.util.LinkedHashMap<String, Integer>();
 
+    /** Allow mitering of angles of 70 degrees and above */
+    private static final float MITER_LIMIT = 1.75f;
+
     private static final FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
 
     /**
@@ -958,9 +961,9 @@ public class SLDStyleFactory {
         BasicStroke stroke2d;
 
         if ((dashes != null) && (dashes.length > 0)) {
-            stroke2d = new BasicStroke(width, capCode, joinCode, 1, dashes, dashOffset);
+            stroke2d = new BasicStroke(width, capCode, joinCode, MITER_LIMIT, dashes, dashOffset);
         } else {
-            stroke2d = new BasicStroke(width, capCode, joinCode, 1);
+            stroke2d = new BasicStroke(width, capCode, joinCode, MITER_LIMIT);
         }
 
         return stroke2d;

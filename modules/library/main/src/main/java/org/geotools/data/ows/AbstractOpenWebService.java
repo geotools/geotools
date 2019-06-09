@@ -427,7 +427,10 @@ public abstract class AbstractOpenWebService<C extends Capabilities, R extends O
 
                 ByteArrayOutputStream out = new ByteArrayOutputStream();
                 request.performPostOutput(out);
-                InputStream in = new ByteArrayInputStream(out.toByteArray());
+                byte[] byteArray = out.toByteArray();
+
+                LOGGER.fine(new String(byteArray));
+                InputStream in = new ByteArrayInputStream(byteArray);
 
                 try {
                     httpResponse = httpClient.post(finalURL, in, postContentType);

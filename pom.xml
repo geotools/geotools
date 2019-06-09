@@ -116,7 +116,7 @@
     <fmt.action>format</fmt.action>
     <fmt.skip>false</fmt.skip>
     <batik.version>1.10</batik.version>
-    <jackson2.version>2.9.7</jackson2.version>
+    <jackson2.version>2.9.9</jackson2.version>
   </properties>
 
   <!-- Profiles set on the command-line overwrite default properties. -->
@@ -1390,6 +1390,16 @@
       <dependency>
        <groupId>com.fasterxml.jackson.core</groupId>
        <artifactId>jackson-core</artifactId>
+        <version>${jackson2.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-databind</artifactId>
+        <version>${jackson2.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-annotations</artifactId>
         <version>${jackson2.version}</version>
       </dependency>
     </dependencies>

@@ -347,6 +347,39 @@ public class DrawTest {
                 1000);
     }
 
+    @Test
+    public void testLineJoinMiter() throws Exception {
+
+        File property = new File(TestData.getResource(this, "lineJoins.properties").toURI());
+        PropertyDataStore ds = new PropertyDataStore(property.getParentFile());
+        SimpleFeatureSource lineJoins = ds.getFeatureSource("lineJoins");
+        Style miterStyle = RendererBaseTest.loadStyle(this, "lineGrayMiter.sld");
+
+        MapContent mc = new MapContent();
+        mc.addLayer(new FeatureLayer(lineJoins, miterStyle));
+
+        StreamingRenderer renderer = new StreamingRenderer();
+        renderer.setMapContent(mc);
+        renderer.setRendererHints(
+                Collections.singletonMap(StreamingRenderer.VECTOR_RENDERING_KEY, true));
+        renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
+        ReferencedEnvelope myTestBounds = lineJoins.getBounds();
+        myTestBounds.expandBy(2);
+        BufferedImage image =
+                RendererBaseTest.showRender(
+                        "lineJoinMiter",
+                        renderer,
+                        TIME,
+                        new ReferencedEnvelope[] {myTestBounds},
+                        listener);
+
+        ImageAssert.assertEquals(
+                new File(
+                        "./src/test/resources/org/geotools/renderer/lite/test-data/lineJoinMiter.png"),
+                image,
+                50);
+    }
+
     private StreamingRenderer setupPointRenderer(String pointStyle) throws IOException {
         Style pStyle = RendererBaseTest.loadStyle(this, pointStyle);
         Style lStyle = RendererBaseTest.loadStyle(this, "lineGray.sld");

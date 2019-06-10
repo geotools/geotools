@@ -18,6 +18,13 @@
 
 package org.geotools.data.arcgisrest;
 
+import static org.geotools.data.arcgisrest.ArcGISRestDataStore.ATTRIBUTES_PARAM;
+import static org.geotools.data.arcgisrest.ArcGISRestDataStore.COUNT_PARAM;
+import static org.geotools.data.arcgisrest.ArcGISRestDataStore.DEFAULT_PARAMS;
+import static org.geotools.data.arcgisrest.ArcGISRestDataStore.FORMAT_GEOJSON;
+import static org.geotools.data.arcgisrest.ArcGISRestDataStore.FORMAT_PARAM;
+import static org.geotools.data.arcgisrest.ArcGISRestDataStore.GEOMETRY_PARAM;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import java.io.IOException;
@@ -25,12 +32,16 @@ import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.StringJoiner;
 import java.util.logging.Level;
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
 import org.geotools.data.DefaultResourceInfo;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.Query;
@@ -127,7 +138,7 @@ public class ArcGISRestFeatureSource extends ContentFeatureSource {
             // Re-packages the exception to be compatible with method signature
             throw new IOException(e.getMessage(), e.fillInStackTrace());
         }
-        // Exxgtracts the CRS either using WKID or WKT
+        // Extracts the CRS either using WKID or WKT
         try {
             if (ws.getExtent().getSpatialReference().getLatestWkid() != null) {
                 this.resInfo.setCRS(
@@ -239,12 +250,12 @@ public class ArcGISRestFeatureSource extends ContentFeatureSource {
     protected int getCountInternal(Query query) throws IOException {
 
         Count cnt;
-        Map<String, Object> params =
-                new HashMap<String, Object>(ArcGISRestDataStore.DEFAULT_PARAMS);
-        params.put(ArcGISRestDataStore.COUNT_PARAM, true);
-        params.put(
-                ArcGISRestDataStore.GEOMETRY_PARAM,
-                this.composeExtent(this.getBoundsInternal(query)));
+        List<NameValuePair> params = new ArrayList<>();
+        params.addAll(DEFAULT_PARAMS);
+        params.add(new BasicNameValuePair(COUNT_PARAM, "true"));
+        params.add(
+                new BasicNameValuePair(
+                        GEOMETRY_PARAM, this.composeExtent(this.getBoundsInternal(query))));
 
         try {
             cnt =
@@ -267,20 +278,22 @@ public class ArcGISRestFeatureSource extends ContentFeatureSource {
     protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query)
             throws IOException {
 
-        Map<String, Object> params =
-                new HashMap<String, Object>(ArcGISRestDataStore.DEFAULT_PARAMS);
+        List<NameValuePair> params = new ArrayList<>();
+        params.addAll(DEFAULT_PARAMS);
         InputStream result;
 
-        params.put(ArcGISRestDataStore.GEOMETRY_PARAM, this.composeExtent(this.getBounds(query)));
+        params.add(
+                new BasicNameValuePair(GEOMETRY_PARAM, this.composeExtent(this.getBounds(query))));
 
         // TODO: currently it sets _only_ the BBOX query
-        params.put(ArcGISRestDataStore.GEOMETRY_PARAM, this.composeExtent(this.getBounds(query)));
+        params.add(
+                new BasicNameValuePair(GEOMETRY_PARAM, this.composeExtent(this.getBounds(query))));
 
         // Sets the atttributes to return
-        params.put(ArcGISRestDataStore.ATTRIBUTES_PARAM, this.composeAttributes(query));
+        params.add(new BasicNameValuePair(ATTRIBUTES_PARAM, this.composeAttributes(query)));
 
-        // Sets the outpout to GeoJSON
-        params.put(ArcGISRestDataStore.FORMAT_PARAM, ArcGISRestDataStore.FORMAT_GEOJSON);
+        // Sets the outout to GeoJSON
+        params.add(new BasicNameValuePair(FORMAT_PARAM, FORMAT_GEOJSON));
 
         // Executes the request
         result = this.dataStore.retrieveJSON("POST", (new URL(this.composeQueryURL())), params);

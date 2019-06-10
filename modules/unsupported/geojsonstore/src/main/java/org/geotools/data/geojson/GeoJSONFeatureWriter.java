@@ -19,7 +19,6 @@ package org.geotools.data.geojson;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
@@ -30,7 +29,6 @@ import org.geotools.data.FeatureWriter;
 import org.geotools.data.Query;
 import org.geotools.data.store.ContentState;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
-import org.geotools.util.URLs;
 import org.geotools.util.logging.Logging;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -63,7 +61,10 @@ public class GeoJSONFeatureWriter implements FeatureWriter<SimpleFeatureType, Si
         LOGGER.fine("Opening writer for " + file);
         if (directory == null) {
             throw new IOException(
-                    "Unable to find parent direcotry of file " + file + " from url " + gState.getUrl());
+                    "Unable to find parent direcotry of file "
+                            + file
+                            + " from url "
+                            + gState.getUrl());
         }
         if (!directory.canWrite()) {
             throw new IOException("Directory " + directory + " is not writable.");

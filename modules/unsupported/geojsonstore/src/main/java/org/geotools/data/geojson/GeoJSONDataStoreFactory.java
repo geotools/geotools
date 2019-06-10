@@ -26,103 +26,106 @@ import org.apache.commons.io.FilenameUtils;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFactorySpi;
 import org.geotools.util.KVP;
+import org.geotools.util.URLs;
 
 public class GeoJSONDataStoreFactory implements DataStoreFactorySpi {
 
-    public static final String[] EXTS = {"geojson", "json"};
-    public static final Param URLP =
-            new Param(
-                    "url",
-                    URL.class,
-                    "url to a .json file",
-                    true,
-                    null,
-                    new KVP(Param.EXT, "json", Param.EXT, "geojson"));
+  public static final String[] EXTS = {"geojson", "json"};
+  public static final Param URLP =
+      new Param(
+          "url",
+          URL.class,
+          "url to a .json file",
+          true,
+          null,
+          new KVP(Param.EXT, "json", Param.EXT, "geojson"));
 
-    /** Confirm DataStore availability, null if unknown */
-    Boolean isAvailable = null;
+  /** Confirm DataStore availability, null if unknown */
+  Boolean isAvailable = null;
 
-    public GeoJSONDataStoreFactory() {
-        super();
-    }
+  public GeoJSONDataStoreFactory() {
+    super();
+  }
 
-    @Override
-    public String getDisplayName() {
-        return "GeoJSON";
-    }
+  @Override
+  public String getDisplayName() {
+    return "GeoJSON";
+  }
 
-    @Override
-    public String getDescription() {
-        return "GeoJSON files and URLsi containing feature collections.";
-    }
+  @Override
+  public String getDescription() {
+    return "GeoJSON files and URLsi containing feature collections.";
+  }
 
-    @Override
-    public Param[] getParametersInfo() {
-        return new Param[] {URLP};
-    }
+  @Override
+  public Param[] getParametersInfo() {
+    return new Param[] {URLP};
+  }
 
-    @Override
-    public boolean canProcess(Map<String, Serializable> params) {
-        URL url;
-        try {
-            url = (URL) URLP.lookUp(params);
-            if (url != null) {
-                for (String ext : EXTS) {
-                    if (FilenameUtils.getExtension(url.toExternalForm()).equalsIgnoreCase(ext)) {
-                        return true;
-                    }
-                }
-            }
-        } catch (IOException e) {
-            // in fact we don't really care as we are merely testing
+  @Override
+  public boolean canProcess(Map<String, Serializable> params) {
+    URL url;
+    try {
+      url = (URL) URLP.lookUp(params);
+      if (url != null) {
+        for (String ext : EXTS) {
+          if (FilenameUtils.getExtension(url.toExternalForm()).equalsIgnoreCase(ext)) {
+            return true;
+          }
         }
-        return false;
+      }
+    } catch (IOException e) {
+      // in fact we don't really care as we are merely testing
     }
+    return false;
+  }
 
-    @Override
-    /**
-     * Test to see if this DataStore is available, for example if it has all the appropriate
-     * libraries to construct an instance.
-     *
-     * <p>This method is used for interactive applications, so as to not advertise support for
-     * formats that will not function.
-     *
-     * @return <tt>true</tt> if and only if this factory is available to create DataStores.
-     */
-    public synchronized boolean isAvailable() {
-        if (isAvailable == null) {
-            try {
-                Class.forName("org.geotools.geojson.feature.FeatureJSON");
-                isAvailable = true;
-            } catch (ClassNotFoundException e) {
-                isAvailable = false;
-            }
-        }
-        return isAvailable;
+  @Override
+  /**
+   * Test to see if this DataStore is available, for example if it has all the appropriate libraries
+   * to construct an instance.
+   *
+   * <p>This method is used for interactive applications, so as to not advertise support for formats
+   * that will not function.
+   *
+   * @return <tt>true</tt> if and only if this factory is available to create DataStores.
+   */
+  public synchronized boolean isAvailable() {
+    if (isAvailable == null) {
+      try {
+        Class.forName("org.geotools.geojson.feature.FeatureJSON");
+        isAvailable = true;
+      } catch (ClassNotFoundException e) {
+        isAvailable = false;
+      }
     }
+    return isAvailable;
+  }
 
-    @Override
-    public Map<Key, ?> getImplementationHints() {
-        // none required
-        return Collections.emptyMap();
-    }
+  @Override
+  public Map<Key, ?> getImplementationHints() {
+    // none required
+    return Collections.emptyMap();
+  }
 
-    @Override
-    public DataStore createDataStore(Map<String, Serializable> params) throws IOException {
-        URL url = (URL) URLP.lookUp(params);
-        return new GeoJSONDataStore(url);
-    }
+  @Override
+  public DataStore createDataStore(Map<String, Serializable> params) throws IOException {
+    URL url = (URL) URLP.lookUp(params);
+    GeoJSONFileState state = new GeoJSONFileState(url);
+    return new GeoJSONDataStore(state);
+  }
 
-    @Override
-    public DataStore createNewDataStore(Map<String, Serializable> params) throws IOException {
-        URL url = (URL) URLP.lookUp(params);
-        // We can only really write to local files
-        String scheme = url.getProtocol();
-        String host = url.getHost();
-        if ("file".equalsIgnoreCase(scheme) && (host == null || host.isEmpty())) {
-            return new GeoJSONDataStore(url);
-        } else {
-            throw new IllegalArgumentException("unable to write to remote URLs");
-        }
+  @Override
+  public DataStore createNewDataStore(Map<String, Serializable> params) throws IOException {
+    URL url = (URL) URLP.lookUp(params);
+    // We can only really write to local files
+    String scheme = url.getProtocol();
+    String host = url.getHost();
+    if ("file".equalsIgnoreCase(scheme) && (host == null || host.isEmpty())) {
+      GeoJSONFileState state = new GeoJSONFileState(URLs.urlToFile(url));
+      return new GeoJSONDataStore(state);
+    } else {
+      throw new IllegalArgumentException("unable to write to remote URLs");
     }
+  }
 }

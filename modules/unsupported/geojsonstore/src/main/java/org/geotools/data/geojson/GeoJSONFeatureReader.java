@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2019, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -49,7 +49,7 @@ public class GeoJSONFeatureReader implements FeatureReader<SimpleFeatureType, Si
             }
             return schema;
         } catch (IOException e) {
-            // TODO Auto-generated catch block
+
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
         return null;

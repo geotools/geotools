@@ -35,7 +35,8 @@ import org.opengis.feature.type.AttributeDescriptor;
 public class GeoJSONFeatureSource extends ContentFeatureSource {
     private static final Logger LOGGER = Logging.getLogger(GeoJSONFeatureSource.class);
 
-    private FeatureCollection<?, ?> collection = null;
+    private FeatureCollection<SimpleFeatureType, SimpleFeature> collection;
+    private SimpleFeatureType schema;
 
     public GeoJSONFeatureSource(ContentEntry entry, Query query) {
         super(entry, query);
@@ -48,7 +49,6 @@ public class GeoJSONFeatureSource extends ContentFeatureSource {
                 // failing that we'll attempt to construct it from the features
                 schema = buildFeatureType();
             } catch (IOException e) {
-                // TODO Auto-generated catch block
                 java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             }
         }
@@ -75,10 +75,11 @@ public class GeoJSONFeatureSource extends ContentFeatureSource {
      * @return
      * @throws IOException
      */
-    private FeatureCollection<?, ?> fetchFeatures() throws IOException {
+    private FeatureCollection<SimpleFeatureType, SimpleFeature> fetchFeatures() throws IOException {
         // Ideally we would cache the features here but then things go badly when using transactions
         LOGGER.fine("fetching reader from datastore");
         GeoJSONReader reader = getDataStore().read();
+        schema = (SimpleFeatureType) reader.getSchema();
         collection = reader.getFeatures();
         LOGGER.fine("Got " + collection.size() + " features");
 

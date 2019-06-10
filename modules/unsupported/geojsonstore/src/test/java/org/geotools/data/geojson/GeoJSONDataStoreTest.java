@@ -40,7 +40,8 @@ public class GeoJSONDataStoreTest {
         URL url = TestData.url(GeoJSONDataStore.class, "ne_110m_admin_1_states_provinces.geojson");
         // URL url = new
         // URL("http://geojson.xyz/naturalearth-3.3.0/ne_110m_admin_1_states_provinces.geojson");
-        ds = new GeoJSONDataStore(url);
+        GeoJSONFileState state = new GeoJSONFileState(url);
+        ds = new GeoJSONDataStore(state);
     }
 
     @Test
@@ -73,6 +74,7 @@ public class GeoJSONDataStoreTest {
         FeatureReader<SimpleFeatureType, SimpleFeature> reader = ds.getFeatureReader(query, null);
         SimpleFeatureType schema = reader.getFeatureType();
         assertNotNull(schema);
+        System.out.println(schema);
         /*
          * while (reader.hasNext()) {
          * // System.out.println(reader.next().getAttribute("name")); }
@@ -84,14 +86,15 @@ public class GeoJSONDataStoreTest {
         URL url = TestData.url(GeoJSONDataStore.class, "featureCollection.json");
         // URL url = new
         // URL("http://geojson.xyz/naturalearth-3.3.0/ne_110m_admin_1_states_provinces.geojson");
-        GeoJSONDataStore fds = new GeoJSONDataStore(url);
+        GeoJSONFileState state = new GeoJSONFileState(url);
+        GeoJSONDataStore fds = new GeoJSONDataStore(state);
         String type = fds.getNames().get(0).getLocalPart();
         Query query = new Query(type);
         FeatureReader<SimpleFeatureType, SimpleFeature> reader = fds.getFeatureReader(query, null);
         SimpleFeatureType schema = reader.getFeatureType();
         // System.out.println(schema);
         assertEquals(
-                "org.locationtech.jts.geom.Point",
+                "org.locationtech.jts.geom.Geometry",
                 schema.getGeometryDescriptor().getType().getBinding().getCanonicalName());
         assertNotNull(schema);
         int count = 0;
@@ -106,8 +109,8 @@ public class GeoJSONDataStoreTest {
     @Test
     public void testLocations() throws IOException {
         URL url = TestData.url(GeoJSONDataStore.class, "locations.json");
-
-        GeoJSONDataStore fds = new GeoJSONDataStore(url);
+        GeoJSONFileState state = new GeoJSONFileState(url);
+        GeoJSONDataStore fds = new GeoJSONDataStore(state);
         String type = fds.getNames().get(0).getLocalPart();
         // System.out.println(type);
         Query query = new Query(type);
@@ -116,7 +119,7 @@ public class GeoJSONDataStoreTest {
         SimpleFeatureType schema = reader.getFeatureType();
         // System.out.println(schema);
         assertEquals(
-                "org.locationtech.jts.geom.Point",
+                "org.locationtech.jts.geom.Geometry",
                 schema.getGeometryDescriptor().getType().getBinding().getName());
         assertNotNull(schema);
         int count = 0;

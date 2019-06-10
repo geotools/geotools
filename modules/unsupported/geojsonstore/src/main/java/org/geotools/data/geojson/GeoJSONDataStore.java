@@ -17,7 +17,6 @@
 package org.geotools.data.geojson;
 
 import java.io.IOException;
-import java.net.URL;
 import java.util.Collections;
 import java.util.List;
 import org.apache.commons.io.FilenameUtils;
@@ -38,7 +37,6 @@ import org.opengis.filter.Filter;
 
 public class GeoJSONDataStore extends org.geotools.data.store.ContentDataStore
         implements FileDataStore {
-    
 
     SimpleFeatureType schema;
 
@@ -89,7 +87,7 @@ public class GeoJSONDataStore extends org.geotools.data.store.ContentDataStore
 
     @Override
     public SimpleFeatureType getSchema() throws IOException {
-        
+
         return this.schema;
     }
 
@@ -100,13 +98,13 @@ public class GeoJSONDataStore extends org.geotools.data.store.ContentDataStore
 
     @Override
     public SimpleFeatureSource getFeatureSource() throws IOException {
-        
+
         return new GeoJSONFeatureSource(new ContentEntry(this, typeName), Query.ALL);
     }
 
     @Override
     public FeatureReader<SimpleFeatureType, SimpleFeature> getFeatureReader() throws IOException {
-        
+
         return new GeoJSONFeatureReader(
                 new ContentState(new ContentEntry(this, typeName)), Query.ALL);
     }
@@ -135,10 +133,8 @@ public class GeoJSONDataStore extends org.geotools.data.store.ContentDataStore
         return super.getFeatureWriterAppend(getTypeName(), transaction);
     }
 
-    /**
-     * @return the state
-     */
+    /** @return the state */
     public GeoJSONFileState getState() {
-    return state;}
-
+        return state;
+    }
 }

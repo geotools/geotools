@@ -22,39 +22,37 @@ import org.geotools.util.URLs;
 
 /** @author ian */
 public class GeoJSONFileState {
-  private File file;
-  private URL url;
-  /**
-   * @param url
-   */
-  public GeoJSONFileState(URL url) {
-    this.url = url;
-  }
-  /** */
-  public GeoJSONFileState(File f) {
-    file = f;
-  }
-  /** @return the file */
-  public File getFile() {
-    if(file!=null) {
-      return file;
+    private File file;
+    private URL url;
+    /** @param url */
+    public GeoJSONFileState(URL url) {
+        this.url = url;
     }
-    return URLs.urlToFile(url);
-  }
-  /** @param file the file to set */
-  public void setFile(File file) {
-    this.file = file;
-  }
-  /** @return the url */
-  public URL getUrl() {
-    if (url != null) {
-      return url;
-    } else {
-      return URLs.fileToUrl(file);
+    /** */
+    public GeoJSONFileState(File f) {
+        file = f;
     }
-  }
-  /** @param url the url to set */
-  public void setUrl(URL url) {
-    this.url = url;
-  }
+    /** @return the file */
+    public File getFile() {
+        if (file != null) {
+            return file;
+        }
+        return URLs.urlToFile(url);
+    }
+    /** @param file the file to set */
+    public void setFile(File file) {
+        this.file = file;
+    }
+    /** @return the url */
+    public URL getUrl() {
+        if (url != null) {
+            return url;
+        } else {
+            return URLs.fileToUrl(file);
+        }
+    }
+    /** @param url the url to set */
+    public void setUrl(URL url) {
+        this.url = url;
+    }
 }

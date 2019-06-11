@@ -61,8 +61,6 @@ public class GeoJSONReader {
 
     private static final Logger LOGGER = Logging.getLogger(GeoJSONReader.class);
 
-    private InputStream inputStream;
-
     private JsonParser parser;
 
     private JsonFactory factory;
@@ -90,6 +88,7 @@ public class GeoJSONReader {
 
     public boolean isConnected() {
         URL url;
+        InputStream inputStream;
         try {
             inputStream = state.getUrl().openStream();
             if (inputStream == null) {

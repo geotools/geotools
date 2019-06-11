@@ -30,7 +30,7 @@ import org.geotools.util.URLs;
 
 public class GeoJSONDataStoreFactory implements DataStoreFactorySpi {
 
-    public static final String[] EXTS = {"geojson", "json"};
+    static final String[] EXTS = {"geojson", "json"};
     public static final Param URLP =
             new Param(
                     "url",

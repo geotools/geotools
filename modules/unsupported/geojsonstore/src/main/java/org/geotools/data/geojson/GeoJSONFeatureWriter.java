@@ -75,7 +75,9 @@ public class GeoJSONFeatureWriter implements FeatureWriter<SimpleFeatureType, Si
         this.geoJSONWriter =
                 new GeoJSONWriter(Files.newOutputStream(Paths.get(this.temp.getPath())));
         if (!file.exists()) {
-            file.createNewFile();
+            if (!file.createNewFile()) {
+                throw new IOException("could not create new file: " + file);
+            }
         }
         this.delegate = new GeoJSONFeatureReader(state, query);
     }
@@ -143,10 +145,16 @@ public class GeoJSONFeatureWriter implements FeatureWriter<SimpleFeatureType, Si
             delegate.close();
             delegate = null;
         }
-        LOGGER.fine("Copyting " + temp + " to " + file);
+        state.getEntry().getDataStore().dispose();
+        state.getEntry().dispose();
+        state.close();
+        LOGGER.fine("Copying " + temp + " to " + file);
         // now copy over the new file onto the old one
         Files.copy(temp.toPath(), file.toPath(), StandardCopyOption.REPLACE_EXISTING);
-        temp.delete();
+
+        if (!temp.delete()) {
+            throw new IOException("could not delete: " + temp);
+        }
     }
 
     @Override

@@ -35,11 +35,10 @@ import org.opengis.feature.type.PropertyType;
 public class GeoJSONWriter implements AutoCloseable {
     private OutputStream out;
 
-    private JsonFactory factory = new JsonFactory();
-    private JsonGenerator generator;
-
-    static org.locationtech.jts.io.geojson.GeoJsonWriter jWriter =
+    org.locationtech.jts.io.geojson.GeoJsonWriter jWriter =
             new org.locationtech.jts.io.geojson.GeoJsonWriter();
+
+    JsonGenerator generator;
 
     public GeoJSONWriter(OutputStream outputStream) throws IOException {
 
@@ -49,6 +48,7 @@ public class GeoJSONWriter implements AutoCloseable {
         } else {
             this.out = new BufferedOutputStream(outputStream);
         }
+        JsonFactory factory = new JsonFactory();
         generator = factory.createGenerator(outputStream);
         generator.writeStartObject();
         generator.writeStringField("type", "FeatureCollection");
@@ -57,6 +57,7 @@ public class GeoJSONWriter implements AutoCloseable {
     }
 
     public void write(SimpleFeature currentFeature) throws IOException {
+
         generator.writeStartObject();
         generator.writeStringField("type", "Feature");
         generator.writeFieldName("properties");

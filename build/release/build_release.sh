@@ -16,6 +16,10 @@ function usage() {
   echo " -b <branch> : Branch to release from (eg: master, 8.x, ...)"
   echo " -r <rev>    : Revision to release (eg: a1b2kc4...)"
   echo
+  echo "Environment variables:"
+  echo " SKIP_BUILD : Skips main release build"
+  echo " SKIP_TAG : Skips tag on release branch"
+  echo " SKIP_JAVADOCS : Skips javadoc build"
 }
 
 # parse options
@@ -71,21 +75,22 @@ fi
 if ! git show-ref refs/heads/$branch; then 
   git fetch origin $branch:$branch
 fi
-
-echo "Building release with following parameters:"
-echo "  branch = $branch"
-echo "  revision = $rev"
-echo "  tag = $tag"
-echo "  series = $series"
-
-mvn -version
-
 # ensure there is a jira release
 jira_id=`get_jira_id $tag`
 if [ -z $jira_id ]; then
   echo "Could not locate release $tag in JIRA"
   exit -1
 fi
+
+echo "Building release with following parameters:"
+echo "  branch = $branch"
+echo "  revision = $rev"
+echo "  tag = $tag"
+echo "  series = $series"
+echo "  jira id = $jira_id"
+
+echo "maven/java settings:"
+mvn -version
 
 # move to root of repo
 pushd ../../ > /dev/null
@@ -98,10 +103,8 @@ git checkout $branch
 git pull origin $branch
 
 # check to see if a release branch already exists
-set +e && git checkout rel_$tag && set -e
-if [ $? == 0 ]; then
-  # release branch already exists, kill it
-  git checkout $branch
+if [ `git branch --list rel_$tag | wc -l` == 1 ]; then
+  # git checkout $branch
   echo "branch rel_$tag exists, deleting it"
   git branch -D rel_$tag
 fi
@@ -138,12 +141,15 @@ fi
 target=`pwd`/target
 
 # build the javadocs
-pushd modules > /dev/null
-mvn -Dfmt.skip=true javadoc:aggregate
-pushd target/site > /dev/null
-zip -r $target/geotools-$tag-doc.zip apidocs
-popd > /dev/null
-popd > /dev/null
+if [ "$SKIP_JAVADOCS" != true ]; then
+  echo "building javadocs"
+  pushd modules > /dev/null
+  mvn -Dfmt.skip=true javadoc:aggregate
+  pushd target/site > /dev/null
+  zip -r $target/geotools-$tag-doc.zip apidocs
+  popd > /dev/null
+  popd > /dev/null
+fi
 
 # copy over the artifacts
 if [ ! -e $DIST_PATH ]; then
@@ -164,24 +170,28 @@ init_git $git_user $git_email
 git add .
 git commit -m "updating version numbers and README for $tag"
 
-# check to see if tag already exists
-git fetch --tags
-if [ `git tag --list $tag | wc -l` == 1 ]; then
-  echo "tag $tag exists, deleting it"
-  git tag -d $tag
+# tag release branch
+if [ -z $SKIP_TAG ]; then
+    # check to see if tag already exists
+    git fetch --tags
+    if [ `git tag --list $tag | wc -l` == 1 ]; then
+      echo "tag $tag exists, deleting it"
+      git tag -d $tag
+    fi
+
+    if  [ `git ls-remote --refs --tags origin tags/$tag | wc -l` == 1 ]; then
+      echo "tag $tag exists on $GIT_ROOT, deleting it"
+      git push --delete origin $tag
+    fi
+
+    # tag the release branch
+    git tag $tag
+
+    # push up tag
+    git push origin $tag
 fi
 
-if  [ `git ls-remote --refs --tags origin tags/$tag | wc -l` == 1 ]; then
-  echo "tag $tag exists on $GIT_ROOT, deleting it"
-  git push --delete origin $tag
-fi
-
-# tag the release branch
-git tag $tag
-
-# push up tag
-git push origin $tag
-
+# return to build/release
 popd > /dev/null
 
 # TODO: generate release notes

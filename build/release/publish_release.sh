@@ -11,6 +11,8 @@ function usage() {
   echo " user:  Git username"
   echo " email: Git email"
   echo 
+  echo "Environment variables:"
+  echo " SKIP_DEPLOY : Skips deploy to maven repository"
 }
 
 if [ -z $4 ]; then

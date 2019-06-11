@@ -160,12 +160,12 @@ public class MBFilterTest {
 
         MBFilter mbfilter = new MBFilter(json);
         Filter filter = mbfilter.filter();
-        assertEquals("key IS NULL", ECQL.toCQL(filter));
+        assertEquals("NOT (key IS NULL)", ECQL.toCQL(filter));
 
         json = array("['!has', 'key', 'value']");
         mbfilter = new MBFilter(json);
         filter = mbfilter.filter();
-        assertEquals("NOT (key IS NULL)", ECQL.toCQL(filter));
+        assertEquals("key IS NULL", ECQL.toCQL(filter));
     }
 
     @Test

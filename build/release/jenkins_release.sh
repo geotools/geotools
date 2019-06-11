@@ -17,11 +17,6 @@ fi
 # double check default jdk
 jrunscript -e 'java.lang.System.out.println(java.lang.System.getProperty("java.home"));'
 
-# override using our JAVA_HOME
-if [ ! -z $JAVA_HOME ]; then
-  export PATH=$JAVA_HOME/bin:$PATH
-fi
-
 echo build_release.sh $OPTS $VERSION $GIT_USER $GIT_EMAIL $SERIES
 
 ./build_release.sh $OPTS $VERSION $GIT_USER $GIT_EMAIL $SERIES

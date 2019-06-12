@@ -131,11 +131,13 @@ ant -f rename.xml -Drelease=$tag -Dseries=$series
 popd > /dev/null
 
 # build the release
+MAVEN_FLAGS="--batch-mode -Dfmt.skip=true"
+
 if [ "$SKIP_BUILD" != true ]; then
   echo "building release"
   export MAVEN_OPTS="-Xmx2048m"
-  mvn $MAVEN_FLAGS -DskipTests -Dfmt.skip=true -Dall clean -Pcollect install
-  mvn $MAVEN_FLAGS -DskipTests -Dfmt.skip=true assembly:assembly
+  mvn $MAVEN_FLAGS -DskipTests -Dall clean -Pcollect install
+  mvn $MAVEN_FLAGS -DskipTests assembly:assembly
 fi
 
 target=`pwd`/target

@@ -70,7 +70,9 @@ public enum CacheManagement {
                                     new PersistenceConfiguration()
                                             .strategy(
                                                     PersistenceConfiguration.Strategy
-                                                            .LOCALTEMPSWAP));
+                                                            .LOCALTEMPSWAP))
+                            .timeToIdleSeconds(config.getTimeToIdle())
+                            .timeToLiveSeconds(config.getTimeToLive());
 
             defaultCacheConfiguration.setMaxBytesLocalDisk((long) config.getDiskCacheSize());
             defaultCacheConfiguration.setMaxBytesLocalHeap((long) config.getHeapSize());

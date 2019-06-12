@@ -116,17 +116,6 @@
 			</modules>
 		</profile>
 		<profile>
-			<id>app-schema</id>
-			<activation>
-				<property>
-					<name>all</name>
-				</property>
-			</activation>
-			<modules>
-				<module>app-schema</module>
-			</modules>
-		</profile>
-		<profile>
 			<id>swt</id>
 			<modules>
 				<module>swt</module>

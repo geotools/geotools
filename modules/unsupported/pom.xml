@@ -227,6 +227,13 @@
 			</modules>
 		</profile>
 
+		<profile>
+			<id>wfs-ng</id>
+			<modules>
+				<module>wfs-ng</module>
+			</modules>
+		</profile>
+
 	</profiles>
 
 	<!-- Modules included in a normal build -->

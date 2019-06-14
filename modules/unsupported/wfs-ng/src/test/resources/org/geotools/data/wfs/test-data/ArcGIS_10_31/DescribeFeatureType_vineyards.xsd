@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:SLIP_Public_Services_Farming_WFS="https:services.slip.wa.gov.au:443/arcgis/services/SLIP_Public_Services/Farming_WFS/MapServer/WFSServer" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:gml="http://www.opengis.net/gml/3.2" targetNamespace="https:services.slip.wa.gov.au:443/arcgis/services/SLIP_Public_Services/Farming_WFS/MapServer/WFSServer" elementFormDefault="qualified">
+	<xs:import namespace="http://www.opengis.net/gml/3.2" schemaLocation="http://schemas.opengis.net/gml/3.2.1/gml.xsd"/>
+	<xs:element name="Land_Capability_-_Vineyards__DPIRD-034_" type="SLIP_Public_Services_Farming_WFS:Land_Capability_-_Vineyards__DPIRD-034_Type" substitutionGroup="gml:AbstractFeature"/>
+	<xs:complexType name="Land_Capability_-_Vineyards__DPIRD-034_Type">
+		<xs:complexContent>
+			<xs:extension base="gml:AbstractFeatureType">
+				<xs:sequence>
+					<xs:element name="objectid" type="xs:int"/>
+					<xs:element minOccurs="0" name="decode">
+						<xs:simpleType>
+							<xs:restriction base="xs:string">
+								<xs:maxLength value="100"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:element>
+					<xs:element minOccurs="0" name="lc_vines_c">
+						<xs:simpleType>
+							<xs:restriction base="xs:string">
+								<xs:maxLength value="2"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:element>
+					<xs:element minOccurs="0" name="id" type="xs:int"/>
+					<xs:element minOccurs="0" name="shape" type="gml:MultiSurfacePropertyType"/>
+					<xs:element name="st_area_shape_" type="xs:double"/>
+					<xs:element name="st_length_shape_" type="xs:double"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+</xs:schema>

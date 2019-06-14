@@ -138,7 +138,7 @@ public class MapServerOnlineTest {
         testSingleType2(wfs200);
     }
 
-    private void testSingleType(DataStore wfs) throws IOException, NoSuchElementException {
+    public void testSingleType(DataStore wfs) throws IOException, NoSuchElementException {
         if (url_100 == null) return;
 
         String typeName = "ms_cities";
@@ -183,7 +183,7 @@ public class MapServerOnlineTest {
         }
     }
 
-    private void testSingleType2(DataStore wfs) throws IOException, NoSuchElementException {
+    public void testSingleType2(DataStore wfs) throws IOException, NoSuchElementException {
         if (url_100 == null) return;
 
         String typeName = "ms_rt_cartoteca.ctr10k.dxf";

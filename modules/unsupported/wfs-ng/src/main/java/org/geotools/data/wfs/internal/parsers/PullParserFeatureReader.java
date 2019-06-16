@@ -18,12 +18,14 @@ package org.geotools.data.wfs.internal.parsers;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.logging.Logger;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import org.geotools.data.wfs.internal.GetParser;
 import org.geotools.data.wfs.internal.WFSConfig;
 import org.geotools.geometry.jts.GeometryCoordinateSequenceTransformer;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
+import org.geotools.util.logging.Logging;
 import org.geotools.xsd.Configuration;
 import org.geotools.xsd.PullParser;
 import org.geotools.xsd.impl.ParserHandler.ContextCustomizer;
@@ -42,7 +44,7 @@ import org.xml.sax.SAXException;
  * @author Niels Charlier
  */
 public class PullParserFeatureReader implements GetParser<SimpleFeature> {
-
+    private static final Logger LOGGER = Logging.getLogger(PullParserFeatureReader.class);
     private PullParser parser;
 
     private InputStream inputStream;
@@ -117,6 +119,7 @@ public class PullParserFeatureReader implements GetParser<SimpleFeature> {
 
     /** @see GetParser<SimpleFeature>#getNumberOfFeatures() */
     public int getNumberOfFeatures() {
+        LOGGER.warning("Pull Parser doesn't implement counting features");
         return -1;
     }
 

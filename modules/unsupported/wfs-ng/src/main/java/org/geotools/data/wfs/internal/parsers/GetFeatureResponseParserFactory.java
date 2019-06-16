@@ -56,9 +56,9 @@ public class GetFeatureResponseParserFactory extends AbstractGetFeatureResponseP
                             "GML3", //
                             "GML3L0", //
                             "text/xml", // oddly, GeoServer returns plain 'text/xml' instead of the
-                            // propper
+                            // Proper
                             // subtype when resultType=hits. Guess we should make this something
-                            // the specific strategy can hanlde?
+                            // the specific strategy can handle?
                             "text/xml; charset=UTF-8",
                             "text/gml; subtype=gml/3.1.1", // the incorrectly advertised GeoServer
                             // format

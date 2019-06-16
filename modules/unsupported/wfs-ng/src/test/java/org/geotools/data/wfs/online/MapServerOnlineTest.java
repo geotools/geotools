@@ -18,18 +18,14 @@
 package org.geotools.data.wfs.online;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.URL;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
-import java.util.TreeSet;
 import org.geotools.data.DataStore;
-import org.geotools.data.DataStoreFinder;
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
@@ -38,6 +34,7 @@ import org.geotools.data.wfs.WFSDataStore;
 import org.geotools.data.wfs.WFSDataStoreFactory;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.referencing.CRS;
 import org.geotools.util.factory.GeoTools;
 import org.junit.After;
 import org.junit.Before;
@@ -46,7 +43,6 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
@@ -156,13 +152,16 @@ public class MapServerOnlineTest {
 
         SimpleFeatureCollection features = source.getFeatures();
         features.getBounds();
-        features.getSchema();
+        SimpleFeatureType schema = features.getSchema();
 
         GeometryDescriptor geometryDesc = wfs.getSchema(typeName).getGeometryDescriptor();
         CoordinateReferenceSystem crs = geometryDesc.getCoordinateReferenceSystem();
-
-        ReferencedEnvelope env = new ReferencedEnvelope(-59, -58, -35, -34, crs);
-
+        ReferencedEnvelope env;
+        if (CRS.getAxisOrder(crs).equals(CRS.AxisOrder.NORTH_EAST)) {
+            env = new ReferencedEnvelope(-35, -34, -59, -58, crs);
+        } else {
+            env = new ReferencedEnvelope(-59, -58, -35, -34, crs);
+        }
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(GeoTools.getDefaultHints());
         Filter filter = ff.bbox(ff.property("msGeometry"), env);
         Query query = new Query();
@@ -190,7 +189,8 @@ public class MapServerOnlineTest {
     private void testSingleType2(DataStore wfs) throws IOException, NoSuchElementException {
         if (url_100 == null) return;
 
-        String typeName = "ms_rt_cartoteca.ctr10k.dxf";
+        String typeName = "ms:rt_cartoteca.ctr10k.dxf";
+
         SimpleFeatureType type = wfs.getSchema(typeName);
         type.getTypeName();
         type.getName().getNamespaceURI();
@@ -231,73 +231,6 @@ public class MapServerOnlineTest {
             }
         } finally {
             iterator.close();
-        }
-    }
-
-    @Test
-    public void testWFSFilter() throws IOException, NoSuchElementException {
-
-        String[] expectedA = {
-            "USGS_TNM_Structures.10",
-            "USGS_TNM_Structures.16",
-            "USGS_TNM_Structures.101",
-            "USGS_TNM_Structures.147",
-            "USGS_TNM_Structures.182",
-            "USGS_TNM_Structures.205",
-            "USGS_TNM_Structures.212",
-            "USGS_TNM_Structures.220",
-            "USGS_TNM_Structures.289",
-            "USGS_TNM_Structures.366"
-        };
-        TreeSet<String> expected = new TreeSet<>();
-        expected.addAll(Arrays.asList(expectedA));
-        // Set the capabilities URL to the back end I am referencing
-        String getCapabilities =
-                "http://cartowfs.nationalmap.gov/arcgis/services/structures/MapServer/WFSServer?request=GetCapabilities&service=WFS&version=1.0.0";
-
-        Map<String, Object> connectionParameters = new HashMap<String, Object>();
-        connectionParameters.put(WFSDataStoreFactory.URL.key, getCapabilities);
-        connectionParameters.put(WFSDataStoreFactory.LENIENT.key, Boolean.TRUE);
-        connectionParameters.put(WFSDataStoreFactory.TIMEOUT.key, 60);
-        // uncomment to force GET (sometimes helps).
-        connectionParameters.put(WFSDataStoreFactory.PROTOCOL.key, Boolean.FALSE);
-
-        // Attempt to connect to the datastore.
-        DataStore data = DataStoreFinder.getDataStore(connectionParameters);
-
-        String typeNames[] = data.getTypeNames();
-        String typeName = typeNames[0];
-
-        SimpleFeatureSource source = data.getFeatureSource(typeName);
-
-        FilterFactory ff = CommonFactoryFinder.getFilterFactory(GeoTools.getDefaultHints());
-        Filter filter = ff.equals(ff.property("STATE"), ff.literal("MO"));
-
-        Query query = new Query();
-        query.setTypeName(typeName);
-
-        query.setFilter(filter);
-        SimpleFeatureCollection features = source.getFeatures(query);
-        assertTrue(features.size() > 10);
-        // Iterator through all the features and print them out.
-        int count = 0;
-        try (SimpleFeatureIterator iterator = features.features()) {
-            while (iterator.hasNext() && count < 10) {
-                SimpleFeature feature = iterator.next();
-                assertTrue(expected.contains(feature.getID()));
-                count++;
-            }
-        }
-
-        query.setMaxFeatures(10);
-        features = source.getFeatures(query);
-        assertEquals(10, features.size());
-        // Iterator through all the features and print them out.
-        try (SimpleFeatureIterator iterator = features.features()) {
-            while (iterator.hasNext()) {
-                SimpleFeature feature = iterator.next();
-                assertTrue(expected.contains(feature.getID()));
-            }
         }
     }
 }

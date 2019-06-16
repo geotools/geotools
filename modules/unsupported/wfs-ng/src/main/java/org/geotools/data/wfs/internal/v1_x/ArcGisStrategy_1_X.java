@@ -17,7 +17,6 @@
 package org.geotools.data.wfs.internal.v1_x;
 
 import org.geotools.data.wfs.internal.GetFeatureRequest.ResultType;
-import org.geotools.data.wfs.internal.Versions;
 
 /** @author ian */
 public class ArcGisStrategy_1_X extends StrictWFS_1_x_Strategy {
@@ -25,7 +24,6 @@ public class ArcGisStrategy_1_X extends StrictWFS_1_x_Strategy {
     // limited HITs count
     @Override
     public boolean supports(final ResultType resultType) {
-        if (Versions.v1_1_0.equals(getServiceVersion())) return false;
-        else return true;
+        return false;
     }
 }

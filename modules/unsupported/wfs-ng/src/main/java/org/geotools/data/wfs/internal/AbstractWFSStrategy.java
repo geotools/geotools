@@ -392,36 +392,6 @@ public abstract class AbstractWFSStrategy extends WFSStrategy {
                         + operation);
     }
 
-    // /**
-    // * @see WFSStrategy#getFeaturePOST(Query, String)
-    // */
-    // @Override
-    // public WFSResponse issueGetFeaturePOST(final GetFeatureRequest request) throws IOException {
-    // if (!supportsOperation(WFSOperationType.GET_FEATURE, true)) {
-    // throw new UnsupportedOperationException(
-    // "The server does not support GetFeature for HTTP method POST");
-    // }
-    // URL url = getOperationURL(WFSOperationType.GET_FEATURE, true);
-    //
-    // RequestComponents reqParts = createGetFeatureRequest(request);
-    // GetFeatureType serverRequest = reqParts.getServerRequest();
-    //
-    // Encoder encoder = new Encoder(getWfsConfiguration());
-    //
-    // // If the typeName is of the form prefix:typeName we better declare the namespace since we
-    // // don't know how picky the server parser will be
-    // String typeName = reqParts.getKvpParameters().get("TYPENAME");
-    // QName fullName = getFeatureTypeName(typeName);
-    // String prefix = fullName.getPrefix();
-    // String namespace = fullName.getNamespaceURI();
-    // if (!XMLConstants.DEFAULT_NS_PREFIX.equals(prefix)) {
-    // encoder.getNamespaces().declarePrefix(prefix, namespace);
-    // }
-    // WFSResponse response = issuePostRequest(serverRequest, url, encoder);
-    //
-    // return response;
-    // }
-
     /** @see WFSStrategy#dispose() */
     @Override
     public void dispose() {
@@ -709,7 +679,7 @@ public abstract class AbstractWFSStrategy extends WFSStrategy {
 
         URL finalURL = URIs.buildURL(baseUrl, requestParams);
         requestDebug("Built GET request for ", operation, ": ", finalURL);
-        // System.err.println(finalURL.toExternalForm());
+
         return finalURL;
     }
 
@@ -776,8 +746,6 @@ public abstract class AbstractWFSStrategy extends WFSStrategy {
         encoder.encode(requestObject, opName, out);
 
         requestTrace("Encoded ", request.getOperation(), " request: ", out);
-
-        // System.err.println(out.toString());
 
         return new ByteArrayInputStream(out.toByteArray());
     }

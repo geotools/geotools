@@ -212,4 +212,9 @@ public abstract class WFSStrategy extends Specification {
      * @return field type mappings
      */
     public abstract Map<QName, Class<?>> getFieldTypeMappings();
+
+    /** @return */
+    public boolean canLimit() {
+        return true;
+    }
 }

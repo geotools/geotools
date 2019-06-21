@@ -33,6 +33,7 @@ import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.wfs.WFSDataStore;
 import org.geotools.data.wfs.WFSDataStoreFactory;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.test.OnlineTestSupport;
 import org.geotools.util.factory.GeoTools;
 import org.junit.Before;
 import org.junit.Test;
@@ -41,65 +42,65 @@ import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 
 /** @author ian */
-public class GeoServerWFSTest {
+public class ArcServerWFSOnlineTest extends OnlineTestSupport {
 
     TreeSet<String> expected = new TreeSet<>();
 
     @Before
     public void setup() {
         String[] expectedA = {
-            "states.1",
-            "states.7",
-            "states.9",
-            "states.13",
-            "states.14",
-            "states.17",
-            "states.18",
-            "states.19",
-            "states.21",
-            "states.22",
+            "USGS_TNM_Structures.10",
+            "USGS_TNM_Structures.16",
+            "USGS_TNM_Structures.101",
+            "USGS_TNM_Structures.147",
+            "USGS_TNM_Structures.182",
+            "USGS_TNM_Structures.205",
+            "USGS_TNM_Structures.212",
+            "USGS_TNM_Structures.220",
+            "USGS_TNM_Structures.289",
+            "USGS_TNM_Structures.366"
         };
         expected.addAll(Arrays.asList(expectedA));
     }
 
     @Test
-    public void testGeoServerWFSFilter_V1_get() throws IOException, NoSuchElementException {
-        geoServerTest("1.0.0", true);
+    public void testArcMapWFSFilter_V1_get() throws IOException, NoSuchElementException {
+        arcMapTest("1.0.0", true);
     }
 
     @Test
-    public void testGeoServerWFSFilter_V1_post() throws IOException, NoSuchElementException {
-        geoServerTest("1.0.0", false);
+    public void testArcMapWFSFilter_V1_post() throws IOException, NoSuchElementException {
+        arcMapTest("1.0.0", false);
     }
 
     @Test
-    public void testGeoServerWFSFilter_V1_1_get() throws IOException, NoSuchElementException {
-        geoServerTest("1.1.0", true);
+    public void testArcMapWFSFilter_V1_1_get() throws IOException, NoSuchElementException {
+        arcMapTest("1.1.0", true);
     }
 
     @Test
-    public void testGeoServerWFSFilter_V1_1_post() throws IOException, NoSuchElementException {
-        geoServerTest("1.1.0", false);
+    public void testArcMapWFSFilter_V1_1_post() throws IOException, NoSuchElementException {
+        arcMapTest("1.1.0", false);
     }
 
     @Test
-    public void testGeoServerWFSFilter_V2_get() throws IOException, NoSuchElementException {
-        geoServerTest("2.0.0", true);
+    public void testArcMapWFSFilter_V2_get() throws IOException, NoSuchElementException {
+        arcMapTest("2.0.0", true);
     }
 
     @Test
-    public void testGeoServerWFSFilter_V2_post() throws IOException, NoSuchElementException {
-        geoServerTest("2.0.0", false);
+    public void testArcMapWFSFilter_V2_post() throws IOException, NoSuchElementException {
+        arcMapTest("2.0.0", false);
     }
     /**
      * @param expected
      * @param version
      * @throws IOException
      */
-    private void geoServerTest(String version, boolean get) throws IOException {
+    private void arcMapTest(String version, boolean get) throws IOException {
 
         String getCapabilities =
-                "http://localhost:8080/geoserver/wfs?request=GetCapabilities&service=WFS&version="
+                "http://cartowfs.nationalmap.gov/arcgis/services/structures/MapServer/WFSServer?request=GetCapabilities&service=WFS&version="
                         + version;
         Map<String, Object> connectionParameters = new HashMap<String, Object>();
         connectionParameters.put(WFSDataStoreFactory.URL.key, getCapabilities);
@@ -113,13 +114,12 @@ public class GeoServerWFSTest {
         // Attempt to connect to the datastore.
         WFSDataStore data = (WFSDataStore) DataStoreFinder.getDataStore(connectionParameters);
         assertEquals(version, data.getInfo().getVersion());
-
-        String typeName = "topp:states";
+        String typeNames[] = data.getTypeNames();
+        String typeName = typeNames[0];
         SimpleFeatureSource source = data.getFeatureSource(typeName);
 
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(GeoTools.getDefaultHints());
-        Filter filter =
-                ff.between(ff.property("LAND_KM"), ff.literal(100_000), ff.literal(150_000));
+        Filter filter = ff.equals(ff.property("STATE"), ff.literal("MO"));
 
         Query query = new Query();
         query.setTypeName(typeName);
@@ -134,7 +134,6 @@ public class GeoServerWFSTest {
         try (SimpleFeatureIterator iterator = features.features()) {
             while (iterator.hasNext() && count < 10) {
                 SimpleFeature feature = iterator.next();
-
                 assertTrue(expected.contains(feature.getID()));
                 count++;
             }
@@ -151,5 +150,10 @@ public class GeoServerWFSTest {
                 assertTrue(expected.contains(feature.getID()));
             }
         }
+    }
+
+    @Override
+    protected String getFixtureId() {
+        return "arcgis-wfs";
     }
 }

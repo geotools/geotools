@@ -24,6 +24,17 @@ public class ArcGisStrategy_1_X extends StrictWFS_1_x_Strategy {
     // limited HITs count
     @Override
     public boolean supports(final ResultType resultType) {
+        switch (resultType) {
+            case RESULTS:
+                return true;
+            case HITS:
+            default:
+                return false;
+        }
+    }
+
+    @Override
+    public boolean canLimit() {
         return false;
     }
 }

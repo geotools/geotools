@@ -85,9 +85,7 @@ are supplied by the community and do not yet meet the quality expected by the li
 
 There are also some "unsupported" formats that are either popular or under development:
 
-* app-schema (under development) - allows the remapping and combining of one or more data sources into a provided application schema
 * dfx
-* edigeo
 * geojson
 * wfs
 

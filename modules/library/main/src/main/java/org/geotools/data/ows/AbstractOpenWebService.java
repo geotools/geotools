@@ -421,7 +421,7 @@ public abstract class AbstractOpenWebService<C extends Capabilities, R extends O
      */
     protected Response internalIssueRequest(Request request) throws IOException, ServiceException {
         final URL finalURL = request.getFinalURL();
-        LOGGER.info("FinalURL:" + finalURL);
+        LOGGER.fine("FinalURL:" + finalURL);
         boolean success = false;
         try {
             final HTTPResponse httpResponse;

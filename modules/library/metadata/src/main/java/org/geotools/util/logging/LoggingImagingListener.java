@@ -19,6 +19,7 @@ package org.geotools.util.logging;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.media.jai.OperationRegistry;
 import javax.media.jai.util.ImagingListener;
 
 final class LoggingImagingListener implements ImagingListener {
@@ -26,10 +27,24 @@ final class LoggingImagingListener implements ImagingListener {
     public boolean errorOccurred(
             String message, Throwable thrown, Object where, boolean isRetryable)
             throws RuntimeException {
+
         Logger log = Logging.getLogger(LoggingImagingListener.class);
+
+        if (thrown instanceof RuntimeException && where instanceof OperationRegistry) {
+            // quiet RuntimeExceptions from any OperationRegistry
+            log.log(Level.FINER, message, thrown);
+            return false;
+        }
         if (message.contains("Continuing in pure Java mode")) {
             log.log(Level.FINER, message, thrown);
+            return false;
+        }
+
+        // rethrow runtime exceptions
+        if (thrown instanceof RuntimeException) {
+            throw (RuntimeException) thrown;
         } else {
+            // log errors rather than print them
             log.log(Level.INFO, message, thrown);
         }
         return false; // we are not trying to recover

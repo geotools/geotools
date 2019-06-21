@@ -177,11 +177,20 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
     public boolean supports(ResultType resultType) {
         switch (resultType) {
             case RESULTS:
-            case HITS:
                 return true;
+            case HITS:
             default:
                 return false;
         }
+    }
+
+    @Override
+    /**
+     * Currently the wfs-ng client is unable to handle max features and filters. Setting canLimit to
+     * false is inefficient but gives correct results.
+     */
+    public boolean canLimit() {
+        return false;
     }
 
     @Override

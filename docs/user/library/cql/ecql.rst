@@ -7,7 +7,7 @@ References
 
 * `ECQL Parser Design <http://old.geotools.org/ECQL-Parser-Design_110493908.html>`__ (design doc with BNF, note, in addition to WKT syntax for geometries 
   GeoTools now supports also Extended WKT, same as PostGIS, see example below)
-* `GeoServer CQL Examples <http://docs.geoserver.org/latest/en/user/tutorials/cql/cql_tutorial.html>`_ (geoserver)
+* `GeoServer CQL Examples <http://docs.geoserver.org/latest/en/user/tutorials/cql/cql_tutorial.html>`_ (GeoServer)
 
 .. note::
 
@@ -45,7 +45,7 @@ Examples
 
 * Filter by Comparing Values
   
-  The CQL language limited us to referencing a propertyName against
+  The CQL language limited us to referencing a ``propertyName`` against
   a more general expression.
 
   ECQL allows you to use full expressions everywhere:
@@ -133,7 +133,7 @@ Examples
         Filter filter = ECQL.toFilter(
                 "DWITHIN(buffer(the_geom,5), POINT(1 2), 10, kilometers)");
 
-  The following example shows how to make a filter using the RELATE geooperation. In this case, the DE-9IM pattern corresponds to the **contains** spatial relation, It will be true if the first geometry contains the second.
+  The following example shows how to make a filter using the RELATE operation. In this case, the DE-9IM pattern corresponds to the **contains** spatial relation, It will be true if the first geometry contains the second.
 
   .. literalinclude:: /../src/main/java/org/geotools/cql/ECQLExamples.java
      :language: java

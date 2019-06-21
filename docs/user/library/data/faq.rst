@@ -4,9 +4,10 @@ Data FAQ
 Q: How do I get a FeatureStore?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-FeatureStore is an extension of FeatureSource that is only available if your information can be modified. 
+``FeatureStore`` is an extension of ``FeatureSource`` that is only available if your information can be modified. 
 
-With this in mind you can use an instanceof check, and then cast to a FeatureStore::
+With this in mind you can use an ``instanceof`` check, and then cast to a
+``FeatureStore``::
 
     SimpleFeatureSource source = dataStore.getFeatureSource( typeName );
     if( source instanceof SimpleFeatureStore ){
@@ -24,6 +25,6 @@ Please check that write support is available.
 
 Common solutions:
 
-* ShapeFile: the file is not writable (or is located on a DVD).
+* ShapeFile: the file is not writeable (or is located on a DVD).
 * WFS: We do not support read/write for WFS 1.1.0 at this time; please use VERSION=1.0.0 when connecting.
 * Database: Please check the permissions of the username and password used to connect to the database.

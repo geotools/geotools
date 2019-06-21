@@ -1,8 +1,9 @@
 Oracle GeoRaster Plugin
 -----------------------
 
-This plugin is an extension to the Image Mosaicing Pyramidal JDBC Plugin. Since an Oracle Raster
-Object contains tiles and pyramids, configuration is simple.
+This plugin is an extension to the Image Mosaicing Pyramidal JDBC
+Plugin. Since an Oracle Raster Object contains tiles and pyramids,
+configuration is simple.
 
 Credits
 
@@ -42,13 +43,13 @@ Since this module requires a coverage name, a table containing a column for the 
         STORAGE (PCTINCREASE 0)
         );
 
-2. Now insert a record for a coverage named oek.
+2. Now insert a record for a coverage named ``oek``.
    
    The raster- and pyramid tiles are stored in a table called RASTER_RDT.::
      
      INSERT INTO RASTER VALUES ('oek', sdo_geor.init('RASTER_RDT'));
 
-3. Import the image. Look here in case of problems Oracle Georaster Import::
+3. Import the image. Look here in case of problems Oracle GeoRaster Import::
      
      DECLARE   
         geor SDO_GEORASTER;
@@ -78,7 +79,7 @@ Since this module requires a coverage name, a table containing a column for the 
 Configuration
 ^^^^^^^^^^^^^
 
-The Config file::
+The configuration file::
   
   <?xml version="1.0" encoding="UTF-8" standalone="no"?>
   <config version="1.0">

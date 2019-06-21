@@ -9,7 +9,7 @@ Call Syntax::
 Options:
 
 * ``-config``  
-  The URL or the file name of your xml configuration
+  The URL or the file name of your XML configuration
 
 * ``-spatialTNPrefix``  
   The Prefix of the spatial tables. A prefix of "SPAT" results in tables SPAT_0,SPAT_1,....
@@ -28,7 +28,7 @@ Options:
 
 * ``-srs``
   
-  The SRS needed for a spatial extension. Not required for universal and mySQL.
+  The SRS needed for a spatial extension. Not required for universal and MySQL.
 
 * ``-targetDir``
   

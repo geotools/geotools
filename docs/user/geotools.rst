@@ -71,7 +71,7 @@ Supported Formats
 
 * Vector formats and data access
   
-  app-schema, arcsde, csv, dxf, edigeo, excel, geojson, org, property, shapefile, wfs
+  app-schema, arcsde, csv, dxf, geojson, org, property, shapefile, wfs
 
 * XML Bindings
 

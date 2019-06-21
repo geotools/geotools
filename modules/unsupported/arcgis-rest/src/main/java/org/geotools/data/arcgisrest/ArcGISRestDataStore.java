@@ -20,6 +20,7 @@ package org.geotools.data.arcgisrest;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
+import java.awt.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -27,11 +28,8 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -39,15 +37,12 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import org.apache.commons.io.IOUtils;
-import org.apache.http.Header;
-import org.apache.http.HttpStatus;
-import org.apache.http.NameValuePair;
+import org.apache.http.*;
 import org.apache.http.auth.UsernamePasswordCredentials;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpRequestBase;
+import org.apache.http.client.entity.EntityBuilder;
+import org.apache.http.client.methods.*;
 import org.apache.http.client.utils.URIBuilder;
+import org.apache.http.entity.ContentType;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
@@ -97,6 +92,16 @@ public class ArcGISRestDataStore extends ContentDataStore {
             new ArrayList<NameValuePair>() {
                 {
                     add(new BasicNameValuePair(FORMAT_PARAM, FORMAT_JSON));
+                    add(new BasicNameValuePair(WITHGEOMETRY_PARAM, "true"));
+                    add(new BasicNameValuePair(GEOMETRYTYPE_PARAM, "esriGeometryEnvelope"));
+                }
+            };
+
+    // Default get features request parameter values
+    public static List<NameValuePair> DEFAULT_GETFEATURES_PARAMS =
+            new ArrayList<NameValuePair>() {
+                {
+                    add(new BasicNameValuePair(FORMAT_PARAM, FORMAT_GEOJSON));
                     add(new BasicNameValuePair(WITHGEOMETRY_PARAM, "true"));
                     add(new BasicNameValuePair(GEOMETRYTYPE_PARAM, "esriGeometryEnvelope"));
                 }
@@ -453,13 +458,42 @@ public class ArcGISRestDataStore extends ContentDataStore {
             meth = new HttpPost();
         }
 
+        // Sets the URI, request parameters and request body (depending on method
+        // type)
         URI uri;
-        try {
-            uri = new URIBuilder(url.toString()).setParameters(params).build();
-        } catch (URISyntaxException ex) {
-            throw new IOException(ex.getMessage());
+
+        if (methType.equals("GET")) {
+            // Builds the GET request
+            try {
+                uri = new URIBuilder(url.toString()).setParameters(params).build();
+                meth.setURI(uri);
+            } catch (URISyntaxException ex) {
+                throw new IOException(ex.getMessage());
+            }
+
+            this.LOGGER.log(
+                    Level.FINER, "About to query GET " + url.toString() + "?" + uri.getQuery());
+        } else {
+            // Builds the POST request
+            try {
+                uri = new URIBuilder(url.toString()).build();
+                meth.setURI(uri);
+            } catch (URISyntaxException ex) {
+                throw new IOException(ex.getMessage());
+            }
+
+            HttpEntity body = EntityBuilder.create().chunked().setParameters(params).build();
+            ((HttpPost) (meth)).setEntity(body);
+            meth.setHeader(
+                    HttpHeaders.CONTENT_TYPE,
+                    ContentType.APPLICATION_FORM_URLENCODED.getMimeType());
+            this.LOGGER.log(
+                    Level.FINER,
+                    "About to query POST "
+                            + url.toString()
+                            + " with body: "
+                            + IOUtils.toString(body.getContent(), Charset.defaultCharset()));
         }
-        meth.setURI(uri);
 
         // Adds authorization if login/password is set
         if (this.user != null && this.password != null) {
@@ -514,8 +548,8 @@ public class ArcGISRestDataStore extends ContentDataStore {
      * Helper method to convert an entire InputStream to a String and close the stream
      *
      * @param istream input stream to convert to a String
-     * @throws IOException
      * @return the converted String
+     * @throws IOException
      */
     public static String inputStreamToString(InputStream istream) throws IOException {
         try {

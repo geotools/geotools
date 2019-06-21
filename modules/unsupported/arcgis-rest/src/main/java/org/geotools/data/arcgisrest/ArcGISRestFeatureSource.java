@@ -21,8 +21,6 @@ package org.geotools.data.arcgisrest;
 import static org.geotools.data.arcgisrest.ArcGISRestDataStore.ATTRIBUTES_PARAM;
 import static org.geotools.data.arcgisrest.ArcGISRestDataStore.COUNT_PARAM;
 import static org.geotools.data.arcgisrest.ArcGISRestDataStore.DEFAULT_PARAMS;
-import static org.geotools.data.arcgisrest.ArcGISRestDataStore.FORMAT_GEOJSON;
-import static org.geotools.data.arcgisrest.ArcGISRestDataStore.FORMAT_PARAM;
 import static org.geotools.data.arcgisrest.ArcGISRestDataStore.GEOMETRY_PARAM;
 
 import com.google.gson.Gson;
@@ -279,7 +277,8 @@ public class ArcGISRestFeatureSource extends ContentFeatureSource {
             throws IOException {
 
         List<NameValuePair> params = new ArrayList<>();
-        params.addAll(DEFAULT_PARAMS);
+        params.addAll(ArcGISRestDataStore.DEFAULT_GETFEATURES_PARAMS);
+
         InputStream result;
 
         params.add(
@@ -291,9 +290,6 @@ public class ArcGISRestFeatureSource extends ContentFeatureSource {
 
         // Sets the atttributes to return
         params.add(new BasicNameValuePair(ATTRIBUTES_PARAM, this.composeAttributes(query)));
-
-        // Sets the outout to GeoJSON
-        params.add(new BasicNameValuePair(FORMAT_PARAM, FORMAT_GEOJSON));
 
         // Executes the request
         result = this.dataStore.retrieveJSON("POST", (new URL(this.composeQueryURL())), params);
@@ -319,7 +315,7 @@ public class ArcGISRestFeatureSource extends ContentFeatureSource {
     /**
      * Helper method to return an extent as the API expects it
      *
-     * @param ext Extent (as expressed in the JSON describing the layer)
+     * @param env ReferencedEnvelope (as expressed in the JSON describing the layer)
      */
     protected String composeExtent(ReferencedEnvelope env) {
         Extent ext = new Extent();

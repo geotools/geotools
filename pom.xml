@@ -2256,7 +2256,7 @@
     <repository>
       <uniqueVersion>false</uniqueVersion>
       <id>osgeo</id>
-      <name>Open Source Geospatial Foundation - WeebDAV upload</name>
+      <name>Open Source Geospatial Foundation - WebDAV upload</name>
       <url>dav:http://download.osgeo.org/upload/geotools/</url>
     </repository>
     <snapshotRepository>

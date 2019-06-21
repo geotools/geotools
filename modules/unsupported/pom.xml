@@ -38,16 +38,6 @@
 	<profiles>
 
 		<!-- ================================================== -->
-		<!-- Modules not yet included in the build -->
-		<!-- ================================================== -->
-		<profile>
-			<id>pending</id>
-			<modules>
-				<module>excel</module>
-			</modules>
-		</profile>
-
-		<!-- ================================================== -->
 		<!-- Unsupported Modules -->
 		<!-- ================================================== -->
 		<!-- The following profiles can all be turned on by -->

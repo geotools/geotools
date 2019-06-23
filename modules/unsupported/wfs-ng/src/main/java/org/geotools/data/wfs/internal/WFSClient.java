@@ -33,11 +33,13 @@ import org.geotools.data.ows.Response;
 import org.geotools.data.ows.Specification;
 import org.geotools.data.wfs.WFSServiceInfo;
 import org.geotools.data.wfs.internal.GetFeatureRequest.ResultType;
+import org.geotools.data.wfs.internal.v1_x.ArcGisStrategy_1_X;
 import org.geotools.data.wfs.internal.v1_x.CubeWerxStrategy;
 import org.geotools.data.wfs.internal.v1_x.GeoServerPre200Strategy;
 import org.geotools.data.wfs.internal.v1_x.IonicStrategy;
 import org.geotools.data.wfs.internal.v1_x.MapServerWFSStrategy;
 import org.geotools.data.wfs.internal.v1_x.StrictWFS_1_x_Strategy;
+import org.geotools.data.wfs.internal.v2_0.ArcGisStrategy_2_0;
 import org.geotools.data.wfs.internal.v2_0.StrictWFS_2_0_Strategy;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.ows.ServiceException;
@@ -138,11 +140,6 @@ public class WFSClient extends AbstractOpenWebService<WFSGetCapabilities, QName>
 
         WFSStrategy strategy = null;
 
-        // only one 2.0.0 strategy!
-        if (Versions.v2_0_0.equals(capsVersion)) {
-            strategy = new StrictWFS_2_0_Strategy();
-        }
-
         // override
         if (!"auto".equals(override)) {
             if (override.equalsIgnoreCase("geoserver")) {
@@ -153,6 +150,12 @@ public class WFSClient extends AbstractOpenWebService<WFSGetCapabilities, QName>
                 strategy = new CubeWerxStrategy();
             } else if (override.equalsIgnoreCase("ionic")) {
                 strategy = new IonicStrategy();
+            } else if (override.equalsIgnoreCase("arcgis")
+                    && !Versions.v2_0_0.equals(capsVersion)) {
+                strategy = new ArcGisStrategy_1_X();
+            }
+            if (override.equalsIgnoreCase("arcgis") && Versions.v2_0_0.equals(capsVersion)) {
+                strategy = new ArcGisStrategy_2_0();
             } else {
                 LOGGER.warning(
                         "Could not handle wfs strategy override "
@@ -162,6 +165,7 @@ public class WFSClient extends AbstractOpenWebService<WFSGetCapabilities, QName>
         }
 
         // auto detection
+
         if (strategy == null) {
             // look in comments for indication of CubeWerx server
             NodeList childNodes = capabilitiesDoc.getChildNodes();
@@ -212,8 +216,12 @@ public class WFSClient extends AbstractOpenWebService<WFSGetCapabilities, QName>
                     && uri.contains("geoserver")
                     && !Versions.v2_0_0.equals(capsVersion)) {
                 strategy = new GeoServerPre200Strategy();
-            } else if (uri.contains("/ArcGIS/services/")) {
-                strategy = new StrictWFS_1_x_Strategy(); // new ArcGISServerStrategy();
+            } else if (uri.toLowerCase().contains("/arcgis/services/")
+                    && !Versions.v2_0_0.equals(capsVersion)) {
+                strategy = new ArcGisStrategy_1_X();
+            } else if (uri.toLowerCase().contains("/arcgis/services/")
+                    && Versions.v2_0_0.equals(capsVersion)) {
+                strategy = new ArcGisStrategy_2_0();
             } else if (uri.contains("mapserver") || uri.contains("map=")) {
                 strategy = new MapServerWFSStrategy(capabilitiesDoc);
             }
@@ -225,6 +233,8 @@ public class WFSClient extends AbstractOpenWebService<WFSGetCapabilities, QName>
                 strategy = new StrictWFS_1_x_Strategy(Versions.v1_0_0);
             } else if (Versions.v1_1_0.equals(capsVersion)) {
                 strategy = new StrictWFS_1_x_Strategy(Versions.v1_1_0);
+            } else if (Versions.v2_0_0.equals(capsVersion)) {
+                strategy = new StrictWFS_2_0_Strategy();
             } else {
                 throw new IllegalArgumentException("Unsupported version: " + capsVersion);
             }
@@ -245,7 +255,7 @@ public class WFSClient extends AbstractOpenWebService<WFSGetCapabilities, QName>
     }
 
     public boolean canLimit() {
-        return true;
+        return getStrategy().canLimit();
     }
 
     public boolean canFilter() {
@@ -311,6 +321,11 @@ public class WFSClient extends AbstractOpenWebService<WFSGetCapabilities, QName>
     protected Response internalIssueRequest(Request request) throws IOException {
         Response response;
         try {
+            LOGGER.fine("FinalURL: " + request.getFinalURL().toString());
+            if (LOGGER.isLoggable(Level.FINE) && request.requiresPost()) {
+                String msg = request.getPostContentType();
+                LOGGER.fine("Post message: " + msg);
+            }
             response = super.internalIssueRequest(request);
         } catch (ServiceException e) {
             throw new IOException(e);

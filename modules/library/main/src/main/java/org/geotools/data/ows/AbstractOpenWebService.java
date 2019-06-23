@@ -408,7 +408,7 @@ public abstract class AbstractOpenWebService<C extends Capabilities, R extends O
      */
     protected Response internalIssueRequest(Request request) throws IOException, ServiceException {
         final URL finalURL = request.getFinalURL();
-
+        LOGGER.fine("FinalURL:" + finalURL);
         boolean success = false;
         try {
             final HTTPResponse httpResponse;
@@ -419,8 +419,14 @@ public abstract class AbstractOpenWebService<C extends Capabilities, R extends O
 
                 ByteArrayOutputStream out = new ByteArrayOutputStream();
                 request.performPostOutput(out);
-                InputStream in = new ByteArrayInputStream(out.toByteArray());
-
+                InputStream in;
+                if (LOGGER.isLoggable(Level.FINE)) {
+                    byte[] byteArray = out.toByteArray();
+                    LOGGER.fine(new String(byteArray));
+                    in = new ByteArrayInputStream(byteArray);
+                } else {
+                    in = new ByteArrayInputStream(out.toByteArray());
+                }
                 try {
                     httpResponse = httpClient.post(finalURL, in, postContentType);
                 } finally {

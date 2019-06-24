@@ -56,6 +56,7 @@ public class GeoJSONMongoTestSetup extends MongoTestSetup {
                         .add("intProperty", 0)
                         .add("doubleProperty", 0.0)
                         .add("stringProperty", "zero")
+                        .add("optionalProperty3", "optional")
                         .add(NULLABLE_ATTRIBUTE, "A value")
                         .add(
                                 "listProperty",
@@ -76,6 +77,7 @@ public class GeoJSONMongoTestSetup extends MongoTestSetup {
                         .push("properties")
                         .add("intProperty", 1)
                         .add("doubleProperty", 1.1)
+                        .add("optionalProperty2", "optional")
                         .add("stringProperty", "one")
                         .add(NULLABLE_ATTRIBUTE, null)
                         .add(

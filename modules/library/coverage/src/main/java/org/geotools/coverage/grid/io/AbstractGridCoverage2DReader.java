@@ -238,8 +238,14 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
      *     name, <code>false</code> otherwise.
      */
     protected boolean checkName(String coverageName) {
-        Utilities.ensureNonNull("coverageName", coverageName);
-        return coverageName.equalsIgnoreCase(this.coverageName);
+        if ("geotiff_coverage"
+                .equalsIgnoreCase(
+                        coverageName)) { // GEOS-9236 - tolerate geotiff_coverage as coverageName
+            return true;
+        } else {
+            Utilities.ensureNonNull("coverageName", coverageName);
+            return coverageName.equalsIgnoreCase(this.coverageName);
+        }
     }
 
     @Override

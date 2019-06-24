@@ -36,7 +36,6 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.GeoTools;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
-import org.geotools.util.factory.GeoTools;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

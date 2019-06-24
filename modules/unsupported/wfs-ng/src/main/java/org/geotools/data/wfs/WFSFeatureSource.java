@@ -225,7 +225,7 @@ class WFSFeatureSource extends ContentFeatureSource {
         request.setHints(query.getHints());
 
         int maxFeatures = query.getMaxFeatures();
-        if (Integer.MAX_VALUE > maxFeatures) {
+        if (Integer.MAX_VALUE > maxFeatures && canLimit()) {
             request.setMaxFeatures(maxFeatures);
         }
         // let the request decide request.setOutputFormat(outputFormat);
@@ -273,6 +273,7 @@ class WFSFeatureSource extends ContentFeatureSource {
         }
 
         if (!reader.hasNext()) {
+            reader.close();
             return new EmptyFeatureReader<SimpleFeatureType, SimpleFeature>(contentType);
         }
 

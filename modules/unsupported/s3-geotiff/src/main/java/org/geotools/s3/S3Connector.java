@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Properties;
 import java.util.logging.Logger;
@@ -68,7 +69,8 @@ public class S3Connector {
         // Parse region and anon from URL
         try {
             URI s3Uri = new URI(input);
-            List<NameValuePair> nameValuePairs = URLEncodedUtils.parse(s3Uri, "UTF-8");
+            List<NameValuePair> nameValuePairs =
+                    URLEncodedUtils.parse(s3Uri, Charset.forName("UTF-8"));
 
             for (NameValuePair nvPair : nameValuePairs) {
                 if ("awsRegion".equals(nvPair.getName())) {

@@ -81,6 +81,12 @@ if [ -z $jira_id ]; then
   echo "Could not locate release $tag in JIRA"
   exit -1
 fi
+# create artifact staging dir
+dist=`pwd`/distribution/$tag
+if [ -e $dist ]; then
+  rm -rf $dist
+fi
+mkdir $dist
 
 echo "Building release with following parameters:"
 echo "  branch = $branch"
@@ -88,6 +94,7 @@ echo "  revision = $rev"
 echo "  tag = $tag"
 echo "  series = $series"
 echo "  jira id = $jira_id"
+echo "  distribution = $dist"
 
 echo "maven/java settings:"
 mvn -version
@@ -153,16 +160,6 @@ if [ "$SKIP_JAVADOCS" != true ]; then
   popd > /dev/null
 fi
 
-# copy over the artifacts
-if [ ! -e $DIST_PATH ]; then
-  mkdir -p $DIST_PATH
-fi
-dist=$DIST_PATH/$tag
-if [ -e $dist ]; then
-  rm -rf $dist
-fi
-mkdir $dist
-
 echo "copying artifacts to $dist"
 cp $target/*.zip $dist
 
@@ -198,5 +195,5 @@ popd > /dev/null
 
 # TODO: generate release notes
 
-echo "build complete, artifacts available at $DIST_URL/$tag"
+echo "build complete, artifacts available at $DIST_URL/distribution/$tag"
 exit 0

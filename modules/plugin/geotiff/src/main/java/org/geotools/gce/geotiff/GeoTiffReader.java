@@ -107,6 +107,7 @@ import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
 import org.geotools.util.NumberRange;
 import org.geotools.util.URLs;
+import org.geotools.util.Utilities;
 import org.geotools.util.factory.Hints;
 import org.opengis.coverage.ColorInterpretation;
 import org.opengis.coverage.grid.Format;
@@ -1028,6 +1029,17 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
             }
         }
         return null;
+    }
+
+    @Override
+    protected boolean checkName(
+            String coverageName) { // GEOS-6327 - tolerate geotiff_coverage as coverageName
+        if ("geotiff_coverage".equalsIgnoreCase(coverageName)) {
+            return true;
+        } else {
+            Utilities.ensureNonNull("coverageName", coverageName);
+            return coverageName.equalsIgnoreCase(this.coverageName);
+        }
     }
 
     /**

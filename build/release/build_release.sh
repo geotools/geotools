@@ -166,7 +166,8 @@ cp $target/*.zip $dist
 init_git $git_user $git_email
 
 # commit changes 
-git add .
+git add docs
+git add modules
 git commit -m "updating version numbers and README for $tag"
 
 # tag release branch

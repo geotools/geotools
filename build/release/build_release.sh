@@ -86,7 +86,7 @@ dist=`pwd`/distribution/$tag
 if [ -e $dist ]; then
   rm -rf $dist
 fi
-mkdir $dist
+mkdir -p $dist
 
 echo "Building release with following parameters:"
 echo "  branch = $branch"

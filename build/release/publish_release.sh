@@ -59,14 +59,14 @@ if [ `git tag --list $tag | wc -l` == 0 ]; then
 fi
 git checkout tags/$tag -b rel_$tag
 
-# ensure no changes on it
-set +e
-git status | grep "working directory clean"
-if [ "$?" == "1" ]; then
-  echo "branch rel_$tag dirty, exiting"
-  exit 1
-fi
-set -e
+# ensure no changes on it (actually release folder is a change)
+# set +e
+# git status | grep "working directory clean"
+# if [ "$?" == "1" ]; then
+#   echo "branch rel_$tag dirty, exiting"
+#   exit 1
+# fi
+# set -e
 
 # deploy the release to maven repo
 if [ "$SKIP_DEPLOY"  != true ]; then

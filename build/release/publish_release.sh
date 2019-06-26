@@ -73,12 +73,8 @@ git checkout tags/$tag -b rel_$tag
 # deploy the release to maven repo
 if [ "$SKIP_DEPLOY"  != true ]; then
   echo "deploying with $MAVEN_FLAGS"
-  pwd
-  ls -l
-  git status
-  mvn --version
 
-  mvn clean install deploy -DskipTests -Dall $MAVEN_FLAGS
+  mvn clean deploy -X -DskipTests -Dall $MAVEN_FLAGS
   mvn clean -P deploy.boundless deploy -DskipTests -Dall $MAVEN_FLAGS
 fi
 

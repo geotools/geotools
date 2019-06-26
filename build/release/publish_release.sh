@@ -25,7 +25,9 @@ branch=$2
 git_user=$3
 git_email=$4
 
-echo "Maven Settings: $MAVEN_SETTINGS"
+echo "maven/java settings:"
+mvn -version
+echo "MAVEN_FLAGS=$MAVEN_FLAGS"
 
 # load properties + functions
 . "$( cd "$( dirname "$0" )" && pwd )"/properties

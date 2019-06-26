@@ -98,6 +98,7 @@ echo "  distribution = $dist"
 
 echo "maven/java settings:"
 mvn -version
+echo "MAVEN_FLAGS=$MAVEN_FLAGS"
 
 # move to root of repo
 pushd ../../ > /dev/null

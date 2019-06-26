@@ -138,7 +138,6 @@ ant -f rename.xml -Drelease=$tag -Dseries=$series
 popd > /dev/null
 
 # build the release
-MAVEN_FLAGS="--batch-mode -Dfmt.skip=true"
 
 if [ "$SKIP_BUILD" != true ]; then
   echo "building release"

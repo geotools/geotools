@@ -70,8 +70,8 @@ set -e
 
 # deploy the release to maven repo
 if [ "$SKIP_DEPLOY"  != true ]; then
-  mvn clean deploy -Dfmt.skip=true -DskipTests -Dall
-  mvn clean -P deploy.boundless deploy -Dfmt.skip=true -DskipTests -Dall
+  mvn clean deploy -Dfmt.skip=true -DskipTests -Dall $MAVEN_FLAGS
+  mvn clean -P deploy.boundless deploy -Dfmt.skip=true -DskipTests -Dall $MAVEN_FLAGS
 fi
 
 # get <major.minor> for sf release dir

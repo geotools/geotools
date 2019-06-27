@@ -24,6 +24,7 @@ tag=$1
 branch=$2
 git_user=$3
 git_email=$4
+dist=`pwd`/distribution/$tag
 
 echo "maven/java settings:"
 mvn -version
@@ -88,7 +89,7 @@ if [ "$( echo $str | egrep "[0-9]+\.[0-9]+((\.|-).*)?" )" != "$str" ]; then
 fi
 dir=`echo $tag | sed 's/\([0-9]*\)\([\.\-]\)\([0-9]*\).*/\1/g'`
 
-pushd $DIST_PATH/$tag > /dev/null
+pushd $dist > /dev/null
 
 #Assume SSH Key for $SF_USER is added to the SSH Agent
 rsync -ave "ssh " *.zip $SF_USER@$SF_HOST:"/home/pfs/project/g/ge/geotools/GeoTools\ $dir\ Releases/$tag/"

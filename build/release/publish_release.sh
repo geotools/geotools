@@ -77,8 +77,7 @@ git checkout tags/$tag -b rel_$tag
 if [ "$SKIP_DEPLOY"  != true ]; then
   echo "deploying with $MAVEN_FLAGS"
 
-  #Skip osgeo repo until we get credentials set up
-  #mvn clean deploy -DskipTests -Dall $MAVEN_FLAGS
+  mvn clean deploy -DskipTests -Dall $MAVEN_FLAGS
   mvn clean -P deploy.boundless deploy -DskipTests -Dall $MAVEN_FLAGS
 fi
 

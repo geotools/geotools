@@ -76,7 +76,8 @@ git checkout tags/$tag -b rel_$tag
 if [ "$SKIP_DEPLOY"  != true ]; then
   echo "deploying with $MAVEN_FLAGS"
 
-  mvn clean deploy -DskipTests -Dall $MAVEN_FLAGS
+  #Skip osgeo repo until we get credentials set up
+  #mvn clean deploy -DskipTests -Dall $MAVEN_FLAGS
   mvn clean -P deploy.boundless deploy -DskipTests -Dall $MAVEN_FLAGS
 fi
 
@@ -89,11 +90,8 @@ dir=`echo $tag | sed 's/\([0-9]*\)\([\.\-]\)\([0-9]*\).*/\1/g'`
 
 pushd $DIST_PATH/$tag > /dev/null
 
-#JD: disabling this for now... i think something recently changes on the sf
-# server in that we can't use ssh directly to log in, need to find an 
-# to this command for remotely creating a directory on the server
-#ssh -i $SF_PK $SF_USER@$SF_HOST mkdir -p "/home/pfs/project/g/ge/geotools/GeoTools\ $dir\ Releases"
-rsync -ave "ssh -i $SF_PK" *.zip $SF_USER@$SF_HOST:"/home/pfs/project/g/ge/geotools/GeoTools\ $dir\ Releases/$tag/"
+#Assume SSH Key for $SF_USER is added to the SSH Agent
+rsync -ave "ssh " *.zip $SF_USER@$SF_HOST:"/home/pfs/project/g/ge/geotools/GeoTools\ $dir\ Releases/$tag/"
 
 popd > /dev/null
 

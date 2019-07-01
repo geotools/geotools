@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<as:AppSchemaDataAccess xmlns:as="http://www.geotools.org/app-schema" xmlns:ogc="http://www.opengis.net/ogc"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.geotools.org/app-schema AppSchemaDataAccess.xsd
+                      http://www.opengis.net/ogc http://schemas.opengis.net/filter/1.1.0/expr.xsd">
+  <namespaces>
+    <Namespace><prefix>sco</prefix><uri>http://online.socialchange.net.au</uri></Namespace>
+    <Namespace><prefix>gml</prefix><uri>http://www.opengis.net/gml</uri></Namespace>
+  </namespaces>
+  <sourceDataStores>
+    <DataStore>
+      <id>directory1</id>
+      <parameters>
+        <Parameter>
+          <name>directory</name>
+          <!-- path can be relative to this file if starts with file: -->
+          <value>file:./</value>
+        </Parameter>
+      </parameters>
+    </DataStore>
+  </sourceDataStores>
+  <targetTypes>
+    <FeatureType>
+      <schemaUri>RoadSegment.xsd</schemaUri>
+    </FeatureType>
+  </targetTypes>
+  <typeMappings>
+    <FeatureTypeMapping>
+      <sourceDataStore>directory1</sourceDataStore>
+      <sourceType>RoadSegments</sourceType>
+      <targetElement>sco:RoadSegment</targetElement>
+      <groupBy/>
+      <attributeMappings>
+        <AttributeMapping>
+          <targetAttribute>RoadSegment</targetAttribute>
+          <idExpression>
+            <OCQL>getId()</OCQL>
+          </idExpression>
+        </AttributeMapping>
+        <AttributeMapping>
+          <targetAttribute>RoadSegment/sco:fromToNodes</targetAttribute>
+          <idExpression>
+            <OCQL>FID</OCQL>
+          </idExpression>
+        </AttributeMapping>
+        <AttributeMapping>
+          <targetAttribute>RoadSegment/sco:fromToNodes/sco:fromNode</targetAttribute>
+          <sourceExpression>
+            <OCQL>fromNode</OCQL>
+          </sourceExpression>
+        </AttributeMapping>
+        <AttributeMapping>
+          <targetAttribute>RoadSegment/sco:fromToNodes/sco:toNode</targetAttribute>
+          <sourceExpression>
+            <OCQL>toNode</OCQL>
+          </sourceExpression>
+        </AttributeMapping>
+        <AttributeMapping>
+          <targetAttribute>RoadSegment/sco:name</targetAttribute>
+          <sourceExpression>
+            <OCQL>NAME</OCQL>
+          </sourceExpression>
+        </AttributeMapping>
+        <AttributeMapping>
+          <targetAttribute>RoadSegment/sco:the_geom</targetAttribute>
+          <sourceExpression>
+            <OCQL>the_geom</OCQL>
+          </sourceExpression>
+        </AttributeMapping>
+       <AttributeMapping>
+          <targetAttribute>RoadSegment/sco:broadTypeEl</targetAttribute>			
+          <targetAttributeNode>sco:narrowType</targetAttributeNode>
+        </AttributeMapping>	
+        <AttributeMapping>
+          <targetAttribute>RoadSegment/sco:broadTypeEl/sco:name</targetAttribute>
+          <sourceExpression>
+            <OCQL>'stuff'</OCQL>
+          </sourceExpression>          
+        </AttributeMapping>
+      </attributeMappings>
+    </FeatureTypeMapping>
+  </typeMappings>
+</as:AppSchemaDataAccess>

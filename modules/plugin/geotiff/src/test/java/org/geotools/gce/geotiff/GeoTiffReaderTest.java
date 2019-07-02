@@ -58,6 +58,7 @@ import org.geotools.coverage.processing.CoverageProcessor;
 import org.geotools.coverage.processing.operation.Scale;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.PrjFileReader;
+import org.geotools.factory.GeoTools;
 import org.geotools.factory.Hints;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.GeneralEnvelope;
@@ -421,6 +422,7 @@ public class GeoTiffReaderTest extends org.junit.Assert {
         assertNotNull(file);
         final AbstractGridFormat format = new GeoTiffFormat();
         GridCoverage2D coverage = format.getReader(file).read(null);
+
         String band1Name = coverage.getSampleDimension(0).getDescription().toString();
         String band2Name = coverage.getSampleDimension(1).getDescription().toString();
         assertEquals("Band1", band1Name);
@@ -1027,6 +1029,15 @@ public class GeoTiffReaderTest extends org.junit.Assert {
                 }
             }
         }
+    }
+
+    @Test
+    public void testCoverageName() throws Exception {
+        final File file = TestData.file(GeoTiffReaderTest.class, "wind.tiff");
+        assertNotNull(file);
+
+        GeoTiffReader reader = new GeoTiffReader(file, GeoTools.getDefaultHints());
+        assertTrue(reader.checkName("geotiff_coverage"));
     }
 
     @Test

@@ -66,6 +66,7 @@ import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.referencing.operation.projection.Sinusoidal;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
 import org.geotools.test.TestData;
+import org.geotools.util.factory.GeoTools;
 import org.geotools.util.factory.Hints;
 import org.hamcrest.CoreMatchers;
 import org.junit.After;
@@ -417,6 +418,7 @@ public class GeoTiffReaderTest extends org.junit.Assert {
         assertNotNull(file);
         final AbstractGridFormat format = new GeoTiffFormat();
         GridCoverage2D coverage = format.getReader(file).read(null);
+
         String band1Name = coverage.getSampleDimension(0).getDescription().toString();
         String band2Name = coverage.getSampleDimension(1).getDescription().toString();
         assertEquals("Band1", band1Name);
@@ -1023,6 +1025,15 @@ public class GeoTiffReaderTest extends org.junit.Assert {
                 }
             }
         }
+    }
+
+    @Test
+    public void testCoverageName() throws Exception {
+        final File file = TestData.file(GeoTiffReaderTest.class, "wind.tiff");
+        assertNotNull(file);
+
+        GeoTiffReader reader = new GeoTiffReader(file, GeoTools.getDefaultHints());
+        assertTrue(reader.checkName("geotiff_coverage"));
     }
 
     @Test

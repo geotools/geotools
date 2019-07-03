@@ -89,7 +89,7 @@ public class ProjectionHandler {
 
     protected double datelineX = Double.NaN;
 
-    protected double radius = Double.NaN;
+    protected double targetHalfCircle = Double.NaN;
 
     protected boolean queryAcrossDateline;
 
@@ -283,7 +283,7 @@ public class ProjectionHandler {
             if (!Double.isNaN(datelineX)
                     && renderingEnvelope.getMinX() < datelineX
                     && renderingEnvelope.getMaxX() > datelineX
-                    && renderingEnvelope.getWidth() < radius) {
+                    && renderingEnvelope.getWidth() < targetHalfCircle) {
                 double minX = renderingEnvelope.getMinX();
                 double minY = renderingEnvelope.getMinY();
                 double maxX = renderingEnvelope.getMaxX();
@@ -864,7 +864,7 @@ public class ProjectionHandler {
     }
 
     protected void setCentralMeridian(double centralMeridian) {
-        // compute the earth radius
+        // compute the earth half circle in target CRS coordinates
         try {
             CoordinateReferenceSystem targetCRS = renderingEnvelope.getCoordinateReferenceSystem();
             MathTransform mt = CRS.findMathTransform(WGS84, targetCRS, true);
@@ -873,17 +873,17 @@ public class ProjectionHandler {
             mt.transform(src, 0, dst, 0, 2);
 
             if (CRS.getAxisOrder(targetCRS) == CRS.AxisOrder.NORTH_EAST) {
-                radius = Math.abs(dst[3] - dst[1]);
+                targetHalfCircle = Math.abs(dst[3] - dst[1]);
             } else {
-                radius = Math.abs(dst[2] - dst[0]);
+                targetHalfCircle = Math.abs(dst[2] - dst[0]);
             }
 
-            if (radius <= 0) {
-                throw new RuntimeException("Computed Earth radius is 0, what is going on?");
+            if (targetHalfCircle <= 0) {
+                throw new RuntimeException("Computed Earth half circle is 0, what is going on?");
             }
         } catch (Exception e) {
             throw new RuntimeException(
-                    "Unexpected error computing the Earth radius " + "in the current projection",
+                    "Unexpected error computing the Earth half circle in the current projection",
                     e);
         }
 

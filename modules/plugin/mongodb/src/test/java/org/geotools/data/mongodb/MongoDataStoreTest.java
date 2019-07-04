@@ -166,6 +166,23 @@ public abstract class MongoDataStoreTest extends MongoTestSupport {
         }
     }
 
+    public void testRebuildSchemaWithAllItems() throws Exception {
+        try {
+            dataStore.setSchemaInitParams(MongoSchemaInitParams.builder().maxObjects(-1).build());
+            clearSchemaStore(dataStore);
+            dataStore.cleanEntries();
+            SimpleFeatureType schema = dataStore.getSchema("ft1");
+            assertNotNull(schema);
+            assertNotNull(schema.getDescriptor("properties.optionalProperty"));
+            assertNotNull(schema.getDescriptor("properties.optionalProperty2"));
+            assertNotNull(schema.getDescriptor("properties.optionalProperty3"));
+        } finally {
+            dataStore.setSchemaInitParams(null);
+            clearSchemaStore(dataStore);
+            dataStore.cleanEntries();
+        }
+    }
+
     private void clearSchemaStore(MongoDataStore mongoStore) {
         List<String> typeNames = mongoStore.getSchemaStore().typeNames();
         for (String et : typeNames) {

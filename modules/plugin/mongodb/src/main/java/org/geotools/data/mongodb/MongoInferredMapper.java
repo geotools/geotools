@@ -24,6 +24,7 @@ import com.mongodb.QueryBuilder;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -197,19 +198,47 @@ public class MongoInferredMapper extends AbstractCollectionMapper {
         List<String> ids = schemainitParams.getIds();
         if (!ids.isEmpty()) {
             LOG.info("Using IDs list for schema generation.");
-            // if we have a list of ids, obtain those objects
-            List<ObjectId> oidList =
-                    ids.stream().map(id -> new ObjectId(id)).collect(Collectors.toList());
-            DBObject query = QueryBuilder.start("_id").in(oidList.toArray(new ObjectId[] {})).get();
-            LOG.log(Level.INFO, "IDs query for execute: {0}", query);
-            return collection.find(query);
+            logIdsOnCursor(queryByIds(collection, ids), ids);
+            return queryByIds(collection, ids);
         } else {
+            LOG.info("IDs list for schema generation not available.");
             return null;
         }
     }
 
+    private DBCursor queryByIds(DBCollection collection, List<String> ids) {
+        List<ObjectId> oidList =
+                ids.stream().map(id -> new ObjectId(id)).collect(Collectors.toList());
+        DBObject query = QueryBuilder.start("_id").in(oidList.toArray(new ObjectId[] {})).get();
+        LOG.log(Level.INFO, "IDs query for execute: {0}", query);
+        return collection.find(query);
+    }
+
+    private void logIdsOnCursor(DBCursor cursor, List<String> ids) {
+        final Set<String> idsOnCursor = new HashSet<>();
+        try {
+            cursor.forEach(
+                    dbo -> {
+                        ObjectId oid = (ObjectId) dbo.get("_id");
+                        idsOnCursor.add(oid.toHexString());
+                    });
+        } finally {
+            cursor.close();
+        }
+        // compare ids on list, log not found ids
+        for (String eid : ids) {
+            if (!idsOnCursor.contains(eid)) {
+                LOG.log(Level.WARNING, "ObjectId with value = '{0}' not found in collection.", eid);
+            }
+        }
+    }
+
     private DBCursor obtainCursorByMaxObjects(DBCollection collection, int maxObects) {
-        if (maxObects > 0) {
+        // if configured max object is -1, we should use all collection
+        if (schemainitParams.getMaxObjects() == -1) {
+            LOG.info("Using all collection objects for schema generation.");
+            return collection.find();
+        } else if (maxObects > 0) {
             LOG.info("Using objects max num for schema generation.");
             // else use max num of objects
             LOG.log(Level.INFO, "Max objects limit: {0}", schemainitParams.getMaxObjects());

@@ -244,6 +244,23 @@ public final class GeoTools {
 
     /**
      * The {@linkplain System#getProperty(String) system property} key for the default value to be
+     * assigned to the {@link Hints#DATE_TIME_FORMAT_HANDLING} hint.
+     *
+     * <p>This setting specifies if GML 2 temporal data shall be formatted using same approach as
+     * GML 3+.
+     *
+     * @see Hints#DATE_TIME_FORMAT_HANDLING
+     * @see #getDefaultHints
+     * @since 21.0
+     */
+    public static final String DATE_TIME_FORMAT_HANDLING = "org.geotools.dateTimeFormatHandling";
+
+    static {
+        bind(DATE_TIME_FORMAT_HANDLING, Hints.DATE_TIME_FORMAT_HANDLING);
+    }
+
+    /**
+     * The {@linkplain System#getProperty(String) system property} key for the default value to be
      * assigned to the {@link Hints#ENCODE_EWKT} hint.
      *
      * <p>This setting specifies if geometries with {@link

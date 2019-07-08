@@ -77,7 +77,7 @@ public class ThreadedHsqlEpsgFactory extends ThreadedEpsgFactory {
      * database itself (for example additional database index).
      */
     @SuppressWarnings("PMD.AvoidUsingHardCodedIP")
-    public static final Version VERSION = new Version("8.6.0.1");
+    public static final Version VERSION = new Version("9.6.0");
 
     /**
      * The key for fetching the database directory from {@linkplain System#getProperty(String)

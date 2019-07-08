@@ -63,7 +63,7 @@ public class EPSGTest extends TestCase {
         Set codes = factory.getAuthorityCodes(CoordinateReferenceSystem.class);
 
         assertNotNull(codes);
-        assertEquals(5671, codes.size());
+        assertEquals(6588, codes.size());
     }
 
     /** A random CRS for fun. */

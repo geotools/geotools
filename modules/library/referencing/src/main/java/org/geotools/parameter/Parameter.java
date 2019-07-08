@@ -260,7 +260,7 @@ public class Parameter<T> extends AbstractParameter implements ParameterValue<T>
      */
     static int getUnitMessageID(final Unit<?> unit) {
         // Note: ONE must be tested before RADIAN.
-        if (AbstractUnit.ONE.equals(unit) || Units.PPM.equals(unit))
+        if (AbstractUnit.ONE.isCompatible(unit) || Units.PPM.equals(unit))
             return ErrorKeys.NON_SCALE_UNIT_$1;
         if (SI.METRE.isCompatible(unit)) return ErrorKeys.NON_LINEAR_UNIT_$1;
         if (SI.SECOND.isCompatible(unit)) return ErrorKeys.NON_TEMPORAL_UNIT_$1;

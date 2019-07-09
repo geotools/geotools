@@ -176,6 +176,10 @@ public abstract class MongoDataStoreTest extends MongoTestSupport {
             assertNotNull(schema.getDescriptor("properties.optionalProperty"));
             assertNotNull(schema.getDescriptor("properties.optionalProperty2"));
             assertNotNull(schema.getDescriptor("properties.optionalProperty3"));
+            // check inside array value (not first element)
+            assertNotNull(
+                    "Inside array value check (not first element) failed.",
+                    schema.getDescriptor("properties.listProperty.insideArrayValue"));
         } finally {
             dataStore.setSchemaInitParams(null);
             clearSchemaStore(dataStore);

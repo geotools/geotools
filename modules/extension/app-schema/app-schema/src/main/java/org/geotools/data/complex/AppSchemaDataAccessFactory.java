@@ -20,6 +20,7 @@ package org.geotools.data.complex;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -70,11 +71,25 @@ public class AppSchemaDataAccessFactory implements DataAccessFactory {
     public AppSchemaDataAccessFactory() {}
 
     public DataAccess<FeatureType, Feature> createDataStore(Map params) throws IOException {
-        return createDataStore(params, false, new DataAccessMap());
+        final Set<AppSchemaDataAccess> registeredAppSchemaStores =
+                new HashSet<AppSchemaDataAccess>();
+        try {
+            return createDataStore(params, false, new DataAccessMap(), registeredAppSchemaStores);
+        } catch (Exception ex) {
+            // dispose every already registered included datasource
+            for (AppSchemaDataAccess appSchemaDataAccess : registeredAppSchemaStores) {
+                appSchemaDataAccess.dispose();
+            }
+            throw ex;
+        }
     }
 
     public DataAccess<FeatureType, Feature> createDataStore(
-            Map params, boolean hidden, DataAccessMap sourceDataStoreMap) throws IOException {
+            Map params,
+            boolean hidden,
+            DataAccessMap sourceDataStoreMap,
+            final Set<AppSchemaDataAccess> registeredAppSchemaStores)
+            throws IOException {
         Set<FeatureTypeMapping> mappings;
         AppSchemaDataAccess dataStore;
 
@@ -94,13 +109,13 @@ public class AppSchemaDataAccessFactory implements DataAccessFactory {
             // and avoid creating the same data store twice (this enables feature iterators sharing
             // the same transaction to re-use the connection instead of opening a new one for each
             // joined type)
-            createDataStore(params, true, sourceDataStoreMap);
+            createDataStore(params, true, sourceDataStoreMap, registeredAppSchemaStores);
         }
 
         mappings = AppSchemaDataAccessConfigurator.buildMappings(config, sourceDataStoreMap);
 
         dataStore = new AppSchemaDataAccess(mappings, hidden);
-
+        registeredAppSchemaStores.add(dataStore);
         return dataStore;
     }
 

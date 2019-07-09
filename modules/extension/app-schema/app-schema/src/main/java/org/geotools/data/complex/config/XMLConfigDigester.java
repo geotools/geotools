@@ -280,6 +280,11 @@ public class XMLConfigDigester {
         digester.addCallParam(attMap + "/ClientProperty/name", 0);
         digester.addCallParam(attMap + "/ClientProperty/value", 1);
 
+        // Anonymous unbounded sequence attributes
+        digester.addCallMethod(attMap + "/anonymousAttribute", "putAnonymousAttribute", 2);
+        digester.addCallParam(attMap + "/anonymousAttribute/name", 0);
+        digester.addCallParam(attMap + "/anonymousAttribute/value", 1);
+
         // Field name in external index layer
         digester.addCallMethod(attMap + "/indexField", "setIndexField", 1);
         digester.addCallParam(attMap + "/indexField", 0);

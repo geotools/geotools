@@ -134,6 +134,8 @@ public class AttributeMapping implements Serializable {
      */
     private MultipleValue multipleValue;
 
+    private Map<String, String> anonymousAttributes = new HashMap<String, String>();
+
     /**
      * Returns the expression whose evaluation result against a Feature of the source FeatureType is
      * going to be the value of the target attribute in output FeatureType.
@@ -475,5 +477,22 @@ public class AttributeMapping implements Serializable {
 
     public void setIndexField(String indexField) {
         this.indexField = indexField;
+    }
+
+    /** Attribute definition map for anonymous unbounded sequences on complexType Elements. */
+    public Map<String, String> getAnonymousAttributes() {
+        return anonymousAttributes;
+    }
+
+    public void setAnonymousAttributes(Map<String, String> anonymousAttributes) {
+        if (anonymousAttributes == null) throw new IllegalArgumentException("Map is not nullable");
+        this.anonymousAttributes = anonymousAttributes;
+    }
+
+    public void putAnonymousAttribute(String name, String expression) {
+        if (name == null || expression == null) {
+            throw new IllegalArgumentException("name=" + name + ", expression=" + expression);
+        }
+        getAnonymousAttributes().put(name, expression);
     }
 }

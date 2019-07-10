@@ -16,7 +16,7 @@
  */
 package org.geotools.filter.function;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -124,17 +124,103 @@ public class InterpolateFunction implements Function {
     private Method method;
     private boolean methodSpecified;
 
-    private static class InterpPoint {
-        Expression data;
-        Expression value;
+    protected abstract class InterpPoint {
+        abstract double getData(Object object);
 
-        public InterpPoint(Expression data, Expression value) {
-            this.data = data;
-            this.value = value;
+        abstract double getValue(Object object);
+
+        abstract Color getColor(Object object);
+
+        public <T> T getValue(Object object, Class<T> context) {
+            if (method == Method.COLOR) {
+                return Converters.convert(getColor(object), context);
+            } else {
+                return Converters.convert(getValue(object), context);
+            }
         }
     }
 
-    private List<InterpPoint> interpPoints;
+    protected class DynamicPoint extends InterpPoint {
+        Expression data;
+        Expression value;
+
+        public DynamicPoint(Expression data, Expression value) {
+            this.data = data;
+            this.value = value;
+        }
+
+        @Override
+        public double getData(Object object) {
+            return data.evaluate(object, Double.class);
+        }
+
+        @Override
+        public double getValue(Object object) {
+            return value.evaluate(object, Double.class);
+        }
+
+        @Override
+        public Color getColor(Object object) {
+            return value.evaluate(object, Color.class);
+        }
+    }
+
+    protected abstract class ConstantPoint extends InterpPoint {
+
+        double data;
+        double value;
+
+        public ConstantPoint(double data) {
+            this.data = data;
+        }
+
+        @Override
+        double getData(Object object) {
+            return data;
+        }
+    }
+
+    protected class ConstantNumericPoint extends ConstantPoint {
+
+        double value;
+
+        public ConstantNumericPoint(double data, double value) {
+            super(data);
+            this.value = value;
+        }
+
+        @Override
+        double getValue(Object object) {
+            return value;
+        }
+
+        @Override
+        Color getColor(Object object) {
+            return null;
+        }
+    }
+
+    protected class ConstantColorPoint extends ConstantPoint {
+
+        Color value;
+
+        public ConstantColorPoint(double data, Color value) {
+            super(data);
+            this.value = value;
+        }
+
+        @Override
+        double getValue(Object object) {
+            return Double.NaN;
+        }
+
+        @Override
+        Color getColor(Object object) {
+            return value;
+        }
+    }
+
+    protected volatile List<InterpPoint> interpPoints;
 
     /**
      * Use as a PropertyName when defining a color map. The "Raterdata" is expected to apply to only
@@ -211,7 +297,14 @@ public class InterpolateFunction implements Function {
     }
 
     public <T> T evaluate(Object object, Class<T> context) {
-        initialize();
+        // initialize the lookup data structures only once and in a thread safe way please
+        if (interpPoints == null) {
+            synchronized (this) {
+                if (interpPoints == null) {
+                    initialize();
+                }
+            }
+        }
 
         if (method == Method.NUMERIC && Color.class.isAssignableFrom(context)) {
             throw new IllegalArgumentException(
@@ -248,17 +341,16 @@ public class InterpolateFunction implements Function {
 
         /** Degenerate case: a single interpolation point. Evaluate it directly. */
         if (interpPoints.size() == 1) {
-            return interpPoints.get(0).value.evaluate(object, context);
+            return parameters.get(2).evaluate(object, context);
         }
 
         final int segment = findSegment(lookupValue, object);
         if (segment <= 0) {
             // Data below the range of the interpolation points
-            return interpPoints.get(0).value.evaluate(object, context);
-
+            return interpPoints.get(0).getValue(object, context);
         } else if (segment >= interpPoints.size()) {
             // Data above the range of the interpolation points
-            return interpPoints.get(interpPoints.size() - 1).value.evaluate(object, context);
+            return interpPoints.get(interpPoints.size() - 1).getValue(object, context);
         }
 
         /**
@@ -284,11 +376,11 @@ public class InterpolateFunction implements Function {
             throw new IllegalArgumentException("segment index outside valid range");
         }
 
-        Double data1 = interpPoints.get(segment).data.evaluate(object, Double.class);
-        Double data0 = interpPoints.get(segment - 1).data.evaluate(object, Double.class);
+        Double data1 = interpPoints.get(segment).getData(object);
+        Double data0 = interpPoints.get(segment - 1).getData(object);
         if (method == Method.COLOR) {
-            Color color1 = interpPoints.get(segment).value.evaluate(object, Color.class);
-            Color color0 = interpPoints.get(segment - 1).value.evaluate(object, Color.class);
+            Color color1 = interpPoints.get(segment).getColor(object);
+            Color color0 = interpPoints.get(segment - 1).getColor(object);
             int r =
                     (int)
                             clamp(
@@ -328,8 +420,8 @@ public class InterpolateFunction implements Function {
             return (T) new Color(r, g, b);
 
         } else { // assume numeric
-            Double value1 = interpPoints.get(segment).value.evaluate(object, Double.class);
-            Double value0 = interpPoints.get(segment - 1).value.evaluate(object, Double.class);
+            Double value1 = interpPoints.get(segment).getValue(object);
+            Double value0 = interpPoints.get(segment - 1).getValue(object);
 
             double interpolated = doLinear(lookupValue, data0, data1, value0, value1);
             return Converters.convert(interpolated, context);
@@ -342,11 +434,11 @@ public class InterpolateFunction implements Function {
             throw new IllegalArgumentException("segment index outside valid range");
         }
 
-        Double data1 = interpPoints.get(segment).data.evaluate(object, Double.class);
-        Double data0 = interpPoints.get(segment - 1).data.evaluate(object, Double.class);
+        Double data1 = interpPoints.get(segment).getData(object);
+        Double data0 = interpPoints.get(segment - 1).getData(object);
         if (method == Method.COLOR) {
-            Color color1 = interpPoints.get(segment).value.evaluate(object, Color.class);
-            Color color0 = interpPoints.get(segment - 1).value.evaluate(object, Color.class);
+            Color color1 = interpPoints.get(segment).getColor(object);
+            Color color0 = interpPoints.get(segment - 1).getColor(object);
             int r =
                     (int)
                             clamp(
@@ -386,8 +478,8 @@ public class InterpolateFunction implements Function {
             return (T) new Color(r, g, b);
 
         } else { // assume numeric
-            Double value1 = interpPoints.get(segment).value.evaluate(object, Double.class);
-            Double value0 = interpPoints.get(segment - 1).value.evaluate(object, Double.class);
+            Double value1 = interpPoints.get(segment).getValue(object);
+            Double value0 = interpPoints.get(segment - 1).getValue(object);
 
             double interpolated = doCosine(lookupValue, data0, data1, value0, value1);
             return Converters.convert(interpolated, context);
@@ -413,28 +505,26 @@ public class InterpolateFunction implements Function {
          * 'real' end-point and the next 'real' point.
          */
         if (segment == 1) {
-            double data0 = workingPoints.get(0).data.evaluate(object, Double.class);
-            double data1 = workingPoints.get(1).data.evaluate(object, Double.class);
-            workingPoints.add(
-                    0, new InterpPoint(ff2.literal(2 * data0 - data1), workingPoints.get(0).value));
+            double data0 = workingPoints.get(0).getData(object);
+            double data1 = workingPoints.get(1).getData(object);
+            Expression firstValue = parameters.get(2);
+            workingPoints.add(0, buildInterpPoint(ff2.literal(2 * data0 - data1), firstValue));
             segment++;
-
         } else if (segment == interpPoints.size() - 1) {
-            double data0 = workingPoints.get(segment).data.evaluate(object, Double.class);
-            double data1 = workingPoints.get(segment - 1).data.evaluate(object, Double.class);
-            workingPoints.add(
-                    new InterpPoint(
-                            ff2.literal(2 * data0 - data1), workingPoints.get(segment).value));
+            double data0 = workingPoints.get(segment).getData(object);
+            double data1 = workingPoints.get(segment - 1).getData(object);
+            Expression lastValue = parameters.get(1 + interpPoints.size() * 2);
+            workingPoints.add(buildInterpPoint(ff2.literal(2 * data0 - data1), lastValue));
         }
 
         for (int i = segment - 2, k = 0; k < 4; i++, k++) {
-            xi[k] = workingPoints.get(i).data.evaluate(object, Double.class);
+            xi[k] = workingPoints.get(i).getData(object);
         }
 
         if (method == Method.COLOR) {
             Color[] ci = new Color[4];
             for (int i = segment - 2, k = 0; k < 4; i++, k++) {
-                ci[k] = workingPoints.get(i).value.evaluate(object, Color.class);
+                ci[k] = workingPoints.get(i).getColor(object);
             }
 
             for (int i = 0; i < 4; i++) {
@@ -456,7 +546,7 @@ public class InterpolateFunction implements Function {
 
         } else { // numeric
             for (int i = segment - 2, k = 0; k < 4; i++, k++) {
-                yi[k] = workingPoints.get(i).value.evaluate(object, Double.class);
+                yi[k] = workingPoints.get(i).getValue(object);
             }
             double interpolated = doCubic(lookupValue, xi, yi);
             return Converters.convert(interpolated, context);
@@ -489,7 +579,7 @@ public class InterpolateFunction implements Function {
         List<Expression> sub = parameters.subList(1, parameters.size() - numControlParameters);
         interpPoints = new ArrayList<InterpPoint>();
         for (int i = 0; i < numInterpolationParmaters; i += 2) {
-            interpPoints.add(new InterpPoint(sub.get(i), sub.get(i + 1)));
+            interpPoints.add(buildInterpPoint(sub.get(i), sub.get(i + 1)));
         }
 
         if (mode == Mode.CUBIC) {
@@ -502,6 +592,27 @@ public class InterpolateFunction implements Function {
                 mode = Mode.LINEAR;
             }
         }
+    }
+
+    private InterpPoint buildInterpPoint(Expression data, Expression value) {
+        if (data instanceof Literal && value instanceof Literal) {
+            if (method == Method.COLOR) {
+                Color color = value.evaluate(null, Color.class);
+                if (color == null) {
+                    throw new IllegalArgumentException(
+                            "Could not convert value " + value + " to a color");
+                }
+                return new ConstantColorPoint(data.evaluate(null, Double.class), color);
+            } else {
+                Double numeric = value.evaluate(null, Double.class);
+                if (numeric == null) {
+                    throw new IllegalArgumentException(
+                            "Could not convert value " + value + " to a number");
+                }
+                return new ConstantNumericPoint(data.evaluate(null, Double.class), numeric);
+            }
+        }
+        return new DynamicPoint(data, value);
     }
 
     /**
@@ -589,7 +700,7 @@ public class InterpolateFunction implements Function {
         int segment = interpPoints.size();
 
         for (int i = 0; i < interpPoints.size(); i++) {
-            Double data = interpPoints.get(i).data.evaluate(object, Double.class);
+            Double data = interpPoints.get(i).getData(object);
             if (lookupValue <= data) {
                 segment = i;
                 break;

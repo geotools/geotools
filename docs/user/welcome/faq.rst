@@ -143,9 +143,9 @@ New snapshot jars are built nightly and deployed to a repository separate from t
 are using Maven as your build tool you can work with a snapshot release by adding the following to your pom.xml::
 
     <repository>
-        <id>opengeo</id>
-        <name>OpenGeo Maven Repository</name>
-        <url>http://repo.opengeo.org/</url>
+        <id>boundless</id>
+        <name>Boundless Maven Repository</name>
+        <url>http://repo.boundlessgeo.com/main</url>
         <snapshots>
             <enabled>true</enabled>
         </snapshots>

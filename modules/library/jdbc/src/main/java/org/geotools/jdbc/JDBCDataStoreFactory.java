@@ -312,6 +312,7 @@ public abstract class JDBCDataStoreFactory implements DataStoreFactorySpi {
         // fetch size
         Integer fetchSize = (Integer) FETCHSIZE.lookUp(params);
         if (fetchSize != null && fetchSize > 0) dataStore.setFetchSize(fetchSize);
+        else dataStore.setFetchSize((Integer) FETCHSIZE.sample);
 
         Integer batchInsertSize = (Integer) BATCH_INSERT_SIZE.lookUp(params);
         if (batchInsertSize != null && batchInsertSize > 0) {

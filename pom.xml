@@ -97,7 +97,7 @@
     <src.output>${basedir}/target</src.output>
     <imageio.ext.version>1.2.2</imageio.ext.version>
     <jts.version>1.16.0</jts.version>
-    <jaiext.version>1.1.9</jaiext.version>
+    <jaiext.version>1.1.11</jaiext.version>
     <netcdf.version>4.6.11</netcdf.version>
     <jt.version>1.5.0</jt.version>
     <jaxb.api.version>2.4.0-b180830.0359</jaxb.api.version>
@@ -125,7 +125,7 @@
     <errorProne.version>2.3.2</errorProne.version>
     <javac.version>9+181-r4173-1</javac.version>
     <pmd.skip>false</pmd.skip>
-    <jackson2.version>2.9.7</jackson2.version>
+    <jackson2.version>2.9.9</jackson2.version>
   </properties>
 
   <!-- Profiles set on the command-line overwrite default properties. -->
@@ -1450,7 +1450,7 @@
       <dependency>
         <groupId>org.xerial</groupId>
         <artifactId>sqlite-jdbc</artifactId>
-        <version>3.23.1</version>
+        <version>3.27.2.1</version>
       </dependency>
       <dependency>
         <groupId>org.apache.solr</groupId>
@@ -1466,6 +1466,16 @@
       <dependency>
        <groupId>com.fasterxml.jackson.core</groupId>
        <artifactId>jackson-core</artifactId>
+        <version>${jackson2.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-databind</artifactId>
+        <version>${jackson2.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-annotations</artifactId>
         <version>${jackson2.version}</version>
       </dependency>
     </dependencies>
@@ -2142,8 +2152,8 @@
     <repository>
       <uniqueVersion>false</uniqueVersion>
       <id>osgeo</id>
-      <name>Open Source Geospatial Foundation - Maven 2 repo</name>
-      <url>dav:http://download.osgeo.org/webdav/geotools/</url>
+      <name>Open Source Geospatial Foundation - WebDAV upload</name>
+      <url>dav:http://download.osgeo.org/upload/geotools/</url>
     </repository>
     <snapshotRepository>
         <id>boundless</id>

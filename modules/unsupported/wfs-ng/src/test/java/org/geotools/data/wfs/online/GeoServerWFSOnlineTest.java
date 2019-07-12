@@ -24,6 +24,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Properties;
 import java.util.TreeSet;
 import org.geotools.data.DataStoreFinder;
 import org.geotools.data.Query;
@@ -98,16 +99,20 @@ public class GeoServerWFSOnlineTest extends OnlineTestSupport {
      * @throws IOException
      */
     private void geoServerTest(String version, boolean get) throws IOException {
-
+        Properties fixture = getFixture();
+        
         String getCapabilities =
-                "http://localhost:8080/geoserver/wfs?request=GetCapabilities&service=WFS&version="
-                        + version;
+                fixture.getProperty(WFSDataStoreFactory.URL.key, "http://localhost:8080/geoserver/wfs?") +
+                "REQUEST=GetCapabilities&SERVICE=WFS&VERSION=" + version;
+        
+        
         Map<String, Object> connectionParameters = new HashMap<String, Object>();
         connectionParameters.put(WFSDataStoreFactory.URL.key, getCapabilities);
-        connectionParameters.put(WFSDataStoreFactory.LENIENT.key, Boolean.TRUE);
-        // connectionParameters.put(WFSDataStoreFactory.WFS_STRATEGY.key, "arcgis");
-        connectionParameters.put(WFSDataStoreFactory.TIMEOUT.key, 30);
-        //
+        connectionParameters.put(WFSDataStoreFactory.LENIENT.key,
+                Boolean.valueOf(fixture.getProperty(WFSDataStoreFactory.LENIENT.key,"true")));
+        connectionParameters.put(WFSDataStoreFactory.TIMEOUT.key, Integer.valueOf(
+                fixture.getProperty(WFSDataStoreFactory.TIMEOUT.key,"30")));
+        
         if (get) {
             connectionParameters.put(WFSDataStoreFactory.PROTOCOL.key, Boolean.FALSE);
         }
@@ -158,4 +163,17 @@ public class GeoServerWFSOnlineTest extends OnlineTestSupport {
     protected String getFixtureId() {
         return "geoserver-wfs";
     }
+    
+    /** Create placeholder fixture, the use of localhost is hardcoded anyways */
+    @Override
+    protected Properties createExampleFixture() {
+        Properties template = new Properties();
+        template.put(WFSDataStoreFactory.URL.key, "http://localhost:8080/geoserver/wfs?");
+        template.put(WFSDataStoreFactory.LENIENT.key,"true");
+        template.put(WFSDataStoreFactory.TIMEOUT.key,"5");
+        
+        return template;
+    }
+
+    
 }

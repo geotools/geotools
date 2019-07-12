@@ -186,6 +186,8 @@ public class JMapPane extends AbstractMapPane {
                     }
 
                     baseImageGraphics = baseImage.createGraphics();
+                    baseImageGraphics.setBackground(getBackground());
+                    baseImageGraphics.clearRect(0, 0, r.width, r.height);
                     clearLabelCache.set(true);
 
                 } else {

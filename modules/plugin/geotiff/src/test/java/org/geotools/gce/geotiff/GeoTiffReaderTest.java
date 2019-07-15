@@ -45,11 +45,13 @@ import javax.media.jai.ImageLayout;
 import javax.media.jai.Interpolation;
 import javax.media.jai.PlanarImage;
 import javax.media.jai.ROI;
+import javax.media.jai.operator.MosaicDescriptor;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
+import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.coverage.grid.io.GroundControlPoints;
 import org.geotools.coverage.grid.io.OverviewPolicy;
 import org.geotools.coverage.grid.io.imageio.IIOMetadataDumper;
@@ -62,12 +64,14 @@ import org.geotools.factory.GeoTools;
 import org.geotools.factory.Hints;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.image.ImageWorker;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.referencing.operation.projection.Sinusoidal;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
 import org.geotools.resources.coverage.CoverageUtilities;
+import org.geotools.resources.image.ImageUtilities;
 import org.geotools.test.TestData;
 import org.hamcrest.CoreMatchers;
 import org.junit.After;
@@ -1234,5 +1238,63 @@ public class GeoTiffReaderTest extends org.junit.Assert {
                 reader.dispose();
             }
         }
+    }
+
+    @Test
+    public void testRescaleWithNodataFloat() throws IOException {
+        GridCoverage2DReader reader =
+                new GeoTiffReader(TestData.file(GeoTiffReaderTest.class, "float32_nodata.tif"));
+        GridCoverage2D coverage = null;
+        double[] redBackground = new double[] {255, 0, 0};
+        try {
+            coverage = reader.read(null);
+            ImageWorker iw = new ImageWorker(coverage.getRenderedImage());
+
+            RenderedImage output =
+                    iw.scale(64, 64, 0, 0, Interpolation.getInstance(Interpolation.INTERP_NEAREST))
+                            .rescaleToBytes()
+                            .bandMerge(3)
+                            .forceComponentColorModel()
+                            .forceColorSpaceRGB()
+                            .getRenderedImage();
+            output =
+                    new ImageWorker(output)
+                            .setBackground(redBackground)
+                            .mosaic(
+                                    new RenderedImage[] {output},
+                                    MosaicDescriptor.MOSAIC_TYPE_OVERLAY,
+                                    null,
+                                    null,
+                                    null,
+                                    null)
+                            .getRenderedImage();
+
+            Raster data = output.getData();
+            final int w = data.getWidth();
+            final int h = data.getHeight();
+
+            // Before the fix, all the samples were simply either 0,0,0 or 1,1,1
+            checkPixel(data, 0, 0, gray(1));
+            checkPixel(data, w - 1, 0, gray(43));
+            checkPixel(data, w / 2, h / 2, gray(85));
+            checkPixel(data, w - 1, h - 1, gray(255));
+            checkPixel(data, 0, h - 1, Color.RED);
+        } finally {
+            if (coverage != null) {
+                ImageUtilities.disposeImage(coverage.getRenderedImage());
+                coverage.dispose(true);
+            }
+        }
+    }
+
+    private static void checkPixel(Raster data, int x, int y, Color expectedColor) {
+        int[] pixel = new int[3];
+        data.getPixel(x, y, pixel);
+        Color color = new Color(pixel[0], pixel[1], pixel[2]);
+        assertEquals(expectedColor, color);
+    }
+
+    private static Color gray(int i) {
+        return new Color(i, i, i);
     }
 }

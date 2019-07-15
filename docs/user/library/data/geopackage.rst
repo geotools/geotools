@@ -7,7 +7,7 @@ GeoPackage is an open, standards-based, platform-independent, portable, self-des
 
 The module supports both vector data, as GeoPackage features, and raster data, as GeoPackage tiles. Access to a GeoPackage
 can be performed either low level, using the GeoPackage class, or high level, using the GeoPackage JDBC data store
-for vector data, and the GeoPackageReader for raster data.
+for vector data, and the ``GeoPackageReader`` for raster data.
 
 References:
 
@@ -31,9 +31,9 @@ DataStore Connection Parameters
 ============== ============================================
 Parameter      Description
 ============== ============================================
-"dbtype"       Must be the string "geopkg"
-"database"     The database to connect to
-"user"         User name (optional)
+``dbtype``     Must be the string ``geopkg``
+``database``   The database to connect to
+``user``       User name (optional)
 ============== ============================================
 
 Access

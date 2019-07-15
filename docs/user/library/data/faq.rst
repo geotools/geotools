@@ -25,6 +25,6 @@ Please check that write support is available.
 
 Common solutions:
 
-* ShapeFile: the file is not writeable (or is located on a DVD).
+* ShapeFile: the file is not writable (or is located on a DVD).
 * WFS: We do not support read/write for WFS 1.1.0 at this time; please use VERSION=1.0.0 when connecting.
 * Database: Please check the permissions of the username and password used to connect to the database.

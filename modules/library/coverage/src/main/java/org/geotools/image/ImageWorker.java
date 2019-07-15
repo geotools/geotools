@@ -1411,9 +1411,10 @@ public class ImageWorker {
         boolean computeRescale = false;
         for (int i = 0; i < length; i++) {
             final double delta = extrema[1][i] - extrema[0][i];
-            if (Math.abs(delta) > 1E-6 // maximum and minimum does not coincide
-                    && ((extrema[1][i] - 255 > 1E-6) // the maximum is greater than 255
-                            || (extrema[0][i] < -1E-6))) // the minimum is smaller than 0
+            if ((Math.abs(delta) > 1E-6 // maximum and minimum does not coincide
+                            && ((extrema[1][i] - 255 > 1E-6) // the maximum is greater than 255
+                                    || (extrema[0][i] < -1E-6))) // the minimum is smaller than 0
+                    || offsetAdjustment > 0) // noData has been remapped to byte
             {
                 // we need to rescale
                 computeRescale = true;

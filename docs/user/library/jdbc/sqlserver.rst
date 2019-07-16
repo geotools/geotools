@@ -18,7 +18,7 @@ References:
       <version>${geotools.version}</version>
     </dependency>
 
-Note that the groupId is **org.geotools.jdbc** for this and other JDBC plugin modules.
+Note that the ``groupId`` is ``org.geotools.jdbc`` for this and other JDBC plugin modules.
 
 Connection Parameters
 ^^^^^^^^^^^^^^^^^^^^^
@@ -26,14 +26,14 @@ Connection Parameters
 ============== ============================================
 Parameter      Description
 ============== ============================================
-"dbtype"       Must be the string "sqlserver" if using the Microsoft Driver, otherwise use "jtds-sqlserver"
-"host"         Machine name or IP address to connect to
-"port"         Port number to connect to
-"instance"     Instance of Database to use (instead of port when multiple DB services are running)
-"schema"       The database schema to access
-"database"     The database to connect to
-"user"         User name
-"passwd"       Password
+``dbtype``       Must be the string ``sqlserver`` if using the Microsoft Driver, otherwise use ``jtds-sqlserver``
+``host``         Machine name or IP address to connect to
+``port``         Port number to connect to
+``instance``     Instance of Database to use (instead of port when multiple DB services are running)
+``schema``       The database schema to access
+``database``     The database to connect to
+``user``         User name
+``passwd``       Password
 ============== ============================================
 
 Access

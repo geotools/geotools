@@ -13,7 +13,7 @@ You need HANA's JDBC driver ``ngdbc.jar`` to connect to HANA. Its license does n
 
 **Maven**
    
-Note that the groupId is **org.geotools.jdbc** for this and other JDBC plugin modules.
+Note that the ``groupId`` is ``org.geotools.jdbc`` for this and other JDBC plugin modules.
 
 ::
 
@@ -29,13 +29,13 @@ Connection Parameters
 ============== ============================================
 Parameter      Description
 ============== ============================================
-"dbtype"       Must be the string "hana"
-"host"         Machine name or IP address to connect to
-"instance"     Instance of the database
-"database"     Database to connect to. Leave empty in case of single-container databases. Set to ``SYSTEMDB`` to connect to the system database of a multi-container database.
-"schema"       The database schema to access
-"user"         User name
-"passwd"       Password
+``dbtype``       Must be the string ``hana``
+``host``         Machine name or IP address to connect to
+``instance``     Instance of the database
+``database``     Database to connect to. Leave empty in case of single-container databases. Set to ``SYSTEMDB`` to connect to the system database of a multi-container database.
+``schema``       The database schema to access
+``user``         User name
+``passwd``       Password
 ============== ============================================
 
 Creating
@@ -57,13 +57,13 @@ Here is an example of connecting::
 Advanced GeoTools Parameters
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-+--------------------+-------------------------------------------+
-| Parameter          | Description                               |
-+====================+===========================================+
-| "encode functions" | Flag controlling if a set of filter       |
-|                    | functions are translated directly in SQL. |
-|                    | Default is false.                         |
-+--------------------+-------------------------------------------+
++----------------------+-------------------------------------------+
+| Parameter            | Description                               |
++======================+===========================================+
+| ``encode functions`` | Flag controlling if a set of filter       |
+|                      | functions are translated directly in SQL. |
+|                      | Default is false.                         |
++----------------------+-------------------------------------------+
 
 Importing spatial reference systems
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

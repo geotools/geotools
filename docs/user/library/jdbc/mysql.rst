@@ -13,37 +13,37 @@ Supports direct access to a MySQL database.
       <version>${geotools.version}</version>
     </dependency>
 
-Note that the groupId is **org.geotools.jdbc** for this and other JDBC plugin modules.
+Note that the ``groupId`` is ``org.geotools.jdbc`` for this and other JDBC plugin modules.
 
 Connection Parameters
 ^^^^^^^^^^^^^^^^^^^^^
 
 **Basic connection parameters**
 
-+-------------+----------------------------------------------+
-| Parameter   | Description                                  |
-+=============+==============================================+
-| "dbtype"    | Must be the string "mysql"                   |
-+-------------+----------------------------------------------+
-| "host"      | Machine name or IP address to connect to     |
-+-------------+----------------------------------------------+
-| "port"      | Port number to connect to, default 3309      |
-+-------------+----------------------------------------------+
-| "database"  | The database to connect to                   |
-+-------------+----------------------------------------------+
-| "user"      | User name                                    |
-+-------------+----------------------------------------------+
-| "passwd"    | Password                                     |
-+-------------+----------------------------------------------+
++---------------+----------------------------------------------+
+| Parameter     | Description                                  |
++===============+==============================================+
+| ``dbtype``    | Must be the string ``mysql``                 |
++---------------+----------------------------------------------+
+| ``host``      | Machine name or IP address to connect to     |
++---------------+----------------------------------------------+
+| ``port``      | Port number to connect to, default 3309      |
++---------------+----------------------------------------------+
+| ``database``  | The database to connect to                   |
++---------------+----------------------------------------------+
+| ``user``      | User name                                    |
++---------------+----------------------------------------------+
+| ``passwd``    | Password                                     |
++---------------+----------------------------------------------+
 
 **Advanced Connection Parameters**
 
-+------------------+----------------------------------------------+
-| Parameter        | Description                                  |
-+==================+==============================================+
-| "storage engine" | Storage engine to use for created tables,    |
-|                  | default is "MyISAM".                         |
-+------------------+----------------------------------------------+
++--------------------+----------------------------------------------+
+| Parameter          | Description                                  |
++====================+==============================================+
+| ``storage engine`` | Storage engine to use for created tables,    |
+|                    | default is ``MyISAM``.                       |
++--------------------+----------------------------------------------+
 
 See additional notes below on storage engine.
 
@@ -65,7 +65,7 @@ Here is a quick example::
 Storage Engine
 ^^^^^^^^^^^^^^
 
-The MySQL Datastore is capable of creating new tables via DataStore#createSchema(). The storage engine connection parameter controls what storange engine is used for the new table. The default is "MyISAM" which is the only engine that supports spatial indexing. However depending on the use of the able other engines may be appropriate. For instance "InnoDB" is fully transaction safe so is more suitable to tables that will be undergoing many concurrent edits.
+The MySQL Datastore is capable of creating new tables via ``DataStore.createSchema()``. The storage engine connection parameter controls what storage engine is used for the new table. The default is ``MyISAM`` which is the only engine that supports spatial indexing. However depending on the use of the able other engines may be appropriate. For instance ``InnoDB`` is fully transaction safe so is more suitable to tables that will be undergoing many concurrent edits.
 
 Example::
   

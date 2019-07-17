@@ -1249,9 +1249,18 @@ public class GeoTiffReaderTest extends org.junit.Assert {
             rescalePixels.setValue(false);
             coverage = reader.read(new GeneralParameterValue[] {rescalePixels});
             ImageWorker iw = new ImageWorker(coverage.getRenderedImage());
+            double noData = iw.getNoData().getMin().doubleValue();
             double[] maximums = iw.getMaximums();
+            double[] minimums = iw.getMinimums();
             // the max is 255
             assertArrayEquals(new double[] {6020, 6020, 6020, 1, 0, 10000}, maximums, 0d);
+            assertArrayEquals(new double[] {-2473, -2473, -2473, 0, 0, 0}, minimums, 0d);
+
+            Raster data = coverage.getRenderedImage().getData();
+            // The pixel in the top right corner should be nodata
+            double sample = data.getSampleDouble(data.getWidth() - 1, 0, 0);
+            assertEquals(noData, sample, 0d);
+
         } finally {
             if (coverage != null) {
                 ImageUtilities.disposeImage(coverage.getRenderedImage());
@@ -1265,9 +1274,18 @@ public class GeoTiffReaderTest extends org.junit.Assert {
             rescalePixels.setValue(true);
             coverage = reader.read(new GeneralParameterValue[] {rescalePixels});
             ImageWorker iw = new ImageWorker(coverage.getRenderedImage());
+            double noData = iw.getNoData().getMin().doubleValue();
             double[] maximums = iw.getMaximums();
-            // the max is 255
-            assertArrayEquals(new double[] {0.602, 0.602, 0.602, 0.0001, 0, 1}, maximums, 0d);
+            double[] minimums = iw.getMinimums();
+
+            assertArrayEquals(new double[] {0.602, 0.602, 0.602, 0.0001, 0, 1}, maximums, 1E-6d);
+            assertArrayEquals(new double[] {-0.2473, -0.2473, -0.2473, 0, 0, 0}, minimums, 1E-6d);
+            Raster data = coverage.getRenderedImage().getData();
+            // The pixel in the top right corner should be nodata
+            double sample = data.getSampleDouble(data.getWidth() - 1, 0, 0);
+            assertEquals(noData, sample, 0d);
+
+            // Make sure that noData isn't rescaled too
         } finally {
             if (coverage != null) {
                 ImageUtilities.disposeImage(coverage.getRenderedImage());

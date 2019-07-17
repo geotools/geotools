@@ -24,6 +24,7 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import it.geosolutions.jaiext.range.NoDataContainer;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -59,6 +60,7 @@ import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.coverage.grid.io.imageio.GeoToolsWriteParams;
 import org.geotools.coverage.processing.CoverageProcessor;
 import org.geotools.coverage.processing.operation.Crop;
+import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.function.EnvFunction;
 import org.geotools.gce.arcgrid.ArcGridReader;
@@ -2305,6 +2307,63 @@ public class GridCoverageRendererTest {
                         "src/test/resources/org/geotools/renderer/lite/gridcoverage2d/multiPixelPacked.png");
         ImageAssert.assertEquals(reference, rendered, 0);
 
+        coverage.dispose(true);
+    }
+
+    @Test
+    public void testChannelSelectOnRescaledDataset() throws Exception {
+        URL coverageFile =
+                org.geotools.test.TestData.url(GridCoverageRendererTest.class, "scale_offset");
+        ImageMosaicReader reader = new ImageMosaicReader(coverageFile);
+
+        ParameterValue<Boolean> rescalePixels = AbstractGridFormat.RESCALE_PIXELS.createValue();
+        rescalePixels.setValue(true);
+
+        ParameterValue<int[]> bands = AbstractGridFormat.BANDS.createValue();
+        bands.setValue(new int[] {0});
+        GridCoverage2D coverage = reader.read(new GeneralParameterValue[] {rescalePixels, bands});
+        NoDataContainer noDataProperty = CoverageUtilities.getNoDataProperty(coverage);
+        assertNotNull(noDataProperty);
+        double noData = noDataProperty.getAsSingleValue();
+
+        // At that specific location (x=7,y=2) sample should be nodata
+        final int noDataPixelCoordinateX = 7;
+        final int noDataPixelCoordinateY = 2;
+        RenderedImage image = coverage.getRenderedImage();
+        Raster raster = image.getData();
+        double sample = raster.getSampleDouble(noDataPixelCoordinateX, noDataPixelCoordinateY, 0);
+        assertEquals(noData, sample, 1E-6);
+
+        ReferencedEnvelope mapExtent = ReferencedEnvelope.reference(coverage.getEnvelope2D());
+        Rectangle screenSize =
+                new Rectangle(
+                        image.getMinX(), image.getMinY(), image.getWidth(), image.getHeight());
+        AffineTransform w2s = RendererUtilities.worldToScreenTransform(mapExtent, screenSize);
+        GridCoverageRenderer renderer =
+                new GridCoverageRenderer(
+                        coverage.getCoordinateReferenceSystem(), mapExtent, screenSize, w2s);
+
+        Style style = RendererBaseTest.loadStyle(this, "sld1.sld");
+        RasterSymbolizer rasterSymbolizer =
+                (RasterSymbolizer)
+                        style.featureTypeStyles().get(0).rules().get(0).symbolizers().get(0);
+        image =
+                renderer.renderImage(
+                        coverage,
+                        rasterSymbolizer,
+                        Interpolation.getInstance(Interpolation.INTERP_NEAREST),
+                        Color.RED,
+                        256,
+                        256);
+
+        ColorModel cm = image.getColorModel();
+        assertTrue(cm instanceof IndexColorModel);
+        IndexColorModel icm = (IndexColorModel) cm;
+        int transparentPixel = icm.getTransparentPixel();
+
+        raster = image.getData();
+        int sampleB = raster.getSample(noDataPixelCoordinateX, noDataPixelCoordinateY, 0);
+        assertEquals(transparentPixel, sampleB);
         coverage.dispose(true);
     }
 }

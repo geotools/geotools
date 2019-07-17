@@ -1245,11 +1245,6 @@ public class GranuleDescriptor {
                 return null;
             }
 
-            // apply rescaling
-            if (request.isRescalingEnabled()) {
-                raster = ImageUtilities.applyRescaling(scales, offsets, raster, hints);
-            }
-
             // perform band selection if necessary, so far netcdf is the only low level reader that
             // handles bands selection, if more readers start to support it a decent approach should
             // be used to know if the low level reader already performed the bands selection or if
@@ -1280,6 +1275,19 @@ public class GranuleDescriptor {
                                         .getRenderedImage();
                     }
                 }
+            }
+
+            // apply rescaling
+            if (request.isRescalingEnabled()) {
+                if (noData != null && request.getReadType() == ReadType.JAI_IMAGEREAD) {
+                    // Force nodata settings since JAI ImageRead may lost that
+                    // We have to make sure that noData pixels won't be rescaled
+                    PlanarImage t = PlanarImage.wrapRenderedImage(raster);
+                    t.setProperty(NoDataContainer.GC_NODATA, noData);
+                    raster = t;
+                }
+
+                raster = ImageUtilities.applyRescaling(scales, offsets, raster, hints);
             }
 
             // use fixed source area

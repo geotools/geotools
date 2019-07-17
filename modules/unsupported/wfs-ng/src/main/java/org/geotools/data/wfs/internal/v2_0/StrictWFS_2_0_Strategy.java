@@ -268,6 +268,9 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
                 String count = kvp.remove("MAXFEATURES");
                 kvp.put("COUNT", count);
             }
+            // Also crude
+            String typeName = kvp.remove("TYPENAME");
+            kvp.put("TYPENAMES", typeName);
         }
 
         return kvp;

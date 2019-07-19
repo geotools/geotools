@@ -35,6 +35,7 @@ import org.geotools.data.wfs.WFSDataStoreFactory;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.GeoTools;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.referencing.CRS;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -152,13 +153,16 @@ public class MapServerOnlineTest {
 
         SimpleFeatureCollection features = source.getFeatures();
         features.getBounds();
-        features.getSchema();
+        SimpleFeatureType schema = features.getSchema();
 
         GeometryDescriptor geometryDesc = wfs.getSchema(typeName).getGeometryDescriptor();
         CoordinateReferenceSystem crs = geometryDesc.getCoordinateReferenceSystem();
-
-        ReferencedEnvelope env = new ReferencedEnvelope(-59, -58, -35, -34, crs);
-
+        ReferencedEnvelope env;
+        if (CRS.getAxisOrder(crs).equals(CRS.AxisOrder.NORTH_EAST)) {
+            env = new ReferencedEnvelope(-35, -34, -59, -58, crs);
+        } else {
+            env = new ReferencedEnvelope(-59, -58, -35, -34, crs);
+        }
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(GeoTools.getDefaultHints());
         Filter filter = ff.bbox(ff.property("msGeometry"), env);
         Query query = new Query();
@@ -186,7 +190,8 @@ public class MapServerOnlineTest {
     public void testSingleType2(DataStore wfs) throws IOException, NoSuchElementException {
         if (url_100 == null) return;
 
-        String typeName = "ms_rt_cartoteca.ctr10k.dxf";
+        String typeName = "ms:rt_cartoteca.ctr10k.dxf";
+
         SimpleFeatureType type = wfs.getSchema(typeName);
         type.getTypeName();
         type.getName().getNamespaceURI();

@@ -21,8 +21,10 @@ package org.geotools.filter.function.math;
 
 import static org.geotools.filter.capability.FunctionNameImpl.parameter;
 
+import org.geotools.factory.Hints;
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
+import org.geotools.util.Converters;
 import org.opengis.filter.capability.FunctionName;
 
 /** @source $URL$ */
@@ -37,16 +39,16 @@ public class FilterFunction_abs extends FunctionExpressionImpl {
     }
 
     public Object evaluate(Object feature) {
-        int arg0;
+        Object arg0 = getExpression(0).evaluate(feature);
+        if (arg0 == null) {
+            return null;
+        }
 
-        try { // attempt to get value and perform conversion
-            arg0 = (getExpression(0).evaluate(feature, Integer.class)).intValue();
-        } catch (Exception e) {
-            // probably a type error
+        arg0 = Converters.convert(arg0, Integer.class, new Hints());
+        if (arg0 == null) {
             throw new IllegalArgumentException(
                     "Filter Function problem for function abs argument #0 - expected type int");
         }
-
-        return new Integer(Math.abs(arg0));
+        return Math.abs((Integer) arg0);
     }
 }

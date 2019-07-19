@@ -924,6 +924,9 @@ public class DataUtilities {
         if (type.isArray()) {
             return Array.newInstance(type.getComponentType(), 0);
         }
+        if (type == Geometry.class) { // return a point as default coordinate
+            return fac.createGeometry(point);
+        }
 
         throw new IllegalArgumentException(type + " is not supported by this method");
     }
@@ -1360,8 +1363,11 @@ public class DataUtilities {
                 SimpleFeatureTypeBuilder build = new SimpleFeatureTypeBuilder();
                 build.setName(featureType.getName());
                 build.setAttributes(simpleAttributes);
-                build.setDefaultGeometry(featureType.getGeometryDescriptor().getLocalName());
 
+                GeometryDescriptor defaultGeometry = featureType.getGeometryDescriptor();
+                if (defaultGeometry != null) {
+                    build.setDefaultGeometry(defaultGeometry.getLocalName());
+                }
                 simpleFeatureType = build.buildFeatureType();
             }
         } catch (SchemaException e) {

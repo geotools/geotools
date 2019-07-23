@@ -258,7 +258,7 @@ public class MongoFeatureSource extends ContentFeatureSource {
         Filter f = q.getFilter();
         if (!isAll(f)) {
             Filter[] split = splitFilter(f);
-            query = toQuery(split[0]);
+            query = toQuery(f);
             if (!isAll(split[1])) {
                 postFilter.add(split[1]);
             }

@@ -19,13 +19,13 @@ package org.geotools.xs.bindings;
 import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.TimeZone;
 import javax.xml.namespace.QName;
 import org.geotools.util.Converters;
 import org.geotools.xml.InstanceComponent;
 import org.geotools.xml.SimpleBinding;
 import org.geotools.xml.impl.DatatypeConverterImpl;
 import org.geotools.xs.XS;
+import org.geotools.xs.XSUtils;
 
 /**
  * Binding object for the type http://www.w3.org/2001/XMLSchema:dateTime.
@@ -114,9 +114,9 @@ public class XSDateTimeBinding implements SimpleBinding {
      */
     public String encode(Object object, String value) {
         final Date timestamp = Converters.convert(object, Date.class);
-        Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
-        cal.clear();
-        cal.setTimeInMillis(timestamp.getTime());
-        return DatatypeConverterImpl.getInstance().printDateTime(cal);
+        Calendar calendar = XSUtils.getConfiguredCalendar();
+        calendar.clear();
+        calendar.setTimeInMillis(timestamp.getTime());
+        return DatatypeConverterImpl.getInstance().printDateTime(calendar);
     }
 }

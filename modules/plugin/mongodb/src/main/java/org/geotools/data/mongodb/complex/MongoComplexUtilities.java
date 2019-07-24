@@ -372,7 +372,9 @@ public final class MongoComplexUtilities {
                 if (value instanceof List) {
                     List list = (List) value;
                     if (!list.isEmpty()) {
-                        findMappingsHelper(list.get(0), path, mappings);
+                        for (Object eo : list) {
+                            findMappingsHelper(eo, path, mappings);
+                        }
                     }
                 } else if (value instanceof DBObject) {
                     findMappingsHelper(value, path, mappings);

@@ -105,7 +105,8 @@ public class GeoJSONMongoTestSetup extends MongoTestSetup {
                                 "listProperty",
                                 list(
                                         new BasicDBObject("value", 2.1),
-                                        new BasicDBObject("value", 2.2)))
+                                        new BasicDBObject("value", 2.2),
+                                        new BasicDBObject("insideArrayValue", 7.7)))
                         .add("dateProperty", getDateProperty(2))
                         .pop()
                         .get());

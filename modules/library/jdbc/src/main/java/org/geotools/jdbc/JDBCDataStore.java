@@ -3229,17 +3229,16 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
             if (sqlTypeName != null) {
                 sqlTypeNames[i] = sqlTypeName;
             }
-        }        
-        //Step 2 Geos-7533 make below two lines controllable from hint or param
-        //if all sql type names have been found in dialect dont
-        //go to database GEOS-7533
-        boolean allTypesFound = !ArrayUtils.contains(sqlTypeNames, null);        
-        if(allTypesFound) return sqlTypeNames;
+        }
+        // Geos-7533 if all sql type names have been found in dialect dont
+        // go to database
+        boolean allTypesFound = !ArrayUtils.contains(sqlTypeNames, null);
+        if (allTypesFound) return sqlTypeNames;
 
         // figure out the type names that correspond to the sql types from
         // the database metadata
         DatabaseMetaData metaData = cx.getMetaData();
-        
+
         /*
         *      <LI><B>TYPE_NAME</B> String => Type name
         *        <LI><B>DATA_TYPE</B> int => SQL data type from java.sql.Types
@@ -3291,6 +3290,9 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
 
                     if (sqlType == sqlTypes[i]) {
                         sqlTypeNames[i] = sqlTypeName;
+                        // Geos-7533
+                        // cache the sqlType which required going to database for sql types
+                        getSqlTypeToSqlTypeNameOverrides().put(sqlType, sqlTypeName);
                     }
                 }
             }

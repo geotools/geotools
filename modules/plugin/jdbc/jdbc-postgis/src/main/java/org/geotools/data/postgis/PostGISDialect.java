@@ -71,7 +71,6 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.postgresql.core.Oid;
 
 public class PostGISDialect extends BasicSQLDialect {
 
@@ -1115,8 +1114,6 @@ public class PostGISDialect extends BasicSQLDialect {
 
     @Override
     public void registerSqlTypeToSqlTypeNameOverrides(Map<Integer, String> overrides) {
-        //Step 1 Geos-7533 put the types in dialect
-        overrides.put(4, "int4");
         overrides.put(Types.VARCHAR, "VARCHAR");
         overrides.put(Types.BOOLEAN, "BOOL");
         overrides.put(Types.BLOB, "BYTEA");
@@ -1366,7 +1363,7 @@ public class PostGISDialect extends BasicSQLDialect {
             throws SQLException {
         Statement st = cx.createStatement();
         String tableName = featureType.getTypeName();
-        
+
         try {
             // remove all the geometry_column entries
             String sql =

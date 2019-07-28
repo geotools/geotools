@@ -1,5 +1,6 @@
 @mode 'Flat';
 
+/* @title Zoomed out highway */
 [class = 'highway' and type = 'motorway'][@sd < 15M],  [class = 'highway' and type = 'motorway_link'][@sd < 1M]{
   stroke: #ffffff, #e66e89;
   z-index: 0, 1;
@@ -19,8 +20,10 @@
       0.4, 3M,
       0.2, 6M,
       0.1);
+  /* @title Mid zoom highway */
   [@sd < 200k][@sd > 100k] {
     stroke: #c24e6b, #e892a2;
+    /* @title Mid zoom motorway */
     [type = 'motorway'] {
       stroke-width:  
         categorize(@sd,
@@ -44,6 +47,7 @@
           3 - 1, 200k,
           2 - 1) * 0.9];
     };
+    /* @title Zoomed out motorway link */
     [type = 'motorway_link'] {
       stroke-width:  
         categorize(@sd,
@@ -68,8 +72,10 @@
           1.2 - 1) * 0.9];
     }
   };
+  /* @title Zoomed in highway */
   [@sd < 100k] {
       stroke: #dc2a67, #e892a2;
+      /* @title Zoomed in motorway */
       [type = 'motorway'] {
         stroke-width:  
           categorize(@sd,
@@ -92,10 +98,12 @@
             6 - 1, 100k,
             3 - 1, 200k,
             2 - 1) * 0.9];
+        /* @title Zoomed in bridge */
         [bridge = 1] {
           stroke: #000000, #e892a2;
         };
       };
+      /* @title Zoomed in motorway link*/
       [type = 'motorway_link'] {
         stroke-width:  
           categorize(@sd,
@@ -118,6 +126,7 @@
             3 - 1, 100k,
             2 - 1, 200k,
             1.2 - 1) * 0.9];
+        /* @title Zoomed in link bridge */    
         [bridge = 1]{
           stroke: #000000, #e892a2;
         };

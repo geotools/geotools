@@ -47,6 +47,11 @@ public class CssRule {
 
     public static final Integer NO_Z_INDEX = null;
 
+    enum ZIndexMode {
+        NoZIndexAll,
+        NoZIndexZero;
+    }
+
     Selector selector;
 
     Map<PseudoClass, List<Property>> properties;
@@ -295,9 +300,10 @@ public class CssRule {
      * specific z-index
      *
      * @param zIndex
+     * @param zIndexMode
      * @return
      */
-    public CssRule getSubRuleByZIndex(Integer zIndex) {
+    public CssRule getSubRuleByZIndex(Integer zIndex, ZIndexMode zIndexMode) {
         Map<PseudoClass, List<Property>> zProperties = new HashMap<>();
         List<Integer> zIndexes = new ArrayList<>();
         for (Map.Entry<PseudoClass, List<Property>> entry : this.getProperties().entrySet()) {
@@ -311,9 +317,14 @@ public class CssRule {
                 int zIndexPosition = it.nextIndex();
                 Integer nextZIndex = it.next();
                 if (nextZIndex == NO_Z_INDEX) {
-                    // this set of properties is z-index independent
-                    zProperties.put(entry.getKey(), new ArrayList<>(props));
-                } else if (!nextZIndex.equals(zIndex)) {
+                    if (zIndexMode == ZIndexMode.NoZIndexAll
+                            || !PseudoClass.ROOT.equals(entry.getKey())) {
+                        // this set of properties is z-index independent
+                        zProperties.put(entry.getKey(), new ArrayList<>(props));
+                    } else if (zIndex == 0) {
+                        zProperties.put(entry.getKey(), new ArrayList<>(props));
+                    }
+                } else if (nextZIndex == null || !nextZIndex.equals(zIndex)) {
                     continue;
                 } else {
                     // extract the property values at that position
@@ -347,7 +358,7 @@ public class CssRule {
             nestedByZIndex =
                     nestedRules
                             .stream()
-                            .map(r -> r.getSubRuleByZIndex(zIndex))
+                            .map(r -> r.getSubRuleByZIndex(zIndex, zIndexMode))
                             .filter(r -> r != null)
                             .collect(Collectors.toList());
         }

@@ -38,6 +38,7 @@ import org.apache.commons.httpclient.params.HttpConnectionManagerParams;
 import org.geotools.data.ows.AbstractOpenWebService;
 import org.geotools.data.ows.HTTPClient;
 import org.geotools.data.ows.HTTPResponse;
+import org.geotools.data.wfs.internal.WFSConfig;
 import org.geotools.util.logging.Logging;
 
 /**
@@ -65,14 +66,14 @@ public class MultithreadedHttpClient implements HTTPClient {
 
     private boolean tryGzip;
 
-    public MultithreadedHttpClient() {
+    public MultithreadedHttpClient(WFSConfig config) {
         connectionManager = new MultiThreadedHttpConnectionManager();
 
         HttpConnectionManagerParams params = new HttpConnectionManagerParams();
-        params.setSoTimeout(30000);
-        params.setConnectionTimeout(30000);
-        params.setMaxTotalConnections(6);
-        params.setDefaultMaxConnectionsPerHost(6);
+        params.setSoTimeout(config.getTimeoutMillis());
+        params.setConnectionTimeout(config.getTimeoutMillis());
+        params.setMaxTotalConnections(config.getMaxConnectionPoolSize());
+        params.setDefaultMaxConnectionsPerHost(config.getMaxConnectionPoolSize());
 
         connectionManager.setParams(params);
 

@@ -5244,6 +5244,10 @@ public class ImageWorker {
         if (isNoDataNeeded()) {
             if (background != null && background.length > 0) {
                 pb.set(background[0], 5); // destination No Data value
+            } else if (nodata != null) {
+                // preserve nodata to avoid the destination nodata fall
+                // in the range of valid values
+                pb.set(nodata.getMin(), 5);
             }
         }
 

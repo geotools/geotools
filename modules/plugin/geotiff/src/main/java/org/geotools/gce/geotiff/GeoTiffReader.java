@@ -678,6 +678,13 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
 
         // applying rescale if needed
         if (rescalePixels) {
+            if (!Double.isNaN(noData)) {
+                // Force nodata settings since JAI ImageRead may lost that
+                // We have to make sure that noData pixels won't be rescaled
+                PlanarImage t = PlanarImage.wrapRenderedImage(coverageRaster);
+                t.setProperty(NoDataContainer.GC_NODATA, new NoDataContainer(noData));
+                coverageRaster = t;
+            }
             coverageRaster =
                     PlanarImage.wrapRenderedImage(
                             ImageUtilities.applyRescaling(

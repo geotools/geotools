@@ -33,5 +33,4 @@ public class WFSConfigTest {
 
         assertEquals(10, config.getMaxConnectionPoolSize());
     }
-
 }

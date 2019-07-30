@@ -574,8 +574,9 @@ public class WFSDataAccessFactory implements DataAccessFactory {
                         new WFSFactoryParam<Boolean>(name, Boolean.class, title, description, true);
     }
 
-    /** Optional {@code Integer} controlling the size of the connection pool to use for http(s) requests.
-     *  Only activated when {@link #USE_HTTP_CONNECTION_POOLING} is <code>true</code>
+    /**
+     * Optional {@code Integer} controlling the size of the connection pool to use for http(s)
+     * requests. Only activated when {@link #USE_HTTP_CONNECTION_POOLING} is <code>true</code>
      */
     public static final WFSFactoryParam<Integer> MAX_CONNECTION_POOL_SIZE;
 

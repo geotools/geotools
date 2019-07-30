@@ -262,7 +262,10 @@ public class WFSConfig {
         return useHttpConnectionPooling;
     }
 
-    /** @return the size of the connection pool, if {@link #isUseHttpConnectionPooling()} is <code>true</code> */
+    /**
+     * @return the size of the connection pool, if {@link #isUseHttpConnectionPooling()} is <code>
+     *     true</code>
+     */
     public int getMaxConnectionPoolSize() {
         return maxConnectionPoolSize;
     }

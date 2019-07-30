@@ -108,7 +108,7 @@ final class GridCoverageRendererUtilities {
     //            dstMax = floor(A) - 1
     //            OR dstMax = ceil(A - 1)
     //
-    private static float RATIONAL_TOLERANCE = 0.000001F;
+
     /**
      * Checks whether the provided object is null or not. If it is null it throws an {@link
      * IllegalArgumentException} exception.

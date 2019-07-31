@@ -298,7 +298,7 @@ public final class JTS {
      * Transform from 3D down to 2D.
      *
      * <p>This method transforms each ordinate into WGS84, manually converts this to WGS84_3D with
-     * the addition of a Double.NaN, and then transforms to the final 3D position.
+     * the addition of a Double.NaN, and then transforms to the final 2D position.
      *
      * @param sourceEnvelope
      * @param targetEnvelope

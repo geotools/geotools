@@ -20,3 +20,5 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 html_title='GeoTools %s User Guide' % release
+
+spelling_show_suggestions=False

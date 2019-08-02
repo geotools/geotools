@@ -625,7 +625,7 @@ Another set of aggregate functions are aimed at splitting your ``FeatureCollecti
 These classifiers are used:
 
 * With the function "classifier" to sort features into groups
-* With :doc:`gt-brewer <../../extension/brewer/index>` to produce attractive styles for visualisation of your data.
+* With :doc:`gt-brewer <../../extension/brewer/index>` to produce attractive styles for visualization of your data.
 
 Here are some examples of defining and working with classifiers:
 

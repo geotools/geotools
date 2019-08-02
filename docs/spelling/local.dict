@@ -1,5 +1,4 @@
-Gabriella
-Turek
+Accessor
 affine
 affines
 arcgrid
@@ -36,6 +35,7 @@ Erdas
 ESRI
 evictor
 exe
+Gabriella
 Gaby
 gdal
 geolocate
@@ -94,6 +94,7 @@ NaN
 Netbeans
 northing
 odbc
+OpenGIS
 OSX
 parsers
 pdf
@@ -144,6 +145,7 @@ Solr
 Sonyatype
 SQLite
 styler
+subclasses
 subdirectories
 symbolizer
 symbolizers
@@ -151,6 +153,7 @@ symbology
 Sys
 Teradata
 tilings
+Turek
 uDig
 undirected
 Unidata
@@ -162,5 +165,6 @@ wld
 XLink
 XLinks
 XML
+XPath
 XSD
 YAML

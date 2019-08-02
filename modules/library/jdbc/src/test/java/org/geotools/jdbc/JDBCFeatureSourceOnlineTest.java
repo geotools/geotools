@@ -585,7 +585,7 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
         if (dialect instanceof BasicSQLDialect) {
             FilterToSQL filterToSQL = ((BasicSQLDialect) dialect).createFilterToSQL();
             String sql = filterToSQL.encodeToString(filters[0]);
-            String escapedProperty = filterToSQL.escapeName(property);
+            String escapedProperty = filterToSQL.escapeIdentifier(property);
             assertEquals(
                     "WHERE ("
                             + escapedProperty
@@ -597,7 +597,7 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
             PreparedFilterToSQL filterToSQL =
                     ((PreparedStatementSQLDialect) dialect).createPreparedFilterToSQL();
             String sql = filterToSQL.encodeToString(filters[0]);
-            String escapedProperty = filterToSQL.escapeName(property);
+            String escapedProperty = filterToSQL.escapeIdentifier(property);
             assertEquals(
                     "WHERE ("
                             + escapedProperty
@@ -640,9 +640,9 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
         if (dialect instanceof BasicSQLDialect) {
             FilterToSQL filterToSQL = ((BasicSQLDialect) dialect).createFilterToSQL();
             String sql = filterToSQL.encodeToString(filters[0]);
-            String spe = filterToSQL.escapeName(sp);
-            String ipe = filterToSQL.escapeName(ip);
-            String dpe = filterToSQL.escapeName(dp);
+            String spe = filterToSQL.escapeIdentifier(sp);
+            String ipe = filterToSQL.escapeIdentifier(ip);
+            String dpe = filterToSQL.escapeIdentifier(dp);
             assertEquals(
                     "WHERE (("
                             + spe
@@ -664,9 +664,9 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
             PreparedFilterToSQL filterToSQL =
                     ((PreparedStatementSQLDialect) dialect).createPreparedFilterToSQL();
             String sql = filterToSQL.encodeToString(filters[0]);
-            String spe = filterToSQL.escapeName(sp);
-            String ipe = filterToSQL.escapeName(ip);
-            String dpe = filterToSQL.escapeName(dp);
+            String spe = filterToSQL.escapeIdentifier(sp);
+            String ipe = filterToSQL.escapeIdentifier(ip);
+            String dpe = filterToSQL.escapeIdentifier(dp);
             assertEquals(
                     "WHERE (("
                             + spe

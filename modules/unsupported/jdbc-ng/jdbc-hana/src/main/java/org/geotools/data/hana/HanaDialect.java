@@ -30,6 +30,7 @@ import org.geotools.data.hana.wkb.HanaWKBWriterException;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.PreparedFilterToSQL;
 import org.geotools.jdbc.PreparedStatementSQLDialect;
+import org.geotools.jdbc.util.SqlUtil;
 import org.geotools.referencing.CRS;
 import org.locationtech.jts.geom.*;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -851,7 +852,7 @@ public class HanaDialect extends PreparedStatementSQLDialect {
             } else {
                 sb.append('.');
             }
-            sb.append(HanaUtil.encodeIdentifier(ids[i]));
+            sb.append(SqlUtil.quoteIdentifier(ids[i]));
         }
     }
 

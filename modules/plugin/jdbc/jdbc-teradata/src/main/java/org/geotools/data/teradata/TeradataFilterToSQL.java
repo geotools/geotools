@@ -275,10 +275,10 @@ public class TeradataFilterToSQL extends PreparedFilterToSQL {
 
         out.write(" FROM ");
         if (tinfo.getSchemaName() != null) {
-            out.write(escapeName(tinfo.getSchemaName()));
+            out.write(escapeIdentifier(tinfo.getSchemaName()));
             out.write(".");
         }
-        out.write(escapeName(tinfo.getIndexTableName()));
+        out.write(escapeIdentifier(tinfo.getIndexTableName()));
         out.write(" t, TABLE (SYSSPATIAL.tessellate_search(1,");
 
         out.write(

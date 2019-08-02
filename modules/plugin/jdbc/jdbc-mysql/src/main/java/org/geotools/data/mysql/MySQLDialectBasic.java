@@ -79,6 +79,11 @@ public class MySQLDialectBasic extends BasicSQLDialect {
     }
 
     @Override
+    public String escapeIdentifier(String identifer) {
+        return delegate.escapeIdentifier(identifer);
+    }
+
+    @Override
     public String getGeometryTypeName(Integer type) {
         return delegate.getGeometryTypeName(type);
     }

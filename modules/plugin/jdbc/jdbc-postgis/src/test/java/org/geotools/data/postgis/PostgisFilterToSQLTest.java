@@ -131,7 +131,7 @@ public class PostgisFilterToSQLTest extends SQLFilterTestSupport {
         filterToSql.encode(bbox3d);
         String sql = writer.toString().toLowerCase();
         assertEquals(
-                "where testgeometry &&& st_makeline(st_makepoint(2.0,1.0,0.0), st_makepoint(3.0,2.0,1.0))",
+                "where \"testgeometry\" &&& st_makeline(st_makepoint(2.0,1.0,0.0), st_makepoint(3.0,2.0,1.0))",
                 sql);
     }
 

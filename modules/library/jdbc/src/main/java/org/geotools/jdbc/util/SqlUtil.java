@@ -243,4 +243,50 @@ public class SqlUtil {
     public static PreparedStatementBuilder prepare(PreparedStatement st) throws SQLException {
         return new PreparedStatementBuilder(st);
     }
+
+    /**
+     * Quotes a SQL identifier.
+     *
+     * <p>An identifier is quoted by enclosing it in double quotes. If the identifier contains a
+     * double quote itself, the double quote is replaced by two consecutive double quotes, e.g. a"b
+     * is quoted as "a""b".
+     *
+     * @param id The identifier to quote. Must not be null.
+     * @return Returns the quoted identifier.
+     */
+    public static String quoteIdentifier(String id) {
+        StringBuilder sb = new StringBuilder();
+        sb.append('"');
+        for (int i = 0; i < id.length(); ++i) {
+            char c = id.charAt(i);
+            if (c != '"') {
+                sb.append(c);
+            } else {
+                sb.append("\"\"");
+            }
+        }
+        sb.append('"');
+        return sb.toString();
+    }
+
+    /**
+     * Quotes a series of identifiers separating them with dots.
+     *
+     * <p>Each identifier is quoted as described in {@link #quoteIdentifier(String)} and then a dot
+     * is placed between all identifiers, e.g. if the identifiers a and b were passed, the result
+     * would be "a"."b".
+     *
+     * @param iid The initial identifier.
+     * @param fids Any number of further identifiers.
+     * @return Returns the quoted series of identifiers.
+     */
+    public static String quoteIdentifiers(String iid, String... fids) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(quoteIdentifier(iid));
+        for (String fid : fids) {
+            sb.append('.');
+            sb.append(quoteIdentifier(fid));
+        }
+        return sb.toString();
+    }
 }

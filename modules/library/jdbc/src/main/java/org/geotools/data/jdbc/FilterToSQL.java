@@ -48,6 +48,7 @@ import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JoinPropertyName;
 import org.geotools.jdbc.PrimaryKey;
 import org.geotools.jdbc.PrimaryKeyColumn;
+import org.geotools.jdbc.util.SqlUtil;
 import org.geotools.referencing.CRS;
 import org.geotools.util.ConverterFactory;
 import org.geotools.util.Converters;
@@ -1025,7 +1026,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
                 out.write("(");
 
                 for (int j = 0; j < attValues.size(); j++) {
-                    out.write(escapeName(columns.get(j).getName()));
+                    out.write(escapeIdentifier(columns.get(j).getName()));
                     out.write(" = '");
                     out.write(
                             attValues.get(j).toString()); // DJB: changed this to attValues[j] from
@@ -1381,7 +1382,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
             // check for join
             if (expression instanceof JoinPropertyName) {
                 // encode the prefix
-                out.write(escapeName(((JoinPropertyName) expression).getAlias()));
+                out.write(escapeIdentifier(((JoinPropertyName) expression).getAlias()));
                 out.write(".");
             }
 
@@ -1397,14 +1398,14 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
             }
             String encodedField;
             if (attribute != null) {
-                encodedField = fieldEncoder.encode(escapeName(attribute.getLocalName()));
+                encodedField = fieldEncoder.encode(escapeIdentifier(attribute.getLocalName()));
                 if (target != null && target.isAssignableFrom(attribute.getType().getBinding())) {
                     // no need for casting, it's already the right type
                     target = null;
                 }
             } else {
                 // fall back to just encoding the property name
-                encodedField = fieldEncoder.encode(escapeName(expression.getPropertyName()));
+                encodedField = fieldEncoder.encode(escapeIdentifier(expression.getPropertyName()));
             }
 
             // handle destination type if necessary
@@ -1865,8 +1866,12 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
      * SPEAR.ARCHSITES If the column and table names were actually created using mixed-case, the
      * query needs to be specified as: SELECT "Geom" from "Spear"."ArchSites"
      *
+     * @deprecated It is unclear how the escape character itself should be escaped in names.
+     *     Usually, it's either duplicated or prefixed with a backslash. Override method {@link
+     *     #escapeIdentifier(String)} instead.
      * @param escape the character to be used to escape database names
      */
+    @Deprecated
     public void setSqlNameEscape(String escape) {
         sqlNameEscape = escape;
     }
@@ -1874,10 +1879,29 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
     /**
      * Surrounds a name with the SQL escape character.
      *
+     * @deprecated This function is not able to escape the escape character itself. Use {@link
+     *     #escapeIdentifier(String)} instead.
      * @param name
      */
+    @Deprecated
     public String escapeName(String name) {
         return sqlNameEscape + name + sqlNameEscape;
+    }
+
+    /**
+     * Escapes an identifier.
+     *
+     * <p>The default implementation encloses the identifier in double quotes. Each double quote in
+     * the identifier itself is duplicated, e.g. a"b would be escaped as "a""b".
+     *
+     * <p>Override this method if the target database uses a different convention to escape
+     * identifiers.
+     *
+     * @param identifer The identifier to escape
+     * @return Returns the escaped identifier.
+     */
+    public String escapeIdentifier(String identifer) {
+        return SqlUtil.quoteIdentifier(identifer);
     }
 
     /**

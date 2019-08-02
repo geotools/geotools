@@ -30,6 +30,7 @@ import org.geotools.data.Parameter;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCDataStoreFactory;
 import org.geotools.jdbc.SQLDialect;
+import org.geotools.jdbc.util.SqlUtil;
 import org.geotools.util.KVP;
 import org.postgresql.jdbc.SslMode;
 
@@ -285,9 +286,9 @@ public class PostgisNGDataStoreFactory extends JDBCDataStoreFactory {
 
                     String createParams = (String) CREATE_PARAMS.lookUp(params);
                     String sql =
-                            "CREATE DATABASE \""
-                                    + db
-                                    + "\" "
+                            "CREATE DATABASE "
+                                    + SqlUtil.quoteIdentifier(db)
+                                    + " "
                                     + (createParams == null ? "" : createParams);
                     st = cx.createStatement();
                     st.execute(sql);
@@ -365,7 +366,7 @@ public class PostgisNGDataStoreFactory extends JDBCDataStoreFactory {
             cx = getConnection(user, password, url);
 
             // drop the database
-            String sql = "DROP DATABASE \"" + db + "\"";
+            String sql = "DROP DATABASE " + SqlUtil.quoteIdentifier(db);
             st = cx.createStatement();
             st.execute(sql);
         } catch (SQLException e) {

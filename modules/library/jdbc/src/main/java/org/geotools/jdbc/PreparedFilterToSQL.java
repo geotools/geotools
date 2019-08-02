@@ -173,7 +173,7 @@ public class PreparedFilterToSQL extends FilterToSQL {
                 out.write("(");
 
                 for (int j = 0; j < attValues.size(); j++) {
-                    out.write(escapeName(columns.get(j).getName()));
+                    out.write(escapeIdentifier(columns.get(j).getName()));
                     out.write(" = ");
                     out.write('?');
 

@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.geotools.data.hana.metadata.MetadataDdl;
 import org.geotools.data.hana.metadata.Srs;
+import org.geotools.jdbc.util.SqlUtil;
 
 /** @author Stefan Uhrig, SAP SE */
 public class HanaTestUtil {
@@ -62,9 +63,7 @@ public class HanaTestUtil {
             } else {
                 sb.append('.');
             }
-            sb.append('"');
-            sb.append(ids[i]);
-            sb.append('"');
+            sb.append(SqlUtil.quoteIdentifier(ids[i]));
         }
         return sb;
     }

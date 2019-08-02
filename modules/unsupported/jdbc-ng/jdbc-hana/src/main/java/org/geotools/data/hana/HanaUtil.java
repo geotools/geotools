@@ -24,27 +24,6 @@ package org.geotools.data.hana;
 public final class HanaUtil {
 
     /**
-     * Encodes an identifier.
-     *
-     * @param id The identifier to encode. Must not be null.
-     * @return Returns the encoded identifier.
-     */
-    public static String encodeIdentifier(String id) {
-        StringBuilder sb = new StringBuilder();
-        sb.append('"');
-        for (int i = 0; i < id.length(); ++i) {
-            char c = id.charAt(i);
-            if (c != '"') {
-                sb.append(c);
-            } else {
-                sb.append("\"\"");
-            }
-        }
-        sb.append('"');
-        return sb.toString();
-    }
-
-    /**
      * Converts a string to a SQL string literal by quoting it with single quotes.
      *
      * @param s The string to convert.

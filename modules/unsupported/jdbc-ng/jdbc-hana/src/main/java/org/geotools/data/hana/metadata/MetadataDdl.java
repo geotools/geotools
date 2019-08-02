@@ -17,6 +17,7 @@
 package org.geotools.data.hana.metadata;
 
 import org.geotools.data.hana.HanaUtil;
+import org.geotools.jdbc.util.SqlUtil;
 
 /**
  * Helper class to create DDL statements for creating unit-of-measures and spatial reference
@@ -29,7 +30,7 @@ public final class MetadataDdl {
     public static String getUomDdl(Uom uom) {
         StringBuilder sql = new StringBuilder();
         sql.append("CREATE SPATIAL UNIT OF MEASURE ");
-        sql.append(HanaUtil.encodeIdentifier(uom.getName()));
+        sql.append(SqlUtil.quoteIdentifier(uom.getName()));
         sql.append(" TYPE ");
         switch (uom.getType()) {
             case LINEAR:
@@ -47,11 +48,11 @@ public final class MetadataDdl {
     public static String getSrsDdl(Srs srs) {
         StringBuilder sql = new StringBuilder();
         sql.append("CREATE SPATIAL REFERENCE SYSTEM ");
-        sql.append(HanaUtil.encodeIdentifier(srs.getName()));
+        sql.append(SqlUtil.quoteIdentifier(srs.getName()));
         sql.append(" IDENTIFIED BY ");
         sql.append(Integer.toString(srs.getSrid()));
         sql.append(" ORGANIZATION ");
-        sql.append(HanaUtil.encodeIdentifier(srs.getOrganization()));
+        sql.append(SqlUtil.quoteIdentifier(srs.getOrganization()));
         sql.append(" IDENTIFIED BY ");
         sql.append(srs.getOrganizationId());
         String wkt = srs.getWkt();
@@ -65,11 +66,11 @@ public final class MetadataDdl {
             sql.append(HanaUtil.toStringLiteral(proj4));
         }
         sql.append(" LINEAR UNIT OF MEASURE ");
-        sql.append(HanaUtil.encodeIdentifier(srs.getLinearUom()));
+        sql.append(SqlUtil.quoteIdentifier(srs.getLinearUom()));
         String angularUom = srs.getAngularUom();
         if (angularUom != null) {
             sql.append(" ANGULAR UNIT OF MEASURE ");
-            sql.append(HanaUtil.encodeIdentifier(angularUom));
+            sql.append(SqlUtil.quoteIdentifier(angularUom));
         }
         sql.append(" TYPE ");
         switch (srs.getType()) {

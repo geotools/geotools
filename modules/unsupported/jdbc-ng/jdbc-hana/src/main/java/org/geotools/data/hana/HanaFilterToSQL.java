@@ -46,6 +46,7 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.jdbc.PreparedFilterToSQL;
 import org.geotools.jdbc.PreparedStatementSQLDialect;
 import org.geotools.jdbc.SQLDialect;
+import org.geotools.jdbc.util.SqlUtil;
 import org.geotools.referencing.CRS;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
@@ -87,7 +88,6 @@ import org.opengis.referencing.crs.GeographicCRS;
  *
  * @author Stefan Uhrig, SAP SE
  */
-@SuppressWarnings("deprecation")
 public class HanaFilterToSQL extends PreparedFilterToSQL {
 
     private static final Map<String, Double> UNITS_MAP = new HashMap<String, Double>();
@@ -420,7 +420,7 @@ public class HanaFilterToSQL extends PreparedFilterToSQL {
         out.write(encodeAsHex(wkb));
         if ((currentSRID == null) && (currentGeometry != null)) {
             out.write(", ");
-            out.write(HanaUtil.encodeIdentifier(currentGeometry.getLocalName()));
+            out.write(SqlUtil.quoteIdentifier(currentGeometry.getLocalName()));
             out.write(".ST_SRID())");
         } else {
             out.write("', " + currentSRID + ")");

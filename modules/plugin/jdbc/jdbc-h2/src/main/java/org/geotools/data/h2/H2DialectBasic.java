@@ -68,6 +68,11 @@ public class H2DialectBasic extends BasicSQLDialect {
     }
 
     @Override
+    public String escapeIdentifier(String identifer) {
+        return delegate.escapeIdentifier(identifer);
+    }
+
+    @Override
     public void registerSqlTypeToClassMappings(Map<Integer, Class<?>> mappings) {
         delegate.registerSqlTypeToClassMappings(mappings);
     }

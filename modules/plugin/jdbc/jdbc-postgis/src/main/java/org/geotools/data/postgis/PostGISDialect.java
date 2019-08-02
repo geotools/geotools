@@ -454,7 +454,7 @@ public class PostGISDialect extends BasicSQLDialect {
     @Override
     public void encodeGeometryEnvelope(String tableName, String geometryColumn, StringBuffer sql) {
         sql.append("ST_AsText(" + getForce2DFunction() + "(ST_Envelope(");
-        sql.append("ST_Extent(\"" + geometryColumn + "\"::geometry))))");
+        sql.append("ST_Extent(" + escapeIdentifier(geometryColumn) + "::geometry))))");
     }
 
     @Override
@@ -802,17 +802,17 @@ public class PostGISDialect extends BasicSQLDialect {
 
             if (srid == null || (getVersion(cx).compareTo(V_2_0_0) >= 0 && srid == 0)) {
                 String sqlStatement =
-                        "SELECT ST_SRID(\""
-                                + columnName
-                                + "\") "
-                                + "FROM \""
-                                + schemaName
-                                + "\".\""
-                                + tableName
-                                + "\" "
-                                + "WHERE \""
-                                + columnName
-                                + "\" IS NOT NULL "
+                        "SELECT ST_SRID("
+                                + escapeIdentifier(columnName)
+                                + ") "
+                                + "FROM "
+                                + escapeIdentifier(schemaName)
+                                + "."
+                                + escapeIdentifier(tableName)
+                                + " "
+                                + "WHERE "
+                                + escapeIdentifier(columnName)
+                                + " IS NOT NULL "
                                 + "LIMIT 1";
                 result = statement.executeQuery(sqlStatement);
                 if (result.next()) {
@@ -945,16 +945,16 @@ public class PostGISDialect extends BasicSQLDialect {
             String sqlStatement =
                     "SELECT "
                             + dimFunction
-                            + "(\""
-                            + columnName
-                            + "\"::geometry) "
-                            + "FROM \""
-                            + schemaName
-                            + "\".\""
-                            + tableName
-                            + "\" "
+                            + "("
+                            + escapeIdentifier(columnName)
+                            + "::geometry) "
+                            + "FROM "
+                            + escapeIdentifier(schemaName)
+                            + "."
+                            + escapeIdentifier(tableName)
+                            + " "
                             + "WHERE "
-                            + columnName
+                            + escapeIdentifier(columnName)
                             + " IS NOT NULL "
                             + "LIMIT 1";
             statement = cx.createStatement();
@@ -989,9 +989,10 @@ public class PostGISDialect extends BasicSQLDialect {
         try {
             // pg_get_serial_sequence oddity: table name needs to be
             // escaped with "", whilst column name, doesn't...
-            String sql = "SELECT pg_get_serial_sequence('\"";
-            if (schemaName != null && !"".equals(schemaName)) sql += schemaName + "\".\"";
-            sql += tableName + "\"', '" + columnName + "')";
+            String sql = "SELECT pg_get_serial_sequence('";
+            if (schemaName != null && !"".equals(schemaName))
+                sql += escapeIdentifier(schemaName) + ".";
+            sql += escapeIdentifier(tableName) + "', '" + columnName + "')";
 
             dataStore.getLogger().fine(sql);
             ResultSet rs = st.executeQuery(sql);
@@ -1193,14 +1194,14 @@ public class PostGISDialect extends BasicSQLDialect {
                         }
 
                         sql =
-                                "ALTER TABLE \""
-                                        + schemaName
-                                        + "\".\""
-                                        + tableName
-                                        + "\" "
-                                        + "ALTER COLUMN \""
-                                        + gd.getLocalName()
-                                        + "\" "
+                                "ALTER TABLE "
+                                        + escapeIdentifier(schemaName)
+                                        + "."
+                                        + escapeIdentifier(tableName)
+                                        + " "
+                                        + "ALTER COLUMN "
+                                        + escapeIdentifier(gd.getLocalName())
+                                        + " "
                                         + "TYPE geometry ("
                                         + geomType
                                         + ", "
@@ -1253,20 +1254,13 @@ public class PostGISDialect extends BasicSQLDialect {
                         if (srid > -1) {
                             sql =
                                     "ALTER TABLE " //
-                                            + "\""
-                                            + schemaName
-                                            + "\"" //
+                                            + escapeIdentifier(schemaName)
                                             + "." //
-                                            + "\""
-                                            + tableName
-                                            + "\"" //
-                                            + " ADD CONSTRAINT \"enforce_srid_" //
-                                            + gd.getLocalName()
-                                            + "\"" //
+                                            + escapeIdentifier(tableName)
+                                            + " ADD CONSTRAINT "
+                                            + escapeIdentifier("enforce_srid_" + gd.getLocalName())
                                             + " CHECK (ST_SRID(" //
-                                            + "\""
-                                            + gd.getLocalName()
-                                            + "\"" //
+                                            + escapeIdentifier(gd.getLocalName())
                                             + ") = "
                                             + srid
                                             + ")";
@@ -1277,19 +1271,14 @@ public class PostGISDialect extends BasicSQLDialect {
                         // add dimension checks
                         sql =
                                 "ALTER TABLE " //
-                                        + "\""
-                                        + schemaName
-                                        + "\"" //
+                                        + escapeIdentifier(schemaName)
                                         + "." //
-                                        + "\""
-                                        + tableName
-                                        + "\"" //
-                                        + " ADD CONSTRAINT \"enforce_dims_" //
-                                        + gd.getLocalName()
-                                        + "\"" //
-                                        + " CHECK (st_ndims(\""
-                                        + gd.getLocalName()
-                                        + "\")" //
+                                        + escapeIdentifier(tableName)
+                                        + " ADD CONSTRAINT "
+                                        + escapeIdentifier("enforce_dims_" + gd.getLocalName())
+                                        + " CHECK (st_ndims("
+                                        + escapeIdentifier(gd.getLocalName())
+                                        + ")" //
                                         + " = "
                                         + dimensions
                                         + ")";
@@ -1300,26 +1289,19 @@ public class PostGISDialect extends BasicSQLDialect {
                         if (!geomType.equals("GEOMETRY")) {
                             sql =
                                     "ALTER TABLE " //
-                                            + "\""
-                                            + schemaName
-                                            + "\"" //
+                                            + escapeIdentifier(schemaName)
                                             + "." //
-                                            + "\""
-                                            + tableName
-                                            + "\"" //
-                                            + " ADD CONSTRAINT \"enforce_geotype_" //
-                                            + gd.getLocalName()
-                                            + "\"" //
+                                            + escapeIdentifier(tableName)
+                                            + " ADD CONSTRAINT "
+                                            + escapeIdentifier(
+                                                    "enforce_geotype_" + gd.getLocalName())
                                             + " CHECK (geometrytype(" //
-                                            + "\""
-                                            + gd.getLocalName()
-                                            + "\"" //
+                                            + escapeIdentifier(gd.getLocalName())
                                             + ") = '"
                                             + geomType
                                             + "'::text "
-                                            + "OR \""
-                                            + gd.getLocalName()
-                                            + "\"" //
+                                            + "OR "
+                                            + escapeIdentifier(gd.getLocalName())
                                             + " IS NULL)";
                             LOGGER.fine(sql);
                             st.execute(sql);
@@ -1328,23 +1310,18 @@ public class PostGISDialect extends BasicSQLDialect {
 
                     // add the spatial index
                     sql =
-                            "CREATE INDEX \"spatial_"
-                                    + tableName //
-                                    + "_"
-                                    + gd.getLocalName().toLowerCase()
-                                    + "\"" //
+                            "CREATE INDEX "
+                                    + escapeIdentifier(
+                                            "spatial_"
+                                                    + tableName
+                                                    + "_"
+                                                    + gd.getLocalName().toLowerCase())
                                     + " ON " //
-                                    + "\""
-                                    + schemaName
-                                    + "\"" //
+                                    + escapeIdentifier(schemaName)
                                     + "." //
-                                    + "\""
-                                    + tableName
-                                    + "\"" //
+                                    + escapeIdentifier(tableName)
                                     + " USING GIST (" //
-                                    + "\""
-                                    + gd.getLocalName()
-                                    + "\"" //
+                                    + escapeIdentifier(gd.getLocalName())
                                     + ")";
                     LOGGER.fine(sql);
                     st.execute(sql);

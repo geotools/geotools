@@ -1,6 +1,16 @@
 Système
 d'Unités
+GIS
+Didier
+OGC
+Albers
+Molodenski
+Macgill
+GeoVista
+Deegree
+prototyped
 natively
+kerning
 Accessor
 affine
 affines
@@ -54,7 +64,8 @@ georeferencing
 Geo-Routine
 GeoSolutions
 geospatial
-geotiff
+GeoTiff
+customizable
 GeoTools
 getter
 getters

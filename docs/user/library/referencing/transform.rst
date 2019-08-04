@@ -6,7 +6,7 @@ The following is a list of the projection parameters used in the GeoTools refere
 Parameter Names
 ^^^^^^^^^^^^^^^
 
-Parameters can have more than one name, and are recognised by all the names known to the MathTransformFactory. Many classification and parameter names in GeoTools come from the legacy OGC 01-009 document. But what about other standards for classification names (e.g., "Transverse_Mercator" and "Orthogonal") and parameter names (e.g., "semi_major")?
+Parameters can have more than one name, and are recognized by all the names known to the ``MathTransformFactory``. Many classification and parameter names in GeoTools come from the legacy OGC 01-009 document. But what about other standards for classification names (e.g., "Transverse_Mercator" and "Orthogonal") and parameter names (e.g., "semi_major")?
 
 **GeoTIFF parameter names**
 
@@ -22,9 +22,9 @@ But let's say I'm a developer and I want to develop something that has no "offic
 
 **Authorities for Parameter and Classification Names**
 
-However, each name is always associated to an authority (or a "scope" in the context of scoped names). Thats said, the full name of "semi_major" is actually "OGC:semi_major", where "semi_major" is the LocalName (from the org.opengis.util package) and "OGC" is the scope. The mechanism is similar to fully qualified names in Java packages.
+However, each name is always associated to an authority (or a "scope" in the context of scoped names). That said, the full name of "semi_major" is actually "OGC:semi_major", where "semi_major" is the ``LocalName`` (from the ``org.opengis.util`` package) and "OGC" is the scope. The mechanism is similar to fully qualified names in Java packages.
 
-It should always be possible to know if a particular name is an OGC's name or a GeoTIFF one: just look at the scope. For our own transformation, we use "GeoTools:" scope. If we find an official name from OGC later, we will add that "OGC:" scoped name.
+It should always be possible to know if a particular name is an OGC name or a GeoTIFF one: just look at the scope. For our own transformation, we use "GeoTools:" scope. If we find an official name from OGC later, we will add that "OGC:" scoped name.
 
 **Multiple names for Parameters**
 
@@ -38,19 +38,19 @@ GeoTools will tells you that it know all of the above names for this transformat
 * EPSG:Mercator (1SP)
 * EPSG:9804
 * GeoTIFF:CT_Mercator
-* GeoTools:Projection Mercator cylindrique
+* GeoTools:Projection Mercator cylindrical
 
-Note the GeoTools name is localised, so it may appears in another language depending on how you have your machine set up.
+Note the GeoTools name is localized, so it may appears in another language depending on how you have your machine set up.
 
 One can use any of those names. GeoTools will recognizes "CT_Mercator" as well as "Mercator_1SP". However, if one wants to be sure that he is looking for a GeoTIFF name and not an OGC name, we can always use the fully qualified name.
 
 For example GeoTools:
 
 * GeoTIFF:CT_Mercator - will accept this name
-* OGC:CT_Mercator - but won't recognise this one
-* OGC:Mercator_1SP - recognised
+* OGC:CT_Mercator - but won't recognize this one
+* OGC:Mercator_1SP - recognized
 
-One can use DefaultMathTransformFactory in order to experiment the names from the command line.
+One can use ``DefaultMathTransformFactory`` in order to experiment the names from the command line.
 
 Map Projection Parameters
 ^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -63,7 +63,7 @@ All projections have the following default parameters:
 * false_easting - easting value assigned to the natural origin (added to all x coordinates)
 * false_northing - northing value assigned to the natural origin (added to all y coordinates)
 
-The "semi_major" and "semi_minor" parameters do not need to be specified in the projection section of WKT strings, since this information can be obtained from the GEOGCS.
+The "semi_major" and "semi_minor" parameters do not need to be specified in the projection section of WKT strings, since this information can be obtained from the ``GEOGCS``.
 
 Additional parameters are shown in the following table. Note that "latitude_of_origin" and "scale_factor" are usually default parameters, except in the Mercator and some conic projections.
 
@@ -151,19 +151,19 @@ Additional parameters are shown in the following table. Note that "latitude_of_o
      - 
      - 
 
-latitude_of_origin
+Latitude_of_origin
   latitude of the natural origin (for rectangular coordinates)
 
-scale_factor
+Scale_factor
   scale factor at the natural origin (along a parallel of latitude)
 
-standard_parallel_1
+Standard_parallel_1
   latitude of first standard parallel (true to scale)
 
-standard_parallel_2
+Standard_parallel_2
   latitude of second standard parallel (true to scale)
 
-latitude_true_scale
+Latitude_true_scale
   latitude (parallel) where the scale will equal the scale factor
 
 Notes
@@ -183,22 +183,22 @@ Other Math Transform Parameters
 
 "Affine"
 
-* num_row - number of rows in matrix
-* num_col - number of columns in matrix
-* elt_<r>_<c> - element of matrix (where r is from 0 to (num_row - 1) and c is from 0 to (num_col - 1)
+* ``num_row`` - number of rows in matrix
+* ``num_col`` - number of columns in matrix
+* ``elt_<r>_<c>`` - element of matrix (where ``r`` is from 0 to ``(num_row - 1)`` and ``c`` is from 0 to ``(num_col - 1)``
 
 "Geocentric_To_Ellipsoid" and "Ellipsoid_To_Geocentric"
 
-* semi_major - equatorial radius of the ellipsoid of reference
-* semi_minor - polar radius of the ellipsoid of reference
+* ``semi_major`` - equatorial radius of the ellipsoid of reference
+* ``semi_minor`` - polar radius of the ellipsoid of reference
 
 "Molodenski" and "Abridged_Molodenski"
 
-* dim - dimension of points (2 or 3)
-* dx - x shift (m)
-* dy - y shift (m)
+* ``dim`` - dimension of points (2 or 3)
+* ``dx`` - x shift (m)
+* ``dy`` - y shift (m)
 * dz - z shift (m)
-* src_semi_major - source equatorial radius (m)
-* src_semi_minor - source polar radius (m)
-* tgt_semi_major - target equatorial radius (m)
-* tgt_semi_minor - target polar radius (m)
+* ``src_semi_major`` - source equatorial radius (m)
+* ``src_semi_minor`` - source polar radius (m)
+* ``tgt_semi_major`` - target equatorial radius (m)
+* ``tgt_semi_minor`` - target polar radius (m)

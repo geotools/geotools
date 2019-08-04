@@ -3,8 +3,8 @@ Text
 
 Many projects use Java ``String`` to represent text. This page goes over some of the alternatives used to handle text in a consistent manner.
 
-Enum
-^^^^
+``Enum``
+^^^^^^^^^
 
 The first alternative is a normal Java 5 ``Enum``. We use enumerations to represent a frozen set of machine readable text.
 

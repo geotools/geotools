@@ -116,7 +116,21 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
     }
 
     public DuplicatingStyleVisitor(StyleFactory styleFactory, FilterFactory2 filterFactory) {
-        this.copyFilter = new DuplicatingFilterVisitor(filterFactory);
+        this(styleFactory, filterFactory, new DuplicatingFilterVisitor(filterFactory));
+    }
+
+    /**
+     * Builds a new duplicating style visitor using a custom {@link DuplicatingStyleVisitor}
+     *
+     * @param styleFactory Creates new style objects during style duplication
+     * @param filterFactory Creates new filters and expressions during style duplication
+     * @param filterCloner Copies filters during style duplication
+     */
+    public DuplicatingStyleVisitor(
+            StyleFactory styleFactory,
+            FilterFactory2 filterFactory,
+            DuplicatingFilterVisitor filterCloner) {
+        this.copyFilter = filterCloner;
         this.sf = styleFactory;
         this.ff = filterFactory;
         this.STRICT = false;

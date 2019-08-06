@@ -26,6 +26,7 @@ import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.imageio.netcdf.cv.CoordinateHandlerSpi.CoordinateHandler;
+import org.geotools.imageio.netcdf.utilities.NetCDFCRSUtilities;
 import org.geotools.imageio.netcdf.utilities.NetCDFUtilities;
 import org.geotools.util.Utilities;
 import org.geotools.util.logging.Logging;
@@ -306,9 +307,10 @@ public abstract class CoordinateVariable<T> {
         this.coordinateAxis = coordinateAxis;
         this.conversionFactor = 1d;
         AxisType axisType = coordinateAxis.getAxisType();
-        // Special management for projected coordinates with unit = km
-        if ((axisType == AxisType.GeoX || axisType == AxisType.GeoY)
-                && coordinateAxis.getUnitsString().equalsIgnoreCase("km")) {
+        // Legacy: Special management for projected coordinates with unit = km
+        if (NetCDFCRSUtilities.isConvertAxisKm()
+                && ((axisType == AxisType.GeoX || axisType == AxisType.GeoY)
+                        && coordinateAxis.getUnitsString().equalsIgnoreCase("km"))) {
             conversionFactor = KM_TO_M;
             convertAxis = true;
         }

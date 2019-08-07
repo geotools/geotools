@@ -88,8 +88,4 @@
        </plugin>
      </plugins>
   </build-->
-
-  <modules>
-    <module>jdbc-hana</module>
-  </modules>
 </project>

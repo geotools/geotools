@@ -79,8 +79,8 @@ public class NetCDFProjection {
          * @return
          * @throws FactoryException
          */
-        abstract CoordinateReferenceSystem parseCoordinateReferenceSystem(Variable variable)
-                throws FactoryException;
+        abstract CoordinateReferenceSystem parseCoordinateReferenceSystem(
+                Variable variable, Map<String, Object> crsProperties) throws FactoryException;
 
         /**
          * Extract the {@link CoordinateReferenceSystem} from a NetCDF attribute (if present)
@@ -133,7 +133,8 @@ public class NetCDFProjection {
             }
 
             @Override
-            public CoordinateReferenceSystem parseCoordinateReferenceSystem(Variable variable) {
+            public CoordinateReferenceSystem parseCoordinateReferenceSystem(
+                    Variable variable, Map<String, Object> crsProperties) {
                 return parseWKT(attribute);
             }
         }
@@ -148,8 +149,8 @@ public class NetCDFProjection {
             }
 
             @Override
-            public CoordinateReferenceSystem parseCoordinateReferenceSystem(Variable var)
-                    throws FactoryException {
+            public CoordinateReferenceSystem parseCoordinateReferenceSystem(
+                    Variable var, Map<String, Object> crsProperties) throws FactoryException {
 
                 String mappingName = attribute.getStringValue();
                 String projectionName = getProjectionName(mappingName, var);
@@ -175,8 +176,10 @@ public class NetCDFProjection {
                     handleParam(paramsMapping, netcdfParameters, ogcParameterKey, var);
                 }
 
+                Map<String, Object> map = new HashMap<String, Object>(crsProperties);
+                map.put(NetCDFUtilities.NAME, projectionName);
                 return ProjectionBuilder.buildCRS(
-                        Collections.singletonMap(NetCDFUtilities.NAME, projectionName),
+                        map,
                         projection.getOgcParameters(netcdfParameters),
                         buildEllipsoid(var, SI.METRE));
             }
@@ -538,6 +541,18 @@ public class NetCDFProjection {
      */
     public static CoordinateReferenceSystem parseProjection(Variable var, CRSParser crsParser)
             throws FactoryException {
+        return parseProjection(var, crsParser, Collections.emptyMap());
+    }
+
+    /**
+     * Extract the georeferencing projection information from the specified variable and setup a
+     * {@link CoordinateReferenceSystem} instance
+     *
+     * @throws FactoryException
+     */
+    public static CoordinateReferenceSystem parseProjection(
+            Variable var, CRSParser crsParser, Map<String, Object> crsProperties)
+            throws FactoryException {
         if (crsParser == null) {
             if (LOGGER.isLoggable(Level.FINE)) {
                 LOGGER.fine(
@@ -548,7 +563,7 @@ public class NetCDFProjection {
             return null;
         }
 
-        return crsParser.parseCoordinateReferenceSystem(var);
+        return crsParser.parseCoordinateReferenceSystem(var, crsProperties);
     }
 
     /**
@@ -729,6 +744,11 @@ public class NetCDFProjection {
         return crs;
     }
 
+    public static CoordinateReferenceSystem lookForVariableCRS(
+            NetcdfDataset dataset, CoordinateReferenceSystem defaultCrs) throws FactoryException {
+        return lookForVariableCRS(dataset, defaultCrs, Collections.emptyMap());
+    }
+
     /**
      * Look for a CoordinateReferenceSystem defined into a variable
      *
@@ -738,14 +758,17 @@ public class NetCDFProjection {
      * @throws FactoryException
      */
     public static CoordinateReferenceSystem lookForVariableCRS(
-            NetcdfDataset dataset, CoordinateReferenceSystem defaultCrs) throws FactoryException {
+            NetcdfDataset dataset,
+            CoordinateReferenceSystem defaultCrs,
+            Map<String, Object> crsProperties)
+            throws FactoryException {
         List<Variable> variables = dataset.getVariables();
         CoordinateReferenceSystem crs = defaultCrs;
         for (Variable variable : variables) {
             CRSParser attrib = CRSParser.getCRSParser(variable);
             if (attrib != null) {
                 // Referencing info found
-                crs = NetCDFProjection.parseProjection(variable, attrib);
+                crs = NetCDFProjection.parseProjection(variable, attrib, crsProperties);
                 if (LOGGER.isLoggable(Level.FINE)) {
                     LOGGER.fine(
                             "Detected NetCDFProjection through gridMapping variable: "

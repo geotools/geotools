@@ -18,6 +18,7 @@ package org.geotools.coverage.io.netcdf.crs;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.measure.Unit;
 import org.geotools.imageio.netcdf.utilities.NetCDFUtilities;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.operation.projection.AlbersEqualArea;
@@ -31,6 +32,7 @@ import org.geotools.referencing.operation.projection.PolarStereographic;
 import org.geotools.referencing.operation.projection.RotatedPole;
 import org.geotools.referencing.operation.projection.Stereographic;
 import org.geotools.referencing.operation.projection.TransverseMercator;
+import org.geotools.referencing.operation.transform.ConcatenatedTransform;
 import org.geotools.util.logging.Logging;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.crs.ProjectedCRS;
@@ -161,31 +163,17 @@ public enum NetCDFCoordinateReferenceSystemType {
             crsType = WGS84;
         } else if (crs instanceof ProjectedCRS) {
             ProjectedCRS projectedCRS = (ProjectedCRS) crs;
-            Projection projection = projectedCRS.getConversionFromBase();
-            MathTransform transform = projection.getMathTransform();
-            if (transform instanceof TransverseMercator) {
-                crsType = TRANSVERSE_MERCATOR;
-            } else if (transform instanceof LambertConformal1SP) {
-                crsType = LAMBERT_CONFORMAL_CONIC_1SP;
-            } else if (transform instanceof LambertConformal2SP) {
-                crsType = LAMBERT_CONFORMAL_CONIC_2SP;
-            } else if (transform instanceof LambertAzimuthalEqualArea) {
-                crsType = LAMBERT_AZIMUTHAL_EQUAL_AREA;
-            } else if (transform instanceof Orthographic) {
-                crsType = ORTHOGRAPHIC;
-            } else if (transform instanceof PolarStereographic) {
-                crsType = POLAR_STEREOGRAPHIC;
-            } else if (transform instanceof Stereographic) {
-                crsType = STEREOGRAPHIC;
-            } else if (transform instanceof Mercator1SP) {
-                crsType = MERCATOR_1SP;
-            } else if (transform instanceof Mercator2SP) {
-                crsType = MERCATOR_2SP;
-            } else if (transform instanceof AlbersEqualArea) {
-                crsType = ALBERS_EQUAL_AREA;
-            } else if (transform instanceof RotatedPole) {
-                crsType = ROTATED_POLE;
+            // NetCDF supports a reduced number of CRS Type (WGS84 + some projection).
+            // Some ProjectedCRS may have unit of measure resulting in concatenated transforms.
+            if (hasConcatenatedTransform(projectedCRS)) {
+                Projection projection = projectedCRS.getConversionFromBase();
+                MathTransform mt = projection.getMathTransform();
+                ConcatenatedTransform cmt = ((ConcatenatedTransform) mt);
+                crsType = extractProjectionType(cmt);
+            } else {
+                crsType = getProjectionType(projectedCRS);
             }
+
         } else {
             // Fallback on SPATIAL_REF to deal with projection which
             // doesn't have a CF Mapping.
@@ -196,6 +184,75 @@ public enum NetCDFCoordinateReferenceSystemType {
             LOGGER.fine("Using a NetCDF CRS based on " + crsType);
         }
         return crsType;
+    }
+
+    private static NetCDFCoordinateReferenceSystemType extractProjectionType(
+            ConcatenatedTransform cmt) {
+        // Make sure we only have 2 transformations that are not concatenated further.
+        if (!(cmt.transform1 instanceof ConcatenatedTransform)
+                && !(cmt.transform2 instanceof ConcatenatedTransform)) {
+
+            // Make sure the 1st transformation is supported
+            NetCDFCoordinateReferenceSystemType projectionType = getProjectionType(cmt.transform1);
+            if (projectionType != null) {
+                return projectionType;
+            }
+        }
+        throw new IllegalArgumentException(
+                "The specified projection's transformation is not supported: " + cmt);
+    }
+
+    private static boolean hasConcatenatedTransform(ProjectedCRS projectedCRS) {
+        Projection projection = projectedCRS.getConversionFromBase();
+        MathTransform mt = projection.getMathTransform();
+        return mt instanceof ConcatenatedTransform;
+    }
+
+    private static NetCDFCoordinateReferenceSystemType getProjectionType(
+            ProjectedCRS projectedCRS) {
+        Projection projection = projectedCRS.getConversionFromBase();
+        MathTransform transform = projection.getMathTransform();
+        NetCDFCoordinateReferenceSystemType projectionType = getProjectionType(transform);
+        if (projectionType == null) {
+            throw new IllegalArgumentException(
+                    "The specified projection is not supported: " + transform.getClass());
+        }
+        return projectionType;
+    }
+
+    /**
+     * Return the Supported {@link NetCDFCoordinateReferenceSystemType} based on the
+     * conversionFromBase's MathTransform
+     *
+     * @param transform
+     * @return
+     */
+    private static NetCDFCoordinateReferenceSystemType getProjectionType(MathTransform transform) {
+        if (transform instanceof TransverseMercator) {
+            return TRANSVERSE_MERCATOR;
+        } else if (transform instanceof LambertConformal1SP) {
+            return LAMBERT_CONFORMAL_CONIC_1SP;
+        } else if (transform instanceof LambertConformal2SP) {
+            return LAMBERT_CONFORMAL_CONIC_2SP;
+        } else if (transform instanceof LambertAzimuthalEqualArea) {
+            return LAMBERT_AZIMUTHAL_EQUAL_AREA;
+        } else if (transform instanceof Orthographic) {
+            return ORTHOGRAPHIC;
+        } else if (transform instanceof PolarStereographic) {
+            return POLAR_STEREOGRAPHIC;
+        } else if (transform instanceof Stereographic) {
+            return STEREOGRAPHIC;
+        } else if (transform instanceof Mercator1SP) {
+            return MERCATOR_1SP;
+        } else if (transform instanceof Mercator2SP) {
+            return MERCATOR_2SP;
+        } else if (transform instanceof AlbersEqualArea) {
+            return ALBERS_EQUAL_AREA;
+        } else if (transform instanceof RotatedPole) {
+            return ROTATED_POLE;
+        } else {
+            return null;
+        }
     }
 
     /**
@@ -214,6 +271,32 @@ public enum NetCDFCoordinateReferenceSystemType {
      * and SPATIAL_REF won't return a NetCDF CF projection.
      */
     public abstract NetCDFProjection getNetCDFProjection();
+
+    /**
+     * Return the set of {@link NetCDFCoordinate}s for the current NetCDF CRS type, taking into
+     * account a reference crs.
+     */
+    public NetCDFCoordinate[] getCoordinates(CoordinateReferenceSystem crs) {
+        NetCDFCoordinate[] axisCoordinates = getCoordinates();
+        if (this != NetCDFCoordinateReferenceSystemType.WGS84) {
+            // NetCDF only support WGS84 and a few projections
+            // There might be the case that the projection contains a concatenatedTransform
+            // due to a specific unit in the coordinate axis (as an instance, km
+            // of classic meter).
+            // Extract the unit of measure from the actual coordinate axis in that case.
+            ProjectedCRS projectedCrs = (ProjectedCRS) crs;
+            if (NetCDFCoordinateReferenceSystemType.hasConcatenatedTransform(projectedCrs)) {
+                Unit unit = crs.getCoordinateSystem().getAxis(0).getUnit();
+                NetCDFCoordinate[] newAxisCoordinates = new NetCDFCoordinate[2];
+                for (int i = 0; i < 2; i++) {
+                    newAxisCoordinates[i] = new NetCDFCoordinate(axisCoordinates[i]);
+                    newAxisCoordinates[i].setUnits(unit.toString());
+                }
+                axisCoordinates = newAxisCoordinates;
+            }
+        }
+        return axisCoordinates;
+    }
 
     private static final Logger LOGGER =
             Logging.getLogger(NetCDFCoordinateReferenceSystemType.class);
@@ -273,6 +356,14 @@ public enum NetCDFCoordinateReferenceSystemType {
                         NetCDFUtilities.Y_PROJ_COORD,
                         NetCDFUtilities.Y,
                         NetCDFUtilities.M);
+
+        public NetCDFCoordinate(NetCDFCoordinate that) {
+            this.shortName = that.getShortName();
+            this.longName = that.getLongName();
+            this.dimensionName = that.getDimensionName();
+            this.standardName = that.getStandardName();
+            this.units = that.getUnits();
+        }
 
         public static final NetCDFCoordinate[] LATLON_COORDS =
                 new NetCDFCoordinate[] {LAT_COORDINATE, LON_COORDINATE};

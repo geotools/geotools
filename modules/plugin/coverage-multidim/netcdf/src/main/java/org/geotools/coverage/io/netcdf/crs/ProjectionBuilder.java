@@ -20,13 +20,21 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.measure.Unit;
+import javax.measure.format.ParserException;
 import org.geotools.imageio.netcdf.utilities.NetCDFUtilities;
+import org.geotools.measure.Units;
+import org.geotools.metadata.i18n.Vocabulary;
+import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.NamedIdentifier;
 import org.geotools.referencing.ReferencingFactoryFinder;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.crs.DefaultProjectedCRS;
 import org.geotools.referencing.cs.DefaultCartesianCS;
+import org.geotools.referencing.cs.DefaultCoordinateSystemAxis;
 import org.geotools.referencing.cs.DefaultEllipsoidalCS;
 import org.geotools.referencing.datum.DefaultEllipsoid;
 import org.geotools.referencing.datum.DefaultGeodeticDatum;
@@ -37,6 +45,7 @@ import org.geotools.referencing.operation.MathTransformProvider;
 import org.geotools.util.Utilities;
 import org.geotools.util.factory.GeoTools;
 import org.geotools.util.factory.Hints;
+import org.geotools.util.logging.Logging;
 import org.opengis.metadata.citation.Citation;
 import org.opengis.parameter.ParameterValueGroup;
 import org.opengis.referencing.FactoryException;
@@ -45,6 +54,8 @@ import org.opengis.referencing.NoSuchIdentifierException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.crs.GeographicCRS;
 import org.opengis.referencing.crs.ProjectedCRS;
+import org.opengis.referencing.cs.AxisDirection;
+import org.opengis.referencing.cs.CartesianCS;
 import org.opengis.referencing.cs.EllipsoidalCS;
 import org.opengis.referencing.datum.Ellipsoid;
 import org.opengis.referencing.datum.GeodeticDatum;
@@ -64,6 +75,8 @@ public class ProjectionBuilder {
 
     private static final String DEFAULT_DATUM_NAME = NetCDFUtilities.UNKNOWN;
 
+    public static final String AXIS_UNIT = "axisUnit";
+
     /** Cached {@link MathTransformFactory} for building {@link MathTransform} objects. */
     private static final MathTransformFactory mtFactory;
 
@@ -75,6 +88,8 @@ public class ProjectionBuilder {
 
         mtFactory = ReferencingFactoryFinder.getMathTransformFactory(hints);
     }
+
+    private static final Logger LOGGER = Logging.getLogger(ProjectionBuilder.class);
 
     /**
      * Quick method to create a {@link CoordinateReferenceSystem} instance, given the OGC
@@ -218,6 +233,15 @@ public class ProjectionBuilder {
         return new DefaultGeographicCRS(props, datum, ellipsoidalCS);
     }
 
+    public static ProjectedCRS createProjectedCRS(
+            Map<String, ?> props,
+            GeographicCRS baseCRS,
+            DefiningConversion conversionFromBase,
+            MathTransform transform) {
+        return new DefaultProjectedCRS(
+                props, conversionFromBase, baseCRS, transform, DefaultCartesianCS.PROJECTED);
+    }
+
     /**
      * Build a {@link ProjectedCRS} given the base {@link GeographicCRS}, the {@link
      * DefiningConversion} instance from Base as well as the {@link MathTransform} from the base CRS
@@ -233,10 +257,10 @@ public class ProjectionBuilder {
             Map<String, ?> props,
             GeographicCRS baseCRS,
             DefiningConversion conversionFromBase,
-            MathTransform transform) {
+            MathTransform transform,
+            CartesianCS derivedCS) {
         // Create the projected CRS
-        return new DefaultProjectedCRS(
-                props, conversionFromBase, baseCRS, transform, DefaultCartesianCS.PROJECTED);
+        return new DefaultProjectedCRS(props, conversionFromBase, baseCRS, transform, derivedCS);
     }
 
     /**
@@ -290,23 +314,21 @@ public class ProjectionBuilder {
         updateEllipsoidParams(parameters, ellipsoid);
 
         // Datum
-        final GeodeticDatum datum =
-                ProjectionBuilder.createGeodeticDatum(DEFAULT_DATUM_NAME, ellipsoid);
+        final GeodeticDatum datum = createGeodeticDatum(DEFAULT_DATUM_NAME, ellipsoid);
 
         // Base Geographic CRS
-        GeographicCRS baseCRS =
-                ProjectionBuilder.createGeographicCRS(NetCDFUtilities.UNKNOWN, datum);
+        GeographicCRS baseCRS = createGeographicCRS(NetCDFUtilities.UNKNOWN, datum);
 
         // create math transform
-        MathTransform transform = ProjectionBuilder.createTransform(parameters);
-
-        // create the projection transform
         String name = NetCDFUtilities.UNKNOWN;
+        Unit unit = getUnit(props);
         if (props != null && !props.isEmpty() && props.containsKey(NetCDFUtilities.NAME)) {
             name = (String) props.get(NetCDFUtilities.NAME);
         }
-        DefiningConversion conversionFromBase =
-                ProjectionBuilder.createConversionFromBase(name, transform);
+        DefiningConversion conversionFromBase = new DefiningConversion(name, parameters);
+        DefaultCartesianCS derivedCS = createCartesianCS(name, unit);
+
+        MathTransform transform = mtFactory.createBaseToDerived(baseCRS, parameters, derivedCS);
         OperationMethod method = conversionFromBase.getMethod();
         if (!(method instanceof MathTransformProvider)) {
             OperationMethod opMethod = mtFactory.getLastMethodUsed();
@@ -319,7 +341,42 @@ public class ProjectionBuilder {
             }
         }
 
-        return ProjectionBuilder.createProjectedCRS(props, baseCRS, conversionFromBase, transform);
+        return ProjectionBuilder.createProjectedCRS(
+                props, baseCRS, conversionFromBase, transform, derivedCS);
+    }
+
+    private static DefaultCartesianCS createCartesianCS(String name, Unit unit) {
+        return new DefaultCartesianCS(
+                name,
+                new DefaultCoordinateSystemAxis(
+                        Vocabulary.formatInternational(VocabularyKeys.EASTING),
+                        "E",
+                        AxisDirection.EAST,
+                        unit),
+                new DefaultCoordinateSystemAxis(
+                        Vocabulary.formatInternational(VocabularyKeys.NORTHING),
+                        "N",
+                        AxisDirection.NORTH,
+                        unit));
+    }
+
+    private static Unit getUnit(Map<String, ?> props) {
+        Unit unit = SI.METRE;
+        if (props != null && !props.isEmpty() && props.containsKey(AXIS_UNIT)) {
+            String axisUnit = (String) props.remove(AXIS_UNIT);
+            try {
+                unit = Units.parseUnit(axisUnit);
+            } catch (ParserException | UnsupportedOperationException e) {
+                if (LOGGER.isLoggable(Level.WARNING)) {
+                    LOGGER.warning(
+                            "Unabe to parse the specified axis unit: "
+                                    + axisUnit
+                                    + "Falling back on \"m (meter)\" as default for this projection's "
+                                    + "coordinate axis unit");
+                }
+            }
+        }
+        return unit;
     }
 
     public static MathTransform createTransform(ParameterValueGroup parameters)

@@ -101,6 +101,9 @@ public class WrappingProjectionHandler extends ProjectionHandler {
     @Override
     public Geometry preProcess(Geometry geometry) throws TransformException, FactoryException {
         geometry = super.preProcess(geometry);
+        if (geometry == null) {
+            return null;
+        }
         // if the object was already a large one, clone it and set the user data to indicate it was
         // hopefully it will happen for few objects
         final double width = getWidth(geometry.getEnvelopeInternal(), sourceCRS);

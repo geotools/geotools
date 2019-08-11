@@ -1259,6 +1259,17 @@ public class ProjectionHandlerTest {
     }
 
     @Test
+    public void testOutsideValidArea() throws Exception {
+        Geometry g = new WKTReader().read("POLYGON((0 87, 10 87, 10 89, 0 89, 0 87))");
+        Geometry original = g.copy();
+        ReferencedEnvelope re =
+                new ReferencedEnvelope(-20000000, 20000000, -20000000, 20000000, OSM);
+        ProjectionHandler ph = ProjectionHandlerFinder.getHandler(re, WGS84, true);
+        Geometry preProcessed = ph.preProcess(original);
+        assertNull(preProcessed);
+    }
+
+    @Test
     public void testLargeObject() throws Exception {
         Geometry g = new WKTReader().read("POLYGON((-96 -2, -96 67, 133 67, 133 -2, -96 -2))");
         Geometry original = g.copy();

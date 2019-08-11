@@ -31,6 +31,8 @@ public class PreGeneralizedFeatureReader
         implements FeatureReader<SimpleFeatureType, SimpleFeature> {
     protected SimpleFeatureType featureTyp;
 
+    protected SimpleFeatureType returnedFeatureType;
+
     protected FeatureReader<SimpleFeatureType, SimpleFeature> backendReader;
 
     protected int indexMapping[];
@@ -39,12 +41,14 @@ public class PreGeneralizedFeatureReader
 
     public PreGeneralizedFeatureReader(
             SimpleFeatureType featureTyp,
+            SimpleFeatureType returnedFeatureType,
             int indexMapping[],
             FeatureReader<SimpleFeatureType, SimpleFeature> backendReader,
             String geomPropertyName,
             String backendGeomPropertyName) {
         super();
         this.featureTyp = featureTyp;
+        this.returnedFeatureType = returnedFeatureType;
         this.backendReader = backendReader;
         this.geomPropertyName = geomPropertyName;
         this.backendGeomPropertyName = backendGeomPropertyName;
@@ -56,7 +60,7 @@ public class PreGeneralizedFeatureReader
     }
 
     public SimpleFeatureType getFeatureType() {
-        return featureTyp;
+        return returnedFeatureType;
     }
 
     public boolean hasNext() throws IOException {
@@ -68,6 +72,11 @@ public class PreGeneralizedFeatureReader
         SimpleFeature next = backendReader.next();
         if (next == null) return null;
         return new PreGeneralizedSimpleFeature(
-                featureTyp, indexMapping, next, geomPropertyName, backendGeomPropertyName);
+                featureTyp,
+                returnedFeatureType,
+                indexMapping,
+                next,
+                geomPropertyName,
+                backendGeomPropertyName);
     }
 }

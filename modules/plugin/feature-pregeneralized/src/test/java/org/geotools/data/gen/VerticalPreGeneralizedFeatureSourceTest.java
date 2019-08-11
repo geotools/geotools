@@ -26,6 +26,10 @@ public class VerticalPreGeneralizedFeatureSourceTest
         testGetCount(ConfigName);
     }
 
+    public void testPropertySelection() {
+        testPropertySelection(ConfigName);
+    }
+
     public void testGetBounds() {
         testGetBounds(ConfigName);
     }

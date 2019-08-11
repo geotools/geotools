@@ -80,6 +80,44 @@ public abstract class AbstractPreGeneralizedFeatureSourceTest extends TestCase {
         return TestSetup.REPOSITORY;
     }
 
+    protected void testPropertySelection(String configName) {
+
+        try {
+
+            PreGeneralizedDataStore ds = getDataStore(configName);
+
+            SimpleFeatureSource fs = ds.getFeatureSource("GenStreams");
+            assertTrue(fs.getSupportedHints().contains(Hints.GEOMETRY_DISTANCE));
+
+            // subset of the properties, and out of order
+            Query query =
+                    new Query("GenStreams", Filter.INCLUDE, new String[] {"CAT_ID", "the_geom"});
+
+            // check the collection schema
+            SimpleFeatureCollection fc = fs.getFeatures(query);
+            SimpleFeatureType schema = fc.getSchema();
+            assertEquals(2, schema.getAttributeCount());
+            assertEquals("CAT_ID", schema.getDescriptor(0).getLocalName());
+            assertEquals("the_geom", schema.getDescriptor(1).getLocalName());
+
+            // grab a feature and check the schema and direct attribute access
+            try (SimpleFeatureIterator features = fc.features()) {
+                SimpleFeature sf = features.next();
+                SimpleFeatureType sfSchema = sf.getType();
+                assertEquals(2, sfSchema.getAttributeCount());
+                assertEquals("CAT_ID", sfSchema.getDescriptor(0).getLocalName());
+                assertEquals("the_geom", sfSchema.getDescriptor(1).getLocalName());
+
+                // attributes are correctly mapped to indexes
+                assertTrue(sf.getAttribute(0) instanceof Number);
+                assertTrue(sf.getAttribute(1) instanceof Geometry);
+            }
+
+        } catch (Exception ex) {
+            Assert.fail(ex.getMessage());
+        }
+    }
+
     protected void testGetCount(String configName) {
 
         try {

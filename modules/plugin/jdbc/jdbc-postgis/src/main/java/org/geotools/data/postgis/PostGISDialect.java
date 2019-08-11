@@ -161,6 +161,8 @@ public class PostGISDialect extends BasicSQLDialect {
                 }
             };
 
+    private GeometryColumnEncoder geometryColumnEncoder;
+
     @Override
     public boolean isAggregatedSortSupported(String function) {
         return "distinct".equalsIgnoreCase(function);
@@ -191,6 +193,8 @@ public class PostGISDialect extends BasicSQLDialect {
     boolean functionEncodingEnabled = false;
 
     boolean simplifyEnabled = true;
+
+    boolean base64EncodingEnabled = true;
 
     Version version, pgsqlVersion;
 
@@ -233,7 +237,7 @@ public class PostGISDialect extends BasicSQLDialect {
 
     public boolean canSimplifyPoints() {
         // TWKB encoding is a form of simplified points representation (reduced precision)
-        return version.compareTo(V_2_2_0) >= 0;
+        return version != null && version.compareTo(V_2_2_0) >= 0 && isSimplifyEnabled();
     }
 
     /**
@@ -288,7 +292,7 @@ public class PostGISDialect extends BasicSQLDialect {
             Hints hints)
             throws IOException, SQLException {
         // did we use WKB or TWKB encoding? See #encodeGeometryColumnSimplified
-        if (isTWKBTransferEnabled(descriptor, hints)) {
+        if (isTWKBTransferEnabled(cx, descriptor, hints)) {
             TWKBAttributeIO reader = getTWKBReader(factory);
 
             Geometry g = (Geometry) reader.read(rs, column, descriptor.getType().getBinding());
@@ -309,7 +313,7 @@ public class PostGISDialect extends BasicSQLDialect {
             Hints hints)
             throws IOException, SQLException {
         // did we use WKB or TWKB encoding? See #encodeGeometryColumnSimplified
-        if (isTWKBTransferEnabled(descriptor, hints)) {
+        if (isTWKBTransferEnabled(cx, descriptor, hints)) {
             TWKBAttributeIO reader = getTWKBReader(factory);
 
             Geometry g = (Geometry) reader.read(rs, column, descriptor.getType().getBinding());
@@ -321,14 +325,20 @@ public class PostGISDialect extends BasicSQLDialect {
         }
     }
 
-    private boolean isTWKBTransferEnabled(GeometryDescriptor descriptor, Hints hints) {
+    private boolean isTWKBTransferEnabled(Connection cx, GeometryDescriptor descriptor, Hints hints)
+            throws SQLException {
         Double distance = (Double) hints.get(Hints.GEOMETRY_SIMPLIFICATION);
+        return isTWKBTransferEnabled(cx, descriptor, distance);
+    }
+
+    private boolean isTWKBTransferEnabled(
+            Connection cx, GeometryDescriptor descriptor, Double distance) throws SQLException {
         boolean geography =
                 "geography"
                         .equals(descriptor.getUserData().get(JDBCDataStore.JDBC_NATIVE_TYPENAME));
         return !geography
                 && distance != null
-                && version.compareTo(V_2_2_0) >= 0
+                && getVersion(cx).compareTo(V_2_2_0) >= 0
                 && isStraightSegmentsGeometry(descriptor);
     }
 
@@ -336,6 +346,7 @@ public class PostGISDialect extends BasicSQLDialect {
         WKBAttributeIO reader = wkbReader.get();
         if (reader == null) {
             reader = new WKBAttributeIO(factory);
+            reader.setBase64EncodingEnabled(base64EncodingEnabled);
             wkbReader.set(reader);
         } else {
             reader.setGeometryFactory(factory);
@@ -347,6 +358,7 @@ public class PostGISDialect extends BasicSQLDialect {
         TWKBAttributeIO reader = twkbReader.get();
         if (reader == null) {
             reader = new TWKBAttributeIO(factory);
+            reader.setBase64EncodingEnabled(base64EncodingEnabled);
             twkbReader.set(reader);
         } else {
             reader.setGeometryFactory(factory);
@@ -354,101 +366,35 @@ public class PostGISDialect extends BasicSQLDialect {
         return reader;
     }
 
+    private GeometryColumnEncoder getGeometryColumnEncoder() {
+        // not thread safe, but creating this object is cheap, so did not bother with a
+        // synchronization
+        if (this.geometryColumnEncoder == null) {
+            this.geometryColumnEncoder =
+                    new GeometryColumnEncoder(
+                            this.version, isSimplifyEnabled(), base64EncodingEnabled, this);
+        }
+        return geometryColumnEncoder;
+    }
+
     @Override
     public void encodeGeometryColumn(
             GeometryDescriptor gatt, String prefix, int srid, Hints hints, StringBuffer sql) {
-
-        boolean geography =
-                "geography".equals(gatt.getUserData().get(JDBCDataStore.JDBC_NATIVE_TYPENAME));
-
-        if (geography) {
-            sql.append("encode(ST_AsBinary(");
-            encodeColumnName(prefix, gatt.getLocalName(), sql);
-            sql.append("),'base64')");
-        } else {
-            boolean force2D =
-                    hints != null
-                            && hints.containsKey(Hints.FEATURE_2D)
-                            && Boolean.TRUE.equals(hints.get(Hints.FEATURE_2D));
-
-            if (force2D) {
-                sql.append("encode(ST_AsBinary(" + getForce2DFunction() + "(");
-                encodeColumnName(prefix, gatt.getLocalName(), sql);
-                sql.append(")),'base64')");
-            } else {
-                sql.append("encode(ST_AsEWKB(");
-                encodeColumnName(prefix, gatt.getLocalName(), sql);
-                sql.append("),'base64')");
-            }
-        }
+        boolean force2D =
+                hints != null
+                        && hints.containsKey(Hints.FEATURE_2D)
+                        && Boolean.TRUE.equals(hints.get(Hints.FEATURE_2D));
+        getGeometryColumnEncoder().encode(gatt, prefix, sql, force2D, null);
     }
 
     @Override
     public void encodeGeometryColumnSimplified(
             GeometryDescriptor gatt, String prefix, int srid, StringBuffer sql, Double distance) {
-        if (!isSimplifyEnabled()) {
-            super.encodeGeometryColumnSimplified(gatt, prefix, srid, sql, distance);
-        } else {
-            // add preserveCollapsed argument if it's supported (PostGIS 2.2+)
-            // http://postgis.net/docs/manual-2.2/ST_Simplify.html
-            boolean atLeast2_2_0 = version.compareTo(V_2_2_0) >= 0;
-
-            boolean geography =
-                    "geography".equals(gatt.getUserData().get(JDBCDataStore.JDBC_NATIVE_TYPENAME));
-
-            if (geography) {
-                // st_astwb and st_simplify do not accept a geography column
-                sql.append("encode(ST_AsBinary(");
-                encodeColumnName(prefix, gatt.getLocalName(), sql);
-                sql.append("),'base64')");
-            } else {
-                String preserveCollapsed = atLeast2_2_0 ? ", true" : "";
-                if (NON_CURVED_GEOMETRY_CLASSES.contains(gatt.getType().getBinding())) {
-                    if (atLeast2_2_0) {
-                        sql.append("encode(ST_AsTWKB(ST_Simplify(" + getForce2DFunction() + "(");
-                        encodeColumnName(prefix, gatt.getLocalName(), sql);
-                        sql.append(
-                                "), "
-                                        + distance
-                                        + preserveCollapsed
-                                        + "),"
-                                        + getTWKBDigits(distance)
-                                        + "),'base64')");
-                    } else {
-                        sql.append("encode(ST_AsBinary(ST_Simplify(" + getForce2DFunction() + "(");
-                        encodeColumnName(prefix, gatt.getLocalName(), sql);
-                        sql.append("), " + distance + preserveCollapsed + ")),'base64')");
-                    }
-                } else {
-                    // may have curves mixed in, cannot use TWKB and need to guard ST_Simplify
-                    sql.append("encode(ST_AsBinary(");
-                    sql.append("CASE WHEN ST_HasArc(");
-                    encodeColumnName(prefix, gatt.getLocalName(), sql);
-                    sql.append(") THEN ");
-                    encodeColumnName(prefix, gatt.getLocalName(), sql);
-                    sql.append(" ELSE ");
-                    sql.append("ST_Simplify(" + getForce2DFunction() + "(");
-                    encodeColumnName(prefix, gatt.getLocalName(), sql);
-                    sql.append("), " + distance + preserveCollapsed + ") END),'base64')");
-                }
-            }
-        }
+        getGeometryColumnEncoder().encode(gatt, prefix, sql, true, distance);
     }
 
-    private boolean isStraightSegmentsGeometry(GeometryDescriptor gatt) {
+    protected boolean isStraightSegmentsGeometry(GeometryDescriptor gatt) {
         return NON_CURVED_GEOMETRY_CLASSES.contains(gatt.getType().getBinding());
-    }
-
-    /**
-     * Computes the number of digits preserved by TWKB based on the magnitude of the simplification
-     * distance
-     *
-     * @param distance
-     * @return
-     */
-    private int getTWKBDigits(Double distance) {
-        int result = -(int) Math.floor(Math.log10(distance));
-        return result;
     }
 
     @Override

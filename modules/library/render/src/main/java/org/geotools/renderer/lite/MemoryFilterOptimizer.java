@@ -230,12 +230,15 @@ class MemoryFilterOptimizer extends DuplicatingFilterVisitor {
     public Object visit(PropertyName expression, Object extraData) {
         Expression replacement = expressionReplacements.get(expression);
         if (replacement == null) {
-            if (simpleFeatureType != null) {
+            if (simpleFeatureType != null
+                    && simpleFeatureType.indexOf(expression.getPropertyName()) >= 0) {
                 // index access is significantly faster, does not need memoization
                 replacement = new IndexPropertyName(simpleFeatureType, expression);
             } else if (memoizeCandidates.contains(expression)) {
                 // other accesses can use caching instead
                 replacement = new MemoizedPropertyName(expression);
+            } else {
+                replacement = expression;
             }
 
             expressionReplacements.put(expression, replacement);
@@ -346,6 +349,7 @@ class MemoryFilterOptimizer extends DuplicatingFilterVisitor {
         public Object evaluate(Object object) {
             if (object != lastFeature || lastContext != null) {
                 lastResult = delegate.evaluate(object);
+                lastFeature = object;
                 lastContext = null;
             }
             return lastResult;

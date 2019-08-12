@@ -23,6 +23,8 @@ import java.util.HashSet;
 import java.util.List;
 import org.geotools.data.DataTestCase;
 import org.geotools.renderer.lite.MemoryFilterOptimizer.IndexPropertyName;
+import org.mockito.Mockito;
+import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.And;
 import org.opengis.filter.Filter;
 import org.opengis.filter.PropertyIsEqualTo;
@@ -91,5 +93,31 @@ public class MemoryFilterOptimizerTest extends DataTestCase {
         assertTrue(Proxy.isProxyClass(equalIdCopy.getClass()));
 
         checkPropertiesIndexed(equalNameCopy, equalIdCopy);
+    }
+
+    public void testMemoizeDefaultGeometry() {
+        PropertyName property = ff.property("");
+
+        MemoryFilterOptimizer optimizer =
+                new MemoryFilterOptimizer(roadType, Collections.singleton(property));
+        PropertyName memoized = (PropertyName) property.accept(optimizer, null);
+
+        SimpleFeature spy = Mockito.spy(roadFeatures[0]);
+        assertSame(roadFeatures[0].getDefaultGeometry(), memoized.evaluate(spy));
+        assertSame(roadFeatures[0].getDefaultGeometry(), memoized.evaluate(spy));
+
+        // check the default geometry property has been called once only
+        Mockito.verify(spy, Mockito.times(1)).getDefaultGeometry();
+    }
+
+    public void testMemoizeNonExistingProperty() {
+        // Property accessors would return null instead of an exception, check this behavior has
+        // been replicated
+        PropertyName property = ff.property("foobar");
+
+        MemoryFilterOptimizer optimizer =
+                new MemoryFilterOptimizer(roadType, Collections.singleton(property));
+        PropertyName memoized = (PropertyName) property.accept(optimizer, null);
+        assertNull(memoized.evaluate(roadFeatures[0]));
     }
 }

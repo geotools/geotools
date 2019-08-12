@@ -17,7 +17,6 @@
 package org.geotools.data.wfs.online.v2_0;
 
 import static org.geotools.data.wfs.WFSTestData.GEOS_STATES_11;
-
 import java.util.Collections;
 import org.geotools.data.wfs.WFSDataStoreFactory;
 import org.geotools.data.wfs.online.AbstractWfsDataStoreOnlineTest;
@@ -33,7 +32,7 @@ import org.opengis.filter.FilterFactory2;
 public class GeoServerOnlineTest extends AbstractWfsDataStoreOnlineTest {
 
     public static final String SERVER_URL =
-            "http://localhost:9090/geoserver/wfs?service=WFS&request=GetCapabilities&version=2.0.0";
+            "http://localhost:8080/geoserver/wfs?service=WFS&request=GetCapabilities&version=2.0.0";
 
     public GeoServerOnlineTest() {
         super(
@@ -62,8 +61,8 @@ public class GeoServerOnlineTest extends AbstractWfsDataStoreOnlineTest {
         return ff.intersects(ff.property("the_geom"), ff.literal(polygon));
     }
 
-    @Override
-    public void testDataStoreHandlesAxisFlipping() {
-        // disabled, not implemented for 2.0.0
-    }
+        @Override
+        public void testDataStoreHandlesAxisFlipping() {
+            // disabled, not implemented for 2.0.0
+        }
 }

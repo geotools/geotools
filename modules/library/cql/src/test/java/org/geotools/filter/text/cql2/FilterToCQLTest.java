@@ -232,19 +232,17 @@ public class FilterToCQLTest {
         filter.accept(toCQL, null).toString();
     }
 
-
     @Test
     public void testColorLiteral() throws Exception {
         FilterFactory ff = CommonFactoryFinder.getFilterFactory();
-        PropertyIsEqualTo filter = ff.equal(ff.property("color"), ff.literal(Color.RED),false);
-        
+        PropertyIsEqualTo filter = ff.equal(ff.property("color"), ff.literal(Color.RED), false);
+
         FilterToCQL toCQL = new FilterToCQL();
-        StringBuilder cql = (StringBuilder) toCQL.visit(filter,null);
-        
-        Assert.assertEquals( "color = '#FF0000'", cql.toString() );
+        StringBuilder cql = (StringBuilder) toCQL.visit(filter, null);
+
+        Assert.assertEquals("color = '#FF0000'", cql.toString());
     }
-    
-    
+
     @Test(expected = UnsupportedOperationException.class)
     public void testBegunByUnsuported() throws Exception {
 

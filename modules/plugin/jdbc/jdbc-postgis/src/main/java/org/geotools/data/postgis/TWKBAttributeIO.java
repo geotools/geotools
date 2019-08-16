@@ -67,13 +67,18 @@ class TWKBAttributeIO {
                 return super.readCoordinateSequence(numPts, metadata);
             }
 
-            int dims = metadata.getDims();
-            LiteCoordinateSequence seq = (LiteCoordinateSequence) csFactory.create(numPts, dims);
-            double[] ordinates = new double[numPts * dims];
+            final int dims = metadata.getDims();
+            final LiteCoordinateSequence seq =
+                    (LiteCoordinateSequence) csFactory.create(numPts, dims);
+            final double[] ordinates = new double[numPts * dims];
+            final double[] scales = new double[dims];
+            for (int i = 0; i < scales.length; i++) {
+                scales[i] = metadata.getScale(i);
+            }
             int k = 0;
             for (int i = 0; i < numPts; i++) {
                 for (int j = 0; j < dims; j++) {
-                    double ordinateDelta = readNextDouble(metadata.getScale(j));
+                    double ordinateDelta = readNextDouble(scales[j]);
                     double value = metadata.valueArray[j] + ordinateDelta;
                     metadata.valueArray[j] = value;
                     ordinates[k++] = value;

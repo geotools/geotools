@@ -264,10 +264,13 @@ public class TWKBReader {
 
         // Create CoordinateSequence and read geometry
         CoordinateSequence seq = csFactory.create(numPts, dims);
-
+        final double[] scales = new double[dims];
+        for (int i = 0; i < scales.length; i++) {
+            scales[i] = metadata.getScale(i);
+        }
         for (int i = 0; i < numPts; i++) {
             for (int j = 0; j < dims; j++) {
-                double ordinateDelta = readNextDouble(metadata.getScale(j));
+                double ordinateDelta = readNextDouble(scales[j]);
                 double value = metadata.valueArray[j] + ordinateDelta;
                 metadata.valueArray[j] = value;
                 seq.setOrdinate(i, j, value);

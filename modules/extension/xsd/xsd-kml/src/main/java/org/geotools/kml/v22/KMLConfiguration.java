@@ -178,7 +178,9 @@ public class KMLConfiguration extends Configuration {
         container.registerComponentImplementation(KML.KmlType, KmlTypeBinding.class);
         container.registerComponentImplementation(KML.LabelStyleType, LabelStyleTypeBinding.class);
         //
-        // container.registerComponentImplementation(KML.LatLonAltBoxType,LatLonAltBoxTypeBinding.class);
+        // For 2.2, LatLonAltBoxType does not extend LatLonBoxType as in 2.1, both extend
+        // AbstractLatLonBoxType instead, so LatLonAltBoxType requires a specifig binding
+        container.registerComponentImplementation(KML.LatLonAltBoxType, LatLonBoxTypeBinding.class);
         container.registerComponentImplementation(KML.LatLonBoxType, LatLonBoxTypeBinding.class);
         container.registerComponentImplementation(KML.LinearRingType, LinearRingTypeBinding.class);
         container.registerComponentImplementation(KML.LineStringType, LineStringTypeBinding.class);

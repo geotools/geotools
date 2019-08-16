@@ -350,6 +350,11 @@ public class DataUtilitiesTest extends DataTestCase {
         SimpleFeatureType road3 =
                 DataUtilities.createType("test.road", "id:0,geom:LineString,name:String,uuid:UUID");
         assertEquals(0, DataUtilities.compare(road3, roadType));
+
+        // different attribute bindings
+        SimpleFeatureType road4 =
+                DataUtilities.createType("road", "id:0,geom:LineString,name:String,uuid:String");
+        assertEquals(-1, DataUtilities.compare(road4, roadType));
     }
 
     public void testIsMatch() {}

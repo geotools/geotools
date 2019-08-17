@@ -8,7 +8,7 @@ A binding is what transforms XML into a Java object and vice versa. Bindings can
 * simple types
 * complex types
 
-More specifically, a binding is an instanceof of **org.geotools.xsd.Binding**::
+More specifically, a binding is an ``instanceof`` of ``org.geotools.xsd.Binding``::
   
   interface Binding {
     /**
@@ -35,20 +35,20 @@ Bindings must declare the component they are attached to, known as the target fo
   
   QName getTarget();
 
-This is achieved with a qualified name, an instance of **javax.xml.namespace.QName**. A qualified name is made up of:
+This is achieved with a qualified name, an instance of ``javax.xml.namespace.QName``. A qualified name is made up of:
 
-* a namespace uri, and
+* a namespace URI, and
 * a local parse
 
 Examples:
 
-================================ ==================== ==================================
-Namespace                        Local                Component
-================================ ==================== ==================================
-http://www.geotools.org/po       purchaseOrder        Global "purchaseOrder" element
-http://www.w3.org/2001/XMLSchema int                  Simple type "int"
-http://www.opengis.net/gml       AbstractFeatureType  Complex type "AbstractFeatureType"
-================================ ==================== ==================================
+==================================== ======================== ======================================
+Namespace                            Local                    Component
+==================================== ======================== ======================================
+``http://www.geotools.org/po``       ``purchaseOrder``        Global ``purchaseOrder`` element
+``http://www.w3.org/2001/XMLSchema`` ``int``                  Simple type ``int``
+``http://www.opengis.net/gml``       ``AbstractFeatureType``  Complex type ``AbstractFeatureType``
+==================================== ======================== ======================================
 
 Binding Type
 ''''''''''''
@@ -59,13 +59,13 @@ The job of a binding is to transform between objects and XML. Along with the tar
 
 Examples:
 
-=============================================== ============================
-Target                                          Type (Java Class)
-=============================================== ============================
-http://www.geotools.org/po, purchaseOrder       org.geotools.po.PurchaseOrder
-http://www.w3.org/2001/XMLSchema, int           java.lang.Integer
-http://www.opengis.net/gml, AbstractFeatureType org.geotools.feature.Feature
-=============================================== ============================
+======================================================= =================================
+Target                                                  Type (Java Class)
+======================================================= =================================
+``http://www.geotools.org/po``, ``purchaseOrder``       ``org.geotools.po.PurchaseOrder``
+``http://www.w3.org/2001/XMLSchema,`` ``int``           ``java.lang.Integer``
+``http://www.opengis.net/gml``, ``AbstractFeatureType`` ``org.geotools.feature.Feature``
+======================================================= =================================
 
 Binding Execution
 '''''''''''''''''
@@ -76,7 +76,7 @@ When an element or attribute in an XML document is being parsed, a Binding Execu
 
 The bindings in the chain are executed one after another and the result is the final representation of the element / attribute as a java object. Each binding receives the value produced by the binding before it.
 
-Consider the following xml snippet, in which an element named "integerElement" which is of type "xs:integer" is being parsed::
+Consider the following XML snippet, in which an element named ``integerElement`` which is of type ``xs:integer`` is being parsed::
   
   <integerElement>25</integerElement>
 
@@ -94,7 +94,7 @@ Once the binding chain has been formed, it is executed in order, with the input 
 
 .. image:: /images/xml/bindingChain2.png
 
-The default execution behaviour is to execute after its "parent" binding has executed. However a binding may also specify different execution behaviour, called its **Execution Mode**:
+The default execution behavior is to execute after its "parent" binding has executed. However a binding may also specify different execution behavior, called its **Execution Mode**:
 
 * After
   
@@ -141,16 +141,16 @@ The default execution behaviour is to execute after its "parent" binding has exe
    
    And the associated gt-opengis java interface mappings:
    
-   ================================= ==================================================
-   Element                           Interface
-   ================================= ==================================================
-   PropertyIsEqualTo                 org.opengis.filter.PropertyIsEqualTo
-   PropertyIsNotEqualTo              org.opengis.filter.PropertyIsNotEqualTo
-   PropertyIsLessThan                org.opengis.filter.PropertyIsLessThan
-   PropertyIsLessThanOrEqualTo       org.opengis.filter.PropertyIsLessThanOrEqualTo
-   PropertyIsGreaterThan             org.opengis.filter.PropertyIsGreaterThan
-   PropertyIsGreaterThanOrEqualTo    org.opengis.filter.PropertyIsGreaterThanOrEqualTo
-   ================================= ==================================================
+   ===================================== ======================================================
+   Element                               Interface
+   ===================================== ======================================================
+   ``PropertyIsEqualTo``                 ``org.opengis.filter.PropertyIsEqualTo``
+   ``PropertyIsNotEqualTo``              ``org.opengis.filter.PropertyIsNotEqualTo``
+   ``PropertyIsLessThan``                ``org.opengis.filter.PropertyIsLessThan``
+   ``PropertyIsLessThanOrEqualTo``       ``org.opengis.filter.PropertyIsLessThanOrEqualTo``
+   ``PropertyIsGreaterThan``             ``org.opengis.filter.PropertyIsGreaterThan``
+   ``PropertyIsGreaterThanOrEqualTo``    ``org.opengis.filter.PropertyIsGreaterThanOrEqualTo``
+   ===================================== ======================================================
    
    All of the elements are of the same XML type "BinaryComparisonOpType", but each maps to a different Java interface, so it makes sense to have a specific binding for each element, instead of having a single binding for the type do the work.
 
@@ -186,10 +186,10 @@ Simple bindings are used to parse and encode elements and attributes which have 
   
   The parse method for simple bindings takes two parameters:
   
-  * instance: The instance component ( element or attribute ) that is being parsed as an instance of org.geotools.xsd.InstanceComponent
+  * instance: The instance component ( element or attribute ) that is being parsed as an instance of ``org.geotools.xsd.InstanceComponent``
   * value: The parsed value of the element / attribute created by the previous binding in the execution chain ( explained in greater detail above ). If the binding is the first in the chain, this value is the raw text of the element / attribute as a String.
   
-  The return value of the method is the transformed object. Continuing with the "xs:integer" example, an implementation could be::
+  The return value of the method is the transformed object. Continuing with the ``xs:integer`` example, an implementation could be::
     
     Object parse(InstanceComponent instance, Object value) throws Exception {
       return Integer.parseInt( (String) value );
@@ -204,19 +204,19 @@ Simple bindings are used to parse and encode elements and attributes which have 
   It takes two parameters:
   
   * object: The object to serialize or encode as XML
-  * value: The string value as encoded by the previous binding in the execution chain. If the binding is the first in the chain, the value is the result of calling toString() on the object parameter.
+  * value: The string value as encoded by the previous binding in the execution chain. If the binding is the first in the chain, the value is the result of calling ``toString()`` on the object parameter.
   
   The return value of the method is the serialized value for the object.
-  The example of "xs:integer" can be implemented as::
+  The example of ``xs:integer`` can be implemented as::
     
     String encode(Object object, String value) throws Exception {
       Integer integer = (Integer) object;
       return integer.toString();
     }
 
-* AbstractSimpleBinding
+* ``AbstractSimpleBinding``
   
-  The class org.geotools.xsd.AbstractSimpleBinding is available for subclassing
+  The class ``org.geotools.xsd.AbstractSimpleBinding`` is available for sub-classing
   by binding writers.
 
 Complex Bindings
@@ -252,9 +252,9 @@ The interface for complex bindings looks like::
   
   The parse method for a complex binding takes three parameters:
 
-  * instance: The element instance being parsed, an instance of **org.geotools.xsd.ElementInstance**
-  * nocde:: A node in the current "parse tree" ( explained below ) at the time the binding is being executed, an instance of Node
-  * value: The parsed value as produced by the previous binding in the execution chain. This value is null for the first binding in the chain.
+  * ``instance``: The element instance being parsed, an instance of ``org.geotools.xsd.ElementInstance``
+  * ``nocde``:: A node in the current "parse tree" ( explained below ) at the time the binding is being executed, an instance of Node
+  * ``value``: The parsed value as produced by the previous binding in the execution chain. This value is null for the first binding in the chain.
 
   Complex types by definition are XML elements which are composed of other XML elements and attributes. A complex object could be defined as an object which is composed of other objects. Parsing a complex object really just amounts to rounding up objects for child elements, and composing the resulting object accordingly.
   
@@ -262,9 +262,9 @@ The interface for complex bindings looks like::
   
   A complex binding must use the parse tree to obtain the values that it needs to compose the resulting object.
   
-  As an example, consider the binding for the "PurchaseOrderType" from the purchase order schema.::
+  As an example, consider the binding for the ``PurchaseOrderType`` from the purchase order schema.::
     
-    Object parse(ElementInstance instance, Node node, Object value) throws     Exception {
+    Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         PurchaseOrder po = new PurchaseOrder();
       
         //mandatory child elements
@@ -291,11 +291,11 @@ The interface for complex bindings looks like::
   
   * object: The object to encode
   * document: A document used to create DOM components
-  * value: A value as an element which is the result of the previous binding in the execution chain. For the first binding in the chain this is an empty element ( no attributes, children, or text )
+  * value: A value as an element which is the result of the previous binding in the execution chain. For the first binding in the chain this is an empty element (no attributes, children, or text)
   
-  The return value of the method is the encoded element. Often this is the same element passed in ( the value parameter ), with some content added to it.
+  The return value of the method is the encoded element. Often this is the same element passed in (the value parameter), with some content added to it.
   
-  The getProperty method for a complex binding is used to retrieve properties from an object being encoded.::
+  The ``getProperty`` method for a complex binding is used to retrieve properties from an object being encoded.::
   
      Object getProperty(Object object, QName name) throws Exception;
   
@@ -310,11 +310,11 @@ The interface for complex bindings looks like::
   
   .. note::
      
-    A multi-valued property is an element declaration in which the "maxOccurs" attribute is greater then 1. In this case, the getProperty method may return a collection, an array, or an iterator for the property.
+    A multi-valued property is an element declaration in which the ``maxOccurs`` attribute is greater then 1. In this case, the ``getProperty`` method may return a collection, an array, or an iterator for the property.
   
   The entire encoding process for a complex binding is split over these two methods.
   
-  Consider the "PurchaseOrderType" example::
+  Consider the ``PurchaseOrderType`` example::
     
     Element encode(Object object, Document document, Element value) throws Exception {
          return value;
@@ -335,10 +335,10 @@ The interface for complex bindings looks like::
 
     }
   
-  In the above example all of the work is done in the getProperty method. This is often the case. However there are situations where the encode method is necessary.
+  In the above example all of the work is done in the ``getProperty`` method. This is often the case. However there are situations where the encode method is necessary.
 
   * For types with "open-ended" or "extensible" content ( think AbstractFeatureType from the GML schema ). Since the content is open ended the schema does not contain the necessary information to retrieve the property
-  * For types with "mixed" content ( i.e. can have child elements and text ). In this situation the child elements can be encoded with getProperty, and the text content can be be encoded in encode.
+  * For types with "mixed" content ( i.e. can have child elements and text ). In this situation the child elements can be encoded with ``getProperty``, and the text content can be be encoded in encode.
 
 .. note::
    
@@ -376,18 +376,18 @@ The interface for complex bindings looks like::
         return null;
      }
    
-   In this example, all the work is done in the encode method. However it is evident that the second example results in much more work for the binding implementor which is why the first method is often preferred.
+   In this example, all the work is done in the encode method. However it is evident that the second example results in much more work for the binding implementer which is why the first method is often preferred.
 
-* AbstractComplexBinding
+* ``AbstractComplexBinding``
   
-  The class org.geotools.xml.AbstractCompledxBinding is available for subclassing by binding writers.
+  The class ``org.geotools.xml.AbstractCompledxBinding`` is available for sub-classing by binding writers.
 
 Binding Context
 '''''''''''''''
 
 Often bindings have dependencies on other types of objects. The most common case is a factory used to create objects. Bindings work with the concept of Constructor Injection, in which any dependencies a binding has on another object is listed as a parameter in its constructor.
 
-Let us consider the "PurchaseOrderType" example once again::
+Let us consider the ``PurchaseOrderType`` example once again::
   
   class PurchaseOrderTypeBinding extends AbstractComplexBinding {
     
@@ -402,16 +402,16 @@ Let us consider the "PurchaseOrderType" example once again::
 
 In the above, the binding declares a dependency on a factory which it will use to construct objects. You may be asking the question Where does this factory come from?. The answer is the Binding Context.
 
-The Binding Context is used to create bindings. More specifically a binding is created within a binding context. Which means that all dependencies ( a PurchaseOrderFactory in this case ) must also be present in the binding context. For those of you familiar with the concept of Inversion of Control (IoC) it may not surprise you that the binding context is nothing more then a PicoContainer instance.
+The Binding Context is used to create bindings. More specifically a binding is created within a binding context. Which means that all dependencies ( a ``PurchaseOrderFactory`` in this case ) must also be present in the binding context. For those of you familiar with the concept of Inversion of Control it may not surprise you that the binding context is nothing more then a ``PicoContainer`` instance.
 
 The Binding Context is described further in the Configuration section.
 
 Binding Testing
 ''''''''''''''''
 
-The **XMLTestSupport** class is used as a base class for binding unit tests.
+The ``XMLTestSupport`` class is used as a base class for binding unit tests.
 
-Subclasses of XMLTestSupport need to provide the configuration the binding under test is part of. For instance::
+Subclasses of ``XMLTestSupport`` need to provide the configuration the binding under test is part of. For instance::
   
   public class POBindingTest extends XMLTestSupport {
     
@@ -424,7 +424,7 @@ The class provides convenience methods for testing various aspects of all bindin
 
 * Parse Testing
   
-  Each binding unit test has a member of type org.w3c.dom.Document. It is meant to be used to build up an instance document to be parsed by the parser. The instance document contains the content that the binding under test will parse. The document must be built up from a test method. Once built up, the parse method is called to parse the instance document into an object.::
+  Each binding unit test has a member of type ``org.w3c.dom.Document``. It is meant to be used to build up an instance document to be parsed by the parser. The instance document contains the content that the binding under test will parse. The document must be built up from a test method. Once built up, the parse method is called to parse the instance document into an object.::
     
      /**
       * Parses the built document.
@@ -482,7 +482,7 @@ The class provides convenience methods for testing various aspects of all bindin
   * object: the object to be encoded
   * element: the qualified name of the element which maps to the object
   
-  The method returns a org.w3c.dom.Document object which is the root of the encoded document.
+  The method returns a ``org.w3c.dom.Document`` object which is the root of the encoded document.
   
   An example usage::
     

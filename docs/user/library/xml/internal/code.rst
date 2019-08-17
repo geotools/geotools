@@ -1,7 +1,7 @@
 Code Generation
 ^^^^^^^^^^^^^^^
 
-The xmlcodegen maven plugin provides a code generator which can be used to generate bindings and other classes used in the geotools xml framework. The code generator feeds off a single schema file and generates a number of java classes.
+The ``xmlcodegen`` maven plugin provides a code generator which can be used to generate bindings and other classes used in the GeoTools  XML framework. The code generator feeds off a single schema file and generates a number of java classes.
 
 Plugin Configuration
 ''''''''''''''''''''
@@ -34,7 +34,7 @@ To use the plugin in a project, the following configuration must first be added 
      </plugins>
   </build>
 
-In the above, po.xsd should be replaced with an actual schema file. Once configured the plugin can be executed with the following command::
+In the above, ``po.xsd`` should be replaced with an actual schema file. Once configured the plugin can be executed with the following command::
   
   mvn org.geotools.maven:xmlcodegen:generate 
 
@@ -63,25 +63,25 @@ The output of the command will look something like the following::
 By default, the code generator will generate the following classes:
 
 * A binding for each type in the schema
-* A subclass of org.geotools.xsd.Configuration for the schema
-* A subclass of org.geotools.xml.BindingConfiguration
+* A subclass of ``org.geotools.xsd.Configuration`` for the schema
+* A subclass of ``org.geotools.xml.BindingConfiguration``
 * An interface containing the qualified names of all elements, attributes, and types defined in the schema
 
-The plugin contains may configuration options which can be used to modify this default behaviour.
+The plugin contains may configuration options which can be used to modify this default behavior.
 
 **Example: gt-xsd-gml3 GMLSchema**
 
-This example demonstrates how to generate (just) GMLSchema.java, a file containing a type constant for every GML 3.1.1 XSD type, for gt-xsd-gml3, the GeoTools GML 3.1.1 support module.
+This example demonstrates how to generate (just) ``GMLSchema.java``, a file containing a type constant for every GML 3.1.1 XSD type, for ``gt-xsd-gml3``, the GeoTools GML 3.1.1 support module.
 
-1. Build xmlcodegen
+1. Build ``xmlcodegen``
    
-   In build/maven/xmlcodegen::
+   In ``build/maven/xmlcodegen``::
      
      mvn clean install
    
 2. Generate the schema
    
-   In modules/extension/xsd/xsd-gml3::
+   In ``modules/extension/xsd/xsd-gml3``::
      
      mvn -o xmlcodegen:generateSchema
 
@@ -89,44 +89,44 @@ This example demonstrates how to generate (just) GMLSchema.java, a file containi
    
    There are still some manual changes to perform:
    
-   * The default location of the schema source file is wrong. Move it, replacing the current GMLSchema.java::
+   * The default location of the schema source file is wrong. Move it, replacing the current ``GMLSchema.java``::
        
        mv src/main/java/GMLSchema.java src/main/java/org/geotools/gml3/GMLSchema.java
    
-   * The Java package is wrong. Add to the top of GMLSchema.java::
+   * The Java package is wrong. Add to the top of ``GMLSchema.java``::
        
        package org.geotools.gml3;
    
-   * Java imports are wrong, Fix GMLSchema.java imports in Eclipse with Ctrl-Shift-O.
+   * Java imports are wrong, Fix ``GMLSchema.java`` imports in Eclipse with ``Ctrl-Shift-O``.
 
 Configuration Parameter Reference
 '''''''''''''''''''''''''''''''''
 
 The code generator plugins offers the following goals:
 
-* xmlcodegen:generate - Generates the parser/encoding configuration and bindings
-* xmlcodegen:generateSchema - Generates the class that represents the XML schema as a geotools feature model schema
+* ``xmlcodegen:generate`` - Generates the parser/encoding configuration and bindings
+* ``xmlcodegen:generateSchema`` - Generates the class that represents the XML schema as a GeoTools feature model schema
 
 **Common Configuration**
 
 Many configuration parameters are shared between the above goals. The following is a list of all the common configuration parameters:
 
-* schemaLocation (no default)
+* ``schemaLocation`` (no default)
   
-  Location of the \*.xsd file defining the schema. This can be a relative or absolute path. For relative paths, the schemaSourceDirectory and schemaLookupDirectories parameters are used.::
+  Location of the ``*.xsd`` file defining the schema. This can be a relative or absolute path. For relative paths, the ``schemaSourceDirectory`` and ``schemaLookupDirectories`` parameters are used.::
     
     
     <schemaLocation>po.xsd</schemaLocation>
     <schemaLocation>/home/bob/filter.xsd</schemaLocation>
 
-* schemaSourceDirectory (default src/main/xsd)
+* ``schemaSourceDirectory`` (default ``src/main/xsd``)
   
-  Directory containing the schema specified by schemaLocation, and optionally any other schemas referenced by it.::
+  Directory containing the schema specified by ``schemaLocation``, and optionally any other schemas referenced by it.::
      
      <schemaSourceDirectory>src/main/resources</schemaSourceDirectory>
      <schemaSourceDirectory>/home/bob/schemas</schemaSourceDirectory>
 
-* schemaLookupDirectories (no default)
+* ``schemaLookupDirectories`` (no default)
   
   List of additional directories to be used to locate referenced schemas.::
     
@@ -135,66 +135,66 @@ Many configuration parameters are shared between the above goals. The following 
        <schemaLookupDirectory>/home/bob/otherSchemas</schemaLookupDirectory>
     </schemaLookupDirectories>
 
-* targetPrefix (no default)
+* ``targetPrefix`` (no default)
   
-  The prefix to be mapped to the 'targetNamespace' of the schema.::
+  The prefix to be mapped to the ``targetNamespace`` of the schema.::
      
      <targetPrefix>po</targetPrefix>
 
-* destinationPackage (no default)
+* ``destinationPackage`` (no default)
   
   Name of java package in which to place generated files into. If unspecified the root of the default ( empty ) package is used.::
      
      <destinationPackage>org.geotools.po</destinationPackage>
 
-* outputDirectory (default src/main/java)
+* ``outputDirectory`` (default ``src/main/java``)
   
-  Base location of where generated files should be written. If the destinationPackage is also specified it is appended to this location.::
+  Base location of where generated files should be written. If the ``destinationPackage`` is also specified it is appended to this location.::
     
     <outputDirectory>/home/bob/xml</outputDirectory>
     <outputDirectory>src/other/java</outputDirectory>
 
-* overwriteExistingFiles (default false)
+* ``overwriteExistingFiles`` (default false)
   
   Flag controlling whether existing files should be overwritten by newly generated files.::
      
      <overwriteExistingFiles>true</overwriteExistingFiles>
 
-* relativeSchemaReference (default false)
+* ``relativeSchemaReference`` (default false)
 
-  Treat all relative schema references (include and import) as relative to the schema (XSD) resource in which they are found, rather than looking for them in compiled classes or ``schemaLookupDirectories``. This requires all included/imported schemas to be present in the expected relative filesystem location. The main advantage of this approach is that it supports schema files that have cyclic dependencies (e.g. GML 3.2)::
+  Treat all relative schema references (include and import) as relative to the schema (XSD) resource in which they are found, rather than looking for them in compiled classes or ``schemaLookupDirectories``. This requires all included/imported schemas to be present in the expected relative file system location. The main advantage of this approach is that it supports schema files that have cyclic dependencies (e.g. GML 3.2)::
 
       <relativeSchemaReference>true</relativeSchemaReference>
 
 **Generate Configuration**
 
-The following configuration parameters apply only to the **generate** goal:
+The following configuration parameters apply only to the ``generate`` goal:
 
-* generateXsd (default true)
+* ``generateXsd`` (default true)
   
   Flag controlling whether the interface containing all the qualified element, attribute, and type names for the schema is generated.::
     
     <generateXsd>false</generateXsd>
 
-* generateConfiguration (default true)
+* ``generateConfiguration`` (default true)
   
   Flag controlling whether the Configuration for the schema should be generated.::
     
     <generateConfiguration>false</generateConfiguration>
 
-* generateAttributeBindings (default false)
+* ``generateAttributeBindings`` (default false)
   
   Flag controlling whether bindings for attributes declared in the schema should be generated.::
      
      <generateAttributeBindings>true</generateAttributeBindings>
 
-* generateElementBindings (default false)
+* ``generateElementBindings`` (default false)
   
   Flag controlling whether bindings for elements declared in the schema should be generated.::
     
     <generateElementBindings>true</generateElementBindings>
 
-* generateTypeBindings (default true)
+* ``generateTypeBindings`` (default true)
   
   Flag controlling whether bindings for types declared in the schema should be generated.::
     
@@ -211,7 +211,7 @@ The following configuration parameters apply only to the **generate** goal:
       <include>PropertyIsNotEqualTo</include>
     </includes>
 
-* bindingConstructorArguments (defaults none)
+* ``bindingConstructorArguments`` (defaults none)
   
   List of name, class pairs which define the constructor arguments for each generated binding.::
     
@@ -234,47 +234,47 @@ The following configuration parameters apply only to the **generate** goal:
 
 **GenerateSchema Configuration**
 
-The following configuration parameters apply only to the generateSchema goal:
+The following configuration parameters apply only to the ``generateSchema`` goal:
 
-* includeComplexTypes (default true)
+* ``includeComplexTypes`` (default true)
   
-  Controls whether complex types from the XML schema are included in the generated geotools schema
+  Controls whether complex types from the XML schema are included in the generated GeoTools  schema
 
-* includeSimpleTypes (default true)
+* ``includeSimpleTypes`` (default true)
   
-  Controls whether simple types from the XML schema are included in the generated geotools schema.
+  Controls whether simple types from the XML schema are included in the generated GeoTools  schema.
 
-* followComplexTypes (default false)
+* ``followComplexTypes`` (default false)
   
-  Controls whether the contents of complex XML types are processed during schema generation. Setting this parameter to true will cause the generator to create geotools types which model exactly their corresponding XML schema types in term of base types and composition::
+  Controls whether the contents of complex XML types are processed during schema generation. Setting this parameter to true will cause the generator to create GeoTools  types which model exactly their corresponding XML schema types in term of base types and composition::
 
       <followComplexTypes>true</followComplexTypes>
 
-* cyclicTypeSupport (default false)
+* ``cyclicTypeSupport`` (default false)
 
   Support complex XML types that are cyclically defined, such as ``gmd:CI_CitationType`` from GML 3.2. Types in the generated Schema file will be defined using ``AbstractLazyAttributeType`` and ``AbstractLazyComplexType`` from ``gt-main``. A ``main()`` method is also included in the generated Schema class to aid testing. This option is best used with ``followComplexTypes`` set to ``true``, although if you are working with a multi-package schema such as GML 3.2, you will likely need to bootstrap with ``followComplexTypes`` set to ``false`` to generate skeleton Schema files that you can import before recreating them all with ``followComplexTypes`` set to ``true``::
 
       <cyclicTypeSupport>true</cyclicTypeSupport>
 
-* imports (default none)
+* ``imports`` (default none)
   
-  List of geotools schema classes to include as an import when generating the schema.::
+  List of GeoTools schema classes to include as an import when generating the schema.::
     
     <imports>
       <import>org.geotools.xml.XLINKSchema</import>
     </imports>
  
-* printRecursionPaths (default false)
+* ``printRecursionPaths`` (default false)
   
   Causes the generator to print out information about how it recurses through the XML schema
 
-* maxRecrusionDepth (default 15)
+* ``maxRecrusionDepth`` (default 15)
   
   Causes the generator to stop recursion and throw back an error when it reaches a particular recursion depth. This will happen if the schema has circular dependencies among its contents.
 
-* typebindings (default none)
+* ``typebindings`` (default none)
   
-  Override the default mapping of XSD complex types to Java types in generated *Schema.java*. By default, XSD complex types are mapped to Java ComplexTypeImpl bound to Collection, but for complex types represented by atomic Java types (such a geometries), it may be preferable to map these to AttributeTypeImpl with a binding to the atomic Java type.::
+  Override the default mapping of XSD complex types to Java types in generated ``Schema.java``. By default, XSD complex types are mapped to Java ``ComplexTypeImpl`` bound to Collection, but for complex types represented by atomic Java types (such a geometries), it may be preferable to map these to ``AttributeTypeImpl`` with a binding to the atomic Java type.::
     
     <typeBindings>
        <typeBinding>

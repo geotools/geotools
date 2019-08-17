@@ -21,7 +21,7 @@ StyleFactory
 We have three style factories offering various levels of standards compliance vs pragmatism.
 
 ============== ==================== ================ ======== =======================================
-Module     Class            Capability       Scope    Description
+Module         Class                Capability       Scope    Description
 ============== ==================== ================ ======== =======================================
 ``gt-opengis`` ``StyleFactory``     get              SE       Strictly limited to the SE standard
 ``gt-main``    ``StyleFactory``     get/set          SE / SLD Supports GeoTools vendor extensions
@@ -280,6 +280,7 @@ Notes on handling of features:
 * ``composite``-base (false): definition of composition groups
    
     .. code-block:: java
+      
        // multiply buffer from feature type style 0, onto composite-base provided by feature type style 1 
        style.featureTypeStyles().get(0).getOptions().put("composite","multiply, 0.5");
        style.featureTypeStyles().get(1).getOptions().put("composite-base", "true"); 

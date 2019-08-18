@@ -113,7 +113,7 @@ public class PreGeneralizedSimpleFeature implements SimpleFeature {
     }
 
     public Object getAttribute(int index) throws IndexOutOfBoundsException {
-        return feature.getAttribute(indexMapping[index]);
+        return feature.getAttribute(indexMapping == null ? index : indexMapping[index]);
     }
 
     public int getAttributeCount() {

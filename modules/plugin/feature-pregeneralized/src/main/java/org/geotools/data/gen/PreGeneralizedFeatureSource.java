@@ -217,7 +217,9 @@ public class PreGeneralizedFeatureSource implements SimpleFeatureSource {
                 fs.getFeatures(newQuery),
                 getSchema(),
                 getReturnedSchema(getSchema(), query),
-                indexMapping.get(di == null ? 0.0 : di.getDistance()),
+                query.getPropertyNames() == Query.ALL_NAMES
+                        ? indexMapping.get(di == null ? 0.0 : di.getDistance())
+                        : null,
                 info.getGeomPropertyName(),
                 getBackendGeometryName(fs));
     }

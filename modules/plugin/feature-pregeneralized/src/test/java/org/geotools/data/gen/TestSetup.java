@@ -23,9 +23,11 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import org.geotools.TestData;
 import org.geotools.data.DefaultRepository;
 import org.geotools.data.DefaultTransaction;
@@ -138,6 +140,8 @@ public class TestSetup {
 
         List<AttributeDescriptor> attrs = new ArrayList<AttributeDescriptor>();
         attrs.addAll(typ.getAttributeDescriptors());
+        // have a non linear mapping between source attributes and target attributes
+        Collections.shuffle(attrs, new Random(1));
 
         SimpleFeatureTypeImpl sft =
                 new SimpleFeatureTypeImpl(
@@ -159,6 +163,9 @@ public class TestSetup {
         MemoryDataStore memDS = new MemoryDataStore();
         List<AttributeDescriptor> attrs = new ArrayList<AttributeDescriptor>();
         attrs.addAll(typ.getAttributeDescriptors());
+        // have a non linear mapping between source attributes and target attributes
+        Collections.shuffle(attrs, new Random(1));
+
         GeometryDescriptorImpl geom2Descr =
                 new GeometryDescriptorImpl(
                         typ.getGeometryDescriptor().getType(),
@@ -189,6 +196,8 @@ public class TestSetup {
 
         List<AttributeDescriptor> attrs = new ArrayList<AttributeDescriptor>();
         attrs.addAll(typ.getAttributeDescriptors());
+        // have a non linear mapping between source attributes and target attributes
+        Collections.shuffle(attrs, new Random(1));
 
         GeometryDescriptorImpl geom2Descr =
                 new GeometryDescriptorImpl(

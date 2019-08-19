@@ -22,11 +22,11 @@ import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
-import org.geotools.factory.Hints;
 import org.geotools.metadata.iso.citation.CitationImpl;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.factory.DirectAuthorityFactory;
 import org.geotools.util.SimpleInternationalString;
+import org.geotools.util.factory.Hints;
 import org.opengis.metadata.citation.Citation;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.IdentifiedObject;
@@ -41,17 +41,11 @@ import org.opengis.util.InternationalString;
  * space.
  *
  * @since 2.2
- * @source $URL$
  * @version $Id$
  * @author Jody Garnett
  * @author Rueben Schulz
  * @author Martin Desruisseaux
  * @author Simon Schafer
- * @deprecated This class will move in a <code>org.geotools.referencing.factory.<strong>web</strong>
- *     </code> package in a future Geotools version, in order to put together other web-related
- *     factories defined outside the WMS specification. Don't use this class directly. You should
- *     not need to anyway - use {@link org.geotools.referencing.ReferencingFactoryFinder} instead,
- *     which will continue to work no matter where this class is located.
  */
 public class AutoCRSFactory extends DirectAuthorityFactory implements CRSAuthorityFactory {
     /**

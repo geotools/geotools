@@ -28,7 +28,6 @@ import java.util.Stack;
  * @author roehrig
  *     <p>TODO To change the template for this generated type comment go to Window - Preferences -
  *     Java - Code Style - Code Templates
- * @source $URL$
  */
 public class AlgoLine2D {
 
@@ -54,7 +53,6 @@ public class AlgoLine2D {
         return result;
     }
 
-    /** @param maxLength */
     public static ArrayList<Line2D> split(Line2D line, double maxSpacing) {
         ArrayList<Line2D> result = new ArrayList<Line2D>();
         int n = (int) Math.ceil(AlgoLine2D.length(line) / maxSpacing);

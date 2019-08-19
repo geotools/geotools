@@ -88,13 +88,12 @@ import org.opengis.filter.FilterFactory2;
  *
  * @author Rob Hranac, Vision for New York
  * @author Chris Holmes, TOPP
- * @source $URL$
  * @version $Id$
  */
 public class LogicSAXParser {
     /** The logger for the filter module. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.filter");
+            org.geotools.util.logging.Logging.getLogger(LogicSAXParser.class);
 
     /** factory for creating filters. */
     private FilterFactory2 ff;

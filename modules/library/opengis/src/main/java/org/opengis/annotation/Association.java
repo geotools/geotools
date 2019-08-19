@@ -23,7 +23,6 @@ import java.lang.annotation.Target;
  *
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 2.1
- * @source $URL$
  */
 @Documented
 @Target(METHOD)

@@ -23,7 +23,6 @@ import org.geotools.graph.structure.DirectedNode;
 import org.geotools.graph.structure.Graph;
 import org.geotools.graph.structure.Node;
 
-/** @source $URL$ */
 public class BasicDirectedGraphBuilderTest extends TestCase {
 
     private BasicDirectedGraphBuilder m_builder;

@@ -40,7 +40,7 @@ import org.geotools.util.logging.Logging;
  */
 public abstract class Tile implements ImageLoader {
 
-    protected static final Logger LOGGER = Logging.getLogger(Tile.class.getPackage().getName());
+    protected static final Logger LOGGER = Logging.getLogger(Tile.class);
 
     /**
      * These are the states of the tile. This state represents if the tile needs to be re-rendered
@@ -218,7 +218,7 @@ public abstract class Tile implements ImageLoader {
      * if (swtImage != null && !swtImage.isDisposed()) { return; } // otherwise try creating the
      * SWTImage now try { BufferedImage buffImage = getBufferedImage(); swtImage =
      * AWTSWTImageUtils.createSWTImage(buffImage, false); } catch (Exception ex) {
-     * ex.printStackTrace(); } } }
+     * java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", ex); } } }
      */
 
     /** @return The size of the tile in pixels. */

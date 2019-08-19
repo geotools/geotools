@@ -18,9 +18,9 @@ package org.geotools.filter.v2_0.bindings;
 
 import javax.xml.namespace.QName;
 import org.geotools.filter.v2_0.FES;
-import org.geotools.xml.AbstractComplexBinding;
-import org.geotools.xml.Encoder;
-import org.geotools.xml.EncoderDelegate;
+import org.geotools.xsd.AbstractComplexBinding;
+import org.geotools.xsd.Encoder;
+import org.geotools.xsd.EncoderDelegate;
 import org.locationtech.jts.geom.Geometry;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;

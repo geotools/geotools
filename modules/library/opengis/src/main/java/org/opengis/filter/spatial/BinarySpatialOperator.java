@@ -16,7 +16,6 @@ import org.opengis.filter.expression.Expression;
  * Abstract superclass for filter operators that perform some sort of spatial comparison on two
  * geometric objects.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengis.org/docs/02-059.pdf">Implementation specification 1.0</A>
  * @author Chris Dillard (SYS Technologies)
  * @since GeoAPI 2.0

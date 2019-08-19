@@ -16,9 +16,9 @@
  */
 package org.geotools.imageio.netcdf.cv;
 
+import org.geotools.data.util.NumericConverterFactory;
 import org.geotools.imageio.netcdf.utilities.NetCDFCRSUtilities;
 import org.geotools.util.Converter;
-import org.geotools.util.NumericConverterFactory;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import ucar.nc2.Attribute;
 import ucar.nc2.constants.AxisType;

@@ -34,7 +34,6 @@ import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 import org.opengis.util.ProgressListener;
 
-/** @source $URL$ */
 public class FilteringSimpleFeatureCollectionTest extends FeatureCollectionWrapperTestSupport {
     FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
 

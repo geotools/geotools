@@ -6,7 +6,7 @@ import org.geotools.jdbc.JDBCSkipColumnTestSetup;
 /**
  * 
  *
- * @source $URL$
+
  */
 public class IngresSkipColumnTest extends JDBCSkipColumnTest {
 

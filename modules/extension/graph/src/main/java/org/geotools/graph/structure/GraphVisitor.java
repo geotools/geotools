@@ -20,7 +20,6 @@ package org.geotools.graph.structure;
  * An interface in which to implement a visitor pattern with components of a graph.
  *
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
- * @source $URL$
  */
 public interface GraphVisitor {
 

@@ -54,7 +54,13 @@ public class DescribeFeatureTypeResponseFactory implements WFSResponseFactory {
         return Arrays.asList(
                 "text/xml",
                 "text/xml; subtype=gml/3.1.1",
+                "text/xml; subType=gml/3.1.1",
+                "text/xml;subtype=gml/3.1.1",
+                "text/xml;subType=gml/3.1.1", // ArcServer doesn't have a space!
                 "text/xml; subtype=gml/3.2",
+                "text/xml; subType=gml/3.2",
+                "text/xml;subtype=gml/3.2",
+                "text/xml;subType=gml/3.2",
                 "XMLSCHEMA",
                 "text/gml; subtype=gml/3.1.1",
                 "text/xml; subType=gml/3.1.1/profiles/gmlsf/1.0.0/0",

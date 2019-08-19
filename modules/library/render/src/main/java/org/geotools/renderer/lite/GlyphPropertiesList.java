@@ -21,10 +21,7 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Expression;
 
-/**
- * @author jfc173
- * @source $URL$
- */
+/** @author jfc173 */
 public class GlyphPropertiesList {
 
     private Vector list = new Vector();
@@ -115,11 +112,11 @@ public class GlyphPropertiesList {
     }
 
     public void setPropertyValue(String name, int value) {
-        setPropertyValue(name, new Integer(value));
+        setPropertyValue(name, Integer.valueOf(value));
     }
 
     public void setPropertyValue(String name, double value) {
-        setPropertyValue(name, new Double(value));
+        setPropertyValue(name, Double.valueOf(value));
     }
 
     public void setPropertyValue(String name, Object value) {

@@ -25,7 +25,6 @@ import java.util.Set;
  * Implementation of DefaultServiceInfo as a java bean.
  *
  * @author Jody Garnett (Refractions Research)
- * @source $URL$
  */
 public class DefaultServiceInfo implements ServiceInfo, Serializable {
     private static final long serialVersionUID = 7975308744804800859L;

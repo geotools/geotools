@@ -17,14 +17,13 @@
 package org.geotools.gml2.bindings;
 
 import org.geotools.gml2.GML;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
 
-/** @source $URL$ */
 public class GMLGeometryAssociationTypeBindingTest extends AbstractGMLBindingTest {
     ElementInstance association;
     ElementInstance geometry;
@@ -33,8 +32,8 @@ public class GMLGeometryAssociationTypeBindingTest extends AbstractGMLBindingTes
         super.setUp();
 
         association =
-                createElement(GML.NAMESPACE, "myAssociation", GML.GEOMETRYASSOCIATIONTYPE, null);
-        geometry = createElement(GML.NAMESPACE, "myGeometry", GML.ABSTRACTGEOMETRYTYPE, null);
+                createElement(GML.NAMESPACE, "myAssociation", GML.GeometryAssociationType, null);
+        geometry = createElement(GML.NAMESPACE, "myGeometry", GML.AbstractGeometryType, null);
     }
 
     public void testWithGeometry() throws Exception {
@@ -46,7 +45,7 @@ public class GMLGeometryAssociationTypeBindingTest extends AbstractGMLBindingTes
                         null,
                         null);
         GMLGeometryAssociationTypeBinding s =
-                (GMLGeometryAssociationTypeBinding) getBinding(GML.GEOMETRYASSOCIATIONTYPE);
+                (GMLGeometryAssociationTypeBinding) getBinding(GML.GeometryAssociationType);
         Geometry g = (Geometry) s.parse(association, node, null);
         assertNotNull(g);
         assertTrue(g instanceof Point);
@@ -55,7 +54,7 @@ public class GMLGeometryAssociationTypeBindingTest extends AbstractGMLBindingTes
     public void testWithoutGeometry() throws Exception {
         Node node = createNode(association, null, null, null, null);
         GMLGeometryAssociationTypeBinding s =
-                (GMLGeometryAssociationTypeBinding) getBinding(GML.GEOMETRYASSOCIATIONTYPE);
+                (GMLGeometryAssociationTypeBinding) getBinding(GML.GeometryAssociationType);
 
         try {
             s.parse(association, node, null);

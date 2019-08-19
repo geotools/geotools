@@ -39,21 +39,21 @@ import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.footprint.FootprintBehavior;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.factory.GeoTools;
 import org.geotools.gce.geotiff.GeoTiffReader;
 import org.geotools.gce.imagemosaic.ImageMosaicFormatFactory;
 import org.geotools.gce.imagemosaic.ImageMosaicReader;
+import org.geotools.image.util.ImageUtilities;
 import org.geotools.referencing.CRS;
-import org.geotools.resources.image.ImageUtilities;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.RasterSymbolizer;
 import org.geotools.styling.Rule;
-import org.geotools.styling.SLDParser;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleFactory;
 import org.geotools.styling.StyledLayerDescriptor;
 import org.geotools.styling.UserLayer;
 import org.geotools.test.TestData;
+import org.geotools.util.factory.GeoTools;
+import org.geotools.xml.styling.SLDParser;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -316,7 +316,7 @@ public class TransparencyStyledTest {
         final Style style = nl.getUserStyles()[0];
         final FeatureTypeStyle fts = style.featureTypeStyles().get(0);
         final Rule rule = fts.rules().get(0);
-        final RasterSymbolizer rs_1 = (RasterSymbolizer) rule.getSymbolizers()[0];
+        final RasterSymbolizer rs_1 = (RasterSymbolizer) rule.symbolizers().get(0);
         return rs_1;
     }
 

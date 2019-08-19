@@ -64,7 +64,7 @@ import org.opengis.referencing.operation.TransformException;
 public class ZonalStatisticsTest extends TestCase {
 
     /** {@link Logger} used */
-    private static final Logger LOGGER = Logging.getLogger(ZonalStatisticsTest.class.toString());
+    private static final Logger LOGGER = Logging.getLogger(ZonalStatisticsTest.class);
 
     /** CoverageProcessor */
     private static final CoverageProcessor PROCESSOR = CoverageProcessor.getInstance();

@@ -24,7 +24,6 @@ import org.geotools.geometry.iso.util.algorithm2D.AlgoPoint2D;
  * @author roehrig
  *     <p>TODO To change the template for this generated type comment go to Window - Preferences -
  *     Java - Code Style - Code Templates
- * @source $URL$
  */
 public abstract class Simplex2D extends BRepFace2D {
 
@@ -210,9 +209,6 @@ public abstract class Simplex2D extends BRepFace2D {
     public Point2D getCentroid() {
         Point2D result = new Point2D.Double(this.node[0].getX(), this.node[0].getY());
         int n = this.n();
-        for (int i = 1; i < n; ++i) {
-            AlgoPoint2D.createAdd(result, node[i]);
-        }
         return AlgoPoint2D.scale(result, 1. / n);
     }
 

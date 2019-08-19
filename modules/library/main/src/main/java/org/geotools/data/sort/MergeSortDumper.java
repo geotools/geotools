@@ -29,7 +29,7 @@ import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.data.simple.DelegateSimpleFeatureReader;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureReader;
-import org.geotools.factory.Hints;
+import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;

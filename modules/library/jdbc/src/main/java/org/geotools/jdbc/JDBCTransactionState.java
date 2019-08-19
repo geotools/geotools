@@ -23,11 +23,7 @@ import java.util.logging.Logger;
 import org.geotools.data.Transaction;
 import org.geotools.data.Transaction.State;
 
-/**
- * Responsible for flow control; issues commit and rollback on the managed connection.
- *
- * @source $URL$
- */
+/** Responsible for flow control; issues commit and rollback on the managed connection. */
 final class JDBCTransactionState implements State {
     /** The datastore */
     JDBCDataStore dataStore;
@@ -100,6 +96,7 @@ final class JDBCTransactionState implements State {
     }
 
     @Override
+    @SuppressWarnings("deprecation") // finalize is deprecated in Java 9
     protected void finalize() throws Throwable {
         if (!external && cx != null && !cx.isClosed()) {
             Logger.getLogger("org.geotools.jdbc").severe("State finalized with open connection.");

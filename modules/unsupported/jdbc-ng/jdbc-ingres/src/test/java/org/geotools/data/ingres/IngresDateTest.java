@@ -6,7 +6,7 @@ import org.geotools.jdbc.JDBCDateTestSetup;
 /**
  * 
  *
- * @source $URL$
+
  */
 public class IngresDateTest extends JDBCDateTest {
 

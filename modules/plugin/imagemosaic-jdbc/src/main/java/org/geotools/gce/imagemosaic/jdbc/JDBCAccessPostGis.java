@@ -95,18 +95,17 @@ class JDBCAccessPostGis extends JDBCAccessBase {
             try {
                 if (rs != null) rs.close();
             } catch (SQLException ex) {
+            } finally {
+                try {
+                    if (ps != null) ps.close();
+                } catch (SQLException ex) {
+                } finally {
+                    try {
+                        if (con != null) con.close();
+                    } catch (SQLException ex) {
+                    }
+                }
             }
-            ;
-            try {
-                if (ps != null) ps.close();
-            } catch (SQLException ex) {
-            }
-            ;
-            try {
-                if (con != null) ps.close();
-            } catch (SQLException ex) {
-            }
-            ;
         }
     }
 
@@ -177,28 +176,26 @@ class JDBCAccessPostGis extends JDBCAccessBase {
         String statementString =
                 MessageFormat.format(extentSelect, new Object[] {li.getSpatialTableName()});
         Envelope extent = null;
-        PreparedStatement s = con.prepareStatement(statementString);
-        ResultSet r = s.executeQuery();
+        try (PreparedStatement s = con.prepareStatement(statementString);
+                ResultSet r = s.executeQuery()) {
 
-        if (r.next()) {
-            Object o = r.getObject(1);
-            String pgString = o.toString();
+            if (r.next()) {
+                Object o = r.getObject(1);
+                String pgString = o.toString();
 
-            int start = pgString.indexOf("(") + 1;
-            int end = pgString.indexOf(")");
-            pgString = pgString.substring(start, end);
+                int start = pgString.indexOf("(") + 1;
+                int end = pgString.indexOf(")");
+                pgString = pgString.substring(start, end);
 
-            String[] coords = pgString.split(",");
-            String[] lower = coords[0].split(" ");
-            String[] upper = coords[1].split(" ");
-            extent =
-                    new Envelope(
-                            new Coordinate(new Double(lower[0]), new Double(lower[1])),
-                            new Coordinate(new Double(upper[0]), new Double(upper[1])));
+                String[] coords = pgString.split(",");
+                String[] lower = coords[0].split(" ");
+                String[] upper = coords[1].split(" ");
+                extent =
+                        new Envelope(
+                                new Coordinate(Double.valueOf(lower[0]), Double.valueOf(lower[1])),
+                                new Coordinate(Double.valueOf(upper[0]), Double.valueOf(upper[1])));
+            }
         }
-
-        r.close();
-        s.close();
 
         return extent;
     }
@@ -285,25 +282,22 @@ class JDBCAccessPostGis extends JDBCAccessBase {
         try {
             schema = getSchemaFromSpatialTable(li.getSpatialTableName());
 
-            PreparedStatement s = null;
-
             if (schema == null) {
                 schema = "public";
             }
 
-            s = con.prepareStatement(SRSSelect);
-            s.setString(1, schema);
-            s.setString(2, li.getSpatialTableName());
-            s.setString(3, config.getGeomAttributeNameInSpatialTable());
+            try (PreparedStatement s = con.prepareStatement(SRSSelect)) {
+                s.setString(1, schema);
+                s.setString(2, li.getSpatialTableName());
+                s.setString(3, config.getGeomAttributeNameInSpatialTable());
 
-            ResultSet r = s.executeQuery();
+                try (ResultSet r = s.executeQuery()) {
 
-            if (r.next()) {
-                result = (Integer) r.getObject(1);
+                    if (r.next()) {
+                        result = (Integer) r.getObject(1);
+                    }
+                }
             }
-
-            r.close();
-            s.close();
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new IOException(e);
@@ -336,19 +330,15 @@ class JDBCAccessPostGis extends JDBCAccessBase {
             throws IOException {
         CoordinateReferenceSystem result = null;
 
-        try {
-            PreparedStatement s = con.prepareStatement(CRSSelect);
+        try (PreparedStatement s = con.prepareStatement(CRSSelect)) {
             s.setInt(1, li.getSrsId());
 
-            ResultSet r = s.executeQuery();
-
-            if (r.next()) {
-                String definition = r.getString(1);
-                result = CRS.parseWKT(definition);
+            try (ResultSet r = s.executeQuery()) {
+                if (r.next()) {
+                    String definition = r.getString(1);
+                    result = CRS.parseWKT(definition);
+                }
             }
-
-            r.close();
-            s.close();
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new IOException(e);

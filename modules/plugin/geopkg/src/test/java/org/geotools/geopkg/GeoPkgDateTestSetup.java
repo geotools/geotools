@@ -3,7 +3,6 @@ package org.geotools.geopkg;
 import org.geotools.jdbc.JDBCDateTestSetup;
 import org.geotools.jdbc.JDBCTestSetup;
 
-/** @source $URL$ */
 public class GeoPkgDateTestSetup extends JDBCDateTestSetup {
 
     public GeoPkgDateTestSetup(JDBCTestSetup delegate) {

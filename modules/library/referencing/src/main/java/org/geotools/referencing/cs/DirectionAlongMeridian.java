@@ -26,7 +26,6 @@ import org.opengis.referencing.cs.AxisDirection;
  * East</cite>". Those directions are used in the EPSG database for polar stereographic projections.
  *
  * @version $Id$
- * @source $URL$
  * @author Martin Desruisseaux
  * @since 2.7.2
  */
@@ -61,7 +60,7 @@ public final class DirectionAlongMeridian implements Comparable, Serializable {
      *
      * @see #getDirection
      */
-    private transient AxisDirection direction;
+    private transient volatile AxisDirection direction;
 
     /**
      * The base direction, which must be {@link AxisDirection#NORTH} or {@link AxisDirection#SOUTH}.
@@ -121,11 +120,11 @@ public final class DirectionAlongMeridian implements Comparable, Serializable {
         group = m.group(4);
         if (group != null) {
             final AxisDirection sign = findDirection(BASE_DIRECTIONS, group);
-            final AxisDirection abs = sign.absolute();
-            if (sign == null || !AxisDirection.EAST.equals(abs)) {
+            if (sign == null || !AxisDirection.EAST.equals(sign.absolute())) {
                 // We expected "East" or "West" direction.
                 return null;
             }
+            final AxisDirection abs = sign.absolute();
             if (sign != abs) {
                 meridian = -meridian;
             }
@@ -160,7 +159,7 @@ public final class DirectionAlongMeridian implements Comparable, Serializable {
         AxisDirection candidate = findDirection(values, direction);
         if (candidate == null) {
             String modified = direction.replace('-', '_');
-            if (modified != direction) {
+            if (!modified.equals(direction)) {
                 direction = modified;
                 candidate = findDirection(values, modified);
             }

@@ -18,6 +18,5 @@ package org.opengis.filter.spatial;
  *
  * @author Jody Garnett, Refractions Research
  * @since GeoAPI 2.1
- * @source $URL$
  */
 public interface BoundedSpatialOperator extends SpatialOperator {}

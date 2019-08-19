@@ -23,7 +23,6 @@ import org.geotools.feature.type.SchemaImpl;
 import org.geotools.xs.XSSchema;
 import org.opengis.feature.type.AttributeType;
 
-/** @source $URL$ */
 public class XLINKSchema extends SchemaImpl {
 
     /**

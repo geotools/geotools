@@ -21,7 +21,6 @@ import org.opengis.annotation.UML;
  * polynomial. If they are not equal, then the spline is piecewise rational. If the boolean {@link
  * #isPolynomial isPolynomial} is set to {@code true} then the weights shall all be set to 1.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/as">ISO 19107</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 2.1

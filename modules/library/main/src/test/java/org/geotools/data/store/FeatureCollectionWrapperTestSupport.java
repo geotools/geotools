@@ -28,7 +28,6 @@ import org.locationtech.jts.geom.Point;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-/** @source $URL$ */
 public class FeatureCollectionWrapperTestSupport extends TestCase {
 
     protected CoordinateReferenceSystem crs;
@@ -63,7 +62,7 @@ public class FeatureCollectionWrapperTestSupport extends TestCase {
             point.setUserData(crs);
 
             builder.add(point);
-            builder.add(new Integer(i));
+            builder.add(Integer.valueOf(i));
 
             LineString line =
                     gf.createLineString(
@@ -78,7 +77,7 @@ public class FeatureCollectionWrapperTestSupport extends TestCase {
 
         // add a feature with a null geometry
         builder.add(null);
-        builder.add(new Integer(-1));
+        builder.add(Integer.valueOf(-1));
         builder.add(null);
 
         delegate.add(builder.buildFeature((features + 1) + ""));

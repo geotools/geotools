@@ -38,7 +38,6 @@ import org.opengis.geometry.primitive.Primitive; // For javadoc
  * sharing of geometry is important, such as in the use of computational topology. In a complex,
  * primitives may be aggregated many-to-many into composites for use as attributes of features.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/as">ISO 19107</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0

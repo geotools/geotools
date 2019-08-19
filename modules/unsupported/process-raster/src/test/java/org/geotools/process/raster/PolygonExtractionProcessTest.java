@@ -55,7 +55,6 @@ import org.opengis.feature.simple.SimpleFeature;
  *
  * @author Michael Bedward
  * @since 8.0
- * @source $URL$
  * @version $Id$
  */
 public class PolygonExtractionProcessTest {
@@ -453,11 +452,11 @@ public class PolygonExtractionProcessTest {
             while (iter.hasNext()) {
                 SimpleFeature feature = iter.next();
                 Integer value = ((Number) feature.getAttribute("value")).intValue();
-                System.out.println(value);
+                // System.out.println(value);
                 assertTrue(expectedValues.remove(value));
 
                 Polygon poly = (Polygon) feature.getDefaultGeometry();
-                System.out.println(poly.toText());
+                // System.out.println(poly.toText());
                 assertEquals(areas[value - 1], poly.getArea(), TOL);
             }
         } finally {

@@ -2,8 +2,8 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2001-2006  Vivid Solutions
  *    (C) 2001-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2001-2006  Vivid Solutions
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -33,8 +33,6 @@ package org.geotools.geometry.iso.topograph2D;
  * <p>For a description of the DE-9IM, see the <A
  * HREF="http://www.opengis.org/techno/specs.htm">OpenGIS Simple Features Specification for SQL</A>
  * .
- *
- * @source $URL$
  */
 public class IntersectionMatrix implements Cloneable {
     /** Internal representation of this <code>IntersectionMatrix</code>. */

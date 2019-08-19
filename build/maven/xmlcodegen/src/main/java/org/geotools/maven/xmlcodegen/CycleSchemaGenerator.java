@@ -34,7 +34,7 @@ import org.geotools.feature.NameImpl;
 import org.geotools.feature.type.AbstractLazyAttributeTypeImpl;
 import org.geotools.feature.type.AbstractLazyComplexTypeImpl;
 import org.geotools.util.Utilities;
-import org.geotools.xml.Schemas;
+import org.geotools.xsd.Schemas;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.AttributeType;
 import org.opengis.feature.type.ComplexType;
@@ -54,6 +54,7 @@ import org.opengis.feature.type.PropertyDescriptor;
  * @author Justin Deoliveira
  * 
  */
+@SuppressWarnings("PMD.SystemPrintln")
 public class CycleSchemaGenerator extends SchemaGenerator {
 
     /**

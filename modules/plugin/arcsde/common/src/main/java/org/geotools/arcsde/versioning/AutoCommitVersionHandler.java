@@ -36,11 +36,7 @@ import org.geotools.arcsde.session.ISession;
  * the version indicated by the provided version name.
  *
  * @author Gabriel Roldan (TOPP)
- * @version $Id$
  * @since 2.5.x
- * @source $URL$
- *     http://svn.geotools.org/trunk/modules/plugin/arcsde/datastore/src/main/java/org/geotools
- *     /arcsde/data/versioning/AutoCommitVersionHandler.java $
  */
 public class AutoCommitVersionHandler implements ArcSdeVersionHandler {
 

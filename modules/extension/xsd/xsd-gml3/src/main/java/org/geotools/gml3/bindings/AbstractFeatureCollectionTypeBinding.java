@@ -23,9 +23,9 @@ import org.geotools.data.DataUtilities;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.gml3.GML;
-import org.geotools.xml.AbstractComplexBinding;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
+import org.geotools.xsd.AbstractComplexBinding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 import org.opengis.feature.simple.SimpleFeature;
 
 /**
@@ -53,7 +53,6 @@ import org.opengis.feature.simple.SimpleFeature;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class AbstractFeatureCollectionTypeBinding extends AbstractComplexBinding {
     /** @generated */
@@ -89,7 +88,7 @@ public class AbstractFeatureCollectionTypeBinding extends AbstractComplexBinding
         // &lt;element maxOccurs="unbounded" minOccurs="0" ref="gml:featureMember"/&gt;
         List<SimpleFeature> childValues = node.getChildValues(SimpleFeature.class);
 
-        // example DefaultFeatureCollections or ListFeatureCollection
+        // example ListFeatureCollection
         Collection<SimpleFeature> collection = DataUtilities.collectionCast(featureCollection);
         collection.addAll(childValues);
 

@@ -26,10 +26,10 @@ import javax.imageio.spi.ImageReaderSpi;
 import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.imageio.GeoToolsWriteParams;
-import org.geotools.factory.Hints;
 import org.geotools.parameter.DefaultParameterDescriptor;
 import org.geotools.parameter.DefaultParameterDescriptorGroup;
 import org.geotools.parameter.ParameterGroup;
+import org.geotools.util.factory.Hints;
 import org.opengis.coverage.grid.Format;
 import org.opengis.coverage.grid.GridCoverageReader;
 import org.opengis.coverage.grid.GridCoverageWriter;
@@ -41,7 +41,6 @@ import org.opengis.parameter.GeneralParameterValue;
  *
  * @author Daniele Romagnoli, GeoSolutions
  * @author Simone Giannecchini, GeoSolutions
- * @source $URL$
  */
 public abstract class BaseGDALGridFormat extends AbstractGridFormat implements Format {
 
@@ -56,7 +55,7 @@ public abstract class BaseGDALGridFormat extends AbstractGridFormat implements F
     }
 
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.coverageio.gdal");
+            org.geotools.util.logging.Logging.getLogger(BaseGDALGridFormat.class);
 
     /** The inner {@code ImageReaderSpi} */
     private final ImageReaderSpi spi;

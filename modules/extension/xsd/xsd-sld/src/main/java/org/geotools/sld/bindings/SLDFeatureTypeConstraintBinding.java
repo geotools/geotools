@@ -21,9 +21,9 @@ import javax.xml.namespace.QName;
 import org.geotools.styling.Extent;
 import org.geotools.styling.FeatureTypeConstraint;
 import org.geotools.styling.StyleFactory;
-import org.geotools.xml.AbstractComplexBinding;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
+import org.geotools.xsd.AbstractComplexBinding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 import org.opengis.filter.Filter;
 import org.picocontainer.MutablePicoContainer;
 
@@ -37,7 +37,7 @@ import org.picocontainer.MutablePicoContainer;
  *  &lt;xsd:element name="FeatureTypeConstraint"&gt;
  *      &lt;xsd:annotation&gt;
  *          &lt;xsd:documentation&gt;         A FeatureTypeConstraint identifies a
- *              specific feature type and         supplies fitlering.       &lt;/xsd:documentation&gt;
+ *              specific feature type and         supplies filtering.       &lt;/xsd:documentation&gt;
  *      &lt;/xsd:annotation&gt;
  *      &lt;xsd:complexType&gt;
  *          &lt;xsd:sequence&gt;
@@ -52,7 +52,6 @@ import org.picocontainer.MutablePicoContainer;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class SLDFeatureTypeConstraintBinding extends AbstractComplexBinding {
     StyleFactory styleFactory;

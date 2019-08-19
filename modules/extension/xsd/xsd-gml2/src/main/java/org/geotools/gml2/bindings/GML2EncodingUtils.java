@@ -35,8 +35,8 @@ import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.CRS.AxisOrder;
 import org.geotools.util.logging.Logging;
-import org.geotools.xml.Configuration;
-import org.geotools.xml.SchemaIndex;
+import org.geotools.xsd.Configuration;
+import org.geotools.xsd.SchemaIndex;
 import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.Feature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -51,12 +51,11 @@ import org.w3c.dom.Element;
  *
  * @author Justin Deoliveira, The Open Planning Project, jdeolive@openplans.org
  * @author Ben Caradoc-Davies, CSIRO Exploration and Mining
- * @source $URL$
  */
 public class GML2EncodingUtils {
 
     /** logging instance */
-    static Logger LOGGER = Logging.getLogger("org.geotools.gml");
+    static Logger LOGGER = Logging.getLogger(GML2EncodingUtils.class);
 
     static GMLEncodingUtils e = new GMLEncodingUtils(GML.getInstance());
 
@@ -76,11 +75,6 @@ public class GML2EncodingUtils {
         }
 
         return null;
-    }
-
-    /** @deprecated use {@link #toURI(CoordinateReferenceSystem)}. */
-    public static String crs(CoordinateReferenceSystem crs) {
-        return toURI(crs);
     }
 
     /** Encodes the crs object as a uri. */

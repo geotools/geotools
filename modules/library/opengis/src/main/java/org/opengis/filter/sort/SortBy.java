@@ -36,7 +36,6 @@ import org.opengis.filter.expression.PropertyName;
  * @see <a href="http://schemas.opengis.net/wfs/1.1.0/wfs.xsd">
  * @since GeoAPI 2.1
  * @author Jody Garnett (Refractions Research)
- * @source $URL$
  */
 public interface SortBy {
     /**

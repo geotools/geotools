@@ -24,7 +24,6 @@ import org.apache.commons.dbcp.BasicDataSource;
  * A closeable wrapper around {@link BasicDataSource}
  *
  * @author Administrator
- * @source $URL$
  */
 public class DBCPDataSource extends AbstractManageableDataSource {
 

@@ -24,7 +24,6 @@ import java.util.Map;
  * parsing.
  *
  * @author Richard Gould
- * @source $URL$
  */
 public interface FlowHandler {
     /**

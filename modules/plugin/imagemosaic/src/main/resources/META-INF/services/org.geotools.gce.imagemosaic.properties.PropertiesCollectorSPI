@@ -12,4 +12,5 @@ org.geotools.gce.imagemosaic.properties.ResolutionXExtractorSPI
 org.geotools.gce.imagemosaic.properties.ResolutionYExtractorSPI
 org.geotools.gce.imagemosaic.properties.DateExtractorSPI
 org.geotools.gce.imagemosaic.properties.FSDateExtractorSPI
+org.geotools.gce.imagemosaic.properties.CurrentDateExtractorSPI
 

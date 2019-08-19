@@ -25,12 +25,12 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import javax.measure.Unit;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.iso.quality.PositionalAccuracyImpl;
 import org.geotools.referencing.AbstractIdentifiedObject;
 import org.geotools.referencing.crs.AbstractDerivedCRS;
 import org.geotools.referencing.wkt.Formatter;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
 import org.geotools.util.Utilities;
 import org.opengis.metadata.extent.Extent;
 import org.opengis.metadata.quality.PositionalAccuracy;
@@ -72,7 +72,6 @@ import si.uom.SI;
  * identify the exact type.
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
@@ -88,7 +87,7 @@ public class AbstractCoordinateOperation extends AbstractIdentifiedObject
      * <blockquote>
      *
      * <pre>
-     * {@linkplain #getPositionalAccuracy()}.toArray(EMPTY_ACCURACY_ARRAY);
+     * {@linkplain #getCoordinateOperationAccuracy()}.toArray(EMPTY_ACCURACY_ARRAY);
      * </pre>
      *
      * </blockquote>
@@ -308,22 +307,6 @@ public class AbstractCoordinateOperation extends AbstractIdentifiedObject
     }
 
     /**
-     * Estimate(s) of the impact of this operation on point accuracy. Gives position error estimates
-     * for target coordinates of this coordinate operation, assuming no errors in source
-     * coordinates.
-     *
-     * @return The position error estimates, or an empty collection if not available.
-     * @see #getAccuracy()
-     * @deprecated Renamed as {@link #getCoordinateOperationAccuracy}.
-     */
-    public Collection<PositionalAccuracy> getPositionalAccuracy() {
-        if (coordinateOperationAccuracy == null) {
-            return Collections.emptySet();
-        }
-        return coordinateOperationAccuracy;
-    }
-
-    /**
      * Convenience method returning the accuracy in meters. The default implementation delegates to
      * <code>{@linkplain #getAccuracy(CoordinateOperation) getAccuracy}(this)</code>. Subclasses
      * should override this method if they can provide a more accurate algorithm.
@@ -455,16 +438,6 @@ public class AbstractCoordinateOperation extends AbstractIdentifiedObject
     }
 
     /**
-     * Area in which this operation is valid.
-     *
-     * @return Coordinate operation valid area, or {@code null} if not available.
-     * @deprecated Renamed {@link #getDomainOfValidity}.
-     */
-    public Extent getValidArea() {
-        return domainOfValidity;
-    }
-
-    /**
      * Description of domain of usage, or limitations of usage, for which this operation is valid.
      */
     public InternationalString getScope() {
@@ -549,6 +522,7 @@ public class AbstractCoordinateOperation extends AbstractIdentifiedObject
 
     /** Returns a hash code value for this coordinate operation. */
     @Override
+    @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int hashCode() {
         int code = (int) serialVersionUID;
         if (sourceCRS != null) code ^= sourceCRS.hashCode();

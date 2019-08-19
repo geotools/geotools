@@ -49,11 +49,10 @@ import org.geotools.util.logging.Logging;
  * @see StatusBarItem
  * @author Michael Bedward
  * @since 8.0
- * @source $URL$
  * @version $Id$
  */
 public class JMapStatusBar extends JPanel {
-    private static final Logger LOGGER = Logging.getLogger("org.geotools.swing");
+    private static final Logger LOGGER = Logging.getLogger(JMapStatusBar.class);
 
     private static final String CONFIGURE_TOOL_TIP =
             LocaleUtils.getValue("StatusBar", "ConfigureTooltip");

@@ -2,8 +2,8 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2001-2006  Vivid Solutions
  *    (C) 2001-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2001-2006  Vivid Solutions
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -27,8 +27,6 @@ import org.geotools.geometry.iso.util.algorithm2D.LineIntersector;
 /**
  * Keeps informations about the intersections of Segments. Uses a LineIntersector to calculate the
  * intersection between two line segments.
- *
- * @source $URL$
  */
 public class SegmentIntersector {
 
@@ -54,11 +52,6 @@ public class SegmentIntersector {
     private boolean includeProper;
 
     private boolean recordIsolated;
-
-    private boolean isSelfIntersection;
-
-    // private boolean intersectionFound;
-    private int numIntersections = 0;
 
     // testing only
     public int numTests = 0;
@@ -154,7 +147,6 @@ public class SegmentIntersector {
                 e1.setIsolated(false);
             }
             // intersectionFound = true;
-            numIntersections++;
             // if the segments are adjacent they have at least one trivial
             // intersection,
             // the shared endpoint. Don't bother adding it if it is the

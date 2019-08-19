@@ -22,7 +22,6 @@ import org.opengis.geometry.primitive.Solid;
  * composite solid is a set of solids that join in pairs on common boundary surfaces to form a
  * single solid.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/as">ISO 19107</A>
  * @author Martin Desruisseaux (Geomatys)
  * @since GeoAPI 2.1

@@ -16,16 +16,15 @@
  */
 package org.geotools.coverage.io.netcdf;
 
-import it.geosolutions.jaiext.JAIExt;
 import it.geosolutions.jaiext.range.NoDataContainer;
-import java.awt.Dimension;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
@@ -33,6 +32,7 @@ import java.util.EnumSet;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.TimeZone;
 import javax.media.jai.PlanarImage;
@@ -48,11 +48,12 @@ import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.coverage.grid.io.GridFormatFinder;
 import org.geotools.coverage.grid.io.StructuredGridCoverage2DReader;
 import org.geotools.coverage.processing.CoverageProcessor;
+import org.geotools.coverage.util.CoverageUtilities;
+import org.geotools.coverage.util.FeatureUtilities;
 import org.geotools.data.CloseableIterator;
 import org.geotools.data.FileGroupProvider.FileGroup;
 import org.geotools.data.FileResourceInfo;
 import org.geotools.data.ResourceInfo;
-import org.geotools.factory.Hints;
 import org.geotools.gce.imagemosaic.ImageMosaicFormat;
 import org.geotools.gce.imagemosaic.Utils;
 import org.geotools.geometry.DirectPosition2D;
@@ -61,12 +62,10 @@ import org.geotools.imageio.netcdf.utilities.NetCDFUtilities;
 import org.geotools.metadata.iso.extent.GeographicBoundingBoxImpl;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
-import org.geotools.resources.coverage.CoverageUtilities;
-import org.geotools.resources.coverage.FeatureUtilities;
 import org.geotools.test.TestData;
 import org.geotools.util.DateRange;
 import org.geotools.util.NumberRange;
-import org.junit.After;
+import org.geotools.util.factory.Hints;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -87,19 +86,14 @@ import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.util.InternationalString;
+import si.uom.SI;
 import ucar.nc2.dataset.NetcdfDataset;
 
 public class NetCDFReaderTest extends Assert {
 
     @Before
     public void setup() {
-        JAIExt.initJAIEXT(true, true);
         System.setProperty("netcdf.coordinates.enablePlugins", "true");
-    }
-
-    @After
-    public void cleanup() {
-        JAIExt.initJAIEXT(false, true);
     }
 
     private static final double DELTA = 1E-6;
@@ -207,7 +201,7 @@ public class NetCDFReaderTest extends Assert {
         }
         NetcdfDataset.setDefaultEnhanceMode(newEnhanceMode);
         File file = TestData.file(this, "o3_no2_so.nc");
-        final NetCDFReader reader = new NetCDFReader(file, null);
+        NetCDFReader reader = new NetCDFReader(file, null);
         String coverageName = "NO2";
         GeneralParameterValue[] values = new GeneralParameterValue[] {};
         GridCoverage2D coverage = reader.read(coverageName, values);
@@ -219,7 +213,14 @@ public class NetCDFReaderTest extends Assert {
                         new float[1]);
 
         assertEquals(1.615991, result[0], 1e-6f);
+        reader.dispose();
 
+        // let's open a file containing a time variable with _FillValue attribute
+        file = TestData.file(this, "o3_no2_so_fv_time.nc");
+        reader = new NetCDFReader(file, null);
+        assertEquals(
+                "2012-04-01T00:00:00.000Z",
+                reader.getMetadataValue(coverageName, "TIME_DOMAIN_MINIMUM"));
         NetcdfDataset.setDefaultEnhanceMode(currentEnhanceMode);
         System.setProperty(NetCDFUtilities.ENHANCE_SCALE_MISSING, currentEnhanceMode.toString());
         reader.dispose();
@@ -1431,5 +1432,90 @@ public class NetCDFReaderTest extends Assert {
         assertEquals("file", sourceUrl.getProtocol());
         assertTrue(sourceUrl.getPath().endsWith("O3-NO2.nc"));
         reader.dispose();
+    }
+
+    @Test
+    public void testPreserveUnit() throws Exception {
+        NetCDFReader reader = new NetCDFReader(TestData.file(this, "sst.nc"), null);
+        GridCoverage2D coverage = reader.read(reader.getGridCoverageNames()[0], null);
+        assertEquals(SI.CELSIUS, coverage.getSampleDimension(0).getUnits());
+        coverage.dispose(true);
+        reader.dispose();
+    }
+
+    @Test
+    public void testPurgeMetadataOnly() throws Exception {
+        String directoryName = "purgeMetadataOnly";
+        PurgeSetupHelper purgeSetupHelper = new PurgeSetupHelper(directoryName).invoke();
+
+        // now remove only the metadata
+        NetCDFReader reader = purgeSetupHelper.reader;
+        reader.delete(false);
+        reader.dispose();
+
+        // check we indeed removed the metadata only
+        assertFalse(
+                "Metadata dir should have been removed",
+                purgeSetupHelper.metadataDirectory.get().exists());
+        assertTrue("Data file should still be there", purgeSetupHelper.dataFile.get().exists());
+    }
+
+    @Test
+    public void testPurgeAll() throws Exception {
+        String directoryName = "purgeAll";
+        PurgeSetupHelper purgeSetupHelper = new PurgeSetupHelper(directoryName).invoke();
+
+        // now remove only the metadata
+        NetCDFReader reader = purgeSetupHelper.reader;
+        reader.delete(true);
+        reader.dispose();
+
+        assertFalse(
+                "Metadata dir should have been removed",
+                purgeSetupHelper.metadataDirectory.get().exists());
+        assertFalse(
+                "Data file should also have been removed",
+                purgeSetupHelper.dataFile.get().exists());
+    }
+
+    private class PurgeSetupHelper {
+        private String directoryName;
+        NetCDFReader reader;
+        Optional<File> metadataDirectory;
+        Optional<File> dataFile;
+
+        public PurgeSetupHelper(String directoryName) {
+            this.directoryName = directoryName;
+        }
+
+        public PurgeSetupHelper invoke() throws IOException {
+            File directory = new File(TestData.file(NetCDFReaderTest.this, "."), directoryName);
+            if (directory.exists()) {
+                FileUtils.deleteDirectory(directory);
+            }
+            assertTrue(directory.mkdirs());
+
+            FileUtils.copyFileToDirectory(
+                    TestData.file(NetCDFReaderTest.this, "O3-NO2.nc"), directory);
+            File file = new File(directory, "O3-NO2.nc");
+
+            // create a reader and read coverage, should create everything
+            reader = new NetCDFReader(file, null);
+            GridCoverage2D read = reader.read(reader.getGridCoverageNames()[0], null);
+            read.dispose(true);
+
+            // check we have file and the metadata directory
+            File[] files = directory.listFiles();
+            assertEquals(2, files.length);
+            metadataDirectory =
+                    Arrays.stream(files)
+                            .filter(f -> f.getName().startsWith(".O3-NO2") && f.isDirectory())
+                            .findFirst();
+            assertTrue(metadataDirectory.isPresent());
+            dataFile =
+                    Arrays.stream(files).filter(f -> f.getName().equals("O3-NO2.nc")).findFirst();
+            assertTrue(dataFile.isPresent());
+            return this;
+        }
     }
 }

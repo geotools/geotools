@@ -7,11 +7,11 @@ import org.geotools.data.DataUtilities;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.SchemaException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
+import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
-import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.geom.PrecisionModel;
@@ -23,7 +23,6 @@ import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-/** @source $URL$ */
 public class BBOXImplTest {
 
     FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
@@ -45,7 +44,7 @@ public class BBOXImplTest {
             type = DataUtilities.createType("testSchema", "name:String,*geom:Geometry");
         } catch (SchemaException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
         ArrayList<Object> attributes = new ArrayList<Object>();
         attributes.add("testFeature");
@@ -84,8 +83,7 @@ public class BBOXImplTest {
         String srs = "AUTO:42004,9001,0,33";
         CoordinateReferenceSystem crs = CRS.decode(srs);
         BBOX bbox = ff.bbox(ff.property(""), 0, 1000, 2000, 3000, srs);
-        Geometry geom = bbox.getExpression2().evaluate(null, Geometry.class);
-        assertEquals(crs, geom.getUserData());
-        assertEquals(srs, bbox.getSRS());
+        ReferencedEnvelope envelope = (ReferencedEnvelope) bbox.getExpression2().evaluate(null);
+        assertEquals(crs, envelope.getCoordinateReferenceSystem());
     }
 }

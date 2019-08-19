@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<Indexer>
+    <domains>
+      <domain name="elevation">
+         <attributes><attribute>z</attribute></attributes>
+      </domain>
+    </domains>
+    <coverages>
+        <coverage>
+            <name>NO2</name>
+			<schema name="NO2" >
+				<attributes>the_geom:Polygon,imageindex:Integer,location:String,z:Double,time:java.util.Date</attributes>
+			</schema>
+            <domains>
+              <domain ref="elevation" />
+            </domains>
+        </coverage>
+        <coverage>
+            <name>O3</name>
+		    <schema name="O3" >
+				<attributes>the_geom:Polygon,imageindex:Integer,location:String,z:Double,time:java.util.Date</attributes>
+			</schema>
+            <domains>
+              <domain ref="elevation" />
+            </domains>
+        </coverage>
+    </coverages>
+    <parameters>
+        <parameter name="AuxiliaryFile" value="_polyphemus.xml" />
+        <parameter name="AbsolutePath" value="false" />
+		<parameter name="AuxiliaryDatastoreFile" value="netcdf_datastore.properties" />
+    </parameters>
+</Indexer>

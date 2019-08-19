@@ -17,8 +17,8 @@
 package org.geotools.gml2.bindings;
 
 import org.geotools.gml2.GML;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LinearRing;
@@ -26,7 +26,6 @@ import org.locationtech.jts.geom.impl.CoordinateArraySequenceFactory;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
-/** @source $URL$ */
 public class GMLLinearRingTypeBindingTest extends AbstractGMLBindingTest {
     ElementInstance ring;
     ElementInstance coord1;
@@ -40,14 +39,14 @@ public class GMLLinearRingTypeBindingTest extends AbstractGMLBindingTest {
     protected void setUp() throws Exception {
         super.setUp();
 
-        ring = createElement(GML.NAMESPACE, "myLineString", GML.LINEARRINGTYPE, null);
-        coord1 = createElement(GML.NAMESPACE, "coord", GML.COORDTYPE, null);
-        coord2 = createElement(GML.NAMESPACE, "coord", GML.COORDTYPE, null);
-        coord3 = createElement(GML.NAMESPACE, "coord", GML.COORDTYPE, null);
-        coord4 = createElement(GML.NAMESPACE, "coord", GML.COORDTYPE, null);
-        coord5 = createElement(GML.NAMESPACE, "coord", GML.COORDTYPE, null);
+        ring = createElement(GML.NAMESPACE, "myLineString", GML.LinearRingType, null);
+        coord1 = createElement(GML.NAMESPACE, "coord", GML.CoordType, null);
+        coord2 = createElement(GML.NAMESPACE, "coord", GML.CoordType, null);
+        coord3 = createElement(GML.NAMESPACE, "coord", GML.CoordType, null);
+        coord4 = createElement(GML.NAMESPACE, "coord", GML.CoordType, null);
+        coord5 = createElement(GML.NAMESPACE, "coord", GML.CoordType, null);
 
-        coords = createElement(GML.NAMESPACE, "coordinates", GML.COORDINATESTYPE, null);
+        coords = createElement(GML.NAMESPACE, "coordinates", GML.CoordinatesType, null);
 
         container = new DefaultPicoContainer();
         container.registerComponentInstance(CoordinateArraySequenceFactory.instance());

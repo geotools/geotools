@@ -23,7 +23,6 @@ import org.opengis.util.CodeList;
  * <p>This code list is similar to {@link org.opengis.metadata.spatial.PixelOrientation} except that
  * the later is more clearly restricted to the two-dimensional case.
  *
- * @source $URL$
  * @version <A HREF="http://portal.opengeospatial.org/files/?artifact_id=6716">Abstract
  *     specification 2.0</A>
  * @author Martin Desruisseaux (IRD)

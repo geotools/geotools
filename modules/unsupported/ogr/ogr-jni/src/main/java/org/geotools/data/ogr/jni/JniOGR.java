@@ -1,8 +1,64 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2019, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
 package org.geotools.data.ogr.jni;
 
-import static org.gdal.ogr.ogrConstants.*;
+import static org.gdal.ogr.ogrConstants.OFTBinary;
+import static org.gdal.ogr.ogrConstants.OFTDate;
+import static org.gdal.ogr.ogrConstants.OFTDateTime;
+import static org.gdal.ogr.ogrConstants.OFTInteger;
+import static org.gdal.ogr.ogrConstants.OFTIntegerList;
+import static org.gdal.ogr.ogrConstants.OFTReal;
+import static org.gdal.ogr.ogrConstants.OFTRealList;
+import static org.gdal.ogr.ogrConstants.OFTString;
+import static org.gdal.ogr.ogrConstants.OFTTime;
+import static org.gdal.ogr.ogrConstants.OGRERR_CORRUPT_DATA;
+import static org.gdal.ogr.ogrConstants.OGRERR_FAILURE;
+import static org.gdal.ogr.ogrConstants.OGRERR_NONE;
+import static org.gdal.ogr.ogrConstants.OGRERR_NOT_ENOUGH_DATA;
+import static org.gdal.ogr.ogrConstants.OGRERR_NOT_ENOUGH_MEMORY;
+import static org.gdal.ogr.ogrConstants.OGRERR_UNSUPPORTED_GEOMETRY_TYPE;
+import static org.gdal.ogr.ogrConstants.OGRERR_UNSUPPORTED_OPERATION;
+import static org.gdal.ogr.ogrConstants.OGRERR_UNSUPPORTED_SRS;
+import static org.gdal.ogr.ogrConstants.OJRight;
+import static org.gdal.ogr.ogrConstants.OLCCreateField;
+import static org.gdal.ogr.ogrConstants.OLCDeleteFeature;
+import static org.gdal.ogr.ogrConstants.OLCIgnoreFields;
+import static org.gdal.ogr.ogrConstants.OLCRandomWrite;
+import static org.gdal.ogr.ogrConstants.OLCSequentialWrite;
+import static org.gdal.ogr.ogrConstants.wkbGeometryCollection;
+import static org.gdal.ogr.ogrConstants.wkbGeometryCollection25D;
+import static org.gdal.ogr.ogrConstants.wkbLineString;
+import static org.gdal.ogr.ogrConstants.wkbLineString25D;
+import static org.gdal.ogr.ogrConstants.wkbLinearRing;
+import static org.gdal.ogr.ogrConstants.wkbMultiLineString;
+import static org.gdal.ogr.ogrConstants.wkbMultiLineString25D;
+import static org.gdal.ogr.ogrConstants.wkbMultiPoint;
+import static org.gdal.ogr.ogrConstants.wkbMultiPolygon;
+import static org.gdal.ogr.ogrConstants.wkbMultiPolygon25D;
+import static org.gdal.ogr.ogrConstants.wkbNone;
+import static org.gdal.ogr.ogrConstants.wkbPoint;
+import static org.gdal.ogr.ogrConstants.wkbPoint25D;
+import static org.gdal.ogr.ogrConstants.wkbPolygon;
+import static org.gdal.ogr.ogrConstants.wkbPolygon25D;
+import static org.gdal.ogr.ogrConstants.wkbUnknown;
+import static org.gdal.ogr.ogrConstants.wkbXDR;
 
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Vector;
 import org.gdal.gdal.gdal;
@@ -17,19 +73,61 @@ import org.gdal.ogr.ogr;
 import org.gdal.osr.SpatialReference;
 import org.geotools.data.ogr.OGR;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.util.Version;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 public class JniOGR implements OGR {
+
+    private static final Method GET_FIELD_METHOD;
+
+    private static final boolean USE_FLOAT_SECONDS;
 
     static {
         // perform OGR format registration once
         if (ogr.GetDriverCount() == 0) {
             ogr.RegisterAll();
         }
+        Method getFieldAsDateTime = null;
+        for (Method method : Feature.class.getDeclaredMethods()) {
+            if (method.getName().equals("GetFieldAsDateTime")
+                    && method.getParameterTypes().length == 8
+                    && int.class.equals(method.getParameterTypes()[0])) {
+                getFieldAsDateTime = method;
+            }
+        }
+        if (getFieldAsDateTime == null) {
+            throw new RuntimeException(
+                    "Could not locate the desired GetFieldAsDateTime method from Feature");
+        }
+        GET_FIELD_METHOD = getFieldAsDateTime;
+        USE_FLOAT_SECONDS =
+                new Version(gdal.VersionInfo("RELEASE_NAME")).compareTo(new Version("2.0.0")) >= 0;
     }
 
     Vector<String> vector(String[] opts) {
         return opts != null && opts.length > 0 ? new Vector<String>(Arrays.asList(opts)) : null;
+    }
+
+    @Override
+    public boolean IsGEOSEnabled() {
+        boolean isGEOSEnabled = false;
+        Geometry g1 = Geometry.CreateFromWkt("POINT (1 1)");
+        Geometry g2 = Geometry.CreateFromWkt("POINT (2 2)");
+        try {
+            g1.Touches(g2);
+            if (!GetLastErrorMsg()
+                    .toLowerCase()
+                    .contains("GEOS support not enabled".toLowerCase())) {
+                isGEOSEnabled = true;
+            }
+        } catch (Exception ex) {
+            // Do nothing
+        }
+        return isGEOSEnabled;
+    }
+
+    public String getVersion() {
+        return gdal.VersionInfo("RELEASE_NAME");
     }
 
     @Override
@@ -485,7 +583,25 @@ public class JniOGR implements OGR {
             int[] minute,
             int[] second,
             int[] tzFlag) {
-        ((Feature) feature).GetFieldAsDateTime(i, year, month, day, hour, minute, second, tzFlag);
+        try {
+            if (USE_FLOAT_SECONDS) {
+                float[] secondFloat = new float[second.length];
+                GET_FIELD_METHOD.invoke(
+                        feature, i, year, month, day, hour, minute, secondFloat, tzFlag);
+                for (int j = 0; j < second.length; j++) {
+                    second[j] = (int) secondFloat[j];
+                }
+            } else {
+                GET_FIELD_METHOD.invoke(feature, i, year, month, day, hour, minute, second, tzFlag);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(
+                    "Unexpected exception found while retrieving a datetime field, using float seconds: "
+                            + USE_FLOAT_SECONDS
+                            + " and method "
+                            + GET_FIELD_METHOD,
+                    e);
+        }
     }
 
     @Override
@@ -535,7 +651,7 @@ public class JniOGR implements OGR {
 
     @Override
     public long GetMultiLineStringType() {
-        return wkbMultiPoint25D;
+        return wkbMultiLineString;
     }
 
     @Override
@@ -621,15 +737,5 @@ public class JniOGR implements OGR {
     @Override
     public Object NewSpatialRef(String wkt) {
         return new SpatialReference(wkt);
-    }
-
-    public static void main(String[] args) throws Exception {
-        ogr.RegisterAll();
-        DataSource ds =
-                ogr.Open(
-                        "/Users/jdeolive/Projects/geotools/git/modules/library/sample-data/src/main/resources/org/geotools/test-data/shapes/statepop.shp");
-
-        double[] d = ds.GetLayer(0).GetExtent();
-        System.out.println(d);
     }
 }

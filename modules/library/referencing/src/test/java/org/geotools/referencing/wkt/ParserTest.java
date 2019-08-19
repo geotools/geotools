@@ -43,7 +43,6 @@ import org.opengis.referencing.operation.MathTransform;
 /**
  * Tests the WKT {@link Parser} implementation.
  *
- * @source $URL$
  * @version $Id$
  * @author Yann Cézard
  * @author Remi Eve
@@ -359,12 +358,12 @@ public final class ParserTest {
             try {
                 parsed = parser.parseObject(line);
             } catch (ParseException exception) {
-                System.err.println();
-                System.err.println("-----------------------------");
-                System.err.println("Parse failed. Dump WKT below.");
-                System.err.println("-----------------------------");
-                System.err.println(line);
-                System.err.println();
+                // System.err.println();
+                // System.err.println("-----------------------------");
+                // System.err.println("Parse failed. Dump WKT below.");
+                // System.err.println("-----------------------------");
+                // System.err.println(line);
+                // System.err.println();
                 throw exception;
             }
             assertNotNull("Parsing returns null.", parsed);
@@ -382,16 +381,16 @@ public final class ParserTest {
             try {
                 again = parser.parseObject(formatted);
             } catch (ParseException exception) {
-                System.err.println();
-                System.err.println("------------------------------------");
-                System.err.println("Second parse failed. Dump WKT below.");
-                System.err.println("------------------------------------");
-                System.err.println(line);
-                System.err.println();
-                System.err.println("------ Reformatted WKT below -------");
-                System.err.println();
-                System.err.println(formatted);
-                System.err.println();
+                // System.err.println();
+                // System.err.println("------------------------------------");
+                // System.err.println("Second parse failed. Dump WKT below.");
+                // System.err.println("------------------------------------");
+                // System.err.println(line);
+                // System.err.println();
+                // System.err.println("------ Reformatted WKT below -------");
+                // System.err.println();
+                // System.err.println(formatted);
+                // System.err.println();
                 throw exception;
             }
             assertEquals("Second parsing produced different objects", parsed, again);

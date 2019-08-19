@@ -38,7 +38,6 @@ import org.opengis.filter.capability.FunctionName;
  * </ol>
  *
  * @author Justin Deoliveira, OpenGeo
- * @source $URL$
  */
 public class FilterFunction_strPosition extends FunctionExpressionImpl {
 

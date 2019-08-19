@@ -81,7 +81,6 @@ import org.opengis.feature.type.AttributeType;
  *
  * @author Jody Garnett, Refractions Research
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL$
  */
 public interface Association extends Property {
 

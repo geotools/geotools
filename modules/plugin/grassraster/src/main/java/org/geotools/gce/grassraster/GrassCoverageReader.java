@@ -42,7 +42,6 @@ import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
-import org.geotools.factory.GeoTools;
 import org.geotools.gce.grassraster.core.GrassBinaryRasterReadHandler;
 import org.geotools.gce.grassraster.core.color.JGrassColorTable;
 import org.geotools.gce.grassraster.format.GrassCoverageFormat;
@@ -55,6 +54,7 @@ import org.geotools.image.ImageWorker;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.operation.builder.GridToEnvelopeMapper;
+import org.geotools.util.factory.GeoTools;
 import org.opengis.coverage.grid.Format;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.Envelope;
@@ -76,7 +76,6 @@ import org.opengis.util.ProgressListener;
  * @since 3.0
  * @see GrassBinaryImageReader
  * @see GrassBinaryRasterReadHandler
- * @source $URL$
  */
 public class GrassCoverageReader extends AbstractGridCoverage2DReader
         implements GridCoverage2DReader {

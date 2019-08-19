@@ -31,7 +31,6 @@ import org.locationtech.jts.geom.CoordinateSequence;
  * remains 2-dimensional.
  *
  * @author jgarnett
- * @source $URL$
  */
 public interface CoordinateAccess extends CoordinateSequence {
     /**

@@ -25,7 +25,6 @@ import org.opengis.geometry.TransfiniteSet;
 /**
  * @author Jody Garnett
  * @author Joel Skelton
- * @source $URL$
  */
 public class GeometryTestOperation {
     private String operation;

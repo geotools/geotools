@@ -52,6 +52,13 @@ public class CacheEntryKey implements Serializable {
     }
 
     @Override
+    public String toString() {
+        return String.format(
+                "CacheEntry[bucket: %s, key %s, block: %d, blockSize: %d]",
+                bucket, key, block, blockSize);
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;

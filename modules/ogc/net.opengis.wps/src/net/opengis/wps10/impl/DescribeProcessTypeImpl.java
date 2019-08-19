@@ -29,120 +29,120 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link net.opengis.wps10.impl.DescribeProcessTypeImpl#getIdentifier <em>Identifier</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
 public class DescribeProcessTypeImpl extends RequestBaseTypeImpl implements DescribeProcessType {
     /**
-     * The cached value of the '{@link #getIdentifier() <em>Identifier</em>}' containment reference list.
-     * <!-- begin-user-doc -->
+   * The cached value of the '{@link #getIdentifier() <em>Identifier</em>}' containment reference list.
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getIdentifier()
-     * @generated
-     * @ordered
-     */
+   * @see #getIdentifier()
+   * @generated
+   * @ordered
+   */
     protected EList identifier;
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     protected DescribeProcessTypeImpl() {
-        super();
-    }
+    super();
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     protected EClass eStaticClass() {
-        return Wps10Package.Literals.DESCRIBE_PROCESS_TYPE;
-    }
+    return Wps10Package.Literals.DESCRIBE_PROCESS_TYPE;
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public EList getIdentifier() {
-        if (identifier == null) {
-            identifier = new EObjectContainmentEList(CodeType.class, this, Wps10Package.DESCRIBE_PROCESS_TYPE__IDENTIFIER);
-        }
-        return identifier;
+    if (identifier == null) {
+      identifier = new EObjectContainmentEList(CodeType.class, this, Wps10Package.DESCRIBE_PROCESS_TYPE__IDENTIFIER);
     }
+    return identifier;
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-        switch (featureID) {
-            case Wps10Package.DESCRIBE_PROCESS_TYPE__IDENTIFIER:
-                return ((InternalEList)getIdentifier()).basicRemove(otherEnd, msgs);
-        }
-        return super.eInverseRemove(otherEnd, featureID, msgs);
+    switch (featureID) {
+      case Wps10Package.DESCRIBE_PROCESS_TYPE__IDENTIFIER:
+        return ((InternalEList)getIdentifier()).basicRemove(otherEnd, msgs);
     }
+    return super.eInverseRemove(otherEnd, featureID, msgs);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case Wps10Package.DESCRIBE_PROCESS_TYPE__IDENTIFIER:
-                return getIdentifier();
-        }
-        return super.eGet(featureID, resolve, coreType);
+    switch (featureID) {
+      case Wps10Package.DESCRIBE_PROCESS_TYPE__IDENTIFIER:
+        return getIdentifier();
     }
+    return super.eGet(featureID, resolve, coreType);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case Wps10Package.DESCRIBE_PROCESS_TYPE__IDENTIFIER:
-                getIdentifier().clear();
-                getIdentifier().addAll((Collection)newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
+    switch (featureID) {
+      case Wps10Package.DESCRIBE_PROCESS_TYPE__IDENTIFIER:
+        getIdentifier().clear();
+        getIdentifier().addAll((Collection)newValue);
+        return;
     }
+    super.eSet(featureID, newValue);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case Wps10Package.DESCRIBE_PROCESS_TYPE__IDENTIFIER:
-                getIdentifier().clear();
-                return;
-        }
-        super.eUnset(featureID);
+    switch (featureID) {
+      case Wps10Package.DESCRIBE_PROCESS_TYPE__IDENTIFIER:
+        getIdentifier().clear();
+        return;
     }
+    super.eUnset(featureID);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case Wps10Package.DESCRIBE_PROCESS_TYPE__IDENTIFIER:
-                return identifier != null && !identifier.isEmpty();
-        }
-        return super.eIsSet(featureID);
+    switch (featureID) {
+      case Wps10Package.DESCRIBE_PROCESS_TYPE__IDENTIFIER:
+        return identifier != null && !identifier.isEmpty();
     }
+    return super.eIsSet(featureID);
+  }
 
 } //DescribeProcessTypeImpl

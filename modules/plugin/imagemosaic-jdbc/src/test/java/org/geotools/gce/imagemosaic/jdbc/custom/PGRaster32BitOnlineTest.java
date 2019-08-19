@@ -20,7 +20,6 @@ package org.geotools.gce.imagemosaic.jdbc.custom;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
-/** @source $URL$ */
 public class PGRaster32BitOnlineTest extends PGRasterOnlineTest {
     public PGRaster32BitOnlineTest(String test) {
         super(test);

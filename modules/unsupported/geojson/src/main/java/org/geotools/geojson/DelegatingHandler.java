@@ -33,7 +33,6 @@ import org.geotools.geojson.geom.PolygonHandler;
 import org.json.simple.parser.ContentHandler;
 import org.json.simple.parser.ParseException;
 
-/** @source $URL$ */
 public abstract class DelegatingHandler<T> implements IContentHandler<T> {
 
     protected static HashMap<String, Class<? extends IContentHandler>> handlers = new HashMap();
@@ -119,7 +118,7 @@ public abstract class DelegatingHandler<T> implements IContentHandler<T> {
 
                 return (IContentHandler) clazz.getConstructor(types).newInstance(args);
             } else {
-                return (IContentHandler) clazz.newInstance();
+                return (IContentHandler) clazz.getDeclaredConstructor().newInstance();
             }
 
         } catch (Exception e) {

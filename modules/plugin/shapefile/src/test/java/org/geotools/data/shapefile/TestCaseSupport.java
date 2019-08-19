@@ -16,7 +16,7 @@
  */
 package org.geotools.data.shapefile;
 
-import static junit.framework.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -28,7 +28,7 @@ import java.util.List;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 import org.geotools.TestData;
-import org.geotools.data.shapefile.index.CloseableIterator;
+import org.geotools.data.CloseableIterator;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.factory.CommonFactoryFinder;
@@ -46,7 +46,6 @@ import org.opengis.filter.FilterFactory2;
  *
  * <p>Note: a nearly identical copy of this file exists in the {@code ext/shape} module.
  *
- * @source $URL$
  * @version $Id$
  * @author Ian Schneider
  * @author Martin Desruisseaux
@@ -116,7 +115,7 @@ public class TestCaseSupport {
             if (file.delete()) {
                 // dead
             } else {
-                System.out.println("Couldn't delete " + file);
+                // System.out.println("Couldn't delete " + file);
                 file.deleteOnExit(); // dead later
             }
         }

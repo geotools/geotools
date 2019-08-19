@@ -50,6 +50,7 @@ import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
+import org.geotools.data.util.NullProgressListener;
 import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.filter.text.ecql.ECQL;
 import org.geotools.geometry.DirectPosition2D;
@@ -60,7 +61,6 @@ import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
 import org.geotools.referencing.CRS;
-import org.geotools.util.NullProgressListener;
 import org.geotools.util.SimpleInternationalString;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
@@ -87,7 +87,6 @@ import org.opengis.util.ProgressListener;
  * @author Steve Ansari, NOAA
  * @author Michael Bedward
  * @since 2.6
- * @source $URL$
  * @version $Id$
  */
 @DescribeProcess(
@@ -116,7 +115,6 @@ public class VectorToRasterProcess implements VectorProcess {
     GridCoverage2D result;
     private Number minAttValue;
     private Number maxAttValue;
-    private float nodataValue;
 
     private ReferencedEnvelope extent;
     private Geometry extentGeometry;
@@ -127,7 +125,6 @@ public class VectorToRasterProcess implements VectorProcess {
 
     private int[] coordGridX = new int[COORD_GRID_CHUNK_SIZE];
     private int[] coordGridY = new int[COORD_GRID_CHUNK_SIZE];
-    // private double cellsize;
 
     TiledImage image;
     Graphics2D graphics;
@@ -143,8 +140,7 @@ public class VectorToRasterProcess implements VectorProcess {
      * @param attribute source of values for the output grid: either a {@code String} for the name
      *     of a numeric feature property or an {@code org.opengis.filter.expression.Expression} that
      *     evaluates to a numeric value
-     * @param gridWidthInCells width (cell) of the output raster
-     * @param gridHeightInCells height (cell) of the output raster
+     * @param gridDim size of the output raster
      * @param bounds bounds (world coordinates) of the output raster
      * @param covName a name for the output raster
      * @param monitor an optional {@code ProgressListener} (may be {@code null}
@@ -232,7 +228,6 @@ public class VectorToRasterProcess implements VectorProcess {
      * This method is called by {@linkplain #execute} to rasterize an individual feature.
      *
      * @param feature the feature to be rasterized
-     * @param input the intput parameters (ignored in this implementation)
      * @throws java.lang.Exception
      */
     protected void processFeature(SimpleFeature feature, Object attribute) throws Exception {
@@ -638,18 +633,14 @@ public class VectorToRasterProcess implements VectorProcess {
     }
 
     private void drawGeometry(Geometries geomType, Geometry geometry) throws TransformException {
-        Geometry workingGeometry;
         if (transformFeatures) {
             try {
-                workingGeometry = JTS.transform(geometry, featureToRasterTransform);
+                JTS.transform(geometry, featureToRasterTransform);
             } catch (TransformException ex) {
                 throw ex;
             } catch (MismatchedDimensionException ex) {
                 throw new RuntimeException(ex);
             }
-
-        } else {
-            workingGeometry = geometry;
         }
 
         Coordinate[] coords = geometry.getCoordinates();

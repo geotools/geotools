@@ -16,7 +16,6 @@
  */
 package org.geotools.data.wfs.internal;
 
-import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -28,7 +27,7 @@ import org.apache.commons.io.IOUtils;
 import org.geotools.data.ows.HTTPResponse;
 import org.geotools.data.wfs.internal.parsers.EmfAppSchemaParser;
 import org.geotools.ows.ServiceException;
-import org.geotools.xml.Configuration;
+import org.geotools.xsd.Configuration;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
@@ -50,13 +49,17 @@ public class DescribeFeatureTypeResponse extends WFSResponse {
 
         InputStream responseStream = httpResponse.getResponseStream();
         try {
-            File tmpSchemaFile = File.createTempFile(remoteTypeName.getLocalPart(), ".xsd");
-            OutputStream output = new BufferedOutputStream(new FileOutputStream(tmpSchemaFile));
-            try {
+            String prefix = remoteTypeName.getLocalPart();
+            if (prefix.length() < 3) {
+                /*
+                 * CreateTempFile will throw an exception if the prefix is less that 3 chars long
+                 */
+                prefix += "zzz";
+            }
+            File tmpSchemaFile = File.createTempFile(prefix, ".xsd");
+            try (OutputStream output = new FileOutputStream(tmpSchemaFile)) {
                 IOUtils.copy(responseStream, output);
-            } finally {
                 output.flush();
-                IOUtils.closeQuietly(output);
             }
             try {
                 URL schemaLocation = tmpSchemaFile.toURI().toURL();

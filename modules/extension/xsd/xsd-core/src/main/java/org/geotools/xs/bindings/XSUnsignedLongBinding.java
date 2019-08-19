@@ -18,9 +18,9 @@ package org.geotools.xs.bindings;
 
 import java.math.BigDecimal;
 import javax.xml.namespace.QName;
-import org.geotools.xml.InstanceComponent;
-import org.geotools.xml.SimpleBinding;
 import org.geotools.xs.XS;
+import org.geotools.xsd.InstanceComponent;
+import org.geotools.xsd.SimpleBinding;
 
 /**
  * Binding object for the type http://www.w3.org/2001/XMLSchema:unsignedLong.
@@ -46,7 +46,6 @@ import org.geotools.xs.XS;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class XSUnsignedLongBinding implements SimpleBinding {
     /** @generated */

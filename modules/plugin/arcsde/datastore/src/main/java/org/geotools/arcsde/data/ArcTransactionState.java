@@ -40,13 +40,9 @@ import org.geotools.util.logging.Logging;
  *
  * @author Jake Fear
  * @author Gabriel Roldan
- * @source $URL:
- *     http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/main/java
- *     /org/geotools/arcsde/data/ArcTransactionState.java $
- * @version $Id$
  */
 final class ArcTransactionState implements Transaction.State {
-    private static final Logger LOGGER = Logging.getLogger(ArcTransactionState.class.getName());
+    private static final Logger LOGGER = Logging.getLogger(ArcTransactionState.class);
 
     /**
      * ArcSDEDataStore we can use to look up a Session for our Transaction.
@@ -75,7 +71,7 @@ final class ArcTransactionState implements Transaction.State {
      * Creates a new ArcTransactionState object.
      *
      * @param listenerManager
-     * @param arcSDEDataStore connection pool where to grab a connection and hold it while there's a
+     * @param dataStore connection pool where to grab a connection and hold it while there's a
      *     transaction open (signaled by any use of {@link #getConnection()}
      */
     ArcTransactionState(ArcSDEDataStore dataStore, final FeatureListenerManager listenerManager) {
@@ -93,8 +89,7 @@ final class ArcTransactionState implements Transaction.State {
     }
 
     /**
-     * @param versioName the name of the version to work against
-     * @return
+     * @param versionName the name of the version to work against
      * @throws IOException
      */
     public ArcSdeVersionHandler getVersionHandler(

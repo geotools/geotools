@@ -225,6 +225,7 @@ class SessionPool implements ISessionPool {
 
     /** Ensures proper closure of connection pool at this object's finalization stage. */
     @Override
+    @SuppressWarnings("deprecation") // finalize is deprecated in Java 9
     protected void finalize() {
         close();
     }
@@ -380,7 +381,7 @@ class SessionPool implements ISessionPool {
          * is invoked in an implementation-specific fashion to determine if an instance is still
          * valid to be returned by the pool. It will only be invoked on an "activated" instance.
          *
-         * @param an instance of {@link Session} maintained by this pool.
+         * @param obj an instance of {@link Session} maintained by this pool.
          * @return <code>true</code> if the connection is still alive and operative (checked by
          *     asking its user name), <code>false</code> otherwise.
          */

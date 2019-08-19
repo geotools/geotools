@@ -33,7 +33,6 @@ import org.opengis.referencing.datum.Datum;
  * that type of CRS with an acceptable degree of error. The exception to the rule is the subtype
  * "Temporal" which has been added by analogy.
  *
- * @source $URL$
  * @version <A HREF="http://portal.opengeospatial.org/files/?artifact_id=6716">Abstract
  *     specification 2.0</A>
  * @author Martin Desruisseaux (IRD)

@@ -23,7 +23,6 @@ package org.geotools.filter;
  * the StyleFactory.
  *
  * @author Ian Turton, CCG
- * @source $URL$
  * @version $Id$
  */
 public class FilterFactoryCreationException extends java.lang.Exception {

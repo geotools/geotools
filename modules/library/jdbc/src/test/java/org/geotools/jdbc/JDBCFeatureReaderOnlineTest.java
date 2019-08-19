@@ -25,7 +25,6 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.type.PropertyDescriptor;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-/** @source $URL$ */
 public abstract class JDBCFeatureReaderOnlineTest extends JDBCTestSupport {
 
     public void testNext() throws Exception {

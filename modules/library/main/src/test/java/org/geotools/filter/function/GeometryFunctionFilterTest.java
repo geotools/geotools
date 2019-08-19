@@ -20,7 +20,6 @@ import org.geotools.data.simple.SimpleFeatureIterator;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.expression.Function;
 
-/** @source $URL$ */
 public class GeometryFunctionFilterTest extends FunctionTestSupport {
 
     public GeometryFunctionFilterTest() {

@@ -29,6 +29,8 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import org.geotools.arcsde.data.ArcSDEDataStore;
+import org.geotools.arcsde.data.ArcSDEDataStoreFactory;
+import org.geotools.arcsde.data.ArcSDEJNDIDataStoreFactory;
 import org.geotools.arcsde.data.TestData;
 import org.geotools.arcsde.session.ISession;
 import org.geotools.arcsde.session.ISessionPool;
@@ -38,7 +40,7 @@ import org.geotools.data.DataAccessFinder;
 import org.geotools.data.DataStoreFactorySpi;
 import org.geotools.data.DataStoreFinder;
 import org.geotools.data.Transaction;
-import org.geotools.factory.GeoTools;
+import org.geotools.util.factory.GeoTools;
 import org.geotools.util.logging.Logging;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -47,15 +49,11 @@ import org.junit.Test;
 
 /**
  * @author Gabriel Roldan (OpenGeo)
- * @source $URL$
- *     http://svn.osgeo.org/geotools/trunk/modules/plugin/arcsde/datastore/src/test/java/org
- *     /geotools/arcsde/ArcSDEJNDIDataStoreFactoryTest.java $
- * @version $Id$
  * @since 2.5.7
  */
 public class ArcSDEJNDIDataStoreFactoryTest {
 
-    private static final Logger LOGGER = Logging.getLogger("org.geotools.arcsde");
+    private static final Logger LOGGER = Logging.getLogger(ArcSDEJNDIDataStoreFactoryTest.class);
 
     private static ArcSDEJNDIDataStoreFactory factory;
 

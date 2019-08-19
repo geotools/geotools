@@ -58,7 +58,6 @@ import org.opengis.referencing.operation.MathTransform;
  * feature collection.
  *
  * @author Justin
- * @source $URL$
  */
 public class ReprojectingFeatureCollection extends DecoratingSimpleFeatureCollection {
     static final FilterFactory2 FF = CommonFactoryFinder.getFilterFactory2(null);

@@ -27,7 +27,6 @@ import java.util.ResourceBundle;
  *
  * @author dzwiers, Refractions Research, Inc.
  * @author $Author: dmzwiers $ (last modification)
- * @source $URL$
  * @version $Id$
  */
 public class DefaultFeatureValidationBeanInfo extends ValidationBeanInfo {
@@ -63,7 +62,7 @@ public class DefaultFeatureValidationBeanInfo extends ValidationBeanInfo {
             return pd;
         } catch (IntrospectionException e) {
             // TODO error, log here
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
 
             return new PropertyDescriptor[0];
         }

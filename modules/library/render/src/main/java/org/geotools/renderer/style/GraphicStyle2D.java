@@ -23,7 +23,6 @@ import java.awt.image.BufferedImage;
  * A style class used to depict a point, polygon centroid or line with a small graphic icon
  *
  * @author Andrea Aime
- * @source $URL$
  * @version $Id$
  */
 public class GraphicStyle2D extends Style2D implements PointStyle2D {
@@ -46,7 +45,6 @@ public class GraphicStyle2D extends Style2D implements PointStyle2D {
      *
      * @param image The image that will be used to depict the centroid/point/...
      * @param rotation The image rotation
-     * @param opacity The image opacity
      */
     public GraphicStyle2D(BufferedImage image, float rotation) {
         this.image = image;

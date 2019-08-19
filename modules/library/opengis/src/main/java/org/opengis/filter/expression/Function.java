@@ -21,7 +21,6 @@ import org.opengis.filter.capability.FunctionName;
  * <p>This is included for completeness with respect to the OGC Filter specification. However, no
  * functions are required to be supported by that specification.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengis.org/docs/02-059.pdf">Implementation specification 1.0</A>
  * @version <A HREF="http://www.opengeospatial.org/standards/symbol">Symbology Encoding
  *     Implementation Specification 1.1.0</A>

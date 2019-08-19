@@ -28,7 +28,6 @@ import org.geotools.geometry.iso.PrecisionModel;
  * GeometryTestCase}s and provides a way to execute them all.
  *
  * @author <a href="mailto:joel@lggi.com">Joel Skelton</a>
- * @source $URL$
  */
 public class GeometryTestContainer {
     private List<GeometryTestCase> testCases;
@@ -68,8 +67,8 @@ public class GeometryTestContainer {
             if (!GeometryConformanceTestSuite.isExcluded(excludes, testCase.getDescription())) {
                 testCase.setName(name);
                 // check for overrides on operations
-                System.out.println(
-                        testCase.toString() + " - test count: " + testCase.getOperationCount());
+                // System.out.println(
+                //        testCase.toString() + " - test count: " + testCase.getOperationCount());
                 testCase = GeometryConformanceTestSuite.overrideOps(testCase, excludes);
                 suite.addTest(testCase);
             }

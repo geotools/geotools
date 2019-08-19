@@ -27,8 +27,8 @@ import java.awt.geom.AffineTransform;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.PixelTranslation;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.metadata.iso.spatial.PixelTranslation;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
@@ -47,7 +47,6 @@ import org.opengis.referencing.operation.TransformException;
 /**
  * Test the {@link GridGeometry} implementation.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

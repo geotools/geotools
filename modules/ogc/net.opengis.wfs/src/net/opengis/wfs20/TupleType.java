@@ -17,10 +17,10 @@ import org.eclipse.emf.ecore.EObject;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link net.opengis.wfs20.TupleType#getMember <em>Member</em>}</li>
  * </ul>
- * </p>
  *
  * @see net.opengis.wfs20.Wfs20Package#getTupleType()
  * @model extendedMetaData="name='TupleType' kind='elementOnly'"
@@ -28,20 +28,20 @@ import org.eclipse.emf.ecore.EObject;
  */
 public interface TupleType extends EObject {
     /**
-     * Returns the value of the '<em><b>Member</b></em>' containment reference list.
-     * The list contents are of type {@link net.opengis.wfs20.MemberPropertyType}.
-     * <!-- begin-user-doc -->
+   * Returns the value of the '<em><b>Member</b></em>' containment reference list.
+   * The list contents are of type {@link net.opengis.wfs20.MemberPropertyType}.
+   * <!-- begin-user-doc -->
      * <p>
      * If the meaning of the '<em>Member</em>' containment reference list isn't clear,
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     * @return the value of the '<em>Member</em>' containment reference list.
-     * @see net.opengis.wfs20.Wfs20Package#getTupleType_Member()
-     * @model containment="true" lower="2"
-     *        extendedMetaData="kind='element' name='member' namespace='##targetNamespace'"
-     * @generated
-     */
+   * @return the value of the '<em>Member</em>' containment reference list.
+   * @see net.opengis.wfs20.Wfs20Package#getTupleType_Member()
+   * @model containment="true" lower="2"
+   *        extendedMetaData="kind='element' name='member' namespace='##targetNamespace'"
+   * @generated
+   */
     EList<MemberPropertyType> getMember();
 
 } // TupleType

@@ -22,7 +22,6 @@ import java.sql.SQLException;
  * Extension of JDBCTestSetup which is used by {@link JDBCDataStoreAPIOnlineTest}.
  *
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL$
  */
 public abstract class JDBCDataStoreAPITestSetup extends JDBCDelegatingTestSetup {
 

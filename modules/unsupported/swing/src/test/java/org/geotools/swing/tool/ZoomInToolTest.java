@@ -23,7 +23,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
-import org.fest.swing.core.MouseButton;
+import org.assertj.swing.core.MouseButton;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.Layer;
 import org.geotools.swing.event.MapPaneEvent;
@@ -38,7 +38,6 @@ import org.junit.runner.RunWith;
  *
  * @author Michael Bedward
  * @since 8.0
- * @source $URL$
  * @version $Id$
  */
 @RunWith(GraphicsTestRunner.class)
@@ -93,7 +92,7 @@ public class ZoomInToolTest extends CursorToolTestBase {
                 new ReferencedEnvelope(
                         expectedRect, mapPane.getDisplayArea().getCoordinateReferenceSystem());
 
-        Point screenPos = mapPaneFixture.component().getLocationOnScreen();
+        Point screenPos = mapPaneFixture.target().getLocationOnScreen();
 
         Point mouseStartPos = new Point(screenPos.x + dragBoxRect.x, screenPos.y + dragBoxRect.y);
 
@@ -104,9 +103,9 @@ public class ZoomInToolTest extends CursorToolTestBase {
 
         listener.setExpected(MapPaneEvent.Type.DISPLAY_AREA_CHANGED);
 
-        mapPaneFixture.robot.pressMouse(mouseStartPos, MouseButton.LEFT_BUTTON);
-        mapPaneFixture.robot.moveMouse(mouseEndPos);
-        mapPaneFixture.robot.releaseMouseButtons();
+        mapPaneFixture.robot().pressMouse(mouseStartPos, MouseButton.LEFT_BUTTON);
+        mapPaneFixture.robot().moveMouse(mouseEndPos);
+        mapPaneFixture.robot().releaseMouseButtons();
 
         assertTrue(listener.await(MapPaneEvent.Type.DISPLAY_AREA_CHANGED, EVENT_TIMEOUT));
         assertTrue(expectedEnv.boundsEquals2D(mapPane.getDisplayArea(), TOL));

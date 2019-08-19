@@ -8,7 +8,6 @@ import org.geotools.jdbc.JDBCDataStoreAPITestSetup;
 import org.geotools.jdbc.JDBCVirtualTableOnlineTest;
 import org.geotools.util.logging.Logging;
 
-/** @source $URL$ */
 public class PostgisVirtualTableOnlineTest extends JDBCVirtualTableOnlineTest {
 
     @Override
@@ -36,7 +35,7 @@ public class PostgisVirtualTableOnlineTest extends JDBCVirtualTableOnlineTest {
                 };
         handler.setLevel(Level.WARNING);
         ((PostGISDialect) dataStore.getSQLDialect()).setEstimatedExtentsEnabled(true);
-        Logger logger = Logging.getLogger("org.geotools.jdbc");
+        Logger logger = Logging.getLogger(PostgisVirtualTableOnlineTest.class);
         Level oldLevel = logger.getLevel();
         try {
             logger.setLevel(java.util.logging.Level.WARNING);

@@ -21,7 +21,6 @@ import org.geotools.data.complex.FeatureTypeMapping;
 /**
  * @author Russell Petty (GeoScience Victoria)
  * @version $Id$
- * @source $URL$
  */
 public class UnmappingFilterVisitorFactory {
     public static UnmappingFilterVisitor getInstance(FeatureTypeMapping mapping) {

@@ -20,7 +20,6 @@ package org.geotools.gce.imagemosaic.jdbc;
  * This class implements a common db dialect (no spatial extensions used)
  *
  * @author mcr
- * @source $URL$
  */
 public class UniversalDialect extends DBDialect {
     public UniversalDialect(Config config) {

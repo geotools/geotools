@@ -56,7 +56,6 @@ import org.opengis.referencing.operation.Projection;
  * </TD></TR></TABLE>
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
@@ -155,7 +154,6 @@ public class DefaultProjectedCRS extends AbstractDerivedCRS implements Projected
      * @throws MismatchedDimensionException if the source and target dimension of {@code
      *     baseToDeviced} don't match the dimension of {@code base} and {@code derivedCS}
      *     respectively.
-     * @deprecated Create explicitly a {@link DefiningConversion} instead.
      */
     public DefaultProjectedCRS(
             final Map<String, ?> properties,
@@ -238,6 +236,7 @@ public class DefaultProjectedCRS extends AbstractDerivedCRS implements Projected
      *     versions of this class.
      */
     @Override
+    @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int hashCode() {
         return (int) serialVersionUID ^ super.hashCode();
     }

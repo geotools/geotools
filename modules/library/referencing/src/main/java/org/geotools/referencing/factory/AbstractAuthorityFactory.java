@@ -22,9 +22,9 @@ package org.geotools.referencing.factory;
 import java.util.Collections;
 import java.util.Set;
 import javax.measure.Unit;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.iso.citation.Citations;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
 import org.geotools.util.NameFactory;
 import org.opengis.metadata.citation.Citation;
 import org.opengis.metadata.extent.Extent;
@@ -55,7 +55,6 @@ import org.opengis.util.InternationalString;
  * methods may be overridden as well for better performances.
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
@@ -76,7 +75,7 @@ public abstract class AbstractAuthorityFactory extends ReferencingFactory
      * example if a connection to the EPSG database failed. This method is defined here for
      * implementation convenience, but not yet public because not yet applicable. It will be made
      * public in {@link DeferredAuthorityFactory} and {@link AuthorityFactoryAdapter} subclasses,
-     * which implement the {@link org.geotools.factory.OptionalFactory} interface.
+     * which implement the {@link org.geotools.util.factory.OptionalFactory} interface.
      */
     boolean isAvailable() {
         return true;

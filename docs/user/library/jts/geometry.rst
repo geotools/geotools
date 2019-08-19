@@ -352,4 +352,4 @@ This is an advanced feature that is not often used.
 JTS
 ^^^
 
-Some of the code examples used above reference the *JTS* utility class. This class is provided by **gt-api** module; and contains many helpful methods for working with Geometry.
+Some of the code examples used above reference the *JTS* utility class. This class is provided by **gt-main** module; and contains many helpful methods for working with Geometry.

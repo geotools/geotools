@@ -22,6 +22,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.sql.DataSource;
 import org.geotools.data.DataStoreFinder;
 import org.geotools.data.FeatureReader;
@@ -30,6 +32,7 @@ import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.NameImpl;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.test.OnlineTestCase;
+import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.Feature;
 import org.opengis.feature.simple.SimpleFeature;
@@ -47,9 +50,11 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * with.
  *
  * @author Justin Deoliveira, The Open Planning Project, jdeolive@openplans.org
- * @source $URL$
  */
 public abstract class JDBCTestSupport extends OnlineTestCase {
+
+    static final Logger LOGGER = Logging.getLogger(JDBCTestSupport.class);
+
     static {
         // uncomment to turn up logging
         //
@@ -57,14 +62,14 @@ public abstract class JDBCTestSupport extends OnlineTestCase {
         //        handler.setLevel(java.util.logging.Level.FINE);
         //
         //
-        // org.geotools.util.logging.Logging.getLogger("org.geotools.data.jdbc").setLevel(java.util.logging.Level.FINE);
+        // org.geotools.util.logging.Logging.getLogger(JDBCTestSupport.class).setLevel(java.util.logging.Level.FINE);
         //
-        // org.geotools.util.logging.Logging.getLogger("org.geotools.data.jdbc").addHandler(handler);
+        // org.geotools.util.logging.Logging.getLogger(JDBCTestSupport.class).addHandler(handler);
         //
         //
-        // org.geotools.util.logging.Logging.getLogger("org.geotools.jdbc").setLevel(java.util.logging.Level.FINE);
+        // org.geotools.util.logging.Logging.getLogger(JDBCTestSupport.class).setLevel(java.util.logging.Level.FINE);
         //
-        // org.geotools.util.logging.Logging.getLogger("org.geotools.jdbc").addHandler(handler);
+        // org.geotools.util.logging.Logging.getLogger(JDBCTestSupport.class).addHandler(handler);
     }
 
     protected JDBCTestSetup setup;
@@ -102,8 +107,7 @@ public abstract class JDBCTestSupport extends OnlineTestCase {
             try {
                 setup.tearDown();
             } catch (Exception e) {
-                e.printStackTrace();
-                System.out.println("Error occurred tearing down the test setup");
+                LOGGER.log(Level.SEVERE, "Error occurred tearing down the test setup", e);
             }
         }
     }

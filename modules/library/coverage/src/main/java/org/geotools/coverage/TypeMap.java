@@ -26,11 +26,11 @@ import java.awt.image.SampleModel;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
-import org.geotools.resources.i18n.Vocabulary;
-import org.geotools.resources.i18n.VocabularyKeys;
-import org.geotools.resources.image.ColorUtilities;
+import org.geotools.image.util.ColorUtilities;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
+import org.geotools.metadata.i18n.Vocabulary;
+import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.util.AbstractInternationalString;
 import org.geotools.util.NumberRange;
 import org.geotools.util.Range;
@@ -45,7 +45,6 @@ import org.opengis.util.InternationalString;
  * {@link SampleDimensionType} to {@link DataBuffer} types.
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
@@ -72,9 +71,6 @@ public final class TypeMap {
         new TypeMap(REAL_32BITS, DataBuffer.TYPE_FLOAT, (byte) 32, true, true, M1, P1, pool);
         new TypeMap(REAL_64BITS, DataBuffer.TYPE_DOUBLE, (byte) 64, true, true, M2, P2, pool);
     };
-
-    /** One of {@link SampleDimensionType} code list. */
-    private final SampleDimensionType code;
 
     /**
      * The {@link DataBuffer} type. Must be one of the following constants: {@link
@@ -167,7 +163,6 @@ public final class TypeMap {
         }
         assert ((Comparable) lower).compareTo(upper) < 0 : upper;
         final Class<? extends Number> c = upper.getClass();
-        this.code = code;
         this.type = type;
         this.size = size;
         this.signed = signed;
@@ -439,7 +434,7 @@ public final class TypeMap {
                 {
                     final byte candidate = (byte) value;
                     if (candidate == value) {
-                        return new Byte(candidate);
+                        return Byte.valueOf(candidate);
                     }
                     if (!allowWidening) break;
                     // Fall through

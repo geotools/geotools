@@ -58,16 +58,11 @@ import org.opengis.filter.FilterFactory;
  * ArcSDEDAtaStore test cases
  *
  * @author Gabriel Roldan, Axios Engineering
- * @source $URL$
- *     http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/test/java
- *     /org/geotools/arcsde/data/ArcSDEDataStoreTest.java $
- * @version $Id$
  */
 public class ArcSDEDataStoreTest {
     /** package logger */
     private static Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(
-                    ArcSDEDataStoreTest.class.getPackage().getName());
+            org.geotools.util.logging.Logging.getLogger(ArcSDEDataStoreTest.class);
 
     private static TestData testData;
 

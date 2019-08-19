@@ -49,7 +49,6 @@ import org.opengis.parameter.ParameterValueGroup;
  * ${Longitude_Of_Center}   = ${lon0}
  * </pre>
  *
- * @source $URL$
  * @version $Id$
  * @author Simon Schafer
  */

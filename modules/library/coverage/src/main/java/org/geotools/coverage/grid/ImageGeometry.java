@@ -20,7 +20,7 @@ import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.io.Serializable;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
-import org.geotools.resources.Classes;
+import org.geotools.util.Classes;
 import org.geotools.util.Utilities;
 import org.opengis.coverage.grid.GridGeometry;
 import org.opengis.util.Cloneable;
@@ -33,7 +33,6 @@ import org.opengis.util.Cloneable;
  * sometime used with plain {@linkplain java.awt.image.RenderedImage rendered image} instances.
  *
  * @since 2.5
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  * @see GridGeometry2D
@@ -69,11 +68,6 @@ public class ImageGeometry implements GridGeometry, Serializable, Cloneable {
     /** Returns the conversion from grid coordinates to real world earth coordinates. */
     public AffineTransform2D getGridToCRS() {
         return gridToCRS; // No need to clone since AffineTransform2D is immutable.
-    }
-
-    /** @deprecated Renamed as {@link #getGridToCRS()}. */
-    public AffineTransform2D getGridToCoordinateSystem() {
-        return gridToCRS;
     }
 
     /**

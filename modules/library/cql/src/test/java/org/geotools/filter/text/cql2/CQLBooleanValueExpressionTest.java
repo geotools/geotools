@@ -40,7 +40,6 @@ import org.opengis.filter.Not;
  *
  * @author Mauricio Pazos (Axios Engineering)
  * @since 2.6
- * @source $URL$
  */
 public class CQLBooleanValueExpressionTest {
     protected final org.geotools.filter.text.commons.Language language;

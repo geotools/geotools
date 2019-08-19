@@ -20,9 +20,9 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Set;
-import org.geotools.factory.FactoryRegistryException;
-import org.geotools.factory.Hints;
 import org.geotools.referencing.ReferencingFactoryFinder;
+import org.geotools.util.factory.FactoryRegistryException;
+import org.geotools.util.factory.Hints;
 import org.opengis.referencing.AuthorityFactory;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.IdentifiedObject;
@@ -43,7 +43,6 @@ import org.opengis.referencing.operation.CoordinateOperationAuthorityFactory;
  * their own instance.
  *
  * @since 2.2
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

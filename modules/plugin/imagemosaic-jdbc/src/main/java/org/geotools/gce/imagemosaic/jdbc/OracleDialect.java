@@ -20,7 +20,6 @@ package org.geotools.gce.imagemosaic.jdbc;
  * This class implements the db dialect for oracle loaction based services
  *
  * @author mcr
- * @source $URL$
  */
 public class OracleDialect extends DBDialect {
     public OracleDialect(Config config) {

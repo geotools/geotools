@@ -44,7 +44,6 @@ import java.util.TimeZone;
  * ainsi que <a
  * href="http://www.treasure-troves.com/astro/TropicalYear.html">http://www.treasure-troves.com/astro/TropicalYear.html</a>.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @since 2.1
@@ -130,6 +129,7 @@ public final class Calendar {
      * d'intérêt en heure universelle (UTC). Si cet argument est omis, la date et heure actuelles
      * seront utilisées.
      */
+    @SuppressWarnings("PMD.SystemPrintln")
     public static final void main(final String[] args) throws ParseException {
         final DateFormat format = DateFormat.getDateInstance(DateFormat.SHORT);
         format.setTimeZone(TimeZone.getTimeZone("UTC"));

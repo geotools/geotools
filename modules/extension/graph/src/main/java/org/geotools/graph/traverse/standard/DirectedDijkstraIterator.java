@@ -20,14 +20,14 @@ import java.util.Iterator;
 import org.geotools.graph.structure.DirectedGraphable;
 import org.geotools.graph.structure.Graphable;
 
-/** @source $URL$ */
 public class DirectedDijkstraIterator extends DijkstraIterator {
 
     public DirectedDijkstraIterator(EdgeWeighter weighter) {
         super(weighter);
     }
 
-    protected Iterator getRelated(Graphable current) {
+    @Override
+    protected Iterator<? extends Graphable> getRelated(Graphable current) {
         return (((DirectedGraphable) current).getOutRelated());
     }
 }

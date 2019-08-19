@@ -23,7 +23,6 @@ import org.opengis.filter.FilterVisitor;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.spatial.Crosses;
 
-/** @source $URL$ */
 public class CrossesImpl extends GeometryFilterImpl implements Crosses {
 
     public CrossesImpl(Expression e1, Expression e2) {

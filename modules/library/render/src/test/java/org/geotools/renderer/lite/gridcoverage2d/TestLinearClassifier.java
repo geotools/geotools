@@ -40,16 +40,13 @@ import javax.media.jai.RasterFactory;
 import javax.media.jai.RenderedOp;
 import org.geotools.TestData;
 import org.geotools.image.ImageWorker;
-import org.geotools.resources.image.ComponentColorModelJAI;
+import org.geotools.image.util.ComponentColorModelJAI;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.opengis.referencing.operation.TransformException;
 
-/**
- * @author Simone Giannecchini, GeoSolutions
- * @source $URL$
- */
+/** @author Simone Giannecchini, GeoSolutions */
 public class TestLinearClassifier extends Assert {
 
     @Before
@@ -463,7 +460,7 @@ public class TestLinearClassifier extends Assert {
                 // //
                 // forcing a bad band selection ...
                 // //
-                final RenderedOp d = w.classify(list, new Integer(2)).getRenderedOperation();
+                final RenderedOp d = w.classify(list, Integer.valueOf(2)).getRenderedOperation();
                 d.getTiles();
                 // we should not be here!
 
@@ -475,8 +472,9 @@ public class TestLinearClassifier extends Assert {
             }
             assertTrue(exceptionThrown);
 
-            // pbj.setParameter("bandIndex", new Integer(0));
-            final RenderedOp finalImage = w.classify(list, new Integer(0)).getRenderedOperation();
+            // pbj.setParameter("bandIndex", Integer.valueOf(0));
+            final RenderedOp finalImage =
+                    w.classify(list, Integer.valueOf(0)).getRenderedOperation();
             // JAI.create(
             // RasterClassifierOpImage.OPERATION_NAME, pbj);
             if (TestData.isInteractiveTest()) ImageIOUtilities.visualize(finalImage, "testSWAN1");
@@ -555,7 +553,7 @@ public class TestLinearClassifier extends Assert {
                 // //
                 // forcing a bad band selection ...
                 // //
-                final RenderedOp d = w.classify(list, new Integer(2)).getRenderedOperation();
+                final RenderedOp d = w.classify(list, Integer.valueOf(2)).getRenderedOperation();
                 d.getTiles();
                 // we should not be here!
 
@@ -567,7 +565,8 @@ public class TestLinearClassifier extends Assert {
             }
             assertTrue(exceptionThrown);
 
-            final RenderedOp finalImage = w.classify(list, new Integer(0)).getRenderedOperation();
+            final RenderedOp finalImage =
+                    w.classify(list, Integer.valueOf(0)).getRenderedOperation();
             final IndexColorModel icm = (IndexColorModel) finalImage.getColorModel();
             assertEquals(icm.getRed(4), 255);
             assertEquals(icm.getRed(2), 255);

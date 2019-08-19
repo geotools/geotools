@@ -28,11 +28,6 @@ import org.locationtech.jts.io.WKTReader;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
-/**
- * @source $URL:
- *     http://svn.osgeo.org/geotools/trunk/modules/plugin/jdbc/jdbc-GeoPkg/src/test/java/org/geotools/data/GeoPkg/GeoPkgEmptyGeometryTest.java
- *     $
- */
 public class GeoPkgEmptyGeometryOnlineTest extends JDBCEmptyGeometryOnlineTest {
 
     @Override
@@ -72,7 +67,7 @@ public class GeoPkgEmptyGeometryOnlineTest extends JDBCEmptyGeometryOnlineTest {
         FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
                 dataStore.getFeatureWriterAppend(tname("empty_" + type.toLowerCase()), tx);
         SimpleFeature feature = writer.next();
-        feature.setAttribute(aname("id"), new Integer(100));
+        feature.setAttribute(aname("id"), Integer.valueOf(100));
         feature.setAttribute(aname("geom_" + type.toLowerCase()), emptyGeometry);
         feature.setAttribute(aname("name"), new String("empty " + type));
         writer.write();

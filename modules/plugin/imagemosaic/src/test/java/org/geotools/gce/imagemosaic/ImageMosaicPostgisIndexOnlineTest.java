@@ -41,20 +41,19 @@ import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.DimensionDescriptor;
+import org.geotools.coverage.util.FeatureUtilities;
 import org.geotools.data.Query;
-import org.geotools.factory.Hints;
 import org.geotools.filter.SortByImpl;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalogVisitor;
 import org.geotools.geometry.GeneralEnvelope;
-import org.geotools.resources.coverage.FeatureUtilities;
 import org.geotools.test.OnlineTestCase;
 import org.geotools.test.TestData;
 import org.geotools.util.NumberRange;
+import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
 import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
@@ -292,12 +291,9 @@ public class ImageMosaicPostgisIndexOnlineTest extends OnlineTestCase {
 
     private void setupDataStoreProperties(String folder) throws IOException, FileNotFoundException {
         // place datastore.properties file in the dir for the indexing
-        FileWriter out = null;
-        try {
-            out =
-                    new FileWriter(
-                            new File(TestData.file(this, "."), folder + "/datastore.properties"));
-
+        try (FileWriter out =
+                new FileWriter(
+                        new File(TestData.file(this, "."), folder + "/datastore.properties"))) {
             final Set<Object> keyset = fixture.keySet();
             for (Object key : keyset) {
                 final String key_ = (String) key;
@@ -309,10 +305,6 @@ public class ImageMosaicPostgisIndexOnlineTest extends OnlineTestCase {
                 out.write(key_.replace(" ", "\\ ") + "=" + value.replace(" ", "\\ ") + "\n");
             }
             out.flush();
-        } finally {
-            if (out != null) {
-                IOUtils.closeQuietly(out);
-            }
         }
     }
 

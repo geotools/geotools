@@ -3,7 +3,6 @@ package org.geotools.ows.bindings;
 import net.opengis.ows10.OperationsMetadataType;
 import org.geotools.ows.OWSTestSupport;
 
-/** @source $URL$ */
 public class OperationsMetadataBindingTest extends OWSTestSupport {
 
     public void testParse() throws Exception {

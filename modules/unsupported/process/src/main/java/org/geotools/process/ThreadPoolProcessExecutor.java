@@ -22,7 +22,6 @@ import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-/** @source $URL$ */
 public class ThreadPoolProcessExecutor extends ThreadPoolExecutor implements ProcessExecutor {
 
     public ThreadPoolProcessExecutor(int nThreads, ThreadFactory threadFactory) {

@@ -25,7 +25,6 @@ import org.opengis.feature.type.FeatureType;
  * certain {@link FeatureType}
  *
  * @author Andrea Aime - OpenGeo
- * @source $URL$
  */
 public abstract class PrimaryKeyFinder {
 

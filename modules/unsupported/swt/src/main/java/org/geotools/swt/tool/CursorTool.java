@@ -30,7 +30,6 @@ import org.geotools.swt.utils.Messages;
  *
  * @author Michael Bedward
  * @author Andrea Antonello (www.hydrologis.com)
- * @source $URL$
  */
 public abstract class CursorTool extends MapMouseAdapter {
 

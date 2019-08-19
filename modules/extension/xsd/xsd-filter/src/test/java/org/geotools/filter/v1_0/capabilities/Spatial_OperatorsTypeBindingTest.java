@@ -17,11 +17,10 @@
 package org.geotools.filter.v1_0.capabilities;
 
 import javax.xml.namespace.QName;
-import org.geotools.xml.Binding;
+import org.geotools.xsd.Binding;
 import org.opengis.filter.capability.SpatialOperators;
 import org.w3c.dom.Document;
 
-/** @source $URL$ */
 public class Spatial_OperatorsTypeBindingTest extends FilterCapabilitiesTestSupport {
     public void testType() {
         assertEquals(SpatialOperators.class, binding(OGC.Spatial_OperatorsType).getType());

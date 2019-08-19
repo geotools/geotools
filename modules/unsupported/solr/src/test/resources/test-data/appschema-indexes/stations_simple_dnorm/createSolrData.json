@@ -1,0 +1,156 @@
+[
+	{
+    	"otherid": 1,
+        "name": "station1",
+        "location_name": "Europe",
+    	"position": "POINT(-1 1)",
+    	"comment": "cows"
+	},
+	{
+    	"otherid": 1,
+        "name": "station1",
+        "location_name": "Europe",
+    	"position": "POINT(-1 1)",
+    	"comment": "bats"
+	},
+    {
+    	"otherid": 2,
+        "name": "station2",
+        "location_name": "Asia",
+    	"position": "POINT(-2 1)",
+    	"comment": "cats"
+	},
+	{
+    	"otherid": 2,
+        "name": "station2",
+        "location_name": "Asia",
+    	"position": "POINT(-2 1)",
+    	"comment": "cows"
+	},
+	{
+    	"otherid": 2,
+        "name": "station2",
+        "location_name": "Asia",
+    	"position": "POINT(-2 1)",
+    	"comment": "lizards"
+	},
+    {
+    	"otherid": 3,
+        "name": "station3",
+        "location_name": "Australia",
+    	"position": "POINT(-3 1)",
+    	"comment": "bats"
+	},
+	{
+    	"otherid": 3,
+        "name": "station3",
+        "location_name": "Australia",
+    	"position": "POINT(-3 1)",
+    	"comment": "dinosaurs"
+	},
+    {
+    	"otherid": 4,
+        "name": "station4",
+        "location_name": "Asia",
+    	"position": "POINT(-2 1)",
+    	"comment": "elephants"
+	},
+	{
+    	"otherid": 4,
+        "name": "station4",
+        "location_name": "Asia",
+    	"position": "POINT(-2 1)",
+    	"comment": "elephants"
+	},
+    {
+    	"otherid": 5,
+        "name": "station5",
+        "location_name": "Latin America",
+    	"position": "POINT(0 1)",
+    	"comment": "cats"
+	},
+	{
+    	"otherid": 5,
+        "name": "station5",
+        "location_name": "Latin America",
+    	"position": "POINT(0 1)",
+    	"comment": "wildflies"
+	},
+    {
+    	"otherid": 6,
+        "name": "station6",
+        "location_name": "Latin America",
+    	"position": "POINT(0 1)",
+    	"comment": "wildflies"
+	},
+	{
+    	"otherid": 6,
+        "name": "station6",
+        "location_name": "Latin America",
+    	"position": "POINT(0 1)",
+    	"comment": "cats"
+	},
+    {
+    	"otherid": 7,
+        "name": "station7",
+        "location_name": "Europe",
+    	"position": "POINT(1 1)",
+    	"comment": "cocodriles"
+	},
+	{
+    	"otherid": 7,
+        "name": "station7",
+        "location_name": "Europe",
+    	"position": "POINT(1 1)",
+    	"comment": "condors"
+	},
+    {
+    	"otherid": 8,
+        "name": "station8",
+        "location_name": "Antartida",
+    	"position": "POINT(1 4)",
+    	"comment": "penguins"
+	},
+	{
+    	"otherid": 8,
+        "name": "station8",
+        "location_name": "Antartida",
+    	"position": "POINT(1 4)",
+    	"comment": "seawolfs"
+	},
+    {
+    	"otherid": 9,
+        "name": "station9",
+        "location_name": "Antartida",
+    	"position": "POINT(0 4)",
+    	"comment": "penguins"
+	},
+    {
+    	"otherid": 10,
+        "name": "station10",
+        "location_name": "Asia",
+    	"position": "POINT(-2 1)",
+    	"comment": "pandas"
+	},
+	{
+    	"otherid": 10,
+        "name": "station10",
+        "location_name": "Asia",
+    	"position": "POINT(-2 1)",
+    	"comment": "redpandas"
+	},
+    {
+    	"otherid": 11,
+        "name": "station11",
+        "location_name": "Antartida",
+    	"position": "POINT(0 1)",
+    	"comment": "penguins"
+	},
+	{
+    	"otherid": 11,
+        "name": "station11",
+        "location_name": "Antartida",
+    	"position": "POINT(0 1)",
+    	"comment": "sharks"
+	}
+]

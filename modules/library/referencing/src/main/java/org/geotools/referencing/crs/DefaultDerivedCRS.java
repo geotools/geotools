@@ -37,7 +37,6 @@ import org.opengis.referencing.operation.OperationMethod;
  * includes coordinate reference systems derived from a projected coordinate reference system.
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
@@ -131,7 +130,6 @@ public class DefaultDerivedCRS extends AbstractDerivedCRS implements DerivedCRS 
      * @throws MismatchedDimensionException if the source and target dimension of {@code
      *     baseToDeviced} don't match the dimension of {@code base} and {@code derivedCS}
      *     respectively.
-     * @deprecated Create explicitly a {@link DefiningConversion} instead.
      */
     public DefaultDerivedCRS(
             final Map<String, ?> properties,
@@ -176,6 +174,7 @@ public class DefaultDerivedCRS extends AbstractDerivedCRS implements DerivedCRS 
      *     versions of this class.
      */
     @Override
+    @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int hashCode() {
         return (int) serialVersionUID ^ super.hashCode();
     }

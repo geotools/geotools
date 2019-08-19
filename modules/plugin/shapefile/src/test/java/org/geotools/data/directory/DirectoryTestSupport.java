@@ -11,7 +11,6 @@ import org.geotools.TestData;
 import org.geotools.data.shapefile.ShapefileDataStoreFactory;
 import org.junit.After;
 
-/** @source $URL$ */
 public class DirectoryTestSupport {
 
     static final URI NSURI;
@@ -44,7 +43,7 @@ public class DirectoryTestSupport {
                 deleteDirectory(f);
             } else {
                 if (!f.delete()) {
-                    System.out.println("Couldn't delete " + f.getAbsolutePath());
+                    // System.out.println("Couldn't delete " + f.getAbsolutePath());
                 }
             }
         }

@@ -26,7 +26,6 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
-import org.geotools.factory.Hints;
 import org.geotools.gce.geotiff.GeoTiffFormat;
 import org.geotools.gce.geotiff.GeoTiffReader;
 import org.geotools.parameter.DefaultParameterDescriptor;
@@ -34,6 +33,7 @@ import org.geotools.parameter.DefaultParameterDescriptorGroup;
 import org.geotools.parameter.ParameterGroup;
 import org.geotools.s3.S3Connector;
 import org.geotools.s3.S3ImageInputStreamImpl;
+import org.geotools.util.factory.Hints;
 import org.opengis.parameter.GeneralParameterDescriptor;
 
 /**

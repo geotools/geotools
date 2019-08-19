@@ -29,7 +29,6 @@ import org.opengis.referencing.operation.*; // We use almost all of them.
  * defined rather than empirically derived. Note that some conversions have no parameters.
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @see DefaultTransformation

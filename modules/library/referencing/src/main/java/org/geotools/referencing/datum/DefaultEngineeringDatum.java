@@ -21,9 +21,9 @@ package org.geotools.referencing.datum;
 
 import java.util.Collections;
 import java.util.Map;
+import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.referencing.AbstractIdentifiedObject;
 import org.geotools.referencing.wkt.Formatter;
-import org.geotools.resources.i18n.VocabularyKeys;
 import org.opengis.referencing.datum.EngineeringDatum;
 
 /**
@@ -33,24 +33,12 @@ import org.opengis.referencing.datum.EngineeringDatum;
  * ship or satellite).
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
 public class DefaultEngineeringDatum extends AbstractDatum implements EngineeringDatum {
     /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = 1498304918725248637L;
-
-    /**
-     * An engineering datum for unknown coordinate reference system. Such CRS are usually assumed
-     * cartesian, but will not have any transformation path to other CRS.
-     *
-     * @see org.geotools.referencing.crs.DefaultEngineeringCRS#CARTESIAN_2D
-     * @see org.geotools.referencing.crs.DefaultEngineeringCRS#CARTESIAN_3D
-     * @deprecated Use UKNONWN instead
-     */
-    public static final DefaultEngineeringDatum UNKNOW =
-            new DefaultEngineeringDatum(name(VocabularyKeys.UNKNOW));
 
     /**
      * An engineering datum for unknown coordinate reference system. Such CRS are usually assumed

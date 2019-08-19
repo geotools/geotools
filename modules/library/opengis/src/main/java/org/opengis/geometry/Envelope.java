@@ -23,7 +23,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * Envelope}, it is sufficient to encode these two points. This is consistent with all of the data
  * types in this specification, their state is represented by their publicly accessible attributes.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/as">ISO 19107</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0

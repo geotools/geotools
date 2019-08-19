@@ -1,4 +1,5 @@
-/* GeoTools - The Open Source Java GIS Toolkit
+/*
+ * GeoTools - The Open Source Java GIS Toolkit
  * http://geotools.org
  *
  * (C) 2010-2014, Open Source Geospatial Foundation (OSGeo)
@@ -85,8 +86,10 @@ public class CSVWriteTest {
     @After
     public void removeTemporaryLocations() throws IOException {
         File list[] = tmp.listFiles();
-        for (int i = 0; i < list.length; i++) {
-            list[i].delete();
+        if (list != null) {
+            for (int i = 0; i < list.length; i++) {
+                list[i].delete();
+            }
         }
         tmp.delete();
     }

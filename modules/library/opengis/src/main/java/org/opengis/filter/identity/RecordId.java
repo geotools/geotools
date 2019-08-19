@@ -18,7 +18,6 @@ import org.opengis.annotation.XmlElement;
  * SimpleFeature to represent a Record at the moment (since our Record does not have a getID()
  * method).
  *
- * @source $URL$
  * @version <A HREF="http://www.opengis.org/docs/02-059.pdf">Implementation specification 1.0</A>
  * @author Jody Garnett, Refractions Research Inc.
  * @since GeoAPI 2.1

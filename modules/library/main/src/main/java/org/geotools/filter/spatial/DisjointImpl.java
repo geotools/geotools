@@ -22,7 +22,6 @@ import org.opengis.filter.FilterVisitor;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.spatial.Disjoint;
 
-/** @source $URL$ */
 public class DisjointImpl extends AbstractPreparedGeometryFilter implements Disjoint {
 
     public DisjointImpl(Expression e1, Expression e2) {

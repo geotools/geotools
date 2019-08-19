@@ -20,7 +20,6 @@ import org.geotools.jdbc.JDBCFeatureSourceOnlineTest;
 import org.geotools.jdbc.JDBCTestSetup;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-/** @source $URL$ */
 public class DB2FeatureSourceOnlineTest extends JDBCFeatureSourceOnlineTest {
     protected JDBCTestSetup createTestSetup() {
         return new DB2TestSetup();

@@ -22,7 +22,6 @@ import java.sql.SQLException;
 import java.util.*;
 import javax.measure.Unit;
 import org.geotools.TestData;
-import org.geotools.factory.Hints;
 import org.geotools.metadata.iso.extent.GeographicBoundingBoxImpl;
 import org.geotools.referencing.AbstractIdentifiedObject;
 import org.geotools.referencing.CRS;
@@ -34,6 +33,7 @@ import org.geotools.referencing.factory.epsg.oracle.OracleOnlineTestCase;
 import org.geotools.referencing.operation.AbstractCoordinateOperation;
 import org.geotools.referencing.operation.transform.AbstractMathTransform;
 import org.geotools.referencing.operation.transform.ConcatenatedTransform;
+import org.geotools.util.factory.Hints;
 import org.opengis.geometry.Envelope;
 import org.opengis.metadata.extent.GeographicBoundingBox;
 import org.opengis.parameter.ParameterValueGroup;
@@ -47,7 +47,6 @@ import org.opengis.referencing.operation.*;
  * Tests transformations from CRS and/or operations created from the EPSG factory, using the default
  * plugin.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  * @author Vadim Semenov
@@ -82,8 +81,8 @@ public class DefaultFactoryOnlineTest extends OracleOnlineTestCase {
                                             ThreadedEpsgFactory.class));
             extensive |= TestData.isExtensiveTest();
             if (verbose) {
-                System.out.print("Database version: ");
-                System.out.println(factory.getImplementationHints().get(Hints.VERSION));
+                // System.out.print("Database version: ");
+                // System.out.println(factory.getImplementationHints().get(Hints.VERSION));
             }
         }
         // No 'tearDown()' method: we rely on the ThreadedEpsgFactory shutdown hook.
@@ -595,10 +594,10 @@ public class DefaultFactoryOnlineTest extends OracleOnlineTestCase {
         assertFalse(transform.equals(operation3.getMathTransform()));
         assertEquals(1.0, AbstractCoordinateOperation.getAccuracy(operation3), 1E-6);
         if (false) {
-            System.out.println(operation3);
-            System.out.println(operation3.getSourceCRS());
-            System.out.println(operation3.getTargetCRS());
-            System.out.println(operation3.getMathTransform());
+            // System.out.println(operation3);
+            // System.out.println(operation3.getSourceCRS());
+            // System.out.println(operation3.getTargetCRS());
+            // System.out.println(operation3.getMathTransform());
         }
         /*
          * Tests "BD72 to WGS 84 (1)" (EPSG:1609) creation. This one has an unusual unit for the
@@ -674,20 +673,20 @@ public class DefaultFactoryOnlineTest extends OracleOnlineTestCase {
             }
         }
         if (verbose) {
-            System.out.print("Number of coordinate operations:    ");
-            System.out.println(identifiers.size());
-            System.out.print("Number of tested operations:        ");
-            System.out.println(count);
-            System.out.print("Number of recognized operations:    ");
-            System.out.println(created);
-            System.out.print("Number of operations with accuracy: ");
-            System.out.println(valid);
-            System.out.print("Minimal accuracy value (meters):    ");
-            System.out.println(min);
-            System.out.print("Maximal accuracy value (meters):    ");
-            System.out.println(max);
-            System.out.print("Average accuracy value (meters):    ");
-            System.out.println(sum / valid);
+            // System.out.print("Number of coordinate operations:    ");
+            // System.out.println(identifiers.size());
+            // System.out.print("Number of tested operations:        ");
+            // System.out.println(count);
+            // System.out.print("Number of recognized operations:    ");
+            // System.out.println(created);
+            // System.out.print("Number of operations with accuracy: ");
+            // System.out.println(valid);
+            // System.out.print("Minimal accuracy value (meters):    ");
+            // System.out.println(min);
+            // System.out.print("Maximal accuracy value (meters):    ");
+            // System.out.println(max);
+            // System.out.print("Average accuracy value (meters):    ");
+            // System.out.println(sum / valid);
         }
     }
 

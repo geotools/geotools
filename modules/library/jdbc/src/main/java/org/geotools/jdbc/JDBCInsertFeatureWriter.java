@@ -34,8 +34,6 @@ import org.opengis.feature.simple.SimpleFeatureType;
 /**
  * Inserts features in the database. Buffers the insertions until BUFFER_SIZE is reached or the
  * writer is closed.
- *
- * @source $URL$
  */
 public class JDBCInsertFeatureWriter extends JDBCFeatureReader
         implements FeatureWriter<SimpleFeatureType, SimpleFeature> {

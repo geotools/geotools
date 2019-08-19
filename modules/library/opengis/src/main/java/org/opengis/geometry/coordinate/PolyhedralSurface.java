@@ -21,7 +21,6 @@ import org.opengis.geometry.primitive.Surface;
  * curves. This differs from {@link Surface} only in the restriction on the types of surface patches
  * acceptable.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/as">ISO 19107</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 2.0

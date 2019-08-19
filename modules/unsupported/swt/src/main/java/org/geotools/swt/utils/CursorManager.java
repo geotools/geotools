@@ -28,7 +28,6 @@ import org.eclipse.swt.widgets.Display;
  * <p>This takes care of creating, reusing and managing the various cursors.
  *
  * @author Andrea Antonello (www.hydrologis.com).
- * @source $URL$
  */
 public class CursorManager {
     /** Info Cursor hotspot coordinates */

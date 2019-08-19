@@ -1,6 +1,4 @@
 /**
- * <copyright>
- * </copyright>
  *
  * $Id$
  */
@@ -14,13 +12,13 @@ package net.opengis.ows11.validation;
  * This can be disabled with -vmargs -Dorg.eclipse.emf.examples.generator.validator=false.
  */
 public interface AbstractReferenceBaseTypeValidator {
-    boolean validate();
+  boolean validate();
 
-    boolean validateActuate(Object value);
-    boolean validateArcrole(Object value);
-    boolean validateHref(Object value);
-    boolean validateRole(Object value);
-    boolean validateShow(Object value);
-    boolean validateTitle(Object value);
-    boolean validateType(String value);
+  boolean validateActuate(Object value);
+  boolean validateArcrole(Object value);
+  boolean validateHref(Object value);
+  boolean validateRole(Object value);
+  boolean validateShow(Object value);
+  boolean validateTitle(Object value);
+  boolean validateType(String value);
 }

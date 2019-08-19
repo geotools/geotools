@@ -18,7 +18,6 @@ package org.geotools.data.sqlserver;
 
 import org.geotools.jdbc.JDBCAggregateTestSetup;
 
-/** @source $URL$ */
 public class SQLServerAggregateTestSetup extends JDBCAggregateTestSetup {
 
     public SQLServerAggregateTestSetup() {

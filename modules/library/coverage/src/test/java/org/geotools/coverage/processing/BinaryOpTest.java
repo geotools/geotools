@@ -35,7 +35,6 @@ import org.opengis.parameter.ParameterValueGroup;
  *
  * @author Daniele Romagnoli, GeoSolutions SAS
  * @since 2.7
- * @source $URL$
  */
 public class BinaryOpTest extends GridProcessingTestBase {
 

@@ -21,13 +21,13 @@ package org.geotools.styling;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import org.geotools.util.Utilities;
 
 /**
  * Default implementation of named layer.
  *
  * @author jamesm
- * @source $URL$
  */
 public class NamedLayerImpl extends StyledLayerImpl implements NamedLayer {
     List<Style> styles = new ArrayList<Style>();
@@ -81,5 +81,10 @@ public class NamedLayerImpl extends StyledLayerImpl implements NamedLayer {
         }
 
         return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(styles, featureTypeConstraints);
     }
 }

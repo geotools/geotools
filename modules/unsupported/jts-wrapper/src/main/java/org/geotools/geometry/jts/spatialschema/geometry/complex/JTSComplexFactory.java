@@ -19,9 +19,9 @@ package org.geotools.geometry.jts.spatialschema.geometry.complex;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import org.geotools.factory.Factory;
-import org.geotools.factory.Hints;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.geotools.util.factory.Factory;
+import org.geotools.util.factory.Hints;
 import org.opengis.geometry.complex.ComplexFactory;
 import org.opengis.geometry.complex.CompositeCurve;
 import org.opengis.geometry.complex.CompositePoint;
@@ -29,7 +29,6 @@ import org.opengis.geometry.complex.CompositeSurface;
 import org.opengis.geometry.primitive.Point;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-/** @source $URL$ */
 public class JTSComplexFactory implements Factory, ComplexFactory {
 
     private CoordinateReferenceSystem crs;

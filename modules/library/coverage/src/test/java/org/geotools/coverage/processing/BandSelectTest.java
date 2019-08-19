@@ -40,7 +40,6 @@ import org.opengis.referencing.operation.TransformException;
 /**
  * Tests the SelectSampleDimension operation.
  *
- * @source $URL$
  * @author Simone Giannecchini (GeoSolutions)
  * @since 2.5
  */

@@ -42,13 +42,12 @@ import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.grid.GridGeometry2D;
-import org.geotools.factory.Hints;
+import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.image.ImageWorker;
 import org.geotools.renderer.i18n.ErrorKeys;
 import org.geotools.renderer.i18n.Errors;
 import org.geotools.renderer.i18n.Vocabulary;
 import org.geotools.renderer.i18n.VocabularyKeys;
-import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.styling.AbstractContrastMethodStrategy;
 import org.geotools.styling.ContrastEnhancement;
 import org.geotools.styling.ExponentialContrastMethodStrategy;
@@ -57,6 +56,7 @@ import org.geotools.styling.LogarithmicContrastMethodStrategy;
 import org.geotools.styling.NormalizeContrastMethodStrategy;
 import org.geotools.styling.StyleVisitor;
 import org.geotools.util.SimpleInternationalString;
+import org.geotools.util.factory.Hints;
 import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.filter.expression.Expression;
 import org.opengis.style.ContrastMethod;
@@ -501,7 +501,7 @@ class ContrastEnhancementNode extends StyleVisitorCoverageProcessingNodeAdapter
      * enhancement operations have been implemented in a way that is generic enough o handle all
      * data types.
      *
-     * @param inputImage the input {@link RenderedImage} to work on.
+     * @param inputWorker the input {@link ImageWorker} to work on.
      * @param hints {@link Hints} to control the contrast enhancement process.
      * @return a {@link RenderedImage} on which a contrast enhancement has been performed.
      */
@@ -523,7 +523,7 @@ class ContrastEnhancementNode extends StyleVisitorCoverageProcessingNodeAdapter
     /**
      * Performs a gamma correction operation on the input image.
      *
-     * @param inputImage the input {@link RenderedImage} to work on.
+     * @param worker the input {@link ImageWorker} to work on.
      * @param hints {@link Hints} to control the contrast enhancement process.
      * @return a {@link RenderedImage} on which a gamma correction has been performed.
      */

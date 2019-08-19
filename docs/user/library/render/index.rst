@@ -11,7 +11,7 @@ lets you draw a map using all that data you set up.
 **Reference**
 
 * :doc:`/library/opengis/se`
-* :doc:`/library/api/sld`
+* :doc:`/library/main/sld`
 * http://www.opengeospatial.org/standards/sld
 * http://www.opengeospatial.org/standards/se
 

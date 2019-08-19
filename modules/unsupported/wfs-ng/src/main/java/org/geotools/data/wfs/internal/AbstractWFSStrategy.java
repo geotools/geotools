@@ -49,10 +49,11 @@ import org.geotools.filter.Capabilities;
 import org.geotools.filter.visitor.CapabilitiesFilterSplitter;
 import org.geotools.filter.visitor.SimplifyingFilterVisitor;
 import org.geotools.util.Version;
-import org.geotools.xml.Configuration;
-import org.geotools.xml.Encoder;
+import org.geotools.wfs.v1_0.WFSConfiguration_1_0;
 import org.geotools.xml.XMLHandlerHints;
 import org.geotools.xml.filter.FilterCompliancePreProcessor;
+import org.geotools.xsd.Configuration;
+import org.geotools.xsd.Encoder;
 import org.opengis.filter.Filter;
 import org.opengis.filter.Id;
 import org.opengis.filter.capability.FilterCapabilities;
@@ -111,8 +112,7 @@ public abstract class AbstractWFSStrategy extends WFSStrategy {
     public static final Configuration WFS_1_0_CAPABILITIES_CONFIGURATION =
             new org.geotools.wfs.v1_0.WFSCapabilitiesConfiguration();
 
-    public static final Configuration WFS_1_0_CONFIGURATION =
-            new org.geotools.wfs.v1_0.WFSConfiguration();
+    public static final Configuration WFS_1_0_CONFIGURATION = new WFSConfiguration_1_0();
 
     public static final Configuration FILTER_1_1_CONFIGURATION =
             new org.geotools.filter.v1_1.OGCConfiguration();
@@ -391,36 +391,6 @@ public abstract class AbstractWFSStrategy extends WFSStrategy {
                 "Client does not support any of the server supported output formats for "
                         + operation);
     }
-
-    // /**
-    // * @see WFSStrategy#getFeaturePOST(Query, String)
-    // */
-    // @Override
-    // public WFSResponse issueGetFeaturePOST(final GetFeatureRequest request) throws IOException {
-    // if (!supportsOperation(WFSOperationType.GET_FEATURE, true)) {
-    // throw new UnsupportedOperationException(
-    // "The server does not support GetFeature for HTTP method POST");
-    // }
-    // URL url = getOperationURL(WFSOperationType.GET_FEATURE, true);
-    //
-    // RequestComponents reqParts = createGetFeatureRequest(request);
-    // GetFeatureType serverRequest = reqParts.getServerRequest();
-    //
-    // Encoder encoder = new Encoder(getWfsConfiguration());
-    //
-    // // If the typeName is of the form prefix:typeName we better declare the namespace since we
-    // // don't know how picky the server parser will be
-    // String typeName = reqParts.getKvpParameters().get("TYPENAME");
-    // QName fullName = getFeatureTypeName(typeName);
-    // String prefix = fullName.getPrefix();
-    // String namespace = fullName.getNamespaceURI();
-    // if (!XMLConstants.DEFAULT_NS_PREFIX.equals(prefix)) {
-    // encoder.getNamespaces().declarePrefix(prefix, namespace);
-    // }
-    // WFSResponse response = issuePostRequest(serverRequest, url, encoder);
-    //
-    // return response;
-    // }
 
     /** @see WFSStrategy#dispose() */
     @Override
@@ -709,7 +679,7 @@ public abstract class AbstractWFSStrategy extends WFSStrategy {
 
         URL finalURL = URIs.buildURL(baseUrl, requestParams);
         requestDebug("Built GET request for ", operation, ": ", finalURL);
-        // System.err.println(finalURL.toExternalForm());
+
         return finalURL;
     }
 
@@ -776,8 +746,6 @@ public abstract class AbstractWFSStrategy extends WFSStrategy {
         encoder.encode(requestObject, opName, out);
 
         requestTrace("Encoded ", request.getOperation(), " request: ", out);
-
-        // System.err.println(out.toString());
 
         return new ByteArrayInputStream(out.toByteArray());
     }

@@ -49,13 +49,12 @@ import org.opengis.filter.expression.Literal;
  * implementations into a FunctionFactory.
  *
  * @author Justin Deoliveira, OpenGeo
- * @source $URL$
  */
 public class DefaultFunctionFactory implements FunctionFactory {
-    private static final Logger LOGGER = Logging.getLogger("org.geotools.filter");
+    private static final Logger LOGGER = Logging.getLogger(DefaultFunctionFactory.class);
     private FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory(null);
 
-    private Map<Name, FunctionDescriptor> functionCache;
+    private volatile Map<Name, FunctionDescriptor> functionCache;
 
     public List<FunctionName> getFunctionNames() {
         ArrayList<FunctionName> list = new ArrayList<FunctionName>(functionCache().size());
@@ -202,7 +201,8 @@ public class DefaultFunctionFactory implements FunctionFactory {
         Function newFunction(List<Expression> parameters, Literal fallback) throws Exception {
             // cache lookup
             if (FunctionExpression.class.isAssignableFrom(clazz)) {
-                FunctionExpression function = (FunctionExpression) clazz.newInstance();
+                FunctionExpression function =
+                        (FunctionExpression) clazz.getDeclaredConstructor().newInstance();
                 if (parameters != null) {
                     function.setParameters(parameters);
                 }
@@ -212,7 +212,7 @@ public class DefaultFunctionFactory implements FunctionFactory {
                 return function;
             }
             if (FunctionImpl.class.isAssignableFrom(clazz)) {
-                FunctionImpl function = (FunctionImpl) clazz.newInstance();
+                FunctionImpl function = (FunctionImpl) clazz.getDeclaredConstructor().newInstance();
                 if (parameters != null) {
                     function.setParameters(parameters);
                 }

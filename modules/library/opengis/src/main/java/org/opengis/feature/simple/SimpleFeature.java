@@ -67,7 +67,6 @@ import org.opengis.feature.type.Name;
  * @author Justin Deoliveira (The Open Planning Project)
  * @since 2.5
  * @version 8.0
- * @source $URL$
  */
 public interface SimpleFeature extends Feature {
     /**

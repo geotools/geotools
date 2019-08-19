@@ -22,7 +22,6 @@ import org.geotools.coverage.io.CoverageAccess.AccessType;
  * Describes the capabilities of this {@link CoverageSource}
  *
  * @author Simone Giannecchini, GeoSolutions SAS
- * @source $URL$
  */
 public enum CoverageCapabilities {
     READ_SUBSAMPLING(AccessType.READ_ONLY),

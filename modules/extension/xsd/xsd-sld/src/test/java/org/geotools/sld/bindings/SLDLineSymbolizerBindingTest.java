@@ -19,7 +19,6 @@ package org.geotools.sld.bindings;
 import org.geotools.styling.LineSymbolizer;
 import org.opengis.filter.expression.Function;
 
-/** @source $URL$ */
 public class SLDLineSymbolizerBindingTest extends SLDTestSupport {
     public void testType() throws Exception {
         assertEquals(LineSymbolizer.class, new SLDLineSymbolizerBinding(null).getType());

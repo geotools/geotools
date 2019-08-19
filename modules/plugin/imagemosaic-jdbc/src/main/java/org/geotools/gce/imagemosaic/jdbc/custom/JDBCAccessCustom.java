@@ -1,5 +1,5 @@
 /*
- *    GeoTools+ - The Open Source Java GIS Toolkit
+ *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
  *    (C) 2008, Open Source Geospatial Foundation (OSGeo)
@@ -45,12 +45,10 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * This class is a base class for customzied JDBCAccess Special implentations should subclass
  *
  * @author mcr
- * @source $URL$
  */
 public abstract class JDBCAccessCustom implements JDBCAccess {
 
-    private static final Logger LOGGER =
-            Logging.getLogger(JDBCAccessCustom.class.getPackage().getName());
+    private static final Logger LOGGER = Logging.getLogger(JDBCAccessCustom.class);
 
     private Config config;
     private DataSource dataSource;
@@ -114,11 +112,7 @@ public abstract class JDBCAccessCustom implements JDBCAccess {
         return con;
     }
 
-    /**
-     * closeConnection
-     *
-     * @param conn Connection Object passed to be closed
-     */
+    /** closeConnection */
     protected void closeConnection(Connection con) {
         try {
 
@@ -214,8 +208,6 @@ public abstract class JDBCAccessCustom implements JDBCAccess {
         } catch (Exception e) {
             LOGGER.severe("Cannot parse Decode CRS from Config File " + e.getMessage());
             throw new RuntimeException(e);
-        } finally {
-
         }
 
         LOGGER.fine("Returning CRS Result");

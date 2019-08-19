@@ -23,16 +23,20 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import javax.xml.namespace.QName;
+import org.geotools.appschema.util.IndexQueryUtils;
 import org.geotools.data.FeatureSource;
-import org.geotools.data.complex.config.Types;
+import org.geotools.data.complex.feature.type.Types;
 import org.geotools.data.complex.filter.XPath;
-import org.geotools.data.complex.filter.XPathUtil.Step;
-import org.geotools.data.complex.filter.XPathUtil.StepList;
+import org.geotools.data.complex.util.XPathUtil.Step;
+import org.geotools.data.complex.util.XPathUtil.StepList;
 import org.geotools.data.joining.JoiningNestedAttributeMapping;
 import org.geotools.gml3.GML;
 import org.geotools.xlink.XLINK;
 import org.opengis.feature.Feature;
+import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.feature.type.Name;
@@ -43,7 +47,6 @@ import org.xml.sax.helpers.NamespaceSupport;
  * @author Gabriel Roldan (Axios Engineering)
  * @author Rini Angreani (CSIRO Earth Science and Resource Engineering)
  * @version $Id$
- * @source $URL$
  * @since 2.4
  */
 public class FeatureTypeMapping {
@@ -52,6 +55,11 @@ public class FeatureTypeMapping {
      * access instead of a data store as the source data store
      */
     private FeatureSource<? extends FeatureType, ? extends Feature> source;
+
+    private String sourceDatastoreId;
+
+    // Index FeatureSource, optional
+    private FeatureSource<SimpleFeatureType, SimpleFeature> indexSource;
 
     /** Encapsulates the name and type of target Features */
     private AttributeDescriptor target;
@@ -100,7 +108,19 @@ public class FeatureTypeMapping {
             List<AttributeMapping> mappings,
             NamespaceSupport namespaces,
             boolean isDenormalised) {
+        this(source, null, target, defaultGeometryXPath, mappings, namespaces, isDenormalised);
+    }
+
+    public FeatureTypeMapping(
+            FeatureSource<? extends FeatureType, ? extends Feature> source,
+            FeatureSource<SimpleFeatureType, SimpleFeature> indexSource,
+            AttributeDescriptor target,
+            String defaultGeometryXPath,
+            List<AttributeMapping> mappings,
+            NamespaceSupport namespaces,
+            boolean isDenormalised) {
         this.source = source;
+        this.indexSource = indexSource;
         this.target = target;
         this.defaultGeometryXPath = defaultGeometryXPath;
         this.attributeMappings = new LinkedList<AttributeMapping>(mappings);
@@ -194,6 +214,25 @@ public class FeatureTypeMapping {
         for (Iterator<AttributeMapping> it = attributeMappings.iterator(); it.hasNext(); ) {
             attMapping = (AttributeMapping) it.next();
             if (exactPath.equals(attMapping.getTargetXPath())) {
+                return attMapping;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Finds the attribute mapping for the target expression <code>exactPath</code>.
+     *
+     * @param xpathExpression the xpath expression on the target schema to find the mapping for
+     * @return the attribute mapping that match 1:1 with <code>exactPath</code> or <code>null</code>
+     */
+    public AttributeMapping getAttributeMapping(final String xpathExpression) {
+        AttributeMapping attMapping;
+        StepList stepList =
+                XPath.steps(this.getTargetFeature(), xpathExpression, this.getNamespaces());
+        for (Iterator<AttributeMapping> it = attributeMappings.iterator(); it.hasNext(); ) {
+            attMapping = it.next();
+            if (stepList.equals(attMapping.getTargetXPath())) {
                 return attMapping;
             }
         }
@@ -327,6 +366,7 @@ public class FeatureTypeMapping {
         return expressions;
     }
 
+    @SuppressWarnings("PMD.UnusedPrivateMethod")
     private List<Expression> getClientPropertyExpressions(
             final List attributeMappings, final Name clientPropertyName, StepList parentPath) {
         List<Expression> clientPropertyExpressions =
@@ -430,5 +470,37 @@ public class FeatureTypeMapping {
 
     public void setSource(FeatureSource<? extends FeatureType, ? extends Feature> source) {
         this.source = source;
+    }
+
+    public FeatureSource<SimpleFeatureType, SimpleFeature> getIndexSource() {
+        return indexSource;
+    }
+
+    public void setIndexSource(FeatureSource<SimpleFeatureType, SimpleFeature> indexSource) {
+        this.indexSource = indexSource;
+    }
+
+    /**
+     * Returns index attribute name linked to unrolled propertyName or null if is absent
+     *
+     * @param propertyName
+     * @return Index attribute name
+     */
+    public String getIndexAttributeName(String xpath) {
+        AttributeMapping mapp = IndexQueryUtils.getIndexedAttribute(this, xpath);
+        if (mapp != null) {
+            return mapp.getIndexField();
+        }
+        return null;
+    }
+
+    /** Returns the source datastore id from mappings configurations. */
+    public Optional<String> getSourceDatastoreId() {
+        return Optional.ofNullable(sourceDatastoreId);
+    }
+
+    /** Sets the source datastore id from mappings configurations. */
+    public void setSourceDatastoreId(String sourceDatastoreId) {
+        this.sourceDatastoreId = sourceDatastoreId;
     }
 }

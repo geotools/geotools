@@ -17,12 +17,12 @@
 package org.geotools.gml2.bindings;
 
 import javax.xml.namespace.QName;
+import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.FeatureCollection;
-import org.geotools.feature.FeatureCollections;
 import org.geotools.gml2.GML;
-import org.geotools.xml.AbstractComplexBinding;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
+import org.geotools.xsd.AbstractComplexBinding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 
 /**
  * Binding object for the type http://www.opengis.net/gml:AbstractFeatureCollectionBaseType.
@@ -53,14 +53,10 @@ import org.geotools.xml.Node;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class GMLAbstractFeatureCollectionBaseTypeBinding extends AbstractComplexBinding {
-    FeatureCollections fcFactory;
 
-    public GMLAbstractFeatureCollectionBaseTypeBinding(FeatureCollections fcFactory) {
-        this.fcFactory = fcFactory;
-    }
+    public GMLAbstractFeatureCollectionBaseTypeBinding() {}
 
     /** @generated */
     public QName getTarget() {
@@ -89,6 +85,6 @@ public class GMLAbstractFeatureCollectionBaseTypeBinding extends AbstractComplex
         // TODO: the geotools feature api doesn't allow for use to supply the
         // "correct" subclass without hacking, so for now we just create a
         // default feature collection.
-        return fcFactory.newCollection();
+        return new DefaultFeatureCollection();
     }
 }

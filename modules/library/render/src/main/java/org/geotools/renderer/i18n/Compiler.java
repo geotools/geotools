@@ -17,15 +17,15 @@
 package org.geotools.renderer.i18n;
 
 import java.io.File;
-import org.geotools.resources.IndexedResourceCompiler;
+import org.geotools.util.IndexedResourceCompiler;
 
 /**
  * Resource compiler.
  *
- * @source $URL$
  * @version $Id$
  * @author Simone Giannecchini
  */
+@SuppressWarnings("PMD.SystemPrintln")
 public final class Compiler {
     /**
      * The base directory for {@code "java"} {@code "resources"} sub-directories. The directory

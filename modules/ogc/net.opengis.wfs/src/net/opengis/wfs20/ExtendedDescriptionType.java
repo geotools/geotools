@@ -17,10 +17,10 @@ import org.eclipse.emf.ecore.EObject;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link net.opengis.wfs20.ExtendedDescriptionType#getElement <em>Element</em>}</li>
  * </ul>
- * </p>
  *
  * @see net.opengis.wfs20.Wfs20Package#getExtendedDescriptionType()
  * @model extendedMetaData="name='ExtendedDescriptionType' kind='elementOnly'"
@@ -28,20 +28,20 @@ import org.eclipse.emf.ecore.EObject;
  */
 public interface ExtendedDescriptionType extends EObject {
     /**
-     * Returns the value of the '<em><b>Element</b></em>' containment reference list.
-     * The list contents are of type {@link net.opengis.wfs20.ElementType}.
-     * <!-- begin-user-doc -->
+   * Returns the value of the '<em><b>Element</b></em>' containment reference list.
+   * The list contents are of type {@link net.opengis.wfs20.ElementType}.
+   * <!-- begin-user-doc -->
      * <p>
      * If the meaning of the '<em>Element</em>' containment reference list isn't clear,
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     * @return the value of the '<em>Element</em>' containment reference list.
-     * @see net.opengis.wfs20.Wfs20Package#getExtendedDescriptionType_Element()
-     * @model containment="true" required="true"
-     *        extendedMetaData="kind='element' name='Element' namespace='##targetNamespace'"
-     * @generated
-     */
+   * @return the value of the '<em>Element</em>' containment reference list.
+   * @see net.opengis.wfs20.Wfs20Package#getExtendedDescriptionType_Element()
+   * @model containment="true" required="true"
+   *        extendedMetaData="kind='element' name='Element' namespace='##targetNamespace'"
+   * @generated
+   */
     EList<ElementType> getElement();
 
 } // ExtendedDescriptionType

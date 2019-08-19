@@ -43,11 +43,11 @@ import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import org.geotools.resources.SwingUtilities;
-import org.geotools.resources.i18n.Vocabulary;
-import org.geotools.resources.i18n.VocabularyKeys;
+import org.geotools.metadata.i18n.Vocabulary;
+import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.swing.dialog.JExceptionReporter;
 import org.geotools.util.SimpleInternationalString;
+import org.geotools.util.SwingUtilities;
 import org.opengis.util.InternationalString;
 import org.opengis.util.ProgressListener;
 
@@ -59,7 +59,6 @@ import org.opengis.util.ProgressListener;
  *
  * @author Martin Desruisseaux
  * @since 2.0
- * @source $URL$
  * @version $Id$
  */
 public class JProgressWindow implements ProgressListener {
@@ -232,22 +231,8 @@ public class JProgressWindow implements ProgressListener {
         set(Caller.TITLE, title);
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     * @deprecated
-     */
-    public String getDescription() {
-        return (String) get(Caller.LABEL);
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @deprecated
-     */
-    public void setDescription(final String description) {
-        set(Caller.LABEL, description);
+    public void setTask(InternationalString task) {
+        set(Caller.LABEL, task.toString());
     }
 
     /**
@@ -263,7 +248,7 @@ public class JProgressWindow implements ProgressListener {
         int p = (int) percent; // round toward 0
         if (p < 0) p = 0;
         if (p > 100) p = 100;
-        set(Caller.PROGRESS, new Integer(p));
+        set(Caller.PROGRESS, Integer.valueOf(p));
     }
 
     public float getProgress() {
@@ -593,11 +578,7 @@ public class JProgressWindow implements ProgressListener {
         }
     }
 
-    public void setTask(InternationalString task) {
-        setDescription(task.toString());
-    }
-
     public InternationalString getTask() {
-        return new SimpleInternationalString(getDescription());
+        return new SimpleInternationalString((String) get(Caller.LABEL));
     }
 }

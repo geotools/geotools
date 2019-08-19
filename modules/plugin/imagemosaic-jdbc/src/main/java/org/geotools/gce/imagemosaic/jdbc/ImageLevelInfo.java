@@ -26,7 +26,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * ImageLevelInfo object
  *
  * @author mcr
- * @source $URL$
  */
 public class ImageLevelInfo implements Comparable<ImageLevelInfo> {
 

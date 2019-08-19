@@ -23,7 +23,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import junit.framework.TestCase;
 
-/** @source $URL$ */
 public abstract class WorldImageBaseTestCase extends TestCase {
     public WorldImageBaseTestCase(String name) {
         super(name);
@@ -64,10 +63,6 @@ public abstract class WorldImageBaseTestCase extends TestCase {
         /**
          * Checks whether or not a file is acceptable following the conditions stated by the given
          * extensions.
-         *
-         * @param file DOCUMENT ME!
-         * @param name DOCUMENT ME!
-         * @return DOCUMENT ME!
          */
         public boolean accept(File file, String name) {
             if (this.extensions.size() > 0) {

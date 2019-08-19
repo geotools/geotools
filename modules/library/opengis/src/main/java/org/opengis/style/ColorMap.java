@@ -25,7 +25,6 @@ import org.opengis.filter.expression.Function;
  * match character values. Not all systems can support opacity in colormaps. The default opacity is
  * 1.0 (fully opaque). Defaults for quantity and label are system-dependent.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/symbol">Symbology Encoding
  *     Implementation Specification 1.1.0</A>
  * @author Open Geospatial Consortium

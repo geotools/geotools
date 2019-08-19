@@ -38,11 +38,10 @@ import org.opengis.referencing.NoSuchAuthorityCodeException;
  *
  * @author Simone Giannecchini
  * @author Daniele Romagnoli
- * @source $URL$
  */
 public class ServiceTest {
 
-    private static final Logger LOGGER = Logging.getLogger(ServiceTest.class.toString());
+    private static final Logger LOGGER = Logging.getLogger(ServiceTest.class);
 
     @Test
     public void isAvailable() throws NoSuchAuthorityCodeException, FactoryException {

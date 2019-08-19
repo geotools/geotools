@@ -20,14 +20,13 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.geotools.resources.Classes;
+import org.geotools.util.Classes;
 import org.geotools.util.Utilities;
 import org.opengis.feature.type.Name;
 import org.opengis.feature.type.PropertyType;
 import org.opengis.filter.Filter;
 import org.opengis.util.InternationalString;
 
-/** @source $URL$ */
 public abstract class PropertyTypeImpl implements PropertyType {
 
     private static final List<Filter> NO_RESTRICTIONS = Collections.emptyList();

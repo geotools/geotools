@@ -30,9 +30,9 @@ import org.geotools.data.shapefile.fid.IndexedFidReader;
 import org.geotools.data.shapefile.shp.ShapeType;
 import org.geotools.data.shapefile.shp.ShapefileReader;
 import org.geotools.data.shapefile.shp.ShapefileReader.Record;
+import org.geotools.data.util.ScreenMap;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.geometry.jts.LiteCoordinateSequence;
-import org.geotools.renderer.ScreenMap;
 import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
@@ -325,6 +325,7 @@ class ShapefileFeatureReader implements FeatureReader<SimpleFeatureType, SimpleF
     }
 
     @Override
+    @SuppressWarnings("deprecation") // finalize is deprecated in Java 9
     protected void finalize() throws Throwable {
         if (shp != null) {
             LOGGER.log(

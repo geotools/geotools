@@ -251,6 +251,18 @@ class Transformer {
     }
 
     /**
+     * Injects the transformed attribute expressions into the expression to make it runnable against
+     * the original data
+     *
+     * @param filter
+     * @return
+     */
+    Expression transformExpression(Expression expression) {
+        TransformFilterVisitor transformer = new TransformFilterVisitor(expressions);
+        return (Expression) expression.accept(transformer, null);
+    }
+
+    /**
      * Transforms a query so that it can be run against the original feature source and provides all
      * the necessary attributes to evaluate the requested expressions
      *
@@ -314,9 +326,7 @@ class Transformer {
             } else if (ex instanceof PropertyName) {
                 PropertyName pn = (PropertyName) ex;
                 transformed.add(FF.sort(pn.getPropertyName(), sort.getSortOrder()));
-            } else if (ex instanceof Literal) {
-                // fine, we can continue, constants do not affect sorting
-            } else {
+            } else if (!(ex instanceof Literal)) {
                 // ok, this one cannot be sent down, so we need to do sorting on our own anyways
                 return null;
             }

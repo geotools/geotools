@@ -6,7 +6,7 @@ import org.geotools.jdbc.JDBCLobTestSetup;
 /**
  * 
  *
- * @source $URL$
+
  */
 public class IngresLobTest extends JDBCLobTest {
 

@@ -19,11 +19,6 @@ package org.geotools.geopkg;
 import org.geotools.jdbc.JDBCEmptyGeometryTestSetup;
 import org.geotools.jdbc.JDBCTestSetup;
 
-/**
- * @source $URL:
- *     http://svn.osgeo.org/geotools/trunk/modules/plugin/jdbc/jdbc-GeoPkg/src/test/java/org/geotools/data/GeoPkg/GeoPkgBooleanTestSetup.java
- *     $
- */
 public class GeoPkgEmptyGeometryTestSetup extends JDBCEmptyGeometryTestSetup {
 
     public GeoPkgEmptyGeometryTestSetup(JDBCTestSetup delegate) {

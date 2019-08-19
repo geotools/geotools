@@ -52,7 +52,6 @@ import org.opengis.referencing.operation.MathTransform;
  *
  * @since 2.4
  * @version 14
- * @source $URL$
  * @version $Id$
  * @author Jan Jezek
  */

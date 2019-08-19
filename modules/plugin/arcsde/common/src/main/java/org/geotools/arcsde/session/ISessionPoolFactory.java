@@ -27,7 +27,6 @@ import org.geotools.arcsde.jndi.ArcSDEConnectionFactory;
  * sessionPoolFactory} parameter. See {@link ArcSDEConnectionFactory}.
  *
  * @author Gabriel Roldan (OpenGeo)
- * @source $URL$
  * @version $Id$
  * @since 2.5.7
  */

@@ -49,7 +49,6 @@ import org.opengis.referencing.datum.VerticalDatum;
  * </TD></TR></TABLE>
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
@@ -150,6 +149,7 @@ public class DefaultVerticalCRS extends AbstractSingleCRS implements VerticalCRS
      *     versions of this class.
      */
     @Override
+    @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int hashCode() {
         return (int) serialVersionUID ^ super.hashCode();
     }

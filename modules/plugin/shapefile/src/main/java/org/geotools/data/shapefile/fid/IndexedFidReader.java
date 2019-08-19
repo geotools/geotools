@@ -30,18 +30,17 @@ import org.geotools.data.shapefile.files.FileReader;
 import org.geotools.data.shapefile.files.ShpFiles;
 import org.geotools.data.shapefile.files.StreamLogging;
 import org.geotools.data.shapefile.shp.ShapefileReader;
-import org.geotools.resources.NIOUtilities;
+import org.geotools.util.NIOUtilities;
 import org.geotools.util.URLs;
 
 /**
  * This object reads from a file the fid of a feature in a shapefile.
  *
  * @author Jesse
- * @source $URL$
  */
 public class IndexedFidReader implements FIDReader, FileReader {
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.data.shapefile");
+            org.geotools.util.logging.Logging.getLogger(IndexedFidReader.class);
     private ReadableByteChannel readChannel;
     private ByteBuffer buffer;
     private long count;
@@ -144,7 +143,6 @@ public class IndexedFidReader implements FIDReader, FileReader {
      * @return Returns the record number of the record in the SHX file that the fid identifies. Will
      *     return -1 if the fid was not found.
      * @throws IOException
-     * @throws IllegalArgumentException DOCUMENT ME!
      */
     public long findFid(String fid) throws IOException {
         try {
@@ -294,7 +292,6 @@ public class IndexedFidReader implements FIDReader, FileReader {
      *
      * @return Returns the record number of the feature in the shx or shp that is identified by the
      *     the last fid returned by next().
-     * @throws NoSuchElementException DOCUMENT ME!
      */
     public int currentSHXIndex() {
         if (currentShxIndex == -1) {

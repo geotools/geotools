@@ -61,7 +61,6 @@ import org.opengis.geometry.BoundingBox;
  * </pre>
  *
  * @author Justin Deoliveira, OpenGeo
- * @source $URL$
  */
 public class GeometryJSON {
 
@@ -698,9 +697,9 @@ public class GeometryJSON {
                 sb.append(",");
                 formatDecimal(coord.y, sb);
 
-                if (!Double.isNaN(coord.z)) {
+                if (!Double.isNaN(coord.getZ())) {
                     sb.append(",");
-                    formatDecimal(coord.z, sb);
+                    formatDecimal(coord.getZ(), sb);
                 }
                 sb.append("],");
             }
@@ -726,9 +725,9 @@ public class GeometryJSON {
                 out.write(String.valueOf(coord.x));
                 out.write(",");
                 out.write(String.valueOf(coord.y));
-                if (!Double.isNaN(coord.z)) {
+                if (!Double.isNaN(coord.getZ())) {
                     out.write(",");
-                    out.write(String.valueOf(coord.z));
+                    out.write(String.valueOf(coord.getZ()));
                 }
                 out.write("]");
                 if (i < seq.size() - 1) {

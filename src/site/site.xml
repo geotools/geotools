@@ -4,15 +4,15 @@
     <!-- ==================================================== -->
     <!--     Menus to appears on the left side of each page   -->
     <!-- ==================================================== -->
-    <menu name="Geotools" inherited="top">
+    <menu name="Geotools" inherit="top">
       <item name ="User documentation" href="http://docs.geotools.org/latest/userguide"/>
       <item name="Download"     href="http://sourceforge.net/projects/geotools/files"/>
       <item name="Full Javadoc" href="http://docs.geotools.org/latest/javadocs"/>
       <item name="Legal review" href="review.html"/>
     </menu>
 
-    <menu ref="parent" inherited="top"/>
-    <menu ref="modules" inherited="top"/>
-    <menu ref="reports" inherited="top"/>
+    <menu ref="parent" inherit="top"/>
+    <menu ref="modules" inherit="top"/>
+    <menu ref="reports" inherit="top"/>
   </body>
 </project>

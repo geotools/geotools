@@ -7,7 +7,7 @@ import net.opengis.wcs20.DescribeEOCoverageSetType;
 import net.opengis.wcs20.DimensionTrimType;
 import net.opengis.wcs20.Section;
 import org.eclipse.emf.common.util.EList;
-import org.geotools.xml.Parser;
+import org.geotools.xsd.Parser;
 import org.junit.Test;
 
 public class DescribeEOCoverageSetTest {

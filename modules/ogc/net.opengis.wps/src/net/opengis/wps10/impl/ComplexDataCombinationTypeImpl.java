@@ -25,150 +25,150 @@ import org.eclipse.emf.ecore.impl.EObjectImpl;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link net.opengis.wps10.impl.ComplexDataCombinationTypeImpl#getFormat <em>Format</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
 public class ComplexDataCombinationTypeImpl extends EObjectImpl implements ComplexDataCombinationType {
     /**
-     * The cached value of the '{@link #getFormat() <em>Format</em>}' containment reference.
-     * <!-- begin-user-doc -->
+   * The cached value of the '{@link #getFormat() <em>Format</em>}' containment reference.
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getFormat()
-     * @generated
-     * @ordered
-     */
+   * @see #getFormat()
+   * @generated
+   * @ordered
+   */
     protected ComplexDataDescriptionType format;
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     protected ComplexDataCombinationTypeImpl() {
-        super();
-    }
+    super();
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     protected EClass eStaticClass() {
-        return Wps10Package.Literals.COMPLEX_DATA_COMBINATION_TYPE;
-    }
+    return Wps10Package.Literals.COMPLEX_DATA_COMBINATION_TYPE;
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public ComplexDataDescriptionType getFormat() {
-        return format;
-    }
+    return format;
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public NotificationChain basicSetFormat(ComplexDataDescriptionType newFormat, NotificationChain msgs) {
-        ComplexDataDescriptionType oldFormat = format;
-        format = newFormat;
-        if (eNotificationRequired()) {
-            ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, Wps10Package.COMPLEX_DATA_COMBINATION_TYPE__FORMAT, oldFormat, newFormat);
-            if (msgs == null) msgs = notification; else msgs.add(notification);
-        }
-        return msgs;
+    ComplexDataDescriptionType oldFormat = format;
+    format = newFormat;
+    if (eNotificationRequired()) {
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, Wps10Package.COMPLEX_DATA_COMBINATION_TYPE__FORMAT, oldFormat, newFormat);
+      if (msgs == null) msgs = notification; else msgs.add(notification);
     }
+    return msgs;
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public void setFormat(ComplexDataDescriptionType newFormat) {
-        if (newFormat != format) {
-            NotificationChain msgs = null;
-            if (format != null)
-                msgs = ((InternalEObject)format).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - Wps10Package.COMPLEX_DATA_COMBINATION_TYPE__FORMAT, null, msgs);
-            if (newFormat != null)
-                msgs = ((InternalEObject)newFormat).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - Wps10Package.COMPLEX_DATA_COMBINATION_TYPE__FORMAT, null, msgs);
-            msgs = basicSetFormat(newFormat, msgs);
-            if (msgs != null) msgs.dispatch();
-        }
-        else if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, Wps10Package.COMPLEX_DATA_COMBINATION_TYPE__FORMAT, newFormat, newFormat));
+    if (newFormat != format) {
+      NotificationChain msgs = null;
+      if (format != null)
+        msgs = ((InternalEObject)format).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - Wps10Package.COMPLEX_DATA_COMBINATION_TYPE__FORMAT, null, msgs);
+      if (newFormat != null)
+        msgs = ((InternalEObject)newFormat).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - Wps10Package.COMPLEX_DATA_COMBINATION_TYPE__FORMAT, null, msgs);
+      msgs = basicSetFormat(newFormat, msgs);
+      if (msgs != null) msgs.dispatch();
     }
+    else if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, Wps10Package.COMPLEX_DATA_COMBINATION_TYPE__FORMAT, newFormat, newFormat));
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-        switch (featureID) {
-            case Wps10Package.COMPLEX_DATA_COMBINATION_TYPE__FORMAT:
-                return basicSetFormat(null, msgs);
-        }
-        return super.eInverseRemove(otherEnd, featureID, msgs);
+    switch (featureID) {
+      case Wps10Package.COMPLEX_DATA_COMBINATION_TYPE__FORMAT:
+        return basicSetFormat(null, msgs);
     }
+    return super.eInverseRemove(otherEnd, featureID, msgs);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case Wps10Package.COMPLEX_DATA_COMBINATION_TYPE__FORMAT:
-                return getFormat();
-        }
-        return super.eGet(featureID, resolve, coreType);
+    switch (featureID) {
+      case Wps10Package.COMPLEX_DATA_COMBINATION_TYPE__FORMAT:
+        return getFormat();
     }
+    return super.eGet(featureID, resolve, coreType);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case Wps10Package.COMPLEX_DATA_COMBINATION_TYPE__FORMAT:
-                setFormat((ComplexDataDescriptionType)newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
+    switch (featureID) {
+      case Wps10Package.COMPLEX_DATA_COMBINATION_TYPE__FORMAT:
+        setFormat((ComplexDataDescriptionType)newValue);
+        return;
     }
+    super.eSet(featureID, newValue);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case Wps10Package.COMPLEX_DATA_COMBINATION_TYPE__FORMAT:
-                setFormat((ComplexDataDescriptionType)null);
-                return;
-        }
-        super.eUnset(featureID);
+    switch (featureID) {
+      case Wps10Package.COMPLEX_DATA_COMBINATION_TYPE__FORMAT:
+        setFormat((ComplexDataDescriptionType)null);
+        return;
     }
+    super.eUnset(featureID);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case Wps10Package.COMPLEX_DATA_COMBINATION_TYPE__FORMAT:
-                return format != null;
-        }
-        return super.eIsSet(featureID);
+    switch (featureID) {
+      case Wps10Package.COMPLEX_DATA_COMBINATION_TYPE__FORMAT:
+        return format != null;
     }
+    return super.eIsSet(featureID);
+  }
 
 } //ComplexDataCombinationTypeImpl

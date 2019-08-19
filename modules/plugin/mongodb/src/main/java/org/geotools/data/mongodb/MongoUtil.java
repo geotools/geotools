@@ -137,17 +137,15 @@ public class MongoUtil {
                 String field = (String) k;
                 Object v = e.getValue();
                 if (v instanceof DBObject) {
-                    if (v instanceof BasicDBList) {
-                        // No list support
-                    } else {
+                    // No list support
+                    if (!(v instanceof BasicDBList)) {
                         for (Map.Entry<String, Class<?>> childEntry :
                                 doFindMappableFields((DBObject) v).entrySet()) {
                             map.put(field + "." + childEntry.getKey(), childEntry.getValue());
                         }
                     }
-                } else if (v instanceof List) {
+                } else if (!(v instanceof List)) {
                     // this is here as documentation/placeholder.  no array/list support yet.
-                } else {
                     Class<?> binding = mapBSONObjectToJavaType(v);
                     if (binding != null) {
                         map.put(field, binding);

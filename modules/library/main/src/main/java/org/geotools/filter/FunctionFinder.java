@@ -23,10 +23,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.logging.Logger;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.factory.Hints;
 import org.geotools.feature.NameImpl;
+import org.geotools.util.SuppressFBWarnings;
+import org.geotools.util.factory.Hints;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.capability.FunctionName;
 import org.opengis.filter.expression.Function;
@@ -45,12 +45,8 @@ import org.opengis.filter.expression.Literal;
  * This is done as a proper utility class that accepts Hints.
  *
  * @author Jody Garnett
- * @source $URL$
  */
 public class FunctionFinder {
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.filter");
-
     private volatile Map<Name, FunctionFactory> functionFactoryCache;
 
     public FunctionFinder(Hints hints) {
@@ -73,6 +69,7 @@ public class FunctionFinder {
         Collections.sort(
                 allFunctionDescriptions,
                 new Comparator<FunctionName>() {
+                    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_MIGHT_BE_INFEASIBLE")
                     public int compare(FunctionName o1, FunctionName o2) {
                         if (o1 == null && o2 == null) return 0;
                         if (o1 == null && o2 != null) return 1;
@@ -166,7 +163,7 @@ public class FunctionFinder {
      *
      * @param name Function name; this will need to be an exact match
      * @param parameters Set of Expressions to use as function parameters
-     * @param fallbackValue Literal to use if an implementation could not be found
+     * @param fallback Literal to use if an implementation could not be found
      * @return Function for the provided name, may be a FallbackFunction if an implementation could
      *     not be found
      */
@@ -187,7 +184,7 @@ public class FunctionFinder {
      *
      * @param name Function name; this will need to be an exact match
      * @param parameters Set of Expressions to use as function parameters
-     * @param fallbackValue Literal to use if an implementation could not be found
+     * @param fallback Literal to use if an implementation could not be found
      * @return Function for the provided name, may be a FallbackFunction if an implementation could
      *     not be found
      */

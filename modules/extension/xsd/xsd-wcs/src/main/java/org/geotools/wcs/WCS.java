@@ -19,14 +19,13 @@ package org.geotools.wcs;
 import java.util.Set;
 import javax.xml.namespace.QName;
 import org.geotools.gml4wcs.GML;
-import org.geotools.xml.XSD;
+import org.geotools.xsd.XSD;
 
 /**
  * This interface contains the qualified names of all the types,elements, and attributes in the
  * http://www.opengis.net/wcs schema.
  *
  * @generated
- * @source $URL$
  */
 public final class WCS extends XSD {
 

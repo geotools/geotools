@@ -24,11 +24,7 @@ import java.util.TimeZone;
 import org.geotools.imageio.netcdf.utilities.NetCDFTimeUtilities;
 import org.junit.Test;
 
-/**
- * Test UnidataTimeUtilities
- *
- * @source $URL$
- */
+/** Test UnidataTimeUtilities */
 public final class NetCDFTimeUtilitiesTest {
     @Test
     public void testAddTimeUnit() {

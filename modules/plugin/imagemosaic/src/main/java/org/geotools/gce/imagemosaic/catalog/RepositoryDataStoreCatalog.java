@@ -25,9 +25,9 @@ import org.geotools.data.DataAccess;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFactorySpi;
 import org.geotools.data.Repository;
-import org.geotools.factory.Hints;
 import org.geotools.feature.NameImpl;
 import org.geotools.util.Utilities;
+import org.geotools.util.factory.Hints;
 import org.opengis.feature.type.Name;
 
 /**
@@ -44,6 +44,8 @@ public class RepositoryDataStoreCatalog extends AbstractGTDataStoreGranuleCatalo
     private Set<String> validTypeNames;
 
     private Name storeName;
+
+    private DataAccessStoreWrapper cachedWrapped;
 
     public RepositoryDataStoreCatalog(
             Properties params,
@@ -110,7 +112,13 @@ public class RepositoryDataStoreCatalog extends AbstractGTDataStoreGranuleCatalo
             // see if we can fall back on a data access exposing simple feature types
             DataAccess access = repository.access(storeName);
             if (access != null) {
-                dataStore = new DataAccessStoreWrapper(access);
+                if (cachedWrapped != null && cachedWrapped.wraps(access)) {
+                    return cachedWrapped;
+                } else {
+                    DataAccessStoreWrapper wrapper = new DataAccessStoreWrapper(access);
+                    cachedWrapped = wrapper;
+                    dataStore = wrapper;
+                }
             } else {
                 throw new IllegalStateException(
                         "Could not find a data store with name " + flatStoreName);

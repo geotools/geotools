@@ -23,7 +23,6 @@ import org.locationtech.jts.geom.Coordinate;
  * Represents a node in a line network. A node in a line graph has a coordinate associated with it.
  *
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
- * @source $URL$
  */
 public interface XYNode extends Node {
 

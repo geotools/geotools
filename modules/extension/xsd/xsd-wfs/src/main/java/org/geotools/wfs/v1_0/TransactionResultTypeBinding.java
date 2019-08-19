@@ -19,7 +19,7 @@ package org.geotools.wfs.v1_0;
 import javax.xml.namespace.QName;
 import net.opengis.wfs.TransactionResultsType;
 import net.opengis.wfs.WfsFactory;
-import org.geotools.xml.AbstractComplexEMFBinding;
+import org.geotools.xsd.AbstractComplexEMFBinding;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -56,7 +56,6 @@ import org.w3c.dom.Element;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class TransactionResultTypeBinding extends AbstractComplexEMFBinding {
     public TransactionResultTypeBinding(WfsFactory factory) {

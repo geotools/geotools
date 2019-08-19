@@ -25,7 +25,7 @@ import org.geotools.filter.v1_0.OGCConfiguration;
 import org.geotools.gml2.GML;
 import org.geotools.gml2.bindings.GMLBoxTypeBinding;
 import org.geotools.gml2.bindings.GMLCoordinatesTypeBinding;
-import org.geotools.xml.Configuration;
+import org.geotools.xsd.Configuration;
 import org.locationtech.jts.geom.CoordinateSequence;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.impl.PackedCoordinateSequence;
@@ -37,6 +37,12 @@ public class IonicStrategy extends StrictWFS_1_x_Strategy {
     /** A filter 1.0 configuration to encode Filters issued to Ionic */
     private static final Configuration Ionic_filter_1_0_0_Configuration =
             new OGCConfiguration() {
+
+                @Override
+                protected void registerBindings(Map bindings) {
+                    super.registerBindings(bindings);
+                }
+
                 @Override
                 protected void registerBindings(MutablePicoContainer container) {
                     super.registerBindings(container);

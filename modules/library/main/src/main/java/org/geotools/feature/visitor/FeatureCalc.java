@@ -25,7 +25,6 @@ import org.opengis.feature.FeatureVisitor;
  * @author Cory Horner, Refractions
  * @see FeatureVisitor
  * @since 2.2.M2
- * @source $URL$
  */
 public interface FeatureCalc extends FeatureVisitor {
     /**

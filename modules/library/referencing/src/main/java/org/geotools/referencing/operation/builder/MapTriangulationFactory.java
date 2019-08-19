@@ -28,7 +28,6 @@ import org.opengis.geometry.DirectPosition;
  * org.geotools.referencing.operation.builder.RubberSheetBuilder RubberSheeting} transformation.
  *
  * @since 2.4
- * @source $URL$
  * @version $Id$
  * @author Jan Jezek
  */
@@ -151,10 +150,10 @@ class MapTriangulationFactory {
         DirectPosition2D x = new DirectPosition2D(dp);
 
         // Assert.isTrue(vectors.size() > 0);
-        MappedPosition nearestOne = (MappedPosition) vertices.get(0);
+        MappedPosition nearestOne = vertices.get(0);
 
         for (Iterator<MappedPosition> i = vertices.iterator(); i.hasNext(); ) {
-            MappedPosition candidate = (MappedPosition) i.next();
+            MappedPosition candidate = i.next();
 
             if (((DirectPosition2D) candidate.getSource()).distance(x.toPoint2D())
                     < ((DirectPosition2D) nearestOne.getSource()).distance(x.toPoint2D())) {

@@ -5,7 +5,6 @@ import java.sql.PreparedStatement;
 import org.geotools.jdbc.JDBCLobTestSetup;
 import org.geotools.jdbc.JDBCTestSetup;
 
-/** @source $URL$ */
 public class PostgisLobTestSetup extends JDBCLobTestSetup {
 
     public PostgisLobTestSetup(JDBCTestSetup delegate) {

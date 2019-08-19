@@ -2,7 +2,6 @@ package org.geotools.data.postgis;
 
 import org.geotools.jdbc.JDBCDataStore;
 
-/** @source $URL$ */
 public class PostgisFunctionTestSetup extends PostGISTestSetup {
 
     protected void setUpDataStore(JDBCDataStore dataStore) {

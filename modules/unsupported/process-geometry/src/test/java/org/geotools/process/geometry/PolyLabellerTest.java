@@ -153,7 +153,7 @@ public class PolyLabellerTest extends TestCase {
         }
         Reader reader = new StringReader(sb.toString());
         Polygon p = gjson.readPolygon(reader);
-        System.out.println(p);
+        // System.out.println(p);
         return p;
     }
 }

@@ -20,7 +20,6 @@ package org.geotools.gce.imagemosaic.jdbc;
  * This class implements the db dialect for postgis
  *
  * @author mcr
- * @source $URL$
  */
 public class PostgisDialect extends DBDialect {
     public PostgisDialect(Config config) {

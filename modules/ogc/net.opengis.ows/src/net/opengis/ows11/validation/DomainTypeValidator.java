@@ -1,6 +1,4 @@
 /**
- * <copyright>
- * </copyright>
  *
  * $Id$
  */
@@ -14,7 +12,7 @@ package net.opengis.ows11.validation;
  * This can be disabled with -vmargs -Dorg.eclipse.emf.examples.generator.validator=false.
  */
 public interface DomainTypeValidator {
-    boolean validate();
+  boolean validate();
 
-    boolean validateName(String value);
+  boolean validateName(String value);
 }

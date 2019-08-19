@@ -24,7 +24,6 @@ import java.util.HashSet;
  * node repetitions.
  *
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
- * @source $URL$
  */
 public class Path extends Walk {
 
@@ -32,7 +31,6 @@ public class Path extends Walk {
         super();
     }
 
-    // TODO: DOCUMENT ME!
     public Path(Collection nodes) {
         super(nodes);
     }

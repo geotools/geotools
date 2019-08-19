@@ -21,9 +21,9 @@ import net.opengis.wfs.OperationType;
 import net.opengis.wfs.OperationsType;
 import net.opengis.wfs.WfsFactory;
 import org.geotools.wfs.WFS;
-import org.geotools.xml.AbstractComplexEMFBinding;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
+import org.geotools.xsd.AbstractComplexEMFBinding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 
 /**
  * Binding object for the type http://www.opengis.net/wfs:OperationsType.
@@ -42,7 +42,6 @@ import org.geotools.xml.Node;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class OperationsTypeBinding extends AbstractComplexEMFBinding {
 

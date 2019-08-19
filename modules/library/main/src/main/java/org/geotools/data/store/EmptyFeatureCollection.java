@@ -24,7 +24,6 @@ import org.locationtech.jts.geom.Envelope;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
-/** @source $URL$ */
 public class EmptyFeatureCollection extends DataFeatureCollection {
 
     /** null bounds */

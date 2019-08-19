@@ -18,14 +18,13 @@ package org.geotools.referencing.factory.epsg;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import org.geotools.factory.Hints;
+import org.geotools.util.factory.Hints;
 
 /**
  * This factory uses the MS-Access dialect of SQL. Because the primary distribution format for the
  * EPSG database is MS-Access there is very little work to do in our {@link #adaptSQL} method.
  *
  * @since 2.4
- * @source $URL$
  * @version $Id$
  * @author Jody Garnett
  */

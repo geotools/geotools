@@ -18,7 +18,6 @@ package org.geotools.data.spatialite;
 
 import org.geotools.jdbc.JDBCEmptyTestSetup;
 
-/** @source $URL$ */
 public class SpatiaLiteEmptyTestSetup extends JDBCEmptyTestSetup {
 
     protected SpatiaLiteEmptyTestSetup() {

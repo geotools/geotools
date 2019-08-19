@@ -30,7 +30,6 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.PropertyIsEqualTo;
 
-/** @source $URL$ */
 public class TeradataDataStoreOnlineTest extends JDBCDataStoreOnlineTest {
 
     protected JDBCTestSetup createTestSetup() {
@@ -67,12 +66,13 @@ public class TeradataDataStoreOnlineTest extends JDBCDataStoreOnlineTest {
                                                 w.next();
                                             }
                                             SimpleFeature f = (SimpleFeature) w.next();
-                                            f.setAttribute(1, new Integer((id * 100) + j));
+                                            f.setAttribute(1, Integer.valueOf((id * 100) + j));
                                             f.setAttribute(2, "one");
                                             w.write();
                                             w.close();
                                         } catch (Exception ex) {
-                                            ex.printStackTrace();
+                                            java.util.logging.Logger.getGlobal()
+                                                    .log(java.util.logging.Level.INFO, "", ex);
                                             errors[0] = true;
                                         }
                                     }
@@ -104,7 +104,7 @@ public class TeradataDataStoreOnlineTest extends JDBCDataStoreOnlineTest {
         w.hasNext();
 
         SimpleFeature f = (SimpleFeature) w.next();
-        f.setAttribute(1, new Integer(0));
+        f.setAttribute(1, Integer.valueOf(0));
         f.setAttribute(2, "one");
         w.write();
         w.close();

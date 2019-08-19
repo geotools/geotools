@@ -30,7 +30,7 @@ import javax.media.jai.InterpolationNearest;
 import javax.media.jai.ROI;
 import javax.media.jai.iterator.RectIter;
 import javax.media.jai.iterator.RectIterFactory;
-import org.geotools.resources.coverage.CoverageUtilities;
+import org.geotools.coverage.util.CoverageUtilities;
 import org.opengis.coverage.CannotEvaluateException;
 import org.opengis.coverage.PointOutsideCoverageException;
 import org.opengis.metadata.spatial.PixelOrientation;
@@ -45,7 +45,6 @@ import org.opengis.referencing.operation.TransformException;
  * interpolation however.
  *
  * @since 2.2
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
@@ -67,12 +66,12 @@ public final class Interpolator2D extends GridCoverage2D {
 
     /**
      * The greatest value smaller than 1 representable as a {@code float} number. This value can be
-     * obtained with {@code org.geotools.resources.XMath.previous(1f)}.
+     * obtained with {@code org.geotools.referencing.util.XMath.previous(1f)}.
      */
     private static final float ONE_EPSILON = 0.99999994f;
 
     /** Default interpolations, in preference order. Will be constructed only when first needed. */
-    private static Interpolation[] DEFAULTS;
+    private static volatile Interpolation[] DEFAULTS;
 
     /**
      * Transform from "real world" coordinates to grid coordinates. This transform maps coordinates

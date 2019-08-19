@@ -21,7 +21,7 @@ import javax.xml.namespace.QName;
 import net.opengis.wfs20.MetadataURLType;
 import net.opengis.wfs20.Wfs20Factory;
 import org.geotools.wfs.v2_0.WFS;
-import org.geotools.xml.AbstractComplexEMFBinding;
+import org.geotools.xsd.AbstractComplexEMFBinding;
 
 public class MetadataURLTypeBinding extends AbstractComplexEMFBinding {
 

@@ -37,7 +37,6 @@ import org.geotools.swt.utils.Utils;
  * Action to open shapefile.
  *
  * @author Andrea Antonello (www.hydrologis.com)
- * @source $URL$
  */
 public class OpenShapefileAction extends MapAction implements ISelectionChangedListener {
 
@@ -65,7 +64,7 @@ public class OpenShapefileAction extends MapAction implements ISelectionChangedL
                 mapPane.redraw();
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
     }
 

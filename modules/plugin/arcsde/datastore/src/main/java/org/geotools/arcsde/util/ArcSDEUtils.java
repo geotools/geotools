@@ -39,15 +39,11 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * implementations
  *
  * @author Gabriel Roldan
- * @source $URL$
- *     http://svn.osgeo.org/geotools/trunk/modules/plugin/arcsde/datastore/src/main/java/org
- *     /geotools/arcsde/util/ArcSDEUtils.java $
- * @version $Id$
  * @since 2.5.6
  */
 public final class ArcSDEUtils {
 
-    public static final Logger LOGGER = Logging.getLogger("org.geotools.arcsde.gce");
+    public static final Logger LOGGER = Logging.getLogger(ArcSDEUtils.class);
 
     private static final WeakHashMap<String, CoordinateReferenceSystem> PE_CS_TO_EPSG =
             new WeakHashMap<String, CoordinateReferenceSystem>();

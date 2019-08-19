@@ -36,10 +36,11 @@ import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.ImageWorker;
 import org.geotools.image.test.ImageAssert;
-import org.geotools.map.DefaultMapContext;
+import org.geotools.map.FeatureLayer;
+import org.geotools.map.MapContent;
 import org.geotools.referencing.CRS;
-import org.geotools.styling.SLDParser;
 import org.geotools.styling.Style;
+import org.geotools.xml.styling.SLDParser;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.locationtech.jts.geom.LineString;
@@ -51,7 +52,6 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.GeometryDescriptor;
 
-/** @source $URL$ */
 public class LabelObstacleTest {
 
     static MemoryDataStore mem;
@@ -90,6 +90,8 @@ public class LabelObstacleTest {
         loadData(mem, "lines");
         loadData(mem, "polys");
         loadData(mem, "lines2");
+
+        RendererBaseTest.setupVeraFonts();
     }
 
     static void loadData(MemoryDataStore mem, String name) throws Exception {
@@ -146,24 +148,23 @@ public class LabelObstacleTest {
     }
 
     BufferedImage render(FeatureSource[] sources, Style[] styles) throws Exception {
-        DefaultMapContext map = new DefaultMapContext();
+        MapContent map = new MapContent();
 
         ReferencedEnvelope env = sources[0].getBounds();
         for (int i = 1; i < sources.length; i++) {
             env.expandToInclude(sources[i].getBounds());
         }
-        map.setAreaOfInterest(env);
-        map.setCoordinateReferenceSystem(env.getCoordinateReferenceSystem());
+        map.getViewport().setBounds(env);
         for (int i = 0; i < sources.length; i++) {
             if (styles[i] != null) {
-                map.addLayer(sources[i], styles[i]);
+                map.addLayer(new FeatureLayer(sources[i], styles[i]));
             }
         }
 
         try {
             StreamingRenderer r = new StreamingRenderer();
             r.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
-            r.setContext(map);
+            r.setMapContent(map);
 
             return RendererBaseTest.showRender("testPointLabeling", r, 5000, env);
         } finally {

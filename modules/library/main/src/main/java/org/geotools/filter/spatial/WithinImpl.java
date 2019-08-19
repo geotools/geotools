@@ -22,7 +22,6 @@ import org.opengis.filter.FilterVisitor;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.spatial.Within;
 
-/** @source $URL$ */
 public class WithinImpl extends AbstractPreparedGeometryFilter implements Within {
 
     public WithinImpl(Expression e1, Expression e2) {

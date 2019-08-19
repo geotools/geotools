@@ -20,11 +20,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.feature.type.Name;
 
-/**
- * Holds a cache of FeatureTypes by Name.
- *
- * @source $URL$
- */
+/** Holds a cache of FeatureTypes by Name. */
 public class FeatureTypeCache {
     ConcurrentHashMap<Name, FeatureType> map = new ConcurrentHashMap<Name, FeatureType>();
 

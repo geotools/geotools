@@ -22,7 +22,9 @@ import org.geotools.sld.CssParameter;
 import org.geotools.styling.Graphic;
 import org.geotools.styling.PointSymbolizer;
 import org.geotools.styling.StyleFactory;
-import org.geotools.xml.*;
+import org.geotools.xsd.AbstractComplexBinding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.PropertyName;
 import org.picocontainer.MutablePicoContainer;
@@ -56,7 +58,6 @@ import org.picocontainer.MutablePicoContainer;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class SLDPointSymbolizerBinding extends AbstractComplexBinding {
     StyleFactory styleFactory;

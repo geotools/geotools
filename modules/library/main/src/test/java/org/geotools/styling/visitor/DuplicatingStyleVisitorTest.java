@@ -16,17 +16,16 @@
  */
 package org.geotools.styling.visitor;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Graphics;
+import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.Collections;
-import javax.swing.Icon;
-import javax.xml.transform.TransformerException;
+import javax.swing.*;
 import junit.framework.TestCase;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.feature.NameImpl;
 import org.geotools.filter.IllegalFilterException;
 import org.geotools.metadata.iso.citation.OnLineResourceImpl;
 import org.geotools.styling.AnchorPoint;
@@ -35,7 +34,6 @@ import org.geotools.styling.ContrastEnhancement;
 import org.geotools.styling.Displacement;
 import org.geotools.styling.ExternalGraphic;
 import org.geotools.styling.ExternalMark;
-import org.geotools.styling.FeatureTypeConstraint;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.Fill;
 import org.geotools.styling.Font;
@@ -52,18 +50,15 @@ import org.geotools.styling.PointSymbolizer;
 import org.geotools.styling.PolygonSymbolizer;
 import org.geotools.styling.RasterSymbolizer;
 import org.geotools.styling.Rule;
-import org.geotools.styling.SLDTransformer;
 import org.geotools.styling.SelectedChannelType;
 import org.geotools.styling.Stroke;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleBuilder;
 import org.geotools.styling.StyleFactory;
-import org.geotools.styling.StyledLayerDescriptor;
 import org.geotools.styling.Symbolizer;
 import org.geotools.styling.TextSymbolizer;
 import org.geotools.styling.TextSymbolizer2;
 import org.geotools.styling.UomOgcMapping;
-import org.geotools.styling.UserLayer;
 import org.geotools.util.Utilities;
 import org.junit.Test;
 import org.opengis.filter.FilterFactory2;
@@ -72,13 +67,13 @@ import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
 import org.opengis.style.ContrastMethod;
 import org.opengis.style.OverlapBehavior;
+import org.opengis.style.SemanticType;
 import org.opengis.util.Cloneable;
 
 /**
  * Unit test for DuplicatorStyleVisitor.
  *
  * @author Cory Horner, Refractions Research Inc.
- * @source $URL$
  */
 public class DuplicatingStyleVisitorTest extends TestCase {
     StyleBuilder sb;
@@ -113,68 +108,31 @@ public class DuplicatingStyleVisitorTest extends TestCase {
     public void testStyleDuplication() throws IllegalFilterException {
         // create a style
         Style oldStyle = sb.createStyle("FTSName", sf.createPolygonSymbolizer());
-        oldStyle.getFeatureTypeStyles()[0].setSemanticTypeIdentifiers(
-                new String[] {"simple", "generic:geometry"});
+        oldStyle.featureTypeStyles()
+                .get(0)
+                .semanticTypeIdentifiers()
+                .addAll(
+                        Arrays.asList(
+                                SemanticType.valueOf("simple"),
+                                SemanticType.valueOf("generic:geometry")));
         // duplicate it
         oldStyle.accept(visitor);
         Style newStyle = (Style) visitor.getCopy();
 
         // compare it
         assertNotNull(newStyle);
-        assertEquals(2, newStyle.getFeatureTypeStyles()[0].getSemanticTypeIdentifiers().length);
-
-        // TODO: actually compare it
-        assertTrue(areStylesEqualByXml(oldStyle, newStyle));
-    }
-
-    /**
-     * Produces an XML representation of a Style.
-     *
-     * @param style
-     * @return
-     * @throws TransformerException
-     */
-    private String styleToXML(final Style style) throws TransformerException {
-        StyledLayerDescriptor sld = sf.createStyledLayerDescriptor();
-        UserLayer layer = sf.createUserLayer();
-        layer.setLayerFeatureConstraints(new FeatureTypeConstraint[] {null});
-        sld.addStyledLayer(layer);
-        layer.addUserStyle(style);
-
-        SLDTransformer styleTransform = new SLDTransformer();
-        String xml = styleTransform.transform(sld);
-
-        return xml;
-    }
-
-    /**
-     * Returns whether two Styles have equal XML representations.
-     *
-     * @param s1
-     * @param s2
-     * @return
-     */
-    private boolean areStylesEqualByXml(final Style s1, final Style s2) {
-        try {
-            String xmlS1 = styleToXML(s1);
-            String xmlS2 = styleToXML(s2);
-
-            return xmlS1.equals(xmlS2);
-        } catch (TransformerException te) {
-            te.printStackTrace();
-            return false;
-        }
+        assertEquals(2, newStyle.featureTypeStyles().get(0).semanticTypeIdentifiers().size());
     }
 
     public void testStyle() throws Exception {
         FeatureTypeStyle fts = sf.createFeatureTypeStyle();
-        fts.setFeatureTypeName("feature-type-1");
+        fts.featureTypeNames().add(new NameImpl("feature-type-1"));
 
         FeatureTypeStyle fts2 = fts2();
 
         Style style = sf.getDefaultStyle();
-        style.addFeatureTypeStyle(fts);
-        style.addFeatureTypeStyle(fts2);
+        style.featureTypeStyles().add(fts);
+        style.featureTypeStyles().add(fts2);
 
         style.accept(visitor);
         Style copy = (Style) visitor.getCopy();
@@ -185,7 +143,7 @@ public class DuplicatingStyleVisitorTest extends TestCase {
         Style notEq = sf.getDefaultStyle();
 
         fts2 = fts2();
-        notEq.addFeatureTypeStyle(fts2);
+        notEq.featureTypeStyles().add(fts2);
 
         assertEqualsContract(copy, notEq, style);
     }
@@ -193,15 +151,15 @@ public class DuplicatingStyleVisitorTest extends TestCase {
     private FeatureTypeStyle fts2() {
         FeatureTypeStyle fts2 = sf.createFeatureTypeStyle();
         Rule rule = sf.createRule();
-        fts2.addRule(rule);
-        fts2.setFeatureTypeName("feature-type-2");
+        fts2.rules().add(rule);
+        fts2.featureTypeNames().add(new NameImpl("feature-type-2"));
 
         return fts2;
     }
 
     public void testFeatureTypeStyle() throws Exception {
         FeatureTypeStyle fts = sf.createFeatureTypeStyle();
-        fts.setFeatureTypeName("feature-type");
+        fts.featureTypeNames().add(new NameImpl("feature-type"));
         fts.getOptions().put("key", "value");
 
         Rule rule1;
@@ -211,10 +169,10 @@ public class DuplicatingStyleVisitorTest extends TestCase {
         rule1.setFilter(ff.id(Collections.singleton(ff.featureId("FID"))));
 
         Rule rule2 = sf.createRule();
-        rule2.setIsElseFilter(true);
+        rule2.setElseFilter(true);
         rule2.setName("rule2");
-        fts.addRule(rule1);
-        fts.addRule(rule2);
+        fts.rules().add(rule1);
+        fts.rules().add(rule2);
 
         fts.accept(visitor);
         FeatureTypeStyle clone = (FeatureTypeStyle) visitor.getCopy();
@@ -227,7 +185,7 @@ public class DuplicatingStyleVisitorTest extends TestCase {
 
         FeatureTypeStyle notEq = sf.createFeatureTypeStyle();
         notEq.setName("fts-not-equal");
-        notEq.addRule(rule1);
+        notEq.rules().add(rule1);
         assertEqualsContract(clone, notEq, fts);
 
         fts.setTransformation(ff.literal("transformation"));
@@ -245,7 +203,7 @@ public class DuplicatingStyleVisitorTest extends TestCase {
                 sf.createPolygonSymbolizer(sf.getDefaultStroke(), sf.getDefaultFill(), "shape");
 
         Rule rule = sf.createRule();
-        rule.setSymbolizers(new Symbolizer[] {symb1, symb2});
+        rule.symbolizers().addAll(Arrays.asList(symb1, symb2));
 
         rule.accept(visitor);
         Rule clone = (Rule) visitor.getCopy();
@@ -255,11 +213,11 @@ public class DuplicatingStyleVisitorTest extends TestCase {
         symb2 = sf.createPolygonSymbolizer(sf.getDefaultStroke(), sf.getDefaultFill(), "shape");
 
         Rule notEq = sf.createRule();
-        notEq.setSymbolizers(new Symbolizer[] {symb2});
+        notEq.symbolizers().add(symb2);
         assertEqualsContract(clone, notEq, rule);
 
         symb1 = sf.createLineSymbolizer(sf.getDefaultStroke(), "geometry");
-        clone.setSymbolizers(new Symbolizer[] {symb1});
+        clone.symbolizers().add(symb1);
         assertTrue(!rule.equals(clone));
     }
 
@@ -529,12 +487,12 @@ public class DuplicatingStyleVisitorTest extends TestCase {
 
     public void testGraphic() {
         Graphic graphic = sf.getDefaultGraphic();
-        graphic.addMark(sf.getDefaultMark());
+        graphic.graphicalSymbols().add(sf.getDefaultMark());
 
         Graphic clone = (Graphic) visitor.copy(graphic);
         assertCopy(graphic, clone);
         assertEqualsContract(clone, graphic);
-        assertEquals(clone.getSymbols().length, graphic.getSymbols().length);
+        assertEquals(clone.graphicalSymbols().size(), graphic.graphicalSymbols().size());
 
         Graphic notEq = sf.getDefaultGraphic();
         assertEqualsContract(clone, notEq, graphic);
@@ -668,7 +626,7 @@ public class DuplicatingStyleVisitorTest extends TestCase {
         int controlEqHash = controlEqual.hashCode();
         int testHash = test.hashCode();
         if (controlEqHash != testHash) {
-            System.out.println("Warning  - Equal objects should return equal hashcodes");
+            // System.out.println("Warning  - Equal objects should return equal hashcodes");
         }
     }
 

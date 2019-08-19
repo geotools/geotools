@@ -41,7 +41,6 @@ import org.locationtech.jts.precision.GeometryPrecisionReducer;
  * class is not thread safe.
  *
  * @author Andrea Aime - OpenGeo
- * @source $URL$
  */
 public class GeometryClipper {
 
@@ -401,7 +400,7 @@ public class GeometryClipper {
         // < 0 or > 1 otherwise
         double tInX, tOutX, tInY, tOutY;
         // tOut2: max between tOutX and tOutY, tIn2: max between tInX and tinY
-        double tOut1, tOut2, tIn1, tIn2;
+        double tOut1, tOut2, tIn2;
 
         // Direction of edge
         double deltaX, deltaY;
@@ -485,10 +484,8 @@ public class GeometryClipper {
 
                 // sort them
                 if (tInX < tInY) {
-                    tIn1 = tInX;
                     tIn2 = tInY;
                 } else {
-                    tIn1 = tInY;
                     tIn2 = tInX;
                 }
 

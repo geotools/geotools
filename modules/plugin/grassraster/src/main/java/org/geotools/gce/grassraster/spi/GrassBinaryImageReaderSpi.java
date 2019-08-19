@@ -32,7 +32,6 @@ import org.geotools.gce.grassraster.GrassBinaryImageWriter;
  * @see GrassBinaryImageReader
  * @see GrassBinaryImageWriter
  * @see GrassBinaryImageReaderSpi
- * @source $URL$
  */
 @SuppressWarnings("nls")
 public class GrassBinaryImageReaderSpi extends ImageReaderSpi {

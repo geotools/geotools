@@ -26,7 +26,6 @@ import org.geotools.process.factory.DescribeResult;
  * Counts the elements in the collection (useful as a WFS sidekick)
  *
  * @author Andrea Aime
- * @source $URL$
  */
 @DescribeProcess(
     title = "Count Features",

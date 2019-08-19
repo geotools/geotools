@@ -29,7 +29,6 @@ import org.opengis.feature.type.Schema;
  * http://www.isotc211.org/2005/gmx schema.
  *
  * @generated
- * @source $URL$
  */
 public final class GMX extends GML.DelegatingXSD {
 

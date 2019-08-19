@@ -3,7 +3,6 @@ package org.geotools.data.oracle;
 import org.geotools.jdbc.JDBCViewOnlineTest;
 import org.geotools.jdbc.JDBCViewTestSetup;
 
-/** @source $URL$ */
 public class OracleViewOnlineTest extends JDBCViewOnlineTest {
 
     @Override

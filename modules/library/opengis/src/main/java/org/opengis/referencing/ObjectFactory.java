@@ -91,7 +91,6 @@ import org.opengis.util.InternationalString;
  * "remarks_fr_CA"} property stands for remarks in {@linkplain Locale#CANADA_FRENCH French
  * Canadian}.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengis.org/docs/01-009.pdf">Implementation specification 1.0</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 2.0

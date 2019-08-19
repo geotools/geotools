@@ -27,8 +27,8 @@ import org.geotools.data.Transaction;
 import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentFeatureStore;
 import org.geotools.data.store.ContentState;
-import org.geotools.factory.Hints;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.util.factory.Hints;
 import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -40,7 +40,6 @@ import org.opengis.feature.type.Name;
  *
  * @author Jody Garnett
  * @author Torben Barsballe (Boundless)
- * @source $URL$
  */
 public class PropertyFeatureStore extends ContentFeatureStore {
 

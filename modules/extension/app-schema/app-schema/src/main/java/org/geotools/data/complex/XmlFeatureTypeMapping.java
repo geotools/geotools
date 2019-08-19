@@ -28,8 +28,8 @@ import java.util.List;
 import java.util.Map;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.complex.PathAttributeList.Pair;
-import org.geotools.data.complex.filter.XPathUtil.Step;
-import org.geotools.data.complex.filter.XPathUtil.StepList;
+import org.geotools.data.complex.util.XPathUtil.Step;
+import org.geotools.data.complex.util.XPathUtil.StepList;
 import org.geotools.data.complex.xml.XmlFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.LiteralExpressionImpl;
@@ -45,10 +45,6 @@ import org.xml.sax.helpers.NamespaceSupport;
 /**
  * @author Russell Petty (GeoScience Victoria)
  * @author Rini Angreani (CSIRO Earth Science and Resource Engineering)
- * @version $Id$
- * @source $URL$
- *     http://svn.osgeo.org/geotools/trunk/modules/unsupported/app-schema/app-schema/src/main
- *     /java/org/geotools/data/complex/FeatureTypeMapping.java $
  */
 public class XmlFeatureTypeMapping extends FeatureTypeMapping {
 
@@ -73,8 +69,6 @@ public class XmlFeatureTypeMapping extends FeatureTypeMapping {
     private Map<String, AttributeMapping> indexAttributeList;
 
     AttributeMapping rootAttribute;
-
-    private int index = 1;
 
     private FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
     /** Attributes that don't have their own label, therefore are children of another node. */
@@ -241,7 +235,6 @@ public class XmlFeatureTypeMapping extends FeatureTypeMapping {
         addComplexAttributes(elements, it);
         addSetterAttributes(elements);
 
-        index++;
         removeAllRelativePaths();
     }
 
@@ -459,30 +452,6 @@ public class XmlFeatureTypeMapping extends FeatureTypeMapping {
         }
     }
 
-    protected void setClientProperties(
-            final Attribute target,
-            final Object source,
-            final Map<Name, Expression> clientProperties) {
-        if (clientProperties.size() == 0) {
-            return;
-        }
-        final Map<Name, Object> targetAttributes = new HashMap<Name, Object>();
-        for (Map.Entry<Name, Expression> entry : clientProperties.entrySet()) {
-            Name propName = entry.getKey();
-            Expression propExpr = entry.getValue();
-            Object propValue = null; // getValue(propExpr, source);
-            if (propValue != null) {
-                List<String> ls = (List<String>) propValue;
-                if (ls.size() != 0) {
-                    propValue = ls.get(0);
-                } else {
-                    propValue = "";
-                }
-            }
-            targetAttributes.put(propName, propValue);
-        }
-    }
-
     private String getFullQueryPath(AttributeMapping attMapping) {
         return attMapping.getTargetXPath().toString();
     }
@@ -530,8 +499,6 @@ public class XmlFeatureTypeMapping extends FeatureTypeMapping {
      * <code>gml:name[1]</code>, <code>gml:name[2]</code> and <code>gml:name[3]</code>, but
      * propertyName is just <code>gml:name</code>, all three mappings apply.
      *
-     * @param mappings Feature type mapping to search for
-     * @param simplifiedSteps
      * @return
      */
     @Override

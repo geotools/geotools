@@ -25,7 +25,6 @@ import org.geotools.graph.traverse.GraphWalker;
  * An abstract implementation of GraphIterator.
  *
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
- * @source $URL$
  */
 public abstract class AbstractGraphIterator implements GraphIterator {
 

@@ -1,3 +1,20 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2019, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
+
 package org.geotools.util;
 
 import java.lang.ref.Reference;
@@ -20,9 +37,6 @@ import java.util.concurrent.locks.ReentrantLock;
  * to memory demand. Soft references are most often used to implement memory-sensitive caches.
  *
  * @since 2.6
- * @version $Id$
- * @source $URL: http://svn.geotools.org/trunk/modules/library/metadata/src/main/
- *     java/org/geotools/util/SoftObjectCache.java $
  * @author Emily Gouge (Refractions Research)
  */
 final class SoftObjectCache implements ObjectCache {

@@ -86,7 +86,7 @@ import org.opengis.filter.expression.Literal;
  *
  *
  *
- * @source $URL$
+ *
  */
 public abstract class AbstractPreparedGeometryFilter extends GeometryFilterImpl {
 

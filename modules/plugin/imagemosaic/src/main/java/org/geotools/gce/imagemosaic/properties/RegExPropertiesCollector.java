@@ -26,7 +26,6 @@ import java.util.regex.Pattern;
 import org.apache.commons.io.FilenameUtils;
 import org.geotools.util.logging.Logging;
 
-/** @source $URL$ */
 public abstract class RegExPropertiesCollector extends PropertiesCollector {
 
     private static final Logger LOGGER = Logging.getLogger(RegExPropertiesCollector.class);
@@ -39,15 +38,6 @@ public abstract class RegExPropertiesCollector extends PropertiesCollector {
 
     public void setFullPath(boolean fullPath) {
         this.fullPath = fullPath;
-    }
-
-    /**
-     * @deprecated use {@link RegExPropertiesCollector#RegExPropertiesCollector(PropertiesCollectorSPI, List, String, boolean) instead
-     */
-    @Deprecated
-    public RegExPropertiesCollector(
-            PropertiesCollectorSPI spi, List<String> propertyNames, String regex) {
-        this(spi, propertyNames, regex, false);
     }
 
     public RegExPropertiesCollector(

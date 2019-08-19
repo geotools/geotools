@@ -21,8 +21,8 @@ Encode
 
 To encode a filter::
   
-  org.geotools.xml.Configuration = new org.geotools.filter.v1_0.OGCConfiguration();
-  org.geotools.xml.Encoder encoder = new org.geotools.xml.Encoder( configuration );
+  org.geotools.xsd.Configuration = new org.geotools.filter.v1_0.OGCConfiguration();
+  org.geotools.xsd.Encoder encoder = new org.geotools.xsd.Encoder( configuration );
   encoder.encode( filter, org.geotools.filter.v1_0.OGC.FILTER, outputStream );
 
 This configurations bring in the correct GML2 version of GMLConfiguration to handle any geometry mentioned in your Filter.
@@ -37,8 +37,8 @@ Consider the following filter::
 To encode the filter::
   
   //create the encoder with the filter 1.0 configuration
-  org.geotools.xml.Configuration = new org.geotools.filter.v1_0.OGCConfiguration();
-  org.geotools.xml.Encoder encoder = new org.geotools.xml.Encoder( configuration );
+  org.geotools.xsd.Configuration = new org.geotools.filter.v1_0.OGCConfiguration();
+  org.geotools.xsd.Encoder encoder = new org.geotools.xsd.Encoder( configuration );
   
   //create an output stream
   OutputStream xml = ...
@@ -141,8 +141,8 @@ Ecode
 
 To encode a filter::
   
-  org.geotools.xml.Configuration = new org.geotools.filter.v1_1.OGCConfiguration();
-  org.geotools.xml.Encoder encoder = new org.geotools.xml.Encoder( configuration );
+  org.geotools.xsd.Configuration = new org.geotools.filter.v1_1.OGCConfiguration();
+  org.geotools.xsd.Encoder encoder = new org.geotools.xsd.Encoder( configuration );
   encoder.encode( filter, org.geotools.filter.v1_0.OGC.FILTER, outputStream );
 
 Parse
@@ -197,6 +197,6 @@ Parsing::
 
 Encode::
   
-  org.geotools.xml.Configuration = new org.geotools.filter.v2_0.FESConfiguration();
-  org.geotools.xml.Encoder encoder = new org.geotools.xml.Encoder( configuration );
+  org.geotools.xsd.Configuration = new org.geotools.filter.v2_0.FESConfiguration();
+  org.geotools.xsd.Encoder encoder = new org.geotools.xsd.Encoder( configuration );
   encoder.encode( org.geotools.filter.v2_0.FES.Filter, outputStream );

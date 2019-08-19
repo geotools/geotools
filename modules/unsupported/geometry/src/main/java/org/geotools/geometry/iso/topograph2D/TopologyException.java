@@ -2,8 +2,8 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2001-2006  Vivid Solutions
  *    (C) 2001-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2001-2006  Vivid Solutions
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -17,11 +17,7 @@
  */
 package org.geotools.geometry.iso.topograph2D;
 
-/**
- * Indicates an invalid or inconsistent topological situation encountered during processing
- *
- * @source $URL$
- */
+/** Indicates an invalid or inconsistent topological situation encountered during processing */
 public class TopologyException extends RuntimeException {
 
     private static String msgWithCoord(String msg, Coordinate pt) {

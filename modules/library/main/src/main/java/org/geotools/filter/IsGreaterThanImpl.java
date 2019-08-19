@@ -20,16 +20,8 @@ import org.opengis.filter.FilterVisitor;
 import org.opengis.filter.PropertyIsGreaterThan;
 import org.opengis.filter.expression.Expression;
 
-/**
- * @author jdeolive
- * @source $URL$
- */
+/** @author jdeolive */
 public class IsGreaterThanImpl extends MultiCompareFilterImpl implements PropertyIsGreaterThan {
-
-    @Deprecated
-    protected IsGreaterThanImpl() {
-        this(null, null);
-    }
 
     protected IsGreaterThanImpl(Expression expression1, Expression expression2) {
         super(expression1, expression2);

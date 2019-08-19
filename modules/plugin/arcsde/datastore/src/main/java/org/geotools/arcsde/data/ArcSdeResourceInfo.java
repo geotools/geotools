@@ -30,11 +30,7 @@ import org.opengis.util.InternationalString;
  * {@link ResourceInfo} adapter for a {@link FeatureTypeInfo} and {@link ArcSdeFeatureSource}
  *
  * @author Gabriel Roldan (TOPP)
- * @version $Id$
  * @since 2.5.x
- * @source $URL$
- *     http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/main/java
- *     /org/geotools/arcsde/data/ArcSdeResourceInfo.java $
  */
 public final class ArcSdeResourceInfo implements ResourceInfo {
 

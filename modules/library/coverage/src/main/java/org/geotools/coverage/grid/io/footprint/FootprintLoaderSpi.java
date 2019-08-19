@@ -33,7 +33,6 @@ package org.geotools.coverage.grid.io.footprint;
  * used.
  *
  * @author Daniele Romagnoli, GeoSolutions SAS
- * @source $URL$
  */
 public interface FootprintLoaderSpi {
 

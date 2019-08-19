@@ -22,7 +22,6 @@ import org.opengis.filter.capability.IdCapabilities;
  * Implementation of the IdCapabilities interface.
  *
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL$
  */
 public class IdCapabilitiesImpl implements IdCapabilities {
 

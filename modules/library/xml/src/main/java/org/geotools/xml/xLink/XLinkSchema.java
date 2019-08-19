@@ -49,7 +49,6 @@ import org.xml.sax.SAXException;
  *
  * @author dzwiers www.refractions.net
  * @see Schema
- * @source $URL$
  */
 public class XLinkSchema implements Schema {
     private static Schema instance = new XLinkSchema();
@@ -192,7 +191,6 @@ public class XLinkSchema implements Schema {
         }
     }
 
-    /** DOCUMENT ME! */
     public String getPrefix() {
         return "xLink";
     }

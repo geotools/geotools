@@ -41,4 +41,15 @@ public class MultiPointTest extends GeometryEncoderTestSupport {
                 "points.2",
                 xpath.evaluate("/gml:MultiPoint/gml:pointMember[2]/gml:Point/@gml:id", doc));
     }
+
+    /** no encode gml:id test */
+    public void testEncodeMultiPointNoGmlId() throws Exception {
+        MultiPointEncoder encoder = new MultiPointEncoder(gtEncoder, "gml", GML.NAMESPACE, false);
+        Geometry geometry = new WKTReader2().read("MULTIPOINT(0 0, 1 1)");
+        Document doc = encode(encoder, geometry, "points");
+
+        assertEquals(
+                "0",
+                xpath.evaluate("count(//gml:MultiPoint/gml:pointMember/gml:Point/@gml:id)", doc));
+    }
 }

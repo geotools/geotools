@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.GeometryAttribute;
+import org.opengis.feature.IllegalAttributeException;
 import org.opengis.feature.Property;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -36,7 +37,6 @@ import org.opengis.geometry.BoundingBox;
  *
  * @author Justin Deoliveira, The Open Planning Project
  * @since 2.5
- * @source $URL$
  */
 public class DecoratingFeature implements SimpleFeature {
 

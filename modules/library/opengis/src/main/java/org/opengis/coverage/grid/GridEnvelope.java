@@ -27,7 +27,6 @@ import org.opengis.annotation.UML;
  * {@linkplain Rectangle#getMaxX getMaxX()} and {@linkplain Rectangle#getMinY getMaxY()}) are
  * exclusive.
  *
- * @source $URL$
  * @version ISO 19123:2004
  * @author Wim Koolhoven
  * @author Martin Schouwenburg

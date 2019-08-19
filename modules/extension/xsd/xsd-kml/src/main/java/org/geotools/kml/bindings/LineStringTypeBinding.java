@@ -18,9 +18,9 @@ package org.geotools.kml.bindings;
 
 import javax.xml.namespace.QName;
 import org.geotools.kml.KML;
-import org.geotools.xml.AbstractComplexBinding;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
+import org.geotools.xsd.AbstractComplexBinding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 import org.locationtech.jts.geom.CoordinateSequence;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LineString;
@@ -47,7 +47,6 @@ import org.locationtech.jts.geom.LineString;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class LineStringTypeBinding extends AbstractComplexBinding {
     GeometryFactory geometryFactory;

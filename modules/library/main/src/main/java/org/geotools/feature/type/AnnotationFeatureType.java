@@ -39,7 +39,6 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * </pre>
  *
  * @author John Meagher
- * @source $URL$
  */
 public class AnnotationFeatureType {
 
@@ -62,7 +61,7 @@ public class AnnotationFeatureType {
             tb.add(ANNOTATION_ATTRIBUTE_NAME, String.class);
             tmp = tb.buildFeatureType();
         } catch (Exception ex) {
-            org.geotools.util.logging.Logging.getLogger("org.geotools.data.AnnotationFeatureType")
+            org.geotools.util.logging.Logging.getLogger(AnnotationFeatureType.class)
                     .log(Level.SEVERE, "Error creating ANNOTATION feature type", ex);
         }
         ANNOTATION = tmp;

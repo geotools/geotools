@@ -19,7 +19,6 @@ package org.geotools.geopkg;
 import org.geotools.jdbc.JDBCGeometryOnlineTest;
 import org.geotools.jdbc.JDBCGeometryTestSetup;
 
-/** @source $URL$ */
 public class GeoPkgGeometryOnlineTest extends JDBCGeometryOnlineTest {
 
     @Override

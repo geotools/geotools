@@ -28,8 +28,8 @@ import java.util.stream.Stream;
 import junit.framework.TestCase;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFactorySpi;
-import org.geotools.factory.FactoryCreator;
-import org.geotools.factory.FactoryRegistry;
+import org.geotools.util.factory.FactoryCreator;
+import org.geotools.util.factory.FactoryRegistry;
 
 public class SolrDataStoreFinderTest extends TestCase {
 

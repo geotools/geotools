@@ -18,11 +18,11 @@ package org.geotools.referencing.operation;
 
 import java.util.Map;
 import java.util.Set;
-import org.geotools.factory.BufferedFactory;
-import org.geotools.factory.Hints;
 import org.geotools.referencing.ReferencingFactoryFinder;
 import org.geotools.util.SoftValueHashMap;
 import org.geotools.util.Utilities;
+import org.geotools.util.factory.BufferedFactory;
+import org.geotools.util.factory.Hints;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.CoordinateOperation;
@@ -41,7 +41,6 @@ import org.opengis.referencing.operation.OperationNotFoundException;
  *
  * @since 2.3
  * @version $Id$
- * @source $URL$
  * @author Simone Giannecchini
  * @author Martin Desruisseaux
  */
@@ -262,8 +261,6 @@ public class BufferedCoordinateOperationFactory extends AbstractCoordinateOperat
      * systems using the specified method. The current implementation delegates to the {@linkplain
      * CoordinateOperationFactory coordinate operation factory} specified at construction time with
      * no caching.
-     *
-     * @deprecated Will be removed.
      */
     public CoordinateOperation createOperation(
             final CoordinateReferenceSystem sourceCRS,

@@ -37,7 +37,6 @@ import org.opengis.annotation.UML;
  * @since GeoAPI 2.1
  * @see Record
  * @see RecordSchema
- * @source $URL$
  */
 @UML(identifier = "RecordType", specification = ISO_19103)
 public interface RecordType {

@@ -40,20 +40,12 @@ import org.opengis.annotation.UML;
  *
  * </blockquote>
  *
- * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/as#01-111">ISO 19115</A>
  * @author Ely Conn (Leica Geosystems Geospatial Imaging, LLC)
  * @since GeoAPI 2.1
  */
 @UML(identifier = "MD_RepresentativeFraction", specification = ISO_19115)
 public interface RepresentativeFraction {
-    /**
-     * @deprecated Replaced by {@link #doubleValue}, which is both consistent with {@link
-     *     java.lang.Number} naming and avoid the idea that a representative fraction is only for
-     *     scales - it could be used for any quantity conveniently represented as a ratio.
-     */
-    @Deprecated
-    double toScale();
 
     /**
      * Returns the scale value in a form usable for computation.

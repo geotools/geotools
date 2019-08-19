@@ -18,7 +18,6 @@ import org.opengis.util.CodeList;
  *
  * @author Jody Garnett
  * @since GeoAPI 2.1
- * @source $URL$
  */
 public final class PrecisionType extends CodeList<PrecisionType> {
     /** Serial number for compatibility with different versions. */

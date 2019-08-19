@@ -25,7 +25,6 @@ import org.junit.*;
 /**
  * Tests the {@link Logging} class.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  */
@@ -91,7 +90,7 @@ public class LoggingTest {
             log4j.setLevel(oldLevel);
         } finally {
             Logging.GEOTOOLS.setLoggerFactory((String) null);
-            assertEquals(Logger.class, Logging.getLogger("org.geotools").getClass());
+            assertEquals(Logger.class, Logging.getLogger(LoggingTest.class).getClass());
         }
     }
 

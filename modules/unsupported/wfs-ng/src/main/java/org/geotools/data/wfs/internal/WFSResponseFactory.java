@@ -50,7 +50,6 @@ public interface WFSResponseFactory {
     /**
      * Creates a response parser for the given WFS response.
      *
-     * @param wfs the data store that issued the request that produced the given {@code response}
      * @param response the handle to the response contents the WFS sent
      * @return a {@link WFSResponseParser} that can deal with the given WFS response
      * @throws IOException

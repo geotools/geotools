@@ -19,7 +19,6 @@ package org.geotools.data.spatialite;
 import org.geotools.jdbc.JDBCEmptyOnlineTest;
 import org.geotools.jdbc.JDBCEmptyTestSetup;
 
-/** @source $URL$ */
 public class SpatiaLiteEmptyOnlineTest extends JDBCEmptyOnlineTest {
 
     @Override

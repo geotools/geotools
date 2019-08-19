@@ -26,6 +26,7 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
+import org.geotools.data.store.EmptyFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.util.SoftValueHashMap;
@@ -43,8 +44,6 @@ import org.opengis.filter.sort.SortOrder;
  *
  * <p>This implementation is not suitable for working with large content as it makes use of memory
  * both when eastablishing an initial sort order, and subsequently to hold a list of FeatureId.
- *
- * @source $URL$
  */
 public class SubFeatureList extends SubFeatureCollection implements RandomFeatureAccess {
     /** Order by which content should be sorted */
@@ -92,7 +91,7 @@ public class SubFeatureList extends SubFeatureCollection implements RandomFeatur
     /**
      * item at the specified index.
      *
-     * @param index index of item
+     * @param position index of item
      * @return the item at the specified index.
      * @throws IndexOutOfBoundsException if index is not between 0 and size
      */
@@ -211,7 +210,7 @@ public class SubFeatureList extends SubFeatureCollection implements RandomFeatur
             return this;
         }
         if (filter.equals(Filter.EXCLUDE)) {
-            // TODO implement EmptyFeatureCollection( schema )
+            return new EmptyFeatureCollection(schema);
         }
         return new SubFeatureList(collection, ff.and(filter, subfilter), sort.get(0));
     }

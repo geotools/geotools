@@ -25,10 +25,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-/**
- * @author Jackson Roehrig & Sanjay Jena
- * @source $URL$
- */
+/** @author Jackson Roehrig & Sanjay Jena */
 public class ObjectScreen extends JFrame {
 
     private static final long serialVersionUID = 3573830165005892925L;

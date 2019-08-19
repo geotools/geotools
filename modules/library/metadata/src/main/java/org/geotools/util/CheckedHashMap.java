@@ -18,8 +18,8 @@ package org.geotools.util;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 import org.opengis.util.Cloneable;
 
 /**
@@ -36,7 +36,6 @@ import org.opengis.util.Cloneable;
  * @param <K> The type of keys in the map.
  * @param <V> The type of values in the map.
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Jody Garnett (Refractions Research)
  * @author Martin Desruisseaux (IRD)

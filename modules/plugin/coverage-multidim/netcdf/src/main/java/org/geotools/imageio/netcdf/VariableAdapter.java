@@ -45,9 +45,9 @@ import org.geotools.coverage.io.util.DateRangeComparator;
 import org.geotools.coverage.io.util.DateRangeTreeSet;
 import org.geotools.coverage.io.util.DoubleRangeTreeSet;
 import org.geotools.coverage.io.util.NumberRangeComparator;
+import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.collection.ListFeatureCollection;
-import org.geotools.factory.GeoTools;
 import org.geotools.feature.NameImpl;
 import org.geotools.gce.imagemosaic.Utils;
 import org.geotools.gce.imagemosaic.catalog.index.Indexer.Coverages.Coverage;
@@ -58,10 +58,10 @@ import org.geotools.imageio.netcdf.cv.CoordinateVariable;
 import org.geotools.imageio.netcdf.utilities.NetCDFCRSUtilities;
 import org.geotools.imageio.netcdf.utilities.NetCDFUtilities;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
-import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.util.DateRange;
 import org.geotools.util.NumberRange;
 import org.geotools.util.SimpleInternationalString;
+import org.geotools.util.factory.GeoTools;
 import org.geotools.util.logging.Logging;
 import org.opengis.coverage.SampleDimension;
 import org.opengis.coverage.grid.GridEnvelope;
@@ -79,7 +79,6 @@ import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.MathTransform2D;
 import org.opengis.util.InternationalString;
 import org.opengis.util.ProgressListener;
-import tec.uom.se.format.SimpleUnitFormat;
 import ucar.nc2.Dimension;
 import ucar.nc2.constants.AxisType;
 import ucar.nc2.dataset.CoordinateAxis;
@@ -348,10 +347,6 @@ public class VariableAdapter extends CoverageSourceDescriptor {
                                                 + " is not the same as "
                                                 + o2.getClass());
                             }
-
-                            public boolean equals(Object o) {
-                                return false;
-                            }
                         });
 
         /** The domain name */
@@ -450,8 +445,6 @@ public class VariableAdapter extends CoverageSourceDescriptor {
 
     private Name coverageName;
 
-    private SimpleFeatureType indexSchema;
-
     private int[] nDimensionIndex;
 
     private static final java.util.logging.Logger LOGGER = Logging.getLogger(VariableAdapter.class);
@@ -465,7 +458,6 @@ public class VariableAdapter extends CoverageSourceDescriptor {
     /**
      * Extracts the compound {@link CoordinateReferenceSystem} from the unidata variable.
      *
-     * @return the compound {@link CoordinateReferenceSystem}.
      * @throws Exception
      */
     private void init() throws Exception {
@@ -556,7 +548,6 @@ public class VariableAdapter extends CoverageSourceDescriptor {
                         if (schemaType != null) {
                             // Schema found: proceed with remapping attributes
                             updateMapping(schemaType, dimensionDescriptors);
-                            indexSchema = schemaType;
                             break;
                         }
                         throw new IllegalStateException(
@@ -933,11 +924,7 @@ public class VariableAdapter extends CoverageSourceDescriptor {
         String unitString = variableDS.getUnitsString();
         if (unitString != null) {
             try {
-                for (UnitCharReplacement replacement : UNIT_CHARS_REPLACEMENTS) {
-                    unitString = replacement.replace(unitString);
-                }
-                unit = SimpleUnitFormat.getInstance().parse(unitString);
-
+                unit = NetCDFUnitFormat.parse(unitString);
             } catch (ParserException parseException) {
                 if (LOGGER.isLoggable(Level.FINE)) {
                     LOGGER.fine(
@@ -1246,12 +1233,10 @@ public class VariableAdapter extends CoverageSourceDescriptor {
     /**
      * Create a SimpleFeature on top of the variable and indexes.
      *
-     * @param tIndex the time index
-     * @param zIndex the zeta index
+     * @param index the dimension indexes
      * @param cs the {@link CoordinateSystem} associated with that variable
      * @param imageIndex the index to be associated to the feature in the index
      * @param indexSchema the schema to be used to create the feature
-     * @param geometry the geometry to be attached to the feature
      * @return the created {@link SimpleFeature} TODO move to variable wrapper
      */
     private SimpleFeature createFeature(

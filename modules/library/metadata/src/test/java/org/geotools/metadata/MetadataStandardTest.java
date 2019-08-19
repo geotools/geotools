@@ -31,7 +31,6 @@ import org.opengis.metadata.citation.Citation;
 /**
  * Tests the {@link MetadataStandard} class.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  */

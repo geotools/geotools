@@ -23,7 +23,6 @@ import org.opengis.util.CodeList;
  * @see <a href="http://schemas.opengis.net/filter/1.1.0/sort.xsd">
  * @author Jody Garnett (Refractions Research)
  * @since GeoAPI 2.1
- * @source $URL$
  */
 public final class SortOrder extends CodeList<SortOrder> {
     /** Serial number for compatibility with different versions. */

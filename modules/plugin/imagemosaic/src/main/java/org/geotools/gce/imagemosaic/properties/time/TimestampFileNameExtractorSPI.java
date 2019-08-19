@@ -24,12 +24,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.gce.imagemosaic.properties.PropertiesCollector;
 import org.geotools.gce.imagemosaic.properties.PropertiesCollectorSPI;
-import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.util.URLs;
 
-/** @source $URL$ */
 public class TimestampFileNameExtractorSPI implements PropertiesCollectorSPI {
 
     public static final String REGEX = "regex";

@@ -30,127 +30,127 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link net.opengis.wfs20.impl.DescribeStoredQueriesResponseTypeImpl#getStoredQueryDescription <em>Stored Query Description</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
 public class DescribeStoredQueriesResponseTypeImpl extends EObjectImpl implements DescribeStoredQueriesResponseType {
     /**
-     * The cached value of the '{@link #getStoredQueryDescription() <em>Stored Query Description</em>}' containment reference list.
-     * <!-- begin-user-doc -->
+   * The cached value of the '{@link #getStoredQueryDescription() <em>Stored Query Description</em>}' containment reference list.
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getStoredQueryDescription()
-     * @generated
-     * @ordered
-     */
+   * @see #getStoredQueryDescription()
+   * @generated
+   * @ordered
+   */
     protected EList<StoredQueryDescriptionType> storedQueryDescription;
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     protected DescribeStoredQueriesResponseTypeImpl() {
-        super();
-    }
+    super();
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     protected EClass eStaticClass() {
-        return Wfs20Package.Literals.DESCRIBE_STORED_QUERIES_RESPONSE_TYPE;
-    }
+    return Wfs20Package.Literals.DESCRIBE_STORED_QUERIES_RESPONSE_TYPE;
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public EList<StoredQueryDescriptionType> getStoredQueryDescription() {
-        if (storedQueryDescription == null) {
-            storedQueryDescription = new EObjectContainmentEList<StoredQueryDescriptionType>(StoredQueryDescriptionType.class, this, Wfs20Package.DESCRIBE_STORED_QUERIES_RESPONSE_TYPE__STORED_QUERY_DESCRIPTION);
-        }
-        return storedQueryDescription;
+    if (storedQueryDescription == null) {
+      storedQueryDescription = new EObjectContainmentEList<StoredQueryDescriptionType>(StoredQueryDescriptionType.class, this, Wfs20Package.DESCRIBE_STORED_QUERIES_RESPONSE_TYPE__STORED_QUERY_DESCRIPTION);
     }
+    return storedQueryDescription;
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-        switch (featureID) {
-            case Wfs20Package.DESCRIBE_STORED_QUERIES_RESPONSE_TYPE__STORED_QUERY_DESCRIPTION:
-                return ((InternalEList<?>)getStoredQueryDescription()).basicRemove(otherEnd, msgs);
-        }
-        return super.eInverseRemove(otherEnd, featureID, msgs);
+    switch (featureID) {
+      case Wfs20Package.DESCRIBE_STORED_QUERIES_RESPONSE_TYPE__STORED_QUERY_DESCRIPTION:
+        return ((InternalEList<?>)getStoredQueryDescription()).basicRemove(otherEnd, msgs);
     }
+    return super.eInverseRemove(otherEnd, featureID, msgs);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case Wfs20Package.DESCRIBE_STORED_QUERIES_RESPONSE_TYPE__STORED_QUERY_DESCRIPTION:
-                return getStoredQueryDescription();
-        }
-        return super.eGet(featureID, resolve, coreType);
+    switch (featureID) {
+      case Wfs20Package.DESCRIBE_STORED_QUERIES_RESPONSE_TYPE__STORED_QUERY_DESCRIPTION:
+        return getStoredQueryDescription();
     }
+    return super.eGet(featureID, resolve, coreType);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @SuppressWarnings("unchecked")
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case Wfs20Package.DESCRIBE_STORED_QUERIES_RESPONSE_TYPE__STORED_QUERY_DESCRIPTION:
-                getStoredQueryDescription().clear();
-                getStoredQueryDescription().addAll((Collection<? extends StoredQueryDescriptionType>)newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
+    switch (featureID) {
+      case Wfs20Package.DESCRIBE_STORED_QUERIES_RESPONSE_TYPE__STORED_QUERY_DESCRIPTION:
+        getStoredQueryDescription().clear();
+        getStoredQueryDescription().addAll((Collection<? extends StoredQueryDescriptionType>)newValue);
+        return;
     }
+    super.eSet(featureID, newValue);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case Wfs20Package.DESCRIBE_STORED_QUERIES_RESPONSE_TYPE__STORED_QUERY_DESCRIPTION:
-                getStoredQueryDescription().clear();
-                return;
-        }
-        super.eUnset(featureID);
+    switch (featureID) {
+      case Wfs20Package.DESCRIBE_STORED_QUERIES_RESPONSE_TYPE__STORED_QUERY_DESCRIPTION:
+        getStoredQueryDescription().clear();
+        return;
     }
+    super.eUnset(featureID);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case Wfs20Package.DESCRIBE_STORED_QUERIES_RESPONSE_TYPE__STORED_QUERY_DESCRIPTION:
-                return storedQueryDescription != null && !storedQueryDescription.isEmpty();
-        }
-        return super.eIsSet(featureID);
+    switch (featureID) {
+      case Wfs20Package.DESCRIBE_STORED_QUERIES_RESPONSE_TYPE__STORED_QUERY_DESCRIPTION:
+        return storedQueryDescription != null && !storedQueryDescription.isEmpty();
     }
+    return super.eIsSet(featureID);
+  }
 
 } //DescribeStoredQueriesResponseTypeImpl

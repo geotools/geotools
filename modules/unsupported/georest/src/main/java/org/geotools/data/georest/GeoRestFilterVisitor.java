@@ -62,7 +62,7 @@ import org.opengis.filter.spatial.Within;
  * This can be handy in unit tests.
  *
  * @author Pieter De Graef
- * @source $URL$
+
  */
 public class GeoRestFilterVisitor implements FilterVisitor {
 

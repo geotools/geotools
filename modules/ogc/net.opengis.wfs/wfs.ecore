@@ -1097,7 +1097,7 @@
       <details key="kind" value="elementOnly"/>
     </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="operation" unique="false"
-        lowerBound="1" eType="#//OperationType" defaultValueLiteral="Insert">
+        lowerBound="1" upperBound="-1" eType="#//OperationType" defaultValueLiteral="Insert">
       <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
         <details key="kind" value="element"/>
         <details key="name" value="Operation"/>

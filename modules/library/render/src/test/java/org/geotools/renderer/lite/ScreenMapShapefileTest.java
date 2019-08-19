@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
@@ -16,7 +15,6 @@ import java.net.URL;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import org.geotools.TestData;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.shapefile.ShapefileDataStoreFactory;
@@ -31,7 +29,6 @@ import org.geotools.map.FeatureLayer;
 import org.geotools.map.MapContent;
 import org.geotools.map.MapViewport;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
-import org.geotools.renderer.style.FontCache;
 import org.geotools.styling.ExternalGraphic;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.Graphic;
@@ -93,11 +90,7 @@ public class ScreenMapShapefileTest {
                         shapeFileDataStore.getFeatureSource(shapeFileDataStore.getTypeNames()[0]);
         featureStore.addFeatures(DataUtilities.collection(feature));
 
-        FontCache.getDefaultInstance()
-                .registerFont(
-                        Font.createFont(
-                                Font.TRUETYPE_FONT,
-                                TestData.getResource(this, "Vera.ttf").openStream()));
+        RendererBaseTest.setupVeraFonts();
     }
 
     @After

@@ -26,7 +26,6 @@ import org.opengis.filter.expression.PropertyName;
  * Test class for {@link InFunction}.
  *
  * @author Stefano Costa, GeoSolutions
- * @source $URL$
  */
 public class InFunctionTest extends FunctionTestSupport {
 

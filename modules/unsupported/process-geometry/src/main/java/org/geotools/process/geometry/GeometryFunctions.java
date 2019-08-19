@@ -44,7 +44,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * GeometryProcessFactory}.
  *
  * @author Andrea Aime
- * @source $URL$
  */
 public class GeometryFunctions {
 

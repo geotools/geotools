@@ -99,7 +99,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * <p>This is a port of the uDig "reshape" operation to the GeoTools process framework.
  *
  * @author Jody Garnett (LISAsoft)
- * @source $URL$
  */
 @DescribeProcess(
     title = "Transform",
@@ -125,8 +124,6 @@ public class TransformProcess implements VectorProcess {
         /** Class binding (if known) */
         public Class<?> binding;
     }
-
-    private static final String DEF_DELIMITER = ";";
 
     @DescribeResult(name = "result", description = "Transformed feature collection")
     public SimpleFeatureCollection execute(
@@ -259,8 +256,6 @@ public class TransformProcess implements VectorProcess {
             Class<?> binding = def.binding; // make use of any default binding hint provided by user
             if (value == null) {
                 if (expression instanceof PropertyName) {
-                    PropertyName propertyName = (PropertyName) expression;
-                    String path = propertyName.getPropertyName();
                     AttributeDescriptor descriptor = origional.getDescriptor(name);
                     AttributeType attributeType = descriptor.getType();
                     binding = attributeType.getBinding();

@@ -1,3 +1,21 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2019, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ *
+ */
+
 package org.geotools.wcs.bindings;
 
 import java.util.Date;
@@ -12,9 +30,9 @@ import net.opengis.wcs10.Wcs10Factory;
 import org.geotools.gml3.GML;
 import org.geotools.temporal.object.DefaultInstant;
 import org.geotools.wcs.WCS;
-import org.geotools.xml.AbstractComplexBinding;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
+import org.geotools.xsd.AbstractComplexBinding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 import org.opengis.temporal.Instant;
 import org.opengis.temporal.Period;
 import org.opengis.temporal.Position;
@@ -42,7 +60,6 @@ import org.w3c.dom.Element;
  *  </pre>
  *
  * @generated
- * @source $URL$
  */
 public class TimeSequenceTypeBinding extends AbstractComplexBinding {
 
@@ -119,7 +136,7 @@ public class TimeSequenceTypeBinding extends AbstractComplexBinding {
     /*
      * (non-Javadoc)
      *
-     * @see org.geotools.xml.AbstractComplexBinding#encode(java.lang.Object,
+     * @see org.geotools.xsd.AbstractComplexBinding#encode(java.lang.Object,
      *      org.w3c.dom.Document, org.w3c.dom.Element)
      */
     @Override

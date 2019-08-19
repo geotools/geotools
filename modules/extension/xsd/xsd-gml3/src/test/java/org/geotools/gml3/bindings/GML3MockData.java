@@ -27,7 +27,7 @@ import org.geotools.geometry.jts.LiteCoordinateSequenceFactory;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.gml3.GML;
 import org.geotools.referencing.CRS;
-import org.geotools.xml.XSD;
+import org.geotools.xsd.XSD;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
@@ -40,6 +40,7 @@ import org.locationtech.jts.geom.MultiPoint;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
+import org.locationtech.jts.geom.impl.CoordinateArraySequence;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -51,7 +52,6 @@ import org.w3c.dom.Node;
  * Utility class for creating test xml data for gml3 bindings.
  *
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL$
  */
 public class GML3MockData {
     static CurvedGeometryFactory gf = new CurvedGeometryFactory(0.1);
@@ -448,7 +448,9 @@ public class GML3MockData {
     }
 
     public static MultiPoint multiPoint() {
-        return gf.createMultiPoint(new Coordinate[] {new Coordinate(1, 1), new Coordinate(2, 2)});
+        return gf.createMultiPoint(
+                new CoordinateArraySequence(
+                        new Coordinate[] {new Coordinate(1, 1), new Coordinate(2, 2)}));
     }
 
     public static Element multiPoint(Document document, Node parent) {
@@ -666,7 +668,7 @@ public class GML3MockData {
         builder.add("theName");
         builder.add("theDescription");
         builder.add(point());
-        builder.add(new Integer(1));
+        builder.add(Integer.valueOf(1));
         builder.add(new Date());
 
         return builder.buildFeature("fid.1");

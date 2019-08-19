@@ -19,13 +19,12 @@ package org.geotools.wfs.v1_1;
 import java.util.Set;
 import javax.xml.namespace.QName;
 import org.geotools.filter.v1_1.OGC;
-import org.geotools.ows.OWS;
+import org.geotools.xsd.ows.OWS;
 
 /**
  * XSD for wfs 1.1.
  *
  * @author Justin Deoliveira, OpenGEO
- * @source $URL$
  */
 public final class WFS extends org.geotools.wfs.WFS {
 

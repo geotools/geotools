@@ -25,7 +25,6 @@ import org.locationtech.jts.geom.Point;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 
-/** @source $URL$ */
 public class MultiPointTypeBindingTest extends GML3TestSupport {
 
     public void test() throws Exception {

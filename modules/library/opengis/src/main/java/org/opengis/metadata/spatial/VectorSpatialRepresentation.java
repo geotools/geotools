@@ -18,7 +18,6 @@ import org.opengis.annotation.UML;
 /**
  * Information about the vector spatial objects in the dataset.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/as#01-111">ISO 19115</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 2.0

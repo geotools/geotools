@@ -20,7 +20,6 @@ import java.sql.Connection;
 import org.geotools.jdbc.JDBCGeometrylessTestSetup;
 import org.geotools.jdbc.JDBCTestSetup;
 
-/** @source $URL$ */
 public class DB2GeometrylessTestSetup extends JDBCGeometrylessTestSetup {
 
     protected DB2GeometrylessTestSetup(JDBCTestSetup delegate) {

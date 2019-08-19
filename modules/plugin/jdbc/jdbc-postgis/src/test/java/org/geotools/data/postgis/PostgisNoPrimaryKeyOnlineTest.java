@@ -19,7 +19,6 @@ package org.geotools.data.postgis;
 import org.geotools.jdbc.JDBCNoPrimaryKeyOnlineTest;
 import org.geotools.jdbc.JDBCNoPrimaryKeyTestSetup;
 
-/** @source $URL$ */
 public class PostgisNoPrimaryKeyOnlineTest extends JDBCNoPrimaryKeyOnlineTest {
 
     @Override

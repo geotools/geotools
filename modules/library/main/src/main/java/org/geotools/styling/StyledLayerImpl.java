@@ -20,7 +20,6 @@ package org.geotools.styling;
  * Default implementation of StyledLayer.
  *
  * @author jamesm
- * @source $URL$
  */
 public class StyledLayerImpl implements StyledLayer {
     protected String name;

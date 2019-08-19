@@ -36,7 +36,7 @@ import org.opengis.referencing.datum.PixelInCell;
 public final class RendererUtilities {
 
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(RendererUtilities.class.getName());
+            org.geotools.util.logging.Logging.getLogger(RendererUtilities.class);
 
     /**
      * Helper class for building affine transforms. We use one instance per thread, in order to

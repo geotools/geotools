@@ -34,7 +34,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * @author Simone Giannecchini, GeoSolutions S.A.S.
  * @author Stefan Alfons Krueger (alfonx), Wikisquare.de : Support for
  *     jar:file:foo.jar/bar.properties URLs
- * @source $URL$
  */
 public class MosaicConfigurationBean {
 

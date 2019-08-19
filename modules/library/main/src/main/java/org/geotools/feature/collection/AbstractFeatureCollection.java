@@ -46,7 +46,6 @@ import org.opengis.filter.sort.SortBy;
  *       presenting {@link Collection} classes as a FeatureCollection.
  *
  * @author Jody Garnett (LISAsoft)
- * @source $URL$
  */
 public abstract class AbstractFeatureCollection implements SimpleFeatureCollection {
     /** id used when serialized to gml */
@@ -67,7 +66,7 @@ public abstract class AbstractFeatureCollection implements SimpleFeatureCollecti
         if (iterator instanceof SimpleFeatureIterator) {
             return (SimpleFeatureIterator) iterator;
         } else {
-            SimpleFeatureIterator iter = new DelegateSimpleFeatureIterator(this, iterator);
+            SimpleFeatureIterator iter = new DelegateSimpleFeatureIterator(iterator);
             return iter;
         }
     }

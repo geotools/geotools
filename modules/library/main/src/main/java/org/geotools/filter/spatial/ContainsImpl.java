@@ -22,7 +22,6 @@ import org.opengis.filter.FilterVisitor;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.spatial.Contains;
 
-/** @source $URL$ */
 public class ContainsImpl extends AbstractPreparedGeometryFilter implements Contains {
 
     public ContainsImpl(Expression e1, Expression e2) {

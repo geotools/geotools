@@ -23,12 +23,12 @@ import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.factory.Hints;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCGeographyOnlineTest;
 import org.geotools.jdbc.JDBCGeographyTestSetup;
+import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryCollection;
@@ -42,7 +42,6 @@ import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.spatial.DWithin;
 
-/** @source $URL$ */
 public class PostgisGeographyOnlineTest extends JDBCGeographyOnlineTest {
 
     @Override

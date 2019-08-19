@@ -19,9 +19,9 @@ package org.geotools.kml.bindings;
 import java.awt.Color;
 import javax.xml.namespace.QName;
 import org.geotools.kml.KML;
-import org.geotools.xml.AbstractSimpleBinding;
-import org.geotools.xml.Binding;
-import org.geotools.xml.InstanceComponent;
+import org.geotools.xsd.AbstractSimpleBinding;
+import org.geotools.xsd.Binding;
+import org.geotools.xsd.InstanceComponent;
 
 /**
  * Binding object for the type http://earth.google.com/kml/2.1:color.
@@ -50,7 +50,6 @@ import org.geotools.xml.InstanceComponent;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class ColorBinding extends AbstractSimpleBinding {
     /** @generated */

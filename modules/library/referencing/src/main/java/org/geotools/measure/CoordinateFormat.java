@@ -30,12 +30,12 @@ import javax.measure.Unit;
 import javax.measure.UnitConverter;
 import javax.measure.format.UnitFormat;
 import javax.measure.quantity.Time;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.crs.DefaultTemporalCRS;
-import org.geotools.resources.CRSUtilities;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
+import org.geotools.referencing.util.CRSUtilities;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -64,7 +64,6 @@ import tec.uom.se.format.SimpleUnitFormat;
  * <strong>Note:</strong> parsing is not yet implemented in this version.
  *
  * @since 2.0
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (PMO, IRD)
  */
@@ -107,7 +106,7 @@ public class CoordinateFormat extends Format {
     private UnitConverter[] toMillis;
 
     /** Dummy field position. */
-    private final FieldPosition dummy = new FieldPosition(0);
+    private final transient FieldPosition dummy = new FieldPosition(0);
 
     /** The locale for formatting coordinates and numbers. */
     private final Locale locale;

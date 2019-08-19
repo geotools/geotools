@@ -22,7 +22,6 @@ import org.opengis.filter.FilterVisitor;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.spatial.DWithin;
 
-/** @source $URL$ */
 public class DWithinImpl extends CartesianDistanceFilter implements DWithin {
 
     public DWithinImpl(Expression e1, Expression e2) {

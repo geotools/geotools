@@ -85,9 +85,8 @@ import org.geotools.gml3.bindings.ext.CompositeCurveTypeBinding;
 import org.geotools.gml3.smil.SMIL20Configuration;
 import org.geotools.gml3.smil.SMIL20LANGConfiguration;
 import org.geotools.xlink.XLINKConfiguration;
-import org.geotools.xml.Configuration;
-import org.geotools.xml.Parser;
 import org.geotools.xs.XS;
+import org.geotools.xsd.Configuration;
 import org.locationtech.jts.geom.CoordinateSequenceFactory;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.impl.CoordinateArraySequenceFactory;
@@ -97,7 +96,6 @@ import org.picocontainer.MutablePicoContainer;
  * Parser configuration for the gml3 schema.
  *
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL$
  */
 public class GMLConfiguration extends Configuration {
 
@@ -137,6 +135,12 @@ public class GMLConfiguration extends Configuration {
     /** Controls if coordinates measures should be encoded in GML * */
     private boolean encodeMeasures;
 
+    /** Right-Pad coordinates decimals with zeros up to the configured number of decimals */
+    private boolean padWithZeros;
+
+    /** Force usage of decimals instead of scientific notation * */
+    private boolean forceDecimalEncoding;
+
     public GMLConfiguration() {
         this(false);
     }
@@ -152,10 +156,6 @@ public class GMLConfiguration extends Configuration {
         // add smil dependency
         addDependency(new SMIL20Configuration());
         addDependency(new SMIL20LANGConfiguration());
-
-        // add parser properties
-        getProperties().add(Parser.Properties.PARSE_UNKNOWN_ELEMENTS);
-        getProperties().add(Parser.Properties.PARSE_UNKNOWN_ATTRIBUTES);
     }
 
     /**
@@ -356,7 +356,10 @@ public class GMLConfiguration extends Configuration {
         container.registerComponentInstance(srsSyntax);
 
         if (numDecimals >= 0) {
-            container.registerComponentInstance(new CoordinateFormatter(numDecimals));
+            CoordinateFormatter formatter = new CoordinateFormatter(numDecimals);
+            formatter.setForcedDecimal(forceDecimalEncoding);
+            formatter.setPadWithZeros(padWithZeros);
+            container.registerComponentInstance(formatter);
         }
     }
 
@@ -412,5 +415,43 @@ public class GMLConfiguration extends Configuration {
      */
     public void setEncodeMeasures(boolean encodeMeasures) {
         this.encodeMeasures = encodeMeasures;
+    }
+
+    /**
+     * Formats decimals of coordinates padding with zeros up to the configured number of decimals.
+     *
+     * @param padWithZeros right pad decimals with zeros
+     */
+    public void setPadWithZeros(boolean padWithZeros) {
+        this.padWithZeros = padWithZeros;
+    }
+
+    /**
+     * Forces usage of decimal notation, avoiding scientific notations to encode coordinates.
+     *
+     * @param forceDecimalEncoding avoid scientific notation, always use decimal
+     */
+    public void setForceDecimalEncoding(boolean forceDecimalEncoding) {
+        this.forceDecimalEncoding = forceDecimalEncoding;
+    }
+
+    /**
+     * Returns true if decimals of coordinates are padded with zeros up to the configured number of
+     * decimals.
+     *
+     * @return true if decimals are right-padded with zeros
+     */
+    public boolean getPadWithZeros() {
+        return padWithZeros;
+    }
+
+    /**
+     * Returns true if decimal notation should always be used, and scientific notation always
+     * avoided.
+     *
+     * @return true if decimal notation is always used for encoding coordinates
+     */
+    public boolean getForceDecimalEncoding() {
+        return forceDecimalEncoding;
     }
 }

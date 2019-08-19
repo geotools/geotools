@@ -30,7 +30,6 @@ import org.opengis.filter.expression.Subtract;
  * Empty "abstract" implementation of ExpressionVisitor. Subclasses should override desired methods.
  *
  * @author Cory Horner, Refractions Research Inc.
- * @source $URL$
  */
 public class AbstractExpressionVisitor implements ExpressionVisitor {
 

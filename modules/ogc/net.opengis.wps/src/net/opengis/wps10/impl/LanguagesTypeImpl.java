@@ -25,122 +25,122 @@ import org.eclipse.emf.ecore.util.EDataTypeUniqueEList;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link net.opengis.wps10.impl.LanguagesTypeImpl#getLanguage <em>Language</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
 public class LanguagesTypeImpl extends EObjectImpl implements LanguagesType {
     /**
-     * The cached value of the '{@link #getLanguage() <em>Language</em>}' attribute list.
-     * <!-- begin-user-doc -->
+   * The cached value of the '{@link #getLanguage() <em>Language</em>}' attribute list.
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getLanguage()
-     * @generated
-     * @ordered
-     */
+   * @see #getLanguage()
+   * @generated
+   * @ordered
+   */
     protected EList language;
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     protected LanguagesTypeImpl() {
-        super();
-    }
+    super();
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     protected EClass eStaticClass() {
-        return Wps10Package.Literals.LANGUAGES_TYPE;
-    }
+    return Wps10Package.Literals.LANGUAGES_TYPE;
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public EList getLanguage() {
-        if (language == null) {
-            language = new EDataTypeUniqueEList(String.class, this, Wps10Package.LANGUAGES_TYPE__LANGUAGE);
-        }
-        return language;
+    if (language == null) {
+      language = new EDataTypeUniqueEList(String.class, this, Wps10Package.LANGUAGES_TYPE__LANGUAGE);
     }
+    return language;
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case Wps10Package.LANGUAGES_TYPE__LANGUAGE:
-                return getLanguage();
-        }
-        return super.eGet(featureID, resolve, coreType);
+    switch (featureID) {
+      case Wps10Package.LANGUAGES_TYPE__LANGUAGE:
+        return getLanguage();
     }
+    return super.eGet(featureID, resolve, coreType);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case Wps10Package.LANGUAGES_TYPE__LANGUAGE:
-                getLanguage().clear();
-                getLanguage().addAll((Collection)newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
+    switch (featureID) {
+      case Wps10Package.LANGUAGES_TYPE__LANGUAGE:
+        getLanguage().clear();
+        getLanguage().addAll((Collection)newValue);
+        return;
     }
+    super.eSet(featureID, newValue);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case Wps10Package.LANGUAGES_TYPE__LANGUAGE:
-                getLanguage().clear();
-                return;
-        }
-        super.eUnset(featureID);
+    switch (featureID) {
+      case Wps10Package.LANGUAGES_TYPE__LANGUAGE:
+        getLanguage().clear();
+        return;
     }
+    super.eUnset(featureID);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case Wps10Package.LANGUAGES_TYPE__LANGUAGE:
-                return language != null && !language.isEmpty();
-        }
-        return super.eIsSet(featureID);
+    switch (featureID) {
+      case Wps10Package.LANGUAGES_TYPE__LANGUAGE:
+        return language != null && !language.isEmpty();
     }
+    return super.eIsSet(featureID);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public String toString() {
-        if (eIsProxy()) return super.toString();
+    if (eIsProxy()) return super.toString();
 
-        StringBuffer result = new StringBuffer(super.toString());
-        result.append(" (language: ");
-        result.append(language);
-        result.append(')');
-        return result.toString();
-    }
+    StringBuffer result = new StringBuffer(super.toString());
+    result.append(" (language: ");
+    result.append(language);
+    result.append(')');
+    return result.toString();
+  }
 
 } //LanguagesTypeImpl

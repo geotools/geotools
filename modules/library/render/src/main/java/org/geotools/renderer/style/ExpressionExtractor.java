@@ -51,7 +51,6 @@ import org.opengis.filter.expression.Expression;
  *   <li>"bla } bla" (<code>}</code> is reserved, should have been escaped)
  *
  * @author Andrea Aime - TOPP
- * @source $URL$
  */
 public class ExpressionExtractor {
     static final FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);

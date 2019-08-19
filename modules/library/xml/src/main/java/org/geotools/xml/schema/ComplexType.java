@@ -24,7 +24,6 @@ import org.xml.sax.Attributes;
  * generic XML schema type interface to represent datum within nested elements.
  *
  * @author dzwiers www.refractions.net
- * @source $URL$
  */
 public interface ComplexType extends Type {
     /**
@@ -105,8 +104,6 @@ public interface ComplexType extends Type {
      * This method is a directive to the parser whether to keep the data around in memory for post
      * processing. Generally this should return True, except when streaming.
      *
-     * @param element DOCUMENT ME!
-     * @param hints DOCUMENT ME!
      * @return True, except when streaming the element.
      */
     public boolean cache(Element element, Map hints);

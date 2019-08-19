@@ -28,7 +28,6 @@ import org.geotools.geometry.iso.primitive.CurveImpl;
  * are backed by a type of database to relieve the system memory in cases of large geometries.
  *
  * @author Sanjay Jena and Prof. Dr. Jackson Roehrig
- * @source $URL$
  */
 public interface CollectionFactory {
 

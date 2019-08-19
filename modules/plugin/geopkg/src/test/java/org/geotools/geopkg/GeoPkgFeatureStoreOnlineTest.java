@@ -22,16 +22,15 @@ import java.sql.SQLException;
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
-import org.geotools.factory.Hints;
+import org.geotools.data.util.ScreenMap;
 import org.geotools.jdbc.JDBCFeatureStoreOnlineTest;
 import org.geotools.jdbc.JDBCTestSetup;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
-import org.geotools.renderer.ScreenMap;
+import org.geotools.util.factory.Hints;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.sort.SortBy;
 import org.opengis.filter.sort.SortOrder;
 
-/** @source $URL$ */
 public class GeoPkgFeatureStoreOnlineTest extends JDBCFeatureStoreOnlineTest {
 
     @Override
@@ -83,7 +82,7 @@ public class GeoPkgFeatureStoreOnlineTest extends JDBCFeatureStoreOnlineTest {
 
         try (SimpleFeatureIterator it = fs.getFeatures(q).features()) {
             while (it.hasNext()) {
-                System.out.println(it.next());
+                // System.out.println(it.next());
                 it.next();
             }
         }

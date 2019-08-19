@@ -22,9 +22,9 @@ import java.io.InputStreamReader;
 import java.util.Iterator;
 import java.util.List;
 import javax.xml.transform.TransformerException;
-import org.geotools.filter.FilterTransformer;
 import org.geotools.filter.text.commons.CompilerUtil;
 import org.geotools.filter.text.commons.ExpressionToText;
+import org.geotools.xml.filter.FilterTransformer;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Expression;
@@ -85,7 +85,6 @@ import org.opengis.filter.expression.Expression;
  * @author Mauricio Pazos (Axios Engineering)
  * @author Gabriel Roldan (Axios Engineering)
  * @version $Id$
- * @source $URL$
  */
 public class CQL {
     private CQL() {
@@ -240,6 +239,7 @@ public class CQL {
      *
      * @param args
      */
+    @SuppressWarnings("PMD.SystemPrintln")
     public static final void main(String[] args) {
         System.out.println("CQL Filter Tester");
         System.out.println("(\"quit\" to finish)");
@@ -256,7 +256,7 @@ public class CQL {
             try {
                 line = reader.readLine();
 
-                if (line.equals("quit")) {
+                if (line == null || line.equals("quit")) {
                     System.out.println("Bye!");
                     break;
                 }
@@ -267,11 +267,11 @@ public class CQL {
                     filterTransformer.transform(filter, System.out);
                 }
             } catch (IOException e1) {
-                e1.printStackTrace();
+                java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e1);
             } catch (CQLException cqlex) {
                 System.out.println(cqlex.getSyntaxError());
             } catch (TransformerException e) {
-                e.printStackTrace();
+                java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             }
         }
     }

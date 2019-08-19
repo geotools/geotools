@@ -327,7 +327,7 @@ public class ProcessFunction implements Function {
 
     private String getPrimary(Map<String, Parameter<?>> resultInfo) {
         if (resultInfo.size() == 1) {
-            return resultInfo.get(0).getName();
+            return resultInfo.keySet().iterator().next();
         } else {
             for (Parameter<?> param : resultInfo.values()) {
                 if (param.isRequired()) {

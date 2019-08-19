@@ -19,9 +19,8 @@ package org.geotools.kml.bindings;
 import java.awt.Color;
 import org.geotools.kml.KML;
 import org.geotools.kml.KMLTestSupport;
-import org.geotools.xml.Binding;
+import org.geotools.xsd.Binding;
 
-/** @source $URL$ */
 public class ColorBindingTest extends KMLTestSupport {
     public void testType() {
         assertEquals(Color.class, binding(KML.color).getType());

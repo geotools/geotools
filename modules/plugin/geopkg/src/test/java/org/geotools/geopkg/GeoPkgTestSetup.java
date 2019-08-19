@@ -29,7 +29,7 @@ import org.geotools.geopkg.geom.GeoPkgGeomWriter;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCDataStoreFactory;
 import org.geotools.jdbc.JDBCTestSetup;
-import org.geotools.sql.SqlUtil;
+import org.geotools.jdbc.util.SqlUtil;
 import org.locationtech.jts.geom.Geometry;
 
 public class GeoPkgTestSetup extends JDBCTestSetup {

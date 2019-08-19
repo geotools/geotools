@@ -17,9 +17,9 @@
 package org.geotools.filter.v1_1;
 
 import javax.xml.namespace.QName;
-import org.geotools.xml.AbstractComplexBinding;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
+import org.geotools.xsd.AbstractComplexBinding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.sort.SortBy;
@@ -43,7 +43,6 @@ import org.opengis.filter.sort.SortOrder;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class SortPropertyTypeBinding extends AbstractComplexBinding {
     FilterFactory filterfactory;

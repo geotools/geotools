@@ -19,7 +19,9 @@ package org.geotools.filter.v1_1.capabilities;
 import java.util.List;
 import javax.xml.namespace.QName;
 import org.geotools.filter.v1_1.OGC;
-import org.geotools.xml.*;
+import org.geotools.xsd.AbstractComplexBinding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.capability.ComparisonOperators;
 import org.opengis.filter.capability.Operator;
@@ -41,7 +43,6 @@ import org.opengis.filter.capability.Operator;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class ComparisonOperatorsTypeBinding extends AbstractComplexBinding {
     FilterFactory factory;

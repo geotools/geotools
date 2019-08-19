@@ -34,7 +34,6 @@ import org.opengis.annotation.XmlElement;
  * no end caps). If a raster geometry is used, its coverage-area outline is used for the line,
  * rendered with no end caps.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/symbol">Symbology Encoding
  *     Implementation Specification 1.1.0</A>
  * @author Open Geospatial Consortium

@@ -23,7 +23,6 @@ import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.jdbc.JDBCFeatureSourceOnlineTest;
 import org.geotools.jdbc.JDBCTestSetup;
 
-/** @source $URL$ */
 public class SQLServerFeatureSourceOnlineTest extends JDBCFeatureSourceOnlineTest {
 
     @Override

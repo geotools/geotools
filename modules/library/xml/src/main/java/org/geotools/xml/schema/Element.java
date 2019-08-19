@@ -22,7 +22,6 @@ import java.net.URI;
  * Instances of this interface are intended to represent XML Schema Elements.
  *
  * @author dzwiers www.refractions.net
- * @source $URL$
  */
 public interface Element extends ElementGrouping {
     /** Returns True when the instance of this XML Schema Element is abstract, false otherwise */
@@ -58,7 +57,6 @@ public interface Element extends ElementGrouping {
      */
     public String getName();
 
-    /** DOCUMENT ME! */
     public URI getNamespace();
 
     /** Returns true when the element is nillable, false otherwise */

@@ -32,13 +32,13 @@ import org.opengis.feature.simple.SimpleFeature;
  *
  * @author dzwiers, Refractions Research, Inc.
  * @author $Author: jive $ (last modification)
- * @source $URL$
  * @version $Id$
  */
 public class PolygonNotOverlappingPolygonValidation extends PolygonPolygonAbstractValidation {
 
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.validation");
+            org.geotools.util.logging.Logging.getLogger(
+                    PolygonNotOverlappingPolygonValidation.class);
 
     /**
      * PolygonBoundaryCoveredByPolygonValidation constructor.
@@ -60,7 +60,6 @@ public class PolygonNotOverlappingPolygonValidation extends PolygonPolygonAbstra
      * @param envelope The bounding box of modified features
      * @param results Storage for the error and warning messages
      * @return True if no features intersect. If they do then the validation failed.
-     * @throws Exception DOCUMENT ME!
      * @see org.geotools.validation.IntegrityValidation#validate(java.util.Map,
      *     org.locationtech.jts.geom.Envelope, org.geotools.validation.ValidationResults)
      */

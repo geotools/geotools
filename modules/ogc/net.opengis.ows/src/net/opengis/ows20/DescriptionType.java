@@ -28,12 +28,12 @@ import org.eclipse.emf.ecore.EObject;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link net.opengis.ows20.DescriptionType#getTitle <em>Title</em>}</li>
  *   <li>{@link net.opengis.ows20.DescriptionType#getAbstract <em>Abstract</em>}</li>
  *   <li>{@link net.opengis.ows20.DescriptionType#getKeywords <em>Keywords</em>}</li>
  * </ul>
- * </p>
  *
  * @see net.opengis.ows20.Ows20Package#getDescriptionType()
  * @model extendedMetaData="name='DescriptionType' kind='elementOnly'"
@@ -41,54 +41,54 @@ import org.eclipse.emf.ecore.EObject;
  */
 public interface DescriptionType extends EObject {
     /**
-     * Returns the value of the '<em><b>Title</b></em>' containment reference list.
-     * The list contents are of type {@link net.opengis.ows20.LanguageStringType}.
-     * <!-- begin-user-doc -->
+   * Returns the value of the '<em><b>Title</b></em>' containment reference list.
+   * The list contents are of type {@link net.opengis.ows20.LanguageStringType}.
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * <!-- begin-model-doc -->
-     * Title of this resource, normally used for display to
-     *       humans.
-     * <!-- end-model-doc -->
-     * @return the value of the '<em>Title</em>' containment reference list.
-     * @see net.opengis.ows20.Ows20Package#getDescriptionType_Title()
-     * @model containment="true"
-     *        extendedMetaData="kind='element' name='Title' namespace='##targetNamespace'"
-     * @generated
-     */
+   * <!-- begin-model-doc -->
+   * Title of this resource, normally used for display to
+   *       humans.
+   * <!-- end-model-doc -->
+   * @return the value of the '<em>Title</em>' containment reference list.
+   * @see net.opengis.ows20.Ows20Package#getDescriptionType_Title()
+   * @model containment="true"
+   *        extendedMetaData="kind='element' name='Title' namespace='##targetNamespace'"
+   * @generated
+   */
     EList<LanguageStringType> getTitle();
 
     /**
-     * Returns the value of the '<em><b>Abstract</b></em>' containment reference list.
-     * The list contents are of type {@link net.opengis.ows20.LanguageStringType}.
-     * <!-- begin-user-doc -->
+   * Returns the value of the '<em><b>Abstract</b></em>' containment reference list.
+   * The list contents are of type {@link net.opengis.ows20.LanguageStringType}.
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * <!-- begin-model-doc -->
-     * Brief narrative description of this resource, normally
-     *       used for display to humans.
-     * <!-- end-model-doc -->
-     * @return the value of the '<em>Abstract</em>' containment reference list.
-     * @see net.opengis.ows20.Ows20Package#getDescriptionType_Abstract()
-     * @model containment="true"
-     *        extendedMetaData="kind='element' name='Abstract' namespace='##targetNamespace'"
-     * @generated
-     */
+   * <!-- begin-model-doc -->
+   * Brief narrative description of this resource, normally
+   *       used for display to humans.
+   * <!-- end-model-doc -->
+   * @return the value of the '<em>Abstract</em>' containment reference list.
+   * @see net.opengis.ows20.Ows20Package#getDescriptionType_Abstract()
+   * @model containment="true"
+   *        extendedMetaData="kind='element' name='Abstract' namespace='##targetNamespace'"
+   * @generated
+   */
     EList<LanguageStringType> getAbstract();
 
     /**
-     * Returns the value of the '<em><b>Keywords</b></em>' containment reference list.
-     * The list contents are of type {@link net.opengis.ows20.KeywordsType}.
-     * <!-- begin-user-doc -->
+   * Returns the value of the '<em><b>Keywords</b></em>' containment reference list.
+   * The list contents are of type {@link net.opengis.ows20.KeywordsType}.
+   * <!-- begin-user-doc -->
      * <p>
      * If the meaning of the '<em>Keywords</em>' containment reference list isn't clear,
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     * @return the value of the '<em>Keywords</em>' containment reference list.
-     * @see net.opengis.ows20.Ows20Package#getDescriptionType_Keywords()
-     * @model containment="true"
-     *        extendedMetaData="kind='element' name='Keywords' namespace='##targetNamespace'"
-     * @generated
-     */
+   * @return the value of the '<em>Keywords</em>' containment reference list.
+   * @see net.opengis.ows20.Ows20Package#getDescriptionType_Keywords()
+   * @model containment="true"
+   *        extendedMetaData="kind='element' name='Keywords' namespace='##targetNamespace'"
+   * @generated
+   */
     EList<KeywordsType> getKeywords();
 
 } // DescriptionType

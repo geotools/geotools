@@ -16,14 +16,7 @@
  */
 package org.geotools.renderer.lite;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Frame;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.HeadlessException;
-import java.awt.Panel;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.geom.AffineTransform;
@@ -31,24 +24,25 @@ import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 import java.awt.image.Raster;
 import java.io.IOException;
-import junit.framework.Assert;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.map.MapContext;
+import org.geotools.map.MapContent;
 import org.geotools.renderer.GTRenderer;
 import org.geotools.renderer.RenderListener;
+import org.geotools.renderer.style.FontCache;
 import org.geotools.sld.v1_1.SLDConfiguration;
 import org.geotools.styling.DefaultResourceLocator;
 import org.geotools.styling.NamedLayer;
 import org.geotools.styling.NamedStyle;
 import org.geotools.styling.ResourceLocator;
-import org.geotools.styling.SLDParser;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleFactory;
 import org.geotools.styling.StyledLayerDescriptor;
 import org.geotools.styling.UserLayer;
 import org.geotools.test.TestData;
-import org.geotools.xml.Parser;
+import org.geotools.xml.styling.SLDParser;
+import org.geotools.xsd.Parser;
+import org.junit.Assert;
 
 /**
  * Used to test a renderer implementation.
@@ -56,9 +50,6 @@ import org.geotools.xml.Parser;
  * <p>Mostly tests that the renderer produces an image at all.
  *
  * @author Simone Giannecchini
- * @source $URL$
- *     http://svn.osgeo.org/geotools/trunk/modules/library/render/src/test/java/org/geotools
- *     /renderer/lite/RendererBaseTest.java $
  */
 public abstract class RendererBaseTest {
 
@@ -238,11 +229,11 @@ public abstract class RendererBaseTest {
      * @return
      * @throws Exception
      */
-    public static BufferedImage render(MapContext map) throws Exception {
+    public static BufferedImage render(MapContent map) throws Exception {
         StreamingRenderer r = new StreamingRenderer();
-        r.setContext(map);
+        r.setMapContent(map);
 
-        return RendererBaseTest.showRender("testPointLabeling", r, 5000, map.getLayerBounds());
+        return RendererBaseTest.showRender("testPointLabeling", r, 5000, map.getMaxBounds());
     }
 
     /**
@@ -371,5 +362,15 @@ public abstract class RendererBaseTest {
             actual = new Color(cm.getRed(pixel), cm.getGreen(pixel), cm.getBlue(pixel), 255);
         }
         return actual;
+    }
+
+    /** Configure the Bistream Vera Sans font so that it's available to the JVM */
+    public static void setupVeraFonts() throws IOException, FontFormatException {
+        FontCache.getDefaultInstance()
+                .registerFont(
+                        java.awt.Font.createFont(
+                                java.awt.Font.TRUETYPE_FONT,
+                                TestData.getResource(RendererBaseTest.class, "Vera.ttf")
+                                        .openStream()));
     }
 }

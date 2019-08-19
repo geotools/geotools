@@ -34,7 +34,7 @@ public class RatioZoomContext extends ContinuousZoomContext implements ZoomConte
      * Create a zoom context where zoom level 0 has a scale denominator of {@code initial}, and each
      * subsequent level is {@code ratio} times that.
      *
-     * @param initilScalel scale denominator at level 0
+     * @param initialScale scale denominator at level 0
      * @param ratio ratio between zoom levels
      */
     public RatioZoomContext(final double initialScale, final double ratio) {

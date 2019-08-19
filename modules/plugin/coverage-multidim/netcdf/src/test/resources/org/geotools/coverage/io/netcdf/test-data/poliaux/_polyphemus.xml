@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Indexer>
+    <coverages>
+        <coverage>
+		    <schema name="NO2" >
+				<attributes>the_geom:Polygon,imageindex:Integer,location:String,z:Double,time:java.util.Date</attributes>
+			</schema>
+            <name>NO2</name>
+        </coverage>
+        <coverage>
+			<schema name="O3" >
+				<attributes>the_geom:Polygon,imageindex:Integer,location:String,z:Double,java.util.Date</attributes>
+			</schema>m
+            <name>O3</name>
+        </coverage>
+    </coverages>
+</Indexer>
+

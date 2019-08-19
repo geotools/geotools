@@ -1,3 +1,21 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2019, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ *
+ */
+
 package org.geotools.gml4wcs.bindings;
 
 import java.util.LinkedList;
@@ -8,10 +26,10 @@ import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.gml4wcs.GML;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultCompoundCRS;
-import org.geotools.xml.AbstractComplexBinding;
-import org.geotools.xml.AttributeInstance;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
+import org.geotools.xsd.AbstractComplexBinding;
+import org.geotools.xsd.AttributeInstance;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CompoundCRS;
@@ -45,7 +63,6 @@ import org.w3c.dom.Element;
  *  </pre>
  *
  * @generated
- * @source $URL$
  */
 public class EnvelopeTypeBinding extends AbstractComplexBinding {
 
@@ -102,7 +119,7 @@ public class EnvelopeTypeBinding extends AbstractComplexBinding {
     /*
      * (non-Javadoc)
      *
-     * @see org.geotools.xml.AbstractComplexBinding#getExecutionMode()
+     * @see org.geotools.xsd.AbstractComplexBinding#getExecutionMode()
      */
     @Override
     public int getExecutionMode() {

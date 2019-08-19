@@ -24,14 +24,13 @@ import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.StringTokenizer;
-import junit.framework.Assert;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 import org.geotools.gce.imagemosaic.jdbc.AbstractTest;
 import org.geotools.gce.imagemosaic.jdbc.Config;
 import org.geotools.gce.imagemosaic.jdbc.DBDialect;
+import org.junit.Assert;
 
-/** @source $URL$ */
 public class PGRasterOnlineTest extends AbstractTest {
     protected static DBDialect dialect = null;
 
@@ -255,7 +254,7 @@ public class PGRasterOnlineTest extends AbstractTest {
             con.commit();
             // con.close();
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             Assert.fail(e.getMessage());
         }
     }
@@ -272,7 +271,7 @@ public class PGRasterOnlineTest extends AbstractTest {
             con.prepareStatement("DROP TABLE IF EXISTS \"public\".\"rtable3\"").execute();
             con.commit();
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             Assert.fail(e.getMessage());
         } finally {
             try {

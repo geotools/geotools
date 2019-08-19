@@ -41,9 +41,6 @@ import org.opengis.referencing.operation.MathTransform;
  * @see <A HREF="http://www.remotesensing.org/geotiff/proj_list/eckert_iv.html">"Robinson" on
  *     RemoteSensing.org</A>
  * @since 2.7.0
- * @source $URL$
- *     http://svn.osgeo.org/geotools/branches/2.6.x/modules/library/referencing/src/main/java
- *     /org/geotools/referencing/operation/projection/Mercator.java $
  * @author Andrea Aime
  */
 public class EckertIV extends MapProjection {
@@ -55,8 +52,6 @@ public class EckertIV extends MapProjection {
     private static final double C_y = 1.32650042817700232218;
 
     private static final double C_p = 3.57079632679489661922;
-
-    private static final double RC_p = 0.28004957675577868795;
 
     private static final double EPS = 1e-7;
 
@@ -125,16 +120,6 @@ public class EckertIV extends MapProjection {
         ptDst.setLocation(lam, phi);
 
         return ptDst;
-    }
-
-    /** Compares the specified object with this map projection for equality. */
-    @Override
-    public boolean equals(final Object object) {
-        if (object == this) {
-            // Slight optimization
-            return true;
-        }
-        return super.equals(object);
     }
 
     @Override

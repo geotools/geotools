@@ -28,7 +28,6 @@ import java.util.AbstractList;
  *
  * @see net.refractions.jspatial.jts
  * @author jgarnett, Refractions Reasearch Inc.
- * @source $URL$
  * @version CVS Version
  */
 public class OrdinateList extends AbstractList {
@@ -75,7 +74,7 @@ public class OrdinateList extends AbstractList {
      * @see java.util.List#get(int)
      */
     public Object get(int index) {
-        return new Double(getDouble(index));
+        return Double.valueOf(getDouble(index));
     }
     /** Quick double access */
     public double getDouble(int index) {

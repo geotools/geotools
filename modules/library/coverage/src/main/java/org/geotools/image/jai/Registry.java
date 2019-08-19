@@ -32,15 +32,14 @@ import javax.media.jai.registry.RenderedRegistryMode;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.grid.AbstractGridCoverage;
 import org.geotools.image.ImageWorker;
-import org.geotools.resources.i18n.LoggingKeys;
-import org.geotools.resources.i18n.Loggings;
+import org.geotools.metadata.i18n.LoggingKeys;
+import org.geotools.metadata.i18n.Loggings;
 import org.geotools.util.logging.Logging;
 
 /**
  * A set of static methods for managing JAI's {@linkplain OperationRegistry operation registry}.
  *
  * @since 2.2
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @author Andrea Aime - GeoSolutions

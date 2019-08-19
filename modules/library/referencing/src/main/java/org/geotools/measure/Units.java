@@ -39,7 +39,6 @@ import tec.uom.se.unit.TransformedUnit;
  * A set of units to use in addition of {@link SI} and {@link NonSI}.
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
@@ -161,7 +160,8 @@ public final class Units {
      */
     @SuppressWarnings("unchecked")
     public static <Q extends Quantity<Q>> Unit<Q> autoCorrect(Unit<Q> unit) {
-        return DefaultUnitParser.getInstance().getEquivalentUnit(unit);
+        return DefaultUnitParser.getInstance(SimpleUnitFormat.Flavor.Default)
+                .getEquivalentUnit(unit);
     }
 
     /**

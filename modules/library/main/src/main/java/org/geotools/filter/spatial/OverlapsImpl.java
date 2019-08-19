@@ -23,7 +23,6 @@ import org.opengis.filter.FilterVisitor;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.spatial.Overlaps;
 
-/** @source $URL$ */
 public class OverlapsImpl extends GeometryFilterImpl implements Overlaps {
 
     public OverlapsImpl(Expression e1, Expression e2) {

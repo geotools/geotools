@@ -16,14 +16,16 @@
  */
 package org.geotools.graph.traverse.standard;
 
+import java.util.ArrayDeque;
+import java.util.Collections;
+import java.util.Queue;
 import org.geotools.graph.structure.Graph;
-import org.geotools.graph.util.Queue;
-import org.geotools.graph.util.Stack;
+import org.geotools.graph.structure.Graphable;
 
-/** @source $URL$ */
 public class DirectedDepthFirstTopologicalIterator extends DirectedBreadthFirstTopologicalIterator {
 
-    protected Queue buildQueue(Graph graph) {
-        return (new Stack(graph.getNodes().size()));
+    @Override
+    protected Queue<Graphable> buildQueue(Graph graph) {
+        return (Collections.asLifoQueue(new ArrayDeque<Graphable>(graph.getNodes().size())));
     }
 }

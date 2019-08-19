@@ -34,7 +34,6 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.filter.expression.PropertyName;
 
-/** @source $URL$ */
 public class TransformProcessTest {
     DataStore bugs;
 

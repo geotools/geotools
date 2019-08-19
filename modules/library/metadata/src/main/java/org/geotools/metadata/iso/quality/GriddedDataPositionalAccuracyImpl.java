@@ -24,7 +24,6 @@ import org.opengis.metadata.quality.GriddedDataPositionalAccuracy;
 /**
  * Closeness of gridded data position values to values accepted as or being true.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @author Touraïvane

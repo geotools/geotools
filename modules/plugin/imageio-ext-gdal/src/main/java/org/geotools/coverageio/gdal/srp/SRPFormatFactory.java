@@ -32,8 +32,7 @@ public final class SRPFormatFactory extends BaseGridFormatFactorySPI
         implements GridFormatFactorySpi {
     /** Logger. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(
-                    SRPFormatFactory.class.getPackage().getName());
+            org.geotools.util.logging.Logging.getLogger(SRPFormatFactory.class);
 
     /**
      * Tells me if the coverage plugin to access Erdas imagine is available or not.

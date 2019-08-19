@@ -24,7 +24,6 @@ import org.geotools.geometry.iso.coordinate.GeometryTestSuite;
 import org.geotools.geometry.iso.operations.OperationsTestSuite;
 import org.geotools.geometry.iso.primitive.PrimitiveTestSuite;
 
-/** @source $URL$ */
 public class ISO19107TestSuite {
 
     public static Test suite() {

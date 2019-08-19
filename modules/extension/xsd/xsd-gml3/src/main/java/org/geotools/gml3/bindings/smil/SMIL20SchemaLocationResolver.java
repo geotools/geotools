@@ -19,10 +19,7 @@ package org.geotools.gml3.bindings.smil;
 import org.eclipse.xsd.XSDSchema;
 import org.eclipse.xsd.util.XSDSchemaLocationResolver;
 
-/**
- * @generated
- * @source $URL$
- */
+/** @generated */
 public class SMIL20SchemaLocationResolver implements XSDSchemaLocationResolver {
     /**
      *

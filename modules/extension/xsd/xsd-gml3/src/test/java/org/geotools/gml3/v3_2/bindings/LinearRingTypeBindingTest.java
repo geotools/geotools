@@ -23,7 +23,6 @@ import org.geotools.gml3.v3_2.GML;
 import org.geotools.gml3.v3_2.GML32TestSupport;
 import org.w3c.dom.Document;
 
-/** @source $URL$ */
 public class LinearRingTypeBindingTest extends GML32TestSupport {
     //    public void testPos() throws Exception {
     //        document.appendChild(GML3MockData.linearRingWithPos(document, null));

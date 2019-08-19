@@ -20,7 +20,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -35,10 +34,10 @@ import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.coverage.grid.io.GridFormatFinder;
 import org.geotools.coverage.grid.io.UnknownFormat;
 import org.geotools.data.DefaultTransaction;
-import org.geotools.factory.Hints;
 import org.geotools.gce.imagemosaic.acceptors.GranuleAcceptor;
 import org.geotools.util.URLs;
 import org.geotools.util.Utilities;
+import org.geotools.util.factory.Hints;
 
 /**
  * This class is responsible for walking through the files inside a directory (and its children
@@ -58,8 +57,6 @@ abstract class ImageMosaicWalker implements Runnable {
     /** Default Logger * */
     static final Logger LOGGER =
             org.geotools.util.logging.Logging.getLogger(ImageMosaicWalker.class);
-
-    private List<GranuleAcceptor> granuleAcceptors;
 
     private DefaultTransaction transaction;
 
@@ -90,18 +87,13 @@ abstract class ImageMosaicWalker implements Runnable {
 
     protected final ImageMosaicEventHandlers eventHandler;
 
-    /**
-     * @param updateFeatures if true update catalog with loaded granules
-     * @param imageMosaicConfigHandler configuration handler being used
-     * @param granuleAcceptors list of acceptors to deterrmine granule inclusion
-     */
+    /** @param configHandler configuration handler being used */
     public ImageMosaicWalker(
             ImageMosaicConfigHandler configHandler, ImageMosaicEventHandlers eventHandler) {
         Utilities.ensureNonNull("config handler", configHandler);
         Utilities.ensureNonNull("event handler", eventHandler);
         this.configHandler = configHandler;
         this.eventHandler = eventHandler;
-        this.granuleAcceptors = configHandler.getGranuleAcceptors();
     }
 
     public boolean getStop() {

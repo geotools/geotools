@@ -38,7 +38,6 @@ import org.opengis.referencing.operation.Projection;
  * (default to 0) and <code>"false_northing"</code> (default to 0).
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @see org.geotools.referencing.crs.DefaultProjectedCRS

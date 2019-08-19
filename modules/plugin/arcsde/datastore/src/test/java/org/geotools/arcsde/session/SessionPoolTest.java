@@ -43,10 +43,6 @@ import org.junit.Test;
  * Tests the functionality of a pool of ArcSDE connection objects over a live ArcSDE database
  *
  * @author Gabriel Roldan
- * @source $URL$
- *     http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/test/java
- *     /org/geotools/arcsde/pool/SessionPoolTest.java $
- * @version $Id$
  */
 public class SessionPoolTest {
 

@@ -18,7 +18,6 @@ import org.opengis.metadata.Identifier;
 /**
  * Description of the geographic area using identifiers.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/as#01-111">ISO 19115</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0

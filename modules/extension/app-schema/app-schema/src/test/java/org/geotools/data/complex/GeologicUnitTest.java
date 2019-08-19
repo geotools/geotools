@@ -33,13 +33,13 @@ import org.geotools.data.FeatureSource;
 import org.geotools.data.complex.config.AppSchemaDataAccessConfigurator;
 import org.geotools.data.complex.config.AppSchemaDataAccessDTO;
 import org.geotools.data.complex.config.AppSchemaFeatureTypeRegistry;
-import org.geotools.data.complex.config.EmfComplexFeatureReader;
-import org.geotools.data.complex.config.Types;
 import org.geotools.data.complex.config.XMLConfigDigester;
+import org.geotools.data.complex.feature.type.Types;
+import org.geotools.data.complex.util.EmfComplexFeatureReader;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.test.AppSchemaTestSupport;
-import org.geotools.xml.SchemaIndex;
+import org.geotools.xsd.SchemaIndex;
 import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -53,7 +53,6 @@ import org.opengis.feature.type.Name;
  * This is to ensure we have a working GeologicUnit configuration test.
  *
  * @author Rini Angreani (CSIRO Earth Science and Resource Engineering)
- * @source $URL$
  */
 public class GeologicUnitTest extends AppSchemaTestSupport {
 

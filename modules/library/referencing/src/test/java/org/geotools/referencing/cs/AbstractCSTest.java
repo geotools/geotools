@@ -36,7 +36,6 @@ import tec.uom.se.unit.MetricPrefix;
 /**
  * Tests the {@link AbstractCS} class.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  */

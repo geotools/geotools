@@ -17,7 +17,7 @@
 package org.geotools.gce.imagemosaic.jdbc.custom;
 
 import java.util.Properties;
-import org.geotools.factory.Hints.Key;
+import org.geotools.util.factory.Hints.Key;
 
 /**
  * A Configuration bean storing datastore properties, tableName, coverageName, table prefixes, file

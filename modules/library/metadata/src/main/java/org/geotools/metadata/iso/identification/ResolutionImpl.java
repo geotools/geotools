@@ -26,7 +26,6 @@ import org.opengis.metadata.identification.Resolution;
 /**
  * Level of detail expressed as a scale factor or a ground distance.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @author Touraïvane
@@ -75,7 +74,7 @@ public class ResolutionImpl extends MetadataEntity implements Resolution {
      *
      * @since 2.4
      */
-    public synchronized void setEquivalentScale(final RepresentativeFraction newValue) {
+    public void setEquivalentScale(final RepresentativeFraction newValue) {
         checkWritePermission();
         equivalentScale = newValue;
     }
@@ -89,7 +88,7 @@ public class ResolutionImpl extends MetadataEntity implements Resolution {
     }
 
     /** Set the ground sample distance. */
-    public synchronized void setDistance(final Double newValue) {
+    public void setDistance(final Double newValue) {
         checkWritePermission();
         distance = newValue;
     }

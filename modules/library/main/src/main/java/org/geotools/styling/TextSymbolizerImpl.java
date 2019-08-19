@@ -21,7 +21,7 @@ import java.util.List;
 import javax.measure.Unit;
 import javax.measure.quantity.Length;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.factory.GeoTools;
+import org.geotools.util.factory.GeoTools;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Expression;
 import org.opengis.style.StyleVisitor;
@@ -33,7 +33,6 @@ import org.opengis.util.Cloneable;
  *
  * @author Ian Turton, CCG
  * @author Johann Sorel (Geomatys)
- * @source $URL$
  * @version $Id$
  */
 public class TextSymbolizerImpl extends AbstractSymbolizer implements TextSymbolizer2, Cloneable {
@@ -109,15 +108,6 @@ public class TextSymbolizerImpl extends AbstractSymbolizer implements TextSymbol
             }
         }
     }
-    /**
-     * Returns a device independent Font object that is to be used to render the label.
-     *
-     * @return Device independent Font object to be used to render the label.
-     */
-    @Deprecated
-    public org.geotools.styling.Font[] getFonts() {
-        return fonts.toArray(new org.geotools.styling.Font[fonts.size()]);
-    }
 
     /**
      * Setter for property font.
@@ -126,24 +116,6 @@ public class TextSymbolizerImpl extends AbstractSymbolizer implements TextSymbol
      */
     public void addFont(org.geotools.styling.Font font) {
         fonts.add(font);
-    }
-
-    /**
-     * Sets the list of fonts in the TextSymbolizer to the provided array of Fonts.
-     *
-     * @param fonts The array of fonts to use in the symbolizer.
-     */
-    @Deprecated
-    public void setFonts(org.geotools.styling.Font[] fonts) {
-        this.fonts.clear();
-        if (fonts != null) {
-            for (Font font : fonts) {
-                // the factory likes to pass a array of fonts with a single null value...
-                if (font != null) {
-                    this.fonts.add(font);
-                }
-            }
-        }
     }
 
     /**
@@ -190,27 +162,6 @@ public class TextSymbolizerImpl extends AbstractSymbolizer implements TextSymbol
      *
      * @return Value of property labelPlacement.
      */
-    @Deprecated
-    public LabelPlacement getPlacement() {
-        return getLabelPlacement();
-    }
-
-    /**
-     * Setter for property labelPlacement.
-     *
-     * @param labelPlacement New value of property labelPlacement.
-     * @deprecated Use setLabelPlacement
-     */
-    public void setPlacement(LabelPlacement labelPlacement) {
-        setLabelPlacement(labelPlacement);
-    }
-
-    /**
-     * A pointPlacement specifies how a text element should be rendered relative to its geometric
-     * point.
-     *
-     * @return Value of property labelPlacement.
-     */
     public LabelPlacement getLabelPlacement() {
         return placement;
     }
@@ -248,7 +199,6 @@ public class TextSymbolizerImpl extends AbstractSymbolizer implements TextSymbol
      * Creates a deep copy clone. TODO: Need to complete the deep copy, currently only shallow copy.
      *
      * @return The deep copy clone.
-     * @throws AssertionError DOCUMENT ME!
      */
     public Object clone() {
         try {
@@ -267,18 +217,6 @@ public class TextSymbolizerImpl extends AbstractSymbolizer implements TextSymbol
 
     public Expression getPriority() {
         return priority;
-    }
-
-    public void addToOptions(String key, String value) {
-        getOptions().put(key, value.trim());
-    }
-
-    public String getOption(String key) {
-        if (options == null) {
-            return null;
-        }
-
-        return options.get(key);
     }
 
     public Graphic getGraphic() {

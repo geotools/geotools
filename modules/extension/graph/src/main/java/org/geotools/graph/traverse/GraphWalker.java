@@ -22,7 +22,6 @@ import org.geotools.graph.structure.Graphable;
  * Iterated over the components of a graph using a standard visitor pattern.
  *
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
- * @source $URL$
  */
 public interface GraphWalker {
 
@@ -42,7 +41,7 @@ public interface GraphWalker {
     public int visit(Graphable element, GraphTraversal traversal);
 
     /**
-     * Called when the graph traversal is completed. Wether this method is called after a traversal
+     * Called when the graph traversal is completed. Whether this method is called after a traversal
      * has been stopped with a return signal is up to the implementation of GraphTraversal.
      *
      * @see GraphTraversal

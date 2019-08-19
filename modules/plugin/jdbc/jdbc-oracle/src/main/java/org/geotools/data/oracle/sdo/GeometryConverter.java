@@ -47,7 +47,6 @@ import org.locationtech.jts.geom.Polygon;
  * ordinates beyond xyz.
  *
  * @author jgarnett
- * @source $URL$
  */
 public class GeometryConverter {
     protected OracleConnection connection;
@@ -118,7 +117,6 @@ public class GeometryConverter {
         final double POINT[] = asDoubleArray((STRUCT) data[2], Double.NaN);
         final int ELEMINFO[] = asIntArray((ARRAY) data[3], 0);
         final double ORDINATES[] = asDoubleArray((ARRAY) data[4], Double.NaN);
-        ;
 
         return SDO.create(geometryFactory, GTYPE, SRID, POINT, ELEMINFO, ORDINATES);
     }
@@ -352,12 +350,12 @@ public class GeometryConverter {
     protected final CHAR toCHAR(String s) {
 
         // make sure if the string is larger than one character, only take the first character
-        if (s.length() > 1) s = new String((new Character(s.charAt(0))).toString());
+        if (s.length() > 1) s = new String((Character.valueOf(s.charAt(0))).toString());
         try {
             // BUG: make sure I am correct
             return new CHAR(s, CharacterSet.make(CharacterSet.ISO_LATIN_1_CHARSET));
         } catch (SQLException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
         return null;
     }

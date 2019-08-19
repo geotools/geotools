@@ -17,10 +17,10 @@ import org.eclipse.emf.ecore.EObject;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link net.opengis.wps10.ProcessOfferingsType#getProcess <em>Process</em>}</li>
  * </ul>
- * </p>
  *
  * @see net.opengis.wps10.Wps10Package#getProcessOfferingsType()
  * @model extendedMetaData="name='ProcessOfferings_._type' kind='elementOnly'"
@@ -28,19 +28,19 @@ import org.eclipse.emf.ecore.EObject;
  */
 public interface ProcessOfferingsType extends EObject {
     /**
-     * Returns the value of the '<em><b>Process</b></em>' containment reference list.
-     * The list contents are of type {@link net.opengis.wps10.ProcessBriefType}.
-     * <!-- begin-user-doc -->
+   * Returns the value of the '<em><b>Process</b></em>' containment reference list.
+   * The list contents are of type {@link net.opengis.wps10.ProcessBriefType}.
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * <!-- begin-model-doc -->
-     * Unordered list of one or more brief descriptions of all the processes offered by this WPS server.
-     * <!-- end-model-doc -->
-     * @return the value of the '<em>Process</em>' containment reference list.
-     * @see net.opengis.wps10.Wps10Package#getProcessOfferingsType_Process()
-     * @model type="net.opengis.wps10.ProcessBriefType" containment="true" required="true"
-     *        extendedMetaData="kind='element' name='Process' namespace='##targetNamespace'"
-     * @generated
-     */
+   * <!-- begin-model-doc -->
+   * Unordered list of one or more brief descriptions of all the processes offered by this WPS server.
+   * <!-- end-model-doc -->
+   * @return the value of the '<em>Process</em>' containment reference list.
+   * @see net.opengis.wps10.Wps10Package#getProcessOfferingsType_Process()
+   * @model type="net.opengis.wps10.ProcessBriefType" containment="true" required="true"
+   *        extendedMetaData="kind='element' name='Process' namespace='##targetNamespace'"
+   * @generated
+   */
     EList getProcess();
 
 } // ProcessOfferingsType

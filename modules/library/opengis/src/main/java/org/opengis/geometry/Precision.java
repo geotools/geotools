@@ -21,7 +21,6 @@ package org.opengis.geometry;
  *
  * @author Jody Garnett
  * @since GeoAPI 2.1
- * @source $URL$
  */
 public interface Precision extends Comparable<Precision> {
     /**

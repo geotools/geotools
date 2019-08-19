@@ -29,7 +29,6 @@ import org.opengis.geometry.Geometry;
  *
  * @author Jody Garnett
  * @author Joel Skelton
- * @source $URL$
  */
 public class GeometryTestCase {
 

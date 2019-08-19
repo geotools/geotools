@@ -19,11 +19,11 @@ package org.geotools.referencing.operation.builder;
 import java.io.Serializable;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.GeneralDirectPosition;
-import org.geotools.io.TableWriter;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
-import org.geotools.resources.i18n.Vocabulary;
-import org.geotools.resources.i18n.VocabularyKeys;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
+import org.geotools.metadata.i18n.Vocabulary;
+import org.geotools.metadata.i18n.VocabularyKeys;
+import org.geotools.util.TableWriter;
 import org.geotools.util.Utilities;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.MismatchedDimensionException;
@@ -35,7 +35,6 @@ import org.opengis.referencing.operation.TransformException;
  * positions. Accuracy information and comments can optionnaly be attached.
  *
  * @since 2.4
- * @source $URL$
  * @version $Id$
  * @author Jan Jezek
  * @author Martin Desruisseaux

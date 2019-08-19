@@ -20,7 +20,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  *
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0
- * @source $URL$
  */
 public class OperationNotFoundException extends FactoryException {
     /** Serial number for interoperability with different versions. */

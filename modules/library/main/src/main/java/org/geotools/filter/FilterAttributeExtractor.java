@@ -45,7 +45,6 @@ import org.opengis.filter.expression.VolatileFunction;
  * for this use case refer to the {@link #isConstantExpression()} method
  *
  * @author Andrea Aime - GeoSolutions
- * @source $URL$
  */
 public class FilterAttributeExtractor extends DefaultFilterVisitor {
 

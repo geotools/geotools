@@ -18,7 +18,6 @@ import org.opengis.annotation.UML;
  * A zero dimensional topological primitive in time.
  *
  * @author Alexander Petkov
- * @source $URL$
  */
 @UML(identifier = "TM_Node", specification = ISO_19108)
 public interface TemporalNode extends TemporalTopologicalPrimitive {

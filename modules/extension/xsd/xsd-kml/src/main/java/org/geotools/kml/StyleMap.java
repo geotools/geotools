@@ -29,7 +29,6 @@ import org.geotools.styling.FeatureTypeStyle;
  * serializes / deserializes out to disk.
  *
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL$
  */
 public class StyleMap {
     protected Map map = Collections.synchronizedMap(new HashMap());

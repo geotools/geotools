@@ -21,7 +21,6 @@ import java.sql.PreparedStatement;
 import org.geotools.jdbc.JDBCLobTestSetup;
 import org.geotools.jdbc.JDBCTestSetup;
 
-/** @source $URL$ */
 public class TeradataLobTestSetup extends JDBCLobTestSetup {
 
     public TeradataLobTestSetup(JDBCTestSetup delegate) {

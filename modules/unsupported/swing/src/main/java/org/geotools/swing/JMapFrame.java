@@ -65,7 +65,6 @@ import org.geotools.swing.tool.ScrollWheelTool;
  * @see StatusBar
  * @author Michael Bedward
  * @since 2.6
- * @source $URL$
  * @version $Id$
  */
 public class JMapFrame extends JFrame {

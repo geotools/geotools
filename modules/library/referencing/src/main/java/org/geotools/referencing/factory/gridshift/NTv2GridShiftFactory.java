@@ -26,13 +26,13 @@ import java.io.RandomAccessFile;
 import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.geotools.factory.AbstractFactory;
-import org.geotools.factory.BufferedFactory;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.factory.ReferencingFactory;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
 import org.geotools.util.SoftValueHashMap;
 import org.geotools.util.URLs;
+import org.geotools.util.factory.AbstractFactory;
+import org.geotools.util.factory.BufferedFactory;
 import org.geotools.util.logging.Logging;
 import org.opengis.referencing.FactoryException;
 
@@ -49,7 +49,7 @@ public class NTv2GridShiftFactory extends ReferencingFactory implements Buffered
     private static final int GRID_CACHE_HARD_REFERENCES = 10;
 
     /** Logger. */
-    protected static final Logger LOGGER = Logging.getLogger("org.geotools.referencing");
+    protected static final Logger LOGGER = Logging.getLogger(NTv2GridShiftFactory.class);
 
     /** The soft cache that holds loaded grids. */
     private SoftValueHashMap<String, GridShiftFile> ntv2GridCache;
@@ -75,7 +75,7 @@ public class NTv2GridShiftFactory extends ReferencingFactory implements Buffered
     /**
      * Performs a NTv2 grid file lookup given its name, and checks for file format correctness.
      *
-     * @param name The NTv2 grid file name
+     * @param location The NTv2 grid file location
      * @return {@code true} if file exists and is valid, {@code false} otherwise
      */
     public boolean isNTv2Grid(URL location) {
@@ -89,7 +89,7 @@ public class NTv2GridShiftFactory extends ReferencingFactory implements Buffered
     /**
      * Creates a NTv2 Grid.
      *
-     * @param name The NTv2 grid name
+     * @param gridLocation The NTv2 grid file location
      * @return the grid
      * @throws FactoryException if grid cannot be created
      */
@@ -120,7 +120,7 @@ public class NTv2GridShiftFactory extends ReferencingFactory implements Buffered
      *
      * <p>If file is not valid, the cause is logged at {@link Level#WARNING warning level}.
      *
-     * @param location the NTv2 file absolute path
+     * @param url the NTv2 file absolute path
      * @return true if file has NTv2 format, false otherwise
      */
     protected boolean isNTv2GridFileValid(URL url) {

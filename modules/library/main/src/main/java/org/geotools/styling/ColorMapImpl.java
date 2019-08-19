@@ -27,7 +27,6 @@ import org.opengis.style.StyleVisitor;
  *
  * @author iant
  * @author aaime
- * @source $URL$
  */
 public class ColorMapImpl implements ColorMap {
     private final Function function;

@@ -29,7 +29,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * Shells are simple. Shell: {isSimple() = TRUE}
  *
  * @author Jackson Roehrig & Sanjay Jena
- * @source $URL$
  */
 public class ShellImpl extends CompositeSurfaceImpl implements Shell {
 

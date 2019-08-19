@@ -32,9 +32,9 @@ import org.geotools.data.DataUtilities;
 import org.geotools.gml2.bindings.GMLEncodingUtils;
 import org.geotools.gml3.GML;
 import org.geotools.gml3.GMLConfiguration;
-import org.geotools.xml.Configuration;
-import org.geotools.xml.SchemaIndex;
-import org.geotools.xml.Schemas;
+import org.geotools.xsd.Configuration;
+import org.geotools.xsd.SchemaIndex;
+import org.geotools.xsd.Schemas;
 import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeatureType;
 

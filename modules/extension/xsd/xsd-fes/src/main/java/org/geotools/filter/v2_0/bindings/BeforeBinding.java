@@ -18,7 +18,9 @@ package org.geotools.filter.v2_0.bindings;
 
 import javax.xml.namespace.QName;
 import org.geotools.filter.v2_0.FES;
-import org.geotools.xml.*;
+import org.geotools.xsd.AbstractComplexBinding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.temporal.Before;

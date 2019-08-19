@@ -19,14 +19,13 @@ package org.geotools.sld.bindings;
 import java.util.Set;
 import javax.xml.namespace.QName;
 import org.geotools.filter.v1_0.OGC;
-import org.geotools.xml.XSD;
+import org.geotools.xsd.XSD;
 
 /**
  * This interface contains the qualified names of all the types,elements, and attributes in the
  * http://www.opengis.net/sld schema.
  *
  * @generated
- * @source $URL$
  */
 public final class SLD extends XSD {
     /** singleton instance */

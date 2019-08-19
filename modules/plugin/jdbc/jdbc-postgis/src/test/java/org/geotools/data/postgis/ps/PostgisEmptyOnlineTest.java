@@ -20,7 +20,6 @@ import org.geotools.data.postgis.PostgisEmptyTestSetup;
 import org.geotools.jdbc.JDBCEmptyOnlineTest;
 import org.geotools.jdbc.JDBCEmptyTestSetup;
 
-/** @source $URL$ */
 public class PostgisEmptyOnlineTest extends JDBCEmptyOnlineTest {
 
     @Override

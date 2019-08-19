@@ -35,11 +35,11 @@
 package org.geotools.gce.geotiff;
 
 import it.geosolutions.imageio.maskband.DatasetLayout;
+import it.geosolutions.imageio.utilities.ImageIOUtilities;
 import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReaderSpi;
 import it.geosolutions.imageioimpl.plugins.tiff.TiffDatasetLayoutImpl;
-import java.awt.Color;
-import java.awt.Rectangle;
-import java.awt.RenderingHints;
+import it.geosolutions.jaiext.range.NoDataContainer;
+import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.ColorModel;
 import java.awt.image.SampleModel;
@@ -88,24 +88,25 @@ import org.geotools.coverage.grid.io.imageio.MaskOverviewProvider.MaskInfo;
 import org.geotools.coverage.grid.io.imageio.geotiff.GeoTiffIIOMetadataDecoder;
 import org.geotools.coverage.grid.io.imageio.geotiff.GeoTiffMetadata2CRSAdapter;
 import org.geotools.coverage.grid.io.imageio.geotiff.TiePoint;
+import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.FileGroupProvider.FileGroup;
 import org.geotools.data.MapInfoFileReader;
 import org.geotools.data.PrjFileReader;
 import org.geotools.data.WorldFileReader;
-import org.geotools.factory.Hints;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.image.ImageWorker;
 import org.geotools.image.io.ImageIOExt;
+import org.geotools.image.util.ImageUtilities;
+import org.geotools.metadata.i18n.Vocabulary;
+import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
-import org.geotools.resources.coverage.CoverageUtilities;
-import org.geotools.resources.i18n.Vocabulary;
-import org.geotools.resources.i18n.VocabularyKeys;
-import org.geotools.resources.image.ImageUtilities;
 import org.geotools.util.NumberRange;
 import org.geotools.util.URLs;
+import org.geotools.util.Utilities;
+import org.geotools.util.factory.Hints;
 import org.opengis.coverage.ColorInterpretation;
 import org.opengis.coverage.grid.Format;
 import org.opengis.coverage.grid.GridCoverage;
@@ -131,8 +132,7 @@ import org.opengis.referencing.operation.TransformException;
 public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridCoverage2DReader {
 
     /** Logger for the {@link GeoTiffReader} class. */
-    private Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(GeoTiffReader.class.toString());
+    private Logger LOGGER = org.geotools.util.logging.Logging.getLogger(GeoTiffReader.class);
 
     /**
      * With this java switch I can control whether or not an external PRJ files takes precedence
@@ -319,7 +319,9 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
             } else {
 
                 // check external prj first
-                crs = getCRS(source);
+                if (!ImageIOUtilities.isSkipExternalFilesLookup()) {
+                    crs = getCRS(source);
+                }
 
                 // now, if we did not want to override the inner CRS or we did not have any external
                 // PRJ at hand
@@ -337,6 +339,9 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
             if (metadata.hasNoData()) {
                 noData = metadata.getNoData();
             }
+
+            // collect scales and offsets is present
+            collectScaleOffset(iioMetadata);
 
             //
             // parse and set layout
@@ -543,49 +548,51 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
         Color inputTransparentColor = null;
         OverviewPolicy overviewPolicy = null;
         int[] suggestedTileSize = null;
-        if (params != null) {
+        boolean rescalePixels = AbstractGridFormat.RESCALE_PIXELS.getDefaultValue();
 
-            //
-            // Checking params
-            //
-            if (params != null) {
-                for (int i = 0; i < params.length; i++) {
-                    final ParameterValue param = (ParameterValue) params[i];
-                    final ReferenceIdentifier name = param.getDescriptor().getName();
-                    if (name.equals(AbstractGridFormat.READ_GRIDGEOMETRY2D.getName())) {
-                        final GridGeometry2D gg = (GridGeometry2D) param.getValue();
-                        requestedEnvelope = new GeneralEnvelope((Envelope) gg.getEnvelope2D());
-                        dim = gg.getGridRange2D().getBounds();
-                        continue;
-                    }
-                    if (name.equals(AbstractGridFormat.OVERVIEW_POLICY.getName())) {
-                        overviewPolicy = (OverviewPolicy) param.getValue();
-                        continue;
-                    }
-                    if (name.equals(AbstractGridFormat.INPUT_TRANSPARENT_COLOR.getName())) {
-                        inputTransparentColor = (Color) param.getValue();
-                        continue;
-                    }
-                    if (name.equals(AbstractGridFormat.SUGGESTED_TILE_SIZE.getName())) {
-                        String suggestedTileSize_ = (String) param.getValue();
-                        if (suggestedTileSize_ != null && suggestedTileSize_.length() > 0) {
-                            suggestedTileSize_ = suggestedTileSize_.trim();
-                            int commaPosition = suggestedTileSize_.indexOf(",");
-                            if (commaPosition < 0) {
-                                int tileDim = Integer.parseInt(suggestedTileSize_);
-                                suggestedTileSize = new int[] {tileDim, tileDim};
-                            } else {
-                                int tileW =
-                                        Integer.parseInt(
-                                                suggestedTileSize_.substring(0, commaPosition));
-                                int tileH =
-                                        Integer.parseInt(
-                                                suggestedTileSize_.substring(commaPosition + 1));
-                                suggestedTileSize = new int[] {tileW, tileH};
-                            }
+        //
+        // Checking params
+        //
+        if (params != null) {
+            for (int i = 0; i < params.length; i++) {
+                final ParameterValue param = (ParameterValue) params[i];
+                final ReferenceIdentifier name = param.getDescriptor().getName();
+                if (name.equals(AbstractGridFormat.READ_GRIDGEOMETRY2D.getName())) {
+                    final GridGeometry2D gg = (GridGeometry2D) param.getValue();
+                    requestedEnvelope = new GeneralEnvelope((Envelope) gg.getEnvelope2D());
+                    dim = gg.getGridRange2D().getBounds();
+                    continue;
+                }
+                if (name.equals(AbstractGridFormat.OVERVIEW_POLICY.getName())) {
+                    overviewPolicy = (OverviewPolicy) param.getValue();
+                    continue;
+                }
+                if (name.equals(AbstractGridFormat.INPUT_TRANSPARENT_COLOR.getName())) {
+                    inputTransparentColor = (Color) param.getValue();
+                    continue;
+                }
+                if (name.equals(AbstractGridFormat.SUGGESTED_TILE_SIZE.getName())) {
+                    String suggestedTileSize_ = (String) param.getValue();
+                    if (suggestedTileSize_ != null && suggestedTileSize_.length() > 0) {
+                        suggestedTileSize_ = suggestedTileSize_.trim();
+                        int commaPosition = suggestedTileSize_.indexOf(",");
+                        if (commaPosition < 0) {
+                            int tileDim = Integer.parseInt(suggestedTileSize_);
+                            suggestedTileSize = new int[] {tileDim, tileDim};
+                        } else {
+                            int tileW =
+                                    Integer.parseInt(
+                                            suggestedTileSize_.substring(0, commaPosition));
+                            int tileH =
+                                    Integer.parseInt(
+                                            suggestedTileSize_.substring(commaPosition + 1));
+                            suggestedTileSize = new int[] {tileW, tileH};
                         }
-                        continue;
                     }
+                    continue;
+                }
+                if (name.equals(AbstractGridFormat.RESCALE_PIXELS.getName())) {
+                    rescalePixels = Boolean.TRUE.equals(param.getValue());
                 }
             }
         }
@@ -593,12 +600,12 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
         //
         // set params
         //
-        Integer imageChoice = new Integer(0);
+        Integer imageChoice = Integer.valueOf(0);
         final ImageReadParam readP = new ImageReadParam();
         try {
             imageChoice = setReadParams(overviewPolicy, readP, requestedEnvelope, dim);
         } catch (TransformException e) {
-            new DataSourceException(e);
+            throw new DataSourceException(e);
         }
 
         //
@@ -666,9 +673,23 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
         pbjRead.add(null);
         pbjRead.add(readP);
         pbjRead.add(READER_SPI.createReaderInstance());
-        RenderedOp coverageRaster =
-                JAI.create(
-                        "ImageRead", pbjRead, newHints != null ? (RenderingHints) newHints : null);
+        PlanarImage coverageRaster =
+                JAI.create("ImageRead", pbjRead, newHints != null ? newHints : null);
+
+        // applying rescale if needed
+        if (rescalePixels) {
+            if (!Double.isNaN(noData)) {
+                // Force nodata settings since JAI ImageRead may lost that
+                // We have to make sure that noData pixels won't be rescaled
+                PlanarImage t = PlanarImage.wrapRenderedImage(coverageRaster);
+                t.setProperty(NoDataContainer.GC_NODATA, new NoDataContainer(noData));
+                coverageRaster = t;
+            }
+            coverageRaster =
+                    PlanarImage.wrapRenderedImage(
+                            ImageUtilities.applyRescaling(
+                                    scales, offsets, coverageRaster, newHints));
+        }
 
         //
         // MASKING INPUT COLOR as indicated
@@ -688,7 +709,7 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
         ROI roi = null;
         // Using MaskOvrProvider
         if (hasMaskOvrProvider) {
-            // Parameter definiton
+            // Parameter definition
             GridEnvelope ogr = getOriginalGridRange();
             Rectangle sourceRegion;
             if (readP.getSourceRegion() != null) {
@@ -859,7 +880,8 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
                             Vocabulary.formatInternational(VocabularyKeys.NODATA),
                             new Color[] {new Color(0, 0, 0, 0)},
                             NumberRange.create(noData, noData));
-            CoverageUtilities.setNoDataProperty(properties, new Double(noData));
+            CoverageUtilities.setNoDataProperty(properties, Double.valueOf(noData));
+            image.setProperty(NoDataContainer.GC_NODATA, new NoDataContainer(noData));
         }
         // Setting ROI Property
         if (roi != null) {
@@ -1024,6 +1046,17 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
             }
         }
         return null;
+    }
+
+    @Override
+    protected boolean checkName(
+            String coverageName) { // GEOS-6327 - tolerate geotiff_coverage as coverageName
+        if ("geotiff_coverage".equalsIgnoreCase(coverageName)) {
+            return true;
+        } else {
+            Utilities.ensureNonNull("coverageName", coverageName);
+            return coverageName.equalsIgnoreCase(this.coverageName);
+        }
     }
 
     /**

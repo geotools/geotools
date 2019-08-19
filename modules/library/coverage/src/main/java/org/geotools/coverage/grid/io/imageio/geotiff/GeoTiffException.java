@@ -60,7 +60,6 @@ import java.io.StringWriter;
  *
  * @author Bryce Nordgren / USDA Forest Service
  * @author Simone Giannecchini
- * @source $URL$
  */
 public final class GeoTiffException extends IOException {
 
@@ -97,7 +96,9 @@ public final class GeoTiffException extends IOException {
      * @return Value of property geoKeys.
      */
     public GeoKeyEntry[] getGeoKeys() {
-        return metadata != null ? (GeoKeyEntry[]) metadata.getGeoKeys().toArray() : null;
+        return metadata != null
+                ? metadata.getGeoKeys().toArray(new GeoKeyEntry[metadata.getGeoKeys().size()])
+                : null;
     }
 
     public String getMessage() {
@@ -183,7 +184,8 @@ public final class GeoTiffException extends IOException {
 
         // print out the localized message
         Throwable t = getCause();
-        if (t != null) t.printStackTrace(message);
+        if (t != null)
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", t);
 
         // close and return
         message.close();

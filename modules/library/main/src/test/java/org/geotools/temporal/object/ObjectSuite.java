@@ -19,10 +19,7 @@ package org.geotools.temporal.object;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
-/**
- * @author Mehdi Sidhoum (Geomatys)
- * @source $URL$
- */
+/** @author Mehdi Sidhoum (Geomatys) */
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
     org.geotools.temporal.object.DefaultTemporalCoordinateTest.class,

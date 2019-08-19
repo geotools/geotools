@@ -25,7 +25,6 @@ import org.geotools.jdbc.JDBCTestSetup;
  * FeatureStore test for H2.
  *
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL$
  */
 public class H2FeatureStoreExposedPkTest extends JDBCFeatureStoreExposePkOnlineTest {
     protected JDBCTestSetup createTestSetup() {

@@ -21,7 +21,6 @@ import org.opengis.annotation.UML;
  * @author Alexander Petkov
  * @todo The Javadoc suggest that this interface should extends some kind of {@linkplain
  *     TemporalGeometricPrimitive temporal geometric primitive}.
- * @source $URL$
  */
 @UML(identifier = "TM_Separation", specification = ISO_19108)
 public interface Separation {

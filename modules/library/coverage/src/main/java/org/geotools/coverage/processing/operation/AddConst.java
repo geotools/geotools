@@ -69,7 +69,6 @@ import org.opengis.util.InternationalString;
  * </table>
  *
  * @since 2.2
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @see org.geotools.coverage.processing.Operations#add(org.opengis.coverage.Coverage, double[])

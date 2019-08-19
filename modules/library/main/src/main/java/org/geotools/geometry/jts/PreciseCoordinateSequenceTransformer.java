@@ -18,7 +18,7 @@ package org.geotools.geometry.jts;
 
 import org.locationtech.jts.geom.CoordinateSequence;
 import org.locationtech.jts.geom.CoordinateSequenceFactory;
-import org.locationtech.jts.geom.DefaultCoordinateSequenceFactory;
+import org.locationtech.jts.geom.impl.CoordinateArraySequenceFactory;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.TransformException;
 
@@ -30,14 +30,13 @@ import org.opengis.referencing.operation.TransformException;
  * sequence.
  *
  * @todo Not yet implemented.
- * @source $URL$
  */
 public class PreciseCoordinateSequenceTransformer implements CoordinateSequenceTransformer {
     CoordinateSequenceFactory csFactory;
     double flatness;
 
     public PreciseCoordinateSequenceTransformer() {
-        csFactory = DefaultCoordinateSequenceFactory.instance();
+        csFactory = CoordinateArraySequenceFactory.instance();
     }
 
     /**

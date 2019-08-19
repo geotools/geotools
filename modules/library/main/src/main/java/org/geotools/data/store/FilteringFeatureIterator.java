@@ -25,7 +25,6 @@ import org.opengis.filter.Filter;
  * Decorates a FeatureIterator with one that filters content.
  *
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL$
  */
 public class FilteringFeatureIterator<F extends Feature> implements FeatureIterator<F> {
 

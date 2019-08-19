@@ -23,8 +23,8 @@ import java.util.Set;
 import junit.framework.TestCase;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataUtilities;
-import org.geotools.data.DefaultQuery;
 import org.geotools.data.FeatureSource;
+import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
@@ -45,7 +45,6 @@ import org.opengis.filter.Filter;
  *
  * @author bowens<br>
  *     Created Jun 28, 2004<br>
- * @source $URL$
  * @version <br>
  *     <b>Puropse:</b><br>
  *     <p><b>Description:</b><br>
@@ -97,7 +96,7 @@ public class ValidatorTest extends TestCase {
         SimpleFeatureSource lakes = fixture.repository.source("LAKES", "lakes");
 
         SimpleFeatureIterator features =
-                lakes.getFeatures(new DefaultQuery("lakes", Filter.INCLUDE, 1, null, null))
+                lakes.getFeatures(new Query("lakes", Filter.INCLUDE, 1, (String[]) null, null))
                         .features();
         SimpleFeature feature = features.next();
         features.close();
@@ -190,7 +189,7 @@ public class ValidatorTest extends TestCase {
         DefaultFeatureResults results = new DefaultFeatureResults();
         fixture.processor.runFeatureTests("LAKES", add, results);
 
-        System.out.println(results.error);
+        // System.out.println(results.error);
         assertEquals("lakes test", 2, results.error.size());
 
         // results = new DefaultFeatureResults();

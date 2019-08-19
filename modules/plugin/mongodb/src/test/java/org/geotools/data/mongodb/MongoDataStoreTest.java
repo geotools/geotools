@@ -17,6 +17,7 @@
  */
 package org.geotools.data.mongodb;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -25,6 +26,7 @@ import org.geotools.data.Query;
 import org.geotools.data.Transaction;
 import org.geotools.data.simple.SimpleFeatureReader;
 import org.geotools.data.simple.SimpleFeatureSource;
+import org.geotools.feature.NameImpl;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geometry.jts.GeometryBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -129,5 +131,71 @@ public abstract class MongoDataStoreTest extends MongoTestSupport {
 
         source = dataStore.getFeatureSource("ft2");
         assertEquals(1, source.getCount(new Query("ft2")));
+    }
+
+    public void testRebuildSchemaWithId() throws Exception {
+        try {
+            dataStore.setSchemaInitParams(
+                    MongoSchemaInitParams.builder().ids("58e5889ce4b02461ad5af082").build());
+            clearSchemaStore(dataStore);
+            dataStore.cleanEntries();
+            SimpleFeatureType schema = dataStore.getSchema("ft1");
+            assertNotNull(schema);
+
+            assertNotNull(schema.getDescriptor("properties.optionalProperty"));
+        } finally {
+            dataStore.setSchemaInitParams(null);
+            clearSchemaStore(dataStore);
+            dataStore.cleanEntries();
+        }
+    }
+
+    public void testRebuildSchemaWithMax() throws Exception {
+        try {
+            dataStore.setSchemaInitParams(MongoSchemaInitParams.builder().maxObjects(3).build());
+            clearSchemaStore(dataStore);
+            dataStore.cleanEntries();
+            SimpleFeatureType schema = dataStore.getSchema("ft1");
+            assertNotNull(schema);
+
+            assertNotNull(schema.getDescriptor("properties.optionalProperty"));
+        } finally {
+            dataStore.setSchemaInitParams(null);
+            clearSchemaStore(dataStore);
+            dataStore.cleanEntries();
+        }
+    }
+
+    public void testRebuildSchemaWithAllItems() throws Exception {
+        try {
+            dataStore.setSchemaInitParams(MongoSchemaInitParams.builder().maxObjects(-1).build());
+            clearSchemaStore(dataStore);
+            dataStore.cleanEntries();
+            SimpleFeatureType schema = dataStore.getSchema("ft1");
+            assertNotNull(schema);
+            assertNotNull(schema.getDescriptor("properties.optionalProperty"));
+            assertNotNull(schema.getDescriptor("properties.optionalProperty2"));
+            assertNotNull(schema.getDescriptor("properties.optionalProperty3"));
+            // check inside array value (not first element)
+            assertNotNull(
+                    "Inside array value check (not first element) failed.",
+                    schema.getDescriptor("properties.listProperty.insideArrayValue"));
+        } finally {
+            dataStore.setSchemaInitParams(null);
+            clearSchemaStore(dataStore);
+            dataStore.cleanEntries();
+        }
+    }
+
+    private void clearSchemaStore(MongoDataStore mongoStore) {
+        List<String> typeNames = mongoStore.getSchemaStore().typeNames();
+        for (String et : typeNames) {
+            try {
+                mongoStore.getSchemaStore().deleteSchema(new NameImpl(et));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        mongoStore.cleanEntries();
     }
 }

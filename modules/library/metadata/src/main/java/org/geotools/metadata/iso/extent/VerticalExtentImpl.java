@@ -26,7 +26,6 @@ import org.opengis.referencing.crs.VerticalCRS;
 /**
  * Vertical domain of dataset.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @author Touraïvane
@@ -78,7 +77,7 @@ public class VerticalExtentImpl extends MetadataEntity implements VerticalExtent
     }
 
     /** Set the lowest vertical extent contained in the dataset. */
-    public synchronized void setMinimumValue(final Double newValue) {
+    public void setMinimumValue(final Double newValue) {
         checkWritePermission();
         minimumValue = newValue;
     }
@@ -89,7 +88,7 @@ public class VerticalExtentImpl extends MetadataEntity implements VerticalExtent
     }
 
     /** Set the highest vertical extent contained in the dataset. */
-    public synchronized void setMaximumValue(final Double newValue) {
+    public void setMaximumValue(final Double newValue) {
         checkWritePermission();
         maximumValue = newValue;
     }
@@ -111,7 +110,7 @@ public class VerticalExtentImpl extends MetadataEntity implements VerticalExtent
      *
      * @since 2.4
      */
-    public synchronized void setVerticalCRS(final VerticalCRS newValue) {
+    public void setVerticalCRS(final VerticalCRS newValue) {
         checkWritePermission();
         verticalCRS = newValue;
     }

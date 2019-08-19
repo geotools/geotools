@@ -18,7 +18,6 @@ package org.geotools.data.sqlserver;
 
 import org.geotools.jdbc.JDBCDataStoreAPITestSetup;
 
-/** @source $URL$ */
 public class SQLServerDataStoreAPITestSetup extends JDBCDataStoreAPITestSetup {
 
     public SQLServerDataStoreAPITestSetup() {

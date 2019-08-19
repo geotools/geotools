@@ -18,24 +18,21 @@ package org.geotools.referencing.factory;
 
 import java.awt.RenderingHints;
 import java.util.*;
-import org.geotools.factory.Factory;
-import org.geotools.factory.FactoryCreator;
-import org.geotools.factory.FactoryRegistry;
-import org.geotools.factory.GeoTools;
-import org.geotools.factory.Hints;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.AbstractIdentifiedObject;
 import org.geotools.referencing.ReferencingFactoryFinder;
 import org.geotools.referencing.crs.DefaultCompoundCRS;
 import org.geotools.referencing.cs.AbstractCS;
-import org.geotools.referencing.operation.DefaultMathTransformFactory;
 import org.geotools.referencing.operation.DefiningConversion;
-import org.geotools.resources.XArray;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
-import org.opengis.parameter.ParameterValueGroup;
+import org.geotools.util.XArray;
+import org.geotools.util.factory.Factory;
+import org.geotools.util.factory.FactoryCreator;
+import org.geotools.util.factory.FactoryRegistry;
+import org.geotools.util.factory.GeoTools;
+import org.geotools.util.factory.Hints;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.IdentifiedObject;
-import org.opengis.referencing.NoSuchIdentifierException;
 import org.opengis.referencing.crs.*;
 import org.opengis.referencing.cs.*;
 import org.opengis.referencing.datum.*;
@@ -47,7 +44,6 @@ import org.opengis.referencing.operation.*;
  * helper methods and somewhat implementation-dependent, they are not part of GeoAPI.
  *
  * @since 2.4
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
@@ -91,8 +87,8 @@ public class ReferencingFactoryContainer extends ReferencingFactory {
      * Hints#CRS_FACTORY CRS}, {@link Hints#CS_FACTORY CS}, {@link Hints#DATUM_FACTORY DATUM} and
      * {@link Hints#MATH_TRANSFORM_FACTORY MATH_TRANSFORM} {@code FACTORY} hints.
      *
-     * <p>This constructor is public mainly for {@link org.geotools.factory.FactoryCreator} usage.
-     * Consider invoking <code>{@linkplain #createInstance createInstance}(userHints)</code>
+     * <p>This constructor is public mainly for {@link org.geotools.util.factory.FactoryCreator}
+     * usage. Consider invoking <code>{@linkplain #createInstance createInstance}(userHints)</code>
      * instead.
      *
      * @param userHints The hints, or {@code null} if none.
@@ -268,161 +264,6 @@ public class ReferencingFactoryContainer extends ReferencingFactory {
             }
         }
         return mtFactory;
-    }
-
-    /**
-     * Returns the operation method for the specified name. If the {@linkplain
-     * #getMathTransformFactory underlying math transform factory} is the {@linkplain
-     * DefaultMathTransformFactory Geotools implementation}, then this method just delegates the
-     * call to it. Otherwise this method scans all operations registered in the math transform
-     * factory until a match is found.
-     *
-     * @param name The case insensitive {@linkplain org.opengis.metadata.Identifier#getCode
-     *     identifier code} of the operation method to search for (e.g. {@code
-     *     "Transverse_Mercator"}).
-     * @return The operation method.
-     * @throws NoSuchIdentifierException if there is no operation method registered for the
-     *     specified name.
-     * @see DefaultMathTransformFactory#getOperationMethod
-     * @deprecated Use {@link DefaultMathTransformFactory#getOperationMethod}. This method was
-     *     inefficient for other implementations.
-     */
-    @Deprecated
-    public OperationMethod getOperationMethod(final String name) throws NoSuchIdentifierException {
-        final MathTransformFactory mtFactory = getMathTransformFactory();
-        if (mtFactory instanceof DefaultMathTransformFactory) {
-            // Special processing for Geotools implementation.
-            return ((DefaultMathTransformFactory) mtFactory).getOperationMethod(name);
-        }
-        // Not a geotools implementation. Scan all methods.
-        for (final OperationMethod method : mtFactory.getAvailableMethods(Operation.class)) {
-            if (AbstractIdentifiedObject.nameMatches(method, name)) {
-                return method;
-            }
-        }
-        throw new NoSuchIdentifierException(
-                Errors.format(ErrorKeys.NO_TRANSFORM_FOR_CLASSIFICATION_$1, name), name);
-    }
-
-    /**
-     * Returns the operation method for the last call to a {@code create} method in the currently
-     * running thread. This method may be invoked after any of the following methods:
-     *
-     * <p>
-     *
-     * <ul>
-     *   <li>{@link #createParameterizedTransform}
-     *   <li>{@link #createBaseToDerived}
-     * </ul>
-     *
-     * @return The operation method for the last call to a {@code create} method, or {@code null} if
-     *     none.
-     * @see MathTransformFactory#getLastMethodUsed
-     * @deprecated Moved to the {@link MathTransformFactory} interface.
-     */
-    @Deprecated
-    public OperationMethod getLastUsedMethod() {
-        return getMathTransformFactory().getLastMethodUsed();
-    }
-
-    /**
-     * Creates a transform from a group of parameters. This method delegates the work to the
-     * {@linkplain #getMathTransformFactory underlying math transform factory} and keep trace of the
-     * {@linkplain OperationMethod operation method} used. The later can be obtained by a call to
-     * {@link #getLastUsedMethod}.
-     *
-     * @param parameters The parameter values.
-     * @return The parameterized transform.
-     * @throws NoSuchIdentifierException if there is no transform registered for the method.
-     * @throws FactoryException if the object creation failed. This exception is thrown if some
-     *     required parameter has not been supplied, or has illegal value.
-     * @see MathTransformFactory#createParameterizedTransform
-     * @deprecated Use the {@link MathTransformFactory} interface instead.
-     */
-    @Deprecated
-    public MathTransform createParameterizedTransform(ParameterValueGroup parameters)
-            throws NoSuchIdentifierException, FactoryException {
-        return getMathTransformFactory().createParameterizedTransform(parameters);
-    }
-
-    /**
-     * Creates a {@linkplain #createParameterizedTransform parameterized transform} from a base CRS
-     * to a derived CS. If the {@code "semi_major"} and {@code "semi_minor"} parameters are not
-     * explicitly specified, they will be inferred from the {@linkplain Ellipsoid ellipsoid} and
-     * added to {@code parameters}. In addition, this method performs axis switch as needed.
-     *
-     * <p>The {@linkplain OperationMethod operation method} used can be obtained by a call to {@link
-     * #getLastUsedMethod}.
-     *
-     * @param baseCRS The source coordinate reference system.
-     * @param parameters The parameter values for the transform.
-     * @param derivedCS the target coordinate system.
-     * @return The parameterized transform.
-     * @throws NoSuchIdentifierException if there is no transform registered for the method.
-     * @throws FactoryException if the object creation failed. This exception is thrown if some
-     *     required parameter has not been supplied, or has illegal value.
-     * @see MathTransformFactory#createBaseToDerived
-     * @deprecated Moved to the {@link MathTransformFactory} interface.
-     */
-    @Deprecated
-    public MathTransform createBaseToDerived(
-            final CoordinateReferenceSystem baseCRS,
-            final ParameterValueGroup parameters,
-            final CoordinateSystem derivedCS)
-            throws NoSuchIdentifierException, FactoryException {
-        return getMathTransformFactory().createBaseToDerived(baseCRS, parameters, derivedCS);
-    }
-
-    /**
-     * Creates a projected coordinate reference system from a conversion.
-     *
-     * @param properties Name and other properties to give to the new object.
-     * @param baseCRS Geographic coordinate reference system to base projection on.
-     * @param conversionFromBase The {@linkplain DefiningConversion defining conversion}.
-     * @param derivedCS The coordinate system for the projected CRS.
-     * @throws FactoryException if the object creation failed.
-     * @deprecated Moved to the {@link CRSFactory} interface.
-     */
-    @Deprecated
-    public ProjectedCRS createProjectedCRS(
-            Map<String, ?> properties,
-            final GeographicCRS baseCRS,
-            final Conversion conversionFromBase,
-            final CartesianCS derivedCS)
-            throws FactoryException {
-        return getCRSFactory()
-                .createProjectedCRS(properties, baseCRS, conversionFromBase, derivedCS);
-    }
-
-    /**
-     * Creates a projected coordinate reference system from a set of parameters. If the {@code
-     * "semi_major"} and {@code "semi_minor"} parameters are not explicitly specified, they will be
-     * inferred from the {@linkplain Ellipsoid ellipsoid} and added to the {@code parameters}. This
-     * method also checks for axis order and unit conversions.
-     *
-     * @param properties Name and other properties to give to the new object.
-     * @param baseCRS Geographic coordinate reference system to base projection on.
-     * @param method The operation method, or {@code null} for a default one.
-     * @param parameters The parameter values to give to the projection.
-     * @param derivedCS The coordinate system for the projected CRS.
-     * @throws FactoryException if the object creation failed.
-     * @deprecated Use {@link CRSFactory#createDefiningConversion} followed by {@link
-     *     CRSFactory#createProjectedCRS} instead.
-     */
-    @Deprecated
-    public ProjectedCRS createProjectedCRS(
-            Map<String, ?> properties,
-            GeographicCRS baseCRS,
-            OperationMethod method,
-            ParameterValueGroup parameters,
-            CartesianCS derivedCS)
-            throws FactoryException {
-        final MathTransform mt = createBaseToDerived(baseCRS, parameters, derivedCS);
-        if (method == null) {
-            method = getLastUsedMethod();
-        }
-        return ((ReferencingObjectFactory) getCRSFactory())
-                .createProjectedCRS(properties, method, baseCRS, mt, derivedCS);
     }
 
     /**

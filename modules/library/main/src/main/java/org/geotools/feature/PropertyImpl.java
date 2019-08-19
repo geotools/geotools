@@ -28,7 +28,6 @@ import org.opengis.feature.type.PropertyType;
  * Implementation of Property.
  *
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL$
  */
 public abstract class PropertyImpl implements Property {
     /** content of the property */

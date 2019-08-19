@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (c) 2014 - 2015 Open Source Geospatial Foundation - all rights reserved
+ *    (C) 2014 - 2015, Open Source Geospatial Foundation (OSGeo)
  *    (c) 2001 - 2013 OpenPlans
  *
  *    This library is free software; you can redistribute it and/or
@@ -21,9 +21,9 @@ import javax.xml.namespace.QName;
 import org.geotools.gml3.v3_2.GML;
 import org.geotools.temporal.object.DefaultPosition;
 import org.geotools.util.SimpleInternationalString;
-import org.geotools.xml.AbstractComplexBinding;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
+import org.geotools.xsd.AbstractComplexBinding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 import org.opengis.temporal.Position;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -102,15 +102,13 @@ public class TimePositionTypeBinding extends AbstractComplexBinding {
             value.appendChild(
                     document.createElementNS(
                             GML.NAMESPACE, org.geotools.gml3.GML.Null.getLocalPart()));
+        } else {
+            value.appendChild(document.createTextNode(timePosition.getDateTime().toString()));
         }
-
-        value.appendChild(document.createTextNode(timePosition.getDateTime().toString()));
         return null;
     }
 
     public Object getProperty(Object object, QName name) {
-        Position value = (Position) object;
-
         if (name.getLocalPart().equals("frame")) {
             return "ISO-8601";
         }

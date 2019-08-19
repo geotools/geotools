@@ -20,7 +20,6 @@ import java.io.IOException;
 import org.geotools.jdbc.JDBCFunctionOnlineTest;
 import org.geotools.jdbc.JDBCTestSetup;
 
-/** @source $URL$ */
 public class PostGISFunctionOnlineTest extends JDBCFunctionOnlineTest {
 
     @Override

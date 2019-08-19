@@ -19,10 +19,15 @@
   </formats>
   <fileSets>
     <fileSet>
+      <directory>build</directory>
+      <outputDirectory></outputDirectory>
       <includes>
-        <include>README*</include>
-        <include>LICENSE*</include>
-        <include>NOTICE*</include>
+        <include>README.html</include>
+      </includes>
+    </fileSet>
+    <fileSet>
+      <includes>
+        <include>geotools-logo.png</include>
       </includes>
     </fileSet>
     <fileSet>
@@ -31,16 +36,16 @@
         <include>VERSION*</include>
       </includes>
     </fileSet>
-    <!--fileSet>
-      <outputDirectory></outputDirectory>
-      <directory>licenses</directory>
-      <includes>
-        <include>*</include>
-      </includes>
-    </fileSet-->
     <fileSet>
       <directory>docs/target/user/html</directory>
       <outputDirectory></outputDirectory>
     </fileSet>
   </fileSets>
+  <files>
+    <file>
+      <source>licenses/CreativeCommonsByAttribution.md</source>
+      <outputDirectory></outputDirectory>
+      <destName>LICENSE.md</destName>
+    </file>
+  </files>
 </assembly>

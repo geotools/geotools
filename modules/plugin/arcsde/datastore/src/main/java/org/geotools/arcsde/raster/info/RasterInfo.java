@@ -46,7 +46,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  *
  * @author Saul Farber
  * @author Gabriel Roldan
- * @source $URL$
  */
 public final class RasterInfo {
 
@@ -98,12 +97,7 @@ public final class RasterInfo {
 
             skipLevelone = rasterAttributes.skipLevelOne();
 
-            int internalPyramidLevel = 0;
             for (int arcsdePyramidLevel = 0; arcsdePyramidLevel < numLevels; arcsdePyramidLevel++) {
-                if (arcsdePyramidLevel == 1 && skipLevelone) {
-                    // continue;
-                }
-
                 final int numTilesWide = rasterAttributes.getTilesPerRowByLevel(arcsdePyramidLevel);
                 final int numTilesHigh = rasterAttributes.getTilesPerColByLevel(arcsdePyramidLevel);
                 final GridEnvelope actualImageGridEnvelope;
@@ -121,8 +115,6 @@ public final class RasterInfo {
                         numTilesHigh,
                         actualImageGridEnvelope,
                         actualImageSpatialExtent);
-
-                internalPyramidLevel++;
             }
 
         } catch (SeException se) {
@@ -455,7 +447,7 @@ public final class RasterInfo {
         try {
             srs = CRS.lookupIdentifier(getCoordinateReferenceSystem(), false);
         } catch (FactoryException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
         sb.append(", bands: ").append(getNumBands());
         sb.append(", levels: ").append(getNumLevels());

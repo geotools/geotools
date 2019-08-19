@@ -27,7 +27,6 @@ import org.geotools.filter.text.cql2.CQLExistenceTest;
  *
  * @author Mauricio Pazos (Axios Engineering)
  * @since 2.6
- * @source $URL$
  */
 public class ECQLExistenceTest extends CQLExistenceTest {
 

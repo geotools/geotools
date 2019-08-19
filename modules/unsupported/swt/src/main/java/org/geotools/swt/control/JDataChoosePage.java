@@ -38,7 +38,6 @@ import org.geotools.data.DataStoreFinder;
  * Data chooser wizard page for the {@link JDataStoreWizard data store wizard}.
  *
  * @author Andrea Antonello (www.hydrologis.com)
- * @source $URL$
  */
 public class JDataChoosePage extends WizardPage implements ISelectionChangedListener {
     public static final String ID = "org.geotools.swt.data.DataChoosePage";

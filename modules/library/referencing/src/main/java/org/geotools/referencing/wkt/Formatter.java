@@ -31,13 +31,13 @@ import javax.measure.Unit;
 import javax.measure.format.UnitFormat;
 import javax.measure.quantity.Angle;
 import javax.measure.quantity.Length;
-import org.geotools.math.XMath;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.iso.citation.Citations;
-import org.geotools.resources.Arguments;
-import org.geotools.resources.X364;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
+import org.geotools.metadata.math.XMath;
+import org.geotools.util.Arguments;
 import org.geotools.util.Utilities;
+import org.geotools.util.X364;
 import org.opengis.metadata.Identifier;
 import org.opengis.metadata.citation.Citation;
 import org.opengis.parameter.GeneralParameterValue;
@@ -65,7 +65,6 @@ import tec.uom.se.AbstractUnit;
  * org.opengis.metadata.citation.Citation#getTitle authority titles}.
  *
  * @since 2.0
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @see <A
@@ -135,14 +134,14 @@ public class Formatter {
 
     public void setAuthority(Citation authority) {
         this.authority = authority;
-        this.unitFormat = GeoToolsUnitFormat.getInstance(authority);
+        this.unitFormat = GeoToolsCRSUnitFormat.getInstance(authority);
     }
 
     /** The object to use for formatting numbers. */
     private final NumberFormat numberFormat;
 
     /** The object to use for formatting units. */
-    private UnitFormat unitFormat = GeoToolsUnitFormat.getInstance(Citations.EPSG);
+    private UnitFormat unitFormat = GeoToolsCRSUnitFormat.getInstance(Citations.EPSG);
 
     /** Dummy field position. */
     private final FieldPosition dummy = new FieldPosition(0);
@@ -873,7 +872,7 @@ public class Formatter {
     public static void main(String[] args) {
         final Arguments arguments = new Arguments(args);
         final int indentation = arguments.getRequiredInteger(Formattable.INDENTATION);
-        args = arguments.getRemainingArguments(0);
+        arguments.getRemainingArguments(0);
         Formattable.setIndentation(indentation);
     }
 }

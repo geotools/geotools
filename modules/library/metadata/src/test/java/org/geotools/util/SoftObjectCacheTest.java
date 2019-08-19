@@ -2,6 +2,7 @@ package org.geotools.util;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -11,7 +12,6 @@ import org.junit.Test;
  * Tests the SoftObjectCache with simple tests.
  *
  * @author Emily Gouge (Refractions Research)
- * @source $URL$
  */
 public class SoftObjectCacheTest {
 
@@ -81,7 +81,7 @@ public class SoftObjectCacheTest {
 
         // check that the write thread was blocked
         Object[] values = ((WriterThread) thread1).getValue();
-        assertEquals(null, values);
+        assertNull(values);
         assertEquals(value2, cache.peek(key1));
         assertEquals(1, cache.getKeys().size());
 
@@ -124,7 +124,7 @@ public class SoftObjectCacheTest {
                 cache.put(key1, value1);
                 values = new Object[] {cache.get(key1)};
             } catch (Exception e) {
-                e.printStackTrace();
+                java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             } finally {
                 try {
                     cache.writeUnLock(key1);

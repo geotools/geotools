@@ -19,7 +19,8 @@ package org.geotools.data.complex;
 
 import java.util.Collections;
 import java.util.Map;
-import org.geotools.data.complex.filter.XPathUtil.StepList;
+import org.geotools.data.complex.config.MultipleValue;
+import org.geotools.data.complex.util.XPathUtil.StepList;
 import org.geotools.util.Utilities;
 import org.opengis.feature.type.AttributeType;
 import org.opengis.feature.type.Name;
@@ -29,7 +30,6 @@ import org.opengis.filter.expression.Expression;
  * @author Gabriel Roldan (Axios Engineering)
  * @author Rini Angreani (CSIRO Earth Science and Resource Engineering)
  * @version $Id$
- * @source $URL$
  * @since 2.4
  */
 public class AttributeMapping {
@@ -63,12 +63,15 @@ public class AttributeMapping {
 
     private String sourceIndex;
 
+    private final MultipleValue multipleValue;
+
     /**
-     * Creates a new AttributeMapping object.
-     *
-     * @param sourceExpression DOCUMENT ME!
-     * @param targetXPath DOCUMENT ME!
+     * Field of the external type (e.g. Solr document) that will be used as an index. Will be NULL
+     * if no external index is being used.
      */
+    private String indexField;
+
+    /** Creates a new AttributeMapping object. */
     public AttributeMapping(
             Expression idExpression, Expression sourceExpression, StepList targetXPath) {
         this(idExpression, sourceExpression, null, targetXPath, null, false, null);
@@ -82,6 +85,49 @@ public class AttributeMapping {
             AttributeType targetNodeInstance,
             boolean isMultiValued,
             Map<Name, Expression> clientProperties) {
+        this(
+                idExpression,
+                sourceExpression,
+                sourceIndex,
+                targetXPath,
+                targetNodeInstance,
+                isMultiValued,
+                clientProperties,
+                null);
+    }
+
+    public AttributeMapping(
+            Expression idExpression,
+            Expression sourceExpression,
+            String sourceIndex,
+            StepList targetXPath,
+            AttributeType targetNodeInstance,
+            boolean isMultiValued,
+            Map<Name, Expression> clientProperties,
+            MultipleValue multipleValue) {
+
+        this(
+                idExpression,
+                sourceExpression,
+                sourceIndex,
+                targetXPath,
+                targetNodeInstance,
+                isMultiValued,
+                clientProperties,
+                multipleValue,
+                null);
+    }
+
+    public AttributeMapping(
+            Expression idExpression,
+            Expression sourceExpression,
+            String sourceIndex,
+            StepList targetXPath,
+            AttributeType targetNodeInstance,
+            boolean isMultiValued,
+            Map<Name, Expression> clientProperties,
+            MultipleValue multipleValue,
+            String indexField) {
 
         this.identifierExpression = idExpression == null ? Expression.NIL : idExpression;
         this.sourceExpression = sourceExpression == null ? Expression.NIL : sourceExpression;
@@ -96,6 +142,12 @@ public class AttributeMapping {
                 clientProperties == null
                         ? Collections.<Name, Expression>emptyMap()
                         : clientProperties;
+        this.multipleValue = multipleValue;
+        if (multipleValue != null) {
+            this.isMultiValued = true;
+            this.sourceExpression = multipleValue;
+        }
+        this.indexField = indexField;
     }
 
     public boolean isMultiValued() {
@@ -227,5 +279,17 @@ public class AttributeMapping {
 
     public void setIdentifierExpression(Expression identifierExpression) {
         this.identifierExpression = identifierExpression;
+    }
+
+    public MultipleValue getMultipleValue() {
+        return multipleValue;
+    }
+
+    public String getIndexField() {
+        return indexField;
+    }
+
+    public void setIndexField(String indexField) {
+        this.indexField = indexField;
     }
 }

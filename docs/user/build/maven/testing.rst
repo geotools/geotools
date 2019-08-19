@@ -6,7 +6,7 @@ To just run tests for a module::
    cd modules/library/main
    mvn test
 
-Several of the "profiles" described on this page can be used on conjuction::
+Several of the "profiles" described on this page can be used in conjunction::
    
    mvn test -o -P interactive,stress
 

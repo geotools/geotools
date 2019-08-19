@@ -26,20 +26,20 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.naming.NoInitialContextException;
 import javax.sql.DataSource;
-import org.geotools.factory.GeoTools;
-import org.geotools.factory.Hints;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
+import org.geotools.metadata.i18n.LoggingKeys;
+import org.geotools.metadata.i18n.Loggings;
+import org.geotools.metadata.i18n.Vocabulary;
+import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.ReferencingFactoryFinder;
 import org.geotools.referencing.factory.AbstractAuthorityFactory;
 import org.geotools.referencing.factory.DeferredAuthorityFactory;
 import org.geotools.referencing.factory.FactoryNotFoundException;
 import org.geotools.referencing.factory.ReferencingFactoryContainer;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
-import org.geotools.resources.i18n.LoggingKeys;
-import org.geotools.resources.i18n.Loggings;
-import org.geotools.resources.i18n.Vocabulary;
-import org.geotools.resources.i18n.VocabularyKeys;
+import org.geotools.util.factory.GeoTools;
+import org.geotools.util.factory.Hints;
 import org.opengis.metadata.citation.Citation;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CRSAuthorityFactory;
@@ -74,7 +74,6 @@ import org.opengis.referencing.operation.CoordinateOperationAuthorityFactory;
  * {@linkplain ReferencingFactoryFinder}.getFooAuthorityFactory("EPSG")</code> methods instead.
  *
  * @since 2.4
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
@@ -102,7 +101,7 @@ public class ThreadedEpsgFactory extends DeferredAuthorityFactory
     private static final boolean ALLOW_REGISTRATION = false;
 
     /** The default priority level for this factory. */
-    static final int PRIORITY = MAXIMUM_PRIORITY - 10;
+    protected static final int PRIORITY = MAXIMUM_PRIORITY - 10;
 
     /** The factories to be given to the backing store. */
     private final ReferencingFactoryContainer factories;
@@ -342,18 +341,20 @@ public class ThreadedEpsgFactory extends DeferredAuthorityFactory
      */
     protected AbstractAuthorityFactory createBackingStore(final Hints hints) throws SQLException {
         final DataSource source = getDataSource();
-        final Connection connection = source.getConnection();
-        final String quote = connection.getMetaData().getIdentifierQuoteString();
-        if (quote.equals("\"")) {
-            /*
-             * PostgreSQL quotes the indentifiers with "..." while MS-Access quotes the
-             * identifiers with [...], so we use the identifier quote string metadata as
-             * a way to distinguish the two cases. However I'm not sure that it is a robust
-             * criterion. Subclasses should always override as a safety.
-             */
-            return new FactoryUsingAnsiSQL(hints, connection);
+        try (Connection connection = source.getConnection()) {
+
+            final String quote = connection.getMetaData().getIdentifierQuoteString();
+            if (quote.equals("\"")) {
+                /*
+                 * PostgreSQL quotes the indentifiers with "..." while MS-Access quotes the
+                 * identifiers with [...], so we use the identifier quote string metadata as
+                 * a way to distinguish the two cases. However I'm not sure that it is a robust
+                 * criterion. Subclasses should always override as a safety.
+                 */
+                return new FactoryUsingAnsiSQL(hints, connection);
+            }
+            return new FactoryUsingSQL(hints, connection);
         }
-        return new FactoryUsingSQL(hints, connection);
     }
 
     /**

@@ -16,7 +16,6 @@ import org.opengis.annotation.XmlElement;
  * The ChannelSelection element specifies the false-color channel selection for a multi-spectral
  * raster source (such as a multi-band satellite-imagery source).
  *
- * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/symbol">Symbology Encoding
  *     Implementation Specification 1.1.0</A>
  * @author Open Geospatial Consortium

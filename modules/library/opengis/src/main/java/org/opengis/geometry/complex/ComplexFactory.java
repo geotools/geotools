@@ -20,7 +20,6 @@ import org.opengis.geometry.primitive.Point;
  * system}. Creating complexes in a different CRS may requires a different instance of {@code
  * ComplexFactory}.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/as">ISO 19107</A>
  * @author Sanjay Jena
  * @author Prof. Dr. Jackson Roehrig

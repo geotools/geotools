@@ -25,7 +25,6 @@ import org.geotools.graph.structure.line.OptDirectedXYNode;
  * components for line networks.
  *
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
- * @source $URL$
  */
 public class OptDirectedLineGraphBuilder extends OptDirectedGraphBuilder {
 

@@ -53,13 +53,10 @@ import org.locationtech.jts.io.WKTReader;
  * Test requests using the WPSFactory and WPSProcess objects
  *
  * @author GDavis
- * @source $URL$
- *     http://svn.osgeo.org/geotools/trunk/modules/unsupported/wps/src/test/java/org/geotools
- *     /data/wps/OnlineWPSFactoryTest.java $
  */
 public class WPSFactoryOnlineTest extends OnlineTestCase {
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.data.wps");
+            org.geotools.util.logging.Logging.getLogger(WPSFactoryOnlineTest.class);
 
     private WebProcessingService wps;
 
@@ -460,7 +457,7 @@ public class WPSFactoryOnlineTest extends OnlineTestCase {
         assertNotNull(results);
 
         Double result = (Double) results.get("result");
-        // Double result = new Double(value);
+        // Double result = Double.valueOf(value);
         Double expected = 77.84 + 40039.229;
         // System.out.println(expected);
         // System.out.println(result);

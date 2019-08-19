@@ -33,7 +33,6 @@ import org.geotools.util.URLs;
  * Data store wizard.
  *
  * @author Andrea Antonello (www.hydrologis.com)
- * @source $URL$
  */
 public class JDataStoreWizard extends Wizard {
 

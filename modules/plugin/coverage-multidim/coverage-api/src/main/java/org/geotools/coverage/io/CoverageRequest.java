@@ -18,13 +18,12 @@ package org.geotools.coverage.io;
 
 import java.util.Map;
 import org.geotools.data.Parameter;
-import org.geotools.factory.Hints;
+import org.geotools.util.factory.Hints;
 import org.opengis.feature.type.Name;
 
 /**
  * @author Simone Giannecchini, GeoSolutions
  * @author Jody Garnett
- * @source $URL$
  */
 public abstract class CoverageRequest {
 

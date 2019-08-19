@@ -17,11 +17,15 @@
 package org.geotools.sld.bindings;
 
 import java.net.URI;
+import java.net.URL;
 import javax.xml.namespace.QName;
 import org.geotools.styling.ExternalGraphic;
+import org.geotools.styling.ResourceLocator;
 import org.geotools.styling.StyleFactory;
 import org.geotools.util.Converters;
-import org.geotools.xml.*;
+import org.geotools.xsd.AbstractComplexBinding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 import org.picocontainer.MutablePicoContainer;
 
 /**
@@ -49,13 +53,15 @@ import org.picocontainer.MutablePicoContainer;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class SLDExternalGraphicBinding extends AbstractComplexBinding {
     protected StyleFactory styleFactory;
 
-    public SLDExternalGraphicBinding(StyleFactory styleFactory) {
+    protected ResourceLocator resourceLocator;
+
+    public SLDExternalGraphicBinding(StyleFactory styleFactory, ResourceLocator resourceLocator) {
         this.styleFactory = styleFactory;
+        this.resourceLocator = resourceLocator;
     }
 
     /** @generated */
@@ -108,6 +114,11 @@ public class SLDExternalGraphicBinding extends AbstractComplexBinding {
         URI uri = Converters.convert(node.getChildValue("OnlineResource"), URI.class);
         String format = (String) node.getChildValue("Format");
 
-        return styleFactory.createExternalGraphic(uri.toURL(), format);
+        URL url = resourceLocator.locateResource(uri.toString());
+        if (url == null) {
+            return styleFactory.createExternalGraphic(uri.toString(), format);
+        } else {
+            return styleFactory.createExternalGraphic(url, format);
+        }
     }
 }

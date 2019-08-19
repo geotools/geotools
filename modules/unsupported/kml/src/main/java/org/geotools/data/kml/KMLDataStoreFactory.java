@@ -27,7 +27,7 @@ import org.geotools.data.DataStoreFactorySpi;
  * DataStore factory that creates {@linkplain org.geotools.data.kml.KMLDataStore}s
  *
  * @author NielsCharlier, Scitus Development
- * @source $URL$
+
  */
 public class KMLDataStoreFactory implements DataStoreFactorySpi {
 

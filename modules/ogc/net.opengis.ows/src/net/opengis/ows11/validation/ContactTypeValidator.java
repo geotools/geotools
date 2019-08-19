@@ -1,6 +1,4 @@
 /**
- * <copyright>
- * </copyright>
  *
  * $Id$
  */
@@ -17,11 +15,11 @@ import net.opengis.ows11.TelephoneType;
  * This can be disabled with -vmargs -Dorg.eclipse.emf.examples.generator.validator=false.
  */
 public interface ContactTypeValidator {
-    boolean validate();
+  boolean validate();
 
-    boolean validatePhone(TelephoneType value);
-    boolean validateAddress(AddressType value);
-    boolean validateOnlineResource(OnlineResourceType value);
-    boolean validateHoursOfService(String value);
-    boolean validateContactInstructions(String value);
+  boolean validatePhone(TelephoneType value);
+  boolean validateAddress(AddressType value);
+  boolean validateOnlineResource(OnlineResourceType value);
+  boolean validateHoursOfService(String value);
+  boolean validateContactInstructions(String value);
 }

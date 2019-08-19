@@ -54,7 +54,6 @@ import org.opengis.style.GraphicalSymbol;
  *
  * @author milton
  * @author Andrea Aime - GeoSolutions
- * @source $URL$
  */
 public class UomRescaleStyleVisitor extends DuplicatingStyleVisitor {
 
@@ -81,7 +80,6 @@ public class UomRescaleStyleVisitor extends DuplicatingStyleVisitor {
      * Used to rescaleDashArray the provided unscaled value.
      *
      * @param unscaled the unscaled value.
-     * @param mapScale the mapScale in pixels per meter.
      * @param uom the unit of measure that will be used to scale.
      * @return the expression multiplied by the provided scale.
      */
@@ -117,7 +115,6 @@ public class UomRescaleStyleVisitor extends DuplicatingStyleVisitor {
      * Used to rescaleDashArray the provided unscaled value.
      *
      * @param unscaled the unscaled value.
-     * @param mapScale the mapScale in pixels per meter.
      * @param uom the unit of measure that will be used to scale.
      * @return the expression multiplied by the provided scale.
      */
@@ -134,7 +131,6 @@ public class UomRescaleStyleVisitor extends DuplicatingStyleVisitor {
      * Used to rescaleDashArray the provided stroke.
      *
      * @param stroke the unscaled stroke, which will be modified in-place.
-     * @param mapScale the mapScale in pixels per meter.
      * @param uom the unit of measure that will be used to scale.
      */
     protected void rescaleStroke(Stroke stroke, Unit<Length> uom) {

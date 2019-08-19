@@ -19,7 +19,7 @@ package org.geotools.gml3.simple;
 import org.geotools.gml2.simple.GMLWriter;
 import org.geotools.gml2.simple.QualifiedName;
 import org.geotools.gml3.GML;
-import org.geotools.xml.Encoder;
+import org.geotools.xsd.Encoder;
 import org.locationtech.jts.geom.LineString;
 import org.xml.sax.helpers.AttributesImpl;
 
@@ -35,6 +35,11 @@ class LinearRingEncoder extends LineStringEncoder {
 
     protected LinearRingEncoder(Encoder encoder, String gmlPrefix, String gmlUri) {
         super(encoder, LINEAR_RING.derive(gmlPrefix, gmlUri));
+    }
+
+    protected LinearRingEncoder(
+            Encoder encoder, String gmlPrefix, String gmlUri, boolean encodeGmlId) {
+        super(encoder, LINEAR_RING.derive(gmlPrefix, gmlUri), encodeGmlId);
     }
 
     @Override

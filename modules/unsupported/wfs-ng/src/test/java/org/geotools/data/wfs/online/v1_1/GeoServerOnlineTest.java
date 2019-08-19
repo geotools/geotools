@@ -39,8 +39,8 @@ import org.geotools.data.wfs.WFSDataStoreFactory;
 import org.geotools.data.wfs.online.AbstractWfsDataStoreOnlineTest;
 import org.geotools.data.wfs.online.WFSOnlineTestSupport;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.factory.GeoTools;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
+import org.geotools.util.factory.GeoTools;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
@@ -57,7 +57,6 @@ import org.opengis.filter.PropertyIsNull;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.identity.FeatureId;
 
-/** @source $URL$ */
 public class GeoServerOnlineTest extends AbstractWfsDataStoreOnlineTest {
 
     public static final String SERVER_URL =
@@ -188,7 +187,7 @@ public class GeoServerOnlineTest extends AbstractWfsDataStoreOnlineTest {
                 inStore.close();
             }
 
-            org.geotools.util.logging.Logging.getLogger("org.geotools.data.wfs")
+            org.geotools.util.logging.Logging.getLogger(GeoServerOnlineTest.class)
                     .setLevel(Level.FINE);
             SimpleFeatureCollection inserts = DataUtilities.collection(new SimpleFeature[] {f, f2});
             Id fp = WFSOnlineTestSupport.doInsert(wfs, ft, inserts);
@@ -208,7 +207,7 @@ public class GeoServerOnlineTest extends AbstractWfsDataStoreOnlineTest {
             try {
                 ((SimpleFeatureStore) fs).removeFeatures(filterFac.not(startingFeatures));
             } catch (Exception e) {
-                System.out.println(e);
+                // System.out.println(e);
             }
         }
     }

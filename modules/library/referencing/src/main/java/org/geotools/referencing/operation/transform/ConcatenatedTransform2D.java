@@ -24,7 +24,6 @@ import org.opengis.referencing.operation.NoninvertibleTransformException;
  * Concatenated transform in which the resulting transform is two-dimensional.
  *
  * @since 2.0
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

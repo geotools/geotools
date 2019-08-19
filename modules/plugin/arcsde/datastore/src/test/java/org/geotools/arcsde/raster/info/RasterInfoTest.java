@@ -31,7 +31,6 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.geom.Point2D;
-import java.awt.geom.Point2D.Double;
 import java.io.IOException;
 import org.geotools.arcsde.raster.gce.RasterTestData;
 import org.geotools.arcsde.session.Command;
@@ -50,10 +49,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * database
  *
  * @author Saul Farber, (based on ArcSDEPoolTest by Gabriel Roldan)
- * @source $URL$
- *     http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/test/java
- *     /org/geotools/arcsde/gce/ArcSDEPyramidTest.java $
- * @version $Id$
  */
 public class RasterInfoTest {
 
@@ -86,7 +81,7 @@ public class RasterInfoTest {
         final CoordinateReferenceSystem crs = DefaultEngineeringCRS.CARTESIAN_2D;
 
         final Point imageOffset = new Point(0, 0);
-        final Point2D extentOffset = new Double(0, 0);
+        final Point2D extentOffset = new Point2D.Double(0, 0);
 
         pyramid.addPyramidLevel(
                 0,
@@ -181,7 +176,7 @@ public class RasterInfoTest {
     @Ignore
     public void testArcSDEPyramidHypothetical() throws Exception {
         RasterInfo pyramid = createPyramid();
-        System.out.println(pyramid);
+        // System.out.println(pyramid);
 
         RasterTestData testData = new RasterTestData();
         testData.setUp();
@@ -234,7 +229,7 @@ public class RasterInfoTest {
             conn.dispose();
         }
 
-        System.out.println(pyramid);
+        // System.out.println(pyramid);
 
         /*
          * ArcSDEPyramid pyramid = new ArcSDEPyramid(10, 10); pyramid.addPyramidLevel(0, new

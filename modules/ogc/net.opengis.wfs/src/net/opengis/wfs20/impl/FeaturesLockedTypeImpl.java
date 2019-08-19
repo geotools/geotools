@@ -34,179 +34,179 @@ import org.opengis.filter.identity.FeatureId;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link net.opengis.wfs20.impl.FeaturesLockedTypeImpl#getGroup <em>Group</em>}</li>
  *   <li>{@link net.opengis.wfs20.impl.FeaturesLockedTypeImpl#getResourceId <em>Resource Id</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
 public class FeaturesLockedTypeImpl extends EObjectImpl implements FeaturesLockedType {
     /**
-     * The cached value of the '{@link #getGroup() <em>Group</em>}' attribute list.
-     * <!-- begin-user-doc -->
+   * The cached value of the '{@link #getGroup() <em>Group</em>}' attribute list.
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getGroup()
-     * @generated
-     * @ordered
-     */
+   * @see #getGroup()
+   * @generated
+   * @ordered
+   */
     protected FeatureMap group;
 
     /**
-     * The cached value of the '{@link #getResourceId() <em>Resource Id</em>}' attribute list.
-     * <!-- begin-user-doc -->
+   * The cached value of the '{@link #getResourceId() <em>Resource Id</em>}' attribute list.
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getResourceId()
-     * @generated
-     * @ordered
-     */
+   * @see #getResourceId()
+   * @generated
+   * @ordered
+   */
     protected EList<FeatureId> resourceId;
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     protected FeaturesLockedTypeImpl() {
-        super();
-    }
+    super();
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     protected EClass eStaticClass() {
-        return Wfs20Package.Literals.FEATURES_LOCKED_TYPE;
-    }
+    return Wfs20Package.Literals.FEATURES_LOCKED_TYPE;
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public FeatureMap getGroup() {
-        if (group == null) {
-            group = new BasicFeatureMap(this, Wfs20Package.FEATURES_LOCKED_TYPE__GROUP);
-        }
-        return group;
+    if (group == null) {
+      group = new BasicFeatureMap(this, Wfs20Package.FEATURES_LOCKED_TYPE__GROUP);
     }
+    return group;
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public EList<FeatureId> getResourceId() {
-        if (resourceId == null) {
-            resourceId = new EDataTypeUniqueEList<FeatureId>(FeatureId.class, this, Wfs20Package.FEATURES_LOCKED_TYPE__RESOURCE_ID);
-        }
-        return resourceId;
+    if (resourceId == null) {
+      resourceId = new EDataTypeUniqueEList<FeatureId>(FeatureId.class, this, Wfs20Package.FEATURES_LOCKED_TYPE__RESOURCE_ID);
     }
+    return resourceId;
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-        switch (featureID) {
-            case Wfs20Package.FEATURES_LOCKED_TYPE__GROUP:
-                return ((InternalEList<?>)getGroup()).basicRemove(otherEnd, msgs);
-        }
-        return super.eInverseRemove(otherEnd, featureID, msgs);
+    switch (featureID) {
+      case Wfs20Package.FEATURES_LOCKED_TYPE__GROUP:
+        return ((InternalEList<?>)getGroup()).basicRemove(otherEnd, msgs);
     }
+    return super.eInverseRemove(otherEnd, featureID, msgs);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case Wfs20Package.FEATURES_LOCKED_TYPE__GROUP:
-                if (coreType) return getGroup();
-                return ((FeatureMap.Internal)getGroup()).getWrapper();
-            case Wfs20Package.FEATURES_LOCKED_TYPE__RESOURCE_ID:
-                return getResourceId();
-        }
-        return super.eGet(featureID, resolve, coreType);
+    switch (featureID) {
+      case Wfs20Package.FEATURES_LOCKED_TYPE__GROUP:
+        if (coreType) return getGroup();
+        return ((FeatureMap.Internal)getGroup()).getWrapper();
+      case Wfs20Package.FEATURES_LOCKED_TYPE__RESOURCE_ID:
+        return getResourceId();
     }
+    return super.eGet(featureID, resolve, coreType);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @SuppressWarnings("unchecked")
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case Wfs20Package.FEATURES_LOCKED_TYPE__GROUP:
-                ((FeatureMap.Internal)getGroup()).set(newValue);
-                return;
-            case Wfs20Package.FEATURES_LOCKED_TYPE__RESOURCE_ID:
-                getResourceId().clear();
-                getResourceId().addAll((Collection<? extends FeatureId>)newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
+    switch (featureID) {
+      case Wfs20Package.FEATURES_LOCKED_TYPE__GROUP:
+        ((FeatureMap.Internal)getGroup()).set(newValue);
+        return;
+      case Wfs20Package.FEATURES_LOCKED_TYPE__RESOURCE_ID:
+        getResourceId().clear();
+        getResourceId().addAll((Collection<? extends FeatureId>)newValue);
+        return;
     }
+    super.eSet(featureID, newValue);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case Wfs20Package.FEATURES_LOCKED_TYPE__GROUP:
-                getGroup().clear();
-                return;
-            case Wfs20Package.FEATURES_LOCKED_TYPE__RESOURCE_ID:
-                getResourceId().clear();
-                return;
-        }
-        super.eUnset(featureID);
+    switch (featureID) {
+      case Wfs20Package.FEATURES_LOCKED_TYPE__GROUP:
+        getGroup().clear();
+        return;
+      case Wfs20Package.FEATURES_LOCKED_TYPE__RESOURCE_ID:
+        getResourceId().clear();
+        return;
     }
+    super.eUnset(featureID);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case Wfs20Package.FEATURES_LOCKED_TYPE__GROUP:
-                return group != null && !group.isEmpty();
-            case Wfs20Package.FEATURES_LOCKED_TYPE__RESOURCE_ID:
-                return resourceId != null && !resourceId.isEmpty();
-        }
-        return super.eIsSet(featureID);
+    switch (featureID) {
+      case Wfs20Package.FEATURES_LOCKED_TYPE__GROUP:
+        return group != null && !group.isEmpty();
+      case Wfs20Package.FEATURES_LOCKED_TYPE__RESOURCE_ID:
+        return resourceId != null && !resourceId.isEmpty();
     }
+    return super.eIsSet(featureID);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     public String toString() {
-        if (eIsProxy()) return super.toString();
+    if (eIsProxy()) return super.toString();
 
-        StringBuffer result = new StringBuffer(super.toString());
-        result.append(" (group: ");
-        result.append(group);
-        result.append(", resourceId: ");
-        result.append(resourceId);
-        result.append(')');
-        return result.toString();
-    }
+    StringBuilder result = new StringBuilder(super.toString());
+    result.append(" (group: ");
+    result.append(group);
+    result.append(", resourceId: ");
+    result.append(resourceId);
+    result.append(')');
+    return result.toString();
+  }
 
 } //FeaturesLockedTypeImpl

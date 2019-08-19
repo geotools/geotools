@@ -5,12 +5,12 @@ The internals of gt-jdbc layout the code for JDBCDataStore and abstract classes 
 
 Related:
 
-* :doc:`gt-data internal <../data/internal/>`
+* :doc:`gt-main internal <../data/internal/>`
 
 JDBCDataStore
 ^^^^^^^^^^^^^
 
-The JDBCDataStore class is an extension of ContentDataStore defined by gt-data.
+The JDBCDataStore class is an extension of ContentDataStore defined by gt-main.
 
 .. image:: /images/content2.PNG
 

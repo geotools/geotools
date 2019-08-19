@@ -30,7 +30,6 @@ import java.util.Set;
  * can be slotted straight into them.
  *
  * @author Russell Petty (GeoScience Victoria)
- * @source $URL$
  */
 public class AttributeCreateOrderList {
 

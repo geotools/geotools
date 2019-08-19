@@ -35,9 +35,9 @@ import javax.media.jai.Interpolation;
 import javax.media.jai.PlanarImage;
 import javax.media.jai.ROIShape;
 import org.geotools.coverage.CoverageFactoryFinder;
-import org.geotools.factory.Hints;
+import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
-import org.geotools.resources.coverage.CoverageUtilities;
+import org.geotools.util.factory.Hints;
 import org.junit.Before;
 import org.junit.Test;
 import org.opengis.coverage.grid.GridEnvelope;
@@ -46,7 +46,6 @@ import org.opengis.geometry.Envelope;
 /**
  * Tests the {@link Interpolator2D} implementation.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

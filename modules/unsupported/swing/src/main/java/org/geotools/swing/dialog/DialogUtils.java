@@ -35,7 +35,6 @@ import javax.swing.text.View;
  *
  * @author Michael Bedward
  * @since 2.7
- * @source $URL$
  * @version $Id$
  */
 public class DialogUtils {

@@ -17,10 +17,10 @@
  */
 package org.geotools.ysld.parse;
 
+import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.expect;
-import static org.easymock.classextension.EasyMock.createMock;
-import static org.easymock.classextension.EasyMock.replay;
-import static org.easymock.classextension.EasyMock.verify;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
 import static org.geotools.ysld.TestUtils.appliesToScale;
 import static org.geotools.ysld.TestUtils.attribute;
 import static org.geotools.ysld.TestUtils.function;
@@ -31,6 +31,7 @@ import static org.geotools.ysld.TestUtils.nilExpression;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.anyOf;
 import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.describedAs;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasEntry;
@@ -56,7 +57,8 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import org.easymock.classextension.EasyMock;
+import java.util.logging.Logger;
+import org.easymock.EasyMock;
 import org.geotools.filter.function.RecodeFunction;
 import org.geotools.filter.function.string.ConcatenateFunction;
 import org.geotools.process.function.ProcessFunction;
@@ -75,6 +77,7 @@ import org.geotools.styling.StyledLayerDescriptor;
 import org.geotools.styling.TextSymbolizer;
 import org.geotools.styling.TextSymbolizer2;
 import org.geotools.styling.UomOgcMapping;
+import org.geotools.util.logging.Logging;
 import org.geotools.ysld.Ysld;
 import org.geotools.ysld.YsldTests;
 import org.hamcrest.BaseMatcher;
@@ -99,8 +102,10 @@ import org.opengis.style.Mark;
 import org.opengis.style.PointPlacement;
 import org.opengis.style.RasterSymbolizer;
 import org.opengis.style.SelectedChannelType;
+import org.yaml.snakeyaml.constructor.ConstructorException;
 
 public class YsldParseTest {
+    Logger LOG = Logging.getLogger("org.geotools.ysld.Ysld");
 
     @Test
     public void testAnchor() throws Exception {
@@ -1346,7 +1351,7 @@ public class YsldParseTest {
         // need to use the geotools.styling interface as it provides the accessors for the entries.
         ColorMap map = (ColorMap) symb.getColorMap();
 
-        System.out.println(map.getColorMapEntry(0).getColor().evaluate(null));
+        LOG.fine(map.getColorMapEntry(0).getColor().evaluate(null).toString());
         Color colour1 = (Color) map.getColorMapEntry(0).getColor().evaluate(null);
         Color colour2 = (Color) map.getColorMapEntry(1).getColor().evaluate(null);
         Color colour3 = (Color) map.getColorMapEntry(2).getColor().evaluate(null);
@@ -2259,5 +2264,43 @@ public class YsldParseTest {
         LineSymbolizer p = (LineSymbolizer) SLD.lineSymbolizer(SLD.defaultStyle(sld));
 
         assertThat(p, hasProperty("unitOfMeasure", sameInstance(UomOgcMapping.METRE.getUnit())));
+    }
+
+    @Test
+    public void testLegend() throws Exception {
+        String yaml =
+                "feature-styles:\n"
+                        + "- rules:\n"
+                        + "  - legend:\n"
+                        + "      symbols:\n"
+                        + "      - external:\n"
+                        + "          url: smileyface.png\n"
+                        + "          format: image/png\n"
+                        + "    symbolizers:\n"
+                        + "    - point:\n"
+                        + "        symbols:\n"
+                        + "        - mark:\n"
+                        + "            shape: circle\n"
+                        + "            fill-color: '#FF0000'";
+        StyledLayerDescriptor sld = Ysld.parse(yaml);
+        Rule rule = SLD.rules(SLD.defaultStyle(sld))[0];
+        assertThat(rule.getLegend().graphicalSymbols().get(0), instanceOf(ExternalGraphic.class));
+        ExternalGraphic legend = (ExternalGraphic) rule.getLegend().graphicalSymbols().get(0);
+        assertEquals(new URL("file:smileyface.png"), legend.getLocation());
+        assertEquals("image/png", legend.getFormat());
+        PointSymbolizer p = SLD.pointSymbolizer(SLD.defaultStyle(sld));
+        assertEquals("circle", SLD.wellKnownName(SLD.mark(p)));
+        assertEquals(Color.RED, SLD.color(SLD.fill(p)));
+    }
+
+    @Test
+    public void testDeserializationAttempt() throws Exception {
+        try {
+            String yaml = "!!java.util.Date\n" + "date: 25\n" + "month: 12\n" + "year: 2016";
+            Ysld.parse(yaml);
+            fail("Expected parsing to fail");
+        } catch (ConstructorException e) {
+            assertThat(e.getMessage(), containsString("could not determine a constructor"));
+        }
     }
 }

@@ -18,16 +18,14 @@ package org.geotools.filter.v1_0;
 
 import java.io.ByteArrayInputStream;
 import junit.framework.TestCase;
-import org.geotools.xml.Configuration;
-import org.geotools.xml.Parser;
-import org.geotools.xml.Parser.Properties;
+import org.geotools.xsd.Configuration;
+import org.geotools.xsd.Parser;
 import org.opengis.filter.Filter;
 import org.opengis.filter.PropertyIsEqualTo;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.spatial.DWithin;
 
-/** @source $URL$ */
 public class OGCFilterTest extends TestCase {
     Parser parser;
 
@@ -103,7 +101,6 @@ public class OGCFilterTest extends TestCase {
                         + "</Filter>";
 
         OGCConfiguration configuration = new OGCConfiguration();
-        configuration.getProperties().add(Properties.IGNORE_SCHEMA_LOCATION);
 
         Parser parser = new Parser(configuration);
         DWithin filter = (DWithin) parser.parse(new ByteArrayInputStream(xml.getBytes()));

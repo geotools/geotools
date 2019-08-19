@@ -22,11 +22,11 @@ import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.memory.MemoryDataStore;
 import org.geotools.data.simple.SimpleFeatureCollection;
-import org.geotools.feature.IllegalAttributeException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.validation.spatial.LineNoSelfIntersectValidation;
 import org.geotools.validation.spatial.LineNoSelfOverlappingValidation;
 import org.geotools.validation.spatial.LinesNotIntersectValidation;
+import org.opengis.feature.IllegalAttributeException;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
@@ -48,7 +48,6 @@ import org.opengis.feature.simple.SimpleFeatureType;
  *
  * @author bowens, Refractions Research, Inc.
  * @author $Author: sploreg $ (last modification)
- * @source $URL$
  * @version $Id$
  */
 public class ValidationPlugInTester extends DataTestCase {
@@ -114,10 +113,10 @@ public class ValidationPlugInTester extends DataTestCase {
             assertTrue(false);
         }
 
-        System.out.println("NoLineSelfIntersect - correct");
+        // System.out.println("NoLineSelfIntersect - correct");
         String[] messages = roadValidationResults.getFailedMessages();
         for (int i = 0; i < messages.length; i++) {
-            System.out.println(messages[i]);
+            // System.out.println(messages[i]);
         }
         assertTrue(roadValidationResults.getFailedMessages().length == 0);
     }
@@ -143,7 +142,9 @@ public class ValidationPlugInTester extends DataTestCase {
                     SimpleFeatureBuilder.build(
                             this.roadType,
                             new Object[] {
-                                new Integer(2), line(new int[] {3, 6, 3, 8, 5, 8, 5, 7, 2, 7}), "r4"
+                                Integer.valueOf(2),
+                                line(new int[] {3, 6, 3, 8, 5, 8, 5, 7, 2, 7}),
+                                "r4"
                             },
                             "road.rd4");
         } catch (IllegalAttributeException e) {
@@ -160,10 +161,10 @@ public class ValidationPlugInTester extends DataTestCase {
             assertTrue(false);
         }
 
-        System.out.println("NoLineSelfIntersect - incorrect");
+        // System.out.println("NoLineSelfIntersect - incorrect");
         String[] messages = roadValidationResults.getFailedMessages();
         for (int i = 0; i < messages.length; i++) {
-            System.out.println(messages[i]);
+            // System.out.println(messages[i]);
         }
         assertTrue(roadValidationResults.getFailedMessages().length > 0);
     }
@@ -192,9 +193,9 @@ public class ValidationPlugInTester extends DataTestCase {
             assertTrue(false);
         }
 
-        System.out.println("NoLineSelfOverlap - correct");
+        // System.out.println("NoLineSelfOverlap - correct");
         String[] messages = roadValidationResults.getFailedMessages();
-        for (int i = 0; i < messages.length; i++) System.out.println(messages[i]);
+        for (int i = 0; i < messages.length; i++) // System.out.println(messages[i]);
         assertTrue(roadValidationResults.getFailedMessages().length == 0);
     }
 
@@ -221,7 +222,7 @@ public class ValidationPlugInTester extends DataTestCase {
                     SimpleFeatureBuilder.build(
                             this.roadType,
                             (new Object[] {
-                                new Integer(2),
+                                Integer.valueOf(2),
                                 line(new int[] {7, 7, 8, 7, 9, 7, 9, 6, 8, 6, 8, 7, 7, 7}),
                                 "r4"
                             }),
@@ -238,10 +239,10 @@ public class ValidationPlugInTester extends DataTestCase {
             assertTrue(false);
         }
 
-        System.out.println("NoLineSelfOverlap - incorrect");
+        // System.out.println("NoLineSelfOverlap - incorrect");
         String[] messages = roadValidationResults.getFailedMessages();
         for (int i = 0; i < messages.length; i++) {
-            System.out.println(messages[i]);
+            // System.out.println(messages[i]);
         }
         assertTrue(roadValidationResults.getFailedMessages().length > 0);
     }
@@ -270,9 +271,9 @@ public class ValidationPlugInTester extends DataTestCase {
             assertTrue(false);
         }
 
-        System.out.println("LineIsSingleSegment - correct");
+        // System.out.println("LineIsSingleSegment - correct");
         String[] messages = roadValidationResults.getFailedMessages();
-        for (int i = 0; i < messages.length; i++) System.out.println(messages[i]);
+        for (int i = 0; i < messages.length; i++) // System.out.println(messages[i]);
         assertTrue(roadValidationResults.getFailedMessages().length == 0);
     }
 
@@ -300,10 +301,10 @@ public class ValidationPlugInTester extends DataTestCase {
             assertTrue(false);
         }
 
-        System.out.println("LineIsSingleSegment - incorrect");
+        // System.out.println("LineIsSingleSegment - incorrect");
         String[] messages = roadValidationResults.getFailedMessages();
         for (int i = 0; i < messages.length; i++) {
-            System.out.println(messages[i]);
+            // System.out.println(messages[i]);
         }
         assertTrue(roadValidationResults.getFailedMessages().length > 0);
     }
@@ -358,9 +359,9 @@ public class ValidationPlugInTester extends DataTestCase {
             assertTrue(false);
         }
 
-        System.out.println("NoLinesIntersect - correct");
+        // System.out.println("NoLinesIntersect - correct");
         String[] messages = roadValidationResults.getFailedMessages();
-        for (int i = 0; i < messages.length; i++) System.out.println(messages[i]);
+        for (int i = 0; i < messages.length; i++) // System.out.println(messages[i]);
         assertTrue(roadValidationResults.getFailedMessages().length == 0);
     }
 
@@ -396,9 +397,9 @@ public class ValidationPlugInTester extends DataTestCase {
             assertTrue(false);
         }
 
-        System.out.println("NoLinesIntersect - incorrect");
+        // System.out.println("NoLinesIntersect - incorrect");
         String[] messages = roadValidationResults.getFailedMessages();
-        for (int i = 0; i < messages.length; i++) System.out.println(messages[i]);
+        for (int i = 0; i < messages.length; i++) // System.out.println(messages[i]);
         assertTrue(roadValidationResults.getFailedMessages().length > 0);
     }
 }

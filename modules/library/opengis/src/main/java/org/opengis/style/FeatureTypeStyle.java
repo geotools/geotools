@@ -25,7 +25,6 @@ import org.opengis.metadata.citation.OnLineResource;
 /**
  * Represents a style that applies to features or coverage.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/symbol">Symbology Encoding
  *     Implementation Specification 1.1.0</A>
  * @author Open Geospatial Consortium

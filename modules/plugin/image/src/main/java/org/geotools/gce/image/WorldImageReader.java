@@ -17,7 +17,7 @@
  */
 package org.geotools.gce.image;
 
-import java.awt.Rectangle;
+import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.renderable.ParameterBlock;
 import java.io.BufferedReader;
@@ -56,13 +56,13 @@ import org.geotools.data.DataSourceException;
 import org.geotools.data.FileGroupProvider.FileGroup;
 import org.geotools.data.PrjFileReader;
 import org.geotools.data.WorldFileReader;
-import org.geotools.factory.Hints;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.image.io.ImageIOExt;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.operation.builder.GridToEnvelopeMapper;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
+import org.geotools.util.factory.Hints;
 import org.opengis.coverage.grid.Format;
 import org.opengis.geometry.Envelope;
 import org.opengis.geometry.MismatchedDimensionException;
@@ -83,13 +83,12 @@ import org.opengis.referencing.operation.TransformException;
  * @author simone giannecchini
  * @author alessio fabiani
  * @author rgould
- * @source $URL$
  */
 public final class WorldImageReader extends AbstractGridCoverage2DReader
         implements GridCoverage2DReader {
 
     /** Logger. */
-    private Logger LOGGER = org.geotools.util.logging.Logging.getLogger("org.geotools.gce.image");
+    private Logger LOGGER = org.geotools.util.logging.Logging.getLogger(WorldImageReader.class);
 
     private boolean wmsRequest;
 
@@ -374,8 +373,6 @@ public final class WorldImageReader extends AbstractGridCoverage2DReader
      *
      * @param params WorldImageReader supports no parameters, it just ignores them.
      * @return a new GridCoverage read from the source.
-     * @throws IllegalArgumentException DOCUMENT ME!
-     * @throws IOException DOCUMENT ME!
      */
     public GridCoverage2D read(GeneralParameterValue[] params)
             throws IllegalArgumentException, IOException {
@@ -388,26 +385,24 @@ public final class WorldImageReader extends AbstractGridCoverage2DReader
         GeneralEnvelope requestedEnvelope = null;
         Rectangle dim = null;
         OverviewPolicy overviewPolicy = null;
+        // /////////////////////////////////////////////////////////////////////
+        //
+        // Checking params
+        //
+        // /////////////////////////////////////////////////////////////////////
         if (params != null) {
-            // /////////////////////////////////////////////////////////////////////
-            //
-            // Checking params
-            //
-            // /////////////////////////////////////////////////////////////////////
-            if (params != null) {
-                for (int i = 0; i < params.length; i++) {
-                    final ParameterValue param = (ParameterValue) params[i];
-                    final String name = param.getDescriptor().getName().getCode();
-                    if (name.equals(AbstractGridFormat.READ_GRIDGEOMETRY2D.getName().toString())) {
-                        final GridGeometry2D gg = (GridGeometry2D) param.getValue();
-                        requestedEnvelope = new GeneralEnvelope((Envelope) gg.getEnvelope2D());
-                        dim = gg.getGridRange2D().getBounds();
-                        continue;
-                    }
-                    if (name.equals(AbstractGridFormat.OVERVIEW_POLICY.getName().toString())) {
-                        overviewPolicy = (OverviewPolicy) param.getValue();
-                        continue;
-                    }
+            for (int i = 0; i < params.length; i++) {
+                final ParameterValue param = (ParameterValue) params[i];
+                final String name = param.getDescriptor().getName().getCode();
+                if (name.equals(AbstractGridFormat.READ_GRIDGEOMETRY2D.getName().toString())) {
+                    final GridGeometry2D gg = (GridGeometry2D) param.getValue();
+                    requestedEnvelope = new GeneralEnvelope((Envelope) gg.getEnvelope2D());
+                    dim = gg.getGridRange2D().getBounds();
+                    continue;
+                }
+                if (name.equals(AbstractGridFormat.OVERVIEW_POLICY.getName().toString())) {
+                    overviewPolicy = (OverviewPolicy) param.getValue();
+                    continue;
                 }
             }
         }
@@ -416,13 +411,13 @@ public final class WorldImageReader extends AbstractGridCoverage2DReader
         // set params
         //
         // /////////////////////////////////////////////////////////////////////
-        Integer imageChoice = new Integer(0);
+        Integer imageChoice = Integer.valueOf(0);
         final ImageReadParam readP = new ImageReadParam();
         if (!wmsRequest) {
             try {
                 imageChoice = setReadParams(overviewPolicy, readP, requestedEnvelope, dim);
             } catch (TransformException e) {
-                new DataSourceException(e);
+                throw new DataSourceException(e);
             }
         }
         // /////////////////////////////////////////////////////////////////////

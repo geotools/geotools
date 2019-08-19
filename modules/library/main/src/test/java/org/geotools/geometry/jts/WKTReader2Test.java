@@ -27,7 +27,6 @@ import org.locationtech.jts.geom.MultiPoint;
 import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.io.WKTReader;
 
-/** @source $URL$ */
 public class WKTReader2Test {
 
     @Test

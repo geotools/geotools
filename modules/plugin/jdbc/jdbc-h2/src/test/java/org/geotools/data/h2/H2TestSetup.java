@@ -24,7 +24,6 @@ import org.geotools.jdbc.JDBCTestSetup;
  * Test harness for H2.
  *
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL$
  */
 public class H2TestSetup extends JDBCTestSetup {
 

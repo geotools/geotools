@@ -26,7 +26,6 @@ import org.opengis.metadata.content.ImagingCondition;
 /**
  * Information about an image's suitability for use.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @author Touraïvane
@@ -120,7 +119,7 @@ public class ImageDescriptionImpl extends CoverageDescriptionImpl implements Ima
      * intersection of the optical line of sight with the Earths surface. For images from a
      * scanning device, refer to the centre pixel of the image.
      */
-    public synchronized void setIlluminationElevationAngle(final Double newValue) {
+    public void setIlluminationElevationAngle(final Double newValue) {
         checkWritePermission();
         illuminationElevationAngle = newValue;
     }
@@ -138,7 +137,7 @@ public class ImageDescriptionImpl extends CoverageDescriptionImpl implements Ima
      * Set the illumination azimuth measured in degrees clockwise from true north at the time the
      * image is taken. For images from a scanning device, refer to the centre pixel of the image.
      */
-    public synchronized void setIlluminationAzimuthAngle(final Double newValue) {
+    public void setIlluminationAzimuthAngle(final Double newValue) {
         checkWritePermission();
         illuminationAzimuthAngle = newValue;
     }
@@ -149,7 +148,7 @@ public class ImageDescriptionImpl extends CoverageDescriptionImpl implements Ima
     }
 
     /** Set the conditions affected the image. */
-    public synchronized void setImagingCondition(final ImagingCondition newValue) {
+    public void setImagingCondition(final ImagingCondition newValue) {
         checkWritePermission();
         imagingCondition = newValue;
     }
@@ -160,7 +159,7 @@ public class ImageDescriptionImpl extends CoverageDescriptionImpl implements Ima
     }
 
     /** Set the specifies the image quality. */
-    public synchronized void setImageQualityCode(final Identifier newValue) {
+    public void setImageQualityCode(final Identifier newValue) {
         checkWritePermission();
         imageQualityCode = newValue;
     }
@@ -177,7 +176,7 @@ public class ImageDescriptionImpl extends CoverageDescriptionImpl implements Ima
      * Set the area of the dataset obscured by clouds, expressed as a percentage of the spatial
      * extent.
      */
-    public synchronized void setCloudCoverPercentage(final Double newValue) {
+    public void setCloudCoverPercentage(final Double newValue) {
         checkWritePermission();
         cloudCoverPercentage = newValue;
     }
@@ -194,7 +193,7 @@ public class ImageDescriptionImpl extends CoverageDescriptionImpl implements Ima
      * Set the image distributors code that identifies the level of radiometric and geometric
      * processing that has been applied.
      */
-    public synchronized void setProcessingLevelCode(final Identifier newValue) {
+    public void setProcessingLevelCode(final Identifier newValue) {
         checkWritePermission();
         processingLevelCode = newValue;
     }
@@ -210,7 +209,7 @@ public class ImageDescriptionImpl extends CoverageDescriptionImpl implements Ima
     /**
      * Set the count of the number the number of lossy compression cycles performed on the image.
      */
-    public synchronized void setCompressionGenerationQuantity(final Integer newValue) {
+    public void setCompressionGenerationQuantity(final Integer newValue) {
         checkWritePermission();
         compressionGenerationQuantity = newValue;
     }
@@ -224,7 +223,7 @@ public class ImageDescriptionImpl extends CoverageDescriptionImpl implements Ima
     }
 
     /** Set the indication of whether or not triangulation has been performed upon the image. */
-    public synchronized void setTriangulationIndicator(final Boolean newValue) {
+    public void setTriangulationIndicator(final Boolean newValue) {
         checkWritePermission();
         triangulationIndicator = newValue;
     }
@@ -241,7 +240,7 @@ public class ImageDescriptionImpl extends CoverageDescriptionImpl implements Ima
      * Set the indication of whether or not the radiometric calibration information for generating
      * the radiometrically calibrated standard data product is available.
      */
-    public synchronized void setRadiometricCalibrationDataAvailable(final Boolean newValue) {
+    public void setRadiometricCalibrationDataAvailable(final Boolean newValue) {
         checkWritePermission();
         radiometricCalibrationDataAvailable = newValue;
     }
@@ -258,7 +257,7 @@ public class ImageDescriptionImpl extends CoverageDescriptionImpl implements Ima
      * Set the indication of whether or not constants are available which allow for camera
      * calibration corrections.
      */
-    public synchronized void setCameraCalibrationInformationAvailable(final Boolean newValue) {
+    public void setCameraCalibrationInformationAvailable(final Boolean newValue) {
         checkWritePermission();
         cameraCalibrationInformationAvailable = newValue;
     }
@@ -269,7 +268,7 @@ public class ImageDescriptionImpl extends CoverageDescriptionImpl implements Ima
     }
 
     /** Set the indication of whether or not Calibration Reseau information is available. */
-    public synchronized void setFilmDistortionInformationAvailable(final Boolean newValue) {
+    public void setFilmDistortionInformationAvailable(final Boolean newValue) {
         checkWritePermission();
         filmDistortionInformationAvailable = newValue;
     }
@@ -282,7 +281,7 @@ public class ImageDescriptionImpl extends CoverageDescriptionImpl implements Ima
     }
 
     /** Set the indication of whether or not lens aberration correction information is available. */
-    public synchronized void setLensDistortionInformationAvailable(final Boolean newValue) {
+    public void setLensDistortionInformationAvailable(final Boolean newValue) {
         checkWritePermission();
         lensDistortionInformationAvailable = newValue;
     }

@@ -21,12 +21,16 @@ import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCDataStoreFactory;
 import org.geotools.jdbc.JDBCTestSetup;
 
-/** @source $URL$ */
 public class OracleTestSetup extends JDBCTestSetup {
 
     @Override
     protected String typeName(String raw) {
         return raw.toUpperCase();
+    }
+
+    @Override
+    public boolean canResetSchema() {
+        return false;
     }
 
     @Override
@@ -44,7 +48,7 @@ public class OracleTestSetup extends JDBCTestSetup {
         // tests do assume the dialect is working in non loose mode
         ((OracleDialect) dataStore.getSQLDialect()).setLooseBBOXEnabled(false);
         ((OracleDialect) dataStore.getSQLDialect()).setEstimatedExtentsEnabled(false);
-        dataStore.setDatabaseSchema(fixture.getProperty("user").toUpperCase());
+        dataStore.setDatabaseSchema(fixture.getProperty("schema").toUpperCase());
     }
 
     @Override

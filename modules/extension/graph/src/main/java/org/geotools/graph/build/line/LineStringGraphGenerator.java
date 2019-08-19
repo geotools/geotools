@@ -36,7 +36,6 @@ import org.locationtech.jts.geom.*;
  * @see org.locationtech.jts.geom.Point
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
  * @author Anders Bakkevold, Bouvet AS, bakkedev@gmail.com
- * @source $URL$
  */
 public class LineStringGraphGenerator extends BasicLineGraphGenerator {
 

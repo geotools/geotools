@@ -25,7 +25,6 @@ import org.opengis.geometry.primitive.CurveSegment;
  * Since the end of each arc is the start of the next, this {@linkplain Position position} is not
  * repeated in the {@linkplain #getControlPoints control points} sequence.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/as">ISO 19107</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0

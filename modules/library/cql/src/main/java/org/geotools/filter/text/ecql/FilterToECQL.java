@@ -19,9 +19,9 @@ package org.geotools.filter.text.ecql;
 import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Pattern;
-import org.geotools.factory.Hints;
 import org.geotools.filter.text.commons.ExpressionToText;
 import org.geotools.filter.text.commons.FilterToTextUtil;
+import org.geotools.util.factory.Hints;
 import org.opengis.filter.And;
 import org.opengis.filter.ExcludeFilter;
 import org.opengis.filter.Filter;
@@ -252,23 +252,6 @@ final class FilterToECQL implements FilterVisitor {
         return true;
     }
 
-    /** Check if this is EXSISTS encoding of PropertyExistsFunction */
-    private boolean isPropertyExistsTrue(PropertyIsEqualTo filter) {
-        if (isFunctionTrue(filter, "PropertyExists", 1)) {
-            Function function = (Function) filter.getExpression1();
-            List<Expression> parameters = function.getParameters();
-            Expression arg = parameters.get(0);
-            if (arg instanceof Literal) {
-                Literal literal = (Literal) arg;
-                Object value = literal.getValue();
-                if (value instanceof String) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
     private Object buildExists(PropertyIsEqualTo filter, StringBuilder output) {
         Function function = (Function) filter.getExpression1();
         List<Expression> parameters = function.getParameters();
@@ -300,7 +283,6 @@ final class FilterToECQL implements FilterVisitor {
 
     private Object buildRelate(PropertyIsEqualTo filter, StringBuilder output) {
         Function operation = (Function) filter.getExpression1();
-        String name = operation.getName();
         output.append("RELATE(");
         List<Expression> parameters = operation.getParameters();
         Expression arg1 = parameters.get(0);

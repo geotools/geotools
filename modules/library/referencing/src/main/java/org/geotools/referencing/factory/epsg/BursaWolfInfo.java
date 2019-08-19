@@ -19,7 +19,6 @@ package org.geotools.referencing.factory.epsg;
 /**
  * Private structure for {@link DirectEpsgFactory#createBursaWolfParameters} usage.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

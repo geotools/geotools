@@ -50,7 +50,6 @@ import org.opengis.coverage.grid.GridEnvelope;
  * once you opened a stream to a raster you can't open another one and then read the former.
  *
  * @author Gabriel Roldan
- * @source $URL$
  * @version $Id$
  * @since 2.5.7
  */

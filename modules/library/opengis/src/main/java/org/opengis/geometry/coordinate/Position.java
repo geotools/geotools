@@ -27,7 +27,6 @@ import org.opengis.geometry.primitive.Point;
  *     {@code Position} as the base interface of the above. This leads to a slightly different
  *     semantic since ISO defines {@link #getDirectPosition} as conditional, while GeoAPI defines it
  *     as mandatory by allowing the method to return {@code this}.
- * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/as">ISO 19107</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0

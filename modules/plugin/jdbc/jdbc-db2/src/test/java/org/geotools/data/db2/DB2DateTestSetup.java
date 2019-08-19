@@ -3,7 +3,6 @@ package org.geotools.data.db2;
 import java.sql.Connection;
 import org.geotools.jdbc.JDBCDateTestSetup;
 
-/** @source $URL$ */
 public class DB2DateTestSetup extends JDBCDateTestSetup {
 
     public DB2DateTestSetup() {

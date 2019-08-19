@@ -21,9 +21,9 @@ import java.util.logging.Logger;
 import javax.xml.namespace.QName;
 import org.geotools.gml2.GML;
 import org.geotools.referencing.CRS;
-import org.geotools.xml.AbstractComplexBinding;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
+import org.geotools.xsd.AbstractComplexBinding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 import org.locationtech.jts.geom.Geometry;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
@@ -53,7 +53,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class GMLAbstractGeometryTypeBinding extends AbstractComplexBinding {
     Logger logger;
@@ -64,7 +63,7 @@ public class GMLAbstractGeometryTypeBinding extends AbstractComplexBinding {
 
     /** @generated */
     public QName getTarget() {
-        return GML.ABSTRACTGEOMETRYTYPE;
+        return GML.AbstractGeometryType;
     }
 
     /**
@@ -123,7 +122,7 @@ public class GMLAbstractGeometryTypeBinding extends AbstractComplexBinding {
             Geometry geometry = (Geometry) object;
 
             if (geometry.getUserData() instanceof CoordinateReferenceSystem) {
-                return GML2EncodingUtils.crs((CoordinateReferenceSystem) geometry.getUserData());
+                return GML2EncodingUtils.toURI((CoordinateReferenceSystem) geometry.getUserData());
             }
         }
 

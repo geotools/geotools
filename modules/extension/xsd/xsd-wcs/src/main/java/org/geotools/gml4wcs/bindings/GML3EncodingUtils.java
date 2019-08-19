@@ -21,12 +21,13 @@ import java.net.URISyntaxException;
 import java.util.Collections;
 import java.util.List;
 import javax.xml.namespace.QName;
+import org.eclipse.xsd.XSDElementDeclaration;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.gml2.bindings.GML2EncodingUtils;
 import org.geotools.gml3.GML;
 import org.geotools.xlink.XLINK;
-import org.geotools.xml.ComplexBinding;
-import org.geotools.xml.Encoder;
+import org.geotools.xsd.ComplexBinding;
+import org.geotools.xsd.Encoder;
 import org.locationtech.jts.geom.CoordinateSequence;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryCollection;
@@ -38,7 +39,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * Utility class for gml3 encoding.
  *
  * @author Justin Deoliveira, The Open Planning Project, jdeolive@openplans.org
- * @source $URL$
  */
 public class GML3EncodingUtils {
     static DirectPosition[] positions(LineString line) {
@@ -63,7 +63,7 @@ public class GML3EncodingUtils {
         }
 
         try {
-            String crsCode = GML2EncodingUtils.crs(crs);
+            String crsCode = GML2EncodingUtils.toURI(crs);
 
             if (crsCode != null) {
                 return new URI(crsCode);
@@ -73,11 +73,6 @@ public class GML3EncodingUtils {
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    /** @deprecated use {@link #toURI(CoordinateReferenceSystem)}. */
-    static URI crs(CoordinateReferenceSystem crs) {
-        return toURI(crs);
     }
 
     static CoordinateReferenceSystem getCRS(Geometry g) {
@@ -135,8 +130,8 @@ public class GML3EncodingUtils {
     }
 
     /**
-     * Helper method used to implement {@link ComplexBinding#getProperties(Object)} for bindings of
-     * geometry reference types:
+     * Helper method used to implement {@link ComplexBinding#getProperties(Object,
+     * XSDElementDeclaration)} for bindings of geometry reference types:
      *
      * <ul>
      *   <li>GeometryPropertyType

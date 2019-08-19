@@ -44,7 +44,6 @@ import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.io.WKTReader;
 
-/** @source $URL$ */
 public class GeometryClipperTest {
 
     static final double EPS = 1e-3;
@@ -253,7 +252,7 @@ public class GeometryClipperTest {
         Geometry g =
                 wkt.read(
                         "POLYGON((367 -13, 459 105, 653 -42, 611 -96, 562 -60, 514 -124, 367 -13))");
-        System.out.println(g.getNumPoints());
+        // System.out.println(g.getNumPoints());
         Geometry clipped = clipper.clip(g, false);
         assertNotNull(clipped);
         assertTrue(!clipped.isEmpty());

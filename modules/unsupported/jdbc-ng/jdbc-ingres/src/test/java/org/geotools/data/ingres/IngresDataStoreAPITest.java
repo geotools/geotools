@@ -6,7 +6,7 @@ import org.geotools.jdbc.JDBCDataStoreAPITestSetup;
 /**
  * 
  *
- * @source $URL$
+
  */
 public class IngresDataStoreAPITest extends JDBCDataStoreAPITest {
 

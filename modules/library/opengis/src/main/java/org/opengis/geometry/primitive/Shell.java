@@ -22,7 +22,6 @@ import org.opengis.geometry.complex.CompositeSurface;
  * ring}, a {@code Shell}'s elements have no natural sort order. Like {@linkplain Ring rings},
  * {@code Shell}s are simple.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/as">ISO 19107</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0

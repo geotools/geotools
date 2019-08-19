@@ -18,8 +18,8 @@ package org.geotools.wcs.v2_0;
 
 import java.util.Map;
 import net.opengis.wcs20.Wcs20Factory;
-import org.geotools.xml.ComplexEMFBinding;
-import org.geotools.xml.Configuration;
+import org.geotools.xsd.ComplexEMFBinding;
+import org.geotools.xsd.Configuration;
 
 /**
  * Parser configuration for the http://www.opengis.net/WCS_service-extension_interpolation/1.0

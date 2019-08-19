@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.util.NoSuchElementException;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.simple.SimpleFeatureIterator;
-import org.geotools.feature.IllegalAttributeException;
+import org.opengis.feature.IllegalAttributeException;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
@@ -35,7 +35,6 @@ import org.opengis.feature.simple.SimpleFeatureType;
  *
  * @author jgarnett
  * @since 2.1.RC0
- * @source $URL$
  */
 final class FeatureReaderFeatureIterator implements SimpleFeatureIterator {
     FeatureReader<SimpleFeatureType, SimpleFeature> reader;
@@ -99,4 +98,4 @@ final class FeatureReaderFeatureIterator implements SimpleFeatureIterator {
             reader = null;
         }
     }
-};
+}

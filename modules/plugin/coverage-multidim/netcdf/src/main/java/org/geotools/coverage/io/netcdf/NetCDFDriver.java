@@ -38,9 +38,9 @@ import org.geotools.coverage.io.CoverageAccess;
 import org.geotools.coverage.io.Driver;
 import org.geotools.coverage.io.FileDriver;
 import org.geotools.coverage.io.impl.DefaultFileDriver;
-import org.geotools.factory.Hints;
 import org.geotools.imageio.netcdf.NetCDFImageReaderSpi;
 import org.geotools.imageio.netcdf.utilities.NetCDFUtilities;
+import org.geotools.util.factory.Hints;
 import org.opengis.util.ProgressListener;
 
 /** NetCDF Driver */
@@ -53,7 +53,7 @@ public class NetCDFDriver extends DefaultFileDriver implements FileDriver, Drive
 
     /** Logger. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.coverage.io.netcdf");
+            org.geotools.util.logging.Logging.getLogger(NetCDFDriver.class);
 
     /** A static {@link ImageReaderSpi} to be used to call canDecodeInput */
     static final ImageReaderSpi SPI;
@@ -95,7 +95,14 @@ public class NetCDFDriver extends DefaultFileDriver implements FileDriver, Drive
     public CoverageAccess connect(
             Map<String, Serializable> params, Hints hints, ProgressListener listener)
             throws IOException {
-        return new NetCDFAccess(this, null, params, hints, listener);
+        if (params == null) throw new IllegalArgumentException("Invalid or no input provided.");
+        if (!params.containsKey(URL.key))
+            throw new IllegalArgumentException(
+                    "Unable to find parameter URL in parameters " + params.toString());
+
+        // get the URL
+        final URL url = (URL) params.get(URL.key);
+        return new NetCDFAccess(this, url, params, hints, listener);
     }
 
     public boolean isAvailable() {

@@ -55,7 +55,6 @@ import org.geotools.swt.utils.Messages;
  *
  * @author Andrea Aime
  * @since 1.1
- * @source $URL$
  */
 public class ScaleViewer {
     public static final int MIN = 0;
@@ -88,7 +87,7 @@ public class ScaleViewer {
                 ScaleViewer.this.scale = Double.parseDouble(ptext);
                 fire(selectionEvent); // everything worked
             } catch (Throwable t) {
-                t.printStackTrace();
+                java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", t);
             } finally {
                 ScaleViewer.this.scaleEditor.setEnabled(ScaleViewer.this.enabled);
             }

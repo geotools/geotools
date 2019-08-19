@@ -30,7 +30,6 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.util.Set;
-import org.geotools.factory.Hints;
 import org.geotools.metadata.iso.quality.PositionalAccuracyImpl;
 import org.geotools.referencing.ReferencingFactoryFinder;
 import org.geotools.referencing.WKT;
@@ -38,6 +37,7 @@ import org.geotools.referencing.crs.DefaultCompoundCRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.crs.DefaultTemporalCRS;
 import org.geotools.referencing.crs.DefaultVerticalCRS;
+import org.geotools.util.factory.Hints;
 import org.junit.Before;
 import org.junit.Test;
 import org.opengis.parameter.ParameterValueGroup;
@@ -67,7 +67,6 @@ import org.opengis.referencing.operation.Transformation;
  * tests should be executed with Maven. It may occurs during an execution from the IDE however, in
  * which case the tests are disabled in order to allows normal execution of other tests.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

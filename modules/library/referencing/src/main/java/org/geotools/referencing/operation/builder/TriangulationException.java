@@ -20,7 +20,6 @@ package org.geotools.referencing.operation.builder;
  * Thrown when it is unable to generate TIN.
  *
  * @since 2.4
- * @source $URL$
  * @version $Id$
  * @author Jan Jezek
  */

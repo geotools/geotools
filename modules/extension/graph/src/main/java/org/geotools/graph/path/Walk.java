@@ -31,16 +31,13 @@ import org.geotools.graph.structure.Node;
  * G = {N,E} W = { n(i) in N | (n(i-1),n(i)) in E }
  *
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
- * @source $URL$
  */
 public class Walk extends ArrayList implements NodeSequence {
 
     private List m_edges;
 
-    // TODO: DOCUMENT ME!
     public Walk() {}
 
-    // TODO: DOCUMENT ME!
     public Walk(Collection nodes) {
         super(nodes);
     }
@@ -79,18 +76,15 @@ public class Walk extends ArrayList implements NodeSequence {
         return (super.add(node));
     }
 
-    // TODO DOCUMENT ME!
     public void add(int index, Object element) {
         super.add(index, element);
         m_edges = null;
     }
 
-    // TODO DOCUMENT ME!
     public boolean add(Object o) {
         return (add((Node) o));
     }
 
-    // TODO DOCUMENT ME!
     public boolean addAll(Collection c) {
         m_edges = null;
         return (super.addAll(c));
@@ -254,7 +248,6 @@ public class Walk extends ArrayList implements NodeSequence {
         });
     }
 
-    // TODO: DOCUMENT ME!!!
     public Path duplicate() {
         return (new Path(this));
     }

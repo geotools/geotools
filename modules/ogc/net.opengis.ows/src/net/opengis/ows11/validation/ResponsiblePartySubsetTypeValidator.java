@@ -1,6 +1,4 @@
 /**
- * <copyright>
- * </copyright>
  *
  * $Id$
  */
@@ -16,10 +14,10 @@ import net.opengis.ows11.ContactType;
  * This can be disabled with -vmargs -Dorg.eclipse.emf.examples.generator.validator=false.
  */
 public interface ResponsiblePartySubsetTypeValidator {
-    boolean validate();
+  boolean validate();
 
-    boolean validateIndividualName(String value);
-    boolean validatePositionName(String value);
-    boolean validateContactInfo(ContactType value);
-    boolean validateRole(CodeType value);
+  boolean validateIndividualName(String value);
+  boolean validatePositionName(String value);
+  boolean validateContactInfo(ContactType value);
+  boolean validateRole(CodeType value);
 }

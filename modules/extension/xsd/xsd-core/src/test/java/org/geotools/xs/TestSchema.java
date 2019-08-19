@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.Field;
 import java.net.URL;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import javax.xml.namespace.QName;
@@ -32,16 +33,16 @@ import org.eclipse.xsd.XSDFactory;
 import org.eclipse.xsd.XSDSchema;
 import org.eclipse.xsd.XSDSimpleTypeDefinition;
 import org.eclipse.xsd.util.XSDParser;
-import org.geotools.xml.Binding;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Schemas;
-import org.geotools.xml.SimpleBinding;
-import org.geotools.xml.impl.BindingLoader;
-import org.geotools.xml.impl.ElementImpl;
-import org.geotools.xml.impl.PicoMap;
+import org.geotools.util.URLs;
+import org.geotools.xsd.Binding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Schemas;
+import org.geotools.xsd.SimpleBinding;
+import org.geotools.xsd.impl.BindingLoader;
+import org.geotools.xsd.impl.ElementImpl;
+import org.geotools.xsd.impl.PicoMap;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
-/** @source $URL$ */
 public abstract class TestSchema extends TestCase {
     public static URL url;
     public static XSDSchema schema;
@@ -140,8 +141,8 @@ public abstract class TestSchema extends TestCase {
                             + "\"/>"
                             + "</xsd:schema>");
 
-            URL url = temp.toURL();
-            XSDParser parser = new XSDParser();
+            URL url = URLs.fileToUrl(temp);
+            XSDParser parser = new XSDParser(Collections.emptyMap());
             parser.parse(url.toString());
 
             XSDSchema schema = parser.getSchema();
@@ -149,7 +150,7 @@ public abstract class TestSchema extends TestCase {
 
             return (ElementInstance) map.get(name);
         } catch (Throwable t) {
-            t.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", t);
 
             return null;
         }

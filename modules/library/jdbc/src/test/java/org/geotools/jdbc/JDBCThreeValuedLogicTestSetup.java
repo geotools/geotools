@@ -5,8 +5,6 @@ import java.sql.SQLException;
 /**
  * This test setup is so simple that subclasses may not be necessary, but just in case, we provide
  * the ability to subclass
- *
- * @source $URL$
  */
 public class JDBCThreeValuedLogicTestSetup extends JDBCDelegatingTestSetup {
 

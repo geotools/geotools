@@ -1,3 +1,21 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2019, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ *
+ */
+
 package org.geotools.xml;
 
 import java.io.ByteArrayOutputStream;
@@ -9,6 +27,9 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import javax.xml.namespace.QName;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -19,20 +40,22 @@ import org.geotools.gml.GMLFilterFeature;
 import org.geotools.gml.GMLFilterGeometry;
 import org.geotools.gml.GMLHandlerFeature;
 import org.geotools.gml.producer.FeatureTransformer;
-import org.geotools.gtxml.GTXML;
 import org.geotools.referencing.CRS;
+import org.geotools.wfs.gtxml.GTXML;
 import org.geotools.xml.gml.GMLComplexTypes;
 import org.geotools.xml.schema.Schema;
 import org.geotools.xs.XSConfiguration;
+import org.geotools.xsd.Configuration;
+import org.geotools.xsd.XSD;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.feature.type.Name;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLFilterImpl;
-import org.xml.sax.helpers.XMLReaderFactory;
 
 public class GMLExamples {
 
@@ -46,7 +69,7 @@ public class GMLExamples {
         GMLFilterDocument filterDocument = new GMLFilterDocument(filterGeometry);
 
         // parse xml
-        XMLReader reader = XMLReaderFactory.createXMLReader();
+        XMLReader reader = getXMLReader();
         reader.setContentHandler(filterDocument);
         reader.parse(input);
 
@@ -70,7 +93,7 @@ public class GMLExamples {
         GMLFilterDocument filterDocument = new GMLFilterDocument(filterGeometry);
 
         // parse xml
-        XMLReader reader = XMLReaderFactory.createXMLReader();
+        XMLReader reader = getXMLReader();
         reader.setContentHandler(filterDocument);
         reader.parse(input);
 
@@ -155,7 +178,7 @@ public class GMLExamples {
 
     private void xdoExample() throws Exception {
         // xdoExample start
-        XMLReader reader = XMLReaderFactory.createXMLReader();
+        XMLReader reader = getXMLReader();
         URI schemaLoc =
                 new java.net.URI(
                         "http://giswebservices.massgis.state.ma.us/geoserver/wfs?request=describefeaturetype&service=wfs&version=1.0.0&typename=massgis:GISDATA.COUNTIES_POLY");
@@ -169,6 +192,13 @@ public class GMLExamples {
         SimpleFeatureType ft =
                 GMLComplexTypes.createFeatureType(schemaHandler.getSchema().getElements()[0]);
         // xdoExample end
+    }
+
+    private XMLReader getXMLReader() throws ParserConfigurationException, SAXException {
+        SAXParserFactory parserFactory = SAXParserFactory.newInstance();
+        parserFactory.setNamespaceAware(true);
+        SAXParser parser = parserFactory.newSAXParser();
+        return parser.getXMLReader();
     }
 
     private void rawSchemaExample() throws Exception {

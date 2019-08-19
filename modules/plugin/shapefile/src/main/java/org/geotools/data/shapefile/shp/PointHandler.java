@@ -28,7 +28,6 @@ import org.locationtech.jts.geom.Point;
  *
  * @author aaime
  * @author Ian Schneider
- * @source $URL$
  */
 public class PointHandler implements ShapeHandler {
 
@@ -102,21 +101,23 @@ public class PointHandler implements ShapeHandler {
     }
 
     public void write(ByteBuffer buffer, Object geometry) {
-        Coordinate c = ((Point) geometry).getCoordinate();
+        Point point = (Point) geometry;
+        Coordinate c = point.getCoordinate();
 
         buffer.putDouble(c.x);
         buffer.putDouble(c.y);
 
         if (shapeType == ShapeType.POINTZ) {
-            if (Double.isNaN(c.z)) { // nan means not defined
+            if (Double.isNaN(c.getZ())) { // nan means not defined
                 buffer.putDouble(0.0);
             } else {
-                buffer.putDouble(c.z);
+                buffer.putDouble(c.getZ());
             }
         }
 
         if ((shapeType == ShapeType.POINTZ) || (shapeType == ShapeType.POINTM)) {
-            buffer.putDouble(-10E40); // M
+            double m = point.getCoordinateSequence().getM(0);
+            buffer.putDouble(!Double.isNaN(m) ? m : 0.0); // M
         }
     }
 }

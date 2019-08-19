@@ -25,7 +25,6 @@ import org.opengis.metadata.quality.RelativeInternalPositionalAccuracy;
  * Closeness of the relative positions of features in the scope to their respective relative
  * positions accepted as or being true.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @author Touraïvane

@@ -27,7 +27,6 @@ package org.geotools.data.oracle.sdo;
  * willing to try this out won't have to re-code everything from scratch.
  *
  * @author Andrea Aime - OpenGeo
- * @source $URL$
  */
 public class JGeometryConverter {
     //    /**

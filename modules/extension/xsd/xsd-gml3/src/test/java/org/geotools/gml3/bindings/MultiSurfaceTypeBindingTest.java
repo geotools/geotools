@@ -23,7 +23,6 @@ import org.locationtech.jts.geom.MultiPolygon;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 
-/** @source $URL$ */
 public class MultiSurfaceTypeBindingTest extends GML3TestSupport {
 
     public void testEncode() throws Exception {

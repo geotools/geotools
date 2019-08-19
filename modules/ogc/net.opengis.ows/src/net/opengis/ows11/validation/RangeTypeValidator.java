@@ -1,6 +1,4 @@
 /**
- * <copyright>
- * </copyright>
  *
  * $Id$
  */
@@ -16,10 +14,10 @@ import net.opengis.ows11.ValueType;
  * This can be disabled with -vmargs -Dorg.eclipse.emf.examples.generator.validator=false.
  */
 public interface RangeTypeValidator {
-    boolean validate();
+  boolean validate();
 
-    boolean validateMinimumValue(ValueType value);
-    boolean validateMaximumValue(ValueType value);
-    boolean validateSpacing(ValueType value);
-    boolean validateRangeClosure(RangeClosureType value);
+  boolean validateMinimumValue(ValueType value);
+  boolean validateMaximumValue(ValueType value);
+  boolean validateSpacing(ValueType value);
+  boolean validateRangeClosure(RangeClosureType value);
 }

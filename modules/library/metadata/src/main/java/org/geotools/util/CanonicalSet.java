@@ -42,19 +42,11 @@ package org.geotools.util;
  *
  * @param <E> The type of elements in the set.
  * @since 2.4
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @author Jody Garnett
  */
 public class CanonicalSet<E> extends WeakHashSet<E> {
-    /**
-     * Constructs a {@code CanonicalSet}.
-     *
-     * @deprecated Use {@link #newInstance} instead.
-     */
-    public CanonicalSet() {}
-
     /**
      * Constructs a {@code CanonicalSet} for elements of the specified type.
      *

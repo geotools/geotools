@@ -26,7 +26,7 @@ import org.geotools.arcsde.session.ISession;
 /**
  * Fully qualifies a table names.
  *
- * <p>{@link net.sf.jsqlparser.schema.Table} has provitions only to store schema and table names, in
+ * <p>{@link net.sf.jsqlparser.schema.Table} has provisions only to store schema and table names, in
  * the traditional sense. ArcSDE uses fully qualified names formed by
  * "databaseName"."userName"."tableName". Though "databaseName" is optional in some ArcSDE systems
  * (sql server, for example), it is required in Oracle. Schema and table stands for user and table
@@ -34,10 +34,6 @@ import org.geotools.arcsde.session.ISession;
  * "databaseName"."userName"
  *
  * @author Gabriel Roldan, Axios Engineering
- * @version $Id$
- * @source $URL:
- *     http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/main/java
- *     /org/geotools/arcsde/data/view/FromItemQualifier.java $
  * @since 2.3.x
  */
 class FromItemQualifier implements FromItemVisitor {

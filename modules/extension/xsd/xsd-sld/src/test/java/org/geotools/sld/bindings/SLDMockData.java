@@ -22,7 +22,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
-/** @source $URL$ */
 public class SLDMockData {
     static Element anchorPoint(Document document, Node parent) {
         Element anchorPoint = element(SLD.ANCHORPOINT, document, parent);

@@ -18,6 +18,7 @@ package org.geotools.geometry.iso.primitive;
 
 import org.geotools.geometry.iso.coordinate.DirectPositionImpl;
 import org.geotools.geometry.iso.coordinate.EnvelopeImpl;
+import org.geotools.util.SuppressFBWarnings;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.Envelope;
 import org.opengis.geometry.primitive.OrientablePrimitive;
@@ -29,7 +30,6 @@ import org.opengis.geometry.primitive.SolidBoundary;
  * solid is defined by the boundary surfaces.
  *
  * @author Jackson Roehrig & Sanjay Jena
- * @source $URL$
  */
 public class SolidImpl extends PrimitiveImpl implements Solid {
     private static final long serialVersionUID = 9203406429631890989L;
@@ -128,6 +128,7 @@ public class SolidImpl extends PrimitiveImpl implements Solid {
     }
 
     @Override
+    @SuppressFBWarnings("NP_CLONE_COULD_RETURN_NULL")
     public SolidImpl clone() throws CloneNotSupportedException {
         // TODO Auto-generated method stub
         return null;

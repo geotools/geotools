@@ -24,7 +24,6 @@ import com.esri.sde.sdk.client.SeRasterScanLineProducer;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 
-/** @source $URL$ */
 public class ArcSDERasterOneBitPerBandProducerImpl extends ArcSDERasterProducer {
 
     /**
@@ -99,7 +98,8 @@ public class ArcSDERasterOneBitPerBandProducerImpl extends ArcSDERasterProducer 
                                 }
                                 consumer.rasterComplete(SeRasterConsumer.STATICIMAGEDONE);
                             } catch (Exception se) {
-                                se.printStackTrace();
+                                java.util.logging.Logger.getGlobal()
+                                        .log(java.util.logging.Level.INFO, "", se);
                                 consumer.rasterComplete(SeRasterConsumer.IMAGEERROR);
                             }
                         }

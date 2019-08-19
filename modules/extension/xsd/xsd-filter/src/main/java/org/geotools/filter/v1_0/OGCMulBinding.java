@@ -17,9 +17,9 @@
 package org.geotools.filter.v1_0;
 
 import javax.xml.namespace.QName;
-import org.geotools.xml.AbstractComplexBinding;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
+import org.geotools.xsd.AbstractComplexBinding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Multiply;
@@ -37,7 +37,6 @@ import org.opengis.filter.expression.Multiply;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class OGCMulBinding extends AbstractComplexBinding {
     FilterFactory filterfactory;

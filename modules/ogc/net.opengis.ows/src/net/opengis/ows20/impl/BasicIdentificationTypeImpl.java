@@ -29,232 +29,232 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link net.opengis.ows20.impl.BasicIdentificationTypeImpl#getIdentifier <em>Identifier</em>}</li>
  *   <li>{@link net.opengis.ows20.impl.BasicIdentificationTypeImpl#getMetadataGroup <em>Metadata Group</em>}</li>
  *   <li>{@link net.opengis.ows20.impl.BasicIdentificationTypeImpl#getMetadata <em>Metadata</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
 public class BasicIdentificationTypeImpl extends DescriptionTypeImpl implements BasicIdentificationType {
     /**
-     * The cached value of the '{@link #getIdentifier() <em>Identifier</em>}' containment reference.
-     * <!-- begin-user-doc -->
+   * The cached value of the '{@link #getIdentifier() <em>Identifier</em>}' containment reference.
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getIdentifier()
-     * @generated
-     * @ordered
-     */
+   * @see #getIdentifier()
+   * @generated
+   * @ordered
+   */
     protected CodeType identifier;
 
     /**
-     * The cached value of the '{@link #getMetadataGroup() <em>Metadata Group</em>}' attribute list.
-     * <!-- begin-user-doc -->
+   * The cached value of the '{@link #getMetadataGroup() <em>Metadata Group</em>}' attribute list.
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getMetadataGroup()
-     * @generated
-     * @ordered
-     */
+   * @see #getMetadataGroup()
+   * @generated
+   * @ordered
+   */
     protected FeatureMap metadataGroup;
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     protected BasicIdentificationTypeImpl() {
-        super();
-    }
+    super();
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     protected EClass eStaticClass() {
-        return Ows20Package.Literals.BASIC_IDENTIFICATION_TYPE;
-    }
+    return Ows20Package.Literals.BASIC_IDENTIFICATION_TYPE;
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public CodeType getIdentifier() {
-        return identifier;
-    }
+    return identifier;
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public NotificationChain basicSetIdentifier(CodeType newIdentifier, NotificationChain msgs) {
-        CodeType oldIdentifier = identifier;
-        identifier = newIdentifier;
-        if (eNotificationRequired()) {
-            ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, Ows20Package.BASIC_IDENTIFICATION_TYPE__IDENTIFIER, oldIdentifier, newIdentifier);
-            if (msgs == null) msgs = notification; else msgs.add(notification);
-        }
-        return msgs;
+    CodeType oldIdentifier = identifier;
+    identifier = newIdentifier;
+    if (eNotificationRequired()) {
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, Ows20Package.BASIC_IDENTIFICATION_TYPE__IDENTIFIER, oldIdentifier, newIdentifier);
+      if (msgs == null) msgs = notification; else msgs.add(notification);
     }
+    return msgs;
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public void setIdentifier(CodeType newIdentifier) {
-        if (newIdentifier != identifier) {
-            NotificationChain msgs = null;
-            if (identifier != null)
-                msgs = ((InternalEObject)identifier).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - Ows20Package.BASIC_IDENTIFICATION_TYPE__IDENTIFIER, null, msgs);
-            if (newIdentifier != null)
-                msgs = ((InternalEObject)newIdentifier).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - Ows20Package.BASIC_IDENTIFICATION_TYPE__IDENTIFIER, null, msgs);
-            msgs = basicSetIdentifier(newIdentifier, msgs);
-            if (msgs != null) msgs.dispatch();
-        }
-        else if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, Ows20Package.BASIC_IDENTIFICATION_TYPE__IDENTIFIER, newIdentifier, newIdentifier));
+    if (newIdentifier != identifier) {
+      NotificationChain msgs = null;
+      if (identifier != null)
+        msgs = ((InternalEObject)identifier).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - Ows20Package.BASIC_IDENTIFICATION_TYPE__IDENTIFIER, null, msgs);
+      if (newIdentifier != null)
+        msgs = ((InternalEObject)newIdentifier).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - Ows20Package.BASIC_IDENTIFICATION_TYPE__IDENTIFIER, null, msgs);
+      msgs = basicSetIdentifier(newIdentifier, msgs);
+      if (msgs != null) msgs.dispatch();
     }
+    else if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, Ows20Package.BASIC_IDENTIFICATION_TYPE__IDENTIFIER, newIdentifier, newIdentifier));
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public FeatureMap getMetadataGroup() {
-        if (metadataGroup == null) {
-            metadataGroup = new BasicFeatureMap(this, Ows20Package.BASIC_IDENTIFICATION_TYPE__METADATA_GROUP);
-        }
-        return metadataGroup;
+    if (metadataGroup == null) {
+      metadataGroup = new BasicFeatureMap(this, Ows20Package.BASIC_IDENTIFICATION_TYPE__METADATA_GROUP);
     }
+    return metadataGroup;
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public EList<MetadataType> getMetadata() {
-        return getMetadataGroup().list(Ows20Package.Literals.BASIC_IDENTIFICATION_TYPE__METADATA);
-    }
+    return getMetadataGroup().list(Ows20Package.Literals.BASIC_IDENTIFICATION_TYPE__METADATA);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-        switch (featureID) {
-            case Ows20Package.BASIC_IDENTIFICATION_TYPE__IDENTIFIER:
-                return basicSetIdentifier(null, msgs);
-            case Ows20Package.BASIC_IDENTIFICATION_TYPE__METADATA_GROUP:
-                return ((InternalEList<?>)getMetadataGroup()).basicRemove(otherEnd, msgs);
-            case Ows20Package.BASIC_IDENTIFICATION_TYPE__METADATA:
-                return ((InternalEList<?>)getMetadata()).basicRemove(otherEnd, msgs);
-        }
-        return super.eInverseRemove(otherEnd, featureID, msgs);
+    switch (featureID) {
+      case Ows20Package.BASIC_IDENTIFICATION_TYPE__IDENTIFIER:
+        return basicSetIdentifier(null, msgs);
+      case Ows20Package.BASIC_IDENTIFICATION_TYPE__METADATA_GROUP:
+        return ((InternalEList<?>)getMetadataGroup()).basicRemove(otherEnd, msgs);
+      case Ows20Package.BASIC_IDENTIFICATION_TYPE__METADATA:
+        return ((InternalEList<?>)getMetadata()).basicRemove(otherEnd, msgs);
     }
+    return super.eInverseRemove(otherEnd, featureID, msgs);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case Ows20Package.BASIC_IDENTIFICATION_TYPE__IDENTIFIER:
-                return getIdentifier();
-            case Ows20Package.BASIC_IDENTIFICATION_TYPE__METADATA_GROUP:
-                if (coreType) return getMetadataGroup();
-                return ((FeatureMap.Internal)getMetadataGroup()).getWrapper();
-            case Ows20Package.BASIC_IDENTIFICATION_TYPE__METADATA:
-                return getMetadata();
-        }
-        return super.eGet(featureID, resolve, coreType);
+    switch (featureID) {
+      case Ows20Package.BASIC_IDENTIFICATION_TYPE__IDENTIFIER:
+        return getIdentifier();
+      case Ows20Package.BASIC_IDENTIFICATION_TYPE__METADATA_GROUP:
+        if (coreType) return getMetadataGroup();
+        return ((FeatureMap.Internal)getMetadataGroup()).getWrapper();
+      case Ows20Package.BASIC_IDENTIFICATION_TYPE__METADATA:
+        return getMetadata();
     }
+    return super.eGet(featureID, resolve, coreType);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @SuppressWarnings("unchecked")
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case Ows20Package.BASIC_IDENTIFICATION_TYPE__IDENTIFIER:
-                setIdentifier((CodeType)newValue);
-                return;
-            case Ows20Package.BASIC_IDENTIFICATION_TYPE__METADATA_GROUP:
-                ((FeatureMap.Internal)getMetadataGroup()).set(newValue);
-                return;
-            case Ows20Package.BASIC_IDENTIFICATION_TYPE__METADATA:
-                getMetadata().clear();
-                getMetadata().addAll((Collection<? extends MetadataType>)newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
+    switch (featureID) {
+      case Ows20Package.BASIC_IDENTIFICATION_TYPE__IDENTIFIER:
+        setIdentifier((CodeType)newValue);
+        return;
+      case Ows20Package.BASIC_IDENTIFICATION_TYPE__METADATA_GROUP:
+        ((FeatureMap.Internal)getMetadataGroup()).set(newValue);
+        return;
+      case Ows20Package.BASIC_IDENTIFICATION_TYPE__METADATA:
+        getMetadata().clear();
+        getMetadata().addAll((Collection<? extends MetadataType>)newValue);
+        return;
     }
+    super.eSet(featureID, newValue);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case Ows20Package.BASIC_IDENTIFICATION_TYPE__IDENTIFIER:
-                setIdentifier((CodeType)null);
-                return;
-            case Ows20Package.BASIC_IDENTIFICATION_TYPE__METADATA_GROUP:
-                getMetadataGroup().clear();
-                return;
-            case Ows20Package.BASIC_IDENTIFICATION_TYPE__METADATA:
-                getMetadata().clear();
-                return;
-        }
-        super.eUnset(featureID);
+    switch (featureID) {
+      case Ows20Package.BASIC_IDENTIFICATION_TYPE__IDENTIFIER:
+        setIdentifier((CodeType)null);
+        return;
+      case Ows20Package.BASIC_IDENTIFICATION_TYPE__METADATA_GROUP:
+        getMetadataGroup().clear();
+        return;
+      case Ows20Package.BASIC_IDENTIFICATION_TYPE__METADATA:
+        getMetadata().clear();
+        return;
     }
+    super.eUnset(featureID);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case Ows20Package.BASIC_IDENTIFICATION_TYPE__IDENTIFIER:
-                return identifier != null;
-            case Ows20Package.BASIC_IDENTIFICATION_TYPE__METADATA_GROUP:
-                return metadataGroup != null && !metadataGroup.isEmpty();
-            case Ows20Package.BASIC_IDENTIFICATION_TYPE__METADATA:
-                return !getMetadata().isEmpty();
-        }
-        return super.eIsSet(featureID);
+    switch (featureID) {
+      case Ows20Package.BASIC_IDENTIFICATION_TYPE__IDENTIFIER:
+        return identifier != null;
+      case Ows20Package.BASIC_IDENTIFICATION_TYPE__METADATA_GROUP:
+        return metadataGroup != null && !metadataGroup.isEmpty();
+      case Ows20Package.BASIC_IDENTIFICATION_TYPE__METADATA:
+        return !getMetadata().isEmpty();
     }
+    return super.eIsSet(featureID);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     public String toString() {
-        if (eIsProxy()) return super.toString();
+    if (eIsProxy()) return super.toString();
 
-        StringBuffer result = new StringBuffer(super.toString());
-        result.append(" (metadataGroup: ");
-        result.append(metadataGroup);
-        result.append(')');
-        return result.toString();
-    }
+    StringBuilder result = new StringBuilder(super.toString());
+    result.append(" (metadataGroup: ");
+    result.append(metadataGroup);
+    result.append(')');
+    return result.toString();
+  }
 
 } //BasicIdentificationTypeImpl

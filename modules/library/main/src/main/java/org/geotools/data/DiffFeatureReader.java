@@ -48,7 +48,6 @@ import org.opengis.filter.spatial.Within;
  * in order to check for deletetions.
  *
  * @author Jody Garnett, Refractions Research
- * @source $URL$
  */
 public class DiffFeatureReader<T extends FeatureType, F extends Feature>
         implements FeatureReader<T, F> {

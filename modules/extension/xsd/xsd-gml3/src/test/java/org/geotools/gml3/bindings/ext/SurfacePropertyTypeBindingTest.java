@@ -24,7 +24,6 @@ import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Polygon;
 import org.w3c.dom.Document;
 
-/** @source $URL$ */
 public class SurfacePropertyTypeBindingTest extends GML3TestSupport {
 
     protected boolean enableExtendedArcSurfaceSupport() {

@@ -19,7 +19,6 @@ package org.geotools.data.teradata;
 import org.geotools.jdbc.JDBCDataStoreAPIOnlineTest;
 import org.geotools.jdbc.JDBCDataStoreAPITestSetup;
 
-/** @source $URL$ */
 public class TeradataDataStoreAPIOnlineTest extends JDBCDataStoreAPIOnlineTest {
 
     @Override

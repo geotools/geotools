@@ -36,14 +36,13 @@ import org.opengis.util.ProgressListener;
  * Implementation of a coverage source for netcdf data
  *
  * @author Simone Giannecchini, GeoSolutions SAS
- * @source $URL$
  */
 @SuppressWarnings("rawtypes")
 public class NetCDFSource extends DefaultCoverageSource {
 
     /** Logger. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(NetCDFSource.class.toString());
+            org.geotools.util.logging.Logging.getLogger(NetCDFSource.class);
 
     NetCDFImageReader reader;
 

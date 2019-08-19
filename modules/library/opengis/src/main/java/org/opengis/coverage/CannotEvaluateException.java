@@ -23,7 +23,6 @@ import org.opengis.geometry.DirectPosition; // For Javadoc
  * @since GeoAPI 1.0
  * @see Coverage#evaluate(DirectPosition, byte[])
  * @see Coverage#evaluate(DirectPosition, double[])
- * @source $URL$
  */
 public class CannotEvaluateException extends RuntimeException {
     /** Serial number for interoperability with different versions. */

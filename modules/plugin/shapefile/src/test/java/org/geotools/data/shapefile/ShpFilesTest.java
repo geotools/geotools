@@ -35,7 +35,6 @@ import org.geotools.data.shapefile.files.ShpFileType;
 import org.geotools.data.shapefile.files.ShpFiles;
 import org.junit.Test;
 
-/** @source $URL$ */
 public class ShpFilesTest {
 
     @Test

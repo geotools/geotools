@@ -17,15 +17,15 @@
 package org.geotools.gml2;
 
 import junit.framework.TestCase;
-import org.geotools.feature.FeatureCollections;
+import org.eclipse.xsd.util.XSDSchemaLocationResolver;
 import org.geotools.xlink.XLINKConfiguration;
 import org.geotools.xs.XSConfiguration;
+import org.geotools.xsd.SchemaLocationResolver;
 import org.locationtech.jts.geom.CoordinateSequenceFactory;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
-/** @source $URL$ */
 public class GMLConfigurationTest extends TestCase {
     GMLConfiguration configuration;
 
@@ -42,7 +42,7 @@ public class GMLConfigurationTest extends TestCase {
     public void testGetSchemaLocation() {
         assertEquals(
                 GMLConfiguration.class.getResource("feature.xsd").toString(),
-                configuration.getSchemaFileURL());
+                configuration.getXSD().getSchemaLocation());
     }
 
     public void testDependencies() {
@@ -54,13 +54,11 @@ public class GMLConfigurationTest extends TestCase {
     public void testSchemaLocationResolver() {
         assertEquals(
                 GMLConfiguration.class.getResource("feature.xsd").toString(),
-                configuration
-                        .getSchemaLocationResolver()
+                ((XSDSchemaLocationResolver) new SchemaLocationResolver(configuration.getXSD()))
                         .resolveSchemaLocation(null, GML.NAMESPACE, "feature.xsd"));
         assertEquals(
                 GMLConfiguration.class.getResource("geometry.xsd").toString(),
-                configuration
-                        .getSchemaLocationResolver()
+                ((XSDSchemaLocationResolver) new SchemaLocationResolver(configuration.getXSD()))
                         .resolveSchemaLocation(null, GML.NAMESPACE, "geometry.xsd"));
     }
 
@@ -71,6 +69,5 @@ public class GMLConfigurationTest extends TestCase {
         assertNotNull(container.getComponentInstanceOfType(FeatureTypeCache.class));
         assertNotNull(container.getComponentAdapter(CoordinateSequenceFactory.class));
         assertNotNull(container.getComponentAdapterOfType(GeometryFactory.class));
-        assertNotNull(container.getComponentAdapterOfType(FeatureCollections.class));
     }
 }

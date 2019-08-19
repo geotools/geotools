@@ -20,7 +20,6 @@ import java.net.URI;
 import org.geotools.xml.schema.All;
 import org.geotools.xml.schema.Element;
 
-/** @source $URL$ */
 public class AllGT implements All {
 
     private Element[] elements;

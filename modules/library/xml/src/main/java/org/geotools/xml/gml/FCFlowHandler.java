@@ -24,7 +24,6 @@ import org.geotools.xml.XMLHandlerHints;
  * Allows the XMLSAXHandler to abort parsing of GML.
  *
  * @author Richard Gould
- * @source $URL$
  */
 public class FCFlowHandler implements FlowHandler {
     public boolean shouldStop(Map hints) {

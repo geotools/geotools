@@ -56,14 +56,14 @@ import javax.media.jai.iterator.WritableRectIter;
 import org.geotools.geometry.GeneralDirectPosition;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.image.ImageWorker;
-import org.geotools.io.LineWriter;
+import org.geotools.image.util.ImageUtilities;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.operation.matrix.GeneralMatrix;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
-import org.geotools.resources.Classes;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
-import org.geotools.resources.image.ImageUtilities;
+import org.geotools.util.Classes;
+import org.geotools.util.LineWriter;
 import org.geotools.util.SimpleInternationalString;
 import org.geotools.util.logging.Logging;
 import org.opengis.coverage.CannotEvaluateException;
@@ -100,7 +100,6 @@ import org.opengis.util.RecordType;
  * </ul>
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
@@ -651,22 +650,20 @@ public abstract class AbstractCoverage extends PropertySourceImpl implements Cov
             final AffineTransform crsToGrid = context.getTransform();
             final Shape area = context.getAreaOfInterest();
             final Rectangle gridBounds;
-            if (true) {
-                /*
-                 * Computes the grid bounds for the coverage bounds (or the area of interest).
-                 * The default implementation of Rectangle uses Math.floor and Math.ceil for
-                 * computing a box which contains fully the Rectangle2D. But in our particular
-                 * case, we really want to round toward the nearest integer.
-                 */
-                final Rectangle2D bounds =
-                        XAffineTransform.transform(
-                                crsToGrid, (area != null) ? area.getBounds2D() : this.bounds, null);
-                final int xmin = (int) Math.round(bounds.getMinX());
-                final int ymin = (int) Math.round(bounds.getMinY());
-                final int xmax = (int) Math.round(bounds.getMaxX());
-                final int ymax = (int) Math.round(bounds.getMaxY());
-                gridBounds = new Rectangle(xmin, ymin, xmax - xmin, ymax - ymin);
-            }
+            /*
+             * Computes the grid bounds for the coverage bounds (or the area of interest).
+             * The default implementation of Rectangle uses Math.floor and Math.ceil for
+             * computing a box which contains fully the Rectangle2D. But in our particular
+             * case, we really want to round toward the nearest integer.
+             */
+            final Rectangle2D bounds =
+                    XAffineTransform.transform(
+                            crsToGrid, (area != null) ? area.getBounds2D() : this.bounds, null);
+            final int xmin = (int) Math.round(bounds.getMinX());
+            final int ymin = (int) Math.round(bounds.getMinY());
+            final int xmax = (int) Math.round(bounds.getMaxX());
+            final int ymax = (int) Math.round(bounds.getMaxY());
+            gridBounds = new Rectangle(xmin, ymin, xmax - xmin, ymax - ymin);
             /*
              * Computes some properties of the image to be created.
              */
@@ -818,14 +815,6 @@ public abstract class AbstractCoverage extends PropertySourceImpl implements Cov
                             cs.getAxis(xAxis).getDirection(), cs.getAxis(yAxis).getDirection()
                         };
                 final AxisDirection[] normalized = axis.clone();
-                if (false) {
-                    // Normalize axis: Is it really a good idea?
-                    // We should provide a rendering hint for configuring that.
-                    Arrays.sort(normalized);
-                    for (int i = normalized.length; --i >= 0; ) {
-                        normalized[i] = normalized[i].absolute();
-                    }
-                }
                 normalized[1] = normalized[1].opposite(); // Image's Y axis is downward.
                 matrix = new GeneralMatrix(srcEnvelope, axis, dstEnvelope, normalized);
             } else {
@@ -849,8 +838,7 @@ public abstract class AbstractCoverage extends PropertySourceImpl implements Cov
          * Returns all values of a given element for a specified set of coordinates. This method is
          * automatically invoked at rendering time for populating an image tile, providing that the
          * rendered image is created using the "{@link ImageFunctionDescriptor ImageFunction}"
-         * operator and the image type is not {@code double}. The default implementation invokes
-         * {@link AbstractCoverage#evaluate(DirectPosition,float[])} recursively.
+         * operator and the image type is not {@code double}.
          */
         public void getElements(
                 final float startX,

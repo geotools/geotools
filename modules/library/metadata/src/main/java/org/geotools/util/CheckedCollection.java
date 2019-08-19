@@ -24,7 +24,6 @@ import java.util.Collection;
  *
  * @param <E> The type of elements in the collection.
  * @since 2.4
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  */

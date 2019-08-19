@@ -11,8 +11,8 @@ package org.geotools.po.bindings;
 
 import javax.xml.namespace.QName;
 import org.geotools.po.ObjectFactory;
-import org.geotools.xml.AbstractSimpleBinding;
-import org.geotools.xml.InstanceComponent;
+import org.geotools.xsd.AbstractSimpleBinding;
+import org.geotools.xsd.InstanceComponent;
 
 public class CommentBinding extends AbstractSimpleBinding {
     ObjectFactory factory;

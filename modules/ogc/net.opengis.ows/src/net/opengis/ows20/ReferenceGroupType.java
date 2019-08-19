@@ -20,11 +20,11 @@ import org.eclipse.emf.ecore.util.FeatureMap;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link net.opengis.ows20.ReferenceGroupType#getAbstractReferenceBaseGroup <em>Abstract Reference Base Group</em>}</li>
  *   <li>{@link net.opengis.ows20.ReferenceGroupType#getAbstractReferenceBase <em>Abstract Reference Base</em>}</li>
  * </ul>
- * </p>
  *
  * @see net.opengis.ows20.Ows20Package#getReferenceGroupType()
  * @model extendedMetaData="name='ReferenceGroupType' kind='elementOnly'"
@@ -32,37 +32,37 @@ import org.eclipse.emf.ecore.util.FeatureMap;
  */
 public interface ReferenceGroupType extends BasicIdentificationType {
     /**
-     * Returns the value of the '<em><b>Abstract Reference Base Group</b></em>' attribute list.
-     * The list contents are of type {@link org.eclipse.emf.ecore.util.FeatureMap.Entry}.
-     * <!-- begin-user-doc -->
+   * Returns the value of the '<em><b>Abstract Reference Base Group</b></em>' attribute list.
+   * The list contents are of type {@link org.eclipse.emf.ecore.util.FeatureMap.Entry}.
+   * <!-- begin-user-doc -->
      * <p>
      * If the meaning of the '<em>Abstract Reference Base Group</em>' attribute list isn't clear,
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     * @return the value of the '<em>Abstract Reference Base Group</em>' attribute list.
-     * @see net.opengis.ows20.Ows20Package#getReferenceGroupType_AbstractReferenceBaseGroup()
-     * @model unique="false" dataType="org.eclipse.emf.ecore.EFeatureMapEntry" required="true" many="true"
-     *        extendedMetaData="kind='group' name='AbstractReferenceBase:group' namespace='##targetNamespace'"
-     * @generated
-     */
+   * @return the value of the '<em>Abstract Reference Base Group</em>' attribute list.
+   * @see net.opengis.ows20.Ows20Package#getReferenceGroupType_AbstractReferenceBaseGroup()
+   * @model unique="false" dataType="org.eclipse.emf.ecore.EFeatureMapEntry" required="true" many="true"
+   *        extendedMetaData="kind='group' name='AbstractReferenceBase:group' namespace='##targetNamespace'"
+   * @generated
+   */
     FeatureMap getAbstractReferenceBaseGroup();
 
     /**
-     * Returns the value of the '<em><b>Abstract Reference Base</b></em>' containment reference list.
-     * The list contents are of type {@link net.opengis.ows20.AbstractReferenceBaseType}.
-     * <!-- begin-user-doc -->
+   * Returns the value of the '<em><b>Abstract Reference Base</b></em>' containment reference list.
+   * The list contents are of type {@link net.opengis.ows20.AbstractReferenceBaseType}.
+   * <!-- begin-user-doc -->
      * <p>
      * If the meaning of the '<em>Abstract Reference Base</em>' containment reference list isn't clear,
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     * @return the value of the '<em>Abstract Reference Base</em>' containment reference list.
-     * @see net.opengis.ows20.Ows20Package#getReferenceGroupType_AbstractReferenceBase()
-     * @model containment="true" required="true" transient="true" changeable="false" volatile="true" derived="true"
-     *        extendedMetaData="kind='element' name='AbstractReferenceBase' namespace='##targetNamespace' group='AbstractReferenceBase:group'"
-     * @generated
-     */
+   * @return the value of the '<em>Abstract Reference Base</em>' containment reference list.
+   * @see net.opengis.ows20.Ows20Package#getReferenceGroupType_AbstractReferenceBase()
+   * @model containment="true" required="true" transient="true" changeable="false" volatile="true" derived="true"
+   *        extendedMetaData="kind='element' name='AbstractReferenceBase' namespace='##targetNamespace' group='AbstractReferenceBase:group'"
+   * @generated
+   */
     EList<AbstractReferenceBaseType> getAbstractReferenceBase();
 
 } // ReferenceGroupType

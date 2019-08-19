@@ -24,7 +24,6 @@ package org.geotools.geometry.iso.util;
  * <p>The implementations in this class are non-robust in sense that round-errors may occur.
  *
  * @author Sanjay Jena
- * @source $URL$
  */
 public class DoubleOperation {
 

@@ -22,7 +22,6 @@ package org.geotools.referencing.factory.epsg;
  * SQL later by {@link DirectEpsgFactory#adaptSQL} if needed).
  *
  * @since 2.2
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  */

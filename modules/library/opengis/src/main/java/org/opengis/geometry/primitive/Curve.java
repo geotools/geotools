@@ -43,7 +43,6 @@ import org.opengis.geometry.coordinate.GenericCurve;
  * with the end point of each segment except the last being the start point of the next segment in
  * the segment list.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/as">ISO 19107</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0

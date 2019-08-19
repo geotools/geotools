@@ -19,7 +19,6 @@ package org.geotools.data.h2;
 import org.geotools.jdbc.JDBCFeatureLockingOnlineTest;
 import org.geotools.jdbc.JDBCTestSetup;
 
-/** @source $URL$ */
 public class H2FeatureLockingTest extends JDBCFeatureLockingOnlineTest {
 
     protected JDBCTestSetup createTestSetup() {

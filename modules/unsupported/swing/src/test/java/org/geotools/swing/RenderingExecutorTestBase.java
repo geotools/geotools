@@ -31,7 +31,6 @@ import org.geotools.swing.testutils.WaitingRenderingExecutorListener;
  *
  * @author Michael Bedward
  * @since 8.0
- * @source $URL$
  * @version $Id$
  */
 public abstract class RenderingExecutorTestBase {

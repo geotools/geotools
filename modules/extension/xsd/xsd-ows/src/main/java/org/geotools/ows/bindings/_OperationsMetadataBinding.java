@@ -18,8 +18,10 @@ package org.geotools.ows.bindings;
 
 import javax.xml.namespace.QName;
 import net.opengis.ows10.Ows10Factory;
-import org.geotools.ows.OWS;
-import org.geotools.xml.*;
+import org.geotools.xsd.AbstractComplexEMFBinding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
+import org.geotools.xsd.ows.OWS;
 
 /**
  * Binding object for the type http://www.opengis.net/ows:_OperationsMetadata.
@@ -53,7 +55,6 @@ import org.geotools.xml.*;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class _OperationsMetadataBinding extends AbstractComplexEMFBinding {
     public _OperationsMetadataBinding(Ows10Factory factory) {

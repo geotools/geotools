@@ -16,15 +16,15 @@
  */
 package org.geotools.referencing.factory.epsg;
 
-import org.geotools.factory.FactoryNotFoundException;
-import org.geotools.factory.FactoryRegistryException;
-import org.geotools.factory.GeoTools;
-import org.geotools.factory.Hints;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.ReferencingFactoryFinder;
 import org.geotools.referencing.factory.AbstractAuthorityFactory;
 import org.geotools.referencing.factory.DeferredAuthorityFactory;
 import org.geotools.referencing.factory.OrderedAxisAuthorityFactory;
+import org.geotools.util.factory.FactoryNotFoundException;
+import org.geotools.util.factory.FactoryRegistryException;
+import org.geotools.util.factory.GeoTools;
+import org.geotools.util.factory.Hints;
 import org.opengis.metadata.citation.Citation;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CRSAuthorityFactory;
@@ -50,12 +50,9 @@ import org.opengis.referencing.operation.CoordinateOperationAuthorityFactory;
  * </blockquote>
  *
  * @since 2.3
- * @source $URL$
- * @version $Id$
  * @author Martin Desruisseaux
  * @see OrderedAxisAuthorityFactory
  * @see Hints#FORCE_LONGITUDE_FIRST_AXIS_ORDER
- * @tutorial http://docs.codehaus.org/display/GEOTOOLS/The+axis+order+issue
  */
 public class LongitudeFirstFactory extends DeferredAuthorityFactory
         implements CRSAuthorityFactory,
@@ -68,30 +65,6 @@ public class LongitudeFirstFactory extends DeferredAuthorityFactory
      * the DatumAuthorityFactory as well, user will get a FactoryNotFoundException when asking for
      * a factory with the FORCE_LONGITUDE_FIRST_AXIS_ORDER hint set.
      */
-
-    /**
-     * The {@linkplain System#getProperty(String) system property} key for setting the default
-     * {@link Hints#FORCE_LONGITUDE_FIRST_AXIS_ORDER FORCE_LONGITUDE_FIRST_AXIS_ORDER} hint value.
-     * This setting can provide a transition path for projects expecting a (<var>longitude</var>,
-     * <var>latitude</var>) axis order on a system-wide level. Application developpers can set the
-     * default value as below:
-     *
-     * <blockquote>
-     *
-     * <pre>
-     * System.setProperty(SYSTEM_DEFAULT_KEY, "true");
-     * </pre>
-     *
-     * </blockquote>
-     *
-     * Note that this system property applies mostly to the default EPSG factory. Most other
-     * factories ({@code "CRS"}, {@code "AUTO"}, <cite>etc.</cite>) don't need this property since
-     * they use (<var>longitude</var>, <var>latitude</var>) axis order by design.
-     *
-     * @see Hints#FORCE_LONGITUDE_FIRST_AXIS_ORDER
-     * @deprecated Moved to {@link GeoTools#FORCE_LONGITUDE_FIRST_AXIS_ORDER}.
-     */
-    public static final String SYSTEM_DEFAULT_KEY = GeoTools.FORCE_LONGITUDE_FIRST_AXIS_ORDER;
 
     /**
      * Creates a default factory. The {@link Hints#FORCE_LONGITUDE_FIRST_AXIS_ORDER
@@ -132,10 +105,9 @@ public class LongitudeFirstFactory extends DeferredAuthorityFactory
 
     /**
      * Returns the priority to use relative to the {@link ThreadedEpsgFactory} priority. The default
-     * priority should be lower, except if the <code>{@value #SYSTEM_DEFAULT_KEY}</code> system
-     * property is set to {@code true}.
-     *
-     * @deprecated Not needed anymore since {@link GeoTools#getDefaultHints}.
+     * priority should be lower, except if the <code>
+     * {@value GeoTools#FORCE_LONGITUDE_FIRST_AXIS_ORDER}</code> system property is set to {@code
+     * true}.
      */
     private static int relativePriority() {
         try {

@@ -25,7 +25,6 @@ import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Polygon;
 
-/** @source $URL$ */
 public class PolygonGraphGeneratorTest extends TestCase {
 
     static GeometryFactory gf = new GeometryFactory();

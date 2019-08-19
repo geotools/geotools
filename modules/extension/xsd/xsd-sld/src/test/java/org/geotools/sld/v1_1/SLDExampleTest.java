@@ -35,14 +35,13 @@ import org.geotools.styling.Rule;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyledLayerDescriptor;
 import org.geotools.styling.TextSymbolizer;
-import org.geotools.xml.Parser;
+import org.geotools.xsd.Parser;
 import org.opengis.filter.expression.Expression;
 import org.opengis.style.ExternalGraphic;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.ext.EntityResolver2;
 
-/** @source $URL$ */
 public class SLDExampleTest extends TestCase {
 
     public void testParseSLD() throws Exception {
@@ -88,10 +87,10 @@ public class SLDExampleTest extends TestCase {
         assertEquals("GEOSYM", s.getName());
         assertTrue(s.isDefault());
 
-        assertEquals(1, s.getFeatureTypeStyles().length);
-        FeatureTypeStyle fts = s.getFeatureTypeStyles()[0];
+        assertEquals(1, s.featureTypeStyles().size());
+        FeatureTypeStyle fts = s.featureTypeStyles().get(0);
 
-        assertEquals("Foundation", fts.getFeatureTypeName());
+        assertEquals("Foundation", fts.featureTypeNames().iterator().next().getLocalPart());
         assertEquals(1, fts.rules().size());
 
         Rule r = fts.rules().get(0);

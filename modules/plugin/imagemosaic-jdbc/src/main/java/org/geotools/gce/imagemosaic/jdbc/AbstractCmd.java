@@ -21,7 +21,6 @@ import java.io.File;
 import java.net.URL;
 import java.net.URLDecoder;
 
-/** @source $URL$ */
 public class AbstractCmd {
 
     protected static String CONFIGPARAM = "-config";
@@ -44,7 +43,7 @@ public class AbstractCmd {
             sourceURL = new URL(URLDecoder.decode((String) source, "UTF8"));
 
         } catch (Exception ex) {
-            ex.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", ex);
             System.exit(1);
         }
         return sourceURL;

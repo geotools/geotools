@@ -21,7 +21,6 @@ import java.sql.SQLException;
 import org.geotools.jdbc.JDBCFeatureStoreOnlineTest;
 import org.geotools.jdbc.JDBCTestSetup;
 
-/** @source $URL$ */
 public class TeradataFeatureStoreOnlineTest extends JDBCFeatureStoreOnlineTest {
 
     protected JDBCTestSetup createTestSetup() {

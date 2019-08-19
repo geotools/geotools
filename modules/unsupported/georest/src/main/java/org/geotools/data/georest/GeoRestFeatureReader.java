@@ -35,7 +35,7 @@ import org.opengis.filter.sort.SortOrder;
  * FeatureReader for the {@link GeoRestDataStore}.
  *
  * @author Pieter De Graef, Geosparc
- * @source $URL$
+
  */
 public class GeoRestFeatureReader implements SimpleFeatureReader {
 
@@ -139,7 +139,7 @@ public class GeoRestFeatureReader implements SimpleFeatureReader {
         }
 
         URL targetUrl = new URL(builder.toString());
-        System.out.println(targetUrl);
+        // System.out.println(targetUrl);
         return targetUrl.openStream();
     }
 

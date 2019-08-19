@@ -9,7 +9,7 @@
  */
 package org.geotools.po.bindings;
 
-import org.geotools.xml.Configuration;
+import org.geotools.xsd.Configuration;
 import org.picocontainer.MutablePicoContainer;
 
 /**

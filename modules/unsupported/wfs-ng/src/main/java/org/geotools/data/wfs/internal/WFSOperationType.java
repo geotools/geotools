@@ -22,7 +22,6 @@ package org.geotools.data.wfs.internal;
  * @author Gabriel Roldan
  * @version $Id$
  * @since 2.5.x
- * @source $URL$
  */
 public enum WFSOperationType {
     GET_CAPABILITIES("GetCapabilities"),

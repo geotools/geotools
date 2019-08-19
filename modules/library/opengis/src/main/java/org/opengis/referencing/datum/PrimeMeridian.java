@@ -22,7 +22,6 @@ import org.opengis.referencing.IdentifiedObject;
  * #getName name} initial value is "Greenwich", and that value shall be used when the {@linkplain
  * #getGreenwichLongitude greenwich longitude} value is zero.
  *
- * @source $URL$
  * @version <A HREF="http://portal.opengeospatial.org/files/?artifact_id=6716">Abstract
  *     specification 2.0</A>
  * @author Martin Desruisseaux (IRD)

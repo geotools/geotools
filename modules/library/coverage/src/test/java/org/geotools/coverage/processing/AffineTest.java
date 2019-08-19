@@ -37,7 +37,6 @@ import org.opengis.parameter.ParameterValueGroup;
 /**
  * Tests the scale operation.
  *
- * @source $URL$
  * @version $Id$
  * @author Simone Giannecchini (GeoSolutions)
  * @since 12.0
@@ -49,7 +48,6 @@ public class AffineTest extends GridProcessingTestBase {
     /** Set up common objects used for all tests. */
     @Before
     public void setUp() {
-        JAIExt.initJAIEXT();
         processor = CoverageProcessor.getInstance(null);
     }
 

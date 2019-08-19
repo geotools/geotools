@@ -25,7 +25,6 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
-import org.apache.commons.io.IOUtils;
 import org.geotools.data.wfs.WFSDataStore;
 import org.geotools.data.wfs.internal.Loggers;
 import org.junit.AfterClass;
@@ -64,11 +63,9 @@ public class CubewerksOnlineTest {
             try {
                 stream = url_100.openStream();
             } catch (Throwable t) {
-                System.err.println("Server is not available. test disabled ");
+                // System.err.println("Server is not available. test disabled ");
                 url_100 = null;
                 url_110 = null;
-            } finally {
-                IOUtils.closeQuietly(stream);
             }
         }
         if (url_100 != null) {

@@ -26,18 +26,17 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.data.util.NullProgressListener;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.visitor.CalcResult;
 import org.geotools.feature.visitor.UniqueVisitor;
 import org.geotools.filter.capability.FunctionNameImpl;
-import org.geotools.util.NullProgressListener;
 import org.opengis.filter.capability.FunctionName;
 
 /**
  * Clone of EqualIntervalFunction for unique values
  *
  * @author Cory Horner
- * @source $URL$
  */
 public class UniqueIntervalFunction extends ClassificationFunction {
 
@@ -91,7 +90,8 @@ public class UniqueIntervalFunction extends ClassificationFunction {
                 // resize values array
                 values = new Set[classNum];
                 // calculate number of items to put in each of the larger bins
-                int binPop = new Double(Math.ceil((double) results.length / classNum)).intValue();
+                int binPop =
+                        Double.valueOf(Math.ceil((double) results.length / classNum)).intValue();
                 // determine index of bin where the next bin has one less item
                 int lastBigBin = results.length % classNum;
                 if (lastBigBin == 0) lastBigBin = classNum;

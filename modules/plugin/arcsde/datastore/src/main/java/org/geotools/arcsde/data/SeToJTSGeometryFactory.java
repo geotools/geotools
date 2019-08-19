@@ -1,4 +1,19 @@
-/** */
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2019, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
 package org.geotools.arcsde.data;
 
 import com.esri.sde.sdk.client.SeRow;
@@ -17,10 +32,6 @@ import org.locationtech.jts.geom.Polygon;
  * creates JTS geometries directly by calling {@link SeRow#getGeometry(GeometryFactory, int)},
  * instead of fetching an {@link SeShape} through {@link SeRow#getShape(int)} and then converting it
  * to a JTS geometry. This is work in progress and _experimental_, though.
- *
- * @source $URL$
- *     http://svn.osgeo.org/geotools/trunk/modules/plugin/arcsde/datastore/src/main/java/org
- *     /geotools/arcsde/data/SeToJTSGeometryFactory.java $
  */
 public class SeToJTSGeometryFactory implements GeometryFactory {
 

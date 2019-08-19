@@ -24,7 +24,6 @@ import org.opengis.geometry.coordinate.Position;
  * this is if the {@code Point} has been subclassed to provide additional non-geometric information
  * such as symbology.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/as">ISO 19107</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0

@@ -27,9 +27,9 @@ import org.geotools.feature.FeatureCollection;
 import org.geotools.gml2.bindings.GML2ParsingUtils;
 import org.geotools.gml3.GML;
 import org.geotools.wfs.WFS;
-import org.geotools.xml.AbstractComplexEMFBinding;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
+import org.geotools.xsd.AbstractComplexEMFBinding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.picocontainer.MutablePicoContainer;
@@ -112,7 +112,6 @@ import org.picocontainer.MutablePicoContainer;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class InsertElementTypeBinding extends AbstractComplexEMFBinding {
     WfsFactory wfsfactory;

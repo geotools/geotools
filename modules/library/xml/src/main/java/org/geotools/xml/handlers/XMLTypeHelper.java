@@ -26,7 +26,6 @@ import org.geotools.xml.schema.Type;
  * Utility class with methods to help implement Element and Type Handlers
  *
  * @author Jesse
- * @source $URL$
  */
 public class XMLTypeHelper {
 

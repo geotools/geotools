@@ -26,7 +26,6 @@ import org.opengis.metadata.quality.FormatConsistency;
  * described by the scope.
  *
  * @since 2.4
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @author Touraïvane

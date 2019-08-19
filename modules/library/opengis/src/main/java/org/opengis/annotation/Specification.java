@@ -14,7 +14,6 @@ package org.opengis.annotation;
  *
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 2.0
- * @source $URL$
  */
 public enum Specification {
     /**

@@ -24,9 +24,9 @@ import javax.measure.IncommensurableException;
 import javax.measure.UnconvertibleException;
 import javax.measure.Unit;
 import javax.measure.UnitConverter;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
-import org.geotools.resources.i18n.VocabularyKeys;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
+import org.geotools.metadata.i18n.VocabularyKeys;
 import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.referencing.cs.AxisDirection;
 import org.opengis.referencing.cs.CoordinateSystemAxis;
@@ -47,7 +47,6 @@ import si.uom.SI;
  * </TD></TR></TABLE>
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

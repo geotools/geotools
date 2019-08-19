@@ -27,9 +27,8 @@ import java.io.StringReader;
 import javax.xml.parsers.DocumentBuilderFactory;
 import junit.framework.TestCase;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.xml.Encoder;
-import org.geotools.xml.Parser;
-import org.geotools.xml.Parser.Properties;
+import org.geotools.xsd.Encoder;
+import org.geotools.xsd.Parser;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.PropertyIsEqualTo;
@@ -39,7 +38,6 @@ import org.opengis.filter.spatial.DWithin;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-/** @source $URL$ */
 public class OGCFilterTest extends TestCase {
     public void testEncode() throws Exception {
         FilterFactory f = CommonFactoryFinder.getFilterFactory(null);
@@ -110,7 +108,6 @@ public class OGCFilterTest extends TestCase {
                         + "</Filter>";
 
         OGCConfiguration configuration = new OGCConfiguration();
-        configuration.getProperties().add(Properties.IGNORE_SCHEMA_LOCATION);
 
         Parser parser = new Parser(configuration);
         DWithin filter = (DWithin) parser.parse(new ByteArrayInputStream(xml.getBytes()));

@@ -46,8 +46,6 @@ public class OSMTileTest {
 
     @Test
     public void testGetURL() {
-
-        System.out.println();
         Assert.assertEquals(
                 "http://tile.openstreetmap.org/5/10/12.png", this.tile.getUrl().toString());
     }

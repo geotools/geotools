@@ -44,14 +44,10 @@ import org.geotools.util.logging.Logging;
  *
  * @author mcr
  */
-/**
- * @author christian
- * @source $URL$
- */
+/** @author christian */
 public class ImageDecoderThread extends AbstractThread {
     /** Logger. */
-    protected static final Logger LOGGER =
-            Logging.getLogger(ImageDecoderThread.class.getPackage().getName());
+    protected static final Logger LOGGER = Logging.getLogger(ImageDecoderThread.class);
 
     private byte[] imageBytes;
 

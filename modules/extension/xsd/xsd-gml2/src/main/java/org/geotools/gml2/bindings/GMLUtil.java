@@ -18,7 +18,6 @@ package org.geotools.gml2.bindings;
 
 import org.locationtech.jts.geom.CoordinateSequence;
 
-/** @source $URL$ */
 public class GMLUtil {
     /**
      * Determines the dimension of a coordinate sequence. This is based off of the first coordinate

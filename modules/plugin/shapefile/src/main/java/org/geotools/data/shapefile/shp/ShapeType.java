@@ -23,7 +23,6 @@ import org.locationtech.jts.geom.GeometryFactory;
  * be tied to a ResourceBundle if someone wants to do that.
  *
  * @author Ian Schneider
- * @source $URL$
  */
 public final class ShapeType {
 

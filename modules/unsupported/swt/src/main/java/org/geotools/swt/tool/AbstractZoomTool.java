@@ -25,7 +25,6 @@ import org.eclipse.swt.SWT;
  *
  * @author Michael Bedward
  * @since 2.6
- * @source $URL$
  */
 public abstract class AbstractZoomTool extends CursorTool {
     /** The default zoom increment */

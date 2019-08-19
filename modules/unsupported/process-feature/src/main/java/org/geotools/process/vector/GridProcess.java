@@ -41,7 +41,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * A process that builds a regular grid as a feature collection
  *
  * @author Andrea Aime - GeoSolutions
- * @source $URL$
  */
 @DescribeProcess(
     title = "Grid",
@@ -118,8 +117,6 @@ public class GridProcess implements VectorProcess {
         /**
          * Creates the feature TYPE
          *
-         * @param typeName name for the feature TYPE; if {@code null} or empty, {@linkplain
-         *     #DEFAULT_TYPE_NAME} will be used
          * @param crs coordinate reference system (may be {@code null})
          * @return the feature TYPE
          */
@@ -151,7 +148,7 @@ public class GridProcess implements VectorProcess {
          * Overrides {@linkplain GridFeatureBuilder#setAttributes(GridElement, Map)} to assign a
          * sequential integer id value to each grid element feature as it is constructed.
          *
-         * @param el the element from which the new feature is being constructed
+         * @param ge the element from which the new feature is being constructed
          * @param attributes a {@code Map} with the single key "id"
          */
         @Override

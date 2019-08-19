@@ -38,7 +38,6 @@ import org.opengis.referencing.cs.LinearCS;
  * </TD></TR></TABLE>
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

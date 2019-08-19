@@ -33,8 +33,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.processing.CoverageProcessor;
-import org.geotools.resources.Arguments;
-import org.geotools.resources.Classes;
+import org.geotools.util.Arguments;
+import org.geotools.util.Classes;
 import org.geotools.util.Utilities;
 import org.opengis.parameter.ParameterValueGroup;
 import org.opengis.util.InternationalString;
@@ -43,7 +43,6 @@ import org.opengis.util.InternationalString;
  * A very simple viewer for {@link GridCoverage2D}. This viewer provides no zoom capability, no user
  * interaction and ignores the coordinate system. It is just for quick test of grid coverage.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

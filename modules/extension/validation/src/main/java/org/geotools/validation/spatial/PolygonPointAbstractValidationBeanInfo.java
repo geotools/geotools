@@ -28,7 +28,6 @@ import org.geotools.validation.DefaultIntegrityValidationBeanInfo;
  *
  * @author dzwiers, Refractions Research, Inc.
  * @author $Author: dmzwiers $ (last modification)
- * @source $URL$
  * @version $Id$
  */
 public class PolygonPointAbstractValidationBeanInfo extends DefaultIntegrityValidationBeanInfo {
@@ -74,7 +73,7 @@ public class PolygonPointAbstractValidationBeanInfo extends DefaultIntegrityVali
             pd = pd2;
 
             // TODO error, log here
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
 
         return pd;

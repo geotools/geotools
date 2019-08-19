@@ -18,7 +18,6 @@ package org.geotools.data.sqlserver;
 
 import org.geotools.jdbc.JDBCEmptyTestSetup;
 
-/** @source $URL$ */
 public class SQLServerEmptyTestSetup extends JDBCEmptyTestSetup {
 
     protected SQLServerEmptyTestSetup() {

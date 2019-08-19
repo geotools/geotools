@@ -21,7 +21,7 @@ import org.geotools.jdbc.JDBCPrimaryKeyFinderTestSetup;
 /**
  * 
  *
- * @source $URL$
+
  */
 public class IngresPrimaryKeyFinderTestSetup extends JDBCPrimaryKeyFinderTestSetup {
 

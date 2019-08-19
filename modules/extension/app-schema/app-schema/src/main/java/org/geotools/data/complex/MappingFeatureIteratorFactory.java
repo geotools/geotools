@@ -24,11 +24,11 @@ import org.geotools.data.FeatureSource;
 import org.geotools.data.Query;
 import org.geotools.data.Transaction;
 import org.geotools.data.complex.config.AppSchemaDataAccessConfigurator;
-import org.geotools.data.complex.config.Types;
+import org.geotools.data.complex.feature.type.Types;
 import org.geotools.data.complex.filter.ComplexFilterSplitter;
 import org.geotools.data.complex.filter.XPath;
-import org.geotools.data.complex.filter.XPathUtil.StepList;
 import org.geotools.data.complex.spi.CustomSourceDataStore;
+import org.geotools.data.complex.util.XPathUtil.StepList;
 import org.geotools.data.joining.JoiningQuery;
 import org.geotools.filter.FilterAttributeExtractor;
 import org.geotools.filter.FilterCapabilities;
@@ -45,15 +45,10 @@ import org.xml.sax.helpers.NamespaceSupport;
 /**
  * @author Russell Petty (GeoScience Victoria)
  * @author Rini Angreani (CSIRO Earth Science and Resource Engineering)
- * @source $URL:
- *     http://svn.osgeo.org/geotools/trunk/modules/extension/app-schema/app-schema/src/main
- *     /java/org/geotools/data/complex/MappingFeatureIteratorFactory.java $
- *     http://svn.osgeo.org/geotools/trunk/modules/unsupported/app-schema/app-schema/src/main
- *     /java/org/geotools/data/complex/MappingFeatureIteratorFactory.java $
  */
 public class MappingFeatureIteratorFactory {
     protected static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.data.complex");
+            org.geotools.util.logging.Logging.getLogger(MappingFeatureIteratorFactory.class);
 
     /**
      * Temporary filter visitor to determine whether the filter concerns any attribute mapping that
@@ -120,6 +115,29 @@ public class MappingFeatureIteratorFactory {
             Filter unrolledFilter,
             Transaction transaction)
             throws IOException {
+        return MappingFeatureIteratorFactory.getInstance(
+                store, mapping, query, unrolledFilter, transaction, true);
+    }
+
+    public static IMappingFeatureIterator getInstance(
+            AppSchemaDataAccess store,
+            FeatureTypeMapping mapping,
+            Query query,
+            Filter unrolledFilter,
+            Transaction transaction,
+            boolean indexEnable)
+            throws IOException {
+
+        // if this feature type mapping uses an external index and indexing is enable
+        // then create a specific iterator
+        if (indexEnable && mapping.getIndexSource() != null) {
+            IndexedMappingFeatureIteratorFactory factory =
+                    new IndexedMappingFeatureIteratorFactory(
+                            store, mapping, query, unrolledFilter, transaction);
+            if (factory.getIndexModeProcessor().isIndexDrivenIteratorCase()) {
+                return factory.buildInstance();
+            }
+        }
 
         if (mapping instanceof XmlFeatureTypeMapping) {
             return new XmlMappingFeatureIterator(store, mapping, query);

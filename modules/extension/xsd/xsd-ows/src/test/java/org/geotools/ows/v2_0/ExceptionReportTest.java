@@ -3,7 +3,7 @@ package org.geotools.ows.v2_0;
 import net.opengis.ows20.ExceptionReportType;
 import net.opengis.ows20.ExceptionType;
 import net.opengis.ows20.Ows20Factory;
-import org.geotools.xml.Encoder;
+import org.geotools.xsd.Encoder;
 import org.junit.Test;
 
 public class ExceptionReportTest {
@@ -13,7 +13,7 @@ public class ExceptionReportTest {
         ExceptionType e = Ows20Factory.eINSTANCE.createExceptionType();
         e.setExceptionCode("testCode");
         e.setLocator("testLocator");
-        e.setExceptionText("testText");
+        e.getExceptionText().add("testText");
 
         ExceptionReportType report = Ows20Factory.eINSTANCE.createExceptionReportType();
         report.setVersion("2.0");

@@ -50,7 +50,6 @@ import org.opengis.geometry.BoundingBox;
  * @author Stefan Alfons Krueger (alfonx), Wikisquare.de : Support for
  *     jar:file:foo.jar/bar.properties URLs
  * @since 2.5
- * @source $URL$
  */
 class CachingDataStoreGranuleCatalog extends GranuleCatalog {
 

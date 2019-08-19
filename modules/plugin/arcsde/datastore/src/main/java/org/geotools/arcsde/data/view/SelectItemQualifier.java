@@ -40,10 +40,6 @@ import org.geotools.arcsde.session.ISession;
  * items than the visited.
  *
  * @author Gabriel Roldan, Axios Engineering
- * @version $Id$
- * @source $URL:
- *     http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/main/java
- *     /org/geotools/arcsde/data/view/SelectItemQualifier.java $
  * @since 2.3.x
  */
 class SelectItemQualifier implements net.sf.jsqlparser.statement.select.SelectItemVisitor {

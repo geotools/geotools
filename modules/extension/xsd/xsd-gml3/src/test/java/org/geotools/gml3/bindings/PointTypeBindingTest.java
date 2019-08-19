@@ -23,7 +23,6 @@ import org.locationtech.jts.geom.Point;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.w3c.dom.Document;
 
-/** @source $URL$ */
 public class PointTypeBindingTest extends GML3TestSupport {
 
     public void testPos() throws Exception {

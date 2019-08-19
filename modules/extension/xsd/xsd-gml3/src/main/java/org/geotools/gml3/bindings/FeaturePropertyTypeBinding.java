@@ -27,9 +27,9 @@ import org.geotools.gml3.GML;
 import org.geotools.gml3.XSDIdRegistry;
 import org.geotools.util.Converters;
 import org.geotools.xlink.XLINK;
-import org.geotools.xml.AbstractComplexBinding;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
+import org.geotools.xsd.AbstractComplexBinding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 import org.opengis.feature.ComplexAttribute;
 import org.opengis.feature.Feature;
 import org.opengis.feature.simple.SimpleFeature;
@@ -59,8 +59,6 @@ import org.xml.sax.Attributes;
  *
  *          </code>
  *         </pre>
- *
- * @source $URL$
  */
 public class FeaturePropertyTypeBinding extends AbstractComplexBinding {
     /**
@@ -130,7 +128,7 @@ public class FeaturePropertyTypeBinding extends AbstractComplexBinding {
     }
 
     /**
-     * @see org.geotools.xml.AbstractComplexBinding#encode(java.lang.Object, org.w3c.dom.Document,
+     * @see AbstractComplexBinding#encode(java.lang.Object, org.w3c.dom.Document,
      *     org.w3c.dom.Element)
      */
     @Override
@@ -148,7 +146,6 @@ public class FeaturePropertyTypeBinding extends AbstractComplexBinding {
      * Check if the complex attribute contains a feature which id is pre-existing in the document.
      * If it's true, make sure it's only encoded as an xlink:href to the existing id.
      *
-     * @param value The complex attribute value
      * @param att The complex attribute itself
      */
     private void checkXlinkHref(ComplexAttribute att) {
@@ -179,8 +176,6 @@ public class FeaturePropertyTypeBinding extends AbstractComplexBinding {
             // make sure the value is not encoded
             att.setValue(Collections.emptyList());
         }
-
-        return;
     }
 
     /**

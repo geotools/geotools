@@ -18,12 +18,7 @@ package org.geotools.ows;
 
 import org.xml.sax.SAXException;
 
-/**
- * DOCUMENT ME!
- *
- * @author dzwiers
- * @source $URL$
- */
+/** @author dzwiers */
 public class ServiceException extends SAXException {
     /*
      * Constants used in communications with Web Map Servers

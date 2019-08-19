@@ -26,9 +26,6 @@ import java.util.Map;
 import javax.measure.Unit;
 import javax.measure.quantity.Angle;
 import javax.measure.quantity.Length;
-import org.geotools.factory.BufferedFactory;
-import org.geotools.factory.Factory;
-import org.geotools.factory.Hints;
 import org.geotools.referencing.ReferencingFactoryFinder;
 import org.geotools.referencing.crs.*;
 import org.geotools.referencing.cs.*;
@@ -38,6 +35,9 @@ import org.geotools.referencing.operation.MathTransformProvider;
 import org.geotools.referencing.wkt.Parser;
 import org.geotools.referencing.wkt.Symbols;
 import org.geotools.util.CanonicalSet;
+import org.geotools.util.factory.BufferedFactory;
+import org.geotools.util.factory.Factory;
+import org.geotools.util.factory.Hints;
 import org.opengis.parameter.ParameterValueGroup;
 import org.opengis.referencing.*;
 import org.opengis.referencing.crs.*;
@@ -52,7 +52,6 @@ import org.opengis.referencing.operation.*;
  * ObjectFactory} interface.
  *
  * @since 2.4
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
@@ -847,45 +846,6 @@ public class ReferencingObjectFactory extends ReferencingFactory
     }
 
     /**
-     * Creates a derived coordinate reference system. If the transformation is an affine map
-     * performing a rotation, then any mixed axes must have identical units. For example, a
-     * (<var>lat_deg</var>, <var>lon_deg</var>, <var>height_feet</var>) system can be rotated in the
-     * (<var>lat</var>, <var>lon</var>) plane, since both affected axes are in decimal degrees. But
-     * you should not rotate this coordinate system in any other plane.
-     *
-     * <p><b>NOTE:</b> It is the user's responsability to ensure that the {@code baseToDerived}
-     * transform performs all required steps, including {@linkplain AbstractCS#swapAndScaleAxis unit
-     * conversions and change of axis order}, if needed. The {@link ReferencingFactoryContainer}
-     * class provides conveniences methods for this task.
-     *
-     * @param properties Name and other properties to give to the new object.
-     * @param method A description of the {@linkplain Conversion#getMethod method for the
-     *     conversion}.
-     * @param base Coordinate reference system to base the derived CRS on.
-     * @param baseToDerived The transform from the base CRS to returned CRS.
-     * @param derivedCS The coordinate system for the derived CRS.
-     * @throws FactoryException if the object creation failed.
-     * @deprecated Use {@link CoordinateOperationFactory#createDefiningConversion} followed by
-     *     {@link #createDerivedCRS} instead.
-     */
-    public DerivedCRS createDerivedCRS(
-            Map<String, ?> properties,
-            OperationMethod method,
-            CoordinateReferenceSystem base,
-            MathTransform baseToDerived,
-            CoordinateSystem derivedCS)
-            throws FactoryException {
-        DerivedCRS crs;
-        try {
-            crs = new DefaultDerivedCRS(properties, method, base, baseToDerived, derivedCS);
-        } catch (IllegalArgumentException exception) {
-            throw new FactoryException(exception);
-        }
-        crs = pool.unique(crs);
-        return crs;
-    }
-
-    /**
      * Creates a derived coordinate reference system from a conversion. It is the user's
      * responsability to ensure that the conversion performs all required steps, including
      * {@linkplain AbstractCS#swapAndScaleAxis unit conversions and change of axis order}, if
@@ -935,8 +895,6 @@ public class ReferencingObjectFactory extends ReferencingFactory
      * @param baseToDerived The transform from the geographic to the projected CRS.
      * @param derivedCS The coordinate system for the projected CRS.
      * @throws FactoryException if the object creation failed.
-     * @deprecated Use {@link CoordinateOperationFactory#createDefiningConversion} followed by
-     *     {@link #createProjectedCRS} instead.
      */
     public ProjectedCRS createProjectedCRS(
             Map<String, ?> properties,

@@ -41,7 +41,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  *
  * @author Mauricio Pazos (Axios Engineering)
  * @since 2.6
- * @source $URL$
  */
 public class CQLLiteralTest {
     protected final Language language;

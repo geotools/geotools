@@ -89,7 +89,6 @@ import org.opengis.util.InternationalString;
  * WKT parsing. For caching, this factory should be wrapped in some buffered factory like {@link
  * BufferedAuthorityFactory}.
  *
- * @source $URL$
  * @version $Id$
  * @author Oscar Fonts
  */

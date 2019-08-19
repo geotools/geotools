@@ -21,10 +21,10 @@ import java.net.URL;
 import org.geotools.TestData;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.imageio.GeoToolsWriteParams;
-import org.geotools.factory.Hints;
 import org.geotools.gce.image.WorldImageFormat;
 import org.geotools.gce.image.WorldImageReader;
 import org.geotools.gce.imagemosaic.RemoteTest;
+import org.geotools.util.factory.Hints;
 import org.opengis.coverage.grid.Format;
 import org.opengis.coverage.grid.GridCoverageWriter;
 

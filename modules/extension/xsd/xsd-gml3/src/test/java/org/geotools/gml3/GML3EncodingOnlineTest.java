@@ -36,14 +36,13 @@ import org.eclipse.xsd.XSDSchema;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.gml3.bindings.TEST;
 import org.geotools.gml3.bindings.TestConfiguration;
-import org.geotools.xml.Configuration;
-import org.geotools.xml.Encoder;
-import org.geotools.xml.Parser;
+import org.geotools.xsd.Configuration;
+import org.geotools.xsd.Encoder;
+import org.geotools.xsd.Parser;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.helpers.DefaultHandler;
 
-/** @source $URL$ */
 public class GML3EncodingOnlineTest extends TestCase {
 
     @Override
@@ -89,7 +88,7 @@ public class GML3EncodingOnlineTest extends TestCase {
 
         Encoder encoder = new Encoder(configuration, schema);
         ByteArrayOutputStream output = new ByteArrayOutputStream();
-        encoder.write(fc, TEST.TestFeatureCollection, output);
+        encoder.encode(fc, TEST.TestFeatureCollection, output);
 
         validate(output.toByteArray(), configuration);
     }
@@ -118,7 +117,7 @@ public class GML3EncodingOnlineTest extends TestCase {
         Encoder encoder = new Encoder(configuration, schema);
 
         ByteArrayOutputStream output = new ByteArrayOutputStream();
-        encoder.write(fc, TEST.TestFeatureCollection, output);
+        encoder.encode(fc, TEST.TestFeatureCollection, output);
 
         validate(output.toByteArray(), configuration);
     }
@@ -126,7 +125,7 @@ public class GML3EncodingOnlineTest extends TestCase {
     void validate(byte[] data, Configuration configuration) throws Exception {
         SchemaFactory sf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
 
-        Schema s = sf.newSchema(new URI(configuration.getSchemaFileURL()).toURL());
+        Schema s = sf.newSchema(new URI(configuration.getXSD().getSchemaLocation()).toURL());
 
         Validator v = s.newValidator();
 
@@ -134,12 +133,12 @@ public class GML3EncodingOnlineTest extends TestCase {
         DefaultHandler handler =
                 new DefaultHandler() {
                     public void error(SAXParseException e) throws SAXException {
-                        System.out.println(e.getMessage());
+                        // System.out.println(e.getMessage());
                         errors.add(e);
                     }
 
                     public void fatalError(SAXParseException e) throws SAXException {
-                        System.out.println(e.getMessage());
+                        // System.out.println(e.getMessage());
                         errors.add(e);
                     }
                 };

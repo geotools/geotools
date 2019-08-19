@@ -21,7 +21,6 @@ import org.opengis.geometry.primitive.Primitive;
  * reference system}. Creating aggregates in a different CRS may requires a different instance of
  * {@code AggregateFactory}.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/as">ISO 19107</A>
  * @author Sanjay Jena
  * @author Prof. Dr. Jackson Roehrig
@@ -35,7 +34,7 @@ public interface AggregateFactory {
      * primitive, e.g. changes in the primitive instances will have consequences in the geometric
      * behaviour of the {@code MultiPrimitive} and vice versa.
      *
-     * @param points A set of primitives.
+     * @param primitives A set of primitives.
      * @return the resulting multi primitive.
      */
     MultiPrimitive createMultiPrimitive(Set<Primitive> primitives);

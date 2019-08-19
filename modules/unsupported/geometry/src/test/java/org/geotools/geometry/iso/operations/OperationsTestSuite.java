@@ -19,7 +19,6 @@ package org.geotools.geometry.iso.operations;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
-/** @source $URL$ */
 public class OperationsTestSuite {
 
     public static Test suite() {

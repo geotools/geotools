@@ -27,7 +27,6 @@ import org.geotools.process.factory.DescribeResult;
  * Simple process with a {@link ReferencedEnvelope} as the output
  *
  * @author Andrea Aime
- * @source $URL$
  */
 @DescribeProcess(title = "Bounds", description = "Computes the bounding box of the input features.")
 public class BoundsProcess implements VectorProcess {

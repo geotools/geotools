@@ -32,7 +32,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * primitive.parameterization(length()-s) = parameterization(s)};
  *
  * @author Jackson Roehrig & Sanjay Jena
- * @source $URL$
  */
 public abstract class OrientableCurveImpl extends OrientablePrimitiveImpl
         implements OrientableCurve {

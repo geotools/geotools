@@ -24,7 +24,6 @@ import org.opengis.referencing.operation.TransformException;
  * Concatenated transform where both transforms are one-dimensional.
  *
  * @since 2.0
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

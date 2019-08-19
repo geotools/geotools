@@ -19,25 +19,24 @@ package org.geotools.coverage;
 import java.util.Arrays;
 import java.util.Set;
 import org.geotools.coverage.grid.GridCoverageFactory;
-import org.geotools.factory.FactoryCreator;
-import org.geotools.factory.FactoryFinder;
-import org.geotools.factory.FactoryRegistry;
-import org.geotools.factory.FactoryRegistryException;
-import org.geotools.factory.Hints;
-import org.geotools.resources.LazySet;
+import org.geotools.util.LazySet;
+import org.geotools.util.factory.FactoryCreator;
+import org.geotools.util.factory.FactoryFinder;
+import org.geotools.util.factory.FactoryRegistry;
+import org.geotools.util.factory.FactoryRegistryException;
+import org.geotools.util.factory.Hints;
 
 /**
  * Defines static methods used to access the application's default {@linkplain GridCoverageFactory
  * factory} implementation.
  *
  * @since 2.4
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  */
 public final class CoverageFactoryFinder extends FactoryFinder {
     /** The service registry for this manager. Will be initialized only when first needed. */
-    private static FactoryRegistry registry;
+    private static volatile FactoryRegistry registry;
 
     /** Do not allows any instantiation of this class. */
     private CoverageFactoryFinder() {

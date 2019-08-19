@@ -19,13 +19,13 @@ package org.geotools.referencing.operation.transform;
 import static org.junit.Assert.*;
 
 import java.util.Random;
+import org.geotools.referencing.operation.builder.LocalizationGrid;
 import org.junit.*;
 import org.opengis.referencing.operation.TransformException;
 
 /**
  * Test the {@link LocalizationGrid} implementation.
  *
- * @source $URL$
  * @version $Id$
  * @author Remi Eve
  * @author Martin Desruisseaux (IRD)

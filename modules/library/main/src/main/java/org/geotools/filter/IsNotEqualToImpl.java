@@ -20,15 +20,9 @@ import org.opengis.filter.FilterVisitor;
 import org.opengis.filter.PropertyIsNotEqualTo;
 import org.opengis.filter.expression.Expression;
 
-/** @source $URL$ */
 public class IsNotEqualToImpl extends MultiCompareFilterImpl implements PropertyIsNotEqualTo {
 
     IsEqualsToImpl delegate;
-
-    @Deprecated
-    protected IsNotEqualToImpl() {
-        this(null, null);
-    }
 
     protected IsNotEqualToImpl(Expression e1, Expression e2) {
         this(e1, e2, true);

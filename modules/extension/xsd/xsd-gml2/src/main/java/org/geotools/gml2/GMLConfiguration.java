@@ -17,7 +17,6 @@
 package org.geotools.gml2;
 
 import javax.xml.namespace.QName;
-import org.geotools.feature.DefaultFeatureCollections;
 import org.geotools.gml2.bindings.GMLAbstractFeatureCollectionBaseTypeBinding;
 import org.geotools.gml2.bindings.GMLAbstractFeatureCollectionTypeBinding;
 import org.geotools.gml2.bindings.GMLAbstractFeatureTypeBinding;
@@ -51,8 +50,7 @@ import org.geotools.gml2.bindings.GMLPolygonMemberTypeBinding;
 import org.geotools.gml2.bindings.GMLPolygonPropertyTypeBinding;
 import org.geotools.gml2.bindings.GMLPolygonTypeBinding;
 import org.geotools.xlink.XLINKConfiguration;
-import org.geotools.xml.Configuration;
-import org.geotools.xml.Parser;
+import org.geotools.xsd.Configuration;
 import org.locationtech.jts.geom.CoordinateSequenceFactory;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.impl.CoordinateArraySequenceFactory;
@@ -62,7 +60,6 @@ import org.picocontainer.MutablePicoContainer;
  * Configuration used by gml2 parsers.
  *
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL$
  */
 public class GMLConfiguration extends Configuration {
     /** Property which controls whether encoded features should include bounds. */
@@ -91,17 +88,18 @@ public class GMLConfiguration extends Configuration {
     /** Number of decimals in the output */
     protected int numDecimals = 6;
 
+    /** Right-Pad coordinates decimals with zeros up to the configured number of decimals */
+    protected boolean padWithZeros;
+
+    /** Force usage of decimals instead of scientific notation * */
+    protected boolean forceDecimalEncoding;
+
     /** Creates the new gml configuration, with a depenendency on {@link XLINKConfiguration} */
     public GMLConfiguration() {
         super(GML.getInstance());
 
         // add xlink cdependency
         addDependency(new XLINKConfiguration());
-
-        // add the parse unknown attributes property, this is mostly for
-        // the "fid" attribute
-        getProperties().add(Parser.Properties.PARSE_UNKNOWN_ELEMENTS);
-        getProperties().add(Parser.Properties.PARSE_UNKNOWN_ATTRIBUTES);
     }
 
     /**
@@ -194,7 +192,6 @@ public class GMLConfiguration extends Configuration {
      *   <li>{@link CoordinateArraySequenceFactory} under {@link CoordinateSequenceFactory}
      *   <li>{@link GeometryFactory}
      *   <li>{@link FeatureTypeCache}
-     *   <li>{@link DefaultFeatureCollections}
      * </ul>
      */
     public void configureContext(MutablePicoContainer container) {
@@ -205,7 +202,6 @@ public class GMLConfiguration extends Configuration {
         container.registerComponentInstance(
                 CoordinateSequenceFactory.class, CoordinateArraySequenceFactory.instance());
         container.registerComponentImplementation(GeometryFactory.class);
-        container.registerComponentImplementation(DefaultFeatureCollections.class);
 
         container.registerComponentInstance(srsSyntax);
     }
@@ -226,5 +222,43 @@ public class GMLConfiguration extends Configuration {
      */
     public void setNumDecimals(int numDecimals) {
         this.numDecimals = numDecimals;
+    }
+
+    /**
+     * Formats decimals of coordinates padding with zeros up to the configured number of decimals.
+     *
+     * @param padWithZeros right pad decimals with zeros
+     */
+    public void setPadWithZeros(boolean padWithZeros) {
+        this.padWithZeros = padWithZeros;
+    }
+
+    /**
+     * Forces usage of decimal notation, avoiding scientific notations to encode coordinates.
+     *
+     * @param forceDecimalEncoding avoid scientific notation, always use decimal
+     */
+    public void setForceDecimalEncoding(boolean forceDecimalEncoding) {
+        this.forceDecimalEncoding = forceDecimalEncoding;
+    }
+
+    /**
+     * Returns true if decimals of coordinates are padded with zeros up to the configured number of
+     * decimals.
+     *
+     * @return true if decimals are right-padded with zeros
+     */
+    public boolean getPadWithZeros() {
+        return padWithZeros;
+    }
+
+    /**
+     * Returns true if decimal notation should always be used, and scientific notation always
+     * avoided.
+     *
+     * @return true if decimal notation is always used for encoding coordinates
+     */
+    public boolean getForceDecimalEncoding() {
+        return forceDecimalEncoding;
     }
 }

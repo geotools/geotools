@@ -59,7 +59,6 @@ import org.geotools.swt.utils.Messages;
  *
  * @author Emily Gouge (Refractions Research, Inc.)
  * @since 1.0.0
- * @source $URL$
  */
 public class OpacityViewer {
     double opacity = Double.NaN;

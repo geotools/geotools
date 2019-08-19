@@ -24,7 +24,6 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
-import org.geotools.arcsde.ArcSDEDataStoreFactory;
 import org.geotools.arcsde.session.ISession;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.DataStore;
@@ -42,7 +41,6 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.opengis.filter.Filter;
 
-/** @source $URL$ */
 public class ArcSDEDataStoreVersioningTest {
 
     private static String defaultVersion;

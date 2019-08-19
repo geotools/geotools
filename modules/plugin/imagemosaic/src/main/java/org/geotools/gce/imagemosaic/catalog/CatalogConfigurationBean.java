@@ -52,12 +52,6 @@ public class CatalogConfigurationBean {
      */
     private boolean wrapStore = false;
 
-    /**
-     * <code>true</code> it tells us if the mosaic points to absolute paths or to relative ones. (in
-     * case of <code>false</code>).
-     */
-    private boolean absolutePath = Utils.DEFAULT_PATH_BEHAVIOR;
-
     private PathType pathType;
 
     public CatalogConfigurationBean() {}
@@ -126,21 +120,8 @@ public class CatalogConfigurationBean {
         this.heterogeneousCRS = heterogeneousCRS;
     }
 
-    @Deprecated
-    public boolean isAbsolutePath() {
-        return absolutePath;
-    }
-
-    @Deprecated
-    public void setAbsolutePath(final boolean absolutePath) {
-        this.absolutePath = absolutePath;
-    }
-
     public PathType getPathType() {
-        if (pathType == null) {
-            return isAbsolutePath() ? PathType.ABSOLUTE : PathType.RELATIVE;
-        }
-        return pathType;
+        return pathType == null ? PathType.RELATIVE : pathType;
     }
 
     public void setPathType(PathType pathType) {

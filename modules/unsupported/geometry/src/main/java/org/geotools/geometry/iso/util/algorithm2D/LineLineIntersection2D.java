@@ -2,8 +2,8 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2001-2006  Vivid Solutions
  *    (C) 2001-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2001-2006  Vivid Solutions
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -17,6 +17,8 @@
  */
 package org.geotools.geometry.iso.util.algorithm2D;
 
+import static java.lang.Double.isNaN;
+
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 
@@ -24,7 +26,6 @@ import java.awt.geom.Point2D;
  * @author roehrig
  *     <p>TODO To change the template for this generated type comment go to Window - Preferences -
  *     Java - Code Style - Code Templates
- * @source $URL$
  */
 public class LineLineIntersection2D {
     // the range of the returned values is from 0.0 to 1.0
@@ -113,15 +114,8 @@ public class LineLineIntersection2D {
                     throw new IllegalArgumentException(
                             "Error on LineLineIntersection: wrong coincident itscs");
                 }
-            } else if (count == 2) {
             }
-        } else if (n == 2) {
-
         }
-    }
-
-    private boolean isNaN(double d) {
-        return java.lang.Double.isNaN(d);
     }
 
     public boolean isCoincident() {

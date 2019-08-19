@@ -19,7 +19,6 @@ package org.geotools.data.h2;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCUDTTestSetup;
 
-/** @source $URL$ */
 public class H2UDTTestSetup extends JDBCUDTTestSetup {
 
     public H2UDTTestSetup() {

@@ -23,10 +23,10 @@ import java.io.StringWriter;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
 import org.geotools.ysld.YamlMap;
+import org.geotools.ysld.YamlUtil;
 import org.geotools.ysld.Ysld;
 import org.geotools.ysld.YsldTests;
 import org.junit.Test;
-import org.yaml.snakeyaml.Yaml;
 
 public class SldTransformerTest {
 
@@ -142,6 +142,52 @@ public class SldTransformerTest {
                         .map("external");
         assertEquals("image/png", eg.str("format"));
         assertEquals("smileyface.png", eg.str("url"));
+    }
+
+    @Test
+    public void testPointWithLegend() throws Exception {
+        // <UserStyle>
+        //   <Title>Simple Point With Legend Graphic</Title>
+        //   <FeatureTypeStyle>
+        //     <Rule>
+        //       <LegendGraphic>
+        //         <Graphic>
+        //           <ExternalGraphic>
+        //             <OnlineResource xlink:href="smileyface.png" />
+        //             <Format>image/png</Format>
+        //           </ExternalGraphic>
+        //           <Size>32</Size>
+        //         </Graphic>
+        //       </LegendGraphic>
+        //       <PointSymbolizer>
+        //         <Graphic>
+        //           <Mark>
+        //             <WellKnownName>circle</WellKnownName>
+        //             <Fill>
+        //               <CssParameter name="fill">#FF0000</CssParameter>
+        //             </Fill>
+        //           </Mark>
+        //           <Size>6</Size>
+        //         </Graphic>
+        //       </PointSymbolizer>
+        //     </Rule>
+        //   </FeatureTypeStyle>
+        // </UserStyle>
+        YamlMap style = transform("point", "legend.sld");
+        assertEquals("Simple Point With Legend Graphic", style.str("title"));
+
+        YamlMap rule = style.seq("feature-styles").map(0).seq("rules").map(0);
+
+        YamlMap eg = rule.map("legend").seq("symbols").map(0).map("external");
+        assertEquals("image/png", eg.str("format"));
+        assertEquals("smileyface.png", eg.str("url"));
+
+        YamlMap point = rule.seq("symbolizers").map(0).map("point");
+        assertEquals(6, point.integer("size").intValue());
+
+        YamlMap mark = point.seq("symbols").map(0).map("mark");
+        assertEquals("circle", mark.str("shape"));
+        assertEquals("#FF0000", mark.str("fill-color"));
     }
 
     @Test
@@ -1943,7 +1989,7 @@ public class SldTransformerTest {
 
     YamlMap yaml(SldTransformer transformer) throws Exception {
         String yaml = ((StringWriter) transformer.context().output()).toString();
-        return new YamlMap(new Yaml().load(yaml));
+        return new YamlMap(YamlUtil.getSafeYaml().load(yaml));
     }
 
     YamlMap transform(String dirname, String filename) throws Exception {

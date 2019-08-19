@@ -19,7 +19,6 @@ package org.geotools.data.sqlserver;
 import org.geotools.jdbc.JDBCPrimaryKeyOnlineTest;
 import org.geotools.jdbc.JDBCPrimaryKeyTestSetup;
 
-/** @source $URL$ */
 public class SQLServerPrimaryKeyOnlineTest extends JDBCPrimaryKeyOnlineTest {
 
     @Override

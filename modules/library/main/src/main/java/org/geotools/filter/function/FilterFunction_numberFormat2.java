@@ -33,7 +33,6 @@ import org.opengis.filter.capability.FunctionName;
  * rather than falling back on locale based defaults.
  *
  * @author Justin Deoliveira, OpenGeo
- * @source $URL$
  */
 public class FilterFunction_numberFormat2 extends FunctionExpressionImpl {
 

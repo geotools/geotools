@@ -150,7 +150,7 @@ Both GeoServer and and uDig offer some form of Catalog API. Here is an example o
   Catalog catalog = new DefaultCatalog();
   ServiceFinder finder = new DefaultServiceFactory( catalog );
   
-  WFSService service = finder.aquire( uri ); // uri of your GetCapabilities document
+  WFSService service = finder.acquire( uri ); // uri of your GetCapabilities document
   
   IServiceInfo info = service.getInfo( new NullProgressListener() );
   

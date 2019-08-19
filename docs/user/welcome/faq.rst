@@ -85,9 +85,7 @@ are supplied by the community and do not yet meet the quality expected by the li
 
 There are also some "unsupported" formats that are either popular or under development:
 
-* app-schema (under development) - allows the remapping and combining of one or more data sources into a provided application schema
 * dfx
-* edigeo
 * geojson
 * wfs
 
@@ -143,9 +141,9 @@ New snapshot jars are built nightly and deployed to a repository separate from t
 are using Maven as your build tool you can work with a snapshot release by adding the following to your pom.xml::
 
     <repository>
-        <id>opengeo</id>
-        <name>OpenGeo Maven Repository</name>
-        <url>http://repo.opengeo.org/</url>
+        <id>boundless</id>
+        <name>Boundless Maven Repository</name>
+        <url>http://repo.boundlessgeo.com/main</url>
         <snapshots>
             <enabled>true</enabled>
         </snapshots>

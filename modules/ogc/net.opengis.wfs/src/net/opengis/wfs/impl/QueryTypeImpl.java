@@ -42,6 +42,7 @@ import org.opengis.filter.sort.SortBy;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link net.opengis.wfs.impl.QueryTypeImpl#getGroup <em>Group</em>}</li>
  *   <li>{@link net.opengis.wfs.impl.QueryTypeImpl#getPropertyName <em>Property Name</em>}</li>
@@ -54,524 +55,523 @@ import org.opengis.filter.sort.SortBy;
  *   <li>{@link net.opengis.wfs.impl.QueryTypeImpl#getSrsName <em>Srs Name</em>}</li>
  *   <li>{@link net.opengis.wfs.impl.QueryTypeImpl#getTypeName <em>Type Name</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
 public class QueryTypeImpl extends EObjectImpl implements QueryType {
 	/**
-     * The cached value of the '{@link #getGroup() <em>Group</em>}' attribute list.
-     * <!-- begin-user-doc -->
+   * The cached value of the '{@link #getGroup() <em>Group</em>}' attribute list.
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @see #getGroup()
-     * @generated
-     * @ordered
-     */
+   * @see #getGroup()
+   * @generated
+   * @ordered
+   */
 	protected FeatureMap group;
 
 	/**
-     * The cached value of the '{@link #getPropertyName() <em>Property Name</em>}' attribute list.
-     * <!-- begin-user-doc -->
+   * The cached value of the '{@link #getPropertyName() <em>Property Name</em>}' attribute list.
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @see #getPropertyName()
-     * @generated
-     * @ordered
-     */
+   * @see #getPropertyName()
+   * @generated
+   * @ordered
+   */
 	protected EList propertyName;
 
 	/**
-     * The cached value of the '{@link #getFunction() <em>Function</em>}' attribute list.
-     * <!-- begin-user-doc -->
+   * The cached value of the '{@link #getFunction() <em>Function</em>}' attribute list.
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @see #getFunction()
-     * @generated
-     * @ordered
-     */
+   * @see #getFunction()
+   * @generated
+   * @ordered
+   */
 	protected EList function;
 
 	/**
-     * The default value of the '{@link #getFilter() <em>Filter</em>}' attribute.
-     * <!-- begin-user-doc -->
+   * The default value of the '{@link #getFilter() <em>Filter</em>}' attribute.
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @see #getFilter()
-     * @generated
-     * @ordered
-     */
+   * @see #getFilter()
+   * @generated
+   * @ordered
+   */
 	protected static final Filter FILTER_EDEFAULT = null;
 
 	/**
-     * The cached value of the '{@link #getFilter() <em>Filter</em>}' attribute.
-     * <!-- begin-user-doc -->
+   * The cached value of the '{@link #getFilter() <em>Filter</em>}' attribute.
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @see #getFilter()
-     * @generated
-     * @ordered
-     */
+   * @see #getFilter()
+   * @generated
+   * @ordered
+   */
 	protected Filter filter = FILTER_EDEFAULT;
 
 	/**
-     * The cached value of the '{@link #getSortBy() <em>Sort By</em>}' attribute list.
-     * <!-- begin-user-doc -->
+   * The cached value of the '{@link #getSortBy() <em>Sort By</em>}' attribute list.
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @see #getSortBy()
-     * @generated
-     * @ordered
-     */
+   * @see #getSortBy()
+   * @generated
+   * @ordered
+   */
 	protected EList sortBy;
 
 	/**
-     * The default value of the '{@link #getFeatureVersion() <em>Feature Version</em>}' attribute.
-     * <!-- begin-user-doc -->
+   * The default value of the '{@link #getFeatureVersion() <em>Feature Version</em>}' attribute.
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @see #getFeatureVersion()
-     * @generated
-     * @ordered
-     */
+   * @see #getFeatureVersion()
+   * @generated
+   * @ordered
+   */
 	protected static final String FEATURE_VERSION_EDEFAULT = null;
 
 	/**
-     * The cached value of the '{@link #getFeatureVersion() <em>Feature Version</em>}' attribute.
-     * <!-- begin-user-doc -->
+   * The cached value of the '{@link #getFeatureVersion() <em>Feature Version</em>}' attribute.
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @see #getFeatureVersion()
-     * @generated
-     * @ordered
-     */
+   * @see #getFeatureVersion()
+   * @generated
+   * @ordered
+   */
 	protected String featureVersion = FEATURE_VERSION_EDEFAULT;
 
 	/**
-     * The default value of the '{@link #getHandle() <em>Handle</em>}' attribute.
-     * <!-- begin-user-doc -->
+   * The default value of the '{@link #getHandle() <em>Handle</em>}' attribute.
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @see #getHandle()
-     * @generated
-     * @ordered
-     */
+   * @see #getHandle()
+   * @generated
+   * @ordered
+   */
 	protected static final String HANDLE_EDEFAULT = null;
 
 	/**
-     * The cached value of the '{@link #getHandle() <em>Handle</em>}' attribute.
-     * <!-- begin-user-doc -->
+   * The cached value of the '{@link #getHandle() <em>Handle</em>}' attribute.
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @see #getHandle()
-     * @generated
-     * @ordered
-     */
+   * @see #getHandle()
+   * @generated
+   * @ordered
+   */
 	protected String handle = HANDLE_EDEFAULT;
 
 	/**
-     * The default value of the '{@link #getSrsName() <em>Srs Name</em>}' attribute.
-     * <!-- begin-user-doc -->
+   * The default value of the '{@link #getSrsName() <em>Srs Name</em>}' attribute.
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @see #getSrsName()
-     * @generated
-     * @ordered
-     */
+   * @see #getSrsName()
+   * @generated
+   * @ordered
+   */
 	protected static final URI SRS_NAME_EDEFAULT = null;
 
 	/**
-     * The cached value of the '{@link #getSrsName() <em>Srs Name</em>}' attribute.
-     * <!-- begin-user-doc -->
+   * The cached value of the '{@link #getSrsName() <em>Srs Name</em>}' attribute.
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @see #getSrsName()
-     * @generated
-     * @ordered
-     */
+   * @see #getSrsName()
+   * @generated
+   * @ordered
+   */
 	protected URI srsName = SRS_NAME_EDEFAULT;
 
 	/**
-     * The default value of the '{@link #getTypeName() <em>Type Name</em>}' attribute.
-     * <!-- begin-user-doc -->
+   * The default value of the '{@link #getTypeName() <em>Type Name</em>}' attribute.
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @see #getTypeName()
-     * @generated
-     * @ordered
-     */
+   * @see #getTypeName()
+   * @generated
+   * @ordered
+   */
 	protected static final List TYPE_NAME_EDEFAULT = null;
 
 	/**
-     * The cached value of the '{@link #getTypeName() <em>Type Name</em>}' attribute.
-     * <!-- begin-user-doc -->
+   * The cached value of the '{@link #getTypeName() <em>Type Name</em>}' attribute.
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @see #getTypeName()
-     * @generated
-     * @ordered
-     */
+   * @see #getTypeName()
+   * @generated
+   * @ordered
+   */
 	protected List typeName = TYPE_NAME_EDEFAULT;
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	protected QueryTypeImpl() {
-        super();
-    }
+    super();
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	protected EClass eStaticClass() {
-        return WfsPackage.Literals.QUERY_TYPE;
-    }
+    return WfsPackage.Literals.QUERY_TYPE;
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public FeatureMap getGroup() {
-        if (group == null) {
-            group = new BasicFeatureMap(this, WfsPackage.QUERY_TYPE__GROUP);
-        }
-        return group;
+    if (group == null) {
+      group = new BasicFeatureMap(this, WfsPackage.QUERY_TYPE__GROUP);
     }
+    return group;
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public EList getPropertyName() {
-        if (propertyName == null) {
-            propertyName = new EDataTypeUniqueEList(String.class, this, WfsPackage.QUERY_TYPE__PROPERTY_NAME);
-        }
-        return propertyName;
+    if (propertyName == null) {
+      propertyName = new EDataTypeUniqueEList(String.class, this, WfsPackage.QUERY_TYPE__PROPERTY_NAME);
     }
+    return propertyName;
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public EList getXlinkPropertyName() {
-        return getGroup().list(WfsPackage.Literals.QUERY_TYPE__XLINK_PROPERTY_NAME);
-    }
+    return getGroup().list(WfsPackage.Literals.QUERY_TYPE__XLINK_PROPERTY_NAME);
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public EList getFunction() {
-        if (function == null) {
-            function = new EDataTypeUniqueEList(Function.class, this, WfsPackage.QUERY_TYPE__FUNCTION);
-        }
-        return function;
+    if (function == null) {
+      function = new EDataTypeUniqueEList(Function.class, this, WfsPackage.QUERY_TYPE__FUNCTION);
     }
+    return function;
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public Filter getFilter() {
-        return filter;
-    }
+    return filter;
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public void setFilter(Filter newFilter) {
-        Filter oldFilter = filter;
-        filter = newFilter;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, WfsPackage.QUERY_TYPE__FILTER, oldFilter, filter));
-    }
+    Filter oldFilter = filter;
+    filter = newFilter;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, WfsPackage.QUERY_TYPE__FILTER, oldFilter, filter));
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public EList getSortBy() {
-        if (sortBy == null) {
-            sortBy = new EDataTypeUniqueEList(SortBy.class, this, WfsPackage.QUERY_TYPE__SORT_BY);
-        }
-        return sortBy;
+    if (sortBy == null) {
+      sortBy = new EDataTypeUniqueEList(SortBy.class, this, WfsPackage.QUERY_TYPE__SORT_BY);
     }
+    return sortBy;
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public String getFeatureVersion() {
-        return featureVersion;
-    }
+    return featureVersion;
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public void setFeatureVersion(String newFeatureVersion) {
-        String oldFeatureVersion = featureVersion;
-        featureVersion = newFeatureVersion;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, WfsPackage.QUERY_TYPE__FEATURE_VERSION, oldFeatureVersion, featureVersion));
-    }
+    String oldFeatureVersion = featureVersion;
+    featureVersion = newFeatureVersion;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, WfsPackage.QUERY_TYPE__FEATURE_VERSION, oldFeatureVersion, featureVersion));
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public String getHandle() {
-        return handle;
-    }
+    return handle;
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public void setHandle(String newHandle) {
-        String oldHandle = handle;
-        handle = newHandle;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, WfsPackage.QUERY_TYPE__HANDLE, oldHandle, handle));
-    }
+    String oldHandle = handle;
+    handle = newHandle;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, WfsPackage.QUERY_TYPE__HANDLE, oldHandle, handle));
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public URI getSrsName() {
-        return srsName;
-    }
+    return srsName;
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public void setSrsName(URI newSrsName) {
-        URI oldSrsName = srsName;
-        srsName = newSrsName;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, WfsPackage.QUERY_TYPE__SRS_NAME, oldSrsName, srsName));
-    }
+    URI oldSrsName = srsName;
+    srsName = newSrsName;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, WfsPackage.QUERY_TYPE__SRS_NAME, oldSrsName, srsName));
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public List getTypeName() {
-        return typeName;
-    }
+    return typeName;
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public void setTypeName(List newTypeName) {
-        List oldTypeName = typeName;
-        typeName = newTypeName;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, WfsPackage.QUERY_TYPE__TYPE_NAME, oldTypeName, typeName));
-    }
+    List oldTypeName = typeName;
+    typeName = newTypeName;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, WfsPackage.QUERY_TYPE__TYPE_NAME, oldTypeName, typeName));
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-        switch (featureID) {
-            case WfsPackage.QUERY_TYPE__GROUP:
-                return ((InternalEList)getGroup()).basicRemove(otherEnd, msgs);
-            case WfsPackage.QUERY_TYPE__XLINK_PROPERTY_NAME:
-                return ((InternalEList)getXlinkPropertyName()).basicRemove(otherEnd, msgs);
-        }
-        return super.eInverseRemove(otherEnd, featureID, msgs);
+    switch (featureID) {
+      case WfsPackage.QUERY_TYPE__GROUP:
+        return ((InternalEList)getGroup()).basicRemove(otherEnd, msgs);
+      case WfsPackage.QUERY_TYPE__XLINK_PROPERTY_NAME:
+        return ((InternalEList)getXlinkPropertyName()).basicRemove(otherEnd, msgs);
     }
+    return super.eInverseRemove(otherEnd, featureID, msgs);
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case WfsPackage.QUERY_TYPE__GROUP:
-                if (coreType) return getGroup();
-                return ((FeatureMap.Internal)getGroup()).getWrapper();
-            case WfsPackage.QUERY_TYPE__PROPERTY_NAME:
-                return getPropertyName();
-            case WfsPackage.QUERY_TYPE__XLINK_PROPERTY_NAME:
-                return getXlinkPropertyName();
-            case WfsPackage.QUERY_TYPE__FUNCTION:
-                return getFunction();
-            case WfsPackage.QUERY_TYPE__FILTER:
-                return getFilter();
-            case WfsPackage.QUERY_TYPE__SORT_BY:
-                return getSortBy();
-            case WfsPackage.QUERY_TYPE__FEATURE_VERSION:
-                return getFeatureVersion();
-            case WfsPackage.QUERY_TYPE__HANDLE:
-                return getHandle();
-            case WfsPackage.QUERY_TYPE__SRS_NAME:
-                return getSrsName();
-            case WfsPackage.QUERY_TYPE__TYPE_NAME:
-                return getTypeName();
-        }
-        return super.eGet(featureID, resolve, coreType);
+    switch (featureID) {
+      case WfsPackage.QUERY_TYPE__GROUP:
+        if (coreType) return getGroup();
+        return ((FeatureMap.Internal)getGroup()).getWrapper();
+      case WfsPackage.QUERY_TYPE__PROPERTY_NAME:
+        return getPropertyName();
+      case WfsPackage.QUERY_TYPE__XLINK_PROPERTY_NAME:
+        return getXlinkPropertyName();
+      case WfsPackage.QUERY_TYPE__FUNCTION:
+        return getFunction();
+      case WfsPackage.QUERY_TYPE__FILTER:
+        return getFilter();
+      case WfsPackage.QUERY_TYPE__SORT_BY:
+        return getSortBy();
+      case WfsPackage.QUERY_TYPE__FEATURE_VERSION:
+        return getFeatureVersion();
+      case WfsPackage.QUERY_TYPE__HANDLE:
+        return getHandle();
+      case WfsPackage.QUERY_TYPE__SRS_NAME:
+        return getSrsName();
+      case WfsPackage.QUERY_TYPE__TYPE_NAME:
+        return getTypeName();
     }
+    return super.eGet(featureID, resolve, coreType);
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case WfsPackage.QUERY_TYPE__GROUP:
-                ((FeatureMap.Internal)getGroup()).set(newValue);
-                return;
-            case WfsPackage.QUERY_TYPE__PROPERTY_NAME:
-                getPropertyName().clear();
-                getPropertyName().addAll((Collection)newValue);
-                return;
-            case WfsPackage.QUERY_TYPE__XLINK_PROPERTY_NAME:
-                getXlinkPropertyName().clear();
-                getXlinkPropertyName().addAll((Collection)newValue);
-                return;
-            case WfsPackage.QUERY_TYPE__FUNCTION:
-                getFunction().clear();
-                getFunction().addAll((Collection)newValue);
-                return;
-            case WfsPackage.QUERY_TYPE__FILTER:
-                setFilter((Filter)newValue);
-                return;
-            case WfsPackage.QUERY_TYPE__SORT_BY:
-                getSortBy().clear();
-                getSortBy().addAll((Collection)newValue);
-                return;
-            case WfsPackage.QUERY_TYPE__FEATURE_VERSION:
-                setFeatureVersion((String)newValue);
-                return;
-            case WfsPackage.QUERY_TYPE__HANDLE:
-                setHandle((String)newValue);
-                return;
-            case WfsPackage.QUERY_TYPE__SRS_NAME:
-                setSrsName((URI)newValue);
-                return;
-            case WfsPackage.QUERY_TYPE__TYPE_NAME:
-                setTypeName((List)newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
+    switch (featureID) {
+      case WfsPackage.QUERY_TYPE__GROUP:
+        ((FeatureMap.Internal)getGroup()).set(newValue);
+        return;
+      case WfsPackage.QUERY_TYPE__PROPERTY_NAME:
+        getPropertyName().clear();
+        getPropertyName().addAll((Collection)newValue);
+        return;
+      case WfsPackage.QUERY_TYPE__XLINK_PROPERTY_NAME:
+        getXlinkPropertyName().clear();
+        getXlinkPropertyName().addAll((Collection)newValue);
+        return;
+      case WfsPackage.QUERY_TYPE__FUNCTION:
+        getFunction().clear();
+        getFunction().addAll((Collection)newValue);
+        return;
+      case WfsPackage.QUERY_TYPE__FILTER:
+        setFilter((Filter)newValue);
+        return;
+      case WfsPackage.QUERY_TYPE__SORT_BY:
+        getSortBy().clear();
+        getSortBy().addAll((Collection)newValue);
+        return;
+      case WfsPackage.QUERY_TYPE__FEATURE_VERSION:
+        setFeatureVersion((String)newValue);
+        return;
+      case WfsPackage.QUERY_TYPE__HANDLE:
+        setHandle((String)newValue);
+        return;
+      case WfsPackage.QUERY_TYPE__SRS_NAME:
+        setSrsName((URI)newValue);
+        return;
+      case WfsPackage.QUERY_TYPE__TYPE_NAME:
+        setTypeName((List)newValue);
+        return;
     }
+    super.eSet(featureID, newValue);
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public void eUnset(int featureID) {
-        switch (featureID) {
-            case WfsPackage.QUERY_TYPE__GROUP:
-                getGroup().clear();
-                return;
-            case WfsPackage.QUERY_TYPE__PROPERTY_NAME:
-                getPropertyName().clear();
-                return;
-            case WfsPackage.QUERY_TYPE__XLINK_PROPERTY_NAME:
-                getXlinkPropertyName().clear();
-                return;
-            case WfsPackage.QUERY_TYPE__FUNCTION:
-                getFunction().clear();
-                return;
-            case WfsPackage.QUERY_TYPE__FILTER:
-                setFilter(FILTER_EDEFAULT);
-                return;
-            case WfsPackage.QUERY_TYPE__SORT_BY:
-                getSortBy().clear();
-                return;
-            case WfsPackage.QUERY_TYPE__FEATURE_VERSION:
-                setFeatureVersion(FEATURE_VERSION_EDEFAULT);
-                return;
-            case WfsPackage.QUERY_TYPE__HANDLE:
-                setHandle(HANDLE_EDEFAULT);
-                return;
-            case WfsPackage.QUERY_TYPE__SRS_NAME:
-                setSrsName(SRS_NAME_EDEFAULT);
-                return;
-            case WfsPackage.QUERY_TYPE__TYPE_NAME:
-                setTypeName(TYPE_NAME_EDEFAULT);
-                return;
-        }
-        super.eUnset(featureID);
+    switch (featureID) {
+      case WfsPackage.QUERY_TYPE__GROUP:
+        getGroup().clear();
+        return;
+      case WfsPackage.QUERY_TYPE__PROPERTY_NAME:
+        getPropertyName().clear();
+        return;
+      case WfsPackage.QUERY_TYPE__XLINK_PROPERTY_NAME:
+        getXlinkPropertyName().clear();
+        return;
+      case WfsPackage.QUERY_TYPE__FUNCTION:
+        getFunction().clear();
+        return;
+      case WfsPackage.QUERY_TYPE__FILTER:
+        setFilter(FILTER_EDEFAULT);
+        return;
+      case WfsPackage.QUERY_TYPE__SORT_BY:
+        getSortBy().clear();
+        return;
+      case WfsPackage.QUERY_TYPE__FEATURE_VERSION:
+        setFeatureVersion(FEATURE_VERSION_EDEFAULT);
+        return;
+      case WfsPackage.QUERY_TYPE__HANDLE:
+        setHandle(HANDLE_EDEFAULT);
+        return;
+      case WfsPackage.QUERY_TYPE__SRS_NAME:
+        setSrsName(SRS_NAME_EDEFAULT);
+        return;
+      case WfsPackage.QUERY_TYPE__TYPE_NAME:
+        setTypeName(TYPE_NAME_EDEFAULT);
+        return;
     }
+    super.eUnset(featureID);
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case WfsPackage.QUERY_TYPE__GROUP:
-                return group != null && !group.isEmpty();
-            case WfsPackage.QUERY_TYPE__PROPERTY_NAME:
-                return propertyName != null && !propertyName.isEmpty();
-            case WfsPackage.QUERY_TYPE__XLINK_PROPERTY_NAME:
-                return !getXlinkPropertyName().isEmpty();
-            case WfsPackage.QUERY_TYPE__FUNCTION:
-                return function != null && !function.isEmpty();
-            case WfsPackage.QUERY_TYPE__FILTER:
-                return FILTER_EDEFAULT == null ? filter != null : !FILTER_EDEFAULT.equals(filter);
-            case WfsPackage.QUERY_TYPE__SORT_BY:
-                return sortBy != null && !sortBy.isEmpty();
-            case WfsPackage.QUERY_TYPE__FEATURE_VERSION:
-                return FEATURE_VERSION_EDEFAULT == null ? featureVersion != null : !FEATURE_VERSION_EDEFAULT.equals(featureVersion);
-            case WfsPackage.QUERY_TYPE__HANDLE:
-                return HANDLE_EDEFAULT == null ? handle != null : !HANDLE_EDEFAULT.equals(handle);
-            case WfsPackage.QUERY_TYPE__SRS_NAME:
-                return SRS_NAME_EDEFAULT == null ? srsName != null : !SRS_NAME_EDEFAULT.equals(srsName);
-            case WfsPackage.QUERY_TYPE__TYPE_NAME:
-                return TYPE_NAME_EDEFAULT == null ? typeName != null : !TYPE_NAME_EDEFAULT.equals(typeName);
-        }
-        return super.eIsSet(featureID);
+    switch (featureID) {
+      case WfsPackage.QUERY_TYPE__GROUP:
+        return group != null && !group.isEmpty();
+      case WfsPackage.QUERY_TYPE__PROPERTY_NAME:
+        return propertyName != null && !propertyName.isEmpty();
+      case WfsPackage.QUERY_TYPE__XLINK_PROPERTY_NAME:
+        return !getXlinkPropertyName().isEmpty();
+      case WfsPackage.QUERY_TYPE__FUNCTION:
+        return function != null && !function.isEmpty();
+      case WfsPackage.QUERY_TYPE__FILTER:
+        return FILTER_EDEFAULT == null ? filter != null : !FILTER_EDEFAULT.equals(filter);
+      case WfsPackage.QUERY_TYPE__SORT_BY:
+        return sortBy != null && !sortBy.isEmpty();
+      case WfsPackage.QUERY_TYPE__FEATURE_VERSION:
+        return FEATURE_VERSION_EDEFAULT == null ? featureVersion != null : !FEATURE_VERSION_EDEFAULT.equals(featureVersion);
+      case WfsPackage.QUERY_TYPE__HANDLE:
+        return HANDLE_EDEFAULT == null ? handle != null : !HANDLE_EDEFAULT.equals(handle);
+      case WfsPackage.QUERY_TYPE__SRS_NAME:
+        return SRS_NAME_EDEFAULT == null ? srsName != null : !SRS_NAME_EDEFAULT.equals(srsName);
+      case WfsPackage.QUERY_TYPE__TYPE_NAME:
+        return TYPE_NAME_EDEFAULT == null ? typeName != null : !TYPE_NAME_EDEFAULT.equals(typeName);
     }
+    return super.eIsSet(featureID);
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public String toString() {
-        if (eIsProxy()) return super.toString();
+    if (eIsProxy()) return super.toString();
 
-        StringBuffer result = new StringBuffer(super.toString());
-        result.append(" (group: ");
-        result.append(group);
-        result.append(", propertyName: ");
-        result.append(propertyName);
-        result.append(", function: ");
-        result.append(function);
-        result.append(", filter: ");
-        result.append(filter);
-        result.append(", sortBy: ");
-        result.append(sortBy);
-        result.append(", featureVersion: ");
-        result.append(featureVersion);
-        result.append(", handle: ");
-        result.append(handle);
-        result.append(", srsName: ");
-        result.append(srsName);
-        result.append(", typeName: ");
-        result.append(typeName);
-        result.append(')');
-        return result.toString();
-    }
+    StringBuffer result = new StringBuffer(super.toString());
+    result.append(" (group: ");
+    result.append(group);
+    result.append(", propertyName: ");
+    result.append(propertyName);
+    result.append(", function: ");
+    result.append(function);
+    result.append(", filter: ");
+    result.append(filter);
+    result.append(", sortBy: ");
+    result.append(sortBy);
+    result.append(", featureVersion: ");
+    result.append(featureVersion);
+    result.append(", handle: ");
+    result.append(handle);
+    result.append(", srsName: ");
+    result.append(srsName);
+    result.append(", typeName: ");
+    result.append(typeName);
+    result.append(')');
+    return result.toString();
+  }
 
 } //QueryTypeImpl

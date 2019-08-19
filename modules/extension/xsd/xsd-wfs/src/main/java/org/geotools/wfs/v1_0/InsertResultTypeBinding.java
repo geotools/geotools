@@ -22,9 +22,9 @@ import net.opengis.wfs.InsertResultsType;
 import net.opengis.wfs.InsertedFeatureType;
 import net.opengis.wfs.WfsFactory;
 import org.geotools.filter.v1_0.capabilities.OGC;
-import org.geotools.xml.AbstractComplexEMFBinding;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
+import org.geotools.xsd.AbstractComplexEMFBinding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -57,7 +57,6 @@ import org.w3c.dom.Element;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class InsertResultTypeBinding extends AbstractComplexEMFBinding {
     WfsFactory wfsfactory;

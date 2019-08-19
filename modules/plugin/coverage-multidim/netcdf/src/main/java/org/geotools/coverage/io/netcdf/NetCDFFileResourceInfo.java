@@ -29,15 +29,14 @@ import org.geotools.coverage.grid.io.DimensionDescriptor;
 import org.geotools.coverage.io.catalog.CoverageSlice;
 import org.geotools.coverage.io.catalog.CoverageSlicesCatalog;
 import org.geotools.coverage.io.catalog.CoverageSlicesCatalog.WrappedCoverageSlicesCatalog;
+import org.geotools.coverage.util.FeatureUtilities;
 import org.geotools.data.CloseableIterator;
 import org.geotools.data.DefaultResourceInfo;
 import org.geotools.data.FileResourceInfo;
 import org.geotools.data.Query;
 import org.geotools.filter.SortByImpl;
-import org.geotools.gce.imagemosaic.RasterManager;
 import org.geotools.gce.imagemosaic.Utils;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.resources.coverage.FeatureUtilities;
 import org.geotools.util.DateRange;
 import org.geotools.util.NumberRange;
 import org.geotools.util.Range;
@@ -134,9 +133,6 @@ class NetCDFFileResourceInfo extends DefaultResourceInfo implements FileResource
          *
          * <p>The method also look for supportFiles.
          *
-         * @param file
-         * @paran aggregate, whether aggregation queries should be invoked to extract domains
-         * @param firstFeature, sample feature to be used when no aggregation is needed
          * @return
          * @throws IOException
          */
@@ -273,16 +269,7 @@ class NetCDFFileResourceInfo extends DefaultResourceInfo implements FileResource
 
     private URL sourceURL;
 
-    /**
-     * ImageMosaicFileGroupProvider constructor
-     *
-     * @param sourceURL
-     * @param coverageSlicesCatalog
-     * @param rasterManager manager the {@link RasterManager} instance for underlying index info
-     *     retrieval and management
-     * @param parentLocation the granules parentLocation (relative paths refer to that)
-     * @param locationAttributeName the actual location attribute name
-     */
+    /** ImageMosaicFileGroupProvider constructor */
     public NetCDFFileResourceInfo(
             NetCDFReader reader,
             String coverageName,

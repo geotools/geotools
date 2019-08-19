@@ -23,16 +23,14 @@ import org.opengis.filter.Filter;
  * Implements Filter interface, with constants and default behaviors for methods.
  *
  * @author Rob Hranac, Vision for New York
- * @source $URL$
  * @version $Id$
  */
 public abstract class AbstractFilter extends FilterAbstract implements FilterType, Filter {
 
     /** The logger for the default core module. */
     protected static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.core");
+            org.geotools.util.logging.Logging.getLogger(AbstractFilter.class);
 
-    /** @param factory */
     protected AbstractFilter() {}
 
     /**
@@ -66,8 +64,8 @@ public abstract class AbstractFilter extends FilterAbstract implements FilterTyp
      * @param filterType Type of filter for check.
      * @return Whether or not this is a logic filter type.
      */
-    protected static boolean isLogicFilter(short filterType) {
-        LOGGER.entering("AbstractFilter", "isLogicFilter", new Short(filterType));
+    public static boolean isLogicFilter(short filterType) {
+        LOGGER.entering("AbstractFilter", "isLogicFilter", Short.valueOf(filterType));
 
         return ((filterType == LOGIC_OR) || (filterType == LOGIC_AND) || (filterType == LOGIC_NOT));
     }
@@ -134,7 +132,7 @@ public abstract class AbstractFilter extends FilterAbstract implements FilterTyp
      * @param filterType Type of filter for check.
      * @return Whether or not this is a logic filter type.
      */
-    protected static boolean isSimpleFilter(short filterType) {
+    public static boolean isSimpleFilter(short filterType) {
         return (isCompareFilter(filterType)
                 || isGeometryFilter(filterType)
                 || (filterType == NULL)

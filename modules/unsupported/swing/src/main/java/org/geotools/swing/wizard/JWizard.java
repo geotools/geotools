@@ -28,6 +28,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
 import java.util.HashMap;
+import java.util.logging.Logger;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -40,6 +41,8 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import org.geotools.gml.SubHandlerLinearRing;
+import org.geotools.util.logging.Logging;
 
 /**
  * Swing does not provide a wizard construct (boo hiss) so this is a quick dialog that can step us
@@ -50,9 +53,11 @@ import javax.swing.event.ListSelectionListener;
  * with Java</a>.
  *
  * @author Jody, gdavis
- * @source $URL$
  */
 public class JWizard extends JDialog {
+
+    static final Logger LOGGER = Logging.getLogger(SubHandlerLinearRing.class);
+
     private static final long serialVersionUID = 1L;
 
     /** Indicates that the 'Finish' button was pressed to close the dialog. */
@@ -193,7 +198,7 @@ public class JWizard extends JDialog {
                 try {
                     page.dispose();
                 } catch (Throwable t) {
-                    System.out.println(id + " close: " + t);
+                    LOGGER.info(id + " close: " + t);
                 }
             }
         }
@@ -248,6 +253,7 @@ public class JWizard extends JDialog {
         JPage page = model.get(id);
         if (page == null) {
             close(ERROR);
+            return;
         }
         current = page;
 
@@ -262,10 +268,11 @@ public class JWizard extends JDialog {
         if (panel == null) {
             // lazy create panel
             panel = page.getPanel();
-            panel.setName(id);
             if (panel == null) {
                 close(ERROR); // card panel not provided
+                return;
             }
+            panel.setName(id);
             cardPanel.add(panel, id);
         }
         controller.syncButtonsToPage();

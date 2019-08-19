@@ -125,5 +125,6 @@ public class NetCDFAggregationTest {
                 variableAdapter.getTemporalDomain().getTemporalExtent(),
                 variableAdapterReversed.getTemporalDomain().getTemporalExtent());
         reader.dispose();
+        readerReversed.dispose();
     }
 }

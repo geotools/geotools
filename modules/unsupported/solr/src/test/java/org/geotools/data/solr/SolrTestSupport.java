@@ -44,9 +44,9 @@ public abstract class SolrTestSupport extends OnlineTestCase {
         java.util.logging.ConsoleHandler handler = new java.util.logging.ConsoleHandler();
         handler.setLevel(java.util.logging.Level.FINE);
 
-        org.geotools.util.logging.Logging.getLogger("org.geotools.data.solr")
+        org.geotools.util.logging.Logging.getLogger(SolrTestSupport.class)
                 .setLevel(java.util.logging.Level.FINE);
-        org.geotools.util.logging.Logging.getLogger("org.geotools.data.solr").addHandler(handler);
+        org.geotools.util.logging.Logging.getLogger(SolrTestSupport.class).addHandler(handler);
     }
 
     protected SolrFeatureSource featureSource;

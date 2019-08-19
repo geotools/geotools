@@ -19,15 +19,14 @@ package org.geotools.ows.v1_1;
 import java.util.Set;
 import javax.xml.namespace.QName;
 import org.geotools.xlink.XLINK;
-import org.geotools.xml.XML;
-import org.geotools.xml.XSD;
+import org.geotools.xsd.XML;
+import org.geotools.xsd.XSD;
 
 /**
  * This interface contains the qualified names of all the types,elements, and attributes in the
  * http://www.opengis.net/ows/1.1 schema.
  *
  * @generated
- * @source $URL$
  */
 public final class OWS extends XSD {
 

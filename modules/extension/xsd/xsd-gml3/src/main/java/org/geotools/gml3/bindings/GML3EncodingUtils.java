@@ -36,10 +36,10 @@ import org.geotools.gml3.GML;
 import org.geotools.gml3.XSDIdRegistry;
 import org.geotools.util.Converters;
 import org.geotools.xlink.XLINK;
-import org.geotools.xml.ComplexBinding;
-import org.geotools.xml.Configuration;
-import org.geotools.xml.SchemaIndex;
-import org.geotools.xml.XSD;
+import org.geotools.xsd.ComplexBinding;
+import org.geotools.xsd.Configuration;
+import org.geotools.xsd.SchemaIndex;
+import org.geotools.xsd.XSD;
 import org.locationtech.jts.geom.CoordinateSequence;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.LineString;
@@ -61,9 +61,6 @@ import org.xml.sax.helpers.NamespaceSupport;
  *
  * @author Justin Deoliveira, The Open Planning Project, jdeolive@openplans.org
  * @author Ben Caradoc-Davies, CSIRO Exploration and Mining
- * @source $URL$
- *     http://svn.osgeo.org/geotools/trunk/modules/extension/xsd/xsd-gml3/src/main/java/org
- *     /geotools/gml3/bindings/GML3EncodingUtils.java $
  */
 public class GML3EncodingUtils {
 
@@ -219,14 +216,9 @@ public class GML3EncodingUtils {
         return e.GeometryPropertyType_getProperty(geometry, name, true, makeEmpty);
     }
 
-    /** @deprecated use {@link #GeometryPropertyType_GetProperty(Geometry, QName)} */
-    public static Object getProperty(Geometry geometry, QName name) {
-        return INSTANCE.GeometryPropertyType_GetProperty(geometry, name);
-    }
-
     /**
-     * Helper method used to implement {@link ComplexBinding#getProperties(Object)} for bindings of
-     * geometry reference types:
+     * Helper method used to implement {@link ComplexBinding#getProperties(Object,
+     * XSDElementDeclaration)} for bindings of geometry reference types:
      *
      * <ul>
      *   <li>GeometryPropertyType
@@ -237,11 +229,6 @@ public class GML3EncodingUtils {
      */
     public List GeometryPropertyType_GetProperties(Geometry geometry) {
         return e.GeometryPropertyType_getProperties(geometry);
-    }
-
-    /** @deprecated use {@link #GeometryPropertyType_GetProperties(Geometry)} */
-    public static List getProperties(Geometry geometry) {
-        return INSTANCE.GeometryPropertyType_GetProperties(geometry);
     }
 
     public Element AbstractFeatureTypeEncode(
@@ -288,14 +275,6 @@ public class GML3EncodingUtils {
         return encoding;
     }
 
-    /**
-     * @deprecated use {@link #AbstractFeatureTypeEncode(Object, Document, Element, XSDIdRegistry)}
-     */
-    public static Element AbstractFeatureType_encode(
-            Object object, Document document, Element value, XSDIdRegistry idSet) {
-        return INSTANCE.AbstractFeatureTypeEncode(object, document, value, idSet);
-    }
-
     public List AbstractFeatureTypeGetProperties(
             Object object,
             XSDElementDeclaration element,
@@ -313,20 +292,6 @@ public class GML3EncodingUtils {
                                 "location",
                                 "metaDataProperty")),
                 configuration);
-    }
-
-    /**
-     * @deprecated use
-     *             {@link #AbstractFeatureTypeGetProperties(Object, XSDElementDeclaration, SchemaIndex, Configuration)
-     *
-     */
-    public static List AbstractFeatureType_getProperties(
-            Object object,
-            XSDElementDeclaration element,
-            SchemaIndex schemaIndex,
-            Configuration configuration) {
-        return INSTANCE.AbstractFeatureTypeGetProperties(
-                object, element, schemaIndex, configuration);
     }
 
     /**

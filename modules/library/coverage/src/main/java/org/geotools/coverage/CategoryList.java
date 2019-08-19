@@ -25,18 +25,17 @@ import java.util.AbstractList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Locale;
+import java.util.Objects;
 import javax.measure.Unit;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
+import org.geotools.metadata.i18n.Vocabulary;
+import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.referencing.wkt.UnformattableObjectException;
-import org.geotools.resources.Classes;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
-import org.geotools.resources.i18n.Vocabulary;
-import org.geotools.resources.i18n.VocabularyKeys;
 import org.geotools.util.AbstractInternationalString;
+import org.geotools.util.Classes;
 import org.geotools.util.NumberRange;
 import org.geotools.util.Utilities;
-import org.opengis.geometry.DirectPosition;
-import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.util.InternationalString;
 
 /**
@@ -48,7 +47,6 @@ import org.opengis.util.InternationalString;
  * <p>Instances of {@link CategoryList} are immutable and thread-safe.
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
@@ -295,10 +293,10 @@ class CategoryList extends AbstractList<Category> implements Comparator<Category
 
     /**
      * Effectue une recherche bi-linéaire de la valeur spécifiée. Cette méthode est semblable à
-     * {@link Arrays#binarySearch(double[],double)}, excepté qu'elle peut distinguer différentes
+     * {@code Arrays#binarySearch(double[],double)}, excepté qu'elle peut distinguer différentes
      * valeurs de NaN.
      *
-     * <p>Note: This method is not private in order to allows testing by {@link CategoryTest}.
+     * <p>Note: This method is not private in order to allow testing by {@link CategoryTest}.
      */
     static int binarySearch(final double[] array, final double key) {
         int low = 0;
@@ -455,8 +453,8 @@ class CategoryList extends AbstractList<Category> implements Comparator<Category
      * Format the specified value using the specified locale convention.
      *
      * @param value The value to format.
-     * @param writeUnit {@code true} if unit symbol should be formatted after the number. Ignored if
-     *     this category list has no unit.
+     * @param writeUnits {@code true} if unit symbol should be formatted after the number. Ignored
+     *     if this category list has no unit.
      * @param locale The locale, or {@code null} for a default one.
      * @param buffer The buffer where to format.
      * @return The buffer {@code buffer} for convenience.
@@ -691,6 +689,24 @@ class CategoryList extends AbstractList<Category> implements Comparator<Category
         return (overflowFallback == null) && super.equals(object);
     }
 
+    @Override
+    public int hashCode() {
+        int result =
+                Objects.hash(
+                        super.hashCode(),
+                        range,
+                        main,
+                        nodata,
+                        overflowFallback,
+                        last,
+                        hasGaps,
+                        name,
+                        unit);
+        result = 31 * result + Arrays.hashCode(minimums);
+        result = 31 * result + Arrays.hashCode(categories);
+        return result;
+    }
+
     /** Reset the {@link #last} field to a non-null value after deserialization. */
     private void readObject(final ObjectInputStream in) throws IOException, ClassNotFoundException {
         in.defaultReadObject();
@@ -715,15 +731,6 @@ class CategoryList extends AbstractList<Category> implements Comparator<Category
     /** Tests whether this transform does not move any points. */
     public boolean isIdentity() {
         return false;
-    }
-
-    /** Ensure the specified point is one-dimensional. */
-    private static void checkDimension(final DirectPosition point) {
-        final int dim = point.getDimension();
-        if (dim != 1) {
-            throw new MismatchedDimensionException(
-                    Errors.format(ErrorKeys.MISMATCHED_DIMENSION_$2, 1, dim));
-        }
     }
 
     /**

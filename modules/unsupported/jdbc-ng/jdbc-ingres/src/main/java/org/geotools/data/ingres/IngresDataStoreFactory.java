@@ -14,7 +14,7 @@ import org.geotools.jdbc.SQLDialect;
 /**
  * 
  *
- * @source $URL$
+
  */
 public class IngresDataStoreFactory extends JDBCDataStoreFactory {
 

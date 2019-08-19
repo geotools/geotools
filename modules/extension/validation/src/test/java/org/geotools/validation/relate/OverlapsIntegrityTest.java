@@ -30,12 +30,8 @@ import org.opengis.filter.Filter;
  *
  * @author bowens<br>
  *     Created Apr 29, 2004<br>
- * @source $URL$
  * @version <br>
  *     <b>Puropse:</b><br>
- *     <p>DOCUMENT ME!! <b>Description:</b><br>
- *     <p>DOCUMENT ME!! <b>Usage:</b><br>
- *     <p>DOCUMENT ME!!
  */
 public class OverlapsIntegrityTest extends SpatialTestCase {
 
@@ -68,9 +64,9 @@ public class OverlapsIntegrityTest extends SpatialTestCase {
         filter = OverlapsIntegrity.filterBBox(all, line.getSchema());
         SimpleFeatureIterator r = line.getFeatures().features();
         for (; r.hasNext(); ) {
-            System.out.println("Loop counter: " + ++counter);
+            // System.out.println("Loop counter: " + ++counter);
             SimpleFeature victim = r.next();
-            System.out.println("Found line number: " + victim.getID());
+            // System.out.println("Found line number: " + victim.getID());
             assertTrue("feature " + victim.getID(), filter.evaluate(victim));
         }
         r.close();
@@ -86,14 +82,14 @@ public class OverlapsIntegrityTest extends SpatialTestCase {
         try {
             map.put("my:line", mds.getFeatureSource("line"));
         } catch (IOException e1) {
-            e1.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e1);
         }
 
         try {
             vr.setValidation(overlap);
             assertFalse(overlap.validate(map, lineBounds, vr));
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
     }
 
@@ -102,22 +98,22 @@ public class OverlapsIntegrityTest extends SpatialTestCase {
         overlap.setExpected(false);
         overlap.setGeomTypeRefA("my:line");
 
-        System.out.println("=========================================");
+        // System.out.println("=========================================");
         Map map = new HashMap();
         try {
             map.put("my:line", mds.getFeatureSource("line"));
         } catch (IOException e1) {
             // TODO Auto-generated catch block
-            e1.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e1);
         }
 
         try {
-            System.out.println("Test Validate BBox");
+            // System.out.println("Test Validate BBox");
             // assertFalse(overlap.validate(map, new Envelope(-1,2,-2,3), vr));
             assertFalse(overlap.validate(map, lineBounds, vr));
             // (RoadValidationResults)vr;
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
     }
 }

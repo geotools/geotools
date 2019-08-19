@@ -31,7 +31,6 @@ import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
-import org.geotools.factory.GeoTools;
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.collection.AdaptorFeatureCollection;
 import org.geotools.feature.collection.BaseSimpleFeatureCollection;
@@ -41,14 +40,15 @@ import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.JTSFactoryFinder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.geometry.util.XRectangle2D;
 import org.geotools.process.ProcessException;
 import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
-import org.geotools.resources.geometry.XRectangle2D;
 import org.geotools.util.Utilities;
+import org.geotools.util.factory.GeoTools;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
@@ -77,7 +77,6 @@ import org.opengis.referencing.operation.MathTransform2D;
  * </ul>
  *
  * @author Simone Giannecchini, GeoSolutions
- * @source $URL$
  */
 @DescribeProcess(
     title = "Raster As Point Collection",
@@ -294,7 +293,8 @@ public class RasterAsPointCollectionProcess implements RasterProcess {
          *
          * @param coverageCRS the {@link GridCoverage2D} {@link CoordinateReferenceSystem}
          */
-        private void gridConvergenceAngle(final CoordinateReferenceSystem coverageCRS) {
+        private void gridConvergenceAngle(final CoordinateReferenceSystem coverageCRS)
+                throws IOException {
             // GridCoverage Angle management is required only if the input Coverage has been
             // reprojected
             if (targetCRS != null) {
@@ -318,7 +318,7 @@ public class RasterAsPointCollectionProcess implements RasterProcess {
                         }
 
                     } catch (Exception e) {
-                        new IOException(e);
+                        throw new IOException(e);
                     }
                 }
             }

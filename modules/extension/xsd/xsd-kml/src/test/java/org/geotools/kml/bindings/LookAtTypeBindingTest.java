@@ -18,11 +18,10 @@ package org.geotools.kml.bindings;
 
 import org.geotools.kml.KML;
 import org.geotools.kml.KMLTestSupport;
-import org.geotools.xml.Binding;
+import org.geotools.xsd.Binding;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Point;
 
-/** @source $URL$ */
 public class LookAtTypeBindingTest extends KMLTestSupport {
 
     public void testType() {
@@ -46,7 +45,7 @@ public class LookAtTypeBindingTest extends KMLTestSupport {
         Coordinate c = p.getCoordinate();
         assertEquals(1d, c.x, 0.1);
         assertEquals(2d, c.y, 0.1);
-        assertEquals(3d, c.z, 0.1);
+        assertEquals(3d, c.getZ(), 0.1);
 
         xml = "<LookAt/>";
         buildDocument(xml);
@@ -54,6 +53,6 @@ public class LookAtTypeBindingTest extends KMLTestSupport {
         c = p.getCoordinate();
         assertEquals(0d, c.x, 0.1);
         assertEquals(0d, c.y, 0.1);
-        assertEquals(0d, c.z, 0.1);
+        assertEquals(0d, c.getZ(), 0.1);
     }
 }

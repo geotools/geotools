@@ -37,7 +37,6 @@ import org.geotools.coverage.grid.io.GridFormatFinder;
 import org.geotools.coverage.grid.io.OverviewPolicy;
 import org.geotools.coverage.grid.io.UnknownFormat;
 import org.geotools.coverage.grid.io.footprint.MultiLevelROI;
-import org.geotools.factory.Hints;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
@@ -45,6 +44,7 @@ import org.geotools.referencing.operation.builder.GridToEnvelopeMapper;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.test.TestData;
 import org.geotools.util.URLs;
+import org.geotools.util.factory.Hints;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -60,7 +60,6 @@ import org.opengis.referencing.operation.TransformException;
  * Testing {@link OverviewsController}.
  *
  * @author Daniele Romagnoli, GeoSolutions SAS
- * @source $URL$
  */
 public class OverviewsControllerTest extends Assert {
 
@@ -197,7 +196,7 @@ public class OverviewsControllerTest extends Assert {
         Assert.assertNotNull(reader);
 
         final String name = reader.getGridCoverageNames()[0];
-        final int nOv = reader.getNumOverviews();
+        final int nOv = reader.getDatasetLayout().getNumInternalOverviews();
         final double[][] hRes = reader.getResolutionLevels();
         final RasterManager rasterManager = reader.getRasterManager(name);
 

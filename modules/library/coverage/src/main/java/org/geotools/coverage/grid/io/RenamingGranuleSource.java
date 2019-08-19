@@ -24,6 +24,7 @@ import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.opengis.feature.simple.SimpleFeatureType;
 
+/** {@link GranuleSource} wrapper exposing a different type name */
 public class RenamingGranuleSource implements GranuleSource {
 
     protected final String name;
@@ -31,6 +32,12 @@ public class RenamingGranuleSource implements GranuleSource {
     protected final SimpleFeatureType schema;
     private final String delegateTypeName;
 
+    /**
+     * Builds a {@link RenamingGranuleSource}
+     *
+     * @param name The new type name
+     * @param delegate The delegate to be wrapped
+     */
     public RenamingGranuleSource(String name, GranuleSource delegate) {
         this.name = name;
         this.delegate = delegate;

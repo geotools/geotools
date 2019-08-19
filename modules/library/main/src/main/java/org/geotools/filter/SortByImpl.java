@@ -20,7 +20,6 @@ import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.sort.SortBy;
 import org.opengis.filter.sort.SortOrder;
 
-/** @source $URL$ */
 public class SortByImpl implements SortBy {
 
     PropertyName propertyName;

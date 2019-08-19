@@ -22,7 +22,6 @@ package org.geotools.swt.styling.simple;
  *
  * @author Jody Garnett
  * @since 1.0.0
- * @source $URL$
  */
 public enum Mode {
     /** <code>POINT</code> Mode - editing a Point or MultiPoint. */

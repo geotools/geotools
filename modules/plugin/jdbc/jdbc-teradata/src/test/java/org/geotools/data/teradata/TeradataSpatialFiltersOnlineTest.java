@@ -19,7 +19,6 @@ package org.geotools.data.teradata;
 import org.geotools.jdbc.JDBCDataStoreAPITestSetup;
 import org.geotools.jdbc.JDBCSpatialFiltersOnlineTest;
 
-/** @source $URL$ */
 public class TeradataSpatialFiltersOnlineTest extends JDBCSpatialFiltersOnlineTest {
 
     protected JDBCDataStoreAPITestSetup createTestSetup() {

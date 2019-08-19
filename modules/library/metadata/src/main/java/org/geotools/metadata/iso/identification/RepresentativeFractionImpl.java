@@ -19,15 +19,14 @@
  */
 package org.geotools.metadata.iso.identification;
 
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 import org.opengis.metadata.identification.RepresentativeFraction;
 
 /**
  * A scale where {@linkplain #getDenominator denominator} = {@code 1 / scale}. This implementation
  * is set up as a {@linkplain Number number} - because it is.
  *
- * @source $URL$
  * @version $Id$
  * @author Jody Garnett
  * @since 2.4
@@ -69,12 +68,6 @@ public class RepresentativeFractionImpl extends Number implements Representative
             throw new IllegalArgumentException(
                     Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "scale", scale));
         }
-    }
-
-    /** @deprecated This is equivalent to {@link #doubleValue}. */
-    @Deprecated
-    public double toScale() {
-        return doubleValue();
     }
 
     /**

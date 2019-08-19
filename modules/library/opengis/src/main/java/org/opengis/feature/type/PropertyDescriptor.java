@@ -82,7 +82,6 @@ import org.opengis.feature.ComplexAttribute;
  *
  * @author Jody Garnett, Refractions Research
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL$
  */
 public interface PropertyDescriptor {
     /**

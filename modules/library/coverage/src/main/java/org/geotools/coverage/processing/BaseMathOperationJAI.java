@@ -25,12 +25,12 @@ import java.util.logging.Logger;
 import javax.media.jai.OperationDescriptor;
 import javax.media.jai.registry.RenderedRegistryMode;
 import org.geotools.coverage.grid.GridCoverage2D;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.parameter.DefaultParameterDescriptor;
 import org.geotools.parameter.ImagingParameterDescriptors;
 import org.geotools.parameter.ImagingParameters;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
 import org.geotools.util.Utilities;
 import org.geotools.util.logging.Logging;
 import org.opengis.parameter.InvalidParameterValueException;
@@ -44,14 +44,13 @@ import org.opengis.parameter.ParameterValueGroup;
  *
  * @author Nicola Lagomarsini, GeoSolutions SAS
  * @since 14.x
- * @source $URL$
  */
 public abstract class BaseMathOperationJAI extends OperationJAI {
 
     private static final long serialVersionUID = 6830028735162290160L;
 
     /** {@link Logger} for this class. */
-    public static final Logger LOGGER = Logging.getLogger("org.geotools.coverage.processing");
+    public static final Logger LOGGER = Logging.getLogger(BaseMathOperationJAI.class);
 
     /** Name for the Sources parameter */
     public static final String SOURCES_NAME = "Sources";

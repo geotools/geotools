@@ -43,7 +43,6 @@ import si.uom.SI;
 /**
  * Tests <cite>Well Know Text</cite> (WKT) formatting for some hard-coded, predefined objects.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

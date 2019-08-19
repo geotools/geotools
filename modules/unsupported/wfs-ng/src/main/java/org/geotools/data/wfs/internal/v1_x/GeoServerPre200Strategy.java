@@ -18,7 +18,7 @@ package org.geotools.data.wfs.internal.v1_x;
 
 import java.util.Set;
 import org.geotools.data.wfs.internal.WFSOperationType;
-import org.geotools.xml.Configuration;
+import org.geotools.xsd.Configuration;
 
 /**
  * WFS strategy for GeoServer WFS 1.1 where the geoserver version is lower than 2.0.

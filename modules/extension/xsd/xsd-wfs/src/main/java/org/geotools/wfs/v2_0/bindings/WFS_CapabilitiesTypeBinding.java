@@ -21,9 +21,9 @@ import javax.xml.namespace.QName;
 import net.opengis.wfs20.WFSCapabilitiesType;
 import net.opengis.wfs20.Wfs20Factory;
 import org.geotools.wfs.v2_0.WFS;
-import org.geotools.xml.AbstractComplexEMFBinding;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
+import org.geotools.xsd.AbstractComplexEMFBinding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 
 public class WFS_CapabilitiesTypeBinding extends AbstractComplexEMFBinding {
 

@@ -24,7 +24,6 @@ import org.opengis.filter.expression.PropertyName;
  * Tests UniqueIntervalFunction
  *
  * @author Cory Horner
- * @source $URL$
  */
 public class UniqueIntervalFunctionTest extends FunctionTestSupport {
     public UniqueIntervalFunctionTest(String testName) {
@@ -79,5 +78,23 @@ public class UniqueIntervalFunctionTest extends FunctionTestSupport {
         assertEquals(2, classifier.getSize());
         assertEquals(classifier.values[0].size(), classifier.values[1].size());
         assertFalse(classifier.values[0].removeAll(classifier.values[1]));
+    }
+
+    public void testConstantValuesNumeric() {
+        Function function = ff.function("UniqueInterval", ff.property("v"), ff.literal(12));
+        ExplicitClassifier classifier = (ExplicitClassifier) function.evaluate(constantCollection);
+        assertNotNull(classifier);
+        assertEquals(1, classifier.getSize());
+        assertEquals(1, classifier.getValues(0).size());
+        assertEquals(123.123, classifier.getValues(0).iterator().next());
+    }
+
+    public void testConstantValuesString() {
+        Function function = ff.function("UniqueInterval", ff.property("s"), ff.literal(12));
+        ExplicitClassifier classifier = (ExplicitClassifier) function.evaluate(constantCollection);
+        assertNotNull(classifier);
+        assertEquals(1, classifier.getSize());
+        assertEquals(1, classifier.getValues(0).size());
+        assertEquals("abc", classifier.getValues(0).iterator().next());
     }
 }

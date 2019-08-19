@@ -5,7 +5,7 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>modules</artifactId>
-    <version>21-SNAPSHOT</version>
+    <version>22-SNAPSHOT</version>
   </parent>
 
   <groupId>org.geotools</groupId>
@@ -65,6 +65,16 @@
       </plugin>
     </plugins>
   </build>
+  
+  <!-- disable pmd and errorprone in these modules, their code is generated -->
+  <properties>
+    <errorProneFlags>-XepDisableAllChecks</errorProneFlags>
+    <pmd.skip>true</pmd.skip>
+    <spotbugs.skip>true</spotbugs.skip>
+    <checkstyle.skip>true</checkstyle.skip>
+	<lint>none</lint>
+  </properties>
+
 
   <modules>
     <module>org.w3.xlink</module>

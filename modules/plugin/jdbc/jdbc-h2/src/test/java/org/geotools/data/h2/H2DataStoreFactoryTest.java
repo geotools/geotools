@@ -18,6 +18,7 @@ package org.geotools.data.h2;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -34,7 +35,6 @@ import org.h2.tools.Server;
 import org.junit.Before;
 import org.junit.Test;
 
-/** @source $URL$ */
 public class H2DataStoreFactoryTest {
     H2DataStoreFactory factory;
     HashMap params;
@@ -131,6 +131,21 @@ public class H2DataStoreFactoryTest {
             }
         } finally {
             server.shutdown();
+        }
+    }
+
+    @Test
+    public void testDefaultFetchSizeDataStore() throws Exception {
+        JDBCDataStore ds = null;
+        try {
+            assertNull(params.get(H2DataStoreFactory.FETCHSIZE));
+            ds = factory.createDataStore(params);
+            assertNotNull(ds);
+            assertTrue(ds.getFetchSize() == 1000);
+        } finally {
+            if (ds != null) {
+                ds.dispose();
+            }
         }
     }
 }

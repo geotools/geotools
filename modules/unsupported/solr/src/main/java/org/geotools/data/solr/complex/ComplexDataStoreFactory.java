@@ -21,6 +21,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import org.apache.commons.digester.Digester;
+import org.geotools.appschema.filter.FilterFactoryImplReportInvalidProperty;
 import org.geotools.data.DataAccess;
 import org.geotools.data.Query;
 import org.geotools.data.Transaction;
@@ -38,7 +39,6 @@ import org.geotools.data.solr.IndexesConfig;
 import org.geotools.data.solr.SingleLayerMapper;
 import org.geotools.data.solr.SolrDataStore;
 import org.geotools.data.solr.SolrFeatureSource;
-import org.geotools.filter.FilterFactoryImplReportInvalidProperty;
 import org.geotools.filter.expression.AbstractExpressionVisitor;
 import org.geotools.util.Converters;
 import org.opengis.feature.Feature;
@@ -58,7 +58,7 @@ public final class ComplexDataStoreFactory implements CustomSourceDataStore {
     private final FilterFactory filterFactory = new FilterFactoryImplReportInvalidProperty();
 
     @Override
-    public void configXmlDigester(Digester digester) {
+    public void configXmlDigesterDataSources(Digester digester) {
         XMLConfigDigester.setCommonSourceDataStoreRules(
                 ComplexDataStoreConfigWithContext.class, "SolrDataStore", digester);
         String dataStores = "AppSchemaDataAccess/sourceDataStores/";
@@ -72,6 +72,18 @@ public final class ComplexDataStoreFactory implements CustomSourceDataStore {
         digester.addCallParam(dataStores + "SolrDataStore/index/geometry/srid", 1);
         digester.addCallParam(dataStores + "SolrDataStore/index/geometry/type", 2);
         digester.addCallParam(dataStores + "SolrDataStore/index/geometry", 3, "default");
+    }
+
+    @Override
+    public void configXmlDigesterAttributesMappings(Digester digester) {
+        String rootPath =
+                "AppSchemaDataAccess/typeMappings/FeatureTypeMapping/attributeMappings/AttributeMapping";
+        String multipleValuePath = rootPath + "/solrMultipleValue";
+        digester.addObjectCreate(
+                multipleValuePath, XMLConfigDigester.CONFIG_NS_URI, SolrMultipleValue.class);
+        digester.addCallMethod(multipleValuePath, "setExpression", 1);
+        digester.addCallParam(multipleValuePath, 0);
+        digester.addSetNext(multipleValuePath, "setMultipleValue");
     }
 
     @Override
@@ -114,6 +126,12 @@ public final class ComplexDataStoreFactory implements CustomSourceDataStore {
             // get all the attributes names used in the feature type mapping
             Set<String> attributes = extractAttributesNames(mapping);
             indexesConfig.addAttributes(mapping.getSourceTypeName(), attributes);
+            if (isDenormalizedIndexMode(mapping, dataStoreConfig)) {
+                // set as denormalizedIndexMode
+                indexesConfig
+                        .getIndexConfig(getTypeName(mapping, dataStoreConfig))
+                        .setDenormalizedIndexMode(true);
+            }
         }
         // build the Apache Solr store
         return new SolrDataStore(
@@ -174,6 +192,12 @@ public final class ComplexDataStoreFactory implements CustomSourceDataStore {
             // client properties
             for (Object value : attributeMapping.getClientProperties().values()) {
                 attributes.addAll(extractAttributesNames(parseExpression(value)));
+            }
+            // solr multiple values expressions
+            if (attributeMapping.getMultipleValue() instanceof SolrMultipleValue) {
+                SolrMultipleValue multipleValue =
+                        (SolrMultipleValue) attributeMapping.getMultipleValue();
+                attributes.addAll(extractAttributesNames(multipleValue.getExpression()));
             }
         }
         return attributes;
@@ -270,5 +294,33 @@ public final class ComplexDataStoreFactory implements CustomSourceDataStore {
             throw new RuntimeException(
                     String.format("Error parsing expression '%s'.", expression), exception);
         }
+    }
+
+    //    private Set<String> parseIndexModeAttributes(TypeMapping mapping) {
+    //        Set<String> attributes = new HashSet<>();
+    //        // basic feature attributes:
+    //        ((List<AttributeMapping>) mapping.getAttributeMappings())
+    //                .stream()
+    //                .filter(
+    //                        attributeMapping ->
+    //                                StringUtils.isNotEmpty(attributeMapping.getIndexField()))
+    //                .forEach(
+    //                        attributeMapping -> {
+    //                            attributes.add(attributeMapping.getIndexField());
+    //                        });
+    //        // chained features attributes:
+    //
+    //        return attributes;
+    //    }
+
+    private String getTypeName(TypeMapping mapping, SourceDataStore dataStoreConfig) {
+        if (dataStoreConfig.getId().equals(mapping.getIndexDataStore())) {
+            return mapping.getIndexTypeName();
+        }
+        return mapping.getSourceTypeName();
+    }
+
+    private boolean isDenormalizedIndexMode(TypeMapping mapping, SourceDataStore dataStoreConfig) {
+        return dataStoreConfig.getId().equals(mapping.getIndexDataStore());
     }
 }

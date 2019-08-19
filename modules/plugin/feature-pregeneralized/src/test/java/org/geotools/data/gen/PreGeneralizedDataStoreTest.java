@@ -21,7 +21,6 @@ import java.io.IOException;
 import java.util.List;
 import junit.framework.TestCase;
 import org.geotools.data.DataUtilities;
-import org.geotools.data.DefaultQuery;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.Query;
 import org.geotools.data.ServiceInfo;
@@ -36,7 +35,6 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.Name;
 
-/** @source $URL$ */
 public class PreGeneralizedDataStoreTest extends TestCase {
 
     @Override
@@ -55,7 +53,7 @@ public class PreGeneralizedDataStoreTest extends TestCase {
 
             String typeName = ds.getTypeNames()[0];
             assertTrue("GenStreams".equals(typeName));
-            Query query = new DefaultQuery(typeName);
+            Query query = new Query(typeName);
 
             FeatureReader<SimpleFeatureType, SimpleFeature> reader =
                     ds.getFeatureReader(query, Transaction.AUTO_COMMIT);
@@ -70,7 +68,7 @@ public class PreGeneralizedDataStoreTest extends TestCase {
 
             ServiceInfo si = ds.getInfo();
             assertTrue(si != null);
-            System.out.println(si);
+            // System.out.println(si);
 
             List<Name> names = ds.getNames();
             assertTrue(names.contains(new NameImpl(typeName)));
@@ -84,7 +82,7 @@ public class PreGeneralizedDataStoreTest extends TestCase {
 
             ds.dispose();
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             Assert.fail();
         }
     }
@@ -100,7 +98,7 @@ public class PreGeneralizedDataStoreTest extends TestCase {
             ds = new PreGeneralizedDataStore(ginfos, TestSetup.REPOSITORY);
             typeName = ds.getTypeNames()[0];
         } catch (IOException ex) {
-            ex.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", ex);
             Assert.fail();
         }
 

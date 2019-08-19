@@ -23,7 +23,6 @@ import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.MultiLineString;
 import org.locationtech.jts.geom.Polygon;
 
-/** @source $URL$ */
 public class GeoPkgDataStoreAPITestSetup extends JDBCDataStoreAPITestSetup {
 
     boolean addSpatialIndex;

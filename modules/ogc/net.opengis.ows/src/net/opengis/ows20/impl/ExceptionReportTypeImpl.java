@@ -28,249 +28,249 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link net.opengis.ows20.impl.ExceptionReportTypeImpl#getException <em>Exception</em>}</li>
  *   <li>{@link net.opengis.ows20.impl.ExceptionReportTypeImpl#getLang <em>Lang</em>}</li>
  *   <li>{@link net.opengis.ows20.impl.ExceptionReportTypeImpl#getVersion <em>Version</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
 public class ExceptionReportTypeImpl extends EObjectImpl implements ExceptionReportType {
     /**
-     * The cached value of the '{@link #getException() <em>Exception</em>}' containment reference list.
-     * <!-- begin-user-doc -->
+   * The cached value of the '{@link #getException() <em>Exception</em>}' containment reference list.
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getException()
-     * @generated
-     * @ordered
-     */
+   * @see #getException()
+   * @generated
+   * @ordered
+   */
     protected EList<ExceptionType> exception;
 
     /**
-     * The default value of the '{@link #getLang() <em>Lang</em>}' attribute.
-     * <!-- begin-user-doc -->
+   * The default value of the '{@link #getLang() <em>Lang</em>}' attribute.
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getLang()
-     * @generated
-     * @ordered
-     */
+   * @see #getLang()
+   * @generated
+   * @ordered
+   */
     protected static final String LANG_EDEFAULT = null;
 
     /**
-     * The cached value of the '{@link #getLang() <em>Lang</em>}' attribute.
-     * <!-- begin-user-doc -->
+   * The cached value of the '{@link #getLang() <em>Lang</em>}' attribute.
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getLang()
-     * @generated
-     * @ordered
-     */
+   * @see #getLang()
+   * @generated
+   * @ordered
+   */
     protected String lang = LANG_EDEFAULT;
 
     /**
-     * The default value of the '{@link #getVersion() <em>Version</em>}' attribute.
-     * <!-- begin-user-doc -->
+   * The default value of the '{@link #getVersion() <em>Version</em>}' attribute.
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getVersion()
-     * @generated
-     * @ordered
-     */
+   * @see #getVersion()
+   * @generated
+   * @ordered
+   */
     protected static final String VERSION_EDEFAULT = null;
 
     /**
-     * The cached value of the '{@link #getVersion() <em>Version</em>}' attribute.
-     * <!-- begin-user-doc -->
+   * The cached value of the '{@link #getVersion() <em>Version</em>}' attribute.
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getVersion()
-     * @generated
-     * @ordered
-     */
+   * @see #getVersion()
+   * @generated
+   * @ordered
+   */
     protected String version = VERSION_EDEFAULT;
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     protected ExceptionReportTypeImpl() {
-        super();
-    }
+    super();
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     protected EClass eStaticClass() {
-        return Ows20Package.Literals.EXCEPTION_REPORT_TYPE;
-    }
+    return Ows20Package.Literals.EXCEPTION_REPORT_TYPE;
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public EList<ExceptionType> getException() {
-        if (exception == null) {
-            exception = new EObjectContainmentEList<ExceptionType>(ExceptionType.class, this, Ows20Package.EXCEPTION_REPORT_TYPE__EXCEPTION);
-        }
-        return exception;
+    if (exception == null) {
+      exception = new EObjectContainmentEList<ExceptionType>(ExceptionType.class, this, Ows20Package.EXCEPTION_REPORT_TYPE__EXCEPTION);
     }
+    return exception;
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public String getLang() {
-        return lang;
-    }
+    return lang;
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public void setLang(String newLang) {
-        String oldLang = lang;
-        lang = newLang;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, Ows20Package.EXCEPTION_REPORT_TYPE__LANG, oldLang, lang));
-    }
+    String oldLang = lang;
+    lang = newLang;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, Ows20Package.EXCEPTION_REPORT_TYPE__LANG, oldLang, lang));
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public String getVersion() {
-        return version;
-    }
+    return version;
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public void setVersion(String newVersion) {
-        String oldVersion = version;
-        version = newVersion;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, Ows20Package.EXCEPTION_REPORT_TYPE__VERSION, oldVersion, version));
-    }
+    String oldVersion = version;
+    version = newVersion;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, Ows20Package.EXCEPTION_REPORT_TYPE__VERSION, oldVersion, version));
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-        switch (featureID) {
-            case Ows20Package.EXCEPTION_REPORT_TYPE__EXCEPTION:
-                return ((InternalEList<?>)getException()).basicRemove(otherEnd, msgs);
-        }
-        return super.eInverseRemove(otherEnd, featureID, msgs);
+    switch (featureID) {
+      case Ows20Package.EXCEPTION_REPORT_TYPE__EXCEPTION:
+        return ((InternalEList<?>)getException()).basicRemove(otherEnd, msgs);
     }
+    return super.eInverseRemove(otherEnd, featureID, msgs);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case Ows20Package.EXCEPTION_REPORT_TYPE__EXCEPTION:
-                return getException();
-            case Ows20Package.EXCEPTION_REPORT_TYPE__LANG:
-                return getLang();
-            case Ows20Package.EXCEPTION_REPORT_TYPE__VERSION:
-                return getVersion();
-        }
-        return super.eGet(featureID, resolve, coreType);
+    switch (featureID) {
+      case Ows20Package.EXCEPTION_REPORT_TYPE__EXCEPTION:
+        return getException();
+      case Ows20Package.EXCEPTION_REPORT_TYPE__LANG:
+        return getLang();
+      case Ows20Package.EXCEPTION_REPORT_TYPE__VERSION:
+        return getVersion();
     }
+    return super.eGet(featureID, resolve, coreType);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @SuppressWarnings("unchecked")
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case Ows20Package.EXCEPTION_REPORT_TYPE__EXCEPTION:
-                getException().clear();
-                getException().addAll((Collection<? extends ExceptionType>)newValue);
-                return;
-            case Ows20Package.EXCEPTION_REPORT_TYPE__LANG:
-                setLang((String)newValue);
-                return;
-            case Ows20Package.EXCEPTION_REPORT_TYPE__VERSION:
-                setVersion((String)newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
+    switch (featureID) {
+      case Ows20Package.EXCEPTION_REPORT_TYPE__EXCEPTION:
+        getException().clear();
+        getException().addAll((Collection<? extends ExceptionType>)newValue);
+        return;
+      case Ows20Package.EXCEPTION_REPORT_TYPE__LANG:
+        setLang((String)newValue);
+        return;
+      case Ows20Package.EXCEPTION_REPORT_TYPE__VERSION:
+        setVersion((String)newValue);
+        return;
     }
+    super.eSet(featureID, newValue);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case Ows20Package.EXCEPTION_REPORT_TYPE__EXCEPTION:
-                getException().clear();
-                return;
-            case Ows20Package.EXCEPTION_REPORT_TYPE__LANG:
-                setLang(LANG_EDEFAULT);
-                return;
-            case Ows20Package.EXCEPTION_REPORT_TYPE__VERSION:
-                setVersion(VERSION_EDEFAULT);
-                return;
-        }
-        super.eUnset(featureID);
+    switch (featureID) {
+      case Ows20Package.EXCEPTION_REPORT_TYPE__EXCEPTION:
+        getException().clear();
+        return;
+      case Ows20Package.EXCEPTION_REPORT_TYPE__LANG:
+        setLang(LANG_EDEFAULT);
+        return;
+      case Ows20Package.EXCEPTION_REPORT_TYPE__VERSION:
+        setVersion(VERSION_EDEFAULT);
+        return;
     }
+    super.eUnset(featureID);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case Ows20Package.EXCEPTION_REPORT_TYPE__EXCEPTION:
-                return exception != null && !exception.isEmpty();
-            case Ows20Package.EXCEPTION_REPORT_TYPE__LANG:
-                return LANG_EDEFAULT == null ? lang != null : !LANG_EDEFAULT.equals(lang);
-            case Ows20Package.EXCEPTION_REPORT_TYPE__VERSION:
-                return VERSION_EDEFAULT == null ? version != null : !VERSION_EDEFAULT.equals(version);
-        }
-        return super.eIsSet(featureID);
+    switch (featureID) {
+      case Ows20Package.EXCEPTION_REPORT_TYPE__EXCEPTION:
+        return exception != null && !exception.isEmpty();
+      case Ows20Package.EXCEPTION_REPORT_TYPE__LANG:
+        return LANG_EDEFAULT == null ? lang != null : !LANG_EDEFAULT.equals(lang);
+      case Ows20Package.EXCEPTION_REPORT_TYPE__VERSION:
+        return VERSION_EDEFAULT == null ? version != null : !VERSION_EDEFAULT.equals(version);
     }
+    return super.eIsSet(featureID);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     public String toString() {
-        if (eIsProxy()) return super.toString();
+    if (eIsProxy()) return super.toString();
 
-        StringBuffer result = new StringBuffer(super.toString());
-        result.append(" (lang: ");
-        result.append(lang);
-        result.append(", version: ");
-        result.append(version);
-        result.append(')');
-        return result.toString();
-    }
+    StringBuilder result = new StringBuilder(super.toString());
+    result.append(" (lang: ");
+    result.append(lang);
+    result.append(", version: ");
+    result.append(version);
+    result.append(')');
+    return result.toString();
+  }
 
 } //ExceptionReportTypeImpl

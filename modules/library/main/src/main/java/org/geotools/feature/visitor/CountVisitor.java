@@ -25,7 +25,6 @@ import org.opengis.feature.simple.SimpleFeature;
  *
  * @author Cory Horner, Refractions
  * @since 2.2.M2
- * @source $URL$
  */
 public class CountVisitor implements FeatureCalc {
     Integer count = null;
@@ -75,7 +74,7 @@ public class CountVisitor implements FeatureCalc {
         }
 
         public Object getValue() {
-            return new Integer(count);
+            return Integer.valueOf(count);
         }
 
         public boolean isCompatible(CalcResult targetResults) {

@@ -20,10 +20,10 @@
 package org.geotools.referencing.wkt;
 
 import java.util.prefs.Preferences;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.iso.citation.Citations;
-import org.geotools.resources.Classes;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
+import org.geotools.util.Classes;
 import org.opengis.metadata.citation.Citation;
 import org.opengis.parameter.GeneralParameterValue;
 
@@ -33,7 +33,6 @@ import org.opengis.parameter.GeneralParameterValue;
  * Known Text</cite> (WKT)</A>.
  *
  * @since 2.0
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @see <A

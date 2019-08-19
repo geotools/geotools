@@ -25,9 +25,9 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.gml2.GML;
 import org.geotools.gml2.GMLConfiguration;
 import org.geotools.gml2.bindings.GML2EncodingUtils;
-import org.geotools.xml.Configuration;
-import org.geotools.xml.Encoder;
-import org.geotools.xml.XSD;
+import org.geotools.xsd.Configuration;
+import org.geotools.xsd.Encoder;
+import org.geotools.xsd.XSD;
 import org.locationtech.jts.geom.GeometryCollection;
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.LinearRing;
@@ -63,25 +63,56 @@ public class GML2FeatureCollectionEncoderDelegate extends FeatureCollectionEncod
 
         private int numDecimals;
 
+        private boolean padWithZeros;
+
+        private boolean decimalEncoding;
+
         public GML2Delegate(Encoder encoder) {
             this.gmlPrefix = encoder.getNamespaces().getPrefix(GML.NAMESPACE);
             this.featureMember = FEATURE_MEMBER.derive(gmlPrefix);
             this.numDecimals = getNumDecimals(encoder.getConfiguration());
+            this.padWithZeros = getPadWithZeros(encoder.getConfiguration());
+            this.decimalEncoding = getForceDecimalEncoding(encoder.getConfiguration());
         }
 
         private int getNumDecimals(Configuration configuration) {
-            GMLConfiguration config;
-            if (configuration instanceof GMLConfiguration) {
-                config = (GMLConfiguration) configuration;
-            } else {
-                config = configuration.getDependency(GMLConfiguration.class);
-            }
+            GMLConfiguration config = getGMLConfiguration(configuration);
 
             if (config == null) {
                 return 6;
             } else {
                 return config.getNumDecimals();
             }
+        }
+
+        private boolean getPadWithZeros(Configuration configuration) {
+            GMLConfiguration config = getGMLConfiguration(configuration);
+
+            if (config == null) {
+                return false;
+            } else {
+                return config.getPadWithZeros();
+            }
+        }
+
+        private boolean getForceDecimalEncoding(Configuration configuration) {
+            GMLConfiguration config = getGMLConfiguration(configuration);
+
+            if (config == null) {
+                return true;
+            } else {
+                return config.getForceDecimalEncoding();
+            }
+        }
+
+        private GMLConfiguration getGMLConfiguration(Configuration configuration) {
+            GMLConfiguration config;
+            if (configuration instanceof GMLConfiguration) {
+                config = (GMLConfiguration) configuration;
+            } else {
+                config = configuration.getDependency(GMLConfiguration.class);
+            }
+            return config;
         }
 
         public List getFeatureProperties(
@@ -171,7 +202,12 @@ public class GML2FeatureCollectionEncoderDelegate extends FeatureCollectionEncod
 
         @Override
         public boolean forceDecimalEncoding() {
-            return true;
+            return decimalEncoding;
+        }
+
+        @Override
+        public boolean padWithZeros() {
+            return padWithZeros;
         }
     }
 }

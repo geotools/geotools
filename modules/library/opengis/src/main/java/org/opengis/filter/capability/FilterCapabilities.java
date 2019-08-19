@@ -34,7 +34,7 @@ import org.opengis.annotation.UML;
  * @author <a href="mailto:mschneider@lat-lon.de">Markus Schneider</a>
  *
  *
- * @source $URL$
+ *
  */
 public interface FilterCapabilities {
 

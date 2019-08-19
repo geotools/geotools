@@ -30,127 +30,127 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link net.opengis.wfs20.impl.ListStoredQueriesResponseTypeImpl#getStoredQuery <em>Stored Query</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
 public class ListStoredQueriesResponseTypeImpl extends EObjectImpl implements ListStoredQueriesResponseType {
     /**
-     * The cached value of the '{@link #getStoredQuery() <em>Stored Query</em>}' containment reference list.
-     * <!-- begin-user-doc -->
+   * The cached value of the '{@link #getStoredQuery() <em>Stored Query</em>}' containment reference list.
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getStoredQuery()
-     * @generated
-     * @ordered
-     */
+   * @see #getStoredQuery()
+   * @generated
+   * @ordered
+   */
     protected EList<StoredQueryListItemType> storedQuery;
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     protected ListStoredQueriesResponseTypeImpl() {
-        super();
-    }
+    super();
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     protected EClass eStaticClass() {
-        return Wfs20Package.Literals.LIST_STORED_QUERIES_RESPONSE_TYPE;
-    }
+    return Wfs20Package.Literals.LIST_STORED_QUERIES_RESPONSE_TYPE;
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public EList<StoredQueryListItemType> getStoredQuery() {
-        if (storedQuery == null) {
-            storedQuery = new EObjectContainmentEList<StoredQueryListItemType>(StoredQueryListItemType.class, this, Wfs20Package.LIST_STORED_QUERIES_RESPONSE_TYPE__STORED_QUERY);
-        }
-        return storedQuery;
+    if (storedQuery == null) {
+      storedQuery = new EObjectContainmentEList<StoredQueryListItemType>(StoredQueryListItemType.class, this, Wfs20Package.LIST_STORED_QUERIES_RESPONSE_TYPE__STORED_QUERY);
     }
+    return storedQuery;
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-        switch (featureID) {
-            case Wfs20Package.LIST_STORED_QUERIES_RESPONSE_TYPE__STORED_QUERY:
-                return ((InternalEList<?>)getStoredQuery()).basicRemove(otherEnd, msgs);
-        }
-        return super.eInverseRemove(otherEnd, featureID, msgs);
+    switch (featureID) {
+      case Wfs20Package.LIST_STORED_QUERIES_RESPONSE_TYPE__STORED_QUERY:
+        return ((InternalEList<?>)getStoredQuery()).basicRemove(otherEnd, msgs);
     }
+    return super.eInverseRemove(otherEnd, featureID, msgs);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case Wfs20Package.LIST_STORED_QUERIES_RESPONSE_TYPE__STORED_QUERY:
-                return getStoredQuery();
-        }
-        return super.eGet(featureID, resolve, coreType);
+    switch (featureID) {
+      case Wfs20Package.LIST_STORED_QUERIES_RESPONSE_TYPE__STORED_QUERY:
+        return getStoredQuery();
     }
+    return super.eGet(featureID, resolve, coreType);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @SuppressWarnings("unchecked")
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case Wfs20Package.LIST_STORED_QUERIES_RESPONSE_TYPE__STORED_QUERY:
-                getStoredQuery().clear();
-                getStoredQuery().addAll((Collection<? extends StoredQueryListItemType>)newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
+    switch (featureID) {
+      case Wfs20Package.LIST_STORED_QUERIES_RESPONSE_TYPE__STORED_QUERY:
+        getStoredQuery().clear();
+        getStoredQuery().addAll((Collection<? extends StoredQueryListItemType>)newValue);
+        return;
     }
+    super.eSet(featureID, newValue);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case Wfs20Package.LIST_STORED_QUERIES_RESPONSE_TYPE__STORED_QUERY:
-                getStoredQuery().clear();
-                return;
-        }
-        super.eUnset(featureID);
+    switch (featureID) {
+      case Wfs20Package.LIST_STORED_QUERIES_RESPONSE_TYPE__STORED_QUERY:
+        getStoredQuery().clear();
+        return;
     }
+    super.eUnset(featureID);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case Wfs20Package.LIST_STORED_QUERIES_RESPONSE_TYPE__STORED_QUERY:
-                return storedQuery != null && !storedQuery.isEmpty();
-        }
-        return super.eIsSet(featureID);
+    switch (featureID) {
+      case Wfs20Package.LIST_STORED_QUERIES_RESPONSE_TYPE__STORED_QUERY:
+        return storedQuery != null && !storedQuery.isEmpty();
     }
+    return super.eIsSet(featureID);
+  }
 
 } //ListStoredQueriesResponseTypeImpl

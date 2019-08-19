@@ -18,13 +18,12 @@ package org.geotools.gml2;
 
 import java.io.InputStream;
 import junit.framework.TestCase;
-import org.geotools.xml.Configuration;
-import org.geotools.xml.StreamingParser;
+import org.geotools.xsd.Configuration;
+import org.geotools.xsd.StreamingParser;
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
 
-/** @source $URL$ */
 public class GMLGeometryStreamingTest extends TestCase {
     public void testStreamByXpath() throws Exception {
         Configuration configuration = new GMLConfiguration();

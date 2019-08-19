@@ -25,17 +25,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import org.apache.commons.jxpath.JXPathException;
+import org.geotools.appschema.feature.AppSchemaAttributeBuilder;
+import org.geotools.appschema.util.XmlXpathUtilites;
 import org.geotools.data.Query;
 import org.geotools.data.complex.PathAttributeList.Pair;
-import org.geotools.data.complex.config.Types;
-import org.geotools.data.complex.filter.XPath.*;
-import org.geotools.data.complex.filter.XPathUtil.*;
+import org.geotools.data.complex.feature.type.Types;
+import org.geotools.data.complex.util.ComplexFeatureConstants;
+import org.geotools.data.complex.util.XPathUtil.*;
 import org.geotools.data.complex.xml.*;
-import org.geotools.feature.AppSchemaAttributeBuilder;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.type.ComplexTypeImpl;
 import org.geotools.filter.LiteralExpressionImpl;
-import org.geotools.util.XmlXpathUtilites;
 import org.opengis.feature.Attribute;
 import org.opengis.feature.Feature;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -49,10 +49,6 @@ import org.xml.sax.Attributes;
  *
  * @author Russell Petty (GeoScience Victoria)
  * @author Rini Angreani (CSIRO Earth Science and Resource Engineering)
- * @version $Id$
- * @source $URL$
- *     http://svn.osgeo.org/geotools/trunk/modules/unsupported/app-schema/app-schema/src/main
- *     /java/org/geotools/data/complex/AppSchemaDataAccess.java $
  */
 public class XmlMappingFeatureIterator extends DataAccessMappingFeatureIterator {
 

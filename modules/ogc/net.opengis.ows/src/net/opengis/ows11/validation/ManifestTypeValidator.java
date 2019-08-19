@@ -1,6 +1,4 @@
 /**
- * <copyright>
- * </copyright>
  *
  * $Id$
  */
@@ -15,7 +13,7 @@ import org.eclipse.emf.common.util.EList;
  * This can be disabled with -vmargs -Dorg.eclipse.emf.examples.generator.validator=false.
  */
 public interface ManifestTypeValidator {
-    boolean validate();
+  boolean validate();
 
-    boolean validateReferenceGroup(EList value);
+  boolean validateReferenceGroup(EList value);
 }

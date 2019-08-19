@@ -20,15 +20,15 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-import org.geotools.factory.GeoTools;
-import org.geotools.factory.Hints;
+import org.geotools.util.NullEntityResolver;
+import org.geotools.util.factory.GeoTools;
+import org.geotools.util.factory.Hints;
 import org.xml.sax.EntityResolver;
 
 /**
  * Hint object with known parameters for XML parsing.
  *
  * @author Jesse
- * @source $URL$
  */
 public class XMLHandlerHints implements Map<String, Object> {
 
@@ -50,7 +50,7 @@ public class XMLHandlerHints implements Map<String, Object> {
     public static final String SAX_PARSER_FACTORY = "javax.xml.parsers.SAXParserFactory";
 
     /** The value so that the parser will encode all Geotools filters with no modifications. */
-    public static final Integer VALUE_FILTER_COMPLIANCE_LOW = new Integer(0);
+    public static final Integer VALUE_FILTER_COMPLIANCE_LOW = Integer.valueOf(0);
     /**
      * The value so the parser will be slightly more compliant to the Filter 1.0.0 spec. It will
      * encode:
@@ -90,7 +90,7 @@ public class XMLHandlerHints implements Map<String, Object> {
      *
      * <p>this will return all features and so the filtering must be done on the client.
      */
-    public static final Integer VALUE_FILTER_COMPLIANCE_MEDIUM = new Integer(1);
+    public static final Integer VALUE_FILTER_COMPLIANCE_MEDIUM = Integer.valueOf(1);
 
     /**
      * The value so the parser will be compliant with the Filter 1.0.0 spec.
@@ -119,7 +119,7 @@ public class XMLHandlerHints implements Map<String, Object> {
      * <p>not(fidFilter). this will return all features and so the filtering must be done on the
      * client.
      */
-    public static final Integer VALUE_FILTER_COMPLIANCE_HIGH = new Integer(2);
+    public static final Integer VALUE_FILTER_COMPLIANCE_HIGH = Integer.valueOf(2);
 
     private Map<String, Object> map = new HashMap<String, Object>();
 
@@ -181,7 +181,7 @@ public class XMLHandlerHints implements Map<String, Object> {
 
     /**
      * Looks up {@link #ENTITY_RESOLVER} instance in provided hints, defaulting to setting provided
-     * by {@link GeoTools#getEntityResolver(org.geotools.factory.Hints)} (usually {@link
+     * by {@link GeoTools#getEntityResolver(org.geotools.util.factory.Hints)} (usually {@link
      * PreventLocalEntityResolver} unless otherwise configured).
      *
      * @param hints
@@ -189,8 +189,8 @@ public class XMLHandlerHints implements Map<String, Object> {
      *     Hints#ENTITY_RESOLVER}.
      */
     public static EntityResolver toEntityResolver(Map<String, Object> hints) {
-        if (hints != null && hints.containsKey(Hints.ENTITY_RESOLVER)) {
-            Object resolver = hints.get(Hints.ENTITY_RESOLVER);
+        if (hints != null && hints.containsKey(GeoTools.ENTITY_RESOLVER)) {
+            Object resolver = hints.get(GeoTools.ENTITY_RESOLVER);
             if (resolver == null) { // use null instance rather than check each time
                 return NullEntityResolver.INSTANCE;
             } else if (resolver instanceof EntityResolver) {

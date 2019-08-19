@@ -20,8 +20,9 @@ import java.util.List;
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.namespace.QName;
 import org.geotools.wfs.v2_0.WFS;
-import org.geotools.xml.*;
 import org.geotools.xs.bindings.XSQNameBinding;
+import org.geotools.xsd.AbstractSimpleBinding;
+import org.geotools.xsd.InstanceComponent;
 
 /**
  * Binding object for the type http://www.opengis.net/wfs/2.0:ReturnFeatureTypesListType.

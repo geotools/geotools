@@ -31,9 +31,9 @@ import org.geotools.kml.KML;
 import org.geotools.kml.StyleMap;
 import org.geotools.kml.v22.SchemaRegistry;
 import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.xml.AbstractComplexBinding;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
+import org.geotools.xsd.AbstractComplexBinding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.LinearRing;
 import org.locationtech.jts.geom.Point;
@@ -75,7 +75,6 @@ import org.opengis.feature.type.Name;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class FeatureTypeBinding extends AbstractComplexBinding {
     /** base feature type for kml features, used when no Schema element is specified */

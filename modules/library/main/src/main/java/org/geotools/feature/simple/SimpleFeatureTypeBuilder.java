@@ -98,11 +98,11 @@ import org.opengis.util.InternationalString;
  *
  * @author Justin Deolivera
  * @author Jody Garnett
- * @source $URL$
  */
 public class SimpleFeatureTypeBuilder {
     /** logger */
-    static Logger LOGGER = org.geotools.util.logging.Logging.getLogger("org.geotools.feature");
+    static Logger LOGGER =
+            org.geotools.util.logging.Logging.getLogger(SimpleFeatureTypeBuilder.class);
 
     /** factories */
     protected FeatureTypeFactory factory;
@@ -549,7 +549,7 @@ public class SimpleFeatureTypeBuilder {
      * <p>If not such binding exists then an attribute type is created on the fly.
      *
      * @param name The name of the attribute.
-     * @param bind The class the attribute is bound to.
+     * @param binding The class the attribute is bound to.
      */
     public void add(String name, Class<?> binding) {
 
@@ -916,10 +916,8 @@ public class SimpleFeatureTypeBuilder {
             return newList();
         }
         try {
-            return origional.getClass().newInstance();
-        } catch (InstantiationException e) {
-            return newList();
-        } catch (IllegalAccessException e) {
+            return origional.getClass().getDeclaredConstructor().newInstance();
+        } catch (Exception e) {
             return newList();
         }
     }

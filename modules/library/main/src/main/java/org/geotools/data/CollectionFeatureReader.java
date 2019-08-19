@@ -23,8 +23,8 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
-import org.geotools.feature.IllegalAttributeException;
 import org.geotools.feature.collection.DelegateSimpleFeatureIterator;
+import org.opengis.feature.IllegalAttributeException;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
@@ -33,7 +33,6 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * of features, an array of features or a FeatureCollection.
  *
  * @author jones
- * @source $URL$
  */
 public class CollectionFeatureReader implements FeatureReader<SimpleFeatureType, SimpleFeature> {
     private SimpleFeatureIterator features;

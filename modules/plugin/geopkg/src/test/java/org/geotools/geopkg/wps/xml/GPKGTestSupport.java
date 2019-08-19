@@ -16,8 +16,8 @@
  */
 package org.geotools.geopkg.wps.xml;
 
-import org.geotools.xml.Configuration;
-import org.geotools.xml.test.XMLTestSupport;
+import org.geotools.xsd.Configuration;
+import org.geotools.xsd.test.XMLTestSupport;
 
 /**
  * Base test class for the http://www.opengis.net/gpkg schema.

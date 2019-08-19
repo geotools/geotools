@@ -18,9 +18,9 @@ package org.geotools.data;
 
 import java.io.IOException;
 import java.util.NoSuchElementException;
-import org.geotools.feature.IllegalAttributeException;
 import org.geotools.filter.visitor.BindingFilterVisitor;
 import org.opengis.feature.Feature;
+import org.opengis.feature.IllegalAttributeException;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.filter.Filter;
 
@@ -35,7 +35,6 @@ import org.opengis.filter.Filter;
  * <p>Jody here - changed hasNext() to peek as required.
  *
  * @author Chris Holmes
- * @source $URL$
  * @version $Id$
  */
 public class FilteringFeatureReader<T extends FeatureType, F extends Feature>

@@ -27,7 +27,6 @@ import javax.swing.Icon;
  *
  * @author Michael Bedward
  * @since 2.6
- * @source $URL$
  * @version $Id$
  */
 public class JColorIcon implements Icon {

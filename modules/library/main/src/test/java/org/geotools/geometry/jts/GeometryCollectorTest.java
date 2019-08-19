@@ -11,7 +11,6 @@ import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.io.WKTReader;
 import org.opengis.filter.FilterFactory2;
 
-/** @source $URL$ */
 public class GeometryCollectorTest {
 
     FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);

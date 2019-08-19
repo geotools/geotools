@@ -20,7 +20,6 @@ import org.opengis.util.InternationalString;
  *
  * @author Alexander Petkov
  * @todo Retrofit in the referencing framework.
- * @source $URL$
  */
 @UML(identifier = "TM_Clock", specification = ISO_19108)
 public interface Clock extends TemporalReferenceSystem {

@@ -18,10 +18,13 @@ package org.geotools.data;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.identity.FeatureIdImpl;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.util.WeakHashSet;
+import org.geotools.util.logging.Logging;
 import org.opengis.feature.Feature;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.filter.And;
@@ -37,9 +40,9 @@ import org.opengis.filter.identity.Identifier;
  * rollback(). Previously these changes were represented as an change event with no known bounds.
  *
  * @author Jody Garnett
- * @source $URL$
  */
 public class BatchFeatureEvent extends FeatureEvent {
+    static final Logger LOGGER = Logging.getLogger(BatchFeatureEvent.class);
     private static final long serialVersionUID = 3154238322369916486L;
 
     public BatchFeatureEvent(
@@ -83,8 +86,10 @@ public class BatchFeatureEvent extends FeatureEvent {
                 Id newFeatureIds = (Id) change.getFilter();
                 fids.addAll(newFeatureIds.getIdentifiers());
             } else {
-                // warning? how can you add features and not know
-                // what you are adding?
+                LOGGER.log(
+                        Level.FINE,
+                        "Found added features without an id filter associated with them: {0}",
+                        change.getFilter());
             }
         }
 

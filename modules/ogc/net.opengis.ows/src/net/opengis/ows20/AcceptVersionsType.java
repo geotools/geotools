@@ -20,10 +20,10 @@ import org.eclipse.emf.ecore.EObject;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link net.opengis.ows20.AcceptVersionsType#getVersion <em>Version</em>}</li>
  * </ul>
- * </p>
  *
  * @see net.opengis.ows20.Ows20Package#getAcceptVersionsType()
  * @model extendedMetaData="name='AcceptVersionsType' kind='elementOnly'"

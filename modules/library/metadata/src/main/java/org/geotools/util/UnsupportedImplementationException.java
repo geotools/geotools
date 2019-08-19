@@ -16,8 +16,8 @@
  */
 package org.geotools.util;
 
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 
 /**
  * Throws when an operation can't use arbitrary implementation of an interface, and a given instance
@@ -25,7 +25,6 @@ import org.geotools.resources.i18n.Errors;
  * a Geotools implementation of a <A HREF="http://geoapi.sourceforge.net">GeoAPI</A> interface.
  *
  * @since 2.0
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

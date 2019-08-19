@@ -23,17 +23,19 @@ import java.util.List;
 import org.eclipse.xsd.XSDComplexTypeDefinition;
 import org.eclipse.xsd.XSDElementDeclaration;
 import org.eclipse.xsd.XSDTypeDefinition;
-import org.geotools.feature.type.ComplexFeatureTypeImpl;
+import org.geotools.appschema.resolver.xml.AppSchemaConfiguration;
+import org.geotools.data.complex.feature.type.ComplexFeatureTypeImpl;
+import org.geotools.data.complex.feature.type.Types;
+import org.geotools.data.complex.util.EmfComplexFeatureReader;
 import org.geotools.gml3.GML;
 import org.geotools.gml3.GMLConfiguration;
 import org.geotools.gml3.complex.GmlFeatureTypeRegistryConfiguration;
 import org.geotools.test.AppSchemaTestSupport;
-import org.geotools.xml.AppSchemaConfiguration;
-import org.geotools.xml.Configuration;
-import org.geotools.xml.SchemaIndex;
 import org.geotools.xml.resolver.SchemaCatalog;
 import org.geotools.xml.resolver.SchemaResolver;
 import org.geotools.xs.XS;
+import org.geotools.xsd.Configuration;
+import org.geotools.xsd.SchemaIndex;
 import org.junit.Assert;
 import org.junit.Test;
 import org.locationtech.jts.geom.Geometry;
@@ -50,7 +52,6 @@ import org.opengis.feature.type.PropertyDescriptor;
  * @author Gabriel Roldan (Axios Engineering)
  * @author Ben Caradoc-Davies (CSIRO Earth Science and Resource Engineering)
  * @version $Id$
- * @source $URL$
  * @since 2.4
  */
 public class EmfAppSchemaReaderTest extends AppSchemaTestSupport {

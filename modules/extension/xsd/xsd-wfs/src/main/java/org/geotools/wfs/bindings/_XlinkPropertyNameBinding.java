@@ -20,8 +20,8 @@ import javax.xml.namespace.QName;
 import net.opengis.wfs.WfsFactory;
 import net.opengis.wfs.XlinkPropertyNameType;
 import org.geotools.wfs.WFS;
-import org.geotools.xml.AbstractComplexEMFBinding;
-import org.geotools.xml.ComplexBinding;
+import org.geotools.xsd.AbstractComplexEMFBinding;
+import org.geotools.xsd.ComplexBinding;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Text;
@@ -72,7 +72,6 @@ import org.w3c.dom.Text;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class _XlinkPropertyNameBinding extends AbstractComplexEMFBinding {
     public _XlinkPropertyNameBinding(WfsFactory factory) {

@@ -32,7 +32,6 @@ import org.opengis.geometry.primitive.OrientableCurve;
 import org.opengis.geometry.primitive.Ring;
 import org.opengis.geometry.primitive.SurfaceBoundary;
 
-/** @source $URL$ */
 public class SurfaceImplTest extends TestCase {
     private PositionFactoryImpl postitionFactory;
     private PrimitiveFactoryImpl primitiveFactory;

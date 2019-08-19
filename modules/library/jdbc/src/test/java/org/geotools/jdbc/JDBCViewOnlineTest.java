@@ -15,7 +15,6 @@ import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.filter.FilterFactory;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-/** @source $URL$ */
 public abstract class JDBCViewOnlineTest extends JDBCTestSupport {
 
     protected static final String LAKESVIEW = "lakesview";

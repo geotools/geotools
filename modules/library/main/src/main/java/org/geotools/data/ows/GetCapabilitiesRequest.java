@@ -24,7 +24,6 @@ package org.geotools.data.ows;
  * documents can be very large.
  *
  * @author Richard Gould
- * @source $URL$
  */
 public interface GetCapabilitiesRequest extends Request {
     public static String GET_CAPABILITIES = "GetCapabilities";

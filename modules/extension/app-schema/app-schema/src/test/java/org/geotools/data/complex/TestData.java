@@ -20,14 +20,14 @@ package org.geotools.data.complex;
 import java.util.LinkedList;
 import java.util.List;
 import org.geotools.data.FeatureSource;
-import org.geotools.data.complex.config.Types;
+import org.geotools.data.complex.feature.type.Types;
+import org.geotools.data.complex.feature.type.UniqueNameFeatureTypeFactoryImpl;
 import org.geotools.data.complex.filter.XPath;
 import org.geotools.data.memory.MemoryDataStore;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.TypeBuilder;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
-import org.geotools.feature.type.UniqueNameFeatureTypeFactoryImpl;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
@@ -46,7 +46,6 @@ import org.xml.sax.helpers.NamespaceSupport;
 /**
  * @author Gabriel Roldan (Axios Engineering)
  * @version $Id$
- * @source $URL$
  * @since 2.4
  */
 public class TestData {
@@ -447,7 +446,7 @@ public class TestData {
                 fb.add("id" + sufix);
                 fb.add("sample_collection_date" + sufix);
                 fb.add("determinand_description" + sufix);
-                fb.add(new Float(groupValue + "." + measurement));
+                fb.add(Float.valueOf(groupValue + "." + measurement));
 
                 fb.add(gf.createPoint(new Coordinate(groupValue, groupValue)));
 

@@ -17,7 +17,7 @@
 package org.geotools.geopkg.wps.xml;
 
 import org.geotools.geopkg.TileMatrix;
-import org.geotools.xml.Binding;
+import org.geotools.xsd.Binding;
 
 /**
  * Binding test case for http://www.opengis.net/gpkg:gridtype.

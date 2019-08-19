@@ -47,7 +47,6 @@ import org.geotools.swing.locale.LocaleUtils;
  *
  * @author Michael Bedward
  * @since 8.0
- * @source $URL$
  * @version $Id$
  */
 public class JExceptionReporter {
@@ -122,7 +121,6 @@ public class JExceptionReporter {
      */
     static class ReportingDialog extends AbstractSimpleDialog {
         private static final int DEFAULT_WIDTH = 400;
-        private static final int DEFAULT_HEIGHT = 200;
         private static final int MARGIN = 5;
 
         private final String message;

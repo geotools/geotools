@@ -33,12 +33,11 @@ import org.opengis.coverage.grid.Format;
  * @author Daniele Romagnoli, GeoSolutions
  * @author Simone Giannecchini (simboss), GeoSolutions
  * @since 2.5.x
- * @source $URL$
  */
 public final class AIGFormatFactory implements GridFormatFactorySpi {
     /** Logger. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(AIGFormatFactory.class.toString());
+            org.geotools.util.logging.Logging.getLogger(AIGFormatFactory.class);
 
     /**
      * Tells me if the coverage plugin to access EHdr is available or not.

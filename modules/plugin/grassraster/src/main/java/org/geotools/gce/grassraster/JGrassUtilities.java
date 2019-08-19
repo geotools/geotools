@@ -45,11 +45,11 @@ import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.InvalidGridGeometryException;
-import org.geotools.factory.GeoTools;
 import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.image.ImageWorker;
 import org.geotools.referencing.CRS;
+import org.geotools.util.factory.GeoTools;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
 import org.opengis.referencing.FactoryException;
@@ -62,7 +62,6 @@ import org.opengis.referencing.operation.TransformException;
  *
  * @author Andrea Antonello - www.hydrologis.com
  * @since 1.1.0
- * @source $URL$
  */
 public class JGrassUtilities {
     public static final String NORTH = "NORTH"; // $NON-NLS-1$
@@ -693,19 +692,15 @@ public class JGrassUtilities {
         printImage(renderedImage);
     }
 
+    @SuppressWarnings("PMD.SystemPrintln")
     public static void printImage(RenderedImage renderedImage) {
         RectIter rectIter = RectIterFactory.create(renderedImage, null);
-        int y = 0;
         do {
-            int x = 0;
             do {
                 double value = rectIter.getSampleDouble();
                 System.out.print(value + " ");
-                x++;
             } while (!rectIter.nextPixelDone());
             rectIter.startPixels();
-            y++;
-            System.out.println();
         } while (!rectIter.nextLineDone());
     }
 }

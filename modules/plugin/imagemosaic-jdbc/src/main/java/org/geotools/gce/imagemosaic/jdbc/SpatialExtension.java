@@ -20,7 +20,6 @@ package org.geotools.gce.imagemosaic.jdbc;
  * Enum for support spatial extension
  *
  * @author mcr
- * @source $URL$
  */
 public enum SpatialExtension {
     DB2("DB2"),

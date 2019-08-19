@@ -27,7 +27,6 @@ import org.opengis.feature.type.AttributeType;
  * Test ReferenceTypeBinding.
  *
  * @author Rini Angreani (CSIRO Earth Science and Resource Engineering)
- * @source $URL$
  */
 public class ReferenceTypeBindingTest extends GML3TestSupport {
 

@@ -19,7 +19,6 @@ package org.geotools.data.spatialite;
 import org.geotools.jdbc.JDBCDataStoreOnlineTest;
 import org.geotools.jdbc.JDBCTestSetup;
 
-/** @source $URL$ */
 public class SpatiaLiteDataStoreOnlineTest extends JDBCDataStoreOnlineTest {
 
     @Override

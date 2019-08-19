@@ -30,7 +30,6 @@ import org.opengis.feature.type.Schema;
  * http://www.isotc211.org/2005/gmd schema.
  *
  * @generated
- * @source $URL$
  */
 public final class GMD extends GML.DelegatingXSD {
 

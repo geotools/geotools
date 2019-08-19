@@ -17,8 +17,7 @@
 package org.geotools.referencing.factory.epsg.oracle;
 
 import java.sql.Connection;
-import org.geotools.factory.Hints;
-import org.geotools.referencing.factory.epsg.OracleDialectEpsgFactory;
+import org.geotools.util.factory.Hints;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.datum.GeodeticDatum;
 
@@ -28,7 +27,6 @@ import org.opengis.referencing.datum.GeodeticDatum;
  * <p>No cache or buffer was harmed in the making of these tests.
  *
  * @author Jody
- * @source $URL$
  */
 public class FactoryUsingOracleSQLOnlineTest extends OracleOnlineTestCase {
 

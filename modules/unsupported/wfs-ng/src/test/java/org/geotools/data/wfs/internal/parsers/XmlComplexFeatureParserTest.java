@@ -16,11 +16,11 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import javax.xml.namespace.QName;
-import org.geotools.data.complex.config.EmfComplexFeatureReader;
-import org.geotools.data.complex.config.FeatureTypeRegistry;
+import org.geotools.data.complex.feature.type.ComplexFeatureTypeFactoryImpl;
+import org.geotools.data.complex.feature.type.FeatureTypeRegistry;
+import org.geotools.data.complex.util.EmfComplexFeatureReader;
 import org.geotools.feature.FakeTypes;
 import org.geotools.feature.NameImpl;
-import org.geotools.feature.type.ComplexFeatureTypeFactoryImpl;
 import org.geotools.gml3.complex.GmlFeatureTypeRegistryConfiguration;
 import org.geotools.xml.resolver.SchemaResolver;
 import org.junit.Assert;
@@ -215,7 +215,7 @@ public class XmlComplexFeatureParserTest {
                 typeRegistry.getDescriptor(
                         new NameImpl("urn:cgi:xmlns:CGI:GeoSciML:2.0", ":", "Borehole"), null);
         FeatureType featureType = (FeatureType) descriptor.getType();
-        System.out.println(featureType);
+        // System.out.println(featureType);
 
         // Arrange
         XmlComplexFeatureParser boreholeParser =

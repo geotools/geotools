@@ -38,7 +38,6 @@ import org.opengis.referencing.operation.TransformException;
  * disagrees with the orientation of the referenced object.
  *
  * @author roehrig
- * @source $URL$
  */
 public class OrientablePrimitiveProxy implements OrientablePrimitive, Serializable {
     /**
@@ -144,7 +143,7 @@ public class OrientablePrimitiveProxy implements OrientablePrimitive, Serializab
     }
 
     public double getDistance(Geometry geometry) {
-        return primitive.getDistance(geometry);
+        return primitive.distance(geometry);
     }
 
     public int getDimension(DirectPosition point) {

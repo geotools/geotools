@@ -31,7 +31,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * the versions centered on poles and the equator)
  *
  * @author Andrea Aime - GeoSolutions
- * @source $URL$
  */
 public class LambertAzimuthalEqualAreaHandlerFactory implements ProjectionHandlerFactory {
 

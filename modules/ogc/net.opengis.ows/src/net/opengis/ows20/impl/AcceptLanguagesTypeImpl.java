@@ -23,129 +23,129 @@ import org.eclipse.emf.ecore.util.EDataTypeEList;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link net.opengis.ows20.impl.AcceptLanguagesTypeImpl#getLanguage <em>Language</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
 public class AcceptLanguagesTypeImpl extends EObjectImpl implements AcceptLanguagesType {
     /**
-     * The cached value of the '{@link #getLanguage() <em>Language</em>}' attribute list.
-     * <!-- begin-user-doc -->
+   * The cached value of the '{@link #getLanguage() <em>Language</em>}' attribute list.
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getLanguage()
-     * @generated
-     * @ordered
-     */
+   * @see #getLanguage()
+   * @generated
+   * @ordered
+   */
     protected EList<String> language;
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     protected AcceptLanguagesTypeImpl() {
-        super();
-    }
+    super();
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     protected EClass eStaticClass() {
-        return Ows20Package.Literals.ACCEPT_LANGUAGES_TYPE;
-    }
+    return Ows20Package.Literals.ACCEPT_LANGUAGES_TYPE;
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public EList<String> getLanguage() {
-        if (language == null) {
-            language = new EDataTypeEList<String>(String.class, this, Ows20Package.ACCEPT_LANGUAGES_TYPE__LANGUAGE);
-        }
-        return language;
+    if (language == null) {
+      language = new EDataTypeEList<String>(String.class, this, Ows20Package.ACCEPT_LANGUAGES_TYPE__LANGUAGE);
     }
+    return language;
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case Ows20Package.ACCEPT_LANGUAGES_TYPE__LANGUAGE:
-                return getLanguage();
-        }
-        return super.eGet(featureID, resolve, coreType);
+    switch (featureID) {
+      case Ows20Package.ACCEPT_LANGUAGES_TYPE__LANGUAGE:
+        return getLanguage();
     }
+    return super.eGet(featureID, resolve, coreType);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @SuppressWarnings("unchecked")
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case Ows20Package.ACCEPT_LANGUAGES_TYPE__LANGUAGE:
-                getLanguage().clear();
-                getLanguage().addAll((Collection<? extends String>)newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
+    switch (featureID) {
+      case Ows20Package.ACCEPT_LANGUAGES_TYPE__LANGUAGE:
+        getLanguage().clear();
+        getLanguage().addAll((Collection<? extends String>)newValue);
+        return;
     }
+    super.eSet(featureID, newValue);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case Ows20Package.ACCEPT_LANGUAGES_TYPE__LANGUAGE:
-                getLanguage().clear();
-                return;
-        }
-        super.eUnset(featureID);
+    switch (featureID) {
+      case Ows20Package.ACCEPT_LANGUAGES_TYPE__LANGUAGE:
+        getLanguage().clear();
+        return;
     }
+    super.eUnset(featureID);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case Ows20Package.ACCEPT_LANGUAGES_TYPE__LANGUAGE:
-                return language != null && !language.isEmpty();
-        }
-        return super.eIsSet(featureID);
+    switch (featureID) {
+      case Ows20Package.ACCEPT_LANGUAGES_TYPE__LANGUAGE:
+        return language != null && !language.isEmpty();
     }
+    return super.eIsSet(featureID);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     public String toString() {
-        if (eIsProxy()) return super.toString();
+    if (eIsProxy()) return super.toString();
 
-        StringBuffer result = new StringBuffer(super.toString());
-        result.append(" (language: ");
-        result.append(language);
-        result.append(')');
-        return result.toString();
-    }
+    StringBuilder result = new StringBuilder(super.toString());
+    result.append(" (language: ");
+    result.append(language);
+    result.append(')');
+    return result.toString();
+  }
 
 } //AcceptLanguagesTypeImpl

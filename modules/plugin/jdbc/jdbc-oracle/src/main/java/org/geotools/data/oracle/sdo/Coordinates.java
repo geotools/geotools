@@ -36,7 +36,6 @@ import org.locationtech.jts.geom.PrecisionModel;
  *
  * @author bowens , Refractions Research, Inc.
  * @author $Author: jgarnett $ (last modification)
- * @source $URL$
  * @version $Id$
  */
 public class Coordinates {
@@ -131,6 +130,7 @@ public class Coordinates {
                                 .toObjectArray();
             }
 
+            /*
             System.out.println("subCoordArray.length = " + subCoordArray.length);
             System.out.println("subCoordArray: ");
             System.out.print("X   ");
@@ -158,6 +158,7 @@ public class Coordinates {
                 System.out.print(subAttributeArray[1][p] + " ");
 
             System.out.println("");
+            */
 
             CoordinateAccess c =
                     (CoordinateAccess)
@@ -243,7 +244,7 @@ public class Coordinates {
 
         if (LEN == 3) {
             buf.append(" ");
-            buf.append(nf.format(c.z));
+            buf.append(nf.format(c.getZ()));
         }
     }
 
@@ -267,7 +268,7 @@ public class Coordinates {
         }
 
         if (cs.size() > 0) {
-            return Double.isNaN(cs.getCoordinate(0).z) ? 2 : 3;
+            return Double.isNaN(cs.getCoordinate(0).getZ()) ? 2 : 3;
         }
 
         return 3;

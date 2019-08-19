@@ -18,8 +18,8 @@
 package org.geotools.data.complex;
 
 import java.io.IOException;
+import org.geotools.appschema.util.InterpolationProperties;
 import org.geotools.data.FeatureSource;
-import org.geotools.util.InterpolationProperties;
 import org.opengis.feature.Feature;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.feature.type.Name;
@@ -29,7 +29,6 @@ import org.opengis.feature.type.Name;
  * from different data accesses to be accessed globally.
  *
  * @author Rini Angreani (CSIRO Earth Science and Resource Engineering)
- * @source $URL$
  */
 public class AppSchemaDataAccessRegistry extends DataAccessRegistry {
 

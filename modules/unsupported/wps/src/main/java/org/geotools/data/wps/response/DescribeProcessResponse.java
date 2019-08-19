@@ -25,15 +25,14 @@ import org.geotools.data.ows.HTTPResponse;
 import org.geotools.data.ows.Response;
 import org.geotools.ows.ServiceException;
 import org.geotools.wps.WPSConfiguration;
-import org.geotools.xml.Configuration;
-import org.geotools.xml.Parser;
+import org.geotools.xsd.Configuration;
+import org.geotools.xsd.Parser;
 import org.xml.sax.SAXException;
 
 /**
  * Represents the response from a server after a DescribeProcess request has been issued.
  *
  * @author gdavis
- * @source $URL$
  */
 public class DescribeProcessResponse extends Response {
 

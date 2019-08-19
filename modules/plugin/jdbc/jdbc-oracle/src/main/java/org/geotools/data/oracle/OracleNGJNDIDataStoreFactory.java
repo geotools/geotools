@@ -23,7 +23,6 @@ import org.geotools.jdbc.JDBCJNDIDataStoreFactory;
  * JNDI DataStoreFactory for oracle database.
  *
  * @author Christian Mueller
- * @source $URL$
  */
 public class OracleNGJNDIDataStoreFactory extends JDBCJNDIDataStoreFactory {
 

@@ -19,7 +19,6 @@ package org.geotools.data.spatialite;
 import org.geotools.jdbc.JDBCBooleanOnlineTest;
 import org.geotools.jdbc.JDBCBooleanTestSetup;
 
-/** @source $URL$ */
 public class SpatiaLiteBooleanOnlineTest extends JDBCBooleanOnlineTest {
 
     @Override

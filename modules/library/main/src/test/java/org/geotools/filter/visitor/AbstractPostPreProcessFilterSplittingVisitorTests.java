@@ -42,7 +42,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.TransformException;
 
-/** @source $URL$ */
 public class AbstractPostPreProcessFilterSplittingVisitorTests extends TestCase {
     public class TestAccessor implements ClientTransactionAccessor {
 

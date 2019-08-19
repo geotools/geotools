@@ -24,7 +24,6 @@ import org.geotools.coverage.grid.io.imageio.GeoToolsWriteParams;
 /**
  * @author Simone Giannecchini, GeoSolutions.
  * @since 2.3.x
- * @source $URL$
  */
 public final class GTopo30WriteParams extends GeoToolsWriteParams {
 
@@ -45,7 +44,7 @@ public final class GTopo30WriteParams extends GeoToolsWriteParams {
     }
 
     public void setCompressionType(String ct) {
-        compressionType = new String(ct);
+        compressionType = ct;
     }
 
     /** Default constructor. */

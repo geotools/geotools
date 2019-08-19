@@ -47,7 +47,6 @@ import org.opengis.geometry.primitive.Primitive;
  * each curve (except the first) begins where the previous one ends.
  *
  * @author Jackson Roehrig & Sanjay Jena
- * @source $URL$
  */
 public class CompositeCurveImpl extends CompositeImpl<OrientableCurveImpl>
         implements CompositeCurve {
@@ -84,7 +83,6 @@ public class CompositeCurveImpl extends CompositeImpl<OrientableCurveImpl>
         if (!ci.hasNext())
             throw new IllegalArgumentException("Curve has no elements."); // $NON-NLS-1$
         CurveImpl c0 = (CurveImpl) ci.next();
-        ;
         // this.envelope = new EnvelopeImpl(c0.getEnvelope());
         this.envelope = new EnvelopeImpl(c0.getEnvelope());
         while (ci.hasNext()) {

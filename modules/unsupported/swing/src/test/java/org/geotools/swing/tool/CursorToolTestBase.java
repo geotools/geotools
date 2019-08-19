@@ -22,10 +22,10 @@ import static org.junit.Assert.*;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import javax.swing.JFrame;
-import org.fest.swing.edt.GuiActionRunner;
-import org.fest.swing.edt.GuiQuery;
-import org.fest.swing.fixture.FrameFixture;
-import org.fest.swing.fixture.JPanelFixture;
+import org.assertj.swing.edt.GuiActionRunner;
+import org.assertj.swing.edt.GuiQuery;
+import org.assertj.swing.fixture.FrameFixture;
+import org.assertj.swing.fixture.JPanelFixture;
 import org.geotools.map.Layer;
 import org.geotools.swing.JMapPane;
 import org.geotools.swing.event.MapPaneEvent;
@@ -40,7 +40,6 @@ import org.junit.Before;
  *
  * @author Michael Bedward
  * @since 8.0
- * @source $URL$
  * @version $Id$
  */
 public abstract class CursorToolTestBase extends GraphicsTestBase {
@@ -84,7 +83,7 @@ public abstract class CursorToolTestBase extends GraphicsTestBase {
         listener = new WaitingMapPaneListener();
         mapPane.addMapPaneListener(listener);
         windowFixture = new FrameFixture(frame);
-        mapPaneFixture = new JPanelFixture(windowFixture.robot, mapPane);
+        mapPaneFixture = new JPanelFixture(windowFixture.robot(), mapPane);
         listener.setExpected(MapPaneEvent.Type.RENDERING_STOPPED);
         ((FrameFixture) windowFixture).show();
         assertTrue(

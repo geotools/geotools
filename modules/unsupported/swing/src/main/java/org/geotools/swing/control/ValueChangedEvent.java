@@ -26,7 +26,6 @@ import java.awt.Component;
  * @see ValueChangedListener
  * @author Michael Bedward
  * @since 2.6.1
- * @source $URL$
  * @version $Id$
  */
 public class ValueChangedEvent<T> {

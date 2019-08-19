@@ -32,7 +32,6 @@ import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.opengis.geometry.primitive.OrientableSurface;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-/** @source $URL$ */
 public class RelateOperatorsTest extends TestCase {
 
     private static final boolean F = false;
@@ -418,7 +417,7 @@ public class RelateOperatorsTest extends TestCase {
         try {
             rPoint = (PointImpl) wktReader.read(aWKTpoint);
         } catch (ParseException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
         return rPoint;
     }
@@ -429,7 +428,7 @@ public class RelateOperatorsTest extends TestCase {
         try {
             rCurve = (CurveImpl) wktReader.read(aWKTcurve);
         } catch (ParseException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
         return rCurve;
     }
@@ -440,7 +439,7 @@ public class RelateOperatorsTest extends TestCase {
         try {
             rSurface = (SurfaceImpl) wktReader.read(aWKTsurface);
         } catch (ParseException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
         return rSurface;
     }

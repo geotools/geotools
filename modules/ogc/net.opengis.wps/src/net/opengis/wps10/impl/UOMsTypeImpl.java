@@ -17,6 +17,7 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
 import org.eclipse.emf.ecore.util.EObjectEList;
+import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 
 /**
  * <!-- begin-user-doc -->
@@ -24,41 +25,41 @@ import org.eclipse.emf.ecore.util.EObjectEList;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link net.opengis.wps10.impl.UOMsTypeImpl#getUOM <em>UOM</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
 public class UOMsTypeImpl extends EObjectImpl implements UOMsType {
     /**
-     * The cached value of the '{@link #getUOM() <em>UOM</em>}' reference list.
-     * <!-- begin-user-doc -->
+   * The cached value of the '{@link #getUOM() <em>UOM</em>}' reference list.
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getUOM()
-     * @generated
-     * @ordered
-     */
+   * @see #getUOM()
+   * @generated
+   * @ordered
+   */
     protected EList uOM;
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     protected UOMsTypeImpl() {
-        super();
-    }
+    super();
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     protected EClass eStaticClass() {
-        return Wps10Package.Literals.UO_MS_TYPE;
-    }
+    return Wps10Package.Literals.UO_MS_TYPE;
+  }
 
     /**
      * <!-- begin-user-doc -->
@@ -73,58 +74,58 @@ public class UOMsTypeImpl extends EObjectImpl implements UOMsType {
     }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case Wps10Package.UO_MS_TYPE__UOM:
-                return getUOM();
-        }
-        return super.eGet(featureID, resolve, coreType);
+    switch (featureID) {
+      case Wps10Package.UO_MS_TYPE__UOM:
+        return getUOM();
     }
+    return super.eGet(featureID, resolve, coreType);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case Wps10Package.UO_MS_TYPE__UOM:
-                getUOM().clear();
-                getUOM().addAll((Collection)newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
+    switch (featureID) {
+      case Wps10Package.UO_MS_TYPE__UOM:
+        getUOM().clear();
+        getUOM().addAll((Collection)newValue);
+        return;
     }
+    super.eSet(featureID, newValue);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case Wps10Package.UO_MS_TYPE__UOM:
-                getUOM().clear();
-                return;
-        }
-        super.eUnset(featureID);
+    switch (featureID) {
+      case Wps10Package.UO_MS_TYPE__UOM:
+        getUOM().clear();
+        return;
     }
+    super.eUnset(featureID);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case Wps10Package.UO_MS_TYPE__UOM:
-                return uOM != null && !uOM.isEmpty();
-        }
-        return super.eIsSet(featureID);
+    switch (featureID) {
+      case Wps10Package.UO_MS_TYPE__UOM:
+        return uOM != null && !uOM.isEmpty();
     }
+    return super.eIsSet(featureID);
+  }
 
 } //UOMsTypeImpl

@@ -37,12 +37,11 @@ import java.util.regex.Pattern;
 import org.geotools.data.Query;
 import org.geotools.data.jdbc.FilterToSQL;
 import org.geotools.data.sqlserver.reader.SqlServerBinaryReader;
-import org.geotools.factory.Hints;
-import org.geotools.filter.function.FilterFunction_area;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.jdbc.BasicSQLDialect;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.referencing.CRS;
+import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryCollection;
@@ -69,15 +68,12 @@ import org.opengis.referencing.cs.CoordinateSystemAxis;
  * Dialect implementation for Microsoft SQL Server.
  *
  * @author Justin Deoliveira, OpenGEO
- * @source $URL$
  */
 public class SQLServerDialect extends BasicSQLDialect {
 
     private static final int DEFAULT_AXIS_MAX = 10000000;
     private static final int DEFAULT_AXIS_MIN = -10000000;
     static final String SPATIAL_INDEX_KEY = "SpatialIndex";
-
-    private static final String AREA_FUNCTION = "STArea";
 
     /**
      * Pattern used to match the first FROM element in a SQL query, without matching also attributes
@@ -140,21 +136,6 @@ public class SQLServerDialect extends BasicSQLDialect {
 
     public SQLServerDialect(JDBCDataStore dataStore) {
         super(dataStore);
-    }
-
-    @Override
-    public void registerFunctions(Map<String, String> functions) {
-        super.registerFunctions(functions);
-        functions.put(FilterFunction_area.NAME.getName(), AREA_FUNCTION);
-    }
-
-    @Override
-    protected void encodeAggregateFunction(String function, String column, StringBuffer sql) {
-        if (AREA_FUNCTION.equalsIgnoreCase(function)) {
-            sql.append(column).append(".").append(function).append("()");
-        } else {
-            super.encodeAggregateFunction(function, column, sql);
-        }
     }
 
     @Override
@@ -886,6 +867,7 @@ public class SQLServerDialect extends BasicSQLDialect {
                 cx.commit();
             }
         } finally {
+            dataStore.closeSafe(st);
             dataStore.closeSafe(cx);
         }
     }
@@ -1045,10 +1027,14 @@ public class SQLServerDialect extends BasicSQLDialect {
             String schemaName, String tableName, String columnName, Connection cx, Statement st)
             throws SQLException {
         ResultSet rs = st.getGeneratedKeys();
-        Object result = null;
-        if (rs.next()) {
-            result = rs.getObject(1);
+        try {
+            Object result = null;
+            if (rs.next()) {
+                result = rs.getObject(1);
+            }
+            return result;
+        } finally {
+            dataStore.closeSafe(rs);
         }
-        return result;
     }
 }

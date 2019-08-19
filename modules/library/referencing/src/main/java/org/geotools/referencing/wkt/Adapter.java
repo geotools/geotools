@@ -26,7 +26,6 @@ import org.geotools.util.UnsupportedImplementationException;
  * {@code toWKT()} method using reflection.
  *
  * @since 2.0
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
@@ -44,16 +43,12 @@ final class Adapter extends Formattable {
      * object as WKT, then an {@link UnsupportedImplementationException} is thrown.
      */
     protected String formatWKT(final Formatter formatter) {
-        if (object instanceof org.geotools.resources.Formattable) {
-            return ((org.geotools.resources.Formattable) object).formatWKT(formatter);
+        if (object instanceof org.geotools.referencing.util.Formattable) {
+            return ((org.geotools.referencing.util.Formattable) object).formatWKT(formatter);
         }
         final Class classe = object.getClass();
-        final String wkt;
         try {
-            wkt =
-                    (String)
-                            classe.getMethod("toWKT", (Class[]) null)
-                                    .invoke(object, (Object[]) null);
+            classe.getMethod("toWKT", (Class[]) null).invoke(object, (Object[]) null);
         } catch (Exception cause) {
             final UnsupportedImplementationException exception;
             exception = new UnsupportedImplementationException(classe);

@@ -17,8 +17,8 @@
 
 package org.geotools.referencing.factory;
 
-import org.geotools.factory.Hints;
 import org.geotools.metadata.iso.citation.Citations;
+import org.geotools.util.factory.Hints;
 import org.opengis.metadata.citation.Citation;
 import org.opengis.referencing.AuthorityFactory;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
@@ -31,7 +31,6 @@ import org.opengis.referencing.NoSuchAuthorityCodeException;
  * class directly.
  *
  * @author Ben Caradoc-Davies (CSIRO Earth Science and Resource Engineering)
- * @source $URL$
  */
 public class HTTP_URI_AuthorityFactory extends Abstract_URI_AuthorityFactory {
 

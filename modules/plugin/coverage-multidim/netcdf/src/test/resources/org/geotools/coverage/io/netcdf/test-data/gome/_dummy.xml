@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Indexer>
+    <schemas>
+        <schema name="default" >
+            <attributes>
+            the_geom:Polygon,imageindex:Integer,time:java.util.Date,location:String
+            </attributes>
+        </schema>
+    </schemas>
+    <coverages>
+        <coverage>
+			<nameCollector>coverageNameCollector</nameCollector>
+            <schema ref="default"></schema>
+            <origName>z</origName>
+        </coverage>
+    </coverages>
+    <collectors>
+		<collector name="coverageNameCollector">
+			<value>[A-z0-9]+(?=.DUMMY)</value>
+			<spi>StringFileNameExtractorSPI</spi>
+			<mapped>coverageName</mapped>
+		</collector>
+    </collectors>
+</Indexer>

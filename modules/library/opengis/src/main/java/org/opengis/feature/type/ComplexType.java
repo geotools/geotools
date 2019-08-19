@@ -85,7 +85,6 @@ import org.opengis.feature.Property;
  * @see ComplexAttribute
  * @author Jody Garnett (Refractions Research)
  * @author Justin Deoliveira (The Open Planning Project)
- * @source $URL$
  */
 public interface ComplexType extends AttributeType {
     /** Override and type narrow to Collection<Property>.class. */

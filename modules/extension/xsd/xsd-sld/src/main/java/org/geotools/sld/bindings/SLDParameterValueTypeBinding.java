@@ -20,10 +20,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import javax.xml.namespace.QName;
-import org.geotools.xml.AbstractComplexBinding;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
-import org.geotools.xml.Text;
+import org.geotools.xsd.AbstractComplexBinding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
+import org.geotools.xsd.Text;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Expression;
 import org.picocontainer.MutablePicoContainer;
@@ -51,7 +51,6 @@ import org.picocontainer.MutablePicoContainer;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class SLDParameterValueTypeBinding extends AbstractComplexBinding {
     FilterFactory filterFactory;

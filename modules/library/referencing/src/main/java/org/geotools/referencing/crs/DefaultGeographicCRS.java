@@ -54,7 +54,6 @@ import si.uom.NonSI;
  * </TD></TR></TABLE>
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
@@ -206,6 +205,7 @@ public class DefaultGeographicCRS extends AbstractSingleCRS implements Geographi
      *     versions of this class.
      */
     @Override
+    @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int hashCode() {
         return (int) serialVersionUID ^ super.hashCode();
     }

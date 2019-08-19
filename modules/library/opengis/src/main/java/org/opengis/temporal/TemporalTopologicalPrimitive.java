@@ -19,7 +19,6 @@ import org.opengis.annotation.UML;
  * topological primitives within a topological complex.
  *
  * @author Alexander Petkov
- * @source $URL$
  */
 @UML(identifier = "TM_TopologicalPrimitive", specification = ISO_19108)
 public interface TemporalTopologicalPrimitive {}

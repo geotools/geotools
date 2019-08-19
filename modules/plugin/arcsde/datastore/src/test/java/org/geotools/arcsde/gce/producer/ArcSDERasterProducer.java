@@ -22,7 +22,6 @@ import com.esri.sde.sdk.client.SeRasterProducer;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
-/** @source $URL$ */
 public abstract class ArcSDERasterProducer implements SeRasterProducer {
 
     ArrayList<SeRasterConsumer> consumers = new ArrayList<SeRasterConsumer>();

@@ -21,9 +21,9 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.factory.Hints;
 import org.geotools.filter.expression.PropertyAccessor;
 import org.geotools.filter.expression.PropertyAccessorFactory;
+import org.geotools.util.factory.Hints;
 import org.junit.Before;
 import org.junit.Test;
 import org.locationtech.jts.geom.Envelope;

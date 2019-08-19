@@ -181,4 +181,9 @@ class ShapefileCompatibleFeature implements SimpleFeature {
     public void setDefaultGeometry(Object geometry) {
         delegate.setDefaultGeometry(geometry);
     }
+
+    @Override
+    public String toString() {
+        return "ShapefileCompatibleFeature{" + "delegate=" + delegate + '}';
+    }
 }

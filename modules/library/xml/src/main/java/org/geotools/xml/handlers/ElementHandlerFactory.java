@@ -39,7 +39,6 @@ import org.xml.sax.SAXException;
  * @author dzwiers www.refractions.net
  * @see org.geotools.xml.XMLSAXHandler
  * @see Schema
- * @source $URL$
  */
 public class ElementHandlerFactory {
     /** Used to store ElementHandlerFactory */

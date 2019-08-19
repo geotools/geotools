@@ -18,7 +18,7 @@ package org.geotools.filter.v2_0.bindings;
 
 import javax.xml.namespace.QName;
 import org.geotools.filter.v2_0.FES;
-import org.geotools.xml.AbstractComplexBinding;
+import org.geotools.xsd.AbstractComplexBinding;
 import org.opengis.filter.BinaryComparisonOperator;
 import org.opengis.filter.expression.Expression;
 

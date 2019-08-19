@@ -18,7 +18,7 @@ package org.geotools.kml.bindings;
 
 import org.geotools.kml.KML;
 import org.geotools.kml.KMLTestSupport;
-import org.geotools.xml.Binding;
+import org.geotools.xsd.Binding;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryCollection;
@@ -29,9 +29,9 @@ import org.locationtech.jts.geom.MultiPoint;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
+import org.locationtech.jts.geom.impl.CoordinateArraySequence;
 import org.w3c.dom.Document;
 
-/** @source $URL$ */
 public class MultiGeometryTypeBindingTest extends KMLTestSupport {
 
     public void testType() {
@@ -58,7 +58,9 @@ public class MultiGeometryTypeBindingTest extends KMLTestSupport {
     public void testEncodeMultiPoint() throws Exception {
         GeometryFactory gf = new GeometryFactory();
         MultiPoint mp =
-                gf.createMultiPoint(new Coordinate[] {new Coordinate(0, 0), new Coordinate(1, 1)});
+                gf.createMultiPoint(
+                        new CoordinateArraySequence(
+                                new Coordinate[] {new Coordinate(0, 0), new Coordinate(1, 1)}));
         Document dom = encode(mp, KML.MultiGeometry);
         assertEquals(2, getElementsByQName(dom, KML.Point).getLength());
     }

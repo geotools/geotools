@@ -21,8 +21,8 @@ import java.util.List;
 import java.util.StringTokenizer;
 import javax.xml.namespace.QName;
 import org.geotools.kml.KML;
-import org.geotools.xml.AbstractSimpleBinding;
-import org.geotools.xml.InstanceComponent;
+import org.geotools.xsd.AbstractSimpleBinding;
+import org.geotools.xsd.InstanceComponent;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.CoordinateSequence;
 import org.locationtech.jts.geom.CoordinateSequenceFactory;
@@ -42,7 +42,6 @@ import org.locationtech.jts.geom.CoordinateSequenceFactory;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class CoordinatesTypeBinding extends AbstractSimpleBinding {
     CoordinateSequenceFactory csFactory;
@@ -92,7 +91,7 @@ public class CoordinatesTypeBinding extends AbstractSimpleBinding {
             c.y = Double.parseDouble(st.nextToken());
 
             if (st.hasMoreTokens()) {
-                c.z = Double.parseDouble(st.nextToken());
+                c.setZ(Double.parseDouble(st.nextToken()));
             }
 
             coordinates[i] = c;
@@ -107,8 +106,8 @@ public class CoordinatesTypeBinding extends AbstractSimpleBinding {
         for (int i = 0; i < cs.size(); i++) {
             Coordinate c = cs.getCoordinate(i);
             sb.append(c.x).append(",").append(c.y);
-            if (cs.getDimension() == 3 && !Double.isNaN(c.z)) {
-                sb.append(",").append(c.z);
+            if (cs.getDimension() == 3 && !Double.isNaN(c.getZ())) {
+                sb.append(",").append(c.getZ());
             }
             sb.append(" ");
         }

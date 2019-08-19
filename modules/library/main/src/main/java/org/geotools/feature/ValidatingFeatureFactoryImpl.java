@@ -20,7 +20,6 @@ package org.geotools.feature;
  * Factory for creating instances of the Attribute family of classes.
  *
  * @author Andrea Aime
- * @source $URL$
  * @version $Id$
  */
 public class ValidatingFeatureFactoryImpl extends AbstractFeatureFactoryImpl {

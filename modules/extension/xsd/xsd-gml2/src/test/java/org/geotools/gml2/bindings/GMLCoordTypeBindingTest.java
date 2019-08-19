@@ -18,15 +18,14 @@ package org.geotools.gml2.bindings;
 
 import java.math.BigDecimal;
 import org.geotools.gml2.GML;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
 import org.geotools.xs.XS;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.impl.CoordinateArraySequenceFactory;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
-/** @source $URL$ */
 public class GMLCoordTypeBindingTest extends AbstractGMLBindingTest {
     ElementInstance x;
     ElementInstance y;
@@ -40,7 +39,7 @@ public class GMLCoordTypeBindingTest extends AbstractGMLBindingTest {
         x = createElement(GML.NAMESPACE, "X", XS.DECIMAL, "12.34");
         y = createElement(GML.NAMESPACE, "Y", XS.DECIMAL, "56.78");
         z = createElement(GML.NAMESPACE, "Z", XS.DECIMAL, "910.11");
-        coordinate = createElement(GML.NAMESPACE, "myCoordinate", GML.COORDTYPE, null);
+        coordinate = createElement(GML.NAMESPACE, "myCoordinate", GML.CoordType, null);
 
         container = new DefaultPicoContainer();
         container.registerComponentInstance(CoordinateArraySequenceFactory.instance());
@@ -102,6 +101,6 @@ public class GMLCoordTypeBindingTest extends AbstractGMLBindingTest {
         assertNotNull(c);
         assertEquals(c.x, 12.34, 0d);
         assertEquals(c.y, 56.78, 0d);
-        assertEquals(c.z, 910.11, 0d);
+        assertEquals(c.getZ(), 910.11, 0d);
     }
 }

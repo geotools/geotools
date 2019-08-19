@@ -34,7 +34,6 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.filter.Id;
 
-/** @source $URL$ */
 public class JDBCUpdateFeatureWriter extends JDBCFeatureReader
         implements FeatureWriter<SimpleFeatureType, SimpleFeature> {
 
@@ -67,7 +66,7 @@ public class JDBCUpdateFeatureWriter extends JDBCFeatureReader
         try {
             last.init();
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
 
         // reset next flag

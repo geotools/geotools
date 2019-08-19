@@ -31,7 +31,6 @@ import java.sql.SQLException;
  * information is fetch in the underlying metadata database.
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Touraïvane
  * @author Martin Desruisseaux (IRD)

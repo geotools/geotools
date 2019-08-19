@@ -26,7 +26,6 @@ import java.util.concurrent.Future;
  * ProcessFactory.getResultInfo()} description.
  *
  * @author Jody
- * @source $URL$
  */
 public interface Progress extends Future<Map<String, Object>> {
     /** Value of getProgress used to represent an undefined amount of work. */

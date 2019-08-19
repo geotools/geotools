@@ -22,7 +22,6 @@ import org.opengis.geometry.DirectPosition; // For javadoc
  *
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0
- * @source $URL$
  */
 public class TransformException extends Exception {
     /** Serial number for interoperability with different versions. */

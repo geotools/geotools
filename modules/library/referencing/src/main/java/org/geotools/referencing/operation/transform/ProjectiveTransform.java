@@ -26,6 +26,10 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.ejml.MatrixDimensionException;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
+import org.geotools.metadata.i18n.Vocabulary;
+import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.parameter.MatrixParameterDescriptors;
 import org.geotools.parameter.MatrixParameters;
@@ -36,10 +40,6 @@ import org.geotools.referencing.operation.matrix.GeneralMatrix;
 import org.geotools.referencing.operation.matrix.MatrixFactory;
 import org.geotools.referencing.operation.matrix.SingularMatrixException;
 import org.geotools.referencing.operation.matrix.XMatrix;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
-import org.geotools.resources.i18n.Vocabulary;
-import org.geotools.resources.i18n.VocabularyKeys;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.parameter.ParameterDescriptor;
 import org.opengis.parameter.ParameterDescriptorGroup;
@@ -83,7 +83,6 @@ import si.uom.NonSI;
  * last column, which contains 1.
  *
  * @since 2.0
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @see javax.media.jai.PerspectiveTransform

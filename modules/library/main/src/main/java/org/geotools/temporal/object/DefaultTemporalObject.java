@@ -22,6 +22,5 @@ import org.opengis.temporal.TemporalObject;
  * Base abstract class for temporal object.
  *
  * @author Mehdi Sidhoum (Geomatys)
- * @source $URL$
  */
 public abstract class DefaultTemporalObject implements TemporalObject {}

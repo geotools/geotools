@@ -24,7 +24,6 @@ package org.geotools.styling;
  * $
  *
  * @author iant
- * @source $URL$
  */
 public class StyleFactoryCreationException extends java.lang.Exception {
     private static final long serialVersionUID = -1809128211848169317L;

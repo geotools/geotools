@@ -19,7 +19,6 @@ package org.geotools.data.teradata;
 import org.geotools.jdbc.JDBCLobOnlineTest;
 import org.geotools.jdbc.JDBCLobTestSetup;
 
-/** @source $URL$ */
 public class TeradataLobOnlineTest extends JDBCLobOnlineTest {
 
     protected JDBCLobTestSetup createTestSetup() {

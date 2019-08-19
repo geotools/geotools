@@ -19,7 +19,6 @@ package org.geotools.data.h2;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCNoPrimaryKeyTestSetup;
 
-/** @source $URL$ */
 public class H2NoPrimaryKeyTestSetup extends JDBCNoPrimaryKeyTestSetup {
 
     protected H2NoPrimaryKeyTestSetup() {

@@ -44,13 +44,14 @@ import org.opengis.geometry.BoundingBox;
  *     <p>This feature object is read only, modifying calls result in a {@link
  *     UnsupportedOperationException}
  *     <p>The special thing is that a generalized geometry is returned.
- * @source $URL$
  */
 public class PreGeneralizedSimpleFeature implements SimpleFeature {
 
     SimpleFeature feature;
 
     SimpleFeatureType featureTyp;
+
+    SimpleFeatureType returnedFeatureType;
 
     String geomPropertyName, backendGeomPropertyName;
 
@@ -62,6 +63,7 @@ public class PreGeneralizedSimpleFeature implements SimpleFeature {
 
     public PreGeneralizedSimpleFeature(
             SimpleFeatureType featureTyp,
+            SimpleFeatureType returnedFeatureType,
             int indexMapping[],
             SimpleFeature feature,
             String geomPropertyName,
@@ -71,6 +73,7 @@ public class PreGeneralizedSimpleFeature implements SimpleFeature {
         this.geomPropertyName = geomPropertyName;
         this.backendGeomPropertyName = backendGeomPropertyName;
         this.featureTyp = featureTyp;
+        this.returnedFeatureType = returnedFeatureType;
         this.indexMapping = indexMapping;
         this.nameBackendGeomProperty = new NameImpl(backendGeomPropertyName);
     }
@@ -110,7 +113,7 @@ public class PreGeneralizedSimpleFeature implements SimpleFeature {
     }
 
     public Object getAttribute(int index) throws IndexOutOfBoundsException {
-        return feature.getAttribute(indexMapping[index]);
+        return feature.getAttribute(indexMapping == null ? index : indexMapping[index]);
     }
 
     public int getAttributeCount() {
@@ -126,7 +129,7 @@ public class PreGeneralizedSimpleFeature implements SimpleFeature {
     }
 
     public SimpleFeatureType getFeatureType() {
-        return featureTyp;
+        return returnedFeatureType;
     }
 
     public String getID() {
@@ -134,7 +137,7 @@ public class PreGeneralizedSimpleFeature implements SimpleFeature {
     }
 
     public SimpleFeatureType getType() {
-        return featureTyp;
+        return returnedFeatureType;
     }
 
     public void setAttribute(String arg0, Object arg1) {
@@ -266,5 +269,10 @@ public class PreGeneralizedSimpleFeature implements SimpleFeature {
                 * geomPropertyName.hashCode()
                 * backendGeomPropertyName.hashCode()
                 * feature.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return "PregeneralizedFeature of " + feature.toString();
     }
 }

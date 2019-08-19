@@ -18,7 +18,6 @@ import org.opengis.annotation.XmlElement;
  * true} if the feature's geometry touches, but does not overlap with the geometry held by this
  * object.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengis.org/docs/02-059.pdf">Implementation specification 1.0</A>
  * @author Chris Dillard (SYS Technologies)
  * @since GeoAPI 2.0

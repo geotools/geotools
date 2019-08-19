@@ -26,6 +26,7 @@ import java.awt.geom.Point2D;
 import java.util.Collection;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.NamedIdentifier;
+import org.geotools.util.SuppressFBWarnings;
 import org.opengis.parameter.GeneralParameterDescriptor;
 import org.opengis.parameter.ParameterDescriptor;
 import org.opengis.parameter.ParameterDescriptorGroup;
@@ -49,7 +50,6 @@ import si.uom.NonSI;
  * @see <A HREF="http://www.remotesensing.org/geotiff/proj_list/polyconic.html">"Polyconic" on
  *     RemoteSensing.org</A>
  * @since 2.6.3
- * @source $URL$
  * @author Andrea Aime
  */
 public class WinkelTripel extends MapProjection {
@@ -97,6 +97,7 @@ public class WinkelTripel extends MapProjection {
     }
 
     /** {@inheritDoc} */
+    @SuppressFBWarnings("UR_UNINIT_READ_CALLED_FROM_SUPER_CONSTRUCTOR")
     public ParameterDescriptorGroup getParameterDescriptors() {
         return descriptors;
     }

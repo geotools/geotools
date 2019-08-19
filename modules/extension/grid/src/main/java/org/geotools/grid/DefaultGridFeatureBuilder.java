@@ -39,7 +39,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  *
  * @author mbedward
  * @since 2.7
- * @source $URL$
  * @version $Id$
  */
 public final class DefaultGridFeatureBuilder extends GridFeatureBuilder {

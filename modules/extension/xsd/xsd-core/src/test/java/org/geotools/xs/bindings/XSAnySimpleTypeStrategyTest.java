@@ -18,11 +18,10 @@ package org.geotools.xs.bindings;
 
 import javax.xml.namespace.QName;
 import org.eclipse.xsd.XSDSimpleTypeDefinition;
-import org.geotools.xml.SimpleBinding;
 import org.geotools.xs.TestSchema;
 import org.geotools.xs.XS;
+import org.geotools.xsd.SimpleBinding;
 
-/** @source $URL$ */
 public class XSAnySimpleTypeStrategyTest extends TestSchema {
     private XSDSimpleTypeDefinition typeDef;
     private SimpleBinding stratagy;

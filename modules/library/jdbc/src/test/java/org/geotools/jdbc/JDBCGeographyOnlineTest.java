@@ -22,7 +22,6 @@ import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.spatial.BBOX;
 import org.opengis.filter.spatial.DWithin;
 
-/** @source $URL$ */
 public abstract class JDBCGeographyOnlineTest extends JDBCTestSupport {
 
     FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
@@ -277,7 +276,7 @@ public abstract class JDBCGeographyOnlineTest extends JDBCTestSupport {
         dialect.encodeTableName(tname("geopoint"), sb);
 
         VirtualTable vt = new VirtualTable("geopoint_vt", sb.toString());
-        dataStore.addVirtualTable(vt);
+        dataStore.createVirtualTable(vt);
 
         SimpleFeatureType featureType = dataStore.getSchema("geopoint_vt");
         assertNotNull(featureType);

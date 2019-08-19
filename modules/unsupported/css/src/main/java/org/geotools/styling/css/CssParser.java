@@ -38,6 +38,7 @@ import org.geotools.styling.css.selector.PseudoClass;
 import org.geotools.styling.css.selector.ScaleRange;
 import org.geotools.styling.css.selector.Selector;
 import org.geotools.styling.css.selector.TypeName;
+import org.geotools.util.SuppressFBWarnings;
 import org.opengis.filter.Filter;
 import org.opengis.filter.expression.Expression;
 import org.parboiled.Action;
@@ -225,6 +226,7 @@ public class CssParser extends BaseParser<Object> {
                 ECQLSelector());
     }
 
+    @SuppressFBWarnings("IL_INFINITE_RECURSIVE_LOOP")
     Rule AndSelector() {
         return Sequence(
                 BasicSelector(),

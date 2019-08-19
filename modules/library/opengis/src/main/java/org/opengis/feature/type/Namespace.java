@@ -58,7 +58,6 @@ import org.opengis.annotation.UML;
  * @author Jody Garnett, Refractions Research, Inc.
  * @author Justin Deoliveira, The Open Planning Project
  * @since GeoAPI 2.1
- * @source $URL$
  */
 @UML(identifier = "NameSpace", specification = ISO_19103)
 public interface Namespace extends Set<Name> {

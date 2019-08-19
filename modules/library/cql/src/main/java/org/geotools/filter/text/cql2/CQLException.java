@@ -23,7 +23,6 @@ import org.geotools.filter.text.generated.parsers.ParseException;
  * This exception is produced when the cql input string has syntax errors.
  *
  * @author Mauricio Pazos (Axios Engineering)
- * @source $URL$
  * @version $Id$
  * @since 2.4
  */

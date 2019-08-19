@@ -22,7 +22,6 @@ import org.opengis.geometry.primitive.OrientableSurface;
  * {@link #getElements element} shall be the set of {@linkplain OrientableSurface orientable
  * surfaces} contained in this {@code MultiSurface}.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/as">ISO 19107</A>
  * @author Sanjay Jena
  * @author Prof. Dr. Jackson Roehrig

@@ -30,7 +30,6 @@ import org.geotools.util.URLs;
  * The parameter list wizard.
  *
  * @author Andrea Antonello (www.hydrologis.com)
- * @source $URL$
  */
 public class JParameterListWizard extends Wizard {
 

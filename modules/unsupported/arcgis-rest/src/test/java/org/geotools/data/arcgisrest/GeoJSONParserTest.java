@@ -21,11 +21,6 @@ import static org.junit.Assert.*;
 
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.stream.MalformedJsonException;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.LineString;
-import org.locationtech.jts.geom.MultiLineString;
-import org.locationtech.jts.geom.MultiPoint;
-import org.locationtech.jts.geom.Point;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -37,12 +32,17 @@ import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.util.logging.Logging;
 import org.junit.Before;
 import org.junit.Test;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.MultiLineString;
+import org.locationtech.jts.geom.MultiPoint;
+import org.locationtech.jts.geom.Point;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
 public class GeoJSONParserTest {
 
-    private static final Logger LOGGER = Logging.getLogger("org.geotools.data.arcgisrest");
+    private static final Logger LOGGER = Logging.getLogger(GeoJSONParserTest.class);
 
     ArcGISRestFeatureReader reader;
     SimpleFeatureType fType;

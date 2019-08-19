@@ -24,7 +24,6 @@ import java.nio.ByteBuffer;
  *
  * @author aaime
  * @author Ian Schneider
- * @source $URL$
  */
 public interface ShapeHandler {
     /**

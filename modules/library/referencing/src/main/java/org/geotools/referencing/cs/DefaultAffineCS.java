@@ -39,7 +39,6 @@ import tec.uom.se.AbstractUnit;
  * </TD></TR></TABLE>
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @see DefaultCartesianCS

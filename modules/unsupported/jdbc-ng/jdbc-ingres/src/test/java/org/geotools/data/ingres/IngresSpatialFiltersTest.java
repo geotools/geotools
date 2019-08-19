@@ -6,7 +6,7 @@ import org.geotools.jdbc.JDBCSpatialFiltersTest;
 /**
  * 
  *
- * @source $URL$
+
  */
 public class IngresSpatialFiltersTest extends JDBCSpatialFiltersTest {
 

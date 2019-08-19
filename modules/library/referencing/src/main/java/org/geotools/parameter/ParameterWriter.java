@@ -30,14 +30,14 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
-import org.geotools.io.TableWriter;
 import org.geotools.measure.Angle;
 import org.geotools.measure.AngleFormat;
-import org.geotools.resources.Arguments;
-import org.geotools.resources.Classes;
-import org.geotools.resources.XArray;
-import org.geotools.resources.i18n.Vocabulary;
-import org.geotools.resources.i18n.VocabularyKeys;
+import org.geotools.metadata.i18n.Vocabulary;
+import org.geotools.metadata.i18n.VocabularyKeys;
+import org.geotools.util.Arguments;
+import org.geotools.util.Classes;
+import org.geotools.util.TableWriter;
+import org.geotools.util.XArray;
 import org.opengis.metadata.Identifier;
 import org.opengis.parameter.GeneralParameterDescriptor;
 import org.opengis.parameter.GeneralParameterValue;
@@ -56,7 +56,6 @@ import org.opengis.util.InternationalString;
  * and an encoding capable to provide drawing box characters (e.g. unicode).
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  */
@@ -174,7 +173,7 @@ public class ParameterWriter extends FilterWriter {
      * Implementation of public {@code format} methods.
      *
      * @param name The group name, usually {@code descriptor.getCode().getName()}.
-     * @param descriptor The parameter descriptor. Should be equals to {@code
+     * @param group The parameter descriptor group. Should be equals to {@code
      *     values.getDescriptor()} if {@code values} is non null.
      * @param values The parameter values, or {@code null} if none.
      * @throws IOException if an error occured will writing to the stream.

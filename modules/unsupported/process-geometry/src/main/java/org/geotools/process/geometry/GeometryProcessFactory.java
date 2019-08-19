@@ -24,7 +24,6 @@ import org.geotools.util.SimpleInternationalString;
  * A process factory exposing all the annotated methods in {@link GeometryFunctions}
  *
  * @author Andrea Aime - OpenGeo
- * @source $URL$
  */
 public class GeometryProcessFactory extends StaticMethodsProcessFactory<GeometryFunctions> {
 

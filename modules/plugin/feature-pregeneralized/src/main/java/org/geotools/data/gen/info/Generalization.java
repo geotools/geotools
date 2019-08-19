@@ -25,7 +25,6 @@ import java.io.IOException;
  *     <p>distance the distance used in generalization featureName the name of the feature
  *     geomPropertyName the name of the geometry property in the feature dataSourceName the name of
  *     the datasource dataSourceNameSpace the namespace of the datasource, may be null
- * @source $URL$
  */
 public class Generalization implements Comparable<Generalization> {
     private Double distance;

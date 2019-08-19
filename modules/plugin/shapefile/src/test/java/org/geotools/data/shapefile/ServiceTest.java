@@ -27,7 +27,6 @@ import org.geotools.data.DataStoreFinder;
 import org.junit.Test;
 
 /**
- * @source $URL$
  * @version $Id$
  * @author ian
  */

@@ -18,7 +18,9 @@ package org.geotools.filter.v1_1.capabilities;
 
 import javax.xml.namespace.QName;
 import org.geotools.filter.v1_1.OGC;
-import org.geotools.xml.*;
+import org.geotools.xsd.AbstractComplexBinding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.capability.IdCapabilities;
 
@@ -40,7 +42,6 @@ import org.opengis.filter.capability.IdCapabilities;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class Id_CapabilitiesTypeBinding extends AbstractComplexBinding {
     FilterFactory factory;

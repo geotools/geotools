@@ -32,14 +32,14 @@ import javax.measure.Unit;
 import org.geotools.coverage.Category;
 import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.GridSampleDimension;
-import org.geotools.factory.GeoTools;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.image.io.ImageIOExt;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
 import org.geotools.util.NumberRange;
+import org.geotools.util.factory.GeoTools;
 import org.opengis.geometry.Envelope;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -82,7 +82,7 @@ import org.opengis.referencing.operation.TransformException;
  * @author Martin Desruisseaux
  *
  *
- * @source $URL$
+ *
  * @version $Id$
  */
 public class GridCoverageBuilder {
@@ -403,7 +403,6 @@ public class GridCoverageBuilder {
      *
      * @since 2.5
      * @author Martin Desruisseaux
-     * @source $URL$
      * @version $Id$
      */
     public class Variable {

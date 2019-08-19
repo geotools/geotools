@@ -43,7 +43,6 @@ import org.opengis.filter.FilterFactory;
  * </pre>
  *
  * @author Justin Deoliveira, OpenGeo
- * @source $URL$
  */
 public class VendorOptionBinding extends SLDVendorOptionBinding {
 

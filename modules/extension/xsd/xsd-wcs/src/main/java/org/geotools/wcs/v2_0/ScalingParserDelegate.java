@@ -16,7 +16,7 @@
  */
 package org.geotools.wcs.v2_0;
 
-import org.geotools.xml.XSDParserDelegate;
+import org.geotools.xsd.XSDParserDelegate;
 
 public class ScalingParserDelegate extends XSDParserDelegate {
 

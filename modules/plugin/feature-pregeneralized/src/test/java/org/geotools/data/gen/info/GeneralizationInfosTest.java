@@ -22,7 +22,6 @@ import java.util.Collection;
 import junit.framework.TestCase;
 import org.junit.Assert;
 
-/** @source $URL$ */
 public class GeneralizationInfosTest extends TestCase {
 
     public void testGeneralizationInfos() {
@@ -31,7 +30,7 @@ public class GeneralizationInfosTest extends TestCase {
         try {
             infos = provider.getGeneralizationInfos("src/test/resources/geninfo1.xml");
         } catch (IOException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             Assert.fail();
             return;
         }

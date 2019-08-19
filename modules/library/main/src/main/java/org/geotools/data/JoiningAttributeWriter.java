@@ -23,7 +23,6 @@ import org.opengis.feature.type.AttributeDescriptor;
  * Provides ...
  *
  * @author Sean Geoghegan, Defence Science and Technology Organisation.
- * @source $URL$
  */
 public class JoiningAttributeWriter implements AttributeWriter {
     private AttributeWriter[] writers;

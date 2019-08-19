@@ -42,13 +42,12 @@ import org.opengis.feature.simple.SimpleFeatureType;
  *
  * @author bowens, Refractions Research, Inc.
  * @author $Author: jive $ (last modification)
- * @source $URL$
  * @version $Id$ - bowens: changed intersects to crosses
  */
 public class LineNoSelfIntersectValidation extends DefaultFeatureValidation {
     /** The logger for the validation module. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.validation");
+            org.geotools.util.logging.Logging.getLogger(LineNoSelfIntersectValidation.class);
 
     /**
      * LineNoSelfIntersectFeatureValidation constructor.
@@ -93,9 +92,9 @@ public class LineNoSelfIntersectValidation extends DefaultFeatureValidation {
             line = getDefaultLineString(feature);
         } catch (ClassCastException unLine) {
             results.error(feature, "Geometry is required to be a LineString");
-            System.out.println(feature.getID() + "  name: " + getName());
-            System.out.println(feature.getID() + "   ref: " + getTypeRef());
-            System.out.println(feature.getID() + "   ref: " + getTypeRefs());
+            // System.out.println(feature.getID() + "  name: " + getName());
+            // System.out.println(feature.getID() + "   ref: " + getTypeRef());
+            // System.out.println(feature.getID() + "   ref: " + getTypeRefs());
         }
         if (line == null) {
             // Ignore null geometry (user can check with nullZero )

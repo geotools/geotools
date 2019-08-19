@@ -16,7 +16,7 @@
  */
 package org.geotools.data.shapefile.fid;
 
-import static junit.framework.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import org.geotools.data.Query;
 import org.geotools.data.shapefile.ShapefileDataStore;
@@ -25,7 +25,6 @@ import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.util.URLs;
 import org.junit.Test;
 
-/** @source $URL$ */
 public class FidIndexerTest extends FIDTestCase {
 
     /*

@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.logging.Logger;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.coordinatesequence.CoordinateSequences;
-import org.locationtech.jts.algorithm.CGAlgorithms;
+import org.locationtech.jts.algorithm.RayCrossingCounter;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.CoordinateSequence;
 import org.locationtech.jts.geom.Envelope;
@@ -38,12 +38,11 @@ import org.locationtech.jts.geom.Polygon;
  *
  * @author aaime
  * @author Ian Schneider
- * @source $URL$
  * @version $Id$
  */
 public class PolygonHandler implements ShapeHandler {
     protected static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.data.shapefile");
+            org.geotools.util.logging.Logging.getLogger(PolygonHandler.class);
 
     GeometryFactory geometryFactory;
 
@@ -76,7 +75,7 @@ public class PolygonHandler implements ShapeHandler {
             // nan test; x!=x iff x is nan
             if ((testPoint.x == p.x)
                     && (testPoint.y == p.y)
-                    && ((testPoint.z == p.z) || (!(testPoint.z == testPoint.z)))) {
+                    && ((testPoint.getZ() == p.getZ()) || Double.isNaN(testPoint.getZ()))) {
                 return true;
             }
         }
@@ -329,7 +328,7 @@ public class PolygonHandler implements ShapeHandler {
                 Coordinate[] coordList = tryRing.getCoordinates();
 
                 if (tryEnv.contains(testEnv)
-                        && (CGAlgorithms.isPointInRing(testPt, coordList)
+                        && (RayCrossingCounter.locatePointInRing(testPt, coordList) != 2
                                 || (pointInList(testPt, coordList)))) {
                     isContained = true;
                 }
@@ -458,13 +457,30 @@ public class PolygonHandler implements ShapeHandler {
         }
 
         if (shapeType == ShapeType.POLYGONM || shapeType == ShapeType.POLYGONZ) {
-            // m
-            buffer.putDouble(-10E40);
-            buffer.putDouble(-10E40);
-
-            for (int t = 0; t < npoints; t++) {
-                buffer.putDouble(-10E40);
+            // obtain all M values
+            List<Double> values = new ArrayList<>();
+            for (int ringN = 0; ringN < nrings; ringN++) {
+                CoordinateSequence coords = coordinates[ringN];
+                final int seqSize = coords.size();
+                double m;
+                for (int coordN = 0; coordN < seqSize; coordN++) {
+                    m = coords.getM(coordN);
+                    values.add(m);
+                }
             }
+
+            // m min
+            double edge = values.stream().min(Double::compare).get();
+            buffer.putDouble(!Double.isNaN(edge) ? edge : -10E40);
+            // m max
+            edge = values.stream().max(Double::compare).get();
+            buffer.putDouble(!Double.isNaN(edge) ? edge : -10E40);
+
+            // m values
+            values.forEach(
+                    x -> {
+                        buffer.putDouble(!Double.isNaN(x) ? x : -10E40);
+                    });
         }
     }
 }

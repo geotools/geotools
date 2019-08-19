@@ -43,7 +43,6 @@ import org.opengis.filter.spatial.Overlaps;
 import org.opengis.filter.spatial.Touches;
 import org.opengis.filter.spatial.Within;
 
-/** @source $URL$ */
 public class TeradataFilterToSQL extends PreparedFilterToSQL {
 
     static final Logger LOGGER = Logging.getLogger(TeradataFilterToSQL.class);

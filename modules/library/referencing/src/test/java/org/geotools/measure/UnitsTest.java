@@ -43,7 +43,6 @@ import tec.uom.se.unit.TransformedUnit;
  * Test conversions using the units declared in {@link Units}.
  *
  * @author Martin Desruisseaux (Geomatys)
- * @source $URL$
  */
 public class UnitsTest {
     /** Compares two values for equality. */

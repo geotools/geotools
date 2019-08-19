@@ -55,6 +55,12 @@ public class CacheConfig {
     // in heap cache size in bytes
     public static final String S3_CACHING_HEAP_SIZE = "s3.caching.heapSize";
 
+    // time to idle in seconds
+    public static final String S3_CACHING_TIME_TO_IDLE = "s3.caching.timeToIdle";
+
+    // time to live in seconds
+    public static final String S3_CACHING_TIME_TO_LIVE = "s3.caching.timeToLive";
+
     private boolean useDiskCache = true;
     private boolean useOffHeapCache = false;
     private int chunkSizeBytes = 5 * MEBIBYTE_IN_BYTES;
@@ -62,6 +68,8 @@ public class CacheConfig {
     private int heapSize = 50 * MEBIBYTE_IN_BYTES;
     private Path cacheDirectory;
     private String configurationPath;
+    private long timeToIdle = 0;
+    private long timeToLive = 0;
 
     public static CacheConfig getDefaultConfig() {
         CacheConfig config = new CacheConfig();
@@ -131,6 +139,24 @@ public class CacheConfig {
             config.setConfigurationPath(ehCachePath);
         }
 
+        if (System.getProperty(S3_CACHING_TIME_TO_IDLE) != null) {
+            try {
+                long timeToIdle = Long.parseLong(System.getProperty(S3_CACHING_TIME_TO_IDLE));
+                config.setTimeToIdle(timeToIdle);
+            } catch (NumberFormatException e) {
+                LOGGER.log(Level.FINER, "Can't parse time to idle", e);
+            }
+        }
+
+        if (System.getProperty(S3_CACHING_TIME_TO_LIVE) != null) {
+            try {
+                long timeToLive = Long.parseLong(System.getProperty(S3_CACHING_TIME_TO_LIVE));
+                config.setTimeToLive(timeToLive);
+            } catch (NumberFormatException e) {
+                LOGGER.log(Level.FINER, "Can't parse time to live", e);
+            }
+        }
+
         return config;
     }
 
@@ -188,5 +214,21 @@ public class CacheConfig {
 
     public void setHeapSize(int heapSize) {
         this.heapSize = heapSize;
+    }
+
+    public long getTimeToIdle() {
+        return timeToIdle;
+    }
+
+    public long getTimeToLive() {
+        return timeToLive;
+    }
+
+    public void setTimeToIdle(long timeToIdle) {
+        this.timeToIdle = timeToIdle;
+    }
+
+    public void setTimeToLive(long timeToLive) {
+        this.timeToLive = timeToLive;
     }
 }

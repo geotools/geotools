@@ -18,10 +18,7 @@ package org.geotools.graph.util.delaunay;
 
 import java.util.List;
 
-/**
- * @author jfc173
- * @source $URL$
- */
+/** @author jfc173 */
 public class AutoClustData {
 
     double localMean;

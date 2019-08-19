@@ -37,7 +37,6 @@ import org.opengis.referencing.operation.TransformException;
  *   <li>{@link MathTransformFactory#createFilterTransform}
  * </ul>
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

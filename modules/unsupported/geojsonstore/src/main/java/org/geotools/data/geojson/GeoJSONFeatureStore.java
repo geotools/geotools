@@ -1,5 +1,3 @@
-package org.geotools.data.geojson;
-
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
@@ -16,6 +14,7 @@ package org.geotools.data.geojson;
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
+package org.geotools.data.geojson;
 
 import java.io.IOException;
 import org.geotools.data.FeatureReader;

@@ -31,7 +31,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  *
  * @author Michael Bedward
  * @since 8.0
- * @source $URL$
  * @version $Id$
  */
 public class CRSListModel extends AbstractListModel {
@@ -59,7 +58,6 @@ public class CRSListModel extends AbstractListModel {
      * JCRSChooser#DEFAULT_AUTHORITY}.
      *
      * @param authority the authority name
-     * @param showDefaults show GeoTools default reference systems
      */
     public CRSListModel(String authority) {
         try {

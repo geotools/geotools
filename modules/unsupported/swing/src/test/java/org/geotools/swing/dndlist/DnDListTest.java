@@ -21,13 +21,12 @@ import static org.junit.Assert.*;
 
 import java.awt.GraphicsEnvironment;
 import javax.swing.RepaintManager;
-import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
+import org.assertj.swing.edt.FailOnThreadViolationRepaintManager;
 import org.geotools.swing.control.DnDList;
 import org.geotools.swing.control.DnDListModel;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-/** @source $URL$ */
 public class DnDListTest {
 
     boolean isHeadless() {

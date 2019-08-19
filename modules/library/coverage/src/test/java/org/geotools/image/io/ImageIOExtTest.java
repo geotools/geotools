@@ -36,7 +36,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-/** @source $URL$ */
 public class ImageIOExtTest {
 
     private boolean useCache;
@@ -98,7 +97,7 @@ public class ImageIOExtTest {
     RenderedImage getTestRenderedImage(int width, int height, int bands) {
         Byte[] values = new Byte[bands];
         for (int i = 0; i < values.length; i++) {
-            values[i] = new Byte((byte) 0);
+            values[i] = Byte.valueOf((byte) 0);
         }
         return ConstantDescriptor.create((float) width, (float) height, values, null);
     }

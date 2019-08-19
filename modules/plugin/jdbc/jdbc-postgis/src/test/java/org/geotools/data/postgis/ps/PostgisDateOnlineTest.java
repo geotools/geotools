@@ -4,7 +4,6 @@ import org.geotools.data.postgis.PostgisDateTestSetup;
 import org.geotools.jdbc.JDBCDateOnlineTest;
 import org.geotools.jdbc.JDBCDateTestSetup;
 
-/** @source $URL$ */
 public class PostgisDateOnlineTest extends JDBCDateOnlineTest {
 
     @Override

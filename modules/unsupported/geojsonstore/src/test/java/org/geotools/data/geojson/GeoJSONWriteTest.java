@@ -79,12 +79,12 @@ public class GeoJSONWriteTest {
         tmp = File.createTempFile("example", "");
         boolean exists = tmp.exists();
         if (exists) {
-            System.err.println("Removing tempfile " + tmp);
+            // System.err.println("Removing tempfile " + tmp);
             tmp.delete();
         }
         boolean created = tmp.mkdirs();
         if (!created) {
-            System.err.println("Could not create " + tmp);
+            // System.err.println("Could not create " + tmp);
             System.exit(1);
         }
         file = new File(tmp, "locations.json");
@@ -92,7 +92,7 @@ public class GeoJSONWriteTest {
         URL resource = TestData.getResource(GeoJSONWriteTest.class, "locations.json");
         url = resource;
         if (url == null) throw new RuntimeException("Input datafile not found");
-        System.out.println("copying " + resource.toExternalForm() + " to " + file);
+        // System.out.println("copying " + resource.toExternalForm() + " to " + file);
         Files.copy(resource.openStream(), file.toPath(), StandardCopyOption.REPLACE_EXISTING);
         url = URLs.fileToUrl(file);
     }
@@ -145,7 +145,7 @@ public class GeoJSONWriteTest {
         assertEquals("featureStore1 before", 9, featureStore1.getFeatures().size());
         assertEquals("featureStore2 before", 9, featureStore2.getFeatures().size());
         SimpleFeature first = DataUtilities.first(featureStore1.getFeatures());
-        System.out.println(first);
+        // System.out.println(first);
         // select feature to remove
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
 
@@ -174,7 +174,7 @@ public class GeoJSONWriteTest {
                         type,
                         new Object[] {45.52, -122.681944, "Portland", 800, 2014, point},
                         "feature-10");
-        System.out.println(feature);
+        // System.out.println(feature);
         SimpleFeatureCollection collection = DataUtilities.collection(feature);
 
         featureStore2.addFeatures(collection);
@@ -274,7 +274,7 @@ public class GeoJSONWriteTest {
     public void replaceAll() throws Exception {
         Map<String, Serializable> params = new HashMap<String, Serializable>();
         params.put("url", url);
-        System.out.println("fetching store from " + url);
+        // System.out.println("fetching store from " + url);
         DataStore store = DataStoreFinder.getDataStore(params);
 
         final SimpleFeatureType type = store.getSchema("locations");

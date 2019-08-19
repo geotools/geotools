@@ -35,7 +35,6 @@ import org.opengis.filter.FilterFactory;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class PropertyIsGreaterThanOrEqualToBinding
         extends OGCPropertyIsGreaterThanOrEqualToBinding {

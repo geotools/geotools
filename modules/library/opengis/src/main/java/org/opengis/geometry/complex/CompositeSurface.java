@@ -23,7 +23,6 @@ import org.opengis.geometry.primitive.OrientableSurface;
  * Essentially, a composite surface is a collection of oriented surfaces that join in pairs on
  * common boundary curves and which, when considered as a whole, form a single surface.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/as">ISO 19107</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0

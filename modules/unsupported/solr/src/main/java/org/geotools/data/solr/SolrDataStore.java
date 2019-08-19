@@ -45,15 +45,17 @@ import org.geotools.data.store.ContentDataStore;
 import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.factory.Hints;
 import org.geotools.feature.NameImpl;
+import org.geotools.feature.visitor.UniqueVisitor;
 import org.geotools.filter.FilterCapabilities;
 import org.geotools.filter.visitor.SimplifyingFilterVisitor;
+import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
+import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.sort.SortBy;
 import org.opengis.filter.sort.SortOrder;
 
@@ -128,10 +130,10 @@ public class SolrDataStore extends ContentDataStore {
                 new HttpSolrClient.Builder()
                         .withBaseSolrUrl(url.toString())
                         .allowCompression(true)
+                        .withConnectionTimeout(10000)
+                        .withSocketTimeout(10000)
                         .build();
-        this.solrServer.setConnectionTimeout(10000);
         this.solrServer.setFollowRedirects(true);
-        this.solrServer.setSoTimeout(10000);
     }
 
     /**
@@ -272,20 +274,6 @@ public class SolrDataStore extends ContentDataStore {
     }
 
     /**
-     * Get the field used to filter the types that the datastore provides.
-     *
-     * @deprecated
-     */
-    public String getField() {
-        if (layerMapper instanceof FieldLayerMapper) {
-            return ((FieldLayerMapper) layerMapper).getField();
-        }
-
-        throw new IllegalStateException(
-                "Layer mapper not instance of " + FieldLayerMapper.class.getName());
-    }
-
-    /**
      * Gets the document loader controlling how documents are mapped to layers from the solr index.
      */
     public SolrLayerMapper getLayerMapper() {
@@ -381,6 +369,27 @@ public class SolrDataStore extends ContentDataStore {
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
         }
+        return query;
+    }
+
+    /**
+     * Create a group by field Solr query
+     *
+     * @param featureType
+     * @param q
+     * @param visitor UniqueVisitor with group settings
+     * @return Solr query
+     */
+    protected SolrQuery selectUniqueValues(
+            SimpleFeatureType featureType, Query q, UniqueVisitor visitor) {
+        SolrQuery query = select(featureType, q);
+        // normal fields empty
+        query.setFields(new String[] {});
+        // set group data
+        query.setParam("group", true);
+        PropertyName pname = (PropertyName) visitor.getExpression();
+        query.setParam("group.field", pname.getPropertyName());
+        query.setParam("group.limit", "0");
         return query;
     }
 

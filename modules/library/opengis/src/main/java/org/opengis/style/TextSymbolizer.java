@@ -16,7 +16,6 @@ import org.opengis.filter.expression.Expression;
 /**
  * Indicates how text will be drawn.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/symbol">Symbology Encoding
  *     Implementation Specification 1.1.0</A>
  * @author Open Geospatial Consortium

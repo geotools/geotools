@@ -16,10 +16,7 @@
  */
 package org.geotools.geometry.iso.util.algorithmND;
 
-/**
- * @author roehrig
- * @source $URL$
- */
+/** @author roehrig */
 public class AlgoLineND {
 
     // Commented out because methods are neither tested nor used

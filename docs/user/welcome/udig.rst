@@ -40,11 +40,11 @@ You can get a FeatureStore in uDig by writing an operation. The operation will s
            FeatureStore store = (FeatureStore) target; // AddStuff registered to accept FeatureStore
            FeatureType schema = store.getSchema();
    
-           FeatureCollection collection = FeatureCollections.newInstance();
+           FeatureCollection collection = new DefaultFeatureCollection();
            Object attributes = new Object[]{
                "name",
                new geomFactory.createPoint( new Coordinate(1,1) ),
-               new Integer(3)
+               Integer.valueOf(3)
            };
            Feature feature = schema.create( attribtues, "featureId" );
            ...

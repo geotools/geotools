@@ -44,7 +44,6 @@ import tec.uom.se.unit.MetricPrefix;
  * </TD></TR></TABLE>
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
@@ -258,6 +257,7 @@ public class DefaultTemporalCRS extends AbstractSingleCRS implements TemporalCRS
      *     versions of this class.
      */
     @Override
+    @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int hashCode() {
         return (int) serialVersionUID ^ super.hashCode();
     }

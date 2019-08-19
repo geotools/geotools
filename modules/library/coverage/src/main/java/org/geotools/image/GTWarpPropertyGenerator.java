@@ -35,7 +35,7 @@ import javax.media.jai.ROIShape;
 import javax.media.jai.RenderedOp;
 import javax.media.jai.Warp;
 import javax.media.jai.operator.ConstantDescriptor;
-import org.geotools.factory.Hints;
+import org.geotools.util.factory.Hints;
 
 /**
  * A property generator for the Warp operation that builds the expected ROI bounds even when the
@@ -139,7 +139,7 @@ public class GTWarpPropertyGenerator extends PropertyGeneratorImpl {
 
             final PlanarImage constantImage =
                     ConstantDescriptor.create(
-                            new Float(w), new Float(h), new Byte[] {(byte) 255}, hints);
+                            Float.valueOf(w), Float.valueOf(h), new Byte[] {(byte) 255}, hints);
 
             PlanarImage roiImage = null;
 

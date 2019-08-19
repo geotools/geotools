@@ -16,7 +16,7 @@
  */
 package org.geotools.data.postgis;
 
-import org.geotools.data.DefaultQuery;
+import org.geotools.data.Query;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.jdbc.JDBCDataStore;
@@ -32,7 +32,6 @@ import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.PropertyIsEqualTo;
 import org.opengis.filter.spatial.Intersects;
 
-/** @source $URL$ */
 public class PostGISFeatureSourceOnlineTest extends JDBCFeatureSourceOnlineTest {
 
     @Override
@@ -66,7 +65,7 @@ public class PostGISFeatureSourceOnlineTest extends JDBCFeatureSourceOnlineTest 
                                                     new Coordinate(0, 0)
                                                 }))));
 
-        DefaultQuery query = new DefaultQuery();
+        Query query = new Query();
         query.setFilter(filter);
 
         ReferencedEnvelope bounds = dataStore.getFeatureSource(tname("ft1")).getBounds(query);
@@ -101,7 +100,7 @@ public class PostGISFeatureSourceOnlineTest extends JDBCFeatureSourceOnlineTest 
         PropertyIsEqualTo filter =
                 ff.equals(ff.property(aname("stringProperty")), ff.literal("one"));
 
-        DefaultQuery query = new DefaultQuery();
+        Query query = new Query();
         query.setFilter(filter);
 
         ReferencedEnvelope bounds = dataStore.getFeatureSource(tname("ft1")).getBounds(query);

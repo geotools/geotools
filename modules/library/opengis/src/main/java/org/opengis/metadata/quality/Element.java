@@ -22,7 +22,6 @@ import org.opengis.util.InternationalString;
 /**
  * Type of test applied to the data specified by a data quality scope.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/as#01-111">ISO 19115</A>
  * @author Martin Desruisseaux (IRD)
  * @author Cory Horner (Refractions Research)

@@ -22,7 +22,8 @@ import org.geotools.sld.bindings.SLDFeatureTypeStyleBinding;
 import org.geotools.styling.Description;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.StyleFactory;
-import org.geotools.xml.*;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 
 /**
  * Binding object for the element http://www.opengis.net/se:FeatureTypeStyle.
@@ -63,7 +64,6 @@ import org.geotools.xml.*;
  * </pre>
  *
  * @generated
- * @source $URL$
  */
 public class FeatureTypeStyleBinding extends SLDFeatureTypeStyleBinding {
 
@@ -92,9 +92,6 @@ public class FeatureTypeStyleBinding extends SLDFeatureTypeStyleBinding {
             fts.getDescription().setTitle(d.getTitle());
             fts.getDescription().setAbstract(d.getAbstract());
         }
-
-        // TODO: version
-        if (node.hasChild("version")) {}
 
         return fts;
     }

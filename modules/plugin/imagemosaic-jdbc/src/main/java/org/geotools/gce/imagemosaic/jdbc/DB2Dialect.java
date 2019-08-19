@@ -20,7 +20,6 @@ package org.geotools.gce.imagemosaic.jdbc;
  * This class implements the db dialect for db2 spatial extender
  *
  * @author mcr
- * @source $URL$
  */
 public class DB2Dialect extends DBDialect {
     public DB2Dialect(Config config) {

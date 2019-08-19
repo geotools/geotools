@@ -18,7 +18,6 @@ import org.opengis.annotation.XmlElement;
  * to show identification being defined with a long (as with several popular object relational
  * mappers).
  *
- * @source $URL$
  * @version <A HREF="http://portal.opengeospatial.org/files/?artifact_id=5929">Implementation
  *     specification 1.1</A>
  * @author Jody Garnett, Refractions Research Inc.

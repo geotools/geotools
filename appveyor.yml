@@ -3,7 +3,7 @@ branches:
   only:
   - master
 build_script:
-- cmd: mvn install -T2 -Dall -fae -U
+- cmd: mvn install -T1C -Dall -fae -U -Dfmt.skip=true
 cache: 
   - C:\Users\appveyor\.m2\ -> pom.xml
 

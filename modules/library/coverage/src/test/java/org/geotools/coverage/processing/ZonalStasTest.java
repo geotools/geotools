@@ -79,13 +79,12 @@ import org.opengis.referencing.operation.TransformException;
  * @author Simone Giannecchini, GeoSolutions
  * @author Andrea Antonello, Hydrologis
  * @author Daniele Romagnoli, GeoSolutions
- * @source $URL$
  */
 public class ZonalStasTest extends TestCase {
 
     static final double DELTA = 10E-4;
 
-    private static final Logger LOGGER = Logging.getLogger(ZonalStasTest.class.toString());
+    private static final Logger LOGGER = Logging.getLogger(ZonalStasTest.class);
 
     static ListFeatureCollection testPolygons;
 

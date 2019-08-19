@@ -22,10 +22,10 @@ import org.eclipse.emf.ecore.EObject;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link net.opengis.ows20.AcceptFormatsType#getOutputFormat <em>Output Format</em>}</li>
  * </ul>
- * </p>
  *
  * @see net.opengis.ows20.Ows20Package#getAcceptFormatsType()
  * @model extendedMetaData="name='AcceptFormatsType' kind='elementOnly'"

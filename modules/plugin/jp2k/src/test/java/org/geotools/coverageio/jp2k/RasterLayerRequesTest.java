@@ -34,7 +34,6 @@ import org.opengis.parameter.ParameterValue;
  * @author Daniele Romagnoli, GeoSolutions
  * @author Simone Giannecchini (simboss), GeoSolutions
  *     <p>Testing {@link org.geotools.coverageio.jp2k.RasterLayerRequest}
- * @source $URL$
  */
 public final class RasterLayerRequesTest extends BaseJP2K {
 

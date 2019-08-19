@@ -19,7 +19,6 @@ package org.geotools.process.raster;
 
 import static org.junit.Assert.assertEquals;
 
-import it.geosolutions.jaiext.JAIExt;
 import it.geosolutions.jaiext.vectorbin.ROIGeometry;
 import java.awt.Rectangle;
 import java.awt.geom.NoninvertibleTransformException;
@@ -35,11 +34,11 @@ import javax.media.jai.RenderedOp;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.GridFormatFinder;
+import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.image.ImageWorker;
 import org.geotools.image.jai.Registry;
-import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.test.TestData;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -80,8 +79,6 @@ public class BandProcessTest {
     @BeforeClass
     public static void setup()
             throws FileNotFoundException, IOException, NoninvertibleTransformException {
-        JAIExt.initJAIEXT(true, true);
-
         // Disable medialib
         System.setProperty("com.sun.media.jai.disableMediaLib", "true");
         // Disable bandmerge and mosaic native operation
@@ -119,7 +116,6 @@ public class BandProcessTest {
         // Enable bandmerge and mosaic native operation
         Registry.setNativeAccelerationAllowed("BandMerge", true);
         Registry.setNativeAccelerationAllowed("Mosaic", true);
-        JAIExt.initJAIEXT(false, true);
     }
 
     // Ensure that the merging and selecting two equal images returns the same images

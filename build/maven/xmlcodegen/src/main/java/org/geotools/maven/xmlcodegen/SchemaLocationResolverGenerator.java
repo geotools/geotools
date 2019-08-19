@@ -17,8 +17,6 @@
 package org.geotools.maven.xmlcodegen;
 
 import java.io.File;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -26,7 +24,7 @@ import java.util.logging.Level;
 
 import org.eclipse.xsd.XSDInclude;
 import org.eclipse.xsd.XSDSchema;
-import org.geotools.xml.Schemas;
+import org.geotools.xsd.Schemas;
 
 
 /**

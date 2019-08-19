@@ -14,7 +14,6 @@ import org.opengis.filter.expression.Expression;
 import org.opengis.filter.temporal.AnyInteracts;
 import org.opengis.temporal.RelativePosition;
 
-/** @source $URL$ */
 public class AnyInteractsImpl extends BinaryTemporalOperatorImpl implements AnyInteracts {
 
     public AnyInteractsImpl(Expression e1, Expression e2) {

@@ -21,7 +21,9 @@ import org.geotools.se.v1_1.SE;
 import org.geotools.styling.Description;
 import org.geotools.styling.StyleFactory;
 import org.geotools.util.SimpleInternationalString;
-import org.geotools.xml.*;
+import org.geotools.xsd.AbstractComplexBinding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 import org.opengis.util.InternationalString;
 
 /**
@@ -44,7 +46,6 @@ import org.opengis.util.InternationalString;
  * </pre>
  *
  * @generated
- * @source $URL$
  */
 public class DescriptionBinding extends AbstractComplexBinding {
 

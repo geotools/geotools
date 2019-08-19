@@ -55,17 +55,16 @@ import org.eclipse.xsd.XSDSchema;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.util.URLs;
-import org.geotools.xml.Configuration;
-import org.geotools.xml.Parser;
-import org.geotools.xml.Schemas;
-import org.geotools.xml.StreamingParser;
+import org.geotools.xsd.Configuration;
+import org.geotools.xsd.Parser;
+import org.geotools.xsd.Schemas;
+import org.geotools.xsd.StreamingParser;
 import org.locationtech.jts.geom.Point;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.capability.FilterCapabilities;
 import org.opengis.filter.capability.Operator;
 import org.w3c.dom.Document;
 
-/** @source $URL$ */
 public class WFS_2_0_0_ParsingTest extends TestCase {
 
     Configuration configuration;
@@ -171,7 +170,7 @@ public class WFS_2_0_0_ParsingTest extends TestCase {
         assertTrue(simpleKeywords.contains("GEOSERVER"));
 
         assertEquals("WFS", sa.getServiceType().getValue());
-        assertEquals("2.0.0", sa.getServiceTypeVersion().get(0));
+        assertEquals("2.0.0", sa.getServiceTypeVersion());
     }
 
     void assertOperationsMetadata(WFSCapabilitiesType caps) {
@@ -372,7 +371,7 @@ public class WFS_2_0_0_ParsingTest extends TestCase {
 
             assertEquals(BigInteger.valueOf(155), intProperty);
             assertEquals(new URI("http://www.opengeospatial.org/"), f.getAttribute("uriProperty"));
-            assertEquals(new Float(12765.0), f.getAttribute("measurand"));
+            assertEquals(Float.valueOf(12765.0f), f.getAttribute("measurand"));
             assertTrue(f.getAttribute("dateProperty") instanceof Date);
             assertEquals(BigDecimal.valueOf(5.03), f.getAttribute("decimalProperty"));
         } finally {

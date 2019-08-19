@@ -16,16 +16,16 @@
  */
 package org.geotools.referencing.factory.epsg;
 
-import org.geotools.factory.FactoryNotFoundException;
-import org.geotools.factory.FactoryRegistryException;
-import org.geotools.factory.GeoTools;
-import org.geotools.factory.Hints;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.ReferencingFactoryFinder;
 import org.geotools.referencing.factory.AbstractAuthorityFactory;
 import org.geotools.referencing.factory.AbstractEpsgMediator;
 import org.geotools.referencing.factory.DeferredAuthorityFactory;
 import org.geotools.referencing.factory.OrderedAxisAuthorityFactory;
+import org.geotools.util.factory.FactoryNotFoundException;
+import org.geotools.util.factory.FactoryRegistryException;
+import org.geotools.util.factory.GeoTools;
+import org.geotools.util.factory.Hints;
 import org.opengis.metadata.citation.Citation;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CRSAuthorityFactory;
@@ -51,12 +51,9 @@ import org.opengis.referencing.operation.CoordinateOperationAuthorityFactory;
  * </blockquote>
  *
  * @since 2.5
- * @source $URL$
- * @version $Id$
  * @author Jody Garnett
  * @see OrderedAxisAuthorityFactory
  * @see Hints#FORCE_LONGITUDE_FIRST_AXIS_ORDER
- * @tutorial http://docs.codehaus.org/display/GEOTOOLS/The+axis+order+issue
  */
 public class LongitudeFirstEpsgDecorator extends DeferredAuthorityFactory
         implements CRSAuthorityFactory,
@@ -112,21 +109,12 @@ public class LongitudeFirstEpsgDecorator extends DeferredAuthorityFactory
      * Returns the priority to use relative to the {@link ThreadedEpsgFactory} priority. The default
      * priority should be lower, except if the <code>{@value #SYSTEM_DEFAULT_KEY}</code> system
      * property is set to {@code true}.
-     *
-     * @deprecated Not needed anymore since {@link GeoTools#getDefaultHints}.
      */
     private static int relativePriority(Hints userHints) {
         try {
             if (Boolean.getBoolean(GeoTools.FORCE_LONGITUDE_FIRST_AXIS_ORDER)) {
                 return +10;
             }
-            //            if( userHints != null && Boolean.TRUE == userHints.get(
-            // Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER ) ){
-            //                return 10;
-            //            }
-            //            else {
-            //                return -10;
-            //            }
         } catch (SecurityException e) {
             // Fall back on default value.
         }

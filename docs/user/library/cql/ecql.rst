@@ -29,7 +29,7 @@ As you can see above the ECQL class can be run on the command line.
 It allows you to try out the ECQL examples on this page; and produces the XML Filter representation of the result.::
     
     ECQL Filter Tester
-    "Seperate with \";\" or \"quit\" to finish)
+    "Separate with \";\" or \"quit\" to finish)
     >attr > 10
     <?xml version="1.0" encoding="UTF-8"?>
     <ogc:PropertyIsGreaterThan xmlns="http://www.opengis.net/ogc" xmlns:ogc="http://www.opengis.net/ogc" xmlns:gml="http://www.opengis.net/gml">

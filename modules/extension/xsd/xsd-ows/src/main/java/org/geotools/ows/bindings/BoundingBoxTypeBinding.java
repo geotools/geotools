@@ -21,11 +21,11 @@ import javax.xml.namespace.QName;
 import net.opengis.ows10.Ows10Factory;
 import org.eclipse.emf.ecore.EFactory;
 import org.eclipse.emf.ecore.EObject;
-import org.geotools.ows.OWS;
-import org.geotools.xml.ComplexEMFBinding;
-import org.geotools.xml.EMFUtils;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
+import org.geotools.xsd.ComplexEMFBinding;
+import org.geotools.xsd.EMFUtils;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
+import org.geotools.xsd.ows.OWS;
 
 /**
  * Binding object for the type http://www.opengis.net/ows:BoundingBoxType.
@@ -69,7 +69,6 @@ import org.geotools.xml.Node;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class BoundingBoxTypeBinding extends ComplexEMFBinding {
 

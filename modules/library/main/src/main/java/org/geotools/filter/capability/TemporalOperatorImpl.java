@@ -22,7 +22,6 @@ import java.util.Set;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.capability.TemporalOperator;
 
-/** @source $URL$ */
 public class TemporalOperatorImpl implements TemporalOperator {
 
     String name;

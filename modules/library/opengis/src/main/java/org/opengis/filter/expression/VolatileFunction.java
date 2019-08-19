@@ -29,6 +29,5 @@ package org.opengis.filter.expression;
  * should be marked as <em>volatile</em>
  *
  * @author Andrea Aime - GeoSolutions
- * @source $URL$
  */
 public interface VolatileFunction extends Function {}

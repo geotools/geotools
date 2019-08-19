@@ -22,8 +22,8 @@ import org.geotools.data.DataStore;
 import org.geotools.data.property.PropertyDataStore;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureSource;
+import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.FeatureCollection;
-import org.geotools.feature.FeatureCollections;
 import org.geotools.process.ProcessException;
 import org.geotools.test.TestData;
 import org.junit.After;
@@ -35,7 +35,6 @@ import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
 import org.opengis.feature.Feature;
 
-/** @source $URL$ */
 public class LRSMeasureProcessTest {
     private DataStore featureSource;
 
@@ -132,7 +131,7 @@ public class LRSMeasureProcessTest {
     @Test
     public void testNoFeaturesGiven() throws Exception {
         LRSMeasureProcess process = new LRSMeasureProcess();
-        FeatureCollection origional = FeatureCollections.newCollection();
+        FeatureCollection origional = new DefaultFeatureCollection();
         Point point = geometryFactory.createPoint(new Coordinate(1.0, 0.0));
 
         FeatureCollection result = process.execute(origional, "from_lrs", "to_lrs", point, null);

@@ -34,7 +34,7 @@ import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.referencing.CRS;
 import org.geotools.util.URLs;
-import org.geotools.xml.Parser;
+import org.geotools.xsd.Parser;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Point;
 import org.opengis.feature.simple.SimpleFeature;
@@ -42,7 +42,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
-/** @source $URL$ */
 public class GMLParsingTest extends TestCase {
 
     public void testGML() throws Exception {

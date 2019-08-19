@@ -25,7 +25,6 @@ import org.jdom2.Document;
  *
  * @author Russell Petty (GeoScience Victoria)
  * @version $Id$
- * @source $URL$
  */
 public class XmlResponse {
 

@@ -17,7 +17,7 @@
 package org.geotools.gml2.simple;
 
 import org.geotools.gml2.GML;
-import org.geotools.xml.Encoder;
+import org.geotools.xsd.Encoder;
 import org.locationtech.jts.geom.Geometry;
 import org.xml.sax.helpers.AttributesImpl;
 
@@ -33,8 +33,16 @@ import org.xml.sax.helpers.AttributesImpl;
  */
 public abstract class GeometryEncoder<T extends Geometry> extends ObjectEncoder<T> {
 
+    /** Flag for to encode gml:id as attribute if is true. */
+    private boolean encodeGmlId = true;
+
     protected GeometryEncoder(Encoder encoder) {
         super(encoder);
+    }
+
+    protected GeometryEncoder(Encoder encoder, boolean encodeGmlId) {
+        super(encoder);
+        this.encodeGmlId = encodeGmlId;
     }
 
     /**
@@ -64,7 +72,7 @@ public abstract class GeometryEncoder<T extends Geometry> extends ObjectEncoder<
      *     gml:id attribute otherwise
      */
     protected AttributesImpl cloneWithGmlId(AttributesImpl atts, String gmlId) {
-        if (gmlId == null) {
+        if (gmlId == null || !encodeGmlId) {
             return atts;
         }
         AttributesImpl result;

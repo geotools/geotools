@@ -26,7 +26,6 @@ import org.opengis.util.CodeList;
  * African grids usually points West, instead of East. This information is obviously relevant for
  * algorithms converting South African grid coordinates into Lat/Long.
  *
- * @source $URL$
  * @version <A HREF="http://portal.opengeospatial.org/files/?artifact_id=6716">Abstract
  *     specification 2.0</A>
  * @author Martin Desruisseaux (IRD)

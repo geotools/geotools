@@ -132,18 +132,6 @@ abstract class KeysFetcher {
             SimpleFeatureType featureType, Collection<SimpleFeature> features, PreparedStatement ps)
             throws SQLException;
 
-    /**
-     * Called after each non-prepared statement inserts to get back the key that were inserted.
-     *
-     * @deprecated Please call {@link #postInsert(SimpleFeatureType, SimpleFeature, Connection,
-     *     Statement)} instead
-     */
-    @Deprecated
-    public void postInsert(SimpleFeatureType featureType, SimpleFeature feature, Connection cx)
-            throws SQLException {
-        postInsert(featureType, feature, cx, null);
-    }
-
     /** Called after each non-prepared statement inserts to get back the key that were inserted. */
     public abstract void postInsert(
             SimpleFeatureType featureType, SimpleFeature feature, Connection cx, Statement st)
@@ -453,9 +441,11 @@ abstract class KeysFetcher {
             try {
                 ResultSet rs = st.executeQuery(sql.toString());
                 try {
-                    rs.next();
-                    next = rs.getObject(1);
-
+                    if (rs.next()) {
+                        next = rs.getObject(1);
+                    } else {
+                        next = 1;
+                    }
                     if (next == null) {
                         // this probably means there was no data in the table, set to 1
                         // TODO: probably better to do a count to check... but if this

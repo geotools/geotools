@@ -36,11 +36,9 @@ import org.locationtech.jts.geom.Polygon;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.FilterFactory;
 
-/** @source $URL$ */
 public class InclusionFeatureCollectionTest {
 
     FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
-    GeometryFactory gf = new GeometryFactory();
 
     @Test
     public void testExecute() throws Exception {
@@ -92,6 +90,7 @@ public class InclusionFeatureCollectionTest {
         assertTrue(expected.equals((Geometry) sf.getDefaultGeometry()));
     }
 
+    @Test
     public void testExecute1() throws Exception {
         SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
         tb.setName("featureType");

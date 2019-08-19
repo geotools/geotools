@@ -29,7 +29,7 @@ import org.geotools.util.logging.Logging;
 
 public class GeobufDataStoreFactory implements DataStoreFactorySpi {
 
-    private static final Logger LOGGER = Logging.getLogger("org.geotools.data.geobuf");
+    private static final Logger LOGGER = Logging.getLogger(GeobufDataStoreFactory.class);
 
     public static final Param FILE_PARAM =
             new Param(

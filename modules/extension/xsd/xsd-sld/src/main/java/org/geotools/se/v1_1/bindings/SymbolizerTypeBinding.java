@@ -21,7 +21,9 @@ import javax.xml.namespace.QName;
 import org.geotools.se.v1_1.SE;
 import org.geotools.styling.Symbolizer;
 import org.geotools.styling.UomOgcMapping;
-import org.geotools.xml.*;
+import org.geotools.xsd.AbstractComplexBinding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 import org.opengis.style.Description;
 
 /**
@@ -52,7 +54,6 @@ import org.opengis.style.Description;
  * </pre>
  *
  * @generated
- * @source $URL$
  */
 public class SymbolizerTypeBinding extends AbstractComplexBinding {
 
@@ -94,12 +95,6 @@ public class SymbolizerTypeBinding extends AbstractComplexBinding {
         }
         if (node.hasChild("Description")) {
             sym.setDescription((Description) node.getChildValue("Description"));
-        }
-        if (node.hasChild("BaseSymbolizer")) {
-            // throw new IllegalArgumentException("BaseSymbolizer not supported");
-        }
-        if (node.hasAttribute("version")) {
-            // throw new IllegalArgumentException("version not supported");
         }
         if (node.hasAttribute("uom")) {
             String uom = ((URI) node.getAttributeValue("uom")).toString();

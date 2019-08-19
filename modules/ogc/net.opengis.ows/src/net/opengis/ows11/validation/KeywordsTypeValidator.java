@@ -1,6 +1,4 @@
 /**
- * <copyright>
- * </copyright>
  *
  * $Id$
  */
@@ -17,8 +15,8 @@ import org.eclipse.emf.common.util.EList;
  * This can be disabled with -vmargs -Dorg.eclipse.emf.examples.generator.validator=false.
  */
 public interface KeywordsTypeValidator {
-    boolean validate();
+  boolean validate();
 
-    boolean validateKeyword(EList value);
-    boolean validateType(CodeType value);
+  boolean validateKeyword(EList value);
+  boolean validateType(CodeType value);
 }

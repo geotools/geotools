@@ -26,7 +26,6 @@ import org.opengis.feature.simple.SimpleFeature;
  * allows it to collect warning information.
  *
  * @author Jody Garnett, Refractions Research, Inc
- * @source $URL$
  */
 public interface ValidationResults {
     /**

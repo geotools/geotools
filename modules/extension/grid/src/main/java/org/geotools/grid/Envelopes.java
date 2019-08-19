@@ -39,7 +39,6 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
  * @todo move this class or its methods to a more general module
  * @author mbedward
  * @since 2.7
- * @source $URL$
  * @version $Id$
  */
 public class Envelopes {

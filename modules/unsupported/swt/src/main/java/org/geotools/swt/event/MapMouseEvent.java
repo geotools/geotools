@@ -29,7 +29,6 @@ import org.geotools.swt.SwtMapPane;
  * @author Michael Bedward (adapted from code by Cameron Shorter)
  * @author Andrea Antonello (www.hydrologis.com)
  * @since 2.6
- * @source $URL$
  */
 public final class MapMouseEvent {
     private DirectPosition2D geoCoords;

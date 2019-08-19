@@ -27,11 +27,11 @@ import java.util.logging.Level;
 import org.apache.commons.io.FilenameUtils;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFactorySpi;
-import org.geotools.factory.Hints;
 import org.geotools.gce.imagemosaic.Utils;
 import org.geotools.gce.imagemosaic.catalog.oracle.OracleDatastoreWrapper;
 import org.geotools.gce.imagemosaic.catalog.postgis.PostgisDatastoreWrapper;
 import org.geotools.util.Utilities;
+import org.geotools.util.factory.Hints;
 
 public class GTDataStoreGranuleCatalog extends AbstractGTDataStoreGranuleCatalog {
 

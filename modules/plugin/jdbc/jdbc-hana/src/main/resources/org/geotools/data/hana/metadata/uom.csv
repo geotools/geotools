@@ -1,0 +1,69 @@
+"milliarc-seconds per year","angular",1.5363146893207598E-16
+"arc-seconds per year","angular",1.5363146893207598E-13
+"milliarc-second","angular",4.848136811095355E-9
+"microradian","angular",1.0E-6
+"centesimal second","angular",1.570796326794895E-6
+"arc-second","angular",4.848136811095355E-6
+"centesimal minute","angular",1.570796326794895E-4
+"arc-minute","angular",2.908882086657213E-4
+"mil_6400","angular",9.817477042468094E-4
+"grad","angular",0.01570796326794895
+"degree","angular",0.017453292519943278
+"degree (supplier to define representation)","angular",0.017453292519943278
+"radians per second","angular",1.0
+"radian","angular",1.0
+"millimetres per year","linear",3.168876517273149E-11
+"centimetres per year","linear",3.1688765172731484E-10
+"metres per year","linear",3.1688765172731486E-8
+"millimetre","linear",0.001
+"centimetre","linear",0.01
+"Clarke's link","linear",0.201166195164
+"British link (Sears 1922 truncated)","linear",0.20116756
+"British link (Sears 1922)","linear",0.2011676512155263
+"British link (Benoit 1895 A)","linear",0.201167824
+"British link (Benoit 1895 B)","linear",0.2011678249437587
+"link","linear",0.201168
+"US survey link","linear",0.2011684023368047
+"Clarke's foot","linear",0.3047972654
+"Indian foot (1937)","linear",0.30479841
+"British foot (Sears 1922 truncated)","linear",0.30479933333333337
+"British foot (Sears 1922)","linear",0.3047994715386762
+"Indian foot (1975)","linear",0.3047995
+"Indian foot","linear",0.30479951024814694
+"Indian foot (1962)","linear",0.3047996
+"Gold Coast foot","linear",0.3047997101815088
+"British foot (Benoit 1895 A)","linear",0.3047997333333333
+"British foot (Benoit 1895 B)","linear",0.30479973476327077
+"foot","linear",0.3048
+"US survey foot","linear",0.30480060960121924
+"British foot (1936)","linear",0.3048007491
+"British foot (1865)","linear",0.30480083333333335
+"Clarke's yard","linear",0.9143917962
+"Indian yard (1937)","linear",0.91439523
+"British yard (Sears 1922 truncated)","linear",0.914398
+"British yard (Sears 1922)","linear",0.9143984146160287
+"Indian yard (1975)","linear",0.9143985
+"Indian yard","linear",0.9143985307444408
+"Indian yard (1962)","linear",0.9143988
+"British yard (Benoit 1895 A)","linear",0.9143992
+"British yard (Benoit 1895 B)","linear",0.9143992042898124
+"yard","linear",0.9144
+"metres per second","linear",1.0
+"meter","linear",1.0
+"metre","linear",1.0
+"German legal metre","linear",1.0000135965
+"fathom","linear",1.8288
+"Clarke's chain","linear",20.1166195164
+"British chain (Sears 1922 truncated)","linear",20.116756
+"British chain (Sears 1922)","linear",20.116765121552632
+"British chain (Benoit 1895 A)","linear",20.1167824
+"British chain (Benoit 1895 B)","linear",20.116782494375872
+"chain","linear",20.1168
+"US survey chain","linear",20.11684023368047
+"kilometer","linear",1000.0
+"kilometre","linear",1000.0
+"Statute mile","linear",1609.344
+"US survey mile","linear",1609.3472186944375
+"nautical mile","linear",1852.0
+"planar grad","linear",100075.0
+"planar degree","linear",111120.0

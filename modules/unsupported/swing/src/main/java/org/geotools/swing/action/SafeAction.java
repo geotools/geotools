@@ -1,3 +1,19 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2019, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
 package org.geotools.swing.action;
 
 import java.awt.event.ActionEvent;
@@ -9,8 +25,6 @@ import org.geotools.swing.dialog.JExceptionReporter;
  *
  * <p>This is not generally a good practice - we are just using it as an excuse to not mess up code
  * examples with exception handling code (gasp!). TODO: provide a background Runnable...
- *
- * @source $URL$
  */
 public abstract class SafeAction extends AbstractAction {
     private static final long serialVersionUID = 1118122797759176800L;

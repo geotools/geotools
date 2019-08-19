@@ -20,7 +20,6 @@ package org.geotools.data.ows;
  * Represents a base object for a Capabilities document
  *
  * @author rgould
- * @source $URL$
  */
 public class Capabilities {
     private Service service;

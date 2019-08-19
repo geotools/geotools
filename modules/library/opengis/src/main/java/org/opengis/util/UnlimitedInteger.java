@@ -23,7 +23,6 @@ import org.opengis.annotation.UML;
  * @author Jody Garnett (Refractions Research)
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 2.1
- * @source $URL$
  */
 @UML(identifier = "UnlimitedInteger", specification = ISO_19103)
 public final class UnlimitedInteger extends Number implements Comparable<UnlimitedInteger> {

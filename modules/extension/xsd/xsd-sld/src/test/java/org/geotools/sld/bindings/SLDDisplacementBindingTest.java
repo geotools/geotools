@@ -19,7 +19,6 @@ package org.geotools.sld.bindings;
 import org.geotools.filter.Filters;
 import org.geotools.styling.Displacement;
 
-/** @source $URL$ */
 public class SLDDisplacementBindingTest extends SLDTestSupport {
     public void testType() throws Exception {
         assertEquals(Displacement.class, new SLDDisplacementBinding(null).getType());

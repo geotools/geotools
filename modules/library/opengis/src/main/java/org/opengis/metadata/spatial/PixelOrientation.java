@@ -23,7 +23,6 @@ import org.opengis.util.CodeList;
  * <p>This code list is restricted to the two-dimensional case. A similar code list, {@link
  * org.opengis.referencing.datum.PixelInCell}, can be used for <var>n</var>-dimensional grid cell.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/as#01-111">ISO 19115</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 2.0

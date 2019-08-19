@@ -19,7 +19,6 @@ package org.geotools.geometry.iso.complex;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
-/** @source $URL$ */
 public class ComplexTestSuite {
 
     public static Test suite() {

@@ -25,7 +25,6 @@ import org.opengis.geometry.DirectPosition;
  * A simple four-sided polygon.
  *
  * @since 2.4
- * @source $URL$
  * @version $Id$
  * @author Jan Jezek
  */
@@ -92,7 +91,7 @@ class Quadrilateral extends Polygon {
             trigB.addAdjacentTriangle(trigA);
         } catch (TriangulationException e) {
             // should never reach here
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
 
         triangles.add(trigA);

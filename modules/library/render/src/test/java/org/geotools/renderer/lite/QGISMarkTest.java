@@ -83,6 +83,6 @@ public class QGISMarkTest {
 
         BufferedImage image =
                 RendererBaseTest.showRender("QGIS Marks", renderer, DISPLAY_TIME, bounds);
-        ImageAssert.assertEquals(file("qgis"), image, 50);
+        ImageAssert.assertEquals(file("qgis"), image, 180);
     }
 }

@@ -52,7 +52,6 @@ import org.opengis.geometry.primitive.CurveSegment;
  * eccentricity and small <var>P</var>, use the first or "central" representation. Those with large
  * eccentricity or large <var>P</var> tend to use the second or "linear" representation.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/as">ISO 19107</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0

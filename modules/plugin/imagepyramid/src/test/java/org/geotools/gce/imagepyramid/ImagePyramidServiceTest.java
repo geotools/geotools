@@ -17,15 +17,14 @@
 package org.geotools.gce.imagepyramid;
 
 import java.util.Iterator;
-import junit.framework.Assert;
 import org.geotools.coverage.grid.io.GridFormatFactorySpi;
 import org.geotools.coverage.grid.io.GridFormatFinder;
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
  * @author Simone Giannecchini
  * @since 2.3
- * @source $URL$
  */
 public class ImagePyramidServiceTest extends Assert {
 

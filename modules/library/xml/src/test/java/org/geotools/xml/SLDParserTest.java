@@ -27,7 +27,6 @@ import javax.xml.parsers.SAXParserFactory;
 import junit.framework.TestCase;
 import org.xml.sax.SAXException;
 
-/** @source $URL$ */
 public class SLDParserTest extends TestCase {
 
     public void testRemoteSLD()

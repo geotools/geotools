@@ -22,7 +22,6 @@ import org.locationtech.jts.geom.Envelope;
  * Holds teradata tessellation parameters.
  *
  * @author Justin Deoliveira, OpenGeo
- * @source $URL$
  */
 public class TessellationInfo {
 

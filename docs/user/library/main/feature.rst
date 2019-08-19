@@ -209,7 +209,7 @@ Using a TypeFactory::
   
   List<AttributeDescriptor> types = new ArrayList<AttributeDescriptor>();
   types.add( defaultGeometry );
-  types.add( typeFactory.createAttributeDescriptor(ID, idName, 1, 1, false, new Integer(0) ) );
+  types.add( typeFactory.createAttributeDescriptor(ID, idName, 1, 1, false, Integer.valueOf(0) ) );
   types.add( typeFactory.createAttributeDescriptor(NAME, nameName, 1, 1, true, null ) );
   
   final FeatureType FLAG = featureTypeFactory.createSimpleFeatureType( name, types, defaultGeometry, crs, Collections.EMPTY_SET, description );

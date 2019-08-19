@@ -29,10 +29,10 @@ import org.eclipse.emf.ecore.EObject;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link net.opengis.wfs.InsertResultsType#getFeature <em>Feature</em>}</li>
  * </ul>
- * </p>
  *
  * @see net.opengis.wfs.WfsPackage#getInsertResultsType()
  * @model extendedMetaData="name='InsertResultsType' kind='elementOnly'"
@@ -40,20 +40,20 @@ import org.eclipse.emf.ecore.EObject;
  */
 public interface InsertResultsType extends EObject {
 	/**
-     * Returns the value of the '<em><b>Feature</b></em>' containment reference list.
-     * The list contents are of type {@link net.opengis.wfs.InsertedFeatureType}.
-     * <!-- begin-user-doc -->
+   * Returns the value of the '<em><b>Feature</b></em>' containment reference list.
+   * The list contents are of type {@link net.opengis.wfs.InsertedFeatureType}.
+   * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Feature</em>' containment reference list isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-     * @return the value of the '<em>Feature</em>' containment reference list.
-     * @see net.opengis.wfs.WfsPackage#getInsertResultsType_Feature()
-     * @model type="net.opengis.wfs.InsertedFeatureType" containment="true" required="true"
-     *        extendedMetaData="kind='element' name='Feature' namespace='##targetNamespace'"
-     * @generated
-     */
+   * @return the value of the '<em>Feature</em>' containment reference list.
+   * @see net.opengis.wfs.WfsPackage#getInsertResultsType_Feature()
+   * @model type="net.opengis.wfs.InsertedFeatureType" containment="true" required="true"
+   *        extendedMetaData="kind='element' name='Feature' namespace='##targetNamespace'"
+   * @generated
+   */
 	EList getFeature();
 
 } // InsertResultsType

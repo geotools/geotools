@@ -41,14 +41,14 @@ import org.geotools.coverage.TypeMap;
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.grid.io.footprint.FootprintBehavior;
 import org.geotools.coverage.grid.io.footprint.MultiLevelROI;
-import org.geotools.factory.Hints;
+import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.referencing.operation.transform.ConcatenatedTransform;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
-import org.geotools.resources.coverage.CoverageUtilities;
+import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.Geometry;
 import org.opengis.coverage.ColorInterpretation;
 import org.opengis.coverage.grid.GridCoverage;
@@ -65,7 +65,7 @@ class RasterLayerResponse {
 
     /** Logger. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.coverageio");
+            org.geotools.util.logging.Logging.getLogger(RasterLayerResponse.class);
 
     /** The GridCoverage produced after a {@link #compute()} method call */
     private GridCoverage gridCoverage;
@@ -173,12 +173,11 @@ class RasterLayerResponse {
      * This method creates the GridCoverage2D from the underlying file given a specified envelope,
      * and a requested dimension.
      *
-     * @param iUseJAI specify if the underlying read process should leverage on a JAI ImageRead
+     * @param useJAI specify if the underlying read process should leverage on a JAI ImageRead
      *     operation or a simple direct call to the {@code read} method of a proper {@code
      *     ImageReader}.
      * @param useMultithreading specify if the underlying read process should use multithreading
      *     when a JAI ImageRead operation is requested
-     * @param overviewPolicy the overview policy which need to be adopted
      * @return a {@code GridCoverage}
      * @throws java.io.IOException
      */

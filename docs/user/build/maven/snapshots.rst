@@ -76,4 +76,4 @@ The build server ares is watching the repository, and will build and deploy a sn
       
       mvn deploy -Dmaven.test.skip=true
 
-6. Let your community know via email! (The email can ask them to build iwth -U).
+6. Let your community know via email! (The email can ask them to build with -U).

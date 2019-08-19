@@ -21,7 +21,8 @@ import org.geotools.se.v1_1.SE;
 import org.geotools.sld.bindings.SLDPolygonSymbolizerBinding;
 import org.geotools.styling.PolygonSymbolizer;
 import org.geotools.styling.StyleFactory;
-import org.geotools.xml.*;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 import org.opengis.filter.expression.Expression;
 import org.opengis.style.Displacement;
 
@@ -45,7 +46,6 @@ import org.opengis.style.Displacement;
  * </pre>
  *
  * @generated
- * @source $URL$
  */
 public class PolygonSymbolizerBinding extends SLDPolygonSymbolizerBinding {
 

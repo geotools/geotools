@@ -26,7 +26,6 @@ import org.geotools.swing.locale.LocaleUtils;
  *
  * @author Michael Bedward
  * @since 8.0
- * @source $URL$
  * @version $Id$
  */
 public class NoToolAction extends MapAction {
@@ -58,7 +57,6 @@ public class NoToolAction extends MapAction {
     public NoToolAction(MapPane mapPane, boolean showToolName) {
         String toolName = showToolName ? TOOL_NAME : null;
 
-        String iconImagePath = null;
         super.init(mapPane, toolName, TOOL_TIP, ICON_IMAGE);
     }
 

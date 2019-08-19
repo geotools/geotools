@@ -44,11 +44,11 @@ import org.geotools.coverage.Category;
 import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.CoverageTestBase;
 import org.geotools.coverage.GridSampleDimension;
-import org.geotools.factory.Hints;
 import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.test.TestData;
+import org.geotools.util.factory.Hints;
 import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import si.uom.SI;
@@ -59,7 +59,6 @@ import tec.uom.se.unit.MetricPrefix;
  * Base class for grid coverage tests. This base class provides factory methods for sample {@link
  * GridCoverage2D}, and {@code assertEqual} methods for comparing values.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

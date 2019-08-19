@@ -22,11 +22,10 @@ import java.io.InputStream;
 import java.net.URL;
 import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
-import junit.framework.Assert;
 import junit.framework.Test;
 import junit.framework.TestSuite;
+import org.junit.Assert;
 
-/** @source $URL$ */
 public class GeoRasterOnlineTest extends AbstractTest {
     protected static DBDialect dialect = null;
     static String CREATE_RDT =
@@ -195,7 +194,7 @@ public class GeoRasterOnlineTest extends AbstractTest {
             con.commit();
             con.close();
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             Assert.fail(e.getMessage());
         }
     }
@@ -207,7 +206,7 @@ public class GeoRasterOnlineTest extends AbstractTest {
         try {
             con = dialect.getConnection();
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             Assert.fail(e.getMessage());
         }
         try {

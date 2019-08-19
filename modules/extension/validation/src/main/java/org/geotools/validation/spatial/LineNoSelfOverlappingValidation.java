@@ -23,7 +23,6 @@ import org.geotools.validation.ValidationResults;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LineString;
-import org.locationtech.jts.geom.Point;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
@@ -37,13 +36,12 @@ import org.opengis.feature.simple.SimpleFeatureType;
  *
  * @author bowens, Refractions Research, Inc.
  * @author $Author: jive $ (last modification)
- * @source $URL$
  * @version $Id$
  */
 public class LineNoSelfOverlappingValidation extends DefaultFeatureValidation {
     /** The logger for the validation module. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.validation");
+            org.geotools.util.logging.Logging.getLogger(LineNoSelfOverlappingValidation.class);
 
     /**
      * LineNoSelfOverlappingFeatureValidation constructor.
@@ -51,7 +49,7 @@ public class LineNoSelfOverlappingValidation extends DefaultFeatureValidation {
      * <p>Description
      */
     public LineNoSelfOverlappingValidation() {
-        System.out.println("***************** LineNoSelfOverlappingValidation *************");
+        // System.out.println("***************** LineNoSelfOverlappingValidation *************");
     }
 
     /**
@@ -91,9 +89,9 @@ public class LineNoSelfOverlappingValidation extends DefaultFeatureValidation {
             line = getDefaultLineString(feature);
         } catch (ClassCastException unLine) {
             results.error(feature, "Geometry is required to be a LineString");
-            System.out.println(feature.getID() + "  name: " + getName());
-            System.out.println(feature.getID() + "   ref: " + getTypeRef());
-            System.out.println(feature.getID() + "   ref: " + getTypeRefs());
+            // System.out.println(feature.getID() + "  name: " + getName());
+            // System.out.println(feature.getID() + "   ref: " + getTypeRef());
+            // System.out.println(feature.getID() + "   ref: " + getTypeRefs());
         }
         if (line == null) {
             // Ignore null geometry (user can check with nullZero )
@@ -134,18 +132,5 @@ public class LineNoSelfOverlappingValidation extends DefaultFeatureValidation {
 
         // LOGGER.log(Level.FINEST, getName() + "(" + feature.getID() + ") passed");
         return true;
-    }
-    /*
-     * touchesSegment
-     * iterates all segments and returns true as soon as the point is found to intersect with the linestring
-     * */
-    private boolean touchesSegment(LineString[] segments, Point p1) {
-        for (int i = 0; i < segments.length; i++) {
-            // using intersects will handle a point that is not  an end point on the line segment
-            if (p1.intersects(segments[i])) {
-                return true;
-            }
-        }
-        return false;
     }
 }

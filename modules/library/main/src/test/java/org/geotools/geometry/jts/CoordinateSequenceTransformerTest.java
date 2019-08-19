@@ -30,7 +30,7 @@ import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.CoordinateSequence;
 import org.locationtech.jts.geom.CoordinateSequenceFactory;
-import org.locationtech.jts.geom.DefaultCoordinateSequenceFactory;
+import org.locationtech.jts.geom.impl.CoordinateArraySequenceFactory;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
@@ -41,13 +41,12 @@ import org.opengis.referencing.operation.TransformException;
  * Tests the {@link DefaultCoordinateSequenceTransformer} implementation.
  *
  * @since 2.2
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  */
 public class CoordinateSequenceTransformerTest {
     /** The coordinate sequence factory to use. */
-    private final CoordinateSequenceFactory csFactory = DefaultCoordinateSequenceFactory.instance();
+    private final CoordinateSequenceFactory csFactory = CoordinateArraySequenceFactory.instance();
 
     /** Compares the current implementation with a simplier one. */
     @Test

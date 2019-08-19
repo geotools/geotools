@@ -16,7 +16,6 @@
  */
 package org.geotools.jdbc;
 
-/** @source $URL$ */
 public abstract class JDBCUDTTestSetup extends JDBCDelegatingTestSetup {
 
     protected JDBCUDTTestSetup(JDBCTestSetup delegate) {

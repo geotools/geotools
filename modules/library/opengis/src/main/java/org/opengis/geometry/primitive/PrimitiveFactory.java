@@ -27,7 +27,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * reference system}. Creating primitives in a different CRS may requires a different instance of
  * {@code PrimitiveFactory}.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/as">ISO 19107</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0

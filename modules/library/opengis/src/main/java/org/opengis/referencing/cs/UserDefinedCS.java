@@ -21,7 +21,6 @@ import org.opengis.annotation.UML;
  * dimensional coordinate system. The non-straight axis is typically incrementally straight or
  * curved. A {@code UserDefinedCS} shall have two or three {@linkplain #getAxis axis associations}.
  *
- * @source $URL$
  * @version <A HREF="http://portal.opengeospatial.org/files/?artifact_id=6716">Abstract
  *     specification 2.0</A>
  * @author Martin Desruisseaux (IRD)

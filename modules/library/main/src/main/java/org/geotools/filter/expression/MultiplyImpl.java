@@ -27,7 +27,6 @@ import org.opengis.filter.expression.Multiply;
  * Implementation of Multiply expression.
  *
  * @author Justin Deoliveira, The Open Planning Project, jdeolive@openplans.org
- * @source $URL$
  */
 public class MultiplyImpl extends MathExpressionImpl implements Multiply {
 

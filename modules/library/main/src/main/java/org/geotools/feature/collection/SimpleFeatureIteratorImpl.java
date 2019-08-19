@@ -26,7 +26,6 @@ import org.opengis.feature.simple.SimpleFeature;
  * <p>Note this does not implement Iterator (FeatureIterator is a separate class).
  *
  * @author Ian Schneider
- * @source $URL$
  */
 public class SimpleFeatureIteratorImpl extends FeatureIteratorImpl<SimpleFeature>
         implements SimpleFeatureIterator {

@@ -24,7 +24,6 @@ import org.opengis.annotation.Extension;
  *
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0
- * @source $URL$
  */
 @Extension
 public interface MathTransform2D extends MathTransform {

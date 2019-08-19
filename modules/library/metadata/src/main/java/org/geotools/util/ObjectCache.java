@@ -91,7 +91,6 @@ import java.util.Set;
  *
  * @since 2.5
  * @version $Id$
- * @source $URL$
  * @author Cory Horner (Refractions Research)
  * @see https://jsr-107-interest.dev.java.net/javadoc/javax/cache/package-summary.html
  */

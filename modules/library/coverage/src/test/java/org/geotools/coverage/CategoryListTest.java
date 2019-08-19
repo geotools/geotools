@@ -24,15 +24,14 @@ import static org.junit.Assert.fail;
 
 import java.util.Arrays;
 import java.util.Random;
-import org.geotools.resources.XArray;
 import org.geotools.util.Range;
+import org.geotools.util.XArray;
 import org.junit.Test;
 import org.opengis.referencing.operation.TransformException;
 
 /**
  * Tests the {@link CategoryList} implementation.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
@@ -105,7 +104,7 @@ public final class CategoryListTest {
             fail("Argument check");
         } catch (IllegalArgumentException exception) {
             if (VERBOSE) {
-                System.out.println(exception.getLocalizedMessage());
+                // System.out.println(exception.getLocalizedMessage());
                 // This is the expected exception.
             }
         }
@@ -114,7 +113,7 @@ public final class CategoryListTest {
             fail("Argument check");
         } catch (IllegalArgumentException exception) {
             if (VERBOSE) {
-                System.out.println(exception.getLocalizedMessage());
+                // System.out.println(exception.getLocalizedMessage());
                 // This is the expected exception.
             }
         }

@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 
 import javax.xml.namespace.QName;
 import net.opengis.cat.csw20.DescribeRecordType;
-import org.geotools.xml.Parser;
+import org.geotools.xsd.Parser;
 import org.junit.Test;
 
 public class CSWDescribeRecordTest {

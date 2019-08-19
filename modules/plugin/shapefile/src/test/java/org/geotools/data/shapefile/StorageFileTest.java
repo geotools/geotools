@@ -35,7 +35,6 @@ import org.geotools.data.shapefile.files.StorageFile;
 import org.junit.Before;
 import org.junit.Test;
 
-/** @source $URL$ */
 public class StorageFileTest implements FileReader {
 
     private ShpFiles shpFiles1;

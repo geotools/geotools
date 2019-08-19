@@ -33,8 +33,6 @@ import org.geotools.util.URLs;
  * <p>GeoTools DataStores that work with files are asked to provide a FileDataStoreFactorySpi
  * documenting what file extensions they support; and any additional parameters that may be
  * interesting etc.
- *
- * @source $URL$
  */
 public class JDataStoreWizard extends JWizard {
     private static final long serialVersionUID = -3788708439279424698L;
@@ -166,7 +164,7 @@ public class JDataStoreWizard extends JWizard {
         URL url = (URL) connectionParameters.get("url");
         return URLs.urlToFile(url);
     }
-    /** @param format2 */
+
     public void setFormat(DataStoreFactorySpi format) {
         if (this.format == format) {
             return;

@@ -30,7 +30,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * coordinate reference system}. Creating geometries in a different CRS may requires a different
  * instance of {@code GeometryFactory}.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/as">ISO 19107</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0
@@ -41,22 +40,6 @@ public interface GeometryFactory {
      * org.opengis.geometry.Geometry geometries} to be created through this interface.
      */
     CoordinateReferenceSystem getCoordinateReferenceSystem();
-
-    /**
-     * Create a direct position with empty coordinates.
-     *
-     * @deprecated Moved to PositionFactory
-     */
-    @Deprecated
-    DirectPosition createDirectPosition();
-
-    /**
-     * Create a direct position at the specified location specified by coordinates.
-     *
-     * @deprecated Moved to PositionFactory
-     */
-    @Deprecated
-    DirectPosition createDirectPosition(double[] coordinates);
 
     /**
      * Creates a new Envelope with the given corners.
@@ -449,13 +432,6 @@ public interface GeometryFactory {
     PolyhedralSurface createPolyhedralSurface(List<Polygon> tiles)
             throws MismatchedReferenceSystemException, MismatchedDimensionException;
 
-    /**
-     * Placeholder to create a MultiPrimitive (or derivatives).
-     *
-     * @deprecated <strong>This method is temporary. It will move to some {@code MultiPrimitive}
-     *     factory when the creation of Geometry interfaces will be completed.</strong> See <A
-     *     HREF="http://jira.codehaus.org/browse/GEO-1">GEO-1 on JIRA</A>.
-     */
-    @Deprecated
+    /** Placeholder to create a MultiPrimitive (or derivatives). */
     MultiPrimitive createMultiPrimitive();
 }

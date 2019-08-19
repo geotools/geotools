@@ -30,7 +30,6 @@ import org.opengis.filter.expression.Expression;
  * <p>The result contains an array of lists with the expression values in each.
  *
  * @author Cory Horner, Refractions Research Inc.
- * @source $URL$
  */
 public class QuantileListVisitor implements FeatureCalc {
     private Expression expr;
@@ -67,7 +66,7 @@ public class QuantileListVisitor implements FeatureCalc {
         }
 
         // calculate number of items to put into each of the larger bins
-        int binPop = new Double(Math.ceil((double) count / bins)).intValue();
+        int binPop = Double.valueOf(Math.ceil((double) count / bins)).intValue();
         // determine index of bin where the next bin has one less item
         int lastBigBin = count % bins;
         if (lastBigBin == 0) lastBigBin = bins;

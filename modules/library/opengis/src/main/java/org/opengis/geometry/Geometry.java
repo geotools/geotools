@@ -28,7 +28,6 @@ import org.opengis.util.Cloneable;
  * infinite set of points that satisfies the set operation interfaces for a set of direct positions,
  * {@link TransfiniteSet TransfiniteSet&lt;DirectPosition&gt;}.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/as">ISO 19107</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0

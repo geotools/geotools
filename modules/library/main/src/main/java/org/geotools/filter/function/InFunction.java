@@ -31,7 +31,6 @@ import org.opengis.filter.expression.Expression;
  * <code>false</code>.
  *
  * @author Stefano Costa, GeoSolutions
- * @source $URL$
  */
 public class InFunction extends FunctionExpressionImpl {
 

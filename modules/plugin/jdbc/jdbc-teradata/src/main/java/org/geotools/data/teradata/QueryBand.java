@@ -23,7 +23,6 @@ import java.util.Map;
  * Thread local table that holds transaction local query bands.
  *
  * @author Justin Deoliveira, OpenGeo
- * @source $URL$
  */
 public class QueryBand {
 

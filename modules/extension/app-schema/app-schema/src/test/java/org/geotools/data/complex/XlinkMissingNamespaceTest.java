@@ -32,7 +32,6 @@ import org.junit.Test;
  * To test client properties of app-schema mapping file
  *
  * @author Jacqui Githaiga (Curtin University of Technology)
- * @source $URL$
  */
 public class XlinkMissingNamespaceTest extends AppSchemaTestSupport {
     /**

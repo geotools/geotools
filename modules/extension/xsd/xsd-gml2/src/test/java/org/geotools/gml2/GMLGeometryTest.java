@@ -18,14 +18,13 @@ package org.geotools.gml2;
 
 import javax.xml.parsers.SAXParserFactory;
 import junit.framework.TestCase;
-import org.geotools.xml.Configuration;
-import org.geotools.xml.Parser;
+import org.geotools.xsd.Configuration;
+import org.geotools.xsd.Parser;
 import org.locationtech.jts.geom.GeometryCollection;
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
 
-/** @source $URL$ */
 public class GMLGeometryTest extends TestCase {
     Parser parser;
 
@@ -36,11 +35,12 @@ public class GMLGeometryTest extends TestCase {
 
         Configuration configuration = new GMLConfiguration();
 
-        parser = new Parser(configuration, getClass().getResourceAsStream("geometry.xml"));
+        parser = new Parser(configuration);
     }
 
     public void test() throws Exception {
-        GeometryCollection gc = (GeometryCollection) parser.parse();
+        GeometryCollection gc =
+                (GeometryCollection) parser.parse(getClass().getResourceAsStream("geometry.xml"));
 
         assertEquals(gc.getNumGeometries(), 3);
 

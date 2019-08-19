@@ -27,7 +27,6 @@ import org.opengis.filter.expression.ExpressionVisitor;
  * Implementation of divide expression.
  *
  * @author Justin Deoliveira, The Open Planning Project, jdeolive@openplans.org
- * @source $URL$
  */
 public class DivideImpl extends MathExpressionImpl implements Divide {
 

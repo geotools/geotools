@@ -35,9 +35,8 @@ import net.opengis.wps10.LanguagesType1;
 import net.opengis.wps10.ProcessBriefType;
 import net.opengis.wps10.ProcessOfferingsType;
 import net.opengis.wps10.WPSCapabilitiesType;
-import org.geotools.xml.Parser;
+import org.geotools.xsd.Parser;
 
-/** @source $URL$ */
 public class GetCapabilitiesTest extends TestCase {
 
     public void testParse() throws Exception {
@@ -91,14 +90,14 @@ public class GetCapabilitiesTest extends TestCase {
         assertNotNull(si.getServiceType());
         assertEquals("WPS", si.getServiceType().getValue());
 
-        assertEquals(2, si.getServiceTypeVersion().size());
-        assertEquals("1.0.0", si.getServiceTypeVersion().get(0));
-        assertEquals("0.4.0", si.getServiceTypeVersion().get(1));
+        assertNotNull(si.getServiceTypeVersion());
+        assertEquals("1.0.0", si.getServiceTypeVersion());
+        //       assertEquals("0.4.0", si.getServiceTypeVersion().get(1));
 
         assertEquals("NONE", si.getFees());
 
-        assertEquals(1, si.getAccessConstraints().size());
-        assertEquals("NONE", si.getAccessConstraints().get(0));
+        assertNotNull(si.getAccessConstraints());
+        assertEquals("NONE", si.getAccessConstraints());
     }
 
     /**
@@ -125,21 +124,20 @@ public class GetCapabilitiesTest extends TestCase {
 
         ContactType ci = sc.getContactInfo();
         assertNotNull(ci);
-        assertEquals(1, ci.getPhone().getVoice().size());
-        assertEquals("+1 613 759-1874", ci.getPhone().getVoice().get(0));
-        assertEquals(1, ci.getPhone().getFacsimile().size());
-        assertEquals("+1 613 759-1937", ci.getPhone().getFacsimile().get(0));
+        assertNotNull(ci.getPhone().getVoice());
+        assertEquals("+1 613 759-1874", ci.getPhone().getVoice());
+        assertNotNull(ci.getPhone().getFacsimile());
+        assertEquals("+1 613 759-1937", ci.getPhone().getFacsimile());
 
         AddressType a = ci.getAddress();
         assertNotNull(a);
-        assertEquals(1, a.getDeliveryPoint().size());
-        assertEquals(
-                "Room 1135, Neatby Building, 960, Carling Avenue", a.getDeliveryPoint().get(0));
+        assertNotNull(a.getDeliveryPoint());
+        assertEquals("Room 1135, Neatby Building, 960, Carling Avenue", a.getDeliveryPoint());
         assertEquals("Ottawa", a.getCity());
         assertEquals("ON", a.getAdministrativeArea());
         assertEquals("Canada", a.getCountry());
-        assertEquals(1, a.getElectronicMailAddress().size());
-        assertEquals("schutp@agr.gc.ca", a.getElectronicMailAddress().get(0));
+        assertNotNull(a.getElectronicMailAddress());
+        assertEquals("schutp@agr.gc.ca", a.getElectronicMailAddress());
     }
 
     /**

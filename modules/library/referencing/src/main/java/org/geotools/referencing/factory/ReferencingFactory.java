@@ -22,13 +22,13 @@ package org.geotools.referencing.factory;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.logging.Logger;
-import org.geotools.factory.AbstractFactory;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
+import org.geotools.metadata.i18n.Vocabulary;
+import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.metadata.iso.citation.CitationImpl;
 import org.geotools.metadata.iso.citation.Citations;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
-import org.geotools.resources.i18n.Vocabulary;
-import org.geotools.resources.i18n.VocabularyKeys;
+import org.geotools.util.factory.AbstractFactory;
 import org.geotools.util.logging.Logging;
 import org.opengis.metadata.citation.Citation;
 import org.opengis.parameter.InvalidParameterValueException;
@@ -54,13 +54,12 @@ import org.opengis.referencing.Factory;
  * </ul>
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
 public class ReferencingFactory extends AbstractFactory implements Factory {
     /** The logger for event related to Geotools's factories. */
-    public static final Logger LOGGER = Logging.getLogger("org.geotools.referencing.factory");
+    public static final Logger LOGGER = Logging.getLogger(ReferencingFactory.class);
 
     /**
      * A citation which contains only the title "All" in localized language. Used as a

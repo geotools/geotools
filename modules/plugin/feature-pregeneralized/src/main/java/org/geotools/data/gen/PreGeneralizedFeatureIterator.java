@@ -26,13 +26,14 @@ import org.opengis.feature.simple.SimpleFeatureType;
 /**
  * @author Christian Muüller
  *     <p>Implementation of {@link FeatureIterator} for {@link PreGeneralizedSimpleFeature}
- * @source $URL$
  */
 public class PreGeneralizedFeatureIterator implements SimpleFeatureIterator {
 
     protected SimpleFeatureIterator backendIterator;
 
     protected SimpleFeatureType featureTyp;
+
+    protected SimpleFeatureType returnedFeatureType;
 
     protected String geomPropertyName, backendGeomPropertyName;
 
@@ -41,12 +42,14 @@ public class PreGeneralizedFeatureIterator implements SimpleFeatureIterator {
     public PreGeneralizedFeatureIterator(
             SimpleFeatureIterator backendIterator,
             SimpleFeatureType featureTyp,
+            SimpleFeatureType returnedFeatureType,
             int indexMapping[],
             String geomPropertyName,
             String backendGeomPropertyName) {
         super();
         this.backendIterator = backendIterator;
         this.featureTyp = featureTyp;
+        this.returnedFeatureType = returnedFeatureType;
         this.geomPropertyName = geomPropertyName;
         this.backendGeomPropertyName = backendGeomPropertyName;
         this.indexMapping = indexMapping;
@@ -64,6 +67,11 @@ public class PreGeneralizedFeatureIterator implements SimpleFeatureIterator {
         SimpleFeature f = backendIterator.next();
         if (f == null) return null;
         return new PreGeneralizedSimpleFeature(
-                featureTyp, indexMapping, f, geomPropertyName, backendGeomPropertyName);
+                featureTyp,
+                returnedFeatureType,
+                indexMapping,
+                f,
+                geomPropertyName,
+                backendGeomPropertyName);
     }
 }

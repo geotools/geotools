@@ -24,10 +24,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import org.geotools.resources.coverage.CoverageUtilities;
+import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.util.URLs;
 
-/** @source $URL$ */
 public abstract class DefaultPropertiesCollectorSPI implements PropertiesCollectorSPI {
 
     private final String name;

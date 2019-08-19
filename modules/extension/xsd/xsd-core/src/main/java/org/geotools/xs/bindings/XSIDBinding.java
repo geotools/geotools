@@ -17,9 +17,9 @@
 package org.geotools.xs.bindings;
 
 import javax.xml.namespace.QName;
-import org.geotools.xml.AbstractSimpleBinding;
-import org.geotools.xml.InstanceComponent;
 import org.geotools.xs.XS;
+import org.geotools.xsd.AbstractSimpleBinding;
+import org.geotools.xsd.InstanceComponent;
 
 /**
  * Binding object for the type http://www.w3.org/2001/XMLSchema:ID.
@@ -39,7 +39,6 @@ import org.geotools.xs.XS;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class XSIDBinding extends AbstractSimpleBinding {
     /** @generated */

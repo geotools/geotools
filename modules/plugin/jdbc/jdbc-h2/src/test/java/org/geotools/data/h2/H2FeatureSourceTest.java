@@ -23,7 +23,6 @@ import org.geotools.jdbc.JDBCTestSetup;
  * SimpleFeatureSource test for H2.
  *
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL$
  */
 public class H2FeatureSourceTest extends JDBCFeatureSourceOnlineTest {
     protected JDBCTestSetup createTestSetup() {

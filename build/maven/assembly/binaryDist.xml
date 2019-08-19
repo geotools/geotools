@@ -19,8 +19,15 @@
   </formats>
   <fileSets>
     <fileSet>
+      <directory>build</directory>
+      <outputDirectory></outputDirectory>
       <includes>
-        <include>README*</include>
+        <include>README.html</include>
+      </includes>
+    </fileSet>
+    <fileSet>
+      <includes>
+        <include>geotools-logo.png</include>
         <include>LICENSE*</include>
         <include>NOTICE*</include>
       </includes>
@@ -37,6 +44,10 @@
       <includes>
         <include>*</include>
       </includes>
+      <excludes>
+        <exclude>CreativeCommonsByAttribution.md</exclude>
+        <exclude>README.md</exclude>
+      </excludes>
     </fileSet>
     <fileSet>
       <directory>target/binaries</directory>
@@ -44,6 +55,11 @@
       <includes>
         <include>*.jar</include>
       </includes>
+      <excludes>
+        <exclude>*dummy-*</exclude>
+        <exclude>junit*.jar</exclude>
+        <exclude>README.md</exclude>
+      </excludes>
     </fileSet>
   </fileSets>
 </assembly>

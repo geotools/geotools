@@ -25,7 +25,6 @@ import org.junit.*;
  * Tests the {@link MolodenskiTransform} class.
  *
  * @author Tara Athan
- * @source $URL$
  */
 public final class MolodenskiTransformTest extends TransformTestBase {
     /** An array with a variety of test points */

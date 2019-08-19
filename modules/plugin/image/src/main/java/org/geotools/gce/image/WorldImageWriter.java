@@ -38,13 +38,13 @@ import javax.media.jai.JAI;
 import javax.media.jai.ParameterBlockJAI;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.io.AbstractGridCoverageWriter;
+import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.data.DataSourceException;
-import org.geotools.factory.Hints;
 import org.geotools.image.ImageWorker;
 import org.geotools.image.io.ImageIOExt;
 import org.geotools.parameter.Parameter;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
-import org.geotools.resources.coverage.CoverageUtilities;
+import org.geotools.util.factory.Hints;
 import org.opengis.coverage.grid.Format;
 import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.coverage.grid.GridCoverageWriter;
@@ -60,7 +60,6 @@ import org.opengis.referencing.operation.TransformException;
  * @author Simone Giannecchini, GeoSolutions
  * @author rgould
  * @author Alessio Fabiani, GeoSolutions
- * @source $URL$
  */
 public final class WorldImageWriter extends AbstractGridCoverageWriter
         implements GridCoverageWriter {
@@ -97,7 +96,7 @@ public final class WorldImageWriter extends AbstractGridCoverageWriter
         // we have to separate the handling of a file from the handling of an
         // output stream due to the fact that the latter requires no world file.
         if (this.destination instanceof String) {
-            destination = new File((String) destination);
+            this.destination = new File((String) destination);
         } else if (this.destination instanceof URL) {
             final URL url = ((URL) destination);
             if (url.getProtocol().equalsIgnoreCase("file")) {
@@ -107,7 +106,7 @@ public final class WorldImageWriter extends AbstractGridCoverageWriter
                     path = "//" + auth + path;
                 }
 
-                destination = new File(path);
+                this.destination = new File(path);
             } else {
                 throw new RuntimeException(
                         "WorldImageWriter::write:It is not possible writing to an URL!");
@@ -143,8 +142,6 @@ public final class WorldImageWriter extends AbstractGridCoverageWriter
      *
      * @param coverage the GridCoverage to write.
      * @param parameters no parameters are accepted. Currently ignored.
-     * @throws IllegalArgumentException DOCUMENT ME!
-     * @throws IOException DOCUMENT ME!
      * @see org.opengis.coverage.grid.GridCoverageWriter#write(org.geotools.gc.GridCoverage,
      *     org.opengis.parameter.GeneralParameterValue[])
      */
@@ -289,7 +286,6 @@ public final class WorldImageWriter extends AbstractGridCoverageWriter
      * @param outstream OutputStream
      * @throws IOException
      * @throws IOException
-     * @throws IllegalArgumentException DOCUMENT ME!
      */
     private static void encode(
             final GridCoverage2D sourceCoverage,

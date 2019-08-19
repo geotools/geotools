@@ -29,12 +29,13 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import org.geotools.filter.visitor.SimplifyingFilterVisitor;
 import org.geotools.styling.Style;
 import org.geotools.styling.css.Value.Function;
 import org.geotools.styling.css.selector.PseudoClass;
 import org.geotools.styling.css.selector.Selector;
 import org.geotools.styling.css.util.PseudoClassExtractor;
+import org.geotools.styling.css.util.PseudoClassRemover;
 import org.geotools.util.Converters;
 
 /**
@@ -45,6 +46,11 @@ import org.geotools.util.Converters;
 public class CssRule {
 
     public static final Integer NO_Z_INDEX = null;
+
+    enum ZIndexMode {
+        NoZIndexAll,
+        NoZIndexZero;
+    }
 
     Selector selector;
 
@@ -294,9 +300,10 @@ public class CssRule {
      * specific z-index
      *
      * @param zIndex
+     * @param zIndexMode
      * @return
      */
-    public CssRule getSubRuleByZIndex(Integer zIndex) {
+    public CssRule getSubRuleByZIndex(Integer zIndex, ZIndexMode zIndexMode) {
         Map<PseudoClass, List<Property>> zProperties = new HashMap<>();
         List<Integer> zIndexes = new ArrayList<>();
         for (Map.Entry<PseudoClass, List<Property>> entry : this.getProperties().entrySet()) {
@@ -310,9 +317,14 @@ public class CssRule {
                 int zIndexPosition = it.nextIndex();
                 Integer nextZIndex = it.next();
                 if (nextZIndex == NO_Z_INDEX) {
-                    // this set of properties is z-index independent
-                    zProperties.put(entry.getKey(), new ArrayList<>(props));
-                } else if (!nextZIndex.equals(zIndex)) {
+                    if (zIndexMode == ZIndexMode.NoZIndexAll
+                            || !PseudoClass.ROOT.equals(entry.getKey())) {
+                        // this set of properties is z-index independent
+                        zProperties.put(entry.getKey(), new ArrayList<>(props));
+                    } else if (zIndex == 0) {
+                        zProperties.put(entry.getKey(), new ArrayList<>(props));
+                    }
+                } else if (nextZIndex == null || !nextZIndex.equals(zIndex)) {
                     continue;
                 } else {
                     // extract the property values at that position
@@ -341,6 +353,16 @@ public class CssRule {
             }
         }
 
+        List<CssRule> nestedByZIndex = Collections.emptyList();
+        if (nestedRules != null) {
+            nestedByZIndex =
+                    nestedRules
+                            .stream()
+                            .map(r -> r.getSubRuleByZIndex(zIndex, zIndexMode))
+                            .filter(r -> r != null)
+                            .collect(Collectors.toList());
+        }
+
         if (zProperties.size() > 0) {
             // if the properties had an original z-index, mark it, we'll need it
             // to figure out if a combination of rules can be applied at a z-index > 0, or not
@@ -356,6 +378,7 @@ public class CssRule {
                                 Arrays.asList((Value) new Value.Literal(String.valueOf(zIndex)))));
             }
             CssRule zRule = new CssRule(this.getSelector(), zProperties, this.getComment());
+            zRule.nestedRules = nestedByZIndex;
             zRule.ancestry = Arrays.asList(this);
             return zRule;
         } else {
@@ -641,28 +664,61 @@ public class CssRule {
      * @return
      */
     public List<CssRule> expandNested(RulesCombiner combiner) {
-        if (nestedRules.isEmpty()) {
+        if (nestedRules == null || nestedRules.isEmpty()) {
             return Collections.singletonList(this);
         } else {
-            Stream<CssRule> nestedRulesStream =
-                    nestedRules
-                            .stream()
-                            .flatMap(
-                                    r -> {
-                                        return r.expandNested(combiner)
-                                                .stream()
-                                                .map(
-                                                        sr -> {
-                                                            CssRule combined =
-                                                                    combiner.combineRules(
-                                                                            Arrays.asList(
-                                                                                    this, sr));
-                                                            combined.setComment(sr.getComment());
-                                                            combined.setAncestry(null);
-                                                            return combined;
-                                                        });
-                                    });
-            return Stream.concat(Stream.of(this), nestedRulesStream).collect(Collectors.toList());
+            List<CssRule> result = new ArrayList<>();
+            result.add(this);
+            for (CssRule nestedRule : nestedRules) {
+                // combine with parent's properties and selectors
+                CssRule combined = combiner.combineRules(Arrays.asList(this, nestedRule));
+                combined.setComment(nestedRule.getComment());
+                combined.setAncestry(null);
+                combined.nestedRules = nestedRule.nestedRules;
+
+                final List<CssRule> nestedCombined = combined.expandNested(combiner);
+                result.addAll(nestedCombined);
+            }
+            return result;
+        }
+    }
+
+    /**
+     * Flattens pure pseudo-selector sub-rules into the main rule, as properties
+     *
+     * @return
+     */
+    public CssRule flattenPseudoSelectors() {
+        if (nestedRules == null || nestedRules.isEmpty()) {
+            return this;
+        }
+        List<CssRule> residual = new ArrayList<>();
+        List<CssRule> pseudoRules = new ArrayList<>();
+        for (CssRule nested : nestedRules) {
+            final CssRule flattened = nested.flattenPseudoSelectors();
+            final Selector removed =
+                    (Selector) flattened.getSelector().accept(new PseudoClassRemover());
+            if (Selector.ACCEPT.equals(removed)) {
+                CssRule cleaned = new CssRule(removed, flattened.properties, flattened.comment);
+                cleaned.nestedRules = flattened.nestedRules;
+                pseudoRules.add(cleaned);
+            } else {
+                CssRule cleaned = new CssRule(removed, flattened.properties, flattened.comment);
+                cleaned.nestedRules = flattened.nestedRules;
+                residual.add(cleaned);
+            }
+        }
+
+        if (!pseudoRules.isEmpty()) {
+            pseudoRules.add(0, this);
+            final CssRule combined =
+                    new RulesCombiner(new SimplifyingFilterVisitor()).combineRules(pseudoRules);
+            combined.nestedRules = residual;
+            return combined;
+        } else {
+            final CssRule combined = new CssRule(this.selector, this.properties, this.comment);
+            combined.nestedRules = residual;
+            return combined;
         }
     }
 }

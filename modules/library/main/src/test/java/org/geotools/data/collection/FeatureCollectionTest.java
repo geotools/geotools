@@ -50,9 +50,6 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * implementations.
  *
  * @author Jody
- * @source $URL$
- *     http://svn.osgeo.org/geotools/trunk/modules/library/main/src/main/java/org/geotools/
- *     data/collection/FeatureCollectionTest.java $
  */
 @SuppressWarnings("unchecked")
 public abstract class FeatureCollectionTest extends TestCase {

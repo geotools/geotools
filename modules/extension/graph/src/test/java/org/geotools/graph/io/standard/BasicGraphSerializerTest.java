@@ -30,7 +30,6 @@ import org.geotools.graph.structure.GraphVisitor;
 import org.geotools.graph.structure.Graphable;
 import org.geotools.graph.structure.Node;
 
-/** @source $URL$ */
 public class BasicGraphSerializerTest extends TestCase {
 
     private GraphBuilder m_builder;
@@ -215,7 +214,7 @@ public class BasicGraphSerializerTest extends TestCase {
             after.visitNodes(visitor);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             assertTrue(false);
         }
     }
@@ -269,7 +268,7 @@ public class BasicGraphSerializerTest extends TestCase {
                     };
             after.visitNodes(visitor);
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             assertTrue(false);
         }
     }

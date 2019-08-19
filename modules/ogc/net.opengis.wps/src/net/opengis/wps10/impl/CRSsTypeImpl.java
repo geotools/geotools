@@ -22,140 +22,140 @@ import org.eclipse.emf.ecore.impl.EObjectImpl;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link net.opengis.wps10.impl.CRSsTypeImpl#getCRS <em>CRS</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
 public class CRSsTypeImpl extends EObjectImpl implements CRSsType {
     /**
-     * The default value of the '{@link #getCRS() <em>CRS</em>}' attribute.
-     * <!-- begin-user-doc -->
+   * The default value of the '{@link #getCRS() <em>CRS</em>}' attribute.
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getCRS()
-     * @generated
-     * @ordered
-     */
+   * @see #getCRS()
+   * @generated
+   * @ordered
+   */
     protected static final String CRS_EDEFAULT = null;
 
     /**
-     * The cached value of the '{@link #getCRS() <em>CRS</em>}' attribute.
-     * <!-- begin-user-doc -->
+   * The cached value of the '{@link #getCRS() <em>CRS</em>}' attribute.
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getCRS()
-     * @generated
-     * @ordered
-     */
+   * @see #getCRS()
+   * @generated
+   * @ordered
+   */
     protected String cRS = CRS_EDEFAULT;
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     protected CRSsTypeImpl() {
-        super();
-    }
+    super();
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     protected EClass eStaticClass() {
-        return Wps10Package.Literals.CR_SS_TYPE;
-    }
+    return Wps10Package.Literals.CR_SS_TYPE;
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public String getCRS() {
-        return cRS;
-    }
+    return cRS;
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public void setCRS(String newCRS) {
-        String oldCRS = cRS;
-        cRS = newCRS;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, Wps10Package.CR_SS_TYPE__CRS, oldCRS, cRS));
-    }
+    String oldCRS = cRS;
+    cRS = newCRS;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, Wps10Package.CR_SS_TYPE__CRS, oldCRS, cRS));
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case Wps10Package.CR_SS_TYPE__CRS:
-                return getCRS();
-        }
-        return super.eGet(featureID, resolve, coreType);
+    switch (featureID) {
+      case Wps10Package.CR_SS_TYPE__CRS:
+        return getCRS();
     }
+    return super.eGet(featureID, resolve, coreType);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case Wps10Package.CR_SS_TYPE__CRS:
-                setCRS((String)newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
+    switch (featureID) {
+      case Wps10Package.CR_SS_TYPE__CRS:
+        setCRS((String)newValue);
+        return;
     }
+    super.eSet(featureID, newValue);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case Wps10Package.CR_SS_TYPE__CRS:
-                setCRS(CRS_EDEFAULT);
-                return;
-        }
-        super.eUnset(featureID);
+    switch (featureID) {
+      case Wps10Package.CR_SS_TYPE__CRS:
+        setCRS(CRS_EDEFAULT);
+        return;
     }
+    super.eUnset(featureID);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case Wps10Package.CR_SS_TYPE__CRS:
-                return CRS_EDEFAULT == null ? cRS != null : !CRS_EDEFAULT.equals(cRS);
-        }
-        return super.eIsSet(featureID);
+    switch (featureID) {
+      case Wps10Package.CR_SS_TYPE__CRS:
+        return CRS_EDEFAULT == null ? cRS != null : !CRS_EDEFAULT.equals(cRS);
     }
+    return super.eIsSet(featureID);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public String toString() {
-        if (eIsProxy()) return super.toString();
+    if (eIsProxy()) return super.toString();
 
-        StringBuffer result = new StringBuffer(super.toString());
-        result.append(" (cRS: ");
-        result.append(cRS);
-        result.append(')');
-        return result.toString();
-    }
+    StringBuffer result = new StringBuffer(super.toString());
+    result.append(" (cRS: ");
+    result.append(cRS);
+    result.append(')');
+    return result.toString();
+  }
 
 } //CRSsTypeImpl

@@ -16,7 +16,10 @@
  */
 package org.geotools.coverage.grid.io.footprint;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
 import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.simple.SimpleFeature;
 
@@ -32,6 +35,17 @@ public interface FootprintGeometryProvider {
      * @throws IOException
      */
     Geometry getFootprint(SimpleFeature feature) throws IOException;
+
+    /**
+     * Returns the list of sidecar files defining masks for the specified feature. The default
+     * implementation returns an empty list.
+     *
+     * @param feature the granule representative feature (if any)
+     * @return A list of files defining the masks for this granule (might be more than one)
+     */
+    default List<File> getSidecars(SimpleFeature feature) throws IOException {
+        return Collections.emptyList();
+    }
 
     /**
      * Close up the provider (in case it holds onto persistent resources such as files or database

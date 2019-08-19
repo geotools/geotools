@@ -41,8 +41,8 @@ import java.util.Map;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 import org.geotools.data.wfs.WFSDataStoreFactory;
-import org.geotools.factory.Hints;
 import org.geotools.referencing.CRS;
+import org.geotools.util.factory.Hints;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.xml.sax.EntityResolver;
 

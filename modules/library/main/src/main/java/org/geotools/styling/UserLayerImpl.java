@@ -22,6 +22,7 @@ package org.geotools.styling;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import org.geotools.data.DataStore;
 import org.geotools.util.Utilities;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -33,8 +34,9 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * <p>I was going to implement this after SLD POST on monday, but I was expecting the definition in
  * the spec to be a bit "nicer". Right now its just:
  *
- * <p><element name=ï¿½InlineFeatureï¿½> <complexType> <sequence> <element ref="gml:_Feature"
- * maxOccurs="unbounded"/> </sequence> </complexType>
+ * <pre>
+ * {@code <element name="InlineFeature"> <complexType> <sequence> <element ref="gml:_Feature" maxOccurs="unbounded"/> </sequence> </complexType>}
+ * </pre>
  *
  * <p>(the spec hasnt been finalized)
  *
@@ -42,7 +44,9 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * type, and its simple (no nesting, no <choices>, and no attributes), then we can parse ones that
  * look like:
  *
- * <p><Feature> <Name>David Blasby</Name> <Location> ... GML ... </Location> </Feature>
+ * <pre>
+ * {@code <Feature> <Name>David Blasby</Name> <Location> ... GML ... </Location> </Feature>}
+ * </pre>
  *
  * <p>I'm not the best at reading .xsd, but I think that means you can stick in ANY GML Feature. If
  * so, its way too general.
@@ -55,7 +59,6 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * renderer as normal.
  *
  * @author jamesm
- * @source $URL$
  */
 public class UserLayerImpl extends StyledLayerImpl implements UserLayer {
 
@@ -150,5 +153,11 @@ public class UserLayerImpl extends StyledLayerImpl implements UserLayer {
         }
 
         return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(
+                inlineFeatureDatastore, inlineFeatureType, remoteOWS, styles, constraints);
     }
 }

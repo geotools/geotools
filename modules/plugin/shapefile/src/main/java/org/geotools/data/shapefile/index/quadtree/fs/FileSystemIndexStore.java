@@ -32,15 +32,10 @@ import org.geotools.data.shapefile.index.quadtree.StoreException;
 import org.geotools.data.shapefile.shp.IndexFile;
 import org.locationtech.jts.geom.Envelope;
 
-/**
- * DOCUMENT ME!
- *
- * @author Tommaso Nolli
- * @source $URL$
- */
+/** @author Tommaso Nolli */
 public class FileSystemIndexStore implements IndexStore {
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.index.quadtree");
+            org.geotools.util.logging.Logging.getLogger(FileSystemIndexStore.class);
     private File file;
     private byte byteOrder;
 
@@ -122,10 +117,8 @@ public class FileSystemIndexStore implements IndexStore {
      * Wites a tree node to the qix file
      *
      * @param node The node
-     * @param channel DOCUMENT ME!
      * @param order byte order
      * @throws IOException
-     * @throws StoreException DOCUMENT ME!
      */
     private void writeNode(Node node, FileChannel channel, ByteOrder order)
             throws IOException, StoreException {
@@ -162,7 +155,6 @@ public class FileSystemIndexStore implements IndexStore {
      * Calculates the offset
      *
      * @param node
-     * @throws StoreException DOCUMENT ME!
      */
     private int getSubNodeOffset(Node node) throws StoreException {
         int offset = 0;
@@ -235,11 +227,7 @@ public class FileSystemIndexStore implements IndexStore {
         return tree;
     }
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @param order
-     */
+    /** @param order */
     private static ByteOrder byteToOrder(byte order) {
         ByteOrder ret = null;
 
@@ -265,20 +253,12 @@ public class FileSystemIndexStore implements IndexStore {
         return ret;
     }
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @return Returns the byteOrder.
-     */
+    /** @return Returns the byteOrder. */
     public int getByteOrder() {
         return this.byteOrder;
     }
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @param byteOrder The byteOrder to set.
-     */
+    /** @param byteOrder The byteOrder to set. */
     public void setByteOrder(byte byteOrder) {
         this.byteOrder = byteOrder;
     }

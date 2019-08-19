@@ -18,11 +18,11 @@ package org.geotools.coverage.io.netcdf;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.geotools.factory.Hints;
-import org.geotools.util.BooleanConverterFactory;
+import org.geotools.data.util.BooleanConverterFactory;
+import org.geotools.data.util.NumericConverterFactory;
 import org.geotools.util.Converter;
 import org.geotools.util.ConverterFactory;
-import org.geotools.util.NumericConverterFactory;
+import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
 
 /**

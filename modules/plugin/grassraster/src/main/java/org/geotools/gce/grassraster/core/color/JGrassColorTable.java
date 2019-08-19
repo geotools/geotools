@@ -24,7 +24,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 import org.geotools.gce.grassraster.JGrassMapEnvironment;
+import org.geotools.util.logging.Logging;
 
 /**
  * Represents a GRASS rastermap color table.
@@ -51,9 +53,10 @@ import org.geotools.gce.grassraster.JGrassMapEnvironment;
  *
  * @author Andrea Antonello (www.hydrologis.com)
  * @since 3.0
- * @source $URL$
  */
 public class JGrassColorTable {
+
+    static final Logger LOGGER = Logging.getLogger(JGrassColorTable.class);
 
     /** The rainbow color table, used as default for non existing color table. */
     private static final int[][] rainbow =
@@ -99,7 +102,7 @@ public class JGrassColorTable {
             if (line == null) {
                 rdr.close();
                 if (colrFile.delete()) {
-                    System.out.println("removed empty color file"); // $NON-NLS-1$
+                    LOGGER.info("removed empty color file"); // $NON-NLS-1$
                 }
                 rules = createDefaultColorTable(dataRange, alpha);
                 return;
@@ -250,7 +253,6 @@ public class JGrassColorTable {
         } else if (ruleSplit.length >= 1) {
             String part = ruleSplit[0];
             int alpha = 255;
-            if (ruleSplit.length == 2) alpha = Integer.parseInt(ruleSplit[1]);
 
             String[] partSplit = part.split(":"); // $NON-NLS-1$
 

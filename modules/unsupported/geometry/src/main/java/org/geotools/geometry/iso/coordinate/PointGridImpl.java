@@ -24,7 +24,6 @@ import java.util.ArrayList;
  * PointArray::column[1..n] : Position PointGrid::row[1..n] : PointArray
  *
  * @author Jackson Roehrig & Sanjay Jena
- * @source $URL$
  */
 public class PointGridImpl {
 

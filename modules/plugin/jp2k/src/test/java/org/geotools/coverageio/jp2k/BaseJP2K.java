@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.util.logging.Logger;
 import javax.media.jai.ImageLayout;
 import javax.media.jai.PlanarImage;
-import javax.media.jai.widget.ScrollingImagePanel;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import org.geotools.coverage.grid.GridCoverage2D;
@@ -32,7 +31,6 @@ import org.junit.Assert;
  * @author Daniele Romagnoli, GeoSolutions
  * @author Simone Giannecchini (simboss), GeoSolutions
  *     <p>Base testing class initializing JAI properties to be used during tests.
- * @source $URL$
  */
 @SuppressWarnings("deprecation")
 public class BaseJP2K extends Assert {
@@ -54,7 +52,10 @@ public class BaseJP2K extends Assert {
         if (TestData.isInteractiveTest()) {
             final JFrame frame = new JFrame();
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.getContentPane().add(new ScrollingImagePanel(gc.getRenderedImage(), 800, 800));
+            frame.getContentPane()
+                    .add(
+                            new javax.media.jai.widget.ScrollingImagePanel(
+                                    gc.getRenderedImage(), 800, 800));
             frame.pack();
             SwingUtilities.invokeLater(
                     new Runnable() {

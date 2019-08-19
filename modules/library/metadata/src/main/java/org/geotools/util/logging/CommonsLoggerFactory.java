@@ -25,7 +25,6 @@ import org.apache.commons.logging.LogFactory;
  * HREF="http://jakarta.apache.org/commons/logging/">Commons-logging</A> framework.
  *
  * @since 2.4
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  */

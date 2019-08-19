@@ -21,7 +21,6 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.opengis.filter.PropertyIsNotEqualTo;
 import org.opengis.filter.expression.Expression;
 
-/** @source $URL$ */
 public class IsNotEqualToImpltest extends TestCase {
 
     org.opengis.filter.FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory(null);

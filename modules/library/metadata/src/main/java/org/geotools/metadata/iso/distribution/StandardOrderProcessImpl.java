@@ -28,7 +28,6 @@ import org.opengis.util.InternationalString;
  * Common ways in which the resource may be obtained or received, and related instructions and fee
  * information.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @author Jody Garnett
@@ -80,20 +79,20 @@ public class StandardOrderProcessImpl extends MetadataEntity implements Standard
      * Set fees and terms for retrieving the resource. Include monetary units (as specified in ISO
      * 4217).
      */
-    public synchronized void setFees(final InternationalString newValue) {
+    public void setFees(final InternationalString newValue) {
         checkWritePermission();
         fees = newValue;
     }
 
     /** Returns the date and time when the dataset will be available. */
-    public synchronized Date getPlannedAvailableDateTime() {
+    public Date getPlannedAvailableDateTime() {
         return (plannedAvailableDateTime != Long.MIN_VALUE)
                 ? new Date(plannedAvailableDateTime)
                 : null;
     }
 
     /** Set the date and time when the dataset will be available. */
-    public synchronized void setPlannedAvailableDateTime(final Date newValue) {
+    public void setPlannedAvailableDateTime(final Date newValue) {
         checkWritePermission();
         plannedAvailableDateTime = (newValue != null) ? newValue.getTime() : Long.MIN_VALUE;
     }
@@ -104,7 +103,7 @@ public class StandardOrderProcessImpl extends MetadataEntity implements Standard
     }
 
     /** Set general instructions, terms and services provided by the distributor. */
-    public synchronized void setOrderingInstructions(final InternationalString newValue) {
+    public void setOrderingInstructions(final InternationalString newValue) {
         checkWritePermission();
         orderingInstructions = newValue;
     }
@@ -115,7 +114,7 @@ public class StandardOrderProcessImpl extends MetadataEntity implements Standard
     }
 
     /** Set typical turnaround time for the filling of an order. */
-    public synchronized void setTurnaround(final InternationalString newValue) {
+    public void setTurnaround(final InternationalString newValue) {
         checkWritePermission();
         turnaround = newValue;
     }

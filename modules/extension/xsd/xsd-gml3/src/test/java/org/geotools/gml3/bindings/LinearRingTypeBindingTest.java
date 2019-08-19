@@ -20,7 +20,6 @@ import org.geotools.gml3.GML3TestSupport;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.LinearRing;
 
-/** @source $URL$ */
 public class LinearRingTypeBindingTest extends GML3TestSupport {
 
     public void testPos() throws Exception {

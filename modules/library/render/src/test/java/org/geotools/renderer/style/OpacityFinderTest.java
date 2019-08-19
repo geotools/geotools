@@ -5,10 +5,10 @@ import junit.framework.TestCase;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.renderer.lite.OpacityFinder;
 import org.geotools.styling.RasterSymbolizer;
-import org.geotools.styling.SLDParser;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleFactory;
 import org.geotools.test.TestData;
+import org.geotools.xml.styling.SLDParser;
 
 public class OpacityFinderTest extends TestCase {
 

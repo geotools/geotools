@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import net.opengis.wfs20.ResolveValueType;
+import org.geotools.appschema.jdbc.JoiningJDBCFeatureSource;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.Query;
 import org.geotools.data.Transaction;
@@ -34,12 +35,11 @@ import org.geotools.data.complex.DataAccessRegistry;
 import org.geotools.data.complex.FeatureTypeMapping;
 import org.geotools.data.complex.MappingFeatureCollection;
 import org.geotools.data.complex.NestedAttributeMapping;
-import org.geotools.data.complex.filter.XPathUtil.StepList;
-import org.geotools.factory.Hints;
+import org.geotools.data.complex.util.XPathUtil.StepList;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.filter.FilterAttributeExtractor;
-import org.geotools.jdbc.JoiningJDBCFeatureSource;
+import org.geotools.util.factory.Hints;
 import org.opengis.feature.Feature;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.expression.Expression;
@@ -51,7 +51,6 @@ import org.xml.sax.helpers.NamespaceSupport;
  * Nested attribute mapping used for joining system
  *
  * @author Niels Charlier (Curtin University of Technology)
- * @source $URL$
  */
 public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
 

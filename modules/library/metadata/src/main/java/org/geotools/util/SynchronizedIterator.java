@@ -23,7 +23,6 @@ import java.util.Iterator;
  * by {@link java.util.Collections#synchronizedSet}'s iterator, except that the synchronization is
  * performed on an arbitrary lock.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

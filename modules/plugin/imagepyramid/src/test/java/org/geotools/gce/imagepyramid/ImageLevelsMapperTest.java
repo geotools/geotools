@@ -39,7 +39,7 @@ import org.geotools.test.TestData;
 import org.geotools.util.URLs;
 import org.junit.AfterClass;
 import org.junit.Assert;
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.opengis.coverage.grid.GridEnvelope;
 import org.opengis.geometry.MismatchedDimensionException;
@@ -53,8 +53,8 @@ public class ImageLevelsMapperTest extends Assert {
 
     protected static final Double DELTA = 1E-6;
 
-    @Before
-    public void init() {
+    @BeforeClass
+    public static void init() {
         System.setProperty("org.geotools.referencing.forceXY", "true");
         CRS.reset("all");
     }

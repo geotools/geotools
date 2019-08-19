@@ -22,7 +22,6 @@ import org.opengis.filter.FilterVisitor;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.spatial.Intersects;
 
-/** @source $URL$ */
 public class IntersectsImpl extends AbstractPreparedGeometryFilter implements Intersects {
 
     public IntersectsImpl(Expression e1, Expression e2) {

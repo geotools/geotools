@@ -22,12 +22,12 @@ import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.coordinate.GenericCurve;
 import org.opengis.geometry.coordinate.ParamForPoint;
 
-/** @source $URL$ */
 public class ParamForPointImpl extends ArrayList<Double> implements ParamForPoint {
 
     /** */
     private static final long serialVersionUID = -1875728979337736219L;
 
+    @SuppressWarnings("PMD.UnusedPrivateField")
     private GenericCurve genericCurve;
 
     /** @param genericCurve */

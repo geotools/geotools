@@ -26,7 +26,6 @@ import org.opengis.coverage.grid.GridEnvelope;
  * Captures information about a query for a single raster in a raster dataset.
  *
  * @author Gabriel Roldan
- * @source $URL$
  * @version $Id$
  * @since 2.5.6
  * @see RasterUtils#findMatchingRasters
@@ -48,8 +47,6 @@ public final class RasterQueryInfo {
 
     private GeneralEnvelope resultEnvelope;
 
-    private GridEnvelope resultDimension;
-
     private Long rasterId;
 
     private GridEnvelope mosaicLocation;
@@ -62,13 +59,9 @@ public final class RasterQueryInfo {
 
     private int rasterIndex;
 
-    /** The full tile range for the matching pyramid level */
-    private GridEnvelope levelTileRange;
-
     private GridEnvelope resultGridRange;
 
     public RasterQueryInfo() {
-        setResultDimensionInsideTiledImage(new GridEnvelope2D(0, 0, 0, 0));
         setMatchingTiles(new GridEnvelope2D(0, 0, 0, 0));
         setResultEnvelope(null);
     }
@@ -92,7 +85,6 @@ public final class RasterQueryInfo {
         //                + ltr.getHigh(1);
         s.append("\n\tMatching tiles       : ").append(mt).append(" out of ").append("level");
         s.append("\n\tTiled image size     : ").append(getTiledImageGridRange());
-        s.append("\n\tResult dimension     : ").append(getResultDimensionInsideTiledImage());
         s.append("\n\tMosaiced dimension   : ").append(getMosaicLocation());
         s.append("\n\tResult envelope      : ").append(getResultEnvelope());
         s.append("\n]");
@@ -127,11 +119,6 @@ public final class RasterQueryInfo {
         return resultEnvelope;
     }
 
-    @Deprecated
-    public GridEnvelope getResultDimensionInsideTiledImage() {
-        return resultDimension;
-    }
-
     void setRasterId(Long rasterId) {
         this.rasterId = rasterId;
     }
@@ -154,10 +141,6 @@ public final class RasterQueryInfo {
 
     void setMatchingTiles(GridEnvelope matchingTiles) {
         this.matchingTiles = matchingTiles;
-    }
-
-    void setResultDimensionInsideTiledImage(GridEnvelope resultDimensionInsideTiledImage) {
-        this.resultDimension = resultDimensionInsideTiledImage;
     }
 
     void setMosaicLocation(GridEnvelope targetRasterGridRange) {
@@ -204,16 +187,6 @@ public final class RasterQueryInfo {
 
     public int getRasterIndex() {
         return rasterIndex;
-    }
-
-    @Deprecated
-    void setLevelTileRange(GridEnvelope levelTileRange2) {
-        this.levelTileRange = levelTileRange2;
-    }
-
-    @Deprecated
-    public GridEnvelope getLevelTileRange() {
-        return levelTileRange;
     }
 
     void setResultGridRange(GridEnvelope resultGridRange) {

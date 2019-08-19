@@ -28,7 +28,6 @@ import org.opengis.filter.spatial.DWithin;
 import org.opengis.filter.spatial.Intersects;
 import org.opengis.filter.spatial.Overlaps;
 
-/** @source $URL$ */
 public class OracleFilterToSqlTest extends TestCase {
 
     OracleFilterToSQL encoder;
@@ -54,7 +53,7 @@ public class OracleFilterToSqlTest extends TestCase {
     }
 
     public void testBboxFilter() throws Exception {
-        BBOX bbox = ff.bbox("GEOM", -180, -90, 180, 90, "ESPG:4326");
+        BBOX bbox = ff.bbox("GEOM", -180, -90, 180, 90, "EPSG:4326");
         String encoded = encoder.encodeToString(bbox);
         assertEquals(
                 "WHERE SDO_RELATE(\"GEOM\", ?, 'mask=anyinteract querytype=WINDOW') = 'TRUE' ",
@@ -62,7 +61,7 @@ public class OracleFilterToSqlTest extends TestCase {
     }
 
     public void testLooseBboxFilter() throws Exception {
-        BBOX bbox = ff.bbox("GEOM", -180, -90, 180, 90, "ESPG:4326");
+        BBOX bbox = ff.bbox("GEOM", -180, -90, 180, 90, "EPSG:4326");
         encoder.setLooseBBOXEnabled(true);
         String encoded = encoder.encodeToString(bbox);
         assertEquals(

@@ -11,7 +11,6 @@ import org.opengis.parameter.ParameterValueGroup;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.MathTransformFactory;
 
-/** @source $URL$ */
 public class CassiniSoldnerTest {
 
     /**

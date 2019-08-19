@@ -22,7 +22,6 @@ import org.opengis.annotation.UML;
  * systems positions are given in formulae by either (<var>x</var>, <var>y</var>) in 2D, or
  * (<var>x</var>, <var>y</var>, <var>z</var>) in 3D.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/as">ISO 19107</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 2.0

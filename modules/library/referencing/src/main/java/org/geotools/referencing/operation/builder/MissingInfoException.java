@@ -23,7 +23,6 @@ import org.opengis.referencing.FactoryException;
  * set up properly.
  *
  * @since 2.4
- * @source $URL$
  * @version $Id$
  * @author Jan Jezek
  */

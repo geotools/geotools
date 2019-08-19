@@ -21,12 +21,7 @@ import org.geotools.xml.schema.Element;
 import org.geotools.xml.schema.ElementGrouping;
 import org.geotools.xml.schema.Group;
 
-/**
- * DOCUMENT ME!
- *
- * @author dzwiers
- * @source $URL$
- */
+/** @author dzwiers */
 public class GroupGT implements Group {
     private ElementGrouping child;
     private String id;
@@ -39,20 +34,10 @@ public class GroupGT implements Group {
         // do nothing
     }
 
-    /**
-     * Creates a new GroupGT object.
-     *
-     * @param id DOCUMENT ME!
-     * @param name DOCUMENT ME!
-     * @param namespace DOCUMENT ME!
-     * @param child DOCUMENT ME!
-     * @param min DOCUMENT ME!
-     * @param max DOCUMENT ME!
-     */
+    /** Creates a new GroupGT object. */
     public GroupGT(String id, String name, URI namespace, ElementGrouping child, int min, int max) {
         this.id = id;
         this.name = name;
-        name.toCharArray();
         this.namespace = namespace;
         this.child = child;
         this.min = min;

@@ -28,10 +28,10 @@ import org.geotools.feature.type.AttributeTypeImpl;
 import org.geotools.feature.type.ComplexTypeImpl;
 import org.geotools.gml3.GML3TestSupport;
 import org.geotools.gml3.GMLConfiguration;
-import org.geotools.xml.Configuration;
-import org.geotools.xml.SchemaLocator;
-import org.geotools.xml.XSD;
 import org.geotools.xs.XSSchema;
+import org.geotools.xsd.Configuration;
+import org.geotools.xsd.SchemaLocator;
+import org.geotools.xsd.XSD;
 import org.opengis.feature.ComplexAttribute;
 import org.opengis.feature.Property;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -40,7 +40,6 @@ import org.opengis.feature.type.Name;
 import org.opengis.feature.type.PropertyDescriptor;
 import org.picocontainer.MutablePicoContainer;
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 
 public class XSAnyTypeBindingTest extends GML3TestSupport {
 
@@ -103,9 +102,9 @@ public class XSAnyTypeBindingTest extends GML3TestSupport {
     }
 
     @Override
-    protected void registerNamespaces(Element root) {
-        super.registerNamespaces(root);
-        root.setAttribute("xmlns:test", "http://www.geotools.org/anytypetest");
+    protected void setUp() throws Exception {
+        super.setUp();
+        registerNamespaceMapping("test", "http://www.geotools.org/anytypetest");
     }
 
     @Override

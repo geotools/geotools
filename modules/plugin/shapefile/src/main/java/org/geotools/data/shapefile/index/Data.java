@@ -22,17 +22,12 @@ import java.util.ArrayList;
  * Holds values (with associated DataDefinition)
  *
  * @author Tommaso Nolli
- * @source $URL$
  */
 public class Data {
     private DataDefinition def;
     private ArrayList values;
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @param def
-     */
+    /** @param def */
     public Data(DataDefinition def) {
         this.def = def;
         this.values = new ArrayList(def.getFieldsCount());
@@ -58,8 +53,6 @@ public class Data {
     }
 
     /**
-     * DOCUMENT ME!
-     *
      * @param val
      * @return - this Data object
      * @throws TreeException
@@ -86,16 +79,11 @@ public class Data {
         return this.def;
     }
 
-    /** DOCUMENT ME! */
     public int getValuesCount() {
         return this.values.size();
     }
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @param i
-     */
+    /** @param i */
     public Object getValue(int i) {
         return this.values.get(i);
     }

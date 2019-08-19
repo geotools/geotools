@@ -33,10 +33,7 @@ import org.opengis.temporal.OrdinalEra;
 import org.opengis.temporal.OrdinalPosition;
 import org.opengis.temporal.TemporalReferenceSystem;
 
-/**
- * @author Mehdi Sidhoum (Geomatys)
- * @source $URL$
- */
+/** @author Mehdi Sidhoum (Geomatys) */
 public class DefaultOrdinalPositionTest {
 
     private OrdinalPosition ordinalPosition1;

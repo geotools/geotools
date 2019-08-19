@@ -30,7 +30,7 @@ import org.apache.commons.io.IOUtils;
 import org.geotools.data.ows.AbstractRequest;
 import org.geotools.data.ows.HTTPResponse;
 import org.geotools.data.ows.Request;
-import org.geotools.factory.FactoryNotFoundException;
+import org.geotools.util.factory.FactoryNotFoundException;
 import org.geotools.util.logging.Logging;
 
 public abstract class WFSRequest extends AbstractRequest implements Request {

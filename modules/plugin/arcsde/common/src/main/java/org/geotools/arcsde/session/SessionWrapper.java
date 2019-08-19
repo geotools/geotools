@@ -42,11 +42,7 @@ import org.geotools.arcsde.versioning.ArcSdeVersionHandler;
  * A pure session wrapper to aid in creating session decorators by extending this class.
  *
  * @author Gabriel Roldan (TOPP)
- * @version $Id$
  * @since 2.5.x
- * @source $URL$
- *     http://svn.geotools.org/trunk/modules/plugin/arcsde/datastore/src/main/java/org/geotools
- *     /arcsde/pool/SessionWrapper.java $
  */
 public class SessionWrapper implements ISession {
 

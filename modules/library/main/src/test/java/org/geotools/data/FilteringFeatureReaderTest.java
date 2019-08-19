@@ -18,7 +18,7 @@ package org.geotools.data;
 
 import java.io.IOException;
 import java.util.NoSuchElementException;
-import org.geotools.feature.IllegalAttributeException;
+import org.opengis.feature.IllegalAttributeException;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
@@ -27,7 +27,6 @@ import org.opengis.filter.Filter;
  * Test FilteredFeatureReader for conformance.
  *
  * @author Jody Garnett, Refractions Research
- * @source $URL$
  */
 public class FilteringFeatureReaderTest extends DataTestCase {
     FeatureReader<SimpleFeatureType, SimpleFeature> roadReader;

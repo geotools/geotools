@@ -22,13 +22,9 @@ import java.util.Map;
 import junit.framework.TestCase;
 import org.geotools.gml3.GML;
 import org.geotools.gml3.GMLConfiguration;
-import org.geotools.xml.Binding;
+import org.geotools.xsd.Binding;
 
-/**
- * Test {@link GMLConfiguration}.
- *
- * @source $URL$
- */
+/** Test {@link GMLConfiguration}. */
 public class GMLConfigurationTest extends TestCase {
 
     /**

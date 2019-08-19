@@ -17,13 +17,12 @@
 package org.geotools.gml2.bindings;
 
 import org.geotools.gml2.GML;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LineString;
 
-/** @source $URL$ */
 public class GMLLineStringPropertyTypeBindingTest extends AbstractGMLBindingTest {
     ElementInstance association;
     ElementInstance geometry;
@@ -33,8 +32,8 @@ public class GMLLineStringPropertyTypeBindingTest extends AbstractGMLBindingTest
 
         association =
                 createElement(
-                        GML.NAMESPACE, "myLineStringProperty", GML.LINESTRINGPROPERTYTYPE, null);
-        geometry = createElement(GML.NAMESPACE, "myLineString", GML.LINESTRINGTYPE, null);
+                        GML.NAMESPACE, "myLineStringProperty", GML.LineStringPropertyType, null);
+        geometry = createElement(GML.NAMESPACE, "myLineString", GML.LineStringType, null);
     }
 
     public void testWithGeometry() throws Exception {
@@ -55,9 +54,9 @@ public class GMLLineStringPropertyTypeBindingTest extends AbstractGMLBindingTest
                         null,
                         null);
         GMLGeometryAssociationTypeBinding s =
-                (GMLGeometryAssociationTypeBinding) getBinding(GML.GEOMETRYASSOCIATIONTYPE);
+                (GMLGeometryAssociationTypeBinding) getBinding(GML.GeometryAssociationType);
         GMLLineStringPropertyTypeBinding s1 =
-                (GMLLineStringPropertyTypeBinding) getBinding(GML.LINESTRINGPROPERTYTYPE);
+                (GMLLineStringPropertyTypeBinding) getBinding(GML.LineStringPropertyType);
         LineString p = (LineString) s1.parse(association, node, s.parse(association, node, null));
         assertNotNull(p);
     }

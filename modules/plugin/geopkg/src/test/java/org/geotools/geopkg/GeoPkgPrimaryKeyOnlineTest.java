@@ -19,7 +19,6 @@ package org.geotools.geopkg;
 import org.geotools.jdbc.JDBCPrimaryKeyOnlineTest;
 import org.geotools.jdbc.JDBCPrimaryKeyTestSetup;
 
-/** @source $URL$ */
 public class GeoPkgPrimaryKeyOnlineTest extends JDBCPrimaryKeyOnlineTest {
 
     @Override

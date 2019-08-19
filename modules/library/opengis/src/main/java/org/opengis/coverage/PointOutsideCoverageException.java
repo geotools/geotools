@@ -19,7 +19,6 @@ import org.opengis.geometry.DirectPosition;
  * Thrown when a {@link Coverage#evaluate(DirectPosition, java.util.Set) evaluate} method is invoked
  * for a location outside the domain of the coverage.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengis.org/docs/01-004.pdf">Grid Coverage specification 1.0</A>
  * @author Martin Desruisseaux (IRD)
  * @author Alexander Petkov

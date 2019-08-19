@@ -26,7 +26,6 @@ import org.geotools.gce.imagemosaic.properties.PropertiesCollectorSPI;
  * properties from a file name.
  *
  * @author Romagnoli Daniele, GeoSolutions SAS
- * @source $URL$
  */
 public class RuntimeExtractorSPI extends DefaultPropertiesCollectorSPI
         implements PropertiesCollectorSPI {

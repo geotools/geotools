@@ -19,7 +19,7 @@ package org.geotools.renderer.lite;
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.Icon;
+import javax.swing.*;
 import org.geotools.filter.ConstantExpression;
 import org.geotools.filter.FilterAttributeExtractor;
 import org.geotools.renderer.style.DynamicSymbolFactoryFinder;
@@ -74,13 +74,11 @@ import org.opengis.style.GraphicalSymbol;
  * symbolizer whose width is specified with a literal expression.<br>
  * Also provides an indication whether the stroke width is accurate, or if a non literal width has
  * been found.
- *
- * @source $URL$
  */
 public class MetaBufferEstimator extends FilterAttributeExtractor implements StyleVisitor {
     /** The logger for the rendering module. */
     protected static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.rendering");
+            org.geotools.util.logging.Logging.getLogger(MetaBufferEstimator.class);
 
     protected FilterAttributeExtractor attributeExtractor = new FilterAttributeExtractor();
 
@@ -133,11 +131,7 @@ public class MetaBufferEstimator extends FilterAttributeExtractor implements Sty
     }
 
     public void visit(Style style) {
-        FeatureTypeStyle[] ftStyles = style.getFeatureTypeStyles();
-
-        for (int i = 0; i < ftStyles.length; i++) {
-            ftStyles[i].accept(this);
-        }
+        style.featureTypeStyles().forEach(ft -> ft.accept(this));
     }
 
     public void visit(Rule rule) {
@@ -147,25 +141,11 @@ public class MetaBufferEstimator extends FilterAttributeExtractor implements Sty
             filter.accept(this, null);
         }
 
-        Symbolizer[] symbolizers = rule.getSymbolizers();
-
-        if (symbolizers != null) {
-            for (int i = 0; i < symbolizers.length; i++) {
-                Symbolizer symbolizer = symbolizers[i];
-                symbolizer.accept(this);
-            }
-        }
-
-        Graphic[] legendGraphics = rule.getLegendGraphic();
-
-        if (legendGraphics != null) {}
+        rule.symbolizers().forEach(s -> s.accept(this));
     }
 
     public void visit(FeatureTypeStyle fts) {
-        Rule[] rules = fts.getRules();
-
-        for (int i = 0; i < rules.length; i++) {
-            Rule rule = rules[i];
+        for (Rule rule : fts.rules()) {
             rule.accept(this);
         }
     }
@@ -363,13 +343,11 @@ public class MetaBufferEstimator extends FilterAttributeExtractor implements Sty
                     }
                     // evaluate the icon if found, if not SLD asks us to go to the next one
                     if (icon != null) {
-                        if (icon != null) {
-                            int size = Math.max(icon.getIconHeight(), icon.getIconWidth());
-                            if (size > buffer) {
-                                buffer = size;
-                            }
-                            return;
+                        int size = Math.max(icon.getIconHeight(), icon.getIconWidth());
+                        if (size > buffer) {
+                            buffer = size;
                         }
+                        return;
                     }
                 } else if (gs instanceof Mark) {
                     Mark mark = (Mark) gs;

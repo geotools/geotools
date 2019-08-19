@@ -50,9 +50,10 @@ class ChoiceAttributeTypeImpl extends AttributeTypeImpl implements ChoiceAttribu
             Object defaultValue,
             List<Filter> filter) {
         super(name, defaultType, false, false, filter, null, toDescription(types));
-        if (defaultValue == null && !isNillable) {
-            defaultValue = DataUtilities.defaultValue(defaultType);
+        if (defaultValue == null && !nillable) {
+            this.defaultValue = DataUtilities.defaultValue(defaultType);
         }
+        this.isNillable = nillable;
         this.minOccurs = min;
         this.maxOccurs = max;
     }

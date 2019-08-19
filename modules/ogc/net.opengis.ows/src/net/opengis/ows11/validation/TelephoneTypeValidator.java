@@ -1,12 +1,9 @@
 /**
- * <copyright>
- * </copyright>
  *
  * $Id$
  */
 package net.opengis.ows11.validation;
 
-import org.eclipse.emf.common.util.EList;
 
 /**
  * A sample validator interface for {@link net.opengis.ows11.TelephoneType}.
@@ -15,8 +12,8 @@ import org.eclipse.emf.common.util.EList;
  * This can be disabled with -vmargs -Dorg.eclipse.emf.examples.generator.validator=false.
  */
 public interface TelephoneTypeValidator {
-    boolean validate();
+  boolean validate();
 
-    boolean validateVoice(EList value);
-    boolean validateFacsimile(EList value);
+  boolean validateVoice(String value);
+  boolean validateFacsimile(String value);
 }

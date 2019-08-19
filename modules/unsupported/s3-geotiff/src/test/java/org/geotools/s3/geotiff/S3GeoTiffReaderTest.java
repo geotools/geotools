@@ -73,7 +73,7 @@ public class S3GeoTiffReaderTest {
                     int s3BytesRead = in.read(s3Buffer, 0, (int) readSize);
 
                     if (!Arrays.equals(fileBuffer, s3Buffer)) {
-                        System.out.println("Arrays aren't equal");
+                        // System.out.println("Arrays aren't equal");
                     }
 
                     assertEquals(

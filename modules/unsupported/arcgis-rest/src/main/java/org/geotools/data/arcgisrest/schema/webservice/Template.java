@@ -1,97 +1,111 @@
+
 package org.geotools.data.arcgisrest.schema.webservice;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class Template {
 
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("name")
     @Expose
     private String name;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("description")
     @Expose
     private String description;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("drawingTool")
     @Expose
     private String drawingTool;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("prototype")
     @Expose
     private Prototype prototype;
 
     /**
+     * 
      * (Required)
-     *
-     * @return The name
+     * 
      */
     public String getName() {
         return name;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param name The name
+     * 
      */
     public void setName(String name) {
         this.name = name;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The description
+     * 
      */
     public String getDescription() {
         return description;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param description The description
+     * 
      */
     public void setDescription(String description) {
         this.description = description;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The drawingTool
+     * 
      */
     public String getDrawingTool() {
         return drawingTool;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param drawingTool The drawingTool
+     * 
      */
     public void setDrawingTool(String drawingTool) {
         this.drawingTool = drawingTool;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The prototype
+     * 
      */
     public Prototype getPrototype() {
         return prototype;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param prototype The prototype
+     * 
      */
     public void setPrototype(Prototype prototype) {
         this.prototype = prototype;
@@ -99,17 +113,40 @@ public class Template {
 
     @Override
     public String toString() {
-        return ToStringBuilder.reflectionToString(this);
+        StringBuilder sb = new StringBuilder();
+        sb.append(Template.class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this))).append('[');
+        sb.append("name");
+        sb.append('=');
+        sb.append(((this.name == null)?"<null>":this.name));
+        sb.append(',');
+        sb.append("description");
+        sb.append('=');
+        sb.append(((this.description == null)?"<null>":this.description));
+        sb.append(',');
+        sb.append("drawingTool");
+        sb.append('=');
+        sb.append(((this.drawingTool == null)?"<null>":this.drawingTool));
+        sb.append(',');
+        sb.append("prototype");
+        sb.append('=');
+        sb.append(((this.prototype == null)?"<null>":this.prototype));
+        sb.append(',');
+        if (sb.charAt((sb.length()- 1)) == ',') {
+            sb.setCharAt((sb.length()- 1), ']');
+        } else {
+            sb.append(']');
+        }
+        return sb.toString();
     }
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder()
-                .append(name)
-                .append(description)
-                .append(drawingTool)
-                .append(prototype)
-                .toHashCode();
+        int result = 1;
+        result = ((result* 31)+((this.name == null)? 0 :this.name.hashCode()));
+        result = ((result* 31)+((this.description == null)? 0 :this.description.hashCode()));
+        result = ((result* 31)+((this.drawingTool == null)? 0 :this.drawingTool.hashCode()));
+        result = ((result* 31)+((this.prototype == null)? 0 :this.prototype.hashCode()));
+        return result;
     }
 
     @Override
@@ -121,11 +158,7 @@ public class Template {
             return false;
         }
         Template rhs = ((Template) other);
-        return new EqualsBuilder()
-                .append(name, rhs.name)
-                .append(description, rhs.description)
-                .append(drawingTool, rhs.drawingTool)
-                .append(prototype, rhs.prototype)
-                .isEquals();
+        return (((((this.name == rhs.name)||((this.name!= null)&&this.name.equals(rhs.name)))&&((this.description == rhs.description)||((this.description!= null)&&this.description.equals(rhs.description))))&&((this.drawingTool == rhs.drawingTool)||((this.drawingTool!= null)&&this.drawingTool.equals(rhs.drawingTool))))&&((this.prototype == rhs.prototype)||((this.prototype!= null)&&this.prototype.equals(rhs.prototype))));
     }
+
 }

@@ -24,7 +24,6 @@ import org.xml.sax.Attributes;
  *
  * @author dzwiers, Refractions Research, Inc. http://www.refractions.net
  * @author $Author:$ (last modification)
- * @source $URL$
  * @version $Id$
  */
 public class IgnoreHandler extends XSIElementHandler {
@@ -37,6 +36,7 @@ public class IgnoreHandler extends XSIElementHandler {
     }
 
     /** @see java.lang.Object#hashCode() */
+    @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int hashCode() {
         return 0;
     }

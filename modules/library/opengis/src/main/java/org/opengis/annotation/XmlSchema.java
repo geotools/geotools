@@ -21,7 +21,6 @@ import java.lang.annotation.Target;
  *
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 2.0
- * @source $URL$
  */
 @Documented
 @Target(PACKAGE)

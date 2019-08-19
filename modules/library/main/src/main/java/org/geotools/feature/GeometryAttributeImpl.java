@@ -46,7 +46,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  *
  * @author Leprosy
  * @since 0.3 TODO: test wkt geometry parse.
- * @source $URL$
  */
 public class GeometryAttributeImpl extends AttributeImpl implements GeometryAttribute {
     /** bounds, derived */
@@ -64,7 +63,6 @@ public class GeometryAttributeImpl extends AttributeImpl implements GeometryAttr
         return (GeometryDescriptor) super.getDescriptor();
     }
 
-    /** @deprecated */
     public Geometry getValue() {
         return (Geometry) super.getValue();
     }
@@ -73,7 +71,6 @@ public class GeometryAttributeImpl extends AttributeImpl implements GeometryAttr
         super.setValue((Geometry) newValue);
     }
 
-    /** @deprecated */
     public void setValue(Geometry geometry) {
         super.setValue(geometry);
     }

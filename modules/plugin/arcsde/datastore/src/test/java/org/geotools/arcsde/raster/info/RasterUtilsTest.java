@@ -43,7 +43,6 @@ import java.util.ArrayList;
 import java.util.List;
 import org.junit.Test;
 
-/** @source $URL$ */
 public class RasterUtilsTest {
 
     @Test

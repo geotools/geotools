@@ -37,7 +37,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * @author Jody Garnett
  * @author Michael Bedward
  * @since 2.7
- * @source $URL$
  * @version $Id$
  */
 public class MapContentTest {

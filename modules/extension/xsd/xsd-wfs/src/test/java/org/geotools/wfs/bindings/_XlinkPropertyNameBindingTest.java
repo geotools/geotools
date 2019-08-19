@@ -20,7 +20,7 @@ import java.math.BigInteger;
 import net.opengis.wfs.XlinkPropertyNameType;
 import org.geotools.wfs.WFS;
 import org.geotools.wfs.WFSTestSupport;
-import org.geotools.xml.Binding;
+import org.geotools.xsd.Binding;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -30,7 +30,6 @@ import org.w3c.dom.Element;
  * @author Gabriel Roldan (TOPP)
  * @version $Id$
  * @since 2.5.x
- * @source $URL$
  */
 public class _XlinkPropertyNameBindingTest extends WFSTestSupport {
     public _XlinkPropertyNameBindingTest() {

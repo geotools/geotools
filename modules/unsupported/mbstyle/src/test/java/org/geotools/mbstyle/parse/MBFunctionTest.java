@@ -126,13 +126,13 @@ public class MBFunctionTest {
         assertEquals("temperature", ECQL.toCQL(property));
 
         Literal stop1 = (Literal) fn.getParameters().get(1);
-        assertEquals(new Integer(0), stop1.evaluate(null, Integer.class));
+        assertEquals(Integer.valueOf(0), stop1.evaluate(null, Integer.class));
 
         Literal color1 = (Literal) fn.getParameters().get(2);
         assertEquals(Color.BLUE, color1.evaluate(null, Color.class));
 
         Literal stop2 = (Literal) fn.getParameters().get(3);
-        assertEquals(new Integer(100), stop2.evaluate(null, Integer.class));
+        assertEquals(Integer.valueOf(100), stop2.evaluate(null, Integer.class));
 
         Literal color2 = (Literal) fn.getParameters().get(4);
         assertEquals(Color.RED, color2.evaluate(null, Color.class));
@@ -188,16 +188,16 @@ public class MBFunctionTest {
         assertEquals("temperature", ECQL.toCQL(property));
 
         Literal base = (Literal) fn.getParameters().get(1);
-        assertEquals(new Double(1.1), base.evaluate(null, Double.class));
+        assertEquals(Double.valueOf(1.1), base.evaluate(null, Double.class));
 
         Literal stop1 = (Literal) fn.getParameters().get(2);
-        assertEquals(new Integer(0), stop1.evaluate(null, Integer.class));
+        assertEquals(Integer.valueOf(0), stop1.evaluate(null, Integer.class));
 
         Literal color1 = (Literal) fn.getParameters().get(3);
         assertEquals(Color.BLUE, color1.evaluate(null, Color.class));
 
         Literal stop2 = (Literal) fn.getParameters().get(4);
-        assertEquals(new Integer(100), stop2.evaluate(null, Integer.class));
+        assertEquals(Integer.valueOf(100), stop2.evaluate(null, Integer.class));
 
         Literal color2 = (Literal) fn.getParameters().get(5);
         assertEquals(Color.RED, color2.evaluate(null, Color.class));
@@ -272,19 +272,19 @@ public class MBFunctionTest {
         assertEquals(18.0, n.doubleValue(), .000001);
 
         Literal stop1 = (Literal) fn.getParameters().get(1);
-        assertEquals(new Integer(0), stop1.evaluate(null, Integer.class));
+        assertEquals(Integer.valueOf(0), stop1.evaluate(null, Integer.class));
 
         Literal color1 = (Literal) fn.getParameters().get(2);
         assertEquals(Color.BLUE, color1.evaluate(null, Color.class));
 
         Literal stop2 = (Literal) fn.getParameters().get(3);
-        assertEquals(new Integer(6), stop2.evaluate(null, Integer.class));
+        assertEquals(Integer.valueOf(6), stop2.evaluate(null, Integer.class));
 
         Literal color2 = (Literal) fn.getParameters().get(4);
         assertEquals(Color.RED, color2.evaluate(null, Color.class));
 
         Literal stop3 = (Literal) fn.getParameters().get(5);
-        assertEquals(new Integer(12), stop3.evaluate(null, Integer.class));
+        assertEquals(Integer.valueOf(12), stop3.evaluate(null, Integer.class));
 
         Literal color3 = (Literal) fn.getParameters().get(6);
         assertEquals(Color.GREEN, color3.evaluate(null, Color.class));

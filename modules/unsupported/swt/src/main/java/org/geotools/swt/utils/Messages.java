@@ -22,7 +22,6 @@ import java.util.ResourceBundle;
  * i18n utility.
  *
  * @author Andrea Antonello (www.hydrologis.com)
- * @source $URL$
  */
 public class Messages {
     private static final ResourceBundle stringRes =

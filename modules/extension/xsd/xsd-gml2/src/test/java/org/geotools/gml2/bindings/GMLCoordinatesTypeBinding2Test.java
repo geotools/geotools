@@ -17,12 +17,11 @@
 package org.geotools.gml2.bindings;
 
 import org.geotools.gml2.GML;
-import org.geotools.xml.Binding;
+import org.geotools.xsd.Binding;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.CoordinateSequence;
 import org.w3c.dom.Document;
 
-/** @source $URL$ */
 public class GMLCoordinatesTypeBinding2Test extends GMLTestSupport {
     public void testType() {
         assertEquals(CoordinateSequence.class, binding(GML.CoordinatesType).getType());

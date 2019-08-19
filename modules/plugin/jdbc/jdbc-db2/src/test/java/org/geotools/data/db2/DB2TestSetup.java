@@ -27,12 +27,10 @@ import org.geotools.util.logging.Logging;
  * Test harness for db2.
  *
  * @author Christian Mueller
- * @source $URL$
  */
 public class DB2TestSetup extends JDBCTestSetup {
 
-    protected static final Logger LOGGER =
-            Logging.getLogger(DB2TestSetup.class.getPackage().getName());
+    protected static final Logger LOGGER = Logging.getLogger(DB2TestSetup.class);
 
     //    protected SQLDialect createSQLDialect(JDBCDataStore dataStore) {
     //        return new DB2SQLDialect(dataStore);

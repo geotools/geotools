@@ -22,7 +22,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  *
  * <p>Note that some conversions have no parameters.
  *
- * @source $URL$
  * @version <A HREF="http://portal.opengeospatial.org/files/?artifact_id=6716">Abstract
  *     specification 2.0</A>
  * @author Martin Desruisseaux (IRD)

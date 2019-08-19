@@ -26,7 +26,6 @@ import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.store.ContentFeatureCollection;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.data.store.ContentFeatureStore;
-import org.geotools.factory.Hints;
 import org.geotools.geometry.jts.CircularArc;
 import org.geotools.geometry.jts.CircularRing;
 import org.geotools.geometry.jts.CircularString;
@@ -37,6 +36,7 @@ import org.geotools.geometry.jts.CurvedGeometries;
 import org.geotools.geometry.jts.SingleCurvedGeometry;
 import org.geotools.jdbc.JDBCTestSetup;
 import org.geotools.jdbc.JDBCTestSupport;
+import org.geotools.util.factory.Hints;
 import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
@@ -326,7 +326,7 @@ public class PostGISCurvesOnlineTest extends JDBCTestSupport {
     public void testSimplify() throws Exception {
         ContentFeatureSource fs = dataStore.getFeatureSource(tname("curves"));
         Query q = new Query();
-        q.getHints().put(Hints.GEOMETRY_SIMPLIFICATION, new Double(0.1));
+        q.getHints().put(Hints.GEOMETRY_SIMPLIFICATION, Double.valueOf(0.1));
         ContentFeatureCollection fc = fs.getFeatures(q);
         try (SimpleFeatureIterator fi = fc.features()) {
             // check they have not been simplified

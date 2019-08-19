@@ -22,7 +22,6 @@ import java.io.IOException;
  * Indicates a FeatureType could not be found.
  *
  * @author Jody Garnett, Refractions Research
- * @source $URL$
  */
 public class SchemaNotFoundException extends IOException {
     private static final long serialVersionUID = 1L;
@@ -32,7 +31,7 @@ public class SchemaNotFoundException extends IOException {
 
     public SchemaNotFoundException(String typeName) {
         super(NOT_FOUND + typeName);
-        typeName = null;
+        this.typeName = null;
     }
 
     public SchemaNotFoundException(String typeName, Throwable t) {

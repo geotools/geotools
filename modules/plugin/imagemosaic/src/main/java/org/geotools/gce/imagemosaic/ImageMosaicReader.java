@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2006 - 2016, Open Source Geospatial Foundation (OSGeo)5
+ *    (C) 2006 - 2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -16,6 +16,7 @@
  */
 package org.geotools.gce.imagemosaic;
 
+import it.geosolutions.imageio.maskband.DatasetLayout;
 import java.awt.Rectangle;
 import java.io.File;
 import java.io.FilenameFilter;
@@ -49,6 +50,7 @@ import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.DefaultHarvestedSource;
 import org.geotools.coverage.grid.io.DimensionDescriptor;
 import org.geotools.coverage.grid.io.GranuleSource;
+import org.geotools.coverage.grid.io.GranuleStore;
 import org.geotools.coverage.grid.io.HarvestedSource;
 import org.geotools.coverage.grid.io.OverviewPolicy;
 import org.geotools.coverage.grid.io.StructuredGridCoverage2DReader;
@@ -58,7 +60,6 @@ import org.geotools.data.DefaultFileServiceInfo;
 import org.geotools.data.FileGroupProvider.FileGroup;
 import org.geotools.data.ResourceInfo;
 import org.geotools.data.ServiceInfo;
-import org.geotools.factory.Hints;
 import org.geotools.gce.imagemosaic.ImageMosaicEventHandlers.ExceptionEvent;
 import org.geotools.gce.imagemosaic.ImageMosaicEventHandlers.FileProcessingEvent;
 import org.geotools.gce.imagemosaic.ImageMosaicEventHandlers.ProcessingEvent;
@@ -74,6 +75,7 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.geotools.util.URLs;
 import org.geotools.util.Utilities;
+import org.geotools.util.factory.Hints;
 import org.opengis.coverage.grid.Format;
 import org.opengis.coverage.grid.GridEnvelope;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -107,7 +109,6 @@ import org.opengis.referencing.operation.MathTransform;
  * @author Stefan Alfons Krueger (alfonx), Wikisquare.de : Support for
  *     jar:file:foo.jar/bar.properties URLs
  * @since 2.3
- * @source $URL$
  */
 @SuppressWarnings("rawtypes")
 public class ImageMosaicReader extends AbstractGridCoverage2DReader
@@ -615,12 +616,14 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
 
                 // Scan for MosaicConfigurationBeans from properties files
                 List<MosaicConfigurationBean> beans = new ArrayList<>();
-                for (File propFile : properties) {
-                    if (Utils.checkFileReadable(propFile)
-                            && Utils.loadMosaicProperties(URLs.fileToUrl(propFile)) != null) {
-                        configuration = Utils.loadMosaicProperties(URLs.fileToUrl(propFile));
-                        if (configuration != null) {
-                            beans.add(configuration);
+                if (properties != null) {
+                    for (File propFile : properties) {
+                        if (Utils.checkFileReadable(propFile)
+                                && Utils.loadMosaicProperties(URLs.fileToUrl(propFile)) != null) {
+                            configuration = Utils.loadMosaicProperties(URLs.fileToUrl(propFile));
+                            if (configuration != null) {
+                                beans.add(configuration);
+                            }
                         }
                     }
                 }
@@ -665,11 +668,6 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
                     granuleCatalog.dispose();
                 }
                 granuleCatalog = catalog;
-
-                if (granuleCatalog == null) {
-                    throw new DataSourceException(
-                            "Unable to create index for this URL " + sourceURL);
-                }
 
                 // Creating a RasterManager for each mosaic configuration found on disk
                 for (MosaicConfigurationBean bean : beans) {
@@ -813,8 +811,8 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
         if (suggestedSPIClass != null) {
             try {
                 final Class<?> clazz = Class.forName(suggestedSPIClass);
-                if (clazz.newInstance() instanceof ImageReaderSpi)
-                    suggestedSPI = (ImageReaderSpi) clazz.newInstance();
+                if (clazz.getDeclaredConstructor().newInstance() instanceof ImageReaderSpi)
+                    suggestedSPI = (ImageReaderSpi) clazz.getDeclaredConstructor().newInstance();
                 else suggestedSPI = null;
             } catch (Exception e) {
                 if (LOGGER.isLoggable(Level.FINE))
@@ -1074,28 +1072,20 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
     }
 
     @Override
-    public int getNumOverviews(String coverageName) {
-        coverageName = checkUnspecifiedCoverage(coverageName);
-        RasterManager manager = getRasterManager(coverageName);
-        return manager.overviewsController.getNumberOfOverviews();
-    }
-
-    @Override
-    public int getNumOverviews() {
-        return getNumOverviews(UNSPECIFIED);
-    }
-
-    @Override
-    public double[] getReadingResolutions(OverviewPolicy policy, double[] requestedResolution) {
+    public double[] getReadingResolutions(OverviewPolicy policy, double[] requestedResolution)
+            throws IOException {
         return getReadingResolutions(UNSPECIFIED, policy, requestedResolution);
     }
 
     @Override
     public double[] getReadingResolutions(
-            String coverageName, OverviewPolicy policy, double[] requestedResolution) {
+            String coverageName, OverviewPolicy policy, double[] requestedResolution)
+            throws IOException {
         coverageName = checkUnspecifiedCoverage(coverageName);
         RasterManager manager = getRasterManager(coverageName);
-        final int numOverviews = getNumOverviews(coverageName);
+        DatasetLayout datasetLayout = getDatasetLayout(coverageName);
+        final int numOverviews =
+                datasetLayout.getNumInternalOverviews() + datasetLayout.getNumExternalOverviews();
         OverviewsController overviewsController = manager.overviewsController;
         OverviewLevel level = null;
         if (numOverviews > 0) {
@@ -1147,6 +1137,15 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
         }
     }
 
+    @Override
+    protected boolean checkName(String coverageName) {
+        if (coverageName.equalsIgnoreCase(UNSPECIFIED)) {
+            return getGridCoverageCount() == 1;
+        } else {
+            return names.contains(coverageName);
+        }
+    }
+
     /**
      * Create a RasterManager on top of this {@link MosaicConfigurationBean}
      *
@@ -1179,12 +1178,14 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
             coverageName = defaultName;
         }
         RasterManager manager = getRasterManager(coverageName);
-        if (manager == null) {
-            // Consider creating a new GranuleStore
-        } else {
-            return manager.getGranuleSource(readOnly, getHints());
+        GranuleSource source = null;
+        if (manager != null) {
+            source = manager.getGranuleSource(readOnly, getHints());
+            if (source instanceof GranuleStore) {
+                source = new PurgingGranuleStore((GranuleStore) source, manager);
+            }
         }
-        return null;
+        return source;
     }
 
     @Override
@@ -1394,8 +1395,10 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
         if (deleteData) {
             // quick way: delete everything
             final File[] list = parentDirectory.listFiles();
-            for (File file : list) {
-                FileUtils.deleteQuietly(file);
+            if (list != null) {
+                for (File file : list) {
+                    FileUtils.deleteQuietly(file);
+                }
             }
         } else {
             finalizeCleanup();
@@ -1413,12 +1416,6 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
         for (File file : files) {
             FileUtils.deleteQuietly(file);
         }
-    }
-
-    @Override
-    public boolean removeCoverage(String coverageName)
-            throws IOException, UnsupportedOperationException {
-        return removeCoverage(coverageName, false);
     }
 
     /**
@@ -1538,5 +1535,10 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
 
     public ExecutorService getMultiThreadedLoader() {
         return multiThreadedLoader;
+    }
+
+    public DatasetLayout getDatasetLayout() {
+        // Default implementation for backwards compatibility
+        return getDatasetLayout(checkUnspecifiedCoverage(UNSPECIFIED));
     }
 }

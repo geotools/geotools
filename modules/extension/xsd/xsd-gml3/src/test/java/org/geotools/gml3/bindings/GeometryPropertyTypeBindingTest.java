@@ -23,13 +23,12 @@ import org.geotools.geometry.jts.LiteCoordinateSequence;
 import org.geotools.gml3.GML;
 import org.geotools.gml3.GML3TestSupport;
 import org.geotools.gml3.GMLConfiguration;
-import org.geotools.xml.Configuration;
+import org.geotools.xsd.Configuration;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.io.WKTReader;
 import org.w3c.dom.Document;
 
-/** @source $URL$ */
 public class GeometryPropertyTypeBindingTest extends GML3TestSupport {
 
     @Override

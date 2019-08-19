@@ -18,7 +18,6 @@ import org.opengis.annotation.XmlElement;
  * Abstract super-interface for logical operators that accept two or more other logical values as
  * inputs. Currently, the only two subclasses are {@link And} and {@link Or}.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengis.org/docs/02-059.pdf">Implementation specification 1.0</A>
  * @author Chris Dillard (SYS Technologies)
  * @since GeoAPI 2.0

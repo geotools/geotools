@@ -28,10 +28,7 @@ import org.opengis.temporal.IndeterminateValue;
 import org.opengis.temporal.TemporalPosition;
 import org.opengis.temporal.TemporalReferenceSystem;
 
-/**
- * @author Mehdi Sidhoum (Geomatys)
- * @source $URL$
- */
+/** @author Mehdi Sidhoum (Geomatys) */
 public class DefaultTemporalPositionTest {
 
     private TemporalPosition temporalPosition1;

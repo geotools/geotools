@@ -22,9 +22,9 @@ import org.geotools.styling.Graphic;
 import org.geotools.styling.Rule;
 import org.geotools.styling.StyleFactory;
 import org.geotools.styling.Symbolizer;
-import org.geotools.xml.AbstractComplexBinding;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
+import org.geotools.xsd.AbstractComplexBinding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 import org.opengis.filter.Filter;
 import org.opengis.util.InternationalString;
 import org.picocontainer.MutablePicoContainer;
@@ -63,7 +63,6 @@ import org.picocontainer.MutablePicoContainer;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class SLDRuleBinding extends AbstractComplexBinding {
     StyleFactory styleFactory;
@@ -135,7 +134,7 @@ public class SLDRuleBinding extends AbstractComplexBinding {
 
         // &lt;xsd:element ref="sld:LegendGraphic" minOccurs="0"/&gt;
         if (node.hasChild("LegendGraphic")) {
-            rule.setLegendGraphic(new Graphic[] {(Graphic) node.getChildValue("LegendGraphic")});
+            rule.setLegend((Graphic) node.getChildValue("LegendGraphic"));
         }
 
         // &lt;xsd:choice minOccurs="0"&gt;
@@ -145,7 +144,7 @@ public class SLDRuleBinding extends AbstractComplexBinding {
         if (node.hasChild(Filter.class)) {
             rule.setFilter((Filter) node.getChildValue(Filter.class));
         } else if (node.hasChild("ElseFilter")) {
-            rule.setIsElseFilter(true);
+            rule.setElseFilter(true);
         }
 
         // &lt;xsd:element ref="sld:MinScaleDenominator" minOccurs="0"/&gt;
@@ -162,7 +161,7 @@ public class SLDRuleBinding extends AbstractComplexBinding {
 
         // &lt;xsd:element ref="sld:Symbolizer" maxOccurs="unbounded"/&gt;
         List syms = node.getChildValues(Symbolizer.class);
-        rule.setSymbolizers((Symbolizer[]) syms.toArray(new Symbolizer[syms.size()]));
+        rule.symbolizers().addAll(syms);
 
         return rule;
     }

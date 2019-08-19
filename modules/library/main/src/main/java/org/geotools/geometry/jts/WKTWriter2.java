@@ -2,8 +2,8 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *   (C) 2015, Open Source Geospatial Foundation (OSGeo)
- *   (C) 2001, Vivid Solutions
+ *    (C) 2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2001, Vivid Solutions
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -93,8 +93,6 @@ public class WKTWriter2 extends WKTWriter {
         return "LINESTRING ( " + p0.x + " " + p0.y + ", " + p1.x + " " + p1.y + " )";
     }
 
-    private static int INDENT = 2;
-
     /**
      * Creates the <code>DecimalFormat</code> used to write <code>double</code>s with a sufficient
      * number of decimal places.
@@ -137,8 +135,6 @@ public class WKTWriter2 extends WKTWriter {
     private boolean isFormatted = false;
 
     private boolean useFormatting = false;
-
-    private int level = 0;
 
     private int coordsPerLine = -1;
 
@@ -324,7 +320,7 @@ public class WKTWriter2 extends WKTWriter {
      * Converts a <code>CircularString</code> to &lt;CircularString Tagged Text&gt; format, then
      * appends it to the writer.
      *
-     * @param lineString the <code>LineString</code> to process
+     * @param circularString the <code>SingleCurvedGeometry</code></code> to process
      * @param writer the output writer to append to
      */
     private void appendCircularStringTaggedText(
@@ -446,28 +442,11 @@ public class WKTWriter2 extends WKTWriter {
     }
 
     /**
-     * Appends the i'th coordinate from the sequence to the writer
-     *
-     * @param seq the <code>CoordinateSequence</code> to process
-     * @param i the index of the coordinate to write
-     * @param writer the output writer to append to
-     */
-    private void appendCoordinate(CoordinateSequence seq, int i, Writer writer) throws IOException {
-        writer.write(writeNumber(seq.getX(i)) + " " + writeNumber(seq.getY(i)));
-        if (outputDimension >= 3 && seq.getDimension() >= 3) {
-            double z = seq.getOrdinate(i, 3);
-            if (!Double.isNaN(z)) {
-                writer.write(" ");
-                writer.write(writeNumber(z));
-            }
-        }
-    }
-
-    /**
      * Converts a <code>Coordinate</code> to <code>&lt;Point&gt;</code> format, then appends it to
      * the writer.
      *
-     * @param coordinate the <code>Coordinate</code> to process
+     * @param x the x ordinate to process
+     * @param y the x ordinate to process
      * @param writer the output writer to append to
      */
     private void appendControlPoint(double x, double y, Writer writer) throws IOException {
@@ -483,9 +462,9 @@ public class WKTWriter2 extends WKTWriter {
      */
     private void appendCoordinate(Coordinate coordinate, Writer writer) throws IOException {
         writer.write(writeNumber(coordinate.x) + " " + writeNumber(coordinate.y));
-        if (outputDimension >= 3 && !Double.isNaN(coordinate.z)) {
+        if (outputDimension >= 3 && !Double.isNaN(coordinate.getZ())) {
             writer.write(" ");
-            writer.write(writeNumber(coordinate.z));
+            writer.write(writeNumber(coordinate.getZ()));
         }
     }
 
@@ -497,33 +476,6 @@ public class WKTWriter2 extends WKTWriter {
      */
     private String writeNumber(double d) {
         return formatter.format(d);
-    }
-
-    /**
-     * Converts a <code>LineString</code> to &lt;LineString Text&gt; format, then appends it to the
-     * writer.
-     *
-     * @param lineString the <code>LineString</code> to process
-     * @param writer the output writer to append to
-     */
-    private void appendSequenceText(
-            CoordinateSequence seq, int level, boolean doIndent, Writer writer) throws IOException {
-        if (seq.size() == 0) {
-            writer.write("EMPTY");
-        } else {
-            if (doIndent) indent(level, writer);
-            writer.write("(");
-            for (int i = 0; i < seq.size(); i++) {
-                if (i > 0) {
-                    writer.write(", ");
-                    if (coordsPerLine > 0 && i % coordsPerLine == 0) {
-                        indent(level + 1, writer);
-                    }
-                }
-                appendCoordinate(seq, i, writer);
-            }
-            writer.write(")");
-        }
     }
 
     /**

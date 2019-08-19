@@ -48,7 +48,6 @@ import org.opengis.feature.type.GeometryType;
  * to map from java class to attribute type and vice versa.
  *
  * @author Justin Deoliveira, The Open Planning Project, jdeolive@openplans.org
- * @source $URL$
  */
 public class SimpleSchema extends SchemaImpl {
 

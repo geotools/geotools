@@ -28,7 +28,6 @@ import org.geotools.geometry.iso.primitive.CurveImpl;
  * Hence, the lists are not backed by any type of persistence.
  *
  * @author Sanjay Jena and Prof. Dr. Jackson Roehrig
- * @source $URL$
  */
 public class CollectionFactoryMemoryImpl implements CollectionFactory {
 

@@ -25,6 +25,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.List;
+import java.util.logging.Level;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import org.apache.commons.io.FileUtils;
@@ -32,11 +33,11 @@ import org.apache.commons.io.FilenameUtils;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.sld.SLDConfiguration;
 import org.geotools.styling.NamedLayer;
-import org.geotools.styling.SLDParser;
-import org.geotools.styling.SLDTransformer;
 import org.geotools.styling.StyleFactory;
 import org.geotools.styling.StyledLayerDescriptor;
-import org.geotools.xml.Parser;
+import org.geotools.xml.styling.SLDParser;
+import org.geotools.xml.styling.SLDTransformer;
+import org.geotools.xsd.Parser;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -67,8 +68,8 @@ public abstract class AbstractIntegrationTest extends CssBaseTest {
 
     @Test
     public void translateTest() throws Exception {
-        String css = FileUtils.readFileToString(file);
-        if (!exclusiveRulesEnabled) {
+        String css = FileUtils.readFileToString(file, "UTF-8");
+        if (!exclusiveRulesEnabled && !css.contains("@mode")) {
             css = "@mode \"Simple\";\n" + css;
         }
 
@@ -110,21 +111,20 @@ public abstract class AbstractIntegrationTest extends CssBaseTest {
         File sldFile2 =
                 new File("./target/css", FilenameUtils.getBaseName(file.getName()) + ".sld");
         writeStyle(actual, sldFile2);
-        String actualSld = FileUtils.readFileToString(sldFile2);
+        String actualSld = FileUtils.readFileToString(sldFile2, "UTF-8");
 
         List validationErrors = validateSLD(actualSld);
         if (!validationErrors.isEmpty()) {
-            System.out.println("Validation failed, errors are: ");
+            LOGGER.severe("Validation failed, errors are: ");
             for (Object e : validationErrors) {
                 if (e instanceof SAXParseException) {
                     SAXParseException se = (SAXParseException) e;
-                    System.out.println(
-                            "line " + se.getLineNumber() + ": " + se.getLocalizedMessage());
+                    LOGGER.severe("line " + se.getLineNumber() + ": " + se.getLocalizedMessage());
                 } else {
-                    System.out.println(e);
+                    LOGGER.log(Level.SEVERE, "Other exception type", e);
                 }
             }
-            System.err.println(
+            LOGGER.severe(
                     "Validation failed, the two files are: "
                             + sldFile.getAbsolutePath()
                             + " "
@@ -132,7 +132,7 @@ public abstract class AbstractIntegrationTest extends CssBaseTest {
             fail("Validation failed");
         }
 
-        String expectedSld = FileUtils.readFileToString(sldFile);
+        String expectedSld = FileUtils.readFileToString(sldFile, "UTF-8");
         StyledLayerDescriptor expectedSLD = parseToSld(expectedSld);
         StyledLayerDescriptor actualSLD = parseToSld(actualSld);
         // Document expectedDom = XMLUnit.buildControlDocument(expectedSld);
@@ -148,13 +148,13 @@ public abstract class AbstractIntegrationTest extends CssBaseTest {
 
             // Try the java9 version
             if (sldFile_java9.exists()) {
-                expectedSLD = parseToSld(FileUtils.readFileToString(sldFile_java9));
+                expectedSLD = parseToSld(FileUtils.readFileToString(sldFile_java9, "UTF-8"));
                 if (expectedSLD.equals(actualSLD)) {
                     return;
                 }
             }
 
-            System.err.println(message);
+            // System.err.println(message);
             fail(message);
         }
     }

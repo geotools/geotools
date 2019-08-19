@@ -28,7 +28,6 @@ import org.opengis.geometry.BoundingBox;
  * @author Jody Garnett (Refractions Research)
  * @author Justin Deoliveira (The Open Planning Project)
  * @since GeoAPI 2.2
- * @source $URL$
  * @version 8.0
  */
 public interface Feature extends ComplexAttribute {

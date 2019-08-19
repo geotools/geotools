@@ -28,13 +28,12 @@ import java.util.TimeZone;
 import javax.media.jai.JAI;
 import javax.media.jai.Warp;
 import javax.media.jai.WarpPolynomial;
+import org.geotools.metadata.i18n.Vocabulary;
+import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.parameter.Parameter;
 import org.geotools.parameter.ParameterGroup;
-import org.geotools.resources.XArray;
-import org.geotools.resources.i18n.Vocabulary;
-import org.geotools.resources.i18n.VocabularyKeys;
 import org.geotools.util.Utilities;
-import org.opengis.parameter.ParameterDescriptor;
+import org.geotools.util.XArray;
 import org.opengis.parameter.ParameterDescriptorGroup;
 import org.opengis.parameter.ParameterValue;
 import org.opengis.parameter.ParameterValueGroup;
@@ -61,7 +60,6 @@ import org.opengis.referencing.operation.NoninvertibleTransformException;
  * Image Manipulation</A> in the <cite>Programming in Java Advanced Imaging</cite> guide.
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  * @author Alessio Fabiani
@@ -74,22 +72,6 @@ public class WarpTransform2D extends AbstractMathTransform
         implements MathTransform2D, Serializable {
     /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = -7949539694656719923L;
-
-    /**
-     * Placeholder interface to preserve parameter references in client code.
-     *
-     * @deprecated Please use {@link WarpTransform2DProvider}
-     */
-    static interface Provider {
-        ParameterDescriptor<Integer> DEGREE = WarpTransform2DProvider.DEGREE;
-        ParameterDescriptorGroup PARAMETERS = WarpTransform2DProvider.PARAMETERS;
-        ParameterDescriptor<Float> POST_SCALE_X = WarpTransform2DProvider.POST_SCALE_X;
-        ParameterDescriptor<Float> POST_SCALE_Y = WarpTransform2DProvider.POST_SCALE_Y;
-        ParameterDescriptor<Float> PRE_SCALE_X = WarpTransform2DProvider.PRE_SCALE_X;
-        ParameterDescriptor<Float> PRE_SCALE_Y = WarpTransform2DProvider.PRE_SCALE_Y;
-        ParameterDescriptor<?> X_COEFFS = WarpTransform2DProvider.X_COEFFS;
-        ParameterDescriptor<?> Y_COEFFS = WarpTransform2DProvider.Y_COEFFS;
-    }
 
     private static final boolean USE_HACK;
 
@@ -551,7 +533,6 @@ public class WarpTransform2D extends AbstractMathTransform
             postIncrement = 0;
         }
         final Point2D.Float ptSrc = new PointFloat();
-        final float[] ptDst = new float[2];
         while (--numPts >= 0) {
             ptSrc.x = srcPts[srcOff++] - 0.5f; // See the comment in transform(Point2D...)
             ptSrc.y = srcPts[srcOff++] - 0.5f; // for an explanation about the 0.5 shift.
@@ -577,7 +558,6 @@ public class WarpTransform2D extends AbstractMathTransform
             postIncrement = 0;
         }
         final Point2D.Double ptSrc = new PointDouble();
-        final float[] ptDst = new float[2];
         while (--numPts >= 0) {
             ptSrc.x = srcPts[srcOff++] - 0.5; // See the comment in transform(Point2D...)
             ptSrc.y = srcPts[srcOff++] - 0.5; // for an explanation about the 0.5 shift.

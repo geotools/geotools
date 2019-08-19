@@ -39,7 +39,6 @@ import org.geotools.data.gen.info.GeneralizationInfosProviderImpl;
  *     {@link GeneralizationInfosProvider}
  *     <p>GeneralizationInfosProviderProviderParam (Object,optional) Parameter object for {@link
  *     GeneralizationInfosProvider#getGeneralizationInfos(Object)}
- * @source $URL$
  */
 public class PreGeneralizedDataStoreFactory implements DataStoreFactorySpi {
 
@@ -80,11 +79,13 @@ public class PreGeneralizedDataStoreFactory implements DataStoreFactorySpi {
         try {
             Class providerClass = Class.forName(providerClassName);
             GeneralizationInfosProvider provider =
-                    (GeneralizationInfosProvider) providerClass.newInstance();
+                    (GeneralizationInfosProvider)
+                            providerClass.getDeclaredConstructor().newInstance();
             GeneralizationInfos gInfos = provider.getGeneralizationInfos(providerParam);
 
             Class repositoryClass = Class.forName(repositoryClassName);
-            Repository repository = (Repository) repositoryClass.newInstance();
+            Repository repository =
+                    (Repository) repositoryClass.getDeclaredConstructor().newInstance();
 
             return new PreGeneralizedDataStore(gInfos, repository, namespace);
         } catch (Exception ex) {

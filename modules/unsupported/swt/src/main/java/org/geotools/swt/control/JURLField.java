@@ -38,7 +38,6 @@ import org.geotools.util.URLs;
  *
  * @author Jody Garnett
  * @author Andrea Antonello (www.hydrologis.com)
- * @source $URL$
  */
 public class JURLField extends ParamField {
 

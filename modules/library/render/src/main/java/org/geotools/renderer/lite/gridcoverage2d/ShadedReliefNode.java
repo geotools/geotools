@@ -35,14 +35,14 @@ import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.grid.GridGeometry2D;
-import org.geotools.factory.Hints;
+import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.image.ImageWorker;
 import org.geotools.renderer.i18n.ErrorKeys;
 import org.geotools.renderer.i18n.Errors;
-import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.styling.ShadedRelief;
 import org.geotools.styling.StyleVisitor;
 import org.geotools.util.SimpleInternationalString;
+import org.geotools.util.factory.Hints;
 import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.filter.expression.Expression;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -159,8 +159,7 @@ class ShadedReliefNode extends StyleVisitorCoverageProcessingNodeAdapter
             CoverageProcessingNode nodeSource = getSource(0);
 
             CoverageProcessingNode colorMapNode = null;
-            if (nodeSource != null
-                    && nodeSource instanceof ColorMapNode
+            if (nodeSource instanceof ColorMapNode
                     && ((ColorMapNode) nodeSource).getType() != ColorMapNode.TYPE_NONE) {
 
                 // If colormap is present, ShadedRelief need to be computed on previous source

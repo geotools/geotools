@@ -11,9 +11,9 @@ import net.opengis.cat.csw20.SimpleLiteral;
 import net.opengis.cat.csw20.SummaryRecordType;
 import net.opengis.ows10.BoundingBoxType;
 import org.eclipse.emf.common.util.EList;
-import org.geotools.ows.OWS;
-import org.geotools.xml.Encoder;
-import org.geotools.xml.Parser;
+import org.geotools.xsd.Encoder;
+import org.geotools.xsd.Parser;
+import org.geotools.xsd.ows.OWS;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -112,7 +112,7 @@ public class CSWRecordTest {
     public void testRoundTripRecord() throws Exception {
         RecordType record = (RecordType) parser.parse(getClass().getResourceAsStream("Record.xml"));
         String encoded = encoder.encodeAsString(record, CSW.Record);
-        System.out.println(encoded);
+        // System.out.println(encoded);
         RecordType reparsed = (RecordType) parser.parse(new StringReader(encoded));
         assertTrue(EMFUtils.emfEquals(record, reparsed));
     }

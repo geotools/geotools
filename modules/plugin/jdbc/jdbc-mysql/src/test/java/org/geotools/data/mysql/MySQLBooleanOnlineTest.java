@@ -19,7 +19,6 @@ package org.geotools.data.mysql;
 import org.geotools.jdbc.JDBCBooleanOnlineTest;
 import org.geotools.jdbc.JDBCBooleanTestSetup;
 
-/** @source $URL$ */
 public class MySQLBooleanOnlineTest extends JDBCBooleanOnlineTest {
 
     @Override

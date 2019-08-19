@@ -22,7 +22,6 @@ import org.geotools.util.Utilities;
  * A (name, description) pair for a coordinate system axis.
  *
  * @since 2.3
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  */

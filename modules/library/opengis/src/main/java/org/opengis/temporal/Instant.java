@@ -23,7 +23,6 @@ import org.opengis.annotation.UML;
  * @author Alexander Petkov TODO There is a bit of a conflict in the spec document as to what should
  *     be returned for "position." The diagram shows that Position should be returned, while the
  *     text in the document demands that TemporalPosition should represent position in time.
- * @source $URL$
  */
 @UML(identifier = "TM_Instant", specification = ISO_19108)
 public interface Instant extends TemporalGeometricPrimitive {

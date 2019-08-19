@@ -23,7 +23,6 @@ import org.opengis.geometry.DirectPosition;
  * DirectPosition associated with another DirectPosition.
  *
  * @since 2.4
- * @source $URL$
  * @version $Id$
  * @author Jan Jezek
  */

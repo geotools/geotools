@@ -28,7 +28,6 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.factory.GeoTools;
 import org.geotools.styling.AnchorPoint;
 import org.geotools.styling.Fill;
 import org.geotools.styling.Font;
@@ -38,6 +37,7 @@ import org.geotools.styling.PointPlacement;
 import org.geotools.styling.StyleBuilder;
 import org.geotools.styling.TextSymbolizer;
 import org.geotools.swt.utils.Messages;
+import org.geotools.util.factory.GeoTools;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.filter.expression.Expression;
@@ -76,7 +76,6 @@ import org.opengis.filter.expression.Expression;
  *
  * @author Jody Garnett
  * @since 1.0.0
- * @source $URL$
  */
 public class LabelViewer {
     boolean enabled;

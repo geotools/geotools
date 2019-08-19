@@ -33,7 +33,6 @@ import org.opengis.parameter.ParameterDescriptor;
  * example the {@linkplain NewZealandMapGrid New Zealand map grid} and may wish to override the
  * neutral default values with some default value appropriate for that area.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

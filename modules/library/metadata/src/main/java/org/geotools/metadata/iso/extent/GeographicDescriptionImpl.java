@@ -25,7 +25,6 @@ import org.opengis.metadata.extent.GeographicDescription;
 /**
  * Description of the geographic area using identifiers.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @author Touraïvane
@@ -62,7 +61,7 @@ public class GeographicDescriptionImpl extends GeographicExtentImpl
     }
 
     /** Set the identifier used to represent a geographic area. */
-    public synchronized void setGeographicIdentifier(final Identifier newValue) {
+    public void setGeographicIdentifier(final Identifier newValue) {
         checkWritePermission();
         geographicIdentifier = newValue;
     }

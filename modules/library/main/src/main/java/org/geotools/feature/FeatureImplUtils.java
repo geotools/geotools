@@ -28,7 +28,6 @@ import java.util.SortedSet;
  * <p>This class is only for use internally and is not meant to be called by client code.
  *
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL$
  */
 public class FeatureImplUtils {
 

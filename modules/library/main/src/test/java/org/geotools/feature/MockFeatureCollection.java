@@ -28,10 +28,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
 import org.opengis.filter.sort.SortBy;
 
-/**
- * @author jamesm
- * @source $URL$
- */
+/** @author jamesm */
 public class MockFeatureCollection implements SimpleFeatureCollection {
 
     /** Creates a new instance of MockFeatureCollection */

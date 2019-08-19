@@ -26,10 +26,7 @@ import junit.framework.TestCase;
 import org.geotools.test.TestData;
 import org.geotools.xml.schema.Schema;
 
-/**
- * @author dzwiers
- * @source $URL$
- */
+/** @author dzwiers */
 public class SchemaMergeTest extends TestCase {
 
     protected SAXParser parser;
@@ -59,13 +56,13 @@ public class SchemaMergeTest extends TestCase {
             try {
                 parser.parse(f, contentHandler);
             } catch (Exception e) {
-                e.printStackTrace();
+                java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
                 fail(e.toString());
             }
 
             try {
                 assertNotNull("Schema missing", contentHandler.getSchema());
-                System.out.println(contentHandler.getSchema());
+                // System.out.println(contentHandler.getSchema());
 
                 Schema schema = contentHandler.getSchema();
 
@@ -77,11 +74,11 @@ public class SchemaMergeTest extends TestCase {
                         schema.getComplexTypes().length == 1);
 
             } catch (Exception e) {
-                e.printStackTrace();
+                java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
                 fail(e.toString());
             }
         } catch (IOException e1) {
-            e1.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e1);
             fail(e1.toString());
         }
     }

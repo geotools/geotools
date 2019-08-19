@@ -102,7 +102,6 @@ import org.opengis.filter.temporal.TOverlaps;
  * </code></pre>
  *
  * @author Jody Garnett (Refractions Research)
- * @source $URL$
  */
 public class IsFullySupportedFilterVisitor implements FilterVisitor, ExpressionVisitor {
 

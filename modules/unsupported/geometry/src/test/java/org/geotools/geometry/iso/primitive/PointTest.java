@@ -31,10 +31,7 @@ import org.opengis.geometry.primitive.Point;
 import org.opengis.geometry.primitive.PrimitiveFactory;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-/**
- * @author sanjay
- * @source $URL$
- */
+/** @author sanjay */
 public class PointTest extends TestCase {
 
     public void testMain() {
@@ -63,6 +60,7 @@ public class PointTest extends TestCase {
     private void _testPoint(GeometryBuilder builder) {
 
         GeometryFactoryImpl tCoordFactory = (GeometryFactoryImpl) builder.getGeometryFactory();
+        PositionFactory pf = builder.getPositionFactory();
         PrimitiveFactoryImpl tPrimFactory = (PrimitiveFactoryImpl) builder.getPrimitiveFactory();
 
         double[] coord = new double[] {10, 32000};
@@ -73,7 +71,7 @@ public class PointTest extends TestCase {
         assertTrue(dp[0] == 10);
         assertTrue(dp[1] == 32000);
 
-        DirectPosition dp1 = tCoordFactory.createDirectPosition(coord);
+        DirectPosition dp1 = pf.createDirectPosition(coord);
 
         Point p2 = tPrimFactory.createPoint(dp1);
 
@@ -95,7 +93,7 @@ public class PointTest extends TestCase {
         assertTrue(p1.isCycle() == true);
 
         double[] coord2 = new double[] {5, 20};
-        dp1 = tCoordFactory.createDirectPosition(coord2);
+        dp1 = pf.createDirectPosition(coord2);
         p1.setDirectPosition(dp1);
         // System.out.println("P1: " + p1);
         // System.out.println("P2: " + p2);

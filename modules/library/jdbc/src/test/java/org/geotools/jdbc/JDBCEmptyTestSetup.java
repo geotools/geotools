@@ -22,7 +22,6 @@ import java.sql.SQLException;
  * Test setup for executing tests on tables with no data.
  *
  * @author Justin Deoliveira, OpenGEO
- * @source $URL$
  */
 public abstract class JDBCEmptyTestSetup extends JDBCDelegatingTestSetup {
 

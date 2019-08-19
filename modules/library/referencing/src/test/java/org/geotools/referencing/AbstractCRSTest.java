@@ -19,8 +19,6 @@ package org.geotools.referencing;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.Set;
-import org.geotools.factory.GeoTools;
-import org.geotools.factory.Hints;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.Envelope2D;
 import org.geotools.metadata.iso.citation.Citations;
@@ -31,6 +29,8 @@ import org.geotools.referencing.operation.projection.LambertConformal1SP;
 import org.geotools.referencing.operation.projection.MapProjection;
 import org.geotools.referencing.operation.projection.TransverseMercator;
 import org.geotools.test.OnlineTestCase;
+import org.geotools.util.factory.GeoTools;
+import org.geotools.util.factory.Hints;
 import org.opengis.geometry.Envelope;
 import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.metadata.citation.Citation;
@@ -49,7 +49,6 @@ import org.opengis.referencing.operation.TransformException;
 /**
  * Tests if the CRS utility class is functioning correctly when using HSQL datastore.
  *
- * @source $URL$
  * @version $Id$
  * @author Jody Garnett
  * @author Martin Desruisseaux
@@ -75,7 +74,7 @@ public abstract class AbstractCRSTest extends OnlineTestCase {
         assertEquals("Lat", axis0.getAbbreviation());
 
         CoordinateSystemAxis axis1 = cs.getAxis(1);
-        assertEquals("Long", axis1.getAbbreviation());
+        assertEquals("Lon", axis1.getAbbreviation());
     }
 
     /** Tests the (longitude, latitude) axis order for EPSG:4326. */
@@ -85,7 +84,7 @@ public abstract class AbstractCRSTest extends OnlineTestCase {
         assertEquals(2, cs.getDimension());
 
         CoordinateSystemAxis axis0 = cs.getAxis(0);
-        assertEquals("Long", axis0.getAbbreviation());
+        assertEquals("Lon", axis0.getAbbreviation());
 
         CoordinateSystemAxis axis1 = cs.getAxis(1);
         assertEquals("Lat", axis1.getAbbreviation());
@@ -369,10 +368,11 @@ public abstract class AbstractCRSTest extends OnlineTestCase {
                 assertNotNull(crs);
                 count++;
             } catch (FactoryException e) {
-                System.err.println("WARNING (CRS: " + code + " ):" + e.getMessage());
+                // System.err.println("WARNING (CRS: " + code + " ):" + e.getMessage());
             }
         }
-        System.out.println("Success: " + count + "/" + total + " (" + (count * 100) / total + "%)");
+        // System.out.println("Success: " + count + "/" + total + " (" + (count * 100) / total +
+        // "%)");
     }
 
     public void testSRSAxisOrder() throws Exception {
@@ -400,29 +400,29 @@ public abstract class AbstractCRSTest extends OnlineTestCase {
     }
 
     /**
-     * Tests similarity transform on the example provided in the EPSG projection guide, page 99
+     * Tests similarity transform on the example provided in the EPSG projection guide, page 140
      *
      * @throws Exception
      */
     public void testSimilarityTransform() throws Exception {
-        // Tombak LNG Plant
-        CoordinateReferenceSystem tombak = CRS.decode("EPSG:5817", true);
-        // Nakhl-e Ghanem / UTM zone 39N
-        CoordinateReferenceSystem ng39 = CRS.decode("EPSG:3307", true);
+        // ED50 / UTM zone 31N
+        CoordinateReferenceSystem tombak = CRS.decode("EPSG:23031", true);
+        // ETRS89 / UTM zone 31N
+        CoordinateReferenceSystem ng39 = CRS.decode("EPSG:25831", true);
 
         // forward
-        double[] src = new double[] {20000, 10000};
+        double[] src = new double[] {300000, 4500000};
         double[] dst = new double[2];
         MathTransform mt = CRS.findMathTransform(tombak, ng39);
         mt.transform(src, 0, dst, 0, 1);
 
-        assertEquals(618336.748, dst[0], 0.001);
-        assertEquals(3067774.210, dst[1], 0.001);
+        assertEquals(299905.060, dst[0], 0.001);
+        assertEquals(4499796.515, dst[1], 0.001);
 
         // and back
         mt.inverse().transform(dst, 0, src, 0, 1);
-        assertEquals(20000, src[0], 0.001);
-        assertEquals(10000, src[1], 0.001);
+        assertEquals(300000, src[0], 0.001);
+        assertEquals(4500000, src[1], 0.001);
     }
 
     public void testOperationSourceTarget() throws Exception {
@@ -669,7 +669,7 @@ public abstract class AbstractCRSTest extends OnlineTestCase {
             envelope.add(40061162.89695589, 37753756.60975308);
 
             Envelope transformed = CRS.transform(envelope, DefaultGeographicCRS.WGS84);
-            System.out.println(transformed);
+            // System.out.println(transformed);
         } finally {
             MapProjection.SKIP_SANITY_CHECKS = false;
         }
@@ -718,7 +718,7 @@ public abstract class AbstractCRSTest extends OnlineTestCase {
             CRS.decode("EPSG:4326");
             return true;
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             return false;
         }
     }

@@ -23,7 +23,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  *
  * @author Jody Garnett, Refractions Research
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL$
  */
 public interface FeatureType extends ComplexType {
 

@@ -42,6 +42,7 @@ import org.geotools.data.shapefile.dbf.DbaseFileHeader;
 import org.geotools.data.shapefile.dbf.DbaseFileReader;
 import org.geotools.data.shapefile.fid.IndexedFidReader;
 import org.geotools.data.shapefile.files.FileReader;
+import org.geotools.data.shapefile.files.ShpFileType;
 import org.geotools.data.shapefile.files.ShpFiles;
 import org.geotools.data.shapefile.index.Data;
 import org.geotools.data.shapefile.index.TreeException;
@@ -51,8 +52,7 @@ import org.geotools.data.shapefile.shp.ShapefileHeader;
 import org.geotools.data.shapefile.shp.ShapefileReader;
 import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentFeatureSource;
-import org.geotools.factory.Hints;
-import org.geotools.factory.Hints.Key;
+import org.geotools.data.util.ScreenMap;
 import org.geotools.feature.AttributeTypeBuilder;
 import org.geotools.feature.FeatureTypes;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
@@ -60,8 +60,9 @@ import org.geotools.feature.type.BasicFeatureTypes;
 import org.geotools.filter.FilterAttributeExtractor;
 import org.geotools.filter.visitor.ExtractBoundsFilterVisitor;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.renderer.ScreenMap;
-import org.geotools.resources.Classes;
+import org.geotools.util.Classes;
+import org.geotools.util.factory.Hints;
+import org.geotools.util.factory.Hints.Key;
 import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.CoordinateSequenceFactory;
 import org.locationtech.jts.geom.Envelope;
@@ -313,7 +314,7 @@ class ShapefileFeatureSource extends ContentFeatureSource {
 
         // grab the target bbox, if any
         Envelope bbox = new ReferencedEnvelope();
-        if (q.getFilter() != null) {
+        if (q != null && q.getFilter() != null) {
             bbox = (Envelope) q.getFilter().accept(ExtractBoundsFilterVisitor.BOUNDS_VISITOR, bbox);
             if (bbox == null) {
                 bbox = new ReferencedEnvelope();
@@ -328,6 +329,9 @@ class ShapefileFeatureSource extends ContentFeatureSource {
                 && filter instanceof Id
                 && indexManager.hasFidIndex(false)) {
             Id fidFilter = (Id) filter;
+            if (indexManager.isIndexStale(ShpFileType.FIX)) {
+                indexManager.createFidIndex();
+            }
             List<Data> records = indexManager.queryFidIndex(fidFilter);
             if (records != null) {
                 goodRecs = new CloseableIteratorWrapper<Data>(records.iterator());
@@ -358,9 +362,7 @@ class ShapefileFeatureSource extends ContentFeatureSource {
 
         // get the .fix file reader, if we have a .fix file
         IndexedFidReader fidReader = null;
-        if (getDataStore().isFidIndexed()
-                && filter instanceof Id
-                && indexManager.hasFidIndex(false)) {
+        if (getDataStore().isFidIndexed() && indexManager.hasFidIndex(false)) {
             fidReader = new IndexedFidReader(shpFiles);
         }
 

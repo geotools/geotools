@@ -19,9 +19,11 @@ package org.geotools.filter.visitor;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
+import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.spatial.BBOX;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * Visit the BBOX filter elements and make sure they are valid.
@@ -33,11 +35,10 @@ import org.opengis.filter.spatial.BBOX;
  * <p>
  *
  * @author Jody
- * @source $URL$
  */
 public class FixBBOXFilterVisitor extends DuplicatingFilterVisitor {
 
-    // private static final Logger logger = Logging.getLogger("org.geotools.filter");
+    // private static final Logger logger = Logging.getLogger(FixBBOXFilterVisitor.class);
 
     /**
      * Represents a hard limit; requests outside of this bound are assumed to be invalid for the WFS
@@ -48,13 +49,12 @@ public class FixBBOXFilterVisitor extends DuplicatingFilterVisitor {
     /**
      * Visitor used to "clean up" any BBOX expressions.
      *
-     * @param max Max bounding box used to clip any BBox expressions to ensure they are vaild
+     * @param maxbbox Max bounding box used to clip any BBox expressions to ensure they are vaild
      */
-    public FixBBOXFilterVisitor(ReferencedEnvelope fsd) {
-        maxbbox = fsd;
+    public FixBBOXFilterVisitor(ReferencedEnvelope maxbbox) {
+        this.maxbbox = maxbbox;
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public Object visit(BBOX filter, Object extraData) {
         Envelope bbox = null;
@@ -68,9 +68,16 @@ public class FixBBOXFilterVisitor extends DuplicatingFilterVisitor {
         } else if (rightGeometry != null && rightGeometry instanceof Literal) {
             le = (Literal) rightGeometry;
         }
+        CoordinateReferenceSystem crs = null;
         if (le != null && le.getValue() != null && le.getValue() instanceof Geometry) {
             Geometry geometry = (Geometry) le.getValue();
             bbox = geometry.getEnvelopeInternal();
+            crs = (CoordinateReferenceSystem) geometry.getUserData();
+        } else if (le != null
+                && le.getValue() != null
+                && le.getValue() instanceof ReferencedEnvelope) {
+            bbox = (Envelope) le.getValue();
+            crs = ((ReferencedEnvelope) le.getValue()).getCoordinateReferenceSystem();
         }
         if (bbox == null) {
             // huh? no literal? Allow super class to sort it out ...
@@ -101,9 +108,10 @@ public class FixBBOXFilterVisitor extends DuplicatingFilterVisitor {
         }
         if (clipped) {
             // the bbox was clipped!
-            String propertyName = filter.getPropertyName();
-            String srs = filter.getSRS();
-            return getFactory(extraData).bbox(propertyName, minx, miny, maxx, maxy, srs);
+            FilterFactory2 ff = getFactory(extraData);
+            return ff.bbox(
+                    filter.getExpression1(),
+                    ff.literal(new ReferencedEnvelope(minx, maxx, miny, maxy, crs)));
         } else {
             return super.visit(filter, extraData); // allow super class to make a direct copy
         }

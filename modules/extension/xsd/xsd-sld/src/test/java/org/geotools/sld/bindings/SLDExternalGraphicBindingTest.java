@@ -20,10 +20,9 @@ import org.geotools.styling.ExternalGraphic;
 import org.geotools.xlink.XLINK;
 import org.w3c.dom.Element;
 
-/** @source $URL$ */
 public class SLDExternalGraphicBindingTest extends SLDTestSupport {
     public void testType() throws Exception {
-        assertEquals(ExternalGraphic.class, new SLDExternalGraphicBinding(null).getType());
+        assertEquals(ExternalGraphic.class, new SLDExternalGraphicBinding(null, null).getType());
     }
 
     public void testNormal() throws Exception {
@@ -42,6 +41,25 @@ public class SLDExternalGraphicBindingTest extends SLDTestSupport {
         assertNotNull(externalGraphic);
 
         assertEquals(getClass().getResource("eclipse.png"), externalGraphic.getLocation());
+        assertEquals("image/png", externalGraphic.getFormat());
+    }
+
+    public void testUnknownProtocol() throws Exception {
+        document.appendChild(document.createElementNS(SLD.NAMESPACE, "ExternalGraphic"));
+
+        Element r = document.createElementNS(SLD.NAMESPACE, "OnlineResource");
+        r.setAttributeNS(XLINK.NAMESPACE, "href", "resource:/foo/bar/test.png");
+
+        Element f = document.createElementNS(SLD.NAMESPACE, "Format");
+        f.appendChild(document.createTextNode("image/png"));
+
+        document.getDocumentElement().appendChild(r);
+        document.getDocumentElement().appendChild(f);
+
+        ExternalGraphic externalGraphic = (ExternalGraphic) parse();
+        assertNotNull(externalGraphic);
+
+        assertEquals("resource:/foo/bar/test.png", externalGraphic.getURI());
         assertEquals("image/png", externalGraphic.getFormat());
     }
 }

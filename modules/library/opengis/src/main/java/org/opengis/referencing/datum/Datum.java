@@ -25,7 +25,6 @@ import org.opengis.util.InternationalString;
  * reference system. Each datum subtype can be associated with only specific types of {@linkplain
  * org.opengis.referencing.cs.CoordinateSystem coordinate systems}.
  *
- * @source $URL$
  * @version <A HREF="http://portal.opengeospatial.org/files/?artifact_id=6716">Abstract
  *     specification 2.0</A>
  * @author Martin Desruisseaux (IRD)

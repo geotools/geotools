@@ -17,146 +17,146 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link net.opengis.ows20.impl.NilValueTypeImpl#getNilReason <em>Nil Reason</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
 public class NilValueTypeImpl extends CodeTypeImpl implements NilValueType {
     /**
-     * The default value of the '{@link #getNilReason() <em>Nil Reason</em>}' attribute.
-     * <!-- begin-user-doc -->
+   * The default value of the '{@link #getNilReason() <em>Nil Reason</em>}' attribute.
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getNilReason()
-     * @generated
-     * @ordered
-     */
+   * @see #getNilReason()
+   * @generated
+   * @ordered
+   */
     protected static final String NIL_REASON_EDEFAULT = null;
 
     /**
-     * The cached value of the '{@link #getNilReason() <em>Nil Reason</em>}' attribute.
-     * <!-- begin-user-doc -->
+   * The cached value of the '{@link #getNilReason() <em>Nil Reason</em>}' attribute.
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getNilReason()
-     * @generated
-     * @ordered
-     */
+   * @see #getNilReason()
+   * @generated
+   * @ordered
+   */
     protected String nilReason = NIL_REASON_EDEFAULT;
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     protected NilValueTypeImpl() {
-        super();
-    }
+    super();
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     protected EClass eStaticClass() {
-        return Ows20Package.Literals.NIL_VALUE_TYPE;
-    }
+    return Ows20Package.Literals.NIL_VALUE_TYPE;
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public String getNilReason() {
-        return nilReason;
-    }
+    return nilReason;
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public void setNilReason(String newNilReason) {
-        String oldNilReason = nilReason;
-        nilReason = newNilReason;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, Ows20Package.NIL_VALUE_TYPE__NIL_REASON, oldNilReason, nilReason));
-    }
+    String oldNilReason = nilReason;
+    nilReason = newNilReason;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, Ows20Package.NIL_VALUE_TYPE__NIL_REASON, oldNilReason, nilReason));
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case Ows20Package.NIL_VALUE_TYPE__NIL_REASON:
-                return getNilReason();
-        }
-        return super.eGet(featureID, resolve, coreType);
+    switch (featureID) {
+      case Ows20Package.NIL_VALUE_TYPE__NIL_REASON:
+        return getNilReason();
     }
+    return super.eGet(featureID, resolve, coreType);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case Ows20Package.NIL_VALUE_TYPE__NIL_REASON:
-                setNilReason((String)newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
+    switch (featureID) {
+      case Ows20Package.NIL_VALUE_TYPE__NIL_REASON:
+        setNilReason((String)newValue);
+        return;
     }
+    super.eSet(featureID, newValue);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case Ows20Package.NIL_VALUE_TYPE__NIL_REASON:
-                setNilReason(NIL_REASON_EDEFAULT);
-                return;
-        }
-        super.eUnset(featureID);
+    switch (featureID) {
+      case Ows20Package.NIL_VALUE_TYPE__NIL_REASON:
+        setNilReason(NIL_REASON_EDEFAULT);
+        return;
     }
+    super.eUnset(featureID);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case Ows20Package.NIL_VALUE_TYPE__NIL_REASON:
-                return NIL_REASON_EDEFAULT == null ? nilReason != null : !NIL_REASON_EDEFAULT.equals(nilReason);
-        }
-        return super.eIsSet(featureID);
+    switch (featureID) {
+      case Ows20Package.NIL_VALUE_TYPE__NIL_REASON:
+        return NIL_REASON_EDEFAULT == null ? nilReason != null : !NIL_REASON_EDEFAULT.equals(nilReason);
     }
+    return super.eIsSet(featureID);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     public String toString() {
-        if (eIsProxy()) return super.toString();
+    if (eIsProxy()) return super.toString();
 
-        StringBuffer result = new StringBuffer(super.toString());
-        result.append(" (nilReason: ");
-        result.append(nilReason);
-        result.append(')');
-        return result.toString();
-    }
+    StringBuilder result = new StringBuilder(super.toString());
+    result.append(" (nilReason: ");
+    result.append(nilReason);
+    result.append(')');
+    return result.toString();
+  }
 
 } //NilValueTypeImpl

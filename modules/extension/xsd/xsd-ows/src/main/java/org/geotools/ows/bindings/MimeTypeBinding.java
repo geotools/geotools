@@ -18,8 +18,9 @@ package org.geotools.ows.bindings;
 
 import javax.xml.namespace.QName;
 import net.opengis.ows10.Ows10Factory;
-import org.geotools.ows.OWS;
-import org.geotools.xml.*;
+import org.geotools.xsd.AbstractSimpleBinding;
+import org.geotools.xsd.InstanceComponent;
+import org.geotools.xsd.ows.OWS;
 
 /**
  * Binding object for the type http://www.opengis.net/ows:MimeType.
@@ -41,7 +42,6 @@ import org.geotools.xml.*;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class MimeTypeBinding extends AbstractSimpleBinding {
     public MimeTypeBinding(Ows10Factory factory) {}

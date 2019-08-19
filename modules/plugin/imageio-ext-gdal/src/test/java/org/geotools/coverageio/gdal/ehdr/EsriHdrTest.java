@@ -36,10 +36,10 @@ import org.geotools.coverage.grid.io.GridFormatFinder;
 import org.geotools.coverageio.gdal.BaseGDALGridCoverage2DReader;
 import org.geotools.coverageio.gdal.GDALTestCase;
 import org.geotools.coverageio.gdal.ecw.ECWReader;
-import org.geotools.factory.Hints;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.test.TestData;
+import org.geotools.util.factory.Hints;
 import org.junit.Assert;
 import org.junit.Test;
 import org.opengis.parameter.GeneralParameterValue;
@@ -52,7 +52,6 @@ import org.opengis.referencing.NoSuchAuthorityCodeException;
  * @author Daniele Romagnoli, GeoSolutions
  * @author Simone Giannecchini (simboss), GeoSolutions
  *     <p>Testing {@link ECWReader}
- * @source $URL$
  */
 public final class EsriHdrTest extends GDALTestCase {
     /** file name of a valid EHdr sample data to be used for tests. */
@@ -128,7 +127,7 @@ public final class EsriHdrTest extends GDALTestCase {
                             oldEnvelope.getUpperCorner().getOrdinate(0),
                             oldEnvelope.getUpperCorner().getOrdinate(1)
                         });
-        cropEnvelope.setCoordinateReferenceSystem(reader.getCrs());
+        cropEnvelope.setCoordinateReferenceSystem(reader.getCoordinateReferenceSystem());
 
         final ParameterValue gg =
                 (ParameterValue)
@@ -174,7 +173,7 @@ public final class EsriHdrTest extends GDALTestCase {
                             oldEnvelope.getUpperCorner().getOrdinate(0) + translate0,
                             oldEnvelope.getUpperCorner().getOrdinate(1) + translate1
                         });
-        wrongEnvelope.setCoordinateReferenceSystem(reader.getCrs());
+        wrongEnvelope.setCoordinateReferenceSystem(reader.getCoordinateReferenceSystem());
 
         final ParameterValue gg2 =
                 (ParameterValue)

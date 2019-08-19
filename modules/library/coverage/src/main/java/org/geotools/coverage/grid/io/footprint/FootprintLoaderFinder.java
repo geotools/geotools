@@ -21,8 +21,8 @@ import static org.geotools.util.Utilities.toUnmodifiableSet;
 
 import java.util.Arrays;
 import java.util.Set;
-import org.geotools.factory.FactoryCreator;
-import org.geotools.factory.FactoryRegistry;
+import org.geotools.util.factory.FactoryCreator;
+import org.geotools.util.factory.FactoryRegistry;
 
 /**
  * Enable programs to find all available FootprintLoader implementations.
@@ -41,7 +41,7 @@ import org.geotools.factory.FactoryRegistry;
  */
 public final class FootprintLoaderFinder {
     /** The service registry for this manager. Will be initialized only when first needed. */
-    private static FactoryRegistry registry;
+    private static volatile FactoryRegistry registry;
 
     /** Do not allows any instantiation of this class. */
     private FootprintLoaderFinder() {

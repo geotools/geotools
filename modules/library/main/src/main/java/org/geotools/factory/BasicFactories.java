@@ -19,11 +19,13 @@ package org.geotools.factory;
 // J2SE dependencies
 
 import java.util.Map;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.ReferencingFactoryFinder;
-import org.geotools.resources.Classes;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
-import org.opengis.feature.type.FeatureTypeFactory;
+import org.geotools.util.Classes;
+import org.geotools.util.factory.FactoryNotFoundException;
+import org.geotools.util.factory.FactoryRegistryException;
+import org.geotools.util.factory.Hints;
 import org.opengis.filter.FilterFactory;
 import org.opengis.geometry.coordinate.GeometryFactory;
 import org.opengis.geometry.primitive.PrimitiveFactory;
@@ -47,7 +49,6 @@ import org.opengis.util.NameFactory;
  * later in a subclass.
  *
  * @since 2.3
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  */
@@ -93,35 +94,6 @@ public class BasicFactories {
      */
     private static String unsupportedFactory(final Class type) {
         return Errors.format(ErrorKeys.FACTORY_NOT_FOUND_$1, Classes.getShortName(type));
-    }
-
-    /**
-     * Returns the {@linkplain FeatureTypeFactory feature type factory} singleton.
-     *
-     * <p><strong>NOTE:</strong> This method is not yet supported in Geotools. The default
-     * implementation thrown an exception in all case.
-     *
-     * @throws FactoryNotFoundException if no factory was found for the requested type.
-     * @throws FactoryRegistryException if the factory can't be obtained for an other reason.
-     * @deprecated use {@link #getFeatureTypeFactory()}.
-     */
-    public FeatureTypeFactory getTypeFactory() throws FactoryRegistryException {
-        return getFeatureTypeFactory();
-    }
-
-    /**
-     * Returns the {@linkplain FeatureTypeFactory feature type factory} singleton.
-     *
-     * <p><strong>NOTE:</strong> This method is not yet supported in Geotools. The default
-     * implementation thrown an exception in all case.
-     *
-     * @throws FactoryNotFoundException if no factory was found for the requested type.
-     * @throws FactoryRegistryException if the factory can't be obtained for an other reason.
-     * @deprecated use {@link #getFeatureTypeFactory()}.
-     * @since 2.5
-     */
-    public FeatureTypeFactory getFeatureTypeFactory() throws FactoryRegistryException {
-        throw new FactoryNotFoundException(unsupportedFactory(FeatureTypeFactory.class));
     }
 
     /**

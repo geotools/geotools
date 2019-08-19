@@ -19,7 +19,6 @@ package org.geotools.data.gen;
 
 import org.geotools.data.Repository;
 
-/** @source $URL$ */
 public class ShapeFilePreGeneralizedFeatureSourceTest
         extends AbstractPreGeneralizedFeatureSourceTest {
 
@@ -27,6 +26,10 @@ public class ShapeFilePreGeneralizedFeatureSourceTest
 
     protected Repository getRepository() {
         return new DSFinderRepository();
+    }
+
+    public void testPropertySelection() {
+        testPropertySelection(ConfigName);
     }
 
     public void testGetCount() {

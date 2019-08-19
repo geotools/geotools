@@ -28,7 +28,7 @@
         </sld:Fill>
         <sld:VendorOption name="followLine">true</sld:VendorOption>
         <sld:VendorOption name="repeat">50</sld:VendorOption>
-        <sld:VendorOption name="maxDisplacement">10</sld:VendorOption>
+        <sld:VendorOption name="maxDisplacement">12</sld:VendorOption>
       </sld:TextSymbolizer>
     </sld:Rule>
   </sld:FeatureTypeStyle>

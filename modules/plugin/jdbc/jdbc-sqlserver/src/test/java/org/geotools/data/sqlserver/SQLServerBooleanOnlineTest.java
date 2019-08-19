@@ -19,7 +19,6 @@ package org.geotools.data.sqlserver;
 import org.geotools.jdbc.JDBCBooleanOnlineTest;
 import org.geotools.jdbc.JDBCBooleanTestSetup;
 
-/** @source $URL$ */
 public class SQLServerBooleanOnlineTest extends JDBCBooleanOnlineTest {
 
     @Override

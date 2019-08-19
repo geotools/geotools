@@ -21,7 +21,7 @@
   <parent>
     <artifactId>unsupported</artifactId>
     <groupId>org.geotools</groupId>
-    <version>21-SNAPSHOT</version>
+    <version>22-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
@@ -69,5 +69,11 @@
       <artifactId>ehcache</artifactId>
       <version>2.10.3</version>
     </dependency>
+	<dependency>
+		<groupId>org.mockito</groupId>
+		<artifactId>mockito-core</artifactId>
+		<scope>test</scope>
+		<type>jar</type>
+	</dependency>
   </dependencies>
 </project>

@@ -30,12 +30,11 @@ import org.opengis.coverage.grid.Format;
  *
  * @author Daniele Romagnoli
  * @author Simone Giannecchini (simboss)
- * @source $URL$
  */
 public final class ArcGridFormatFactory implements GridFormatFactorySpi {
     /** Logger. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.gce.arcgrid");
+            org.geotools.util.logging.Logging.getLogger(ArcGridFormatFactory.class);
 
     /**
      * Tells me if the coverage plugin to access Ascii grids is available or not.
@@ -71,11 +70,7 @@ public final class ArcGridFormatFactory implements GridFormatFactorySpi {
         return new ArcGridFormat();
     }
 
-    /**
-     * Returns the implementation hints. The default implementation returns en empty map.
-     *
-     * @return DOCUMENT ME!
-     */
+    /** Returns the implementation hints. The default implementation returns en empty map. */
     public Map<RenderingHints.Key, ?> getImplementationHints() {
         return Collections.emptyMap();
     }

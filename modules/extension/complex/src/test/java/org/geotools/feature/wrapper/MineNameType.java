@@ -9,6 +9,9 @@
  */
 package org.geotools.feature.wrapper;
 
+import org.geotools.data.complex.feature.wrapper.FeatureWrapper;
+import org.geotools.data.complex.feature.wrapper.XSDMapping;
+
 @XSDMapping(namespace = "urn:org:example", separator = ":")
 public class MineNameType extends FeatureWrapper {
     @XSDMapping(local = "isPreferred")

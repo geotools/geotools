@@ -280,7 +280,6 @@ public class MosaicBeanBuilder {
             bean.setAuxiliaryDatastorePath(auxiliaryDatastorePath);
             bean.setCheckAuxiliaryMetadata(checkAuxiliaryMetadata);
             bean.setNoData(noData);
-            ;
         }
         return bean;
     }

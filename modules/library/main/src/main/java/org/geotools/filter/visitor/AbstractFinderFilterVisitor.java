@@ -80,7 +80,6 @@ import org.xml.sax.helpers.NamespaceSupport;
  * is found. The walk will be stopped and the value returned.
  *
  * @author Jody Garnett (Refractions Research)
- * @source $URL$
  */
 public abstract class AbstractFinderFilterVisitor implements FilterVisitor, ExpressionVisitor {
     protected boolean found = false;
@@ -211,7 +210,7 @@ public abstract class AbstractFinderFilterVisitor implements FilterVisitor, Expr
         PropertyName property =
                 new PropertyName() {
                     public String getPropertyName() {
-                        return filter.getPropertyName();
+                        return ((PropertyName) filter.getExpression1()).getPropertyName();
                     }
 
                     public Object accept(ExpressionVisitor visitor, Object data) {

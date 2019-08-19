@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<as:AppSchemaDataAccess xmlns:as="http://www.geotools.org/app-schema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <namespaces>
+        <Namespace>
+            <prefix>st</prefix>
+            <uri>http://www.stations.org/1.0</uri>
+        </Namespace>
+        <Namespace>
+            <prefix>gml</prefix>
+            <uri>http://www.opengis.net/gml/3.2</uri>
+        </Namespace>
+    </namespaces>
+    <sourceDataStores>
+        <SolrDataStore>
+            <id>stations</id>
+            <url>ttp://127.0.0.2:8080/solr/stations</url>
+            <index name="stations">
+                <geometry default="true">
+                    <name>station_location</name>
+                    <srid>4326</srid>
+                    <type>POINT</type>
+                </geometry>
+            </index>
+        </SolrDataStore>
+    </sourceDataStores>
+    <targetTypes>
+        <FeatureType>
+            <schemaUri>meteo.xsd</schemaUri>
+        </FeatureType>
+    </targetTypes>
+    <typeMappings>
+        <FeatureTypeMapping>
+            <mappingName>multi_stations_solr</mappingName>
+            <sourceDataStore>stations</sourceDataStore>
+            <sourceType>stations</sourceType>
+            <targetElement>st:Station</targetElement>
+            <attributeMappings>
+                <AttributeMapping>
+                    <targetAttribute>st:Station</targetAttribute>
+                    <idExpression>
+                        <OCQL>station_id</OCQL>
+                    </idExpression>
+                </AttributeMapping>
+                <AttributeMapping>
+                    <targetAttribute>st:stationName</targetAttribute>
+                    <sourceExpression>
+                        <OCQL>station_name</OCQL>
+                    </sourceExpression>
+                </AttributeMapping>
+                <AttributeMapping>
+                    <targetAttribute>st:position</targetAttribute>
+                    <sourceExpression>
+                        <OCQL>station_location</OCQL>
+                    </sourceExpression>
+                </AttributeMapping>
+                <AttributeMapping>
+                    <targetAttribute>st:tag</targetAttribute>
+                    <solrMultipleValue>station_tag</solrMultipleValue>
+                </AttributeMapping>
+                <AttributeMapping>
+                    <targetAttribute>st:comment</targetAttribute>
+                    <solrMultipleValue>station_comment</solrMultipleValue>
+                </AttributeMapping>
+            </attributeMappings>
+        </FeatureTypeMapping>
+    </typeMappings>
+</as:AppSchemaDataAccess>

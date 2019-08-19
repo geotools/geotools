@@ -25,7 +25,6 @@ import org.geotools.data.DataSourceException;
  * Utility methods to build a default connection pool
  *
  * @author Andrea Aime - TOPP
- * @source $URL$
  */
 public class DataSourceUtil {
     private DataSourceUtil() {

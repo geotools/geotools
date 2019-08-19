@@ -22,11 +22,11 @@ import java.util.Collections;
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
-import org.geotools.factory.Hints;
+import org.geotools.data.util.ScreenMap;
 import org.geotools.jdbc.JDBCDataStoreAPIOnlineTest;
 import org.geotools.jdbc.JDBCDataStoreAPITestSetup;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
-import org.geotools.renderer.ScreenMap;
+import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.LineString;
 import org.opengis.feature.simple.SimpleFeature;
@@ -65,7 +65,7 @@ public class GeoPkgDataStoreAPIOnlineTest extends JDBCDataStoreAPIOnlineTest {
                 new Query(
                         tname("road"),
                         factory.id(Collections.singleton(factory.featureId("road.0"))));
-        Hints hints = new Hints(Hints.GEOMETRY_DISTANCE, new Double(10));
+        Hints hints = new Hints(Hints.GEOMETRY_DISTANCE, Double.valueOf(10));
         q.setHints(hints);
 
         try (SimpleFeatureIterator it = fs.getFeatures(q).features()) {

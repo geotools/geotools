@@ -22,7 +22,6 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 /**
  * @author Russell Petty (GeoScience Victoria)
  * @version $Id$
- * @source $URL$
  */
 public interface XmlFeatureCollection extends SimpleFeatureCollection {
 

@@ -29,11 +29,11 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
+import org.geotools.metadata.i18n.LoggingKeys;
+import org.geotools.metadata.i18n.Loggings;
 import org.geotools.metadata.iso.citation.Citations;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
-import org.geotools.resources.i18n.LoggingKeys;
-import org.geotools.resources.i18n.Loggings;
 import org.geotools.util.GrowableInternationalString;
 import org.geotools.util.Utilities;
 import org.geotools.util.WeakValueHashMap;
@@ -66,7 +66,6 @@ import org.opengis.util.ScopedName;
  * example "DCW" as an alternative title for "<cite>Digital Chart of the World</cite>").
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
@@ -560,23 +559,6 @@ public class NamedIdentifier
         return getName().tip();
     }
 
-    /** @deprecated Replaced by {@link #tip()}. */
-    @Deprecated
-    public LocalName name() {
-        return tip();
-    }
-
-    /**
-     * Returns a view of this object as a local name. The local name returned by this method will
-     * have the same {@linkplain LocalName#getScope scope} than this generic name.
-     *
-     * @deprecated Replaced by {@link #tip()}.
-     */
-    @Deprecated
-    public LocalName asLocalName() {
-        return tip();
-    }
-
     /**
      * Returns the scope (name space) in which this name is local.
      *
@@ -584,16 +566,6 @@ public class NamedIdentifier
      */
     public NameSpace scope() {
         return getName().scope();
-    }
-
-    /**
-     * Returns the scope (name space) of this generic name. If this name has no scope (e.g. is the
-     * root), then this method returns {@code null}.
-     *
-     * @deprecated Replaced by {@link #scope()}.
-     */
-    public GenericName getScope() {
-        return getName().scope().name();
     }
 
     /**
@@ -632,17 +604,6 @@ public class NamedIdentifier
      */
     public GenericName toFullyQualifiedName() {
         return getName().toFullyQualifiedName();
-    }
-
-    /**
-     * Returns a view of this object as a scoped name, or {@code null} if this name has no scope.
-     *
-     * @deprecated Replaced by {@link #toFullyQualifiedName()}.
-     */
-    @Deprecated
-    public ScopedName asScopedName() {
-        final GenericName name = toFullyQualifiedName();
-        return (name instanceof ScopedName) ? (ScopedName) name : null;
     }
 
     /**

@@ -22,7 +22,6 @@ import java.util.Iterator;
  * An iterator that returns no content.
  *
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL$
  */
 public class EmptyIterator implements Iterator {
 

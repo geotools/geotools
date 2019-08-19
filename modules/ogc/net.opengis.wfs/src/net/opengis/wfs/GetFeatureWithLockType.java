@@ -28,10 +28,10 @@ import org.eclipse.emf.common.util.EList;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link net.opengis.wfs.GetFeatureWithLockType#getExpiry <em>Expiry</em>}</li>
  * </ul>
- * </p>
  *
  * @see net.opengis.wfs.WfsPackage#getGetFeatureWithLockType()
  * @model extendedMetaData="name='GetFeatureWithLockType' kind='elementOnly'"
@@ -40,64 +40,64 @@ import org.eclipse.emf.common.util.EList;
 public interface GetFeatureWithLockType extends GetFeatureType {
 	
 	/**
-     * Returns the value of the '<em><b>Expiry</b></em>' attribute.
-     * The default value is <code>"5"</code>.
-     * <!-- begin-user-doc -->
+   * Returns the value of the '<em><b>Expiry</b></em>' attribute.
+   * The default value is <code>"5"</code>.
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * <!-- begin-model-doc -->
-     * 
-     *                      The expiry attribute is used to set the length
-     *                      of time (expressed in minutes) that features will
-     *                      remain locked as a result of a GetFeatureWithLock
-     *                      request.  After the expiry period elapses, the
-     *                      locked resources must be released.  If the
-     *                      expiry attribute is not set, then the default
-     *                      value of 5 minutes will be enforced.
-     * <!-- end-model-doc -->
-     * @return the value of the '<em>Expiry</em>' attribute.
-     * @see #isSetExpiry()
-     * @see #unsetExpiry()
-     * @see #setExpiry(BigInteger)
-     * @see net.opengis.wfs.WfsPackage#getGetFeatureWithLockType_Expiry()
-     * @model default="5" unique="false" unsettable="true" dataType="org.eclipse.emf.ecore.xml.type.PositiveInteger"
-     *        extendedMetaData="kind='attribute' name='expiry'"
-     * @generated
-     */
+   * <!-- begin-model-doc -->
+   * 
+   *                      The expiry attribute is used to set the length
+   *                      of time (expressed in minutes) that features will
+   *                      remain locked as a result of a GetFeatureWithLock
+   *                      request.  After the expiry period elapses, the
+   *                      locked resources must be released.  If the
+   *                      expiry attribute is not set, then the default
+   *                      value of 5 minutes will be enforced.
+   * <!-- end-model-doc -->
+   * @return the value of the '<em>Expiry</em>' attribute.
+   * @see #isSetExpiry()
+   * @see #unsetExpiry()
+   * @see #setExpiry(BigInteger)
+   * @see net.opengis.wfs.WfsPackage#getGetFeatureWithLockType_Expiry()
+   * @model default="5" unique="false" unsettable="true" dataType="org.eclipse.emf.ecore.xml.type.PositiveInteger"
+   *        extendedMetaData="kind='attribute' name='expiry'"
+   * @generated
+   */
 	BigInteger getExpiry();
 
 	/**
-     * Sets the value of the '{@link net.opengis.wfs.GetFeatureWithLockType#getExpiry <em>Expiry</em>}' attribute.
-     * <!-- begin-user-doc -->
+   * Sets the value of the '{@link net.opengis.wfs.GetFeatureWithLockType#getExpiry <em>Expiry</em>}' attribute.
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Expiry</em>' attribute.
-     * @see #isSetExpiry()
-     * @see #unsetExpiry()
-     * @see #getExpiry()
-     * @generated
-     */
+   * @param value the new value of the '<em>Expiry</em>' attribute.
+   * @see #isSetExpiry()
+   * @see #unsetExpiry()
+   * @see #getExpiry()
+   * @generated
+   */
 	void setExpiry(BigInteger value);
 
 	/**
-     * Unsets the value of the '{@link net.opengis.wfs.GetFeatureWithLockType#getExpiry <em>Expiry</em>}' attribute.
-     * <!-- begin-user-doc -->
+   * Unsets the value of the '{@link net.opengis.wfs.GetFeatureWithLockType#getExpiry <em>Expiry</em>}' attribute.
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @see #isSetExpiry()
-     * @see #getExpiry()
-     * @see #setExpiry(BigInteger)
-     * @generated
-     */
+   * @see #isSetExpiry()
+   * @see #getExpiry()
+   * @see #setExpiry(BigInteger)
+   * @generated
+   */
 	void unsetExpiry();
 
 	/**
-     * Returns whether the value of the '{@link net.opengis.wfs.GetFeatureWithLockType#getExpiry <em>Expiry</em>}' attribute is set.
-     * <!-- begin-user-doc -->
+   * Returns whether the value of the '{@link net.opengis.wfs.GetFeatureWithLockType#getExpiry <em>Expiry</em>}' attribute is set.
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @return whether the value of the '<em>Expiry</em>' attribute is set.
-     * @see #unsetExpiry()
-     * @see #getExpiry()
-     * @see #setExpiry(BigInteger)
-     * @generated
-     */
+   * @return whether the value of the '<em>Expiry</em>' attribute is set.
+   * @see #unsetExpiry()
+   * @see #getExpiry()
+   * @see #setExpiry(BigInteger)
+   * @generated
+   */
 	boolean isSetExpiry();
 
 } // GetFeatureWithLockType

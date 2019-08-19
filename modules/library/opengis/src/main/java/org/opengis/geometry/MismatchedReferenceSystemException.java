@@ -15,7 +15,6 @@ package org.opengis.geometry;
  *
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 2.0
- * @source $URL$
  */
 public class MismatchedReferenceSystemException extends IllegalArgumentException {
     /** Serial number for interoperability with different versions. */

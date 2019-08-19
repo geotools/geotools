@@ -25,7 +25,7 @@ import net.opengis.wfs.ResultTypeType;
 import org.geotools.test.TestData;
 import org.geotools.wfs.WFS;
 import org.geotools.wfs.WFSTestSupport;
-import org.geotools.xml.Binding;
+import org.geotools.xsd.Binding;
 import org.w3c.dom.Document;
 
 /**
@@ -34,7 +34,6 @@ import org.w3c.dom.Document;
  * @author Justin Deoliveira
  * @version $Id: GetFeatureTypeBindingTest.java 27749 2007-11-05 09:51:33Z groldan $
  * @since 2.5.x
- * @source $URL$
  */
 public class GetFeatureTypeBindingTest extends WFSTestSupport {
     public GetFeatureTypeBindingTest() {

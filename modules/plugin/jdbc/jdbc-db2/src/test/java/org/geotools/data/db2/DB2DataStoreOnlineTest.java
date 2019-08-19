@@ -23,7 +23,6 @@ import org.geotools.jdbc.JDBCTestSetup;
  * Data store test for db2.
  *
  * @author Christian Mueller
- * @source $URL$
  */
 public class DB2DataStoreOnlineTest extends JDBCDataStoreOnlineTest {
     protected JDBCTestSetup createTestSetup() {

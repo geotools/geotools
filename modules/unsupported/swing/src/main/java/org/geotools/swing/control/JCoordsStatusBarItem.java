@@ -39,7 +39,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * @see JMapStatusBar
  * @author Michael Bedward
  * @since 8.0
- * @source $URL$
  * @version $Id$
  */
 public class JCoordsStatusBarItem extends StatusBarItem {

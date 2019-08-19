@@ -24,7 +24,6 @@ import junit.framework.TestCase;
 import org.geotools.graph.structure.GraphVisitor;
 import org.geotools.graph.structure.Graphable;
 
-/** @source $URL$ */
 public class BasicGraphTest extends TestCase {
 
     private List m_nodes;

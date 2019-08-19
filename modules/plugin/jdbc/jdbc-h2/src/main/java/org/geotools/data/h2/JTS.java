@@ -33,7 +33,6 @@ import org.locationtech.jts.io.WKTReader;
  *
  * @author David Blasby, The Open Planning Project, dblasby@openplans.org
  * @author Justin Deoliveira, The Open Planning Project, jdeolive@openplans.org
- * @source $URL$
  */
 public class JTS {
 

@@ -28,7 +28,6 @@ import org.xml.sax.Attributes;
  *
  * @author dzwiers, Refractions Research, Inc. http://www.refractions.net
  * @author $Author:$ (last modification)
- * @source $URL$
  * @version $Id$
  */
 public class UnionHandler extends XSIElementHandler {
@@ -40,6 +39,7 @@ public class UnionHandler extends XSIElementHandler {
     private List simpleTypes;
 
     /** @see java.lang.Object#hashCode() */
+    @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int hashCode() {
         return LOCALNAME.hashCode()
                 * ((id == null) ? 1 : id.hashCode())
@@ -91,20 +91,12 @@ public class UnionHandler extends XSIElementHandler {
         return LOCALNAME;
     }
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @return memberTypes attribute value
-     */
+    /** @return memberTypes attribute value */
     public String getMemberTypes() {
         return memberTypes;
     }
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @return list of simpleTypeHandlers representing the nested simpleTypes
-     */
+    /** @return list of simpleTypeHandlers representing the nested simpleTypes */
     public List getSimpleTypes() {
         return simpleTypes;
     }

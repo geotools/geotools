@@ -17,7 +17,6 @@ import org.opengis.temporal.Period;
 import org.opengis.temporal.RelativePosition;
 import org.opengis.temporal.TemporalPrimitive;
 
-/** @source $URL$ */
 public abstract class BinaryTemporalOperatorImpl implements BinaryTemporalOperator {
 
     private static final OperatorNameFilterVisitor operationNameVisitor =

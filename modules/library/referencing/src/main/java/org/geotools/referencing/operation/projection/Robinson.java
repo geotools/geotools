@@ -39,7 +39,6 @@ import org.opengis.referencing.operation.MathTransform;
  * @see <A HREF="http://www.remotesensing.org/geotiff/proj_list/robinson.html">"Robinson" on
  *     RemoteSensing.org</A>
  * @since 2.6.3
- * @source $URL$
  * @author Andrea Aime
  */
 public class Robinson extends MapProjection {
@@ -228,16 +227,6 @@ public class Robinson extends MapProjection {
         }
     }
 
-    /** Compares the specified object with this map projection for equality. */
-    @Override
-    public boolean equals(final Object object) {
-        if (object == this) {
-            // Slight optimization
-            return true;
-        }
-        return super.equals(object);
-    }
-
     @Override
     protected double getToleranceForAssertions(double longitude, double latitude) {
         // the Robinson projection is meant for world-wide displays, don't be picky
@@ -354,6 +343,6 @@ public class Robinson extends MapProjection {
     //    }
 
     public static void main(String[] args) {
-        System.out.println(PI / 2d);
+        // System.out.println(PI / 2d);
     }
 }

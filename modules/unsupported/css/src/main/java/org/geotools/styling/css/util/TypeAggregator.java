@@ -58,41 +58,41 @@ class TypeAggregator {
         if (existingBinding == null) {
             types.put(name, binding);
         } else {
-            if (existingBinding.isAssignableFrom(binding)) {
-                // nothing to do
-            } else if (binding.isAssignableFrom(existingBinding)) {
-                types.put(name, binding);
-            } else if (Number.class.isAssignableFrom(binding)
-                    && Number.class.isAssignableFrom(existingBinding)) {
-                // go towards the larger number class, fall back on
-                // Number if the binding is not integral nor float (custom/unforeseen Number
-                // subclass)
-                if (INTEGRAL_NUMBER_TYPES.contains(existingBinding)) {
-                    if (INTEGRAL_NUMBER_TYPES.contains(binding)) {
-                        if (INTEGRAL_NUMBER_TYPES.indexOf(binding)
-                                > INTEGRAL_NUMBER_TYPES.indexOf(existingBinding)) {
+            if (!existingBinding.isAssignableFrom(binding)) {
+                if (binding.isAssignableFrom(existingBinding)) {
+                    types.put(name, binding);
+                } else if (Number.class.isAssignableFrom(binding)
+                        && Number.class.isAssignableFrom(existingBinding)) {
+                    // go towards the larger number class, fall back on
+                    // Number if the binding is not integral nor float (custom/unforeseen Number
+                    // subclass)
+                    if (INTEGRAL_NUMBER_TYPES.contains(existingBinding)) {
+                        if (INTEGRAL_NUMBER_TYPES.contains(binding)) {
+                            if (INTEGRAL_NUMBER_TYPES.indexOf(binding)
+                                    > INTEGRAL_NUMBER_TYPES.indexOf(existingBinding)) {
+                                types.put(name, binding);
+                            }
+                        } else if (FLOAT_NUMBER_TYPES.contains(binding)) {
                             types.put(name, binding);
-                        }
-                    } else if (FLOAT_NUMBER_TYPES.contains(binding)) {
-                        types.put(name, binding);
-                    } else {
-                        types.put(name, Number.class);
-                    }
-                } else if (FLOAT_NUMBER_TYPES.contains(existingBinding)) {
-                    if (FLOAT_NUMBER_TYPES.contains(binding)) {
-                        if (FLOAT_NUMBER_TYPES.indexOf(binding)
-                                > FLOAT_NUMBER_TYPES.indexOf(existingBinding)) {
-                            types.put(name, binding);
-                        } else if (!INTEGRAL_NUMBER_TYPES.contains(binding)) {
+                        } else {
                             types.put(name, Number.class);
                         }
+                    } else if (FLOAT_NUMBER_TYPES.contains(existingBinding)) {
+                        if (FLOAT_NUMBER_TYPES.contains(binding)) {
+                            if (FLOAT_NUMBER_TYPES.indexOf(binding)
+                                    > FLOAT_NUMBER_TYPES.indexOf(existingBinding)) {
+                                types.put(name, binding);
+                            } else if (!INTEGRAL_NUMBER_TYPES.contains(binding)) {
+                                types.put(name, Number.class);
+                            }
+                        }
                     }
+                } else {
+                    // TODO: we could scan the superclasses and implemented
+                    // interfaces to find a real common ancestor instead
+                    // of directly falling back to Object
+                    types.put(name, Object.class);
                 }
-            } else {
-                // TODO: we could scan the superclasses and implemented
-                // interfaces to find a real common ancestor instead
-                // of directly falling back to Object
-                types.put(name, Object.class);
             }
         }
     }

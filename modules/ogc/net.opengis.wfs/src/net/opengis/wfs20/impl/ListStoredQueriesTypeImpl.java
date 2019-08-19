@@ -15,29 +15,27 @@ import org.eclipse.emf.ecore.EClass;
  * <!-- begin-user-doc -->
  * An implementation of the model object '<em><b>List Stored Queries Type</b></em>'.
  * <!-- end-user-doc -->
- * <p>
- * </p>
  *
  * @generated
  */
 public class ListStoredQueriesTypeImpl extends BaseRequestTypeImpl implements ListStoredQueriesType {
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     protected ListStoredQueriesTypeImpl() {
-        super();
-    }
+    super();
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     protected EClass eStaticClass() {
-        return Wfs20Package.Literals.LIST_STORED_QUERIES_TYPE;
-    }
+    return Wfs20Package.Literals.LIST_STORED_QUERIES_TYPE;
+  }
 
 } //ListStoredQueriesTypeImpl

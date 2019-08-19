@@ -39,7 +39,7 @@ public class DbaseFieldFormatterTest {
 
         assertEquals("Value", n.doubleValue(), Double.valueOf(s), Math.pow(10.0, -places));
 
-        System.out.printf("%36s->%36s%n", n, s);
+        // System.out.printf("%36s->%36s%n", n, s);
 
         return s;
     }

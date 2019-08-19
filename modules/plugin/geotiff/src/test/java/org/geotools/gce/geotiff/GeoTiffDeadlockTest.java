@@ -13,7 +13,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.geotools.test.TestData;
 import org.junit.Test;
 
-/** @source $URL$ */
 public class GeoTiffDeadlockTest {
 
     /** Increase this value to get more threads than files */

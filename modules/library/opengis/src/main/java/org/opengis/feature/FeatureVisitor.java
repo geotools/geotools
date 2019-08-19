@@ -21,7 +21,6 @@ package org.opengis.feature;
  * alternate work flow.
  *
  * @author Cory Horner (Refractions Research, Inc)
- * @source $URL$
  */
 public interface FeatureVisitor {
     /**

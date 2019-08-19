@@ -27,11 +27,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 
-/**
- * A "button" of a certain color determined by the color picker.
- *
- * @source $URL$
- */
+/** A "button" of a certain color determined by the color picker. */
 public class StolenColorEditor {
 
     private Point fExtent;

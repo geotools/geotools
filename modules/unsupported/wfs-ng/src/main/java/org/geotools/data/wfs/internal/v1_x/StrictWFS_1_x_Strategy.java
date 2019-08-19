@@ -85,7 +85,7 @@ import org.geotools.data.wfs.internal.WFSResponseFactory;
 import org.geotools.data.wfs.internal.WFSStrategy;
 import org.geotools.util.Version;
 import org.geotools.wfs.v1_0.WFS;
-import org.geotools.xml.Configuration;
+import org.geotools.xsd.Configuration;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.Filter;
 import org.opengis.filter.capability.FilterCapabilities;
@@ -611,6 +611,7 @@ public class StrictWFS_1_x_Strategy extends AbstractWFSStrategy {
         final OperationType operationMetadata = getOperationMetadata(operation);
 
         Set<String> serverSupportedFormats;
+        LOGGER.fine("requesting " + parameterName + " from " + operationMetadata);
         serverSupportedFormats = findParameters(operationMetadata, parameterName);
         return serverSupportedFormats;
     }

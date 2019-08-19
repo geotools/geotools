@@ -14,7 +14,6 @@ package org.opengis.feature.type;
  *
  * @author Jody Garnett, Refractions Research
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL$
  */
 public interface AssociationDescriptor extends PropertyDescriptor {
 

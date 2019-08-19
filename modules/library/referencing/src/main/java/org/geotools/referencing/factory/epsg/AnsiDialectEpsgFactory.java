@@ -21,7 +21,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import javax.sql.DataSource;
-import org.geotools.factory.Hints;
+import org.geotools.util.factory.Hints;
 import org.opengis.referencing.FactoryException;
 
 /**
@@ -39,7 +39,6 @@ import org.opengis.referencing.FactoryException;
  * </ul>
  *
  * @since 2.4
- * @source $URL$
  * @version $Id$
  * @author Rueben Schulz
  * @author Martin Desruisseaux
@@ -123,7 +122,7 @@ public class AnsiDialectEpsgFactory extends AbstractEpsgFactory {
     /**
      * Constructs an authority factory using the specified connection.
      *
-     * @param userHints The underlying factories used for objects creation.
+     * @param hints The underlying factories used for objects creation.
      * @param connection The connection to the underlying EPSG database.
      * @throws FactoryException
      */
@@ -136,7 +135,7 @@ public class AnsiDialectEpsgFactory extends AbstractEpsgFactory {
     /**
      * Constructs an authority factory using the specified connection.
      *
-     * @param userHints The underlying factories used for objects creation.
+     * @param hints The underlying factories used for objects creation.
      * @param dataSource Used to create a connection to the underlying EPSG database
      * @throws FactoryException
      */

@@ -30,7 +30,6 @@ import org.junit.Test;
  * Online test for {@link SchemaCatalog}.
  *
  * @author Ben Caradoc-Davies (CSIRO Earth Science and Resource Engineering)
- * @source $URL$
  */
 public class SchemaCacheOnlineTest extends OnlineTestSupport {
 

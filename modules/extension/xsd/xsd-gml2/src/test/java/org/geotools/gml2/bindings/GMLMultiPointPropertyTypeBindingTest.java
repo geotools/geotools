@@ -17,15 +17,14 @@
 package org.geotools.gml2.bindings;
 
 import org.geotools.gml2.GML;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.MultiPoint;
 import org.locationtech.jts.geom.Point;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
-/** @source $URL$ */
 public class GMLMultiPointPropertyTypeBindingTest extends AbstractGMLBindingTest {
     ElementInstance association;
     ElementInstance geometry;
@@ -35,8 +34,8 @@ public class GMLMultiPointPropertyTypeBindingTest extends AbstractGMLBindingTest
 
         association =
                 createElement(
-                        GML.NAMESPACE, "myMultiPointProperty", GML.MULTIPOINTPROPERTYTYPE, null);
-        geometry = createElement(GML.NAMESPACE, "myMultiPoint", GML.MULTIPOINTTYPE, null);
+                        GML.NAMESPACE, "myMultiPointProperty", GML.MultiPointPropertyType, null);
+        geometry = createElement(GML.NAMESPACE, "myMultiPoint", GML.MultiPointType, null);
 
         container = new DefaultPicoContainer();
         container.registerComponentImplementation(GeometryFactory.class);

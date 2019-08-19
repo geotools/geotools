@@ -16,7 +16,7 @@
   <parent>
     <groupId>org.geotools.maven</groupId>
     <artifactId>maven</artifactId>
-    <version>21-SNAPSHOT</version>
+    <version>22-SNAPSHOT</version>
   </parent>
   
 
@@ -57,6 +57,12 @@
 		</dependency>
 
 	</dependencies>
+  
+  <!-- disable pmd -->
+  <properties>
+    <pmd.skip>true</pmd.skip>
+  </properties>
+
 
   <build> 
     <plugins>

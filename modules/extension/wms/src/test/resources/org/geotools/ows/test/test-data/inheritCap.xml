@@ -1,0 +1,166 @@
+<?xml version='1.0' encoding="UTF-8" standalone="no" ?>
+<!DOCTYPE WMT_MS_Capabilities SYSTEM "http://terraservice.net/OgcCapabilities_1_1_1.dtd">
+<WMT_MS_Capabilities version="1.1.1" updateSequence="2004121622">
+	<!-- Service Metadata -->
+	<Service>
+		<!-- The OGC-defined name for this type of service -->
+		<Name>OGC:WMS</Name>
+		<!-- Human-readable title for pick lists -->
+		<Title>The GLOBE Program Visualization Server</Title>
+		<!-- Narrative description providing additional information -->
+		<Abstract>
+			Web Map Server maintained for The GLOBE Program by Digital
+			Earth and GLOBE Visualizations at NASA Goddard Space Flight
+			Center. Contents include GLOBE student data and
+			environmental data from NOAA, NASA and other sources.
+			Contact: webmaster@www.digitalearth.gov.
+		</Abstract>
+		<KeywordList>
+			<Keyword>environment</Keyword>
+			<Keyword>weather</Keyword>
+			<Keyword>education</Keyword>
+			<Keyword>science</Keyword>
+		</KeywordList>
+		<!-- Top-level address of service or service provider.  See also onlineResource attributes of <dcpType> children. -->
+		<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink"
+			xlink:href="http://www.globe.gov/" />
+		<ContactInformation>
+			<ContactPersonPrimary>
+				<ContactPerson>Jeff de La Beaujardiere</ContactPerson>
+				<ContactOrganization>NASA</ContactOrganization>
+			</ContactPersonPrimary>
+			<ContactPosition>Computer Scientist</ContactPosition>
+			<ContactAddress>
+				<AddressType>postal</AddressType>
+				<Address>
+					NASA Goddard Space Flight Center, Code 933
+				</Address>
+				<City>Greenbelt</City>
+				<StateOrProvince>MD</StateOrProvince>
+				<PostCode>20771</PostCode>
+				<Country>USA</Country>
+			</ContactAddress>
+			<ContactVoiceTelephone>
+				+1 301 286-1569
+			</ContactVoiceTelephone>
+			<ContactElectronicMailAddress>
+				jeff2002@sunrise.gsfc.nasa.gov
+			</ContactElectronicMailAddress>
+		</ContactInformation>
+		<!-- Fees or access constraints imposed. -->
+		<Fees>none</Fees>
+		<AccessConstraints>none</AccessConstraints>
+	</Service>
+	<Capability>
+		<Request>
+			<GetCapabilities>
+				<Format>application/vnd.ogc.wms_xml</Format>
+				<DCPType>
+					<HTTP>
+						<Get>
+							<OnlineResource
+								xmlns:xlink="http://www.w3.org/1999/xlink"
+								xlink:href="http://globe.digitalearth.gov/viz-bin/wmt.cgi" />
+						</Get>
+					</HTTP>
+				</DCPType>
+			</GetCapabilities>
+			<GetMap>
+				<Format>image/gif</Format>
+				<Format>image/png</Format>
+				<Format>image/png; VISUAL=PSEUDO</Format>
+				<Format>image/png; VISUAL=TRUE</Format>
+				<Format>image/tiff</Format>
+				<Format>image/tiff; VISUAL=PSEUDO</Format>
+				<Format>image/tiff; VISUAL=TRUE</Format>
+				<DCPType>
+					<HTTP>
+						<Get>
+							<OnlineResource
+								xmlns:xlink="http://www.w3.org/1999/xlink"
+								xlink:href="http://globe.digitalearth.gov/viz-bin/wmt.cgi" />
+						</Get>
+					</HTTP>
+				</DCPType>
+			</GetMap>
+			<GetFeatureInfo>
+				<Format>text/plain</Format>
+				<Format>text/xml</Format>
+				<DCPType>
+					<HTTP>
+						<Get>
+							<OnlineResource
+								xmlns:xlink="http://www.w3.org/1999/xlink"
+								xlink:href="http://globe.digitalearth.gov/viz-bin/wmt.cgi" />
+						</Get>
+					</HTTP>
+				</DCPType>
+			</GetFeatureInfo>
+		</Request>
+		<Exception>
+			<Format>application/vnd.ogc.se_xml</Format>
+			<Format>application/vnd.ogc.se_inimage</Format>
+		</Exception>
+		<Layer>
+			<Title>The GLOBE Program Visualization Server</Title>
+			<SRS>EPSG:4326</SRS>
+			<SRS>AUTO:42003</SRS>
+			<SRS>AUTO:42005</SRS>
+			<LatLonBoundingBox minx="-180" miny="-90" maxx="180"
+				maxy="90" />
+			<Dimension name="time" units="ISO8601" />
+			<Dimension name="depth" units="centimeters" unitSymbol="cm" />
+			<Dimension name="hour" units="hour" unitSymbol="h" />
+			<Style>
+				<Name>TestStyle</Name>
+				<Title>Title: for Unit Tests</Title>
+			</Style>
+			<Layer>
+				<Title>Context Layers</Title>
+				<SRS>EPSG:26905</SRS>
+				<Layer>
+					<Name>COASTLINES</Name>
+					<Title>Coastlines</Title>
+					<Abstract>Context layer: Coastlines</Abstract>
+					<SRS>EPSG:26906</SRS>
+					<Style>
+						<Name>default</Name>
+						<Title>Default</Title>
+						<LegendURL width="180" height="50">
+							<Format>image/gif</Format>
+							<OnlineResource
+								xmlns:xlink="http://www.w3.org/1999/xlink"
+								xlink:href="http://globe.digitalearth.gov/globe/en/icons/colorbars/COASTLINES.gif" />
+						</LegendURL>
+					</Style>
+				</Layer>
+			</Layer>
+			<Layer queryable="1">
+				<Title>Physiography</Title>
+				<Layer opaque="1">
+					<Name>RTOPO</Name>
+					<Title>Topography and Bathymetry</Title>
+					<Abstract>
+						Topography and Bathymetry. Units: m.
+					</Abstract>
+					<Extent name="time" default="1994-12-31">
+						1994-12-31
+					</Extent>
+					<Style>
+						<Name>REFERENCE</Name>
+						<Title>Color map</Title>
+						<Abstract>
+							Color on map indicates data value.
+						</Abstract>
+						<LegendURL width="180" height="50">
+							<Format>image/gif</Format>
+							<OnlineResource
+								xmlns:xlink="http://www.w3.org/1999/xlink"
+								xlink:href="http://globe.digitalearth.gov/gsfc/en/icons/colorbars/topo.h.gif" />
+						</LegendURL>
+					</Style>
+				</Layer>
+			</Layer>
+		</Layer>
+	</Capability>
+</WMT_MS_Capabilities>

@@ -20,16 +20,8 @@ import org.opengis.filter.FilterVisitor;
 import org.opengis.filter.PropertyIsLessThan;
 import org.opengis.filter.expression.Expression;
 
-/**
- * @author jdeolive
- * @source $URL$
- */
+/** @author jdeolive */
 public class IsLessThenImpl extends MultiCompareFilterImpl implements PropertyIsLessThan {
-    @Deprecated
-    protected IsLessThenImpl() {
-        this(null, null);
-    }
-
     protected IsLessThenImpl(Expression expression1, Expression expression2) {
         this(expression1, expression2, false);
     }

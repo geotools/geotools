@@ -22,10 +22,7 @@ import junit.textui.TestRunner;
 import org.geotools.coverage.grid.io.GridFormatFactorySpi;
 import org.geotools.coverage.grid.io.GridFormatFinder;
 
-/**
- * @author Simone Giannecchini
- * @source $URL$
- */
+/** @author Simone Giannecchini */
 public class ImageMosaicJDBCServiceTest extends TestCase {
     /** */
     public ImageMosaicJDBCServiceTest() {}

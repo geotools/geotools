@@ -22,7 +22,6 @@ import org.geotools.jdbc.JDBCGeographyOnlineTest;
 import org.geotools.jdbc.JDBCGeographyTestSetup;
 import org.opengis.feature.simple.SimpleFeatureType;
 
-/** @source $URL$ */
 public class PostgisGeographyOnlineTest extends JDBCGeographyOnlineTest {
 
     @Override

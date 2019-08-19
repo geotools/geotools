@@ -62,7 +62,6 @@ import org.opengis.referencing.operation.TransformException;
  *
  * @author aaime
  * @author $Author: jive $ (last modification)
- * @source $URL$
  * @version $Id$ TODO: handle the case where there is more than one geometry and the other
  *     geometries have a different CS than the default geometry
  */
@@ -82,7 +81,6 @@ public class ReprojectFeatureResults extends AbstractFeatureCollection {
      * @throws NoSuchElementException
      * @throws OperationNotFoundException
      * @throws CannotCreateTransformException
-     * @throws NullPointerException DOCUMENT ME!
      * @throws IllegalArgumentException
      */
     public ReprojectFeatureResults(

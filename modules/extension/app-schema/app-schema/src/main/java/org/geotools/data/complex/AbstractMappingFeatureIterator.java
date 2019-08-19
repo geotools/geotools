@@ -16,7 +16,7 @@
  */
 package org.geotools.data.complex;
 
-import static org.geotools.data.complex.ComplexFeatureConstants.DEFAULT_GEOMETRY_LOCAL_NAME;
+import static org.geotools.data.complex.util.ComplexFeatureConstants.DEFAULT_GEOMETRY_LOCAL_NAME;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -28,23 +28,24 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.logging.Logger;
 import net.opengis.wfs20.ResolveValueType;
+import org.geotools.appschema.feature.AppSchemaFeatureFactoryImpl;
+import org.geotools.appschema.filter.FilterFactoryImplNamespaceAware;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.Query;
 import org.geotools.data.Transaction;
-import org.geotools.data.complex.config.Types;
+import org.geotools.data.complex.feature.type.ComplexFeatureTypeFactoryImpl;
+import org.geotools.data.complex.feature.type.Types;
 import org.geotools.data.complex.filter.XPath;
-import org.geotools.data.complex.filter.XPathUtil.StepList;
+import org.geotools.data.complex.util.XPathUtil.StepList;
 import org.geotools.data.joining.JoiningQuery;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.factory.Hints;
-import org.geotools.feature.AppSchemaFeatureFactoryImpl;
 import org.geotools.feature.FeatureIterator;
-import org.geotools.feature.type.ComplexFeatureTypeFactoryImpl;
-import org.geotools.filter.FilterFactoryImplNamespaceAware;
 import org.geotools.filter.identity.FeatureIdImpl;
+import org.geotools.util.factory.Hints;
 import org.geotools.xlink.XLINK;
-import org.locationtech.jts.geom.EmptyGeometry;
 import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.PrecisionModel;
 import org.opengis.feature.Attribute;
 import org.opengis.feature.Feature;
 import org.opengis.feature.FeatureFactory;
@@ -68,12 +69,14 @@ import org.xml.sax.helpers.NamespaceSupport;
  *
  * @author Russell Petty (GeoScience Victoria)
  * @version $Id$
- * @source $URL$
  */
 public abstract class AbstractMappingFeatureIterator implements IMappingFeatureIterator {
     /** The logger for the filter module. */
     protected static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.data.complex");
+            org.geotools.util.logging.Logging.getLogger(AbstractMappingFeatureIterator.class);
+
+    public static final GeometryFactory GEOMETRY_FACTORY =
+            new GeometryFactory(new PrecisionModel(PrecisionModel.FLOATING));
 
     protected FilterFactory2 filterFac = CommonFactoryFinder.getFilterFactory2(null);
 
@@ -128,6 +131,8 @@ public abstract class AbstractMappingFeatureIterator implements IMappingFeatureI
     protected Integer resolveTimeOut;
 
     protected Transaction transaction;
+
+    protected Query query;
 
     public Transaction getTransaction() {
         return transaction;
@@ -250,7 +255,7 @@ public abstract class AbstractMappingFeatureIterator implements IMappingFeatureI
         }
 
         // NC - property names
-        if (query != null && query.getProperties() != null) {
+        if (query.getProperties() != null) {
             setPropertyNames(query.getProperties());
         } else {
             setPropertyNames(null); // we need the actual property names (not surrogates) to do
@@ -260,6 +265,7 @@ public abstract class AbstractMappingFeatureIterator implements IMappingFeatureI
         xpathAttributeBuilder.setFeatureFactory(attf);
         initialiseSourceFeatures(mapping, unrolledQuery, query.getCoordinateSystemReproject());
         xpathAttributeBuilder.setFilterFactory(namespaceAwareFilterFactory);
+        this.query = unrolledQuery;
     }
 
     // properties can only be set by constructor, before initialising source features
@@ -622,7 +628,7 @@ public abstract class AbstractMappingFeatureIterator implements IMappingFeatureI
             Geometry geom;
             if (target.getValue() == null) {
                 // create empty geometry if null but attributes
-                geom = new EmptyGeometry();
+                geom = GEOMETRY_FACTORY.createGeometryCollection();
             } else {
                 // need to clone because it seems the same geometry object from the
                 // db is reused instead of regenerated if different attributes refer

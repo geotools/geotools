@@ -41,7 +41,6 @@ import org.geotools.data.shapefile.files.StorageFile;
 import org.junit.Before;
 import org.junit.Test;
 
-/** @source $URL$ */
 public class ShpFilesTestStream implements org.geotools.data.shapefile.files.FileWriter {
 
     private String typeName;

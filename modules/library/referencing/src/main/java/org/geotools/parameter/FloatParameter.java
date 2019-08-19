@@ -22,8 +22,8 @@ package org.geotools.parameter;
 import java.net.URI;
 import javax.measure.Unit;
 import org.geotools.measure.Units;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 import org.opengis.parameter.InvalidParameterTypeException;
 import org.opengis.parameter.InvalidParameterValueException;
 import org.opengis.parameter.ParameterDescriptor;
@@ -42,7 +42,6 @@ import org.opengis.parameter.ParameterValue;
  * ParameterValue} since it avoid the creation of {@link Double} objects.
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @see DefaultParameterDescriptor

@@ -22,7 +22,6 @@ import org.opengis.util.InternationalString;
 /**
  * Information about the scope and frequency of updating.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/as#01-111">ISO 19115</A>
  * @author Martin Desruisseaux (IRD)
  * @author Cory Horner (Refractions Research)

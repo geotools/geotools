@@ -28,8 +28,6 @@ import org.opengis.style.StyleVisitor;
  *       if required. These are used to ensure that any set methods can handle a org.opengis.styling
  *       instances.
  * </ul>
- *
- * @source $URL$
  */
 public class StyleTest {
     static FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
@@ -83,11 +81,6 @@ public class StyleTest {
         assertEquals(style, font.getStyle()); // oblique or italic
         assertEquals(weight, font.getWeight()); // bold or normal
         assertEquals(size, font.getSize());
-
-        assertSame(font.getFontStyle(), font.getStyle());
-        assertSame(font.getFontFamily(), family.get(0));
-        assertSame(font.getFontWeight(), font.getWeight());
-        assertSame(font.getFontSize(), font.getSize());
 
         FontImpl cast = FontImpl.cast(font);
         assertSame(cast, font);

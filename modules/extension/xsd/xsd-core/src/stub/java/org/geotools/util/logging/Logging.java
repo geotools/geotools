@@ -21,7 +21,7 @@ import java.util.logging.Logger;
 /**
  * 
  *
- * @source $URL$
+
  */
 public class Logging {
 

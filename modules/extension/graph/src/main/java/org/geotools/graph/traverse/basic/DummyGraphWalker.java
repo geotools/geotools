@@ -26,7 +26,6 @@ import org.geotools.graph.traverse.GraphWalker;
  *
  * @see GraphTraversal
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
- * @source $URL$
  */
 public class DummyGraphWalker implements GraphWalker {
 

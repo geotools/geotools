@@ -31,7 +31,6 @@ import org.opengis.filter.expression.Expression;
  *
  * @author Jesse
  * @author ported from PostPreProcessFilterSplittingVisitor at 2.5.2 by Gabriel Roldan
- * @source $URL$
  */
 @SuppressWarnings({"nls", "unchecked"})
 public class CapabilitiesFilterSplitterFunctionTest

@@ -31,7 +31,6 @@ import org.locationtech.jts.geom.Point;
  * @author Cory Horner, Refractions
  * @see FeatureCalc
  * @since 2.2.M2
- * @source $URL$
  */
 public interface CalcResult {
     /**

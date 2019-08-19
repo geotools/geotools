@@ -33,12 +33,11 @@ import org.geotools.graph.structure.basic.BasicGraph;
  * Computers, Environment and Urban Systems, 26:315-334.
  *
  * @author jfc173
- * @source $URL$
  */
 public class AutoClust {
 
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.graph");
+            org.geotools.util.logging.Logging.getLogger(AutoClust.class);
 
     /** Creates a new instance of AutoClust */
     public AutoClust() {}

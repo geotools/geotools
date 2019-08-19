@@ -24,7 +24,6 @@ import org.opengis.annotation.UML;
  * Bézier curve that has only two knots, 0.0, and 1.0, each of multiplicity (degree+1), is
  * equivalent to a simple Bézier curve.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/as">ISO 19107</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 2.0

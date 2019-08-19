@@ -36,7 +36,6 @@ import org.opengis.filter.spatial.BBOX;
 import org.opengis.filter.spatial.Beyond;
 import org.opengis.filter.spatial.DWithin;
 
-/** @source $URL$ */
 public class DB2SpatialFiltersOnlineTest extends JDBCSpatialFiltersOnlineTest {
 
     @Override

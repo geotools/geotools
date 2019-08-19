@@ -20,10 +20,8 @@ import java.io.Closeable;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import org.geotools.data.DataUtilities;
-import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.opengis.feature.Feature;
-import org.opengis.feature.type.FeatureType;
 
 /**
  * A feature iterator that completely delegates to a normal Iterator, simply allowing Java 1.4 code
@@ -33,7 +31,6 @@ import org.opengis.feature.type.FeatureType;
  * allow for collections that make use of system resources.
  *
  * @author Jody Garnett, Refractions Research, Inc.
- * @source $URL$
  */
 public class DelegateFeatureIterator<F extends Feature> implements FeatureIterator<F> {
     Iterator<F> delegate;
@@ -43,17 +40,6 @@ public class DelegateFeatureIterator<F extends Feature> implements FeatureIterat
      * @param iterator Iterator to be used as a delegate.
      */
     public DelegateFeatureIterator(Iterator<F> iterator) {
-        delegate = iterator;
-    }
-
-    /**
-     * Wrap the provided iterator up as a FeatureIterator.
-     *
-     * @param iterator Iterator to be used as a delegate.
-     * @deprecated collection no longer used
-     */
-    public DelegateFeatureIterator(
-            FeatureCollection<? extends FeatureType, F> collection, Iterator<F> iterator) {
         delegate = iterator;
     }
 

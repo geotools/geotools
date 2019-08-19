@@ -17,7 +17,6 @@
 
 package org.geotools.data.gen;
 
-/** @source $URL$ */
 public class HorizontalPreGeneralizedFeatureSourceTest
         extends AbstractPreGeneralizedFeatureSourceTest {
 
@@ -25,6 +24,10 @@ public class HorizontalPreGeneralizedFeatureSourceTest
 
     public void testGetCount() {
         testGetCount(ConfigName);
+    }
+
+    public void testPropertySelection() {
+        testPropertySelection(ConfigName);
     }
 
     public void testGetBounds() {

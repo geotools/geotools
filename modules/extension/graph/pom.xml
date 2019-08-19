@@ -16,7 +16,7 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>extension</artifactId>
-    <version>21-SNAPSHOT</version>
+    <version>22-SNAPSHOT</version>
   </parent>
 
 
@@ -68,6 +68,16 @@
       <id>jdeolive</id>
       <email>jdeolive@users.sourceforge.net</email>
       <organization>Refractions Research</organization>
+      <roles>
+        <role>Java Developer</role>
+        <role>Module Maintainer</role>
+      </roles>
+    </developer>
+    <developer>
+      <name>Ian Turton</name>
+      <id>ianturton</id>
+      <email>ianturton@users.sourceforge.net</email>
+      <organization>Astun Technology</organization>
       <roles>
         <role>Java Developer</role>
         <role>Module Maintainer</role>

@@ -64,7 +64,6 @@ import org.xml.sax.helpers.AttributesImpl;
  * <p>Subclass must override encode and getValue as usual.
  *
  * @author dzwiers
- * @source $URL$
  */
 public class FilterComplexTypes {
     public static final String CACHE_SERVICE_EXCEPTIONS =
@@ -1242,9 +1241,9 @@ public class FilterComplexTypes {
                 Object literal = string;
                 try {
                     if (string.indexOf('.') != -1) {
-                        literal = new Double(Double.parseDouble(string));
+                        literal = Double.valueOf(Double.parseDouble(string));
                     } else {
-                        literal = new Integer(Integer.parseInt(string));
+                        literal = Integer.valueOf(Integer.parseInt(string));
                     }
                 } catch (NumberFormatException nonNumber) {
                     // ignore

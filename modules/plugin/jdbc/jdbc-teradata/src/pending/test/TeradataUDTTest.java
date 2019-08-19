@@ -22,7 +22,7 @@ import org.geotools.jdbc.JDBCUDTTestSetup;
 /**
  * 
  *
- * @source $URL$
+
  */
 public class TeradataUDTTest extends JDBCUDTTest {
 

@@ -46,7 +46,6 @@ import org.opengis.referencing.operation.TransformException;
  *
  * @author jeichar
  * @since 0.6.0
- * @source $URL$
  */
 public class InPlaceCoordinateSequenceTransformer implements CoordinateSequenceTransformer {
 
@@ -105,12 +104,6 @@ public class InPlaceCoordinateSequenceTransformer implements CoordinateSequenceT
         /** @see org.opengis.geometry.coordinate.DirectPosition#getDimension() */
         public int getDimension() {
             return dimension;
-        }
-
-        /** @see org.opengis.geometry.coordinate.DirectPosition#getCoordinates() */
-        @Deprecated
-        public double[] getCoordinates() {
-            return getCoordinate();
         }
 
         /** @see org.opengis.geometry.coordinate.DirectPosition#getCoordinate() */

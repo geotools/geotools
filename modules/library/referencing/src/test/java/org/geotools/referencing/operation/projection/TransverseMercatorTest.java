@@ -27,11 +27,7 @@ import org.opengis.parameter.ParameterValueGroup;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.MathTransformFactory;
 
-/**
- * Unit tests of {@link TransverseMercator}.
- *
- * @source $URL$
- */
+/** Unit tests of {@link TransverseMercator}. */
 public class TransverseMercatorTest {
 
     /**

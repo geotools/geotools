@@ -28,10 +28,7 @@ import org.opengis.temporal.Position;
 import org.opengis.temporal.TemporalPosition;
 import org.opengis.util.InternationalString;
 
-/**
- * @author Mehdi Sidhoum (Geomatys)
- * @source $URL$
- */
+/** @author Mehdi Sidhoum (Geomatys) */
 public class DefaultPositionTest {
 
     private Position position1;

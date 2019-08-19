@@ -170,7 +170,7 @@
 		<xsd:annotation>
 			<xsd:documentation>
         A FeatureTypeConstraint identifies a specific feature type and
-        supplies fitlering.
+        supplies filtering.
       </xsd:documentation>
 		</xsd:annotation>
 		<xsd:complexType>

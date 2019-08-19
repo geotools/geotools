@@ -43,10 +43,6 @@ class ImageMosaicDatastoreWalker extends ImageMosaicWalker {
     static final Logger LOGGER =
             org.geotools.util.logging.Logging.getLogger(ImageMosaicDatastoreWalker.class);
 
-    /**
-     * @param updateFeatures if true update catalog with loaded granules
-     * @param imageMosaicConfigHandler TODO
-     */
     public ImageMosaicDatastoreWalker(
             ImageMosaicConfigHandler configHandler, ImageMosaicEventHandlers eventHandler) {
         super(configHandler, eventHandler);

@@ -1,11 +1,15 @@
 package org.geotools.csw;
 
+import java.util.logging.Logger;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.util.FeatureMap;
+import org.geotools.util.logging.Logging;
 
 public class EMFUtils {
+
+    static final Logger LOGGER = Logging.getLogger(EMFUtils.class);
 
     public static boolean emfEquals(EObject e1, EObject e2) {
         if (e1 == e2) {
@@ -24,8 +28,7 @@ public class EMFUtils {
             boolean equals = objectEquals(o1, o2);
 
             if (!equals) {
-                System.out.println(
-                        "Comparison failed on " + sf + " o1 has " + o1 + " while o2 has " + o2);
+                LOGGER.fine("Comparison failed on " + sf + " o1 has " + o1 + " while o2 has " + o2);
                 return false;
             }
         }
@@ -45,7 +48,7 @@ public class EMFUtils {
             EList l1 = (EList) o1;
             EList l2 = (EList) o2;
             if (l1.size() != l2.size()) {
-                System.out.println(
+                LOGGER.fine(
                         "The two lists do not have the same size, e1 has "
                                 + l1.size()
                                 + " while o2 has "

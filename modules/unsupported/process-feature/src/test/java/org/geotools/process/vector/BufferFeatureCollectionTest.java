@@ -30,7 +30,7 @@ import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LinearRing;
-import org.locationtech.jts.geom.PrecisionModel;
+import org.locationtech.jts.geom.impl.CoordinateArraySequence;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.FilterFactory;
 
@@ -53,7 +53,7 @@ public class BufferFeatureCollectionTest extends TestCase {
             b.add(i);
             features.add(b.buildFeature(i + ""));
         }
-        Double distance = new Double(500);
+        Double distance = Double.valueOf(500);
         BufferFeatureCollection process = new BufferFeatureCollection();
         SimpleFeatureCollection output = process.execute(features, distance, null);
         assertEquals(2, output.size());
@@ -90,7 +90,7 @@ public class BufferFeatureCollectionTest extends TestCase {
             b.add(0);
             features.add(b.buildFeature(numFeatures + ""));
         }
-        Double distance = new Double(500);
+        Double distance = Double.valueOf(500);
         BufferFeatureCollection process = new BufferFeatureCollection();
         SimpleFeatureCollection output = process.execute(features, distance, null);
         assertEquals(5, output.size());
@@ -129,12 +129,12 @@ public class BufferFeatureCollectionTest extends TestCase {
                 j++;
             }
             array[3] = new Coordinate(numFeatures, numFeatures);
-            LinearRing shell = new LinearRing(array, new PrecisionModel(), 0);
+            LinearRing shell = gf.createLinearRing(new CoordinateArraySequence(array));
             b.add(gf.createPolygon(shell, null));
             b.add(0);
             features.add(b.buildFeature(numFeatures + ""));
         }
-        Double distance = new Double(500);
+        Double distance = Double.valueOf(500);
         BufferFeatureCollection process = new BufferFeatureCollection();
         SimpleFeatureCollection output = process.execute(features, distance, null);
         assertEquals(5, output.size());
@@ -147,7 +147,7 @@ public class BufferFeatureCollectionTest extends TestCase {
                 j++;
             }
             array[3] = new Coordinate(numFeatures, numFeatures);
-            LinearRing shell = new LinearRing(array, new PrecisionModel(), 0);
+            LinearRing shell = gf.createLinearRing(new CoordinateArraySequence(array));
             Geometry expected = gf.createPolygon(shell, null).buffer(distance);
 
             SimpleFeature sf = iterator.next();
@@ -177,7 +177,7 @@ public class BufferFeatureCollectionTest extends TestCase {
                 j++;
             }
             array[3] = new Coordinate(numFeatures, numFeatures);
-            LinearRing shell = new LinearRing(array, new PrecisionModel(), 0);
+            LinearRing shell = gf.createLinearRing(new CoordinateArraySequence(array));
             b.add(gf.createPolygon(shell, null));
             b.add(0);
             b.add(numFeatures + 1);
@@ -198,7 +198,7 @@ public class BufferFeatureCollectionTest extends TestCase {
                 j++;
             }
             array[3] = new Coordinate(numFeatures, numFeatures);
-            LinearRing shell = new LinearRing(array, new PrecisionModel(), 0);
+            LinearRing shell = gf.createLinearRing(new CoordinateArraySequence(array));
             Geometry expected = gf.createPolygon(shell, null).buffer(numFeatures + 1);
             expectedBounds.expandToInclude(expected.getEnvelopeInternal());
 

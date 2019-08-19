@@ -20,7 +20,8 @@ import org.geotools.sld.bindings.SLDStyledLayerDescriptorBinding;
 import org.geotools.styling.Description;
 import org.geotools.styling.StyleFactory;
 import org.geotools.styling.StyledLayerDescriptor;
-import org.geotools.xml.*;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 
 /**
  * Binding object for the element http://www.opengis.net/sld:StyledLayerDescriptor.
@@ -54,7 +55,6 @@ import org.geotools.xml.*;
  * </pre>
  *
  * @generated
- * @source $URL$
  */
 public class StyledLayerDescriptorBinding extends SLDStyledLayerDescriptorBinding {
 

@@ -29,11 +29,11 @@ import org.geotools.data.FeatureWriter;
 import org.geotools.data.Query;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.data.store.ContentState;
-import org.geotools.factory.Hints;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.geometry.jts.WKTWriter2;
 import org.geotools.util.Converters;
+import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.io.WKTWriter;
 import org.opengis.feature.IllegalAttributeException;
@@ -45,7 +45,6 @@ import org.opengis.feature.simple.SimpleFeatureType;
  *
  * @author Jody Garnett
  * @author Torben Barsballe (Boundless)
- * @source $URL$
  */
 public class PropertyFeatureWriter implements FeatureWriter<SimpleFeatureType, SimpleFeature> {
 

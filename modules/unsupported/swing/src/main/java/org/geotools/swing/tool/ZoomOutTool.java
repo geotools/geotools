@@ -40,7 +40,6 @@ import org.geotools.swing.locale.LocaleUtils;
  *
  * @author Michael Bedward
  * @since 2.6
- * @source $URL$
  * @version $Id$
  */
 public class ZoomOutTool extends AbstractZoomTool {

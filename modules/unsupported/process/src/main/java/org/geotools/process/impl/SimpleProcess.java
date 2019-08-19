@@ -18,8 +18,8 @@ package org.geotools.process.impl;
 
 import java.util.HashMap;
 import java.util.Map;
+import org.geotools.data.util.NullProgressListener;
 import org.geotools.process.ProcessFactory;
-import org.geotools.util.NullProgressListener;
 import org.opengis.util.ProgressListener;
 
 /**
@@ -27,7 +27,6 @@ import org.opengis.util.ProgressListener;
  * report progress as it goes).
  *
  * @author gdavis
- * @source $URL$
  */
 public abstract class SimpleProcess extends AbstractProcess {
     /** Can only run once... should not need to check this but we are being careful */

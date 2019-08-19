@@ -20,15 +20,14 @@ import java.lang.reflect.Field;
 import javax.measure.Unit;
 import javax.xml.namespace.QName;
 import org.geotools.ows.v1_1.OWS;
-import org.geotools.xml.AbstractSimpleBinding;
-import org.geotools.xml.InstanceComponent;
+import org.geotools.xsd.AbstractSimpleBinding;
+import org.geotools.xsd.InstanceComponent;
 import si.uom.NonSI;
 import si.uom.SI;
 import tec.uom.se.AbstractUnit;
 import tec.uom.se.unit.AlternateUnit;
 import tec.uom.se.unit.BaseUnit;
 
-/** @source $URL$ */
 public class UnitBinding extends AbstractSimpleBinding {
 
     public QName getTarget() {

@@ -24,33 +24,18 @@ import java.nio.channels.FileChannel;
 import java.nio.channels.FileChannel.MapMode;
 import org.geotools.data.shapefile.index.quadtree.Node;
 import org.geotools.data.shapefile.index.quadtree.StoreException;
-import org.geotools.resources.NIOUtilities;
+import org.geotools.util.NIOUtilities;
 import org.locationtech.jts.geom.Envelope;
 
-/**
- * DOCUMENT ME!
- *
- * @author Tommaso Nolli
- * @source $URL$
- */
+/** @author Tommaso Nolli */
 public class FileSystemNode extends Node {
     static final int[] ZERO = new int[0];
 
     private ScrollingBuffer buffer;
-    private ByteOrder order;
     private int subNodeStartByte;
     private int subNodesLength;
     private int numSubNodes;
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @param bounds
-     * @param channel DOCUMENT ME!
-     * @param order DOCUMENT ME!
-     * @param startByte DOCUMENT ME!
-     * @param subNodesLength DOCUMENT ME!
-     */
     FileSystemNode(Envelope bounds, ScrollingBuffer buffer, int startByte, int subNodesLength) {
         super(bounds);
         this.buffer = buffer;
@@ -68,38 +53,22 @@ public class FileSystemNode extends Node {
         return copy;
     }
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @return Returns the numSubNodes.
-     */
+    /** @return Returns the numSubNodes. */
     public int getNumSubNodes() {
         return this.numSubNodes;
     }
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @param numSubNodes The numSubNodes to set.
-     */
+    /** @param numSubNodes The numSubNodes to set. */
     public void setNumSubNodes(int numSubNodes) {
         this.numSubNodes = numSubNodes;
     }
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @return Returns the subNodeStartByte.
-     */
+    /** @return Returns the subNodeStartByte. */
     public int getSubNodeStartByte() {
         return this.subNodeStartByte;
     }
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @return Returns the subNodesLength.
-     */
+    /** @return Returns the subNodesLength. */
     public int getSubNodesLength() {
         return this.subNodesLength;
     }
@@ -134,10 +103,7 @@ public class FileSystemNode extends Node {
     }
 
     /**
-     * DOCUMENT ME!
-     *
      * @param channel
-     * @param order DOCUMENT ME!
      * @throws IOException
      */
     public static FileSystemNode readNode(

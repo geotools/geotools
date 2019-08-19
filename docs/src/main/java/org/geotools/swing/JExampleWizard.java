@@ -26,7 +26,6 @@ import org.geotools.swing.wizard.JWizard;
  * <p>
  *
  * @author Jody
- * @source $URL$
  */
 // example wizard start
 public class JExampleWizard extends JWizard {

@@ -514,7 +514,7 @@ will be translated to raw SQL optimizing significantly is execution. In particul
 to JDBC data stores:
 
 * Aggregations and grouping on property names is support
-* Simple math expressions of the above are also supported (substract, add, multiply, divide)
+* Simple math expressions of the above are also supported (subtract, add, multiply, divide)
 * Functions may be supported, or not, depending on the filter capabilities of the data store. At the time
   of writing only PostgreSQL supports a small set of functions (e.g., dateDifference, floor, ceil, 
   string concatenation and the like).
@@ -681,7 +681,7 @@ You can think of a Classifier as a filter function similar to a Java **switch** 
 Join
 ^^^^
 
-GeoTools does not have any native ability to "Join" FeatureCollections; even though this is a very common request.
+GeoTools does not have any native ability to "Join" feature collections; even though this is a very common request.
 
 References:
 

@@ -37,7 +37,6 @@ import org.geotools.image.ImageWorker;
  *
  * @author Simone Giannecchini, GeoSolutions
  * @author Nicola Lagomarsini, GeoSolutions SAS
- * @source $URL$
  */
 @SuppressWarnings("unchecked")
 public class ColorReduction extends PointOpImage {

@@ -20,7 +20,6 @@ import org.opengis.referencing.operation.CoordinateOperation;
  * Tests the value of key constants.
  *
  * @author Martin Desruisseaux (Geomatys)
- * @source $URL$
  */
 public final class KeyConstantsTest {
     /**

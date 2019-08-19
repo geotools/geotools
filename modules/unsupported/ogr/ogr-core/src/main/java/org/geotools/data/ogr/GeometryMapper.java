@@ -29,9 +29,6 @@ import org.locationtech.jts.io.WKTWriter;
  * Converts between JTS and OGR geometries
  *
  * @author Andrea Aime - GeoSolutions
- * @source $URL:
- *     http://svn.osgeo.org/geotools/trunk/modules/unsupported/ogr/src/main/java/org/geotools
- *     /data/ogr/GeometryMapper.java $
  */
 @SuppressWarnings("rawtypes")
 abstract class GeometryMapper {

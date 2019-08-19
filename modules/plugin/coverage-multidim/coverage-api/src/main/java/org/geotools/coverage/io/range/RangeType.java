@@ -27,7 +27,6 @@ import org.opengis.util.InternationalString;
  * race, or radiances by wavelength.
  *
  * @author Simone Giannecchini, GeoSolutions
- * @source $URL$
  */
 public interface RangeType {
     /**

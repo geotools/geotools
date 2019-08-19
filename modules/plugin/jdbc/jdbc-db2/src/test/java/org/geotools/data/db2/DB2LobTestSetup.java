@@ -5,7 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import org.geotools.jdbc.JDBCLobTestSetup;
 
-/** @source $URL$ */
 public class DB2LobTestSetup extends JDBCLobTestSetup {
 
     protected DB2LobTestSetup() {

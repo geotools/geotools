@@ -31,7 +31,6 @@ import org.locationtech.jts.io.WKBConstants;
  * @author Christian Mueller
  *     <p>Version of JTS WKB Reader adjusted for DB2
  * @see WKBReader for JTS Java Doc
- * @source $URL$
  */
 public class DB2WKBReader {
 

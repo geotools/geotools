@@ -25,7 +25,6 @@ import org.opengis.metadata.quality.Result;
 /**
  * Closeness of reported coordinate values to values accepted as or being true.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @author Touraïvane

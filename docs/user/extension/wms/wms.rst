@@ -159,7 +159,7 @@ Making a GetMap request is more interesting than looking at WMSCapabilities.
      GetMapResponse response = (GetMapResponse) wms.issueRequest(request);
      BufferedImage image = ImageIO.read(response.getInputStream());
 
-Other common activites:
+Other common activities:
 
 * Requesting with a style
   

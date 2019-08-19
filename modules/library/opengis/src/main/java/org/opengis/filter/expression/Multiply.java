@@ -20,7 +20,6 @@ import org.opengis.annotation.XmlElement;
  * numeric product of their {@linkplain #getExpression1 first} and {@linkplain #getExpression2
  * second} operand.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengis.org/docs/02-059.pdf">Implementation specification 1.0</A>
  * @author Chris Dillard (SYS Technologies)
  * @since GeoAPI 2.0

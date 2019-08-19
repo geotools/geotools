@@ -29,12 +29,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.imageio.GeoToolsWriteParams;
-import org.geotools.data.DataUtilities;
 import org.geotools.data.PrjFileReader;
-import org.geotools.factory.Hints;
 import org.geotools.gce.imagemosaic.ImageMosaicFormat;
 import org.geotools.parameter.DefaultParameterDescriptorGroup;
 import org.geotools.parameter.ParameterGroup;
+import org.geotools.util.URLs;
+import org.geotools.util.factory.Hints;
 import org.opengis.coverage.grid.Format;
 import org.opengis.coverage.grid.GridCoverageWriter;
 import org.opengis.parameter.GeneralParameterDescriptor;
@@ -48,13 +48,12 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * @author Simone Giannecchini (simboss)
  * @author Stefan Alfons Krueger (alfonx), Wikisquare.de : Support for
  *     jar:file:foo.jar/bar.properties like URLs
- * @source $URL$
  */
 public final class ImagePyramidFormat extends AbstractGridFormat implements Format {
 
     /** Logger. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.gce.imagepyramid");
+            org.geotools.util.logging.Logging.getLogger(ImagePyramidFormat.class);
 
     /** Creates an instance and sets the metadata. */
     public ImagePyramidFormat() {
@@ -144,7 +143,7 @@ public final class ImagePyramidFormat extends AbstractGridFormat implements Form
             // Trying to load information
 
             // get the crs if able to
-            final URL prjURL = DataUtilities.changeUrlExt(sourceURL, "prj");
+            final URL prjURL = URLs.changeUrlExt(sourceURL, "prj");
             PrjFileReader crsReader;
             try {
                 crsReader = new PrjFileReader(Channels.newChannel(prjURL.openStream()));

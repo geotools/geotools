@@ -38,7 +38,6 @@ import org.opengis.filter.expression.Function;
  * Computes a new attribute to classify another attribute by intervals over vector data sets.
  *
  * @author Mauro Bartolomeoli
- * @source $URL$
  */
 @DescribeProcess(
     title = "ClassifyByRange",

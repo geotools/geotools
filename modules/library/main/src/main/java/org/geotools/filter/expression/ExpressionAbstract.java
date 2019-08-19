@@ -24,7 +24,6 @@ import org.opengis.filter.expression.Expression;
  * Abstract superclass of these Expression implementations.
  *
  * @author Jody Garnett
- * @source $URL$
  */
 public abstract class ExpressionAbstract implements Expression {
 

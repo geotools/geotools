@@ -23,20 +23,21 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.RenderedImage;
 import java.util.Locale;
-import org.geotools.factory.Hints;
+import java.util.Objects;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.Envelope2D;
+import org.geotools.geometry.PixelTranslation;
 import org.geotools.geometry.TransformedDirectPosition;
-import org.geotools.metadata.iso.spatial.PixelTranslation;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.factory.ReferencingFactoryContainer;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.geotools.referencing.operation.transform.ConcatenatedTransform;
 import org.geotools.referencing.operation.transform.DimensionFilter;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
-import org.geotools.resources.Classes;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
+import org.geotools.util.Classes;
+import org.geotools.util.factory.Hints;
 import org.opengis.coverage.CannotEvaluateException;
 import org.opengis.coverage.grid.GridEnvelope;
 import org.opengis.coverage.grid.GridGeometry;
@@ -62,7 +63,6 @@ import org.opengis.referencing.operation.TransformException;
  * for referencing a pixel without ambiguity.
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @see ImageGeometry
@@ -73,7 +73,7 @@ public class GridGeometry2D extends GeneralGridGeometry {
     private static final long serialVersionUID = -3989363771504614419L;
 
     /** Helpers methods for 2D CRS creation. Will be constructed only when first needed. */
-    private static ReferencingFactoryContainer FACTORIES;
+    private static volatile ReferencingFactoryContainer FACTORIES;
 
     /**
      * The two-dimensional part of the coordinate reference system.
@@ -991,7 +991,7 @@ public class GridGeometry2D extends GeneralGridGeometry {
      * MathsTransform} provided by {@linkplain GridGeometry2D#getCRSToGrid2D(PixelOrientation)}
      * which is accessed via {@linkplain #getGridGeometry()}.
      *
-     * @param env The envelope in world coordinate system.
+     * @param envelope The envelope in world coordinate system.
      * @return The corresponding rectangle in the grid coordinate system as a new {@code
      *     GridEnvelope2D} object
      * @throws IllegalArgumentException if the coordinate reference system of the envelope is not
@@ -1215,6 +1215,22 @@ public class GridGeometry2D extends GeneralGridGeometry {
             // and should be strictly derived from gridToCRS2D anyway.
         }
         return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(
+                super.hashCode(),
+                crs2D,
+                gridDimensionX,
+                gridDimensionY,
+                axisDimensionX,
+                axisDimensionY,
+                gridToCRS2D,
+                gridFromCRS2D,
+                cornerToCRS2D,
+                crsToCorner2D,
+                arbitraryToInternal);
     }
 
     /**

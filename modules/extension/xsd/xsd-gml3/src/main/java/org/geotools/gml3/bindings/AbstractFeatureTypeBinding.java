@@ -22,12 +22,12 @@ import org.eclipse.xsd.XSDElementDeclaration;
 import org.geotools.gml2.FeatureTypeCache;
 import org.geotools.gml3.GML;
 import org.geotools.gml3.XSDIdRegistry;
-import org.geotools.xml.AbstractComplexBinding;
-import org.geotools.xml.BindingWalkerFactory;
-import org.geotools.xml.Configuration;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
-import org.geotools.xml.SchemaIndex;
+import org.geotools.xsd.AbstractComplexBinding;
+import org.geotools.xsd.BindingWalkerFactory;
+import org.geotools.xsd.Configuration;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
+import org.geotools.xsd.SchemaIndex;
 import org.opengis.feature.Feature;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -63,7 +63,6 @@ import org.w3c.dom.Element;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class AbstractFeatureTypeBinding extends AbstractComplexBinding {
     FeatureTypeCache ftCache;

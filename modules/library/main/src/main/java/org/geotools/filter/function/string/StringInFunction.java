@@ -22,7 +22,6 @@ import org.geotools.filter.FunctionImpl;
 import org.opengis.filter.capability.FunctionName;
 
 @SuppressWarnings("unchecked")
-/** @source $URL$ */
 public class StringInFunction extends FunctionImpl {
 
     static FunctionName NAME =

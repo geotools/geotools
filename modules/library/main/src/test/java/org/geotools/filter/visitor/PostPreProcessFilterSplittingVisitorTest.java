@@ -34,7 +34,6 @@ import org.opengis.filter.PropertyIsLike;
 import org.opengis.filter.PropertyIsNull;
 import org.opengis.filter.spatial.BBOX;
 
-/** @source $URL$ */
 public class PostPreProcessFilterSplittingVisitorTest
         extends AbstractPostPreProcessFilterSplittingVisitorTests {
 

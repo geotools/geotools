@@ -29,12 +29,11 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
-import org.geotools.factory.Hints;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.MapContent;
-import org.geotools.map.MapContext;
 import org.geotools.renderer.GTRenderer;
 import org.geotools.renderer.RenderListener;
+import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.Envelope;
 
 /**
@@ -42,7 +41,6 @@ import org.locationtech.jts.geom.Envelope;
  *
  * @author Michael Bedward
  * @since 8.0
- * @source $URL$
  * @version $Id$
  */
 public class MockRenderer implements GTRenderer {
@@ -114,18 +112,8 @@ public class MockRenderer implements GTRenderer {
     }
 
     @Override
-    public void setContext(MapContext context) {
-        throw new UnsupportedOperationException("Should not be called");
-    }
-
-    @Override
     public void setMapContent(MapContent mapContent) {
         this.mapContent = mapContent;
-    }
-
-    @Override
-    public MapContext getContext() {
-        throw new UnsupportedOperationException("Should not be called");
     }
 
     @Override
@@ -170,7 +158,7 @@ public class MockRenderer implements GTRenderer {
         lock.lock();
         try {
             if (verbose) {
-                System.out.println("mock paint started");
+                // System.out.println("mock paint started");
                 System.out.flush();
             }
 
@@ -190,9 +178,9 @@ public class MockRenderer implements GTRenderer {
 
         if (verbose) {
             if (wasCancelled) {
-                System.out.println("mock paint cancelled");
+                // System.out.println("mock paint cancelled");
             } else {
-                System.out.println("mock paint finished");
+                // System.out.println("mock paint finished");
             }
             System.out.flush();
         }

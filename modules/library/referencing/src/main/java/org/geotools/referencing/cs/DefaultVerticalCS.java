@@ -41,20 +41,12 @@ import org.opengis.referencing.cs.VerticalCS;
  * </TD></TR></TABLE>
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
 public class DefaultVerticalCS extends AbstractCS implements VerticalCS {
     /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = 1201155778896630499L;;
-
-    /**
-     * A one-dimensional vertical CS with <var>{@linkplain
-     * DefaultCoordinateSystemAxis#ELLIPSOIDAL_HEIGHT ellipsoidal height}</var> axis in metres.
-     */
-    public static DefaultVerticalCS ELLIPSOIDAL_HEIGHT =
-            new DefaultVerticalCS(DefaultCoordinateSystemAxis.ELLIPSOIDAL_HEIGHT);
 
     /**
      * A one-dimensional vertical CS with <var>{@linkplain
@@ -66,8 +58,12 @@ public class DefaultVerticalCS extends AbstractCS implements VerticalCS {
     public static DefaultVerticalCS GRAVITY_RELATED_HEIGHT =
             new DefaultVerticalCS(DefaultCoordinateSystemAxis.GRAVITY_RELATED_HEIGHT);
 
-    /** @deprecated Renamed as {@link #GRAVITY_RELATED_HEIGHT}. */
-    @Deprecated public static DefaultVerticalCS GRAVITY_RELATED = GRAVITY_RELATED_HEIGHT;
+    /**
+     * A one-dimensional vertical CS with <var>{@linkplain
+     * DefaultCoordinateSystemAxis#ELLIPSOIDAL_HEIGHT ellipsoidal height}</var> axis in metres.
+     */
+    public static DefaultVerticalCS ELLIPSOIDAL_HEIGHT =
+            new DefaultVerticalCS(DefaultCoordinateSystemAxis.ELLIPSOIDAL_HEIGHT);
 
     /**
      * A one-dimensional vertical CS with <var>{@linkplain DefaultCoordinateSystemAxis#DEPTH

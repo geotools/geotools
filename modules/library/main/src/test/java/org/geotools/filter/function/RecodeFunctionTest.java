@@ -31,7 +31,6 @@ import org.opengis.filter.expression.Literal;
  * Test the Recode function against the Symbology Encoding 1.1 specs.
  *
  * @author mbedward
- * @source $URL$
  */
 public class RecodeFunctionTest extends SEFunctionTestBase {
 
@@ -46,7 +45,7 @@ public class RecodeFunctionTest extends SEFunctionTestBase {
 
     @Test
     public void testFindFunction() throws Exception {
-        System.out.println("   testFindFunction");
+        // System.out.println("   testFindFunction");
 
         Literal fallback = ff2.literal("NOT_FOUND");
         setupParameters(ints, colors);
@@ -58,7 +57,7 @@ public class RecodeFunctionTest extends SEFunctionTestBase {
 
     @Test
     public void testIntToColorLookup() throws Exception {
-        System.out.println("   testIntToColorLookup");
+        // System.out.println("   testIntToColorLookup");
 
         setupParameters(ints, colors);
         Function fn = finder.findFunction("recode", parameters);
@@ -85,7 +84,7 @@ public class RecodeFunctionTest extends SEFunctionTestBase {
 
     @Test
     public void testRecodeUndefinedValueReturnsNull() throws Exception {
-        System.out.println("   testRecodeUndefinedValueReturnsNull");
+        // System.out.println("   testRecodeUndefinedValueReturnsNull");
 
         setupParameters(words, ints);
         Function fn = finder.findFunction("recode", parameters);
@@ -108,5 +107,24 @@ public class RecodeFunctionTest extends SEFunctionTestBase {
             parameters.add(ff2.literal(data[i]));
             parameters.add(ff2.literal(values[i]));
         }
+    }
+
+    @Test
+    public void testEqualsHashCode() {
+        setupParameters(words, ints);
+        Function fn1 = finder.findFunction("interpolate", parameters);
+        Function fn2 = finder.findFunction("interpolate", parameters);
+        setupParameters(words, new Integer[] {1, 2, 5});
+        Function fn3 = finder.findFunction("interpolate", parameters);
+
+        // symmetric
+        assertEquals(fn1, fn2);
+        assertEquals(fn2, fn1);
+        // same hashcode
+        assertEquals(fn1.hashCode(), fn2.hashCode());
+
+        // but not equal to fn3
+        assertNotEquals(fn1, fn3);
+        assertNotEquals(fn2, fn3);
     }
 }

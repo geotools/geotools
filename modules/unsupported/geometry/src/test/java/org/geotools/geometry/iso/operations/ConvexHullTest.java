@@ -42,7 +42,6 @@ import org.opengis.geometry.primitive.Surface;
 import org.opengis.geometry.primitive.SurfaceBoundary;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-/** @source $URL$ */
 public class ConvexHullTest extends TestCase {
 
     private GeometryBuilder builder = null;
@@ -69,12 +68,12 @@ public class ConvexHullTest extends TestCase {
         // Point
 
         Geometry res = this.createPointA().getConvexHull();
-        double coord[] = ((PointImpl) res).getPosition().getCoordinate();
+        double coord[] = ((PointImpl) res).getDirectPosition().getCoordinate();
         assertTrue(coord[0] == 30);
         assertTrue(coord[1] == 50);
 
         res = this.createPointB().getConvexHull();
-        coord = ((PointImpl) res).getPosition().getCoordinate();
+        coord = ((PointImpl) res).getDirectPosition().getCoordinate();
         assertTrue(coord[0] == 100);
         assertTrue(coord[1] == 120);
 
@@ -285,7 +284,7 @@ public class ConvexHullTest extends TestCase {
         try {
             rPoint = (PointImpl) wktReader.read(aWKTpoint);
         } catch (ParseException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
         return rPoint;
     }
@@ -296,7 +295,7 @@ public class ConvexHullTest extends TestCase {
         try {
             rCurve = (CurveImpl) wktReader.read(aWKTcurve);
         } catch (ParseException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
         return rCurve;
     }
@@ -307,7 +306,7 @@ public class ConvexHullTest extends TestCase {
         try {
             rSurface = (SurfaceImpl) wktReader.read(aWKTsurface);
         } catch (ParseException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
         return rSurface;
     }

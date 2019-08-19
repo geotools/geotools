@@ -20,7 +20,6 @@ import java.net.URL;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
-/** @source $URL$ */
 public class MySqlOnlineTest extends AbstractTest {
     static DBDialect dialect = null;
 

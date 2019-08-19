@@ -18,9 +18,9 @@
 package org.geotools.referencing.crs;
 
 import java.util.Set;
-import org.geotools.factory.AbstractFactory;
 import org.geotools.metadata.iso.citation.CitationImpl;
 import org.geotools.metadata.iso.citation.Citations;
+import org.geotools.util.factory.AbstractFactory;
 import org.opengis.metadata.citation.Citation;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.IdentifiedObject;
@@ -47,7 +47,6 @@ import org.opengis.util.InternationalString;
  *
  * @author Ben Caradoc-Davies, CSIRO Earth Science and Resource Engineering
  * @see <a href="http://jira.codehaus.org/browse/GEOT-3112">GEOT-3112</a>
- * @source $URL$
  */
 public class EPSGCRSAuthorityFactory extends AbstractFactory implements CRSAuthorityFactory {
 

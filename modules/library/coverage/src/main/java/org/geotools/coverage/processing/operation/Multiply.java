@@ -71,7 +71,6 @@ import org.opengis.util.InternationalString;
  * </table>
  *
  * @since 8.x
- * @source $URL$
  * @see org.geotools.coverage.processing.Operations#multiply(org.opengis.coverage.Coverage,
  *     org.opengis.coverage.Coverage)
  * @see Multiply

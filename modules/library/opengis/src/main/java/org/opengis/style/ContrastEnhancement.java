@@ -27,7 +27,6 @@ import org.opengis.filter.expression.Expression;
  * image. The default GammaValue is 1.0 (no change). If none of Normalize, Histogram, or GammaValue
  * are selected in a ContrastEnhancement, then no enhancement is performed.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/symbol">Symbology Encoding
  *     Implementation Specification 1.1.0</A>
  * @author Open Geospatial Consortium

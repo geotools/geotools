@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<Indexer>
+    <domains>
+      <domain name="time">
+        <attributes><attribute ref="timeCollector">time</attribute></attributes>
+      </domain>
+    </domains>
+    <schemas>
+        <schema name="default" >
+            <attributes>the_geom:Polygon,location:String,imageindex:Integer,time:java.util.Date</attributes>
+        </schema>
+    </schemas>
+    <coverages>
+        <coverage>
+            <name>NO2</name>
+            <schema ref="default"></schema>
+            <domains>
+              <domain ref="time" />
+            </domains>
+        </coverage>
+        <coverage>
+            <name>BrO</name>
+            <schema ref="default"></schema>
+            <domains>
+              <domain ref="time" />
+            </domains>
+        </coverage>
+    </coverages>
+    <collectors>
+      <collector name="timeCollector">
+        <value>[0-9]{8}</value>
+        <spi>TimestampFileNameExtractorSPI</spi>
+        <mapped>time</mapped>
+      </collector>
+    </collectors>
+    <parameters>
+        <parameter name="AuxiliaryFile" value="_dummy.xml" />
+        <parameter name="AbsolutePath" value="true" />
+    </parameters>
+</Indexer>

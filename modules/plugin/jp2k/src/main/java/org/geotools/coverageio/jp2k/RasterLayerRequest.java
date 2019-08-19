@@ -30,18 +30,18 @@ import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.OverviewPolicy;
 import org.geotools.data.DataSourceException;
-import org.geotools.factory.Hints;
 import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.PixelTranslation;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.metadata.iso.spatial.PixelTranslation;
+import org.geotools.geometry.util.XRectangle2D;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.operation.LinearTransform;
 import org.geotools.referencing.operation.builder.GridToEnvelopeMapper;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
-import org.geotools.resources.geometry.XRectangle2D;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
+import org.geotools.util.factory.Hints;
 import org.opengis.geometry.BoundingBox;
 import org.opengis.geometry.Envelope;
 import org.opengis.geometry.MismatchedDimensionException;
@@ -492,9 +492,6 @@ class RasterLayerRequest {
      * Check the type of read operation which will be performed and return {@code true} if a JAI
      * imageRead operation need to be performed or {@code false} if a simple read operation is
      * needed.
-     *
-     * @return {@code true} if the read operation will use a JAI ImageRead operation instead of a
-     *     simple {@code ImageReader.read(...)} call.
      */
     private void checkReadType() {
         // //
@@ -537,8 +534,6 @@ class RasterLayerRequest {
      * Return a crop region from a specified envelope, leveraging on the grid to world
      * transformation.
      *
-     * @param refinedRequestedBBox the crop envelope
-     * @return a {@code Rectangle} representing the crop region.
      * @throws TransformException in case a problem occurs when going back to raster space.
      * @throws DataSourceException
      */
@@ -639,17 +634,6 @@ class RasterLayerRequest {
      * rectangle which is suitable for a successive read operation with {@link ImageIO} to do
      * crop-on-read.
      *
-     * @param requestedBBox is the envelope we are requested to load.
-     * @param destinationRasterArea represents the area to load in raster space. This parameter
-     *     cannot be null since it gets filled with whatever the crop region is depending on the
-     *     <code>requestedEnvelope</code>.
-     * @param requestedRasterArea is the requested region where to load data of the specified
-     *     envelope.
-     * @param readGridToWorld the Grid to world transformation to be used
-     * @return the adjusted requested envelope, empty if no requestedEnvelope has been specified,
-     *     {@code null} in case the requested envelope does not intersect the coverage envelope or
-     *     in case the adjusted requested envelope is covered by a too small raster region (an empty
-     *     region).
      * @throws DataSourceException
      * @throws DataSourceException in case something bad occurs
      */

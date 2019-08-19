@@ -22,7 +22,6 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.opengis.filter.PropertyIsEqualTo;
 import org.opengis.filter.expression.Expression;
 
-/** @source $URL$ */
 public class IsEqualsToImplTest extends TestCase {
 
     org.opengis.filter.FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory(null);
@@ -93,7 +92,8 @@ public class IsEqualsToImplTest extends TestCase {
     }
 
     public void testOperandsDoubleLongOutOfRange() {
-        Expression e1 = filterFactory.literal(new Double(Long.MAX_VALUE).doubleValue() + 10000.0);
+        Expression e1 =
+                filterFactory.literal(Double.valueOf(Long.MAX_VALUE).doubleValue() + 10000.0);
         Expression e2 = filterFactory.literal(Long.MAX_VALUE);
 
         PropertyIsEqualTo equal = filterFactory.equals(e1, e2);

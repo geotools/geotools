@@ -20,7 +20,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import javax.xml.namespace.QName;
-import org.geotools.xml.*;
+import org.geotools.xsd.AbstractComplexBinding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.capability.SpatialOperator;
 import org.opengis.filter.capability.SpatialOperators;
@@ -52,7 +54,6 @@ import org.opengis.filter.capability.SpatialOperators;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class Spatial_OperatorsTypeBinding extends AbstractComplexBinding {
     FilterFactory factory;

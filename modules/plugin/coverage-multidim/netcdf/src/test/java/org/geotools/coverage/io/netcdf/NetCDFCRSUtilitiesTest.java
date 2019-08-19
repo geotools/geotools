@@ -30,11 +30,7 @@ import ucar.nc2.constants.AxisType;
 import ucar.nc2.dataset.CoordinateAxis;
 import ucar.nc2.dataset.NetcdfDataset;
 
-/**
- * Test UnidataTimeUtilities
- *
- * @source $URL$
- */
+/** Test UnidataTimeUtilities */
 public final class NetCDFCRSUtilitiesTest extends Assert {
     @Test
     public void testBuildVerticalCRS() throws IOException {

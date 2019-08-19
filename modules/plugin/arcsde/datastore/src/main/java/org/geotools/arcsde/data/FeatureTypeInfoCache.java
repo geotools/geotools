@@ -63,15 +63,11 @@ import org.opengis.feature.type.Name;
  * info.
  *
  * @author Gabriel Roldan
- * @version $Id$
  * @since 2.5.6
- * @source $URL:
- *     http://svn.osgeo.org/geotools/trunk/modules/plugin/arcsde/datastore/src/main/java/org
- *     /geotools/arcsde/data/FeatureTypeInfoCache.java $
  */
 final class FeatureTypeInfoCache {
 
-    private static final Logger LOGGER = Logging.getLogger("org.geotools.arcsde.data");
+    private static final Logger LOGGER = Logging.getLogger(FeatureTypeInfoCache.class);
 
     /** ArcSDE registered layers definitions */
     private final Map<String, FeatureTypeInfo> featureTypeInfos;

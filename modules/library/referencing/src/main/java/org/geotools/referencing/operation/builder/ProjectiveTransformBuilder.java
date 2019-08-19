@@ -58,7 +58,6 @@ import org.opengis.referencing.operation.MathTransform;
  *  m = (A<sup>T</sup>PA)<sup>-1</sup> A<sup>T</sup>Px'  </blockquote> </pre>
  *
  * @author Jan Jezek
- * @source $URL$
  * @version $Id$
  * @since 2.4
  */

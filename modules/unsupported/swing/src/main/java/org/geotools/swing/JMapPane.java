@@ -38,13 +38,12 @@ import org.geotools.renderer.lite.StreamingRenderer;
  * @author Michael Bedward
  * @author Ian Turton
  * @since 2.6
- * @source $URL$
  * @version $Id$
  */
 public class JMapPane extends AbstractMapPane {
 
     private GTRenderer renderer;
-    private BufferedImage baseImage;
+    protected BufferedImage baseImage;
     private Graphics2D baseImageGraphics;
 
     /** Creates a new map pane. */
@@ -187,6 +186,8 @@ public class JMapPane extends AbstractMapPane {
                     }
 
                     baseImageGraphics = baseImage.createGraphics();
+                    baseImageGraphics.setBackground(getBackground());
+                    baseImageGraphics.clearRect(0, 0, r.width, r.height);
                     clearLabelCache.set(true);
 
                 } else {

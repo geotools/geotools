@@ -1,3 +1,19 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
 package org.geotools.swing.table;
 
 import java.io.IOException;
@@ -7,7 +23,7 @@ import java.util.List;
 import javax.swing.SwingWorker;
 import javax.swing.table.AbstractTableModel;
 import org.geotools.data.simple.SimpleFeatureCollection;
-import org.geotools.util.NullProgressListener;
+import org.geotools.data.util.NullProgressListener;
 import org.opengis.feature.Feature;
 import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.simple.SimpleFeature;
@@ -18,8 +34,6 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * and cache them for a {@code JTable}
  *
  * <p>
- *
- * @source $URL$
  */
 public class FeatureCollectionTableModel extends AbstractTableModel {
     private static final long serialVersionUID = -7119885084300393935L;

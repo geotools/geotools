@@ -23,7 +23,6 @@ package org.geotools.grid.ortholine;
  *
  * @author mbedward
  * @since 8.0
- * @source $URL$
  * @version $Id$
  */
 public class OrthoLineDef {

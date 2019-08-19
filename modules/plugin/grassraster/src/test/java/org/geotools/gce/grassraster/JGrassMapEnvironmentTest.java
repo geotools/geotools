@@ -25,7 +25,6 @@ import org.geotools.util.URLs;
  * Test the {@link JGrassMapEnvironment} class and the created paths.
  *
  * @author Andrea Antonello (www.hydrologis.com)
- * @source $URL$
  */
 @SuppressWarnings("nls")
 public class JGrassMapEnvironmentTest extends TestCase {

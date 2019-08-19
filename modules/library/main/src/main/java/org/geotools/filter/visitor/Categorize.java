@@ -31,7 +31,6 @@ import org.opengis.filter.expression.Literal;
  * <p>In case the Categorize (or Interpolate) function is used inside a RasterSymbolizer as a
  * ColorMap, the LookupValue is set to the fixed value “Rasterdata”.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/symbol">Symbology Encoding
  *     Implementation Specification 1.1.0</A>
  * @author Johann Sorel (Geomatys)

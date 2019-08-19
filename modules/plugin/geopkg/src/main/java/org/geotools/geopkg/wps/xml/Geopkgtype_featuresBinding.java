@@ -23,8 +23,9 @@ import javax.xml.namespace.NamespaceContext;
 import javax.xml.namespace.QName;
 import org.geotools.geopkg.wps.GeoPackageProcessRequest;
 import org.geotools.geopkg.wps.GeoPackageProcessRequest.Layer;
-import org.geotools.xml.*;
 import org.geotools.xs.bindings.XSQNameBinding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 import org.opengis.filter.Filter;
 
 /**

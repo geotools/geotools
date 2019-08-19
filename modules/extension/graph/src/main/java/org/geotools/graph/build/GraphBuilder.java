@@ -35,7 +35,6 @@ import org.geotools.graph.structure.Node;
  * @see Graph
  * @see GraphGenerator
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
- * @source $URL$
  */
 public interface GraphBuilder {
 

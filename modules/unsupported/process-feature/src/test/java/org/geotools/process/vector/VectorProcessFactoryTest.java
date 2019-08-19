@@ -8,12 +8,12 @@ import static org.junit.Assert.assertTrue;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Set;
-import org.geotools.factory.FactoryIteratorProvider;
-import org.geotools.factory.GeoTools;
 import org.geotools.feature.NameImpl;
 import org.geotools.process.Processors;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
+import org.geotools.util.factory.FactoryIteratorProvider;
+import org.geotools.util.factory.GeoTools;
 import org.junit.Test;
 import org.opengis.feature.type.Name;
 

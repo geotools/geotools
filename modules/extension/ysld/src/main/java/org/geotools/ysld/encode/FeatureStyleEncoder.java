@@ -17,6 +17,7 @@
  */
 package org.geotools.ysld.encode;
 
+import java.util.Optional;
 import java.util.logging.Logger;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.Style;
@@ -37,8 +38,16 @@ public class FeatureStyleEncoder extends YsldEncodeHandler<FeatureTypeStyle> {
     @Override
     protected void encode(FeatureTypeStyle featureStyle) {
         put("name", featureStyle.getName());
-        put("title", featureStyle.getTitle());
-        put("abstract", featureStyle.getAbstract());
+        put(
+                "title",
+                Optional.ofNullable(featureStyle.getDescription().getTitle())
+                        .map(Object::toString)
+                        .orElse(null));
+        put(
+                "abstract",
+                Optional.ofNullable(featureStyle.getDescription().getAbstract())
+                        .map(Object::toString)
+                        .orElse(null));
         if (featureStyle.getTransformation() != null) {
             push("transform").inline(new TransformEncoder(featureStyle.getTransformation()));
             pop();

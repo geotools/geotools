@@ -22,7 +22,7 @@ import org.geotools.jdbc.JDBCTestSetup;
 /**
  * 
  *
- * @source $URL$
+
  */
 public class IngresFeatureStoreExposePkTest extends JDBCFeatureStoreExposePkTest {
 

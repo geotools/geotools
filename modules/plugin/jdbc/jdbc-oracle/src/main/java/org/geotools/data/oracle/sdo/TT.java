@@ -37,7 +37,6 @@ import org.locationtech.jts.geom.Polygon;
  * @author bowens
  *     <p>To change the template for this generated type comment go to Window>Preferences>Java>Code
  *     Generation>Code and Comments
- * @source $URL$
  */
 public interface TT {
     /** <code>TT</code> code representing unknown geometies (like splines) */

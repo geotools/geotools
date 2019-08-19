@@ -18,10 +18,10 @@ package org.geotools.coverage.processing.operation;
 
 import javax.media.jai.operator.BandSelectDescriptor; // For javadoc
 import org.geotools.coverage.processing.Operation2D;
-import org.geotools.factory.Hints;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.parameter.DefaultParameterDescriptor;
 import org.geotools.parameter.DefaultParameterDescriptorGroup;
+import org.geotools.util.factory.Hints;
 import org.opengis.coverage.Coverage;
 import org.opengis.parameter.ParameterDescriptor;
 import org.opengis.parameter.ParameterValueGroup;
@@ -80,7 +80,6 @@ import org.opengis.parameter.ParameterValueGroup;
  * </table>
  *
  * @since 2.2
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @see org.geotools.coverage.processing.Operations#selectSampleDimension

@@ -36,7 +36,6 @@ import org.junit.Test;
  * Tests for rendering and reprojection
  *
  * @author jandm
- * @source $URL$
  */
 public class TileTest {
     private static final long TIME = 4000;

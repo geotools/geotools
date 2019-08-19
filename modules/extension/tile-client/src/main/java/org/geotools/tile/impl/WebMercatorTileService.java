@@ -35,8 +35,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  */
 public abstract class WebMercatorTileService extends TileService {
 
-    private static final Logger LOGGER =
-            Logging.getLogger(WebMercatorTileService.class.getPackage().getName());
+    private static final Logger LOGGER = Logging.getLogger(WebMercatorTileService.class);
 
     public static final double MIN_LONGITUDE = -180;
 

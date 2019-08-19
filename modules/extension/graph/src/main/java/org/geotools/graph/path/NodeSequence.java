@@ -23,7 +23,6 @@ import org.geotools.graph.structure.Node;
  * Represents a sequence of nodes in a graph.
  *
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
- * @source $URL$
  */
 public interface NodeSequence {
 

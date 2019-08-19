@@ -40,7 +40,6 @@ import org.opengis.filter.PropertyIsEqualTo;
  *
  * @author Mauricio Pazos (Axios Engineering)
  * @since 2.6
- * @source $URL$
  */
 public class CQLExistenceTest {
 

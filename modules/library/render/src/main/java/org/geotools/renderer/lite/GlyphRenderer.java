@@ -21,10 +21,7 @@ import java.util.List;
 import org.geotools.styling.ExternalGraphic;
 import org.geotools.styling.Graphic;
 
-/**
- * @author jamesm
- * @source $URL$
- */
+/** @author jamesm */
 public interface GlyphRenderer {
 
     public boolean canRender(String format);

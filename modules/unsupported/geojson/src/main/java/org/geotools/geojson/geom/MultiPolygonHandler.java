@@ -26,7 +26,6 @@ import org.locationtech.jts.geom.LinearRing;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Polygon;
 
-/** @source $URL$ */
 public class MultiPolygonHandler extends GeometryHandlerBase<MultiPolygon> {
 
     List<Coordinate> coordinates;

@@ -69,7 +69,7 @@ OpenGIS consortium's work is fully acknowledged here.
   which I believe is close to what the situation really was).
 
 
-* org.geotools.resources.image
+* org.geotools.referencing.util.image
   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     * updated headers

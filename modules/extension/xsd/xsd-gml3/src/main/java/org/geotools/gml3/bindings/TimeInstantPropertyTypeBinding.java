@@ -18,7 +18,9 @@ package org.geotools.gml3.bindings;
 
 import javax.xml.namespace.QName;
 import org.geotools.gml3.GML;
-import org.geotools.xml.*;
+import org.geotools.xsd.AbstractComplexBinding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 import org.opengis.temporal.Instant;
 
 /**

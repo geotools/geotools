@@ -27,26 +27,26 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import org.geotools.factory.Hints;
 import org.geotools.geometry.GeneralDirectPosition;
 import org.geotools.geometry.GeneralEnvelope;
-import org.geotools.io.TableWriter;
-import org.geotools.math.Statistics;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
+import org.geotools.metadata.i18n.Vocabulary;
+import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.metadata.iso.extent.ExtentImpl;
 import org.geotools.metadata.iso.extent.GeographicBoundingBoxImpl;
 import org.geotools.metadata.iso.quality.PositionalAccuracyImpl;
 import org.geotools.metadata.iso.quality.QuantitativeResultImpl;
+import org.geotools.metadata.math.Statistics;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.ReferencingFactoryFinder;
 import org.geotools.referencing.cs.DefaultCartesianCS;
 import org.geotools.referencing.operation.DefaultOperationMethod;
 import org.geotools.referencing.operation.DefaultTransformation;
-import org.geotools.resources.CRSUtilities;
-import org.geotools.resources.Classes;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
-import org.geotools.resources.i18n.Vocabulary;
-import org.geotools.resources.i18n.VocabularyKeys;
+import org.geotools.referencing.util.CRSUtilities;
+import org.geotools.util.Classes;
+import org.geotools.util.TableWriter;
+import org.geotools.util.factory.Hints;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.geometry.MismatchedReferenceSystemException;
@@ -95,7 +95,6 @@ import org.opengis.util.InternationalString;
  * #computeMathTransform()} methods.
  *
  * @since 2.4
- * @source $URL$
  * @version $Id$
  * @author Jan Jezek
  * @author Martin Desruisseaux

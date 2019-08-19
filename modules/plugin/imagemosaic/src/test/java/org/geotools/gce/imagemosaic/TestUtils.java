@@ -16,22 +16,28 @@
  */
 package org.geotools.gce.imagemosaic;
 
+import static org.geotools.util.URLs.fileToUrl;
+
 import it.geosolutions.imageio.utilities.ImageIOUtilities;
 import java.awt.Rectangle;
 import java.awt.image.RenderedImage;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import javax.media.jai.PlanarImage;
 import javax.swing.JFrame;
+import org.apache.commons.io.FileUtils;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.GridFormatFinder;
 import org.geotools.coverage.grid.io.UnknownFormat;
-import org.geotools.factory.Hints;
 import org.geotools.parameter.Parameter;
 import org.geotools.referencing.CRS;
+import org.geotools.test.TestData;
+import org.geotools.util.URLs;
+import org.geotools.util.factory.Hints;
 import org.junit.Assert;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.ParameterValue;
@@ -211,5 +217,28 @@ final class TestUtils extends Assert {
      */
     static void show(RenderedImage image, String title) {
         ImageIOUtilities.visualize(image, title);
+    }
+
+    public static ImageMosaicReader getReader(File directory) throws FactoryException {
+        URL directoryURL = fileToUrl(directory);
+        return getReader(directoryURL);
+    }
+
+    public static ImageMosaicReader getReader(URL directoryURL) throws FactoryException {
+        final AbstractGridFormat format = TestUtils.getFormat(directoryURL);
+        ImageMosaicReader reader = TestUtils.getReader(directoryURL, format);
+        assertNotNull(reader);
+        return reader;
+    }
+
+    public static File setupTestDirectory(Object caller, URL url, String testDirectoryName)
+            throws IOException {
+        File source = URLs.urlToFile(url);
+        File directory = new File(TestData.file(caller, "."), testDirectoryName);
+        if (directory.exists()) {
+            FileUtils.deleteDirectory(directory);
+        }
+        FileUtils.copyDirectory(source, directory);
+        return directory;
     }
 }

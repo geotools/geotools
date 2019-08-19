@@ -35,7 +35,6 @@ import org.opengis.filter.expression.Function;
  * restrictions on the allowable and is captured as part of schema information (@linkplain
  * FeatureType). This is similar to the XML concept of "facets".
  *
- * @source $URL$
  * @version <A HREF="http://www.opengis.org/docs/02-059.pdf">Implementation specification 1.0</A>
  * @author Chris Dillard (SYS Technologies)
  * @since GeoAPI 2.0

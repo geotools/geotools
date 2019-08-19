@@ -18,6 +18,8 @@ package org.geotools.referencing.operation.transform;
 
 import java.util.Collections;
 import org.geotools.measure.Units;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.parameter.DefaultParameterDescriptor;
 import org.geotools.parameter.FloatParameter;
@@ -25,8 +27,6 @@ import org.geotools.parameter.ParameterGroup;
 import org.geotools.referencing.NamedIdentifier;
 import org.geotools.referencing.datum.BursaWolfParameters;
 import org.geotools.referencing.operation.MathTransformProvider;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
 import org.geotools.util.Utilities;
 import org.opengis.parameter.ParameterDescriptor;
 import org.opengis.parameter.ParameterDescriptorGroup;
@@ -68,7 +68,6 @@ import si.uom.SI;
  * </ul>
  *
  * @since 2.2
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

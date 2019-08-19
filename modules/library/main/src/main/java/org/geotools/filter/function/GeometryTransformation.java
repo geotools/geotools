@@ -27,7 +27,6 @@ import org.opengis.filter.expression.Function;
  * <p>It gives the renderer a hint of what area should be queried given a certain rendering area
  *
  * @author Andrea Aime - GeoSolutions
- * @source $URL$
  */
 public interface GeometryTransformation extends Function {
     /**

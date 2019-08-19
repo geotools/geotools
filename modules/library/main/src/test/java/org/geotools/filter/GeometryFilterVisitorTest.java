@@ -7,7 +7,6 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Function;
 
-/** @source $URL$ */
 public class GeometryFilterVisitorTest extends TestCase {
 
     FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);

@@ -44,7 +44,6 @@ import org.opengis.filter.FilterFactory;
  * </pre>
  *
  * @generated
- * @source $URL$
  */
 public class FontBinding extends SLDFontBinding {
 

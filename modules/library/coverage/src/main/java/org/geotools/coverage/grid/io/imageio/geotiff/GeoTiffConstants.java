@@ -20,10 +20,7 @@ import it.geosolutions.imageio.plugins.tiff.TIFFTag;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- * @author simone
- * @source $URL$
- */
+/** @author simone */
 public final class GeoTiffConstants {
 
     static final Pattern NaturalNumberPattern = Pattern.compile("[0-9]*");

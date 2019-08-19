@@ -21,8 +21,6 @@ import java.awt.GraphicsEnvironment;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.util.logging.Logging;
-import org.junit.internal.runners.InitializationError;
-import org.junit.internal.runners.JUnit4ClassRunner;
 import org.junit.runner.notification.RunNotifier;
 
 /**
@@ -34,20 +32,21 @@ import org.junit.runner.notification.RunNotifier;
  *
  * @author Michael Bedward
  * @since 8.0
- * @source $URL$
  * @version $Id$
  */
-public class GraphicsTestRunner extends JUnit4ClassRunner {
+@SuppressWarnings("deprecation")
+public class GraphicsTestRunner extends org.junit.internal.runners.JUnit4ClassRunner {
 
     private static final Boolean INTERACTIVE = Boolean.getBoolean("org.geotools.test.interactive");
 
-    public GraphicsTestRunner(Class<?> klass) throws InitializationError {
+    public GraphicsTestRunner(Class<?> klass)
+            throws org.junit.internal.runners.InitializationError {
         super(klass);
     }
 
     @Override
     public void run(RunNotifier notifier) {
-        Logger logger = Logging.getLogger("org.geotools.swing");
+        Logger logger = Logging.getLogger(GraphicsTestRunner.class);
 
         if (!INTERACTIVE
                 || GraphicsEnvironment.getLocalGraphicsEnvironment().isHeadlessInstance()) {

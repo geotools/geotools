@@ -66,7 +66,6 @@ import org.opengis.feature.type.PropertyType;
  *
  * @author Jody Garnett (Refractions Research)
  * @author Justin Deoliveira (The Open Planning Project)
- * @source $URL$
  */
 public interface Property {
 

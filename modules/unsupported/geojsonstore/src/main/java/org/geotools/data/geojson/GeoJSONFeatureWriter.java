@@ -1,5 +1,3 @@
-package org.geotools.data.geojson;
-
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
@@ -16,6 +14,7 @@ package org.geotools.data.geojson;
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
+package org.geotools.data.geojson;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -36,7 +35,7 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
 public class GeoJSONFeatureWriter implements FeatureWriter<SimpleFeatureType, SimpleFeature> {
-    private static final Logger LOGGER = Logging.getLogger(GeoJSONFeatureWriter.class.getName());
+    private static final Logger LOGGER = Logging.getLogger(GeoJSONFeatureWriter.class);
 
     private ContentState state;
 

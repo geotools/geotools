@@ -16,7 +16,6 @@ import org.opengis.annotation.UML;
 /**
  * Equivalents to the {@link Arc}, except the bulge representation is maintained.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/as">ISO 19107</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0

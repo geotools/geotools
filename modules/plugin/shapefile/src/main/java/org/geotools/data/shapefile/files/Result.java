@@ -21,7 +21,6 @@ package org.geotools.data.shapefile.files;
  * @param <V> The type of value that the result is
  * @param <S> The state of the return for example this may be a an enum that Provides state values
  *     such as NONE, FAILURE, etc..
- * @source $URL$
  */
 public class Result<V, S> {
 

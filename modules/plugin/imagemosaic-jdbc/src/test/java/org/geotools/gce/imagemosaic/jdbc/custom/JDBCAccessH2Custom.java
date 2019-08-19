@@ -34,10 +34,7 @@ import org.geotools.geometry.GeneralEnvelope;
 import org.locationtech.jts.geom.Envelope;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-/**
- * @author mcr
- * @source $URL$
- */
+/** @author mcr */
 public class JDBCAccessH2Custom extends JDBCAccessCustom {
 
     public JDBCAccessH2Custom(Config config) throws IOException {

@@ -30,6 +30,7 @@ class Toolbox {
      *
      * @param args
      */
+    @SuppressWarnings("PMD.SystemPrintln")
     public static void main(String[] args) {
         if (args.length == 0) {
             System.out.println("Missing cmd import | ddl");

@@ -23,7 +23,6 @@ import org.json.simple.parser.ParseException;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
 
-/** @source $URL$ */
 public class GeometryHandler extends DelegatingHandler<Geometry> {
 
     GeometryFactory factory;

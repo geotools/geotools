@@ -86,8 +86,7 @@ import org.opengis.filter.temporal.TOverlaps;
  */
 class FilterToCQL implements FilterVisitor {
     /** Standard java logger */
-    private static Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(FilterToCQL.class.getName());
+    private static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(FilterToCQL.class);
 
     /** Exclude everything; using an old SQL trick of 1=0. */
     public Object visit(ExcludeFilter filter, Object extraData) {

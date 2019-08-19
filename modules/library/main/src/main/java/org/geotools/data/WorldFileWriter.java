@@ -25,11 +25,11 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.geotools.referencing.operation.transform.IdentityTransform;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
 import org.opengis.referencing.operation.MathTransform;
 
 /**
@@ -52,7 +52,6 @@ import org.opengis.referencing.operation.MathTransform;
  * <p>Note that a world file usually takes as reference the centre of the pixel.
  *
  * @author Simone Giannecchini, GeoSolutions
- * @source $URL$
  */
 public class WorldFileWriter {
     /** Default buffer size we wil luse to write out. */
@@ -74,7 +73,7 @@ public class WorldFileWriter {
 
     /** Logger for this class. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.data.data");
+            org.geotools.util.logging.Logging.getLogger(WorldFileWriter.class);
 
     /**
      * Constructor.

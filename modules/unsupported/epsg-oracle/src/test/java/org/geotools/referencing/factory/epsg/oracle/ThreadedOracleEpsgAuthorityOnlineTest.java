@@ -18,9 +18,8 @@ package org.geotools.referencing.factory.epsg.oracle;
 
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
-import org.geotools.factory.GeoTools;
 import org.geotools.referencing.CRS;
-import org.geotools.referencing.factory.epsg.ThreadedOracleEpsgFactory;
+import org.geotools.util.factory.GeoTools;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.datum.GeodeticDatum;
 
@@ -29,7 +28,6 @@ import org.opengis.referencing.datum.GeodeticDatum;
  * OracleDialectEpsgFactory when the buffer needs to be fed.
  *
  * @author Jody
- * @source $URL$
  */
 public class ThreadedOracleEpsgAuthorityOnlineTest extends OracleOnlineTestCase {
 

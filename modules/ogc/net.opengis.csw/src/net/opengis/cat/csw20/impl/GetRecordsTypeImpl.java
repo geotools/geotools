@@ -98,7 +98,7 @@ public class GetRecordsTypeImpl extends RequestBaseTypeImpl implements GetRecord
      * @generated
      * @ordered
      */
-    protected static final Integer MAX_RECORDS_EDEFAULT = new Integer(10);
+    protected static final Integer MAX_RECORDS_EDEFAULT = Integer.valueOf(10);
 
     /**
      * The cached value of the '{@link #getMaxRecords() <em>Max Records</em>}' attribute.
@@ -216,7 +216,7 @@ public class GetRecordsTypeImpl extends RequestBaseTypeImpl implements GetRecord
      * @generated
      * @ordered
      */
-    protected static final Integer START_POSITION_EDEFAULT = new Integer(1);
+    protected static final Integer START_POSITION_EDEFAULT = Integer.valueOf(1);
 
     /**
      * The cached value of the '{@link #getStartPosition() <em>Start Position</em>}' attribute.

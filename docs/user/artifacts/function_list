@@ -1,7 +1,1806 @@
+DefaultFunctionFactory
+^^^^^^^^^^^^^^^^^^^^^^
+
+Contains 202 functions.
+
+Area(geometry): area
+''''''''''''''''''''
+
+* geometry: Geometry 1:1 required
+
+* area: Double 1:1 required
+
+Categorize(LookupValue, Value, Threshold 1, Value 1, Threshold 2, Value 2, succeeding or preceding): return
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* LookupValue
+
+* Value
+
+* Threshold 1
+
+* Value 1
+
+* Threshold 2
+
+* Value 2
+
+* succeeding or preceding
+
+* return
+
+Collection_Average(expression): average
+'''''''''''''''''''''''''''''''''''''''
+
+* expression: Number 1:1 required
+
+* average: Number 1:1 required
+
+Collection_Bounds(geometry): bounds
+'''''''''''''''''''''''''''''''''''
+
+* geometry: Geometry 1:1 required
+
+* bounds
+
+Collection_Count(features): count
+'''''''''''''''''''''''''''''''''
+
+* features
+
+* count: Number 1:1 required
+
+Collection_Max(expression): max
+'''''''''''''''''''''''''''''''
+
+* expression: Comparable 1:1 required
+
+* max: Comparable 1:1 required
+
+Collection_Median(expression): median
+'''''''''''''''''''''''''''''''''''''
+
+* expression: Comparable 1:1 required
+
+* median: Comparable 1:1 required
+
+Collection_Min(expression): min
+'''''''''''''''''''''''''''''''
+
+* expression: Comparable 1:1 required
+
+* min: Comparable 1:1 required
+
+Collection_Nearest(value): expression
+'''''''''''''''''''''''''''''''''''''
+
+* value: Comparable 1:1 required
+
+* expression: Expression 1:1 required
+
+Collection_Sum(expression): sum
+'''''''''''''''''''''''''''''''
+
+* expression: Number 1:1 required
+
+* sum: Number 1:1 required
+
+Collection_Unique(expression): unique
+'''''''''''''''''''''''''''''''''''''
+
+* expression
+
+* unique
+
+Concatenate(text): result
+'''''''''''''''''''''''''
+
+* text: String 2:-1 required
+
+* result: String 1:1 required
+
+EqualArea(value, classes, areaFunction): EqualArea
+''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* value: Double 1:1 required
+
+* classes: Integer 1:1 required
+
+* areaFunction: Double 0:1 optional
+
+* EqualArea: RangedClassifier 1:1 required
+
+EqualInterval(value, classes): EqualInterval
+''''''''''''''''''''''''''''''''''''''''''''
+
+* value: Double 1:1 required
+
+* classes: Integer 1:1 required
+
+* EqualInterval: RangedClassifier 1:1 required
+
+IEEEremainder(dividend, divisor): remainder
+'''''''''''''''''''''''''''''''''''''''''''
+
+* dividend: Number 1:1 required
+
+* divisor: Number 1:1 required
+
+* remainder: Double 1:1 required
+
+Interpolate(data value pairs, mode, method): lookup
+'''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* data value pairs
+
+* mode: String 1:1 required
+
+* method: String 0:1 optional
+
+* lookup
+
+Jenks(value, classes): Jenks
+''''''''''''''''''''''''''''
+
+* value: Double 1:1 required
+
+* classes: Integer 1:1 required
+
+* Jenks: RangedClassifier 1:1 required
+
+PropertyExists(propertyName): exists
+''''''''''''''''''''''''''''''''''''
+
+* propertyName
+
+* exists: Boolean 1:1 required
+
+Quantile(value, classes): Quantile
+''''''''''''''''''''''''''''''''''
+
+* value: Double 1:1 required
+
+* classes: Integer 1:1 required
+
+* Quantile: RangedClassifier 1:1 required
+
+Recode(LookupValue, Data 1, Value 1, Data 2, Value 2): return
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* LookupValue
+
+* Data 1
+
+* Value 1
+
+* Data 2
+
+* Value 2
+
+* return
+
+StandardDeviation(value, classes): StandardDeviation
+''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* value: Double 1:1 required
+
+* classes: Integer 1:1 required
+
+* StandardDeviation: RangedClassifier 1:1 required
+
+UniqueInterval(value, classes): UniqueInterval
+''''''''''''''''''''''''''''''''''''''''''''''
+
+* value: Double 1:1 required
+
+* classes: Integer 1:1 required
+
+* UniqueInterval: RangedClassifier 1:1 required
+
+abs(int): abs
+'''''''''''''
+
+* int: Integer 1:1 required
+
+* abs: Integer 1:1 required
+
+abs_2(number): long
+'''''''''''''''''''
+
+* number: Long 1:1 required
+
+* long: Long 1:1 required
+
+abs_3(number): float
+''''''''''''''''''''
+
+* number: Float 1:1 required
+
+* float: Float 1:1 required
+
+abs_4(number): double
+'''''''''''''''''''''
+
+* number: Double 1:1 required
+
+* double: Double 1:1 required
+
+acos(value): arc cosine
+'''''''''''''''''''''''
+
+* value: Double 1:1 required
+
+* arc cosine: Double 1:1 required
+
+area2(geometry): area
+'''''''''''''''''''''
+
+* geometry: Geometry 1:1 required
+
+* area: Double 1:1 required
+
+asin(value): arc sine
+'''''''''''''''''''''
+
+* value: Double 1:1 required
+
+* arc sine: Double 1:1 required
+
+atan(value): arc tan
+''''''''''''''''''''
+
+* value: Double 1:1 required
+
+* arc tan: Double 1:1 required
+
+atan2(x, y): arc tan
+''''''''''''''''''''
+
+* x: Double 1:1 required
+
+* y: Double 1:1 required
+
+* arc tan: Double 1:1 required
+
+attributeCount(count): return
+'''''''''''''''''''''''''''''
+
+* count
+
+* return
+
+between(value, min, max): between
+'''''''''''''''''''''''''''''''''
+
+* value
+
+* min
+
+* max
+
+* between: Boolean 1:1 required
+
+boundary(geometry): boundary
+''''''''''''''''''''''''''''
+
+* geometry: Geometry 1:1 required
+
+* boundary: Geometry 1:1 required
+
+boundaryDimension(geometry): dimension
+''''''''''''''''''''''''''''''''''''''
+
+* geometry: Geometry 1:1 required
+
+* dimension: Integer 1:1 required
+
+boundedBy(): result
+'''''''''''''''''''
+
+* result: Geometry 1:1 required
+
+buffer(geometry, distance): buffer
+''''''''''''''''''''''''''''''''''
+
+* geometry: Geometry 1:1 required
+
+* distance: Number 1:1 required
+
+* buffer: Geometry 1:1 required
+
+bufferWithSegments(geometry, distance, numberOfSegments): buffer
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* geometry: Geometry 1:1 required
+
+* distance: Number 1:1 required
+
+* numberOfSegments: Number 1:1 required
+
+* buffer: Geometry 1:1 required
+
+ceil(number): ceiling
+'''''''''''''''''''''
+
+* number: Number 1:1 required
+
+* ceiling: Double 1:1 required
+
+centroid(geometry): centroid
+''''''''''''''''''''''''''''
+
+* geometry: Geometry 1:1 required
+
+* centroid: Point 1:1 required
+
+classify(expression, classifer): value
+''''''''''''''''''''''''''''''''''''''
+
+* expression
+
+* classifer: Classifier 1:1 required
+
+* value
+
+contains(geometry1, geometry2): contains
+''''''''''''''''''''''''''''''''''''''''
+
+* geometry1: Geometry 1:1 required
+
+* geometry2: Geometry 1:1 required
+
+* contains: Boolean 1:1 required
+
+contrast(reference, color1, color2, threshold): result
+''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* reference: Color 1:1 required
+
+* color1: Color 0:1 optional
+
+* color2: Color 0:1 optional
+
+* threshold: Double 0:1 optional
+
+* result: Color 1:1 required
+
+convert(value, class): converted
+''''''''''''''''''''''''''''''''
+
+* value
+
+* class: Class 1:1 required
+
+* converted
+
+convexHull(geometry): hull
+''''''''''''''''''''''''''
+
+* geometry: Geometry 1:1 required
+
+* hull: Geometry 1:1 required
+
+cos(radians): cosine
+''''''''''''''''''''
+
+* radians: Double 1:1 required
+
+* cosine: Double 1:1 required
+
+crosses(geometry1, geometry2): crosses
+''''''''''''''''''''''''''''''''''''''
+
+* geometry1: Geometry 1:1 required
+
+* geometry2: Geometry 1:1 required
+
+* crosses: Boolean 1:1 required
+
+darken(color, amount, method): result
+'''''''''''''''''''''''''''''''''''''
+
+* color: Color 1:1 required
+
+* amount: Float 1:1 required
+
+* method: Method 0:1 optional
+
+* result: Color 1:1 required
+
+dateDifference(a, b): result
+''''''''''''''''''''''''''''
+
+* a: Date 1:1 required
+
+* b: Date 1:1 required
+
+* result: Long 1:1 required
+
+dateFormat(format, date): formatted
+'''''''''''''''''''''''''''''''''''
+
+* format: String 1:1 required
+
+* date: Date 1:1 required
+
+* formatted: String 1:1 required
+
+dateParse(format, dateString): date
+'''''''''''''''''''''''''''''''''''
+
+* format: String 1:1 required
+
+* dateString: String 1:1 required
+
+* date: Date 1:1 required
+
+desaturate(color, amount, method): result
+'''''''''''''''''''''''''''''''''''''''''
+
+* color: Color 1:1 required
+
+* amount: Float 1:1 required
+
+* method: Method 0:1 optional
+
+* result: Color 1:1 required
+
+difference(geometry1, geometry2): difference
+''''''''''''''''''''''''''''''''''''''''''''
+
+* geometry1: Geometry 1:1 required
+
+* geometry2: Geometry 1:1 required
+
+* difference: Geometry 1:1 required
+
+dimension(geometry): dimension
+''''''''''''''''''''''''''''''
+
+* geometry: Geometry 1:1 required
+
+* dimension: Integer 1:1 required
+
+disjoint(geometry1, geometry2): disjoint
+''''''''''''''''''''''''''''''''''''''''
+
+* geometry1: Geometry 1:1 required
+
+* geometry2: Geometry 1:1 required
+
+* disjoint: Boolean 1:1 required
+
+disjoint3D(geometry1, geometry2): disjoint3D
+''''''''''''''''''''''''''''''''''''''''''''
+
+* geometry1: Geometry 1:1 required
+
+* geometry2: Geometry 1:1 required
+
+* disjoint3D: Double 1:1 required
+
+distance(geometry1, geometry2): distance
+''''''''''''''''''''''''''''''''''''''''
+
+* geometry1: Geometry 1:1 required
+
+* geometry2: Geometry 1:1 required
+
+* distance: Double 1:1 required
+
+distance3D(geometry1, geometry2): distance3D
+''''''''''''''''''''''''''''''''''''''''''''
+
+* geometry1: Geometry 1:1 required
+
+* geometry2: Geometry 1:1 required
+
+* distance3D: Double 1:1 required
+
+double2bool(double): double2bool
+''''''''''''''''''''''''''''''''
+
+* double: Double 1:1 required
+
+* double2bool: Boolean 1:1 required
+
+endAngle(linestring): endAngle
+''''''''''''''''''''''''''''''
+
+* linestring: LineString 1:1 required
+
+* endAngle: Double 1:1 required
+
+endPoint(linestring): endPoint
+''''''''''''''''''''''''''''''
+
+* linestring: LineString 1:1 required
+
+* endPoint: Point 1:1 required
+
+env(variable): value
+''''''''''''''''''''
+
+* variable: String 1:1 required
+
+* value
+
+envelope(geometry): envelope
+''''''''''''''''''''''''''''
+
+* geometry: Geometry 1:1 required
+
+* envelope: Geometry 1:1 required
+
+equalTo(a, b): equalTo
+''''''''''''''''''''''
+
+* a
+
+* b
+
+* equalTo: Boolean 1:1 required
+
+equalsExact(geometry1, geometry2): equalsExact
+''''''''''''''''''''''''''''''''''''''''''''''
+
+* geometry1: Geometry 1:1 required
+
+* geometry2: Geometry 1:1 required
+
+* equalsExact: Boolean 1:1 required
+
+equalsExactTolerance(geometry1, geometry2, tolarance): equalsExactTolerance
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* geometry1: Geometry 1:1 required
+
+* geometry2: Geometry 1:1 required
+
+* tolarance: Double 1:1 required
+
+* equalsExactTolerance: Boolean 1:1 required
+
+exp(number): exponent
+'''''''''''''''''''''
+
+* number: Number 1:1 required
+
+* exponent: Double 1:1 required
+
+exteriorRing(geometry): exteriorRing
+''''''''''''''''''''''''''''''''''''
+
+* geometry: Geometry 1:1 required
+
+* exteriorRing: LinearRing 1:1 required
+
+floor(double): floor
+''''''''''''''''''''
+
+* double: Double 1:1 required
+
+* floor: Double 1:1 required
+
+geomFromWKT(geometry): geomFromWKT
+''''''''''''''''''''''''''''''''''
+
+* geometry: String 1:1 required
+
+* geomFromWKT: Geometry 1:1 required
+
+geomLength(geometry): geomLength
+''''''''''''''''''''''''''''''''
+
+* geometry: Geometry 1:1 required
+
+* geomLength: Double 1:1 required
+
+geometry(): geometry
+''''''''''''''''''''
+
+* geometry: Boolean 1:1 required
+
+geometryType(geometry): geometryType
+''''''''''''''''''''''''''''''''''''
+
+* geometry: Geometry 1:1 required
+
+* geometryType: String 1:1 required
+
+getGeometryN(geometry, index): getGeometryN
+'''''''''''''''''''''''''''''''''''''''''''
+
+* geometry: Geometry 1:1 required
+
+* index: Integer 1:1 required
+
+* getGeometryN: Geometry 1:1 required
+
+getX(geometry): getX
+''''''''''''''''''''
+
+* geometry: Geometry 1:1 required
+
+* getX: Double 1:1 required
+
+getY(geometry): getY
+''''''''''''''''''''
+
+* geometry: Geometry 1:1 required
+
+* getY: Double 1:1 required
+
+getz(geometry): getz
+''''''''''''''''''''
+
+* geometry: Geometry 1:1 required
+
+* getz: Double 1:1 required
+
+grayscale(color): result
+''''''''''''''''''''''''
+
+* color: Color 1:1 required
+
+* result: Color 1:1 required
+
+greaterEqualThan(x, y): greaterEqualThan
+''''''''''''''''''''''''''''''''''''''''
+
+* x
+
+* y
+
+* greaterEqualThan: Boolean 1:1 required
+
+greaterThan(x, y): greaterThan
+''''''''''''''''''''''''''''''
+
+* x
+
+* y
+
+* greaterThan: Boolean 1:1 required
+
+hsl(hue, saturation, lightness): result
+'''''''''''''''''''''''''''''''''''''''
+
+* hue: Double 1:1 required
+
+* saturation: Double 1:1 required
+
+* lightness: Double 1:1 required
+
+* result: Color 1:1 required
+
+id(): id
+''''''''
+
+* id: String 1:1 required
+
+if_then_else(condition, then, else): if_then_else
+'''''''''''''''''''''''''''''''''''''''''''''''''
+
+* condition: Boolean 1:1 required
+
+* then
+
+* else
+
+* if_then_else
+
+in(candidate, v): result
+''''''''''''''''''''''''
+
+* candidate
+
+* v
+
+* result: Boolean 1:1 required
+
+in10(value, in1, in2, in3, in4, in5, in6, in7, in8, in9, in10): in10
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* value
+
+* in1
+
+* in2
+
+* in3
+
+* in4
+
+* in5
+
+* in6
+
+* in7
+
+* in8
+
+* in9
+
+* in10
+
+* in10: Boolean 1:1 required
+
+in2(value, in1, in2): in2
+'''''''''''''''''''''''''
+
+* value
+
+* in1
+
+* in2
+
+* in2: Boolean 1:1 required
+
+in3(value, in1, in2, in3): in3
+''''''''''''''''''''''''''''''
+
+* value
+
+* in1
+
+* in2
+
+* in3
+
+* in3: Boolean 1:1 required
+
+in4(value, in1, in2, in3, in4): in4
+'''''''''''''''''''''''''''''''''''
+
+* value
+
+* in1
+
+* in2
+
+* in3
+
+* in4
+
+* in4: Boolean 1:1 required
+
+in5(value, in1, in2, in3, in4, in5): in5
+''''''''''''''''''''''''''''''''''''''''
+
+* value
+
+* in1
+
+* in2
+
+* in3
+
+* in4
+
+* in5
+
+* in5: Boolean 1:1 required
+
+in6(value, in1, in2, in3, in4, in5, in6): in6
+'''''''''''''''''''''''''''''''''''''''''''''
+
+* value
+
+* in1
+
+* in2
+
+* in3
+
+* in4
+
+* in5
+
+* in6
+
+* in6: Boolean 1:1 required
+
+in7(value, in1, in2, in3, in4, in5, in6, in7): in7
+''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* value
+
+* in1
+
+* in2
+
+* in3
+
+* in4
+
+* in5
+
+* in6
+
+* in7
+
+* in7: Boolean 1:1 required
+
+in8(value, in1, in2, in3, in4, in5, in6, in7, in8): in8
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* value
+
+* in1
+
+* in2
+
+* in3
+
+* in4
+
+* in5
+
+* in6
+
+* in7
+
+* in8
+
+* in8: Boolean 1:1 required
+
+in9(value, in1, in2, in3, in4, in5, in6, in7, in8, in9): in9
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* value
+
+* in1
+
+* in2
+
+* in3
+
+* in4
+
+* in5
+
+* in6
+
+* in7
+
+* in8
+
+* in9
+
+* in9: Boolean 1:1 required
+
+int2bbool(int): int2bbool
+'''''''''''''''''''''''''
+
+* int: Integer 1:1 required
+
+* int2bbool: Boolean 1:1 required
+
+int2ddouble(int): int2ddouble
+'''''''''''''''''''''''''''''
+
+* int: Integer 1:1 required
+
+* int2ddouble: Double 1:1 required
+
+interiorPoint(geometry): interiorPoint
+''''''''''''''''''''''''''''''''''''''
+
+* geometry: Geometry 1:1 required
+
+* interiorPoint: Point 1:1 required
+
+interiorRingN(geometry, n): interiorRingN
+'''''''''''''''''''''''''''''''''''''''''
+
+* geometry: Geometry 1:1 required
+
+* n: Integer 1:1 required
+
+* interiorRingN: LinearRing 1:1 required
+
+intersection(geometry1, geometry2): intersection
+''''''''''''''''''''''''''''''''''''''''''''''''
+
+* geometry1: Geometry 1:1 required
+
+* geometry2: Geometry 1:1 required
+
+* intersection: Geometry 1:1 required
+
+intersects(geometry1, geometry2): intersects
+''''''''''''''''''''''''''''''''''''''''''''
+
+* geometry1: Geometry 1:1 required
+
+* geometry2: Geometry 1:1 required
+
+* intersects: Boolean 1:1 required
+
+intersects3D(geometry1, geometry2): intersects3D
+''''''''''''''''''''''''''''''''''''''''''''''''
+
+* geometry1: Geometry 1:1 required
+
+* geometry2: Geometry 1:1 required
+
+* intersects3D: Double 1:1 required
+
+isClosed(geometry): isClosed
+''''''''''''''''''''''''''''
+
+* geometry: Geometry 1:1 required
+
+* isClosed: Boolean 1:1 required
+
+isCoverage(): isCoverage
+''''''''''''''''''''''''
+
+* isCoverage: Boolean 1:1 required
+
+isEmpty(geometry): isEmpty
+''''''''''''''''''''''''''
+
+* geometry: Geometry 1:1 required
+
+* isEmpty: Boolean 1:1 required
+
+isLike(string, regex): isLike
+'''''''''''''''''''''''''''''
+
+* string: String 1:1 required
+
+* regex: String 1:1 required
+
+* isLike: Boolean 1:1 required
+
+isNull(object): isNull
+''''''''''''''''''''''
+
+* object
+
+* isNull: Boolean 1:1 required
+
+isRing(geometry): isRing
+''''''''''''''''''''''''
+
+* geometry: Geometry 1:1 required
+
+* isRing: Boolean 1:1 required
+
+isSimple(geometry): isSimple
+''''''''''''''''''''''''''''
+
+* geometry: Geometry 1:1 required
+
+* isSimple: Boolean 1:1 required
+
+isValid(geometry): isValid
+''''''''''''''''''''''''''
+
+* geometry: Geometry 1:1 required
+
+* isValid: Boolean 1:1 required
+
+isWithinDistance(geometry1, geometry2, distance): isWithinDistance
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* geometry1: Geometry 1:1 required
+
+* geometry2: Geometry 1:1 required
+
+* distance: Double 1:1 required
+
+* isWithinDistance: Boolean 1:1 required
+
+isWithinDistance3D(geometry1, geometry2, distance): isWithinDistance3D
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* geometry1: Geometry 1:1 required
+
+* geometry2: Geometry 1:1 required
+
+* distance: Double 1:1 required
+
+* isWithinDistance3D: Double 1:1 required
+
+isometric(geometry, extrusion): isometric
+'''''''''''''''''''''''''''''''''''''''''
+
+* geometry: Geometry 1:1 required
+
+* extrusion: Double 1:1 required
+
+* isometric: Geometry 1:1 required
+
+lapply(source, expression): result
+''''''''''''''''''''''''''''''''''
+
+* source: List 1:1 required
+
+* expression
+
+* result: List 1:1 required
+
+length(string): length
+''''''''''''''''''''''
+
+* string: String 1:1 required
+
+* length: Integer 1:1 required
+
+lessEqualThan(a, b): lessEqualThan
+''''''''''''''''''''''''''''''''''
+
+* a: Number 1:1 required
+
+* b: Number 1:1 required
+
+* lessEqualThan: Boolean 1:1 required
+
+lessThan(a, b): lessThan
+''''''''''''''''''''''''
+
+* a: Number 1:1 required
+
+* b: Number 1:1 required
+
+* lessThan: Boolean 1:1 required
+
+lighten(color, amount, method): result
+''''''''''''''''''''''''''''''''''''''
+
+* color: Color 1:1 required
+
+* amount: Float 1:1 required
+
+* method: Method 0:1 optional
+
+* result: Color 1:1 required
+
+list(item): list
+''''''''''''''''
+
+* item
+
+* list: List 1:1 required
+
+listMultiply(factor, list): listMultiply
+''''''''''''''''''''''''''''''''''''''''
+
+* factor: Number 1:1 required
+
+* list: String 1:1 required
+
+* listMultiply: String 1:1 required
+
+litem(source, index): result
+''''''''''''''''''''''''''''
+
+* source: List 1:1 required
+
+* index: Integer 1:1 required
+
+* result
+
+literate(index, times, expression): result
+''''''''''''''''''''''''''''''''''''''''''
+
+* index
+
+* times: Integer 1:1 required
+
+* expression
+
+* result: List 1:1 required
+
+log(value): logarithm
+'''''''''''''''''''''
+
+* value: Number 1:1 required
+
+* logarithm: Double 1:1 required
+
+max(double, double): maxium
+'''''''''''''''''''''''''''
+
+* double: Number 1:1 required
+
+* double: Number 1:1 required
+
+* maxium: Double 1:1 required
+
+max_2(long, long): maximum
+''''''''''''''''''''''''''
+
+* long: Number 1:1 required
+
+* long: Number 1:1 required
+
+* maximum: Long 1:1 required
+
+max_3(float, float): maximum
+''''''''''''''''''''''''''''
+
+* float: Number 1:1 required
+
+* float: Number 1:1 required
+
+* maximum: Float 1:1 required
+
+max_4(int, int): maximum
+''''''''''''''''''''''''
+
+* int: Number 1:1 required
+
+* int: Number 1:1 required
+
+* maximum: Integer 1:1 required
+
+min(double, double): minium
+'''''''''''''''''''''''''''
+
+* double: Double 1:1 required
+
+* double: Double 1:1 required
+
+* minium: Double 1:1 required
+
+min_2(long, long): minium
+'''''''''''''''''''''''''
+
+* long: Number 1:1 required
+
+* long: Number 1:1 required
+
+* minium: Long 1:1 required
+
+min_3(float, float): minium
+'''''''''''''''''''''''''''
+
+* float: Number 1:1 required
+
+* float: Number 1:1 required
+
+* minium: Float 1:1 required
+
+min_4(int, int): minium
+'''''''''''''''''''''''
+
+* int: Number 1:1 required
+
+* int: Number 1:1 required
+
+* minium: Integer 1:1 required
+
+mincircle(geometry): mincircle
+''''''''''''''''''''''''''''''
+
+* geometry: Geometry 1:1 required
+
+* mincircle: Geometry 1:1 required
+
+minimumdiameter(geometry): minimumdiameter
+''''''''''''''''''''''''''''''''''''''''''
+
+* geometry: Geometry 1:1 required
+
+* minimumdiameter: Geometry 1:1 required
+
+minrectangle(geometry): minrectangle
+''''''''''''''''''''''''''''''''''''
+
+* geometry: Geometry 1:1 required
+
+* minrectangle: Geometry 1:1 required
+
+mix(color1, color2, weight): result
+'''''''''''''''''''''''''''''''''''
+
+* color1: Color 1:1 required
+
+* color2: Color 1:1 required
+
+* weight: Double 1:1 required
+
+* result: Color 1:1 required
+
+modulo(dividend, divisor): modulo
+'''''''''''''''''''''''''''''''''
+
+* dividend: Integer 1:1 required
+
+* divisor: Integer 1:1 required
+
+* modulo: Integer 1:1 required
+
+not(logicValue): not
+''''''''''''''''''''
+
+* logicValue: Boolean 1:1 required
+
+* not: Boolean 1:1 required
+
+notEqualTo(a, b): notEqualTo
+''''''''''''''''''''''''''''
+
+* a
+
+* b
+
+* notEqualTo: Boolean 1:1 required
+
+numGeometries(geometry): numGeometries
+''''''''''''''''''''''''''''''''''''''
+
+* geometry: Geometry 1:1 required
+
+* numGeometries: Integer 1:1 required
+
+numInteriorRing(geometry): numInteriorRing
+''''''''''''''''''''''''''''''''''''''''''
+
+* geometry: Geometry 1:1 required
+
+* numInteriorRing: Integer 1:1 required
+
+numPoints(geometry): numPoints
+''''''''''''''''''''''''''''''
+
+* geometry: Geometry 1:1 required
+
+* numPoints: Integer 1:1 required
+
+numberFormat(format, number, language): numberFormat
+''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* format: String 1:1 required
+
+* number: Number 1:1 required
+
+* language: String 0:1 optional
+
+* numberFormat: String 1:1 required
+
+numberFormat2(format, number, minus, decimal, separator): numberFormat2
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* format: String 1:1 required
+
+* number: Number 1:1 required
+
+* minus: String 1:1 required
+
+* decimal: String 1:1 required
+
+* separator: String 1:1 required
+
+* numberFormat2: String 1:1 required
+
+octagonalenvelope(geometry): octagonalenvelope
+''''''''''''''''''''''''''''''''''''''''''''''
+
+* geometry: Geometry 1:1 required
+
+* octagonalenvelope: Geometry 1:1 required
+
+offset(geometry, offsetX, offsetY): offset
+''''''''''''''''''''''''''''''''''''''''''
+
+* geometry: Geometry 1:1 required
+
+* offsetX: Double 1:1 required
+
+* offsetY: Double 1:1 required
+
+* offset: Geometry 1:1 required
+
+overlaps(geometry1, geometry2): overlaps
+''''''''''''''''''''''''''''''''''''''''
+
+* geometry1: Geometry 1:1 required
+
+* geometry2: Geometry 1:1 required
+
+* overlaps: Geometry 1:1 required
+
+parseBoolean(string): parseBoolean
+''''''''''''''''''''''''''''''''''
+
+* string: String 1:1 required
+
+* parseBoolean: Boolean 1:1 required
+
+parseDouble(string): parseDouble
+''''''''''''''''''''''''''''''''
+
+* string: String 1:1 required
+
+* parseDouble: Double 1:1 required
+
+parseInt(string): parseInt
+''''''''''''''''''''''''''
+
+* string: String 1:1 required
+
+* parseInt: Integer 1:1 required
+
+parseLong(string): parseLong
+''''''''''''''''''''''''''''
+
+* string: String 1:1 required
+
+* parseLong: Long 1:1 required
+
+pgNearest(geometry, num_features): pgNearest
+''''''''''''''''''''''''''''''''''''''''''''
+
+* geometry: Geometry 1:1 required
+
+* num_features: Integer 1:1 required
+
+* pgNearest: Boolean 1:1 required
+
+pi(): pi
+''''''''
+
+* pi: Double 1:1 required
+
+pointN(geometry, index): pointN
+'''''''''''''''''''''''''''''''
+
+* geometry: Geometry 1:1 required
+
+* index: Integer 1:1 required
+
+* pointN: Geometry 1:1 required
+
+pow(base, exponent): power
+''''''''''''''''''''''''''
+
+* base: Number 1:1 required
+
+* exponent: Number 1:1 required
+
+* power: Double 1:1 required
+
+property(propertyName): propertyValue
+'''''''''''''''''''''''''''''''''''''
+
+* propertyName: String 1:1 required
+
+* propertyValue
+
+random(): random
+''''''''''''''''
+
+* random: Double 1:1 required
+
+relate(geometry1, geometry2): relate
+''''''''''''''''''''''''''''''''''''
+
+* geometry1: Geometry 1:1 required
+
+* geometry2: Geometry 1:1 required
+
+* relate: String 1:1 required
+
+relatePattern(geometry, geometry, pattern): related
+'''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* geometry: Geometry 1:1 required
+
+* geometry: Geometry 1:1 required
+
+* pattern: String 1:1 required
+
+* related: Boolean 1:1 required
+
+rescaleToPixels(value, defaultUnit, scaleFactor, rescalingMode): rescaleToPixels
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* value: String 1:1 required
+
+* defaultUnit: Unit 1:1 required
+
+* scaleFactor: Double 1:1 required
+
+* rescalingMode: RescalingMode 0:1 optional
+
+* rescaleToPixels: String 1:1 required
+
+rint(double): rounded
+'''''''''''''''''''''
+
+* double: Number 1:1 required
+
+* rounded: Double 1:1 required
+
+round(number): float
+''''''''''''''''''''
+
+* number: Number 1:1 required
+
+* float: Float 1:1 required
+
+roundDouble(number): rounded
+''''''''''''''''''''''''''''
+
+* number: Number 1:1 required
+
+* rounded: Double 1:1 required
+
+round_2(number): long
+'''''''''''''''''''''
+
+* number: Number 1:1 required
+
+* long: Long 1:1 required
+
+saturate(color, amount, method): result
+'''''''''''''''''''''''''''''''''''''''
+
+* color: Color 1:1 required
+
+* amount: Float 1:1 required
+
+* method: Method 0:1 optional
+
+* result: Color 1:1 required
+
+setCRS(geometry, CRS): setCRS
+'''''''''''''''''''''''''''''
+
+* geometry: Geometry 1:1 required
+
+* CRS: String 1:1 required
+
+* setCRS: Geometry 1:1 required
+
+shade(color, weight): result
+''''''''''''''''''''''''''''
+
+* color: Color 1:1 required
+
+* weight: Double 1:1 required
+
+* result: Color 1:1 required
+
+sin(radians): sine
+''''''''''''''''''
+
+* radians: Number 1:1 required
+
+* sine: Double 1:1 required
+
+size(source): result
+''''''''''''''''''''
+
+* source: Collection 1:1 required
+
+* result: Integer 1:1 required
+
+spin(color, amount): result
+'''''''''''''''''''''''''''
+
+* color: Color 1:1 required
+
+* amount: Double 1:1 required
+
+* result: Color 1:1 required
+
+sqrt(number): root
+''''''''''''''''''
+
+* number: Number 1:1 required
+
+* root: Double 1:1 required
+
+startAngle(linestring): degrees
+'''''''''''''''''''''''''''''''
+
+* linestring: LineString 1:1 required
+
+* degrees: Double 1:1 required
+
+startPoint(linestring): point
+'''''''''''''''''''''''''''''
+
+* linestring: LineString 1:1 required
+
+* point: Point 1:1 required
+
+strAbbreviate(string, lower, upper, appendTo): string
+'''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* string: String 1:1 required
+
+* lower: Integer 1:1 required
+
+* upper: Integer 1:1 required
+
+* appendTo: String 1:1 required
+
+* string: String 1:1 required
+
+strCapitalize(string): string
+'''''''''''''''''''''''''''''
+
+* string: String 1:1 required
+
+* string: String 1:1 required
+
+strConcat(string1, string2): strConcat
+''''''''''''''''''''''''''''''''''''''
+
+* string1: String 1:1 required
+
+* string2: String 1:1 required
+
+* strConcat: String 1:1 required
+
+strDefaultIfBlank(string, default): string
+''''''''''''''''''''''''''''''''''''''''''
+
+* string: String 1:1 required
+
+* default: String 1:1 required
+
+* string: String 1:1 required
+
+strEndsWith(String, postfix): endsWith
+''''''''''''''''''''''''''''''''''''''
+
+* String: String 1:1 required
+
+* postfix: String 1:1 required
+
+* endsWith: Boolean 1:1 required
+
+strEqualsIgnoreCase(string, lookup): equals
+'''''''''''''''''''''''''''''''''''''''''''
+
+* string: String 1:1 required
+
+* lookup: String 1:1 required
+
+* equals: Boolean 1:1 required
+
+strIndexOf(String, lookup): index
+'''''''''''''''''''''''''''''''''
+
+* String: String 1:1 required
+
+* lookup: String 1:1 required
+
+* index: Integer 1:1 required
+
+strLastIndexOf(String, lookup): index
+'''''''''''''''''''''''''''''''''''''
+
+* String: String 1:1 required
+
+* lookup: String 1:1 required
+
+* index: Integer 1:1 required
+
+strLength(string): length
+'''''''''''''''''''''''''
+
+* string: String 1:1 required
+
+* length: Integer 1:1 required
+
+strMatches(string, regex): match
+''''''''''''''''''''''''''''''''
+
+* string: String 1:1 required
+
+* regex: String 1:1 required
+
+* match: Boolean 1:1 required
+
+strPosition(string, lookup, method): string
+'''''''''''''''''''''''''''''''''''''''''''
+
+* string: String 1:1 required
+
+* lookup: String 1:1 required
+
+* method: String 1:1 required
+
+* string: String 1:1 required
+
+strReplace(string, search, replace, all): string
+''''''''''''''''''''''''''''''''''''''''''''''''
+
+* string: String 1:1 required
+
+* search: String 1:1 required
+
+* replace: String 1:1 required
+
+* all: Boolean 1:1 required
+
+* string: String 1:1 required
+
+strStartsWith(string, prefix): starts with
+''''''''''''''''''''''''''''''''''''''''''
+
+* string: String 1:1 required
+
+* prefix: String 1:1 required
+
+* starts with: Boolean 1:1 required
+
+strStripAccents(string): string
+'''''''''''''''''''''''''''''''
+
+* string: String 1:1 required
+
+* string: String 1:1 required
+
+strSubstring(string, beginIndex, endIndex): substring
+'''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* string: String 1:1 required
+
+* beginIndex: Integer 1:1 required
+
+* endIndex: Integer 1:1 required
+
+* substring: String 1:1 required
+
+strSubstringStart(string, beginIndex): substring
+''''''''''''''''''''''''''''''''''''''''''''''''
+
+* string: String 1:1 required
+
+* beginIndex: Integer 1:1 required
+
+* substring: String 1:1 required
+
+strToLowerCase(string): lowercase
+'''''''''''''''''''''''''''''''''
+
+* string: String 1:1 required
+
+* lowercase: String 1:1 required
+
+strToUpperCase(string): uppercase
+'''''''''''''''''''''''''''''''''
+
+* string: String 1:1 required
+
+* uppercase: String 1:1 required
+
+strTrim(string): trim
+'''''''''''''''''''''
+
+* string: String 1:1 required
+
+* trim: String 1:1 required
+
+strTrim2(string, method, character): trim
+'''''''''''''''''''''''''''''''''''''''''
+
+* string: String 1:1 required
+
+* method: String 1:1 required
+
+* character: String 1:1 required
+
+* trim: String 1:1 required
+
+strURLEncode(encodeable, formUrlEncode): strURLEncode
+'''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* encodeable: String 1:1 required
+
+* formUrlEncode: Boolean 0:1 optional
+
+* strURLEncode: String 1:1 required
+
+stringTemplate(input, pattern, template, defaultValue): return
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* input
+
+* pattern
+
+* template
+
+* defaultValue
+
+* return
+
+symDifference(geometry, geometry): symetric difference
+''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* geometry: Geometry 1:1 required
+
+* geometry: Geometry 1:1 required
+
+* symetric difference: Geometry 1:1 required
+
+tan(radians): tan
+'''''''''''''''''
+
+* radians: Number 1:1 required
+
+* tan: Double 1:1 required
+
+tint(color, weight): result
+'''''''''''''''''''''''''''
+
+* color: Color 1:1 required
+
+* weight: Double 1:1 required
+
+* result: Color 1:1 required
+
+toDegrees(radians): degrees
+'''''''''''''''''''''''''''
+
+* radians: Number 1:1 required
+
+* degrees: Double 1:1 required
+
+toRadians(degree): radians
+''''''''''''''''''''''''''
+
+* degree: Number 1:1 required
+
+* radians: Double 1:1 required
+
+toWKT(geometry): wkt
+''''''''''''''''''''
+
+* geometry: Geometry 1:1 required
+
+* wkt: String 1:1 required
+
+touches(geometry, geometry): touches
+''''''''''''''''''''''''''''''''''''
+
+* geometry: Geometry 1:1 required
+
+* geometry: Geometry 1:1 required
+
+* touches: Boolean 1:1 required
+
+union(geometry, geometry): union
+''''''''''''''''''''''''''''''''
+
+* geometry: Geometry 1:1 required
+
+* geometry: Geometry 1:1 required
+
+* union: Geometry 1:1 required
+
+vertices(geometry): vertices
+''''''''''''''''''''''''''''
+
+* geometry: Geometry 1:1 required
+
+* vertices: MultiPoint 1:1 required
+
+within(geometry, geometry): within
+''''''''''''''''''''''''''''''''''
+
+* geometry: Geometry 1:1 required
+
+* geometry: Geometry 1:1 required
+
+* within: Boolean 1:1 required
+
 ProcessFunctionFactory
 ^^^^^^^^^^^^^^^^^^^^^^
 
-Contains 94 functions.
+May 03, 2019 12:32:04 PM org.geotools.image.ImageWorker <clinit>
+INFO: Warp/affine reduction enabled: true
+Contains 102 functions.
 
 AddCoverages(coverageA, coverageB): result
 ''''''''''''''''''''''''''''''''''''''''''
@@ -35,8 +1834,8 @@ Affine(coverage, scalex, scaley, shearx, sheary, translatex, translatey, nodata,
 
 * result: GridCoverage2D 1:1 required
 
-Aggregate(features, aggregationAttribute, function, singlePass): result
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Aggregate(features, aggregationAttribute, function, singlePass, groupByAttributes): result
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 * features: SimpleFeatureCollection 1:1 required
 
@@ -45,6 +1844,8 @@ Aggregate(features, aggregationAttribute, function, singlePass): result
 * function: AggregationFunction 0:unbounded
 
 * singlePass: Boolean 1:1 required
+
+* groupByAttributes: String 0:unbounded
 
 * result: Results 1:1 required
 
@@ -123,15 +1924,6 @@ Bounds(features): bounds
 
 * bounds: ReferencedEnvelope 1:1 required
 
-BufferFeatureCollection(features, buffer): result
-'''''''''''''''''''''''''''''''''''''''''''''''''
-
-* features: FeatureCollection 1:1 required
-
-* buffer: Double 1:1 required
-
-* result: FeatureCollection 1:1 required
-
 BufferFeatureCollection(features, distance, attributeName): result
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
@@ -147,6 +1939,29 @@ Centroid(features): result
 ''''''''''''''''''''''''''
 
 * features: SimpleFeatureCollection 1:1 required
+
+* result: SimpleFeatureCollection 1:1 required
+
+ClassifyByRange(features, classifyOnAttribute, thresholds, outputValues, classifier, classes, include, outputAttribute, outputType): result
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* features: SimpleFeatureCollection 1:1 required
+
+* classifyOnAttribute: String 1:1 required
+
+* thresholds: String 0:unbounded
+
+* outputValues: String 0:unbounded
+
+* classifier: String 0:1 optional
+
+* classes: Integer 0:1 optional
+
+* include: Boolean 0:1 optional
+
+* outputAttribute: String 0:1 optional
+
+* outputType: String 0:1 optional
 
 * result: SimpleFeatureCollection 1:1 required
 
@@ -187,12 +2002,44 @@ Contour(data, band, levels, interval, simplify, smooth, roi): result
 
 * result: SimpleFeatureCollection 1:1 required
 
+ConvolveCoverage(data, kernel, kernelRadius, kernelWidth, kernelHeight): result
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* data: GridCoverage2D 1:1 required
+
+* kernel: KernelJAI 0:1 optional
+
+* kernelRadius: Integer 0:1 optional
+
+* kernelWidth: Integer 0:1 optional
+
+* kernelHeight: Integer 0:1 optional
+
+* result: GridCoverage2D 1:1 required
+
 Count(features): result
 '''''''''''''''''''''''
 
 * features: SimpleFeatureCollection 1:1 required
 
 * result: Number 1:1 required
+
+CoverageClassStats(coverage, stats, band, classes, method, noData): results
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* coverage: GridCoverage2D 1:1 required
+
+* stats: Statistic 0:unbounded
+
+* band: Integer 0:1 optional
+
+* classes: Integer 0:1 optional
+
+* method: ClassificationMethod 0:1 optional
+
+* noData: Double 0:1 optional
+
+* results: Results 1:1 required
 
 CropCoverage(coverage, cropShape): result
 '''''''''''''''''''''''''''''''''''''''''
@@ -213,6 +2060,23 @@ Feature(geometry, crs, typeName): result
 * typeName: String 1:1 required
 
 * result: SimpleFeatureCollection 1:1 required
+
+FeatureClassStats(features, attribute, stats, classes, method, noData): results
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* features: FeatureCollection 1:1 required
+
+* attribute: String 1:1 required
+
+* stats: Statistic 0:unbounded
+
+* classes: Integer 0:1 optional
+
+* method: ClassificationMethod 0:1 optional
+
+* noData: Double 0:1 optional
+
+* results: Results 1:1 required
 
 Grid(bounds, width, height, vertexSpacing, mode): result
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -275,6 +2139,21 @@ IntersectionFeatureCollection(first feature collection, second feature collectio
 * areasEnabled: Boolean 0:1 optional
 
 * result: SimpleFeatureCollection 1:1 required
+
+Jiffle(coverage, script, destName, sourceName, outputType): result
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* coverage: GridCoverage2D 0:unbounded
+
+* script: String 1:1 required
+
+* destName: String 0:1 optional
+
+* sourceName: String 0:unbounded
+
+* outputType: DataType 0:1 optional
+
+* result: GridCoverage2D 1:1 required
 
 LRSGeocode(features, from_measure_attb, to_measure_attb, measure): result
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -339,6 +2218,13 @@ Nearest(features, point, crs): result
 
 * result: FeatureCollection 1:1 required
 
+NormalizeCoverage(data): result
+'''''''''''''''''''''''''''''''
+
+* data: GridCoverage2D 1:1 required
+
+* result: GridCoverage2D 1:1 required
+
 PointBuffers(center, crs, distances, quadrantSegments): buffers
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
@@ -352,12 +2238,14 @@ PointBuffers(center, crs, distances, quadrantSegments): buffers
 
 * buffers: SimpleFeatureCollection 1:1 required
 
-PointStacker(data, cellSize, normalize, preserveLocation, outputBBOX, outputWidth, outputHeight): result
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+PointStacker(data, cellSize, weightClusterPosition, normalize, preserveLocation, outputBBOX, outputWidth, outputHeight): result
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 * data: SimpleFeatureCollection 1:1 required
 
 * cellSize: Integer 1:1 required
+
+* weightClusterPosition: Boolean 1:1 required
 
 * normalize: Boolean 1:1 required
 
@@ -370,6 +2258,15 @@ PointStacker(data, cellSize, normalize, preserveLocation, outputBBOX, outputWidt
 * outputHeight: Integer 1:1 required
 
 * result: SimpleFeatureCollection 1:1 required
+
+PolyLabeller(polygon, precision): result
+''''''''''''''''''''''''''''''''''''''''
+
+* polygon: Geometry 1:1 required
+
+* precision: Double 1:1 required
+
+* result: Geometry 1:1 required
 
 PolygonExtraction(data, band, insideEdges, roi, nodata, ranges): result
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -441,6 +2338,39 @@ RasterZonalStatistics(data, band, zones, classification): statistics
 * classification: GridCoverage2D 0:1 optional
 
 * statistics: SimpleFeatureCollection 1:1 required
+
+RasterZonalStatistics2(source, bands, zones, classifier, nodata, mask, useROIAccessor, roi, statistics, minbounds, maxbounds, numbins, rangeData, localStats): zonal statistics
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* source: GridCoverage2D 1:1 required
+
+* bands: int 0:unbounded
+
+* zones: Object 0:unbounded
+
+* classifier: GridCoverage2D 0:1 optional
+
+* nodata: Range 1:1 required
+
+* mask: Geometry 1:1 required
+
+* useROIAccessor: Boolean 1:1 required
+
+* roi: Polygon 1:1 required
+
+* statistics: StatsType 0:unbounded
+
+* minbounds: double 0:unbounded
+
+* maxbounds: double 0:unbounded
+
+* numbins: int 0:unbounded
+
+* rangeData: Object 0:unbounded
+
+* localStats: Boolean 1:1 required
+
+* zonal statistics: List 1:1 required
 
 RectangularClip(features, clip, preserveZ): result
 ''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -520,6 +2450,13 @@ Transform(features, transform): result
 * transform: String 1:1 required
 
 * result: SimpleFeatureCollection 1:1 required
+
+TransparencyFill(data): result
+''''''''''''''''''''''''''''''
+
+* data: GridCoverage2D 1:1 required
+
+* result: GridCoverage2D 1:1 required
 
 UnionFeatureCollection(first, second): result
 '''''''''''''''''''''''''''''''''''''''''''''
@@ -979,1574 +2916,17 @@ within(a, b): result
 
 * result: boolean 1:1 required
 
-DefaultFunctionFactory
-^^^^^^^^^^^^^^^^^^^^^^
+PolygonLabelFunctionFactory
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Contains 180 functions.
+Contains 1 functions.
 
-Area(geometry): area
-''''''''''''''''''''
-
-* geometry: Geometry 1:1 required
-
-* area: Double 1:1 required
-
-AttributeRename(targetAttribute, optimizeQuery): sourceAttribute
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-* targetAttribute: String 1:1 required
-
-* optimizeQuery: boolean 0:1 optional
-
-* sourceAttribute: String 1:1 required
-
-BufferTest(): distance
-''''''''''''''''''''''
-
-* distance: Double 1:1 required
-
-Categorize(LookupValue, Value, Threshold 1, Value 1, Threshold 2, Value 2, succeeding or preceding): return
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-* LookupValue
-
-* Value
-
-* Threshold 1
-
-* Value 1
-
-* Threshold 2
-
-* Value 2
-
-* succeeding or preceding
-
-* return
-
-Collection_Average(expression): average
-'''''''''''''''''''''''''''''''''''''''
-
-* expression: Number 1:1 required
-
-* average: Number 1:1 required
-
-Collection_Bounds(geometry): bounds
-'''''''''''''''''''''''''''''''''''
-
-* geometry: Geometry 1:1 required
-
-* bounds
-
-Collection_Count(): count
-'''''''''''''''''''''''''
-
-* count
-
-Collection_Max(expression): max
-'''''''''''''''''''''''''''''''
-
-* expression: Comparable 1:1 required
-
-* max: Comparable 1:1 required
-
-Collection_Median(expression): median
-'''''''''''''''''''''''''''''''''''''
-
-* expression: Comparable 1:1 required
-
-* median: Comparable 1:1 required
-
-Collection_Min(expression): min
-'''''''''''''''''''''''''''''''
-
-* expression: Comparable 1:1 required
-
-* min: Comparable 1:1 required
-
-Collection_Nearest(value): expression
-'''''''''''''''''''''''''''''''''''''
-
-* value: Comparable 1:1 required
-
-* expression: Expression 1:1 required
-
-Collection_Sum(expression): sum
-'''''''''''''''''''''''''''''''
-
-* expression: Number 1:1 required
-
-* sum: Number 1:1 required
-
-Collection_Unique(expression): unique
-'''''''''''''''''''''''''''''''''''''
-
-* expression
-
-* unique
-
-Concatenate(text): result
-'''''''''''''''''''''''''
-
-* text: String 2:-1 required
-
-* result: String 1:1 required
-
-CoverageCenter(): coverage
-''''''''''''''''''''''''''
-
-* coverage: GridCoverage2D 1:1 required
-
-EqualInterval(value, classes): EqualInterval
-''''''''''''''''''''''''''''''''''''''''''''
-
-* value: Double 1:1 required
-
-* classes: Integer 1:1 required
-
-* EqualInterval: RangedClassifier 1:1 required
-
-IEEEremainder(dividend, divisor): remainder
-'''''''''''''''''''''''''''''''''''''''''''
-
-* dividend: Number 1:1 required
-
-* divisor: Number 1:1 required
-
-* remainder: Double 1:1 required
-
-Interpolate(data value pairs, mode, method): lookup
-'''''''''''''''''''''''''''''''''''''''''''''''''''
-
-* data value pairs
-
-* mode: String 1:1 required
-
-* method: String 0:1 optional
-
-* lookup
-
-Jenks(value, classes): Jenks
-''''''''''''''''''''''''''''
-
-* value: Double 1:1 required
-
-* classes: Integer 1:1 required
-
-* Jenks: RangedClassifier 1:1 required
-
-PropertyExists(propertyName): exists
-''''''''''''''''''''''''''''''''''''
-
-* propertyName
-
-* exists: Boolean 1:1 required
-
-Quantile(value, classes): Quantile
-''''''''''''''''''''''''''''''''''
-
-* value: Double 1:1 required
-
-* classes: Integer 1:1 required
-
-* Quantile: RangedClassifier 1:1 required
-
-Recode(LookupValue, Data 1, Value 1, Data 2, Value 2): return
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-* LookupValue
-
-* Data 1
-
-* Value 1
-
-* Data 2
-
-* Value 2
-
-* return
-
-ReprojectCollection(): crs
-''''''''''''''''''''''''''
-
-* crs: String 1:1 required
-
-StandardDeviation(value, classes): StandardDeviation
-''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-* value: Double 1:1 required
-
-* classes: Integer 1:1 required
-
-* StandardDeviation: RangedClassifier 1:1 required
-
-UniqueInterval(value, classes): UniqueInterval
-''''''''''''''''''''''''''''''''''''''''''''''
-
-* value: Double 1:1 required
-
-* classes: Integer 1:1 required
-
-* UniqueInterval: RangedClassifier 1:1 required
-
-__equals(): return
-''''''''''''''''''
-
-* return
-
-abs(int): abs
-'''''''''''''
-
-* int: Integer 1:1 required
-
-* abs: Integer 1:1 required
-
-abs_2(number): long
-'''''''''''''''''''
-
-* number: Long 1:1 required
-
-* long: Long 1:1 required
-
-abs_3(number): float
-''''''''''''''''''''
-
-* number: Float 1:1 required
-
-* float: Float 1:1 required
-
-abs_4(number): double
-'''''''''''''''''''''
-
-* number: Double 1:1 required
-
-* double: Double 1:1 required
-
-acos(value): arc cosine
-'''''''''''''''''''''''
-
-* value: Double 1:1 required
-
-* arc cosine: Double 1:1 required
-
-area2(geometry): area
-'''''''''''''''''''''
-
-* geometry: Geometry 1:1 required
-
-* area: Double 1:1 required
-
-asin(value): arc sine
-'''''''''''''''''''''
-
-* value: Double 1:1 required
-
-* arc sine: Double 1:1 required
-
-atan(value): arc tan
-''''''''''''''''''''
-
-* value: Double 1:1 required
-
-* arc tan: Double 1:1 required
-
-atan2(x, y): arc tan
-''''''''''''''''''''
-
-* x: Double 1:1 required
-
-* y: Double 1:1 required
-
-* arc tan: Double 1:1 required
-
-between(value, low, high): between
-''''''''''''''''''''''''''''''''''
-
-* value
-
-* low
-
-* high
-
-* between: Boolean 1:1 required
-
-boundary(geometry): boundary
-''''''''''''''''''''''''''''
-
-* geometry: Geometry 1:1 required
-
-* boundary: Geometry 1:1 required
-
-boundaryDimension(geometry): dimension
-''''''''''''''''''''''''''''''''''''''
-
-* geometry: Geometry 1:1 required
-
-* dimension: Integer 1:1 required
-
-buffer(geometry, distance): buffer
-''''''''''''''''''''''''''''''''''
-
-* geometry: Geometry 1:1 required
-
-* distance: Number 1:1 required
-
-* buffer: Geometry 1:1 required
-
-bufferWithSegments(geometry, distance, numberOfSegments): buffer
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-* geometry: Geometry 1:1 required
-
-* distance: Number 1:1 required
-
-* numberOfSegments: Number 1:1 required
-
-* buffer: Geometry 1:1 required
-
-ceil(number): ceiling
-'''''''''''''''''''''
-
-* number: Number 1:1 required
-
-* ceiling: Double 1:1 required
-
-centroid(geometry): centroid
-''''''''''''''''''''''''''''
-
-* geometry: Geometry 1:1 required
-
-* centroid: Point 1:1 required
-
-classify(expression, classifer): value
-''''''''''''''''''''''''''''''''''''''
-
-* expression
-
-* classifer: Classifier 1:1 required
-
-* value
-
-contains(geometry1, geometry2): contains
-''''''''''''''''''''''''''''''''''''''''
-
-* geometry1: Geometry 1:1 required
-
-* geometry2: Geometry 1:1 required
-
-* contains: Boolean 1:1 required
-
-convert(value, class): converted
-''''''''''''''''''''''''''''''''
-
-* value
-
-* class: Class 1:1 required
-
-* converted
-
-convexHull(geometry): hull
-''''''''''''''''''''''''''
-
-* geometry: Geometry 1:1 required
-
-* hull: Geometry 1:1 required
-
-cos(radians): cosine
-''''''''''''''''''''
-
-* radians: Double 1:1 required
-
-* cosine: Double 1:1 required
-
-crosses(geometry1, geometry2): crosses
-''''''''''''''''''''''''''''''''''''''
-
-* geometry1: Geometry 1:1 required
-
-* geometry2: Geometry 1:1 required
-
-* crosses: Boolean 1:1 required
-
-dateFormat(format, date): formatted
-'''''''''''''''''''''''''''''''''''
-
-* format: String 1:1 required
-
-* date: Date 1:1 required
-
-* formatted: String 1:1 required
-
-dateParse(format, dateString): date
-'''''''''''''''''''''''''''''''''''
-
-* format: String 1:1 required
-
-* dateString: String 1:1 required
-
-* date: Date 1:1 required
-
-difference(geometry1, geometry2): difference
-''''''''''''''''''''''''''''''''''''''''''''
-
-* geometry1: Geometry 1:1 required
-
-* geometry2: Geometry 1:1 required
-
-* difference: Geometry 1:1 required
-
-dimension(geometry): dimension
-''''''''''''''''''''''''''''''
-
-* geometry: Geometry 1:1 required
-
-* dimension: Integer 1:1 required
-
-disjoint(geometry1, geometry2): disjoint
-''''''''''''''''''''''''''''''''''''''''
-
-* geometry1: Geometry 1:1 required
-
-* geometry2: Geometry 1:1 required
-
-* disjoint: Boolean 1:1 required
-
-disjoint3D(geometry1, geometry2): disjoint3D
-''''''''''''''''''''''''''''''''''''''''''''
-
-* geometry1: Geometry 1:1 required
-
-* geometry2: Geometry 1:1 required
-
-* disjoint3D: Double 1:1 required
-
-distance(geometry1, geometry2): distance
-''''''''''''''''''''''''''''''''''''''''
-
-* geometry1: Geometry 1:1 required
-
-* geometry2: Geometry 1:1 required
-
-* distance: Double 1:1 required
-
-distance3D(geometry1, geometry2): distance3D
-''''''''''''''''''''''''''''''''''''''''''''
-
-* geometry1: Geometry 1:1 required
-
-* geometry2: Geometry 1:1 required
-
-* distance3D: Double 1:1 required
-
-double2bool(double): double2bool
-''''''''''''''''''''''''''''''''
-
-* double: Double 1:1 required
-
-* double2bool: Boolean 1:1 required
-
-endAngle(linestring): endAngle
-''''''''''''''''''''''''''''''
-
-* linestring: LineString 1:1 required
-
-* endAngle: Double 1:1 required
-
-endPoint(linestring): endPoint
-''''''''''''''''''''''''''''''
-
-* linestring: LineString 1:1 required
-
-* endPoint: Point 1:1 required
-
-env(variable): value
-''''''''''''''''''''
-
-* variable: String 1:1 required
-
-* value
-
-envelope(geometry): envelope
-''''''''''''''''''''''''''''
-
-* geometry: Geometry 1:1 required
-
-* envelope: Geometry 1:1 required
-
-equalTo(object1, object2): equalTo
-''''''''''''''''''''''''''''''''''
-
-* object1
-
-* object2
-
-* equalTo: Boolean 1:1 required
-
-equalsExact(geometry1, geometry2): equalsExact
-''''''''''''''''''''''''''''''''''''''''''''''
-
-* geometry1: Geometry 1:1 required
-
-* geometry2: Geometry 1:1 required
-
-* equalsExact: Boolean 1:1 required
-
-equalsExactTolerance(geometry1, geometry2, tolarance): equalsExactTolerance
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-* geometry1: Geometry 1:1 required
-
-* geometry2: Geometry 1:1 required
-
-* tolarance: Double 1:1 required
-
-* equalsExactTolerance: Boolean 1:1 required
-
-exp(number): exponent
-'''''''''''''''''''''
-
-* number: Number 1:1 required
-
-* exponent: Double 1:1 required
-
-exteriorRing(geometry): exteriorRing
-''''''''''''''''''''''''''''''''''''
-
-* geometry: Geometry 1:1 required
-
-* exteriorRing: LinearRing 1:1 required
-
-floor(double): floor
-''''''''''''''''''''
-
-* double: Double 1:1 required
-
-* floor: Double 1:1 required
-
-geomFromWKT(geometry): geomFromWKT
-''''''''''''''''''''''''''''''''''
-
-* geometry: String 1:1 required
-
-* geomFromWKT: Geometry 1:1 required
-
-geomLength(geometry): geomLength
-''''''''''''''''''''''''''''''''
-
-* geometry: Geometry 1:1 required
-
-* geomLength: Double 1:1 required
-
-geometryType(geometry): geometryType
-''''''''''''''''''''''''''''''''''''
-
-* geometry: Geometry 1:1 required
-
-* geometryType: String 1:1 required
-
-getGeometryN(geometry, index): getGeometryN
-'''''''''''''''''''''''''''''''''''''''''''
-
-* geometry: Geometry 1:1 required
-
-* index: Integer 1:1 required
-
-* getGeometryN: Geometry 1:1 required
-
-getX(geometry): getX
-''''''''''''''''''''
-
-* geometry: Geometry 1:1 required
-
-* getX: Double 1:1 required
-
-getY(geometry): getY
-''''''''''''''''''''
-
-* geometry: Geometry 1:1 required
-
-* getY: Double 1:1 required
-
-getz(geometry): getz
-''''''''''''''''''''
-
-* geometry: Geometry 1:1 required
-
-* getz: Double 1:1 required
-
-greaterEqualThan(object1, object2): greaterEqualThan
-''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-* object1
-
-* object2
-
-* greaterEqualThan: Boolean 1:1 required
-
-greaterThan(object1, object2): greaterThan
+labelPoint(polygon, tolerance): labelPoint
 ''''''''''''''''''''''''''''''''''''''''''
 
-* object1
+* polygon: Geometry 1:1 required
 
-* object2
+* tolerance: double 1:1 required
 
-* greaterThan: Boolean 1:1 required
-
-id(): id
-''''''''
-
-* id: String 1:1 required
-
-if_then_else(condition, then, else): if_then_else
-'''''''''''''''''''''''''''''''''''''''''''''''''
-
-* condition: Boolean 1:1 required
-
-* then
-
-* else
-
-* if_then_else
-
-in10(value, in1, in2, in3, in4, in5, in6, in7, in8, in9, in10): in10
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-* value: Boolean 1:1 required
-
-* in1
-
-* in2
-
-* in3
-
-* in4
-
-* in5
-
-* in6
-
-* in7
-
-* in8
-
-* in9
-
-* in10
-
-* in10: Boolean 1:1 required
-
-in2(value, in1, in2): in2
-'''''''''''''''''''''''''
-
-* value: Boolean 1:1 required
-
-* in1
-
-* in2
-
-* in2: Boolean 1:1 required
-
-in3(value, in1, in2, in3): in3
-''''''''''''''''''''''''''''''
-
-* value: Boolean 1:1 required
-
-* in1
-
-* in2
-
-* in3
-
-* in3: Boolean 1:1 required
-
-in4(value, in1, in2, in3, in4): in4
-'''''''''''''''''''''''''''''''''''
-
-* value: Boolean 1:1 required
-
-* in1
-
-* in2
-
-* in3
-
-* in4
-
-* in4: Boolean 1:1 required
-
-in5(value, in1, in2, in3, in4, in5): in5
-''''''''''''''''''''''''''''''''''''''''
-
-* value: Boolean 1:1 required
-
-* in1
-
-* in2
-
-* in3
-
-* in4
-
-* in5
-
-* in5: Boolean 1:1 required
-
-in6(value, in1, in2, in3, in4, in5, in6): in6
-'''''''''''''''''''''''''''''''''''''''''''''
-
-* value: Boolean 1:1 required
-
-* in1
-
-* in2
-
-* in3
-
-* in4
-
-* in5
-
-* in6
-
-* in6: Boolean 1:1 required
-
-in7(value, in1, in2, in3, in4, in5, in6, in7): in7
-''''''''''''''''''''''''''''''''''''''''''''''''''
-
-* value: Boolean 1:1 required
-
-* in1
-
-* in2
-
-* in3
-
-* in4
-
-* in5
-
-* in6
-
-* in7
-
-* in7: Boolean 1:1 required
-
-in8(value, in1, in2, in3, in4, in5, in6, in7, in8): in8
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-* value: Boolean 1:1 required
-
-* in1
-
-* in2
-
-* in3
-
-* in4
-
-* in5
-
-* in6
-
-* in7
-
-* in8
-
-* in8: Boolean 1:1 required
-
-in9(value, in1, in2, in3, in4, in5, in6, in7, in8, in9): in9
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-* value: Boolean 1:1 required
-
-* in1
-
-* in2
-
-* in3
-
-* in4
-
-* in5
-
-* in6
-
-* in7
-
-* in8
-
-* in9
-
-* in9: Boolean 1:1 required
-
-int2bbool(int): int2bbool
-'''''''''''''''''''''''''
-
-* int: Integer 1:1 required
-
-* int2bbool: Boolean 1:1 required
-
-int2ddouble(int): int2ddouble
-'''''''''''''''''''''''''''''
-
-* int: Integer 1:1 required
-
-* int2ddouble: Double 1:1 required
-
-interiorPoint(geometry): interiorPoint
-''''''''''''''''''''''''''''''''''''''
-
-* geometry: Geometry 1:1 required
-
-* interiorPoint: Point 1:1 required
-
-interiorRingN(geometry, n): interiorRingN
-'''''''''''''''''''''''''''''''''''''''''
-
-* geometry: Geometry 1:1 required
-
-* n: Integer 1:1 required
-
-* interiorRingN: LinearRing 1:1 required
-
-intersection(geometry1, geometry2): intersection
-''''''''''''''''''''''''''''''''''''''''''''''''
-
-* geometry1: Geometry 1:1 required
-
-* geometry2: Geometry 1:1 required
-
-* intersection: Geometry 1:1 required
-
-intersects(geometry1, geometry2): intersects
-''''''''''''''''''''''''''''''''''''''''''''
-
-* geometry1: Geometry 1:1 required
-
-* geometry2: Geometry 1:1 required
-
-* intersects: Boolean 1:1 required
-
-intersects3D(geometry1, geometry2): intersects3D
-''''''''''''''''''''''''''''''''''''''''''''''''
-
-* geometry1: Geometry 1:1 required
-
-* geometry2: Geometry 1:1 required
-
-* intersects3D: Double 1:1 required
-
-isClosed(geometry): isClosed
-''''''''''''''''''''''''''''
-
-* geometry: Geometry 1:1 required
-
-* isClosed: Boolean 1:1 required
-
-isCoverage(): isCoverage
-''''''''''''''''''''''''
-
-* isCoverage: Boolean 1:1 required
-
-isEmpty(geometry): isEmpty
-''''''''''''''''''''''''''
-
-* geometry: Geometry 1:1 required
-
-* isEmpty: Boolean 1:1 required
-
-isLike(string, regex): isLike
-'''''''''''''''''''''''''''''
-
-* string: String 1:1 required
-
-* regex: String 1:1 required
-
-* isLike: Boolean 1:1 required
-
-isNull(object): isNull
-''''''''''''''''''''''
-
-* object
-
-* isNull: Boolean 1:1 required
-
-isRing(geometry): isRing
-''''''''''''''''''''''''
-
-* geometry: Geometry 1:1 required
-
-* isRing: Boolean 1:1 required
-
-isSimple(geometry): isSimple
-''''''''''''''''''''''''''''
-
-* geometry: Geometry 1:1 required
-
-* isSimple: Boolean 1:1 required
-
-isValid(geometry): isValid
-''''''''''''''''''''''''''
-
-* geometry: Geometry 1:1 required
-
-* isValid: Boolean 1:1 required
-
-isWithinDistance(geometry1, geometry2, distance): isWithinDistance
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-* geometry1: Geometry 1:1 required
-
-* geometry2: Geometry 1:1 required
-
-* distance: Double 1:1 required
-
-* isWithinDistance: Boolean 1:1 required
-
-isWithinDistance3D(geometry1, geometry2, distance): isWithinDistance3D
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-* geometry1: Geometry 1:1 required
-
-* geometry2: Geometry 1:1 required
-
-* distance: Double 1:1 required
-
-* isWithinDistance3D: Double 1:1 required
-
-isometric(geometry, extrusion): isometric
-'''''''''''''''''''''''''''''''''''''''''
-
-* geometry: Geometry 1:1 required
-
-* extrusion: Double 1:1 required
-
-* isometric: Geometry 1:1 required
-
-length(string): length
-''''''''''''''''''''''
-
-* string: String 1:1 required
-
-* length: Integer 1:1 required
-
-lessEqualThan(a, b): lessEqualThan
-''''''''''''''''''''''''''''''''''
-
-* a: Number 1:1 required
-
-* b: Number 1:1 required
-
-* lessEqualThan: Boolean 1:1 required
-
-lessThan(a, b): lessThan
-''''''''''''''''''''''''
-
-* a: Number 1:1 required
-
-* b: Number 1:1 required
-
-* lessThan: Boolean 1:1 required
-
-list(item): list
-''''''''''''''''
-
-* item
-
-* list: List 1:1 required
-
-log(value): logarithm
-'''''''''''''''''''''
-
-* value: Number 1:1 required
-
-* logarithm: Double 1:1 required
-
-max(double, double): maxium
-'''''''''''''''''''''''''''
-
-* double: Number 1:1 required
-
-* double: Number 1:1 required
-
-* maxium: Double 1:1 required
-
-max_2(long, long): maximum
-''''''''''''''''''''''''''
-
-* long: Number 1:1 required
-
-* long: Number 1:1 required
-
-* maximum: Long 1:1 required
-
-max_3(float, float): maximum
-''''''''''''''''''''''''''''
-
-* float: Number 1:1 required
-
-* float: Number 1:1 required
-
-* maximum: Float 1:1 required
-
-max_4(int, int): maximum
-''''''''''''''''''''''''
-
-* int: Number 1:1 required
-
-* int: Number 1:1 required
-
-* maximum: Integer 1:1 required
-
-min(double, double): minium
-'''''''''''''''''''''''''''
-
-* double: Double 1:1 required
-
-* double: Double 1:1 required
-
-* minium: Double 1:1 required
-
-min_2(long, long): minium
-'''''''''''''''''''''''''
-
-* long: Number 1:1 required
-
-* long: Number 1:1 required
-
-* minium: Long 1:1 required
-
-min_3(float, float): minium
-'''''''''''''''''''''''''''
-
-* float: Number 1:1 required
-
-* float: Number 1:1 required
-
-* minium: Float 1:1 required
-
-min_4(int, int): minium
-'''''''''''''''''''''''
-
-* int: Number 1:1 required
-
-* int: Number 1:1 required
-
-* minium: Integer 1:1 required
-
-mincircle(geometry): mincircle
-''''''''''''''''''''''''''''''
-
-* geometry: Geometry 1:1 required
-
-* mincircle: Geometry 1:1 required
-
-minimumdiameter(geometry): minimumdiameter
-''''''''''''''''''''''''''''''''''''''''''
-
-* geometry: Geometry 1:1 required
-
-* minimumdiameter: Geometry 1:1 required
-
-minrectangle(geometry): minrectangle
-''''''''''''''''''''''''''''''''''''
-
-* geometry: Geometry 1:1 required
-
-* minrectangle: Geometry 1:1 required
-
-modulo(dividend, divisor): modulo
-'''''''''''''''''''''''''''''''''
-
-* dividend: Integer 1:1 required
-
-* divisor: Integer 1:1 required
-
-* modulo: Integer 1:1 required
-
-not(logicValue): not
-''''''''''''''''''''
-
-* logicValue: Boolean 1:1 required
-
-* not: Boolean 1:1 required
-
-notEqualTo(a, b): notEqualTo
-''''''''''''''''''''''''''''
-
-* a
-
-* b
-
-* notEqualTo: Boolean 1:1 required
-
-numGeometries(geometry): numGeometries
-''''''''''''''''''''''''''''''''''''''
-
-* geometry: Geometry 1:1 required
-
-* numGeometries: Integer 1:1 required
-
-numInteriorRing(geometry): numInteriorRing
-''''''''''''''''''''''''''''''''''''''''''
-
-* geometry: Geometry 1:1 required
-
-* numInteriorRing: Integer 1:1 required
-
-numPoints(geometry): numPoints
-''''''''''''''''''''''''''''''
-
-* geometry: Geometry 1:1 required
-
-* numPoints: Integer 1:1 required
-
-numberFormat(format, number): numberFormat
-''''''''''''''''''''''''''''''''''''''''''
-
-* format: String 1:1 required
-
-* number: Number 1:1 required
-
-* numberFormat: String 1:1 required
-
-numberFormat2(format, number, minus, decimal, separator): numberFormat2
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-* format: String 1:1 required
-
-* number: Number 1:1 required
-
-* minus: String 1:1 required
-
-* decimal: String 1:1 required
-
-* separator: String 1:1 required
-
-* numberFormat2: String 1:1 required
-
-octagonalenvelope(geometry): octagonalenvelope
-''''''''''''''''''''''''''''''''''''''''''''''
-
-* geometry: Geometry 1:1 required
-
-* octagonalenvelope: Geometry 1:1 required
-
-offset(geometry, offsetX, offsetY): offset
-''''''''''''''''''''''''''''''''''''''''''
-
-* geometry: Geometry 1:1 required
-
-* offsetX: Double 1:1 required
-
-* offsetY: Double 1:1 required
-
-* offset: Geometry 1:1 required
-
-overlaps(geometry1, geometry2): overlaps
-''''''''''''''''''''''''''''''''''''''''
-
-* geometry1: Geometry 1:1 required
-
-* geometry2: Geometry 1:1 required
-
-* overlaps: Geometry 1:1 required
-
-parseBoolean(string): parseBoolean
-''''''''''''''''''''''''''''''''''
-
-* string: String 1:1 required
-
-* parseBoolean: Boolean 1:1 required
-
-parseDouble(string): parseDouble
-''''''''''''''''''''''''''''''''
-
-* string: String 1:1 required
-
-* parseDouble: Double 1:1 required
-
-parseInt(string): parseInt
-''''''''''''''''''''''''''
-
-* string: String 1:1 required
-
-* parseInt: Integer 1:1 required
-
-parseLong(string): parseLong
-''''''''''''''''''''''''''''
-
-* string: String 1:1 required
-
-* parseLong: Long 1:1 required
-
-pi(): pi
-''''''''
-
-* pi: Double 1:1 required
-
-pointN(geometry, index): pointN
-'''''''''''''''''''''''''''''''
-
-* geometry: Geometry 1:1 required
-
-* index: Integer 1:1 required
-
-* pointN: Geometry 1:1 required
-
-pow(base, exponent): power
-''''''''''''''''''''''''''
-
-* base: Number 1:1 required
-
-* exponent: Number 1:1 required
-
-* power: Double 1:1 required
-
-property(propertyName): propertyValue
-'''''''''''''''''''''''''''''''''''''
-
-* propertyName: String 1:1 required
-
-* propertyValue
-
-random(): random
-''''''''''''''''
-
-* random: Double 1:1 required
-
-relate(geometry1, geometry2): relate
-''''''''''''''''''''''''''''''''''''
-
-* geometry1: Geometry 1:1 required
-
-* geometry2: Geometry 1:1 required
-
-* relate: String 1:1 required
-
-relatePattern(geometry, geometry, pattern): related
-'''''''''''''''''''''''''''''''''''''''''''''''''''
-
-* geometry: Geometry 1:1 required
-
-* geometry: Geometry 1:1 required
-
-* pattern: String 1:1 required
-
-* related: Boolean 1:1 required
-
-rescaleToPixels(value, defaultUnit, scaleFactor, rescalingMode): rescaleToPixels
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-* value: String 1:1 required
-
-* defaultUnit: Unit 1:1 required
-
-* scaleFactor: Double 1:1 required
-
-* rescalingMode: RescalingMode 0:1 optional
-
-* rescaleToPixels: String 1:1 required
-
-rint(double): rounded
-'''''''''''''''''''''
-
-* double: Number 1:1 required
-
-* rounded: Double 1:1 required
-
-round(number): float
-''''''''''''''''''''
-
-* number: Number 1:1 required
-
-* float: Float 1:1 required
-
-roundDouble(number): rounded
-''''''''''''''''''''''''''''
-
-* number: Number 1:1 required
-
-* rounded: Double 1:1 required
-
-round_2(number): long
-'''''''''''''''''''''
-
-* number: Number 1:1 required
-
-* long: Long 1:1 required
-
-setCRS(geometry, CRS): setCRS
-'''''''''''''''''''''''''''''
-
-* geometry: Geometry 1:1 required
-
-* CRS: String 1:1 required
-
-* setCRS: Geometry 1:1 required
-
-sin(radians): sine
-''''''''''''''''''
-
-* radians: Number 1:1 required
-
-* sine: Double 1:1 required
-
-sqrt(number): root
-''''''''''''''''''
-
-* number: Number 1:1 required
-
-* root: Double 1:1 required
-
-startAngle(linestring): degrees
-'''''''''''''''''''''''''''''''
-
-* linestring: LineString 1:1 required
-
-* degrees: Double 1:1 required
-
-startPoint(linestring): point
-'''''''''''''''''''''''''''''
-
-* linestring: LineString 1:1 required
-
-* point: Point 1:1 required
-
-strCapitalize(string): string
-'''''''''''''''''''''''''''''
-
-* string: String 1:1 required
-
-* string: String 1:1 required
-
-strConcat(string1, string2): strConcat
-''''''''''''''''''''''''''''''''''''''
-
-* string1: String 1:1 required
-
-* string2: String 1:1 required
-
-* strConcat: String 1:1 required
-
-strEndsWith(String, postfix): endsWith
-''''''''''''''''''''''''''''''''''''''
-
-* String: String 1:1 required
-
-* postfix: String 1:1 required
-
-* endsWith: Boolean 1:1 required
-
-strEqualsIgnoreCase(string, lookup): equals
-'''''''''''''''''''''''''''''''''''''''''''
-
-* string: String 1:1 required
-
-* lookup: String 1:1 required
-
-* equals: Boolean 1:1 required
-
-strIndexOf(String, lookup): index
-'''''''''''''''''''''''''''''''''
-
-* String: String 1:1 required
-
-* lookup: String 1:1 required
-
-* index: Integer 1:1 required
-
-strLastIndexOf(String, lookup): index
-'''''''''''''''''''''''''''''''''''''
-
-* String: String 1:1 required
-
-* lookup: String 1:1 required
-
-* index: Integer 1:1 required
-
-strLength(string): length
-'''''''''''''''''''''''''
-
-* string: String 1:1 required
-
-* length: Integer 1:1 required
-
-strMatches(string, regex): match
-''''''''''''''''''''''''''''''''
-
-* string: String 1:1 required
-
-* regex: String 1:1 required
-
-* match: Boolean 1:1 required
-
-strPosition(string, lookup, method): string
-'''''''''''''''''''''''''''''''''''''''''''
-
-* string: String 1:1 required
-
-* lookup: String 1:1 required
-
-* method: String 1:1 required
-
-* string: String 1:1 required
-
-strReplace(string, search, replace, all): string
-''''''''''''''''''''''''''''''''''''''''''''''''
-
-* string: String 1:1 required
-
-* search: String 1:1 required
-
-* replace: String 1:1 required
-
-* all: Boolean 1:1 required
-
-* string: String 1:1 required
-
-strStartsWith(string, prefix): starts with
-''''''''''''''''''''''''''''''''''''''''''
-
-* string: String 1:1 required
-
-* prefix: String 1:1 required
-
-* starts with: Boolean 1:1 required
-
-strSubstring(string, beginIndex, endIndex): substring
-'''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-* string: String 1:1 required
-
-* beginIndex: Integer 1:1 required
-
-* endIndex: Integer 1:1 required
-
-* substring: String 1:1 required
-
-strSubstringStart(string, beginIndex): substring
-''''''''''''''''''''''''''''''''''''''''''''''''
-
-* string: String 1:1 required
-
-* beginIndex: Integer 1:1 required
-
-* substring: String 1:1 required
-
-strToLowerCase(string): lowercase
-'''''''''''''''''''''''''''''''''
-
-* string: String 1:1 required
-
-* lowercase: String 1:1 required
-
-strToUpperCase(string): uppercase
-'''''''''''''''''''''''''''''''''
-
-* string: String 1:1 required
-
-* uppercase: String 1:1 required
-
-strTrim(string): trim
-'''''''''''''''''''''
-
-* string: String 1:1 required
-
-* trim: String 1:1 required
-
-strTrim2(string, method, character): trim
-'''''''''''''''''''''''''''''''''''''''''
-
-* string: String 1:1 required
-
-* method: String 1:1 required
-
-* character: String 1:1 required
-
-* trim: String 1:1 required
-
-stringTemplate(input, pattern, template, defaultValue): return
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-* input
-
-* pattern
-
-* template
-
-* defaultValue
-
-* return
-
-symDifference(geometry, geometry): symetric difference
-''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-* geometry: Geometry 1:1 required
-
-* geometry: Geometry 1:1 required
-
-* symetric difference: Geometry 1:1 required
-
-tan(radians): tan
-'''''''''''''''''
-
-* radians: Number 1:1 required
-
-* tan: Double 1:1 required
-
-toDegrees(radians): degrees
-'''''''''''''''''''''''''''
-
-* radians: Number 1:1 required
-
-* degrees: Double 1:1 required
-
-toRadians(degree): radians
-''''''''''''''''''''''''''
-
-* degree: Number 1:1 required
-
-* radians: Double 1:1 required
-
-toWKT(geometry): wkt
-''''''''''''''''''''
-
-* geometry: Geometry 1:1 required
-
-* wkt: String 1:1 required
-
-touches(geometry, geometry): touches
-''''''''''''''''''''''''''''''''''''
-
-* geometry: Geometry 1:1 required
-
-* geometry: Geometry 1:1 required
-
-* touches: Boolean 1:1 required
-
-union(geometry, geometry): union
-''''''''''''''''''''''''''''''''
-
-* geometry: Geometry 1:1 required
-
-* geometry: Geometry 1:1 required
-
-* union: Geometry 1:1 required
-
-vertices(geometry): vertices
-''''''''''''''''''''''''''''
-
-* geometry: Geometry 1:1 required
-
-* vertices: MultiPoint 1:1 required
-
-within(geometry, geometry): within
-''''''''''''''''''''''''''''''''''
-
-* geometry: Geometry 1:1 required
-
-* geometry: Geometry 1:1 required
-
-* within: Boolean 1:1 required
+* labelPoint: Point 1:1 required
 

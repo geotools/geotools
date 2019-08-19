@@ -19,7 +19,6 @@ package org.geotools.data.h2;
 import org.geotools.jdbc.JDBCLobOnlineTest;
 import org.geotools.jdbc.JDBCLobTestSetup;
 
-/** @source $URL$ */
 public class H2LobTest extends JDBCLobOnlineTest {
 
     @Override

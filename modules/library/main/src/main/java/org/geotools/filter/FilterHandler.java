@@ -23,7 +23,6 @@ import org.xml.sax.ContentHandler;
  * classes that want the sax parsing classes to pass on their filter information.
  *
  * @author Rob Hranac, Vision for New York
- * @source $URL$
  * @version $Id$
  */
 public interface FilterHandler extends ContentHandler {

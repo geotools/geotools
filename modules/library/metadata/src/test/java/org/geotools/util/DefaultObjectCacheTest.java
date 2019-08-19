@@ -24,7 +24,6 @@ import org.junit.*;
  * Tests the {@link DefaultObjectCache} with simple tests.
  *
  * @author Cory Horner
- * @source $URL$
  */
 public final class DefaultObjectCacheTest {
     /** Tests with two values. */

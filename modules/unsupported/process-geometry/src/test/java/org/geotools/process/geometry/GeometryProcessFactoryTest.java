@@ -17,7 +17,6 @@ import org.locationtech.jts.operation.buffer.BufferParameters;
 import org.opengis.feature.type.Name;
 import org.opengis.util.InternationalString;
 
-/** @source $URL$ */
 public class GeometryProcessFactoryTest extends TestCase {
 
     GeometryProcessFactory factory;

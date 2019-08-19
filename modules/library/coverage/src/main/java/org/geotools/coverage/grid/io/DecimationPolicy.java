@@ -20,7 +20,6 @@ package org.geotools.coverage.grid.io;
  * Decimation policies.
  *
  * @since 2.7
- * @source $URL$
  * @author Daniele Romagnoli, GeoSolutions SAS.
  * @author Simone Giannecchini, GeoSolutions SAS.
  */

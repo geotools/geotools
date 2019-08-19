@@ -86,7 +86,6 @@ import org.opengis.filter.expression.Expression;
  * @author Jody Garnett, Refractions Research
  * @author Gabriel Roldan, Axios Engineering
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL$
  */
 public interface ComplexAttribute extends Attribute {
 

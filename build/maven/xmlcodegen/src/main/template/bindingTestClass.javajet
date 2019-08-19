@@ -11,7 +11,7 @@
     String prefix = Schemas.getTargetPrefix( schema );
 %>
 
-import org.geotools.xml.Binding;
+import org.geotools.xsd.Binding;
 
 /**
  * Binding test case for <%=named.getTargetNamespace()%>:<%=named.getName()%>.

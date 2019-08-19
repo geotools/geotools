@@ -20,19 +20,19 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.gml3.GML;
 import org.geotools.gml3.GML3TestSupport;
-import org.geotools.xml.Configuration;
+import org.geotools.xsd.Configuration;
 import org.opengis.feature.simple.SimpleFeature;
 import org.w3c.dom.Element;
 
-/** @source $URL$ */
 public class AbstractFeatureCollectionTypeBindingTest extends GML3TestSupport {
     protected Configuration createConfiguration() {
         return new TestConfiguration();
     }
 
-    protected void registerNamespaces(Element root) {
-        super.registerNamespaces(root);
-        root.setAttribute("xmlns:test", TEST.NAMESPACE);
+    @Override
+    protected void setUp() throws Exception {
+        super.setUp();
+        registerNamespaceMapping("test", TEST.NAMESPACE);
     }
 
     public void testFeatureMember() throws Exception {

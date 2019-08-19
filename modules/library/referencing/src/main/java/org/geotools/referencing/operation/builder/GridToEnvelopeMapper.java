@@ -19,10 +19,10 @@ package org.geotools.referencing.operation.builder;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.operation.matrix.MatrixFactory;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
 import org.geotools.util.Utilities;
 import org.opengis.coverage.grid.GridEnvelope;
 import org.opengis.geometry.Envelope;
@@ -82,7 +82,6 @@ import org.opengis.referencing.operation.Matrix;
  * </ul>
  *
  * @since 2.3
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
@@ -206,17 +205,6 @@ public class GridToEnvelopeMapper {
 
     /**
      * Returns whatever the grid range maps {@linkplain PixelInCell#CELL_CENTER pixel center} or
-     * {@linkplain PixelInCell#CELL_CORNER pixel corner}.
-     *
-     * @deprecated Renamed {@link #getPixelAnchor}.
-     */
-    @Deprecated
-    public PixelInCell getGridType() {
-        return getPixelAnchor();
-    }
-
-    /**
-     * Returns whatever the grid range maps {@linkplain PixelInCell#CELL_CENTER pixel center} or
      * {@linkplain PixelInCell#CELL_CORNER pixel corner}. The former is OGC convention while the
      * later is Java2D/JAI convention. The default is cell center (OGC convention).
      *
@@ -225,17 +213,6 @@ public class GridToEnvelopeMapper {
      */
     public PixelInCell getPixelAnchor() {
         return anchor;
-    }
-
-    /**
-     * Set whatever the grid range maps {@linkplain PixelInCell#CELL_CENTER pixel center} or
-     * {@linkplain PixelInCell#CELL_CORNER pixel corner}.
-     *
-     * @deprecated Renamed {@link #setPixelAnchor}.
-     */
-    @Deprecated
-    public void setGridType(final PixelInCell anchor) {
-        setPixelAnchor(anchor);
     }
 
     /**

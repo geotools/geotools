@@ -19,11 +19,10 @@ package org.geotools.filter.function;
 import java.util.logging.Logger;
 import org.opengis.filter.expression.Expression;
 
-/** @source $URL$ */
 public class ClassificationFunctionTest extends FunctionTestSupport {
 
     protected static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.filter");
+            org.geotools.util.logging.Logging.getLogger(ClassificationFunctionTest.class);
 
     public ClassificationFunctionTest(String testName) {
         super(testName);

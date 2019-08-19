@@ -25,7 +25,6 @@ import org.junit.*;
 /**
  * Test the {@link MonolineFormatter} class.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
@@ -44,10 +43,10 @@ public final class MonolineFormatterTest {
             "org.opengis.referencing" // Non-geotools logger should not be affected.
         };
         for (int i = 0; i < namespaces.length; i++) {
-            System.out.println();
-            System.out.print("Testing ");
+            // System.out.println();
+            // System.out.print("Testing ");
             final Logger logger = Logging.getLogger(namespaces[i]);
-            System.out.println(logger.getName());
+            // System.out.println(logger.getName());
             logger.severe("Don't worry, just a test");
             logger.warning("This is an imaginary warning");
             logger.info("This is a pseudo-information message");

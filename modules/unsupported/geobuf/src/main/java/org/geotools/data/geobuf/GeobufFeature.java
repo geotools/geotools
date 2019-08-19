@@ -94,7 +94,8 @@ public class GeobufFeature {
         } else if (value instanceof Boolean) {
             builder.setBoolValue((Boolean) value);
         } else {
-            builder.setStringValue(value != null ? value.toString() : null);
+            // cannot pass null here, will NPE
+            builder.setStringValue(value != null ? value.toString() : "");
         }
         return builder.build();
     }

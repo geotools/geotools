@@ -142,26 +142,9 @@ public class TransformFeatureStore extends TransformFeatureSource implements Sim
     }
 
     @Override
-    public void modifyFeatures(AttributeDescriptor[] type, Object[] value, Filter filter)
-            throws IOException {
-        String[] simpleNames = new String[type.length];
-        for (int i = 0; i < type.length; i++) {
-            simpleNames[i] = type[i].getLocalName();
-        }
-
-        modifyFeatures(simpleNames, value, filter);
-    }
-
-    @Override
     public void modifyFeatures(Name attributeName, Object attributeValue, Filter filter)
             throws IOException {
         modifyFeatures(new Name[] {attributeName}, new Object[] {attributeValue}, filter);
-    }
-
-    @Override
-    public void modifyFeatures(AttributeDescriptor type, Object value, Filter filter)
-            throws IOException {
-        modifyFeatures(new AttributeDescriptor[] {type}, new Object[] {value}, filter);
     }
 
     @Override

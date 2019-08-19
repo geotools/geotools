@@ -1,6 +1,4 @@
 /**
- * <copyright>
- * </copyright>
  *
  * $Id$
  */
@@ -15,8 +13,8 @@ import org.eclipse.emf.ecore.EObject;
  * This can be disabled with -vmargs -Dorg.eclipse.emf.examples.generator.validator=false.
  */
 public interface ServiceReferenceTypeValidator {
-    boolean validate();
+  boolean validate();
 
-    boolean validateRequestMessage(EObject value);
-    boolean validateRequestMessageReference(String value);
+  boolean validateRequestMessage(EObject value);
+  boolean validateRequestMessageReference(String value);
 }

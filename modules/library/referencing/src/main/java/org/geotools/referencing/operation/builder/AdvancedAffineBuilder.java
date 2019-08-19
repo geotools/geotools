@@ -35,7 +35,6 @@ import org.opengis.referencing.operation.MathTransform;
  * the Czech Republic
  *
  * @author jezekjan
- * @source $URL$
  * @version $Id$
  */
 public class AdvancedAffineBuilder extends MathTransformBuilder {
@@ -86,9 +85,6 @@ public class AdvancedAffineBuilder extends MathTransformBuilder {
 
     /** Map of constrains - parameter name as key and its required value */
     private Map<String, Double> valueConstrain = new HashMap<String, Double>();
-
-    /** Map of constrains - parameters (represented by string) are equal to each other */
-    private Map<String, String> equalConstrain = new HashMap<String, String>();
 
     /** Affine transformation for approximate values */
     private final AffineTransform2D affineTrans;

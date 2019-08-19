@@ -39,6 +39,7 @@ import org.geotools.mbstyle.MapboxTestUtils;
 import org.geotools.mbstyle.layer.*;
 import org.geotools.mbstyle.parse.MBObjectParser;
 import org.geotools.styling.*;
+import org.geotools.xml.styling.SLDTransformer;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
@@ -559,7 +560,7 @@ public class StyleTransformTest {
         List<FeatureTypeStyle> fts = layers.get(0).transform(mbStyle);
         Rule r = fts.get(0).rules().get(0);
         Symbolizer symbolizer = r.symbolizers().get(1);
-        assertEquals("true", ((TextSymbolizerImpl) symbolizer).getOption("partials"));
+        assertEquals("true", ((TextSymbolizerImpl) symbolizer).getOptions().get("partials"));
     }
 
     @Test
@@ -576,7 +577,7 @@ public class StyleTransformTest {
         List<FeatureTypeStyle> fts = layers.get(0).transform(mbStyle);
         Rule r = fts.get(0).rules().get(0);
         Symbolizer symbolizer = r.symbolizers().get(1);
-        assertEquals("true", ((TextSymbolizerImpl) symbolizer).getOption("partials"));
+        assertEquals("true", ((TextSymbolizerImpl) symbolizer).getOptions().get("partials"));
     }
 
     @Test
@@ -593,7 +594,7 @@ public class StyleTransformTest {
         List<FeatureTypeStyle> fts = layers.get(0).transform(mbStyle);
         Rule r = fts.get(0).rules().get(0);
         Symbolizer symbolizer = r.symbolizers().get(1);
-        assertNull("true", ((TextSymbolizerImpl) symbolizer).getOption("partials"));
+        assertNull("true", ((TextSymbolizerImpl) symbolizer).getOptions().get("partials"));
     }
 
     @Test
@@ -627,7 +628,7 @@ public class StyleTransformTest {
         List<FeatureTypeStyle> fts = layers.get(0).transform(mbStyle);
         Rule r = fts.get(0).rules().get(0);
         Symbolizer symbolizer = r.symbolizers().get(1);
-        assertEquals("true", ((TextSymbolizerImpl) symbolizer).getOption("labelObstacle"));
+        assertEquals("true", ((TextSymbolizerImpl) symbolizer).getOptions().get("labelObstacle"));
     }
 
     @Test
@@ -661,12 +662,12 @@ public class StyleTransformTest {
         StyledLayerDescriptor sld = mbStyle.transform();
         SLDTransformer styleTransform = new SLDTransformer();
         String xml = styleTransform.transform(sld);
-        System.out.print(xml);
+        // System.out.print(xml);
         List<MBLayer> layers = mbStyle.layers("test-source");
         List<FeatureTypeStyle> fts = layers.get(0).transform(mbStyle);
         Rule r = fts.get(0).rules().get(0);
         Symbolizer symbolizer = r.symbolizers().get(0);
-        assertNull("true", ((TextSymbolizerImpl) symbolizer).getOption("labelObstacle"));
+        assertNull("true", ((TextSymbolizerImpl) symbolizer).getOptions().get("labelObstacle"));
     }
 
     /** Read a test Mapbox Style file (json) and parse it into a {@link JSONObject}. */

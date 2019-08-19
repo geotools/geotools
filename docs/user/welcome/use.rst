@@ -56,7 +56,7 @@ Formally these interfaces come from three locations:
 
 * gt-opengis - interfaces backed by ISO and OGC standards (as explained in the Use of Standards page).
 * jts topology suite - geometry library implementing the Simple Features for SQL (SFSQL) OGC standard.
-* gt-api - interfaces provided by GeoTools.
+* gt-main - interfaces provided by GeoTools.
 
 We also have one stalled work in progress:
 
@@ -181,7 +181,6 @@ CommonFactoryFinder
 * FilterFactory
 * StyleFactory
 * Function
-* FeatureLockFactory
 * FileDataStore - factory used to work with file datastores
 * FeatureFactory - factory used to create features
 * FeatureTypeFactory - factory used to create feature type description

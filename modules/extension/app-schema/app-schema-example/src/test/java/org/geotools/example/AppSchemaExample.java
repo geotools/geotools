@@ -36,9 +36,6 @@ import org.opengis.feature.type.FeatureType;
  * An example of how to use the app-schema module.
  * 
  * @author Ben Caradoc-Davies, CSIRO Earth Science and Resource Engineering
- * 
- *
- * @source $URL$
  */
 public class AppSchemaExample {
 

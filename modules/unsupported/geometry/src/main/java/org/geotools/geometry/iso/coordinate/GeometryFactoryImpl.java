@@ -24,9 +24,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import org.geotools.factory.Factory;
-import org.geotools.factory.GeoTools;
-import org.geotools.factory.Hints;
 import org.geotools.geometry.GeometryFactoryFinder;
 import org.geotools.geometry.iso.aggregate.MultiPrimitiveImpl;
 import org.geotools.geometry.iso.primitive.CurveImpl;
@@ -35,6 +32,9 @@ import org.geotools.geometry.iso.primitive.SurfaceBoundaryImpl;
 import org.geotools.geometry.iso.primitive.SurfaceImpl;
 import org.geotools.geometry.iso.util.Assert;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.geotools.util.factory.Factory;
+import org.geotools.util.factory.GeoTools;
+import org.geotools.util.factory.Hints;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.Envelope;
 import org.opengis.geometry.MismatchedDimensionException;
@@ -73,7 +73,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * types as parameters
  *
  * @author Jackson Roehrig & Sanjay Jena
- * @source $URL$
  */
 public class GeometryFactoryImpl implements Factory, GeometryFactory {
 
@@ -266,7 +265,7 @@ public class GeometryFactoryImpl implements Factory, GeometryFactory {
         if (directPositions == null)
             directPositions = new ArrayList<DirectPosition>(coordList.size());
         for (double[] coords : coordList) {
-            directPositions.add(createDirectPosition(coords));
+            directPositions.add(positionFactory.createDirectPosition(coords));
         }
         return directPositions;
     }
@@ -282,7 +281,7 @@ public class GeometryFactoryImpl implements Factory, GeometryFactory {
         // TODO Test
         if (coord.length != this.getDimension()) throw new MismatchedDimensionException();
 
-        return (PositionImpl) createPosition(createDirectPosition(coord));
+        return (PositionImpl) createPosition(positionFactory.createDirectPosition(coord));
     }
 
     /* (non-Javadoc)
@@ -314,14 +313,14 @@ public class GeometryFactoryImpl implements Factory, GeometryFactory {
     /**
      * Creates an Envelope with the given coordinates.
      *
-     * @param Coordinate c of a point p. The created envelope will have this coordinate as lower and
-     *     upper corner
+     * @param c Coordinate c of a point p. The created envelope will have this coordinate as lower
+     *     and upper corner
      * @return EnvelopeImpl The created envelope will have the coordinate as lower and upper corner.
      */
     public EnvelopeImpl createEnvelope(double[] c) {
         if (c.length != this.getDimension()) throw new MismatchedDimensionException();
 
-        return new EnvelopeImpl(createDirectPosition(c));
+        return new EnvelopeImpl(positionFactory.createDirectPosition(c));
     }
 
     /**
@@ -513,9 +512,9 @@ public class GeometryFactoryImpl implements Factory, GeometryFactory {
             result.add(
                     this.createTriangle(
                             null,
-                            createDirectPosition(coord0),
-                            createDirectPosition(coord1),
-                            createDirectPosition(coord2)));
+                            positionFactory.createDirectPosition(coord0),
+                            positionFactory.createDirectPosition(coord1),
+                            positionFactory.createDirectPosition(coord2)));
         }
         return result;
     }

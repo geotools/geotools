@@ -27,7 +27,6 @@ import org.geotools.data.DataStoreFinder;
 /**
  * @author Christian Mueller
  *     <p>Abstract test class for getting a jdbc data source via JNDI lookup
- * @source $URL$
  */
 public abstract class JDBCJNDIDataSourceOnlineTest extends JDBCTestSupport {
 

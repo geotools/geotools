@@ -25,7 +25,6 @@ import org.opengis.feature.Feature;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-/** @source $URL$ */
 public class GeoJSON {
     static GeometryJSON gjson = new GeometryJSON();
     static FeatureJSON fjson = new FeatureJSON();

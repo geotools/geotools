@@ -48,7 +48,6 @@ import org.opengis.referencing.operation.MathTransform;
  * </ul>
  *
  * @author Luca Paolino - GeoSolutions
- * @source $URL$
  */
 @DescribeProcess(
     title = "Area Grid",

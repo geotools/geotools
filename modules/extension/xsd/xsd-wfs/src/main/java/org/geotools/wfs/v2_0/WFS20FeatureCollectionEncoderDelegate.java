@@ -22,7 +22,7 @@ import org.geotools.gml2.simple.GMLWriter;
 import org.geotools.gml2.simple.QualifiedName;
 import org.geotools.gml3.simple.GML32FeatureCollectionEncoderDelegate;
 import org.geotools.gml3.v3_2.GML;
-import org.geotools.xml.Encoder;
+import org.geotools.xsd.Encoder;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.FeatureType;
 import org.xml.sax.Attributes;

@@ -18,7 +18,6 @@ import org.opengis.annotation.XmlElement;
  * true} if the first geometric operand crosses the second (in the sense defined by the OGC Simple
  * Features specification).
  *
- * @source $URL$
  * @version <A HREF="http://www.opengis.org/docs/02-059.pdf">Implementation specification 1.0</A>
  * @author Chris Dillard (SYS Technologies)
  * @since GeoAPI 2.0

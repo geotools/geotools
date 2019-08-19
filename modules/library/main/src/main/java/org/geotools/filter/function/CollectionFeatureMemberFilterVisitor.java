@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2011 Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2011, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -26,7 +26,6 @@ import org.opengis.filter.expression.PropertyName;
  * such as Collection_AverageFunction.
  *
  * @since 8.0
- * @source $URL$
  */
 public final class CollectionFeatureMemberFilterVisitor extends DuplicatingFilterVisitor {
     public Object visit(PropertyName expression, Object data) {

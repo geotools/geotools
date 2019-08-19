@@ -25,8 +25,8 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.map.DefaultMapContext;
-import org.geotools.map.MapContext;
+import org.geotools.map.FeatureLayer;
+import org.geotools.map.MapContent;
 import org.geotools.renderer.lite.StreamingRenderer;
 import org.geotools.styling.BasicPolygonStyle;
 import org.geotools.styling.Style;
@@ -40,13 +40,10 @@ import org.locationtech.jts.util.Stopwatch;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * This is a legacy benchmarking suite I'm using to assess the performance of some very large
  * datasets. Will be removed.
- *
- * @source $URL$
  */
 @Ignore
 public class LargePolygonsPerfTest {
@@ -75,7 +72,7 @@ public class LargePolygonsPerfTest {
             // test.testRender();
             LargePolygonsPerfTest.oneTimeTearDown();
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
     }
 
@@ -96,7 +93,7 @@ public class LargePolygonsPerfTest {
     }
 
     private void log(String s) {
-        System.err.println(s);
+        // System.err.println(s);
     }
 
     @Test
@@ -137,15 +134,14 @@ public class LargePolygonsPerfTest {
 
     private void testRender(SimpleFeatureSource featureSource) throws Exception {
         SimpleFeatureType schema = featureSource.getSchema();
-        CoordinateReferenceSystem crs = schema.getCoordinateReferenceSystem();
         ReferencedEnvelope bounds = featureSource.getBounds();
 
-        MapContext context = new DefaultMapContext(crs);
+        MapContent content = new MapContent();
         Style style = new BasicPolygonStyle();
-        context.addLayer(featureSource, style);
-        context.setAreaOfInterest(bounds);
+        content.addLayer(new FeatureLayer(featureSource, style));
+        content.getViewport().setBounds(bounds);
         StreamingRenderer renderer = new StreamingRenderer();
-        renderer.setContext(context);
+        renderer.setMapContent(content);
 
         BufferedImage image = new BufferedImage(800, 600, BufferedImage.TYPE_INT_ARGB);
         Graphics2D graphics = image.createGraphics();

@@ -19,7 +19,6 @@ package org.geotools.data.spatialite;
 import org.geotools.jdbc.JDBCFeatureLockingOnlineTest;
 import org.geotools.jdbc.JDBCTestSetup;
 
-/** @source $URL$ */
 public class SpatiaLiteFeatureLockingOnlineTest extends JDBCFeatureLockingOnlineTest {
 
     @Override

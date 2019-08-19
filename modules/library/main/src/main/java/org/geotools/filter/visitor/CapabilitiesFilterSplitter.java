@@ -133,14 +133,13 @@ import org.opengis.filter.temporal.TOverlaps;
  * @author dzwiers
  * @author commented and ported from gt to ogc filters by saul.farber
  * @author ported to work upon {@code org.geotools.filter.Capabilities} by Gabriel Roldan
- * @source $URL$
  * @since 2.5.3
  */
 @SuppressWarnings({"nls", "unchecked"})
 public class CapabilitiesFilterSplitter implements FilterVisitor, ExpressionVisitor {
 
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.filter");
+            org.geotools.util.logging.Logging.getLogger(CapabilitiesFilterSplitter.class);
 
     /**
      * The stack holding the bits of the filter that are not processable by something with the given
@@ -267,9 +266,7 @@ public class CapabilitiesFilterSplitter implements FilterVisitor, ExpressionVisi
      * @see FilterVisitor#visit(IncludeFilter, Object)
      * @param filter the {@link Filter} to visit
      */
-    public void visit(IncludeFilter filter) {
-        return;
-    }
+    public void visit(IncludeFilter filter) {}
 
     /**
      * @see FilterVisitor#visit(ExcludeFilter, Object)

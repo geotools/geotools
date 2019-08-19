@@ -29,7 +29,6 @@ import org.opengis.referencing.operation.PlanarProjection;
 /**
  * Base class for for azimuthal (or planar) map projections.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @since 2.1

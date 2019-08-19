@@ -61,7 +61,7 @@ public class PostGISCitextOnlineTest extends JDBCTestSupport {
             try {
                 setup.tearDown();
             } catch (Exception e) {
-                System.out.println("Error occurred tearing down the test setup");
+                // System.out.println("Error occurred tearing down the test setup");
             }
         }
     }

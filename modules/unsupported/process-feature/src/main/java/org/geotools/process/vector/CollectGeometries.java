@@ -33,7 +33,6 @@ import org.opengis.util.ProgressListener;
  * specialized subclass of it in case the geometries are uniform)
  *
  * @author Andrea Aime - GeoSolutions
- * @source $URL$
  */
 @DescribeProcess(
     title = "Collect Geometries",

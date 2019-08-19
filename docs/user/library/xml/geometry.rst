@@ -295,7 +295,7 @@ XDO allows you to declare w/ Objects the Schema you are interested in, and how i
 * reuse occurs on a schema by schema basis
 * You can "generated" a schema explicitly out into code
 * Code has been generated for GML2, WFS, and WMS
-* Custom documents, based on an extention of a known schema can be parsed
+* Custom documents, based on an extension of a known schema can be parsed
 * generated code also includes support for the production of XML documents.
 * validation of content is supported
 
@@ -384,8 +384,8 @@ Here is an example to parse against the above schema::
 To parse the document::
   
   //create the parser with the gml 2.0 configuration
-  org.geotools.xml.Configuration configuration = new org.geotools.gml2.GMLConfiguration();
-  org.geotools.xml.Parser parser = new org.geotools.xml.Parser( configuration );
+  org.geotools.xsd.Configuration configuration = new org.geotools.gml2.GMLConfiguration();
+  org.geotools.xsd.Parser parser = new org.geotools.xsd.Parser( configuration );
   
   //the xml instance document above
   InputStream xml = ...
@@ -593,8 +593,8 @@ The document for the above file is slightly different (because GML3 has a differ
 And this time when you parse you can refer to the GML3 configuration::
   
   //create the parser with the gml 3.0 configuration
-  org.geotools.xml.Configuration configuration = new org.geotools.gml3.GMLConfiguration();
-  org.geotools.xml.Parser parser = new org.geotools.xml.Parser( configuration );
+  org.geotools.xsd.Configuration configuration = new org.geotools.gml3.GMLConfiguration();
+  org.geotools.xsd.Parser parser = new org.geotools.xsd.Parser( configuration );
   
   //the xml instance document above
   InputStream xml = ...
@@ -734,7 +734,7 @@ Unfortunately, this is rarely the case. GML documents are often encountered in t
 
 If you do not have an XSD file you are likely to get warnings like the following::
   
-  Apr 11, 2009 7:29:06 PM org.geotools.xml.impl.ParserHandler startElement
+  Apr 11, 2009 7:29:06 PM ParserHandler startElement
   INFO: Could not find declaration for: {http://ogr.maptools.org/}FeatureCollection. Creating a mock element declaration and parsing anyways...
 
 Fortunately there are a number of alternatives.
@@ -742,7 +742,7 @@ Fortunately there are a number of alternatives.
 * Alternative 1: Create an Application Schema Configuration
   
   This method can be used if the application schema to be parsed is known before
-  hand. The org.geotools.xml.Configuration class is used to configure the parser
+  hand. The org.geotools.xsd.Configuration class is used to configure the parser
   with the information for a particular schema. The org.geotools.gml.ApplicationSchemaConfiguration can be used to create a
   configuration from a namespace,schemaLocation pair.::
     
@@ -752,7 +752,7 @@ Fortunately there are a number of alternatives.
     String schemaLocation =  getClass().getResource("test.xsd").toString();
     
     org.geotools.xml.Configuruation configuration = new ApplicationSchemaConfiguration( namespace, schemaLocation );
-    org.geotools.xml.Parser parser = new org.geotools.xml.Parser( configuration );
+    org.geotools.xsd.Parser parser = new org.geotools.xsd.Parser( configuration );
    
    //the xml instance document above
    InputStream xml = ...
@@ -771,7 +771,7 @@ Fortunately there are a number of alternatives.
   done with a parser property. The following instructs the parser to ignore the
   application schema::
     
-    org.geotools.xml.Configuration configuration = new org.geotools.gml2.GMLConfiguration();
+    org.geotools.xsd.Configuration configuration = new org.geotools.gml2.GMLConfiguration();
     configuration.getProperties().add( Parser.Properties.IGNORE_SCHEMA_LOCATION );
     configuration.getProperties().add(Parser.Properties.PARSE_UNKNOWN_ELEMENTS);
     ...

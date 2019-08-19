@@ -22,12 +22,12 @@ package org.geotools.referencing.factory;
 // J2SE dependencies and extensions
 
 import java.util.Set;
-import org.geotools.factory.BufferedFactory;
-import org.geotools.factory.FactoryRegistryException;
-import org.geotools.factory.GeoTools;
-import org.geotools.factory.Hints;
 import org.geotools.util.ObjectCache;
 import org.geotools.util.ObjectCaches;
+import org.geotools.util.factory.BufferedFactory;
+import org.geotools.util.factory.FactoryRegistryException;
+import org.geotools.util.factory.GeoTools;
+import org.geotools.util.factory.Hints;
 import org.opengis.metadata.citation.Citation;
 import org.opengis.referencing.AuthorityFactory;
 import org.opengis.referencing.FactoryException;
@@ -61,7 +61,6 @@ import org.opengis.util.InternationalString;
  * implementations to choose from on construction.
  *
  * @since 2.4
- * @source $URL$
  * @version $Id: BufferedAuthorityDecorator.java 26038 2007-06-27 01:58:12Z jgarnett $
  * @author Jody Garnett
  */
@@ -102,7 +101,7 @@ public final class CachedCRSAuthorityDecorator extends AbstractAuthorityFactory
      * choose to implement.
      *
      * @param factory The factory to cache. Can not be {@code null}.
-     * @param maxStrongReferences The maximum number of objects to keep by strong reference.
+     * @param cache The underlying cache
      */
     protected CachedCRSAuthorityDecorator(CRSAuthorityFactory factory, ObjectCache cache) {
         super(((ReferencingFactory) factory).getPriority()); // TODO

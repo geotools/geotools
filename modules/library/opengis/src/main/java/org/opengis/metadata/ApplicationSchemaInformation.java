@@ -19,7 +19,6 @@ import org.opengis.metadata.citation.Citation;
 /**
  * Information about the application schema used to build the dataset.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/as#01-111">ISO 19115</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 2.0
@@ -89,18 +88,4 @@ public interface ApplicationSchemaInformation {
         specification = ISO_19115
     )
     String getSoftwareDevelopmentFileFormat();
-
-    /**
-     * Information about the spatial attributes in the application schema for the feature types.
-     *
-     * @return The spatial attributes in the application schema for the feature types.
-     * @deprecated removed from ISO_19115
-     */
-    @Deprecated
-    @UML(
-        identifier = "featureCatalogueSupplement",
-        obligation = OPTIONAL,
-        specification = ISO_19115
-    )
-    SpatialAttributeSupplement getFeatureCatalogueSupplement();
 }

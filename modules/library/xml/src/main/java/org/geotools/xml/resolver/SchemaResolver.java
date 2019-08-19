@@ -41,13 +41,11 @@ import java.util.logging.Logger;
  * </ol>
  *
  * @author Ben Caradoc-Davies (CSIRO Earth Science and Resource Engineering)
- * @source $URL$
  */
 public class SchemaResolver {
 
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(
-                    SchemaResolver.class.getPackage().getName());
+            org.geotools.util.logging.Logging.getLogger(SchemaResolver.class);
 
     /** A local OASIS catalog (null if not present). */
     private SchemaCatalog catalog;

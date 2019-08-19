@@ -22,10 +22,7 @@ import org.opengis.geometry.aggregate.MultiPoint;
 import org.opengis.geometry.primitive.Point;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-/**
- * @author roehrig
- * @source $URL$
- */
+/** @author roehrig */
 public class MultiPointImpl extends MultiPrimitiveImpl implements MultiPoint {
     private static final long serialVersionUID = -1251341764107281100L;
 

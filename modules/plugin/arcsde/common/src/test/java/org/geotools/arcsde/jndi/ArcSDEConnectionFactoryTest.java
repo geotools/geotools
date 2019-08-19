@@ -42,7 +42,6 @@ import org.junit.Test;
  * Unit test suite for {@link ArcSDEConnectionFactory}
  *
  * @author Gabriel Roldan (OpenGeo)
- * @source $URL$
  * @version $Id$
  * @since 2.5.7
  */

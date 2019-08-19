@@ -77,7 +77,6 @@ import org.opengis.style.SemanticType;
  *
  * @author Jody Garnett, Refractions Research.
  * @since 0.7.0
- * @source $URL$
  */
 public class SLDs extends SLD {
     private static FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);

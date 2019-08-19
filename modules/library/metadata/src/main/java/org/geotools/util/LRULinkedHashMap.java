@@ -19,8 +19,8 @@ package org.geotools.util;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 
 /**
  * A {@link Map} with a fixed maximum size which removes the <cite>least recently used</cite> (LRU)
@@ -32,7 +32,6 @@ import org.geotools.resources.i18n.Errors;
  *
  * @param <K> The type of keys in the map.
  * @param <V> The type of values in the map.
- * @source $URL$
  * @version $Id$
  * @author Simone Giannecchini
  * @author Martin Desruisseaux

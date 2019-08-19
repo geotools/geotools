@@ -16,6 +16,7 @@
  */
 package org.geotools.gml2.bindings;
 
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 import javax.xml.namespace.QName;
@@ -29,14 +30,14 @@ import org.eclipse.xsd.XSDTypeDefinition;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.gml2.GMLConfiguration;
-import org.geotools.xml.AttributeInstance;
-import org.geotools.xml.Binding;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.InstanceComponent;
-import org.geotools.xml.Node;
-import org.geotools.xml.impl.AttributeImpl;
-import org.geotools.xml.impl.ElementImpl;
-import org.geotools.xml.impl.NodeImpl;
+import org.geotools.xsd.AttributeInstance;
+import org.geotools.xsd.Binding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.InstanceComponent;
+import org.geotools.xsd.Node;
+import org.geotools.xsd.impl.AttributeImpl;
+import org.geotools.xsd.impl.ElementImpl;
+import org.geotools.xsd.impl.NodeImpl;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.CoordinateSequence;
 import org.locationtech.jts.geom.CoordinateSequenceFactory;
@@ -46,7 +47,6 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
-/** @source $URL$ */
 public class AbstractGMLBindingTest extends TestCase {
     XSDSchema schema;
     MutablePicoContainer container;
@@ -56,7 +56,13 @@ public class AbstractGMLBindingTest extends TestCase {
         String loc = GMLConfiguration.class.getResource("feature.xsd").toString();
 
         GMLConfiguration configuration = new GMLConfiguration();
-        schema = configuration.schema();
+        XSDSchema result;
+        try {
+            result = configuration.getXSD().getSchema();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        schema = result;
         container = new DefaultPicoContainer();
 
         configuration.registerBindings(container);

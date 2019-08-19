@@ -19,9 +19,9 @@ package org.geotools.renderer.lite.gridcoverage2d;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.geotools.factory.Hints;
 import org.geotools.renderer.i18n.ErrorKeys;
 import org.geotools.renderer.i18n.Errors;
+import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
 import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.util.InternationalString;
@@ -30,13 +30,12 @@ import org.opengis.util.InternationalString;
  * Helper class that implements a subchain.
  *
  * @author Simone Giannecchini, GeoSolutions.
- * @source $URL$
  */
 public abstract class SubchainStyleVisitorCoverageProcessingAdapter
         extends StyleVisitorCoverageProcessingNodeAdapter {
 
     /** Logger for this class. */
-    private static final Logger LOGGER = Logging.getLogger(RasterSymbolizerHelper.class.getName());
+    private static final Logger LOGGER = Logging.getLogger(RasterSymbolizerHelper.class);
     /**
      * sink for the internal graph of {@link CoverageProcessingNode}s created to satisfy the
      * provided SLD.

@@ -33,7 +33,6 @@ import org.opengis.filter.expression.Expression;
  * Fields and helper method for unit test classes
  *
  * @author Michael Bedward
- * @source $URL$
  */
 public class SEFunctionTestBase {
 

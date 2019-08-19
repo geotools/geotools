@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 
 import java.util.List;
 import net.opengis.wcs20.GetCapabilitiesType;
-import org.geotools.xml.Parser;
+import org.geotools.xsd.Parser;
 import org.junit.Test;
 
 public class GetCapabilitiesTest {

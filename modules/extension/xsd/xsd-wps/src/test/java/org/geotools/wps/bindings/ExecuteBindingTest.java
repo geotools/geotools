@@ -15,7 +15,6 @@ import org.geotools.wps.WPSTestSupport;
  * that can be found in the WPS schema (and in that alone)
  *
  * @author Andrea Aime
- * @source $URL$
  */
 public class ExecuteBindingTest extends WPSTestSupport {
 

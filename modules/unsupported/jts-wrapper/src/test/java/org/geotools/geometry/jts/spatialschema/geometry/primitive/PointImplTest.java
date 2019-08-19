@@ -28,10 +28,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
-/**
- * @author gdavis
- * @source $URL$
- */
+/** @author gdavis */
 public class PointImplTest extends TestCase {
 
     public void testNewEmptyPoint() {

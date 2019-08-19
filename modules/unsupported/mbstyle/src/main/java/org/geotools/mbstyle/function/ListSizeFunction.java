@@ -47,6 +47,6 @@ public class ListSizeFunction extends FunctionExpressionImpl {
             throw new IllegalArgumentException(
                     "Filter Function problem for function listSize argument #0 - expected type List");
         }
-        return new Integer(arg0.size());
+        return Integer.valueOf(arg0.size());
     }
 }

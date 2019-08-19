@@ -29,12 +29,12 @@ import java.util.Locale;
 import org.ejml.UtilEjml;
 import org.ejml.data.DMatrixRMaj;
 import org.ejml.dense.row.CommonOps_DDRM;
-import org.geotools.io.ContentFormatException;
-import org.geotools.io.LineFormat;
-import org.geotools.resources.XArray;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
+import org.geotools.util.ContentFormatException;
+import org.geotools.util.LineFormat;
 import org.geotools.util.Utilities;
+import org.geotools.util.XArray;
 import org.opengis.geometry.Envelope;
 import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.referencing.cs.AxisDirection;
@@ -45,7 +45,6 @@ import org.opengis.referencing.operation.Matrix;
  *
  * @since 2.2
  * @version 14.0
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @author Simone Giannecchini
@@ -837,6 +836,12 @@ public class GeneralMatrix implements XMatrix, Serializable {
     /** Returns a clone of this matrix. */
     @Override
     public GeneralMatrix clone() {
+        try {
+            super.clone();
+        } catch (CloneNotSupportedException e) {
+            // should not happen
+            throw new RuntimeException(e);
+        }
         return new GeneralMatrix(this);
     }
 
@@ -960,9 +965,7 @@ public class GeneralMatrix implements XMatrix, Serializable {
      * @param numCols The new number of columns in the matrix.
      */
     public void setSize(int numRows, int numCols) {
-        if (numRows == mat.numCols && numCols == mat.numCols) {
-            // do nothing
-        } else {
+        if (numRows != mat.numCols || numCols != mat.numCols) {
             // grow or shrink
             DMatrixRMaj ret = new DMatrixRMaj(numRows, numCols);
             CommonOps_DDRM.extract(mat, 0, numRows, 0, numCols, ret, 0, 0);

@@ -25,7 +25,6 @@ import org.opengis.referencing.NoSuchAuthorityCodeException;
  * HREF="http://www.epsg.org">EPSG</A>, which is also used in the <A
  * HREF="http://www.remotesensing.org/geotiff/geotiff.html">GeoTIFF</A> standard.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengis.org/docs/01-009.pdf">Implementation specification 1.0</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0

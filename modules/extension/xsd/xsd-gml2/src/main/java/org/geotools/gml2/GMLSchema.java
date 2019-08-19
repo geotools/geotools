@@ -45,7 +45,6 @@ import org.opengis.feature.type.AttributeType;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.feature.type.Name;
 
-/** @source $URL$ */
 public class GMLSchema extends SchemaImpl {
     /**
      *

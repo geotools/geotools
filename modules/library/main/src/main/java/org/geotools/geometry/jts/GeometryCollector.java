@@ -45,7 +45,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * </ul>
  *
  * @author Andrea Aime - GeoSolutions
- * @source $URL$
  */
 public class GeometryCollector {
     List<Geometry> geometries = new ArrayList<Geometry>();

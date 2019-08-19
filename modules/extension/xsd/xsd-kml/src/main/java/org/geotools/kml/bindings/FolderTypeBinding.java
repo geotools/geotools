@@ -21,10 +21,10 @@ import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.kml.KML;
-import org.geotools.xml.AbstractComplexBinding;
-import org.geotools.xml.Binding;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
+import org.geotools.xsd.AbstractComplexBinding;
+import org.geotools.xsd.Binding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
@@ -49,7 +49,6 @@ import org.opengis.feature.simple.SimpleFeatureType;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class FolderTypeBinding extends AbstractComplexBinding {
     public static final SimpleFeatureType FeatureType;

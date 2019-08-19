@@ -26,7 +26,6 @@ import org.opengis.filter.capability.FunctionName;
  *
  * @author Jody Garnett
  * @since 2.2, 2.5
- * @source $URL$
  */
 public class PiFunction extends FunctionExpressionImpl {
     public static FunctionName NAME = new FunctionNameImpl("pi", Double.class);
@@ -41,6 +40,6 @@ public class PiFunction extends FunctionExpressionImpl {
 
     @Override
     public Object evaluate(Object object) {
-        return new Double(Math.PI);
+        return Double.valueOf(Math.PI);
     }
 }

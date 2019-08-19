@@ -35,7 +35,7 @@ import org.locationtech.jts.geom.Geometry;
 /**
  * 
  *
- * @source $URL$
+
  */
 public class IngresDataStoreTest extends JDBCDataStoreTest {
 

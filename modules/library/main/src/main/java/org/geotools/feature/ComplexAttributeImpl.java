@@ -28,7 +28,6 @@ import org.opengis.feature.type.ComplexType;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.identity.Identifier;
 
-/** @source $URL$ */
 public class ComplexAttributeImpl extends AttributeImpl implements ComplexAttribute {
 
     public ComplexAttributeImpl(
@@ -122,7 +121,7 @@ public class ComplexAttributeImpl extends AttributeImpl implements ComplexAttrib
 
         Collection clone = null;
         try {
-            clone = original.getClass().newInstance();
+            clone = original.getClass().getDeclaredConstructor().newInstance();
         } catch (Exception e) {
             clone = new ArrayList();
         }

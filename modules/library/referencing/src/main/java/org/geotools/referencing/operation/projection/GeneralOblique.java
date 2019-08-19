@@ -46,7 +46,6 @@ import org.opengis.referencing.operation.MathTransform;
  *     User Manual, Part 1</a>
  * @see <a href="https://github.com/OSGeo/proj.4/blob/master/src/PJ_ob_tran.c">proj.4</a>
  * @since 13.1
- * @source $URL$
  * @version $Id$
  * @author Maciej Filocha (ICM)
  */

@@ -19,11 +19,6 @@ package org.geotools.data.postgis;
 import org.geotools.jdbc.JDBCEmptyGeometryTestSetup;
 import org.geotools.jdbc.JDBCTestSetup;
 
-/**
- * @source $URL:
- *     http://svn.osgeo.org/geotools/trunk/modules/plugin/jdbc/jdbc-postgis/src/test/java/org/geotools/data/postgis/PostGISBooleanTestSetup.java
- *     $
- */
 public class PostGISEmptyGeometryTestSetup extends JDBCEmptyGeometryTestSetup {
 
     public PostGISEmptyGeometryTestSetup(JDBCTestSetup delegate) {

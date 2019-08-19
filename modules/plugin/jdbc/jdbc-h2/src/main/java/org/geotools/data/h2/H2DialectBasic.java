@@ -23,9 +23,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Map;
 import org.geotools.data.jdbc.FilterToSQL;
-import org.geotools.factory.Hints;
 import org.geotools.jdbc.BasicSQLDialect;
 import org.geotools.jdbc.JDBCDataStore;
+import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
@@ -40,7 +40,6 @@ import org.opengis.feature.type.GeometryDescriptor;
  * H2 database dialect based on basic (non-prepared) statements.
  *
  * @author Justin Deoliveira, OpenGEO
- * @source $URL$
  */
 public class H2DialectBasic extends BasicSQLDialect {
 

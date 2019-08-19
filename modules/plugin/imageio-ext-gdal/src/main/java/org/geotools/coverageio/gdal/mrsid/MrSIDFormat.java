@@ -21,7 +21,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.coverageio.gdal.BaseGDALGridFormat;
 import org.geotools.data.DataSourceException;
-import org.geotools.factory.Hints;
+import org.geotools.util.factory.Hints;
 import org.opengis.coverage.grid.Format;
 import org.opengis.geometry.MismatchedDimensionException;
 
@@ -31,11 +31,10 @@ import org.opengis.geometry.MismatchedDimensionException;
  * @author Daniele Romagnoli, GeoSolutions
  * @author Simone Giannecchini (simboss), GeoSolutions
  * @since 2.5.x
- * @source $URL$
  */
 public final class MrSIDFormat extends BaseGDALGridFormat implements Format {
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.coverageio.gdal.mrsid");
+            org.geotools.util.logging.Logging.getLogger(MrSIDFormat.class);
 
     /** Creates an instance and sets the metadata. */
     public MrSIDFormat() {

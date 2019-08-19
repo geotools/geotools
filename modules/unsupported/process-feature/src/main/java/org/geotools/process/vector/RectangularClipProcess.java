@@ -33,7 +33,6 @@ import org.opengis.referencing.operation.TransformException;
  * A process clipping the geometries in the input feature collection to a specified rectangle
  *
  * @author Andrea Aime - OpenGeo
- * @source $URL$
  */
 @DescribeProcess(
     title = "Rectangular Clip",

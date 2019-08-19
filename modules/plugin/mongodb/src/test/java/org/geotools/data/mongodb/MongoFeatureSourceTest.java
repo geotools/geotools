@@ -31,6 +31,7 @@ import org.opengis.filter.PropertyIsEqualTo;
 import org.opengis.filter.PropertyIsGreaterThan;
 import org.opengis.filter.PropertyIsLessThan;
 import org.opengis.filter.PropertyIsLike;
+import org.opengis.filter.PropertyIsNull;
 import org.opengis.filter.spatial.BBOX;
 
 public abstract class MongoFeatureSourceTest extends MongoTestSupport {
@@ -279,5 +280,13 @@ public abstract class MongoFeatureSourceTest extends MongoTestSupport {
 
         // no feature should match
         assertEquals(0, source.getCount(q));
+    }
+
+    public void testIsNullFilter() throws Exception {
+        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        PropertyIsNull isNull = ff.isNull(ff.literal("properties.nullableAttribute"));
+        SimpleFeatureSource source = dataStore.getFeatureSource("ft1");
+        Query q = new Query("ft1", isNull);
+        assertEquals(2, source.getCount(q));
     }
 }

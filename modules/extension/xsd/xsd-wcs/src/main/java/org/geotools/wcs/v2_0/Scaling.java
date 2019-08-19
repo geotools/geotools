@@ -18,7 +18,7 @@ package org.geotools.wcs.v2_0;
 
 import java.util.Set;
 import javax.xml.namespace.QName;
-import org.geotools.xml.XSD;
+import org.geotools.xsd.XSD;
 
 /**
  * This interface contains the qualified names of all the types,elements, and attributes in the

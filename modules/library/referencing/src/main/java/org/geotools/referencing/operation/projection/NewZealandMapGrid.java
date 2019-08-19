@@ -20,8 +20,8 @@ import static java.lang.Math.*;
 
 import java.awt.geom.Point2D;
 import java.util.Collection;
-import org.geotools.math.Complex;
 import org.geotools.metadata.iso.citation.Citations;
+import org.geotools.metadata.math.Complex;
 import org.geotools.referencing.NamedIdentifier;
 import org.opengis.parameter.GeneralParameterDescriptor;
 import org.opengis.parameter.ParameterDescriptor;
@@ -43,7 +43,6 @@ import org.opengis.referencing.operation.MathTransform;
  * inline on the stack. We assume that Jave 6 and above can do this optimization.
  *
  * @since 2.2
- * @source $URL$
  * @version $Id$
  * @author Justin Deoliveira
  * @author Martin Desruisseaux

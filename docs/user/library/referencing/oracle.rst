@@ -101,8 +101,8 @@ Example using the popular commons-dbcp implementation of DataSource::
     Map config = new HashMap();
     config.put( Hints.EPSG_DATA_SOURCE, source );
     config.put( Hints.AUTHORITY_MAX_ACTIVE, new Intenger( 3 ));
-    config.put( Hints.AUTHORITY_MAX_IDLE, new Integer( 1 ));
-    config.put( Hints.AUTHORITY_MIN_IDLE, new Integer( 0 ));
+    config.put( Hints.AUTHORITY_MAX_IDLE, Integer.valueOf( 1 ));
+    config.put( Hints.AUTHORITY_MIN_IDLE, Integer.valueOf( 0 ));
     
 
 Please be careful can configure your BasicDataSource to provide more connections then the gt-epsg-oracle module will ask for.:
@@ -110,11 +110,11 @@ Please be careful can configure your BasicDataSource to provide more connections
 * Number of available connections: source.setMaxActive(10)
 * Number of connections used::
     
-    new Hints(Hints.AUTHORITY_MAX_ACTIVE, new Integer(3) );
+    new Hints(Hints.AUTHORITY_MAX_ACTIVE, Integer.valueOf(3) );
 
 * Ensure that we return the connections (before the DataSource reclaims them)::
     
-    Hints.AUTHORITY_MIN_IDLE, new Integer( 0 );
+    Hints.AUTHORITY_MIN_IDLE, Integer.valueOf( 0 );
 
 * If you do not do this the gt-epsg-oracle module will encounter problems of the following form.
     

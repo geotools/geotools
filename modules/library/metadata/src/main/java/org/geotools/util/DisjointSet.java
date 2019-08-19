@@ -46,7 +46,6 @@ import java.util.Set;
  *
  * @param <E> The type of elements in this set.
  * @since 2.0
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

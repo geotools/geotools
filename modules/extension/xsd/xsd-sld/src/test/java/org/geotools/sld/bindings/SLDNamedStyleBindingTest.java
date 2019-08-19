@@ -18,7 +18,6 @@ package org.geotools.sld.bindings;
 
 import org.geotools.styling.NamedStyle;
 
-/** @source $URL$ */
 public class SLDNamedStyleBindingTest extends SLDTestSupport {
     public void testType() throws Exception {
         assertEquals(NamedStyle.class, new SLDNamedStyleBinding(null).getType());

@@ -20,7 +20,6 @@ package org.geotools.referencing;
  * Predefined CRS as WKT strings. Hard-coded constants are more convenient for debugging than
  * strings read from a file.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

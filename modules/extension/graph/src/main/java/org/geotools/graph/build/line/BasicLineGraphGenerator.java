@@ -53,7 +53,6 @@ import org.locationtech.jts.index.bintree.Interval;
  * @see org.locationtech.jts.geom.Coordinate
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
  * @author Anders Bakkevold, Bouvet AS, bakkedev@gmail.com
- * @source $URL$
  */
 public class BasicLineGraphGenerator implements LineGraphGenerator {
 

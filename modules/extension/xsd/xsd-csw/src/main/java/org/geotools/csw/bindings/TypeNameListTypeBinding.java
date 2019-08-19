@@ -19,8 +19,8 @@ package org.geotools.csw.bindings;
 import java.util.List;
 import javax.xml.namespace.QName;
 import org.geotools.csw.CSW;
-import org.geotools.xml.AbstractSimpleBinding;
-import org.geotools.xml.InstanceComponent;
+import org.geotools.xsd.AbstractSimpleBinding;
+import org.geotools.xsd.InstanceComponent;
 
 public class TypeNameListTypeBinding extends AbstractSimpleBinding {
     public TypeNameListTypeBinding() {}

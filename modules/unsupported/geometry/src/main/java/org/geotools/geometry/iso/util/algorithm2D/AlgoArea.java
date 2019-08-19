@@ -30,7 +30,6 @@ import org.geotools.geometry.iso.util.elem2D.Edge2D;
  * @author roehrig
  *     <p>TODO To change the template for this generated type comment go to Window - Preferences -
  *     Java - Code Style - Code Templates
- * @source $URL$
  */
 public class AlgoArea {
 
@@ -124,7 +123,7 @@ public class AlgoArea {
                     } else if (type == PathIterator.SEG_QUADTO) {
                         points.add(new Point2D.Double(coords[0], coords[1]));
                         points.add(new Point2D.Double(coords[2], coords[3]));
-                    } else if (type == PathIterator.SEG_LINETO) {
+                    } else if (type == PathIterator.SEG_CUBICTO) {
                         points.add(new Point2D.Double(coords[0], coords[1]));
                         points.add(new Point2D.Double(coords[2], coords[3]));
                         points.add(new Point2D.Double(coords[4], coords[5]));
@@ -147,8 +146,7 @@ public class AlgoArea {
         ArrayList<Point2D> points = new ArrayList<Point2D>(segments.size() + 1);
 
         for (Iterator<Line2D> it = segments.iterator(); it.hasNext(); ) {
-            Line2D edge = it.next();
-            points.add(((Line2D) it.next()).getP1());
+            points.add((it.next()).getP1());
         }
 
         return AlgoPoint2D.pointsOrientation(points).booleanValue();
@@ -175,8 +173,6 @@ public class AlgoArea {
         pointsArray = (Point2D[]) points.toArray(pointsArray);
 
         int n = pointsArray.length;
-        double x[] = new double[n];
-        double y[] = new double[n];
 
         GeneralPath path = new GeneralPath(GeneralPath.WIND_NON_ZERO, n);
 

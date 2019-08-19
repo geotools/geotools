@@ -18,7 +18,6 @@ import org.opengis.annotation.UML;
  * One-dimensional topological primitive in time.
  *
  * @author Alexander Petkov
- * @source $URL$
  */
 @UML(identifier = "TM_Edge", specification = ISO_19108)
 public interface TemporalEdge extends TemporalTopologicalPrimitive {

@@ -19,13 +19,19 @@ package org.geotools.swing;
 
 import static org.junit.Assert.*;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
-import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
-import org.fest.swing.edt.GuiActionRunner;
-import org.fest.swing.edt.GuiQuery;
-import org.fest.swing.edt.GuiTask;
-import org.fest.swing.fixture.FrameFixture;
+import java.awt.image.BufferedImage;
+import java.awt.image.WritableRaster;
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import javax.swing.SwingUtilities;
+import org.assertj.swing.edt.FailOnThreadViolationRepaintManager;
+import org.assertj.swing.edt.GuiActionRunner;
+import org.assertj.swing.edt.GuiQuery;
+import org.assertj.swing.edt.GuiTask;
+import org.assertj.swing.fixture.FrameFixture;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.MapContent;
 import org.geotools.swing.event.MapPaneEvent;
@@ -42,11 +48,16 @@ import org.junit.runner.RunWith;
  *
  * @author Michael Bedward
  * @since 8.0
- * @source $URL$
  * @version $Id$
  */
 @RunWith(GraphicsTestRunner.class)
 public class JMapPaneGraphicsTest extends JMapPaneGraphicsTestBase {
+
+    /**
+     * Set this to true to display the screen shot image of the label in the test {@linkplain
+     * #labelTextIsFittedProperly()}.
+     */
+    private static final boolean displayLabelImage = false;
 
     @BeforeClass
     public static void setUpOnce() {
@@ -76,6 +87,40 @@ public class JMapPaneGraphicsTest extends JMapPaneGraphicsTestBase {
         mapPane = null;
     }
 
+    /**
+     * Test for GEOT-6342, background color is not used in 1st rendering of map
+     *
+     * @throws InvocationTargetException
+     * @throws InterruptedException
+     * @throws IOException
+     */
+    @Test
+    public void drawLayersSetsBackgroundonStartup()
+            throws InvocationTargetException, InterruptedException, IOException {
+
+        window.show(new Dimension(WIDTH, HEIGHT));
+        MapContent mapContent = createMapContent(createMatchedBounds(mapPane.getVisibleRect()));
+        mapPane.setMapContent(mapContent);
+        SwingUtilities.invokeAndWait(
+                new Runnable() {
+
+                    @Override
+                    public void run() {
+                        mapPane.setBackground(Color.BLUE);
+                    }
+                });
+
+        mapPane.drawLayers(true);
+        BufferedImage image = (BufferedImage) mapPane.getBaseImage();
+
+        WritableRaster raster = image.getRaster();
+        int[] pixel = new int[4];
+        raster.getPixel(1, 1, pixel);
+        assertEquals("Pixel at (1,1) was not renderered", 0, pixel[0]);
+        assertEquals("Pixel at (1,1) was not renderered", 0, pixel[1]);
+        assertEquals("Pixel at (1,1) was not renderered", 255, pixel[2]);
+    }
+
     @Test
     public void resizingPaneFiresEvent() {
         window.show(new Dimension(WIDTH, HEIGHT));
@@ -93,13 +138,13 @@ public class JMapPaneGraphicsTest extends JMapPaneGraphicsTestBase {
 
     @Test
     public void moveImageUp() {
-        // remeber: moving image up means negative dy
+        // Remember: moving image up means negative dy
         assertMoveImage(0, -10);
     }
 
     @Test
     public void moveImageDown() {
-        // remeber: moving image down means positive dy
+        // Remember: moving image down means positive dy
         assertMoveImage(0, 10);
     }
 
@@ -161,7 +206,7 @@ public class JMapPaneGraphicsTest extends JMapPaneGraphicsTestBase {
                 new GuiTask() {
                     @Override
                     protected void executeInEDT() throws Throwable {
-                        window.component().setVisible(false);
+                        window.target().setVisible(false);
                     }
                 });
 

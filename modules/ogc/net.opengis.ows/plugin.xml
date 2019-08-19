@@ -24,5 +24,19 @@
   </extension>
 
 
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated ows20 -->
+      <package
+            uri="http://www.opengis.net/ows/2.0"
+            class="net.opengis.ows20.Ows20Package"
+            genModel="ows20.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.extension_parser">
+      <!-- @generated ows20 -->
+      <parser
+            type="ows20"
+            class="net.opengis.ows20.util.Ows20ResourceFactoryImpl"/>
+   </extension>
 </plugin>
 

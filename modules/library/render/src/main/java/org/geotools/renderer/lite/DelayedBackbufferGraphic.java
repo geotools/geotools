@@ -275,10 +275,6 @@ final class DelayedBackbufferGraphic extends Graphics2D {
         delegate.fillRoundRect(x, y, width, height, arcWidth, arcHeight);
     }
 
-    public void finalize() {
-        delegate.finalize();
-    }
-
     public Color getBackground() {
         return delegate.getBackground();
     }
@@ -295,6 +291,7 @@ final class DelayedBackbufferGraphic extends Graphics2D {
         return delegate.getClipBounds(r);
     }
 
+    @SuppressWarnings("deprecation")
     public Rectangle getClipRect() {
         return delegate.getClipRect();
     }

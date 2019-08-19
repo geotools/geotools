@@ -21,7 +21,6 @@ package org.geotools.geometry.iso;
  * to treat the dimension of the input data, or do not always work correctly in that dimension.
  *
  * @author Sanjay Dominik Jena
- * @source $URL$
  */
 public class UnsupportedDimensionException extends Exception {
 

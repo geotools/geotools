@@ -23,7 +23,6 @@ import org.opengis.annotation.UML;
  * <p>The horizontal and vertical curves require initial and final tangent vectors for a complete
  * definition. These values are supplied by the four methods defined in this interface.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/as">ISO 19107</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 2.0

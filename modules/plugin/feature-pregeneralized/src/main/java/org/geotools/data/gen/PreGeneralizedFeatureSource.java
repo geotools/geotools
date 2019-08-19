@@ -45,10 +45,11 @@ import org.geotools.data.gen.info.Generalization;
 import org.geotools.data.gen.info.GeneralizationInfo;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureSource;
-import org.geotools.factory.Hints;
 import org.geotools.feature.NameImpl;
+import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeImpl;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -63,7 +64,6 @@ import org.opengis.filter.sort.SortBy;
  *     <p>Feature source for a feature type with pregeneralized geometries
  *     <p>This featue store does business as usual with the exception described here {@link
  *     PreGeneralizedDataStore}
- * @source $URL$
  */
 public class PreGeneralizedFeatureSource implements SimpleFeatureSource {
 
@@ -191,6 +191,7 @@ public class PreGeneralizedFeatureSource implements SimpleFeatureSource {
         return new PreGeneralizedFeatureCollection(
                 getBaseFeatureSource().getFeatures(),
                 getSchema(),
+                getSchema(),
                 indexMapping.get(0.0),
                 info.getGeomPropertyName(),
                 info.getGeomPropertyName());
@@ -199,6 +200,7 @@ public class PreGeneralizedFeatureSource implements SimpleFeatureSource {
     public SimpleFeatureCollection getFeatures(Filter filter) throws IOException {
         return new PreGeneralizedFeatureCollection(
                 getBaseFeatureSource().getFeatures(filter),
+                getSchema(),
                 getSchema(),
                 indexMapping.get(0.0),
                 info.getGeomPropertyName(),
@@ -214,9 +216,20 @@ public class PreGeneralizedFeatureSource implements SimpleFeatureSource {
         return new PreGeneralizedFeatureCollection(
                 fs.getFeatures(newQuery),
                 getSchema(),
-                indexMapping.get(di == null ? 0.0 : di.getDistance()),
+                getReturnedSchema(getSchema(), query),
+                query.getPropertyNames() == Query.ALL_NAMES
+                        ? indexMapping.get(di == null ? 0.0 : di.getDistance())
+                        : null,
                 info.getGeomPropertyName(),
                 getBackendGeometryName(fs));
+    }
+
+    private SimpleFeatureType getReturnedSchema(SimpleFeatureType schema, Query query) {
+        if (query.getPropertyNames() == Query.ALL_NAMES) {
+            return schema;
+        }
+
+        return SimpleFeatureTypeBuilder.retype(schema, query.getPropertyNames());
     }
 
     public FeatureReader<SimpleFeatureType, SimpleFeature> getFeatureReader(
@@ -235,6 +248,7 @@ public class PreGeneralizedFeatureSource implements SimpleFeatureSource {
 
             return new PreGeneralizedFeatureReader(
                     getSchema(),
+                    getReturnedSchema(getSchema(), query),
                     indexMapping.get(di == null ? 0.0 : di.getDistance()),
                     backendReader,
                     info.getGeomPropertyName(),
@@ -415,7 +429,6 @@ public class PreGeneralizedFeatureSource implements SimpleFeatureSource {
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
-        ;
 
         hints.add(Hints.GEOMETRY_DISTANCE); // always supported
         supportedHints = Collections.unmodifiableSet(hints);
@@ -499,7 +512,6 @@ public class PreGeneralizedFeatureSource implements SimpleFeatureSource {
     }
 
     /**
-     * @param query the query object
      * @param fs the backend feature surce
      * @return Proxy modified for backend feature source
      *     <p>create a proxy for the origianl query object 1) typeName has to be changed to backend

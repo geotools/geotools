@@ -19,14 +19,13 @@ package org.geotools.kml.bindings;
 import javax.xml.namespace.QName;
 import org.geotools.kml.KML;
 import org.geotools.kml.KMLTestSupport;
-import org.geotools.xml.Binding;
+import org.geotools.xsd.Binding;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LinearRing;
 import org.locationtech.jts.geom.Polygon;
 import org.w3c.dom.Document;
 
-/** @source $URL$ */
 public class PolygonTypeBindingTest extends KMLTestSupport {
     public void testType() {
         assertEquals(Polygon.class, binding(KML.PolygonType).getType());

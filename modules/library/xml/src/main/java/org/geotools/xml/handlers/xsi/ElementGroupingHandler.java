@@ -24,7 +24,6 @@ import org.xml.sax.SAXException;
  * Allows the developer to avoid instanceof operators when wishing to compress.
  *
  * @author dzwiers www.refractions.net
- * @source $URL$
  */
 public abstract class ElementGroupingHandler extends XSIElementHandler {
     /**

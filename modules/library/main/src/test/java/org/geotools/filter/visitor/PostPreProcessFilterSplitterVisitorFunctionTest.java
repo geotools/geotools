@@ -28,7 +28,6 @@ import org.opengis.filter.expression.Expression;
  * Test case where only specific functions are supported.
  *
  * @author Jesse
- * @source $URL$
  */
 public class PostPreProcessFilterSplitterVisitorFunctionTest
         extends AbstractPostPreProcessFilterSplittingVisitorTests {

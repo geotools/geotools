@@ -33,7 +33,6 @@ package org.opengis.util;
  * @see <A
  *     HREF="http://developer.java.sun.com/developer/bugParade/bugs/4098033.html">&quot;<cite>Cloneable
  *     doesn't define <code>clone()</code></cite>&quot; on Sun's bug parade</A>
- * @source $URL$
  */
 public interface Cloneable extends java.lang.Cloneable {
     /**

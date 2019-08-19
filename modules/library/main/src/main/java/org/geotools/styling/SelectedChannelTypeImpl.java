@@ -23,11 +23,7 @@ import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
 import org.opengis.style.StyleVisitor;
 
-/**
- * Default implementation of SelectedChannelType.
- *
- * @source $URL$
- */
+/** Default implementation of SelectedChannelType. */
 public class SelectedChannelTypeImpl implements SelectedChannelType {
     private FilterFactory filterFactory;
 

@@ -44,7 +44,6 @@ import org.opengis.feature.simple.SimpleFeatureType;
  *
  * <p>Note: a nearly identical copy of this file exists in the {@code ext/shape} module.
  *
- * @source $URL$
  * @version $Id$
  * @author Ian Schneider
  * @author Martin Desruisseaux
@@ -81,7 +80,7 @@ public abstract class TestCaseSupport extends TestCase {
 
     protected OGRDataStoreFactory createDataStoreFactory() {
         try {
-            return dataStoreFactoryClass.newInstance();
+            return dataStoreFactoryClass.getDeclaredConstructor().newInstance();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -109,7 +108,7 @@ public abstract class TestCaseSupport extends TestCase {
                 AVAILABLE = true;
             } catch (Throwable e) {
                 AVAILABLE = false;
-                System.out.println("Failed to initialize GDAL, error is: " + e);
+                // System.out.println("Failed to initialize GDAL, error is: " + e);
             }
         }
         return AVAILABLE;

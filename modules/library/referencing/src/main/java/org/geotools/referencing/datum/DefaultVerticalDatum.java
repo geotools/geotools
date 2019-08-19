@@ -21,9 +21,9 @@ package org.geotools.referencing.datum;
 
 import java.util.Collections;
 import java.util.Map;
+import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.referencing.AbstractIdentifiedObject;
 import org.geotools.referencing.wkt.Formatter;
-import org.geotools.resources.i18n.VocabularyKeys;
 import org.geotools.util.Utilities;
 import org.opengis.referencing.datum.VerticalDatum;
 import org.opengis.referencing.datum.VerticalDatumType;
@@ -36,7 +36,6 @@ import org.opengis.referencing.datum.VerticalDatumType;
  * org.opengis.referencing.cs.CoordinateSystemAxis coordinate system axis} with which it is combined
  * to create a {@linkplain org.opengis.referencing.crs.VerticalCRS vertical CRS}.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @since 2.1
@@ -184,6 +183,7 @@ public class DefaultVerticalDatum extends AbstractDatum implements VerticalDatum
      *     versions of this class.
      */
     @Override
+    @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int hashCode() {
         return super.hashCode() ^ type.hashCode();
     }

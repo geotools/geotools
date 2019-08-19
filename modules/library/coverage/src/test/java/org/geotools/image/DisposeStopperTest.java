@@ -31,7 +31,7 @@ import javax.imageio.ImageIO;
 import javax.imageio.stream.ImageInputStream;
 import org.geotools.TestData;
 import org.geotools.coverage.processing.MosaicTest;
-import org.geotools.resources.image.ImageUtilities;
+import org.geotools.image.util.ImageUtilities;
 import org.junit.Test;
 
 public class DisposeStopperTest {

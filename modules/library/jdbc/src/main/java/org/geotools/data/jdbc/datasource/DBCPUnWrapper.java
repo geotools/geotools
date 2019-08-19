@@ -25,7 +25,6 @@ import org.apache.commons.dbcp.DelegatingStatement;
  * Unwraps DBCP managed connections
  *
  * @author Andrea Aime - TOPP
- * @source $URL$
  */
 public class DBCPUnWrapper implements UnWrapper {
 

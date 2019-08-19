@@ -46,11 +46,6 @@ import org.locationtech.jts.geom.Polygon;
  *
  *          </code>
  * </pre>
- *
- * @generated
- * @source $URL$
- *     http://svn.osgeo.org/geotools/trunk/modules/extension/xsd/xsd-gml3/src/main/java/org
- *     /geotools/gml3/bindings/SurfacePropertyTypeBinding.java $
  */
 public class SurfacePropertyTypeBinding extends GeometryPropertyTypeBindingBase {
 

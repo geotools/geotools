@@ -18,7 +18,6 @@ package org.geotools.geometry.iso.util.algorithmND;
 
 import junit.framework.TestCase;
 
-/** @source $URL$ */
 public class AlgoRectangleNDTest extends TestCase {
 
     public void testWorkingAlgos() {
@@ -168,7 +167,7 @@ public class AlgoRectangleNDTest extends TestCase {
         coords[1] = 0.4;
         double[] newCoords = AlgoPointND.scale(coords, 3.0);
 
-        System.out.println(newCoords[0] + "  " + newCoords[1]);
+        // System.out.println(newCoords[0] + "  " + newCoords[1]);
 
         assertTrue(newCoords[0] == 0.9);
         assertTrue(newCoords[1] == 1.2);

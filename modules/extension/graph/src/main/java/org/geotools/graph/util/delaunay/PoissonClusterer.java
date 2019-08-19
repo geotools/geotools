@@ -24,10 +24,7 @@ import org.geotools.graph.structure.basic.BasicGraph;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.expression.Expression;
 
-/**
- * @author jfc173
- * @source $URL$
- */
+/** @author jfc173 */
 public class PoissonClusterer {
 
     private static double threshold = 1.0E-10;
@@ -41,7 +38,7 @@ public class PoissonClusterer {
         Iterator nodeIt = nodes.iterator();
         Vector clusterNodes = new Vector();
         Vector clusterEdges = new Vector();
-        System.out.println("x, y, actual, expected, probability");
+        // System.out.println("x, y, actual, expected, probability");
         while (nodeIt.hasNext()) {
             DelaunayNode next = (DelaunayNode) nodeIt.next();
             SimpleFeature nextFeature = next.getFeature();
@@ -94,7 +91,6 @@ public class PoissonClusterer {
                         SimpleFeature neighborFeature = neighbor.getFeature();
                         newNodes.add(neighbor);
 
-                        Object neighborsBaseObj = base.evaluate(nextFeature);
                         if (!(baseObj instanceof Number)) {
                             throw new RuntimeException(
                                     "Expression "
@@ -102,7 +98,6 @@ public class PoissonClusterer {
                                             + " must evaluate to a number on feature "
                                             + neighborFeature);
                         }
-                        Object neighborsTargetObj = target.evaluate(nextFeature);
                         if (!(targetObj instanceof Number)) {
                             throw new RuntimeException(
                                     "Expression "
@@ -152,7 +147,6 @@ public class PoissonClusterer {
                 while (newNodeIt.hasNext()) {
                     DelaunayNode nextNode = (DelaunayNode) newNodeIt.next();
                     SimpleFeature nextFeature2 = nextNode.getFeature();
-                    Object neighborsBaseObj = base.evaluate(nextFeature2);
                     if (!(baseObj instanceof Number)) {
                         throw new RuntimeException(
                                 "Expression "
@@ -160,7 +154,6 @@ public class PoissonClusterer {
                                         + " must evaluate to a number on feature "
                                         + nextFeature2);
                     }
-                    Object neighborsTargetObj = target.evaluate(nextFeature2);
                     if (!(targetObj instanceof Number)) {
                         throw new RuntimeException(
                                 "Expression "
@@ -181,16 +174,16 @@ public class PoissonClusterer {
             double poissonProb = top / bottom;
             //            System.out.println("testing " + newNodes);
             //            System.out.println("testing " + newEdges);
-            System.out.println(
-                    next.getCoordinate().x
-                            + ", "
-                            + next.getCoordinate().y
-                            + ", "
-                            + totalTarget
-                            + ", "
-                            + expectedTarget
-                            + ", "
-                            + poissonProb);
+            // System.out.println(
+            //                    next.getCoordinate().x
+            //                            + ", "
+            //                            + next.getCoordinate().y
+            //                            + ", "
+            //                            + totalTarget
+            //                            + ", "
+            //                            + expectedTarget
+            //                            + ", "
+            //                            + poissonProb);
 
             if (poissonProb < threshold) {
                 clusterNodes.addAll(newNodes);

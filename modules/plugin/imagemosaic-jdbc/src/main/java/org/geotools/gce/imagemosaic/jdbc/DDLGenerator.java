@@ -28,6 +28,7 @@ import java.util.logging.Logger;
  *
  * @author mcr
  */
+@SuppressWarnings("PMD.SystemPrintln")
 class DDLGenerator extends AbstractCmd {
     private static final int DefaultPyramids = 0;
 
@@ -111,7 +112,7 @@ class DDLGenerator extends AbstractCmd {
                 try {
                     config = Config.readFrom(getURLFromString(args[i + 1]));
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
                     System.exit(1);
                 }
                 if (config != null
@@ -136,7 +137,7 @@ class DDLGenerator extends AbstractCmd {
                 i++;
 
             } else if (args[i].equals("-pyramids")) {
-                pyramids = new Integer(args[i + 1]);
+                pyramids = Integer.valueOf(args[i + 1]);
                 i++;
             } else if (args[i].equals("-targetDir")) {
                 targetDir = args[i + 1];
@@ -175,7 +176,7 @@ class DDLGenerator extends AbstractCmd {
         try {
             gen.generate();
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             System.exit(1);
         }
 

@@ -19,7 +19,6 @@ package org.geotools.data.oracle;
 import org.geotools.jdbc.JDBCFeatureLockingOnlineTest;
 import org.geotools.jdbc.JDBCTestSetup;
 
-/** @source $URL$ */
 public class OracleFeatureLockingOnlineTest extends JDBCFeatureLockingOnlineTest {
 
     @Override

@@ -16,20 +16,16 @@
  */
 package org.geotools.filter;
 
+import java.util.ArrayList;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterVisitor;
 import org.opengis.filter.Not;
 
-/**
- * @author jdeolive
- * @source $URL$
- */
+/** @author jdeolive */
 public class NotImpl extends LogicFilterImpl implements Not {
 
-    @Deprecated
-    protected NotImpl() {}
-
     protected NotImpl(Filter filter) {
+        super(new ArrayList<>());
         this.children.add(filter);
     }
 

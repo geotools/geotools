@@ -25,7 +25,6 @@ import java.util.Vector;
  * @author roehrig
  *     <p>TODO To change the template for this generated type comment go to Window - Preferences -
  *     Java - Code Style - Code Templates
- * @source $URL$
  */
 public class Geo2DFactory {
 
@@ -45,7 +44,6 @@ public class Geo2DFactory {
          */
         public static int[] getTriangles(Node2D n0, Node2D n1) {
             TN tn0 = (TN) n0.object;
-            TN tn1 = (TN) n1.object;
             int side[] = new int[2];
             side[0] = -1;
             side[1] = -1;
@@ -161,8 +159,8 @@ public class Geo2DFactory {
     public static Object[] splitEdge(Edge2D edge, Point2D p) {
 
         if (edge.getLeftSimplex() != null || edge.getRightSimplex() != null) {
-            System.out.println(
-                    "error connectSimplexSimplex(Simplex2D simplex0, Simplex2D simplex1)");
+            // System.out.println("error connectSimplexSimplex(Simplex2D simplex0, Simplex2D
+            // simplex1)");
             return null;
         }
 
@@ -181,20 +179,6 @@ public class Geo2DFactory {
 
         newEdge.object = edge.object;
         return new Object[] {newEdge, newNode};
-    }
-
-    /**
-     * @param edge
-     * @param n1
-     * @param ns
-     */
-    private static void connect(Edge2D edge, Node2D n0, Node2D n1) {
-        if (edge.hasPoint(n0) && edge.hasPoint(n1)) {
-            System.out.println("error connect(Edge2D edge, Node2D n0, Node2D n1)");
-        }
-        edge.setNodes(n0, n1);
-        n0.linkEdge(edge);
-        n1.linkEdge(edge);
     }
 
     /**

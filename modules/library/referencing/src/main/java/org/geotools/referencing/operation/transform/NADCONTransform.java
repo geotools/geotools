@@ -23,6 +23,10 @@ import java.io.Serializable;
 import java.net.URI;
 import java.net.URL;
 import java.util.prefs.Preferences;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
+import org.geotools.metadata.i18n.Vocabulary;
+import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.parameter.DefaultParameterDescriptor;
 import org.geotools.parameter.Parameter;
@@ -33,12 +37,7 @@ import org.geotools.referencing.factory.gridshift.GridShiftLocator;
 import org.geotools.referencing.factory.gridshift.NADCONGridShiftFactory;
 import org.geotools.referencing.factory.gridshift.NADConGridShift;
 import org.geotools.referencing.operation.MathTransformProvider;
-import org.geotools.referencing.operation.builder.LocalizationGrid;
-import org.geotools.resources.Arguments;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
-import org.geotools.resources.i18n.Vocabulary;
-import org.geotools.resources.i18n.VocabularyKeys;
+import org.geotools.util.Arguments;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.ParameterDescriptor;
 import org.opengis.parameter.ParameterDescriptorGroup;
@@ -108,7 +107,6 @@ import org.opengis.referencing.operation.Transformation;
  * @see <a href="http://www.ngs.noaa.gov/TOOLS/Nadcon/Nadcon.html">NADCON - North American Datum
  *     Conversion Utility</a>
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Rueben Schulz
  * @todo the transform code does not deal with the case where grids cross +- 180 degrees.
@@ -144,12 +142,6 @@ public class NADCONTransform extends AbstractMathTransform
 
     /** Longitude grid shift file names. Output in WKT. */
     private final URI longGridName;
-
-    /**
-     * Longitude and latitude grid shift values. Values are organized from low to high longitude
-     * (low x index to high) and low to high latitude (low y index to high).
-     */
-    private LocalizationGrid gridShift;
 
     /**
      * The {@link #gridShift} values as a {@code LocalizationGridTransform2D}. Used for
@@ -202,7 +194,6 @@ public class NADCONTransform extends AbstractMathTransform
                 return result;
             }
         }
-        ;
 
         throw new FactoryException("Could not locate grid file " + grid);
     }
@@ -509,13 +500,7 @@ public class NADCONTransform extends AbstractMathTransform
             return (MathTransform2D) super.inverse();
         }
 
-        /**
-         * Restore reference to this object after deserialization.
-         *
-         * @param in DOCUMENT ME!
-         * @throws IOException DOCUMENT ME!
-         * @throws ClassNotFoundException DOCUMENT ME!
-         */
+        /** Restore reference to this object after deserialization. */
         private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
             in.defaultReadObject();
             NADCONTransform.this.inverse = this;

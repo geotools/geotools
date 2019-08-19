@@ -20,7 +20,6 @@ import java.io.IOException;
 import javax.swing.JOptionPane;
 import org.geotools.data.DataStore;
 
-/** @source $URL$ */
 public class TypeNameChooser {
 
     public static String showTypeNameChooser(DataStore dataStore) {

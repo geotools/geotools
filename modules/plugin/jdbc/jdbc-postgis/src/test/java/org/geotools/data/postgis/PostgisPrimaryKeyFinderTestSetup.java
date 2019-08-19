@@ -18,7 +18,6 @@ package org.geotools.data.postgis;
 
 import org.geotools.jdbc.JDBCPrimaryKeyFinderTestSetup;
 
-/** @source $URL$ */
 public class PostgisPrimaryKeyFinderTestSetup extends JDBCPrimaryKeyFinderTestSetup {
 
     protected PostgisPrimaryKeyFinderTestSetup() {

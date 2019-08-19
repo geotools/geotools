@@ -41,11 +41,10 @@ import org.xml.sax.SAXException;
  *
  * @author James Macgill
  * @author Cory Horner, Refractions Research Inc.
- * @source $URL$
  */
 public class ColorBrewer {
     private static final java.util.logging.Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.brewer.color");
+            org.geotools.util.logging.Logging.getLogger(ColorBrewer.class);
     public static final PaletteType ALL = new PaletteType(true, true, "ALL");
     public static final PaletteType SUITABLE_RANGED = new PaletteType(true, false);
     public static final PaletteType SUITABLE_UNIQUE = new PaletteType(false, true);

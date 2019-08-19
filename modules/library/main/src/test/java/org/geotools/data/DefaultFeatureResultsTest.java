@@ -26,11 +26,10 @@ import org.geotools.data.simple.SimpleFeatureSource;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
-/** @source $URL$ */
 public class DefaultFeatureResultsTest extends TestCase {
 
     public void testMaxFeatureOptimized() throws Exception {
-        DefaultQuery q = new DefaultQuery("roads");
+        Query q = new Query("roads");
         q.setMaxFeatures(10);
 
         // mock up the feature source so that it'll return a count of 20
@@ -46,7 +45,7 @@ public class DefaultFeatureResultsTest extends TestCase {
     }
 
     public void testMaxfeaturesHandCount() throws Exception {
-        DefaultQuery q = new DefaultQuery("roads");
+        Query q = new Query("roads");
         q.setMaxFeatures(1);
 
         // mock up the feature source so that it'll return a count of -1 (too

@@ -18,7 +18,7 @@ package org.geotools.gce.imagemosaic;
 
 import static org.junit.Assert.assertEquals;
 
-import java.awt.RenderingHints;
+import java.awt.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -33,7 +33,6 @@ import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
@@ -41,7 +40,6 @@ import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.coverage.grid.io.footprint.FootprintBehavior;
 import org.geotools.coverage.grid.io.footprint.MultiLevelROIProviderFactory;
-import org.geotools.factory.Hints;
 import org.geotools.filter.text.ecql.ECQL;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.test.ImageAssert;
@@ -50,6 +48,7 @@ import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.test.TestData;
 import org.geotools.util.URLs;
+import org.geotools.util.factory.Hints;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -147,12 +146,9 @@ public class ImageMosaicEgrTest {
         Properties p = new Properties();
         // Setting Raster property
         p.put(MultiLevelROIProviderFactory.SOURCE_PROPERTY, "raster");
-        FileOutputStream fos = null;
-        try {
-            fos = new FileOutputStream(new File(testMosaicRaster, "footprints.properties"));
+        try (FileOutputStream fos =
+                new FileOutputStream(new File(testMosaicRaster, "footprints.properties"))) {
             p.store(fos, null);
-        } finally {
-            IOUtils.closeQuietly(fos);
         }
     }
 
@@ -163,12 +159,9 @@ public class ImageMosaicEgrTest {
         p.put(MultiLevelROIProviderFactory.SOURCE_PROPERTY, "sidecar");
         // the vector is not an exact match, that would result in black artifacts
         p.put("footprint_inset", "0.01");
-        FileOutputStream fos = null;
-        try {
-            fos = new FileOutputStream(new File(testMosaicRaster, "footprints.properties"));
+        try (FileOutputStream fos =
+                new FileOutputStream(new File(testMosaicRaster, "footprints.properties"))) {
             p.store(fos, null);
-        } finally {
-            IOUtils.closeQuietly(fos);
         }
     }
 

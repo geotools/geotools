@@ -20,7 +20,6 @@ package org.geotools.brewer.color;
  * Number of samples that can be represented.
  *
  * @author James Macgill
- * @source $URL$
  */
 public class SampleScheme {
     int[][] sampleScheme = new int[15][];

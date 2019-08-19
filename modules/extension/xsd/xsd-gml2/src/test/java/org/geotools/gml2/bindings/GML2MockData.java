@@ -47,7 +47,6 @@ import org.w3c.dom.Node;
  * Collection of static methods for creating mock data for binding unit tests.
  *
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL$
  */
 public class GML2MockData {
     /** factory used to create geometries */
@@ -195,7 +194,12 @@ public class GML2MockData {
 
     static MultiPoint multiPoint() {
         return setCRS(
-                gf.createMultiPoint(new Coordinate[] {new Coordinate(1, 1), new Coordinate(2, 2)}));
+                gf.createMultiPoint(
+                        new CoordinateArraySequence(
+                                new CoordinateArraySequence(
+                                        new Coordinate[] {
+                                            new Coordinate(1, 1), new Coordinate(2, 2)
+                                        }))));
     }
 
     static Element multiPoint(Document document, Node parent) {
@@ -311,7 +315,7 @@ public class GML2MockData {
         builder.add("theName");
         builder.add("theDescription");
         builder.add(point());
-        builder.add(new Integer(1));
+        builder.add(Integer.valueOf(1));
         builder.add(new Date());
 
         return (SimpleFeature) builder.buildFeature("fid.1");

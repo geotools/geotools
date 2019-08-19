@@ -19,7 +19,6 @@ package org.geotools.geopkg;
 import org.geotools.jdbc.JDBCNoPrimaryKeyOnlineTest;
 import org.geotools.jdbc.JDBCNoPrimaryKeyTestSetup;
 
-/** @source $URL$ */
 public class GeoPkgNoPrimaryKeyOnlineTest extends JDBCNoPrimaryKeyOnlineTest {
 
     @Override

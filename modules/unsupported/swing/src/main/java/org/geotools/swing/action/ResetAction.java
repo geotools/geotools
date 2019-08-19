@@ -26,7 +26,6 @@ import org.geotools.swing.locale.LocaleUtils;
  *
  * @author Michael Bedward
  * @since 2.6
- * @source $URL$
  * @version $Id$
  */
 public class ResetAction extends MapAction {
@@ -58,7 +57,6 @@ public class ResetAction extends MapAction {
     public ResetAction(MapPane mapPane, boolean showToolName) {
         String toolName = showToolName ? TOOL_NAME : null;
 
-        String iconImagePath = null;
         super.init(mapPane, toolName, TOOL_TIP, ICON_IMAGE);
     }
 

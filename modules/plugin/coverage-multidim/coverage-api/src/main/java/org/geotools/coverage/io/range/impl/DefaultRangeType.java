@@ -30,7 +30,6 @@ import org.opengis.util.InternationalString;
  * Default implementation of {@link RangeType}
  *
  * @author Simone Giannecchini, GeoSolutions.
- * @source $URL$
  */
 public class DefaultRangeType implements RangeType {
     private InternationalString description;

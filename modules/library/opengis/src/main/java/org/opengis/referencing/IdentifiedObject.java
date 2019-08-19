@@ -31,7 +31,6 @@ import org.opengis.util.InternationalString;
  *     in GeoAPI because the split between {@code IdentifiedObject} and {@code IdentifiedObjectBase}
  *     in OGC/ISO specification was mostly a workaround for introducing {@code IdentifiedObject} in
  *     ISO 19111 without changing the {@code ReferenceSystem} definition in ISO 19115.
- * @source $URL$
  * @version <A HREF="http://portal.opengeospatial.org/files/?artifact_id=6716">Abstract
  *     specification 2.0</A>
  * @author Martin Desruisseaux (IRD)

@@ -19,20 +19,16 @@ package org.geotools.gce.arcgrid;
 
 import java.io.File;
 import java.io.FileFilter;
-import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.logging.Logger;
 import junit.framework.TestCase;
 import org.geotools.TestData;
 
-/**
- * @author Giannecchini
- * @source $URL$
- */
+/** @author Giannecchini */
 public abstract class ArcGridBaseTestCase extends TestCase {
 
     protected static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(ArcGridBaseTestCase.class.toString());
+            org.geotools.util.logging.Logging.getLogger(ArcGridBaseTestCase.class);
 
     protected File[] testFiles;
 
@@ -92,7 +88,7 @@ public abstract class ArcGridBaseTestCase extends TestCase {
             } catch (Exception e) {
                 // e.printStackTrace();
                 final StringWriter writer = new StringWriter();
-                e.printStackTrace(new PrintWriter(writer));
+                java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
                 errors.append("\nFile ")
                         .append(testFiles[i].getAbsolutePath())
                         .append(" :\n")

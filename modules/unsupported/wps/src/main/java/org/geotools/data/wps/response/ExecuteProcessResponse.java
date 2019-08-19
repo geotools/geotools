@@ -26,8 +26,8 @@ import org.geotools.data.ows.HTTPResponse;
 import org.geotools.data.ows.Response;
 import org.geotools.ows.ServiceException;
 import org.geotools.wps.WPSConfiguration;
-import org.geotools.xml.Configuration;
-import org.geotools.xml.Parser;
+import org.geotools.xsd.Configuration;
+import org.geotools.xsd.Parser;
 import org.xml.sax.SAXException;
 import org.xmlpull.mxp1.MXParser;
 import org.xmlpull.v1.XmlPullParser;
@@ -37,7 +37,6 @@ import org.xmlpull.v1.XmlPullParserException;
  * Represents the response from a server after an ExecuteProcess request has been issued.
  *
  * @author gdavis
- * @source $URL$
  */
 public class ExecuteProcessResponse extends Response {
 

@@ -26,6 +26,7 @@ import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.imageio.netcdf.cv.CoordinateHandlerSpi.CoordinateHandler;
+import org.geotools.imageio.netcdf.utilities.NetCDFCRSUtilities;
 import org.geotools.imageio.netcdf.utilities.NetCDFUtilities;
 import org.geotools.util.Utilities;
 import org.geotools.util.logging.Logging;
@@ -158,7 +159,9 @@ public abstract class CoordinateVariable<T> {
                     coordinateAxis instanceof CoordinateAxis2D
                             ? indexMap.get(coordinateAxis.getDimension(0).getFullName())
                             : 0;
-            return convertedData.get(j * coordinateAxis.getDimension(1).getLength() + i);
+            // j will be zero for 1D axis
+            return convertedData.get(
+                    i + (j != 0 ? (j * coordinateAxis.getDimension(1).getLength()) : 0));
         }
 
         @Override
@@ -304,21 +307,26 @@ public abstract class CoordinateVariable<T> {
         this.coordinateAxis = coordinateAxis;
         this.conversionFactor = 1d;
         AxisType axisType = coordinateAxis.getAxisType();
-        // Special management for projected coordinates with unit = km
-        if ((axisType == AxisType.GeoX || axisType == AxisType.GeoY)
-                && coordinateAxis.getUnitsString().equalsIgnoreCase("km")) {
+        // Legacy: Special management for projected coordinates with unit = km
+        if (NetCDFCRSUtilities.isConvertAxisKm()
+                && ((axisType == AxisType.GeoX || axisType == AxisType.GeoY)
+                        && coordinateAxis.getUnitsString().equalsIgnoreCase("km"))) {
             conversionFactor = KM_TO_M;
             convertAxis = true;
         }
     }
 
     protected void init() {
-        if (coordinateAxis.isNumeric()
-                && coordinateAxis instanceof CoordinateAxis1D
-                && !coordinateAxis.hasMissing()) {
-            axisHelper = new CoordinateAxis1DNumericHelper();
-        } else {
+        if (!coordinateAxis.isNumeric()
+                || !(coordinateAxis instanceof CoordinateAxis1D)
+                || (coordinateAxis.hasMissing()
+                        && !AxisType.Time.equals(coordinateAxis.getAxisType()))) {
+            // Not sure time variable can have actual NoData values in the array.
+            // Let's exclude it from GeneralHelper case.
+            // We may revisit it if we find some data with FillValues in the array.
             axisHelper = new CoordinateAxisGeneralHelper();
+        } else {
+            axisHelper = new CoordinateAxis1DNumericHelper();
         }
     }
 

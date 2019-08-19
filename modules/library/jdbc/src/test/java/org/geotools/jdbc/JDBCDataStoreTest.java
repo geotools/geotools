@@ -16,8 +16,8 @@
  */
 package org.geotools.jdbc;
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -39,8 +39,8 @@ import java.util.List;
 import java.util.concurrent.*;
 import org.geotools.data.Query;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.factory.Hints;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.geotools.util.factory.Hints;
 import org.junit.Test;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;

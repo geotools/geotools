@@ -26,19 +26,12 @@ import org.opengis.filter.Id;
  * <p>Example:<code>
  * Set<String> fids = (Set<String>) filter.accept( IdCollectorFilterVisitor.ID_COLLECTOR, new HashSet() );
  * </code>
- *
- * @source $URL$
  */
 public class IdCollectorFilterVisitor extends DefaultFilterVisitor {
     public static final IdCollectorFilterVisitor ID_COLLECTOR = new IdCollectorFilterVisitor(true);
     public static final IdCollectorFilterVisitor IDENTIFIER_COLLECTOR =
             new IdCollectorFilterVisitor(false);
     private final boolean mCollectStringIds;
-
-    /** @deprecated use {@link #IdCollectorFilterVisitor(boolean)} */
-    protected IdCollectorFilterVisitor() {
-        mCollectStringIds = true;
-    }
 
     protected IdCollectorFilterVisitor(boolean collectStringIds) {
         mCollectStringIds = collectStringIds;

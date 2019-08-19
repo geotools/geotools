@@ -144,7 +144,7 @@ The CSVFeatureWriter handles the writing functionality for our CSVFeatureStore. 
       :start-after: import com.csvreader.CsvWriter;
       :end-before: public CSVFeatureWriter(CSVFileState csvFileState, CSVStrategy csvStrategy)
 
-The feature type we grab for writing is dependent on our strategy; therefore, we must feed CSVFeatureWriter our CSVStrategy and grab the feature type from it. We'll aslo get our iterator, which reads the file, from our CSVStrategy. Finally, we'll set up a CsvWriter to write to a new file, temp, with the same headers from our current file.
+The feature type we grab for writing is dependent on our strategy; therefore, we must feed CSVFeatureWriter our CSVStrategy and grab the feature type from it. We'll also get our iterator, which reads the file, from our CSVStrategy. Finally, we'll set up a CsvWriter to write to a new file, temp, with the same headers from our current file.
 
    .. literalinclude:: /../../modules/unsupported/csv/src/main/java/org/geotools/data/csv/CSVFeatureWriter.java
       :language: java

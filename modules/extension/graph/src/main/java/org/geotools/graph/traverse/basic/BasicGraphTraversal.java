@@ -27,7 +27,6 @@ import org.geotools.graph.traverse.GraphWalker;
  * A basic implementation of GraphTraversal.
  *
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
- * @source $URL$
  */
 public class BasicGraphTraversal implements GraphTraversal {
 

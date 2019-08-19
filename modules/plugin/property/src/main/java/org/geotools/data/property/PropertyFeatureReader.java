@@ -73,12 +73,11 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  *
  * @author Jody Garnett (LISAsoft)
  * @author Torben Barsballe (Boundless)
- * @source $URL$
  * @version $Id
  * @since 8.0
  */
 public class PropertyFeatureReader implements FeatureReader<SimpleFeatureType, SimpleFeature> {
-    private static final Logger LOGGER = Logging.getLogger("org.geotools.data.property");
+    private static final Logger LOGGER = Logging.getLogger(PropertyFeatureReader.class);
     BufferedReader reader;
     SimpleFeatureType type;
     String line;
@@ -189,7 +188,7 @@ public class PropertyFeatureReader implements FeatureReader<SimpleFeatureType, S
             // read the value
             stringValue = text[index];
         } catch (RuntimeException e1) {
-            e1.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e1);
             stringValue = null;
         }
         // check for special <null> flag

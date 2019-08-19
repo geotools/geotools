@@ -28,10 +28,7 @@ import org.junit.Test;
 import org.opengis.temporal.IntervalLength;
 import si.uom.SI;
 
-/**
- * @author Mehdi Sidhoum (Geomatys)
- * @source $URL$
- */
+/** @author Mehdi Sidhoum (Geomatys) */
 public class DefaultIntervalLengthTest {
 
     private IntervalLength intervalLength1;

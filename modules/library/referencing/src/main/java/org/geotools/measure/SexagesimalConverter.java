@@ -32,7 +32,6 @@ import tec.uom.se.AbstractConverter;
  * <p>Unfortunatly, this pseudo-unit is extensively used in the EPSG database.
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
@@ -194,7 +193,7 @@ class SexagesimalConverter extends AbstractConverter {
 
     @Override
     public Number convert(Number value) {
-        return convert(value);
+        return convert(value.doubleValue());
     }
 
     @Override

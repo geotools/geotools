@@ -40,7 +40,6 @@ import java.awt.Graphics2D;
  * @author Jody
  * @since 2.7
  * @version 8.0
- * @source $URL$
  */
 public abstract class DirectLayer extends Layer {
 

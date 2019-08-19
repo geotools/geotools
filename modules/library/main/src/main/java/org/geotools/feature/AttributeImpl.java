@@ -33,7 +33,6 @@ import org.opengis.filter.identity.Identifier;
  * @author Ian Schneider
  * @author Jody Garnett
  * @author Gabriel Roldan
- * @source $URL$
  * @version $Id$
  */
 public class AttributeImpl extends PropertyImpl implements Attribute {
@@ -81,7 +80,7 @@ public class AttributeImpl extends PropertyImpl implements Attribute {
     /**
      * Override of equals.
      *
-     * @param other the object to be tested for equality.
+     * @param obj the object to be tested for equality.
      * @return whether other is equal to this attribute Type.
      */
     public boolean equals(Object obj) {

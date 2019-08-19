@@ -24,7 +24,6 @@ import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
 import org.opengis.util.InternationalString;
 
-/** @source $URL$ */
 public class AssociationTypeImpl extends PropertyTypeImpl implements AssociationType {
 
     protected final AttributeType relatedType;
@@ -38,10 +37,6 @@ public class AssociationTypeImpl extends PropertyTypeImpl implements Association
             InternationalString description) {
         super(name, referenceType.getBinding(), isAbstract, restrictions, superType, description);
         this.relatedType = referenceType;
-
-        if (relatedType == null) {
-            throw new NullPointerException("relatedType");
-        }
     }
 
     public AttributeType getRelatedType() {

@@ -19,11 +19,10 @@ package org.geotools.gml2;
 import java.net.URI;
 import junit.framework.TestCase;
 import org.geotools.gml2.bindings.GML2ParsingUtils;
-import org.geotools.xml.impl.AttributeImpl;
-import org.geotools.xml.impl.NodeImpl;
+import org.geotools.xsd.impl.AttributeImpl;
+import org.geotools.xsd.impl.NodeImpl;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-/** @source $URL$ */
 public class GML2ParsingUtilsTest extends TestCase {
     public void testCRS() throws Exception {
         NodeImpl node = new NodeImpl(null);

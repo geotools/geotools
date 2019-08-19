@@ -35,7 +35,6 @@ import org.opengis.filter.FilterFactory2;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class ContainsBinding extends OGCContainsBinding {
 

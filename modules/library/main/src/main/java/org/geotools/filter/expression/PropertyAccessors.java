@@ -19,13 +19,12 @@ package org.geotools.filter.expression;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ServiceLoader;
-import org.geotools.factory.Hints;
+import org.geotools.util.factory.Hints;
 
 /**
  * Convenience class for looking up a property accessor for a particular object type.
  *
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL$
  */
 public class PropertyAccessors {
     static final PropertyAccessorFactory[] FACTORY_CACHE;
@@ -52,34 +51,6 @@ public class PropertyAccessors {
 
     /** Make sure this class won't be instantianted */
     private PropertyAccessors() {}
-
-    // NC - old method, not used anymore
-    /**
-     * Looks up a {@link PropertyAccessor} for a particular object.
-     *
-     * <p>This method will return the first accessor that is capabile of handling the object and
-     * xpath expression provided, no order is guaranteed.
-     *
-     * @param object The target object.
-     * @param xpath An xpath expression denoting a property of the target object.
-     * @param hints Hints to pass on to factories.
-     * @return A property accessor, or <code>null</code> if one could not be found.
-     * @deprecated Use findPropertyAccessors, returned property accessor might not work
-     * @see findPropertyAccessors
-     */
-    public static PropertyAccessor findPropertyAccessor(
-            Object object, String xpath, Class target, Hints hints) {
-        if (object == null) return null;
-
-        for (PropertyAccessorFactory factory : FACTORY_CACHE) {
-            PropertyAccessor accessor =
-                    factory.createPropertyAccessor(object.getClass(), xpath, target, hints);
-            if (accessor != null && accessor.canHandle(object, xpath, target)) {
-                return accessor;
-            }
-        }
-        return null;
-    }
 
     /**
      * Looks up a list of {@link PropertyAccessor} for a particular object.

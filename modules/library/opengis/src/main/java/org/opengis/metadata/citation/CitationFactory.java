@@ -20,7 +20,6 @@ import org.opengis.util.InternationalString;
  * {@linkplain Obligation#OPTIONAL optional} arguments. The value must be non-null for {@linkplain
  * Obligation#MANDATORY mandatory} arguments.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/as#01-111">ISO 19115</A>
  * @author Jesse Crossley (SYS Technologies)
  * @since GeoAPI 2.0

@@ -30,7 +30,6 @@ import org.geotools.measure.Units;
 import org.geotools.styling.ExternalGraphic;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.Fill;
-import org.geotools.styling.Graphic;
 import org.geotools.styling.PolygonSymbolizer;
 import org.geotools.styling.Rule;
 import org.geotools.text.Text;
@@ -56,14 +55,11 @@ public class BackgroundMBLayer extends MBLayer {
 
     private JSONObject paint;
 
-    private JSONObject layout;
-
     private static String TYPE = "background";
 
     public BackgroundMBLayer(JSONObject json) {
         super(json, new MBObjectParser(BackgroundMBLayer.class));
         paint = paint();
-        layout = layout();
     }
 
     @Override
@@ -199,7 +195,6 @@ public class BackgroundMBLayer extends MBLayer {
                         Double.POSITIVE_INFINITY,
                         symbolizers,
                         filter.filter());
-        rule.setLegendGraphic(new Graphic[0]);
 
         rules.add(rule);
         return Collections.singletonList(

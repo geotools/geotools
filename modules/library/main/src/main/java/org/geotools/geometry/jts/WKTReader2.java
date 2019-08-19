@@ -2,8 +2,8 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *   (C) 2009 - 2016, Open Source Geospatial Foundation (OSGeo)
- *   (C) 2001, Vivid Solutions
+ *    (C) 2009 - 2016, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2001, Vivid Solutions
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -33,6 +33,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.CoordinateSequence;
+import org.locationtech.jts.geom.CoordinateXYZM;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryCollection;
 import org.locationtech.jts.geom.GeometryFactory;
@@ -53,7 +55,6 @@ import org.locationtech.jts.util.AssertionFailedException;
 /**
  * Create a geometry from SQL Multi-Media Extension Well-Known Text which allows curves.
  *
- * @source $URL$
  * @version 1.7
  * @see WKTWriter2
  */
@@ -144,24 +145,30 @@ public class WKTReader2 extends WKTReader {
         }
     }
 
+    /** Returns the next array of <code>Coordinate</code>s in the stream. */
+    private Coordinate[] getCoordinates() throws IOException, ParseException {
+        return getCoordinates(false);
+    }
+
     /**
      * Returns the next array of <code>Coordinate</code>s in the stream.
      *
+     * @param measures TRUE if measures are available
      * @return the next array of <code>Coordinate</code>s in the stream, or an empty array if EMPTY
      *     is the next element returned by the stream.
      * @throws IOException if an I/O error occurs
      * @throws ParseException if an unexpected token was encountered
      */
-    private Coordinate[] getCoordinates() throws IOException, ParseException {
+    private Coordinate[] getCoordinates(boolean measures) throws IOException, ParseException {
         String nextToken = getNextEmptyOrOpener();
         if (nextToken.equals(EMPTY)) {
             return new Coordinate[] {};
         }
         ArrayList coordinates = new ArrayList();
-        coordinates.add(getPreciseCoordinate());
+        coordinates.add(getPreciseCoordinate(measures));
         nextToken = getNextCloserOrComma();
         while (nextToken.equals(COMMA)) {
-            coordinates.add(getPreciseCoordinate());
+            coordinates.add(getPreciseCoordinate(measures));
             nextToken = getNextCloserOrComma();
         }
         Coordinate[] array = new Coordinate[coordinates.size()];
@@ -184,16 +191,17 @@ public class WKTReader2 extends WKTReader {
             coordinates.add(getPreciseCoordinate());
             nextToken = getNextCloserOrComma();
         }
-        Coordinate[] array = new Coordinate[coordinates.size()];
         return coordinates;
     }
 
     private Coordinate getPreciseCoordinate() throws IOException, ParseException {
-        Coordinate coord = new Coordinate();
-        coord.x = getNextNumber();
-        coord.y = getNextNumber();
-        if (isNumberNext()) {
-            coord.z = getNextNumber();
+        return getPreciseCoordinate(false);
+    }
+
+    private Coordinate getPreciseCoordinate(boolean measures) throws IOException, ParseException {
+        Coordinate coord = measures ? new CoordinateXYZM() : new Coordinate();
+        for (int i = 0; isNumberNext(); i++) {
+            coord.setOrdinate(i, getNextNumber());
         }
         precisionModel.makePrecise(coord);
         return coord;
@@ -209,8 +217,6 @@ public class WKTReader2 extends WKTReader {
      * Parses the next number in the stream. Numbers with exponents are handled. <tt>NaN</tt> values
      * are handled correctly, and the case of the "NaN" token is not significant.
      *
-     * @param tokenizer tokenizer over a stream of text in Well-known Text format. The next token
-     *     must be a number.
      * @return the next number in the stream
      * @throws ParseException if the next token is not a valid number
      * @throws IOException if an I/O error occurs
@@ -391,6 +397,12 @@ public class WKTReader2 extends WKTReader {
             return readCurvePolygonText();
         } else if (type.equalsIgnoreCase("MULTISURFACE")) {
             return readMultiSurfaceText();
+        } else if (type.equalsIgnoreCase("LINESTRINGZ")) {
+            return readLineStringText(3, 0);
+        } else if (type.equalsIgnoreCase("LINESTRINGM")) {
+            return readLineStringText(3, 1);
+        } else if (type.equalsIgnoreCase("LINESTRINGZM")) {
+            return readLineStringText(4, 1);
         }
         throw new ParseException("Unknown geometry type: " + type);
     }
@@ -412,15 +424,53 @@ public class WKTReader2 extends WKTReader {
         return point;
     }
 
-    /**
-     * Creates a <code>LineString</code> using the next token in the stream.
-     *
-     * @return a <code>LineString</code> specified by the next token in the stream
-     * @throws IOException if an I/O error occurs
-     * @throws ParseException if an unexpected token was encountered
-     */
+    /** Creates a <code>LineString</code> using the next token in the stream. */
     private LineString readLineStringText() throws IOException, ParseException {
-        return geometryFactory.createLineString(getCoordinates());
+        return readLineStringText(2, 0);
+    }
+
+    /**
+     * Creates a <code>LineString</code> using the next token in the stream, the provided dimension
+     * and measures will be used to create the <code>LineString</code>.
+     */
+    private LineString readLineStringText(int dimension, int measures)
+            throws IOException, ParseException {
+        if (measures == 0) {
+            // default situation, capable of handle elevations but no measures
+            return geometryFactory.createLineString(getCoordinates());
+        }
+        // handle linestring subtypes with measures (elevation and measures)
+        return geometryFactory.createLineString(
+                buildCoordinateSequence(getCoordinates(true), dimension, measures));
+    }
+
+    /**
+     * Helper method that builds a coordinate sequence using the provided array coordinates,
+     * dimension and measures.
+     */
+    private CoordinateSequence buildCoordinateSequence(
+            Coordinate[] coordinates, int dimension, int measures) {
+        // create the coordinate sequence
+        LiteCoordinateSequence coordinateSequence =
+                new LiteCoordinateSequence(coordinates.length, dimension, measures);
+        // add the coordinates to the sequence
+        insertCoordinates(coordinates, coordinateSequence);
+        return coordinateSequence;
+    }
+
+    /**
+     * Helper method that just inserts the coordinates of the provided array into the provide
+     * coordinates sequence.
+     */
+    private void insertCoordinates(
+            Coordinate[] coordinates, CoordinateSequence coordinateSequence) {
+        for (int i = 0; i < coordinates.length; i++) {
+            Coordinate coordinate = coordinates[i];
+            for (int j = 0; j < coordinateSequence.getDimension(); j++) {
+                // j is the index of the ordinate, i.e. X, Y, Z or M
+                coordinateSequence.setOrdinate(i, j, coordinate.getOrdinate(j));
+            }
+        }
     }
 
     /**

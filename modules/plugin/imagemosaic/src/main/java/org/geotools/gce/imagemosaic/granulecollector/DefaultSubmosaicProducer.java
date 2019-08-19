@@ -44,14 +44,10 @@ public class DefaultSubmosaicProducer extends BaseSubmosaicProducer {
             RasterLayerResponse rasterLayerResponse, Filter granuleFilter, boolean dryRun) {
         super(rasterLayerResponse, dryRun);
         this.granuleFilter = granuleFilter;
-        this.dryRun = dryRun;
     }
 
     /** {@link Filter} instance used to collect granule. */
     private final Filter granuleFilter;
-
-    /** We can request a dry run (no tasks are spawn) with this member. */
-    private final boolean dryRun;
 
     /**
      * This method is responsible for collecting all the granules accepting a certain {@link

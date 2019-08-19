@@ -19,7 +19,6 @@ package org.geotools.data.store;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.feature.collection.MaxSimpleFeatureCollection;
 
-/** @source $URL$ */
 public class MaxFeaturesFeatureCollectionTest extends FeatureCollectionWrapperTestSupport {
 
     public void testSize() throws Exception {

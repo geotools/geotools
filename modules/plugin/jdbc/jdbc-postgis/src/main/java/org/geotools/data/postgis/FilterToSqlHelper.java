@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2018, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -25,12 +25,13 @@ import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.function.BiConsumer;
 import org.geotools.data.jdbc.FilterToSQL;
+import org.geotools.data.postgis.filter.FilterFunction_pgNearest;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.FilterCapabilities;
+import org.geotools.filter.LengthFunction;
 import org.geotools.filter.function.DateDifferenceFunction;
 import org.geotools.filter.function.FilterFunction_area;
 import org.geotools.filter.function.FilterFunction_strConcat;
@@ -55,7 +56,9 @@ import org.geotools.filter.function.math.FilterFunction_floor;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.PreparedFilterToSQL;
+import org.geotools.jdbc.PrimaryKeyColumn;
 import org.geotools.jdbc.SQLDialect;
+import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryComponentFilter;
@@ -63,10 +66,12 @@ import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Polygon;
 import org.opengis.feature.type.AttributeDescriptor;
+import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.filter.BinaryComparisonOperator;
 import org.opengis.filter.MultiValuedFilter;
 import org.opengis.filter.NativeFilter;
 import org.opengis.filter.PropertyIsBetween;
+import org.opengis.filter.PropertyIsEqualTo;
 import org.opengis.filter.expression.BinaryExpression;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;
@@ -101,23 +106,6 @@ import org.opengis.geometry.BoundingBox3D;
 class FilterToSqlHelper {
 
     protected static final String IO_ERROR = "io problem writing filter";
-
-    /** Conversion factor from common units to meter */
-    private static final Map<String, Double> UNITS_MAP =
-            new HashMap<String, Double>() {
-                {
-                    put("kilometers", 1000.0);
-                    put("kilometer", 1000.0);
-                    put("mm", 0.001);
-                    put("millimeter", 0.001);
-                    put("mi", 1609.344);
-                    put("miles", 1609.344);
-                    put("NM", 1852d);
-                    put("feet", 0.3048);
-                    put("ft", 0.3048);
-                    put("in", 0.0254);
-                }
-            };
 
     private static final Envelope WORLD = new Envelope(-180, 180, -90, 90);
 
@@ -170,6 +158,7 @@ class FilterToSqlHelper {
             caps.addType(FilterFunction_strEqualsIgnoreCase.class);
             caps.addType(FilterFunction_strIndexOf.class);
             caps.addType(FilterFunction_strLength.class);
+            caps.addType(LengthFunction.class);
             caps.addType(FilterFunction_strToLowerCase.class);
             caps.addType(FilterFunction_strToUpperCase.class);
             caps.addType(FilterFunction_strReplace.class);
@@ -188,6 +177,9 @@ class FilterToSqlHelper {
 
             // time related functions
             caps.addType(DateDifferenceFunction.class);
+
+            // n nearest function
+            caps.addType(FilterFunction_pgNearest.class);
         }
 
         // native filter support
@@ -512,7 +504,7 @@ class FilterToSqlHelper {
      * @return
      */
     public String getFunctionName(Function function) {
-        if (function instanceof FilterFunction_strLength) {
+        if (function instanceof FilterFunction_strLength || function instanceof LengthFunction) {
             return "char_length";
         } else if (function instanceof FilterFunction_strToLowerCase) {
             return "lower";
@@ -921,5 +913,142 @@ class FilterToSqlHelper {
         } catch (java.io.IOException ioe) {
             throw new RuntimeException(IO_ERROR, ioe);
         }
+    }
+
+    private String getPrimaryKeyColumnsAsCommaSeparatedList(
+            List<PrimaryKeyColumn> pkColumns, SQLDialect dialect) {
+        StringBuffer sb = new StringBuffer();
+        boolean first = true;
+        for (PrimaryKeyColumn c : pkColumns) {
+            if (first) {
+                first = false;
+            } else {
+                sb.append(",");
+            }
+            dialect.encodeColumnName(null, c.getName(), sb);
+        }
+        return sb.toString();
+    }
+
+    public Object visit(
+            FilterFunction_pgNearest filter, Object extraData, NearestHelperContext ctx) {
+        SQLDialect pgDialect = ctx.getPgDialect();
+        Expression geometryExp = getParameter(filter, 0, true);
+        Expression numNearest = getParameter(filter, 1, true);
+        try {
+            List<PrimaryKeyColumn> pkColumns = delegate.getPrimaryKey().getColumns();
+            if (pkColumns == null || pkColumns.size() == 0) {
+                throw new UnsupportedOperationException(
+                        "Unsupported usage of Postgis Nearest Operator: table with no primary key");
+            }
+
+            String pkColumnsAsString =
+                    getPrimaryKeyColumnsAsCommaSeparatedList(pkColumns, pgDialect);
+            StringBuffer sb = new StringBuffer();
+            sb.append(" (")
+                    .append(pkColumnsAsString)
+                    .append(")")
+                    .append(" in (select ")
+                    .append(pkColumnsAsString)
+                    .append(" from ");
+            if (delegate.getDatabaseSchema() != null) {
+                pgDialect.encodeSchemaName(delegate.getDatabaseSchema(), sb);
+                sb.append(".");
+            }
+            pgDialect.encodeTableName(delegate.getPrimaryKey().getTableName(), sb);
+            sb.append(" order by ");
+            // geometry column name
+            pgDialect.encodeColumnName(
+                    null, delegate.getFeatureType().getGeometryDescriptor().getLocalName(), sb);
+            sb.append(" <-> ");
+            // reference geometry
+            Geometry geomValue =
+                    (Geometry) delegate.evaluateLiteral((Literal) geometryExp, Geometry.class);
+            ctx.encodeGeometryValue.accept(geomValue, sb);
+
+            // num of features
+            sb.append(" limit ");
+            int numFeatures = numNearest.evaluate(null, Number.class).intValue();
+            sb.append(numFeatures);
+            sb.append(")");
+
+            out.write(sb.toString());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return extraData;
+    }
+
+    /** Context data struct for nearest visit method */
+    public static class NearestHelperContext {
+        private SQLDialect pgDialect;
+        private BiConsumer<Geometry, StringBuffer> encodeGeometryValue;
+
+        public NearestHelperContext(
+                SQLDialect pgDialect, BiConsumer<Geometry, StringBuffer> encodeGeometryValue) {
+            super();
+            this.pgDialect = pgDialect;
+            this.encodeGeometryValue = encodeGeometryValue;
+        }
+
+        public SQLDialect getPgDialect() {
+            return pgDialect;
+        }
+
+        public void setPgDialect(SQLDialect pgDialect) {
+            this.pgDialect = pgDialect;
+        }
+
+        public BiConsumer<Geometry, StringBuffer> getEncodeGeometryValue() {
+            return encodeGeometryValue;
+        }
+
+        public void setEncodeGeometryValue(BiConsumer<Geometry, StringBuffer> encodeGeometryValue) {
+            this.encodeGeometryValue = encodeGeometryValue;
+        }
+    }
+
+    /**
+     * Detects and return a FilterFunction_pgNearest if found, otherwise null
+     *
+     * @param filter filter to evaluate
+     * @return FilterFunction_pgNearest if found
+     */
+    public FilterFunction_pgNearest getNearestFilter(PropertyIsEqualTo filter) {
+        Expression expr1 = filter.getExpression1();
+        Expression expr2 = filter.getExpression2();
+        // if expr2 is nearest filter, switch positions
+        if (expr2 instanceof FilterFunction_pgNearest) {
+            Expression tmp = expr1;
+            expr1 = expr2;
+            expr2 = tmp;
+        }
+        if (expr1 instanceof FilterFunction_pgNearest) {
+            if (!(expr2 instanceof Literal)) {
+                throw new UnsupportedOperationException(
+                        "Unsupported usage of Nearest Operator: it can be compared only to a Boolean \"true\" value");
+            }
+            Boolean nearest = (Boolean) delegate.evaluateLiteral((Literal) expr2, Boolean.class);
+            if (nearest == null || !nearest.booleanValue()) {
+                throw new UnsupportedOperationException(
+                        "Unsupported usage of Nearest Operator: it can be compared only to a Boolean \"true\" value");
+            }
+            return (FilterFunction_pgNearest) expr1;
+        } else {
+            return null;
+        }
+    }
+
+    public Integer getFeatureTypeGeometrySRID() {
+        return (Integer)
+                delegate.getFeatureType()
+                        .getGeometryDescriptor()
+                        .getUserData()
+                        .get(JDBCDataStore.JDBC_NATIVE_SRID);
+    }
+
+    public Integer getFeatureTypeGeometryDimension() {
+        GeometryDescriptor descriptor = delegate.getFeatureType().getGeometryDescriptor();
+        return (Integer) descriptor.getUserData().get(Hints.COORDINATE_DIMENSION);
     }
 }

@@ -47,7 +47,6 @@ import org.opengis.geometry.primitive.SurfaceBoundary;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
 
-/** @source $URL$ */
 public class TransformTest extends TestCase {
 
     private CoordinateReferenceSystem crs1;
@@ -72,10 +71,10 @@ public class TransformTest extends TestCase {
         if (geom1 instanceof PointImpl && geom2 instanceof PointImpl) {
             PointImpl point1 = (PointImpl) geom1;
             PointImpl point2 = (PointImpl) geom2;
-            for (int i = 0; i < point1.getPosition().getCoordinate().length; i++) {
+            for (int i = 0; i < point1.getDirectPosition().getCoordinate().length; i++) {
                 assertEquals(
-                        point1.getPosition().getOrdinate(i),
-                        point2.getPosition().getOrdinate(i),
+                        point1.getDirectPosition().getOrdinate(i),
+                        point2.getDirectPosition().getOrdinate(i),
                         epsilon);
             }
 

@@ -47,7 +47,6 @@ import org.opengis.feature.type.FeatureType;
  *
  * @author en
  * @author jgarnett
- * @source $URL$
  */
 public class FeatureTypeTest extends DataTestCase {
 
@@ -208,9 +207,9 @@ public class FeatureTypeTest extends DataTestCase {
     public void testDeepCopy() throws Exception {
         // primative
         String str = "FooBar";
-        Integer i = new Integer(3);
-        Float f = new Float(3.14);
-        Double d = new Double(3.14159);
+        Integer i = Integer.valueOf(3);
+        Float f = Float.valueOf(3.14f);
+        Double d = Double.valueOf(3.14159);
 
         AttributeTypeBuilder ab = new AttributeTypeBuilder();
 

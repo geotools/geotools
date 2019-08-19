@@ -35,7 +35,6 @@ import org.opengis.referencing.operation.CoordinateOperation;
  * get} methods are forwarded to the appropriate {@link IdentifiedObject} method.
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

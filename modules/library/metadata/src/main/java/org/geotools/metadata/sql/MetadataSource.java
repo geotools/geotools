@@ -65,7 +65,6 @@ import org.opengis.util.InternationalString;
  * table.
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Touraïvane
  * @author Olivier Kartotaroeno (Institut de Recherche pour le Développement)

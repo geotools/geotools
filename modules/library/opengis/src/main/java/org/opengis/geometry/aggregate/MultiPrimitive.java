@@ -20,7 +20,6 @@ import org.opengis.geometry.primitive.Primitive;
  * Specialization of the {@linkplain Aggregate} interface that restricts the elements to only being
  * of type {@linkplain Primitive}.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/as">ISO 19107</A>
  * @since GeoAPI 1.0
  */

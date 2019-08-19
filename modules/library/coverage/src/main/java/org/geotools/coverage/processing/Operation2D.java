@@ -21,14 +21,14 @@ import java.util.Map;
 import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
-import org.geotools.factory.Hints;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.parameter.DefaultParameterDescriptor;
 import org.geotools.referencing.NamedIdentifier;
-import org.geotools.resources.Classes;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
+import org.geotools.util.Classes;
 import org.geotools.util.Utilities;
+import org.geotools.util.factory.Hints;
 import org.opengis.parameter.InvalidParameterValueException;
 import org.opengis.parameter.ParameterDescriptor;
 import org.opengis.parameter.ParameterDescriptorGroup;
@@ -40,7 +40,6 @@ import org.opengis.referencing.IdentifiedObject;
  * An operation working on {@link GridCoverage2D} sources.
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
@@ -96,8 +95,6 @@ public abstract class Operation2D extends AbstractOperation {
      * @param sourceNames Names of the sources to extract from {@link ParameterValueGroup}.
      * @param sources On input, an array with the same length than {@code sourceNames}. On output,
      *     the {@link GridCoverage2D} to be used as sources for this operation.
-     * @return The type of the {@linkplain #PRIMARY_SOURCE_INDEX primary source}, or {@code null} if
-     *     unknow or if the type should not be changed.
      * @throws IllegalArgumentException if an argument is {@code null}, or if {@code sources} and
      *     {@code sourceNames} doesn't have length.
      * @throws ParameterNotFoundException if a required source has not been found.

@@ -71,7 +71,7 @@ For defining coordinate systems and transformations between those coordinate sys
 GeoTools library is used. That being said, Geomajas provides the ability to register extra
 coordinate systems through the Spring configuration. As a result those new coordinate systems
 are available only through Geomajas **GeoService** interface (and not when
-directly using the GeoTools **CRS** helper clas).
+directly using the GeoTools **CRS** helper class).
 
 This GeoService specifically handles CRS transformations with support for *transformable* areas.
 These transformable areas define the boundaries wherein transformations between 2 coordinate

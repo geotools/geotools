@@ -57,7 +57,6 @@ import org.opengis.filter.sort.SortBy;
  * @see Hints#FEATURE_DETACHED
  * @author Oliver Gottwald
  * @author Jody
- * @source $URL$
  */
 public class ListFeatureCollection extends AbstractFeatureCollection
         implements Collection<SimpleFeature> {

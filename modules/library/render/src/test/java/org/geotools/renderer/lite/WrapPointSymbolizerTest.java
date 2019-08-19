@@ -18,7 +18,6 @@ import org.geotools.test.TestData;
 import org.junit.Before;
 import org.junit.Test;
 
-/** @source $URL$ */
 public class WrapPointSymbolizerTest {
     private static final long TIME = 4000;
     SimpleFeatureSource fs;

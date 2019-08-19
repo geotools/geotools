@@ -26,7 +26,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 /**
  * Tests the {@link GeneralDirectPosition} and {@link DirectPosition2D} classes.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  */

@@ -61,7 +61,6 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * </code></pre>
  *
  * @author Jody Garnett, Refractions Research, Inc.
- * @source $URL$
  * @version $Id$
  */
 public interface FeatureValidation extends Validation {

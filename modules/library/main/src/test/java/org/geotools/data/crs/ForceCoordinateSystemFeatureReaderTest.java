@@ -33,7 +33,6 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-/** @source $URL$ */
 public class ForceCoordinateSystemFeatureReaderTest extends TestCase {
 
     private static final String FEATURE_TYPE_NAME = "testType";

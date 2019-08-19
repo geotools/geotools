@@ -26,7 +26,6 @@ import org.opengis.filter.expression.Expression;
  * Takes an AttributeExpression, and computes the node count for the attribute.
  *
  * @author Rini Angreani (CSIRO Mineral Resources)
- * @source $URL$
  */
 public class AttributeCountFunction extends FunctionExpressionImpl {
 

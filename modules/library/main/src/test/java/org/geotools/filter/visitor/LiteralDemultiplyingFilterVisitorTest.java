@@ -35,7 +35,6 @@ import org.opengis.filter.expression.PropertyName;
  * Unit test for LiteralDemultiplyingFilter.
  *
  * @author Niels Charlier
- * @source $URL$
  */
 public class LiteralDemultiplyingFilterVisitorTest {
 

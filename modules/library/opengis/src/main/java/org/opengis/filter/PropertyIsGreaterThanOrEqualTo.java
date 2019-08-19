@@ -17,7 +17,6 @@ import org.opengis.annotation.XmlElement;
  * Filter operator that checks that its first sub-expression is greater or equal to its second
  * subexpression.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengis.org/docs/02-059.pdf">Implementation specification 1.0</A>
  * @author Chris Dillard (SYS Technologies)
  * @since GeoAPI 2.0

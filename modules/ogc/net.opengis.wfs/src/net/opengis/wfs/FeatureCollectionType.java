@@ -28,13 +28,13 @@ import org.eclipse.emf.ecore.EObject;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link net.opengis.wfs.FeatureCollectionType#getLockId <em>Lock Id</em>}</li>
  *   <li>{@link net.opengis.wfs.FeatureCollectionType#getTimeStamp <em>Time Stamp</em>}</li>
  *   <li>{@link net.opengis.wfs.FeatureCollectionType#getNumberOfFeatures <em>Number Of Features</em>}</li>
  *   <li>{@link net.opengis.wfs.FeatureCollectionType#getFeature <em>Feature</em>}</li>
  * </ul>
- * </p>
  *
  * @see net.opengis.wfs.WfsPackage#getFeatureCollectionType()
  * @model extendedMetaData="name='FeatureCollectionType' kind='empty'"
@@ -66,13 +66,13 @@ public interface FeatureCollectionType extends EObject {
 	String getLockId();
 	
 	/**
-     * Sets the value of the '{@link net.opengis.wfs.FeatureCollectionType#getLockId <em>Lock Id</em>}' attribute.
-     * <!-- begin-user-doc -->
+   * Sets the value of the '{@link net.opengis.wfs.FeatureCollectionType#getLockId <em>Lock Id</em>}' attribute.
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Lock Id</em>' attribute.
-     * @see #getLockId()
-     * @generated
-     */
+   * @param value the new value of the '<em>Lock Id</em>' attribute.
+   * @see #getLockId()
+   * @generated
+   */
 	void setLockId(String value);
 
 	/**
@@ -97,13 +97,13 @@ public interface FeatureCollectionType extends EObject {
 	
 
 	/**
-     * Sets the value of the '{@link net.opengis.wfs.FeatureCollectionType#getTimeStamp <em>Time Stamp</em>}' attribute.
-     * <!-- begin-user-doc -->
+   * Sets the value of the '{@link net.opengis.wfs.FeatureCollectionType#getTimeStamp <em>Time Stamp</em>}' attribute.
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Time Stamp</em>' attribute.
-     * @see #getTimeStamp()
-     * @generated
-     */
+   * @param value the new value of the '<em>Time Stamp</em>' attribute.
+   * @see #getTimeStamp()
+   * @generated
+   */
 	void setTimeStamp(Calendar value);
 
 	/**
@@ -130,13 +130,13 @@ public interface FeatureCollectionType extends EObject {
 	BigInteger getNumberOfFeatures();
 	
 	/**
-     * Sets the value of the '{@link net.opengis.wfs.FeatureCollectionType#getNumberOfFeatures <em>Number Of Features</em>}' attribute.
-     * <!-- begin-user-doc -->
+   * Sets the value of the '{@link net.opengis.wfs.FeatureCollectionType#getNumberOfFeatures <em>Number Of Features</em>}' attribute.
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Number Of Features</em>' attribute.
-     * @see #getNumberOfFeatures()
-     * @generated
-     */
+   * @param value the new value of the '<em>Number Of Features</em>' attribute.
+   * @see #getNumberOfFeatures()
+   * @generated
+   */
 	void setNumberOfFeatures(BigInteger value);
 
 	/**

@@ -29,7 +29,6 @@ import org.locationtech.jts.geom.CoordinateSequenceFactory;
  * <p>This allows us to determine the dimensions of a Geometry.
  *
  * @author jgarnett
- * @source $URL$
  */
 public interface CoordinateAccessFactory extends CoordinateSequenceFactory {
     /**

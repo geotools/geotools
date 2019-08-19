@@ -27,7 +27,6 @@ import org.locationtech.jts.io.WKTReader;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.spatial.DWithin;
 
-/** @source $URL$ */
 public class SQLServerSpatialFiltersOnlineTest extends JDBCSpatialFiltersOnlineTest {
 
     @Override

@@ -31,11 +31,11 @@ import org.eclipse.emf.common.util.EList;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link net.opengis.wfs.DescribeFeatureTypeType#getTypeName <em>Type Name</em>}</li>
  *   <li>{@link net.opengis.wfs.DescribeFeatureTypeType#getOutputFormat <em>Output Format</em>}</li>
  * </ul>
- * </p>
  *
  * @see net.opengis.wfs.WfsPackage#getDescribeFeatureTypeType()
  * @model extendedMetaData="name='DescribeFeatureTypeType' kind='elementOnly'"
@@ -64,72 +64,72 @@ public interface DescribeFeatureTypeType extends BaseRequestType {
 	EList getTypeName();
 
 	/**
-     * Returns the value of the '<em><b>Output Format</b></em>' attribute.
-     * The default value is <code>"text/xml; subtype=gml/3.1.1"</code>.
-     * <!-- begin-user-doc -->
+   * Returns the value of the '<em><b>Output Format</b></em>' attribute.
+   * The default value is <code>"text/xml; subtype=gml/3.1.1"</code>.
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * <!-- begin-model-doc -->
-     * 
-     *                      The outputFormat attribute is used to specify what schema
-     *                      description language should be used to describe features.
-     *                      The default value of 'text/xml; subtype=3.1.1' means that
-     *                      the WFS must generate a GML3 application schema that can
-     *                      be used to validate the GML3 output of a GetFeature
-     *                      request or feature instances specified in Transaction
-     *                      operations.
-     *                      For the purposes of experimentation, vendor extension,
-     *                      or even extensions that serve a specific community of
-     *                      interest, other acceptable output format values may be
-     *                      advertised by a WFS service in the capabilities document.
-     *                      The meaning of such values in not defined in the WFS
-     *                      specification.  The only proviso is such cases is that
-     *                      clients may safely ignore outputFormat values that do
-     *                      not recognize.
-     * <!-- end-model-doc -->
-     * @return the value of the '<em>Output Format</em>' attribute.
-     * @see #isSetOutputFormat()
-     * @see #unsetOutputFormat()
-     * @see #setOutputFormat(String)
-     * @see net.opengis.wfs.WfsPackage#getDescribeFeatureTypeType_OutputFormat()
-     * @model default="text/xml; subtype=gml/3.1.1" unique="false" unsettable="true" dataType="org.eclipse.emf.ecore.xml.type.String"
-     *        extendedMetaData="kind='attribute' name='outputFormat'"
-     * @generated
-     */
+   * <!-- begin-model-doc -->
+   * 
+   *                      The outputFormat attribute is used to specify what schema
+   *                      description language should be used to describe features.
+   *                      The default value of 'text/xml; subtype=3.1.1' means that
+   *                      the WFS must generate a GML3 application schema that can
+   *                      be used to validate the GML3 output of a GetFeature
+   *                      request or feature instances specified in Transaction
+   *                      operations.
+   *                      For the purposes of experimentation, vendor extension,
+   *                      or even extensions that serve a specific community of
+   *                      interest, other acceptable output format values may be
+   *                      advertised by a WFS service in the capabilities document.
+   *                      The meaning of such values in not defined in the WFS
+   *                      specification.  The only proviso is such cases is that
+   *                      clients may safely ignore outputFormat values that do
+   *                      not recognize.
+   * <!-- end-model-doc -->
+   * @return the value of the '<em>Output Format</em>' attribute.
+   * @see #isSetOutputFormat()
+   * @see #unsetOutputFormat()
+   * @see #setOutputFormat(String)
+   * @see net.opengis.wfs.WfsPackage#getDescribeFeatureTypeType_OutputFormat()
+   * @model default="text/xml; subtype=gml/3.1.1" unique="false" unsettable="true" dataType="org.eclipse.emf.ecore.xml.type.String"
+   *        extendedMetaData="kind='attribute' name='outputFormat'"
+   * @generated
+   */
 	String getOutputFormat();
 
 	/**
-     * Sets the value of the '{@link net.opengis.wfs.DescribeFeatureTypeType#getOutputFormat <em>Output Format</em>}' attribute.
-     * <!-- begin-user-doc -->
+   * Sets the value of the '{@link net.opengis.wfs.DescribeFeatureTypeType#getOutputFormat <em>Output Format</em>}' attribute.
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Output Format</em>' attribute.
-     * @see #isSetOutputFormat()
-     * @see #unsetOutputFormat()
-     * @see #getOutputFormat()
-     * @generated
-     */
+   * @param value the new value of the '<em>Output Format</em>' attribute.
+   * @see #isSetOutputFormat()
+   * @see #unsetOutputFormat()
+   * @see #getOutputFormat()
+   * @generated
+   */
 	void setOutputFormat(String value);
 
 	/**
-     * Unsets the value of the '{@link net.opengis.wfs.DescribeFeatureTypeType#getOutputFormat <em>Output Format</em>}' attribute.
-     * <!-- begin-user-doc -->
+   * Unsets the value of the '{@link net.opengis.wfs.DescribeFeatureTypeType#getOutputFormat <em>Output Format</em>}' attribute.
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @see #isSetOutputFormat()
-     * @see #getOutputFormat()
-     * @see #setOutputFormat(String)
-     * @generated
-     */
+   * @see #isSetOutputFormat()
+   * @see #getOutputFormat()
+   * @see #setOutputFormat(String)
+   * @generated
+   */
 	void unsetOutputFormat();
 
 	/**
-     * Returns whether the value of the '{@link net.opengis.wfs.DescribeFeatureTypeType#getOutputFormat <em>Output Format</em>}' attribute is set.
-     * <!-- begin-user-doc -->
+   * Returns whether the value of the '{@link net.opengis.wfs.DescribeFeatureTypeType#getOutputFormat <em>Output Format</em>}' attribute is set.
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @return whether the value of the '<em>Output Format</em>' attribute is set.
-     * @see #unsetOutputFormat()
-     * @see #getOutputFormat()
-     * @see #setOutputFormat(String)
-     * @generated
-     */
+   * @return whether the value of the '<em>Output Format</em>' attribute is set.
+   * @see #unsetOutputFormat()
+   * @see #getOutputFormat()
+   * @see #setOutputFormat(String)
+   * @generated
+   */
 	boolean isSetOutputFormat();
 
 } // DescribeFeatureTypeType

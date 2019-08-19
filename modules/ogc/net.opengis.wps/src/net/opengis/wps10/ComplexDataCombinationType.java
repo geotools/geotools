@@ -19,10 +19,10 @@ import org.eclipse.emf.ecore.EObject;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link net.opengis.wps10.ComplexDataCombinationType#getFormat <em>Format</em>}</li>
  * </ul>
- * </p>
  *
  * @see net.opengis.wps10.Wps10Package#getComplexDataCombinationType()
  * @model extendedMetaData="name='ComplexDataCombinationType' kind='elementOnly'"
@@ -30,29 +30,29 @@ import org.eclipse.emf.ecore.EObject;
  */
 public interface ComplexDataCombinationType extends EObject {
     /**
-     * Returns the value of the '<em><b>Format</b></em>' containment reference.
-     * <!-- begin-user-doc -->
+   * Returns the value of the '<em><b>Format</b></em>' containment reference.
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * <!-- begin-model-doc -->
-     * The default combination of MimeType/Encoding/Schema supported for this Input/Output.
-     * <!-- end-model-doc -->
-     * @return the value of the '<em>Format</em>' containment reference.
-     * @see #setFormat(ComplexDataDescriptionType)
-     * @see net.opengis.wps10.Wps10Package#getComplexDataCombinationType_Format()
-     * @model containment="true" required="true"
-     *        extendedMetaData="kind='element' name='Format'"
-     * @generated
-     */
+   * <!-- begin-model-doc -->
+   * The default combination of MimeType/Encoding/Schema supported for this Input/Output.
+   * <!-- end-model-doc -->
+   * @return the value of the '<em>Format</em>' containment reference.
+   * @see #setFormat(ComplexDataDescriptionType)
+   * @see net.opengis.wps10.Wps10Package#getComplexDataCombinationType_Format()
+   * @model containment="true" required="true"
+   *        extendedMetaData="kind='element' name='Format'"
+   * @generated
+   */
     ComplexDataDescriptionType getFormat();
 
     /**
-     * Sets the value of the '{@link net.opengis.wps10.ComplexDataCombinationType#getFormat <em>Format</em>}' containment reference.
-     * <!-- begin-user-doc -->
+   * Sets the value of the '{@link net.opengis.wps10.ComplexDataCombinationType#getFormat <em>Format</em>}' containment reference.
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Format</em>' containment reference.
-     * @see #getFormat()
-     * @generated
-     */
+   * @param value the new value of the '<em>Format</em>' containment reference.
+   * @see #getFormat()
+   * @generated
+   */
     void setFormat(ComplexDataDescriptionType value);
 
 } // ComplexDataCombinationType

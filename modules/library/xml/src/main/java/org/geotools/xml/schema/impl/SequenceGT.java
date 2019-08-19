@@ -21,12 +21,7 @@ import org.geotools.xml.schema.Element;
 import org.geotools.xml.schema.ElementGrouping;
 import org.geotools.xml.schema.Sequence;
 
-/**
- * DOCUMENT ME!
- *
- * @author dzwiers
- * @source $URL$
- */
+/** @author dzwiers */
 public class SequenceGT implements Sequence {
     private ElementGrouping[] children;
     private String id;

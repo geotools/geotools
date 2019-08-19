@@ -37,7 +37,6 @@ import java.util.TreeMap;
  * @param <K> The type of keys in the sorted list, to be used for sorting.
  * @param <V> The type of elements in the list.
  * @since 2.2
- * @source $URL$
  * @version $Id$
  * @author Simone Giannecchini
  * @author Martin Desruisseaux

@@ -72,7 +72,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * </pre>
  *
  * @author Justin Deoliveira, OpenGeo
- * @source $URL$
  */
 public class FeatureJSON {
 
@@ -229,7 +228,7 @@ public class FeatureJSON {
     /**
      * Writes a feature as GeoJSON returning the result as a string.
      *
-     * @param geometry The geometry.
+     * @param feature The feature
      * @return The geometry encoded as GeoJSON
      */
     public String toString(SimpleFeature feature) throws IOException {

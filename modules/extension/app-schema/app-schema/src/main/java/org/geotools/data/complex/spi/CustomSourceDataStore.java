@@ -17,6 +17,7 @@
 package org.geotools.data.complex.spi;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.ServiceLoader;
 import org.apache.commons.digester.Digester;
@@ -30,6 +31,7 @@ import org.geotools.data.complex.config.AppSchemaDataAccessDTO;
 import org.geotools.data.complex.config.SourceDataStore;
 import org.opengis.feature.Feature;
 import org.opengis.feature.type.FeatureType;
+import org.opengis.filter.expression.PropertyName;
 
 /**
  * This interface allows data stores to take advantage of certain App-Schema extension points
@@ -51,11 +53,20 @@ public interface CustomSourceDataStore {
             SourceDataStore dataStoreConfig, AppSchemaDataAccessDTO appSchemaConfig);
 
     /**
-     * Allows a data store to provide its own configuration tot he XML parser \ digester.
+     * Allows a data store to provide its own configuration to the XML parser \ digester for data
+     * sources.
      *
      * @param digester XML parser \ digester
      */
-    void configXmlDigester(Digester digester);
+    void configXmlDigesterDataSources(Digester digester);
+
+    /**
+     * Allows a data store to provide its own configuration to the XML parser \ digester for
+     * attributes mappings.
+     *
+     * @param digester XML parser \ digester
+     */
+    void configXmlDigesterAttributesMappings(Digester digester);
 
     /**
      * Allows a data store to build its own iterator that will be used by App-Schema core to
@@ -73,6 +84,11 @@ public interface CustomSourceDataStore {
             FeatureTypeMapping featureTypeMapping,
             Query query,
             Transaction transaction);
+
+    default List<PropertyName> getSurrogatePropertyNames(
+            List<PropertyName> requested, FeatureTypeMapping mapping) {
+        return Collections.emptyList();
+    }
 
     /**
      * Helper method that loads all the custom data stores extensions.

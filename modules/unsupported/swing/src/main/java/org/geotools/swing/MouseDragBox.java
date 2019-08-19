@@ -29,7 +29,6 @@ import javax.swing.event.MouseInputAdapter;
  *
  * @author Michael Bedward
  * @since 8.0
- * @source $URL$
  * @version $Id$
  */
 public class MouseDragBox extends MouseInputAdapter {

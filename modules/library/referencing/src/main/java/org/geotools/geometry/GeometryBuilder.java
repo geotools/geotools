@@ -21,9 +21,9 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
-import org.geotools.factory.GeoTools;
-import org.geotools.factory.Hints;
 import org.geotools.referencing.CRS;
+import org.geotools.util.factory.GeoTools;
+import org.geotools.util.factory.Hints;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.Envelope;
 import org.opengis.geometry.MismatchedDimensionException;
@@ -74,7 +74,6 @@ import org.opengis.referencing.cs.CoordinateSystemAxis;
  * <p>
  *
  * @author Jody Garnett
- * @source $URL$
  */
 public class GeometryBuilder {
     /** Hints used for the duration of this GeometryBuilder. */
@@ -118,17 +117,6 @@ public class GeometryBuilder {
 
     public CoordinateReferenceSystem getCoordinateReferenceSystem() {
         return crs;
-    }
-
-    /**
-     * Set the CoordinateReferenceSystem for the geometries that will be produced.
-     *
-     * @param crs the CoordinateReferenceSystem to set
-     * @deprecated Use setCoordinateReferenceSystem() instead.
-     */
-    @Deprecated
-    public void setCoordianteReferenceSystem(CoordinateReferenceSystem crs) {
-        setCoordinateReferenceSystem(crs);
     }
 
     /**
@@ -269,12 +257,6 @@ public class GeometryBuilder {
         // - The curve will be set as parent curves for the Curve segments
         // - Start and end params for the CurveSegments will be set
         return getPrimitiveFactory().createCurve(segments);
-    }
-
-    @Deprecated
-    public Curve createCurve(PointArray points)
-            throws MismatchedReferenceSystemException, MismatchedDimensionException {
-        return createCurve(points, true);
     }
 
     public Curve createCurve(PointArray points, boolean closed)
@@ -461,7 +443,7 @@ public class GeometryBuilder {
 
     public SurfaceBoundary createSurfaceBoundary(PointArray points)
             throws MismatchedReferenceSystemException, MismatchedDimensionException {
-        Curve curve = createCurve(points);
+        Curve curve = createCurve(points, true);
         return createSurfaceBoundary(curve);
     }
 
@@ -568,6 +550,7 @@ public class GeometryBuilder {
         return getGeometryFactory().createLineSegment(from, to);
     }
 
+    @SuppressWarnings("deprecation")
     public MultiPrimitive createMultiPrimitive() {
         return getGeometryFactory().createMultiPrimitive();
     }

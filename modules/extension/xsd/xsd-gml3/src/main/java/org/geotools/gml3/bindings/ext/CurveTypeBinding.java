@@ -49,7 +49,6 @@ import org.locationtech.jts.geom.GeometryFactory;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class CurveTypeBinding extends org.geotools.gml3.bindings.CurveTypeBinding
         implements Comparable {

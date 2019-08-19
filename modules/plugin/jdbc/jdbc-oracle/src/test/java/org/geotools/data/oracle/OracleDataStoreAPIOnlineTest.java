@@ -25,7 +25,6 @@ import org.geotools.jdbc.JDBCFeatureStore;
 import org.geotools.jdbc.PrimaryKeyColumn;
 import org.geotools.jdbc.SequencedPrimaryKeyColumn;
 
-/** @source $URL$ */
 public class OracleDataStoreAPIOnlineTest extends JDBCDataStoreAPIOnlineTest {
 
     @Override

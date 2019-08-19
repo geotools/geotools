@@ -28,7 +28,6 @@ import org.eclipse.swt.widgets.Shell;
  *
  * @since 2.7
  * @author Andrea Antonello (www.hydrologis.com)
- * @source $URL$
  */
 public final class ExceptionMonitor {
     /** The creation of {@code ExceptionMonitor} class objects is forbidden. */

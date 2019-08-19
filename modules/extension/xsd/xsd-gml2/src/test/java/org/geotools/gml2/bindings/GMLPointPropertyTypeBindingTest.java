@@ -17,13 +17,12 @@
 package org.geotools.gml2.bindings;
 
 import org.geotools.gml2.GML;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
 
-/** @source $URL$ */
 public class GMLPointPropertyTypeBindingTest extends AbstractGMLBindingTest {
     ElementInstance association;
     ElementInstance geometry;
@@ -31,8 +30,8 @@ public class GMLPointPropertyTypeBindingTest extends AbstractGMLBindingTest {
     protected void setUp() throws Exception {
         super.setUp();
 
-        association = createElement(GML.NAMESPACE, "myPointProperty", GML.POINTPROPERTYTYPE, null);
-        geometry = createElement(GML.NAMESPACE, "myPoint", GML.POINTTYPE, null);
+        association = createElement(GML.NAMESPACE, "myPointProperty", GML.PointPropertyType, null);
+        geometry = createElement(GML.NAMESPACE, "myPoint", GML.PointType, null);
     }
 
     public void testWithGeometry() throws Exception {
@@ -44,9 +43,9 @@ public class GMLPointPropertyTypeBindingTest extends AbstractGMLBindingTest {
                         null,
                         null);
         GMLGeometryAssociationTypeBinding s =
-                (GMLGeometryAssociationTypeBinding) getBinding(GML.GEOMETRYASSOCIATIONTYPE);
+                (GMLGeometryAssociationTypeBinding) getBinding(GML.GeometryAssociationType);
         GMLPointPropertyTypeBinding s1 =
-                (GMLPointPropertyTypeBinding) getBinding(GML.POINTPROPERTYTYPE);
+                (GMLPointPropertyTypeBinding) getBinding(GML.PointPropertyType);
         Point p = (Point) s1.parse(association, node, s.parse(association, node, null));
         assertNotNull(p);
     }

@@ -21,7 +21,6 @@ package org.geotools.jdbc;
  *
  * @author Andrea Aime - OpenGeo
  * @author Martin Davis - OpenGeo
- * @source $URL$
  */
 public abstract class JDBC3DOnlineTest extends JDBCGeneric3DOnlineTest {
 

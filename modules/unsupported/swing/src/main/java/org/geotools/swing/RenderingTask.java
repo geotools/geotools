@@ -33,7 +33,6 @@ import org.opengis.feature.simple.SimpleFeature;
  *
  * @author Michael Bedward
  * @since 8.0
- * @source $URL$
  * @version $Id$
  */
 public class RenderingTask implements Callable<Boolean>, RenderListener {

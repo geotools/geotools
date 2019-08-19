@@ -16,8 +16,8 @@
  */
 package org.geotools.referencing.operation.matrix;
 
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 import org.opengis.referencing.operation.Matrix;
 
 /**
@@ -26,7 +26,6 @@ import org.opengis.referencing.operation.Matrix;
  *
  * @since 2.2
  * @version 13.0
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

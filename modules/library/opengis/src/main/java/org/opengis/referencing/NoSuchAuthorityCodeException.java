@@ -17,7 +17,6 @@ package org.opengis.referencing;
  * @since GeoAPI 1.0
  * @see org.opengis.referencing.datum.DatumAuthorityFactory
  * @see org.opengis.referencing.crs.CRSAuthorityFactory
- * @source $URL$
  */
 public class NoSuchAuthorityCodeException extends FactoryException {
     /** Serial number for interoperability with different versions. */

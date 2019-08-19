@@ -17,9 +17,9 @@
 package org.geotools.xs.bindings;
 
 import javax.xml.namespace.QName;
-import org.geotools.xml.InstanceComponent;
-import org.geotools.xml.SimpleBinding;
 import org.geotools.xs.XS;
+import org.geotools.xsd.InstanceComponent;
+import org.geotools.xsd.SimpleBinding;
 
 /**
  * Binding object for the type http://www.w3.org/2001/XMLSchema:double.
@@ -54,7 +54,6 @@ import org.geotools.xs.XS;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class XSDoubleBinding implements SimpleBinding {
     /** @generated */
@@ -96,10 +95,10 @@ public class XSDoubleBinding implements SimpleBinding {
      */
     public Object parse(InstanceComponent instance, Object value) throws Exception {
         if ("INF".equals(value)) {
-            return new Double(Double.POSITIVE_INFINITY);
+            return Double.valueOf(Double.POSITIVE_INFINITY);
         }
 
-        return new Double((String) value);
+        return Double.valueOf((String) value);
     }
 
     /**

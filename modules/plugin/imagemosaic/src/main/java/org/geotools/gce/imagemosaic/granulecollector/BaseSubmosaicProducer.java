@@ -17,9 +17,9 @@
 
 package org.geotools.gce.imagemosaic.granulecollector;
 
+import it.geosolutions.jaiext.JAIExt;
 import it.geosolutions.jaiext.vectorbin.ROIGeometry;
-import java.awt.Color;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.awt.image.ColorModel;
 import java.awt.image.IndexColorModel;
 import java.awt.image.MultiPixelPackedSampleModel;
@@ -40,6 +40,7 @@ import javax.media.jai.Histogram;
 import javax.media.jai.PlanarImage;
 import javax.media.jai.ROI;
 import org.apache.commons.io.FilenameUtils;
+import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.gce.imagemosaic.GranuleDescriptor;
 import org.geotools.gce.imagemosaic.GranuleDescriptor.GranuleLoadingResult;
 import org.geotools.gce.imagemosaic.GranuleLoader;
@@ -52,7 +53,6 @@ import org.geotools.gce.imagemosaic.Utils;
 import org.geotools.gce.imagemosaic.egr.ROIExcessGranuleRemover;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.image.ImageWorker;
-import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.util.URLs;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
@@ -83,7 +83,7 @@ public class BaseSubmosaicProducer implements SubmosaicProducer {
 
     protected Color inputTransparentColor;
 
-    private int[] alphaIndex = new int[1];
+    // boolean forceFootprints = JAIExt.;
 
     public BaseSubmosaicProducer(RasterLayerResponse rasterLayerResponse, boolean dryRun) {
         this.rasterLayerResponse = rasterLayerResponse;
@@ -167,10 +167,7 @@ public class BaseSubmosaicProducer implements SubmosaicProducer {
                     // transparent color to set we have to remove it.
                     //
                     final ColorModel cm = loadedImage.getColorModel();
-                    hasAlpha = cm.hasAlpha();
-                    if (hasAlpha) {
-                        alphaIndex[0] = cm.getNumComponents() - 1;
-                    }
+                    hasAlpha |= cm.hasAlpha();
 
                     //
                     // we set the input threshold accordingly to the input
@@ -274,6 +271,7 @@ public class BaseSubmosaicProducer implements SubmosaicProducer {
         //
         // TRANSPARENT COLOR MANAGEMENT
         //
+        boolean granuleHasAlpha = false;
         if (doInputTransparency) {
             if (LOGGER.isLoggable(Level.FINE)) {
                 LOGGER.fine("Support for alpha on input granule " + result.getGranuleUrl());
@@ -282,7 +280,7 @@ public class BaseSubmosaicProducer implements SubmosaicProducer {
                     new ImageWorker(granule)
                             .makeColorTransparent(inputTransparentColor)
                             .getRenderedImage();
-            hasAlpha = granule.getColorModel().hasAlpha();
+            granuleHasAlpha = granule.getColorModel().hasAlpha();
             if (!granule.getColorModel().hasAlpha()) {
                 // if the resulting image has no transparency (can happen with IndexColorModel then
                 // we need to try component
@@ -292,12 +290,12 @@ public class BaseSubmosaicProducer implements SubmosaicProducer {
                                 .forceComponentColorModel(true)
                                 .makeColorTransparent(inputTransparentColor)
                                 .getRenderedImage();
-                hasAlpha = granule.getColorModel().hasAlpha();
+                granuleHasAlpha = granule.getColorModel().hasAlpha();
             }
-            assert hasAlpha;
+            assert granuleHasAlpha;
         }
         PlanarImage alphaChannel = null;
-        if (hasAlpha || doInputTransparency) {
+        if (granuleHasAlpha || doInputTransparency) {
             ImageWorker w = new ImageWorker(granule);
             if (granule.getSampleModel() instanceof MultiPixelPackedSampleModel
                     || granule.getColorModel() instanceof IndexColorModel) {
@@ -306,7 +304,7 @@ public class BaseSubmosaicProducer implements SubmosaicProducer {
             }
             // doing this here gives the guarantee that I get the correct index for the transparency
             // band
-            alphaIndex[0] = granule.getColorModel().getNumComponents() - 1;
+            int[] alphaIndex = new int[] {granule.getColorModel().getNumComponents() - 1};
             assert alphaIndex[0] < granule.getSampleModel().getNumBands();
 
             //
@@ -323,16 +321,19 @@ public class BaseSubmosaicProducer implements SubmosaicProducer {
         // ROI
         //
         // we need to add its roi in order to avoid problems with the mosaics sources overlapping
-        final Rectangle bounds = PlanarImage.wrapRenderedImage(granule).getBounds();
-        Geometry mask =
-                JTS.toGeometry(
-                        new Envelope(
-                                bounds.getMinX(),
-                                bounds.getMaxX(),
-                                bounds.getMinY(),
-                                bounds.getMaxY()));
-        ROI imageROI = new ROIGeometry(mask);
-        if (rasterLayerResponse.getFootprintBehavior().handleFootprints()) {
+        ROI imageROI = null;
+        if (rasterLayerResponse.getFootprintBehavior().handleFootprints()
+                || rasterLayerResponse.isHeterogeneousCRS()
+                || !JAIExt.isJAIExtOperation("Mosaic")) {
+            final Rectangle bounds = PlanarImage.wrapRenderedImage(granule).getBounds();
+            Geometry mask =
+                    JTS.toGeometry(
+                            new Envelope(
+                                    bounds.getMinX(),
+                                    bounds.getMaxX(),
+                                    bounds.getMinY(),
+                                    bounds.getMaxY()));
+            imageROI = new ROIGeometry(mask);
 
             // get the real footprint
             final ROI footprint = result.getFootprint();
@@ -343,6 +344,9 @@ public class BaseSubmosaicProducer implements SubmosaicProducer {
                     imageROI = imageROI.intersect(footprint);
                 }
             }
+        }
+
+        if (rasterLayerResponse.getFootprintBehavior().handleFootprints()) {
 
             // ARTIFACTS FILTERING
             if (rasterLayerResponse.getDefaultArtifactsFilterThreshold() != Integer.MIN_VALUE

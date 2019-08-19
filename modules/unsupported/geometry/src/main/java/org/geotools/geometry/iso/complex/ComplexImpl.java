@@ -45,7 +45,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * provided in the schemas in annex D.
  *
  * @author Jackson Roehrig & Sanjay Jena
- * @source $URL$
  */
 public abstract class ComplexImpl extends GeometryImpl implements Complex {
 

@@ -3,11 +3,12 @@ package org.geotools.data.complex.config;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
+import org.geotools.data.complex.util.EmfComplexFeatureReader;
 import org.geotools.feature.NameImpl;
 import org.geotools.gml3.v3_2.GML;
 import org.geotools.test.AppSchemaTestSupport;
-import org.geotools.xml.SchemaIndex;
 import org.geotools.xml.resolver.SchemaResolver;
+import org.geotools.xsd.SchemaIndex;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.opengis.feature.type.AttributeType;

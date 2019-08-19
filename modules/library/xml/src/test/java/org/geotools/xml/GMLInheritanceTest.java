@@ -27,7 +27,6 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.opengis.feature.simple.SimpleFeature;
 
-/** @source $URL$ */
 public class GMLInheritanceTest extends TestCase {
 
     public void testNestedFeature() throws Throwable {

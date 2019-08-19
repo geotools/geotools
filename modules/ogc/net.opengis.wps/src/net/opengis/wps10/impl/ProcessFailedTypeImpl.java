@@ -26,150 +26,150 @@ import org.eclipse.emf.ecore.impl.EObjectImpl;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link net.opengis.wps10.impl.ProcessFailedTypeImpl#getExceptionReport <em>Exception Report</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
 public class ProcessFailedTypeImpl extends EObjectImpl implements ProcessFailedType {
     /**
-     * The cached value of the '{@link #getExceptionReport() <em>Exception Report</em>}' containment reference.
-     * <!-- begin-user-doc -->
+   * The cached value of the '{@link #getExceptionReport() <em>Exception Report</em>}' containment reference.
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getExceptionReport()
-     * @generated
-     * @ordered
-     */
+   * @see #getExceptionReport()
+   * @generated
+   * @ordered
+   */
     protected ExceptionReportType exceptionReport;
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     protected ProcessFailedTypeImpl() {
-        super();
-    }
+    super();
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     protected EClass eStaticClass() {
-        return Wps10Package.Literals.PROCESS_FAILED_TYPE;
-    }
+    return Wps10Package.Literals.PROCESS_FAILED_TYPE;
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public ExceptionReportType getExceptionReport() {
-        return exceptionReport;
-    }
+    return exceptionReport;
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public NotificationChain basicSetExceptionReport(ExceptionReportType newExceptionReport, NotificationChain msgs) {
-        ExceptionReportType oldExceptionReport = exceptionReport;
-        exceptionReport = newExceptionReport;
-        if (eNotificationRequired()) {
-            ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, Wps10Package.PROCESS_FAILED_TYPE__EXCEPTION_REPORT, oldExceptionReport, newExceptionReport);
-            if (msgs == null) msgs = notification; else msgs.add(notification);
-        }
-        return msgs;
+    ExceptionReportType oldExceptionReport = exceptionReport;
+    exceptionReport = newExceptionReport;
+    if (eNotificationRequired()) {
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, Wps10Package.PROCESS_FAILED_TYPE__EXCEPTION_REPORT, oldExceptionReport, newExceptionReport);
+      if (msgs == null) msgs = notification; else msgs.add(notification);
     }
+    return msgs;
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public void setExceptionReport(ExceptionReportType newExceptionReport) {
-        if (newExceptionReport != exceptionReport) {
-            NotificationChain msgs = null;
-            if (exceptionReport != null)
-                msgs = ((InternalEObject)exceptionReport).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - Wps10Package.PROCESS_FAILED_TYPE__EXCEPTION_REPORT, null, msgs);
-            if (newExceptionReport != null)
-                msgs = ((InternalEObject)newExceptionReport).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - Wps10Package.PROCESS_FAILED_TYPE__EXCEPTION_REPORT, null, msgs);
-            msgs = basicSetExceptionReport(newExceptionReport, msgs);
-            if (msgs != null) msgs.dispatch();
-        }
-        else if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, Wps10Package.PROCESS_FAILED_TYPE__EXCEPTION_REPORT, newExceptionReport, newExceptionReport));
+    if (newExceptionReport != exceptionReport) {
+      NotificationChain msgs = null;
+      if (exceptionReport != null)
+        msgs = ((InternalEObject)exceptionReport).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - Wps10Package.PROCESS_FAILED_TYPE__EXCEPTION_REPORT, null, msgs);
+      if (newExceptionReport != null)
+        msgs = ((InternalEObject)newExceptionReport).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - Wps10Package.PROCESS_FAILED_TYPE__EXCEPTION_REPORT, null, msgs);
+      msgs = basicSetExceptionReport(newExceptionReport, msgs);
+      if (msgs != null) msgs.dispatch();
     }
+    else if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, Wps10Package.PROCESS_FAILED_TYPE__EXCEPTION_REPORT, newExceptionReport, newExceptionReport));
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-        switch (featureID) {
-            case Wps10Package.PROCESS_FAILED_TYPE__EXCEPTION_REPORT:
-                return basicSetExceptionReport(null, msgs);
-        }
-        return super.eInverseRemove(otherEnd, featureID, msgs);
+    switch (featureID) {
+      case Wps10Package.PROCESS_FAILED_TYPE__EXCEPTION_REPORT:
+        return basicSetExceptionReport(null, msgs);
     }
+    return super.eInverseRemove(otherEnd, featureID, msgs);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case Wps10Package.PROCESS_FAILED_TYPE__EXCEPTION_REPORT:
-                return getExceptionReport();
-        }
-        return super.eGet(featureID, resolve, coreType);
+    switch (featureID) {
+      case Wps10Package.PROCESS_FAILED_TYPE__EXCEPTION_REPORT:
+        return getExceptionReport();
     }
+    return super.eGet(featureID, resolve, coreType);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case Wps10Package.PROCESS_FAILED_TYPE__EXCEPTION_REPORT:
-                setExceptionReport((ExceptionReportType)newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
+    switch (featureID) {
+      case Wps10Package.PROCESS_FAILED_TYPE__EXCEPTION_REPORT:
+        setExceptionReport((ExceptionReportType)newValue);
+        return;
     }
+    super.eSet(featureID, newValue);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case Wps10Package.PROCESS_FAILED_TYPE__EXCEPTION_REPORT:
-                setExceptionReport((ExceptionReportType)null);
-                return;
-        }
-        super.eUnset(featureID);
+    switch (featureID) {
+      case Wps10Package.PROCESS_FAILED_TYPE__EXCEPTION_REPORT:
+        setExceptionReport((ExceptionReportType)null);
+        return;
     }
+    super.eUnset(featureID);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case Wps10Package.PROCESS_FAILED_TYPE__EXCEPTION_REPORT:
-                return exceptionReport != null;
-        }
-        return super.eIsSet(featureID);
+    switch (featureID) {
+      case Wps10Package.PROCESS_FAILED_TYPE__EXCEPTION_REPORT:
+        return exceptionReport != null;
     }
+    return super.eIsSet(featureID);
+  }
 
 } //ProcessFailedTypeImpl

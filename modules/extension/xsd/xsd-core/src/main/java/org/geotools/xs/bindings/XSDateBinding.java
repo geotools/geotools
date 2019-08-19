@@ -18,13 +18,12 @@ package org.geotools.xs.bindings;
 
 import java.sql.Date;
 import java.util.Calendar;
-import java.util.TimeZone;
 import javax.xml.namespace.QName;
-import org.geotools.factory.Hints;
-import org.geotools.xml.InstanceComponent;
-import org.geotools.xml.SimpleBinding;
 import org.geotools.xml.impl.DatatypeConverterImpl;
 import org.geotools.xs.XS;
+import org.geotools.xs.XSUtils;
+import org.geotools.xsd.InstanceComponent;
+import org.geotools.xsd.SimpleBinding;
 
 /**
  * Binding object for the type http://www.w3.org/2001/XMLSchema:date.
@@ -59,7 +58,6 @@ import org.geotools.xs.XS;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class XSDateBinding implements SimpleBinding {
     /** @generated */
@@ -105,16 +103,9 @@ public class XSDateBinding implements SimpleBinding {
 
     public String encode(Object object, String value) throws Exception {
         final Date date = (Date) object;
-        Object hint = Hints.getSystemDefault(Hints.LOCAL_DATE_TIME_HANDLING);
-        Calendar calendar;
-        if (Boolean.TRUE.equals(hint)) {
-            calendar = Calendar.getInstance();
-        } else {
-            calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
-        }
+        Calendar calendar = XSUtils.getConfiguredCalendar();
         calendar.clear();
         calendar.setTimeInMillis(date.getTime());
-
         return DatatypeConverterImpl.getInstance().printDate(calendar);
     }
 }

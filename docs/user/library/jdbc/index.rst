@@ -39,6 +39,7 @@ DataStore plugins:
    
    db2
    h2
+   hana
    mysql
    oracle
    postgis

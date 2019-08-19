@@ -17,16 +17,20 @@
 package org.geotools.gce.imagemosaic.catalog;
 
 import java.io.IOException;
+import java.util.logging.Logger;
 import org.geotools.coverage.grid.io.GranuleStore;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.Query;
 import org.geotools.data.Transaction;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
-import org.geotools.factory.Hints;
+import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.gce.imagemosaic.RasterManager;
+import org.geotools.util.factory.Hints;
+import org.geotools.util.logging.Logging;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.Filter;
+import org.opengis.filter.FilterFactory2;
 
 /**
  * A {@link GranuleStore} implementation wrapping a {@link GranuleCatalog}.
@@ -34,6 +38,10 @@ import org.opengis.filter.Filter;
  * @author Daniele Romagnoli, GeoSolutions SAS
  */
 public class GranuleCatalogStore extends GranuleCatalogSource implements GranuleStore {
+
+    static final Logger LOGGER = Logging.getLogger(GranuleCatalogStore.class);
+
+    static final FilterFactory2 FF = CommonFactoryFinder.getFilterFactory2();
 
     private Transaction transaction;
 
@@ -94,18 +102,24 @@ public class GranuleCatalogStore extends GranuleCatalogSource implements Granule
 
     @Override
     public int removeGranules(Filter filter) {
-        int removed = catalog.removeGranules(new Query(typeName, filter));
+        return removeGranules(filter, null);
+    }
+
+    @Override
+    public int removeGranules(Filter filter, Hints hints) {
         try {
+            int removed = catalog.removeGranules(new Query(typeName, filter));
+
             // we cannot re-initialize a raster manager if there are no granules
             Query q = new Query(manager.getTypeName());
             q.setMaxFeatures(1);
             if (DataUtilities.count(catalog.getGranules(q)) > 0) {
                 manager.initialize(true);
             }
+            return removed;
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Failed to remove granules matching " + filter, e);
         }
-        return removed;
     }
 
     @Override

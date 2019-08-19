@@ -31,7 +31,6 @@ import org.locationtech.jts.geom.Polygon;
  * can be seen as a composite, since uses in fact other, simpler iterator to carry on its duties.
  *
  * @author Andrea Aime
- * @source $URL$
  * @version $Id$
  */
 public final class GeomCollectionIterator extends AbstractLiteIterator {

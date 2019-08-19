@@ -13,7 +13,7 @@ Specifically, only the FeatureServer services on either ArcGIS Online (Open Data
 ArcGIS Server FeatureServers are covered so far.
 
 FeatureServers, non entire services, are used as endpoints for ArcGIS
-Servers, beacuse there may be hundreds of different layers, and it seems ESRI throttlea back 
+Servers, because there may be hundreds of different layers, and it seems ESRI throttlea back 
 requests, leading to very long times for building feature types.
 
 

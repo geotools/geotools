@@ -22,7 +22,6 @@ import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
-import org.geotools.factory.Hints;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.NamedIdentifier;
 import org.geotools.referencing.cs.DefaultEllipsoidalCS;
@@ -30,6 +29,7 @@ import org.geotools.referencing.datum.DefaultEllipsoid;
 import org.geotools.referencing.datum.DefaultPrimeMeridian;
 import org.geotools.referencing.factory.DirectAuthorityFactory;
 import org.geotools.util.SimpleInternationalString;
+import org.geotools.util.factory.Hints;
 import org.opengis.metadata.Identifier;
 import org.opengis.metadata.citation.Citation;
 import org.opengis.referencing.FactoryException;
@@ -46,14 +46,8 @@ import org.opengis.util.InternationalString;
  * CRS} space.
  *
  * @since 2.2
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
- * @deprecated This class will move in a <code>org.geotools.referencing.factory.<strong>web</strong>
- *     </code> package in a future Geotools version, in order to put together other web-related
- *     factories defined outside the WMS specification. Don't use this class directly. You should
- *     not need to anyway - use {@link org.geotools.referencing.ReferencingFactoryFinder} instead,
- *     which will continue to work no matter where this class is located.
  */
 public class WebCRSFactory extends DirectAuthorityFactory implements CRSAuthorityFactory {
     /**

@@ -21,7 +21,6 @@ import org.geotools.data.shapefile.TestCaseSupport;
 import org.geotools.data.shapefile.files.ShpFiles;
 import org.junit.Before;
 
-/** @source $URL$ */
 public abstract class FIDTestCase extends TestCaseSupport {
 
     protected final String TYPE_NAME = "archsites";

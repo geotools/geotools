@@ -22,7 +22,6 @@ import org.opengis.geometry.complex.CompositeCurve;
  * negative, then the {@code OrientableCurve} is related to another {@linkplain Curve curve} with a
  * parameterization that reverses the sense of the curve traversal.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/as">ISO 19107</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0

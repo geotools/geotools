@@ -4,7 +4,6 @@ import org.geotools.jdbc.JDBCDateOnlineTest;
 import org.geotools.jdbc.JDBCDateTestSetup;
 import org.junit.Ignore;
 
-/** @source $URL$ */
 public class GeoPkgDateOnlineTest extends JDBCDateOnlineTest {
 
     @Override

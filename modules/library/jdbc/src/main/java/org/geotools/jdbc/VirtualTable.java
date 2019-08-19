@@ -29,7 +29,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.data.Query;
-import org.geotools.factory.Hints;
+import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.Geometry;
 import org.opengis.filter.Filter;
@@ -50,7 +50,6 @@ import org.opengis.filter.Filter;
  * setEscapeSql() method.
  *
  * @author Andrea Aime - OpenGeo
- * @source $URL$
  */
 public class VirtualTable implements Serializable {
 

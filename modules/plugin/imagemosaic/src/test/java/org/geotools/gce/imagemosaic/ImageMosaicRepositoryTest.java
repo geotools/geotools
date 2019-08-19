@@ -42,12 +42,12 @@ import org.geotools.data.ServiceInfo;
 import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.data.shapefile.ShapefileDataStoreFactory;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.factory.Hints;
 import org.geotools.feature.AttributeTypeBuilder;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.TypeBuilder;
 import org.geotools.test.TestData;
 import org.geotools.util.URLs;
+import org.geotools.util.factory.Hints;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -372,7 +372,7 @@ public class ImageMosaicRepositoryTest {
 
         @Override
         public FeatureSource getFeatureSource(Name typeName) throws IOException {
-            if (this.name.equals(name)) {
+            if (this.name.equals(typeName)) {
                 return delegate.getFeatureSource(name.getLocalPart());
             }
             return null;

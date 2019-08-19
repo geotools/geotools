@@ -33,7 +33,6 @@ import org.opengis.util.CodeList;
  *
  * @author Martin Desruisseaux
  * @author Ben Caradoc-Davies (CSIRO Earth Science and Resource Engineering)
- * @source $URL$
  */
 final class URI_Type {
     /**

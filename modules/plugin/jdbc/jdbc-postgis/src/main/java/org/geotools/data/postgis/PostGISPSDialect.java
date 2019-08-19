@@ -23,11 +23,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.Map;
-import org.geotools.factory.Hints;
+import java.util.Set;
 import org.geotools.jdbc.ColumnMetadata;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.PreparedFilterToSQL;
 import org.geotools.jdbc.PreparedStatementSQLDialect;
+import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
@@ -37,7 +38,6 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.GeometryDescriptor;
 
-/** @source $URL$ */
 public class PostGISPSDialect extends PreparedStatementSQLDialect {
 
     private PostGISDialect delegate;
@@ -45,6 +45,13 @@ public class PostGISPSDialect extends PreparedStatementSQLDialect {
     public PostGISPSDialect(JDBCDataStore store, PostGISDialect delegate) {
         super(store);
         this.delegate = delegate;
+        // prepared statements enable native binary transfer, no need to base64 encode
+        this.delegate.base64EncodingEnabled = false;
+    }
+
+    @Override
+    protected void addSupportedHints(Set<Hints.Key> hints) {
+        delegate.addSupportedHints(hints);
     }
 
     @Override
@@ -72,7 +79,7 @@ public class PostGISPSDialect extends PreparedStatementSQLDialect {
             Connection cx,
             Hints hints)
             throws IOException, SQLException {
-        return delegate.decodeGeometryValue(descriptor, rs, column, factory, cx, new Hints());
+        return delegate.decodeGeometryValue(descriptor, rs, column, factory, cx, hints);
     }
 
     public Geometry decodeGeometryValue(
@@ -84,12 +91,6 @@ public class PostGISPSDialect extends PreparedStatementSQLDialect {
             Hints hints)
             throws IOException, SQLException {
         return delegate.decodeGeometryValue(descriptor, rs, column, factory, cx, hints);
-    }
-
-    @Override
-    public void encodeGeometryColumn(
-            GeometryDescriptor gatt, String prefix, int srid, StringBuffer sql) {
-        delegate.encodeGeometryColumn(gatt, prefix, srid, sql);
     }
 
     @Override
@@ -283,5 +284,31 @@ public class PostGISPSDialect extends PreparedStatementSQLDialect {
             return name.substring(1);
         }
         return super.getArrayComponentTypeName(att);
+    }
+
+    public void encodeGeometryValue(Geometry value, int dimension, int srid, StringBuffer sql)
+            throws IOException {
+        delegate.encodeGeometryValue(value, dimension, srid, sql);
+    }
+
+    @Override
+    public void encodeGeometryColumnSimplified(
+            GeometryDescriptor gatt, String prefix, int srid, StringBuffer sql, Double distance) {
+        delegate.encodeGeometryColumnSimplified(gatt, prefix, srid, sql, distance);
+    }
+
+    @Override
+    public void encodeGeometryColumnGeneralized(
+            GeometryDescriptor gatt, String prefix, int srid, StringBuffer sql, Double distance) {
+        delegate.encodeGeometryColumnGeneralized(gatt, prefix, srid, sql, distance);
+    }
+
+    PostGISDialect getDelegate() {
+        return delegate;
+    }
+
+    @Override
+    public void initializeConnection(Connection cx) throws SQLException {
+        delegate.initializeConnection(cx);
     }
 }

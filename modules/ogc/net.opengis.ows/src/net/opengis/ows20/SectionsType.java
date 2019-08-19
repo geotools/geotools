@@ -21,10 +21,10 @@ import org.eclipse.emf.ecore.EObject;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link net.opengis.ows20.SectionsType#getSection <em>Section</em>}</li>
  * </ul>
- * </p>
  *
  * @see net.opengis.ows20.Ows20Package#getSectionsType()
  * @model extendedMetaData="name='SectionsType' kind='elementOnly'"
@@ -32,20 +32,20 @@ import org.eclipse.emf.ecore.EObject;
  */
 public interface SectionsType extends EObject {
     /**
-     * Returns the value of the '<em><b>Section</b></em>' attribute list.
-     * The list contents are of type {@link java.lang.String}.
-     * <!-- begin-user-doc -->
+   * Returns the value of the '<em><b>Section</b></em>' attribute list.
+   * The list contents are of type {@link java.lang.String}.
+   * <!-- begin-user-doc -->
      * <p>
      * If the meaning of the '<em>Section</em>' attribute list isn't clear,
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     * @return the value of the '<em>Section</em>' attribute list.
-     * @see net.opengis.ows20.Ows20Package#getSectionsType_Section()
-     * @model unique="false"
-     *        extendedMetaData="kind='element' name='Section' namespace='##targetNamespace'"
-     * @generated
-     */
+   * @return the value of the '<em>Section</em>' attribute list.
+   * @see net.opengis.ows20.Ows20Package#getSectionsType_Section()
+   * @model unique="false"
+   *        extendedMetaData="kind='element' name='Section' namespace='##targetNamespace'"
+   * @generated
+   */
     EList<String> getSection();
 
 } // SectionsType

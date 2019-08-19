@@ -23,7 +23,6 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import org.geotools.util.Converters;
 import org.yaml.snakeyaml.DumperOptions;
-import org.yaml.snakeyaml.Yaml;
 
 /**
  * Base class for Yaml object wrappers.
@@ -201,7 +200,7 @@ public class YamlObject<T> {
         DumperOptions dumperOpts = new DumperOptions();
         dumperOpts.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
         dumperOpts.setDefaultScalarStyle(DumperOptions.ScalarStyle.PLAIN);
-        new Yaml(dumperOpts).dump(raw, w);
+        YamlUtil.getSafeYaml(dumperOpts).dump(raw, w);
         return w.toString();
     }
 }

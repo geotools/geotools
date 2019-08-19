@@ -29,13 +29,11 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.test.ImageAssert;
 import org.geotools.map.FeatureLayer;
 import org.geotools.map.MapContent;
-import org.geotools.renderer.style.FontCache;
 import org.geotools.styling.Style;
 import org.geotools.test.TestData;
 import org.junit.Before;
 import org.junit.Test;
 
-/** @source $URL$ */
 public class GeometryFunctionTest {
     private static final long TIME = 40000;
 
@@ -51,10 +49,7 @@ public class GeometryFunctionTest {
         bounds = fs.getBounds();
         bounds.expandBy(0.5);
 
-        Font font =
-                Font.createFont(
-                        Font.TRUETYPE_FONT, TestData.getResource(this, "Vera.ttf").openStream());
-        FontCache.getDefaultInstance().registerFont(font);
+        RendererBaseTest.setupVeraFonts();
     }
 
     @Test

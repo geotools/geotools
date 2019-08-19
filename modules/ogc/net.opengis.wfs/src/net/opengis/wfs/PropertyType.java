@@ -17,11 +17,11 @@ import org.eclipse.emf.ecore.EObject;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link net.opengis.wfs.PropertyType#getName <em>Name</em>}</li>
  *   <li>{@link net.opengis.wfs.PropertyType#getValue <em>Value</em>}</li>
  * </ul>
- * </p>
  *
  * @see net.opengis.wfs.WfsPackage#getPropertyType()
  * @model extendedMetaData="name='PropertyType' kind='elementOnly'"
@@ -46,13 +46,13 @@ public interface PropertyType extends EObject {
 	QName getName();
 
 	/**
-     * Sets the value of the '{@link net.opengis.wfs.PropertyType#getName <em>Name</em>}' attribute.
-     * <!-- begin-user-doc -->
+   * Sets the value of the '{@link net.opengis.wfs.PropertyType#getName <em>Name</em>}' attribute.
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Name</em>' attribute.
-     * @see #getName()
-     * @generated
-     */
+   * @param value the new value of the '<em>Name</em>' attribute.
+   * @see #getName()
+   * @generated
+   */
 	void setName(QName value);
 
 	/**
@@ -72,13 +72,13 @@ public interface PropertyType extends EObject {
 	Object getValue();
 
 	/**
-     * Sets the value of the '{@link net.opengis.wfs.PropertyType#getValue <em>Value</em>}' attribute.
-     * <!-- begin-user-doc -->
+   * Sets the value of the '{@link net.opengis.wfs.PropertyType#getValue <em>Value</em>}' attribute.
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Value</em>' attribute.
-     * @see #getValue()
-     * @generated
-     */
+   * @param value the new value of the '<em>Value</em>' attribute.
+   * @see #getValue()
+   * @generated
+   */
 	void setValue(Object value);
 
 } // PropertyType

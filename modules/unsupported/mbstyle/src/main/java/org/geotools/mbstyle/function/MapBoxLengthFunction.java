@@ -1,4 +1,3 @@
-package org.geotools.mbstyle.function;
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
@@ -15,6 +14,7 @@ package org.geotools.mbstyle.function;
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
+package org.geotools.mbstyle.function;
 
 import static org.geotools.filter.capability.FunctionNameImpl.parameter;
 

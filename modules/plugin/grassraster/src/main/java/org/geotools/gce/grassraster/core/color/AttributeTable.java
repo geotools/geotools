@@ -19,7 +19,6 @@ package org.geotools.gce.grassraster.core.color;
 import java.util.Enumeration;
 import java.util.Vector;
 
-/** @source $URL$ */
 public class AttributeTable {
     private Vector<CellAttribute> atts = null;
 

@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2016, Open Source Geospatial Foundation (OSGeo).
+ *    (C) 2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -16,7 +16,7 @@
  */
 package org.geotools.gml2.simple;
 
-import org.geotools.xml.Encoder;
+import org.geotools.xsd.Encoder;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.LinearRing;

@@ -97,7 +97,7 @@ Using a ProcessorExecutor
 '''''''''''''''''''''''''
 
 The real fun with using the Processes utility class is that you can set up work and then schedule
-the work in two separate steps. This is a great way to use todays multi-core processors in
+the work in two separate steps. This is a great way to use multi-core processors in
 your application.
 
 1. You can then use a ProcessorExecutor is going to be in charge of running your processes - you

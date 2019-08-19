@@ -22,7 +22,6 @@ import org.opengis.geometry.primitive.CurveSegment;
  * Sequence&lt;{@link Geodesic}&gt;</code> into a single object, with the obvious savings of storage
  * space.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/as">ISO 19107</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0

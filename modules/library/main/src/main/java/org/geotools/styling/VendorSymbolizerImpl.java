@@ -29,7 +29,6 @@ import org.opengis.style.StyleVisitor;
  *
  * @author James Macgill, CCG
  * @author Johann Sorel (Geomatys)
- * @source $URL$
  * @version $Id$
  */
 public class VendorSymbolizerImpl extends AbstractSymbolizer implements ExtensionSymbolizer {

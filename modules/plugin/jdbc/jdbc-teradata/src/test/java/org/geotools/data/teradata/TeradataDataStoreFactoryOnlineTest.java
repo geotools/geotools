@@ -27,7 +27,6 @@ import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCTestSetup;
 import org.geotools.jdbc.JDBCTestSupport;
 
-/** @source $URL$ */
 public class TeradataDataStoreFactoryOnlineTest extends JDBCTestSupport {
 
     protected JDBCTestSetup createTestSetup() {

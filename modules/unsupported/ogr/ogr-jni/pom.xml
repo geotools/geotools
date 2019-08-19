@@ -16,7 +16,7 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>gt-ogr</artifactId>
-    <version>21-SNAPSHOT</version>
+    <version>22-SNAPSHOT</version>
   </parent>
 
 
@@ -82,7 +82,7 @@
   </dependencies>
   
   <properties>
-    <gdal.version>1.8.1</gdal.version>
+    <gdal.version>2.2.0</gdal.version>
   </properties>
   
     <build>

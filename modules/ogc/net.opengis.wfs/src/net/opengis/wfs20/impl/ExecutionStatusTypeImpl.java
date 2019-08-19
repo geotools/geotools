@@ -22,180 +22,180 @@ import org.eclipse.emf.ecore.impl.EObjectImpl;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link net.opengis.wfs20.impl.ExecutionStatusTypeImpl#getStatus <em>Status</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
 public class ExecutionStatusTypeImpl extends EObjectImpl implements ExecutionStatusType {
     /**
-     * The default value of the '{@link #getStatus() <em>Status</em>}' attribute.
-     * <!-- begin-user-doc -->
+   * The default value of the '{@link #getStatus() <em>Status</em>}' attribute.
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getStatus()
-     * @generated
-     * @ordered
-     */
+   * @see #getStatus()
+   * @generated
+   * @ordered
+   */
     protected static final String STATUS_EDEFAULT = "OK";
 
     /**
-     * The cached value of the '{@link #getStatus() <em>Status</em>}' attribute.
-     * <!-- begin-user-doc -->
+   * The cached value of the '{@link #getStatus() <em>Status</em>}' attribute.
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getStatus()
-     * @generated
-     * @ordered
-     */
+   * @see #getStatus()
+   * @generated
+   * @ordered
+   */
     protected String status = STATUS_EDEFAULT;
 
     /**
-     * This is true if the Status attribute has been set.
-     * <!-- begin-user-doc -->
+   * This is true if the Status attribute has been set.
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+   * @generated
+   * @ordered
+   */
     protected boolean statusESet;
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     protected ExecutionStatusTypeImpl() {
-        super();
-    }
+    super();
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     protected EClass eStaticClass() {
-        return Wfs20Package.Literals.EXECUTION_STATUS_TYPE;
-    }
+    return Wfs20Package.Literals.EXECUTION_STATUS_TYPE;
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public String getStatus() {
-        return status;
-    }
+    return status;
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public void setStatus(String newStatus) {
-        String oldStatus = status;
-        status = newStatus;
-        boolean oldStatusESet = statusESet;
-        statusESet = true;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, Wfs20Package.EXECUTION_STATUS_TYPE__STATUS, oldStatus, status, !oldStatusESet));
-    }
+    String oldStatus = status;
+    status = newStatus;
+    boolean oldStatusESet = statusESet;
+    statusESet = true;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, Wfs20Package.EXECUTION_STATUS_TYPE__STATUS, oldStatus, status, !oldStatusESet));
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public void unsetStatus() {
-        String oldStatus = status;
-        boolean oldStatusESet = statusESet;
-        status = STATUS_EDEFAULT;
-        statusESet = false;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.UNSET, Wfs20Package.EXECUTION_STATUS_TYPE__STATUS, oldStatus, STATUS_EDEFAULT, oldStatusESet));
-    }
+    String oldStatus = status;
+    boolean oldStatusESet = statusESet;
+    status = STATUS_EDEFAULT;
+    statusESet = false;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.UNSET, Wfs20Package.EXECUTION_STATUS_TYPE__STATUS, oldStatus, STATUS_EDEFAULT, oldStatusESet));
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public boolean isSetStatus() {
-        return statusESet;
-    }
+    return statusESet;
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case Wfs20Package.EXECUTION_STATUS_TYPE__STATUS:
-                return getStatus();
-        }
-        return super.eGet(featureID, resolve, coreType);
+    switch (featureID) {
+      case Wfs20Package.EXECUTION_STATUS_TYPE__STATUS:
+        return getStatus();
     }
+    return super.eGet(featureID, resolve, coreType);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case Wfs20Package.EXECUTION_STATUS_TYPE__STATUS:
-                setStatus((String)newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
+    switch (featureID) {
+      case Wfs20Package.EXECUTION_STATUS_TYPE__STATUS:
+        setStatus((String)newValue);
+        return;
     }
+    super.eSet(featureID, newValue);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case Wfs20Package.EXECUTION_STATUS_TYPE__STATUS:
-                unsetStatus();
-                return;
-        }
-        super.eUnset(featureID);
+    switch (featureID) {
+      case Wfs20Package.EXECUTION_STATUS_TYPE__STATUS:
+        unsetStatus();
+        return;
     }
+    super.eUnset(featureID);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case Wfs20Package.EXECUTION_STATUS_TYPE__STATUS:
-                return isSetStatus();
-        }
-        return super.eIsSet(featureID);
+    switch (featureID) {
+      case Wfs20Package.EXECUTION_STATUS_TYPE__STATUS:
+        return isSetStatus();
     }
+    return super.eIsSet(featureID);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     public String toString() {
-        if (eIsProxy()) return super.toString();
+    if (eIsProxy()) return super.toString();
 
-        StringBuffer result = new StringBuffer(super.toString());
-        result.append(" (status: ");
-        if (statusESet) result.append(status); else result.append("<unset>");
-        result.append(')');
-        return result.toString();
-    }
+    StringBuilder result = new StringBuilder(super.toString());
+    result.append(" (status: ");
+    if (statusESet) result.append(status); else result.append("<unset>");
+    result.append(')');
+    return result.toString();
+  }
 
 } //ExecutionStatusTypeImpl

@@ -31,7 +31,6 @@ import org.opengis.feature.Feature;
  * <p>This class will check to see if the provided Iterator implements {@link Closeable}.
  *
  * @author Ian Schneider
- * @source $URL$
  */
 public class FeatureIteratorImpl<F extends Feature> implements FeatureIterator<F> {
     /** The iterator from the SimpleFeatureCollection to return features from. */

@@ -19,11 +19,11 @@ import org.eclipse.emf.ecore.util.FeatureMap;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link net.opengis.wfs20.ValueListType#getGroup <em>Group</em>}</li>
  *   <li>{@link net.opengis.wfs20.ValueListType#getValue <em>Value</em>}</li>
  * </ul>
- * </p>
  *
  * @see net.opengis.wfs20.Wfs20Package#getValueListType()
  * @model extendedMetaData="name='ValueListType' kind='elementOnly'"
@@ -31,37 +31,37 @@ import org.eclipse.emf.ecore.util.FeatureMap;
  */
 public interface ValueListType extends EObject {
     /**
-     * Returns the value of the '<em><b>Group</b></em>' attribute list.
-     * The list contents are of type {@link org.eclipse.emf.ecore.util.FeatureMap.Entry}.
-     * <!-- begin-user-doc -->
+   * Returns the value of the '<em><b>Group</b></em>' attribute list.
+   * The list contents are of type {@link org.eclipse.emf.ecore.util.FeatureMap.Entry}.
+   * <!-- begin-user-doc -->
      * <p>
      * If the meaning of the '<em>Group</em>' attribute list isn't clear,
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     * @return the value of the '<em>Group</em>' attribute list.
-     * @see net.opengis.wfs20.Wfs20Package#getValueListType_Group()
-     * @model unique="false" dataType="org.eclipse.emf.ecore.EFeatureMapEntry" many="true"
-     *        extendedMetaData="kind='group' name='group:0'"
-     * @generated
-     */
+   * @return the value of the '<em>Group</em>' attribute list.
+   * @see net.opengis.wfs20.Wfs20Package#getValueListType_Group()
+   * @model unique="false" dataType="org.eclipse.emf.ecore.EFeatureMapEntry" many="true"
+   *        extendedMetaData="kind='group' name='group:0'"
+   * @generated
+   */
     FeatureMap getGroup();
 
     /**
-     * Returns the value of the '<em><b>Value</b></em>' containment reference list.
-     * The list contents are of type {@link org.eclipse.emf.ecore.EObject}.
-     * <!-- begin-user-doc -->
+   * Returns the value of the '<em><b>Value</b></em>' containment reference list.
+   * The list contents are of type {@link org.eclipse.emf.ecore.EObject}.
+   * <!-- begin-user-doc -->
      * <p>
      * If the meaning of the '<em>Value</em>' containment reference list isn't clear,
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     * @return the value of the '<em>Value</em>' containment reference list.
-     * @see net.opengis.wfs20.Wfs20Package#getValueListType_Value()
-     * @model containment="true" required="true" transient="true" volatile="true" derived="true"
-     *        extendedMetaData="kind='element' name='Value' namespace='##targetNamespace' group='#group:0'"
-     * @generated
-     */
+   * @return the value of the '<em>Value</em>' containment reference list.
+   * @see net.opengis.wfs20.Wfs20Package#getValueListType_Value()
+   * @model containment="true" required="true" transient="true" volatile="true" derived="true"
+   *        extendedMetaData="kind='element' name='Value' namespace='##targetNamespace' group='#group:0'"
+   * @generated
+   */
     EList<EObject> getValue();
 
 } // ValueListType

@@ -27,7 +27,6 @@ import org.geotools.data.ows.Request;
  * Executes a process.
  *
  * @author gdavis
- * @source $URL$
  */
 public interface ExecuteProcessRequest extends Request {
 

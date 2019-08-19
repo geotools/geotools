@@ -376,9 +376,10 @@ class Session implements ISession {
             issue(Commands.CLOSE_CONNECTION);
         } catch (Exception e) {
             LOGGER.log(Level.FINE, "closing connection " + toString(), e);
-        } finally {
-            // taskExecutor.shutdown();
         }
+        //        finally {
+        //            taskExecutor.shutdown();
+        //        }
     }
 
     /** @see ISession#equals(java.lang.Object) */

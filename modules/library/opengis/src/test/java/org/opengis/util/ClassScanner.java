@@ -24,7 +24,6 @@ import org.opengis.annotation.Specification;
  * Scans every classes in the OpenGIS classpath.
  *
  * @author Martin Desruisseaux (IRD)
- * @source $URL$
  */
 final class ClassScanner implements Iterator<Class<?>> {
     /** Extension for class files. */

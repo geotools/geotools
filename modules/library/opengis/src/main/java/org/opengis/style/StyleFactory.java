@@ -31,7 +31,6 @@ import org.opengis.util.InternationalString;
  * @author Open Geospatial Consortium
  * @author Johann Sorel (Geomatys)
  * @since GeoAPI 2.2
- * @source $URL$
  */
 public interface StyleFactory {
     /**

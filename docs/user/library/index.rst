@@ -12,7 +12,6 @@ support for common spatial formats such as shapefiles.
    
    opengis/index
    jts/index
-   api/index
    metadata/index
    referencing/index
    coverage/index

@@ -25,15 +25,15 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
-import org.geotools.factory.Hints;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.NamedIdentifier;
 import org.geotools.referencing.wkt.Symbols;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
 import org.geotools.util.DerivedSet;
 import org.geotools.util.NameFactory;
 import org.geotools.util.SimpleInternationalString;
+import org.geotools.util.factory.Hints;
 import org.opengis.metadata.citation.Citation;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.IdentifiedObject;
@@ -56,7 +56,6 @@ import org.opengis.util.InternationalString;
  * BufferedAuthorityFactory}.
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Jody Garnett
  * @author Rueben Schulz
@@ -96,7 +95,8 @@ public class PropertyAuthorityFactory extends DirectAuthorityFactory
      * needed. View are always up to date even if entries are added or removed in the {@linkplain
      * #definitions} map.
      */
-    private transient Map<Class<? extends IdentifiedObject>, Set<String>> filteredCodes;
+    private transient Map<Class<? extends IdentifiedObject>, Set<String>> filteredCodes =
+            new HashMap<>();
 
     /** A WKT parser. */
     private transient Parser parser;
@@ -215,9 +215,6 @@ public class PropertyAuthorityFactory extends DirectAuthorityFactory
             throws FactoryException {
         if (type == null || type.isAssignableFrom(IdentifiedObject.class)) {
             return codes;
-        }
-        if (filteredCodes == null) {
-            filteredCodes = new HashMap<Class<? extends IdentifiedObject>, Set<String>>();
         }
         synchronized (filteredCodes) {
             Set<String> filtered = filteredCodes.get(type);

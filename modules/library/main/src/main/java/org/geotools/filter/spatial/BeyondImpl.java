@@ -22,7 +22,6 @@ import org.opengis.filter.FilterVisitor;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.spatial.Beyond;
 
-/** @source $URL$ */
 public class BeyondImpl extends CartesianDistanceFilter implements Beyond {
 
     public BeyondImpl(Expression e1, Expression e2) {

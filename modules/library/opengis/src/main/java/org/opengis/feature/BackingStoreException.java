@@ -25,7 +25,6 @@ import java.sql.SQLException; // For javadoc
  *
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 2.0
- * @source $URL$
  */
 public class BackingStoreException extends RuntimeException {
     /** Serial version UID allowing cross compiler use of {@code BackingStoreException}. */

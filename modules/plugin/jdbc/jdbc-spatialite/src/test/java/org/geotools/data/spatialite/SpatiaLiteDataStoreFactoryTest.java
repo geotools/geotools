@@ -23,7 +23,6 @@ import junit.framework.TestResult;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCDataStoreFactory;
 
-/** @source $URL$ */
 public class SpatiaLiteDataStoreFactoryTest extends TestCase {
 
     SpatiaLiteDataStoreFactory factory;
@@ -45,7 +44,7 @@ public class SpatiaLiteDataStoreFactoryTest extends TestCase {
                 super.run(result);
             }
         } catch (Throwable t) {
-            t.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", t);
         }
     }
 

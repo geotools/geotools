@@ -36,11 +36,10 @@ import org.opengis.feature.type.Name;
  * @author Jody Garnett
  * @author Justin Deoliveira
  * @since 2.5
- * @source $URL$
  */
 public class Descriptors {
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(Descriptors.class.getPackage().getName());
+            org.geotools.util.logging.Logging.getLogger(Descriptors.class);
 
     /**
      * Wraps a list of {@link AttributeType} in {@link AttributeDescriptor}.

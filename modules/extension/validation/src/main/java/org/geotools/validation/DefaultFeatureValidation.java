@@ -32,13 +32,12 @@ import org.opengis.feature.simple.SimpleFeatureType;
  *
  * @author Jody Garnett, Refractions Research, Inc.
  * @author $Author: jive $ (last modification)
- * @source $URL$
  * @version $Id$
  */
 public class DefaultFeatureValidation implements FeatureValidation {
     /** The logger for the validation module. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.validation");
+            org.geotools.util.logging.Logging.getLogger(DefaultFeatureValidation.class);
 
     /** User's Name of this validation test. */
     private String name; // name of the validation

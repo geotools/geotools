@@ -27,6 +27,7 @@ import java.util.Map;
 import org.geotools.data.DataStore;
 import org.geotools.data.property.PropertyDataStore;
 import org.geotools.data.simple.SimpleFeatureSource;
+import org.geotools.data.util.NullProgressListener;
 import org.geotools.feature.NameImpl;
 import org.geotools.process.Process;
 import org.geotools.process.Processors;
@@ -34,12 +35,10 @@ import org.geotools.process.vector.AggregateProcess.AggregationFunction;
 import org.geotools.process.vector.AggregateProcess.Results;
 import org.geotools.test.TestData;
 import org.geotools.util.KVP;
-import org.geotools.util.NullProgressListener;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-/** @source $URL$ */
 public class FeatureGSProcessFactoryFactoryTest {
 
     DataStore bugs;

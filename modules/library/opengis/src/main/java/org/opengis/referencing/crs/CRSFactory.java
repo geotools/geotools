@@ -34,7 +34,6 @@ import org.opengis.referencing.operation.*;
  * state plane coordinate systems that use feet units. This factory lets an application create such
  * a hybrid coordinate system.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengis.org/docs/01-009.pdf">Implementation specification 1.0</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0

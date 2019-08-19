@@ -38,10 +38,7 @@ import java.nio.channels.ReadableByteChannel;
  * org.geotools.test.TestData} class provided in the {@code org.geotools.resources} directory.
  *
  * @since 2.2
- * @source $URL$
- * @version $Id$
  * @author Martin Desruisseaux
- * @tutorial http://www.geotools.org/display/GEOT/5.8+Test+Data
  */
 public final class TestData extends org.geotools.test.TestData {
     /** Do not allow instantiation of this class. */

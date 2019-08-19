@@ -16,15 +16,15 @@
  */
 package org.geotools.gml2.bindings;
 
+import javax.xml.namespace.QName;
 import org.geotools.gml2.GML;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.MultiLineString;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
-/** @source $URL$ */
 public class GMLMultiLineStringTypeBindingTest extends AbstractGMLBindingTest {
     ElementInstance ml;
     ElementInstance line1;
@@ -34,9 +34,19 @@ public class GMLMultiLineStringTypeBindingTest extends AbstractGMLBindingTest {
     protected void setUp() throws Exception {
         super.setUp();
 
-        line1 = createElement(GML.NAMESPACE, "myLine", GML.LINESTRINGMEMBERTYPE, null);
-        line2 = createElement(GML.NAMESPACE, "myLine", GML.LINESTRINGMEMBERTYPE, null);
-        ml = createElement(GML.NAMESPACE, "myMultiLine", GML.MULTILINESTRINGTYPE, null);
+        line1 =
+                createElement(
+                        GML.NAMESPACE,
+                        "myLine",
+                        new QName("http://www.opengis.net/gml", "LineStringMemberType"),
+                        null);
+        line2 =
+                createElement(
+                        GML.NAMESPACE,
+                        "myLine",
+                        new QName("http://www.opengis.net/gml", "LineStringMemberType"),
+                        null);
+        ml = createElement(GML.NAMESPACE, "myMultiLine", GML.MultiLineStringType, null);
 
         container = new DefaultPicoContainer();
         container.registerComponentImplementation(GeometryFactory.class);

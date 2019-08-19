@@ -32,7 +32,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * The boundary of Surfaces shall be represented as SurfaceBoundary.
  *
  * @author Jackson Roehrig & Sanjay Jena
- * @source $URL$
  */
 public class SurfaceBoundaryImpl extends PrimitiveBoundaryImpl implements SurfaceBoundary {
     private static final long serialVersionUID = -1357747117053853492L;

@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<genmodel:GenModel xmi:version="2.0"
-    xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
-    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/net.opengis.ows/src"
-    editDirectory="/net.opengis.ows.edit/src" editorDirectory="/net.opengi.ows.editor/src"
-    modelPluginID="net.opengis.ows" modelName="Ows10" updateClasspath="false" importerID="org.eclipse.emf.importer.java"
-    usedGenPackages="platform:/plugin/org.eclipse.emf.ecore/model/XMLType.genmodel#//type platform:/plugin/org.eclipse.emf.ecore/model/Ecore.genmodel#//ecore platform:/plugin/org.eclipse.emf.ecore/model/XMLNamespace.genmodel#//namespace">
-  <foreignModel>@model</foreignModel>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/net.opengis.ows/src" editDirectory="/net.opengis.ows.edit/src"
+    editorDirectory="/net.opengi.ows.editor/src" modelPluginID="net.opengis.ows" modelName="Ows10"
+    updateClasspath="false" importerID="org.eclipse.emf.importer.ecore" complianceLevel="10.0"
+    runtimeVersion="2.13" usedGenPackages="platform:/plugin/org.eclipse.emf.ecore/model/XMLType.genmodel#//type platform:/plugin/org.eclipse.emf.ecore/model/Ecore.genmodel#//ecore">
+  <foreignModel>ows10.ecore</foreignModel>
   <genPackages prefix="Ows10" basePackage="net.opengis" disposableProviderFactory="true"
       adapterFactory="false" literalsInterface="false" ecorePackage="ows10.ecore#/">
     <genDataTypes ecoreDataType="ows10.ecore#//MimeType"/>

@@ -20,7 +20,9 @@ import javax.xml.namespace.QName;
 import net.opengis.wfs20.ValueCollectionType;
 import net.opengis.wfs20.Wfs20Factory;
 import org.geotools.wfs.v2_0.WFS;
-import org.geotools.xml.*;
+import org.geotools.xsd.AbstractComplexEMFBinding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 
 /**
  * Binding object for the type http://www.opengis.net/wfs/2.0:ValueCollectionType.

@@ -16,7 +16,7 @@
  */
 package org.geotools.util;
 
-import static org.geotools.resources.Classes.*;
+import static org.geotools.util.Classes.*;
 
 import java.io.Serializable;
 import java.lang.reflect.Array;
@@ -26,10 +26,8 @@ import java.util.Comparator;
 import java.util.ConcurrentModificationException;
 import java.util.NoSuchElementException;
 import java.util.SortedSet;
-import org.geotools.resources.ClassChanger;
-import org.geotools.resources.Classes;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 import org.opengis.util.Cloneable;
 
 /**
@@ -45,7 +43,6 @@ import org.opengis.util.Cloneable;
  *
  * @param <T> The type of range elements.
  * @since 2.0
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @author Andrea Aime
@@ -537,18 +534,16 @@ public class RangeSet<T extends Comparable<? super T>> extends AbstractSet<Range
             if (((i1 = ~i1) & 1) != 0) { // Attention: c'est ~ et non -
                 modCount++;
                 Array.set(array, --i1, upper);
-            } else {
-                /*
-                 * Si la date de fin ne tombe pas dans une plage déjà existante, il
-                 * faudra (plus tard) supprimer les éventuelles plages qui le précède.
-                 *
-                 *   0   1     2      3        4     5        6         7
-                 *   #####     ########        #######        ###########
-                 *                    ^                  ^
-                 *            lower(i=3)         upper(i=6)
-                 */
-                // nothing to do
             }
+            /*
+             * Si la date de fin ne tombe pas dans une plage déjà existante, il
+             * faudra (plus tard) supprimer les éventuelles plages qui le précède.
+             *
+             *   0   1     2      3        4     5        6         7
+             *   #####     ########        #######        ###########
+             *                    ^                  ^
+             *            lower(i=3)         upper(i=6)
+             */
         } else {
             i1 &= ~1;
         }

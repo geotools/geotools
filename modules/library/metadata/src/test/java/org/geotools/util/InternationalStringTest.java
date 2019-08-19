@@ -31,7 +31,6 @@ import org.opengis.util.GenericName;
  * Tests the various {@link InternationalString} implementations.
  *
  * @author Martin Desruisseaux (IRD)
- * @source $URL$
  * @version $Id$
  */
 public final class InternationalStringTest {
@@ -91,7 +90,7 @@ public final class InternationalStringTest {
     }
 
     /** Performs basic test on the given object. */
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked", "SelfComparison"})
     private <T extends Comparable> void basicTests(final T toTest)
             throws IOException, ClassNotFoundException {
         assertEquals("CompareTo: ", 0, toTest.compareTo(toTest));

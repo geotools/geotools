@@ -19,7 +19,6 @@ package org.geotools.data.mysql;
 import org.geotools.jdbc.JDBCFeatureReaderOnlineTest;
 import org.geotools.jdbc.JDBCTestSetup;
 
-/** @source $URL$ */
 public class MySQLFeatureReaderOnlineTest extends JDBCFeatureReaderOnlineTest {
 
     @Override

@@ -47,7 +47,6 @@ import org.opengis.filter.spatial.Equals;
  * the filters themselves. There is a seperate unit test for expressions.
  *
  * @author Andrea Aime, SATA
- * @source $URL$
  */
 public class FilterAttributeExtractorTest extends TestCase {
     boolean set = false;
@@ -57,20 +56,12 @@ public class FilterAttributeExtractorTest extends TestCase {
     /** Test suite for this test case */
     TestSuite suite = null;
 
-    /**
-     * Constructor with test name.
-     *
-     * @param testName DOCUMENT ME!
-     */
+    /** Constructor with test name. */
     public FilterAttributeExtractorTest(String testName) {
         super(testName);
     }
 
-    /**
-     * Main for test runner.
-     *
-     * @param args DOCUMENT ME!
-     */
+    /** Main for test runner. */
     public static void main(String[] args) {
         junit.textui.TestRunner.run(suite());
     }

@@ -60,6 +60,7 @@ public class CSVSpecifiedWKTStrategyTest {
         assertEquals("Invalid y coordinate", coordinate.y, 1.59, 0.1);
     }
 
+    @Test
     public void testCreateFeatureBadGeometry() throws IOException {
         String input = CSVTestStrategySupport.buildInputString("fleem,morx", "foo,bar");
         CSVFileState fileState = new CSVFileState(input, "blub");

@@ -172,10 +172,6 @@ public class StreamingRendererCompositeTest {
                         "./src/test/resources/org/geotools/renderer/composite/test-data/blend1-"
                                 + composite
                                 + ".png");
-        ImageIO.write(
-                blended,
-                "PNG",
-                new File(reference.getParent(), "blend1-" + composite + "-point.png"));
         // allow some tolerance, the JDK does not do exactly the same thing as blending two images
         // but only for the copy case... uh
         int threshold = 50;

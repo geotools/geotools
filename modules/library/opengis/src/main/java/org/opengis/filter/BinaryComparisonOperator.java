@@ -18,7 +18,6 @@ import org.opengis.filter.expression.Expression;
  * Abstract base class for filters that compare exactly two values against each other. The nature of
  * the comparison is dependent on the subclass.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengis.org/docs/02-059.pdf">Implementation specification 1.0</A>
  * @author Chris Dillard (SYS Technologies)
  * @since GeoAPI 2.0

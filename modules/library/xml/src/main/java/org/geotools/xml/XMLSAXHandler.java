@@ -53,14 +53,13 @@ import org.xml.sax.helpers.DefaultHandler;
  * dtd references. If an {@link EntityResolver} is provided it will be used.
  *
  * @author dzwiers, Refractions Research, Inc. http://www.refractions.net
- * @source $URL$
  * @version $Id$
  * @see XMLElementHandler
  */
 public class XMLSAXHandler extends DefaultHandler {
     /** the logger -- should be used for debugging (assuming there are bugs LOL) */
     protected static final Logger logger =
-            org.geotools.util.logging.Logging.getLogger("net.refractions.xml.sax");
+            org.geotools.util.logging.Logging.getLogger(XMLSAXHandler.class);
 
     protected static Level level = Level.FINE;
 
@@ -133,7 +132,6 @@ public class XMLSAXHandler extends DefaultHandler {
      * parser to resolve relative uri's.
      *
      * @param intendedDocument
-     * @param hints DOCUMENT ME!
      */
     public XMLSAXHandler(URI intendedDocument, Map hints) {
         instanceDocument = intendedDocument;

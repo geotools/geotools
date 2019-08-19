@@ -4,7 +4,6 @@ import static java.awt.RenderingHints.KEY_ANTIALIASING;
 import static java.awt.RenderingHints.VALUE_ANTIALIAS_ON;
 
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
@@ -24,18 +23,15 @@ import org.geotools.map.FeatureLayer;
 import org.geotools.map.MapContent;
 import org.geotools.map.MapViewport;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
-import org.geotools.renderer.style.FontCache;
 import org.geotools.styling.Style;
 import org.geotools.styling.TextSymbolizer;
 import org.geotools.styling.visitor.DuplicatingStyleVisitor;
-import org.geotools.test.TestData;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
-/** @source $URL$ */
 public class LabelWrapTest extends TestCase {
 
     private static final long TIME = 10000;
@@ -44,12 +40,7 @@ public class LabelWrapTest extends TestCase {
 
     @Override
     protected void setUp() throws Exception {
-        // register a cross platform test
-        FontCache.getDefaultInstance()
-                .registerFont(
-                        Font.createFont(
-                                Font.TRUETYPE_FONT,
-                                TestData.getResource(this, "Vera.ttf").openStream()));
+        RendererBaseTest.setupVeraFonts();
 
         bounds = new ReferencedEnvelope(0, 10, 0, 10, null);
 
@@ -96,7 +87,7 @@ public class LabelWrapTest extends TestCase {
         BufferedImage image = renderLabels(fs, style, "Label wrap disabled");
         String refPath =
                 "./src/test/resources/org/geotools/renderer/lite/test-data/textWrapDisabled.png";
-        ImageAssert.assertEquals(new File(refPath), image, 1200);
+        ImageAssert.assertEquals(new File(refPath), image, 3000);
     }
 
     public void testAutoWrap() throws Exception {
@@ -104,7 +95,7 @@ public class LabelWrapTest extends TestCase {
         BufferedImage image = renderLabels(fs, style, "Label wrap enabled");
         String refPath =
                 "./src/test/resources/org/geotools/renderer/lite/test-data/textWrapEnabled.png";
-        ImageAssert.assertEquals(new File(refPath), image, 1200);
+        ImageAssert.assertEquals(new File(refPath), image, 3000);
     }
 
     public void testAutoWrapWithIncreasedSpacing() throws Exception {
@@ -114,7 +105,7 @@ public class LabelWrapTest extends TestCase {
                 renderLabels(fs, spacedStyle, "Label wrap enabled with extra char spacing");
         String refPath =
                 "./src/test/resources/org/geotools/renderer/lite/test-data/textWrapEnabledSpaceIncreased.png";
-        ImageAssert.assertEquals(new File(refPath), image, 1200);
+        ImageAssert.assertEquals(new File(refPath), image, 3000);
     }
 
     public void testAutoWrapWithDecreasedSpacing() throws Exception {
@@ -124,7 +115,7 @@ public class LabelWrapTest extends TestCase {
                 renderLabels(fs, spacedStyle, "Label wrap enabled with extra char spacing");
         String refPath =
                 "./src/test/resources/org/geotools/renderer/lite/test-data/textWrapEnabledSpaceDecreased.png";
-        ImageAssert.assertEquals(new File(refPath), image, 1200);
+        ImageAssert.assertEquals(new File(refPath), image, 3000);
     }
 
     public void testAutoWrapWithIncreasedWordSpacing() throws Exception {
@@ -134,7 +125,7 @@ public class LabelWrapTest extends TestCase {
                 renderLabels(fs, spacedStyle, "Label wrap enabled with extra char spacing");
         String refPath =
                 "./src/test/resources/org/geotools/renderer/lite/test-data/textWrapEnabledWordSpaceIncreased.png";
-        ImageAssert.assertEquals(new File(refPath), image, 1200);
+        ImageAssert.assertEquals(new File(refPath), image, 3000);
     }
 
     private Style getCharSpacedStyle(String styleFile, String key, float spacing)
@@ -184,7 +175,7 @@ public class LabelWrapTest extends TestCase {
 
         String refPath =
                 "./src/test/resources/org/geotools/renderer/lite/test-data/textWrapEnabledLocalTransform.png";
-        ImageAssert.assertEquals(new File(refPath), image, 1200);
+        ImageAssert.assertEquals(new File(refPath), image, 3000);
     }
 
     public void testDirectLayerLabelInteraction() throws Exception {
@@ -215,7 +206,7 @@ public class LabelWrapTest extends TestCase {
                 RendererBaseTest.showRender("Label and direct layers", renderer, TIME, bounds);
         String refPath =
                 "./src/test/resources/org/geotools/renderer/lite/test-data/textWrapEnabled.png";
-        ImageAssert.assertEquals(new File(refPath), image, 1200);
+        ImageAssert.assertEquals(new File(refPath), image, 3000);
     }
 
     private BufferedImage renderLabels(SimpleFeatureSource fs, Style style, String title)

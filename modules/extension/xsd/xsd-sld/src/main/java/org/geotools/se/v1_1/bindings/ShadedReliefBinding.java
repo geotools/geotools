@@ -45,7 +45,6 @@ import org.opengis.filter.FilterFactory;
  * </pre>
  *
  * @generated
- * @source $URL$
  */
 public class ShadedReliefBinding extends SLDShadedReliefBinding {
 

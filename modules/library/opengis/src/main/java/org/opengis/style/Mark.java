@@ -16,7 +16,6 @@ import org.opengis.filter.expression.Expression;
 /**
  * Indicate that one of a few predefined shapes will be drawn at the points of the geometry.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/symbol">Symbology Encoding
  *     Implementation Specification 1.1.0</A>
  * @author Open Geospatial Consortium

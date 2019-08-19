@@ -23,7 +23,6 @@ import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.Polygon;
 import org.w3c.dom.Document;
 
-/** @source $URL$ */
 public class PolygonTypeBindingTest extends GML3TestSupport {
 
     @Override

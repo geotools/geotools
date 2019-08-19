@@ -44,7 +44,7 @@ import org.opengis.feature.type.Name;
  * For a more detailed description, look up the projects documentation.
  *
  * @author Pieter De Graef, Geosparc
- * @source $URL$
+
  */
 public class GeoRestDataStore extends ContentDataStore {
 

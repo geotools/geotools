@@ -78,7 +78,6 @@ import java.util.regex.Pattern;
  * be invoked. See {@link #isLoggable} for implementation tips taking advantage of this rule.
  *
  * @since 2.4
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  * @see Logging
@@ -500,6 +499,7 @@ public abstract class LoggerAdapter extends Logger {
      * logp}(level, sourceClass, sourceMethod, message)</code>.
      */
     @Override
+    @SuppressWarnings("deprecation")
     public void logrb(
             final Level level,
             final String sourceClass,
@@ -517,6 +517,7 @@ public abstract class LoggerAdapter extends Logger {
      * Throwable) logp}(level, sourceClass, sourceMethod, message, thrown)</code>.
      */
     @Override
+    @SuppressWarnings("deprecation")
     public void logrb(
             final Level level,
             final String sourceClass,
@@ -535,6 +536,7 @@ public abstract class LoggerAdapter extends Logger {
      * Object) logp}(level, sourceClass, sourceMethod, message, param)</code>.
      */
     @Override
+    @SuppressWarnings("deprecation")
     public void logrb(
             final Level level,
             final String sourceClass,
@@ -553,6 +555,7 @@ public abstract class LoggerAdapter extends Logger {
      * Object[]) logp}(level, sourceClass, sourceMethod, message, params)</code>.
      */
     @Override
+    @SuppressWarnings("deprecation")
     public void logrb(
             final Level level,
             final String sourceClass,

@@ -21,7 +21,6 @@ import org.opengis.util.InternationalString;
  * @author Guilhem Legal (Geomatys)
  * @author Johann Sorel (Geomatys)
  * @since GeoAPI 2.3
- * @source $URL$
  */
 public interface TemporalFactory {
 

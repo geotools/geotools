@@ -18,17 +18,20 @@ package org.geotools.data.shapefile.shp;
 
 import java.nio.ByteBuffer;
 import java.nio.DoubleBuffer;
+import java.util.ArrayList;
+import java.util.List;
 import org.geotools.geometry.jts.JTS;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.CoordinateSequence;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.MultiPoint;
+import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.geom.impl.CoordinateArraySequence;
 
 /**
  * @author aaime
  * @author Ian Schneider
- * @source $URL$
  */
 public class MultiPointHandler implements ShapeHandler {
     final ShapeType shapeType;
@@ -94,8 +97,7 @@ public class MultiPointHandler implements ShapeHandler {
     }
 
     private Object createNull() {
-        Coordinate[] c = null;
-        return geometryFactory.createMultiPoint(c);
+        return geometryFactory.createMultiPoint((CoordinateSequence) null);
     }
 
     public Object read(ByteBuffer buffer, ShapeType type, boolean flatGeometry) {
@@ -149,7 +151,9 @@ public class MultiPointHandler implements ShapeHandler {
         }
 
         if (shapeType == ShapeType.MULTIPOINTZ) {
-            double[] zExtreame = JTSUtilities.zMinMax(mp.getCoordinates());
+            double[] result = {Double.NaN, Double.NaN};
+            JTSUtilities.zMinMax(new CoordinateArraySequence(mp.getCoordinates()), result);
+            double[] zExtreame = result;
 
             if (Double.isNaN(zExtreame[0])) {
                 buffer.putDouble(0.0);
@@ -161,7 +165,7 @@ public class MultiPointHandler implements ShapeHandler {
 
             for (int t = 0; t < mp.getNumGeometries(); t++) {
                 Coordinate c = (mp.getGeometryN(t)).getCoordinate();
-                double z = c.z;
+                double z = c.getZ();
 
                 if (Double.isNaN(z)) {
                     buffer.putDouble(0.0);
@@ -170,14 +174,22 @@ public class MultiPointHandler implements ShapeHandler {
                 }
             }
         }
-
+        // if have M coordinates
         if (shapeType == ShapeType.MULTIPOINTM || shapeType == ShapeType.MULTIPOINTZ) {
-            buffer.putDouble(-10E40);
-            buffer.putDouble(-10E40);
-
-            for (int t = 0; t < mp.getNumGeometries(); t++) {
-                buffer.putDouble(-10E40);
+            // obtain all M values
+            List<Double> mvalues = new ArrayList<>();
+            for (int t = 0, tt = mp.getNumGeometries(); t < tt; t++) {
+                Point point = (Point) mp.getGeometryN(t);
+                mvalues.add(point.getCoordinateSequence().getM(0));
             }
+            // min, max
+            buffer.putDouble(mvalues.stream().min(Double::compare).get());
+            buffer.putDouble(mvalues.stream().max(Double::compare).get());
+            // encode all M values
+            mvalues.forEach(
+                    x -> {
+                        buffer.putDouble(x);
+                    });
         }
     }
 }

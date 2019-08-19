@@ -22,11 +22,7 @@ package org.geotools.arcsde.session;
  * waiting an available connection for <code>SdeConnectionPool instance's getMaxWaitTime()</code>
  * milliseconds
  *
- * @author Gabriel Roldan
- * @source $URL$
- *     http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/main/java
- *     /org/geotools/arcsde/pool/UnavailableArcSDEConnectionException.java $
- * @version $Id$
+ * @author Gabriel Roldan$
  */
 public class UnavailableConnectionException extends Exception {
 

@@ -35,7 +35,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * Tests for {@link SimpleFeatureImpl}.
  *
  * @author Ben Caradoc-Davies, CSIRO Exploration and Mining
- * @source $URL$
  */
 public class SimpleFeatureTypeImplTest extends TestCase {
 

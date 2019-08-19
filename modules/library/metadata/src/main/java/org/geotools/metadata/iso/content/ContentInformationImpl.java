@@ -25,7 +25,6 @@ import org.opengis.metadata.content.ContentInformation;
 /**
  * Description of the content of a dataset.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @author Touraïvane

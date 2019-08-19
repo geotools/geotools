@@ -85,7 +85,6 @@ import org.opengis.referencing.operation.MathTransform;
  * @author Andrea Antonello (www.hydrologis.com)
  * @author Michael Bedward
  * @author Ian Turton
- * @source $URL$
  */
 public class SwtMapPane extends Canvas
         implements Listener, MapLayerListListener, MapBoundsListener {
@@ -437,7 +436,7 @@ public class SwtMapPane extends Canvas
             getDisplayArea();
             // System.out.println(displayArea);
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
     }
 
@@ -555,7 +554,7 @@ public class SwtMapPane extends Canvas
                     new ReferencedEnvelope(
                             CRS.transform(fullExtent, content.getCoordinateReferenceSystem()));
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
         setDisplayArea(fullExtent);
     }
@@ -928,7 +927,7 @@ public class SwtMapPane extends Canvas
             screenToWorld = worldToScreen.createInverse();
 
         } catch (NoninvertibleTransformException ex) {
-            ex.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", ex);
         }
     }
 

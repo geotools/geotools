@@ -20,7 +20,6 @@ import org.opengis.geometry.Boundary;
  * of {@link Primitive}. Since points have no boundary, no special subclass is needed for their
  * boundary.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/as">ISO 19107</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0

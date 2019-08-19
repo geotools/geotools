@@ -33,8 +33,9 @@ import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.wfs.WFSDataStore;
 import org.geotools.data.wfs.WFSDataStoreFactory;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.factory.GeoTools;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.referencing.CRS;
+import org.geotools.util.factory.GeoTools;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -45,7 +46,6 @@ import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-/** @source $URL$ */
 public class MapServerOnlineTest {
 
     public static final String SERVER_URL_100 =
@@ -104,7 +104,7 @@ public class MapServerOnlineTest {
                 assertEquals("1.1.0", wfs110_with_get.getInfo().getVersion());
                 assertEquals("2.0.0", wfs200.getInfo().getVersion());
             } catch (Exception e) {
-                System.err.println("Server is not available. test disabled ");
+                // System.err.println("Server is not available. test disabled ");
                 url_100 = null;
             }
         }
@@ -152,13 +152,16 @@ public class MapServerOnlineTest {
 
         SimpleFeatureCollection features = source.getFeatures();
         features.getBounds();
-        features.getSchema();
+        SimpleFeatureType schema = features.getSchema();
 
         GeometryDescriptor geometryDesc = wfs.getSchema(typeName).getGeometryDescriptor();
         CoordinateReferenceSystem crs = geometryDesc.getCoordinateReferenceSystem();
-
-        ReferencedEnvelope env = new ReferencedEnvelope(-59, -58, -35, -34, crs);
-
+        ReferencedEnvelope env;
+        if (CRS.getAxisOrder(crs).equals(CRS.AxisOrder.NORTH_EAST)) {
+            env = new ReferencedEnvelope(-35, -34, -59, -58, crs);
+        } else {
+            env = new ReferencedEnvelope(-59, -58, -35, -34, crs);
+        }
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(GeoTools.getDefaultHints());
         Filter filter = ff.bbox(ff.property("msGeometry"), env);
         Query query = new Query();
@@ -176,7 +179,7 @@ public class MapServerOnlineTest {
         try {
             while (iterator.hasNext()) {
                 SimpleFeature feature = iterator.next();
-                System.out.println(feature.getID());
+                // System.out.println(feature.getID());
             }
         } finally {
             iterator.close();
@@ -186,7 +189,8 @@ public class MapServerOnlineTest {
     private void testSingleType2(DataStore wfs) throws IOException, NoSuchElementException {
         if (url_100 == null) return;
 
-        String typeName = "ms_rt_cartoteca.ctr10k.dxf";
+        String typeName = "ms:rt_cartoteca.ctr10k.dxf";
+
         SimpleFeatureType type = wfs.getSchema(typeName);
         type.getTypeName();
         type.getName().getNamespaceURI();
@@ -223,7 +227,7 @@ public class MapServerOnlineTest {
         try {
             while (iterator.hasNext()) {
                 SimpleFeature feature = iterator.next();
-                System.out.println(feature.getID());
+                // System.out.println(feature.getID());
             }
         } finally {
             iterator.close();

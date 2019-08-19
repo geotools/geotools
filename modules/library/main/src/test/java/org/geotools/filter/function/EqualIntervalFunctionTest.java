@@ -22,10 +22,7 @@ import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
 
-/**
- * @author James
- * @source $URL$
- */
+/** @author James */
 public class EqualIntervalFunctionTest extends FunctionTestSupport {
 
     private static final org.opengis.filter.FilterFactory ff =
@@ -85,14 +82,14 @@ public class EqualIntervalFunctionTest extends FunctionTestSupport {
         assertEquals("32.667..61.333", ranged.getTitle(1));
         assertEquals("61.333..90", ranged.getTitle(2));
         // check classifier binning
-        assertEquals(0, ranged.classify(new Double(4)));
+        assertEquals(0, ranged.classify(Double.valueOf(4)));
         assertEquals(2, ranged.classify(name, testFeatures[1])); // 90
-        assertEquals(0, ranged.classify(new Double(20)));
-        assertEquals(1, ranged.classify(new Double(43)));
-        assertEquals(0, ranged.classify(new Double(29)));
-        assertEquals(1, ranged.classify(new Double(61)));
+        assertEquals(0, ranged.classify(Double.valueOf(20)));
+        assertEquals(1, ranged.classify(Double.valueOf(43)));
+        assertEquals(0, ranged.classify(Double.valueOf(29)));
+        assertEquals(1, ranged.classify(Double.valueOf(61)));
         assertEquals(0, ranged.classify(name, testFeatures[6])); // 8
-        assertEquals(0, ranged.classify(new Double(12)));
+        assertEquals(0, ranged.classify(Double.valueOf(12)));
 
         // try again with foo
     }
@@ -121,6 +118,25 @@ public class EqualIntervalFunctionTest extends FunctionTestSupport {
         Function classify = ff.function("classify", ff.property("foo"), ff.literal(split));
 
         SimpleFeature victim = testFeatures[2]; // foo = 20
-        assertEquals("Feature was placed in wrong bin", new Integer(2), classify.evaluate(victim));
+        assertEquals(
+                "Feature was placed in wrong bin", Integer.valueOf(2), classify.evaluate(victim));
+    }
+
+    public void testConstantValuesNumeric() {
+        Function function = ff.function("equalInterval", ff.property("v"), ff.literal(12));
+        RangedClassifier classifier = (RangedClassifier) function.evaluate(constantCollection);
+        assertNotNull(classifier);
+        assertEquals(1, classifier.getSize());
+        assertEquals(123.123, (Double) classifier.getMin(0), 0d);
+        assertEquals(123.123, (Double) classifier.getMax(0), 0d);
+    }
+
+    public void testConstantValuesString() {
+        Function function = ff.function("equalInterval", ff.property("s"), ff.literal(12));
+        RangedClassifier classifier = (RangedClassifier) function.evaluate(constantCollection);
+        assertNotNull(classifier);
+        assertEquals(1, classifier.getSize());
+        assertEquals("abc", classifier.getMin(0));
+        assertEquals("abc", classifier.getMax(0));
     }
 }

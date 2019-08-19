@@ -1,4 +1,5 @@
-/* GeoTools - The Open Source Java GIS Toolkit
+/*
+ * GeoTools - The Open Source Java GIS Toolkit
  * http://geotools.org
  *
  * (C) 2010-2014, Open Source Geospatial Foundation (OSGeo)
@@ -22,7 +23,6 @@ import org.opengis.feature.IllegalAttributeException;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
-/** @source $URL$ */
 public class CSVFeatureReader implements FeatureReader<SimpleFeatureType, SimpleFeature> {
 
     /** State used when reading file */

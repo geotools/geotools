@@ -22,14 +22,17 @@ import com.google.common.io.Files;
 import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
+import javax.media.jai.Interpolation;
 import org.geotools.TestData;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
+import org.geotools.coverage.grid.io.DecimationPolicy;
 import org.geotools.gce.geotiff.GeoTiffFormat;
 import org.geotools.gce.geotiff.GeoTiffReader;
 import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.image.ImageWorker;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.junit.Assert;
@@ -162,6 +165,55 @@ public class MultiResolutionTest {
 
         assertEquals(sfdemReader.getResolutionLevels()[0], reader.getResolutionLevels()[0], 0.001);
         sfdemReader.dispose();
+    }
+
+    @Test
+    public void testVirtualNativeResolutionPreserveAffine() throws IOException, TransformException {
+        TemporaryFolder folder = new TemporaryFolder();
+        folder.create();
+        File file = folder.newFile("sample.tif");
+        Files.copy(TestData.file(this, "multiresolution/sample2.tif"), file);
+
+        ImageMosaicFormat format = new ImageMosaicFormat();
+        ImageMosaicReader reader = format.getReader(folder.getRoot());
+        GridEnvelope originalRange = reader.getOriginalGridRange();
+        GeneralEnvelope envelope = reader.getOriginalEnvelope();
+        MathTransform g2w = reader.getOriginalGridToWorld(PixelInCell.CELL_CORNER);
+        AffineTransform2D at = (AffineTransform2D) g2w;
+
+        ParameterValue<double[]> virtualNativeRes =
+                ImageMosaicFormat.VIRTUAL_NATIVE_RESOLUTION.createValue();
+
+        // Specifying a lower virtual native resolution
+        virtualNativeRes.setValue(new double[] {at.getScaleX() * 40, -at.getScaleY() * 40});
+
+        // This will trigger a first scale operation so that we can check
+        // that the 2 scales aren't collapsed together
+        ParameterValue<DecimationPolicy> decimation =
+                ImageMosaicFormat.DECIMATION_POLICY.createValue();
+        decimation.setValue(DecimationPolicy.DISALLOW);
+
+        ParameterValue<GridGeometry2D> gg = AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
+        gg.setValue(new GridGeometry2D(originalRange, envelope));
+
+        ParameterValue<Interpolation> interpolation =
+                AbstractGridFormat.INTERPOLATION.createValue();
+        interpolation.setValue(Interpolation.getInstance(Interpolation.INTERP_NEAREST));
+
+        GridCoverage2D gc =
+                reader.read(
+                        new ParameterValue<?>[] {virtualNativeRes, gg, decimation, interpolation});
+        RenderedImage ri = gc.getRenderedImage();
+
+        // Given that we are requesting full bbox on full width*height
+        // using a 40X worst native resolution, each 40x40 pixels in the output image
+        // should have the same pixel value
+        ImageWorker worker = new ImageWorker(ri);
+        worker = worker.crop(0f, 0f, 40f, 40f);
+        double[] max = worker.getMaximums();
+        double[] min = worker.getMinimums();
+        assertEquals(max, min, 1E-6);
+        reader.dispose();
     }
 
     private void assertEquals(double[] expected, double[] actuals, double epsilon) {

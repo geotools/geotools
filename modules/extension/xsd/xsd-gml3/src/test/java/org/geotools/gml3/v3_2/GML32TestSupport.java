@@ -4,23 +4,16 @@ import java.util.HashMap;
 import org.custommonkey.xmlunit.SimpleNamespaceContext;
 import org.custommonkey.xmlunit.XMLUnit;
 import org.geotools.gml3.bindings.GML3MockData;
-import org.geotools.xml.Configuration;
-import org.geotools.xml.test.XMLTestSupport;
-import org.w3c.dom.Element;
+import org.geotools.xsd.Configuration;
+import org.geotools.xsd.test.XMLTestSupport;
 import org.w3c.dom.Node;
 
-/** @source $URL$ */
 public abstract class GML32TestSupport extends XMLTestSupport {
 
     static {
         HashMap namespaces = new HashMap();
         namespaces.put("gml", GML.NAMESPACE);
         XMLUnit.setXpathNamespaceContext(new SimpleNamespaceContext(namespaces));
-    }
-
-    protected void registerNamespaces(Element root) {
-        super.registerNamespaces(root);
-        root.setAttribute("xmlns:gml", GML.NAMESPACE);
     }
 
     protected Configuration createConfiguration() {
@@ -39,6 +32,8 @@ public abstract class GML32TestSupport extends XMLTestSupport {
     protected void setUp() throws Exception {
         super.setUp();
         GML3MockData.setGML(GML.getInstance());
+
+        registerNamespaceMapping("gml", GML.NAMESPACE);
     }
 
     @Override

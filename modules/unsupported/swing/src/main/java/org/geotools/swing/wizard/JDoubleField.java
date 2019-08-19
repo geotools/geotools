@@ -25,7 +25,6 @@ import org.geotools.swing.wizard.JWizard.Controller;
  * Widget for double values
  *
  * @author gdavis
- * @source $URL$
  */
 public class JDoubleField extends ParamField {
 
@@ -43,12 +42,12 @@ public class JDoubleField extends ParamField {
     public Object getValue() {
         String val = text.getText();
         if (val == null || val.equals("")) {
-            return new Double(0);
+            return Double.valueOf(0);
         }
         try {
-            return new Double(val);
+            return Double.valueOf(val);
         } catch (NumberFormatException e) {
-            return new Double(0);
+            return Double.valueOf(0);
         }
     }
 

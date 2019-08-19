@@ -20,7 +20,9 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import javax.xml.namespace.QName;
 import org.geotools.geopkg.TileMatrix;
-import org.geotools.xml.*;
+import org.geotools.xsd.AbstractComplexBinding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 
 /**
  * Binding object for the type http://www.opengis.net/gpkg:gridtype.

@@ -16,10 +16,10 @@
  */
 package org.geotools.map;
 
+import org.geotools.coverage.util.FeatureUtilities;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureSource;
-import org.geotools.resources.coverage.FeatureUtilities;
 import org.geotools.styling.Style;
 
 /**
@@ -28,7 +28,6 @@ import org.geotools.styling.Style;
  * @since 8.0
  * @version 8.0
  * @author Jody Garnett
- * @source $URL$
  */
 public abstract class RasterLayer extends StyleLayer {
 

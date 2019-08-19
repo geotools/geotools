@@ -35,7 +35,7 @@ The bound system properties can also be used to configure Hints:
 .. code-block:: java
    
    // Allow access to local dtd and xsd files
-   System.getProperties.put(GeoTools.ENTITY_RESOLVER, "org.geotools.xml.NullEntityResolver");
+   System.getProperties.put(GeoTools.ENTITY_RESOLVER, "org.geotools.util.NullEntityResolver");
    Hints.scanSystemProperties();
 
 Plug-ins

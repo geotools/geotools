@@ -28,7 +28,6 @@ import org.opengis.parameter.Parameter;
  * Implementation of the FunctionName interface.
  *
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL$
  */
 public class FunctionNameImpl extends OperatorImpl implements FunctionName {
 

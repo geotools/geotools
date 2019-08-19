@@ -21,11 +21,10 @@ import java.sql.CallableStatement;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.logging.Level;
-import junit.framework.Assert;
 import junit.framework.Test;
 import junit.framework.TestSuite;
+import org.junit.Assert;
 
-/** @source $URL$ */
 public class DB2OnlineTest extends AbstractTest {
     static DBDialect dialect = null;
 
@@ -111,7 +110,7 @@ public class DB2OnlineTest extends AbstractTest {
             LOGGER.log(Level.INFO, s.getInt(2) + "|" + s.getString(3));
         } catch (SQLException e) {
             Assert.fail(e.getMessage());
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
     }
 

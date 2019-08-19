@@ -21,11 +21,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.geotools.data.oracle.filter.FilterFunction_sdonn;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.factory.Hints;
 import org.geotools.filter.FilterCapabilities;
 import org.geotools.filter.function.FilterFunction_area;
-import org.geotools.filter.function.FilterFunction_sdonn;
 import org.geotools.filter.text.cql2.CQL;
 import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.geometry.jts.JTS;
@@ -34,6 +33,7 @@ import org.geotools.jdbc.PreparedFilterToSQL;
 import org.geotools.jdbc.PreparedStatementSQLDialect;
 import org.geotools.jdbc.PrimaryKeyColumn;
 import org.geotools.jdbc.SQLDialect;
+import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryCollection;
@@ -80,7 +80,6 @@ import org.opengis.filter.temporal.TOverlaps;
  * @author Justin Deoliveira, OpenGEO
  * @author Andrea Aime, OpenGEO
  * @author Davide Savazzi, GeoSolutions
- * @source $URL$
  */
 public class OracleFilterToSQL extends PreparedFilterToSQL {
 
@@ -244,7 +243,7 @@ public class OracleFilterToSQL extends PreparedFilterToSQL {
             } else {
                 sb.append(",");
             }
-            dialect.encodeColumnName(c.getName(), sb);
+            dialect.encodeColumnName(null, c.getName(), sb);
         }
         return sb.toString();
     }
@@ -282,13 +281,14 @@ public class OracleFilterToSQL extends PreparedFilterToSQL {
             sb.append(" where SDO_NN(");
 
             // geometry column name
-            dialect.encodeColumnName(featureType.getGeometryDescriptor().getLocalName(), sb);
+            dialect.encodeColumnName(null, featureType.getGeometryDescriptor().getLocalName(), sb);
             sb.append(",");
 
             // reference geometry
             Geometry geomValue = (Geometry) evaluateLiteral((Literal) geometryExp, Geometry.class);
             sb.append("?");
             literalValues.add(clipToWorldFeatureTypeGeometry(geomValue));
+            descriptors.add(null);
             literalTypes.add(Geometry.class);
             SRIDs.add(getFeatureTypeGeometrySRID());
             dimensions.add(getFeatureTypeGeometryDimension());
@@ -456,20 +456,19 @@ public class OracleFilterToSQL extends PreparedFilterToSQL {
 
     protected Geometry distillSameTypeGeometries(GeometryCollection coll, Geometry original) {
         if (original instanceof Polygon || original instanceof MultiPolygon) {
-            List<Polygon> polys = new ArrayList<Polygon>();
+            List<Polygon> polys = new ArrayList<>();
             accumulateGeometries(polys, coll, Polygon.class);
             return original.getFactory()
-                    .createMultiPolygon(((Polygon[]) polys.toArray(new Polygon[polys.size()])));
+                    .createMultiPolygon((polys.toArray(new Polygon[polys.size()])));
         } else if (original instanceof LineString || original instanceof MultiLineString) {
-            List<LineString> ls = new ArrayList<LineString>();
+            List<LineString> ls = new ArrayList<>();
             accumulateGeometries(ls, coll, LineString.class);
             return original.getFactory()
-                    .createMultiLineString((LineString[]) ls.toArray(new LineString[ls.size()]));
+                    .createMultiLineString(ls.toArray(new LineString[ls.size()]));
         } else if (original instanceof Point || original instanceof MultiPoint) {
-            List<LineString> points = new ArrayList<LineString>();
-            accumulateGeometries(points, coll, LineString.class);
-            return original.getFactory()
-                    .createMultiPoint((Point[]) points.toArray(new Point[points.size()]));
+            List<Point> points = new ArrayList<>();
+            accumulateGeometries(points, coll, Point.class);
+            return original.getFactory().createMultiPoint(points.toArray(new Point[points.size()]));
         } else {
             return original;
         }

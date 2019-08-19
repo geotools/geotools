@@ -25,7 +25,6 @@ import java.util.Collection;
  * </pre>
  *
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL$
  */
 public interface Functions {
 

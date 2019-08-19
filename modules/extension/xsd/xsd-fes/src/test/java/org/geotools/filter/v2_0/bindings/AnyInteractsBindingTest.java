@@ -43,7 +43,7 @@ public class AnyInteractsBindingTest extends FESTestSupport {
                 ((PropertyName) anyInteracts.getExpression1()).getPropertyName());
 
         assertTrue(anyInteracts.getExpression2() instanceof Literal);
-        System.out.println(anyInteracts.getExpression2().evaluate(null));
+        // System.out.println(anyInteracts.getExpression2().evaluate(null));
         assertTrue(anyInteracts.getExpression2().evaluate(null) instanceof Period);
     }
 }

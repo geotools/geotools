@@ -25,7 +25,6 @@ import org.geotools.swt.SwtMapPane;
  *
  * @author Michael Bedward
  * @author Andrea Antonello (www.hydrologis.com)
- * @source $URL$
  */
 public class MapPaneEvent extends EventObject {
     private static final long serialVersionUID = 1L;

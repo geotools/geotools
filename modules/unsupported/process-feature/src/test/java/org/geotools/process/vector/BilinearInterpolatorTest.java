@@ -120,9 +120,9 @@ public class BilinearInterpolatorTest {
     private void printGrid(float[][] grid) {
         for (int j = grid[0].length - 1; j >= 0; j--) {
             for (int i = 0; i < grid.length; i++) {
-                System.out.print(grid[i][j] + " ");
+                // System.out.print(grid[i][j] + " ");
             }
-            System.out.println();
+            // System.out.println();
         }
     }
 }

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<stations>
+    <stations>
+        <measurementName>temperature</measurementName>
+        <measurementTime>2016-12-19T11:26:40</measurementTime>
+        <measurementUnit>C</measurementUnit>
+        <measurementValue>20</measurementValue>
+        <stationCode>ALS</stationCode>
+        <stationComment>ALS_COMMENT_1</stationComment>
+        <stationComment>ALS_COMMENT_2</stationComment>
+        <stationId>13</stationId>
+        <stationLocation>POINT(8.63 44.92)</stationLocation>
+        <stationName>Alessandria</stationName>
+        <stationTag>ALS_TAG_1</stationTag>
+        <stationTag>ALS_TAG_2</stationTag>
+    </stations>
+    <stations>
+        <measurementName>temperature</measurementName>
+        <measurementTime>2016-12-19T11:27:13</measurementTime>
+        <measurementUnit>Km/h</measurementUnit>
+        <measurementValue>155</measurementValue>
+        <stationCode>ALS</stationCode>
+        <stationComment>ALS_COMMENT_1</stationComment>
+        <stationComment>ALS_COMMENT_2</stationComment>
+        <stationId>13</stationId>
+        <stationLocation>POINT(8.63 44.92)</stationLocation>
+        <stationName>Alessandria</stationName>
+        <stationTag>ALS_TAG_1</stationTag>
+        <stationTag>ALS_TAG_2</stationTag>
+    </stations>
+    <stations>
+        <measurementName>temperature</measurementName>
+        <measurementTime>2016-12-19T11:28:31</measurementTime>
+        <measurementUnit>C</measurementUnit>
+        <measurementValue>35</measurementValue>
+        <stationCode>BOL</stationCode>
+        <stationId>7</stationId>
+        <stationLocation>POINT(11.34 44.5)</stationLocation>
+        <stationName>Bologna</stationName>
+    </stations>
+    <stations>
+        <measurementName>temperature</measurementName>
+        <measurementTime>2016-12-19T11:28:55</measurementTime>
+        <measurementUnit>C</measurementUnit>
+        <measurementValue>25</measurementValue>
+        <stationCode>BOL</stationCode>
+        <stationId>7</stationId>
+        <stationLocation>POINT(11.34 44.5)</stationLocation>
+        <stationName>Bologna</stationName>
+    </stations>
+    <stations>
+        <measurementName>wind speed</measurementName>
+        <measurementTime>2016-12-19T11:29:24</measurementTime>
+        <measurementUnit>C</measurementUnit>
+        <measurementValue>80</measurementValue>
+        <stationCode>BOL</stationCode>
+        <stationId>7</stationId>
+        <stationLocation>POINT(11.34 44.5)</stationLocation>
+        <stationName>Bologna</stationName>
+    </stations>
+    <stations>
+        <measurementName>pressure</measurementName>
+        <measurementTime>2016-12-19T11:30:26</measurementTime>
+        <measurementUnit>hPa</measurementUnit>
+        <measurementValue>1019</measurementValue>
+        <stationCode>BOL</stationCode>
+        <stationId>7</stationId>
+        <stationLocation>POINT(11.34 44.5)</stationLocation>
+        <stationName>Bologna</stationName>
+    </stations>
+    <stations>
+        <measurementName>pressure</measurementName>
+        <measurementTime>2016-12-19T11:30:51</measurementTime>
+        <measurementUnit>hPa</measurementUnit>
+        <measurementValue>1015</measurementValue>
+        <stationCode>BOL</stationCode>
+        <stationId>7</stationId>
+        <stationLocation>POINT(11.34 44.5)</stationLocation>
+        <stationName>Bologna</stationName>
+    </stations>
+</stations>

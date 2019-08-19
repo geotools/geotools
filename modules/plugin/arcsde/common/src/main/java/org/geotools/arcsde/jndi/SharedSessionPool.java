@@ -35,7 +35,6 @@ import org.geotools.arcsde.session.UnavailableConnectionException;
  * different applications/datastores when referenced by a JNDI context.
  *
  * @author Gabriel Roldan (OpenGeo)
- * @source $URL$
  * @version $Id$
  * @since 2.5.7
  */
@@ -81,6 +80,7 @@ public final class SharedSessionPool implements ISessionPool {
     }
 
     @Override
+    @SuppressWarnings("deprecation") // finalize is deprecated in Java 9
     protected void finalize() {
         LOGGER.info("Destroying session pool for " + getConfig());
         delegate.close();

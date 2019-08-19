@@ -32,11 +32,7 @@ import org.geotools.renderer.GTRenderer;
 import org.geotools.renderer.lite.StreamingRenderer;
 import org.geotools.renderer.lite.SynchronizedLabelCache;
 
-/**
- * This class is not usable yet !
- *
- * @source $URL$
- */
+/** This class is not usable yet ! */
 public class JLayeredMapPane extends AbstractMapPane {
 
     private static class LayerOperands {
@@ -134,9 +130,6 @@ public class JLayeredMapPane extends AbstractMapPane {
             op.graphics = op.image.createGraphics();
             // op.graphics.setBackground(getBackground());
 
-        } else {
-            // op.graphics.setBackground(getBackground());
-            // op.graphics.clearRect(0, 0, r.width, r.height);
         }
 
         if (op.renderer == null) {

@@ -19,7 +19,7 @@ package org.geotools.gml3.simple;
 import org.geotools.gml2.simple.GMLWriter;
 import org.geotools.gml2.simple.QualifiedName;
 import org.geotools.gml3.GML;
-import org.geotools.xml.Encoder;
+import org.geotools.xsd.Encoder;
 import org.locationtech.jts.geom.Geometry;
 import org.xml.sax.helpers.AttributesImpl;
 
@@ -36,6 +36,15 @@ public class RingEncoder extends MultiLineStringEncoder {
 
     protected RingEncoder(Encoder e, String gmlPrefix, String gmlUri) {
         super(e, gmlPrefix, gmlUri, true);
+        init(gmlPrefix, gmlUri);
+    }
+
+    protected RingEncoder(Encoder e, String gmlPrefix, String gmlUri, boolean encodeGmlId) {
+        super(e, gmlPrefix, gmlUri, true, encodeGmlId);
+        init(gmlPrefix, gmlUri);
+    }
+
+    private void init(String gmlPrefix, String gmlUri) {
         this.ring = RING.derive(gmlPrefix, gmlUri);
     }
 

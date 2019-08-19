@@ -60,7 +60,6 @@ import org.opengis.annotation.UML;
  * @author Bryce Nordgren (USDA)
  * @since GeoAPI 2.0
  * @see NameFactory#createScopedName
- * @source $URL$
  */
 @UML(identifier = "ScopedName", specification = ISO_19103)
 public interface ScopedName extends GenericName {

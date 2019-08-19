@@ -290,6 +290,6 @@ uDig application)::
         ReferencingFactoryFinder.scanForPlugins(); // hook everything up
      }
   
-Here is an example ::download::`epsg.properties </artifacts/epsg.properties>`. file used by uDig:
+Here is an example ::download::`epsg.properties </artifacts/epsg.properties>`_. file used by uDig:
   
    .. literalinclude:: /artifacts/epsg.properties

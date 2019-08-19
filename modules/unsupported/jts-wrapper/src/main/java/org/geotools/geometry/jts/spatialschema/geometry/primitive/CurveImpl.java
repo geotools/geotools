@@ -1,3 +1,19 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2019, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
 /*$************************************************************************************************
  **
  ** $Id$
@@ -15,9 +31,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
-import org.geotools.geometry.jts.JTSGeometry;
-import org.geotools.geometry.jts.JTSUtils;
 import org.geotools.geometry.jts.spatialschema.geometry.GeometryImpl;
+import org.geotools.geometry.jts.spatialschema.geometry.JTSGeometry;
+import org.geotools.geometry.jts.spatialschema.geometry.JTSUtils;
 import org.geotools.geometry.jts.spatialschema.geometry.NotifyingArrayList;
 import org.geotools.geometry.jts.spatialschema.geometry.geometry.LineStringImpl;
 import org.opengis.geometry.DirectPosition;
@@ -35,8 +51,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * Simple implementation of the Curve interface that does not implement any of the (hard) math
  * functions like intersection, etc. A curve consists of any number of CurveSegment objects (such as
  * LineStrings) that must be connected end-to-end.
- *
- * @source $URL$
  */
 public class CurveImpl extends GeometryImpl implements Curve {
     /** Component parts of the Curve. Each element must implement CurveSegment. */
@@ -178,7 +192,6 @@ public class CurveImpl extends GeometryImpl implements Curve {
         } else if (count > 0) {
             boolean allLineString = true;
             LineStringImpl lsi = new LineStringImpl();
-            LineString ls = null;
             List retList = lsi.getControlPoints();
             Object lastPoint = null;
             List segList = null;

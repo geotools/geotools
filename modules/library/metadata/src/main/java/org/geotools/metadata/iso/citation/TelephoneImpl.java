@@ -29,7 +29,6 @@ import org.opengis.metadata.citation.Telephone;
  * @author Jody Garnett
  * @author Martin Desruisseaux
  * @since 2.1
- * @source $URL$
  */
 public class TelephoneImpl extends MetadataEntity implements Telephone {
     /** Serial number for interoperability with different versions. */
@@ -62,7 +61,7 @@ public class TelephoneImpl extends MetadataEntity implements Telephone {
      *
      * @since 2.4
      */
-    public synchronized Collection<String> getVoices() {
+    public Collection<String> getVoices() {
         return (voices = nonNullCollection(voices, String.class));
     }
 
@@ -72,7 +71,7 @@ public class TelephoneImpl extends MetadataEntity implements Telephone {
      *
      * @since 2.4
      */
-    public synchronized void setVoices(final Collection<? extends String> newValues) {
+    public void setVoices(final Collection<? extends String> newValues) {
         voices = copyCollection(newValues, voices, String.class);
     }
 
@@ -82,7 +81,7 @@ public class TelephoneImpl extends MetadataEntity implements Telephone {
      *
      * @since 2.4
      */
-    public synchronized Collection<String> getFacsimiles() {
+    public Collection<String> getFacsimiles() {
         return (facsimiles = nonNullCollection(facsimiles, String.class));
     }
 
@@ -92,7 +91,7 @@ public class TelephoneImpl extends MetadataEntity implements Telephone {
      *
      * @since 2.4
      */
-    public synchronized void setFacsimiles(final Collection<? extends String> newValues) {
+    public void setFacsimiles(final Collection<? extends String> newValues) {
         facsimiles = copyCollection(newValues, facsimiles, String.class);
     }
 }

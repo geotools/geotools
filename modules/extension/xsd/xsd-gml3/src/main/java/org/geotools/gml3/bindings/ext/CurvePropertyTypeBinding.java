@@ -19,8 +19,8 @@ package org.geotools.gml3.bindings.ext;
 import org.geotools.gml3.XSDIdRegistry;
 import org.geotools.gml3.bindings.CurveTypeBinding;
 import org.geotools.gml3.bindings.GML3EncodingUtils;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LineString;
@@ -55,11 +55,6 @@ import org.locationtech.jts.geom.LineString;
  *
  *          </code>
  * </pre>
- *
- * @generated
- * @source $URL$
- *     http://svn.osgeo.org/geotools/trunk/modules/extension/xsd/xsd-gml3/src/main/java/org
- *     /geotools/gml3/bindings/CurvePropertyTypeBinding.java $
  */
 public class CurvePropertyTypeBinding extends org.geotools.gml3.bindings.CurvePropertyTypeBinding
         implements Comparable {

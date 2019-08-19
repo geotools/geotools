@@ -21,6 +21,5 @@ package org.geotools.swing.wizard;
  * widget to create for it
  *
  * @author Graham Davis
- * @source $URL$
  */
 public class ParamWidgetFactory {}

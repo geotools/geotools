@@ -23,9 +23,9 @@ import java.awt.image.Raster;
 import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
-import org.geotools.factory.GeoTools;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.geotools.util.factory.GeoTools;
 import org.junit.Before;
 import org.junit.Test;
 

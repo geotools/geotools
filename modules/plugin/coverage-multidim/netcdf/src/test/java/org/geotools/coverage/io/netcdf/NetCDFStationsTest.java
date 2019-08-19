@@ -28,15 +28,15 @@ import javax.media.jai.PlanarImage;
 import org.apache.commons.io.FileUtils;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
-import org.geotools.factory.Hints;
 import org.geotools.gce.imagemosaic.ImageMosaicFormat;
 import org.geotools.gce.imagemosaic.ImageMosaicReader;
 import org.geotools.gce.imagemosaic.Utils;
+import org.geotools.image.util.ImageUtilities;
 import org.geotools.referencing.CRS;
-import org.geotools.resources.image.ImageUtilities;
 import org.geotools.test.TestData;
+import org.geotools.util.factory.Hints;
 import org.junit.Assert;
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.ParameterValue;
@@ -49,8 +49,8 @@ import org.opengis.parameter.ParameterValue;
  */
 public final class NetCDFStationsTest extends Assert {
 
-    @Before
-    public void init() {
+    @BeforeClass
+    public static void init() {
         // make sure CRS ordering is correct
         System.setProperty("org.geotools.referencing.forceXY", "true");
         CRS.reset("all");

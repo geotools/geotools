@@ -46,8 +46,6 @@ import org.junit.Test;
  * Similar to {@link FillTest}, but uses the vector rendering hint, and only tests stuff that can
  * work with such hint. Also accounts for the fact the texture paint and the full vector rendering
  * do not provide the same output
- *
- * @source $URL$
  */
 public class VectorFillTest {
     private static final long TIME = 40000;

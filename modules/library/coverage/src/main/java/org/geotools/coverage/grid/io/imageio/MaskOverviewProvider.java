@@ -17,6 +17,7 @@
 package org.geotools.coverage.grid.io.imageio;
 
 import it.geosolutions.imageio.maskband.DatasetLayout;
+import it.geosolutions.imageio.utilities.ImageIOUtilities;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.awt.image.RenderedImage;
@@ -46,7 +47,7 @@ import org.geotools.util.URLs;
 public class MaskOverviewProvider {
 
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(MaskOverviewProvider.class.toString());
+            org.geotools.util.logging.Logging.getLogger(MaskOverviewProvider.class);
 
     public static final String OVR_EXTENSION = ".ovr";
 
@@ -127,43 +128,48 @@ public class MaskOverviewProvider {
         this.layout = layout;
 
         // Handling Overviews
-        ovrURL = new URL(inputFile.toString() + OVR_EXTENSION);
         hasDatasetLayout = layout != null;
-        if (hasDatasetLayout && layout.getExternalOverviews() != null) {
-            ovrURL = URLs.fileToUrl(layout.getExternalOverviews());
-        }
-        // Creating overview file URL
-        overviewStreamSpi =
-                suggestedStreamSPI == null ? getInputStreamSPIFromURL(ovrURL) : suggestedStreamSPI;
-        ImageInputStream ovrStream = null;
-        try {
-            ovrStream =
-                    overviewStreamSpi.createInputStreamInstance(
-                            ovrURL, ImageIO.getUseCache(), ImageIO.getCacheDirectory());
-            if (ovrStream == null) {
-                // No Overview file so we fall back to the original file spis
-                overviewStreamSpi = streamSpi;
-                overviewReaderSpi = readerSpi;
-            } else {
-                overviewReaderSpi = getReaderSpiFromStream(null, ovrStream);
+        boolean hasExternalOverviews = false;
+        if (!ImageIOUtilities.isSkipExternalFilesLookup()) {
+            ovrURL = new URL(inputFile.toString() + OVR_EXTENSION);
+            if (hasDatasetLayout && layout.getExternalOverviews() != null) {
+                ovrURL = URLs.fileToUrl(layout.getExternalOverviews());
             }
-        } catch (Exception e) {
-            if (LOGGER.isLoggable(Level.WARNING)) {
-                LOGGER.log(Level.WARNING, "Unable to create a Reader for File: " + ovrURL, e);
-            }
-            throw new IllegalArgumentException(e);
-        } finally {
-            if (ovrStream != null) {
-                try {
-                    ovrStream.close();
-                } catch (Exception e) {
-                    if (LOGGER.isLoggable(Level.SEVERE)) {
-                        LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            // Creating overview file URL
+            overviewStreamSpi =
+                    suggestedStreamSPI == null
+                            ? getInputStreamSPIFromURL(ovrURL)
+                            : suggestedStreamSPI;
+            ImageInputStream ovrStream = null;
+            try {
+                ovrStream =
+                        overviewStreamSpi.createInputStreamInstance(
+                                ovrURL, ImageIO.getUseCache(), ImageIO.getCacheDirectory());
+                if (ovrStream == null) {
+                    // No Overview file so we fall back to the original file spis
+                    overviewStreamSpi = streamSpi;
+                    overviewReaderSpi = readerSpi;
+                } else {
+                    overviewReaderSpi = getReaderSpiFromStream(null, ovrStream);
+                    hasExternalOverviews = true;
+                }
+            } catch (Exception e) {
+                if (LOGGER.isLoggable(Level.WARNING)) {
+                    LOGGER.log(Level.WARNING, "Unable to create a Reader for File: " + ovrURL, e);
+                }
+                throw new IllegalArgumentException(e);
+            } finally {
+                if (ovrStream != null) {
+                    try {
+                        ovrStream.close();
+                    } catch (Exception e) {
+                        if (LOGGER.isLoggable(Level.SEVERE)) {
+                            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+                        }
                     }
                 }
             }
         }
-
         // Getting number of Overviews
         int numOverviews = 0;
         if (hasDatasetLayout) {
@@ -171,46 +177,17 @@ public class MaskOverviewProvider {
             // layout.getNumExternalOverviews() may return -1 when no external file is present
             numExternalOverviews =
                     layout.getNumExternalOverviews() > 0 ? layout.getNumExternalOverviews() : 0;
-            numOverviews = numInternalOverviews + numExternalOverviews;
         } else if (!spiProvider.isMultidim()) {
             // Reading image number
-            ImageInputStream imageStream = null;
-            ImageReader reader = null;
-            try {
-                // Creating stream
-                imageStream =
-                        streamSpi.createInputStreamInstance(
-                                fileURL, ImageIO.getUseCache(), ImageIO.getCacheDirectory());
-                // Creating reader
-                reader = readerSpi.createReaderInstance();
-                // Setting input
-                reader.setInput(imageStream, false, false);
-                // Getting number of images
-                numOverviews = reader.getNumImages(true) - 1;
-                // Setting numInternalOverviews
-                numInternalOverviews = numOverviews;
-            } catch (Exception e) {
-                if (LOGGER.isLoggable(Level.WARNING)) {
-                    LOGGER.log(
-                            Level.WARNING, "Unable to create a Reader for File: " + inputFile, e);
-                }
-                throw new IllegalArgumentException(e);
-            } finally {
-                if (imageStream != null) {
-                    try {
-                        imageStream.close();
-                    } catch (Exception e) {
-                        if (LOGGER.isLoggable(Level.SEVERE)) {
-                            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-                        }
-                    } finally {
-                        if (reader != null) {
-                            reader.dispose();
-                        }
-                    }
-                }
+            numInternalOverviews = getNumOverviews(inputFile, this.streamSpi, this.readerSpi);
+            numExternalOverviews = 0;
+            if (hasExternalOverviews) {
+                // adding +1 since the base level of the external overview is an overview in itself
+                numExternalOverviews =
+                        getNumOverviews(ovrURL, this.overviewStreamSpi, this.overviewReaderSpi) + 1;
             }
         }
+        numOverviews = numInternalOverviews + numExternalOverviews;
         if (numOverviews < 0) {
             numOverviews = 0;
         }
@@ -301,6 +278,45 @@ public class MaskOverviewProvider {
         }
     }
 
+    public int getNumOverviews(
+            URL inputFile, ImageInputStreamSpi streamSpi, ImageReaderSpi readerSpi) {
+        ImageInputStream imageStream = null;
+        ImageReader reader = null;
+        int numOverviews;
+        try {
+            // Creating stream
+            imageStream =
+                    streamSpi.createInputStreamInstance(
+                            inputFile, ImageIO.getUseCache(), ImageIO.getCacheDirectory());
+            // Creating reader
+            reader = readerSpi.createReaderInstance();
+            // Setting input
+            reader.setInput(imageStream, false, false);
+            // Getting number of images
+            numOverviews = reader.getNumImages(true) - 1;
+        } catch (Exception e) {
+            if (LOGGER.isLoggable(Level.WARNING)) {
+                LOGGER.log(Level.WARNING, "Unable to create a Reader for File: " + inputFile, e);
+            }
+            throw new IllegalArgumentException(e);
+        } finally {
+            if (imageStream != null) {
+                try {
+                    imageStream.close();
+                } catch (Exception e) {
+                    if (LOGGER.isLoggable(Level.SEVERE)) {
+                        LOGGER.log(Level.SEVERE, e.getMessage(), e);
+                    }
+                } finally {
+                    if (reader != null) {
+                        reader.dispose();
+                    }
+                }
+            }
+        }
+        return numOverviews;
+    }
+
     /** Returns the external/internal overview image index based on the initial imageindex value */
     public int getOverviewIndex(int imageIndex) {
         if (numExternalOverviews > 0 && imageIndex >= (numInternalOverviews + 1)) {
@@ -343,10 +359,7 @@ public class MaskOverviewProvider {
                     info.file = URLs.urlToFile(fileURL);
                     info.readerSpi = readerSpi;
                     info.streamSpi = streamSpi;
-                    info.index =
-                            imageIndex != 0
-                                    ? layout.getInternalMaskImageIndex(imageIndex) - 1
-                                    : layout.getInternalMaskImageIndex(imageIndex);
+                    info.index = layout.getInternalMaskImageIndex(imageIndex) - 1;
                 } else if (hasExternalMasks) {
                     if (imageIndex < numExternalMasks) {
                         info.file = URLs.urlToFile(maskURL);

@@ -32,7 +32,7 @@ public abstract class AbstractTransformTest {
         // just to make sure the loggin is not going to cause exceptions when turned on
         java.util.logging.ConsoleHandler handler = new java.util.logging.ConsoleHandler();
         handler.setLevel(java.util.logging.Level.FINE);
-        Logging.getLogger("org.geotools.data.transform").setLevel(java.util.logging.Level.FINE);
+        Logging.getLogger(AbstractTransformTest.class).setLevel(java.util.logging.Level.FINE);
 
         WGS84 = CRS.decode("EPSG:4326");
         DELAWARE_BOUNDS =

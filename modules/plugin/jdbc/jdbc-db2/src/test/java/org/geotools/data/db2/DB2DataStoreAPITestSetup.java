@@ -19,7 +19,6 @@ package org.geotools.data.db2;
 import java.sql.Connection;
 import org.geotools.jdbc.JDBCDataStoreAPITestSetup;
 
-/** @source $URL$ */
 public class DB2DataStoreAPITestSetup extends JDBCDataStoreAPITestSetup {
     public DB2DataStoreAPITestSetup() {
         super(new DB2TestSetup());

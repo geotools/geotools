@@ -16,9 +16,11 @@
  */
 package org.geotools.graph.traverse.standard;
 
+import java.util.ArrayDeque;
+import java.util.Collections;
+import java.util.Queue;
 import org.geotools.graph.structure.Graph;
-import org.geotools.graph.util.Queue;
-import org.geotools.graph.util.Stack;
+import org.geotools.graph.structure.Graphable;
 
 /**
  * Iterates over the nodes of a graph in a <B>Depth First Search</B> pattern starting from a
@@ -33,7 +35,6 @@ import org.geotools.graph.util.Stack;
  * The node queue intially contains only the source node of the traversal.
  *
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
- * @source $URL$
  */
 public class DepthFirstIterator extends BreadthFirstIterator {
 
@@ -43,7 +44,8 @@ public class DepthFirstIterator extends BreadthFirstIterator {
      * @param graph The graph of the iteration.
      * @return A Last In First Out queue (Stack)
      */
-    protected Queue buildQueue(Graph graph) {
-        return (new Stack(graph.getNodes().size()));
+    @Override
+    protected Queue<Graphable> buildQueue(Graph graph) {
+        return (Collections.asLifoQueue(new ArrayDeque<>(graph.getNodes().size())));
     }
 }

@@ -16,6 +16,7 @@
  */
 package org.geotools.gml3.simple;
 
+import java.net.URI;
 import java.util.List;
 import java.util.Map;
 import org.eclipse.xsd.XSDElementDeclaration;
@@ -31,9 +32,9 @@ import org.geotools.gml2.simple.QualifiedName;
 import org.geotools.gml3.bindings.GML3EncodingUtils;
 import org.geotools.gml3.v3_2.GML;
 import org.geotools.gml3.v3_2.bindings.GML32EncodingUtils;
-import org.geotools.xml.Configuration;
-import org.geotools.xml.Encoder;
-import org.geotools.xml.XSD;
+import org.geotools.xsd.Configuration;
+import org.geotools.xsd.Encoder;
+import org.geotools.xsd.XSD;
 import org.locationtech.jts.geom.GeometryCollection;
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.LinearRing;
@@ -96,6 +97,10 @@ public class GML32FeatureCollectionEncoderDelegate
 
         int numDecimals;
 
+        private boolean padWithZeros;
+
+        private boolean decimalEncoding;
+
         /** Controls if coordinates measures should be encoded in GML * */
         private boolean encodeMeasures;
 
@@ -108,6 +113,8 @@ public class GML32FeatureCollectionEncoderDelegate
                     (SrsSyntax) encoder.getContext().getComponentInstanceOfType(SrsSyntax.class);
             this.encodingUtils = new GML32EncodingUtils();
             this.numDecimals = getNumDecimals(encoder.getConfiguration());
+            this.padWithZeros = getPadWithZeros(encoder.getConfiguration());
+            this.decimalEncoding = getForceDecimalEncoding(encoder.getConfiguration());
             this.encodeMeasures = getEncodecoordinatesMeasures(encoder.getConfiguration());
         }
 
@@ -123,6 +130,36 @@ public class GML32FeatureCollectionEncoderDelegate
                 return 6;
             } else {
                 return config.getNumDecimals();
+            }
+        }
+
+        private boolean getPadWithZeros(Configuration configuration) {
+            org.geotools.gml3.v3_2.GMLConfiguration config;
+            if (configuration instanceof org.geotools.gml3.v3_2.GMLConfiguration) {
+                config = (org.geotools.gml3.v3_2.GMLConfiguration) configuration;
+            } else {
+                config = configuration.getDependency(org.geotools.gml3.v3_2.GMLConfiguration.class);
+            }
+
+            if (config == null) {
+                return false;
+            } else {
+                return config.getPadWithZeros();
+            }
+        }
+
+        private boolean getForceDecimalEncoding(Configuration configuration) {
+            org.geotools.gml3.v3_2.GMLConfiguration config;
+            if (configuration instanceof org.geotools.gml3.v3_2.GMLConfiguration) {
+                config = (org.geotools.gml3.v3_2.GMLConfiguration) configuration;
+            } else {
+                config = configuration.getDependency(org.geotools.gml3.v3_2.GMLConfiguration.class);
+            }
+
+            if (config == null) {
+                return true;
+            } else {
+                return config.getForceDecimalEncoding();
             }
         }
 
@@ -154,12 +191,9 @@ public class GML32FeatureCollectionEncoderDelegate
 
         public void setSrsNameAttribute(AttributesImpl atts, CoordinateReferenceSystem crs) {
 
-            atts.addAttribute(
-                    null,
-                    "srsName",
-                    "srsName",
-                    null,
-                    GML3EncodingUtils.toURI(crs, srsSyntax).toString());
+            URI srsName = GML3EncodingUtils.toURI(crs, srsSyntax);
+            String crsName = srsName != null ? srsName.toString() : crs.getName().getCode();
+            atts.addAttribute(null, "srsName", "srsName", null, crsName);
         }
 
         @Override
@@ -233,12 +267,17 @@ public class GML32FeatureCollectionEncoderDelegate
 
         @Override
         public boolean forceDecimalEncoding() {
-            return false;
+            return decimalEncoding;
         }
 
         @Override
         public boolean getEncodeMeasures() {
             return encodeMeasures;
+        }
+
+        @Override
+        public boolean padWithZeros() {
+            return padWithZeros;
         }
     }
 }

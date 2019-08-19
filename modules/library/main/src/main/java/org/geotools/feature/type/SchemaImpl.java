@@ -29,7 +29,6 @@ import org.opengis.feature.type.Schema;
  * Implementation of Schema.
  *
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL$
  */
 public class SchemaImpl implements Schema {
     HashMap<Name, AttributeType> contents;

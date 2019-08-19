@@ -48,22 +48,22 @@ import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.InvalidGridGeometryException;
 import org.geotools.coverage.processing.CoverageProcessingException;
 import org.geotools.coverage.processing.OperationJAI;
-import org.geotools.factory.GeoTools;
-import org.geotools.factory.Hints;
+import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.image.ImageWorker;
+import org.geotools.image.util.ImageUtilities;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.parameter.DefaultParameterDescriptor;
 import org.geotools.parameter.ImagingParameterDescriptors;
 import org.geotools.parameter.ImagingParameters;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.operation.transform.ConcatenatedTransform;
-import org.geotools.resources.coverage.CoverageUtilities;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
-import org.geotools.resources.image.ImageUtilities;
 import org.geotools.util.Utilities;
+import org.geotools.util.factory.GeoTools;
+import org.geotools.util.factory.Hints;
 import org.opengis.coverage.Coverage;
 import org.opengis.coverage.grid.GridGeometry;
 import org.opengis.metadata.spatial.PixelOrientation;
@@ -99,7 +99,7 @@ import org.opengis.util.InternationalString;
  *   <li>a Collection of the {@link GridCoverage2D} to mosaic
  *   <li>an optional {@link GridGeometry} object for setting the final resolution and BoundingBox
  *   <li>an optional {@link String} indicating the policy to use for choosing the resolution
- *   <li>an optional {@link double[]} indicating the nodata values to set for the background. Note
+ *   <li>an optional {@code double[]} indicating the nodata values to set for the background. Note
  *       that the only the first value will be used
  * </ul>
  *

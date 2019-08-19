@@ -34,7 +34,6 @@ import org.opengis.referencing.datum.*;
  * Tests the {@link AuthorityFactoryProxy} implementation.
  *
  * @author Martin Desruisseaux
- * @source $URL$
  * @version $Id$
  */
 public final class AuthorityFactoryProxyTest {

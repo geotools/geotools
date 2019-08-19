@@ -19,7 +19,6 @@ import org.opengis.util.InternationalString;
 /**
  * A temporal datum defines the origin of a temporal coordinate reference system.
  *
- * @source $URL$
  * @version <A HREF="http://portal.opengeospatial.org/files/?artifact_id=6716">Abstract
  *     specification 2.0</A>
  * @author Martin Desruisseaux (IRD)

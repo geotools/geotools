@@ -21,10 +21,10 @@ import org.eclipse.emf.ecore.EObject;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link net.opengis.wps10.UOMsType#getUOM <em>UOM</em>}</li>
  * </ul>
- * </p>
  *
  * @see net.opengis.wps10.Wps10Package#getUOMsType()
  * @model extendedMetaData="name='UOMsType' kind='elementOnly'"
@@ -41,7 +41,7 @@ public interface UOMsType extends EObject {
      * <!-- end-model-doc -->
      * @return the value of the '<em>UOM</em>' containment reference list.
      * @see net.opengis.wps10.Wps10Package#getUOMsType_UOM()
-     * @model type="javax.measure.unit.Unit"
+     * @model type="javax.measure.Unit"
      */
     EList getUOM();
 

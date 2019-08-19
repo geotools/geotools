@@ -17,9 +17,9 @@
 package org.geotools.filter.v1_1;
 
 import javax.xml.namespace.QName;
-import org.geotools.xml.AbstractSimpleBinding;
-import org.geotools.xml.Binding;
-import org.geotools.xml.InstanceComponent;
+import org.geotools.xsd.AbstractSimpleBinding;
+import org.geotools.xsd.Binding;
+import org.geotools.xsd.InstanceComponent;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.sort.SortOrder;
 
@@ -41,7 +41,6 @@ import org.opengis.filter.sort.SortOrder;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class SortOrderTypeBinding extends AbstractSimpleBinding {
     FilterFactory filterfactory;

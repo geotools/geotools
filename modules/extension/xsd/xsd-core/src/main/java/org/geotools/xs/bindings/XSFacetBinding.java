@@ -17,10 +17,10 @@
 package org.geotools.xs.bindings;
 
 import javax.xml.namespace.QName;
-import org.geotools.xml.AbstractComplexBinding;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
 import org.geotools.xs.XS;
+import org.geotools.xsd.AbstractComplexBinding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 import org.picocontainer.MutablePicoContainer;
 
 /**
@@ -43,7 +43,6 @@ import org.picocontainer.MutablePicoContainer;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class XSFacetBinding extends AbstractComplexBinding {
     /** @generated */

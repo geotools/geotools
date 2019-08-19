@@ -23,7 +23,7 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.gml2.GMLConfiguration;
 import org.geotools.gml2.simple.GML2FeatureCollectionEncoderDelegate;
 import org.geotools.gml3.GML;
-import org.geotools.xml.Encoder;
+import org.geotools.xsd.Encoder;
 
 /**
  * A WFS 1.0 specific binding with optimizations for {@link SimpleFeatureCollection} encoding

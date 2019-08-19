@@ -36,10 +36,7 @@ import org.opengis.temporal.DateAndTime;
 import org.opengis.temporal.JulianDate;
 import org.opengis.temporal.TemporalCoordinateSystem;
 
-/**
- * @author Mehdi Sidhoum (Geomatys)
- * @source $URL$
- */
+/** @author Mehdi Sidhoum (Geomatys) */
 public class DefaultCalendar extends DefaultTemporalReferenceSystem implements Calendar {
 
     /** Collection of CalendarEra which uses this Calendar as a reference. */

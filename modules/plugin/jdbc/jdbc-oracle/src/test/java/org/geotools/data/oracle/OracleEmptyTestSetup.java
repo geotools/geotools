@@ -2,7 +2,6 @@ package org.geotools.data.oracle;
 
 import org.geotools.jdbc.JDBCEmptyTestSetup;
 
-/** @source $URL$ */
 public class OracleEmptyTestSetup extends JDBCEmptyTestSetup {
 
     protected OracleEmptyTestSetup() {
@@ -37,7 +36,7 @@ public class OracleEmptyTestSetup extends JDBCEmptyTestSetup {
         try {
             run("DROP TABLE empty purge");
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
         try {
             run("DROP SEQUENCE empty_id_seq");

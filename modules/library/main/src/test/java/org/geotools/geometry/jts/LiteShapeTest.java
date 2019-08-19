@@ -18,6 +18,7 @@
  */
 package org.geotools.geometry.jts;
 
+import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import junit.framework.Test;
@@ -35,10 +36,7 @@ import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.TransformException;
 
-/**
- * @author jamesm,iant
- * @source $URL$
- */
+/** @author jamesm,iant */
 public class LiteShapeTest extends TestCase {
     private java.net.URL base = getClass().getResource("testData/");
 
@@ -78,7 +76,7 @@ public class LiteShapeTest extends TestCase {
         GeometryFactory geomFac = new GeometryFactory();
         LineString lineString = makeSampleLineString(geomFac, 0, 0);
         MathTransform transform = ProjectiveTransform.create(new AffineTransform());
-        Decimator decimator = new Decimator(transform);
+        Decimator decimator = new Decimator(transform, new Rectangle());
         LiteShape2 lineShape = new LiteShape2(lineString, transform, decimator, false);
 
         assertFalse(lineShape.contains(0, 0));
@@ -101,7 +99,8 @@ public class LiteShapeTest extends TestCase {
                 new LiteShape2(
                         polygon,
                         ProjectiveTransform.create(new AffineTransform()),
-                        new Decimator(ProjectiveTransform.create(new AffineTransform())),
+                        new Decimator(
+                                ProjectiveTransform.create(new AffineTransform()), new Rectangle()),
                         false);
 
         assertFalse(lineShape.contains(0, 0));

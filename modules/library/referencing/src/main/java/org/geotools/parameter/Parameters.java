@@ -27,10 +27,10 @@ import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 import javax.measure.Unit;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.AbstractIdentifiedObject;
-import org.geotools.resources.Classes;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
+import org.geotools.util.Classes;
 import org.geotools.util.logging.Logging;
 import org.opengis.parameter.GeneralParameterDescriptor;
 import org.opengis.parameter.GeneralParameterValue;
@@ -76,7 +76,6 @@ import org.opengis.parameter.ParameterValueGroup;
  * parameter name is a suffisient key.
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Jody Garnett (Refractions Research)
  * @author Martin Desruisseaux

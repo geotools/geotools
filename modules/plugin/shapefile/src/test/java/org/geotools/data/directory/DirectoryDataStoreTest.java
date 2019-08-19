@@ -11,6 +11,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.geotools.TestData;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFinder;
 import org.geotools.data.FeatureSource;
@@ -27,7 +28,6 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * see the DataStoreCache test
  *
  * @author Andrea Aime - OpenGeo
- * @source $URL$
  */
 public class DirectoryDataStoreTest extends DirectoryTestSupport {
 
@@ -118,6 +118,20 @@ public class DirectoryDataStoreTest extends DirectoryTestSupport {
         assertTrue(typeNames.contains("archsites"));
         assertTrue(typeNames.contains("bugsites"));
         dds.dispose();
+    }
+
+    @Test
+    public void testFactoryVPFConflict() throws Exception {
+
+        File f = TestData.copy(this, "dnc13/dht");
+
+        tempDir = f.getParentFile();
+
+        Map params = new HashMap();
+        params.put(ShapefileDataStoreFactory.URLP.key, URLs.fileToUrl(tempDir));
+        DataStore store = DataStoreFinder.getDataStore(params);
+
+        assertNull(store);
     }
 
     @Test

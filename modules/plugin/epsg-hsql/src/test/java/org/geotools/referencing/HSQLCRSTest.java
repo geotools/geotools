@@ -50,7 +50,7 @@ public class HSQLCRSTest extends AbstractCRSTest {
             throws NoSuchAuthorityCodeException, FactoryException, MismatchedDimensionException,
                     TransformException {
         CoordinateReferenceSystem targetCrs = CRS.decode("EPSG:25831");
-        System.out.println(targetCrs.getDomainOfValidity());
+        // System.out.println(targetCrs.getDomainOfValidity());
         MathTransform mathTransform =
                 CRS.findMathTransform(DefaultGeographicCRS.WGS84, targetCrs, true);
         DirectPosition2D position2D = new DirectPosition2D(DefaultGeographicCRS.WGS84, 0.1, 39);

@@ -18,11 +18,10 @@ package org.geotools.data;
 
 import java.io.IOException;
 import java.util.NoSuchElementException;
-import org.geotools.feature.IllegalAttributeException;
+import org.opengis.feature.IllegalAttributeException;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
-/** @source $URL$ */
 class TestReader implements FeatureReader<SimpleFeatureType, SimpleFeature> {
 
     /** */

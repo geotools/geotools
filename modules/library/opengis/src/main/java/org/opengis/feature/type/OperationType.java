@@ -20,7 +20,6 @@ import org.opengis.filter.Filter;
  * an Operation.
  *
  * @author Jody Garnett, Refractions Research, Inc.
- * @source $URL$
  */
 public interface OperationType extends PropertyType {
 

@@ -30,14 +30,14 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import org.geotools.appschema.filter.FilterFactoryImplNamespaceAware;
 import org.geotools.data.DataAccess;
 import org.geotools.data.DataAccessFinder;
 import org.geotools.data.FeatureSource;
-import org.geotools.data.complex.config.Types;
+import org.geotools.data.complex.feature.type.Types;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureImpl;
 import org.geotools.feature.FeatureIterator;
-import org.geotools.filter.FilterFactoryImplNamespaceAware;
 import org.geotools.gml3.bindings.GML3EncodingUtils;
 import org.geotools.test.AppSchemaTestSupport;
 import org.junit.BeforeClass;
@@ -59,7 +59,6 @@ import org.xml.sax.helpers.NamespaceSupport;
  * inside another complex attribute.
  *
  * @author Rini Angreani (CSIRO Earth Science and Resource Engineering)
- * @source $URL$
  */
 public class FeatureChainingTest extends AppSchemaTestSupport {
     public static final String GSMLNS = "urn:cgi:xmlns:CGI:GeoSciML:2.0";
@@ -169,7 +168,7 @@ public class FeatureChainingTest extends AppSchemaTestSupport {
         sw.start();
         loadDataAccesses();
         sw.stop();
-        System.out.println("Set up time: " + sw.getTimeString());
+        // System.out.println("Set up time: " + sw.getTimeString());
     }
 
     /**

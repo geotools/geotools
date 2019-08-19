@@ -18,9 +18,9 @@ package org.geotools.validation;
 
 import org.geotools.data.DataTestCase;
 import org.geotools.data.memory.MemoryDataStore;
-import org.geotools.feature.IllegalAttributeException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.validation.spatial.IsValidGeometryValidation;
+import org.opengis.feature.IllegalAttributeException;
 
 /**
  * FeatureValidationTest purpose.
@@ -31,7 +31,6 @@ import org.geotools.validation.spatial.IsValidGeometryValidation;
  *
  * @author jgarnett, Refractions Research, Inc.
  * @author $Author: sploreg $ (last modification)
- * @source $URL$
  * @version $Id$
  */
 public class FeatureValidationTest extends DataTestCase {
@@ -87,7 +86,7 @@ public class FeatureValidationTest extends DataTestCase {
             this.newRoad =
                     SimpleFeatureBuilder.build(
                             this.roadType,
-                            (new Object[] {new Integer(2), line(new int[] {1, 2, 1, 2}), "r4"}),
+                            (new Object[] {Integer.valueOf(2), line(new int[] {1, 2, 1, 2}), "r4"}),
                             "road.rd4");
         } catch (IllegalAttributeException e) {
         }
@@ -177,13 +176,13 @@ public class FeatureValidationTest extends DataTestCase {
             roadsPassed = false;
 
             for (int i = 0; i < roadFailures.length; i++) {
-                System.out.println(roadFailures[i]);
+                // System.out.println(roadFailures[i]);
             }
         }
 
         if (roadWarnings.length != 0) {
             for (int i = 0; i < roadWarnings.length; i++) {
-                System.out.println(roadWarnings[i]);
+                // System.out.println(roadWarnings[i]);
             }
         }
 

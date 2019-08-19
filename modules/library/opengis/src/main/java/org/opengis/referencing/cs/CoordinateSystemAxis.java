@@ -20,7 +20,6 @@ import org.opengis.referencing.IdentifiedObject;
  * Definition of a coordinate system axis. See <A HREF="package-summary.html#AxisNames">axis name
  * constraints</A>.
  *
- * @source $URL$
  * @version <A HREF="http://portal.opengeospatial.org/files/?artifact_id=6716">Abstract
  *     specification 2.0</A>
  * @author Martin Desruisseaux (IRD)

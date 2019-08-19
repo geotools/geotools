@@ -33,8 +33,8 @@ import org.geotools.mbstyle.expression.MBExpression;
 import org.geotools.mbstyle.expression.MBString;
 import org.geotools.mbstyle.layer.SymbolMBLayer;
 import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.SLDTransformer;
 import org.geotools.styling.TextSymbolizer;
+import org.geotools.xml.styling.SLDTransformer;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
@@ -225,7 +225,7 @@ public class MBExpressionParseTest {
         SymbolMBLayer rgbLayer = (SymbolMBLayer) rgbTest.layer("rgbExpression");
         List<FeatureTypeStyle> rgbFeatures = rgbLayer.transformInternal(rgbTest);
         Color sldColor =
-                (((TextSymbolizer) rgbFeatures.get(0).rules().get(0).getSymbolizers()[0])
+                (((TextSymbolizer) rgbFeatures.get(0).rules().get(0).symbolizers().get(0))
                         .getFill()
                         .getColor()
                         .evaluate(null, Color.class));

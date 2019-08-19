@@ -18,7 +18,6 @@ package org.geotools.data.spatialite;
 
 import org.geotools.jdbc.JDBCPrimaryKeyTestSetup;
 
-/** @source $URL$ */
 public class SpatiaLitePrimaryKeyTestSetup extends JDBCPrimaryKeyTestSetup {
 
     protected SpatiaLitePrimaryKeyTestSetup() {

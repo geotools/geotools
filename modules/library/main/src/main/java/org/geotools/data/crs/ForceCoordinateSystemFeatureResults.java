@@ -51,7 +51,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * </code></pre>
  *
  * @author aaime
- * @source $URL$
  * @version $Id$
  */
 public class ForceCoordinateSystemFeatureResults extends AbstractFeatureCollection {

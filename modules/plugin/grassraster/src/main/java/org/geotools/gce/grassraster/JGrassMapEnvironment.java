@@ -50,7 +50,6 @@ import org.opengis.referencing.datum.PixelInCell;
  * @since 3.0
  * @see {@link JGrassConstants}
  * @see {@link JGrassRegion}
- * @source $URL$
  */
 public class JGrassMapEnvironment {
 

@@ -19,7 +19,6 @@ package org.geotools.graph.structure.basic;
 import java.util.Iterator;
 import junit.framework.TestCase;
 
-/** @source $URL$ */
 public class BasicDirectedEdgeTest extends TestCase {
 
     private BasicDirectedNode m_inNode;

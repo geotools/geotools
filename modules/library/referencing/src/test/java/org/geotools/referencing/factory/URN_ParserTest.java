@@ -24,7 +24,6 @@ import org.opengis.referencing.NoSuchAuthorityCodeException;
 /**
  * Tests the {@link URN_Parser} class.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  */

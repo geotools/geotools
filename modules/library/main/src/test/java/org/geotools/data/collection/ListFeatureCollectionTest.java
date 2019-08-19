@@ -51,7 +51,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  *
  * @author mbedward
  * @since 2.7
- * @source $URL$
  * @version $Id$
  */
 public class ListFeatureCollectionTest {
@@ -163,7 +162,7 @@ public class ListFeatureCollectionTest {
             type = DataUtilities.createType("testSchema", "name:String,*geom:Geometry");
         } catch (SchemaException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
 
         // initialize FC with test features

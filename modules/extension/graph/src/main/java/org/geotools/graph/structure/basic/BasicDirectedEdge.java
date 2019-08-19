@@ -28,7 +28,6 @@ import org.geotools.graph.structure.Node;
  * Basic implementation of DirectedEdge.
  *
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
- * @source $URL$
  */
 public class BasicDirectedEdge extends BasicGraphable implements DirectedEdge {
 
@@ -51,11 +50,13 @@ public class BasicDirectedEdge extends BasicGraphable implements DirectedEdge {
     }
 
     /** @see DirectedEdge#getInNode() */
+    @Override
     public DirectedNode getInNode() {
         return (m_in);
     }
 
     /** @see DirectedEdge#getOutNode() */
+    @Override
     public DirectedNode getOutNode() {
         return (m_out);
     }
@@ -65,6 +66,7 @@ public class BasicDirectedEdge extends BasicGraphable implements DirectedEdge {
      *
      * @see Edge#getNodeA()
      */
+    @Override
     public Node getNodeA() {
         return (m_in);
     }
@@ -74,11 +76,13 @@ public class BasicDirectedEdge extends BasicGraphable implements DirectedEdge {
      *
      * @see Edge#getNodeB()
      */
+    @Override
     public Node getNodeB() {
         return (m_out);
     }
 
     /** @see Edge#getOtherNode(Node) */
+    @Override
     public Node getOtherNode(Node node) {
         return (m_in.equals(node) ? m_out : m_out.equals(node) ? m_in : null);
     }
@@ -90,6 +94,7 @@ public class BasicDirectedEdge extends BasicGraphable implements DirectedEdge {
      *
      * @see Edge#reverse()
      */
+    @Override
     public void reverse() {
         // remove edge from adjacent nodes
         m_in.removeOut(this);
@@ -110,8 +115,9 @@ public class BasicDirectedEdge extends BasicGraphable implements DirectedEdge {
      *
      * @see org.geotools.graph.structure.Graphable#getRelated()
      */
-    public Iterator getRelated() {
-        HashSet related = new HashSet();
+    @Override
+    public Iterator<Edge> getRelated() {
+        HashSet<Edge> related = new HashSet<>();
 
         // add all edges incident to both nodes
         related.addAll(m_in.getEdges());
@@ -123,39 +129,39 @@ public class BasicDirectedEdge extends BasicGraphable implements DirectedEdge {
         return (related.iterator());
 
         //
-        //    ArrayList related = new ArrayList();
+        // ArrayList related = new ArrayList();
         //
-        //    related.addAll(m_in.getInEdges());
+        // related.addAll(m_in.getInEdges());
         //
-        //    //add out edges, look for an opposite edge, it will have already
-        //    // been added so dont add it
-        //    for (Iterator itr = m_out.getOutEdges().iterator(); itr.hasNext();) {
-        //      DirectedEdge de = (DirectedEdge)itr.next();
-        //      switch(de.compareNodes(this)) {
-        //        case OPPOSITE_NODE_ORIENTATION: continue;
-        //      }
-        //      related.add(de);
-        //    }
+        // //add out edges, look for an opposite edge, it will have already
+        // // been added so dont add it
+        // for (Iterator itr = m_out.getOutEdges().iterator(); itr.hasNext();) {
+        // DirectedEdge de = (DirectedEdge)itr.next();
+        // switch(de.compareNodes(this)) {
+        // case OPPOSITE_NODE_ORIENTATION: continue;
+        // }
+        // related.add(de);
+        // }
         //
-        //    //look for duplicate edges (same direction) if not equal add
-        //    // dont add opposite edges
-        //    // dont add loops
-        //    for (Iterator itr = m_in.getOutEdges().iterator(); itr.hasNext();) {
-        //      DirectedEdge de = (DirectedEdge)itr.next();
-        //      switch(de.compareNodes(this)) {
-        //      	case EQUAL_NODE_ORIENTATION:
-        //      	  if (!de.equals(this))
-        //      	    related.add(de);
-        //      	  continue;
-        //        case OPPOSITE_NODE_ORIENTATION:
-        //          continue;
-        //        case UNEQUAL_NODE_ORIENTATION:
-        //          if (de.getNodeA().equals(de.getNodeB())) continue;
-        //          related.add(de);
-        //      }
-        //    }
+        // //look for duplicate edges (same direction) if not equal add
+        // // dont add opposite edges
+        // // dont add loops
+        // for (Iterator itr = m_in.getOutEdges().iterator(); itr.hasNext();) {
+        // DirectedEdge de = (DirectedEdge)itr.next();
+        // switch(de.compareNodes(this)) {
+        // case EQUAL_NODE_ORIENTATION:
+        // if (!de.equals(this))
+        // related.add(de);
+        // continue;
+        // case OPPOSITE_NODE_ORIENTATION:
+        // continue;
+        // case UNEQUAL_NODE_ORIENTATION:
+        // if (de.getNodeA().equals(de.getNodeB())) continue;
+        // related.add(de);
+        // }
+        // }
         //
-        //    return(related.iterator());
+        // return(related.iterator());
     }
 
     /**
@@ -163,9 +169,10 @@ public class BasicDirectedEdge extends BasicGraphable implements DirectedEdge {
      *
      * @see org.geotools.graph.structure.DirectedGraphable#getInRelated()
      */
-    public Iterator getInRelated() {
-        ArrayList in = new ArrayList();
-        for (Iterator itr = m_in.getInEdges().iterator(); itr.hasNext(); ) {
+    @Override
+    public Iterator<DirectedEdge> getInRelated() {
+        ArrayList<DirectedEdge> in = new ArrayList<>();
+        for (Iterator<? extends Edge> itr = m_in.getInEdges().iterator(); itr.hasNext(); ) {
             DirectedEdge de = (DirectedEdge) itr.next();
             // this check has to be because the edge could be a loop in which case
             // it is in related to itself
@@ -179,9 +186,10 @@ public class BasicDirectedEdge extends BasicGraphable implements DirectedEdge {
      *
      * @see org.geotools.graph.structure.DirectedGraphable#getOutRelated()
      */
-    public Iterator getOutRelated() {
-        ArrayList out = new ArrayList();
-        for (Iterator itr = m_out.getOutEdges().iterator(); itr.hasNext(); ) {
+    @Override
+    public Iterator<DirectedEdge> getOutRelated() {
+        ArrayList<DirectedEdge> out = new ArrayList<>();
+        for (Iterator<?> itr = m_out.getOutEdges().iterator(); itr.hasNext(); ) {
             DirectedEdge de = (DirectedEdge) itr.next();
             // this check has to be because the edge could be a loop in which case
             // it is in related to itself
@@ -191,6 +199,7 @@ public class BasicDirectedEdge extends BasicGraphable implements DirectedEdge {
     }
 
     /** @see Edge#compareNodes(Edge) */
+    @Override
     public int compareNodes(Edge other) {
         if (other instanceof DirectedEdge) {
             DirectedEdge de = (DirectedEdge) other;

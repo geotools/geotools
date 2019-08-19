@@ -25,7 +25,6 @@ import java.awt.image.renderable.ParameterBlock;
 import javax.media.jai.OperationDescriptorImpl;
 import javax.media.jai.registry.RenderedRegistryMode;
 
-/** @source $URL$ */
 public class ColorInversionDescriptor extends OperationDescriptorImpl {
     /** */
     private static final long serialVersionUID = -8859576263333814317L;
@@ -101,8 +100,8 @@ public class ColorInversionDescriptor extends OperationDescriptorImpl {
                 // classes
                 new Object[] {
                     buildDefaultPalette(),
-                    new Integer(InverseColorMapRasterOp.DEFAULT_QUANTIZATION_COLORS),
-                    new Integer(1),
+                    Integer.valueOf(InverseColorMapRasterOp.DEFAULT_QUANTIZATION_COLORS),
+                    Integer.valueOf(1),
                 }, // Default
                 // values
                 null // Valid parameter values

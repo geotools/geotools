@@ -17,7 +17,6 @@ import org.opengis.filter.expression.Expression;
  * The RasterSymbolizer describes how to render raster/matrix-coverage data (e.g., satellite photos,
  * DEMs).
  *
- * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/symbol">Symbology Encoding
  *     Implementation Specification 1.1.0</A>
  * @author Open Geospatial Consortium

@@ -38,7 +38,6 @@ import org.opengis.filter.spatial.DistanceBufferOperator;
  * <p>
  *
  * @author Chris Holmes, TOPP
- * @source $URL$
  * @version $Id$
  * @task REVISIT: add units for distance.
  */
@@ -48,9 +47,6 @@ public abstract class CartesianDistanceFilter extends GeometryFilterImpl
     private double distance;
     /** the distnace units */
     private String units;
-
-    @Deprecated
-    protected CartesianDistanceFilter() {}
 
     protected CartesianDistanceFilter(Expression e1, Expression e2) {
         super(e1, e2);
@@ -130,7 +126,8 @@ public abstract class CartesianDistanceFilter extends GeometryFilterImpl
      * @return True if the objects are equal.
      */
     public boolean equals(Object oFilter) {
-        return super.equals(oFilter) && (distance == distance);
+        return super.equals(oFilter)
+                && (this.distance == ((CartesianDistanceFilter) oFilter).distance);
     }
 
     /**

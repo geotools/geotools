@@ -17,15 +17,14 @@
 package org.geotools.gml2.bindings;
 
 import org.geotools.gml2.GML;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
-/** @source $URL$ */
 public class GMLPointTypeBindingTest extends AbstractGMLBindingTest {
     MutablePicoContainer container;
     ElementInstance point;
@@ -35,9 +34,9 @@ public class GMLPointTypeBindingTest extends AbstractGMLBindingTest {
     protected void setUp() throws Exception {
         super.setUp();
 
-        point = createElement(GML.NAMESPACE, "myPoint", GML.POINTTYPE, null);
-        coord = createElement(GML.NAMESPACE, "coord", GML.COORDTYPE, null);
-        coords = createElement(GML.NAMESPACE, "coordinates", GML.COORDINATESTYPE, null);
+        point = createElement(GML.NAMESPACE, "myPoint", GML.PointType, null);
+        coord = createElement(GML.NAMESPACE, "coord", GML.CoordType, null);
+        coords = createElement(GML.NAMESPACE, "coordinates", GML.CoordinatesType, null);
 
         container = new DefaultPicoContainer();
         container.registerComponentImplementation(GeometryFactory.class);

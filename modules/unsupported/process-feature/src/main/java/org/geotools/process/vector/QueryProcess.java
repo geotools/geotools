@@ -34,7 +34,6 @@ import org.opengis.filter.Filter;
     description =
             "Queries a feature collection using an optional filter and an optional list of attributes to include.  Can also be used to convert feature collection format."
 )
-/** @source $URL$ */
 public class QueryProcess implements VectorProcess {
     @DescribeResult(name = "result", description = "The filtered feature collection")
     public SimpleFeatureCollection execute(

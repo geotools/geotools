@@ -25,7 +25,6 @@ import org.geotools.jdbc.JDBCJNDIDataStoreFactory;
  * JNDI DataStoreFactory for mysql database.
  *
  * @author Christian Mueller
- * @source $URL$
  */
 public class MySQLJNDIDataStoreFactory extends JDBCJNDIDataStoreFactory {
 

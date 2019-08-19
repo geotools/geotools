@@ -19,7 +19,6 @@ import org.opengis.annotation.UML;
  * defined point at a construction site), or be a defined point on a moving vehicle (such as on a
  * ship or satellite).
  *
- * @source $URL$
  * @version <A HREF="http://portal.opengeospatial.org/files/?artifact_id=6716">Abstract
  *     specification 2.0</A>
  * @author Martin Desruisseaux (IRD)

@@ -41,7 +41,6 @@ import org.opengis.feature.type.Schema;
  * 0 Profile), or used to define a non conflicting set of "bindings" for the TypeBuilder(s).
  *
  * @author Jody Garnett, Refractions Research Inc.
- * @source $URL$
  */
 public class ProfileImpl implements Schema {
 

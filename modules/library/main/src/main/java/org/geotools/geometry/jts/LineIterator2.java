@@ -26,7 +26,6 @@ import org.locationtech.jts.geom.LineString;
  *
  * @author Andrea Aime
  * @author simone giannecchini
- * @source $URL$
  * @version $Id$
  */
 public final class LineIterator2 implements PathIterator {

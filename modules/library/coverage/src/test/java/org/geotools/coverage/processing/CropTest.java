@@ -38,7 +38,7 @@ import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.Viewer;
-import org.geotools.factory.GeoTools;
+import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.GeneralEnvelope;
@@ -51,7 +51,7 @@ import org.geotools.referencing.crs.DefaultDerivedCRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
-import org.geotools.resources.coverage.CoverageUtilities;
+import org.geotools.util.factory.GeoTools;
 import org.junit.Before;
 import org.junit.Test;
 import org.locationtech.jts.geom.CoordinateSequence;
@@ -69,7 +69,6 @@ import org.opengis.referencing.operation.TransformException;
 /**
  * Tests the crop operation.
  *
- * @source $URL$
  * @version $Id$
  * @author Simone Giannecchini (GeoSolutions)
  * @author Martin Desruisseaux (Geomatys)
@@ -153,7 +152,7 @@ public final class CropTest extends GridProcessingTestBase {
     @Test
     public void testCropNoData() {
         Map<String, Object> properties = new HashMap<>();
-        final Double theNoData = new Double(-123);
+        final Double theNoData = Double.valueOf(-123);
         CoverageUtilities.setNoDataProperty(properties, theNoData);
         GridCoverage2D source =
                 new GridCoverageFactory()

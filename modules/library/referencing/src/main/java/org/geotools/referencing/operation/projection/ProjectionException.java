@@ -17,15 +17,14 @@
 package org.geotools.referencing.operation.projection;
 
 import org.geotools.measure.Latitude;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 import org.opengis.referencing.operation.TransformException;
 
 /**
  * Thrown by {@link MapProjection} when a map projection failed.
  *
  * @since 2.0
- * @source $URL$
  * @version $Id$
  * @author André Gosselin
  * @author Martin Desruisseaux (IRD)

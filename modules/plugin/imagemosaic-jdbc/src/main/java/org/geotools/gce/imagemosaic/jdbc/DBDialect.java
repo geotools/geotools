@@ -26,7 +26,6 @@ import org.geotools.data.jdbc.datasource.DataSourceFinder;
  *
  * @author mcr
  * @since 2.5
- * @source $URL$
  */
 public abstract class DBDialect {
     protected DataSource dataSource;

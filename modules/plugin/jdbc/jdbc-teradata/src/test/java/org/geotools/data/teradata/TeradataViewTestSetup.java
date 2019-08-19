@@ -18,7 +18,6 @@ package org.geotools.data.teradata;
 
 import org.geotools.jdbc.JDBCViewTestSetup;
 
-/** @source $URL$ */
 public class TeradataViewTestSetup extends JDBCViewTestSetup {
 
     public TeradataViewTestSetup() {

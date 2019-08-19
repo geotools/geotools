@@ -22,7 +22,6 @@ import java.io.IOException;
 /**
  * @author Christian Mueller
  *     <p>Interface for objects creating GeneralizsationInfos
- * @source $URL$
  */
 public interface GeneralizationInfosProvider {
 

@@ -18,7 +18,6 @@ package org.geotools.data.mysql;
 
 import org.geotools.jdbc.JDBCNoPrimaryKeyTestSetup;
 
-/** @source $URL$ */
 public class MySQLNoPrimaryKeyTestSetup extends JDBCNoPrimaryKeyTestSetup {
 
     public MySQLNoPrimaryKeyTestSetup() {

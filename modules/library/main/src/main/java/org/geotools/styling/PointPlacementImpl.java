@@ -19,24 +19,21 @@ package org.geotools.styling;
 // OpenGIS dependencies
 
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.factory.GeoTools;
 import org.geotools.util.Utilities;
+import org.geotools.util.factory.GeoTools;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Expression;
 import org.opengis.style.StyleVisitor;
 import org.opengis.util.Cloneable;
 
 /**
- * DOCUMENT ME!
- *
  * @author Ian Turton, CCG
- * @source $URL$
  * @version $Id$
  */
 public class PointPlacementImpl implements PointPlacement, Cloneable {
     /** The logger for the default core module. */
     private static final java.util.logging.Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.core");
+            org.geotools.util.logging.Logging.getLogger(PointPlacementImpl.class);
 
     // TODO: make container ready
     private final FilterFactory filterFactory;
@@ -51,7 +48,7 @@ public class PointPlacementImpl implements PointPlacement, Cloneable {
     public PointPlacementImpl(FilterFactory factory) {
         filterFactory = factory;
         try {
-            rotation = filterFactory.literal(new Integer(0));
+            rotation = filterFactory.literal(Integer.valueOf(0));
         } catch (org.geotools.filter.IllegalFilterException ife) {
             LOGGER.severe("Failed to build defaultPointPlacement: " + ife);
         }

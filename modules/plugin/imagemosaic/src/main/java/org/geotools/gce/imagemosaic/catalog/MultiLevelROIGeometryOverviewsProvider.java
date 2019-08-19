@@ -29,8 +29,8 @@ import org.geotools.coverage.grid.io.footprint.FootprintLoader;
 import org.geotools.coverage.grid.io.footprint.MultiLevelROI;
 import org.geotools.coverage.grid.io.footprint.MultiLevelROIProvider;
 import org.geotools.coverage.grid.io.footprint.SidecarFootprintProvider;
-import org.geotools.factory.Hints;
 import org.geotools.gce.imagemosaic.Utils;
+import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.simple.SimpleFeature;
 
@@ -108,22 +108,8 @@ public class MultiLevelROIGeometryOverviewsProvider implements MultiLevelROIProv
 
     @Override
     public MultiLevelROI getMultiScaleROI(SimpleFeature sf) throws IOException {
-        String path = null;
-        // Prepare the path, extracting it from the feature (when provided)
-        // or taking it from the baseFile
-        if (sf == null) {
-            path = baseFile.getAbsolutePath();
-        } else {
-            Object value = sf.getAttribute("location");
-            if (value != null && value instanceof String) {
-                String strValue = (String) value;
-                File file = Utils.getFile(strValue, baseFile);
-                path = file.getAbsolutePath();
-            }
-        }
-        final String baseName = FilenameUtils.getBaseName(path);
-        final String fullPath = FilenameUtils.getFullPath(path);
-        final String baseFullName = fullPath + File.separatorChar + baseName;
+        String path = getPath(sf);
+        final String baseFullName = getBaseFullName(path);
         Geometry footprint;
         List<Geometry> footprintOverviews;
         AbstractGridCoverage2DReader reader = null;
@@ -133,7 +119,6 @@ public class MultiLevelROIGeometryOverviewsProvider implements MultiLevelROIProv
             if (numOverviews == LOOK_FOR_OVERVIEWS) {
                 // No number of overviews have been provided.
                 // Getting a reader to retrieve that number.
-                nOverviews = 0;
                 File file = new File(path);
                 AbstractGridFormat format =
                         (AbstractGridFormat)
@@ -143,6 +128,7 @@ public class MultiLevelROIGeometryOverviewsProvider implements MultiLevelROIProv
                 int extOv = layout.getNumExternalOverviews();
                 int intOv = layout.getNumInternalOverviews();
                 nOverviews = (extOv > 0 ? extOv : 0) + (intOv > 0 ? intOv : 0);
+                this.numOverviews = nOverviews;
             }
             footprintOverviews = new ArrayList<Geometry>(nOverviews);
             for (int i = 0; i < nOverviews; i++) {
@@ -166,6 +152,29 @@ public class MultiLevelROIGeometryOverviewsProvider implements MultiLevelROIProv
         }
     }
 
+    private String getBaseFullName(String path) {
+        final String baseName = FilenameUtils.getBaseName(path);
+        final String fullPath = FilenameUtils.getFullPath(path);
+        return fullPath + File.separatorChar + baseName;
+    }
+
+    private String getPath(SimpleFeature sf) throws IOException {
+        String path = null;
+        // Prepare the path, extracting it from the feature (when provided)
+        // or taking it from the baseFile
+        if (sf == null) {
+            path = baseFile.getAbsolutePath();
+        } else {
+            Object value = sf.getAttribute("location");
+            if (value != null && value instanceof String) {
+                String strValue = (String) value;
+                File file = Utils.getFile(strValue, baseFile);
+                path = file.getAbsolutePath();
+            }
+        }
+        return path;
+    }
+
     private Geometry loadFootprint(String baseFullName, boolean isOverview) throws Exception {
         FootprintLoader loader = isOverview ? footprintLoader : overviewsFootprintLoader;
         if (loader != null) {
@@ -174,6 +183,34 @@ public class MultiLevelROIGeometryOverviewsProvider implements MultiLevelROIProv
         return footprintProvider.getFootprint(baseFullName);
     }
 
+    private List<File> loadFootprintFiles(String baseFullName, boolean isOverview)
+            throws IOException {
+        FootprintLoader loader = isOverview ? footprintLoader : overviewsFootprintLoader;
+        if (loader != null) {
+            return loader.getFootprintFiles(baseFullName);
+        }
+        return footprintProvider.getSidecars(baseFullName);
+    }
+
     @Override
     public void dispose() {}
+
+    public List<File> getFootprintFiles(SimpleFeature feature) throws IOException {
+        // force init of data structures
+        getMultiScaleROI(feature);
+
+        List<File> result = new ArrayList<>();
+
+        String path = getPath(feature);
+        final String baseFullName = getBaseFullName(path);
+
+        result.addAll(loadFootprintFiles(baseFullName, false));
+        for (int i = 0; i < numOverviews; i++) {
+            // Setting up the path of the overview's footprint file
+            String pathOverview = baseFullName + String.format(overviewSuffixFormat, i + 1);
+            result.addAll(loadFootprintFiles(pathOverview, true));
+        }
+
+        return result;
+    }
 }

@@ -23,7 +23,6 @@ import org.opengis.style.StyleVisitor;
 /**
  * Default implementation of ExternalMark.
  *
- * @source $URL$
  * @version $Id$
  */
 public class ExternalMarkImpl implements org.geotools.styling.ExternalMark {
@@ -71,10 +70,6 @@ public class ExternalMarkImpl implements org.geotools.styling.ExternalMark {
 
     public void setInlineContent(Icon inline) {
         this.inlineContent = inline;
-    }
-
-    public void getInlineContent(Icon inline) {
-        setInlineContent(inline);
     }
 
     public void setFormat(String mimeType) {

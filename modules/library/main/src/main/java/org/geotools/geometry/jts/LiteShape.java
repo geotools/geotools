@@ -42,7 +42,6 @@ import org.locationtech.jts.geom.impl.PackedCoordinateSequenceFactory;
  * than the origional Geometry).
  *
  * @author Andrea Aime
- * @source $URL$
  * @version $Id$
  */
 public class LiteShape implements Shape, Cloneable {

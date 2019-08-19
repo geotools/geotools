@@ -20,7 +20,6 @@ import java.util.Iterator;
 import junit.framework.TestCase;
 import org.geotools.graph.structure.Edge;
 
-/** @source $URL$ */
 public class OptEdgeTest extends TestCase {
 
     private OptNode m_nodeA;
@@ -91,7 +90,7 @@ public class OptEdgeTest extends TestCase {
         try {
             setUp();
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
 
         m_nodeA.setDegree(4);
@@ -112,7 +111,7 @@ public class OptEdgeTest extends TestCase {
         try {
             setUp();
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
 
         m_nodeA.setDegree(4);
@@ -133,7 +132,7 @@ public class OptEdgeTest extends TestCase {
         try {
             setUp();
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
 
         m_nodeA.setDegree(4);
@@ -148,7 +147,7 @@ public class OptEdgeTest extends TestCase {
         try {
             setUp();
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
 
         m_nodeB.setDegree(4);
@@ -163,7 +162,7 @@ public class OptEdgeTest extends TestCase {
         try {
             setUp();
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
 
         m_nodeA.setDegree(4);

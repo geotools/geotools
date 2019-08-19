@@ -21,6 +21,7 @@ import java.awt.image.RenderedImage;
 import java.awt.image.WritableRaster;
 import java.io.File;
 import java.io.IOException;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import org.geotools.image.ImageWorker;
@@ -32,7 +33,6 @@ import org.geotools.util.logging.Logging;
  * different to a human being.
  *
  * @author Andrea Aime - GeoSolutions
- * @source $URL$
  */
 public class ImageAssert {
 
@@ -150,8 +150,16 @@ public class ImageAssert {
                                     realignImage(actualImage),
                                     actualReferenceFile);
                 } else {
-                    LOGGER.info(
-                            "Images are different, add -Dorg.geotools.image.test.interactive=true to show a dialog comparing them (requires GUI support)");
+                    String message =
+                            "Images are different, add -Dorg.geotools.image.test.interactive=true to show a dialog comparing them (requires GUI support)";
+                    try {
+                        File actualFile = writeActualImage(expectedFile, actualImage);
+                        message += "\n Actual image saved at " + actualFile.getCanonicalPath();
+                    } catch (IOException e) {
+                        LOGGER.log(Level.WARNING, "Failure while saving actual image on file", e);
+                    }
+
+                    LOGGER.info(message);
                 }
 
                 if (overwrite) {
@@ -172,6 +180,19 @@ public class ImageAssert {
                                 + threshold);
             }
         }
+    }
+
+    private static File writeActualImage(File expectedFile, RenderedImage actualImage)
+            throws IOException {
+        File failureDir = new File("./target/image-compare-fails");
+
+        if (!failureDir.exists()) {
+            failureDir.mkdir();
+        }
+        File file = new File(failureDir, expectedFile.getName());
+        ImageIO.write(actualImage, "PNG", file);
+
+        return file;
     }
 
     static String getFormat(File expectedImage) {

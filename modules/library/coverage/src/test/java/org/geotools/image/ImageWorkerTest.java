@@ -16,7 +16,9 @@
  */
 package org.geotools.image;
 
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -30,7 +32,6 @@ import static org.junit.Assert.assertTrue;
 import com.sun.media.imageioimpl.common.PackageUtil;
 import it.geosolutions.imageio.utilities.ImageIOUtilities;
 import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReaderSpi;
-import it.geosolutions.jaiext.JAIExt;
 import it.geosolutions.jaiext.lookup.LookupTable;
 import it.geosolutions.jaiext.lookup.LookupTableFactory;
 import it.geosolutions.jaiext.range.NoDataContainer;
@@ -40,6 +41,7 @@ import it.geosolutions.jaiext.vectorbin.ROIGeometry;
 import java.awt.*;
 import java.awt.color.ColorSpace;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Area;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
@@ -64,6 +66,7 @@ import java.util.zip.GZIPInputStream;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
 import javax.imageio.stream.ImageInputStream;
+import javax.media.jai.Histogram;
 import javax.media.jai.ImageLayout;
 import javax.media.jai.Interpolation;
 import javax.media.jai.JAI;
@@ -76,7 +79,6 @@ import javax.media.jai.Warp;
 import javax.media.jai.WarpAffine;
 import javax.media.jai.operator.ConstantDescriptor;
 import javax.media.jai.operator.MosaicDescriptor;
-import org.apache.commons.io.IOUtils;
 import org.geotools.TestData;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
@@ -84,15 +86,14 @@ import org.geotools.coverage.grid.Viewer;
 import org.geotools.coverage.processing.GridProcessingTestBase;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.image.util.ComponentColorModelJAI;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.geotools.referencing.operation.transform.WarpBuilder;
-import org.geotools.resources.image.ComponentColorModelJAI;
-import org.junit.AfterClass;
+import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.locationtech.jts.geom.Envelope;
 import org.opengis.referencing.operation.TransformException;
@@ -100,7 +101,6 @@ import org.opengis.referencing.operation.TransformException;
 /**
  * Tests the {@link ImageWorker} implementation.
  *
- * @source $URL$
  * @version $Id$
  * @author Simone Giannecchini (GeoSolutions)
  * @author Martin Desruisseaux (Geomatys)
@@ -146,16 +146,6 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
 
     private static BufferedImage worldDEMImage = null;
 
-    @BeforeClass
-    public static void setupJaiExt() {
-        JAIExt.initJAIEXT(true);
-    }
-
-    @AfterClass
-    public static void teardownJaiExt() {
-        JAIExt.initJAIEXT(false);
-    }
-
     /**
      * Creates a simple 128x128 {@link RenderedImage} for testing purposes.
      *
@@ -167,7 +157,8 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         final int height = 128;
         final WritableRaster raster =
                 RasterFactory.createBandedRaster(DataBuffer.TYPE_DOUBLE, width, height, 1, null);
-        final Random random = new Random();
+        // random, but repeatable, by using a fixed seed value
+        final Random random = new Random(1);
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
                 raster.setSample(x, y, 0, Math.ceil(random.nextDouble() * maximum));
@@ -208,6 +199,10 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         return image;
     }
 
+    private static BufferedImage getSyntheticRGB(Color color) {
+        return getSyntheticRGB(color, 128);
+    }
+
     /**
      * Creates a test image in RGB with either {@link ComponentColorModel} or {@link
      * DirectColorModel}.
@@ -216,9 +211,9 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
      *     </code> otherwise.
      * @return
      */
-    private static BufferedImage getSyntheticRGB(Color color) {
-        final int width = 128;
-        final int height = 128;
+    private static BufferedImage getSyntheticRGB(Color color, int sideSize) {
+        final int width = sideSize;
+        final int height = sideSize;
         final BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_3BYTE_BGR);
         final WritableRaster raster = image.getRaster();
         for (int y = 0; y < height; y++) {
@@ -231,6 +226,10 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         return image;
     }
 
+    private static BufferedImage getSyntheticSolidGray(byte gray) {
+        return getSyntheticSolidGray(gray, 128);
+    }
+
     /**
      * Creates a test image in RGB with either {@link ComponentColorModel} or {@link
      * DirectColorModel}.
@@ -239,9 +238,9 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
      *     </code> otherwise.
      * @return
      */
-    private static BufferedImage getSyntheticSolidGray(byte gray) {
-        final int width = 128;
-        final int height = 128;
+    private static BufferedImage getSyntheticSolidGray(byte gray, int sideSize) {
+        final int width = sideSize;
+        final int height = sideSize;
         final BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_BYTE_GRAY);
         final WritableRaster raster = image.getRaster();
         for (int y = 0; y < height; y++) {
@@ -533,6 +532,20 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         readWorker.setImage(ImageIO.read(outFile));
         show(readWorker, "Pure Java JPEG");
         outFile.delete();
+
+        // /////////////////////////////////////////////////////////////////////
+        // test alpha channel is removed with nodata value
+        // /////////////////////////////////////////////////////////////////////
+        worker.setImage(getIndexedRGBNodata());
+        worker.forceIndexColorModel(false);
+        worker.writeJPEG(outFile, "JPEG", 0.75f, true);
+        // with the native imageIO, an exception would have been thrown by now.
+        // with non-native, writing the alpha channel to JPEG will work
+        // as well as reading it (!), but this is not generally supported
+        // and will confuse other image readers,
+        // so alpha should be removed for JPEG
+        BufferedImage image = ImageIO.read(outFile);
+        assertFalse(image.getColorModel().hasAlpha());
     }
 
     /**
@@ -636,10 +649,8 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         // and the palette does not get compressed
         InputStream gzippedStream =
                 ImageWorkerTest.class.getResource("test-data/sf-sfdem.tif.gz").openStream();
-        GZIPInputStream is = new GZIPInputStream(gzippedStream);
-        ImageInputStream iis = null;
-        try {
-            iis = ImageIO.createImageInputStream(is);
+        try (ImageInputStream iis =
+                ImageIO.createImageInputStream(new GZIPInputStream(gzippedStream))) {
             ImageReader reader = new TIFFImageReaderSpi().createReaderInstance(iis);
             reader.setInput(iis);
             BufferedImage bi = reader.read(0);
@@ -671,9 +682,6 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
             icm = (IndexColorModel) back.getColorModel();
             assertEquals(3, icm.getNumColorComponents());
             assertTrue(icm.getMapSize() <= 256);
-        } finally {
-            IOUtils.closeQuietly(is);
-            IOUtils.closeQuietly(iis);
         }
     }
 
@@ -1416,6 +1424,22 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
     }
 
     @Test
+    public void testIndexedRGBNoDataForceComponentColorModelNoAlpha() {
+        RenderedImage image = getIndexedRGBNodata();
+        ImageWorker iw = new ImageWorker(image);
+        iw.setBackground(new double[] {0, 0, 255});
+        iw.forceComponentColorModel(false, true, true);
+        RenderedImage expanded = iw.getRenderedImage();
+
+        // nodata forced expansion
+        assertTrue(expanded.getColorModel() instanceof ComponentColorModel);
+
+        // Make sure there is noAlpha
+        assertFalse(expanded.getColorModel().hasAlpha());
+        assertEquals(3, expanded.getColorModel().getNumComponents());
+    }
+
+    @Test
     public void testOptimizeAffine() throws Exception {
         BufferedImage bi = new BufferedImage(100, 100, BufferedImage.TYPE_3BYTE_BGR);
         ImageWorker iw = new ImageWorker(bi);
@@ -2089,9 +2113,90 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
     }
 
     @Test
-    public void testWarpROIWithoutJAIExt() throws IOException, TransformException {
-        JAIExt.initJAIEXT(false);
-        assertWarpROI();
+    public void testAlphaInterpolation() {
+
+        // All image pixels are initialized to RED.
+        BufferedImage red = getSyntheticRGB(Color.RED, 512);
+        BufferedImage alphaChannel = getSyntheticSolidGray((byte) 255, 512);
+
+        final int w = red.getWidth();
+        final int h = red.getHeight();
+        final int specialPixelsOriginX = w / 2;
+        final int specialPixelsOriginY = h / 2;
+
+        // Setting the top left quarter of the image to all zeros
+        int[] zero = new int[] {0, 0, 0};
+        int[] redValues = new int[] {255, 0, 0};
+        WritableRaster raster = red.getRaster();
+        WritableRaster alphaRaster = alphaChannel.getRaster();
+        for (int i = 0; i < specialPixelsOriginX; i++) {
+            for (int j = 0; j < specialPixelsOriginY; j++) {
+                raster.setPixel(i, j, zero);
+                alphaRaster.setSample(i, j, 0, 0);
+            }
+        }
+
+        // Setting the edge of the quarter with some red teeth for future interpolation
+        // Alpha follows the teeth edges.
+        //      **
+        //       *
+        //      **
+        //       *
+        // * * * *
+        // *******
+        int[] values = null;
+        for (int i = specialPixelsOriginX; i < specialPixelsOriginX + 3; i += 3) {
+            for (int j = 0; j < specialPixelsOriginY; j += 6) {
+                for (int k = 0; k < 3; k++) {
+                    for (int l = 0; l < 6; l++) {
+                        values = l > 2 ? redValues : zero;
+                        raster.setPixel(i + k, j + l, values);
+                        alphaRaster.setSample(i + k, j + l, 0, values[0]);
+                    }
+                }
+            }
+        }
+        for (int i = 0; i < specialPixelsOriginX; i += 6) {
+            for (int j = specialPixelsOriginY; j < specialPixelsOriginY + 3; j += 3) {
+                for (int l = 0; l < 3; l++) {
+                    for (int k = 0; k < 6; k++) {
+                        values = k > 2 ? redValues : zero;
+                        raster.setPixel(i + k, j + l, values);
+                        alphaRaster.setSample(i + k, j + l, 0, values[0]);
+                    }
+                }
+            }
+        }
+        // Applying transparency to create RGBA image
+        ImageWorker iw = new ImageWorker(red);
+        iw.addBand(alphaChannel, false, true, null);
+        RenderedImage rgbA = iw.getRenderedImage();
+
+        ImageWorker scalingWorker =
+                new ImageWorker(rgbA)
+                        .scale(
+                                0.5,
+                                0.5,
+                                0,
+                                0,
+                                Interpolation.getInstance(Interpolation.INTERP_BILINEAR));
+        RenderedImage result = scalingWorker.getRenderedImage();
+
+        // Check alpha has not been interpolated
+        SampleModel sm = result.getSampleModel();
+        assertEquals(4, sm.getNumBands());
+        ColorModel cm = result.getColorModel();
+        assertTrue(cm.hasAlpha());
+        Raster alpha = result.getData();
+
+        // Checking alpha component for pixels is either fully opaque (255) or
+        // fully transparent (0) (No interpolation occurred on alpha)
+        for (int i = 0; i < specialPixelsOriginX; i++) {
+            for (int j = 0; j < specialPixelsOriginY; j++) {
+                int sample = alpha.getSample(i, j, 3);
+                assertTrue(sample == 0 || sample == 255);
+            }
+        }
     }
 
     public void assertWarpROI() throws IOException, TransformException {
@@ -2118,5 +2223,99 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         ImageWorker warpedROIWorker = new ImageWorker(warpedROIImage);
         assertEquals(1, warpedROIWorker.getMaximums()[0], 0d);
         assertEquals(0, warpedROIWorker.getMinimums()[0], 0d);
+    }
+
+    @Test
+    public void testRemoveColorModel() {
+        // cheap way to get a binary image, a ROI is always represented as one
+        Area area = new Area(new Rectangle(0, 0, 32, 16));
+        area.add(new Area(new Rectangle(128, 0, 16, 32)));
+        ROI roi = new ROIShape(area);
+        PlanarImage image = roi.getAsImage();
+        assertThat(image.getColorModel(), instanceOf(IndexColorModel.class));
+        ImageWorker worker = new ImageWorker(image);
+        double[] maximumBefore = worker.getMaximums();
+        assertTrue(worker.isBinary());
+        // remove
+        worker.removeIndexColorModel();
+        RenderedImage result = worker.getRenderedImage();
+        assertThat(result, not(is(image)));
+        assertThat(result.getColorModel(), instanceOf(ComponentColorModel.class));
+        // subtract the original
+        double[] maximums = worker.getMaximums();
+        assertThat(maximums, equalTo(maximumBefore));
+    }
+
+    @Test
+    public void testExtremaSubsample() {
+        // increase the subsampling factor, it should lead to progressive deterioration of
+        // the extracted stats values. Images and workers are re-created over and over, since
+        // the worker attaches the stats to the image as a property (so a new one is needed to
+        // force re-calculation
+        assertMinMax(getSynthetic(1000), 1, 1, 1, 1000);
+        assertMinMax(getSynthetic(1000), 4, 4, 1, 1000);
+        assertMinMax(getSynthetic(1000), 8, 8, 4, 985);
+        assertMinMax(getSynthetic(1000), 16, 16, 9, 985);
+        assertMinMax(getSynthetic(1000), 32, 32, 11, 931);
+    }
+
+    private void assertMinMax(
+            RenderedImage image, int xPeriod, int yPeriod, double expectedMin, double expectedMax) {
+        ImageWorker iw = new ImageWorker(image).setXPeriod(xPeriod).setYPeriod(yPeriod);
+        double[] minimums = iw.getMinimums();
+        assertEquals(expectedMin, minimums[0], 1e-6);
+        double[] maximums = iw.getMaximums();
+        assertEquals(expectedMax, maximums[0], 1e-6);
+    }
+
+    @Test
+    public void testMeanSubsample() {
+        // increase the subsampling factor, it should lead to progressive deterioration of
+        // the extracted stats values. Images and workers are re-created over and over, since
+        // the worker attaches the stats to the image as a property (so a new one is needed to
+        // force re-calculation
+        assertMean(getSynthetic(1000), 1, 1, 500);
+        assertMean(getSynthetic(1000), 4, 4, 500);
+        assertMean(getSynthetic(1000), 8, 8, 490);
+        assertMean(getSynthetic(1000), 16, 16, 495);
+        assertMean(getSynthetic(1000), 32, 32, 455);
+    }
+
+    private void assertMean(RenderedImage image, int xPeriod, int yPeriod, double expectedMean) {
+        ImageWorker iw = new ImageWorker(image).setXPeriod(xPeriod).setYPeriod(yPeriod);
+        double[] means = iw.getMean();
+        assertEquals(expectedMean, means[0], 1);
+    }
+
+    @Test
+    public void testHistogramSubsample() {
+        // increase the subsampling factor, it should lead to progressive deterioration of
+        // the extracted stats values. Images and workers are re-created over and over, since
+        // the worker attaches the stats to the image as a property (so a new one is needed to
+        // force re-calculation.
+        // In this case we have actual counts, so they will have to go down accordingly too
+        assertHistogram(getSynthetic(1000), 1, 1, 5408, 5487, 5475);
+        assertHistogram(getSynthetic(1000), 2, 2, 1372, 1384, 1339);
+        assertHistogram(getSynthetic(1000), 4, 4, 324, 363, 336);
+        assertHistogram(getSynthetic(1000), 8, 8, 83, 85, 87);
+        assertHistogram(getSynthetic(1000), 16, 16, 22, 18, 23);
+        assertHistogram(getSynthetic(1000), 32, 32, 6, 5, 4);
+    }
+
+    private void assertHistogram(
+            RenderedImage image,
+            int xPeriod,
+            int yPeriod,
+            int expectedCountBin1,
+            int expectedCountBin2,
+            int expectedCountBin3) {
+        ImageWorker iw = new ImageWorker(image).setXPeriod(xPeriod).setYPeriod(yPeriod);
+        double[] minimums = iw.getMinimums();
+        double[] maximums = iw.getMaximums();
+        Histogram histogram = iw.getHistogram(new int[] {3}, minimums, maximums);
+        assertThat(
+                histogram.getBins(0),
+                CoreMatchers.equalTo(
+                        new int[] {expectedCountBin1, expectedCountBin2, expectedCountBin3}));
     }
 }

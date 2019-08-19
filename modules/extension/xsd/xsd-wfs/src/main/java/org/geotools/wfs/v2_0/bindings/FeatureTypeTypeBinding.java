@@ -30,7 +30,7 @@ import net.opengis.wfs20.OutputFormatListType;
 import net.opengis.wfs20.Wfs20Factory;
 import org.eclipse.emf.ecore.EObject;
 import org.geotools.wfs.v2_0.WFS;
-import org.geotools.xml.AbstractComplexEMFBinding;
+import org.geotools.xsd.AbstractComplexEMFBinding;
 
 public class FeatureTypeTypeBinding extends AbstractComplexEMFBinding {
     private Wfs20Factory factory;

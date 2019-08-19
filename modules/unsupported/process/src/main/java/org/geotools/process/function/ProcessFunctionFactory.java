@@ -41,7 +41,6 @@ import org.opengis.filter.expression.Literal;
  * value can be seen as a filter function
  *
  * @author Andrea Aime - GeoSolutions
- * @source $URL$
  */
 public class ProcessFunctionFactory implements FunctionFactory {
 

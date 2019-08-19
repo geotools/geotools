@@ -27,7 +27,6 @@ import org.geotools.util.logging.Logging;
  * their entry from the collection when {@link Reference#clear} is invoked.
  *
  * @since 2.0
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
@@ -108,7 +107,5 @@ public final class WeakCollectionCleaner extends Thread {
         } catch (InterruptedException e) {
 
         }
-        // last resort tentative to kill the cleaner thread
-        if (this.isAlive()) this.stop();
     }
 }

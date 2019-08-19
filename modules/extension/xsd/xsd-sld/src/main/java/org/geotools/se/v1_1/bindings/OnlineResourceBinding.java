@@ -41,7 +41,6 @@ import org.geotools.xml.*;
  * </pre>
  *
  * @generated
- * @source $URL$
  */
 public class OnlineResourceBinding extends SLDOnlineResourceBinding {
 

@@ -25,7 +25,6 @@ import org.geotools.data.FeatureReader;
 import org.geotools.data.FeatureWriter;
 import org.geotools.data.Transaction;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.hsqldb.Session;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
@@ -34,27 +33,11 @@ import org.opengis.filter.Filter;
  * A FeatureWriter aware of transactions.
  *
  * @author Gabriel Roldan (TOPP)
- * @version $Id$
  * @since 2.5
- * @source $URL:
- *     http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/main/java
- *     /org/geotools/arcsde/data/TransactionFeatureWriter.java $
  */
 class TransactionFeatureWriter extends ArcSdeFeatureWriter {
     private ArcTransactionState state;
 
-    /**
-     * @param fidReader
-     * @param featureType
-     * @param filteredContent
-     * @param listenerManager
-     * @param transactionalConnection the {@link Session} to work over, with a {@link
-     *     Session#isTransactionActive() transaction active}
-     * @param transaction a transaction <b>already configured</b> with the {@link
-     *     ArcTransactionState} needed for this writer to work.
-     * @throws NoSuchElementException
-     * @throws IOException
-     */
     public TransactionFeatureWriter(
             final FIDReader fidReader,
             final SimpleFeatureType featureType,

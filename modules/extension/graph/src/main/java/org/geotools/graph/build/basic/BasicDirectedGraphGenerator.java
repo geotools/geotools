@@ -34,7 +34,6 @@ package org.geotools.graph.build.basic;
  * </UL>
  *
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
- * @source $URL$
  */
 public class BasicDirectedGraphGenerator extends BasicGraphGenerator {
 

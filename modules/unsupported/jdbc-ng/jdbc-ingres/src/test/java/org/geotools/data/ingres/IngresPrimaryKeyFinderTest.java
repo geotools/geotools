@@ -6,7 +6,7 @@ import org.geotools.jdbc.JDBCPrimaryKeyFinderTestSetup;
 /**
  * 
  *
- * @source $URL$
+
  */
 public class IngresPrimaryKeyFinderTest extends JDBCPrimaryKeyFinderTest {
 

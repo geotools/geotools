@@ -21,8 +21,8 @@ import javax.media.jai.BorderExtender;
 import javax.media.jai.PlanarImage;
 import javax.media.jai.RenderedOp;
 import javax.media.jai.iterator.RandomIter;
-import org.geotools.factory.GeoTools;
 import org.geotools.image.ImageWorker;
+import org.geotools.util.factory.GeoTools;
 
 /**
  * Helper class disposing the border op image along with the iterator when {@link #done()} is called

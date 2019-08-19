@@ -31,7 +31,6 @@ import org.opengis.filter.capability.FunctionName;
  * Breaks a SimpleFeatureCollection into classes using the standard deviation classification method.
  *
  * @author Cory Horner, Refractions Research Inc.
- * @source $URL$
  */
 public class StandardDeviationFunction extends ClassificationFunction {
 
@@ -62,6 +61,10 @@ public class StandardDeviationFunction extends ClassificationFunction {
                 return null;
             }
             double standardDeviation = calcResult.toDouble();
+            if (standardDeviation == 0) {
+                return new RangedClassifier(
+                        new Comparable[] {sdVisit.getMean()}, new Comparable[] {sdVisit.getMean()});
+            }
 
             // figure out the min and max values
             Double min[] = new Double[classNum];
@@ -86,11 +89,11 @@ public class StandardDeviationFunction extends ClassificationFunction {
 
     private Double getMin(int index, int numClasses, double average, double standardDeviation) {
         if (index <= 0 || index >= numClasses) return null;
-        return new Double(average - (((numClasses / 2.0) - index) * standardDeviation));
+        return Double.valueOf(average - (((numClasses / 2.0) - index) * standardDeviation));
     }
 
     private Double getMax(int index, int numClasses, double average, double standardDeviation) {
         if (index < 0 || index >= numClasses - 1) return null;
-        return new Double(average - (((numClasses / 2.0) - 1 - index) * standardDeviation));
+        return Double.valueOf(average - (((numClasses / 2.0) - 1 - index) * standardDeviation));
     }
 }

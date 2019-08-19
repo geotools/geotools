@@ -30,12 +30,12 @@ import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 import java.util.StringTokenizer;
 import java.util.logging.Logger;
-import org.geotools.factory.BufferedFactory;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.factory.ReferencingFactory;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
 import org.geotools.util.SoftValueHashMap;
 import org.geotools.util.URLs;
+import org.geotools.util.factory.BufferedFactory;
 import org.geotools.util.logging.Logging;
 import org.opengis.referencing.FactoryException;
 
@@ -86,7 +86,7 @@ public class NADCONGridShiftFactory extends ReferencingFactory implements Buffer
     private static final int GRID_CACHE_HARD_REFERENCES = 10;
 
     /** Logger. */
-    protected static final Logger LOGGER = Logging.getLogger("org.geotools.referencing");
+    protected static final Logger LOGGER = Logging.getLogger(NADCONGridShiftFactory.class);
 
     /** The soft cache that holds loaded grids. */
     private SoftValueHashMap<NADCONKey, NADConGridShift> gridCache;
@@ -364,8 +364,11 @@ public class NADCONGridShiftFactory extends ReferencingFactory implements Buffer
         // //////////////////////
         // read header info
         // //////////////////////
-        latLine = latBr.readLine(); // skip header description
+        latBr.readLine(); // skip header description
         latLine = latBr.readLine();
+        if (latLine == null) {
+            throw new IOException("Invalid lat grid file, does not contain a grid");
+        }
         latSt = new StringTokenizer(latLine, " ");
 
         if (latSt.countTokens() != 8) {
@@ -389,8 +392,11 @@ public class NADCONGridShiftFactory extends ReferencingFactory implements Buffer
         float ymax = ymin + ((nr - 1) * dy);
 
         // now read long shift grid
-        longLine = longBr.readLine(); // skip header description
+        longBr.readLine(); // skip header description
         longLine = longBr.readLine();
+        if (longLine == null) {
+            throw new IOException("Invalid lon grid file, does not contain a grid");
+        }
         longSt = new StringTokenizer(longLine, " ");
 
         if (longSt.countTokens() != 8) {
@@ -422,8 +428,14 @@ public class NADCONGridShiftFactory extends ReferencingFactory implements Buffer
         for (i = 0; i < nr; i++) {
             for (j = 0; j < nc; ) {
                 latLine = latBr.readLine();
+                if (latLine == null) {
+                    throw new IOException("Was expecting one more line in the lat file");
+                }
                 latSt = new StringTokenizer(latLine, " ");
                 longLine = longBr.readLine();
+                if (longLine == null) {
+                    throw new IOException("Was expecting one more line in the lat file");
+                }
                 longSt = new StringTokenizer(longLine, " ");
 
                 while (latSt.hasMoreTokens() && longSt.hasMoreTokens()) {

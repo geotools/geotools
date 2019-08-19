@@ -22,7 +22,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
-/** @source $URL$ */
 public class SEMockData {
 
     static Element trim(Document document, Node parent) {

@@ -27,7 +27,6 @@ import org.geotools.graph.structure.Graphable;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.LineSegment;
 
-/** @source $URL$ */
 public class DirectedLineGraphGeneratorTest extends TestCase {
 
     private BasicDirectedLineGraphGenerator m_gen;

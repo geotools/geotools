@@ -19,7 +19,6 @@ package org.geotools.geometry.iso.util.algorithmND;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
-/** @source $URL$ */
 public class AlgorithmNDTestSuite {
 
     public static Test suite() {

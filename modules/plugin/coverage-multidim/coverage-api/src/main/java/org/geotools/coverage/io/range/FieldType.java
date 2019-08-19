@@ -38,7 +38,6 @@ import org.opengis.util.InternationalString;
  * <p>Note that in our proposal a {@link FieldType} shall always contain at least one {@link Axis}.
  *
  * @author Simone Giannecchini, GeoSolutions
- * @source $URL$
  */
 public interface FieldType {
 

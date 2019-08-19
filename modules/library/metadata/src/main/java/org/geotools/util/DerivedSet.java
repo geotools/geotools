@@ -34,7 +34,6 @@ import java.util.Set;
  * @param <B> The type of elements in the backing set.
  * @param <E> The type of elements in this set.
  * @since 2.0
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
@@ -53,17 +52,6 @@ public abstract class DerivedSet<B, E> extends AbstractSet<E>
 
     /** The derived type. */
     private final Class<E> derivedType;
-
-    /**
-     * Creates a new derived set from the specified base set.
-     *
-     * @param base The base set.
-     * @deprecated Use {@link #DerivedSet(Set,Class)} instead.
-     */
-    @SuppressWarnings("unchecked")
-    public DerivedSet(final Set<B> base) {
-        this(base, (Class) Object.class);
-    }
 
     /**
      * Creates a new derived set from the specified base set.

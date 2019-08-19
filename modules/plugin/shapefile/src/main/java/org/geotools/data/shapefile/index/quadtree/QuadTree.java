@@ -36,14 +36,13 @@ import org.locationtech.jts.geom.Envelope;
  * <p>TODO: example of typical use...
  *
  * @author Tommaso Nolli
- * @source $URL$
  */
 public class QuadTree {
 
     private static final double SPLITRATIO = 0.55d;
 
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.index.quadtree");
+            org.geotools.util.logging.Logging.getLogger(QuadTree.class);
 
     private Node root;
     private int numShapes;

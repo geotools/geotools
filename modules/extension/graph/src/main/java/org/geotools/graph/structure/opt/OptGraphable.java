@@ -32,7 +32,6 @@ import org.geotools.graph.structure.Graphable;
  *
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
  * @see Graphable
- * @source $URL$
  */
 public abstract class OptGraphable implements Graphable, Serializable {
 

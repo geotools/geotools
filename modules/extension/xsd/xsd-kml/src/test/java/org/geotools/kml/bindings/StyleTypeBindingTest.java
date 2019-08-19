@@ -16,6 +16,7 @@
  */
 package org.geotools.kml.bindings;
 
+import java.util.List;
 import org.geotools.kml.KML;
 import org.geotools.kml.KMLTestSupport;
 import org.geotools.styling.FeatureTypeStyle;
@@ -23,9 +24,8 @@ import org.geotools.styling.LineSymbolizer;
 import org.geotools.styling.PolygonSymbolizer;
 import org.geotools.styling.Symbolizer;
 import org.geotools.styling.TextSymbolizer;
-import org.geotools.xml.Binding;
+import org.geotools.xsd.Binding;
 
-/** @source $URL$ */
 public class StyleTypeBindingTest extends KMLTestSupport {
     public void testType() {
         assertEquals(FeatureTypeStyle.class, binding(KML.StyleType).getType());
@@ -41,11 +41,11 @@ public class StyleTypeBindingTest extends KMLTestSupport {
         buildDocument(xml);
 
         FeatureTypeStyle style = (FeatureTypeStyle) parse();
-        Symbolizer[] syms = style.rules().get(0).getSymbolizers();
+        List<Symbolizer> syms = style.rules().get(0).symbolizers();
 
-        assertEquals(3, syms.length);
-        assertTrue(syms[0] instanceof LineSymbolizer);
-        assertTrue(syms[1] instanceof PolygonSymbolizer);
-        assertTrue(syms[2] instanceof TextSymbolizer);
+        assertEquals(3, syms.size());
+        assertTrue(syms.get(0) instanceof LineSymbolizer);
+        assertTrue(syms.get(1) instanceof PolygonSymbolizer);
+        assertTrue(syms.get(2) instanceof TextSymbolizer);
     }
 }

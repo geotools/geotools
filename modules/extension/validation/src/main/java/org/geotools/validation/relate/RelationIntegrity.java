@@ -22,7 +22,6 @@ import org.geotools.validation.DefaultIntegrityValidation;
  * @author bowens
  *     <p>TODO To change the template for this generated type comment go to Window - Preferences -
  *     Java - Code Generation - Code and Comments
- * @source $URL$
  */
 public abstract class RelationIntegrity extends DefaultIntegrityValidation {
     protected static final String EMPTY = "";
@@ -87,7 +86,7 @@ public abstract class RelationIntegrity extends DefaultIntegrityValidation {
      * @param typeRefB A String with the restrictedPolygonTypeRef to set.
      */
     public final void setGeomTypeRefB(String typeRefB) {
-        if (typeRefB.equals("") || typeRefB == null) typeRefB = EMPTY;
+        if (typeRefB == null || typeRefB.equals("")) this.geomTypeRefB = EMPTY;
         else this.geomTypeRefB = typeRefB;
     }
 

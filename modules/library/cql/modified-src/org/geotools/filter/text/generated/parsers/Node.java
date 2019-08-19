@@ -25,7 +25,7 @@ package org.geotools.filter.text.generated.parsers;
  * @since 2.5
  *
  *
- * @source $URL$
+
  */
 public interface Node {
 

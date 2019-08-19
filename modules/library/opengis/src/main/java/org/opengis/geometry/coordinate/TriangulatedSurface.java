@@ -19,7 +19,6 @@ import org.opengis.annotation.UML;
  * A polyhedral surface that is composed only of {@linkplain Triangle triangles}. There is no
  * restriction on how the triangulation is derived.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/as">ISO 19107</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 2.0

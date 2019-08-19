@@ -29,9 +29,9 @@ import javax.xml.namespace.QName;
 import org.geotools.data.ows.Specification;
 import org.geotools.data.wfs.WFSServiceInfo;
 import org.geotools.data.wfs.internal.GetFeatureRequest.ResultType;
-import org.geotools.factory.GeoTools;
 import org.geotools.util.Version;
-import org.geotools.xml.Configuration;
+import org.geotools.util.factory.GeoTools;
+import org.geotools.xsd.Configuration;
 import org.opengis.filter.Filter;
 import org.opengis.filter.capability.FilterCapabilities;
 
@@ -212,4 +212,9 @@ public abstract class WFSStrategy extends Specification {
      * @return field type mappings
      */
     public abstract Map<QName, Class<?>> getFieldTypeMappings();
+
+    /** @return */
+    public boolean canLimit() {
+        return true;
+    }
 }

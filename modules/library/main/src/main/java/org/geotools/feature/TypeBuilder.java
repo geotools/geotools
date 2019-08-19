@@ -333,7 +333,6 @@ import org.opengis.util.InternationalString;
  *
  * @author Justin Deoliveira
  * @author Jody Garnett
- * @source $URL$
  */
 public class TypeBuilder {
 
@@ -529,7 +528,7 @@ public class TypeBuilder {
         if (type instanceof ComplexType) {
             ComplexType cType = (ComplexType) type;
 
-            properties = null;
+            properties = newCollection(cType.getDescriptors());
             properties.addAll(cType.getDescriptors());
         }
         if (type instanceof FeatureType) {
@@ -1189,10 +1188,8 @@ public class TypeBuilder {
             return newCollection();
         }
         try {
-            return (Collection) origional.getClass().newInstance();
-        } catch (InstantiationException e) {
-            return newCollection();
-        } catch (IllegalAccessException e) {
+            return (Collection) origional.getClass().getDeclaredConstructor().newInstance();
+        } catch (Exception e) {
             return newCollection();
         }
     }

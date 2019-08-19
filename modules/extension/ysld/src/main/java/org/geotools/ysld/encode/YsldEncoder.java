@@ -21,9 +21,9 @@ import java.io.IOException;
 import java.io.Writer;
 import org.geotools.styling.StyledLayerDescriptor;
 import org.geotools.ysld.UomMapper;
+import org.geotools.ysld.YamlUtil;
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
-import org.yaml.snakeyaml.constructor.Constructor;
 
 /** Encodes GeoTools style objects as Ysld. */
 public class YsldEncoder {
@@ -53,7 +53,7 @@ public class YsldEncoder {
         DumperOptions dumpOpts = new DumperOptions();
         dumpOpts.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
 
-        Yaml yaml = new Yaml(new Constructor(), new YsldRepresenter(uomMapper), dumpOpts);
+        Yaml yaml = YamlUtil.getSafeYaml(new YsldRepresenter(uomMapper), dumpOpts);
         yaml.dumpAll(new RootEncoder(sld), out);
     }
 }

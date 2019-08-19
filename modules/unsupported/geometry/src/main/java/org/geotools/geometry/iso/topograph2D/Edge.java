@@ -2,8 +2,8 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2001-2006  Vivid Solutions
  *    (C) 2001-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2001-2006  Vivid Solutions
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -18,14 +18,14 @@
 package org.geotools.geometry.iso.topograph2D;
 
 import java.io.PrintStream;
+import java.util.Arrays;
+import java.util.Objects;
 import org.geotools.geometry.iso.topograph2D.index.MonotoneChainEdge;
 import org.geotools.geometry.iso.util.algorithm2D.LineIntersector;
 
 /**
  * Represents an undirected edge of a {@link PlanarGraph}. An undirected edge in fact simply acts as
  * a central point of reference for two opposite {@link DirectedEdge}s.
- *
- * @source $URL$
  */
 public class Edge extends GraphComponent {
 
@@ -194,9 +194,7 @@ public class Edge extends GraphComponent {
             }
         }
         /** Add the intersection point to edge intersection list. */
-        EdgeIntersection ei = eiList.add(intPt, normalizedSegmentIndex, dist);
-        // ei.print(System.out);
-
+        eiList.add(intPt, normalizedSegmentIndex, dist);
     }
 
     /**
@@ -232,6 +230,13 @@ public class Edge extends GraphComponent {
             if (!isEqualForward && !isEqualReverse) return false;
         }
         return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Objects.hash(env, eiList, name, mce, isIsolated, depth, depthDelta);
+        result = 31 * result + Arrays.hashCode(pts);
+        return result;
     }
 
     /** @return true if the coordinate sequences of the Edges are identical */

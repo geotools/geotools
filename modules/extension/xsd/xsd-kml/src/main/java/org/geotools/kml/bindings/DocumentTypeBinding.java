@@ -21,15 +21,16 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import javax.xml.namespace.QName;
+import org.eclipse.xsd.XSDElementDeclaration;
 import org.geotools.data.DataUtilities;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.kml.KML;
-import org.geotools.xml.AbstractComplexBinding;
-import org.geotools.xml.Binding;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
+import org.geotools.xsd.AbstractComplexBinding;
+import org.geotools.xsd.Binding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
@@ -54,7 +55,6 @@ import org.opengis.feature.simple.SimpleFeatureType;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class DocumentTypeBinding extends AbstractComplexBinding {
     public static final SimpleFeatureType FeatureType;
@@ -115,7 +115,7 @@ public class DocumentTypeBinding extends AbstractComplexBinding {
         return b.buildFeature(feature.getID());
     }
 
-    public List getProperties(Object object) throws Exception {
+    public List getProperties(Object object, XSDElementDeclaration element) throws Exception {
         Object[] prop = new Object[2];
         prop[0] = getPlacemarkName();
         if (object instanceof FeatureCollection) {

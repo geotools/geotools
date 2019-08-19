@@ -16,7 +16,6 @@ import org.opengis.annotation.UML;
 /**
  * Thrown when an invalid value was given to a {@linkplain ParameterValue parameter}.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengis.org/docs/01-004.pdf">Grid Coverage specification 1.0</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0

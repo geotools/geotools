@@ -223,9 +223,9 @@ public class WFSFeatureStoreTest {
 
         ContentFeatureCollection coll = store.getFeatures();
         SimpleFeatureIterator it = coll.features();
-        while (it.hasNext()) {
-            System.err.println(it.next());
-        }
+        // while (it.hasNext()) {
+        // System.err.println(it.next());
+        // }
         assertEquals(3, coll.size());
 
         coll =
@@ -235,9 +235,9 @@ public class WFSFeatureStoreTest {
                                 filterfac.equals(
                                         filterfac.property("NAME"), filterfac.literal("mypoint"))));
         it = coll.features();
-        while (it.hasNext()) {
-            System.err.println(it.next());
-        }
+        // while (it.hasNext()) {
+        // System.err.println(it.next());
+        // }
         assertEquals(1, coll.size());
 
         SimpleFeature feature = coll.features().next();

@@ -20,7 +20,6 @@ package org.geotools.geometry.iso.io.wkt;
  * Constants for WKS
  *
  * @author sanjay
- * @source $URL$
  */
 public class WKTConstants {
 

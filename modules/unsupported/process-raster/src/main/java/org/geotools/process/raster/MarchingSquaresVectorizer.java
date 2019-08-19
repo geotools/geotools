@@ -44,12 +44,12 @@ import org.geotools.geometry.jts.LiteShape2;
 import org.geotools.image.DisposeStopper;
 import org.geotools.image.DrawableBitSet;
 import org.geotools.image.ImageWorker;
+import org.geotools.image.util.ColorUtilities;
+import org.geotools.image.util.ImageUtilities;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.operation.LinearTransform;
 import org.geotools.referencing.operation.transform.ConcatenatedTransform;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
-import org.geotools.resources.image.ColorUtilities;
-import org.geotools.resources.image.ImageUtilities;
 import org.geotools.util.Range;
 import org.geotools.util.Utilities;
 import org.locationtech.jts.geom.Coordinate;
@@ -518,8 +518,6 @@ public final class MarchingSquaresVectorizer {
 
                 LinearTransform translation = ProjectiveTransform.createTranslation(2, 1);
                 transform = ConcatenatedTransform.create(translation, transform);
-            } else {
-                // transform = ProjectiveTransform.create(new AffineTransform(1,0,0,1,1,-1));
             }
 
             double area = 0;

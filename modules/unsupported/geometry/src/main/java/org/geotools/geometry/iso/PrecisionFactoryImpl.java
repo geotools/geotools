@@ -20,11 +20,7 @@ import org.opengis.geometry.Precision;
 import org.opengis.geometry.PrecisionFactory;
 import org.opengis.geometry.PrecisionType;
 
-/**
- * Implementation set up to create PrecisionModel
- *
- * @source $URL$
- */
+/** Implementation set up to create PrecisionModel */
 public class PrecisionFactoryImpl implements PrecisionFactory {
 
     public Precision createFixedPrecision(PrecisionType code, double scale) {

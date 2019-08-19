@@ -25,7 +25,6 @@ import org.geotools.data.gen.info.GeneralizationInfosProviderImpl;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.junit.Assert;
 
-/** @source $URL$ */
 public class PreGeneralizedFeatureCollectionTest extends TestCase {
 
     @Override
@@ -47,7 +46,7 @@ public class PreGeneralizedFeatureCollectionTest extends TestCase {
             typeName = ds.getTypeNames()[0];
             fCollection = ds.getFeatureSource(typeName).getFeatures();
         } catch (IOException ex) {
-            ex.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", ex);
             Assert.fail();
         }
 

@@ -22,7 +22,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  *
  * @author Jody Garnett
  * @since GeoAPI 2.1
- * @source $URL$
  */
 public interface PositionFactory {
     /**
@@ -41,6 +40,14 @@ public interface PositionFactory {
      * rounded to the required precision.
      */
     Precision getPrecision();
+
+    /**
+     * Creates a direct position with ordinates set to zero
+     *
+     * @return
+     * @throws MismatchedDimensionException
+     */
+    DirectPosition createDirectPosition() throws MismatchedDimensionException;
 
     /**
      * Creates a direct position at the specified location specified by coordinates.

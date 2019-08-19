@@ -21,7 +21,7 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.channels.FileChannel;
 import org.geotools.data.shapefile.files.StreamLogging;
-import org.geotools.resources.NIOUtilities;
+import org.geotools.util.NIOUtilities;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryCollection;
@@ -44,7 +44,6 @@ import org.locationtech.jts.geom.GeometryFactory;
  * @author jamesm
  * @author aaime
  * @author Ian Schneider
- * @source $URL$
  */
 public class ShapefileWriter {
     FileChannel shpChannel;
@@ -94,8 +93,8 @@ public class ShapefileWriter {
 
     /** Make sure our buffer is of size. */
     private void checkShapeBuffer(int size) {
-        if (shapeBuffer.capacity() < size) {
-            if (shapeBuffer != null) NIOUtilities.clean(shapeBuffer, false);
+        if (shapeBuffer != null && shapeBuffer.capacity() < size) {
+            NIOUtilities.clean(shapeBuffer, false);
             shapeBuffer = NIOUtilities.allocate(size);
         }
     }

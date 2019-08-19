@@ -28,189 +28,189 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link net.opengis.ows20.impl.AllowedValuesTypeImpl#getGroup <em>Group</em>}</li>
  *   <li>{@link net.opengis.ows20.impl.AllowedValuesTypeImpl#getValue <em>Value</em>}</li>
  *   <li>{@link net.opengis.ows20.impl.AllowedValuesTypeImpl#getRange <em>Range</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
 public class AllowedValuesTypeImpl extends EObjectImpl implements AllowedValuesType {
     /**
-     * The cached value of the '{@link #getGroup() <em>Group</em>}' attribute list.
-     * <!-- begin-user-doc -->
+   * The cached value of the '{@link #getGroup() <em>Group</em>}' attribute list.
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getGroup()
-     * @generated
-     * @ordered
-     */
+   * @see #getGroup()
+   * @generated
+   * @ordered
+   */
     protected FeatureMap group;
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     protected AllowedValuesTypeImpl() {
-        super();
-    }
+    super();
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     protected EClass eStaticClass() {
-        return Ows20Package.Literals.ALLOWED_VALUES_TYPE;
-    }
+    return Ows20Package.Literals.ALLOWED_VALUES_TYPE;
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public FeatureMap getGroup() {
-        if (group == null) {
-            group = new BasicFeatureMap(this, Ows20Package.ALLOWED_VALUES_TYPE__GROUP);
-        }
-        return group;
+    if (group == null) {
+      group = new BasicFeatureMap(this, Ows20Package.ALLOWED_VALUES_TYPE__GROUP);
     }
+    return group;
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public EList<ValueType> getValue() {
-        return getGroup().list(Ows20Package.Literals.ALLOWED_VALUES_TYPE__VALUE);
-    }
+    return getGroup().list(Ows20Package.Literals.ALLOWED_VALUES_TYPE__VALUE);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public EList<RangeType> getRange() {
-        return getGroup().list(Ows20Package.Literals.ALLOWED_VALUES_TYPE__RANGE);
-    }
+    return getGroup().list(Ows20Package.Literals.ALLOWED_VALUES_TYPE__RANGE);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-        switch (featureID) {
-            case Ows20Package.ALLOWED_VALUES_TYPE__GROUP:
-                return ((InternalEList<?>)getGroup()).basicRemove(otherEnd, msgs);
-            case Ows20Package.ALLOWED_VALUES_TYPE__VALUE:
-                return ((InternalEList<?>)getValue()).basicRemove(otherEnd, msgs);
-            case Ows20Package.ALLOWED_VALUES_TYPE__RANGE:
-                return ((InternalEList<?>)getRange()).basicRemove(otherEnd, msgs);
-        }
-        return super.eInverseRemove(otherEnd, featureID, msgs);
+    switch (featureID) {
+      case Ows20Package.ALLOWED_VALUES_TYPE__GROUP:
+        return ((InternalEList<?>)getGroup()).basicRemove(otherEnd, msgs);
+      case Ows20Package.ALLOWED_VALUES_TYPE__VALUE:
+        return ((InternalEList<?>)getValue()).basicRemove(otherEnd, msgs);
+      case Ows20Package.ALLOWED_VALUES_TYPE__RANGE:
+        return ((InternalEList<?>)getRange()).basicRemove(otherEnd, msgs);
     }
+    return super.eInverseRemove(otherEnd, featureID, msgs);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case Ows20Package.ALLOWED_VALUES_TYPE__GROUP:
-                if (coreType) return getGroup();
-                return ((FeatureMap.Internal)getGroup()).getWrapper();
-            case Ows20Package.ALLOWED_VALUES_TYPE__VALUE:
-                return getValue();
-            case Ows20Package.ALLOWED_VALUES_TYPE__RANGE:
-                return getRange();
-        }
-        return super.eGet(featureID, resolve, coreType);
+    switch (featureID) {
+      case Ows20Package.ALLOWED_VALUES_TYPE__GROUP:
+        if (coreType) return getGroup();
+        return ((FeatureMap.Internal)getGroup()).getWrapper();
+      case Ows20Package.ALLOWED_VALUES_TYPE__VALUE:
+        return getValue();
+      case Ows20Package.ALLOWED_VALUES_TYPE__RANGE:
+        return getRange();
     }
+    return super.eGet(featureID, resolve, coreType);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @SuppressWarnings("unchecked")
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case Ows20Package.ALLOWED_VALUES_TYPE__GROUP:
-                ((FeatureMap.Internal)getGroup()).set(newValue);
-                return;
-            case Ows20Package.ALLOWED_VALUES_TYPE__VALUE:
-                getValue().clear();
-                getValue().addAll((Collection<? extends ValueType>)newValue);
-                return;
-            case Ows20Package.ALLOWED_VALUES_TYPE__RANGE:
-                getRange().clear();
-                getRange().addAll((Collection<? extends RangeType>)newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
+    switch (featureID) {
+      case Ows20Package.ALLOWED_VALUES_TYPE__GROUP:
+        ((FeatureMap.Internal)getGroup()).set(newValue);
+        return;
+      case Ows20Package.ALLOWED_VALUES_TYPE__VALUE:
+        getValue().clear();
+        getValue().addAll((Collection<? extends ValueType>)newValue);
+        return;
+      case Ows20Package.ALLOWED_VALUES_TYPE__RANGE:
+        getRange().clear();
+        getRange().addAll((Collection<? extends RangeType>)newValue);
+        return;
     }
+    super.eSet(featureID, newValue);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case Ows20Package.ALLOWED_VALUES_TYPE__GROUP:
-                getGroup().clear();
-                return;
-            case Ows20Package.ALLOWED_VALUES_TYPE__VALUE:
-                getValue().clear();
-                return;
-            case Ows20Package.ALLOWED_VALUES_TYPE__RANGE:
-                getRange().clear();
-                return;
-        }
-        super.eUnset(featureID);
+    switch (featureID) {
+      case Ows20Package.ALLOWED_VALUES_TYPE__GROUP:
+        getGroup().clear();
+        return;
+      case Ows20Package.ALLOWED_VALUES_TYPE__VALUE:
+        getValue().clear();
+        return;
+      case Ows20Package.ALLOWED_VALUES_TYPE__RANGE:
+        getRange().clear();
+        return;
     }
+    super.eUnset(featureID);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case Ows20Package.ALLOWED_VALUES_TYPE__GROUP:
-                return group != null && !group.isEmpty();
-            case Ows20Package.ALLOWED_VALUES_TYPE__VALUE:
-                return !getValue().isEmpty();
-            case Ows20Package.ALLOWED_VALUES_TYPE__RANGE:
-                return !getRange().isEmpty();
-        }
-        return super.eIsSet(featureID);
+    switch (featureID) {
+      case Ows20Package.ALLOWED_VALUES_TYPE__GROUP:
+        return group != null && !group.isEmpty();
+      case Ows20Package.ALLOWED_VALUES_TYPE__VALUE:
+        return !getValue().isEmpty();
+      case Ows20Package.ALLOWED_VALUES_TYPE__RANGE:
+        return !getRange().isEmpty();
     }
+    return super.eIsSet(featureID);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     public String toString() {
-        if (eIsProxy()) return super.toString();
+    if (eIsProxy()) return super.toString();
 
-        StringBuffer result = new StringBuffer(super.toString());
-        result.append(" (group: ");
-        result.append(group);
-        result.append(')');
-        return result.toString();
-    }
+    StringBuilder result = new StringBuilder(super.toString());
+    result.append(" (group: ");
+    result.append(group);
+    result.append(')');
+    return result.toString();
+  }
 
 } //AllowedValuesTypeImpl

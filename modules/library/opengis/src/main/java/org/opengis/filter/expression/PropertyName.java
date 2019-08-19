@@ -23,7 +23,6 @@ import org.xml.sax.helpers.NamespaceSupport;
  * <p>Please note that the Filter specification allows a limited subset of XPath to be used for the
  * PropertyName. We encourage implementations to match this functionality.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengis.org/docs/02-059.pdf">Implementation specification 1.0</A>
  * @author Chris Dillard (SYS Technologies)
  * @since GeoAPI 2.0

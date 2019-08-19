@@ -30,7 +30,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * that does not have ones
  *
  * @author Andrea Aime
- * @source $URL$
  */
 @DescribeProcess(
     title = "Reproject Features",

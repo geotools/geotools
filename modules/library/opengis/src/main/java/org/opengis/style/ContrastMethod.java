@@ -25,7 +25,6 @@ import org.opengis.util.CodeList;
  * brightness level on input, with the goal of producing equal number of pixels in the image at each
  * brightness level on output. This has the effect of revealing many subtle ground features.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/symbol">Symbology Encoding
  *     Implementation Specification 1.1.0</A>
  * @author Open Geospatial Consortium

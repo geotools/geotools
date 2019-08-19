@@ -158,7 +158,7 @@ To use M2E plugin to create a create a new maven project:
    .. image:: images/archetype.png
       :scale: 60
 
-#. The archtype acts a template using the parameters we supply to create the project.
+#. The archetype acts a template using the parameters we supply to create the project.
    
    * Group Id: org.geotools
    * Artifact Id: tutorial
@@ -348,17 +348,7 @@ Here are some additional challenges for you to try:
      :start-after: // docs start cache
      :end-before:  // docs end cache
   
-  For the above example to compile hit :kbd:`Control-Shift-O` to organise imports; it will pull
-  in the following import:
-    
-  .. code-block:: java
-
-     import org.geotools.data.CachingFeatureSource;
-     
-  .. Note::
-
-     When building you may see a message that CachingFeatureSource is deprecated. It's ok to ignore
-     it, it's just a warning. The class is still under test but usable.
+  For the above example to compile hit :kbd:`Control-Shift-O` to organise imports.
 
 ..  The ability to grab figure out what classes to import is a key skill; we are
     starting off here with a simple example with a single import.
@@ -396,7 +386,7 @@ Here are some additional challenges for you to try:
      :end-before: </project>
 
 * So what jars did maven actually use for the Quickstart application? Open up your :file:`pom.xml`
-  and switch to the :guilabel:`dependency heirarchy` or :guilabel:`dependency graph` tabs to see
+  and switch to the :guilabel:`dependency hierarchy` or :guilabel:`dependency graph` tabs to see
   what is going on.
   
   .. image:: images/quickstart-dependency.png

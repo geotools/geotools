@@ -24,7 +24,6 @@ import org.opengis.util.InternationalString;
  *     annotations were updated accordingly, but this interface is still defined in the referencing
  *     package instead of metadata and the {@link #getScope()} method still defined here for this
  *     historical reason.
- * @source $URL$
  * @version <A HREF="http://portal.opengeospatial.org/files/?artifact_id=6716">Abstract
  *     specification 2.0</A>
  * @author Martin Desruisseaux (IRD)

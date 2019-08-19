@@ -21,7 +21,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.geotools.data.DataUtilities;
 import org.geotools.util.URLs;
 import org.geotools.util.Utilities;
 
@@ -32,13 +31,12 @@ import org.geotools.util.Utilities;
  * @author Simone Giannecchini, GeoSolutions SAS
  * @author Stefan Alfons Krueger (alfonx), Wikisquare.de : Support for
  *     jar:file:foo.jar/bar.properties URLs
- * @source $URL$
  */
 public enum PathType {
     RELATIVE {
 
         @Override
-        URL resolvePath(final String parentLocation, final String location) {
+        public URL resolvePath(final String parentLocation, final String location) {
             // initial checks
             Utilities.ensureNonNull("parentLocation", parentLocation);
             Utilities.ensureNonNull("location", location);
@@ -52,7 +50,7 @@ public enum PathType {
             }
             // create a URL for the provided location, relative to parent location
             try {
-                URL rasterURL = DataUtilities.extendURL(new URL(parentLocation), location);
+                URL rasterURL = URLs.extendUrl(new URL(parentLocation), location);
                 if (!Utils.checkURLReadable(rasterURL)) {
                     if (LOGGER.isLoggable(Level.INFO))
                         LOGGER.info("Unable to read image for file " + rasterURL);
@@ -69,7 +67,7 @@ public enum PathType {
     ABSOLUTE {
 
         @Override
-        URL resolvePath(final String parentLocation, final String location) {
+        public URL resolvePath(final String parentLocation, final String location) {
 
             Utilities.ensureNonNull("location", location);
             if (LOGGER.isLoggable(Level.FINE)) {
@@ -106,7 +104,7 @@ public enum PathType {
 
     URL {
         @Override
-        URL resolvePath(final String parentLocation, final String location) {
+        public URL resolvePath(final String parentLocation, final String location) {
             Utilities.ensureNonNull("location", location);
             if (LOGGER.isLoggable(Level.FINE)) {
                 final StringBuilder builder = new StringBuilder();
@@ -138,5 +136,5 @@ public enum PathType {
      *     depending on the flavor of the enum where this method is applied. This method might
      *     return <code>null</code> in case something bad happens.
      */
-    abstract URL resolvePath(final String parentLocation, final String location);
+    public abstract URL resolvePath(final String parentLocation, final String location);
 }

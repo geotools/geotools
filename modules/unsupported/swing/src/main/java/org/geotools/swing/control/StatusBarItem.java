@@ -25,7 +25,6 @@ import javax.swing.JPanel;
  *
  * @author Michael Bedward
  * @since 8.0
- * @source $URL$
  * @version $Id$
  */
 public abstract class StatusBarItem extends JPanel {

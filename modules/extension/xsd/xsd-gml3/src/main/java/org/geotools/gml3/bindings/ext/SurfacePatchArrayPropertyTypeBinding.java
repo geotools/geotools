@@ -18,11 +18,10 @@ package org.geotools.gml3.bindings.ext;
 
 import java.util.List;
 import javax.xml.namespace.QName;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 import org.locationtech.jts.geom.Polygon;
 
-/** @source $URL$ */
 public class SurfacePatchArrayPropertyTypeBinding
         extends org.geotools.gml3.bindings.SurfacePatchArrayPropertyTypeBinding {
 

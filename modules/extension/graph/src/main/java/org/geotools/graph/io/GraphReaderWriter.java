@@ -22,7 +22,6 @@ import org.geotools.graph.structure.Graph;
  * Reads and writes features to and from some permanent form.
  *
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
- * @source $URL$
  */
 public interface GraphReaderWriter {
 

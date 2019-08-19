@@ -18,7 +18,7 @@
         <dependency>
            <groupId>org.geotools.xsd</groupId>
            <artifactId>gt-xsd-core</artifactId>
-           <version>20-SNAPSHOT</version>
+           <version>22-SNAPSHOT</version>
         </dependency>    
     </dependencies>
 
@@ -62,8 +62,8 @@
             <generateXsd>true</generateXsd>
             <targetPrefix>po</targetPrefix>
             <generateSchemaLocationResolver>true</generateSchemaLocationResolver>
-            <complexBindingBaseClass>org.geotools.xml.AbstractComplexBinding</complexBindingBaseClass>
-            <simpleBindingBaseClass>org.geotools.xml.AbstractSimpleBinding</simpleBindingBaseClass>
+            <complexBindingBaseClass>org.geotools.xsd.AbstractComplexBinding</complexBindingBaseClass>
+            <simpleBindingBaseClass>org.geotools.xsd.AbstractSimpleBinding</simpleBindingBaseClass>
             <bindingConstructorArguments>
               <bindingConstructorArgument>
                 <name>factory</name>

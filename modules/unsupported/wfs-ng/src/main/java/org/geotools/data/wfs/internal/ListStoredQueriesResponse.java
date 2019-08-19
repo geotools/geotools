@@ -33,8 +33,8 @@ import org.apache.commons.io.IOUtils;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.ows.HTTPResponse;
 import org.geotools.ows.ServiceException;
-import org.geotools.xml.Configuration;
-import org.geotools.xml.DOMParser;
+import org.geotools.xsd.Configuration;
+import org.geotools.xsd.DOMParser;
 import org.w3c.dom.Document;
 
 public class ListStoredQueriesResponse extends WFSResponse {

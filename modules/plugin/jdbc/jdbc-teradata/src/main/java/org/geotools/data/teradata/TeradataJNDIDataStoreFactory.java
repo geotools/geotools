@@ -25,7 +25,6 @@ import org.geotools.jdbc.JDBCJNDIDataStoreFactory;
  * JNDI DataStoreFactory for Teradata database.
  *
  * @author Jesse Eichar
- * @source $URL$
  */
 public class TeradataJNDIDataStoreFactory extends JDBCJNDIDataStoreFactory {
 

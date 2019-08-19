@@ -25,11 +25,11 @@ import java.sql.Statement;
 import java.sql.Types;
 import java.util.Map;
 import java.util.logging.Level;
-import org.geotools.factory.Hints;
 import org.geotools.geometry.jts.Geometries;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.SQLDialect;
 import org.geotools.referencing.CRS;
+import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryCollection;
@@ -53,18 +53,17 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * common part of the api.
  *
  * @author Justin Deoliveira, OpenGEO
- * @source $URL$
  */
 public class MySQLDialect extends SQLDialect {
     /** mysql spatial types */
-    protected Integer POINT = new Integer(2001);
+    protected Integer POINT = Integer.valueOf(2001);
 
-    protected Integer LINESTRING = new Integer(2002);
-    protected Integer POLYGON = new Integer(2003);
-    protected Integer MULTIPOINT = new Integer(2004);
-    protected Integer MULTILINESTRING = new Integer(2005);
-    protected Integer MULTIPOLYGON = new Integer(2006);
-    protected Integer GEOMETRY = new Integer(2007);
+    protected Integer LINESTRING = Integer.valueOf(2002);
+    protected Integer POLYGON = Integer.valueOf(2003);
+    protected Integer MULTIPOINT = Integer.valueOf(2004);
+    protected Integer MULTILINESTRING = Integer.valueOf(2005);
+    protected Integer MULTIPOLYGON = Integer.valueOf(2006);
+    protected Integer GEOMETRY = Integer.valueOf(2007);
 
     /** the storage engine to use when creating tables, one of MyISAM, InnoDB */
     protected String storageEngine;
@@ -174,7 +173,7 @@ public class MySQLDialect extends SQLDialect {
             ResultSet rs = st.executeQuery(sql.toString());
             try {
                 if (rs.next()) {
-                    return new Integer(rs.getInt(1));
+                    return Integer.valueOf(rs.getInt(1));
                 }
             } finally {
                 dataStore.closeSafe(rs);
@@ -210,7 +209,7 @@ public class MySQLDialect extends SQLDialect {
 
             try {
                 if (rs.next()) {
-                    return new Integer(rs.getInt(1));
+                    return Integer.valueOf(rs.getInt(1));
                 } else {
                     // could not find out
                     return null;
@@ -527,6 +526,7 @@ public class MySQLDialect extends SQLDialect {
                 cx.commit();
             }
         } finally {
+            dataStore.closeSafe(st);
             dataStore.closeSafe(cx);
         }
     }

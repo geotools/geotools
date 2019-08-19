@@ -29,11 +29,11 @@ import org.eclipse.emf.ecore.EObject;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link net.opengis.ows20.KeywordsType#getKeyword <em>Keyword</em>}</li>
  *   <li>{@link net.opengis.ows20.KeywordsType#getType <em>Type</em>}</li>
  * </ul>
- * </p>
  *
  * @see net.opengis.ows20.Ows20Package#getKeywordsType()
  * @model extendedMetaData="name='KeywordsType' kind='elementOnly'"
@@ -41,47 +41,47 @@ import org.eclipse.emf.ecore.EObject;
  */
 public interface KeywordsType extends EObject {
     /**
-     * Returns the value of the '<em><b>Keyword</b></em>' containment reference list.
-     * The list contents are of type {@link net.opengis.ows20.LanguageStringType}.
-     * <!-- begin-user-doc -->
+   * Returns the value of the '<em><b>Keyword</b></em>' containment reference list.
+   * The list contents are of type {@link net.opengis.ows20.LanguageStringType}.
+   * <!-- begin-user-doc -->
      * <p>
      * If the meaning of the '<em>Keyword</em>' containment reference list isn't clear,
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     * @return the value of the '<em>Keyword</em>' containment reference list.
-     * @see net.opengis.ows20.Ows20Package#getKeywordsType_Keyword()
-     * @model containment="true" required="true"
-     *        extendedMetaData="kind='element' name='Keyword' namespace='##targetNamespace'"
-     * @generated
-     */
+   * @return the value of the '<em>Keyword</em>' containment reference list.
+   * @see net.opengis.ows20.Ows20Package#getKeywordsType_Keyword()
+   * @model containment="true" required="true"
+   *        extendedMetaData="kind='element' name='Keyword' namespace='##targetNamespace'"
+   * @generated
+   */
     EList<LanguageStringType> getKeyword();
 
     /**
-     * Returns the value of the '<em><b>Type</b></em>' containment reference.
-     * <!-- begin-user-doc -->
+   * Returns the value of the '<em><b>Type</b></em>' containment reference.
+   * <!-- begin-user-doc -->
      * <p>
      * If the meaning of the '<em>Type</em>' containment reference isn't clear,
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     * @return the value of the '<em>Type</em>' containment reference.
-     * @see #setType(CodeType)
-     * @see net.opengis.ows20.Ows20Package#getKeywordsType_Type()
-     * @model containment="true"
-     *        extendedMetaData="kind='element' name='Type' namespace='##targetNamespace'"
-     * @generated
-     */
+   * @return the value of the '<em>Type</em>' containment reference.
+   * @see #setType(CodeType)
+   * @see net.opengis.ows20.Ows20Package#getKeywordsType_Type()
+   * @model containment="true"
+   *        extendedMetaData="kind='element' name='Type' namespace='##targetNamespace'"
+   * @generated
+   */
     CodeType getType();
 
     /**
-     * Sets the value of the '{@link net.opengis.ows20.KeywordsType#getType <em>Type</em>}' containment reference.
-     * <!-- begin-user-doc -->
+   * Sets the value of the '{@link net.opengis.ows20.KeywordsType#getType <em>Type</em>}' containment reference.
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Type</em>' containment reference.
-     * @see #getType()
-     * @generated
-     */
+   * @param value the new value of the '<em>Type</em>' containment reference.
+   * @see #getType()
+   * @generated
+   */
     void setType(CodeType value);
 
 } // KeywordsType

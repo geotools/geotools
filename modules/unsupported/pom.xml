@@ -10,7 +10,7 @@
 	<parent>
 		<groupId>org.geotools</groupId>
 		<artifactId>modules</artifactId>
-		<version>21-SNAPSHOT</version>
+		<version>22-SNAPSHOT</version>
 	</parent>
 
 
@@ -38,16 +38,6 @@
 	<profiles>
 
 		<!-- ================================================== -->
-		<!-- Modules not yet included in the build -->
-		<!-- ================================================== -->
-		<profile>
-			<id>pending</id>
-			<modules>
-				<module>excel</module>
-			</modules>
-		</profile>
-
-		<!-- ================================================== -->
 		<!-- Unsupported Modules -->
 		<!-- ================================================== -->
 		<!-- The following profiles can all be turned on by -->
@@ -56,6 +46,17 @@
 		<!-- These modules are included in the build and deploy -->
 		<!-- but have not passed our QA and Doc requirements -->
 		<!-- so you may/should consider them risky -->
+		<profile>
+			<id>vpf</id>
+			<activation>
+				<property>
+					<name>all</name>
+				</property>
+			</activation>
+			<modules>
+				<module>vpf</module>
+			</modules>
+		</profile>
 		<profile>
 			<id>gtopo30</id>
 			<activation>
@@ -102,17 +103,6 @@
 				<module>process-geometry</module>
 				<module>process-raster</module>
 				<module>process-feature</module>
-			</modules>
-		</profile>
-		<profile>
-			<id>app-schema</id>
-			<activation>
-				<property>
-					<name>all</name>
-				</property>
-			</activation>
-			<modules>
-				<module>app-schema</module>
 			</modules>
 		</profile>
 		<profile>
@@ -210,13 +200,13 @@
 			</activation>
 			<modules>
 				<module>csv</module>
-				<module>epsg-oracle</module>
 				<module>jdbc-ng</module>
 				<module>solr</module>
 				<module>css</module>
 				<module>geojsonstore</module>
-        <module>s3-geotiff</module>
-        <module>gtopo30</module>
+        		<module>s3-geotiff</module>
+        		<module>gtopo30</module>
+        		<module>vpf</module>
 			</modules>
 		</profile>
 
@@ -231,8 +221,8 @@
 
 	<!-- Modules included in a normal build -->
 	<modules>
+		<module>vpf</module>
 		<module>swing</module>
-		<module>swt</module>
 		<module>process</module>
 		<module>process-geometry</module>
 		<module>process-raster</module>
@@ -240,7 +230,8 @@
 		<module>geojson</module>
 		<module>mbtiles</module>
 		<module>wfs-ng</module>
-
+		<module>ogr</module>
+		<module>postgis-raster</module>
 	</modules>
 
 </project>

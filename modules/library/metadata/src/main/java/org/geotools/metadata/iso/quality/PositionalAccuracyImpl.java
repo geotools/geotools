@@ -29,7 +29,6 @@ import org.opengis.util.InternationalString;
 /**
  * Accuracy of the position of features.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @author Touraïvane
@@ -57,8 +56,8 @@ public class PositionalAccuracyImpl extends ElementImpl implements PositionalAcc
      * been found. Such datum shifts are approximative and may have 1 kilometer error. This
      * pseudo-transformation is allowed by {@linkplain
      * org.geotools.referencing.operation.DefaultCoordinateOperationFactory coordinate operation
-     * factory} only if it was created with {@link org.geotools.factory.Hints#LENIENT_DATUM_SHIFT}
-     * set to {@link Boolean#TRUE}.
+     * factory} only if it was created with {@link
+     * org.geotools.util.factory.Hints#LENIENT_DATUM_SHIFT} set to {@link Boolean#TRUE}.
      *
      * @see org.opengis.referencing.operation.Transformation#getPositionalAccuracy
      * @see org.geotools.referencing.operation.AbstractCoordinateOperationFactory#ELLIPSOID_SHIFT

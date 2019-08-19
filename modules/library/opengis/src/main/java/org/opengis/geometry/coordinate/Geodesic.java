@@ -21,7 +21,6 @@ import org.opengis.annotation.UML;
  * coordinate reference system} may be used to interpolate other positions. Any other point in the
  * {@link #getControlPoints controlPoint} array must fall on this geodesic.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/as">ISO 19107</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0

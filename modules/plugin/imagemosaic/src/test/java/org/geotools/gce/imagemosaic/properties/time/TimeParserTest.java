@@ -24,10 +24,7 @@ import java.util.TimeZone;
 import org.junit.Assert;
 import org.junit.Test;
 
-/**
- * @author Simone Giannecchini, GeoSolutions SAS
- * @source $URL$
- */
+/** @author Simone Giannecchini, GeoSolutions SAS */
 public class TimeParserTest extends Assert {
 
     private static final TimeParser PARSER = new TimeParser();

@@ -13,7 +13,7 @@
   <parent>
     <groupId>org.geotools.xsd</groupId>
     <artifactId>xsd</artifactId>
-    <version>21-SNAPSHOT</version>
+    <version>22-SNAPSHOT</version>
   </parent>
   <!-- =========================================================== -->
   <!--     Module Description                                      -->
@@ -66,6 +66,11 @@
     <dependency>
       <groupId>org.geotools</groupId>
       <artifactId>gt-main</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-xml</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>

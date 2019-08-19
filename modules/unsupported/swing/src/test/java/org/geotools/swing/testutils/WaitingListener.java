@@ -30,7 +30,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * @param <T> type of {@code EventObject}
  * @author Michael Bedward
  * @since 8.0
- * @source $URL$
  * @version $Id$
  */
 public abstract class WaitingListener<T extends EventObject, E extends Enum> {

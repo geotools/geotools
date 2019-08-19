@@ -17,15 +17,14 @@
 package org.geotools.gml2.bindings;
 
 import org.geotools.gml2.GML;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Polygon;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
-/** @source $URL$ */
 public class GMLPolygonTypeBindingTest extends AbstractGMLBindingTest {
     ElementInstance poly;
     ElementInstance oring;
@@ -35,9 +34,9 @@ public class GMLPolygonTypeBindingTest extends AbstractGMLBindingTest {
     protected void setUp() throws Exception {
         super.setUp();
 
-        poly = createElement(GML.NAMESPACE, "myPolygon", GML.POLYGONTYPE, null);
-        oring = createElement(GML.NAMESPACE, "outerBoundaryIs", GML.LINEARRINGTYPE, null);
-        iring = createElement(GML.NAMESPACE, "innerBoundaryIs", GML.LINEARRINGTYPE, null);
+        poly = createElement(GML.NAMESPACE, "myPolygon", GML.PolygonType, null);
+        oring = createElement(GML.NAMESPACE, "outerBoundaryIs", GML.LinearRingType, null);
+        iring = createElement(GML.NAMESPACE, "innerBoundaryIs", GML.LinearRingType, null);
 
         container = new DefaultPicoContainer();
         container.registerComponentImplementation(GeometryFactory.class);

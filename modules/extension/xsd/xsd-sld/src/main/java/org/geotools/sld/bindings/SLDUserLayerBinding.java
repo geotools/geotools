@@ -23,7 +23,9 @@ import org.geotools.styling.RemoteOWS;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleFactory;
 import org.geotools.styling.UserLayer;
-import org.geotools.xml.*;
+import org.geotools.xsd.AbstractComplexBinding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 import org.picocontainer.MutablePicoContainer;
 
 /**
@@ -52,7 +54,6 @@ import org.picocontainer.MutablePicoContainer;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class SLDUserLayerBinding extends AbstractComplexBinding {
     StyleFactory styleFactory;

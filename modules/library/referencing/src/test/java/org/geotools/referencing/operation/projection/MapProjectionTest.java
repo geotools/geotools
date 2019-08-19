@@ -31,7 +31,6 @@ import org.opengis.referencing.operation.TransformException;
 /**
  * Tests the {@link MapProjection} implementation.
  *
- * @source $URL$
  * @version $Id$
  * @author Frank Warmerdam
  */

@@ -49,7 +49,6 @@ import org.opengis.util.ProgressListener;
  * @since 3.0
  * @see GrassBinaryImageWriter
  * @see GrassBinaryRasterWriteHandler
- * @source $URL$
  */
 public class GrassCoverageWriter extends AbstractGridCoverageWriter implements GridCoverageWriter {
     private File output;
@@ -95,7 +94,7 @@ public class GrassCoverageWriter extends AbstractGridCoverageWriter implements G
             writer.write(renderedImage);
             writer.dispose();
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
     }
 

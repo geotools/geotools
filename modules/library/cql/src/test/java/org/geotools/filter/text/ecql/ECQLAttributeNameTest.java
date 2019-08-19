@@ -32,7 +32,7 @@ import org.geotools.filter.text.cql2.CQLAttributeNameTest;
  * @since 2.7
  *
  *
- * @source $URL$
+ *
  */
 public class ECQLAttributeNameTest extends CQLAttributeNameTest {
     public ECQLAttributeNameTest() {

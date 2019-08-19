@@ -63,7 +63,6 @@ import org.opengis.style.GraphicalSymbol;
  *
  * @author Jody Garnett
  * @since 1.0.0
- * @source $URL$
  */
 public class GraphicViewer {
     boolean enabled;

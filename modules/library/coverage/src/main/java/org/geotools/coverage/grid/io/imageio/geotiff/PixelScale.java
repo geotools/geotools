@@ -50,7 +50,6 @@ import org.geotools.util.Utilities;
  *
  * @author Simone Giannecchini, GeoSolutions
  * @since 2.3
- * @source $URL$
  */
 public final class PixelScale {
 

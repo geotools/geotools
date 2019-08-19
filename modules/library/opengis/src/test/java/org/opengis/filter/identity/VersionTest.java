@@ -19,7 +19,7 @@ public class VersionTest {
             long encoded = Version.UNION_ACTION | ((long) action.ordinal());
 
             assertTrue((encoded & Version.UNION_ACTION) > 0);
-            long decoded = Version.UNION_MASK & ((long) encoded);
+            long decoded = Version.UNION_MASK & encoded;
 
             Action found = Action.lookup((int) decoded);
             assertEquals(action, found);
@@ -41,7 +41,7 @@ public class VersionTest {
             assertTrue(true);
         }
 
-        Integer testInt = new Integer(1234567890);
+        Integer testInt = Integer.valueOf(1234567890);
         Version version = new Version(testInt);
 
         assertNotNull(version.getIndex());

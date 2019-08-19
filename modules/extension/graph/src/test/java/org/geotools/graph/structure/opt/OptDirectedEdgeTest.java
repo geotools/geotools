@@ -19,7 +19,6 @@ package org.geotools.graph.structure.opt;
 import java.util.Iterator;
 import junit.framework.TestCase;
 
-/** @source $URL$ */
 public class OptDirectedEdgeTest extends TestCase {
 
     private OptDirectedNode m_inNode;
@@ -91,7 +90,7 @@ public class OptDirectedEdgeTest extends TestCase {
         try {
             setUp();
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
 
         m_inNode.setOutDegree(2);
@@ -107,7 +106,7 @@ public class OptDirectedEdgeTest extends TestCase {
         try {
             setUp();
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
 
         m_inNode.setOutDegree(3);
@@ -125,7 +124,7 @@ public class OptDirectedEdgeTest extends TestCase {
         try {
             setUp();
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
 
         m_inNode.setInDegree(2);
@@ -141,7 +140,7 @@ public class OptDirectedEdgeTest extends TestCase {
         try {
             setUp();
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
 
         m_inNode.setInDegree(3);
@@ -159,7 +158,7 @@ public class OptDirectedEdgeTest extends TestCase {
         try {
             setUp();
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
 
         m_inNode.setInDegree(2);
@@ -183,7 +182,7 @@ public class OptDirectedEdgeTest extends TestCase {
         try {
             setUp();
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
 
         m_inNode.setOutDegree(2);

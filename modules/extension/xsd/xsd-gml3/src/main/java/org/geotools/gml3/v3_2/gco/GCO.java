@@ -27,7 +27,6 @@ import org.opengis.feature.type.Schema;
  * http://www.isotc211.org/2005/gco schema.
  *
  * @generated
- * @source $URL$
  */
 public final class GCO extends GML.DelegatingXSD {
 

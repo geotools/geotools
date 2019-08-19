@@ -21,8 +21,10 @@ import static org.geotools.data.mongodb.MongoDataStore.KEY_collection;
 
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
+import java.util.logging.Logger;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.Name;
@@ -33,6 +35,8 @@ import org.opengis.feature.type.Name;
  * @author Justin Deoliveira, OpenGeo
  */
 public class GeoJSONMapper extends AbstractCollectionMapper {
+
+    static final Logger LOGGER = Logging.getLogger(GeoJSONMapper.class);
 
     MongoGeometryBuilder geomBuilder = new MongoGeometryBuilder();
 
@@ -81,7 +85,7 @@ public class GeoJSONMapper extends AbstractCollectionMapper {
                     ftBuilder.userData(MongoDataStore.KEY_mapping, "properties." + key);
                     ftBuilder.add(key, binding);
                 } else {
-                    System.err.println(
+                    LOGGER.warning(
                             "unmapped key, " + key + " with type of " + v.getClass().getName());
                 }
             }

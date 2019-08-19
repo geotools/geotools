@@ -27,13 +27,13 @@ import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.store.ContentFeatureStore;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.factory.Hints;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.geometry.jts.CircularRing;
 import org.geotools.geometry.jts.CircularString;
 import org.geotools.geometry.jts.CompoundRing;
 import org.geotools.geometry.jts.CurvedGeometry;
 import org.geotools.geometry.jts.WKTReader2;
+import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.io.WKTReader;
 import org.opengis.feature.simple.SimpleFeature;
@@ -45,7 +45,6 @@ import org.opengis.filter.FilterFactory2;
  * Test functioning of PropertyDataStore (used as conformance testing).
  *
  * @author Jody Garnett (LISAsoft)
- * @source $URL$
  */
 public class PropertyDataStoreCurveTest extends TestCase {
     PropertyDataStore store;

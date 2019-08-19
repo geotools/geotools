@@ -19,6 +19,7 @@ package org.geotools.geometry.iso.coordinate;
 import java.util.ArrayList;
 import java.util.List;
 import org.geotools.geometry.iso.primitive.SurfaceBoundaryImpl;
+import org.geotools.util.SuppressFBWarnings;
 import org.opengis.geometry.primitive.SurfacePatch;
 
 /**
@@ -28,7 +29,6 @@ import org.opengis.geometry.primitive.SurfacePatch;
  *     length of triangle sides (Figure 22). These networks satisfy the Delaunay criterion away from
  *     the modifications: For each triangle in the network, the circle passing through its vertexes
  *     does not contain, in its interior, the vertex of any other triangle.
- * @source $URL$
  */
 public class TinImpl extends TriangulatedSurfaceImpl {
 
@@ -180,6 +180,8 @@ public class TinImpl extends TriangulatedSurfaceImpl {
      * @param breakLines
      * @param maxLength
      */
+    // Suppressing for now, but this is actually guaranteed to NPE
+    @SuppressFBWarnings("NP_NULL_PARAM_DEREF_NONVIRTUAL")
     public TinImpl(
             PositionImpl[] post,
             LineStringImpl[] stopLines,

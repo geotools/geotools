@@ -16,7 +16,6 @@
  */
 package org.geotools.gml2.simple;
 
-import java.text.FieldPosition;
 import org.geotools.geometry.jts.coordinatesequence.CoordinateSequences;
 import org.geotools.gml.producer.CoordinateFormatter;
 import org.geotools.gml2.GML;
@@ -40,21 +39,6 @@ public class GMLWriter {
     static final QualifiedName COORDINATES = new QualifiedName(GML.NAMESPACE, "coordinates", "gml");
 
     static final QualifiedName POS_LIST = new QualifiedName(GML.NAMESPACE, "posList", "gml");
-
-    /**
-     * The min value at which the decimal notation is used (below it, the computerized scientific
-     * one is used instead)
-     */
-    private static final double DECIMAL_MIN = Math.pow(10, -3);
-
-    /**
-     * The max value at which the decimal notation is used (above it, the computerized scientific
-     * one is used instead)
-     */
-    private static final double DECIMAL_MAX = Math.pow(10, 7);
-
-    /** Used in coordinate formatting */
-    private static final FieldPosition ZERO = new FieldPosition(0);
 
     private final CoordinateFormatter coordFormatter;
 
@@ -97,7 +81,27 @@ public class GMLWriter {
             int numDecimals,
             boolean forceDecimal,
             String gmlPrefix) {
-        this(delegate, namespaces, numDecimals, forceDecimal, gmlPrefix, true);
+        this(delegate, namespaces, numDecimals, forceDecimal, false, gmlPrefix, true);
+    }
+
+    /**
+     * Create a new content handler
+     *
+     * @param delegate The actual XML writer
+     * @param namespaces The namespaces known to the Encoder
+     * @param numDecimals How many decimals to preserve when writing ordinates
+     * @param forceDecimal If xs:decimal compliant encoding should be used, or not
+     * @param padWithZeros If apply zero padding
+     * @param gmlPrefix The GML namespace prefix
+     */
+    public GMLWriter(
+            ContentHandler delegate,
+            NamespaceSupport namespaces,
+            int numDecimals,
+            boolean forceDecimal,
+            boolean padWithZeros,
+            String gmlPrefix) {
+        this(delegate, namespaces, numDecimals, forceDecimal, padWithZeros, gmlPrefix, true);
     }
 
     /**
@@ -115,6 +119,7 @@ public class GMLWriter {
             NamespaceSupport namespaces,
             int numDecimals,
             boolean forceDecimal,
+            boolean padWithZeros,
             String gmlPrefix,
             boolean encodeMeasures) {
         this.handler = delegate;
@@ -130,6 +135,7 @@ public class GMLWriter {
 
         this.coordFormatter = new CoordinateFormatter(numDecimals);
         this.coordFormatter.setForcedDecimal(forceDecimal);
+        this.coordFormatter.setPadWithZeros(padWithZeros);
 
         this.encodeMeasures = encodeMeasures;
     }

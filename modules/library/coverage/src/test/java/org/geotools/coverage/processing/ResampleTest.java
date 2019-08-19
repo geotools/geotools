@@ -44,18 +44,18 @@ import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.processing.operation.Extrema;
-import org.geotools.factory.GeoTools;
-import org.geotools.factory.Hints;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.Envelope2D;
+import org.geotools.geometry.PixelTranslation;
 import org.geotools.image.ImageWorker;
 import org.geotools.image.test.ImageAssert;
-import org.geotools.metadata.iso.spatial.PixelTranslation;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultProjectedCRS;
 import org.geotools.referencing.cs.DefaultCartesianCS;
 import org.geotools.referencing.operation.DefaultMathTransformFactory;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
+import org.geotools.util.factory.GeoTools;
+import org.geotools.util.factory.Hints;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -76,7 +76,6 @@ import org.opengis.referencing.operation.MathTransform;
  * Visual test of the "Resample" operation. A remote sensing image is projected from a fitted
  * coordinate system to a geographic one.
  *
- * @source $URL$
  * @version $Id$
  * @author Rémi Eve (IRD)
  * @author Martin Desruisseaux (IRD)

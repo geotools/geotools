@@ -38,14 +38,6 @@ class TimestampFileNameExtractor extends RegExPropertiesCollector {
 
     private DateFormat customFormat;
 
-    /**
-     * @deprecated use {@link TimestampFileNameExtractor#TimestampFileNameExtractor(PropertiesCollectorSPI, List, String, String, boolean)
-     */
-    public TimestampFileNameExtractor(
-            PropertiesCollectorSPI spi, List<String> propertyNames, String regex, String format) {
-        this(spi, propertyNames, regex, format, false);
-    }
-
     public TimestampFileNameExtractor(
             PropertiesCollectorSPI spi,
             List<String> propertyNames,

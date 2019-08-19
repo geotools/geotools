@@ -17,14 +17,13 @@
 package org.geotools.gml2.bindings;
 
 import org.geotools.gml2.GML;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Polygon;
 
-/** @source $URL$ */
 public class GMLPolygonMemberTypeBindingTest extends AbstractGMLBindingTest {
     ElementInstance association;
     ElementInstance geometry;
@@ -32,8 +31,8 @@ public class GMLPolygonMemberTypeBindingTest extends AbstractGMLBindingTest {
     protected void setUp() throws Exception {
         super.setUp();
 
-        association = createElement(GML.NAMESPACE, "myAssociation", GML.POLYGONMEMBERTYPE, null);
-        geometry = createElement(GML.NAMESPACE, "myGeometry", GML.POLYGONTYPE, null);
+        association = createElement(GML.NAMESPACE, "myAssociation", GML.PolygonMemberType, null);
+        geometry = createElement(GML.NAMESPACE, "myGeometry", GML.PolygonType, null);
     }
 
     public void testWithGeometry() throws Exception {
@@ -57,11 +56,11 @@ public class GMLPolygonMemberTypeBindingTest extends AbstractGMLBindingTest {
                         null,
                         null);
         GMLGeometryAssociationTypeBinding s1 =
-                (GMLGeometryAssociationTypeBinding) getBinding(GML.GEOMETRYASSOCIATIONTYPE);
+                (GMLGeometryAssociationTypeBinding) getBinding(GML.GeometryAssociationType);
         Geometry g = (Geometry) s1.parse(association, node, null);
 
         GMLPolygonMemberTypeBinding s2 =
-                (GMLPolygonMemberTypeBinding) getBinding(GML.POLYGONMEMBERTYPE);
+                (GMLPolygonMemberTypeBinding) getBinding(GML.PolygonMemberType);
         g = (Geometry) s2.parse(association, node, g);
 
         assertNotNull(g);

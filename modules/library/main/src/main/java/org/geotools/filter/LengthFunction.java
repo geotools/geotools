@@ -26,7 +26,6 @@ import org.opengis.filter.expression.Expression;
  * Takes an AttributeExpression, and computes the length of the data for the attribute.
  *
  * @author dzwiers
- * @source $URL$
  */
 public class LengthFunction extends FunctionExpressionImpl {
     // public static FunctionName NAME = new FunctionNameImpl("length","string");
@@ -46,6 +45,6 @@ public class LengthFunction extends FunctionExpressionImpl {
     public Object evaluate(Object feature) {
         Expression ae = (Expression) getParameters().get(0);
         String value = (String) ae.evaluate(feature, String.class);
-        return new Integer(value == null ? 0 : value.length());
+        return Integer.valueOf(value == null ? 0 : value.length());
     }
 }

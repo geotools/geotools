@@ -25,7 +25,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * used by StreamingRenderer only
  *
  * @author Andrea Aime - OpenGeo
- * @source $URL$
  */
 public interface ProjectionHandlerFactory {
 

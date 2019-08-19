@@ -20,7 +20,6 @@ import org.opengis.parameter.ParameterValueGroup;
  * implementation. A {@code GridCoverageExchange} implementation can support a number of file format
  * or resources.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengis.org/docs/01-004.pdf">Grid Coverage specification 1.0</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 2.0

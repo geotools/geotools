@@ -46,7 +46,6 @@ import org.opengis.filter.temporal.During;
  *
  * @author Jody Garnett
  * @author Mauricio Pazos (Axios Engineering)
- * @source $URL$
  * @version Revision: 1.9
  * @since 2.6
  */
@@ -66,10 +65,8 @@ public class ECQLCompiler extends ECQLParser implements org.geotools.filter.text
      * @param filterFactory
      */
     public ECQLCompiler(final String txtSource, final FilterFactory filterFactory) {
-
         super(new StringReader(txtSource));
 
-        assert txtSource != null : "txtSource cannot be null";
         assert filterFactory != null : "filterFactory cannot be null";
 
         this.source = txtSource;

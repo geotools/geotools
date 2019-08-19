@@ -57,6 +57,6 @@ public class CRSChooserDialog extends Dialog {
         dialog.open();
 
         CoordinateReferenceSystem crs = dialog.getResult();
-        System.out.println(crs);
+        // System.out.println(crs);
     }
 }

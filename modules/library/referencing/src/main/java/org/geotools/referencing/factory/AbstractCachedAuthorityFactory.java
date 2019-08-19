@@ -21,12 +21,12 @@ package org.geotools.referencing.factory;
 
 import java.util.Set;
 import javax.measure.Unit;
-import org.geotools.factory.BufferedFactory;
-import org.geotools.factory.Hints;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.util.NameFactory;
 import org.geotools.util.ObjectCache;
 import org.geotools.util.ObjectCaches;
+import org.geotools.util.factory.BufferedFactory;
+import org.geotools.util.factory.Hints;
 import org.opengis.metadata.citation.Citation;
 import org.opengis.referencing.AuthorityFactory;
 import org.opengis.referencing.FactoryException;
@@ -79,7 +79,6 @@ import org.opengis.util.InternationalString;
  * <p>This object is responsible for using a provided {{ReferencingObjectCache}}.
  *
  * @since 2.4
- * @source $URL$
  * @version $Id: BufferedAuthorityDecorator.java 26038 2007-06-27 01:58:12Z jgarnett $
  * @author Jody Garnett
  */
@@ -116,7 +115,8 @@ public abstract class AbstractCachedAuthorityFactory extends AbstractAuthorityFa
     /**
      * Constructs an instance making use of the default cache.
      *
-     * @param factory The factory to cache. Can not be {@code null}.
+     * @param priority The priority for this factory, as a number between {@link #MINIMUM_PRIORITY *
+     *     MINIMUM_PRIORITY} and {@link #MAXIMUM_PRIORITY MAXIMUM_PRIORITY} inclusive.
      */
     protected AbstractCachedAuthorityFactory(int priority) {
         this(priority, ObjectCaches.create("weak", 50), ReferencingFactoryContainer.instance(null));
@@ -125,7 +125,8 @@ public abstract class AbstractCachedAuthorityFactory extends AbstractAuthorityFa
     /**
      * Constructs an instance making use of the default cache.
      *
-     * @param factory The factory to cache. Can not be {@code null}.
+     * @param priority The priority for this factory, as a number between {@link * #MINIMUM_PRIORITY
+     *     MINIMUM_PRIORITY} and {@link #MAXIMUM_PRIORITY MAXIMUM_PRIORITY} * inclusive.
      */
     protected AbstractCachedAuthorityFactory(int priority, Hints hints) {
         this(priority, ObjectCaches.create(hints), ReferencingFactoryContainer.instance(hints));
@@ -138,8 +139,9 @@ public abstract class AbstractCachedAuthorityFactory extends AbstractAuthorityFa
      * DatumAuthorityFactory}, {@link CSAuthorityFactory}, {@link CRSAuthorityFactory} and {@link
      * CoordinateOperationAuthorityFactory} interfaces they choose to implement.
      *
-     * @param factory The factory to cache. Can not be {@code null}.
-     * @param maxStrongReferences The maximum number of objects to keep by strong reference.
+     * @param priority The priority for this factory, as a number between {@link * #MINIMUM_PRIORITY
+     *     MINIMUM_PRIORITY} and {@link #MAXIMUM_PRIORITY MAXIMUM_PRIORITY} * inclusive.
+     * @param cache The cache to use
      */
     protected AbstractCachedAuthorityFactory(
             int priority, ObjectCache cache, ReferencingFactoryContainer container) {

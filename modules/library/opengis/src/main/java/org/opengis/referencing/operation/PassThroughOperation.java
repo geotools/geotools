@@ -18,7 +18,6 @@ import org.opengis.annotation.UML;
  * A pass-through operation specifies that a subset of a coordinate tuple is subject to a specific
  * coordinate operation.
  *
- * @source $URL$
  * @version <A HREF="http://portal.opengeospatial.org/files/?artifact_id=6716">Abstract
  *     specification 2.0</A>
  * @author Martin Desruisseaux (IRD)

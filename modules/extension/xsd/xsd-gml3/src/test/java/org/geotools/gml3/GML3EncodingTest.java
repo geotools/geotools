@@ -33,7 +33,7 @@ import org.geotools.gml2.SrsSyntax;
 import org.geotools.gml3.bindings.GML3MockData;
 import org.geotools.gml3.bindings.TEST;
 import org.geotools.gml3.bindings.TestConfiguration;
-import org.geotools.xml.Encoder;
+import org.geotools.xsd.Encoder;
 import org.junit.Test;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.io.WKTReader;
@@ -43,7 +43,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-/** @source $URL$ */
 public class GML3EncodingTest extends TestCase {
 
     @Override

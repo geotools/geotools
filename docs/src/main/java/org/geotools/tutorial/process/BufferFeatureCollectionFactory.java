@@ -27,7 +27,6 @@ import org.opengis.util.InternationalString;
  *
  * @author Justin Deoliveira, OpenGEO
  * @since 2.6
- * @source $URL$
  */
 public class BufferFeatureCollectionFactory extends FeatureToFeatureProcessFactory {
 

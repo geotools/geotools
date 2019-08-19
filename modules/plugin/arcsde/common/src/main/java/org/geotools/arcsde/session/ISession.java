@@ -56,7 +56,6 @@ import org.geotools.arcsde.versioning.ArcSdeVersionHandler;
  *
  * @author Gabriel Roldan
  * @author Jody Garnett
- * @source $URL$
  * @version $Id$
  * @since 2.5.x
  */

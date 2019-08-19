@@ -22,7 +22,6 @@ import org.geotools.graph.structure.Graphable;
  * A GraphIterator that starts iteration from a specefied point.
  *
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
- * @source $URL$
  */
 public abstract class SourceGraphIterator extends AbstractGraphIterator {
 

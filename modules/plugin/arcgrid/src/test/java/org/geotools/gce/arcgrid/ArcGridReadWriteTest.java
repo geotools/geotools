@@ -26,9 +26,9 @@ import javax.media.jai.ImageLayout;
 import org.geotools.TestData;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
-import org.geotools.factory.Hints;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.geotools.util.factory.Hints;
 import org.opengis.coverage.grid.GridCoverageReader;
 import org.opengis.coverage.grid.GridCoverageWriter;
 import org.opengis.parameter.GeneralParameterValue;
@@ -39,16 +39,11 @@ import org.opengis.parameter.ParameterValueGroup;
  *
  * @author Daniele Romagnoli
  * @author Simone Giannecchini (simboss)
- * @source $URL$
  */
 public class ArcGridReadWriteTest extends ArcGridBaseTestCase {
     private final Random generator = new Random();
 
-    /**
-     * Creates a new instance of ArcGridReadWriteTest
-     *
-     * @param name DOCUMENT ME!
-     */
+    /** Creates a new instance of ArcGridReadWriteTest */
     public ArcGridReadWriteTest(String name) {
         super(name);
     }
@@ -115,8 +110,8 @@ public class ArcGridReadWriteTest extends ArcGridBaseTestCase {
         }
 
         /** Checking values */
-        final Double noData1 = new Double(ArcGridWriter.getCandidateNoData(gc1));
-        final Double noData2 = new Double(ArcGridWriter.getCandidateNoData(gc2));
+        final Double noData1 = Double.valueOf(ArcGridWriter.getCandidateNoData(gc1));
+        final Double noData2 = Double.valueOf(ArcGridWriter.getCandidateNoData(gc2));
         final int minTileX1 = gc1.getRenderedImage().getMinTileX();
         final int minTileY1 = gc1.getRenderedImage().getMinTileY();
         final int width = gc1.getRenderedImage().getTileWidth();

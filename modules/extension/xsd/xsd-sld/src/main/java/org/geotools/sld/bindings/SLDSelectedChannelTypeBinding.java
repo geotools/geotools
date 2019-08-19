@@ -20,7 +20,9 @@ import javax.xml.namespace.QName;
 import org.geotools.styling.ContrastEnhancement;
 import org.geotools.styling.SelectedChannelType;
 import org.geotools.styling.StyleFactory;
-import org.geotools.xml.*;
+import org.geotools.xsd.AbstractComplexBinding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 import org.opengis.filter.expression.Expression;
 import org.picocontainer.MutablePicoContainer;
 
@@ -42,7 +44,6 @@ import org.picocontainer.MutablePicoContainer;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class SLDSelectedChannelTypeBinding extends AbstractComplexBinding {
     StyleFactory styleFactory;

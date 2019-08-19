@@ -17,9 +17,9 @@
 package org.geotools.xs.bindings;
 
 import javax.xml.namespace.QName;
-import org.geotools.xml.InstanceComponent;
-import org.geotools.xml.SimpleBinding;
 import org.geotools.xs.XS;
+import org.geotools.xsd.InstanceComponent;
+import org.geotools.xsd.SimpleBinding;
 
 /**
  * Binding object for the type http://www.w3.org/2001/XMLSchema:float.
@@ -54,7 +54,6 @@ import org.geotools.xs.XS;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class XSFloatBinding implements SimpleBinding {
     /** @generated */
@@ -97,10 +96,10 @@ public class XSFloatBinding implements SimpleBinding {
         String text = (String) value;
 
         if ("INF".equals(text)) {
-            return new Float(Float.POSITIVE_INFINITY);
+            return Float.valueOf(Float.POSITIVE_INFINITY);
         }
 
-        return new Float((String) text);
+        return Float.valueOf((String) text);
     }
 
     /**

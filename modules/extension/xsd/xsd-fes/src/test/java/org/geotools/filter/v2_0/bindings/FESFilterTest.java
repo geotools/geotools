@@ -22,6 +22,7 @@ import java.util.Date;
 import javax.xml.parsers.DocumentBuilderFactory;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.v2_0.FESTestSupport;
+import org.geotools.xsd.Encoder;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.PropertyIsLike;
@@ -40,7 +41,7 @@ public class FESFilterTest extends FESTestSupport {
         PropertyIsLike filter = ff.like(ff.property("name"), "%test%");
         org.geotools.filter.v2_0.FESConfiguration configuration =
                 new org.geotools.filter.v2_0.FESConfiguration();
-        org.geotools.xml.Encoder encoder = new org.geotools.xml.Encoder(configuration);
+        Encoder encoder = new Encoder(configuration);
         encoder.encode(filter, org.geotools.filter.v2_0.FES.Filter, os);
 
         DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
@@ -60,7 +61,7 @@ public class FESFilterTest extends FESTestSupport {
         Filter filter = ff.after(ff.property("date"), ff.literal(new Date()));
         org.geotools.filter.v2_0.FESConfiguration configuration =
                 new org.geotools.filter.v2_0.FESConfiguration();
-        org.geotools.xml.Encoder encoder = new org.geotools.xml.Encoder(configuration);
+        Encoder encoder = new Encoder(configuration);
         encoder.encode(filter, org.geotools.filter.v2_0.FES.Filter, os);
 
         DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();

@@ -30,176 +30,176 @@ import org.opengis.filter.identity.FeatureId;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link net.opengis.wfs.impl.InsertedFeatureTypeImpl#getFeatureId <em>Feature Id</em>}</li>
  *   <li>{@link net.opengis.wfs.impl.InsertedFeatureTypeImpl#getHandle <em>Handle</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
 public class InsertedFeatureTypeImpl extends EObjectImpl implements InsertedFeatureType {
 	/**
-     * The cached value of the '{@link #getFeatureId() <em>Feature Id</em>}' attribute list.
-     * <!-- begin-user-doc -->
+   * The cached value of the '{@link #getFeatureId() <em>Feature Id</em>}' attribute list.
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @see #getFeatureId()
-     * @generated
-     * @ordered
-     */
+   * @see #getFeatureId()
+   * @generated
+   * @ordered
+   */
 	protected EList featureId;
 
 	/**
-     * The default value of the '{@link #getHandle() <em>Handle</em>}' attribute.
-     * <!-- begin-user-doc -->
+   * The default value of the '{@link #getHandle() <em>Handle</em>}' attribute.
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @see #getHandle()
-     * @generated
-     * @ordered
-     */
+   * @see #getHandle()
+   * @generated
+   * @ordered
+   */
 	protected static final String HANDLE_EDEFAULT = null;
 
 	/**
-     * The cached value of the '{@link #getHandle() <em>Handle</em>}' attribute.
-     * <!-- begin-user-doc -->
+   * The cached value of the '{@link #getHandle() <em>Handle</em>}' attribute.
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @see #getHandle()
-     * @generated
-     * @ordered
-     */
+   * @see #getHandle()
+   * @generated
+   * @ordered
+   */
 	protected String handle = HANDLE_EDEFAULT;
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	protected InsertedFeatureTypeImpl() {
-        super();
-    }
+    super();
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	protected EClass eStaticClass() {
-        return WfsPackage.Literals.INSERTED_FEATURE_TYPE;
-    }
+    return WfsPackage.Literals.INSERTED_FEATURE_TYPE;
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public EList getFeatureId() {
-        if (featureId == null) {
-            featureId = new EDataTypeUniqueEList(FeatureId.class, this, WfsPackage.INSERTED_FEATURE_TYPE__FEATURE_ID);
-        }
-        return featureId;
+    if (featureId == null) {
+      featureId = new EDataTypeUniqueEList(FeatureId.class, this, WfsPackage.INSERTED_FEATURE_TYPE__FEATURE_ID);
     }
+    return featureId;
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public String getHandle() {
-        return handle;
-    }
+    return handle;
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public void setHandle(String newHandle) {
-        String oldHandle = handle;
-        handle = newHandle;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, WfsPackage.INSERTED_FEATURE_TYPE__HANDLE, oldHandle, handle));
-    }
+    String oldHandle = handle;
+    handle = newHandle;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, WfsPackage.INSERTED_FEATURE_TYPE__HANDLE, oldHandle, handle));
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case WfsPackage.INSERTED_FEATURE_TYPE__FEATURE_ID:
-                return getFeatureId();
-            case WfsPackage.INSERTED_FEATURE_TYPE__HANDLE:
-                return getHandle();
-        }
-        return super.eGet(featureID, resolve, coreType);
+    switch (featureID) {
+      case WfsPackage.INSERTED_FEATURE_TYPE__FEATURE_ID:
+        return getFeatureId();
+      case WfsPackage.INSERTED_FEATURE_TYPE__HANDLE:
+        return getHandle();
     }
+    return super.eGet(featureID, resolve, coreType);
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case WfsPackage.INSERTED_FEATURE_TYPE__FEATURE_ID:
-                getFeatureId().clear();
-                getFeatureId().addAll((Collection)newValue);
-                return;
-            case WfsPackage.INSERTED_FEATURE_TYPE__HANDLE:
-                setHandle((String)newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
+    switch (featureID) {
+      case WfsPackage.INSERTED_FEATURE_TYPE__FEATURE_ID:
+        getFeatureId().clear();
+        getFeatureId().addAll((Collection)newValue);
+        return;
+      case WfsPackage.INSERTED_FEATURE_TYPE__HANDLE:
+        setHandle((String)newValue);
+        return;
     }
+    super.eSet(featureID, newValue);
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public void eUnset(int featureID) {
-        switch (featureID) {
-            case WfsPackage.INSERTED_FEATURE_TYPE__FEATURE_ID:
-                getFeatureId().clear();
-                return;
-            case WfsPackage.INSERTED_FEATURE_TYPE__HANDLE:
-                setHandle(HANDLE_EDEFAULT);
-                return;
-        }
-        super.eUnset(featureID);
+    switch (featureID) {
+      case WfsPackage.INSERTED_FEATURE_TYPE__FEATURE_ID:
+        getFeatureId().clear();
+        return;
+      case WfsPackage.INSERTED_FEATURE_TYPE__HANDLE:
+        setHandle(HANDLE_EDEFAULT);
+        return;
     }
+    super.eUnset(featureID);
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case WfsPackage.INSERTED_FEATURE_TYPE__FEATURE_ID:
-                return featureId != null && !featureId.isEmpty();
-            case WfsPackage.INSERTED_FEATURE_TYPE__HANDLE:
-                return HANDLE_EDEFAULT == null ? handle != null : !HANDLE_EDEFAULT.equals(handle);
-        }
-        return super.eIsSet(featureID);
+    switch (featureID) {
+      case WfsPackage.INSERTED_FEATURE_TYPE__FEATURE_ID:
+        return featureId != null && !featureId.isEmpty();
+      case WfsPackage.INSERTED_FEATURE_TYPE__HANDLE:
+        return HANDLE_EDEFAULT == null ? handle != null : !HANDLE_EDEFAULT.equals(handle);
     }
+    return super.eIsSet(featureID);
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public String toString() {
-        if (eIsProxy()) return super.toString();
+    if (eIsProxy()) return super.toString();
 
-        StringBuffer result = new StringBuffer(super.toString());
-        result.append(" (featureId: ");
-        result.append(featureId);
-        result.append(", handle: ");
-        result.append(handle);
-        result.append(')');
-        return result.toString();
-    }
+    StringBuffer result = new StringBuffer(super.toString());
+    result.append(" (featureId: ");
+    result.append(featureId);
+    result.append(", handle: ");
+    result.append(handle);
+    result.append(')');
+    return result.toString();
+  }
 
 } //InsertedFeatureTypeImpl

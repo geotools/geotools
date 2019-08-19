@@ -30,7 +30,6 @@ import org.opengis.geometry.complex.Complex;
 import org.opengis.geometry.primitive.Primitive;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-/** @source $URL$ */
 public class MultiPrimitiveImpl extends AggregateImpl implements MultiPrimitive {
     private static final long serialVersionUID = -8667095513075575773L;
 

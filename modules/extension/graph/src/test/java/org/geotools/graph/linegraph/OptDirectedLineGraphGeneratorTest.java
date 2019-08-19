@@ -26,7 +26,6 @@ import org.geotools.graph.structure.line.XYNode;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.LineSegment;
 
-/** @source $URL$ */
 public class OptDirectedLineGraphGeneratorTest extends TestCase {
 
     private OptDirectedLineGraphGenerator m_gen;

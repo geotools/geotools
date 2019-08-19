@@ -22,7 +22,6 @@ import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-/** @source $URL$ */
 public class PositionImplTest extends TestCase {
 
     public void testPositionImpl() {

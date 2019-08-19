@@ -1,6 +1,5 @@
 package org.geotools.filter.function;
 
-/** @source $URL$ */
 public class IdFunctionTest extends FunctionTestSupport {
 
     public IdFunctionTest(String testName) {

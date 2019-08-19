@@ -24,7 +24,6 @@ import org.opengis.metadata.FeatureTypeList;
 /**
  * List of names of feature types with the same spatial representation (same as spatial attributes).
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @author Touraïvane
@@ -64,7 +63,7 @@ public class FeatureTypeListImpl extends MetadataEntity implements FeatureTypeLi
     }
 
     /** Set the instance of a type defined in the spatial schema. */
-    public synchronized void setSpatialObject(final String newValue) {
+    public void setSpatialObject(final String newValue) {
         checkWritePermission();
         spatialObject = newValue;
     }
@@ -75,7 +74,7 @@ public class FeatureTypeListImpl extends MetadataEntity implements FeatureTypeLi
     }
 
     /** Set the name of the spatial schema used. */
-    public synchronized void setSpatialSchemaName(final String newValue) {
+    public void setSpatialSchemaName(final String newValue) {
         checkWritePermission();
         spatialSchemaName = newValue;
     }

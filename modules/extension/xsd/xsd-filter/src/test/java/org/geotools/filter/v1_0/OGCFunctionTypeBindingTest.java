@@ -16,11 +16,10 @@
  */
 package org.geotools.filter.v1_0;
 
-import org.geotools.xml.Binding;
+import org.geotools.xsd.Binding;
 import org.opengis.filter.expression.Function;
 import org.w3c.dom.Document;
 
-/** @source $URL$ */
 public class OGCFunctionTypeBindingTest extends FilterTestSupport {
     public void testType() {
         assertEquals(Function.class, binding(OGC.FunctionType).getType());

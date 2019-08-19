@@ -25,7 +25,6 @@ import org.geotools.xs.XSSchema;
 import org.opengis.feature.type.AttributeType;
 import org.opengis.feature.type.ComplexType;
 
-/** @source $URL$ */
 public class SMIL20Schema extends SchemaImpl {
     /**
      *

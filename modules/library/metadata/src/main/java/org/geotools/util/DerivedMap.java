@@ -36,7 +36,6 @@ import java.util.Set;
  * @param <K> The type of keys in this map.
  * @param <V> The type of values in both this map and the underlying map.
  * @since 2.0
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
@@ -68,17 +67,6 @@ public abstract class DerivedMap<BK, K, V> extends AbstractMap<K, V> implements 
 
     /** The derived key type. */
     private final Class<K> keyType;
-
-    /**
-     * Creates a new derived map from the specified base map.
-     *
-     * @param base The base map.
-     * @deprecated Use {@link #DerivedMap(Map, Class} instead.
-     */
-    @SuppressWarnings("unchecked")
-    public DerivedMap(final Map<BK, V> base) {
-        this(base, (Class) Object.class);
-    }
 
     /**
      * Creates a new derived map from the specified base map.

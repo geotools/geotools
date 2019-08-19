@@ -34,7 +34,6 @@ import org.junit.Test;
  * Tests for concurrent use of MapContent.
  *
  * @author Michael Bedward
- * @source $URL$
  * @version $Id$
  */
 public class MapContentConcurrencyTest {

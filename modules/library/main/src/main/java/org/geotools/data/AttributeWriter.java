@@ -24,7 +24,6 @@ import org.opengis.feature.type.AttributeDescriptor;
  * Collections, JDBC API. - Added IOExceptions on all methods. - Do we want AttributeWriters to know
  * about the schema and perform validation??
  *
- * @source $URL$
  * @version $Id$
  * @author Ian Schneider
  * @author Sean Geoghegan, Defence Science and Technology Organisation.

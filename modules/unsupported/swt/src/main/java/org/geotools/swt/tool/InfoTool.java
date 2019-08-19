@@ -51,7 +51,6 @@ import org.opengis.feature.Property;
  * @see InfoToolHelper
  * @author Michael Bedward
  * @since 2.6
- * @source $URL$
  */
 public class InfoTool extends CursorTool {
 

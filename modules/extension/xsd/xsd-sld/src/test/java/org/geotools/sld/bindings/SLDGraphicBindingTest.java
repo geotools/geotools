@@ -21,7 +21,6 @@ import org.geotools.filter.Filters;
 import org.geotools.styling.Graphic;
 import org.geotools.styling.Mark;
 
-/** @source $URL$ */
 public class SLDGraphicBindingTest extends SLDTestSupport {
     public void testType() throws Exception {
         assertEquals(Graphic.class, new SLDGraphicBinding(null).getType());
@@ -33,9 +32,9 @@ public class SLDGraphicBindingTest extends SLDTestSupport {
         Graphic graphic = (Graphic) parse();
         assertNotNull(graphic);
 
-        assertEquals(graphic.getMarks().length, 1);
+        assertEquals(graphic.graphicalSymbols().size(), 1);
 
-        Mark mark = graphic.getMarks()[0];
+        Mark mark = (Mark) graphic.graphicalSymbols().get(0);
 
         Color c = org.geotools.styling.SLD.color(mark.getFill().getColor());
         assertEquals(Integer.parseInt("12", 16), c.getRed());

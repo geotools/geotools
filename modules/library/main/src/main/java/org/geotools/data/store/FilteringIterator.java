@@ -24,7 +24,6 @@ import org.opengis.filter.Filter;
  * Decorates a {@link org.geotools.feature.Feature} iterator with one that filters content.
  *
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL$
  */
 public class FilteringIterator<F extends Feature> implements Iterator<F> {
 

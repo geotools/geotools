@@ -26,10 +26,7 @@ import org.junit.Test;
 import org.opengis.temporal.Instant;
 import org.opengis.temporal.Period;
 
-/**
- * @author Mehdi Sidhoum (Geomatys)
- * @source $URL$
- */
+/** @author Mehdi Sidhoum (Geomatys) */
 public class DefaultPeriodTest {
 
     private Period period1;

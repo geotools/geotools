@@ -16,7 +16,9 @@
  */
 package org.geotools.coverage.grid.io;
 
+import it.geosolutions.imageio.core.CoreCommonImageMetadata;
 import it.geosolutions.imageio.maskband.DatasetLayout;
+import it.geosolutions.imageio.maskband.DefaultDatasetLayoutImpl;
 import it.geosolutions.jaiext.utilities.ImageLayout2;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
@@ -40,6 +42,7 @@ import java.util.logging.Logger;
 import javax.imageio.ImageReadParam;
 import javax.imageio.ImageReader;
 import javax.imageio.ImageTypeSpecifier;
+import javax.imageio.metadata.IIOMetadata;
 import javax.imageio.spi.ImageInputStreamSpi;
 import javax.imageio.stream.ImageInputStream;
 import javax.media.jai.ImageLayout;
@@ -52,6 +55,7 @@ import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.io.footprint.MultiLevelROIProvider;
+import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.DefaultFileResourceInfo;
 import org.geotools.data.DefaultFileServiceInfo;
@@ -60,19 +64,18 @@ import org.geotools.data.DefaultServiceInfo;
 import org.geotools.data.FileGroupProvider.FileGroup;
 import org.geotools.data.ResourceInfo;
 import org.geotools.data.ServiceInfo;
-import org.geotools.factory.GeoTools;
-import org.geotools.factory.Hints;
 import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.operation.builder.GridToEnvelopeMapper;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.referencing.operation.transform.IdentityTransform;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
-import org.geotools.resources.coverage.CoverageUtilities;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
 import org.geotools.util.URLs;
 import org.geotools.util.Utilities;
+import org.geotools.util.factory.GeoTools;
+import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
 import org.opengis.coverage.ColorInterpretation;
 import org.opengis.coverage.grid.Format;
@@ -105,12 +108,11 @@ import org.opengis.referencing.operation.TransformException;
  *
  * @author Simone Giannecchini, GeoSolutions
  * @since 2.3
- * @source $URL$
  */
 public abstract class AbstractGridCoverage2DReader implements GridCoverage2DReader {
 
     /** The {@link Logger} for this {@link AbstractGridCoverage2DReader}. */
-    private static final Logger LOGGER = Logging.getLogger("org.geotools.data.coverage.grid");
+    private static final Logger LOGGER = Logging.getLogger(AbstractGridCoverage2DReader.class);
 
     /** Small number used for double comparisons */
     protected static double EPS = 1e-6;
@@ -159,6 +161,11 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
 
     /** {@link GridCoverageFactory} instance. */
     protected GridCoverageFactory coverageFactory;
+
+    /** scales and offsets for rescaling */
+    protected Double[] scales;
+
+    protected Double[] offsets;
 
     private Map<String, ArrayList<Resolution>> resolutionsLevelsMap =
             new HashMap<String, ArrayList<Resolution>>();
@@ -257,9 +264,6 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
      * </code>
      * </pre>
      *
-     * The method {@link #hasMoreGridCoverages} should be invoked first in order to verify that a
-     * coverage is available.
-     *
      * @param parameters Optional parameters matching {@link Format#getReadParameters}.
      * @return a {@linkplain GridCoverage grid coverage} from the input source.
      * @throws InvalidParameterNameException if a parameter in {@code parameters} doesn't have a
@@ -348,7 +352,7 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
         // Default image index 0
         //
         // //
-        Integer imageChoice = new Integer(0);
+        Integer imageChoice = Integer.valueOf(0);
 
         // //
         //
@@ -361,10 +365,19 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
 
         // //
         //
-        // default values for subsampling
+        // Resolution requested. I am here computing the resolution required by
+        // the user.
         //
-        // //
-        readP.setSourceSubsampling(1, 1, 0, 0);
+        double[] requestedRes =
+                getResolution(
+                        requestedEnvelope,
+                        requestedDim,
+                        getCoordinateReferenceSystem(coverageName));
+
+        // Decimation on reading (done here because it alters the read params allowing subsampling)
+        decimationOnReadingControl(coverageName, imageChoice, readP, requestedRes);
+
+        if (requestedRes == null) return imageChoice;
 
         // //
         //
@@ -384,29 +397,20 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
 
         // //
         //
-        // Resolution requested. I am here computing the resolution required by
-        // the user.
-        //
-        // //
-        double[] requestedRes =
-                getResolution(
-                        requestedEnvelope,
-                        requestedDim,
-                        getCoordinateReferenceSystem(coverageName));
-        if (requestedRes == null) return imageChoice;
-
-        // //
-        //
         // overviews or decimation
         //
         // //
-        if (useOverviews)
-            imageChoice = pickOverviewLevel(coverageName, overviewPolicy, requestedRes);
+        if (useOverviews) {
+            int newImageChoice = pickOverviewLevel(coverageName, overviewPolicy, requestedRes);
 
-        // /////////////////////////////////////////////////////////////////////
-        // DECIMATION ON READING
-        // /////////////////////////////////////////////////////////////////////
-        decimationOnReadingControl(coverageName, imageChoice, readP, requestedRes);
+            // if image choice has changed due to using overviews, recalculate subsamping factors
+            if (imageChoice != newImageChoice) {
+                imageChoice = newImageChoice; // update
+                // recalculate subsampling factors if overview number has changed
+                decimationOnReadingControl(coverageName, imageChoice, readP, requestedRes);
+            }
+        }
+
         return imageChoice;
     }
 
@@ -602,11 +606,6 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
         }
     }
 
-    protected final void decimationOnReadingControl(
-            Integer imageChoice, ImageReadParam readP, double[] requestedRes) {
-        decimationOnReadingControl(imageChoice, readP, requestedRes);
-    }
-
     /**
      * This method is responsible for evaluating possible subsampling factors once the best
      * resolution level has been found, in case we have support for overviews, or starting from the
@@ -662,6 +661,16 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
                 subSamplingFactorY = subSamplingFactorY == 0 ? 1 : subSamplingFactorY;
 
                 readP.setSourceSubsampling(subSamplingFactorX, subSamplingFactorY, 0, 0);
+
+                if (LOGGER.isLoggable(Level.FINE))
+                    LOGGER.log(
+                            Level.FINE,
+                            String.format(
+                                    "coverageName:%s,imageChoice:%d,subSamplingFactorX:%d,subSamplingFactorY:%d",
+                                    coverageName,
+                                    imageChoice.intValue(),
+                                    subSamplingFactorX,
+                                    subSamplingFactorY));
             }
         }
     }
@@ -801,18 +810,6 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
         } catch (FactoryException e) {
             throw new DataSourceException("Unable to get resolution", e);
         }
-    }
-
-    /**
-     * Retrieves the {@link CoordinateReferenceSystem} for dataset pointed by this {@link
-     * AbstractGridCoverage2DReader}.
-     *
-     * @return the {@link CoordinateReferenceSystem} for dataset pointed by this {@link
-     *     AbstractGridCoverage2DReader}.
-     * @deprecated use {@link #getCoordinateReferenceSystem()}
-     */
-    public final CoordinateReferenceSystem getCrs() {
-        return getCoordinateReferenceSystem();
     }
 
     /**
@@ -976,38 +973,9 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
         }
     }
 
-    /**
-     * @see org.opengis.coverage.grid.GridCoverageReader#skip()
-     * @deprecated no replacement for that method
-     */
-    public void skip() {
-        throw new UnsupportedOperationException("Unsupported operation.");
-    }
-
-    /**
-     * @see org.opengis.coverage.grid.GridCoverageReader#hasMoreGridCoverages()
-     * @deprecated no replacement for that method
-     */
-    public boolean hasMoreGridCoverages() {
-        throw new UnsupportedOperationException("Unsupported operation.");
-    }
-
-    /** @deprecated use {@link #getGridCoverageNames()} */
-    public String[] listSubNames() {
-        return getGridCoverageNames();
-    }
-
     @Override
     public String[] getGridCoverageNames() {
         return new String[] {coverageName};
-    }
-
-    /**
-     * @see org.opengis.coverage.grid.GridCoverageReader#getCurrentSubname()
-     * @deprecated no replacement for that method
-     */
-    public String getCurrentSubname() {
-        throw new UnsupportedOperationException("Unsupported operation.");
     }
 
     public String[] getMetadataNames(final String coverageName) {
@@ -1145,6 +1113,7 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
      * ImageInputStream} open.
      */
     @Override
+    @SuppressWarnings("deprecation") // finalize is deprecated in Java 9
     protected void finalize() throws Throwable {
         dispose();
         super.finalize();
@@ -1173,26 +1142,6 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
         return Collections.emptySet();
     }
 
-    @Override
-    public int getNumOverviews(String coverageName) {
-        if (!checkName(coverageName)) {
-            throw new IllegalArgumentException(
-                    "The specified coverageName " + coverageName + "is not supported");
-        }
-        if (dtLayout == null) {
-            // Back to the default
-            return numOverviews;
-        }
-        return dtLayout.getNumInternalOverviews()
-                + (dtLayout.getNumExternalOverviews() > 0 ? dtLayout.getNumExternalOverviews() : 0);
-    }
-
-    @Override
-    public int getNumOverviews() {
-        // Default implementation for backwards compatibility
-        return getNumOverviews(coverageName);
-    }
-
     public DatasetLayout getDatasetLayout() {
         // Default implementation for backwards compatibility
         return getDatasetLayout(coverageName);
@@ -1201,7 +1150,16 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
     public DatasetLayout getDatasetLayout(String coverageName) {
         if (!checkName(coverageName)) {
             throw new IllegalArgumentException(
-                    "The specified coverageName " + coverageName + "is not supported");
+                    "The specified coverageName " + coverageName + " is not supported");
+        }
+        // for compatibility with the readers not initializing the field
+        if (dtLayout == null) {
+            return new DefaultDatasetLayoutImpl() {
+                @Override
+                public int getNumInternalOverviews() {
+                    return numOverviews;
+                }
+            };
         }
         return dtLayout;
     }
@@ -1449,5 +1407,14 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
     protected MultiLevelROIProvider getMultiLevelROIProvider(String coverageName) {
         throw new UnsupportedOperationException(
                 "The abstract reader doesn't implement this method yet");
+    }
+
+    /** Collects the scales and offsets for value rescaling from the metadata, if present */
+    protected void collectScaleOffset(IIOMetadata iioMetadata) {
+        if (iioMetadata instanceof CoreCommonImageMetadata) {
+            CoreCommonImageMetadata ccm = (CoreCommonImageMetadata) iioMetadata;
+            this.scales = ccm.getScales();
+            this.offsets = ccm.getOffsets();
+        }
     }
 }

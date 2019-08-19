@@ -18,18 +18,14 @@
 package org.geotools.data.wfs;
 
 import java.io.IOException;
-import java.util.logging.Logger;
 import net.opengis.wfs20.StoredQueryDescriptionType;
 import org.geotools.data.Query;
 import org.geotools.data.store.ContentEntry;
 import org.geotools.data.wfs.internal.GetFeatureRequest;
 import org.geotools.data.wfs.internal.GetFeatureRequest.ResultType;
 import org.geotools.data.wfs.internal.WFSClient;
-import org.geotools.util.logging.Logging;
 
 public class WFSStoredQueryFeatureSource extends WFSFeatureSource {
-
-    private static final Logger LOGGER = Logging.getLogger(WFSStoredQueryFeatureSource.class);
 
     private final StoredQueryDescriptionType desc;
 

@@ -60,7 +60,7 @@ public final class LineStringMeasuresTest extends GeometryEncoderTestSupport {
         Document document = encode(encoder, geometry, "line");
         // check that we got the expected result
         XpathEngine xpath = XMLUnit.newXpathEngine();
-        print(document);
+        // print(document);
         assertEquals("0 1 -1.5", xpath.evaluate("//gml:pos", document));
     }
 
@@ -72,7 +72,7 @@ public final class LineStringMeasuresTest extends GeometryEncoderTestSupport {
         Document document = encode(encoder, geometry, false, "line");
         // check that we got the expected result
         XpathEngine xpath = XMLUnit.newXpathEngine();
-        print(document);
+        // print(document);
         assertEquals("0 1", xpath.evaluate("//gml:pos", document));
     }
 
@@ -108,7 +108,7 @@ public final class LineStringMeasuresTest extends GeometryEncoderTestSupport {
         Document document = encode(encoder, geometry, "line");
         // check that we got the expected result
         XpathEngine xpath = XMLUnit.newXpathEngine();
-        print(document);
+        // print(document);
         assertEquals("0 1 10 -1.5", xpath.evaluate("//gml:pos", document));
     }
 
@@ -120,7 +120,7 @@ public final class LineStringMeasuresTest extends GeometryEncoderTestSupport {
         Document document = encode(encoder, geometry, false, "line");
         // check that we got the expected result
         XpathEngine xpath = XMLUnit.newXpathEngine();
-        print(document);
+        // print(document);
         assertEquals("0 1 10", xpath.evaluate("//gml:pos", document));
     }
 }

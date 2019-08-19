@@ -28,7 +28,6 @@ import org.geotools.styling.css.selector.Reject;
 import org.geotools.styling.css.selector.ScaleRange;
 import org.geotools.styling.css.selector.Selector;
 import org.geotools.styling.css.selector.TypeName;
-import org.opengis.filter.Filter;
 
 /**
  * Takes a {@link Selector} and collects all available pseudo classes in it
@@ -102,7 +101,6 @@ public class PseudoClassExtractor extends AbstractSelectorVisitor {
 
     public static Set<PseudoClass> getPseudoClasses(Selector selector) {
         PseudoClassExtractor extractor = new PseudoClassExtractor();
-        Filter filter = (Filter) selector.accept(extractor);
         return extractor.getPseudoClasses();
     }
 }

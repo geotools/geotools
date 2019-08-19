@@ -44,12 +44,12 @@ import javax.imageio.spi.ImageReaderSpi;
 import javax.media.jai.ImageLayout;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.io.IOUtils;
 import org.geotools.coverage.grid.io.GranuleSource;
 import org.geotools.coverage.grid.io.GranuleStore;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.coverage.grid.io.StructuredGridCoverage2DReader;
 import org.geotools.coverage.grid.io.footprint.MultiLevelROIProvider;
+import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.DataStoreFactorySpi;
 import org.geotools.data.DataUtilities;
@@ -57,8 +57,7 @@ import org.geotools.data.DefaultTransaction;
 import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.data.shapefile.ShapefileDataStoreFactory;
 import org.geotools.data.simple.SimpleFeatureCollection;
-import org.geotools.factory.Hints;
-import org.geotools.factory.Hints.Key;
+import org.geotools.data.util.DefaultProgressListener;
 import org.geotools.feature.collection.AbstractFeatureVisitor;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.gce.imagemosaic.Utils.Prop;
@@ -95,10 +94,11 @@ import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.referencing.CRS;
-import org.geotools.resources.coverage.CoverageUtilities;
-import org.geotools.util.DefaultProgressListener;
+import org.geotools.util.SuppressFBWarnings;
 import org.geotools.util.URLs;
 import org.geotools.util.Utilities;
+import org.geotools.util.factory.Hints;
+import org.geotools.util.factory.Hints.Key;
 import org.locationtech.jts.geom.Polygon;
 import org.opengis.feature.Feature;
 import org.opengis.feature.Property;
@@ -173,6 +173,7 @@ public class ImageMosaicConfigHandler {
      *
      * @throws IllegalArgumentException
      */
+    @SuppressFBWarnings("NP_NULL_PARAM_DEREF")
     public ImageMosaicConfigHandler(
             final CatalogBuilderConfiguration configuration,
             final ImageMosaicEventHandlers eventHandler) {
@@ -409,7 +410,9 @@ public class ImageMosaicConfigHandler {
                 }
             } else {
                 // create a datastore as instructed
-                spi = (DataStoreFactorySpi) Class.forName(SPIClass).newInstance();
+                spi =
+                        (DataStoreFactorySpi)
+                                Class.forName(SPIClass).getDeclaredConstructor().newInstance();
             }
             // set ParentLocation parameter since for embedded database like H2 we must change the
             // database
@@ -1412,22 +1415,16 @@ public class ImageMosaicConfigHandler {
             properties.setProperty(Prop.NO_DATA, String.valueOf(mosaicConfiguration.getNoData()));
         }
 
-        OutputStream outStream = null;
         String filePath =
                 runConfiguration.getParameter(Prop.ROOT_MOSAIC_DIR)
                         + "/"
                         // + runConfiguration.getIndexName() + ".properties"));
                         + mosaicConfiguration.getName()
                         + ".properties";
-        try {
-            outStream = new BufferedOutputStream(new FileOutputStream(filePath));
+        try (OutputStream outStream = new BufferedOutputStream(new FileOutputStream(filePath))) {
             properties.store(outStream, "-Automagically created from GeoTools-");
         } catch (IOException e) {
             eventHandler.fireEvent(Level.SEVERE, e.getLocalizedMessage(), 0);
-        } finally {
-            if (outStream != null) {
-                IOUtils.closeQuietly(outStream);
-            }
         }
     }
 
@@ -1595,10 +1592,16 @@ public class ImageMosaicConfigHandler {
                     new CatalogConfigurationBean();
             catalogConfigurationBean.setCaching(
                     IndexerUtils.getParameterAsBoolean(Prop.CACHING, indexer));
-            catalogConfigurationBean.setAbsolutePath(
-                    IndexerUtils.getParameterAsBoolean(Prop.ABSOLUTE_PATH, indexer));
-            catalogConfigurationBean.setPathType(
-                    IndexerUtils.getParameterAsEnum(Prop.PATH_TYPE, PathType.class, indexer));
+            if (IndexerUtils.getParameterAsBoolean(Prop.ABSOLUTE_PATH, indexer)) {
+                catalogConfigurationBean.setPathType(PathType.ABSOLUTE);
+            } else {
+                catalogConfigurationBean.setPathType(PathType.RELATIVE);
+            }
+            PathType pathType =
+                    IndexerUtils.getParameterAsEnum(Prop.PATH_TYPE, PathType.class, indexer);
+            if (pathType != null) {
+                catalogConfigurationBean.setPathType(pathType);
+            }
 
             catalogConfigurationBean.setLocationAttribute(
                     IndexerUtils.getParameter(Prop.LOCATION_ATTRIBUTE, indexer));
@@ -1640,7 +1643,8 @@ public class ImageMosaicConfigHandler {
             catalogConfig = new CatalogBuilderConfiguration();
             CatalogConfigurationBean bean = mosaicConfiguration.getCatalogConfigurationBean();
             catalogConfig.setParameter(Prop.LOCATION_ATTRIBUTE, (bean.getLocationAttribute()));
-            catalogConfig.setParameter(Prop.ABSOLUTE_PATH, Boolean.toString(bean.isAbsolutePath()));
+            catalogConfig.setParameter(
+                    Prop.ABSOLUTE_PATH, Boolean.toString(bean.getPathType() == PathType.ABSOLUTE));
             catalogConfig.setParameter(Prop.PATH_TYPE, bean.getPathType().toString());
             catalogConfig.setParameter(
                     Prop.ROOT_MOSAIC_DIR /* setRootMosaicDirectory( */,
@@ -1794,7 +1798,7 @@ public class ImageMosaicConfigHandler {
 
     private boolean isHigherResolution(double[][] a, double[][] b) {
         for (int i = 0; i < Math.min(a.length, b.length); i++) {
-            for (int j = 0; i < Math.min(a[i].length, b[i].length); i++) {
+            for (int j = 0; j < Math.min(a[i].length, b[i].length); j++) {
                 if (a[i][j] < b[i][j]) {
                     return true;
                 } else if (a[i][j] > b[i][j]) {

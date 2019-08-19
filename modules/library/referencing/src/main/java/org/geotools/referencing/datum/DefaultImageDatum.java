@@ -32,7 +32,6 @@ import org.opengis.referencing.datum.PixelInCell;
  * context only. For an image datum, the anchor point is usually either the centre of the image or
  * the corner of the image.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @since 2.1
@@ -120,6 +119,7 @@ public class DefaultImageDatum extends AbstractDatum implements ImageDatum {
      *     versions of this class.
      */
     @Override
+    @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int hashCode() {
         return super.hashCode() ^ pixelInCell.hashCode();
     }

@@ -23,7 +23,7 @@ import org.geotools.gml2.simple.GMLWriter;
 import org.geotools.gml2.simple.GeometryEncoder;
 import org.geotools.gml2.simple.QualifiedName;
 import org.geotools.gml3.GML;
-import org.geotools.xml.Encoder;
+import org.geotools.xsd.Encoder;
 import org.locationtech.jts.geom.LineString;
 import org.xml.sax.helpers.AttributesImpl;
 
@@ -53,6 +53,15 @@ class CurveEncoder extends GeometryEncoder<LineString> {
 
     protected CurveEncoder(Encoder e, String gmlPrefix, String gmlUri) {
         super(e);
+        init(gmlPrefix, gmlUri);
+    }
+
+    protected CurveEncoder(Encoder e, String gmlPrefix, String gmlUri, boolean encodeGmlId) {
+        super(e, encodeGmlId);
+        init(gmlPrefix, gmlUri);
+    }
+
+    private void init(String gmlPrefix, String gmlUri) {
         this.curve = CURVE.derive(gmlPrefix, gmlUri);
         this.segments = SEGMENTS.derive(gmlPrefix, gmlUri);
         this.lineStringSegment = LINE_STRING_SEGMENT.derive(gmlPrefix, gmlUri);

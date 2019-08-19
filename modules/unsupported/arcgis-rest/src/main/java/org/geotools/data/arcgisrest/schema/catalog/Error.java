@@ -1,44 +1,59 @@
+
 package org.geotools.data.arcgisrest.schema.catalog;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class Error {
 
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("error")
     @Expose
-    private Error_ error;
+    private Error__1 error;
 
     /**
+     * 
      * (Required)
-     *
-     * @return The error
+     * 
      */
-    public Error_ getError() {
+    public Error__1 getError() {
         return error;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param error The error
+     * 
      */
-    public void setError(Error_ error) {
+    public void setError(Error__1 error) {
         this.error = error;
     }
 
     @Override
     public String toString() {
-        return ToStringBuilder.reflectionToString(this);
+        StringBuilder sb = new StringBuilder();
+        sb.append(Error.class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this))).append('[');
+        sb.append("error");
+        sb.append('=');
+        sb.append(((this.error == null)?"<null>":this.error));
+        sb.append(',');
+        if (sb.charAt((sb.length()- 1)) == ',') {
+            sb.setCharAt((sb.length()- 1), ']');
+        } else {
+            sb.append(']');
+        }
+        return sb.toString();
     }
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(error).toHashCode();
+        int result = 1;
+        result = ((result* 31)+((this.error == null)? 0 :this.error.hashCode()));
+        return result;
     }
 
     @Override
@@ -50,6 +65,7 @@ public class Error {
             return false;
         }
         Error rhs = ((Error) other);
-        return new EqualsBuilder().append(error, rhs.error).isEquals();
+        return ((this.error == rhs.error)||((this.error!= null)&&this.error.equals(rhs.error)));
     }
+
 }

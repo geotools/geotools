@@ -266,7 +266,7 @@ public class PropertyDataStore3DTest {
         assertFalse(bounds.isEmpty());
         assertEquals(CRS.decode("EPSG:7415"), bounds.getCoordinateReferenceSystem());
         assertEquals(12, bounds.getMinZ(), 0d);
-        assertEquals(16, bounds.getMaxZ(), 0d);
+        assertEquals(17, bounds.getMaxZ(), 0d);
     }
 
     @Test

@@ -19,9 +19,9 @@ package org.geotools.sld.bindings;
 import javax.xml.namespace.QName;
 import org.geotools.styling.ColorMapEntry;
 import org.geotools.styling.StyleFactory;
-import org.geotools.xml.AbstractComplexBinding;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
+import org.geotools.xsd.AbstractComplexBinding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Expression;
 import org.picocontainer.MutablePicoContainer;
@@ -46,7 +46,6 @@ import org.picocontainer.MutablePicoContainer;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class SLDColorMapEntryBinding extends AbstractComplexBinding {
     StyleFactory styleFactory;

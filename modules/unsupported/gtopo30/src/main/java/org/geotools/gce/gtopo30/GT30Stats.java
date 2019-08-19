@@ -33,7 +33,6 @@ import org.geotools.util.URLs;
  * @author aaime
  * @author simone giannecchini
  * @author mkraemer
- * @source $URL$
  */
 final class GT30Stats {
     /** Minimum value in the data file */
@@ -61,13 +60,15 @@ final class GT30Stats {
         try {
             reader = new BufferedReader(new FileReader(stats));
             final String line = reader.readLine();
+            if (line == null) {
+                throw new IllegalArgumentException("Invalid empty stats file at " + statsURL);
+            }
             final StringTokenizer stok = new StringTokenizer(line, " ");
 
             // just parse one byte. if the support for this format will
             // be extended, we'll need to add support for multiple bands
             Integer.parseInt(stok.nextToken()); // band
             minimum = Integer.parseInt(stok.nextToken());
-            minimum = -407;
             maximum = Integer.parseInt(stok.nextToken());
             average = Double.parseDouble(stok.nextToken());
             stddev = Double.parseDouble(stok.nextToken());

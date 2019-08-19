@@ -16,9 +16,9 @@
  */
 package org.geotools.filter;
 
-import org.geotools.factory.Hints;
 import org.geotools.util.ConverterFactory;
 import org.geotools.util.Converters;
+import org.geotools.util.factory.Hints;
 import org.opengis.filter.MultiValuedFilter;
 import org.opengis.filter.MultiValuedFilter.MatchAction;
 import org.opengis.filter.expression.Expression;
@@ -33,7 +33,6 @@ import org.opengis.filter.expression.Expression;
  * FilterFactory2 creation method.
  *
  * @author Justin Deoliveira (Boundless)
- * @source $URL$
  */
 public abstract class BinaryComparisonAbstract extends AbstractFilter implements MultiValuedFilter {
 

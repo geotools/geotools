@@ -24,7 +24,6 @@ import java.net.URI;
  * <p>To avoid multiple type checks, a group mask was include, as described below.
  *
  * @author dzwiers www.refractions.net
- * @source $URL$
  */
 public interface ElementGrouping {
     /**

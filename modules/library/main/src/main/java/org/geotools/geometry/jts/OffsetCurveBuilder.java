@@ -22,11 +22,10 @@ import static java.lang.Math.atan2;
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
 import static java.lang.Math.tan;
-import static java.lang.Math.toDegrees;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.locationtech.jts.algorithm.CGAlgorithms;
+import org.locationtech.jts.algorithm.Distance;
 import org.locationtech.jts.algorithm.LineIntersector;
 import org.locationtech.jts.algorithm.RobustLineIntersector;
 import org.locationtech.jts.geom.Coordinate;
@@ -327,7 +326,7 @@ public class OffsetCurveBuilder {
                     break;
                 } else if (j == max - 2 && !closed) {
                     // check if we have an almost closed curl
-                    double distancePointLine = CGAlgorithms.distancePointLine(c4, c1, c2);
+                    double distancePointLine = Distance.pointToLinePerpendicular(c4, c1, c2);
                     if (distancePointLine < abs(offset) / 10) {
                         c2.x = c4.x;
                         c2.y = c4.y;
@@ -503,7 +502,6 @@ public class OffsetCurveBuilder {
                         Math.max(squaredDistance(dx10, dy10), squaredDistance(dx12, dy12)));
         if (squaredDistance(px - x, py - y) > maxAllowedDistanceSquared) {
             double angle = atan2(py - y, px - x);
-            System.out.println(toDegrees(angle));
             double maxAllowedDistance = Math.sqrt(maxAllowedDistanceSquared);
             px = x + maxAllowedDistance * cos(angle);
             py = y + maxAllowedDistance * sin(angle);

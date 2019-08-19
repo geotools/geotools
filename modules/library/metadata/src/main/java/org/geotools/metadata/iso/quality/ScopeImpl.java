@@ -29,7 +29,6 @@ import org.opengis.metadata.quality.Scope;
 /**
  * Description of the data specified by the scope.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @author Touraïvane
@@ -74,7 +73,7 @@ public class ScopeImpl extends MetadataEntity implements Scope {
     }
 
     /** Set the hierarchical level of the data specified by the scope. */
-    public synchronized void setLevel(final ScopeCode newValue) {
+    public void setLevel(final ScopeCode newValue) {
         checkWritePermission();
         level = newValue;
     }
@@ -86,7 +85,7 @@ public class ScopeImpl extends MetadataEntity implements Scope {
      *
      * @since 2.4
      */
-    public synchronized Collection<ScopeDescription> getLevelDescription() {
+    public Collection<ScopeDescription> getLevelDescription() {
         return levelDescription = nonNullCollection(levelDescription, ScopeDescription.class);
     }
 
@@ -95,8 +94,7 @@ public class ScopeImpl extends MetadataEntity implements Scope {
      *
      * @since 2.4
      */
-    public synchronized void setLevelDescription(
-            final Collection<? extends ScopeDescription> newValues) {
+    public void setLevelDescription(final Collection<? extends ScopeDescription> newValues) {
         levelDescription = copyCollection(newValues, levelDescription, ScopeDescription.class);
     }
 
@@ -112,7 +110,7 @@ public class ScopeImpl extends MetadataEntity implements Scope {
      * Set information about the spatial, vertical and temporal extent of the data specified by the
      * scope.
      */
-    public synchronized void setExtent(final Extent newValue) {
+    public void setExtent(final Extent newValue) {
         checkWritePermission();
         extent = newValue;
     }

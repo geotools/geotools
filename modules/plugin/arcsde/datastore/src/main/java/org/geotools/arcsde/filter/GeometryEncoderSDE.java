@@ -70,14 +70,12 @@ import org.opengis.filter.spatial.Within;
  * provided here; mirroring the java SDE api approach
  *
  * @author Gabriel Rold?n
- * @source $URL$
- *     http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/main/java
- *     /org/geotools/arcsde/filter/GeometryEncoderSDE.java $
  */
 @SuppressWarnings("deprecation")
 public class GeometryEncoderSDE extends DefaultFilterVisitor implements FilterVisitor {
     /** Standard java logger */
-    private static Logger log = org.geotools.util.logging.Logging.getLogger("org.geotools.filter");
+    private static Logger log =
+            org.geotools.util.logging.Logging.getLogger(GeometryEncoderSDE.class);
 
     private static FilterCapabilities capabilities = new FilterCapabilities();
 

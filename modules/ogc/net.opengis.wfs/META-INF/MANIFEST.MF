@@ -1,14 +1,22 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
-Bundle-SymbolicName: net.opengis.wfs; singleton:=true
+Bundle-SymbolicName: net.opengis.wfs;singleton:=true
+Automatic-Module-Name: net.opengis.wfs
 Bundle-Version: 1.0.0
 Bundle-ClassPath: .
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Export-Package: net.opengis.wfs,
- net.opengis.wfs.impl
+ net.opengis.wfs.impl,
+ net.opengis.wfs20,
+ net.opengis.wfs20.impl,
+ net.opengis.wfs20.util
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.ecore;visibility:=reexport,
- net.opengis.ows
+ net.opengis.ows;visibility:=reexport,
+ net.opengis.fes;visibility:=reexport,
+ org.w3.xlink;visibility:=reexport
 Eclipse-LazyStart: true
+Bundle-ActivationPolicy: lazy

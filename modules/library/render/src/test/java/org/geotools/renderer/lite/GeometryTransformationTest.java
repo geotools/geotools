@@ -16,11 +16,9 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.map.DefaultMapContext;
 import org.geotools.map.FeatureLayer;
 import org.geotools.map.Layer;
 import org.geotools.map.MapContent;
-import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.styling.PointSymbolizer;
 import org.geotools.styling.SLD;
 import org.geotools.styling.Style;
@@ -31,7 +29,6 @@ import org.locationtech.jts.geom.Point;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.FilterFactory2;
 
-/** @source $URL$ */
 public class GeometryTransformationTest {
     private static final long TIME = 2000;
 
@@ -62,11 +59,11 @@ public class GeometryTransformationTest {
     public void testBufferLine() throws Exception {
         Style style = RendererBaseTest.loadStyle(this, "lineBuffer.sld");
 
-        DefaultMapContext mc = new DefaultMapContext(DefaultGeographicCRS.WGS84);
-        mc.addLayer(fs, style);
+        MapContent mc = new MapContent();
+        mc.addLayer(new FeatureLayer(fs, style));
 
         StreamingRenderer renderer = new StreamingRenderer();
-        renderer.setContext(mc);
+        renderer.setMapContent(mc);
 
         RendererBaseTest.showRender("lineBuffer.sld", renderer, TIME, bounds);
     }
@@ -75,11 +72,11 @@ public class GeometryTransformationTest {
     public void testBufferPoly() throws Exception {
         Style style = RendererBaseTest.loadStyle(this, "polyBuffer.sld");
 
-        DefaultMapContext mc = new DefaultMapContext(DefaultGeographicCRS.WGS84);
-        mc.addLayer(bfs, style);
+        MapContent mc = new MapContent();
+        mc.addLayer(new FeatureLayer(bfs, style));
 
         StreamingRenderer renderer = new StreamingRenderer();
-        renderer.setContext(mc);
+        renderer.setMapContent(mc);
 
         RendererBaseTest.showRender("polyBuffer.sld", renderer, TIME, bounds);
     }
@@ -88,11 +85,11 @@ public class GeometryTransformationTest {
     public void testVertices() throws Exception {
         Style style = RendererBaseTest.loadStyle(this, "lineVertices.sld");
 
-        DefaultMapContext mc = new DefaultMapContext(DefaultGeographicCRS.WGS84);
-        mc.addLayer(fs, style);
+        MapContent mc = new MapContent();
+        mc.addLayer(new FeatureLayer(fs, style));
 
         StreamingRenderer renderer = new StreamingRenderer();
-        renderer.setContext(mc);
+        renderer.setMapContent(mc);
 
         RendererBaseTest.showRender("lineVertices.sld", renderer, TIME, bounds);
     }
@@ -101,11 +98,11 @@ public class GeometryTransformationTest {
     public void testStartEnd() throws Exception {
         Style style = RendererBaseTest.loadStyle(this, "lineStartEnd.sld");
 
-        DefaultMapContext mc = new DefaultMapContext(DefaultGeographicCRS.WGS84);
-        mc.addLayer(fs, style);
+        MapContent mc = new MapContent();
+        mc.addLayer(new FeatureLayer(fs, style));
 
         StreamingRenderer renderer = new StreamingRenderer();
-        renderer.setContext(mc);
+        renderer.setMapContent(mc);
 
         RendererBaseTest.showRender("lineStartEnd.sld", renderer, TIME, bounds);
     }
@@ -114,11 +111,11 @@ public class GeometryTransformationTest {
     public void testIsometric() throws Exception {
         Style style = RendererBaseTest.loadStyle(this, "isometric.sld");
 
-        DefaultMapContext mc = new DefaultMapContext(DefaultGeographicCRS.WGS84);
-        mc.addLayer(bfs, style);
+        MapContent mc = new MapContent();
+        mc.addLayer(new FeatureLayer(bfs, style));
 
         StreamingRenderer renderer = new StreamingRenderer();
-        renderer.setContext(mc);
+        renderer.setMapContent(mc);
         renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
 
         RendererBaseTest.showRender("lineStartEnd.sld", renderer, TIME, bbounds);

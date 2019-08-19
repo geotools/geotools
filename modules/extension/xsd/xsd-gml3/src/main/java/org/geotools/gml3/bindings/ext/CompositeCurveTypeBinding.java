@@ -25,8 +25,8 @@ import org.geotools.gml3.ArcParameters;
 import org.geotools.gml3.GML;
 import org.geotools.gml3.bindings.GML3ParsingUtils;
 import org.geotools.gml3.bindings.LineStringTypeBinding;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.CoordinateList;
 import org.locationtech.jts.geom.CoordinateSequence;
@@ -35,11 +35,7 @@ import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.MultiLineString;
 
-/**
- * Simple type binding for Composite Curve GML elements.
- *
- * @source $URL$
- */
+/** Simple type binding for Composite Curve GML elements. */
 public class CompositeCurveTypeBinding extends LineStringTypeBinding {
 
     private final GeometryFactory gFactory;

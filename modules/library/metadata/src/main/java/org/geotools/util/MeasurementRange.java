@@ -16,11 +16,11 @@
  */
 package org.geotools.util;
 
+import java.util.Objects;
 import javax.measure.IncommensurableException;
 import javax.measure.UnconvertibleException;
 import javax.measure.Unit;
 import javax.measure.UnitConverter;
-import org.geotools.resources.ClassChanger;
 
 /**
  * A range of numbers associated with a unit of measurement. Unit conversions are applied as needed
@@ -28,7 +28,6 @@ import org.geotools.resources.ClassChanger;
  *
  * @param <T> The type of range elements as a subclass of {@link Number}.
  * @since 2.4
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  */
@@ -236,7 +235,7 @@ public class MeasurementRange<T extends Number & Comparable<? super T>> extends 
      *
      * @param type The class to cast to. Must be one of {@link Byte}, {@link Short}, {@link
      *     Integer}, {@link Long}, {@link Float} or {@link Double}.
-     * @param targetUnit the target units.
+     * @param targetUnits the target units.
      * @return The casted range, or {@code this}.
      * @throws IllegalArgumentException if the target units are not compatible with this {@linkplain
      *     #getUnits range units}.
@@ -328,5 +327,10 @@ public class MeasurementRange<T extends Number & Comparable<? super T>> extends 
             return true;
         }
         return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), units);
     }
 }

@@ -32,7 +32,6 @@ package org.geotools.filter.function;
  * 9 <= x <= 30<br>
  *
  * @author Cory Horner, Refractions Research
- * @source $URL$
  */
 public final class RangedClassifier extends Classifier {
 
@@ -104,7 +103,7 @@ public final class RangedClassifier extends Classifier {
     private int classify(Comparable<?> val) {
         Comparable<?> value = val;
         if (val instanceof Integer) { // convert to double as java is stupid
-            value = new Double(((Integer) val).intValue());
+            value = Double.valueOf(((Integer) val).intValue());
         }
         // check each slot and see if: min <= value < max
         int last = min.length - 1;

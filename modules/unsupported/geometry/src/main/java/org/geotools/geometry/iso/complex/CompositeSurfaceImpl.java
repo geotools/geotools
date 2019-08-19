@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Set;
 import org.geotools.geometry.iso.coordinate.EnvelopeImpl;
 import org.geotools.geometry.iso.primitive.OrientableSurfaceImpl;
+import org.geotools.util.SuppressFBWarnings;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.Envelope;
 import org.opengis.geometry.complex.Complex;
@@ -40,7 +41,6 @@ import org.opengis.geometry.primitive.SurfaceBoundary;
  * surface.
  *
  * @author Jackson Roehrig & Sanjay Jena
- * @source $URL$
  */
 public class CompositeSurfaceImpl extends CompositeImpl<OrientableSurfaceImpl>
         implements CompositeSurface {
@@ -124,6 +124,7 @@ public class CompositeSurfaceImpl extends CompositeImpl<OrientableSurfaceImpl>
     /* (non-Javadoc)
      * @see org.geotools.geometry.featgeom.root.GeometryImpl#clone()
      */
+    @SuppressFBWarnings("NP_CLONE_COULD_RETURN_NULL")
     public CompositeSurfaceImpl clone() throws CloneNotSupportedException {
         // TODO Auto-generated method stub
         return null;

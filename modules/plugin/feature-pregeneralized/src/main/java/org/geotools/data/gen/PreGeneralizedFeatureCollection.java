@@ -39,13 +39,14 @@ import org.opengis.util.ProgressListener;
  *     <p>Implementation of {@link FeatureCollection} for {@link PreGeneralizedSimpleFeature}
  *     <p>This collection is read only, modifying methods result in {@link
  *     UnsupportedOperationException}
- * @source $URL$
  */
 public class PreGeneralizedFeatureCollection implements SimpleFeatureCollection {
 
     protected SimpleFeatureCollection backendCollection;
 
     protected SimpleFeatureType featureType;
+
+    protected SimpleFeatureType returnedFeatureType;
 
     protected String geomPropertyName, backendGeomPropertyName;
 
@@ -54,12 +55,14 @@ public class PreGeneralizedFeatureCollection implements SimpleFeatureCollection 
     public PreGeneralizedFeatureCollection(
             SimpleFeatureCollection backendCollection,
             SimpleFeatureType featureType,
+            SimpleFeatureType returnedFeatureType,
             int[] indexMapping,
             String geomPropertyName,
             String backendGeomPropertyName) {
         super();
         this.backendCollection = backendCollection;
         this.featureType = featureType;
+        this.returnedFeatureType = returnedFeatureType;
         this.geomPropertyName = geomPropertyName;
         this.backendGeomPropertyName = backendGeomPropertyName;
         this.indexMapping = indexMapping;
@@ -97,6 +100,7 @@ public class PreGeneralizedFeatureCollection implements SimpleFeatureCollection 
         return new PreGeneralizedFeatureIterator(
                 backendCollection.features(),
                 featureType,
+                returnedFeatureType,
                 indexMapping,
                 geomPropertyName,
                 backendGeomPropertyName);
@@ -111,7 +115,7 @@ public class PreGeneralizedFeatureCollection implements SimpleFeatureCollection 
     }
 
     public SimpleFeatureType getSchema() {
-        return featureType;
+        return returnedFeatureType;
     }
 
     public boolean isEmpty() {
@@ -126,14 +130,24 @@ public class PreGeneralizedFeatureCollection implements SimpleFeatureCollection 
         SimpleFeatureCollection fColl = backendCollection.sort(sortBy);
         if (fColl == null) return null;
         return new PreGeneralizedFeatureCollection(
-                fColl, featureType, indexMapping, geomPropertyName, backendGeomPropertyName);
+                fColl,
+                featureType,
+                returnedFeatureType,
+                indexMapping,
+                geomPropertyName,
+                backendGeomPropertyName);
     }
 
     public SimpleFeatureCollection subCollection(Filter filter) {
         SimpleFeatureCollection fColl = backendCollection.subCollection(filter);
         if (fColl == null) return null;
         return new PreGeneralizedFeatureCollection(
-                fColl, featureType, indexMapping, geomPropertyName, backendGeomPropertyName);
+                fColl,
+                featureType,
+                returnedFeatureType,
+                indexMapping,
+                geomPropertyName,
+                backendGeomPropertyName);
     }
 
     public Object[] toArray() {
@@ -141,6 +155,7 @@ public class PreGeneralizedFeatureCollection implements SimpleFeatureCollection 
         for (int i = 0; i < res.length; i++) {
             res[i] =
                     new PreGeneralizedSimpleFeature(
+                            getSchema(),
                             getSchema(),
                             indexMapping,
                             (SimpleFeature) res[i],
@@ -155,6 +170,7 @@ public class PreGeneralizedFeatureCollection implements SimpleFeatureCollection 
         for (int i = 0; i < res.length; i++) {
             res[i] =
                     new PreGeneralizedSimpleFeature(
+                            getSchema(),
                             getSchema(),
                             indexMapping,
                             (SimpleFeature) res[i],

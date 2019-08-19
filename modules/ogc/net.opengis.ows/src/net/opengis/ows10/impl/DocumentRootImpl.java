@@ -49,6 +49,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link net.opengis.ows10.impl.DocumentRootImpl#getMixed <em>Mixed</em>}</li>
  *   <li>{@link net.opengis.ows10.impl.DocumentRootImpl#getXMLNSPrefixMap <em>XMLNS Prefix Map</em>}</li>
@@ -84,1346 +85,1352 @@ import org.eclipse.emf.ecore.util.InternalEList;
  *   <li>{@link net.opengis.ows10.impl.DocumentRootImpl#getSupportedCRS <em>Supported CRS</em>}</li>
  *   <li>{@link net.opengis.ows10.impl.DocumentRootImpl#getWgS84BoundingBox <em>Wg S84 Bounding Box</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
 public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	/**
-	 * The cached value of the '{@link #getMixed() <em>Mixed</em>}' attribute list.
-	 * <!-- begin-user-doc -->
+   * The cached value of the '{@link #getMixed() <em>Mixed</em>}' attribute list.
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getMixed()
-	 * @generated
-	 * @ordered
-	 */
+   * @see #getMixed()
+   * @generated
+   * @ordered
+   */
 	protected FeatureMap mixed;
 
 	/**
-	 * The cached value of the '{@link #getXMLNSPrefixMap() <em>XMLNS Prefix Map</em>}' map.
-	 * <!-- begin-user-doc -->
+   * The cached value of the '{@link #getXMLNSPrefixMap() <em>XMLNS Prefix Map</em>}' map.
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getXMLNSPrefixMap()
-	 * @generated
-	 * @ordered
-	 */
-	protected EMap xMLNSPrefixMap;
+   * @see #getXMLNSPrefixMap()
+   * @generated
+   * @ordered
+   */
+	protected EMap<String, String> xMLNSPrefixMap;
 
 	/**
-	 * The cached value of the '{@link #getXSISchemaLocation() <em>XSI Schema Location</em>}' map.
-	 * <!-- begin-user-doc -->
+   * The cached value of the '{@link #getXSISchemaLocation() <em>XSI Schema Location</em>}' map.
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getXSISchemaLocation()
-	 * @generated
-	 * @ordered
-	 */
-	protected EMap xSISchemaLocation;
+   * @see #getXSISchemaLocation()
+   * @generated
+   * @ordered
+   */
+	protected EMap<String, String> xSISchemaLocation;
 
 	/**
-	 * The default value of the '{@link #getAbstract() <em>Abstract</em>}' attribute.
-	 * <!-- begin-user-doc -->
+   * The default value of the '{@link #getAbstract() <em>Abstract</em>}' attribute.
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getAbstract()
-	 * @generated
-	 * @ordered
-	 */
+   * @see #getAbstract()
+   * @generated
+   * @ordered
+   */
 	protected static final String ABSTRACT_EDEFAULT = null;
 
 	/**
-	 * The default value of the '{@link #getIndividualName() <em>Individual Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
+   * The default value of the '{@link #getIndividualName() <em>Individual Name</em>}' attribute.
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getIndividualName()
-	 * @generated
-	 * @ordered
-	 */
+   * @see #getIndividualName()
+   * @generated
+   * @ordered
+   */
 	protected static final String INDIVIDUAL_NAME_EDEFAULT = null;
 
 	/**
-	 * The default value of the '{@link #getOrganisationName() <em>Organisation Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
+   * The default value of the '{@link #getOrganisationName() <em>Organisation Name</em>}' attribute.
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getOrganisationName()
-	 * @generated
-	 * @ordered
-	 */
+   * @see #getOrganisationName()
+   * @generated
+   * @ordered
+   */
 	protected static final String ORGANISATION_NAME_EDEFAULT = null;
 
 	/**
-	 * The default value of the '{@link #getPositionName() <em>Position Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
+   * The default value of the '{@link #getPositionName() <em>Position Name</em>}' attribute.
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getPositionName()
-	 * @generated
-	 * @ordered
-	 */
+   * @see #getPositionName()
+   * @generated
+   * @ordered
+   */
 	protected static final String POSITION_NAME_EDEFAULT = null;
 
 	/**
-	 * The default value of the '{@link #getTitle() <em>Title</em>}' attribute.
-	 * <!-- begin-user-doc -->
+   * The default value of the '{@link #getTitle() <em>Title</em>}' attribute.
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getTitle()
-	 * @generated
-	 * @ordered
-	 */
+   * @see #getTitle()
+   * @generated
+   * @ordered
+   */
 	protected static final String TITLE_EDEFAULT = null;
 
 	/**
-	 * The default value of the '{@link #getAccessConstraints() <em>Access Constraints</em>}' attribute.
-	 * <!-- begin-user-doc -->
+   * The default value of the '{@link #getAccessConstraints() <em>Access Constraints</em>}' attribute.
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getAccessConstraints()
-	 * @generated
-	 * @ordered
-	 */
+   * @see #getAccessConstraints()
+   * @generated
+   * @ordered
+   */
 	protected static final String ACCESS_CONSTRAINTS_EDEFAULT = null;
 
 	/**
-	 * The default value of the '{@link #getAvailableCRS() <em>Available CRS</em>}' attribute.
-	 * <!-- begin-user-doc -->
+   * The default value of the '{@link #getAvailableCRS() <em>Available CRS</em>}' attribute.
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getAvailableCRS()
-	 * @generated
-	 * @ordered
-	 */
+   * @see #getAvailableCRS()
+   * @generated
+   * @ordered
+   */
 	protected static final String AVAILABLE_CRS_EDEFAULT = null;
 
 	/**
-	 * The default value of the '{@link #getFees() <em>Fees</em>}' attribute.
-	 * <!-- begin-user-doc -->
+   * The default value of the '{@link #getFees() <em>Fees</em>}' attribute.
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getFees()
-	 * @generated
-	 * @ordered
-	 */
+   * @see #getFees()
+   * @generated
+   * @ordered
+   */
 	protected static final String FEES_EDEFAULT = null;
 
 	/**
-	 * The default value of the '{@link #getLanguage() <em>Language</em>}' attribute.
-	 * <!-- begin-user-doc -->
+   * The default value of the '{@link #getLanguage() <em>Language</em>}' attribute.
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getLanguage()
-	 * @generated
-	 * @ordered
-	 */
+   * @see #getLanguage()
+   * @generated
+   * @ordered
+   */
 	protected static final String LANGUAGE_EDEFAULT = null;
 
 	/**
-	 * The default value of the '{@link #getOutputFormat() <em>Output Format</em>}' attribute.
-	 * <!-- begin-user-doc -->
+   * The default value of the '{@link #getOutputFormat() <em>Output Format</em>}' attribute.
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getOutputFormat()
-	 * @generated
-	 * @ordered
-	 */
+   * @see #getOutputFormat()
+   * @generated
+   * @ordered
+   */
 	protected static final String OUTPUT_FORMAT_EDEFAULT = null;
 
 	/**
-	 * The default value of the '{@link #getSupportedCRS() <em>Supported CRS</em>}' attribute.
-	 * <!-- begin-user-doc -->
+   * The default value of the '{@link #getSupportedCRS() <em>Supported CRS</em>}' attribute.
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getSupportedCRS()
-	 * @generated
-	 * @ordered
-	 */
+   * @see #getSupportedCRS()
+   * @generated
+   * @ordered
+   */
 	protected static final String SUPPORTED_CRS_EDEFAULT = null;
 
 	/**
-	 * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+   * @generated
+   */
 	protected DocumentRootImpl() {
-		super();
-	}
+    super();
+  }
 
 	/**
-	 * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected EClass eStaticClass() {
-		return Ows10Package.eINSTANCE.getDocumentRoot();
-	}
+   * @generated
+   */
+	@Override
+  protected EClass eStaticClass() {
+    return Ows10Package.eINSTANCE.getDocumentRoot();
+  }
 
 	/**
-	 * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+   * @generated
+   */
 	public FeatureMap getMixed() {
-		if (mixed == null) {
-			mixed = new BasicFeatureMap(this, Ows10Package.DOCUMENT_ROOT__MIXED);
-		}
-		return mixed;
-	}
+    if (mixed == null) {
+      mixed = new BasicFeatureMap(this, Ows10Package.DOCUMENT_ROOT__MIXED);
+    }
+    return mixed;
+  }
 
 	/**
-	 * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EMap getXMLNSPrefixMap() {
-		if (xMLNSPrefixMap == null) {
-			xMLNSPrefixMap = new EcoreEMap(EcorePackage.Literals.ESTRING_TO_STRING_MAP_ENTRY, EStringToStringMapEntryImpl.class, this, Ows10Package.DOCUMENT_ROOT__XMLNS_PREFIX_MAP);
-		}
-		return xMLNSPrefixMap;
-	}
+   * @generated
+   */
+	public EMap<String, String> getXMLNSPrefixMap() {
+    if (xMLNSPrefixMap == null) {
+      xMLNSPrefixMap = new EcoreEMap<String,String>(EcorePackage.Literals.ESTRING_TO_STRING_MAP_ENTRY, EStringToStringMapEntryImpl.class, this, Ows10Package.DOCUMENT_ROOT__XMLNS_PREFIX_MAP);
+    }
+    return xMLNSPrefixMap;
+  }
 
 	/**
-	 * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EMap getXSISchemaLocation() {
-		if (xSISchemaLocation == null) {
-			xSISchemaLocation = new EcoreEMap(EcorePackage.Literals.ESTRING_TO_STRING_MAP_ENTRY, EStringToStringMapEntryImpl.class, this, Ows10Package.DOCUMENT_ROOT__XSI_SCHEMA_LOCATION);
-		}
-		return xSISchemaLocation;
-	}
+   * @generated
+   */
+	public EMap<String, String> getXSISchemaLocation() {
+    if (xSISchemaLocation == null) {
+      xSISchemaLocation = new EcoreEMap<String,String>(EcorePackage.Literals.ESTRING_TO_STRING_MAP_ENTRY, EStringToStringMapEntryImpl.class, this, Ows10Package.DOCUMENT_ROOT__XSI_SCHEMA_LOCATION);
+    }
+    return xSISchemaLocation;
+  }
 
 	/**
-	 * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+   * @generated
+   */
 	public String getAbstract() {
-		return (String)getMixed().get(Ows10Package.eINSTANCE.getDocumentRoot_Abstract(), true);
-	}
+    return (String)getMixed().get(Ows10Package.eINSTANCE.getDocumentRoot_Abstract(), true);
+  }
 
 	/**
-	 * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+   * @generated
+   */
 	public void setAbstract(String newAbstract) {
-		((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_Abstract(), newAbstract);
-	}
+    ((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_Abstract(), newAbstract);
+  }
 
 	/**
-	 * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+   * @generated
+   */
 	public ContactType getContactInfo() {
-		return (ContactType)getMixed().get(Ows10Package.eINSTANCE.getDocumentRoot_ContactInfo(), true);
-	}
+    return (ContactType)getMixed().get(Ows10Package.eINSTANCE.getDocumentRoot_ContactInfo(), true);
+  }
 
 	/**
-	 * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+   * @generated
+   */
 	public NotificationChain basicSetContactInfo(ContactType newContactInfo, NotificationChain msgs) {
-		return ((FeatureMap.Internal)getMixed()).basicAdd(Ows10Package.eINSTANCE.getDocumentRoot_ContactInfo(), newContactInfo, msgs);
-	}
+    return ((FeatureMap.Internal)getMixed()).basicAdd(Ows10Package.eINSTANCE.getDocumentRoot_ContactInfo(), newContactInfo, msgs);
+  }
 
 	/**
-	 * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+   * @generated
+   */
 	public void setContactInfo(ContactType newContactInfo) {
-		((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_ContactInfo(), newContactInfo);
-	}
+    ((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_ContactInfo(), newContactInfo);
+  }
 
 	/**
-	 * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+   * @generated
+   */
 	public String getIndividualName() {
-		return (String)getMixed().get(Ows10Package.eINSTANCE.getDocumentRoot_IndividualName(), true);
-	}
+    return (String)getMixed().get(Ows10Package.eINSTANCE.getDocumentRoot_IndividualName(), true);
+  }
 
 	/**
-	 * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+   * @generated
+   */
 	public void setIndividualName(String newIndividualName) {
-		((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_IndividualName(), newIndividualName);
-	}
+    ((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_IndividualName(), newIndividualName);
+  }
 
 	/**
-	 * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+   * @generated
+   */
 	public KeywordsType getKeywords() {
-		return (KeywordsType)getMixed().get(Ows10Package.eINSTANCE.getDocumentRoot_Keywords(), true);
-	}
+    return (KeywordsType)getMixed().get(Ows10Package.eINSTANCE.getDocumentRoot_Keywords(), true);
+  }
 
 	/**
-	 * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+   * @generated
+   */
 	public NotificationChain basicSetKeywords(KeywordsType newKeywords, NotificationChain msgs) {
-		return ((FeatureMap.Internal)getMixed()).basicAdd(Ows10Package.eINSTANCE.getDocumentRoot_Keywords(), newKeywords, msgs);
-	}
+    return ((FeatureMap.Internal)getMixed()).basicAdd(Ows10Package.eINSTANCE.getDocumentRoot_Keywords(), newKeywords, msgs);
+  }
 
 	/**
-	 * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+   * @generated
+   */
 	public void setKeywords(KeywordsType newKeywords) {
-		((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_Keywords(), newKeywords);
-	}
+    ((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_Keywords(), newKeywords);
+  }
 
 	/**
-	 * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+   * @generated
+   */
 	public String getOrganisationName() {
-		return (String)getMixed().get(Ows10Package.eINSTANCE.getDocumentRoot_OrganisationName(), true);
-	}
+    return (String)getMixed().get(Ows10Package.eINSTANCE.getDocumentRoot_OrganisationName(), true);
+  }
 
 	/**
-	 * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+   * @generated
+   */
 	public void setOrganisationName(String newOrganisationName) {
-		((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_OrganisationName(), newOrganisationName);
-	}
+    ((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_OrganisationName(), newOrganisationName);
+  }
 
 	/**
-	 * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+   * @generated
+   */
 	public ResponsiblePartyType getPointOfContact() {
-		return (ResponsiblePartyType)getMixed().get(Ows10Package.eINSTANCE.getDocumentRoot_PointOfContact(), true);
-	}
+    return (ResponsiblePartyType)getMixed().get(Ows10Package.eINSTANCE.getDocumentRoot_PointOfContact(), true);
+  }
 
 	/**
-	 * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+   * @generated
+   */
 	public NotificationChain basicSetPointOfContact(ResponsiblePartyType newPointOfContact, NotificationChain msgs) {
-		return ((FeatureMap.Internal)getMixed()).basicAdd(Ows10Package.eINSTANCE.getDocumentRoot_PointOfContact(), newPointOfContact, msgs);
-	}
+    return ((FeatureMap.Internal)getMixed()).basicAdd(Ows10Package.eINSTANCE.getDocumentRoot_PointOfContact(), newPointOfContact, msgs);
+  }
 
 	/**
-	 * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+   * @generated
+   */
 	public void setPointOfContact(ResponsiblePartyType newPointOfContact) {
-		((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_PointOfContact(), newPointOfContact);
-	}
+    ((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_PointOfContact(), newPointOfContact);
+  }
 
 	/**
-	 * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+   * @generated
+   */
 	public String getPositionName() {
-		return (String)getMixed().get(Ows10Package.eINSTANCE.getDocumentRoot_PositionName(), true);
-	}
+    return (String)getMixed().get(Ows10Package.eINSTANCE.getDocumentRoot_PositionName(), true);
+  }
 
 	/**
-	 * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+   * @generated
+   */
 	public void setPositionName(String newPositionName) {
-		((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_PositionName(), newPositionName);
-	}
+    ((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_PositionName(), newPositionName);
+  }
 
 	/**
-	 * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+   * @generated
+   */
 	public CodeType getRole() {
-		return (CodeType)getMixed().get(Ows10Package.eINSTANCE.getDocumentRoot_Role(), true);
-	}
+    return (CodeType)getMixed().get(Ows10Package.eINSTANCE.getDocumentRoot_Role(), true);
+  }
 
 	/**
-	 * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+   * @generated
+   */
 	public NotificationChain basicSetRole(CodeType newRole, NotificationChain msgs) {
-		return ((FeatureMap.Internal)getMixed()).basicAdd(Ows10Package.eINSTANCE.getDocumentRoot_Role(), newRole, msgs);
-	}
+    return ((FeatureMap.Internal)getMixed()).basicAdd(Ows10Package.eINSTANCE.getDocumentRoot_Role(), newRole, msgs);
+  }
 
 	/**
-	 * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+   * @generated
+   */
 	public void setRole(CodeType newRole) {
-		((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_Role(), newRole);
-	}
+    ((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_Role(), newRole);
+  }
 
 	/**
-	 * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+   * @generated
+   */
 	public String getTitle() {
-		return (String)getMixed().get(Ows10Package.eINSTANCE.getDocumentRoot_Title(), true);
-	}
+    return (String)getMixed().get(Ows10Package.eINSTANCE.getDocumentRoot_Title(), true);
+  }
 
 	/**
-	 * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+   * @generated
+   */
 	public void setTitle(String newTitle) {
-		((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_Title(), newTitle);
-	}
+    ((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_Title(), newTitle);
+  }
 
 	/**
-	 * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+   * @generated
+   */
 	public EObject getAbstractMetaData() {
-		return (EObject)getMixed().get(Ows10Package.eINSTANCE.getDocumentRoot_AbstractMetaData(), true);
-	}
+    return (EObject)getMixed().get(Ows10Package.eINSTANCE.getDocumentRoot_AbstractMetaData(), true);
+  }
 
 	/**
-	 * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+   * @generated
+   */
 	public NotificationChain basicSetAbstractMetaData(EObject newAbstractMetaData, NotificationChain msgs) {
-		return ((FeatureMap.Internal)getMixed()).basicAdd(Ows10Package.eINSTANCE.getDocumentRoot_AbstractMetaData(), newAbstractMetaData, msgs);
-	}
+    return ((FeatureMap.Internal)getMixed()).basicAdd(Ows10Package.eINSTANCE.getDocumentRoot_AbstractMetaData(), newAbstractMetaData, msgs);
+  }
 
 	/**
-	 * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+   * @generated
+   */
 	public String getAccessConstraints() {
-		return (String)getMixed().get(Ows10Package.eINSTANCE.getDocumentRoot_AccessConstraints(), true);
-	}
+    return (String)getMixed().get(Ows10Package.eINSTANCE.getDocumentRoot_AccessConstraints(), true);
+  }
 
 	/**
-	 * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+   * @generated
+   */
 	public void setAccessConstraints(String newAccessConstraints) {
-		((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_AccessConstraints(), newAccessConstraints);
-	}
+    ((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_AccessConstraints(), newAccessConstraints);
+  }
 
 	/**
-	 * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+   * @generated
+   */
 	public String getAvailableCRS() {
-		return (String)getMixed().get(Ows10Package.eINSTANCE.getDocumentRoot_AvailableCRS(), true);
-	}
+    return (String)getMixed().get(Ows10Package.eINSTANCE.getDocumentRoot_AvailableCRS(), true);
+  }
 
 	/**
-	 * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+   * @generated
+   */
 	public void setAvailableCRS(String newAvailableCRS) {
-		((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_AvailableCRS(), newAvailableCRS);
-	}
+    ((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_AvailableCRS(), newAvailableCRS);
+  }
 
 	/**
-	 * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+   * @generated
+   */
 	public BoundingBoxType getBoundingBox() {
-		return (BoundingBoxType)getMixed().get(Ows10Package.eINSTANCE.getDocumentRoot_BoundingBox(), true);
-	}
+    return (BoundingBoxType)getMixed().get(Ows10Package.eINSTANCE.getDocumentRoot_BoundingBox(), true);
+  }
 
 	/**
-	 * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+   * @generated
+   */
 	public NotificationChain basicSetBoundingBox(BoundingBoxType newBoundingBox, NotificationChain msgs) {
-		return ((FeatureMap.Internal)getMixed()).basicAdd(Ows10Package.eINSTANCE.getDocumentRoot_BoundingBox(), newBoundingBox, msgs);
-	}
+    return ((FeatureMap.Internal)getMixed()).basicAdd(Ows10Package.eINSTANCE.getDocumentRoot_BoundingBox(), newBoundingBox, msgs);
+  }
 
 	/**
-	 * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+   * @generated
+   */
 	public void setBoundingBox(BoundingBoxType newBoundingBox) {
-		((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_BoundingBox(), newBoundingBox);
-	}
+    ((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_BoundingBox(), newBoundingBox);
+  }
 
 	/**
-	 * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+   * @generated
+   */
 	public DCPType getDcp() {
-		return (DCPType)getMixed().get(Ows10Package.eINSTANCE.getDocumentRoot_Dcp(), true);
-	}
+    return (DCPType)getMixed().get(Ows10Package.eINSTANCE.getDocumentRoot_Dcp(), true);
+  }
 
 	/**
-	 * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+   * @generated
+   */
 	public NotificationChain basicSetDcp(DCPType newDcp, NotificationChain msgs) {
-		return ((FeatureMap.Internal)getMixed()).basicAdd(Ows10Package.eINSTANCE.getDocumentRoot_Dcp(), newDcp, msgs);
-	}
+    return ((FeatureMap.Internal)getMixed()).basicAdd(Ows10Package.eINSTANCE.getDocumentRoot_Dcp(), newDcp, msgs);
+  }
 
 	/**
-	 * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+   * @generated
+   */
 	public void setDcp(DCPType newDcp) {
-		((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_Dcp(), newDcp);
-	}
+    ((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_Dcp(), newDcp);
+  }
 
 	/**
-	 * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+   * @generated
+   */
 	public ExceptionType getException() {
-		return (ExceptionType)getMixed().get(Ows10Package.eINSTANCE.getDocumentRoot_Exception(), true);
-	}
+    return (ExceptionType)getMixed().get(Ows10Package.eINSTANCE.getDocumentRoot_Exception(), true);
+  }
 
 	/**
-	 * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+   * @generated
+   */
 	public NotificationChain basicSetException(ExceptionType newException, NotificationChain msgs) {
-		return ((FeatureMap.Internal)getMixed()).basicAdd(Ows10Package.eINSTANCE.getDocumentRoot_Exception(), newException, msgs);
-	}
+    return ((FeatureMap.Internal)getMixed()).basicAdd(Ows10Package.eINSTANCE.getDocumentRoot_Exception(), newException, msgs);
+  }
 
 	/**
-	 * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+   * @generated
+   */
 	public void setException(ExceptionType newException) {
-		((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_Exception(), newException);
-	}
+    ((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_Exception(), newException);
+  }
 
 	/**
-	 * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+   * @generated
+   */
 	public ExceptionReportType getExceptionReport() {
-		return (ExceptionReportType)getMixed().get(Ows10Package.eINSTANCE.getDocumentRoot_ExceptionReport(), true);
-	}
+    return (ExceptionReportType)getMixed().get(Ows10Package.eINSTANCE.getDocumentRoot_ExceptionReport(), true);
+  }
 
 	/**
-	 * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+   * @generated
+   */
 	public NotificationChain basicSetExceptionReport(ExceptionReportType newExceptionReport, NotificationChain msgs) {
-		return ((FeatureMap.Internal)getMixed()).basicAdd(Ows10Package.eINSTANCE.getDocumentRoot_ExceptionReport(), newExceptionReport, msgs);
-	}
+    return ((FeatureMap.Internal)getMixed()).basicAdd(Ows10Package.eINSTANCE.getDocumentRoot_ExceptionReport(), newExceptionReport, msgs);
+  }
 
 	/**
-	 * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+   * @generated
+   */
 	public void setExceptionReport(ExceptionReportType newExceptionReport) {
-		((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_ExceptionReport(), newExceptionReport);
-	}
+    ((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_ExceptionReport(), newExceptionReport);
+  }
 
 	/**
-	 * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+   * @generated
+   */
 	public EObject getExtendedCapabilities() {
-		return (EObject)getMixed().get(Ows10Package.eINSTANCE.getDocumentRoot_ExtendedCapabilities(), true);
-	}
+    return (EObject)getMixed().get(Ows10Package.eINSTANCE.getDocumentRoot_ExtendedCapabilities(), true);
+  }
 
 	/**
-	 * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+   * @generated
+   */
 	public NotificationChain basicSetExtendedCapabilities(EObject newExtendedCapabilities, NotificationChain msgs) {
-		return ((FeatureMap.Internal)getMixed()).basicAdd(Ows10Package.eINSTANCE.getDocumentRoot_ExtendedCapabilities(), newExtendedCapabilities, msgs);
-	}
+    return ((FeatureMap.Internal)getMixed()).basicAdd(Ows10Package.eINSTANCE.getDocumentRoot_ExtendedCapabilities(), newExtendedCapabilities, msgs);
+  }
 
 	/**
-	 * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+   * @generated
+   */
 	public void setExtendedCapabilities(EObject newExtendedCapabilities) {
-		((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_ExtendedCapabilities(), newExtendedCapabilities);
-	}
+    ((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_ExtendedCapabilities(), newExtendedCapabilities);
+  }
 
 	/**
-	 * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+   * @generated
+   */
 	public String getFees() {
-		return (String)getMixed().get(Ows10Package.eINSTANCE.getDocumentRoot_Fees(), true);
-	}
+    return (String)getMixed().get(Ows10Package.eINSTANCE.getDocumentRoot_Fees(), true);
+  }
 
 	/**
-	 * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+   * @generated
+   */
 	public void setFees(String newFees) {
-		((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_Fees(), newFees);
-	}
+    ((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_Fees(), newFees);
+  }
 
 	/**
-	 * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+   * @generated
+   */
 	public GetCapabilitiesType getGetCapabilities() {
-		return (GetCapabilitiesType)getMixed().get(Ows10Package.eINSTANCE.getDocumentRoot_GetCapabilities(), true);
-	}
+    return (GetCapabilitiesType)getMixed().get(Ows10Package.eINSTANCE.getDocumentRoot_GetCapabilities(), true);
+  }
 
 	/**
-	 * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+   * @generated
+   */
 	public NotificationChain basicSetGetCapabilities(GetCapabilitiesType newGetCapabilities, NotificationChain msgs) {
-		return ((FeatureMap.Internal)getMixed()).basicAdd(Ows10Package.eINSTANCE.getDocumentRoot_GetCapabilities(), newGetCapabilities, msgs);
-	}
+    return ((FeatureMap.Internal)getMixed()).basicAdd(Ows10Package.eINSTANCE.getDocumentRoot_GetCapabilities(), newGetCapabilities, msgs);
+  }
 
 	/**
-	 * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+   * @generated
+   */
 	public void setGetCapabilities(GetCapabilitiesType newGetCapabilities) {
-		((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_GetCapabilities(), newGetCapabilities);
-	}
+    ((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_GetCapabilities(), newGetCapabilities);
+  }
 
 	/**
-	 * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+   * @generated
+   */
 	public HTTPType getHttp() {
-		return (HTTPType)getMixed().get(Ows10Package.eINSTANCE.getDocumentRoot_Http(), true);
-	}
+    return (HTTPType)getMixed().get(Ows10Package.eINSTANCE.getDocumentRoot_Http(), true);
+  }
 
 	/**
-	 * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+   * @generated
+   */
 	public NotificationChain basicSetHttp(HTTPType newHttp, NotificationChain msgs) {
-		return ((FeatureMap.Internal)getMixed()).basicAdd(Ows10Package.eINSTANCE.getDocumentRoot_Http(), newHttp, msgs);
-	}
+    return ((FeatureMap.Internal)getMixed()).basicAdd(Ows10Package.eINSTANCE.getDocumentRoot_Http(), newHttp, msgs);
+  }
 
 	/**
-	 * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+   * @generated
+   */
 	public void setHttp(HTTPType newHttp) {
-		((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_Http(), newHttp);
-	}
+    ((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_Http(), newHttp);
+  }
 
 	/**
-	 * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+   * @generated
+   */
 	public CodeType getIdentifier() {
-		return (CodeType)getMixed().get(Ows10Package.eINSTANCE.getDocumentRoot_Identifier(), true);
-	}
+    return (CodeType)getMixed().get(Ows10Package.eINSTANCE.getDocumentRoot_Identifier(), true);
+  }
 
 	/**
-	 * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+   * @generated
+   */
 	public NotificationChain basicSetIdentifier(CodeType newIdentifier, NotificationChain msgs) {
-		return ((FeatureMap.Internal)getMixed()).basicAdd(Ows10Package.eINSTANCE.getDocumentRoot_Identifier(), newIdentifier, msgs);
-	}
+    return ((FeatureMap.Internal)getMixed()).basicAdd(Ows10Package.eINSTANCE.getDocumentRoot_Identifier(), newIdentifier, msgs);
+  }
 
 	/**
-	 * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+   * @generated
+   */
 	public void setIdentifier(CodeType newIdentifier) {
-		((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_Identifier(), newIdentifier);
-	}
+    ((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_Identifier(), newIdentifier);
+  }
 
 	/**
-	 * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+   * @generated
+   */
 	public String getLanguage() {
-		return (String)getMixed().get(Ows10Package.eINSTANCE.getDocumentRoot_Language(), true);
-	}
+    return (String)getMixed().get(Ows10Package.eINSTANCE.getDocumentRoot_Language(), true);
+  }
 
 	/**
-	 * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+   * @generated
+   */
 	public void setLanguage(String newLanguage) {
-		((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_Language(), newLanguage);
-	}
+    ((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_Language(), newLanguage);
+  }
 
 	/**
-	 * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+   * @generated
+   */
 	public MetadataType getMetadata() {
-		return (MetadataType)getMixed().get(Ows10Package.eINSTANCE.getDocumentRoot_Metadata(), true);
-	}
+    return (MetadataType)getMixed().get(Ows10Package.eINSTANCE.getDocumentRoot_Metadata(), true);
+  }
 
 	/**
-	 * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+   * @generated
+   */
 	public NotificationChain basicSetMetadata(MetadataType newMetadata, NotificationChain msgs) {
-		return ((FeatureMap.Internal)getMixed()).basicAdd(Ows10Package.eINSTANCE.getDocumentRoot_Metadata(), newMetadata, msgs);
-	}
+    return ((FeatureMap.Internal)getMixed()).basicAdd(Ows10Package.eINSTANCE.getDocumentRoot_Metadata(), newMetadata, msgs);
+  }
 
 	/**
-	 * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+   * @generated
+   */
 	public void setMetadata(MetadataType newMetadata) {
-		((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_Metadata(), newMetadata);
-	}
+    ((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_Metadata(), newMetadata);
+  }
 
 	/**
-	 * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+   * @generated
+   */
 	public OperationType getOperation() {
-		return (OperationType)getMixed().get(Ows10Package.eINSTANCE.getDocumentRoot_Operation(), true);
-	}
+    return (OperationType)getMixed().get(Ows10Package.eINSTANCE.getDocumentRoot_Operation(), true);
+  }
 
 	/**
-	 * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+   * @generated
+   */
 	public NotificationChain basicSetOperation(OperationType newOperation, NotificationChain msgs) {
-		return ((FeatureMap.Internal)getMixed()).basicAdd(Ows10Package.eINSTANCE.getDocumentRoot_Operation(), newOperation, msgs);
-	}
+    return ((FeatureMap.Internal)getMixed()).basicAdd(Ows10Package.eINSTANCE.getDocumentRoot_Operation(), newOperation, msgs);
+  }
 
 	/**
-	 * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+   * @generated
+   */
 	public void setOperation(OperationType newOperation) {
-		((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_Operation(), newOperation);
-	}
+    ((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_Operation(), newOperation);
+  }
 
 	/**
-	 * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+   * @generated
+   */
 	public OperationsMetadataType getOperationsMetadata() {
-		return (OperationsMetadataType)getMixed().get(Ows10Package.eINSTANCE.getDocumentRoot_OperationsMetadata(), true);
-	}
+    return (OperationsMetadataType)getMixed().get(Ows10Package.eINSTANCE.getDocumentRoot_OperationsMetadata(), true);
+  }
 
 	/**
-	 * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+   * @generated
+   */
 	public NotificationChain basicSetOperationsMetadata(OperationsMetadataType newOperationsMetadata, NotificationChain msgs) {
-		return ((FeatureMap.Internal)getMixed()).basicAdd(Ows10Package.eINSTANCE.getDocumentRoot_OperationsMetadata(), newOperationsMetadata, msgs);
-	}
+    return ((FeatureMap.Internal)getMixed()).basicAdd(Ows10Package.eINSTANCE.getDocumentRoot_OperationsMetadata(), newOperationsMetadata, msgs);
+  }
 
 	/**
-	 * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+   * @generated
+   */
 	public void setOperationsMetadata(OperationsMetadataType newOperationsMetadata) {
-		((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_OperationsMetadata(), newOperationsMetadata);
-	}
+    ((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_OperationsMetadata(), newOperationsMetadata);
+  }
 
 	/**
-	 * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+   * @generated
+   */
 	public String getOutputFormat() {
-		return (String)getMixed().get(Ows10Package.eINSTANCE.getDocumentRoot_OutputFormat(), true);
-	}
+    return (String)getMixed().get(Ows10Package.eINSTANCE.getDocumentRoot_OutputFormat(), true);
+  }
 
 	/**
-	 * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+   * @generated
+   */
 	public void setOutputFormat(String newOutputFormat) {
-		((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_OutputFormat(), newOutputFormat);
-	}
+    ((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_OutputFormat(), newOutputFormat);
+  }
 
 	/**
-	 * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+   * @generated
+   */
 	public ServiceIdentificationType getServiceIdentification() {
-		return (ServiceIdentificationType)getMixed().get(Ows10Package.eINSTANCE.getDocumentRoot_ServiceIdentification(), true);
-	}
+    return (ServiceIdentificationType)getMixed().get(Ows10Package.eINSTANCE.getDocumentRoot_ServiceIdentification(), true);
+  }
 
 	/**
-	 * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+   * @generated
+   */
 	public NotificationChain basicSetServiceIdentification(ServiceIdentificationType newServiceIdentification, NotificationChain msgs) {
-		return ((FeatureMap.Internal)getMixed()).basicAdd(Ows10Package.eINSTANCE.getDocumentRoot_ServiceIdentification(), newServiceIdentification, msgs);
-	}
+    return ((FeatureMap.Internal)getMixed()).basicAdd(Ows10Package.eINSTANCE.getDocumentRoot_ServiceIdentification(), newServiceIdentification, msgs);
+  }
 
 	/**
-	 * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+   * @generated
+   */
 	public void setServiceIdentification(ServiceIdentificationType newServiceIdentification) {
-		((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_ServiceIdentification(), newServiceIdentification);
-	}
+    ((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_ServiceIdentification(), newServiceIdentification);
+  }
 
 	/**
-	 * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+   * @generated
+   */
 	public ServiceProviderType getServiceProvider() {
-		return (ServiceProviderType)getMixed().get(Ows10Package.eINSTANCE.getDocumentRoot_ServiceProvider(), true);
-	}
+    return (ServiceProviderType)getMixed().get(Ows10Package.eINSTANCE.getDocumentRoot_ServiceProvider(), true);
+  }
 
 	/**
-	 * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+   * @generated
+   */
 	public NotificationChain basicSetServiceProvider(ServiceProviderType newServiceProvider, NotificationChain msgs) {
-		return ((FeatureMap.Internal)getMixed()).basicAdd(Ows10Package.eINSTANCE.getDocumentRoot_ServiceProvider(), newServiceProvider, msgs);
-	}
+    return ((FeatureMap.Internal)getMixed()).basicAdd(Ows10Package.eINSTANCE.getDocumentRoot_ServiceProvider(), newServiceProvider, msgs);
+  }
 
 	/**
-	 * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+   * @generated
+   */
 	public void setServiceProvider(ServiceProviderType newServiceProvider) {
-		((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_ServiceProvider(), newServiceProvider);
-	}
+    ((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_ServiceProvider(), newServiceProvider);
+  }
 
 	/**
-	 * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+   * @generated
+   */
 	public String getSupportedCRS() {
-		return (String)getMixed().get(Ows10Package.eINSTANCE.getDocumentRoot_SupportedCRS(), true);
-	}
+    return (String)getMixed().get(Ows10Package.eINSTANCE.getDocumentRoot_SupportedCRS(), true);
+  }
 
 	/**
-	 * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+   * @generated
+   */
 	public void setSupportedCRS(String newSupportedCRS) {
-		((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_SupportedCRS(), newSupportedCRS);
-	}
+    ((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_SupportedCRS(), newSupportedCRS);
+  }
 
 	/**
-	 * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+   * @generated
+   */
 	public WGS84BoundingBoxType getWgS84BoundingBox() {
-		return (WGS84BoundingBoxType)getMixed().get(Ows10Package.eINSTANCE.getDocumentRoot_WgS84BoundingBox(), true);
-	}
+    return (WGS84BoundingBoxType)getMixed().get(Ows10Package.eINSTANCE.getDocumentRoot_WgS84BoundingBox(), true);
+  }
 
 	/**
-	 * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+   * @generated
+   */
 	public NotificationChain basicSetWgS84BoundingBox(WGS84BoundingBoxType newWgS84BoundingBox, NotificationChain msgs) {
-		return ((FeatureMap.Internal)getMixed()).basicAdd(Ows10Package.eINSTANCE.getDocumentRoot_WgS84BoundingBox(), newWgS84BoundingBox, msgs);
-	}
+    return ((FeatureMap.Internal)getMixed()).basicAdd(Ows10Package.eINSTANCE.getDocumentRoot_WgS84BoundingBox(), newWgS84BoundingBox, msgs);
+  }
 
 	/**
-	 * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+   * @generated
+   */
 	public void setWgS84BoundingBox(WGS84BoundingBoxType newWgS84BoundingBox) {
-		((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_WgS84BoundingBox(), newWgS84BoundingBox);
-	}
+    ((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_WgS84BoundingBox(), newWgS84BoundingBox);
+  }
 
 	/**
-	 * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-		switch (featureID) {
-			case Ows10Package.DOCUMENT_ROOT__MIXED:
-				return ((InternalEList)getMixed()).basicRemove(otherEnd, msgs);
-			case Ows10Package.DOCUMENT_ROOT__XMLNS_PREFIX_MAP:
-				return ((InternalEList)getXMLNSPrefixMap()).basicRemove(otherEnd, msgs);
-			case Ows10Package.DOCUMENT_ROOT__XSI_SCHEMA_LOCATION:
-				return ((InternalEList)getXSISchemaLocation()).basicRemove(otherEnd, msgs);
-			case Ows10Package.DOCUMENT_ROOT__CONTACT_INFO:
-				return basicSetContactInfo(null, msgs);
-			case Ows10Package.DOCUMENT_ROOT__KEYWORDS:
-				return basicSetKeywords(null, msgs);
-			case Ows10Package.DOCUMENT_ROOT__POINT_OF_CONTACT:
-				return basicSetPointOfContact(null, msgs);
-			case Ows10Package.DOCUMENT_ROOT__ROLE:
-				return basicSetRole(null, msgs);
-			case Ows10Package.DOCUMENT_ROOT__ABSTRACT_META_DATA:
-				return basicSetAbstractMetaData(null, msgs);
-			case Ows10Package.DOCUMENT_ROOT__BOUNDING_BOX:
-				return basicSetBoundingBox(null, msgs);
-			case Ows10Package.DOCUMENT_ROOT__DCP:
-				return basicSetDcp(null, msgs);
-			case Ows10Package.DOCUMENT_ROOT__EXCEPTION:
-				return basicSetException(null, msgs);
-			case Ows10Package.DOCUMENT_ROOT__EXCEPTION_REPORT:
-				return basicSetExceptionReport(null, msgs);
-			case Ows10Package.DOCUMENT_ROOT__EXTENDED_CAPABILITIES:
-				return basicSetExtendedCapabilities(null, msgs);
-			case Ows10Package.DOCUMENT_ROOT__GET_CAPABILITIES:
-				return basicSetGetCapabilities(null, msgs);
-			case Ows10Package.DOCUMENT_ROOT__HTTP:
-				return basicSetHttp(null, msgs);
-			case Ows10Package.DOCUMENT_ROOT__IDENTIFIER:
-				return basicSetIdentifier(null, msgs);
-			case Ows10Package.DOCUMENT_ROOT__METADATA:
-				return basicSetMetadata(null, msgs);
-			case Ows10Package.DOCUMENT_ROOT__OPERATION:
-				return basicSetOperation(null, msgs);
-			case Ows10Package.DOCUMENT_ROOT__OPERATIONS_METADATA:
-				return basicSetOperationsMetadata(null, msgs);
-			case Ows10Package.DOCUMENT_ROOT__SERVICE_IDENTIFICATION:
-				return basicSetServiceIdentification(null, msgs);
-			case Ows10Package.DOCUMENT_ROOT__SERVICE_PROVIDER:
-				return basicSetServiceProvider(null, msgs);
-			case Ows10Package.DOCUMENT_ROOT__WG_S84_BOUNDING_BOX:
-				return basicSetWgS84BoundingBox(null, msgs);
-		}
-		return super.eInverseRemove(otherEnd, featureID, msgs);
-	}
+   * @generated
+   */
+	@Override
+  public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+    switch (featureID) {
+      case Ows10Package.DOCUMENT_ROOT__MIXED:
+        return ((InternalEList<?>)getMixed()).basicRemove(otherEnd, msgs);
+      case Ows10Package.DOCUMENT_ROOT__XMLNS_PREFIX_MAP:
+        return ((InternalEList<?>)getXMLNSPrefixMap()).basicRemove(otherEnd, msgs);
+      case Ows10Package.DOCUMENT_ROOT__XSI_SCHEMA_LOCATION:
+        return ((InternalEList<?>)getXSISchemaLocation()).basicRemove(otherEnd, msgs);
+      case Ows10Package.DOCUMENT_ROOT__CONTACT_INFO:
+        return basicSetContactInfo(null, msgs);
+      case Ows10Package.DOCUMENT_ROOT__KEYWORDS:
+        return basicSetKeywords(null, msgs);
+      case Ows10Package.DOCUMENT_ROOT__POINT_OF_CONTACT:
+        return basicSetPointOfContact(null, msgs);
+      case Ows10Package.DOCUMENT_ROOT__ROLE:
+        return basicSetRole(null, msgs);
+      case Ows10Package.DOCUMENT_ROOT__ABSTRACT_META_DATA:
+        return basicSetAbstractMetaData(null, msgs);
+      case Ows10Package.DOCUMENT_ROOT__BOUNDING_BOX:
+        return basicSetBoundingBox(null, msgs);
+      case Ows10Package.DOCUMENT_ROOT__DCP:
+        return basicSetDcp(null, msgs);
+      case Ows10Package.DOCUMENT_ROOT__EXCEPTION:
+        return basicSetException(null, msgs);
+      case Ows10Package.DOCUMENT_ROOT__EXCEPTION_REPORT:
+        return basicSetExceptionReport(null, msgs);
+      case Ows10Package.DOCUMENT_ROOT__EXTENDED_CAPABILITIES:
+        return basicSetExtendedCapabilities(null, msgs);
+      case Ows10Package.DOCUMENT_ROOT__GET_CAPABILITIES:
+        return basicSetGetCapabilities(null, msgs);
+      case Ows10Package.DOCUMENT_ROOT__HTTP:
+        return basicSetHttp(null, msgs);
+      case Ows10Package.DOCUMENT_ROOT__IDENTIFIER:
+        return basicSetIdentifier(null, msgs);
+      case Ows10Package.DOCUMENT_ROOT__METADATA:
+        return basicSetMetadata(null, msgs);
+      case Ows10Package.DOCUMENT_ROOT__OPERATION:
+        return basicSetOperation(null, msgs);
+      case Ows10Package.DOCUMENT_ROOT__OPERATIONS_METADATA:
+        return basicSetOperationsMetadata(null, msgs);
+      case Ows10Package.DOCUMENT_ROOT__SERVICE_IDENTIFICATION:
+        return basicSetServiceIdentification(null, msgs);
+      case Ows10Package.DOCUMENT_ROOT__SERVICE_PROVIDER:
+        return basicSetServiceProvider(null, msgs);
+      case Ows10Package.DOCUMENT_ROOT__WG_S84_BOUNDING_BOX:
+        return basicSetWgS84BoundingBox(null, msgs);
+    }
+    return super.eInverseRemove(otherEnd, featureID, msgs);
+  }
 
 	/**
-	 * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public Object eGet(int featureID, boolean resolve, boolean coreType) {
-		switch (featureID) {
-			case Ows10Package.DOCUMENT_ROOT__MIXED:
-				if (coreType) return getMixed();
-				return ((FeatureMap.Internal)getMixed()).getWrapper();
-			case Ows10Package.DOCUMENT_ROOT__XMLNS_PREFIX_MAP:
-				if (coreType) return getXMLNSPrefixMap();
-				else return getXMLNSPrefixMap().map();
-			case Ows10Package.DOCUMENT_ROOT__XSI_SCHEMA_LOCATION:
-				if (coreType) return getXSISchemaLocation();
-				else return getXSISchemaLocation().map();
-			case Ows10Package.DOCUMENT_ROOT__ABSTRACT:
-				return getAbstract();
-			case Ows10Package.DOCUMENT_ROOT__CONTACT_INFO:
-				return getContactInfo();
-			case Ows10Package.DOCUMENT_ROOT__INDIVIDUAL_NAME:
-				return getIndividualName();
-			case Ows10Package.DOCUMENT_ROOT__KEYWORDS:
-				return getKeywords();
-			case Ows10Package.DOCUMENT_ROOT__ORGANISATION_NAME:
-				return getOrganisationName();
-			case Ows10Package.DOCUMENT_ROOT__POINT_OF_CONTACT:
-				return getPointOfContact();
-			case Ows10Package.DOCUMENT_ROOT__POSITION_NAME:
-				return getPositionName();
-			case Ows10Package.DOCUMENT_ROOT__ROLE:
-				return getRole();
-			case Ows10Package.DOCUMENT_ROOT__TITLE:
-				return getTitle();
-			case Ows10Package.DOCUMENT_ROOT__ABSTRACT_META_DATA:
-				return getAbstractMetaData();
-			case Ows10Package.DOCUMENT_ROOT__ACCESS_CONSTRAINTS:
-				return getAccessConstraints();
-			case Ows10Package.DOCUMENT_ROOT__AVAILABLE_CRS:
-				return getAvailableCRS();
-			case Ows10Package.DOCUMENT_ROOT__BOUNDING_BOX:
-				return getBoundingBox();
-			case Ows10Package.DOCUMENT_ROOT__DCP:
-				return getDcp();
-			case Ows10Package.DOCUMENT_ROOT__EXCEPTION:
-				return getException();
-			case Ows10Package.DOCUMENT_ROOT__EXCEPTION_REPORT:
-				return getExceptionReport();
-			case Ows10Package.DOCUMENT_ROOT__EXTENDED_CAPABILITIES:
-				return getExtendedCapabilities();
-			case Ows10Package.DOCUMENT_ROOT__FEES:
-				return getFees();
-			case Ows10Package.DOCUMENT_ROOT__GET_CAPABILITIES:
-				return getGetCapabilities();
-			case Ows10Package.DOCUMENT_ROOT__HTTP:
-				return getHttp();
-			case Ows10Package.DOCUMENT_ROOT__IDENTIFIER:
-				return getIdentifier();
-			case Ows10Package.DOCUMENT_ROOT__LANGUAGE:
-				return getLanguage();
-			case Ows10Package.DOCUMENT_ROOT__METADATA:
-				return getMetadata();
-			case Ows10Package.DOCUMENT_ROOT__OPERATION:
-				return getOperation();
-			case Ows10Package.DOCUMENT_ROOT__OPERATIONS_METADATA:
-				return getOperationsMetadata();
-			case Ows10Package.DOCUMENT_ROOT__OUTPUT_FORMAT:
-				return getOutputFormat();
-			case Ows10Package.DOCUMENT_ROOT__SERVICE_IDENTIFICATION:
-				return getServiceIdentification();
-			case Ows10Package.DOCUMENT_ROOT__SERVICE_PROVIDER:
-				return getServiceProvider();
-			case Ows10Package.DOCUMENT_ROOT__SUPPORTED_CRS:
-				return getSupportedCRS();
-			case Ows10Package.DOCUMENT_ROOT__WG_S84_BOUNDING_BOX:
-				return getWgS84BoundingBox();
-		}
-		return super.eGet(featureID, resolve, coreType);
-	}
+   * @generated
+   */
+	@Override
+  public Object eGet(int featureID, boolean resolve, boolean coreType) {
+    switch (featureID) {
+      case Ows10Package.DOCUMENT_ROOT__MIXED:
+        if (coreType) return getMixed();
+        return ((FeatureMap.Internal)getMixed()).getWrapper();
+      case Ows10Package.DOCUMENT_ROOT__XMLNS_PREFIX_MAP:
+        if (coreType) return getXMLNSPrefixMap();
+        else return getXMLNSPrefixMap().map();
+      case Ows10Package.DOCUMENT_ROOT__XSI_SCHEMA_LOCATION:
+        if (coreType) return getXSISchemaLocation();
+        else return getXSISchemaLocation().map();
+      case Ows10Package.DOCUMENT_ROOT__ABSTRACT:
+        return getAbstract();
+      case Ows10Package.DOCUMENT_ROOT__CONTACT_INFO:
+        return getContactInfo();
+      case Ows10Package.DOCUMENT_ROOT__INDIVIDUAL_NAME:
+        return getIndividualName();
+      case Ows10Package.DOCUMENT_ROOT__KEYWORDS:
+        return getKeywords();
+      case Ows10Package.DOCUMENT_ROOT__ORGANISATION_NAME:
+        return getOrganisationName();
+      case Ows10Package.DOCUMENT_ROOT__POINT_OF_CONTACT:
+        return getPointOfContact();
+      case Ows10Package.DOCUMENT_ROOT__POSITION_NAME:
+        return getPositionName();
+      case Ows10Package.DOCUMENT_ROOT__ROLE:
+        return getRole();
+      case Ows10Package.DOCUMENT_ROOT__TITLE:
+        return getTitle();
+      case Ows10Package.DOCUMENT_ROOT__ABSTRACT_META_DATA:
+        return getAbstractMetaData();
+      case Ows10Package.DOCUMENT_ROOT__ACCESS_CONSTRAINTS:
+        return getAccessConstraints();
+      case Ows10Package.DOCUMENT_ROOT__AVAILABLE_CRS:
+        return getAvailableCRS();
+      case Ows10Package.DOCUMENT_ROOT__BOUNDING_BOX:
+        return getBoundingBox();
+      case Ows10Package.DOCUMENT_ROOT__DCP:
+        return getDcp();
+      case Ows10Package.DOCUMENT_ROOT__EXCEPTION:
+        return getException();
+      case Ows10Package.DOCUMENT_ROOT__EXCEPTION_REPORT:
+        return getExceptionReport();
+      case Ows10Package.DOCUMENT_ROOT__EXTENDED_CAPABILITIES:
+        return getExtendedCapabilities();
+      case Ows10Package.DOCUMENT_ROOT__FEES:
+        return getFees();
+      case Ows10Package.DOCUMENT_ROOT__GET_CAPABILITIES:
+        return getGetCapabilities();
+      case Ows10Package.DOCUMENT_ROOT__HTTP:
+        return getHttp();
+      case Ows10Package.DOCUMENT_ROOT__IDENTIFIER:
+        return getIdentifier();
+      case Ows10Package.DOCUMENT_ROOT__LANGUAGE:
+        return getLanguage();
+      case Ows10Package.DOCUMENT_ROOT__METADATA:
+        return getMetadata();
+      case Ows10Package.DOCUMENT_ROOT__OPERATION:
+        return getOperation();
+      case Ows10Package.DOCUMENT_ROOT__OPERATIONS_METADATA:
+        return getOperationsMetadata();
+      case Ows10Package.DOCUMENT_ROOT__OUTPUT_FORMAT:
+        return getOutputFormat();
+      case Ows10Package.DOCUMENT_ROOT__SERVICE_IDENTIFICATION:
+        return getServiceIdentification();
+      case Ows10Package.DOCUMENT_ROOT__SERVICE_PROVIDER:
+        return getServiceProvider();
+      case Ows10Package.DOCUMENT_ROOT__SUPPORTED_CRS:
+        return getSupportedCRS();
+      case Ows10Package.DOCUMENT_ROOT__WG_S84_BOUNDING_BOX:
+        return getWgS84BoundingBox();
+    }
+    return super.eGet(featureID, resolve, coreType);
+  }
 
 	/**
-	 * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void eSet(int featureID, Object newValue) {
-		switch (featureID) {
-			case Ows10Package.DOCUMENT_ROOT__MIXED:
-				((FeatureMap.Internal)getMixed()).set(newValue);
-				return;
-			case Ows10Package.DOCUMENT_ROOT__XMLNS_PREFIX_MAP:
-				((EStructuralFeature.Setting)getXMLNSPrefixMap()).set(newValue);
-				return;
-			case Ows10Package.DOCUMENT_ROOT__XSI_SCHEMA_LOCATION:
-				((EStructuralFeature.Setting)getXSISchemaLocation()).set(newValue);
-				return;
-			case Ows10Package.DOCUMENT_ROOT__ABSTRACT:
-				setAbstract((String)newValue);
-				return;
-			case Ows10Package.DOCUMENT_ROOT__CONTACT_INFO:
-				setContactInfo((ContactType)newValue);
-				return;
-			case Ows10Package.DOCUMENT_ROOT__INDIVIDUAL_NAME:
-				setIndividualName((String)newValue);
-				return;
-			case Ows10Package.DOCUMENT_ROOT__KEYWORDS:
-				setKeywords((KeywordsType)newValue);
-				return;
-			case Ows10Package.DOCUMENT_ROOT__ORGANISATION_NAME:
-				setOrganisationName((String)newValue);
-				return;
-			case Ows10Package.DOCUMENT_ROOT__POINT_OF_CONTACT:
-				setPointOfContact((ResponsiblePartyType)newValue);
-				return;
-			case Ows10Package.DOCUMENT_ROOT__POSITION_NAME:
-				setPositionName((String)newValue);
-				return;
-			case Ows10Package.DOCUMENT_ROOT__ROLE:
-				setRole((CodeType)newValue);
-				return;
-			case Ows10Package.DOCUMENT_ROOT__TITLE:
-				setTitle((String)newValue);
-				return;
-			case Ows10Package.DOCUMENT_ROOT__ACCESS_CONSTRAINTS:
-				setAccessConstraints((String)newValue);
-				return;
-			case Ows10Package.DOCUMENT_ROOT__AVAILABLE_CRS:
-				setAvailableCRS((String)newValue);
-				return;
-			case Ows10Package.DOCUMENT_ROOT__BOUNDING_BOX:
-				setBoundingBox((BoundingBoxType)newValue);
-				return;
-			case Ows10Package.DOCUMENT_ROOT__DCP:
-				setDcp((DCPType)newValue);
-				return;
-			case Ows10Package.DOCUMENT_ROOT__EXCEPTION:
-				setException((ExceptionType)newValue);
-				return;
-			case Ows10Package.DOCUMENT_ROOT__EXCEPTION_REPORT:
-				setExceptionReport((ExceptionReportType)newValue);
-				return;
-			case Ows10Package.DOCUMENT_ROOT__EXTENDED_CAPABILITIES:
-				setExtendedCapabilities((EObject)newValue);
-				return;
-			case Ows10Package.DOCUMENT_ROOT__FEES:
-				setFees((String)newValue);
-				return;
-			case Ows10Package.DOCUMENT_ROOT__GET_CAPABILITIES:
-				setGetCapabilities((GetCapabilitiesType)newValue);
-				return;
-			case Ows10Package.DOCUMENT_ROOT__HTTP:
-				setHttp((HTTPType)newValue);
-				return;
-			case Ows10Package.DOCUMENT_ROOT__IDENTIFIER:
-				setIdentifier((CodeType)newValue);
-				return;
-			case Ows10Package.DOCUMENT_ROOT__LANGUAGE:
-				setLanguage((String)newValue);
-				return;
-			case Ows10Package.DOCUMENT_ROOT__METADATA:
-				setMetadata((MetadataType)newValue);
-				return;
-			case Ows10Package.DOCUMENT_ROOT__OPERATION:
-				setOperation((OperationType)newValue);
-				return;
-			case Ows10Package.DOCUMENT_ROOT__OPERATIONS_METADATA:
-				setOperationsMetadata((OperationsMetadataType)newValue);
-				return;
-			case Ows10Package.DOCUMENT_ROOT__OUTPUT_FORMAT:
-				setOutputFormat((String)newValue);
-				return;
-			case Ows10Package.DOCUMENT_ROOT__SERVICE_IDENTIFICATION:
-				setServiceIdentification((ServiceIdentificationType)newValue);
-				return;
-			case Ows10Package.DOCUMENT_ROOT__SERVICE_PROVIDER:
-				setServiceProvider((ServiceProviderType)newValue);
-				return;
-			case Ows10Package.DOCUMENT_ROOT__SUPPORTED_CRS:
-				setSupportedCRS((String)newValue);
-				return;
-			case Ows10Package.DOCUMENT_ROOT__WG_S84_BOUNDING_BOX:
-				setWgS84BoundingBox((WGS84BoundingBoxType)newValue);
-				return;
-		}
-		super.eSet(featureID, newValue);
-	}
+   * @generated
+   */
+	@Override
+  public void eSet(int featureID, Object newValue) {
+    switch (featureID) {
+      case Ows10Package.DOCUMENT_ROOT__MIXED:
+        ((FeatureMap.Internal)getMixed()).set(newValue);
+        return;
+      case Ows10Package.DOCUMENT_ROOT__XMLNS_PREFIX_MAP:
+        ((EStructuralFeature.Setting)getXMLNSPrefixMap()).set(newValue);
+        return;
+      case Ows10Package.DOCUMENT_ROOT__XSI_SCHEMA_LOCATION:
+        ((EStructuralFeature.Setting)getXSISchemaLocation()).set(newValue);
+        return;
+      case Ows10Package.DOCUMENT_ROOT__ABSTRACT:
+        setAbstract((String)newValue);
+        return;
+      case Ows10Package.DOCUMENT_ROOT__CONTACT_INFO:
+        setContactInfo((ContactType)newValue);
+        return;
+      case Ows10Package.DOCUMENT_ROOT__INDIVIDUAL_NAME:
+        setIndividualName((String)newValue);
+        return;
+      case Ows10Package.DOCUMENT_ROOT__KEYWORDS:
+        setKeywords((KeywordsType)newValue);
+        return;
+      case Ows10Package.DOCUMENT_ROOT__ORGANISATION_NAME:
+        setOrganisationName((String)newValue);
+        return;
+      case Ows10Package.DOCUMENT_ROOT__POINT_OF_CONTACT:
+        setPointOfContact((ResponsiblePartyType)newValue);
+        return;
+      case Ows10Package.DOCUMENT_ROOT__POSITION_NAME:
+        setPositionName((String)newValue);
+        return;
+      case Ows10Package.DOCUMENT_ROOT__ROLE:
+        setRole((CodeType)newValue);
+        return;
+      case Ows10Package.DOCUMENT_ROOT__TITLE:
+        setTitle((String)newValue);
+        return;
+      case Ows10Package.DOCUMENT_ROOT__ACCESS_CONSTRAINTS:
+        setAccessConstraints((String)newValue);
+        return;
+      case Ows10Package.DOCUMENT_ROOT__AVAILABLE_CRS:
+        setAvailableCRS((String)newValue);
+        return;
+      case Ows10Package.DOCUMENT_ROOT__BOUNDING_BOX:
+        setBoundingBox((BoundingBoxType)newValue);
+        return;
+      case Ows10Package.DOCUMENT_ROOT__DCP:
+        setDcp((DCPType)newValue);
+        return;
+      case Ows10Package.DOCUMENT_ROOT__EXCEPTION:
+        setException((ExceptionType)newValue);
+        return;
+      case Ows10Package.DOCUMENT_ROOT__EXCEPTION_REPORT:
+        setExceptionReport((ExceptionReportType)newValue);
+        return;
+      case Ows10Package.DOCUMENT_ROOT__EXTENDED_CAPABILITIES:
+        setExtendedCapabilities((EObject)newValue);
+        return;
+      case Ows10Package.DOCUMENT_ROOT__FEES:
+        setFees((String)newValue);
+        return;
+      case Ows10Package.DOCUMENT_ROOT__GET_CAPABILITIES:
+        setGetCapabilities((GetCapabilitiesType)newValue);
+        return;
+      case Ows10Package.DOCUMENT_ROOT__HTTP:
+        setHttp((HTTPType)newValue);
+        return;
+      case Ows10Package.DOCUMENT_ROOT__IDENTIFIER:
+        setIdentifier((CodeType)newValue);
+        return;
+      case Ows10Package.DOCUMENT_ROOT__LANGUAGE:
+        setLanguage((String)newValue);
+        return;
+      case Ows10Package.DOCUMENT_ROOT__METADATA:
+        setMetadata((MetadataType)newValue);
+        return;
+      case Ows10Package.DOCUMENT_ROOT__OPERATION:
+        setOperation((OperationType)newValue);
+        return;
+      case Ows10Package.DOCUMENT_ROOT__OPERATIONS_METADATA:
+        setOperationsMetadata((OperationsMetadataType)newValue);
+        return;
+      case Ows10Package.DOCUMENT_ROOT__OUTPUT_FORMAT:
+        setOutputFormat((String)newValue);
+        return;
+      case Ows10Package.DOCUMENT_ROOT__SERVICE_IDENTIFICATION:
+        setServiceIdentification((ServiceIdentificationType)newValue);
+        return;
+      case Ows10Package.DOCUMENT_ROOT__SERVICE_PROVIDER:
+        setServiceProvider((ServiceProviderType)newValue);
+        return;
+      case Ows10Package.DOCUMENT_ROOT__SUPPORTED_CRS:
+        setSupportedCRS((String)newValue);
+        return;
+      case Ows10Package.DOCUMENT_ROOT__WG_S84_BOUNDING_BOX:
+        setWgS84BoundingBox((WGS84BoundingBoxType)newValue);
+        return;
+    }
+    super.eSet(featureID, newValue);
+  }
 
 	/**
-	 * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void eUnset(int featureID) {
-		switch (featureID) {
-			case Ows10Package.DOCUMENT_ROOT__MIXED:
-				getMixed().clear();
-				return;
-			case Ows10Package.DOCUMENT_ROOT__XMLNS_PREFIX_MAP:
-				getXMLNSPrefixMap().clear();
-				return;
-			case Ows10Package.DOCUMENT_ROOT__XSI_SCHEMA_LOCATION:
-				getXSISchemaLocation().clear();
-				return;
-			case Ows10Package.DOCUMENT_ROOT__ABSTRACT:
-				setAbstract(ABSTRACT_EDEFAULT);
-				return;
-			case Ows10Package.DOCUMENT_ROOT__CONTACT_INFO:
-				setContactInfo((ContactType)null);
-				return;
-			case Ows10Package.DOCUMENT_ROOT__INDIVIDUAL_NAME:
-				setIndividualName(INDIVIDUAL_NAME_EDEFAULT);
-				return;
-			case Ows10Package.DOCUMENT_ROOT__KEYWORDS:
-				setKeywords((KeywordsType)null);
-				return;
-			case Ows10Package.DOCUMENT_ROOT__ORGANISATION_NAME:
-				setOrganisationName(ORGANISATION_NAME_EDEFAULT);
-				return;
-			case Ows10Package.DOCUMENT_ROOT__POINT_OF_CONTACT:
-				setPointOfContact((ResponsiblePartyType)null);
-				return;
-			case Ows10Package.DOCUMENT_ROOT__POSITION_NAME:
-				setPositionName(POSITION_NAME_EDEFAULT);
-				return;
-			case Ows10Package.DOCUMENT_ROOT__ROLE:
-				setRole((CodeType)null);
-				return;
-			case Ows10Package.DOCUMENT_ROOT__TITLE:
-				setTitle(TITLE_EDEFAULT);
-				return;
-			case Ows10Package.DOCUMENT_ROOT__ACCESS_CONSTRAINTS:
-				setAccessConstraints(ACCESS_CONSTRAINTS_EDEFAULT);
-				return;
-			case Ows10Package.DOCUMENT_ROOT__AVAILABLE_CRS:
-				setAvailableCRS(AVAILABLE_CRS_EDEFAULT);
-				return;
-			case Ows10Package.DOCUMENT_ROOT__BOUNDING_BOX:
-				setBoundingBox((BoundingBoxType)null);
-				return;
-			case Ows10Package.DOCUMENT_ROOT__DCP:
-				setDcp((DCPType)null);
-				return;
-			case Ows10Package.DOCUMENT_ROOT__EXCEPTION:
-				setException((ExceptionType)null);
-				return;
-			case Ows10Package.DOCUMENT_ROOT__EXCEPTION_REPORT:
-				setExceptionReport((ExceptionReportType)null);
-				return;
-			case Ows10Package.DOCUMENT_ROOT__EXTENDED_CAPABILITIES:
-				setExtendedCapabilities((EObject)null);
-				return;
-			case Ows10Package.DOCUMENT_ROOT__FEES:
-				setFees(FEES_EDEFAULT);
-				return;
-			case Ows10Package.DOCUMENT_ROOT__GET_CAPABILITIES:
-				setGetCapabilities((GetCapabilitiesType)null);
-				return;
-			case Ows10Package.DOCUMENT_ROOT__HTTP:
-				setHttp((HTTPType)null);
-				return;
-			case Ows10Package.DOCUMENT_ROOT__IDENTIFIER:
-				setIdentifier((CodeType)null);
-				return;
-			case Ows10Package.DOCUMENT_ROOT__LANGUAGE:
-				setLanguage(LANGUAGE_EDEFAULT);
-				return;
-			case Ows10Package.DOCUMENT_ROOT__METADATA:
-				setMetadata((MetadataType)null);
-				return;
-			case Ows10Package.DOCUMENT_ROOT__OPERATION:
-				setOperation((OperationType)null);
-				return;
-			case Ows10Package.DOCUMENT_ROOT__OPERATIONS_METADATA:
-				setOperationsMetadata((OperationsMetadataType)null);
-				return;
-			case Ows10Package.DOCUMENT_ROOT__OUTPUT_FORMAT:
-				setOutputFormat(OUTPUT_FORMAT_EDEFAULT);
-				return;
-			case Ows10Package.DOCUMENT_ROOT__SERVICE_IDENTIFICATION:
-				setServiceIdentification((ServiceIdentificationType)null);
-				return;
-			case Ows10Package.DOCUMENT_ROOT__SERVICE_PROVIDER:
-				setServiceProvider((ServiceProviderType)null);
-				return;
-			case Ows10Package.DOCUMENT_ROOT__SUPPORTED_CRS:
-				setSupportedCRS(SUPPORTED_CRS_EDEFAULT);
-				return;
-			case Ows10Package.DOCUMENT_ROOT__WG_S84_BOUNDING_BOX:
-				setWgS84BoundingBox((WGS84BoundingBoxType)null);
-				return;
-		}
-		super.eUnset(featureID);
-	}
+   * @generated
+   */
+	@Override
+  public void eUnset(int featureID) {
+    switch (featureID) {
+      case Ows10Package.DOCUMENT_ROOT__MIXED:
+        getMixed().clear();
+        return;
+      case Ows10Package.DOCUMENT_ROOT__XMLNS_PREFIX_MAP:
+        getXMLNSPrefixMap().clear();
+        return;
+      case Ows10Package.DOCUMENT_ROOT__XSI_SCHEMA_LOCATION:
+        getXSISchemaLocation().clear();
+        return;
+      case Ows10Package.DOCUMENT_ROOT__ABSTRACT:
+        setAbstract(ABSTRACT_EDEFAULT);
+        return;
+      case Ows10Package.DOCUMENT_ROOT__CONTACT_INFO:
+        setContactInfo((ContactType)null);
+        return;
+      case Ows10Package.DOCUMENT_ROOT__INDIVIDUAL_NAME:
+        setIndividualName(INDIVIDUAL_NAME_EDEFAULT);
+        return;
+      case Ows10Package.DOCUMENT_ROOT__KEYWORDS:
+        setKeywords((KeywordsType)null);
+        return;
+      case Ows10Package.DOCUMENT_ROOT__ORGANISATION_NAME:
+        setOrganisationName(ORGANISATION_NAME_EDEFAULT);
+        return;
+      case Ows10Package.DOCUMENT_ROOT__POINT_OF_CONTACT:
+        setPointOfContact((ResponsiblePartyType)null);
+        return;
+      case Ows10Package.DOCUMENT_ROOT__POSITION_NAME:
+        setPositionName(POSITION_NAME_EDEFAULT);
+        return;
+      case Ows10Package.DOCUMENT_ROOT__ROLE:
+        setRole((CodeType)null);
+        return;
+      case Ows10Package.DOCUMENT_ROOT__TITLE:
+        setTitle(TITLE_EDEFAULT);
+        return;
+      case Ows10Package.DOCUMENT_ROOT__ACCESS_CONSTRAINTS:
+        setAccessConstraints(ACCESS_CONSTRAINTS_EDEFAULT);
+        return;
+      case Ows10Package.DOCUMENT_ROOT__AVAILABLE_CRS:
+        setAvailableCRS(AVAILABLE_CRS_EDEFAULT);
+        return;
+      case Ows10Package.DOCUMENT_ROOT__BOUNDING_BOX:
+        setBoundingBox((BoundingBoxType)null);
+        return;
+      case Ows10Package.DOCUMENT_ROOT__DCP:
+        setDcp((DCPType)null);
+        return;
+      case Ows10Package.DOCUMENT_ROOT__EXCEPTION:
+        setException((ExceptionType)null);
+        return;
+      case Ows10Package.DOCUMENT_ROOT__EXCEPTION_REPORT:
+        setExceptionReport((ExceptionReportType)null);
+        return;
+      case Ows10Package.DOCUMENT_ROOT__EXTENDED_CAPABILITIES:
+        setExtendedCapabilities((EObject)null);
+        return;
+      case Ows10Package.DOCUMENT_ROOT__FEES:
+        setFees(FEES_EDEFAULT);
+        return;
+      case Ows10Package.DOCUMENT_ROOT__GET_CAPABILITIES:
+        setGetCapabilities((GetCapabilitiesType)null);
+        return;
+      case Ows10Package.DOCUMENT_ROOT__HTTP:
+        setHttp((HTTPType)null);
+        return;
+      case Ows10Package.DOCUMENT_ROOT__IDENTIFIER:
+        setIdentifier((CodeType)null);
+        return;
+      case Ows10Package.DOCUMENT_ROOT__LANGUAGE:
+        setLanguage(LANGUAGE_EDEFAULT);
+        return;
+      case Ows10Package.DOCUMENT_ROOT__METADATA:
+        setMetadata((MetadataType)null);
+        return;
+      case Ows10Package.DOCUMENT_ROOT__OPERATION:
+        setOperation((OperationType)null);
+        return;
+      case Ows10Package.DOCUMENT_ROOT__OPERATIONS_METADATA:
+        setOperationsMetadata((OperationsMetadataType)null);
+        return;
+      case Ows10Package.DOCUMENT_ROOT__OUTPUT_FORMAT:
+        setOutputFormat(OUTPUT_FORMAT_EDEFAULT);
+        return;
+      case Ows10Package.DOCUMENT_ROOT__SERVICE_IDENTIFICATION:
+        setServiceIdentification((ServiceIdentificationType)null);
+        return;
+      case Ows10Package.DOCUMENT_ROOT__SERVICE_PROVIDER:
+        setServiceProvider((ServiceProviderType)null);
+        return;
+      case Ows10Package.DOCUMENT_ROOT__SUPPORTED_CRS:
+        setSupportedCRS(SUPPORTED_CRS_EDEFAULT);
+        return;
+      case Ows10Package.DOCUMENT_ROOT__WG_S84_BOUNDING_BOX:
+        setWgS84BoundingBox((WGS84BoundingBoxType)null);
+        return;
+    }
+    super.eUnset(featureID);
+  }
 
 	/**
-	 * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public boolean eIsSet(int featureID) {
-		switch (featureID) {
-			case Ows10Package.DOCUMENT_ROOT__MIXED:
-				return mixed != null && !mixed.isEmpty();
-			case Ows10Package.DOCUMENT_ROOT__XMLNS_PREFIX_MAP:
-				return xMLNSPrefixMap != null && !xMLNSPrefixMap.isEmpty();
-			case Ows10Package.DOCUMENT_ROOT__XSI_SCHEMA_LOCATION:
-				return xSISchemaLocation != null && !xSISchemaLocation.isEmpty();
-			case Ows10Package.DOCUMENT_ROOT__ABSTRACT:
-				return ABSTRACT_EDEFAULT == null ? getAbstract() != null : !ABSTRACT_EDEFAULT.equals(getAbstract());
-			case Ows10Package.DOCUMENT_ROOT__CONTACT_INFO:
-				return getContactInfo() != null;
-			case Ows10Package.DOCUMENT_ROOT__INDIVIDUAL_NAME:
-				return INDIVIDUAL_NAME_EDEFAULT == null ? getIndividualName() != null : !INDIVIDUAL_NAME_EDEFAULT.equals(getIndividualName());
-			case Ows10Package.DOCUMENT_ROOT__KEYWORDS:
-				return getKeywords() != null;
-			case Ows10Package.DOCUMENT_ROOT__ORGANISATION_NAME:
-				return ORGANISATION_NAME_EDEFAULT == null ? getOrganisationName() != null : !ORGANISATION_NAME_EDEFAULT.equals(getOrganisationName());
-			case Ows10Package.DOCUMENT_ROOT__POINT_OF_CONTACT:
-				return getPointOfContact() != null;
-			case Ows10Package.DOCUMENT_ROOT__POSITION_NAME:
-				return POSITION_NAME_EDEFAULT == null ? getPositionName() != null : !POSITION_NAME_EDEFAULT.equals(getPositionName());
-			case Ows10Package.DOCUMENT_ROOT__ROLE:
-				return getRole() != null;
-			case Ows10Package.DOCUMENT_ROOT__TITLE:
-				return TITLE_EDEFAULT == null ? getTitle() != null : !TITLE_EDEFAULT.equals(getTitle());
-			case Ows10Package.DOCUMENT_ROOT__ABSTRACT_META_DATA:
-				return getAbstractMetaData() != null;
-			case Ows10Package.DOCUMENT_ROOT__ACCESS_CONSTRAINTS:
-				return ACCESS_CONSTRAINTS_EDEFAULT == null ? getAccessConstraints() != null : !ACCESS_CONSTRAINTS_EDEFAULT.equals(getAccessConstraints());
-			case Ows10Package.DOCUMENT_ROOT__AVAILABLE_CRS:
-				return AVAILABLE_CRS_EDEFAULT == null ? getAvailableCRS() != null : !AVAILABLE_CRS_EDEFAULT.equals(getAvailableCRS());
-			case Ows10Package.DOCUMENT_ROOT__BOUNDING_BOX:
-				return getBoundingBox() != null;
-			case Ows10Package.DOCUMENT_ROOT__DCP:
-				return getDcp() != null;
-			case Ows10Package.DOCUMENT_ROOT__EXCEPTION:
-				return getException() != null;
-			case Ows10Package.DOCUMENT_ROOT__EXCEPTION_REPORT:
-				return getExceptionReport() != null;
-			case Ows10Package.DOCUMENT_ROOT__EXTENDED_CAPABILITIES:
-				return getExtendedCapabilities() != null;
-			case Ows10Package.DOCUMENT_ROOT__FEES:
-				return FEES_EDEFAULT == null ? getFees() != null : !FEES_EDEFAULT.equals(getFees());
-			case Ows10Package.DOCUMENT_ROOT__GET_CAPABILITIES:
-				return getGetCapabilities() != null;
-			case Ows10Package.DOCUMENT_ROOT__HTTP:
-				return getHttp() != null;
-			case Ows10Package.DOCUMENT_ROOT__IDENTIFIER:
-				return getIdentifier() != null;
-			case Ows10Package.DOCUMENT_ROOT__LANGUAGE:
-				return LANGUAGE_EDEFAULT == null ? getLanguage() != null : !LANGUAGE_EDEFAULT.equals(getLanguage());
-			case Ows10Package.DOCUMENT_ROOT__METADATA:
-				return getMetadata() != null;
-			case Ows10Package.DOCUMENT_ROOT__OPERATION:
-				return getOperation() != null;
-			case Ows10Package.DOCUMENT_ROOT__OPERATIONS_METADATA:
-				return getOperationsMetadata() != null;
-			case Ows10Package.DOCUMENT_ROOT__OUTPUT_FORMAT:
-				return OUTPUT_FORMAT_EDEFAULT == null ? getOutputFormat() != null : !OUTPUT_FORMAT_EDEFAULT.equals(getOutputFormat());
-			case Ows10Package.DOCUMENT_ROOT__SERVICE_IDENTIFICATION:
-				return getServiceIdentification() != null;
-			case Ows10Package.DOCUMENT_ROOT__SERVICE_PROVIDER:
-				return getServiceProvider() != null;
-			case Ows10Package.DOCUMENT_ROOT__SUPPORTED_CRS:
-				return SUPPORTED_CRS_EDEFAULT == null ? getSupportedCRS() != null : !SUPPORTED_CRS_EDEFAULT.equals(getSupportedCRS());
-			case Ows10Package.DOCUMENT_ROOT__WG_S84_BOUNDING_BOX:
-				return getWgS84BoundingBox() != null;
-		}
-		return super.eIsSet(featureID);
-	}
+   * @generated
+   */
+	@Override
+  public boolean eIsSet(int featureID) {
+    switch (featureID) {
+      case Ows10Package.DOCUMENT_ROOT__MIXED:
+        return mixed != null && !mixed.isEmpty();
+      case Ows10Package.DOCUMENT_ROOT__XMLNS_PREFIX_MAP:
+        return xMLNSPrefixMap != null && !xMLNSPrefixMap.isEmpty();
+      case Ows10Package.DOCUMENT_ROOT__XSI_SCHEMA_LOCATION:
+        return xSISchemaLocation != null && !xSISchemaLocation.isEmpty();
+      case Ows10Package.DOCUMENT_ROOT__ABSTRACT:
+        return ABSTRACT_EDEFAULT == null ? getAbstract() != null : !ABSTRACT_EDEFAULT.equals(getAbstract());
+      case Ows10Package.DOCUMENT_ROOT__CONTACT_INFO:
+        return getContactInfo() != null;
+      case Ows10Package.DOCUMENT_ROOT__INDIVIDUAL_NAME:
+        return INDIVIDUAL_NAME_EDEFAULT == null ? getIndividualName() != null : !INDIVIDUAL_NAME_EDEFAULT.equals(getIndividualName());
+      case Ows10Package.DOCUMENT_ROOT__KEYWORDS:
+        return getKeywords() != null;
+      case Ows10Package.DOCUMENT_ROOT__ORGANISATION_NAME:
+        return ORGANISATION_NAME_EDEFAULT == null ? getOrganisationName() != null : !ORGANISATION_NAME_EDEFAULT.equals(getOrganisationName());
+      case Ows10Package.DOCUMENT_ROOT__POINT_OF_CONTACT:
+        return getPointOfContact() != null;
+      case Ows10Package.DOCUMENT_ROOT__POSITION_NAME:
+        return POSITION_NAME_EDEFAULT == null ? getPositionName() != null : !POSITION_NAME_EDEFAULT.equals(getPositionName());
+      case Ows10Package.DOCUMENT_ROOT__ROLE:
+        return getRole() != null;
+      case Ows10Package.DOCUMENT_ROOT__TITLE:
+        return TITLE_EDEFAULT == null ? getTitle() != null : !TITLE_EDEFAULT.equals(getTitle());
+      case Ows10Package.DOCUMENT_ROOT__ABSTRACT_META_DATA:
+        return getAbstractMetaData() != null;
+      case Ows10Package.DOCUMENT_ROOT__ACCESS_CONSTRAINTS:
+        return ACCESS_CONSTRAINTS_EDEFAULT == null ? getAccessConstraints() != null : !ACCESS_CONSTRAINTS_EDEFAULT.equals(getAccessConstraints());
+      case Ows10Package.DOCUMENT_ROOT__AVAILABLE_CRS:
+        return AVAILABLE_CRS_EDEFAULT == null ? getAvailableCRS() != null : !AVAILABLE_CRS_EDEFAULT.equals(getAvailableCRS());
+      case Ows10Package.DOCUMENT_ROOT__BOUNDING_BOX:
+        return getBoundingBox() != null;
+      case Ows10Package.DOCUMENT_ROOT__DCP:
+        return getDcp() != null;
+      case Ows10Package.DOCUMENT_ROOT__EXCEPTION:
+        return getException() != null;
+      case Ows10Package.DOCUMENT_ROOT__EXCEPTION_REPORT:
+        return getExceptionReport() != null;
+      case Ows10Package.DOCUMENT_ROOT__EXTENDED_CAPABILITIES:
+        return getExtendedCapabilities() != null;
+      case Ows10Package.DOCUMENT_ROOT__FEES:
+        return FEES_EDEFAULT == null ? getFees() != null : !FEES_EDEFAULT.equals(getFees());
+      case Ows10Package.DOCUMENT_ROOT__GET_CAPABILITIES:
+        return getGetCapabilities() != null;
+      case Ows10Package.DOCUMENT_ROOT__HTTP:
+        return getHttp() != null;
+      case Ows10Package.DOCUMENT_ROOT__IDENTIFIER:
+        return getIdentifier() != null;
+      case Ows10Package.DOCUMENT_ROOT__LANGUAGE:
+        return LANGUAGE_EDEFAULT == null ? getLanguage() != null : !LANGUAGE_EDEFAULT.equals(getLanguage());
+      case Ows10Package.DOCUMENT_ROOT__METADATA:
+        return getMetadata() != null;
+      case Ows10Package.DOCUMENT_ROOT__OPERATION:
+        return getOperation() != null;
+      case Ows10Package.DOCUMENT_ROOT__OPERATIONS_METADATA:
+        return getOperationsMetadata() != null;
+      case Ows10Package.DOCUMENT_ROOT__OUTPUT_FORMAT:
+        return OUTPUT_FORMAT_EDEFAULT == null ? getOutputFormat() != null : !OUTPUT_FORMAT_EDEFAULT.equals(getOutputFormat());
+      case Ows10Package.DOCUMENT_ROOT__SERVICE_IDENTIFICATION:
+        return getServiceIdentification() != null;
+      case Ows10Package.DOCUMENT_ROOT__SERVICE_PROVIDER:
+        return getServiceProvider() != null;
+      case Ows10Package.DOCUMENT_ROOT__SUPPORTED_CRS:
+        return SUPPORTED_CRS_EDEFAULT == null ? getSupportedCRS() != null : !SUPPORTED_CRS_EDEFAULT.equals(getSupportedCRS());
+      case Ows10Package.DOCUMENT_ROOT__WG_S84_BOUNDING_BOX:
+        return getWgS84BoundingBox() != null;
+    }
+    return super.eIsSet(featureID);
+  }
 
 	/**
-	 * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public String toString() {
-		if (eIsProxy()) return super.toString();
+   * @generated
+   */
+	@Override
+  public String toString() {
+    if (eIsProxy()) return super.toString();
 
-		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (mixed: ");
-		result.append(mixed);
-		result.append(')');
-		return result.toString();
-	}
+    StringBuilder result = new StringBuilder(super.toString());
+    result.append(" (mixed: ");
+    result.append(mixed);
+    result.append(')');
+    return result.toString();
+  }
 
 } //DocumentRootImpl

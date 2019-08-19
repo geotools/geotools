@@ -48,7 +48,7 @@ public class DriverTest extends Assert {
     private static CoordinateReferenceSystem WGS84;
 
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(TestDriver.class.toString());;
+            org.geotools.util.logging.Logging.getLogger(TestDriver.class);
 
     static {
         try {

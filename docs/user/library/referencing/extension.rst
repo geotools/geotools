@@ -1,7 +1,7 @@
 EPSG Extension Plugin
 ^^^^^^^^^^^^^^^^^^^^^^
 
-The plugin an Coordinate Reference System Authority that adds common extra or unoffical EPSG
+The plugin an Coordinate Reference System Authority that adds common extra or unofficial EPSG
 codes into the mix. Internally it uses the same java property file as the :doc:`wkt` plugin.
 
 This plugin is compatible with a restricted environment and does not require disk access.

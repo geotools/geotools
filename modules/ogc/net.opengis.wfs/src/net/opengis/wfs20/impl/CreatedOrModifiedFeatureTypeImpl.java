@@ -36,183 +36,183 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link net.opengis.wfs20.impl.CreatedOrModifiedFeatureTypeImpl#getResourceId <em>Resource Id</em>}</li>
  *   <li>{@link net.opengis.wfs20.impl.CreatedOrModifiedFeatureTypeImpl#getHandle <em>Handle</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
 public class CreatedOrModifiedFeatureTypeImpl extends EObjectImpl implements CreatedOrModifiedFeatureType {
     /**
-     * The cached value of the '{@link #getResourceId() <em>Resource Id</em>}' attribute list.
-     * <!-- begin-user-doc -->
+   * The cached value of the '{@link #getResourceId() <em>Resource Id</em>}' attribute list.
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getResourceId()
-     * @generated
-     * @ordered
-     */
+   * @see #getResourceId()
+   * @generated
+   * @ordered
+   */
     protected EList<FeatureId> resourceId;
 
     /**
-     * The default value of the '{@link #getHandle() <em>Handle</em>}' attribute.
-     * <!-- begin-user-doc -->
+   * The default value of the '{@link #getHandle() <em>Handle</em>}' attribute.
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getHandle()
-     * @generated
-     * @ordered
-     */
+   * @see #getHandle()
+   * @generated
+   * @ordered
+   */
     protected static final String HANDLE_EDEFAULT = null;
 
     /**
-     * The cached value of the '{@link #getHandle() <em>Handle</em>}' attribute.
-     * <!-- begin-user-doc -->
+   * The cached value of the '{@link #getHandle() <em>Handle</em>}' attribute.
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getHandle()
-     * @generated
-     * @ordered
-     */
+   * @see #getHandle()
+   * @generated
+   * @ordered
+   */
     protected String handle = HANDLE_EDEFAULT;
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     protected CreatedOrModifiedFeatureTypeImpl() {
-        super();
-    }
+    super();
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     protected EClass eStaticClass() {
-        return Wfs20Package.Literals.CREATED_OR_MODIFIED_FEATURE_TYPE;
-    }
+    return Wfs20Package.Literals.CREATED_OR_MODIFIED_FEATURE_TYPE;
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public EList<FeatureId> getResourceId() {
-        if (resourceId == null) {
-            resourceId = new EDataTypeUniqueEList<FeatureId>(FeatureId.class, this, Wfs20Package.CREATED_OR_MODIFIED_FEATURE_TYPE__RESOURCE_ID);
-        }
-        return resourceId;
+    if (resourceId == null) {
+      resourceId = new EDataTypeUniqueEList<FeatureId>(FeatureId.class, this, Wfs20Package.CREATED_OR_MODIFIED_FEATURE_TYPE__RESOURCE_ID);
     }
+    return resourceId;
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public String getHandle() {
-        return handle;
-    }
+    return handle;
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public void setHandle(String newHandle) {
-        String oldHandle = handle;
-        handle = newHandle;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, Wfs20Package.CREATED_OR_MODIFIED_FEATURE_TYPE__HANDLE, oldHandle, handle));
-    }
+    String oldHandle = handle;
+    handle = newHandle;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, Wfs20Package.CREATED_OR_MODIFIED_FEATURE_TYPE__HANDLE, oldHandle, handle));
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case Wfs20Package.CREATED_OR_MODIFIED_FEATURE_TYPE__RESOURCE_ID:
-                return getResourceId();
-            case Wfs20Package.CREATED_OR_MODIFIED_FEATURE_TYPE__HANDLE:
-                return getHandle();
-        }
-        return super.eGet(featureID, resolve, coreType);
+    switch (featureID) {
+      case Wfs20Package.CREATED_OR_MODIFIED_FEATURE_TYPE__RESOURCE_ID:
+        return getResourceId();
+      case Wfs20Package.CREATED_OR_MODIFIED_FEATURE_TYPE__HANDLE:
+        return getHandle();
     }
+    return super.eGet(featureID, resolve, coreType);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @SuppressWarnings("unchecked")
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case Wfs20Package.CREATED_OR_MODIFIED_FEATURE_TYPE__RESOURCE_ID:
-                getResourceId().clear();
-                getResourceId().addAll((Collection<? extends FeatureId>)newValue);
-                return;
-            case Wfs20Package.CREATED_OR_MODIFIED_FEATURE_TYPE__HANDLE:
-                setHandle((String)newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
+    switch (featureID) {
+      case Wfs20Package.CREATED_OR_MODIFIED_FEATURE_TYPE__RESOURCE_ID:
+        getResourceId().clear();
+        getResourceId().addAll((Collection<? extends FeatureId>)newValue);
+        return;
+      case Wfs20Package.CREATED_OR_MODIFIED_FEATURE_TYPE__HANDLE:
+        setHandle((String)newValue);
+        return;
     }
+    super.eSet(featureID, newValue);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case Wfs20Package.CREATED_OR_MODIFIED_FEATURE_TYPE__RESOURCE_ID:
-                getResourceId().clear();
-                return;
-            case Wfs20Package.CREATED_OR_MODIFIED_FEATURE_TYPE__HANDLE:
-                setHandle(HANDLE_EDEFAULT);
-                return;
-        }
-        super.eUnset(featureID);
+    switch (featureID) {
+      case Wfs20Package.CREATED_OR_MODIFIED_FEATURE_TYPE__RESOURCE_ID:
+        getResourceId().clear();
+        return;
+      case Wfs20Package.CREATED_OR_MODIFIED_FEATURE_TYPE__HANDLE:
+        setHandle(HANDLE_EDEFAULT);
+        return;
     }
+    super.eUnset(featureID);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case Wfs20Package.CREATED_OR_MODIFIED_FEATURE_TYPE__RESOURCE_ID:
-                return resourceId != null && !resourceId.isEmpty();
-            case Wfs20Package.CREATED_OR_MODIFIED_FEATURE_TYPE__HANDLE:
-                return HANDLE_EDEFAULT == null ? handle != null : !HANDLE_EDEFAULT.equals(handle);
-        }
-        return super.eIsSet(featureID);
+    switch (featureID) {
+      case Wfs20Package.CREATED_OR_MODIFIED_FEATURE_TYPE__RESOURCE_ID:
+        return resourceId != null && !resourceId.isEmpty();
+      case Wfs20Package.CREATED_OR_MODIFIED_FEATURE_TYPE__HANDLE:
+        return HANDLE_EDEFAULT == null ? handle != null : !HANDLE_EDEFAULT.equals(handle);
     }
+    return super.eIsSet(featureID);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     public String toString() {
-        if (eIsProxy()) return super.toString();
+    if (eIsProxy()) return super.toString();
 
-        StringBuffer result = new StringBuffer(super.toString());
-        result.append(" (resourceId: ");
-        result.append(resourceId);
-        result.append(", handle: ");
-        result.append(handle);
-        result.append(')');
-        return result.toString();
-    }
+    StringBuilder result = new StringBuilder(super.toString());
+    result.append(" (resourceId: ");
+    result.append(resourceId);
+    result.append(", handle: ");
+    result.append(handle);
+    result.append(')');
+    return result.toString();
+  }
 
 } //CreatedOrModifiedFeatureTypeImpl

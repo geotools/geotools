@@ -16,7 +16,6 @@
  */
 package org.geotools.data.spatialite;
 
-/** @source $URL$ */
 public class SpatiaLiteGeometrylessTestSetup extends org.geotools.jdbc.JDBCGeometrylessTestSetup {
 
     protected SpatiaLiteGeometrylessTestSetup() {

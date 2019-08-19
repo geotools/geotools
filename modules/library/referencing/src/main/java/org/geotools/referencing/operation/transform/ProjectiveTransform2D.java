@@ -23,7 +23,6 @@ import org.opengis.referencing.operation.NoninvertibleTransformException;
 /**
  * Projective transform in 2D case.
  *
- * @source $URL$
  * @version $Id$
  * @author Jan Jezek
  */

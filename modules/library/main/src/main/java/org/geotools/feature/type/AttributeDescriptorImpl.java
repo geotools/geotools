@@ -17,13 +17,12 @@
 package org.geotools.feature.type;
 
 import java.util.Map;
-import org.geotools.resources.Classes;
+import org.geotools.util.Classes;
 import org.geotools.util.Utilities;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.AttributeType;
 import org.opengis.feature.type.Name;
 
-/** @source $URL$ */
 public class AttributeDescriptorImpl extends PropertyDescriptorImpl implements AttributeDescriptor {
 
     protected final Object defaultValue;
@@ -74,9 +73,7 @@ public class AttributeDescriptorImpl extends PropertyDescriptorImpl implements A
         if (isNillable) {
             sb.append(" nillable");
         }
-        if (minOccurs == 1 && maxOccurs == 1) {
-            // ignore the 1:1
-        } else {
+        if (minOccurs != 1 || maxOccurs != 1) {
             sb.append(" ");
             sb.append(minOccurs);
             sb.append(":");

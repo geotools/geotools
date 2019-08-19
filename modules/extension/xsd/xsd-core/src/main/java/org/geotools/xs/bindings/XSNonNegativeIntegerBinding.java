@@ -18,9 +18,9 @@ package org.geotools.xs.bindings;
 
 import java.math.BigInteger;
 import javax.xml.namespace.QName;
-import org.geotools.xml.InstanceComponent;
-import org.geotools.xml.SimpleBinding;
 import org.geotools.xs.XS;
+import org.geotools.xsd.InstanceComponent;
+import org.geotools.xsd.SimpleBinding;
 
 /**
  * Binding object for the type http://www.w3.org/2001/XMLSchema:nonNegativeInteger.
@@ -42,7 +42,6 @@ import org.geotools.xs.XS;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class XSNonNegativeIntegerBinding implements SimpleBinding {
     final BigInteger MAX_LONG = BigInteger.valueOf(Long.MAX_VALUE);
@@ -99,11 +98,11 @@ public class XSNonNegativeIntegerBinding implements SimpleBinding {
         }
 
         if (MAX_INTEGER.compareTo(number) >= 0) {
-            return new Integer(number.intValue());
+            return Integer.valueOf(number.intValue());
         }
 
         if (MAX_LONG.compareTo(number) >= 0) {
-            return new Long(number.longValue());
+            return Long.valueOf(number.longValue());
         }
 
         return number;

@@ -28,7 +28,6 @@ import org.geotools.util.logging.Logging;
  * Executes a chain of {@link PrimaryKeyFinder} in the order they are defined
  *
  * @author Andrea Aime - OpenGeo
- * @source $URL$
  */
 public class CompositePrimaryKeyFinder extends PrimaryKeyFinder {
 

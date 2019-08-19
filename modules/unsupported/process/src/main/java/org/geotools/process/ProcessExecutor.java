@@ -31,7 +31,6 @@ import java.util.concurrent.RejectedExecutionException;
  * cancelling execution and/or waiting for completion.
  *
  * @author Jody
- * @source $URL$
  */
 public interface ProcessExecutor extends ExecutorService {
     /**

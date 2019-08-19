@@ -31,6 +31,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link net.opengis.ows20.impl.ReferenceTypeImpl#getIdentifier <em>Identifier</em>}</li>
  *   <li>{@link net.opengis.ows20.impl.ReferenceTypeImpl#getAbstract <em>Abstract</em>}</li>
@@ -38,315 +39,314 @@ import org.eclipse.emf.ecore.util.InternalEList;
  *   <li>{@link net.opengis.ows20.impl.ReferenceTypeImpl#getMetadataGroup <em>Metadata Group</em>}</li>
  *   <li>{@link net.opengis.ows20.impl.ReferenceTypeImpl#getMetadata <em>Metadata</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
 public class ReferenceTypeImpl extends AbstractReferenceBaseTypeImpl implements ReferenceType {
     /**
-     * The cached value of the '{@link #getIdentifier() <em>Identifier</em>}' containment reference.
-     * <!-- begin-user-doc -->
+   * The cached value of the '{@link #getIdentifier() <em>Identifier</em>}' containment reference.
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getIdentifier()
-     * @generated
-     * @ordered
-     */
+   * @see #getIdentifier()
+   * @generated
+   * @ordered
+   */
     protected CodeType identifier;
 
     /**
-     * The cached value of the '{@link #getAbstract() <em>Abstract</em>}' containment reference list.
-     * <!-- begin-user-doc -->
+   * The cached value of the '{@link #getAbstract() <em>Abstract</em>}' containment reference list.
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getAbstract()
-     * @generated
-     * @ordered
-     */
+   * @see #getAbstract()
+   * @generated
+   * @ordered
+   */
     protected EList<LanguageStringType> abstract_;
 
     /**
-     * The default value of the '{@link #getFormat() <em>Format</em>}' attribute.
-     * <!-- begin-user-doc -->
+   * The default value of the '{@link #getFormat() <em>Format</em>}' attribute.
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getFormat()
-     * @generated
-     * @ordered
-     */
+   * @see #getFormat()
+   * @generated
+   * @ordered
+   */
     protected static final String FORMAT_EDEFAULT = null;
 
     /**
-     * The cached value of the '{@link #getFormat() <em>Format</em>}' attribute.
-     * <!-- begin-user-doc -->
+   * The cached value of the '{@link #getFormat() <em>Format</em>}' attribute.
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getFormat()
-     * @generated
-     * @ordered
-     */
+   * @see #getFormat()
+   * @generated
+   * @ordered
+   */
     protected String format = FORMAT_EDEFAULT;
 
     /**
-     * The cached value of the '{@link #getMetadataGroup() <em>Metadata Group</em>}' attribute list.
-     * <!-- begin-user-doc -->
+   * The cached value of the '{@link #getMetadataGroup() <em>Metadata Group</em>}' attribute list.
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getMetadataGroup()
-     * @generated
-     * @ordered
-     */
+   * @see #getMetadataGroup()
+   * @generated
+   * @ordered
+   */
     protected FeatureMap metadataGroup;
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     protected ReferenceTypeImpl() {
-        super();
-    }
+    super();
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     protected EClass eStaticClass() {
-        return Ows20Package.Literals.REFERENCE_TYPE;
-    }
+    return Ows20Package.Literals.REFERENCE_TYPE;
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public CodeType getIdentifier() {
-        return identifier;
-    }
+    return identifier;
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public NotificationChain basicSetIdentifier(CodeType newIdentifier, NotificationChain msgs) {
-        CodeType oldIdentifier = identifier;
-        identifier = newIdentifier;
-        if (eNotificationRequired()) {
-            ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, Ows20Package.REFERENCE_TYPE__IDENTIFIER, oldIdentifier, newIdentifier);
-            if (msgs == null) msgs = notification; else msgs.add(notification);
-        }
-        return msgs;
+    CodeType oldIdentifier = identifier;
+    identifier = newIdentifier;
+    if (eNotificationRequired()) {
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, Ows20Package.REFERENCE_TYPE__IDENTIFIER, oldIdentifier, newIdentifier);
+      if (msgs == null) msgs = notification; else msgs.add(notification);
     }
+    return msgs;
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public void setIdentifier(CodeType newIdentifier) {
-        if (newIdentifier != identifier) {
-            NotificationChain msgs = null;
-            if (identifier != null)
-                msgs = ((InternalEObject)identifier).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - Ows20Package.REFERENCE_TYPE__IDENTIFIER, null, msgs);
-            if (newIdentifier != null)
-                msgs = ((InternalEObject)newIdentifier).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - Ows20Package.REFERENCE_TYPE__IDENTIFIER, null, msgs);
-            msgs = basicSetIdentifier(newIdentifier, msgs);
-            if (msgs != null) msgs.dispatch();
-        }
-        else if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, Ows20Package.REFERENCE_TYPE__IDENTIFIER, newIdentifier, newIdentifier));
+    if (newIdentifier != identifier) {
+      NotificationChain msgs = null;
+      if (identifier != null)
+        msgs = ((InternalEObject)identifier).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - Ows20Package.REFERENCE_TYPE__IDENTIFIER, null, msgs);
+      if (newIdentifier != null)
+        msgs = ((InternalEObject)newIdentifier).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - Ows20Package.REFERENCE_TYPE__IDENTIFIER, null, msgs);
+      msgs = basicSetIdentifier(newIdentifier, msgs);
+      if (msgs != null) msgs.dispatch();
     }
+    else if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, Ows20Package.REFERENCE_TYPE__IDENTIFIER, newIdentifier, newIdentifier));
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public EList<LanguageStringType> getAbstract() {
-        if (abstract_ == null) {
-            abstract_ = new EObjectContainmentEList<LanguageStringType>(LanguageStringType.class, this, Ows20Package.REFERENCE_TYPE__ABSTRACT);
-        }
-        return abstract_;
+    if (abstract_ == null) {
+      abstract_ = new EObjectContainmentEList<LanguageStringType>(LanguageStringType.class, this, Ows20Package.REFERENCE_TYPE__ABSTRACT);
     }
+    return abstract_;
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public String getFormat() {
-        return format;
-    }
+    return format;
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public void setFormat(String newFormat) {
-        String oldFormat = format;
-        format = newFormat;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, Ows20Package.REFERENCE_TYPE__FORMAT, oldFormat, format));
-    }
+    String oldFormat = format;
+    format = newFormat;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, Ows20Package.REFERENCE_TYPE__FORMAT, oldFormat, format));
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public FeatureMap getMetadataGroup() {
-        if (metadataGroup == null) {
-            metadataGroup = new BasicFeatureMap(this, Ows20Package.REFERENCE_TYPE__METADATA_GROUP);
-        }
-        return metadataGroup;
+    if (metadataGroup == null) {
+      metadataGroup = new BasicFeatureMap(this, Ows20Package.REFERENCE_TYPE__METADATA_GROUP);
     }
+    return metadataGroup;
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public EList<MetadataType> getMetadata() {
-        return getMetadataGroup().list(Ows20Package.Literals.REFERENCE_TYPE__METADATA);
-    }
+    return getMetadataGroup().list(Ows20Package.Literals.REFERENCE_TYPE__METADATA);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-        switch (featureID) {
-            case Ows20Package.REFERENCE_TYPE__IDENTIFIER:
-                return basicSetIdentifier(null, msgs);
-            case Ows20Package.REFERENCE_TYPE__ABSTRACT:
-                return ((InternalEList<?>)getAbstract()).basicRemove(otherEnd, msgs);
-            case Ows20Package.REFERENCE_TYPE__METADATA_GROUP:
-                return ((InternalEList<?>)getMetadataGroup()).basicRemove(otherEnd, msgs);
-            case Ows20Package.REFERENCE_TYPE__METADATA:
-                return ((InternalEList<?>)getMetadata()).basicRemove(otherEnd, msgs);
-        }
-        return super.eInverseRemove(otherEnd, featureID, msgs);
+    switch (featureID) {
+      case Ows20Package.REFERENCE_TYPE__IDENTIFIER:
+        return basicSetIdentifier(null, msgs);
+      case Ows20Package.REFERENCE_TYPE__ABSTRACT:
+        return ((InternalEList<?>)getAbstract()).basicRemove(otherEnd, msgs);
+      case Ows20Package.REFERENCE_TYPE__METADATA_GROUP:
+        return ((InternalEList<?>)getMetadataGroup()).basicRemove(otherEnd, msgs);
+      case Ows20Package.REFERENCE_TYPE__METADATA:
+        return ((InternalEList<?>)getMetadata()).basicRemove(otherEnd, msgs);
     }
+    return super.eInverseRemove(otherEnd, featureID, msgs);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case Ows20Package.REFERENCE_TYPE__IDENTIFIER:
-                return getIdentifier();
-            case Ows20Package.REFERENCE_TYPE__ABSTRACT:
-                return getAbstract();
-            case Ows20Package.REFERENCE_TYPE__FORMAT:
-                return getFormat();
-            case Ows20Package.REFERENCE_TYPE__METADATA_GROUP:
-                if (coreType) return getMetadataGroup();
-                return ((FeatureMap.Internal)getMetadataGroup()).getWrapper();
-            case Ows20Package.REFERENCE_TYPE__METADATA:
-                return getMetadata();
-        }
-        return super.eGet(featureID, resolve, coreType);
+    switch (featureID) {
+      case Ows20Package.REFERENCE_TYPE__IDENTIFIER:
+        return getIdentifier();
+      case Ows20Package.REFERENCE_TYPE__ABSTRACT:
+        return getAbstract();
+      case Ows20Package.REFERENCE_TYPE__FORMAT:
+        return getFormat();
+      case Ows20Package.REFERENCE_TYPE__METADATA_GROUP:
+        if (coreType) return getMetadataGroup();
+        return ((FeatureMap.Internal)getMetadataGroup()).getWrapper();
+      case Ows20Package.REFERENCE_TYPE__METADATA:
+        return getMetadata();
     }
+    return super.eGet(featureID, resolve, coreType);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @SuppressWarnings("unchecked")
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case Ows20Package.REFERENCE_TYPE__IDENTIFIER:
-                setIdentifier((CodeType)newValue);
-                return;
-            case Ows20Package.REFERENCE_TYPE__ABSTRACT:
-                getAbstract().clear();
-                getAbstract().addAll((Collection<? extends LanguageStringType>)newValue);
-                return;
-            case Ows20Package.REFERENCE_TYPE__FORMAT:
-                setFormat((String)newValue);
-                return;
-            case Ows20Package.REFERENCE_TYPE__METADATA_GROUP:
-                ((FeatureMap.Internal)getMetadataGroup()).set(newValue);
-                return;
-            case Ows20Package.REFERENCE_TYPE__METADATA:
-                getMetadata().clear();
-                getMetadata().addAll((Collection<? extends MetadataType>)newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
+    switch (featureID) {
+      case Ows20Package.REFERENCE_TYPE__IDENTIFIER:
+        setIdentifier((CodeType)newValue);
+        return;
+      case Ows20Package.REFERENCE_TYPE__ABSTRACT:
+        getAbstract().clear();
+        getAbstract().addAll((Collection<? extends LanguageStringType>)newValue);
+        return;
+      case Ows20Package.REFERENCE_TYPE__FORMAT:
+        setFormat((String)newValue);
+        return;
+      case Ows20Package.REFERENCE_TYPE__METADATA_GROUP:
+        ((FeatureMap.Internal)getMetadataGroup()).set(newValue);
+        return;
+      case Ows20Package.REFERENCE_TYPE__METADATA:
+        getMetadata().clear();
+        getMetadata().addAll((Collection<? extends MetadataType>)newValue);
+        return;
     }
+    super.eSet(featureID, newValue);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case Ows20Package.REFERENCE_TYPE__IDENTIFIER:
-                setIdentifier((CodeType)null);
-                return;
-            case Ows20Package.REFERENCE_TYPE__ABSTRACT:
-                getAbstract().clear();
-                return;
-            case Ows20Package.REFERENCE_TYPE__FORMAT:
-                setFormat(FORMAT_EDEFAULT);
-                return;
-            case Ows20Package.REFERENCE_TYPE__METADATA_GROUP:
-                getMetadataGroup().clear();
-                return;
-            case Ows20Package.REFERENCE_TYPE__METADATA:
-                getMetadata().clear();
-                return;
-        }
-        super.eUnset(featureID);
+    switch (featureID) {
+      case Ows20Package.REFERENCE_TYPE__IDENTIFIER:
+        setIdentifier((CodeType)null);
+        return;
+      case Ows20Package.REFERENCE_TYPE__ABSTRACT:
+        getAbstract().clear();
+        return;
+      case Ows20Package.REFERENCE_TYPE__FORMAT:
+        setFormat(FORMAT_EDEFAULT);
+        return;
+      case Ows20Package.REFERENCE_TYPE__METADATA_GROUP:
+        getMetadataGroup().clear();
+        return;
+      case Ows20Package.REFERENCE_TYPE__METADATA:
+        getMetadata().clear();
+        return;
     }
+    super.eUnset(featureID);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case Ows20Package.REFERENCE_TYPE__IDENTIFIER:
-                return identifier != null;
-            case Ows20Package.REFERENCE_TYPE__ABSTRACT:
-                return abstract_ != null && !abstract_.isEmpty();
-            case Ows20Package.REFERENCE_TYPE__FORMAT:
-                return FORMAT_EDEFAULT == null ? format != null : !FORMAT_EDEFAULT.equals(format);
-            case Ows20Package.REFERENCE_TYPE__METADATA_GROUP:
-                return metadataGroup != null && !metadataGroup.isEmpty();
-            case Ows20Package.REFERENCE_TYPE__METADATA:
-                return !getMetadata().isEmpty();
-        }
-        return super.eIsSet(featureID);
+    switch (featureID) {
+      case Ows20Package.REFERENCE_TYPE__IDENTIFIER:
+        return identifier != null;
+      case Ows20Package.REFERENCE_TYPE__ABSTRACT:
+        return abstract_ != null && !abstract_.isEmpty();
+      case Ows20Package.REFERENCE_TYPE__FORMAT:
+        return FORMAT_EDEFAULT == null ? format != null : !FORMAT_EDEFAULT.equals(format);
+      case Ows20Package.REFERENCE_TYPE__METADATA_GROUP:
+        return metadataGroup != null && !metadataGroup.isEmpty();
+      case Ows20Package.REFERENCE_TYPE__METADATA:
+        return !getMetadata().isEmpty();
     }
+    return super.eIsSet(featureID);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     public String toString() {
-        if (eIsProxy()) return super.toString();
+    if (eIsProxy()) return super.toString();
 
-        StringBuffer result = new StringBuffer(super.toString());
-        result.append(" (format: ");
-        result.append(format);
-        result.append(", metadataGroup: ");
-        result.append(metadataGroup);
-        result.append(')');
-        return result.toString();
-    }
+    StringBuilder result = new StringBuilder(super.toString());
+    result.append(" (format: ");
+    result.append(format);
+    result.append(", metadataGroup: ");
+    result.append(metadataGroup);
+    result.append(')');
+    return result.toString();
+  }
 
 } //ReferenceTypeImpl

@@ -23,7 +23,6 @@ import org.opengis.util.Record;
  * whose individual cells can be geolocated using geolocation information supplied with the data but
  * cannot be geolocated from the grid properties alone.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/as#01-111">ISO 19115</A>
  * @author Martin Desruisseaux (IRD)
  * @author Cory Horner (Refractions Research)

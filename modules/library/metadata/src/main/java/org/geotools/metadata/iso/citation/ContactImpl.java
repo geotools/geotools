@@ -30,7 +30,6 @@ import org.opengis.util.InternationalString;
  * Information required to enable contact with the responsible person and/or organization.
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @author Touraïvane
@@ -210,7 +209,7 @@ public class ContactImpl extends MetadataEntity implements Contact {
     /**
      * Set the physical and email address at which the organization or individual may be contacted.
      */
-    public synchronized void setAddress(final Address newValue) {
+    public void setAddress(final Address newValue) {
         checkWritePermission();
         address = newValue;
     }
@@ -224,7 +223,7 @@ public class ContactImpl extends MetadataEntity implements Contact {
     }
 
     /** Set supplemental instructions on how or when to contact the individual or organization. */
-    public synchronized void setContactInstructions(final InternationalString newValue) {
+    public void setContactInstructions(final InternationalString newValue) {
         checkWritePermission();
         contactInstructions = newValue;
     }
@@ -238,7 +237,7 @@ public class ContactImpl extends MetadataEntity implements Contact {
     }
 
     /** Set on-line information that can be used to contact the individual or organization. */
-    public synchronized void setOnLineResource(final OnLineResource newValue) {
+    public void setOnLineResource(final OnLineResource newValue) {
         checkWritePermission();
         onLineResource = newValue;
     }
@@ -252,7 +251,7 @@ public class ContactImpl extends MetadataEntity implements Contact {
     }
 
     /** Set telephone numbers at which the organization or individual may be contacted. */
-    public synchronized void setPhone(final Telephone newValue) {
+    public void setPhone(final Telephone newValue) {
         checkWritePermission();
         phone = newValue;
     }
@@ -269,7 +268,7 @@ public class ContactImpl extends MetadataEntity implements Contact {
      * Set time period (including time zone) when individuals can contact the organization or
      * individual.
      */
-    public synchronized void setHoursOfService(final InternationalString newValue) {
+    public void setHoursOfService(final InternationalString newValue) {
         checkWritePermission();
         hoursOfService = newValue;
     }

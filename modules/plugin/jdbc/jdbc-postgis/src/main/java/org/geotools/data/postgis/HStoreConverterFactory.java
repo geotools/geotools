@@ -17,9 +17,9 @@
 package org.geotools.data.postgis;
 
 import java.util.Map;
-import org.geotools.factory.Hints;
 import org.geotools.util.Converter;
 import org.geotools.util.ConverterFactory;
+import org.geotools.util.factory.Hints;
 
 /**
  * ConverterFactory for handling Map of String to {@link HStore} conversion.

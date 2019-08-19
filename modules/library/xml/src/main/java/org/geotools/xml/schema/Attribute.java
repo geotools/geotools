@@ -22,7 +22,6 @@ import java.net.URI;
  * An instance of this interface should represent an Attribute from an XML schema.
  *
  * @author dzwiers www.refractions.net
- * @source $URL$
  */
 public interface Attribute {
     /** Represent a mask used to determine the life of the attribute in an instance document. */
@@ -62,7 +61,6 @@ public interface Attribute {
     /** The name of the attribute specified if one was provided in the attribute declaration */
     public String getName();
 
-    /** DOCUMENT ME! */
     public URI getNamespace();
 
     /**

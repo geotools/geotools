@@ -20,9 +20,9 @@ import java.util.Arrays;
 import java.util.List;
 import javax.xml.namespace.QName;
 import org.geotools.gml3.GML;
-import org.geotools.xml.AbstractComplexBinding;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
+import org.geotools.xsd.AbstractComplexBinding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Polygon;
@@ -56,7 +56,6 @@ import org.locationtech.jts.geom.Polygon;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class MultiSurfaceTypeBinding extends AbstractComplexBinding {
     protected GeometryFactory gf;

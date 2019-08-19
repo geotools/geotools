@@ -43,7 +43,6 @@ import org.opengis.filter.expression.Subtract;
  * </code></pre>
  *
  * @author Jody
- * @source $URL$
  */
 public class IsStaticExpressionVisitor implements ExpressionVisitor {
     public static final IsStaticExpressionVisitor VISITOR = new IsStaticExpressionVisitor();

@@ -36,7 +36,6 @@ import java.awt.event.KeyEvent;
  *
  * @author Michael Bedward
  * @since 8.0
- * @source $URL$
  * @version $Id$
  */
 public class KeyInfo {

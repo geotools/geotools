@@ -67,10 +67,9 @@ import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-/** @source $URL$ */
 public abstract class AbstractWfsDataStoreOnlineTest {
 
-    private static final Logger LOGGER = Logging.getLogger("org.geotools.wfs.v_1_1_0.data.test");
+    private static final Logger LOGGER = Logging.getLogger(AbstractWfsDataStoreOnlineTest.class);
 
     protected static final FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
 
@@ -467,36 +466,6 @@ public abstract class AbstractWfsDataStoreOnlineTest {
                     @Override
                     public Expression getExpression1() {
                         return bbox.getExpression1();
-                    }
-
-                    @Override
-                    public String getSRS() {
-                        return bbox.getSRS();
-                    }
-
-                    @Override
-                    public String getPropertyName() {
-                        return bbox.getPropertyName();
-                    }
-
-                    @Override
-                    public double getMinY() {
-                        return bbox.getMinY();
-                    }
-
-                    @Override
-                    public double getMinX() {
-                        return bbox.getMinX();
-                    }
-
-                    @Override
-                    public double getMaxY() {
-                        return bbox.getMaxY();
-                    }
-
-                    @Override
-                    public double getMaxX() {
-                        return bbox.getMaxX();
                     }
 
                     @Override

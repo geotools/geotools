@@ -16,14 +16,13 @@
  */
 package org.geotools.filter.v1_0;
 
-import org.geotools.xml.Binding;
+import org.geotools.xsd.Binding;
 import org.opengis.filter.PropertyIsBetween;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
 import org.w3c.dom.Document;
 
-/** @source $URL$ */
 public class OGCPropertyIsBetweenTypeBindingTest extends FilterTestSupport {
     public void testLowerBoundaryType() {
         assertEquals(Expression.class, binding(OGC.LowerBoundaryType).getType());

@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<as:AppSchemaDataAccess xmlns:as="http://www.geotools.org/app-schema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <namespaces>
+        <Namespace>
+            <prefix>st</prefix>
+            <uri>http://www.stations.org/1.0</uri>
+        </Namespace>
+        <Namespace>
+            <prefix>gml</prefix>
+            <uri>http://www.opengis.net/gml/3.2</uri>
+        </Namespace>
+    </namespaces>
+    <sourceDataStores>
+        <SolrDataStore>
+            <id>stations_solr</id>
+            <url>ttp://127.0.0.2:8080/solr/stations</url>
+            <index name="stations">
+                <geometry default="true">
+                    <name>station_location</name>
+                    <srid>4326</srid>
+                    <type>POINT</type>
+                </geometry>
+            </index>
+        </SolrDataStore>
+        <DataStore>
+            <id>stations_pg</id>
+            <parameters>
+                <Parameter>
+                    <name>Connection timeout</name>
+                    <value>20</value>
+                </Parameter>
+                <Parameter>
+                    <name>port</name>
+                    <value>5432</value>
+                </Parameter>
+                <Parameter>
+                    <name>passwd</name>
+                    <value>sis98</value>
+                </Parameter>
+                <Parameter>
+                    <name>dbtype</name>
+                    <value>postgis</value>
+                </Parameter>
+                <Parameter>
+                    <name>encode functions</name>
+                    <value>false</value>
+                </Parameter>
+                <Parameter>
+                    <name>Evictor run periodicity</name>
+                    <value>300</value>
+                </Parameter>
+                <Parameter>
+                    <name>namespace</name>
+                    <value></value>
+                </Parameter>
+                <Parameter>
+                    <name>schema</name>
+                    <value>meteo</value>
+                </Parameter>
+                <Parameter>
+                    <name>create database</name>
+                    <value>false</value>
+                </Parameter>
+                <Parameter>
+                    <name>fetch size</name>
+                    <value>1000</value>
+                </Parameter>
+                <Parameter>
+                    <name>preparedStatements</name>
+                    <value>false</value>
+                </Parameter>
+                <Parameter>
+                    <name>min connections</name>
+                    <value>1</value>
+                </Parameter>
+                <Parameter>
+                    <name>Evictor tests per run</name>
+                    <value>3</value>
+                </Parameter>
+                <Parameter>
+                    <name>host</name>
+                    <value>localhost</value>
+                </Parameter>
+                <Parameter>
+                    <name>validate connections</name>
+                    <value>true</value>
+                </Parameter>
+                <Parameter>
+                    <name>max connections</name>
+                    <value>10</value>
+                </Parameter>
+                <Parameter>
+                    <name>database</name>
+                    <value>stations</value>
+                </Parameter>
+                <Parameter>
+                    <name>Support on the fly geometry simplification</name>
+                    <value>true</value>
+                </Parameter>
+                <Parameter>
+                    <name>Max connection idle time</name>
+                    <value>300</value>
+                </Parameter>
+                <Parameter>
+                    <name>Test while idle</name>
+                    <value>true</value>
+                </Parameter>
+                <Parameter>
+                    <name>Loose bbox</name>
+                    <value>true</value>
+                </Parameter>
+                <Parameter>
+                    <name>Expose primary keys</name>
+                    <value>true</value>
+                </Parameter>
+                <Parameter>
+                    <name>Max open prepared statements</name>
+                    <value>50</value>
+                </Parameter>
+                <Parameter>
+                    <name>Estimated extends</name>
+                    <value>true</value>
+                </Parameter>
+                <Parameter>
+                    <name>user</name>
+                    <value>sisapp</value>
+                </Parameter>
+            </parameters>
+        </DataStore>
+    </sourceDataStores>
+    <targetTypes>
+        <FeatureType>
+            <schemaUri>meteo.xsd</schemaUri>
+        </FeatureType>
+    </targetTypes>
+    <typeMappings>
+        <FeatureTypeMapping>
+            <mappingName>multi_stations_solr</mappingName>
+            <sourceDataStore>stations_pg</sourceDataStore>            
+            <sourceType>stations</sourceType>
+            <indexDataStore>stations_solr</indexDataStore>
+            <indexType>stations</indexType>
+            <targetElement>st:Station</targetElement>
+            <attributeMappings>
+                <AttributeMapping>
+                    <targetAttribute>st:Station</targetAttribute>
+                    <indexField>station_id</indexField>
+                    <idExpression>
+                        <OCQL>station_id</OCQL>
+                    </idExpression>
+                </AttributeMapping>
+                <AttributeMapping>
+                    <targetAttribute>st:stationName</targetAttribute>
+                    <indexField>station_name</indexField>
+                    <sourceExpression>
+                        <OCQL>station_name</OCQL>
+                    </sourceExpression>
+                </AttributeMapping>
+                <AttributeMapping>
+                    <targetAttribute>st:position</targetAttribute>
+                    <sourceExpression>
+                        <OCQL>station_location</OCQL>
+                    </sourceExpression>
+                </AttributeMapping>
+                <AttributeMapping>
+                    <targetAttribute>st:tag</targetAttribute>
+                    <solrMultipleValue>station_tag</solrMultipleValue>
+                </AttributeMapping>
+                <AttributeMapping>
+                    <targetAttribute>st:comment</targetAttribute>
+                    <solrMultipleValue>station_comment</solrMultipleValue>
+                </AttributeMapping>
+            </attributeMappings>
+        </FeatureTypeMapping>
+    </typeMappings>
+</as:AppSchemaDataAccess>

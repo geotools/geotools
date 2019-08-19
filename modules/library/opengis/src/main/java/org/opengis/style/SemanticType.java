@@ -32,7 +32,6 @@ import org.opengis.util.CodeList;
  *
  * <p>
  *
- * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/symbol">Symbology Encoding
  *     Implementation Specification 1.1.0</A>
  * @author Open Geospatial Consortium
@@ -77,7 +76,7 @@ public final class SemanticType extends CodeList<SemanticType> {
      *
      * @param name The enum name. This name must not be in use by an other enum of this type.
      */
-    private SemanticType(final String name) {
+    public SemanticType(final String name) {
         super(name, VALUES);
     }
 

@@ -26,7 +26,6 @@ import org.opengis.filter.FilterFactory;
 import org.opengis.filter.PropertyIsEqualTo;
 import org.opengis.filter.spatial.BBOX;
 
-/** @source $URL$ */
 public class PropertyNameResolvingFilterVisitorTest extends TestCase {
 
     FilterFactory factory;

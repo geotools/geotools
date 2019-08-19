@@ -60,20 +60,16 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  *
  * @author Michael Bedward
  * @since 2.6
- * @source $URL$
  * @version $Id$
  */
 public class JCRSChooser {
-    private static final Logger LOGGER = Logging.getLogger("org.geotools.swing");
+    private static final Logger LOGGER = Logging.getLogger(JCRSChooser.class);
 
     /** Default authority name (EPSG). */
     public static final String DEFAULT_AUTHORITY = "EPSG";
 
     /** Default dialog title */
     public static final String DEFAULT_TITLE = "Choose a projection";
-
-    private CRSDialog dialog;
-    private CoordinateReferenceSystem crs;
 
     /** Constructor is hidden. */
     private JCRSChooser() {}

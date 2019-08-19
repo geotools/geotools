@@ -27,13 +27,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
+import org.geotools.data.util.NullProgressListener;
 import org.geotools.feature.CollectionEvent;
 import org.geotools.feature.CollectionListener;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.filter.visitor.ExtractBoundsFilterVisitor;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.util.NullProgressListener;
 import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.index.ItemVisitor;
@@ -53,7 +53,6 @@ import org.opengis.util.ProgressListener;
  * created.
  *
  * @author Jody
- * @source $URL$
  */
 public class SpatialIndexFeatureCollection implements SimpleFeatureCollection {
 

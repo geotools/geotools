@@ -48,19 +48,17 @@ import org.geotools.wfs.bindings.QueryTypeBinding;
 import org.geotools.wfs.bindings.ResultTypeTypeBinding;
 import org.geotools.wfs.bindings.TransactionSummaryTypeBinding;
 import org.geotools.wfs.bindings.TransactionTypeBinding;
-import org.geotools.wfs.bindings.TypeNameListTypeBinding;
 import org.geotools.wfs.bindings.UpdateElementTypeBinding;
 import org.geotools.wfs.bindings.WFS_CapabilitiesTypeBinding;
 import org.geotools.wfs.bindings._XlinkPropertyNameBinding;
-import org.geotools.xml.Configuration;
-import org.geotools.xml.XSD;
+import org.geotools.xsd.Configuration;
+import org.geotools.xsd.XSD;
 import org.picocontainer.MutablePicoContainer;
 
 /**
  * Parser configuration for the http://www.opengis.net/wfs schema.
  *
  * @generated
- * @source $URL$
  */
 public abstract class WFSConfiguration extends Configuration {
     /**
@@ -135,8 +133,6 @@ public abstract class WFSConfiguration extends Configuration {
                 WFS.TransactionSummaryType, TransactionSummaryTypeBinding.class);
         container.registerComponentImplementation(
                 WFS.TransactionType, TransactionTypeBinding.class);
-        container.registerComponentImplementation(
-                WFS.TypeNameListType, TypeNameListTypeBinding.class);
         container.registerComponentImplementation(
                 WFS.UpdateElementType, UpdateElementTypeBinding.class);
         container.registerComponentImplementation(

@@ -73,7 +73,6 @@ import org.opengis.geometry.BoundingBox;
  *
  * @author Jesse Eichar, Refractions Research
  * @author Niels Charlier
- * @source $URL$
  */
 public abstract class AbstractIntegrationTest {
 
@@ -306,7 +305,7 @@ public abstract class AbstractIntegrationTest {
             assertTrue(contains(names, first.typeName));
             assertTrue(contains(names, second.typeName));
         } catch (IOException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             fail("Fail with an IOException trying to getTypeNames()");
         }
     }

@@ -23,7 +23,6 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.FunctionImpl;
 import org.opengis.filter.FilterFactory;
 
-/** @source $URL$ */
 public class StringInFunctionTest extends TestCase {
 
     FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);

@@ -29,6 +29,7 @@ import org.opengis.filter.sort.SortBy;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link net.opengis.wfs.QueryType#getGroup <em>Group</em>}</li>
  *   <li>{@link net.opengis.wfs.QueryType#getPropertyName <em>Property Name</em>}</li>
@@ -41,7 +42,6 @@ import org.opengis.filter.sort.SortBy;
  *   <li>{@link net.opengis.wfs.QueryType#getSrsName <em>Srs Name</em>}</li>
  *   <li>{@link net.opengis.wfs.QueryType#getTypeName <em>Type Name</em>}</li>
  * </ul>
- * </p>
  *
  * @see net.opengis.wfs.WfsPackage#getQueryType()
  * @model extendedMetaData="name='QueryType' kind='elementOnly'"
@@ -49,20 +49,20 @@ import org.opengis.filter.sort.SortBy;
  */
 public interface QueryType extends EObject {
 	/**
-     * Returns the value of the '<em><b>Group</b></em>' attribute list.
-     * The list contents are of type {@link org.eclipse.emf.ecore.util.FeatureMap.Entry}.
-     * <!-- begin-user-doc -->
+   * Returns the value of the '<em><b>Group</b></em>' attribute list.
+   * The list contents are of type {@link org.eclipse.emf.ecore.util.FeatureMap.Entry}.
+   * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Group</em>' attribute list isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-     * @return the value of the '<em>Group</em>' attribute list.
-     * @see net.opengis.wfs.WfsPackage#getQueryType_Group()
-     * @model unique="false" dataType="org.eclipse.emf.ecore.EFeatureMapEntry" many="true"
-     *        extendedMetaData="kind='group' name='group:0'"
-     * @generated
-     */
+   * @return the value of the '<em>Group</em>' attribute list.
+   * @see net.opengis.wfs.WfsPackage#getQueryType_Group()
+   * @model unique="false" dataType="org.eclipse.emf.ecore.EFeatureMapEntry" many="true"
+   *        extendedMetaData="kind='group' name='group:0'"
+   * @generated
+   */
 	FeatureMap getGroup();
 
 	/**
@@ -99,20 +99,20 @@ public interface QueryType extends EObject {
 	EList getPropertyName();
 
 	/**
-     * Returns the value of the '<em><b>Xlink Property Name</b></em>' containment reference list.
-     * The list contents are of type {@link net.opengis.wfs.XlinkPropertyNameType}.
-     * <!-- begin-user-doc -->
+   * Returns the value of the '<em><b>Xlink Property Name</b></em>' containment reference list.
+   * The list contents are of type {@link net.opengis.wfs.XlinkPropertyNameType}.
+   * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Xlink Property Name</em>' containment reference list isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-     * @return the value of the '<em>Xlink Property Name</em>' containment reference list.
-     * @see net.opengis.wfs.WfsPackage#getQueryType_XlinkPropertyName()
-     * @model type="net.opengis.wfs.XlinkPropertyNameType" containment="true" transient="true" volatile="true" derived="true"
-     *        extendedMetaData="kind='element' name='XlinkPropertyName' namespace='##targetNamespace' group='#group:0'"
-     * @generated
-     */
+   * @return the value of the '<em>Xlink Property Name</em>' containment reference list.
+   * @see net.opengis.wfs.WfsPackage#getQueryType_XlinkPropertyName()
+   * @model type="net.opengis.wfs.XlinkPropertyNameType" containment="true" transient="true" volatile="true" derived="true"
+   *        extendedMetaData="kind='element' name='XlinkPropertyName' namespace='##targetNamespace' group='#group:0'"
+   * @generated
+   */
 	EList getXlinkPropertyName();
 
 	/**
@@ -155,13 +155,13 @@ public interface QueryType extends EObject {
 	Filter getFilter();
 
 	/**
-     * Sets the value of the '{@link net.opengis.wfs.QueryType#getFilter <em>Filter</em>}' attribute.
-     * <!-- begin-user-doc -->
+   * Sets the value of the '{@link net.opengis.wfs.QueryType#getFilter <em>Filter</em>}' attribute.
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Filter</em>' attribute.
-     * @see #getFilter()
-     * @generated
-     */
+   * @param value the new value of the '<em>Filter</em>' attribute.
+   * @see #getFilter()
+   * @generated
+   */
 	void setFilter(Filter value);
 
 	/**
@@ -183,69 +183,69 @@ public interface QueryType extends EObject {
 	EList getSortBy();
 
 	/**
-     * Returns the value of the '<em><b>Feature Version</b></em>' attribute.
-     * <!-- begin-user-doc -->
+   * Returns the value of the '<em><b>Feature Version</b></em>' attribute.
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * <!-- begin-model-doc -->
-     * 
-     *               For systems that implement versioning, the featureVersion
-     *               attribute is used to specify which version of a particular
-     *               feature instance is to be retrieved.  A value of ALL means
-     *               that all versions should be retrieved.  An integer value
-     *               'i', means that the ith version should be retrieve if it
-     *               exists or the most recent version otherwise.
-     * <!-- end-model-doc -->
-     * @return the value of the '<em>Feature Version</em>' attribute.
-     * @see #setFeatureVersion(String)
-     * @see net.opengis.wfs.WfsPackage#getQueryType_FeatureVersion()
-     * @model unique="false" dataType="org.eclipse.emf.ecore.xml.type.String"
-     *        extendedMetaData="kind='attribute' name='featureVersion'"
-     * @generated
-     */
+   * <!-- begin-model-doc -->
+   * 
+   *               For systems that implement versioning, the featureVersion
+   *               attribute is used to specify which version of a particular
+   *               feature instance is to be retrieved.  A value of ALL means
+   *               that all versions should be retrieved.  An integer value
+   *               'i', means that the ith version should be retrieve if it
+   *               exists or the most recent version otherwise.
+   * <!-- end-model-doc -->
+   * @return the value of the '<em>Feature Version</em>' attribute.
+   * @see #setFeatureVersion(String)
+   * @see net.opengis.wfs.WfsPackage#getQueryType_FeatureVersion()
+   * @model unique="false" dataType="org.eclipse.emf.ecore.xml.type.String"
+   *        extendedMetaData="kind='attribute' name='featureVersion'"
+   * @generated
+   */
 	String getFeatureVersion();
 
 	/**
-     * Sets the value of the '{@link net.opengis.wfs.QueryType#getFeatureVersion <em>Feature Version</em>}' attribute.
-     * <!-- begin-user-doc -->
+   * Sets the value of the '{@link net.opengis.wfs.QueryType#getFeatureVersion <em>Feature Version</em>}' attribute.
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Feature Version</em>' attribute.
-     * @see #getFeatureVersion()
-     * @generated
-     */
+   * @param value the new value of the '<em>Feature Version</em>' attribute.
+   * @see #getFeatureVersion()
+   * @generated
+   */
 	void setFeatureVersion(String value);
 
 	/**
-     * Returns the value of the '<em><b>Handle</b></em>' attribute.
-     * <!-- begin-user-doc -->
+   * Returns the value of the '<em><b>Handle</b></em>' attribute.
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * <!-- begin-model-doc -->
-     * 
-     *                The handle attribute allows a client application
-     *                to assign a client-generated identifier for the
-     *                Query.  The handle is included to facilitate error
-     *                reporting.  If one Query in a GetFeature request
-     *                causes an exception, a WFS may report the handle
-     *                to indicate which query element failed.  If the a
-     *                handle is not present, the WFS may use other means
-     *                to localize the error (e.g. line numbers).
-     * <!-- end-model-doc -->
-     * @return the value of the '<em>Handle</em>' attribute.
-     * @see #setHandle(String)
-     * @see net.opengis.wfs.WfsPackage#getQueryType_Handle()
-     * @model unique="false" dataType="org.eclipse.emf.ecore.xml.type.String"
-     *        extendedMetaData="kind='attribute' name='handle'"
-     * @generated
-     */
+   * <!-- begin-model-doc -->
+   * 
+   *                The handle attribute allows a client application
+   *                to assign a client-generated identifier for the
+   *                Query.  The handle is included to facilitate error
+   *                reporting.  If one Query in a GetFeature request
+   *                causes an exception, a WFS may report the handle
+   *                to indicate which query element failed.  If the a
+   *                handle is not present, the WFS may use other means
+   *                to localize the error (e.g. line numbers).
+   * <!-- end-model-doc -->
+   * @return the value of the '<em>Handle</em>' attribute.
+   * @see #setHandle(String)
+   * @see net.opengis.wfs.WfsPackage#getQueryType_Handle()
+   * @model unique="false" dataType="org.eclipse.emf.ecore.xml.type.String"
+   *        extendedMetaData="kind='attribute' name='handle'"
+   * @generated
+   */
 	String getHandle();
 
 	/**
-     * Sets the value of the '{@link net.opengis.wfs.QueryType#getHandle <em>Handle</em>}' attribute.
-     * <!-- begin-user-doc -->
+   * Sets the value of the '{@link net.opengis.wfs.QueryType#getHandle <em>Handle</em>}' attribute.
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Handle</em>' attribute.
-     * @see #getHandle()
-     * @generated
-     */
+   * @param value the new value of the '<em>Handle</em>' attribute.
+   * @see #getHandle()
+   * @generated
+   */
 	void setHandle(String value);
 
 	/**
@@ -272,47 +272,47 @@ public interface QueryType extends EObject {
 	URI getSrsName();
 
 	/**
-     * Sets the value of the '{@link net.opengis.wfs.QueryType#getSrsName <em>Srs Name</em>}' attribute.
-     * <!-- begin-user-doc -->
+   * Sets the value of the '{@link net.opengis.wfs.QueryType#getSrsName <em>Srs Name</em>}' attribute.
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Srs Name</em>' attribute.
-     * @see #getSrsName()
-     * @generated
-     */
+   * @param value the new value of the '<em>Srs Name</em>' attribute.
+   * @see #getSrsName()
+   * @generated
+   */
 	void setSrsName(URI value);
 
 	/**
-     * Returns the value of the '<em><b>Type Name</b></em>' attribute.
-     * <!-- begin-user-doc -->
+   * Returns the value of the '<em><b>Type Name</b></em>' attribute.
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * <!-- begin-model-doc -->
-     * 
-     *               The typeName attribute is a list of one or more
-     *               feature type names that indicate which types
-     *               of feature instances should be included in the
-     *               reponse set.  Specifying more than one typename
-     *               indicates that a join operation is being performed.
-     *               All the names in the typeName list must be valid
-     *               types that belong to this query's feature content
-     *               as defined by the GML Application Schema.
-     * <!-- end-model-doc -->
-     * @return the value of the '<em>Type Name</em>' attribute.
-     * @see #setTypeName(List)
-     * @see net.opengis.wfs.WfsPackage#getQueryType_TypeName()
-     * @model unique="false" dataType="net.opengis.wfs.TypeNameListType" required="true" many="false"
-     *        extendedMetaData="kind='attribute' name='typeName'"
-     * @generated
-     */
+   * <!-- begin-model-doc -->
+   * 
+   *               The typeName attribute is a list of one or more
+   *               feature type names that indicate which types
+   *               of feature instances should be included in the
+   *               reponse set.  Specifying more than one typename
+   *               indicates that a join operation is being performed.
+   *               All the names in the typeName list must be valid
+   *               types that belong to this query's feature content
+   *               as defined by the GML Application Schema.
+   * <!-- end-model-doc -->
+   * @return the value of the '<em>Type Name</em>' attribute.
+   * @see #setTypeName(List)
+   * @see net.opengis.wfs.WfsPackage#getQueryType_TypeName()
+   * @model unique="false" dataType="net.opengis.wfs.TypeNameListType" required="true" many="false"
+   *        extendedMetaData="kind='attribute' name='typeName'"
+   * @generated
+   */
 	List getTypeName();
 
 	/**
-     * Sets the value of the '{@link net.opengis.wfs.QueryType#getTypeName <em>Type Name</em>}' attribute.
-     * <!-- begin-user-doc -->
+   * Sets the value of the '{@link net.opengis.wfs.QueryType#getTypeName <em>Type Name</em>}' attribute.
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Type Name</em>' attribute.
-     * @see #getTypeName()
-     * @generated
-     */
+   * @param value the new value of the '<em>Type Name</em>' attribute.
+   * @see #getTypeName()
+   * @generated
+   */
 	void setTypeName(List value);
 
 } // QueryType

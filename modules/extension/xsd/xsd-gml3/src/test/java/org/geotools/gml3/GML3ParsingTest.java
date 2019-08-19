@@ -15,8 +15,8 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import junit.framework.TestCase;
 import org.geotools.geometry.jts.coordinatesequence.CoordinateSequences;
-import org.geotools.xml.Parser;
-import org.geotools.xml.StreamingParser;
+import org.geotools.xsd.Parser;
+import org.geotools.xsd.StreamingParser;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.io.WKTReader;
@@ -24,7 +24,6 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.temporal.Period;
 import org.w3c.dom.Document;
 
-/** @source $URL$ */
 public class GML3ParsingTest extends TestCase {
 
     public void testWithoutSchema() throws Exception {

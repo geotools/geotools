@@ -17,7 +17,6 @@ import org.opengis.filter.expression.Expression;
  * An AnchorPoint identifies the location inside a textlabel to use as an "anchor" for positioning
  * it relative to a point geometry.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/symbol">Symbology Encoding
  *     Implementation Specification 1.1.0</A>
  * @author Open Geospatial Consortium

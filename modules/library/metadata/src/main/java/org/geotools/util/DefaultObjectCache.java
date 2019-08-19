@@ -31,7 +31,6 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  *
  * @since 2.5
  * @version $Id$
- * @source $URL$
  * @author Cory Horner (Refractions Research)
  */
 final class DefaultObjectCache implements ObjectCache {

@@ -26,7 +26,6 @@ import org.xml.sax.Attributes;
  *
  * @author dzwiers, Refractions Research, Inc. http://www.refractions.net
  * @author $Author:$ (last modification)
- * @source $URL$
  * @version $Id$
  */
 public class IncludeHandler extends XSIElementHandler {
@@ -47,6 +46,7 @@ public class IncludeHandler extends XSIElementHandler {
     }
 
     /** @see java.lang.Object#hashCode() */
+    @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int hashCode() {
         return (LOCALNAME.hashCode() * ((schemaLocation == null) ? 1 : schemaLocation.hashCode()))
                 + hashCodeOffset;

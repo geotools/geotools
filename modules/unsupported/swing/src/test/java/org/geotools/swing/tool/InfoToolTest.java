@@ -24,7 +24,7 @@ import java.awt.geom.Point2D;
 import java.util.Random;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
-import org.fest.swing.core.MouseButton;
+import org.assertj.swing.core.MouseButton;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.geometry.DirectPosition2D;
@@ -43,7 +43,6 @@ import org.opengis.feature.simple.SimpleFeature;
  *
  * @author Michael Bedward
  * @since 8.0
- * @source $URL$
  * @version $Id$
  */
 @RunWith(GraphicsTestRunner.class)
@@ -98,13 +97,13 @@ public class InfoToolTest extends CursorToolTestBase {
         DirectPosition2D queryPos = TestDataUtils.getPosInFeature(feature);
         Point2D p2d = mapPane.getWorldToScreenTransform().transform(queryPos, null);
 
-        Point windowOrigin = mapPaneFixture.component().getLocationOnScreen();
+        Point windowOrigin = mapPaneFixture.target().getLocationOnScreen();
         Point screenQueryPos =
                 new Point(windowOrigin.x + (int) p2d.getX(), windowOrigin.y + (int) p2d.getY());
 
         mapPane.setCursorTool(tool);
         latch = new CountDownLatch(1);
-        mapPaneFixture.robot.click(screenQueryPos, MouseButton.LEFT_BUTTON, 1);
+        mapPaneFixture.robot().click(screenQueryPos, MouseButton.LEFT_BUTTON, 1);
 
         assertTrue(latch.await(EVENT_TIMEOUT, TimeUnit.MILLISECONDS));
         assertNotNull(reporterText);

@@ -42,7 +42,6 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.locationtech.jts.geom.Coordinate;
 
-/** @source $URL$ */
 public class GeoJSONUtil {
 
     /** Date format (ISO 8601) */
@@ -235,7 +234,7 @@ public class GeoJSONUtil {
             c.y = ((Number) ordinates.get(1)).doubleValue();
         }
         if (ordinates.size() > 2) {
-            c.z = ((Number) ordinates.get(2)).doubleValue();
+            c.setZ(((Number) ordinates.get(2)).doubleValue());
         }
         return c;
     }

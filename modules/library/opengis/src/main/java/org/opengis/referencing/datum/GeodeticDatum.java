@@ -19,7 +19,6 @@ import org.opengis.annotation.UML;
  * sphere) that approximates the shape of the earth. Used also for Cartesian coordinate system
  * centered in this ellipsoid (or sphere).
  *
- * @source $URL$
  * @version <A HREF="http://portal.opengeospatial.org/files/?artifact_id=6716">Abstract
  *     specification 2.0</A>
  * @author Martin Desruisseaux (IRD)

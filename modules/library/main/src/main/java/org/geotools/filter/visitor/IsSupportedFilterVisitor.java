@@ -95,7 +95,6 @@ import org.opengis.filter.temporal.TOverlaps;
  * Please consider IsSupportedFilterVisitor if you need to be sure of the entire Filter.
  *
  * @author Jody Garnett (Refractions Research)
- * @source $URL$
  */
 public class IsSupportedFilterVisitor implements FilterVisitor, ExpressionVisitor {
 

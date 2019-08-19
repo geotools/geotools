@@ -16,7 +16,6 @@
  */
 package org.geotools.xs;
 
-import org.geotools.xml.Configuration;
 import org.geotools.xs.bindings.XSAllBinding;
 import org.geotools.xs.bindings.XSAllNNIBinding;
 import org.geotools.xs.bindings.XSAnnotatedBinding;
@@ -108,13 +107,13 @@ import org.geotools.xs.bindings.XSUnsignedIntBinding;
 import org.geotools.xs.bindings.XSUnsignedLongBinding;
 import org.geotools.xs.bindings.XSUnsignedShortBinding;
 import org.geotools.xs.bindings.XSWildcardBinding;
+import org.geotools.xsd.Configuration;
 import org.picocontainer.MutablePicoContainer;
 
 /**
  * Parser configuration for xml schema schema.
  *
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL$
  */
 public class XSConfiguration extends Configuration {
     public XSConfiguration() {

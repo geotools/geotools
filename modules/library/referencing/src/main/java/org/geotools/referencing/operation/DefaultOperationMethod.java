@@ -22,16 +22,16 @@ package org.geotools.referencing.operation;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
+import org.geotools.metadata.i18n.Vocabulary;
+import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.parameter.Parameters;
 import org.geotools.referencing.AbstractIdentifiedObject;
 import org.geotools.referencing.operation.transform.AbstractMathTransform;
 import org.geotools.referencing.operation.transform.ConcatenatedTransform;
 import org.geotools.referencing.operation.transform.PassThroughTransform;
 import org.geotools.referencing.wkt.Formatter;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
-import org.geotools.resources.i18n.Vocabulary;
-import org.geotools.resources.i18n.VocabularyKeys;
 import org.geotools.util.Utilities;
 import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.parameter.ParameterDescriptorGroup;
@@ -48,7 +48,6 @@ import org.opengis.util.InternationalString;
  * operation using the method assigns values to these parameters.
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @see DefaultOperation
@@ -299,6 +298,7 @@ public class DefaultOperationMethod extends AbstractIdentifiedObject implements 
 
     /** Returns a hash code value for this operation method. */
     @Override
+    @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int hashCode() {
         int code = (int) serialVersionUID + sourceDimensions + 37 * targetDimensions;
         if (parameters != null) {

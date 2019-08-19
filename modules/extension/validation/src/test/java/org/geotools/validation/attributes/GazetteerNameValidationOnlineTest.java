@@ -29,10 +29,10 @@ import java.util.Map;
 import javax.xml.parsers.DocumentBuilderFactory;
 import junit.framework.TestCase;
 import org.geotools.data.simple.SimpleFeatureCollection;
-import org.geotools.feature.IllegalAttributeException;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.GeometryAttribute;
+import org.opengis.feature.IllegalAttributeException;
 import org.opengis.feature.Property;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -54,7 +54,6 @@ import org.xml.sax.InputSource;
  *
  * @author dzwiers, Refractions Research, Inc.
  * @author $Author: sploreg $ (last modification)
- * @source $URL$
  * @version $Id$
  */
 public class GazetteerNameValidationOnlineTest extends TestCase {
@@ -370,7 +369,7 @@ public class GazetteerNameValidationOnlineTest extends TestCase {
         } catch (ConnectException timedOut) {
             return; // ignore server must be down
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             fail(e.toString());
         }
     }

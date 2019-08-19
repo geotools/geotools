@@ -22,11 +22,11 @@ import java.io.InputStreamReader;
 import java.util.Iterator;
 import java.util.List;
 import javax.xml.transform.TransformerException;
-import org.geotools.factory.Hints;
-import org.geotools.filter.FilterTransformer;
 import org.geotools.filter.text.commons.CompilerUtil;
 import org.geotools.filter.text.commons.ExpressionToText;
 import org.geotools.filter.text.cql2.CQLException;
+import org.geotools.util.factory.Hints;
+import org.geotools.xml.filter.FilterTransformer;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Expression;
@@ -75,7 +75,6 @@ import org.opengis.filter.expression.Expression;
  * @author Jody Garnett
  * @author Mauricio Pazos (Axios Engineering)
  * @since 2.6
- * @source $URL$
  */
 public class ECQL {
 
@@ -88,7 +87,7 @@ public class ECQL {
      * Parses the input string in ECQL format into a Filter, using the systems default FilterFactory
      * implementation.
      *
-     * @param ECQLPredicate a string containing a query predicate in ECQL format.
+     * @param ecqlPredicate a string containing a query predicate in ECQL format.
      * @return a {@link Filter} equivalent to the constraint specified in <code>ecqlPredicate</code>
      *     .
      */
@@ -247,6 +246,7 @@ public class ECQL {
      *
      * @param args
      */
+    @SuppressWarnings("PMD.SystemPrintln")
     public static final void main(String[] args) {
         System.out.println("ECQL Filters Tester");
         System.out.println("Seperate with \";\" or \"quit\" to finish)");
@@ -263,22 +263,22 @@ public class ECQL {
             try {
                 line = reader.readLine();
 
-                if (line.equals("quit")) {
+                if (line == null || line.equals("quit")) {
                     System.out.println("Bye!");
                     break;
                 }
 
                 List<Filter> filters = ECQL.toFilterList(line);
                 for (Filter filter : filters) {
-                    System.out.println();
+                    // System.out.println();
                     filterTransformer.transform(filter, System.out);
                 }
             } catch (IOException e1) {
-                e1.printStackTrace();
+                java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e1);
             } catch (CQLException cqlex) {
                 System.out.println(cqlex.getSyntaxError());
             } catch (TransformerException e) {
-                e.printStackTrace();
+                java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             }
         }
     }

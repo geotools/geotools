@@ -17,7 +17,7 @@
 package org.geotools.geopkg.wps.xml;
 
 import org.geotools.filter.v2_0.FESConfiguration;
-import org.geotools.xml.Configuration;
+import org.geotools.xsd.Configuration;
 import org.picocontainer.MutablePicoContainer;
 
 /**

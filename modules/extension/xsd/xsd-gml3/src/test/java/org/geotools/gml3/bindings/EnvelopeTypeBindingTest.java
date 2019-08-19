@@ -22,7 +22,6 @@ import org.locationtech.jts.geom.Envelope;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-/** @source $URL$ */
 public class EnvelopeTypeBindingTest extends GML3TestSupport {
     public void testEncode() throws Exception {
         Document dom = encode(GML3MockData.bounds(), GML.Envelope);

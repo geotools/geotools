@@ -2,8 +2,8 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2001-2006  Vivid Solutions
  *    (C) 2001-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2001-2006  Vivid Solutions
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -37,7 +37,6 @@ import org.opengis.geometry.primitive.OrientableCurve;
 import org.opengis.geometry.primitive.Ring;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-/** @source $URL$ */
 public abstract class EdgeRing {
 
     protected DirectedEdge startDe; // the directed edge which starts the list
@@ -316,7 +315,7 @@ public abstract class EdgeRing {
      * been assigned.
      */
     public boolean containsPoint(Coordinate p) {
-        Ring shell = this.getRing();
+        // Ring shell = this.getRing();
 
         // TODO: auskommentiert; anpassen!
         // Envelope env = shell.getEnvelopeInternal();

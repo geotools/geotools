@@ -18,7 +18,6 @@ package org.geotools.util;
 
 import java.io.Serializable;
 import java.util.Map;
-import org.geotools.resources.Classes;
 
 /**
  * A default implementation of {@link java.util.Map.Entry} which map an arbitrary key-value pairs.
@@ -27,7 +26,6 @@ import org.geotools.resources.Classes;
  * @param <K> The class of key elements.
  * @param <V> The class of value elements.
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @todo This class will be removed when we will be allowed to compile for JSE 1.6, since a default

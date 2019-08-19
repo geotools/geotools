@@ -19,7 +19,6 @@ package org.geotools.data.spatialite;
 import org.geotools.jdbc.JDBCGeometrylessOnlineTest;
 import org.geotools.jdbc.JDBCGeometrylessTestSetup;
 
-/** @source $URL$ */
 public class SpatiaLiteGeometrylessOnlineTest extends JDBCGeometrylessOnlineTest {
 
     @Override

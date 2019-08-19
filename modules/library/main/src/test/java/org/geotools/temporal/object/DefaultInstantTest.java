@@ -28,10 +28,7 @@ import org.opengis.temporal.Instant;
 import org.opengis.temporal.Period;
 import org.opengis.temporal.Position;
 
-/**
- * @author Mehdi Sidhoum (Geomatys)
- * @source $URL$
- */
+/** @author Mehdi Sidhoum (Geomatys) */
 public class DefaultInstantTest {
 
     private Instant instant1;

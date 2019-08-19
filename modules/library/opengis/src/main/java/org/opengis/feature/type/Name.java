@@ -46,7 +46,6 @@ import org.opengis.annotation.UML;
  * extended to express additional functionality.
  *
  * @author Jody Garnett (Refractions Research, Inc.)
- * @source $URL$
  */
 public interface Name {
 

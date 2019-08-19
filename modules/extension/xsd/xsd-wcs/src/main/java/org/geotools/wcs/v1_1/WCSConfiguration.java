@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (c) 2014 - 2015 Open Source Geospatial Foundation - all rights reserved
+ *    (C) 2014 - 2015, Open Source Geospatial Foundation (OSGeo)
  *    (c) 2001 - 2013 OpenPlans
  *
  *    This library is free software; you can redistribute it and/or
@@ -27,8 +27,8 @@ import org.geotools.ows.v1_1.OWSConfiguration;
 import org.geotools.wcs.v1_1.bindings.TimePeriodTypeBinding;
 import org.geotools.wcs.v1_1.bindings.TimePositionTypeBinding;
 import org.geotools.wcs.v1_1.bindings.TimeSequenceTypeBinding;
-import org.geotools.xml.ComplexEMFBinding;
-import org.geotools.xml.Configuration;
+import org.geotools.xsd.ComplexEMFBinding;
+import org.geotools.xsd.Configuration;
 import org.picocontainer.MutablePicoContainer;
 
 /**

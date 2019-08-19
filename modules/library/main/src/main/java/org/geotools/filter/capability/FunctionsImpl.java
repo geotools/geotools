@@ -28,7 +28,6 @@ import org.opengis.filter.capability.Functions;
  * Implementation of the Functions interface.
  *
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL$
  */
 public class FunctionsImpl implements Functions {
 

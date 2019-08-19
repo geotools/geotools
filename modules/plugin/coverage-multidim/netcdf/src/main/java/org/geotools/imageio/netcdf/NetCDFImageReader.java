@@ -40,13 +40,13 @@ import javax.imageio.ImageTypeSpecifier;
 import javax.imageio.metadata.IIOMetadata;
 import javax.imageio.spi.ImageReaderSpi;
 import javax.imageio.stream.ImageInputStream;
-import org.apache.commons.io.IOUtils;
 import org.geotools.coverage.grid.io.FileSetManager;
 import org.geotools.coverage.io.catalog.CoverageSlice;
 import org.geotools.coverage.io.catalog.CoverageSlicesCatalog;
 import org.geotools.coverage.io.catalog.DataStoreConfiguration;
 import org.geotools.coverage.io.range.FieldType;
 import org.geotools.coverage.io.range.RangeType;
+import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.data.DefaultTransaction;
 import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
@@ -60,7 +60,6 @@ import org.geotools.imageio.netcdf.cv.CoordinateVariable;
 import org.geotools.imageio.netcdf.utilities.NetCDFCRSUtilities;
 import org.geotools.imageio.netcdf.utilities.NetCDFUtilities;
 import org.geotools.imageio.netcdf.utilities.NetCDFUtilities.CheckType;
-import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.util.SoftValueHashMap;
 import org.geotools.util.Utilities;
 import org.geotools.util.logging.Logging;
@@ -102,7 +101,9 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
     /** INTERNAL_INDEX_CREATION_PAGE_SIZE */
     private static final int INTERNAL_INDEX_CREATION_PAGE_SIZE = 1000;
 
-    private static final Logger LOGGER = Logging.getLogger(NetCDFImageReader.class.toString());
+    private static final Logger LOGGER = Logging.getLogger(NetCDFImageReader.class);
+
+    private Exception tracer;
 
     /**
      * An instance of {@link AncillaryFileManager} which takes care of handling all the auxiliary
@@ -163,6 +164,11 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
 
     public NetCDFImageReader(ImageReaderSpi originatingProvider) {
         super(originatingProvider);
+
+        if (NetCDFUtilities.TRACE_ENABLED) {
+            tracer = new Exception();
+            tracer.fillInStackTrace();
+        }
     }
 
     /**
@@ -456,7 +462,7 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
             }
 
             if (imageInputStream != null) {
-                IOUtils.closeQuietly(imageInputStream);
+                imageInputStream.close();
             }
 
         } catch (IOException e) {
@@ -466,6 +472,22 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
             dataset = null;
             ancillaryFileManager = null;
             imageInputStream = null;
+        }
+    }
+
+    @Override
+    protected void finalize() throws Throwable {
+        if (numImages > 0) {
+            LOGGER.warning(
+                    "There is code leaving netcdf image readers open, this might cause "
+                            + "issues with file deletion on Windows!");
+            if (NetCDFUtilities.TRACE_ENABLED) {
+                LOGGER.log(
+                        Level.WARNING,
+                        "The unclosed image reader originated on this stack trace",
+                        tracer);
+            }
+            dispose();
         }
     }
 

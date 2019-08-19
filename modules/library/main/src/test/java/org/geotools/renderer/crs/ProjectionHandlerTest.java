@@ -16,11 +16,22 @@
  */
 package org.geotools.renderer.crs;
 
-import static org.junit.Assert.*;
+import static org.hamcrest.Matchers.closeTo;
+import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.zip.GZIPInputStream;
 import org.geotools.data.Base64;
 import org.geotools.geometry.jts.JTS;
@@ -29,6 +40,7 @@ import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.operation.projection.PolarStereographic;
 import org.geotools.referencing.operation.transform.IdentityTransform;
+import org.hamcrest.CoreMatchers;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
@@ -37,17 +49,20 @@ import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryCollection;
 import org.locationtech.jts.geom.GeometryComponentFilter;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.MultiLineString;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.io.WKBReader;
 import org.locationtech.jts.io.WKTReader;
 import org.opengis.referencing.FactoryException;
+import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.crs.SingleCRS;
 import org.opengis.referencing.operation.MathTransform;
+import org.opengis.referencing.operation.TransformException;
 
-/** @source $URL$ */
 public class ProjectionHandlerTest {
 
     static final double EPS = 1e-5;
@@ -66,6 +81,8 @@ public class ProjectionHandlerTest {
 
     static CoordinateReferenceSystem OSM;
 
+    static GeometryFactory gf = new GeometryFactory();
+
     @BeforeClass
     public static void setup() throws Exception {
         WGS84 = DefaultGeographicCRS.WGS84;
@@ -82,7 +99,10 @@ public class ProjectionHandlerTest {
         CoordinateReferenceSystem crs = CRS.decode("EPSG:4939", true);
         SingleCRS hcrs = CRS.getHorizontalCRS(crs);
         ReferencedEnvelope wgs84Envelope = new ReferencedEnvelope(-190, 60, -90, 45, hcrs);
-        ProjectionHandler handler = ProjectionHandlerFinder.getHandler(wgs84Envelope, crs, true);
+        Map params = new HashMap();
+        params.put(ProjectionHandler.ADVANCED_PROJECTION_DENSIFY, 1.0);
+        ProjectionHandler handler =
+                ProjectionHandlerFinder.getHandler(wgs84Envelope, crs, true, params);
 
         assertNull(handler.validAreaBounds);
         List<ReferencedEnvelope> envelopes = handler.getQueryEnvelopes();
@@ -91,6 +111,55 @@ public class ProjectionHandlerTest {
         ReferencedEnvelope expected = new ReferencedEnvelope(170, 180, -90, 45, hcrs);
         assertTrue(envelopes.remove(wgs84Envelope));
         assertEquals(expected, envelopes.get(0));
+    }
+
+    @Test
+    public void testWrappingDisabledHeuristic() throws Exception {
+        ReferencedEnvelope world = new ReferencedEnvelope(-180, 180, -40, 40, WGS84);
+        ReferencedEnvelope mercatorEnvelope = world.transform(MERCATOR, true);
+        // move it so that it crosses the dateline (measures are still accurate for something
+        // crossing the dateline
+        mercatorEnvelope.translate(mercatorEnvelope.getWidth() / 2, 0);
+
+        // a geometry that will cross the dateline and sitting in the same area as the
+        // rendering envelope
+        Geometry g = new WKTReader().read("LINESTRING(-40 20, 190 20)");
+        Map params = new HashMap();
+        params.put(WrappingProjectionHandler.DATELINE_WRAPPING_CHECK_ENABLED, false);
+
+        MathTransform mt = CRS.findMathTransform(WGS84, MERCATOR, true);
+        Geometry reprojected = JTS.transform(g, mt);
+
+        ProjectionHandler handler =
+                ProjectionHandlerFinder.getHandler(mercatorEnvelope, WGS84, true, params);
+        Geometry processed = handler.postProcess(mt, reprojected);
+
+        assertEquals(processed.getGeometryN(0), reprojected);
+
+        params.put(WrappingProjectionHandler.DATELINE_WRAPPING_CHECK_ENABLED, true);
+        handler = ProjectionHandlerFinder.getHandler(mercatorEnvelope, WGS84, true, params);
+
+        processed = handler.postProcess(mt, reprojected);
+
+        assertNotEquals(processed.getGeometryN(0), reprojected);
+    }
+
+    @Test
+    public void testDensification() throws Exception {
+        CoordinateReferenceSystem utm32n = CRS.decode("EPSG:32632", true);
+        ReferencedEnvelope wgs84Envelope = new ReferencedEnvelope(-190, 60, -90, 45, WGS84);
+        ProjectionHandler handler = ProjectionHandlerFinder.getHandler(wgs84Envelope, WGS84, true);
+        Geometry line =
+                gf.createLineString(
+                        new Coordinate[] {new Coordinate(40, 45), new Coordinate(40, 88)});
+        LineString notDensified = (LineString) handler.preProcess(line);
+        assertEquals(2, notDensified.getCoordinates().length);
+
+        Map params = new HashMap();
+        params.put(ProjectionHandler.ADVANCED_PROJECTION_DENSIFY, 1.0);
+        handler = ProjectionHandlerFinder.getHandler(wgs84Envelope, WGS84, true, params);
+        LineString densified = (LineString) handler.preProcess(line);
+        assertEquals(45, densified.getCoordinates().length);
     }
 
     @Test
@@ -190,8 +259,8 @@ public class ProjectionHandlerTest {
         ReferencedEnvelope va = handler.validAreaBounds;
         assertNotNull(va);
         assertEquals(va.getCoordinateReferenceSystem(), WGS84);
-        assertEquals(-Double.MAX_VALUE, va.getMinX(), 0d);
-        assertEquals(Double.MAX_VALUE, va.getMaxX(), 0d);
+        assertEquals(-Integer.MAX_VALUE, va.getMinX(), 0d);
+        assertEquals(Integer.MAX_VALUE, va.getMaxX(), 0d);
         assertEquals(-90, va.getMinY(), 0d);
         assertEquals(90, va.getMaxY(), 0d);
     }
@@ -425,6 +494,54 @@ public class ProjectionHandlerTest {
         assertEquals(mercatorEnvelope.getMaxX(), env.getMaxX(), EPS);
     }
 
+    /** Checks that the measures of XYM geometries are not transformed. */
+    @Test
+    public void testXymGeometriesMeasuresArePreserved() throws Exception {
+        // build a XYM geometry and reproject it
+        Geometry geometry = new WKTReader().read("LINESTRINGM(170 -40 2, 190 40 7)");
+        MathTransform transform = CRS.findMathTransform(WGS84, MERCATOR, true);
+        Geometry transformed = JTS.transform(geometry, transform);
+        // check that coordinates where transformed but measures preserved
+        assertThat(transformed, instanceOf(LineString.class));
+        LineString line = (LineString) transformed;
+        assertThat(line.getCoordinateSequence().getDimension(), is(3));
+        assertThat(line.getCoordinateSequence().getMeasures(), is(1));
+        // check the first coordinate
+        assertThat(line.getCoordinateSequence().getX(0), closeTo(1.8924313434856504E7, EPS));
+        assertThat(line.getCoordinateSequence().getY(0), closeTo(-4838471.398061137, EPS));
+        assertThat(line.getCoordinateSequence().getZ(0), is(Double.NaN));
+        assertThat(line.getCoordinateSequence().getM(0), is(2.0));
+        // check the second coordinate
+        assertThat(line.getCoordinateSequence().getX(1), closeTo(2.115070325072198E7, EPS));
+        assertThat(line.getCoordinateSequence().getY(1), closeTo(4838471.398061137, EPS));
+        assertThat(line.getCoordinateSequence().getZ(1), is(Double.NaN));
+        assertThat(line.getCoordinateSequence().getM(1), is(7.0));
+    }
+
+    /** Checks that the measures of XYZM geometries are not transformed. */
+    @Test
+    public void testXyzmGeometriesMeasuresArePreserved() throws Exception {
+        // build a XYM geometry and reproject it
+        Geometry geometry = new WKTReader().read("LINESTRINGZM(170 -40 10 2, 190 40 15 7)");
+        MathTransform transform = CRS.findMathTransform(WGS84, MERCATOR, true);
+        Geometry transformed = JTS.transform(geometry, transform);
+        // check that coordinates where transformed but measures preserved
+        assertThat(transformed, instanceOf(LineString.class));
+        LineString line = (LineString) transformed;
+        assertThat(line.getCoordinateSequence().getDimension(), is(4));
+        assertThat(line.getCoordinateSequence().getMeasures(), is(1));
+        // check the first coordinate
+        assertThat(line.getCoordinateSequence().getX(0), closeTo(1.8924313434856504E7, EPS));
+        assertThat(line.getCoordinateSequence().getY(0), closeTo(-4838471.398061137, EPS));
+        assertThat(line.getCoordinateSequence().getZ(0), is(10.0));
+        assertThat(line.getCoordinateSequence().getM(0), is(2.0));
+        // check the second coordinate
+        assertThat(line.getCoordinateSequence().getX(1), closeTo(2.115070325072198E7, EPS));
+        assertThat(line.getCoordinateSequence().getY(1), closeTo(4838471.398061137, EPS));
+        assertThat(line.getCoordinateSequence().getZ(1), is(15.0));
+        assertThat(line.getCoordinateSequence().getM(1), is(7.0));
+    }
+
     @Test
     public void testWrapGeometrySmall() throws Exception {
         // projected dateline CRS
@@ -553,7 +670,7 @@ public class ProjectionHandlerTest {
         // post process, this should wrap the geometry, make sure it's valid, and avoid large jumps
         // in its border
         Geometry postProcessed = handler.postProcess(prepared, reprojected);
-        assertTrue(postProcessed instanceof MultiPolygon);
+        assertThat(postProcessed, CoreMatchers.instanceOf(MultiPolygon.class));
         assertEquals(2, postProcessed.getNumGeometries());
     }
 
@@ -678,12 +795,13 @@ public class ProjectionHandlerTest {
         assertEquals(ProjectionHandlerFinder.WRAP_LIMIT * 2 + 1, mls.getNumGeometries());
     }
 
+    @Test
     public void testCutGeometryUTM() throws Exception {
         ReferencedEnvelope wgs84Envelope = new ReferencedEnvelope(8, 10, 40, 45, WGS84);
         ReferencedEnvelope utmEnvelope = wgs84Envelope.transform(UTM32N, true);
 
         // a geometry that will definitely go outside of the UTM32N valid area
-        Geometry g = new WKTReader().read("LINESTRING(-170 -40, 170, 40)");
+        Geometry g = new WKTReader().read("LINESTRING(-170 -40, 170 40)");
 
         ProjectionHandler handler = ProjectionHandlerFinder.getHandler(utmEnvelope, WGS84, true);
         assertTrue(handler.requiresProcessing(g));
@@ -1047,5 +1165,164 @@ public class ProjectionHandlerTest {
         assertTrue(ppEnvelope.contains(180, 54));
         // the original width is 109km, at this latitude one degree of longitude is only 65km
         assertEquals(1.7, ppEnvelope.getWidth(), 0.1);
+    }
+
+    @Test
+    public void testMercatorBug()
+            throws NoSuchAuthorityCodeException, FactoryException, TransformException {
+        // see GEOT-6141
+        CoordinateReferenceSystem sourceCrs = CRS.decode("EPSG:3857", true);
+        CoordinateReferenceSystem targetCrs = CRS.decode("EPSG:31370", true);
+
+        ReferencedEnvelope sourceEnv =
+                new ReferencedEnvelope(
+                        381033.2707188717,
+                        381046.4083331082,
+                        6583847.177786637,
+                        6583860.315400874,
+                        sourceCrs);
+
+        ProjectionHandler projectionHandler =
+                ProjectionHandlerFinder.getHandler(sourceEnv, targetCrs, true);
+
+        ReferencedEnvelope targetEnv = projectionHandler.getQueryEnvelopes().get(0);
+
+        assertEquals(83304.59570855058, targetEnv.getMinX(), 0.1);
+        assertEquals(83313.02253560493, targetEnv.getMaxX(), 0.1);
+        assertEquals(164573.9584101988, targetEnv.getMinY(), 0.1);
+        assertEquals(164582.36316849105, targetEnv.getMaxY(), 0.1);
+    }
+
+    @Test
+    public void testWGS84BackToWebMercator() throws Exception {
+        ReferencedEnvelope renderingEnvelope = new ReferencedEnvelope(135, 180, -90, -45, WGS84);
+        ProjectionHandler handler =
+                ProjectionHandlerFinder.getHandler(renderingEnvelope, OSM, true);
+        assertNotNull(handler);
+
+        List<ReferencedEnvelope> queryEnvelopes = handler.getQueryEnvelopes();
+        assertEquals(1, queryEnvelopes.size());
+
+        ReferencedEnvelope expected =
+                new ReferencedEnvelope(
+                        1.5028131257091932E7,
+                        2.0037508342789244E7,
+                        -1.9971868880408555E7,
+                        -5621521.486192067,
+                        OSM);
+        assertEnvelopesEqual(expected, queryEnvelopes.get(0), EPS);
+    }
+
+    @Test
+    public void testE50LatLonBackToWebMercator() throws Exception {
+        ReferencedEnvelope renderingEnvelope =
+                new ReferencedEnvelope(-80, -45, 135, 180, ED50_LATLON);
+        ProjectionHandler handler =
+                ProjectionHandlerFinder.getHandler(renderingEnvelope, OSM, true);
+        assertNotNull(handler);
+
+        List<ReferencedEnvelope> queryEnvelopes = handler.getQueryEnvelopes();
+        assertEquals(1, queryEnvelopes.size());
+
+        // the ED50 to WGS84 switch causes dateline switch, making it read a larger area...
+        // to be fixed in another commit (a different Jira)
+        ReferencedEnvelope expected =
+                new ReferencedEnvelope(
+                        -2.003748375258002E7,
+                        1.9582312033733368E7,
+                        -1.5538175797794182E7,
+                        -5621345.809658899,
+                        OSM);
+        assertEnvelopesEqual(expected, queryEnvelopes.get(0), EPS);
+    }
+
+    @Test
+    public void testE50BackToWebMercator() throws Exception {
+        ReferencedEnvelope renderingEnvelope = new ReferencedEnvelope(135, 180, -80, -45, ED50);
+        ProjectionHandler handler =
+                ProjectionHandlerFinder.getHandler(renderingEnvelope, OSM, true);
+        assertNotNull(handler);
+
+        List<ReferencedEnvelope> queryEnvelopes = handler.getQueryEnvelopes();
+        assertEquals(1, queryEnvelopes.size());
+
+        // the ED50 to WGS84 switch causes dateline switch, making it read a larger area...
+        // to be fixed in another commit (a different Jira)
+        ReferencedEnvelope expected =
+                new ReferencedEnvelope(
+                        -2.003748375258002E7,
+                        1.9582312033733368E7,
+                        -1.5538175797794182E7,
+                        -5621345.809658899,
+                        OSM);
+        assertEnvelopesEqual(expected, queryEnvelopes.get(0), EPS);
+    }
+
+    @Test
+    public void testOutsideValidArea() throws Exception {
+        Geometry g = new WKTReader().read("POLYGON((0 87, 10 87, 10 89, 0 89, 0 87))");
+        Geometry original = g.copy();
+        ReferencedEnvelope re =
+                new ReferencedEnvelope(-20000000, 20000000, -20000000, 20000000, OSM);
+        ProjectionHandler ph = ProjectionHandlerFinder.getHandler(re, WGS84, true);
+        Geometry preProcessed = ph.preProcess(original);
+        assertNull(preProcessed);
+    }
+
+    @Test
+    public void testLargeObject() throws Exception {
+        Geometry g = new WKTReader().read("POLYGON((-96 -2, -96 67, 133 67, 133 -2, -96 -2))");
+        Geometry original = g.copy();
+        // area large enough to wrap 3 times
+        ReferencedEnvelope re =
+                new ReferencedEnvelope(-40000000, 40000000, -20000000, 20000000, OSM);
+        ProjectionHandler ph = ProjectionHandlerFinder.getHandler(re, WGS84, true);
+        Geometry preProcessed = ph.preProcess(original);
+        MathTransform mt = CRS.findMathTransform(WGS84, OSM, true);
+        Geometry transformed = JTS.transform(preProcessed, mt);
+        Geometry postProcessed = ph.postProcess(mt.inverse(), transformed);
+        assertThat(postProcessed, CoreMatchers.instanceOf(MultiPolygon.class));
+        assertEquals(3, postProcessed.getNumGeometries());
+        // and still large objects
+        assertEquals(2.54e7, postProcessed.getGeometryN(0).getEnvelopeInternal().getWidth(), 1e5);
+        assertEquals(2.54e7, postProcessed.getGeometryN(1).getEnvelopeInternal().getWidth(), 1e5);
+        assertEquals(2.54e7, postProcessed.getGeometryN(2).getEnvelopeInternal().getWidth(), 1e5);
+    }
+
+    @Test
+    public void testLargeObjectSourceInFeet() throws Exception {
+        String worldMercatorFeet =
+                "PROJCS[\"World_Mercator\",\n"
+                        + "    GEOGCS[\"GCS_WGS_1984\",\n"
+                        + "        DATUM[\"WGS_1984\",\n"
+                        + "            SPHEROID[\"WGS_1984\",6378137,298.257223563]],\n"
+                        + "        PRIMEM[\"Greenwich\",0],\n"
+                        + "        UNIT[\"Degree\",0.017453292519943295]],\n"
+                        + "    PROJECTION[\"Mercator_1SP\"],\n"
+                        + "    PARAMETER[\"False_Easting\",0],\n"
+                        + "    PARAMETER[\"False_Northing\",0],\n"
+                        + "    PARAMETER[\"Central_Meridian\",0],\n"
+                        + "    UNIT[\"Foot_US\",0.3048006096012192],\n"
+                        + "    AUTHORITY[\"EPSG\",\"54004\"]]";
+        CoordinateReferenceSystem WOLD_MERCATOR_FEET = CRS.parseWKT(worldMercatorFeet);
+
+        Geometry g =
+                new WKTReader()
+                        .read(
+                                "POLYGON ((-35061186 -725700, -35061186 33191143, 48574352 33191143, 48574352 -725700, -35061186 -725700))");
+        Geometry original = g.copy();
+        // area large enough to wrap 3 times
+        ReferencedEnvelope re = new ReferencedEnvelope(-540, 540, -90, 90, WGS84);
+        ProjectionHandler ph = ProjectionHandlerFinder.getHandler(re, WOLD_MERCATOR_FEET, true);
+        Geometry preProcessed = ph.preProcess(original);
+        MathTransform mt = CRS.findMathTransform(WOLD_MERCATOR_FEET, WGS84, true);
+        Geometry transformed = JTS.transform(preProcessed, mt);
+        Geometry postProcessed = ph.postProcess(mt.inverse(), transformed);
+        assertThat(postProcessed, CoreMatchers.instanceOf(MultiPolygon.class));
+        assertEquals(3, postProcessed.getNumGeometries());
+        // and still large objects
+        assertEquals(228, postProcessed.getGeometryN(0).getEnvelopeInternal().getWidth(), 1);
+        assertEquals(228, postProcessed.getGeometryN(1).getEnvelopeInternal().getWidth(), 1);
+        assertEquals(228, postProcessed.getGeometryN(2).getEnvelopeInternal().getWidth(), 1);
     }
 }

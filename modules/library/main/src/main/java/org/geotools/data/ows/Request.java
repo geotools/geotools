@@ -28,7 +28,6 @@ import org.geotools.ows.ServiceException;
  * This represents a Request to be made against a Open Web Service.
  *
  * @author rgould
- * @source $URL$
  */
 public interface Request {
 
@@ -73,8 +72,6 @@ public interface Request {
      * input stream (containin the response data), this method must return an appropriate Response
      * object.
      *
-     * @param contentType the MIME type of the data in the inputStream
-     * @param inputStream contains the data from the response
      * @throws ServiceException
      * @throws IOException
      */

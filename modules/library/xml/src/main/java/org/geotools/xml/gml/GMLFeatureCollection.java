@@ -24,7 +24,6 @@ import org.locationtech.jts.geom.Envelope;
  * @author dzwiers
  *     <p>TODO To change the template for this generated type comment go to Window - Preferences -
  *     Java - Code Style - Code Templates
- * @source $URL$
  */
 public class GMLFeatureCollection extends DefaultFeatureCollection {
     private ReferencedEnvelope bounds;
@@ -32,7 +31,6 @@ public class GMLFeatureCollection extends DefaultFeatureCollection {
     protected GMLFeatureCollection(String id, Envelope b) {
         super(id, null);
         bounds = ReferencedEnvelope.reference(b);
-        ;
     }
     /* (non-Javadoc)
      * @see org.geotools.feature.FeatureCollection#getBounds()

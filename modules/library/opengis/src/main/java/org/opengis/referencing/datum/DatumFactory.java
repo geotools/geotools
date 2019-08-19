@@ -27,7 +27,6 @@ import org.opengis.referencing.ObjectFactory;
  * use. So {@link DatumAuthorityFactory} can be used to make "standard" datums, and {@code
  * DatumFactory} can be used to make "special" datums.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengis.org/docs/01-009.pdf">Implementation specification 1.0</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0

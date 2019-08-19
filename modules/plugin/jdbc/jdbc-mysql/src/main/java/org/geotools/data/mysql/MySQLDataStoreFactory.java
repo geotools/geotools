@@ -31,7 +31,6 @@ import org.geotools.jdbc.SQLDialect;
  *
  * @author David Winslow, The Open Planning Project
  * @author Nikolaos Pringouris <nprigour@gmail.com> added support for MySQL versions 5.6 (and above)
- * @source $URL$
  */
 public class MySQLDataStoreFactory extends JDBCDataStoreFactory {
     /** parameter for database type */
@@ -152,10 +151,10 @@ public class MySQLDataStoreFactory extends JDBCDataStoreFactory {
                 isMySQLVersion56OrAbove = false;
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         } finally {
             try {
-                if (con != null || !con.isClosed()) {
+                if (con != null) {
                     con.close();
                 }
             } catch (SQLException e) {

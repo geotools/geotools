@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- * 	  (c) 2014 - 2015 Open Source Geospatial Foundation - all rights reserved
+ * 	  (C) 2014 - 2015 Open Source Geospatial Foundation (OSGeo)
  * 	  (c) 2012 - 2014 OpenPlans
  *
  *    This library is free software; you can redistribute it and/or
@@ -139,11 +139,11 @@ public class CSVLatLonStrategy extends CSVStrategy {
 
         List<String> header = new ArrayList<String>();
 
-        GeometryDescriptor geometryDescrptor = featureType.getGeometryDescriptor();
-        CoordinateReferenceSystem crs = geometryDescrptor.getCoordinateReferenceSystem();
-        if (geometryDescrptor != null
+        GeometryDescriptor gd = featureType.getGeometryDescriptor();
+        CoordinateReferenceSystem crs = gd != null ? gd.getCoordinateReferenceSystem() : null;
+        if (gd != null
                 && CRS.equalsIgnoreMetadata(DefaultGeographicCRS.WGS84, crs)
-                && geometryDescrptor.getType().getBinding().isAssignableFrom(Point.class)) {
+                && gd.getType().getBinding().isAssignableFrom(Point.class)) {
             if (crs.getCoordinateSystem().getAxis(0).getDirection().equals(AxisDirection.NORTH)) {
                 header.add(this.latField);
                 header.add(this.lngField);
@@ -153,12 +153,7 @@ public class CSVLatLonStrategy extends CSVStrategy {
             }
         } else {
             throw new IOException(
-                    "Unable use "
-                            + this.latField
-                            + "/"
-                            + this.lngField
-                            + " to represent "
-                            + geometryDescrptor);
+                    "Unable use " + this.latField + "/" + this.lngField + " to represent " + gd);
         }
         for (AttributeDescriptor descriptor : featureType.getAttributeDescriptors()) {
             if (descriptor instanceof GeometryDescriptor) continue;

@@ -17,7 +17,7 @@
 
 package org.geotools.data.complex;
 
-import static org.geotools.data.complex.ComplexFeatureConstants.DEFAULT_GEOMETRY_LOCAL_NAME;
+import static org.geotools.data.complex.util.ComplexFeatureConstants.DEFAULT_GEOMETRY_LOCAL_NAME;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -31,6 +31,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.logging.Logger;
+import org.geotools.appschema.jdbc.JoiningJDBCFeatureSource;
 import org.geotools.data.DataAccess;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.DataStore;
@@ -39,14 +40,14 @@ import org.geotools.data.Query;
 import org.geotools.data.SchemaNotFoundException;
 import org.geotools.data.ServiceInfo;
 import org.geotools.data.complex.config.NonFeatureTypeProxy;
-import org.geotools.data.complex.config.Types;
+import org.geotools.data.complex.feature.type.Types;
 import org.geotools.data.complex.filter.UnmappingFilterVisitor;
 import org.geotools.data.complex.filter.UnmappingFilterVisitorFactory;
 import org.geotools.data.complex.filter.XPath;
-import org.geotools.data.complex.filter.XPathUtil.StepList;
+import org.geotools.data.complex.spi.CustomSourceDataStore;
+import org.geotools.data.complex.util.XPathUtil.StepList;
 import org.geotools.data.joining.JoiningQuery;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.factory.Hints;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.filter.FilterAttributeExtractor;
@@ -54,7 +55,7 @@ import org.geotools.filter.SortByImpl;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.jdbc.JDBCFeatureSource;
 import org.geotools.jdbc.JDBCFeatureStore;
-import org.geotools.jdbc.JoiningJDBCFeatureSource;
+import org.geotools.util.factory.Hints;
 import org.opengis.feature.Feature;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.AttributeType;
@@ -78,14 +79,12 @@ import org.opengis.filter.sort.SortOrder;
  * @author Ben Caradoc-Davies (CSIRO Earth Science and Resource Engineering)
  * @author Rini Angreani (CSIRO Earth Science and Resource Engineering)
  * @version $Id$
- * @source $URL$
  * @since 2.4
  */
 public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
 
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(
-                    AppSchemaDataAccess.class.getPackage().getName());
+            org.geotools.util.logging.Logging.getLogger(AppSchemaDataAccess.class);
 
     private Map<Name, FeatureTypeMapping> mappings = new LinkedHashMap<Name, FeatureTypeMapping>();
 
@@ -431,10 +430,10 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
      * target x-path
      *
      * @param requestedProperty requested property x-path
-     * @param targetXPath target x-path
+     * @param target target x-path steps
      * @return whether they match, i.e. when one of them is completely contained in the other
      */
-    protected static boolean matchProperty(StepList requestedProperty, StepList target) {
+    public static boolean matchProperty(StepList requestedProperty, StepList target) {
         // NC - include all parent and children paths of the requested property
         // i.e.: requested "measurement", found mapping of "measurement/result".
         // "result" must be included to create "measurement"
@@ -458,10 +457,10 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
      * target x-path, ignoring namespaces
      *
      * @param requestedProperty requested property x-path
-     * @param targetXPath target x-path
+     * @param target target x-path steps
      * @return whether they match, i.e. when one of them is completely contained in the other
      */
-    protected static boolean matchProperty(String requestedProperty, StepList target) {
+    public static boolean matchProperty(String requestedProperty, StepList target) {
         // requested Properties are top level nodes, so get all mappings inside node
         return target.get(0).getName().getLocalPart().equals(requestedProperty);
     }
@@ -477,11 +476,21 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
             List<PropertyName> requestedProperties,
             FeatureTypeMapping mapping,
             boolean includeMandatory) {
-        List<PropertyName> propNames = null;
+        List<PropertyName> propNames = new ArrayList<>();
         final AttributeDescriptor targetDescriptor = mapping.getTargetFeature();
         if (requestedProperties != null && requestedProperties.size() > 0) {
             requestedProperties = new ArrayList<PropertyName>(requestedProperties);
             Set<PropertyName> requestedSurrogateProperties = new HashSet<PropertyName>();
+            // extension point allowing stores to contribute properties
+            for (CustomSourceDataStore extension : CustomSourceDataStore.loadExtensions()) {
+                // ask the extension for surrogate properties
+                List<PropertyName> contributedProperties =
+                        extension.getSurrogatePropertyNames(requestedProperties, mapping);
+                if (contributedProperties != null) {
+                    // we got some surrogate properties, let's store them
+                    propNames.addAll(contributedProperties);
+                }
+            }
             // add all surrogate attributes involved in mapping of the requested
             // target schema attributes
             List<AttributeMapping> attMappings = mapping.getAttributeMappings();
@@ -594,9 +603,10 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
                 }
             }
 
-            propNames = new ArrayList<PropertyName>(requestedSurrogateProperties);
+            propNames.addAll(requestedSurrogateProperties);
         }
-        return propNames;
+        // App-Schema business code expects a NULL if no properties
+        return propNames.isEmpty() ? null : propNames;
     }
 
     private List<Expression> unrollProperty(

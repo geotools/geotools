@@ -21,7 +21,6 @@ import org.opengis.geometry.primitive.Point;
  * A separate class for composite point, included for completeness. It is a {@linkplain Complex
  * complex} containing one and only one {@linkplain Point point}.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/as">ISO 19107</A>
  * @author Sanjay Jena
  * @author Jackson Roehrig

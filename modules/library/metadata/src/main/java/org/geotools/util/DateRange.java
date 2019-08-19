@@ -22,8 +22,8 @@ import javax.measure.UnconvertibleException;
 import javax.measure.Unit;
 import javax.measure.UnitConverter;
 import javax.measure.quantity.Time;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 import si.uom.SI;
 import tec.uom.se.unit.MetricPrefix;
 
@@ -31,7 +31,6 @@ import tec.uom.se.unit.MetricPrefix;
  * A range of dates.
  *
  * @since 2.5
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  */

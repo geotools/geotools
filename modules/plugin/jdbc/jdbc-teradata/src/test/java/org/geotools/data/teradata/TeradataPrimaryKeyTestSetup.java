@@ -19,7 +19,6 @@ package org.geotools.data.teradata;
 import org.geotools.jdbc.JDBCPrimaryKeyTestSetup;
 import org.geotools.jdbc.JDBCTestSetup;
 
-/** @source $URL$ */
 public class TeradataPrimaryKeyTestSetup extends JDBCPrimaryKeyTestSetup {
 
     public TeradataPrimaryKeyTestSetup(JDBCTestSetup delegate) {

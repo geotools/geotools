@@ -22,7 +22,6 @@ import org.opengis.filter.FilterVisitor;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.spatial.Touches;
 
-/** @source $URL$ */
 public class TouchesImpl extends GeometryFilterImpl implements Touches {
 
     public TouchesImpl(Expression e1, Expression e2) {

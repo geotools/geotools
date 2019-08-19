@@ -13,29 +13,27 @@ import org.eclipse.emf.ecore.impl.EObjectImpl;
  * <!-- begin-user-doc -->
  * An implementation of the model object '<em><b>No Values Type</b></em>'.
  * <!-- end-user-doc -->
- * <p>
- * </p>
  *
  * @generated
  */
 public class NoValuesTypeImpl extends EObjectImpl implements NoValuesType {
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     protected NoValuesTypeImpl() {
-        super();
-    }
+    super();
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     protected EClass eStaticClass() {
-        return Ows20Package.Literals.NO_VALUES_TYPE;
-    }
+    return Ows20Package.Literals.NO_VALUES_TYPE;
+  }
 
 } //NoValuesTypeImpl

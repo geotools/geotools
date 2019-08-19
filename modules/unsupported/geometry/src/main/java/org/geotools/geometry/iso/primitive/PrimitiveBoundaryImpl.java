@@ -25,7 +25,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * subclass is needed for their boundary.
  *
  * @author Jackson Roehrig & Sanjay Jena
- * @source $URL$
  */
 public abstract class PrimitiveBoundaryImpl extends BoundaryImpl implements PrimitiveBoundary {
 

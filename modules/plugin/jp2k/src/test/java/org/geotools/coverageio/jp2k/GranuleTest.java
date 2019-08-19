@@ -33,7 +33,6 @@ import org.junit.Test;
  * @author Daniele Romagnoli, GeoSolutions
  * @author Simone Giannecchini (simboss), GeoSolutions
  *     <p>Testing {@link org.geotools.coverageio.jp2k.Granule}
- * @source $URL$
  */
 public final class GranuleTest extends BaseJP2K {
 

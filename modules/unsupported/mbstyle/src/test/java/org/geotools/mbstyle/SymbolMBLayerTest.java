@@ -109,7 +109,8 @@ public class SymbolMBLayerTest {
                         .get(0)
                         .rules()
                         .get(0)
-                        .getSymbolizers()[1]
+                        .symbolizers()
+                        .get(1)
                         .getOptions()
                         .get("autoWrap"));
     }
@@ -152,7 +153,8 @@ public class SymbolMBLayerTest {
                         .get(0)
                         .rules()
                         .get(0)
-                        .getSymbolizers()[0]
+                        .symbolizers()
+                        .get(0)
                         .getOptions()
                         .get("followLine"));
     }
@@ -167,7 +169,8 @@ public class SymbolMBLayerTest {
                         .get(0)
                         .rules()
                         .get(0)
-                        .getSymbolizers()[0]
+                        .symbolizers()
+                        .get(0)
                         .getOptions()
                         .get("forceLeftToRight"));
     }
@@ -183,7 +186,8 @@ public class SymbolMBLayerTest {
                         .get(0)
                         .rules()
                         .get(0)
-                        .getSymbolizers()[1]
+                        .symbolizers()
+                        .get(1)
                         .getOptions()
                         .get("spaceAround"));
     }
@@ -199,7 +203,8 @@ public class SymbolMBLayerTest {
                         .get(0)
                         .rules()
                         .get(0)
-                        .getSymbolizers()[1]
+                        .symbolizers()
+                        .get(1)
                         .getOptions()
                         .get("spaceAround"));
         assertEquals(30.0, testLineLayer.getIconPadding());
@@ -209,7 +214,8 @@ public class SymbolMBLayerTest {
                         .get(0)
                         .rules()
                         .get(0)
-                        .getSymbolizers()[0]
+                        .symbolizers()
+                        .get(0)
                         .getOptions()
                         .get("spaceAround"));
     }
@@ -242,7 +248,8 @@ public class SymbolMBLayerTest {
                                                         .get(0)
                                                         .rules()
                                                         .get(0)
-                                                        .getSymbolizers()[0])
+                                                        .symbolizers()
+                                                        .get(0))
                                         .fonts()
                                         .get(0)
                                         .getFamily()
@@ -250,14 +257,15 @@ public class SymbolMBLayerTest {
                         .getParameters()
                         .get(1)
                         .toString());
-        System.out.println(
-                ((TextSymbolizer) featureTypeDefaults.get(0).rules().get(0).getSymbolizers()[0])
-                        .fonts()
-                        .get(0)
-                        .getFamily());
+        // System.out.println(
+        //                ((TextSymbolizer)
+        // featureTypeDefaults.get(0).rules().get(0).getSymbolizers()[0])
+        //                        .fonts()
+        //                        .get(0)
+        //                        .getFamily());
         assertEquals(
                 "Open Sans Regular",
-                ((TextSymbolizer) featureTypeDefaults.get(0).rules().get(0).getSymbolizers()[0])
+                ((TextSymbolizer) featureTypeDefaults.get(0).rules().get(0).symbolizers().get(0))
                         .fonts()
                         .get(0)
                         .getFamily()

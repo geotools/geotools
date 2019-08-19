@@ -23,7 +23,6 @@ import org.geotools.geojson.HandlerBase;
 import org.geotools.geojson.IContentHandler;
 import org.json.simple.parser.ParseException;
 
-/** @source $URL$ */
 public class ArrayHandler extends HandlerBase implements IContentHandler<List> {
 
     List values;

@@ -19,8 +19,8 @@ package org.geotools.swing.control;
 
 import static org.junit.Assert.*;
 
-import org.fest.swing.edt.GuiActionRunner;
-import org.fest.swing.edt.GuiTask;
+import org.assertj.swing.edt.GuiActionRunner;
+import org.assertj.swing.edt.GuiTask;
 import org.geotools.map.MapContent;
 import org.geotools.swing.MapPane;
 import org.geotools.swing.testutils.GraphicsTestBase;
@@ -35,7 +35,6 @@ import org.junit.runner.RunWith;
  *
  * @author Michael Bedward
  * @since 8.0
- * @source $URL$
  * @version $Id$
  */
 @RunWith(GraphicsTestRunner.class)

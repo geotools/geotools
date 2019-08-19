@@ -48,7 +48,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * oriented primitives are self-referential (are instances of the corresponding primitive subtype)
  * while negatively oriented primitives are not.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengis.org/docs/01-101.pdf">Abstract Specification V5</A>
  * @author Jackson Roehrig & Sanjay Jena
  */

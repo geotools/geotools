@@ -19,7 +19,6 @@ package org.geotools.data.teradata;
 import org.geotools.jdbc.JDBCFeatureCollectionOnlineTest;
 import org.geotools.jdbc.JDBCTestSetup;
 
-/** @source $URL$ */
 public class TeradataFeatureCollectionOnlineTest extends JDBCFeatureCollectionOnlineTest {
 
     protected JDBCTestSetup createTestSetup() {

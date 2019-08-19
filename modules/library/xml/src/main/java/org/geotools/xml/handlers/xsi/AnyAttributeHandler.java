@@ -26,7 +26,6 @@ import org.xml.sax.Attributes;
  *
  * @author dzwiers, Refractions Research, Inc. http://www.refractions.net
  * @author $Author:$ (last modification)
- * @source $URL$
  * @version $Id$
  */
 public class AnyAttributeHandler extends XSIElementHandler {
@@ -39,6 +38,7 @@ public class AnyAttributeHandler extends XSIElementHandler {
     //    private int processContents;
 
     /** @see Object#hashCode() */
+    @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int hashCode() {
         return LOCALNAME.hashCode() * ((namespace == null) ? 1 : namespace.hashCode());
     }

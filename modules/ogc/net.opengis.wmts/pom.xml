@@ -5,7 +5,7 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>ogc</artifactId>
-    <version>22-SNAPSHOT</version>
+    <version>23-SNAPSHOT</version>
   </parent>
 
   <groupId>org.geotools.ogc</groupId>
@@ -17,7 +17,7 @@
   	<dependency>
   		<groupId>org.geotools.ogc</groupId>
   		<artifactId>net.opengis.ows</artifactId>
-  		<version>22-SNAPSHOT</version>
+  		<version>23-SNAPSHOT</version>
   	</dependency>
   </dependencies>
 </project>

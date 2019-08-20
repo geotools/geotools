@@ -27,8 +27,8 @@
       <include name="**/pom.xml"/>
       <include name="**/GeoTools.java"/>
       <include name="**/common.py"/>
-      <replacefilter token="22-SNAPSHOT" value="@VERSION@"/>
-      <replacefilter token="22-SNAPSHOT" value="${release}"/>
+      <replacefilter token="23-SNAPSHOT" value="@VERSION@"/>
+      <replacefilter token="23-SNAPSHOT" value="${release}"/>
     </replace>
   </target>
   

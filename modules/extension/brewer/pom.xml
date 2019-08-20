@@ -16,7 +16,7 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>extension</artifactId>
-    <version>22-SNAPSHOT</version>
+    <version>23-SNAPSHOT</version>
   </parent>
   
 

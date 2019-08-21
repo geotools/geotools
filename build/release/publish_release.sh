@@ -91,6 +91,7 @@ dir=`echo $tag | sed 's/\([0-9]*\)\([\.\-]\)\([0-9]*\).*/\1/g'`
 pushd $dist > /dev/null
 
 #Assume SSH Key for $SF_USER is added to the SSH Agent
+ssh $SF_USER@$SF_HOST mkdir -p "/home/pfs/project/g/ge/geotools/GeoTools\ $dir\ Releases"
 rsync -ave "ssh " *.zip $SF_USER@$SF_HOST:"/home/pfs/project/g/ge/geotools/GeoTools\ $dir\ Releases/$tag/"
 
 popd > /dev/null

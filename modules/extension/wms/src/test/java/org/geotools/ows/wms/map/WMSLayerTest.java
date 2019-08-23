@@ -18,6 +18,7 @@ package org.geotools.ows.wms.map;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.net.URL;
@@ -106,5 +107,19 @@ public class WMSLayerTest {
 
         WMSLayer l2 = new WMSLayer(server, wmsLayers[0], styles.get(3).getName());
         assertNotNull(l2);
+    }
+
+    /** Test method for {@link WMSLayer#WMSLayer(WebMapServer, Layer)}. */
+    @Test
+    public void testPreferedFormatWMSLayer() {
+        Layer[] wmsLayers = WMSUtils.getNamedLayers(server.getCapabilities());
+
+        WMSLayer l = new WMSLayer(server, wmsLayers[0], "", "image/jpg");
+        // verify reader is using correct
+        assertTrue(l.getReader().format.equalsIgnoreCase("image/jpg"));
+
+        WMSLayer l2 = new WMSLayer(server, wmsLayers[0], "", "image/unknown");
+        // verify backward compatability
+        assertTrue(l2.getReader().format.equalsIgnoreCase("image/png"));
     }
 }

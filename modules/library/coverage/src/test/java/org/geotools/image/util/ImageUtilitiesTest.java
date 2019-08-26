@@ -20,7 +20,11 @@ package org.geotools.image.util;
 import static org.junit.Assert.*;
 
 import com.sun.media.jai.operator.ImageReadDescriptor;
+import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.awt.image.ComponentColorModel;
+import java.awt.image.DataBuffer;
+import java.awt.image.RenderedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -33,8 +37,12 @@ import javax.imageio.ImageReader;
 import javax.imageio.ImageTypeSpecifier;
 import javax.imageio.metadata.IIOMetadata;
 import javax.imageio.stream.MemoryCacheImageInputStream;
+import javax.media.jai.ImageLayout;
+import javax.media.jai.JAI;
 import javax.media.jai.RenderedOp;
 import javax.media.jai.WritableRenderedImageAdapter;
+import org.geotools.util.factory.Hints;
+import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 
 public class ImageUtilitiesTest {
@@ -130,5 +138,71 @@ public class ImageUtilitiesTest {
         f.setAccessible(true);
         image = f.get(wria);
         assertNull(image);
+    }
+
+    @Test
+    public void testPixelRescaleNoArrays() throws Exception {
+        BufferedImage bi = new BufferedImage(100, 100, BufferedImage.TYPE_BYTE_GRAY);
+        bi.getData().getDataBuffer().setElemDouble(0, 0, 10);
+        assertSame(bi, ImageUtilities.applyRescaling(null, null, bi, null));
+    }
+
+    @Test
+    public void testPixelRescaleFull() throws Exception {
+        BufferedImage bi = new BufferedImage(100, 100, BufferedImage.TYPE_BYTE_GRAY);
+        bi.getRaster().getDataBuffer().setElemDouble(0, 0, 10);
+        RenderedImage result =
+                ImageUtilities.applyRescaling(new Double[] {10d}, new Double[] {1d}, bi, null);
+        assertEquals(DataBuffer.TYPE_DOUBLE, result.getSampleModel().getDataType());
+        assertThat(result.getColorModel(), CoreMatchers.instanceOf(ComponentColorModel.class));
+        double[] pixel = new double[1];
+        result.getData().getPixel(0, 0, pixel);
+        assertEquals(101, pixel[0], 0d);
+    }
+
+    @Test
+    public void testPixelRescaleCustomHints() throws Exception {
+        BufferedImage bi = new BufferedImage(100, 100, BufferedImage.TYPE_BYTE_GRAY);
+        bi.getRaster().getDataBuffer().setElemDouble(0, 0, 10);
+        ImageLayout layout = new ImageLayout(bi);
+        layout.setTileHeight(50);
+        layout.setTileWidth(50);
+        RenderedImage result =
+                ImageUtilities.applyRescaling(
+                        new Double[] {10d},
+                        new Double[] {1d},
+                        bi,
+                        new Hints(JAI.KEY_IMAGE_LAYOUT, layout));
+        assertEquals(DataBuffer.TYPE_DOUBLE, result.getSampleModel().getDataType());
+        assertEquals(50, result.getTileWidth());
+        assertEquals(50, result.getTileHeight());
+        assertThat(result.getColorModel(), CoreMatchers.instanceOf(ComponentColorModel.class));
+        double[] pixel = new double[1];
+        result.getData().getPixel(0, 0, pixel);
+        assertEquals(101, pixel[0], 0d);
+    }
+
+    @Test
+    public void testPixelRescaleOnlyScales() throws Exception {
+        BufferedImage bi = new BufferedImage(100, 100, BufferedImage.TYPE_BYTE_GRAY);
+        bi.getRaster().getDataBuffer().setElemDouble(0, 0, 10);
+        RenderedImage result = ImageUtilities.applyRescaling(new Double[] {10d}, null, bi, null);
+        assertEquals(DataBuffer.TYPE_DOUBLE, result.getSampleModel().getDataType());
+        assertThat(result.getColorModel(), CoreMatchers.instanceOf(ComponentColorModel.class));
+        double[] pixel = new double[1];
+        result.getData().getPixel(0, 0, pixel);
+        assertEquals(100, pixel[0], 0d);
+    }
+
+    @Test
+    public void testPixelRescaleOnlyOffset() throws Exception {
+        BufferedImage bi = new BufferedImage(100, 100, BufferedImage.TYPE_BYTE_GRAY);
+        bi.getRaster().getDataBuffer().setElemDouble(0, 0, 10);
+        RenderedImage result = ImageUtilities.applyRescaling(null, new Double[] {10d}, bi, null);
+        assertEquals(DataBuffer.TYPE_DOUBLE, result.getSampleModel().getDataType());
+        assertThat(result.getColorModel(), CoreMatchers.instanceOf(ComponentColorModel.class));
+        double[] pixel = new double[1];
+        result.getData().getPixel(0, 0, pixel);
+        assertEquals(20, pixel[0], 0d);
     }
 }

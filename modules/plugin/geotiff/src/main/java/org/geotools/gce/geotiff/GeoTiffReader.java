@@ -342,6 +342,9 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
                 noData = metadata.getNoData();
             }
 
+            // collect scales and offsets is present
+            collectScaleOffset(iioMetadata);
+
             //
             // parse and set layout
             //
@@ -547,49 +550,51 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
         Color inputTransparentColor = null;
         OverviewPolicy overviewPolicy = null;
         int[] suggestedTileSize = null;
-        if (params != null) {
+        boolean rescalePixels = AbstractGridFormat.RESCALE_PIXELS.getDefaultValue();
 
-            //
-            // Checking params
-            //
-            if (params != null) {
-                for (int i = 0; i < params.length; i++) {
-                    final ParameterValue param = (ParameterValue) params[i];
-                    final ReferenceIdentifier name = param.getDescriptor().getName();
-                    if (name.equals(AbstractGridFormat.READ_GRIDGEOMETRY2D.getName())) {
-                        final GridGeometry2D gg = (GridGeometry2D) param.getValue();
-                        requestedEnvelope = new GeneralEnvelope((Envelope) gg.getEnvelope2D());
-                        dim = gg.getGridRange2D().getBounds();
-                        continue;
-                    }
-                    if (name.equals(AbstractGridFormat.OVERVIEW_POLICY.getName())) {
-                        overviewPolicy = (OverviewPolicy) param.getValue();
-                        continue;
-                    }
-                    if (name.equals(AbstractGridFormat.INPUT_TRANSPARENT_COLOR.getName())) {
-                        inputTransparentColor = (Color) param.getValue();
-                        continue;
-                    }
-                    if (name.equals(AbstractGridFormat.SUGGESTED_TILE_SIZE.getName())) {
-                        String suggestedTileSize_ = (String) param.getValue();
-                        if (suggestedTileSize_ != null && suggestedTileSize_.length() > 0) {
-                            suggestedTileSize_ = suggestedTileSize_.trim();
-                            int commaPosition = suggestedTileSize_.indexOf(",");
-                            if (commaPosition < 0) {
-                                int tileDim = Integer.parseInt(suggestedTileSize_);
-                                suggestedTileSize = new int[] {tileDim, tileDim};
-                            } else {
-                                int tileW =
-                                        Integer.parseInt(
-                                                suggestedTileSize_.substring(0, commaPosition));
-                                int tileH =
-                                        Integer.parseInt(
-                                                suggestedTileSize_.substring(commaPosition + 1));
-                                suggestedTileSize = new int[] {tileW, tileH};
-                            }
+        //
+        // Checking params
+        //
+        if (params != null) {
+            for (int i = 0; i < params.length; i++) {
+                final ParameterValue param = (ParameterValue) params[i];
+                final ReferenceIdentifier name = param.getDescriptor().getName();
+                if (name.equals(AbstractGridFormat.READ_GRIDGEOMETRY2D.getName())) {
+                    final GridGeometry2D gg = (GridGeometry2D) param.getValue();
+                    requestedEnvelope = new GeneralEnvelope((Envelope) gg.getEnvelope2D());
+                    dim = gg.getGridRange2D().getBounds();
+                    continue;
+                }
+                if (name.equals(AbstractGridFormat.OVERVIEW_POLICY.getName())) {
+                    overviewPolicy = (OverviewPolicy) param.getValue();
+                    continue;
+                }
+                if (name.equals(AbstractGridFormat.INPUT_TRANSPARENT_COLOR.getName())) {
+                    inputTransparentColor = (Color) param.getValue();
+                    continue;
+                }
+                if (name.equals(AbstractGridFormat.SUGGESTED_TILE_SIZE.getName())) {
+                    String suggestedTileSize_ = (String) param.getValue();
+                    if (suggestedTileSize_ != null && suggestedTileSize_.length() > 0) {
+                        suggestedTileSize_ = suggestedTileSize_.trim();
+                        int commaPosition = suggestedTileSize_.indexOf(",");
+                        if (commaPosition < 0) {
+                            int tileDim = Integer.parseInt(suggestedTileSize_);
+                            suggestedTileSize = new int[] {tileDim, tileDim};
+                        } else {
+                            int tileW =
+                                    Integer.parseInt(
+                                            suggestedTileSize_.substring(0, commaPosition));
+                            int tileH =
+                                    Integer.parseInt(
+                                            suggestedTileSize_.substring(commaPosition + 1));
+                            suggestedTileSize = new int[] {tileW, tileH};
                         }
-                        continue;
                     }
+                    continue;
+                }
+                if (name.equals(AbstractGridFormat.RESCALE_PIXELS.getName())) {
+                    rescalePixels = Boolean.TRUE.equals(param.getValue());
                 }
             }
         }
@@ -670,9 +675,23 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
         pbjRead.add(null);
         pbjRead.add(readP);
         pbjRead.add(READER_SPI.createReaderInstance());
-        RenderedOp coverageRaster =
-                JAI.create(
-                        "ImageRead", pbjRead, newHints != null ? (RenderingHints) newHints : null);
+        PlanarImage coverageRaster =
+                JAI.create("ImageRead", pbjRead, newHints != null ? newHints : null);
+
+        // applying rescale if needed
+        if (rescalePixels) {
+            if (!Double.isNaN(noData)) {
+                // Force nodata settings since JAI ImageRead may lost that
+                // We have to make sure that noData pixels won't be rescaled
+                PlanarImage t = PlanarImage.wrapRenderedImage(coverageRaster);
+                t.setProperty(NoDataContainer.GC_NODATA, new NoDataContainer(noData));
+                coverageRaster = t;
+            }
+            coverageRaster =
+                    PlanarImage.wrapRenderedImage(
+                            ImageUtilities.applyRescaling(
+                                    scales, offsets, coverageRaster, newHints));
+        }
 
         //
         // MASKING INPUT COLOR as indicated
@@ -692,7 +711,7 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
         ROI roi = null;
         // Using MaskOvrProvider
         if (hasMaskOvrProvider) {
-            // Parameter definiton
+            // Parameter definition
             GridEnvelope ogr = getOriginalGridRange();
             Rectangle sourceRegion;
             if (readP.getSourceRegion() != null) {

@@ -16,6 +16,7 @@
  */
 package org.geotools.coverage.grid.io;
 
+import it.geosolutions.imageio.core.CoreCommonImageMetadata;
 import it.geosolutions.imageio.maskband.DatasetLayout;
 import it.geosolutions.jaiext.utilities.ImageLayout2;
 import java.awt.Rectangle;
@@ -40,6 +41,7 @@ import java.util.logging.Logger;
 import javax.imageio.ImageReadParam;
 import javax.imageio.ImageReader;
 import javax.imageio.ImageTypeSpecifier;
+import javax.imageio.metadata.IIOMetadata;
 import javax.imageio.spi.ImageInputStreamSpi;
 import javax.imageio.stream.ImageInputStream;
 import javax.media.jai.ImageLayout;
@@ -158,6 +160,11 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
 
     /** {@link GridCoverageFactory} instance. */
     protected GridCoverageFactory coverageFactory;
+
+    /** scales and offsets for rescaling */
+    protected Double[] scales;
+
+    protected Double[] offsets;
 
     private Map<String, ArrayList<Resolution>> resolutionsLevelsMap =
             new HashMap<String, ArrayList<Resolution>>();
@@ -1453,5 +1460,14 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
     protected MultiLevelROIProvider getMultiLevelROIProvider(String coverageName) {
         throw new UnsupportedOperationException(
                 "The abstract reader doesn't implement this method yet");
+    }
+
+    /** Collects the scales and offsets for value rescaling from the metadata, if present */
+    protected void collectScaleOffset(IIOMetadata iioMetadata) {
+        if (iioMetadata instanceof CoreCommonImageMetadata) {
+            CoreCommonImageMetadata ccm = (CoreCommonImageMetadata) iioMetadata;
+            this.scales = ccm.getScales();
+            this.offsets = ccm.getOffsets();
+        }
     }
 }

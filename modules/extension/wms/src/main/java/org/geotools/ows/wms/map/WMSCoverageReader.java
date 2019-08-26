@@ -120,43 +120,32 @@ public class WMSCoverageReader extends AbstractGridCoverage2DReader {
 
         // best guess at the format with a preference for PNG (since it's normally transparent)
         List<String> formats = wms.getCapabilities().getRequest().getGetMap().getFormats();
-        this.format = formats.iterator().next();
+        this.format = getDefaultFormat(formats);
+    }
+
+    public WMSCoverageReader(WebMapServer wms, Layer layer, String style, String preferredFormat) {
+        this.wms = wms;
+        // init the reader
+        addLayer(layer, style);
+        List<String> formats = wms.getCapabilities().getRequest().getGetMap().getFormats();
+        this.format = preferredFormat;
+        // verify if preferred Format is supported else fallback to default functionality
+        if (!formats.contains(preferredFormat)) this.format = getDefaultFormat(formats);
+    }
+
+    public String getDefaultFormat(List<String> formats) {
+
+        // if preferred format is not supported default to first available
         for (String format : formats) {
             if ("image/png".equals(format)
                     || "image/png24".equals(format)
                     || "png".equals(format)
                     || "png24".equals(format)
                     || "image/png; mode=24bit".equals(format)) {
-                this.format = format;
-                break;
+                return format;
             }
         }
-    }
-
-    public WMSCoverageReader(WebMapServer wms, Layer layer, String style, String preferredFormat) {
-        this.wms = wms;
-
-        // init the reader
-        addLayer(layer, style);
-
-        // best guess at the format with a preference for PNG (since it's normally transparent)
-        List<String> formats = wms.getCapabilities().getRequest().getGetMap().getFormats();
-        this.format = preferredFormat;
-        // verify if prefferedFormat is supported
-        if (!formats.contains(preferredFormat)) {
-            // if prefereded format is not supported default to first available
-            LOGGER.warning(preferredFormat + " format is not supported, falling back to defaults");
-            for (String format : formats) {
-                if ("image/png".equals(format)
-                        || "image/png24".equals(format)
-                        || "png".equals(format)
-                        || "png24".equals(format)
-                        || "image/png; mode=24bit".equals(format)) {
-                    this.format = format;
-                    break;
-                }
-            }
-        }
+        return null;
     }
 
     void addLayer(Layer layer) {

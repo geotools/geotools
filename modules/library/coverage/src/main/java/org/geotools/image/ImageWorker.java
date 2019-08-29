@@ -4173,12 +4173,11 @@ public class ImageWorker {
             // check if we can do a warp-affine reduction
             final ParameterBlock sourceParamBlock = op.getParameterBlock();
 
-            RenderingHints hints = getRenderingHints();
             boolean preserveChainedAffines = false;
-            if (hints != null && hints.containsKey(PRESERVE_CHAINED_AFFINES)) {
-                preserveChainedAffines = (boolean) hints.get(PRESERVE_CHAINED_AFFINES);
+            Object preserveHints = getRenderingHint(PRESERVE_CHAINED_AFFINES);
+            if (preserveHints != null && preserveHints instanceof Boolean) {
+                preserveChainedAffines = (Boolean) preserveHints;
             }
-
             if (WARP_REDUCTION_ENABLED
                     && "Warp".equals(opName)
                     && mtProperty instanceof MathTransform2D

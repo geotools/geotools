@@ -350,30 +350,32 @@ public final class ImageUtilities {
             if (defaultSize == null) {
                 defaultSize = GEOTOOLS_DEFAULT_TILE_SIZE;
             }
-            int s;
-            if ((s = toTileSize(image.getWidth(), defaultSize.width)) != 0) {
+            int sw;
+            int sh;
+            sw = toTileSize(image.getWidth(), defaultSize.width);
+            sh = toTileSize(image.getHeight(), defaultSize.height);
+            boolean smallTileWidth = image.getTileWidth() <= STRIPE_SIZE;
+            boolean smallTileHeight = image.getTileHeight() < STRIPE_SIZE;
+            if (sw != 0 || sh != 0 || smallTileHeight || smallTileWidth) {
                 if (layout == null) {
                     layout = new ImageLayout();
                 }
-                layout = layout.setTileWidth(s);
-                layout.setTileGridXOffset(image.getMinX());
-            } else if (image.getTileWidth() <= STRIPE_SIZE) {
-                if (layout == null) {
-                    layout = new ImageLayout();
+                if (sw != 0) {
+                    layout = layout.setTileWidth(sw);
+                    layout.setTileGridXOffset(image.getMinX());
+                } else if (smallTileWidth) {
+                    layout = layout.setTileWidth(defaultSize.width);
+                } else {
+                    layout = layout.setTileWidth(image.getTileWidth());
                 }
-                layout = layout.setTileWidth(defaultSize.width);
-            }
-            if ((s = toTileSize(image.getHeight(), defaultSize.height)) != 0) {
-                if (layout == null) {
-                    layout = new ImageLayout();
+                if (sh != 0) {
+                    layout = layout.setTileHeight(sh);
+                    layout.setTileGridYOffset(image.getMinY());
+                } else if (smallTileHeight) {
+                    layout = layout.setTileHeight(defaultSize.height);
+                } else {
+                    layout = layout.setTileHeight(image.getTileHeight());
                 }
-                layout = layout.setTileHeight(s);
-                layout.setTileGridYOffset(image.getMinY());
-            } else if (image.getTileHeight() < STRIPE_SIZE) {
-                if (layout == null) {
-                    layout = new ImageLayout();
-                }
-                layout = layout.setTileHeight(defaultSize.height);
             }
         }
         return layout;

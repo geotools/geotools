@@ -225,7 +225,7 @@ public abstract class AbstractGridFormat implements Format {
 
     /** Default value of the rescaling behavior, in case it's not specified */
     private static boolean RESCALE_DEFAULT =
-            Boolean.valueOf(System.getProperty("org.geotools.coverage.io.rescale", "true"));
+            Boolean.valueOf(System.getProperty("org.geotools.coverage.io.rescale", "false"));
 
     /**
      * This {@code GeneralParameterValue} can be provided to the {@link GridCoverageReader}s through

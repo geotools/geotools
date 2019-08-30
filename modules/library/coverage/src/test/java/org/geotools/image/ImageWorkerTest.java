@@ -38,7 +38,12 @@ import it.geosolutions.jaiext.range.NoDataContainer;
 import it.geosolutions.jaiext.range.Range;
 import it.geosolutions.jaiext.range.RangeFactory;
 import it.geosolutions.jaiext.vectorbin.ROIGeometry;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Image;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.RenderingHints;
+import java.awt.Transparency;
 import java.awt.color.ColorSpace;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
@@ -49,6 +54,7 @@ import java.awt.image.ComponentColorModel;
 import java.awt.image.DataBuffer;
 import java.awt.image.DirectColorModel;
 import java.awt.image.IndexColorModel;
+import java.awt.image.PixelInterleavedSampleModel;
 import java.awt.image.Raster;
 import java.awt.image.RenderedImage;
 import java.awt.image.SampleModel;
@@ -75,6 +81,7 @@ import javax.media.jai.ROI;
 import javax.media.jai.ROIShape;
 import javax.media.jai.RasterFactory;
 import javax.media.jai.RenderedOp;
+import javax.media.jai.TiledImage;
 import javax.media.jai.Warp;
 import javax.media.jai.WarpAffine;
 import javax.media.jai.operator.ConstantDescriptor;
@@ -2257,6 +2264,46 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         assertMinMax(getSynthetic(1000), 8, 8, 4, 985);
         assertMinMax(getSynthetic(1000), 16, 16, 9, 985);
         assertMinMax(getSynthetic(1000), 32, 32, 11, 931);
+    }
+
+    @Test(expected = Test.None.class)
+    public void testImageLayout() {
+        int tileWitdh = 161;
+        int tileHeight = 21; // a small tileHeight
+        PixelInterleavedSampleModel sm =
+                new PixelInterleavedSampleModel(
+                        DataBuffer.TYPE_BYTE, tileWitdh, tileHeight, 1, tileWitdh, new int[] {0});
+        ComponentColorModel cm =
+                new ComponentColorModel(
+                        ColorSpace.getInstance(ColorSpace.CS_GRAY),
+                        false,
+                        false,
+                        Transparency.OPAQUE,
+                        DataBuffer.TYPE_BYTE);
+        RenderedImage image = new TiledImage(0, 0, tileWitdh, tileHeight, 0, 0, sm, cm);
+        ImageWorker worker = new ImageWorker(image);
+        RenderingHints hints = worker.getRenderingHints();
+        ImageLayout layout = (ImageLayout) hints.get(JAI.KEY_IMAGE_LAYOUT);
+
+        // No IllegalArgumentException will be thrown at this point when creating a new ImageLayout
+        // on top of a reference one.
+        ImageLayout newLayout =
+                new ImageLayout(
+                        layout.getTileGridXOffset(null),
+                        layout.getTileGridYOffset(null),
+                        layout.getTileWidth(null),
+                        layout.getTileHeight(null),
+                        sm,
+                        cm);
+        assertEquals(tileWitdh, newLayout.getTileWidth(null));
+
+        final int imageUtilitiesTileHeight = newLayout.getTileHeight(null);
+        assertNotEquals(tileHeight, imageUtilitiesTileHeight);
+        // That's the default tilesize provided by ImageUtilities
+        // when the original tile size is smaller than a reference value (64).
+        assertEquals(512, imageUtilitiesTileHeight);
+        assertEquals(0, newLayout.getTileGridXOffset(null));
+        assertEquals(0, newLayout.getTileGridYOffset(null));
     }
 
     private void assertMinMax(

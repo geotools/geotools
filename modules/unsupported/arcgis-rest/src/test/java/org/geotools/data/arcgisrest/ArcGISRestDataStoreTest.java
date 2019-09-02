@@ -123,6 +123,41 @@ public class ArcGISRestDataStoreTest {
         }
     }
 
+    @Test
+    public void testVictoadsOpenData() throws Exception {
+
+        PowerMockito.whenNew(HttpClient.class)
+                .withNoArguments()
+                .thenReturn(clientMock)
+                .thenReturn(clientMock);
+        PowerMockito.whenNew(GetMethod.class)
+                .withNoArguments()
+                .thenReturn(getMock)
+                .thenReturn(getMock);
+        when(clientMock.executeMethod(getMock))
+                .thenReturn(HttpStatus.SC_OK)
+                .thenReturn(HttpStatus.SC_OK);
+        when(getMock.getResponseBodyAsStream())
+                .thenReturn(
+                        ArcGISRestDataStoreFactoryTest.readJSONAsStream("test-data/aur-6304.json"))
+                .thenReturn(
+                        ArcGISRestDataStoreFactoryTest.readJSONAsStream(
+                                "test-data/lgaDataset.json"));
+
+        this.dataStore =
+                (ArcGISRestDataStore)
+                        ArcGISRestDataStoreFactoryTest.createDefaultOpenDataTestDataStore();
+        List<Name> names = this.dataStore.createTypeNames();
+
+        assertEquals(1, names.size());
+        assertEquals(TYPENAME1, names.get(0).getLocalPart());
+        assertEquals(ArcGISRestDataStoreFactoryTest.NAMESPACE, names.get(0).getNamespaceURI());
+
+        assertNotNull(
+                this.dataStore.getEntry(
+                        new NameImpl(ArcGISRestDataStoreFactoryTest.NAMESPACE, TYPENAME1)));
+    }
+
     @Test(expected = UnsupportedImplementationException.class)
     public void testUnsupportedAPIVersion() throws Exception {
 

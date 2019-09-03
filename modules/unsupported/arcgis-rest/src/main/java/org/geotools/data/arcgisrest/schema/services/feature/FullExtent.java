@@ -1,4 +1,3 @@
-
 package org.geotools.data.arcgisrest.schema.services.feature;
 
 import com.google.gson.annotations.Expose;
@@ -6,133 +5,73 @@ import com.google.gson.annotations.SerializedName;
 
 public class FullExtent {
 
-    /**
-     * 
-     * (Required)
-     * 
-     */
+    /** (Required) */
     @SerializedName("xmin")
     @Expose
     private Double xmin;
-    /**
-     * 
-     * (Required)
-     * 
-     */
+    /** (Required) */
     @SerializedName("ymin")
     @Expose
     private Double ymin;
-    /**
-     * 
-     * (Required)
-     * 
-     */
+    /** (Required) */
     @SerializedName("xmax")
     @Expose
     private Double xmax;
-    /**
-     * 
-     * (Required)
-     * 
-     */
+    /** (Required) */
     @SerializedName("ymax")
     @Expose
     private Double ymax;
-    /**
-     * 
-     * (Required)
-     * 
-     */
+    /** (Required) */
     @SerializedName("spatialReference")
     @Expose
     private SpatialReference__2 spatialReference;
 
-    /**
-     * 
-     * (Required)
-     * 
-     */
+    /** (Required) */
     public Double getXmin() {
         return xmin;
     }
 
-    /**
-     * 
-     * (Required)
-     * 
-     */
+    /** (Required) */
     public void setXmin(Double xmin) {
         this.xmin = xmin;
     }
 
-    /**
-     * 
-     * (Required)
-     * 
-     */
+    /** (Required) */
     public Double getYmin() {
         return ymin;
     }
 
-    /**
-     * 
-     * (Required)
-     * 
-     */
+    /** (Required) */
     public void setYmin(Double ymin) {
         this.ymin = ymin;
     }
 
-    /**
-     * 
-     * (Required)
-     * 
-     */
+    /** (Required) */
     public Double getXmax() {
         return xmax;
     }
 
-    /**
-     * 
-     * (Required)
-     * 
-     */
+    /** (Required) */
     public void setXmax(Double xmax) {
         this.xmax = xmax;
     }
 
-    /**
-     * 
-     * (Required)
-     * 
-     */
+    /** (Required) */
     public Double getYmax() {
         return ymax;
     }
 
-    /**
-     * 
-     * (Required)
-     * 
-     */
+    /** (Required) */
     public void setYmax(Double ymax) {
         this.ymax = ymax;
     }
 
-    /**
-     * 
-     * (Required)
-     * 
-     */
+    /** (Required) */
     public SpatialReference__2 getSpatialReference() {
         return spatialReference;
     }
 
-    /**
-     * 
-     * (Required)
-     * 
-     */
+    /** (Required) */
     public void setSpatialReference(SpatialReference__2 spatialReference) {
         this.spatialReference = spatialReference;
     }
@@ -140,29 +79,32 @@ public class FullExtent {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(FullExtent.class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this))).append('[');
+        sb.append(FullExtent.class.getName())
+                .append('@')
+                .append(Integer.toHexString(System.identityHashCode(this)))
+                .append('[');
         sb.append("xmin");
         sb.append('=');
-        sb.append(((this.xmin == null)?"<null>":this.xmin));
+        sb.append(((this.xmin == null) ? "<null>" : this.xmin));
         sb.append(',');
         sb.append("ymin");
         sb.append('=');
-        sb.append(((this.ymin == null)?"<null>":this.ymin));
+        sb.append(((this.ymin == null) ? "<null>" : this.ymin));
         sb.append(',');
         sb.append("xmax");
         sb.append('=');
-        sb.append(((this.xmax == null)?"<null>":this.xmax));
+        sb.append(((this.xmax == null) ? "<null>" : this.xmax));
         sb.append(',');
         sb.append("ymax");
         sb.append('=');
-        sb.append(((this.ymax == null)?"<null>":this.ymax));
+        sb.append(((this.ymax == null) ? "<null>" : this.ymax));
         sb.append(',');
         sb.append("spatialReference");
         sb.append('=');
-        sb.append(((this.spatialReference == null)?"<null>":this.spatialReference));
+        sb.append(((this.spatialReference == null) ? "<null>" : this.spatialReference));
         sb.append(',');
-        if (sb.charAt((sb.length()- 1)) == ',') {
-            sb.setCharAt((sb.length()- 1), ']');
+        if (sb.charAt((sb.length() - 1)) == ',') {
+            sb.setCharAt((sb.length() - 1), ']');
         } else {
             sb.append(']');
         }
@@ -172,11 +114,13 @@ public class FullExtent {
     @Override
     public int hashCode() {
         int result = 1;
-        result = ((result* 31)+((this.ymin == null)? 0 :this.ymin.hashCode()));
-        result = ((result* 31)+((this.xmin == null)? 0 :this.xmin.hashCode()));
-        result = ((result* 31)+((this.ymax == null)? 0 :this.ymax.hashCode()));
-        result = ((result* 31)+((this.xmax == null)? 0 :this.xmax.hashCode()));
-        result = ((result* 31)+((this.spatialReference == null)? 0 :this.spatialReference.hashCode()));
+        result = ((result * 31) + ((this.ymin == null) ? 0 : this.ymin.hashCode()));
+        result = ((result * 31) + ((this.xmin == null) ? 0 : this.xmin.hashCode()));
+        result = ((result * 31) + ((this.ymax == null) ? 0 : this.ymax.hashCode()));
+        result = ((result * 31) + ((this.xmax == null) ? 0 : this.xmax.hashCode()));
+        result =
+                ((result * 31)
+                        + ((this.spatialReference == null) ? 0 : this.spatialReference.hashCode()));
         return result;
     }
 
@@ -189,7 +133,16 @@ public class FullExtent {
             return false;
         }
         FullExtent rhs = ((FullExtent) other);
-        return ((((((this.ymin == rhs.ymin)||((this.ymin!= null)&&this.ymin.equals(rhs.ymin)))&&((this.xmin == rhs.xmin)||((this.xmin!= null)&&this.xmin.equals(rhs.xmin))))&&((this.ymax == rhs.ymax)||((this.ymax!= null)&&this.ymax.equals(rhs.ymax))))&&((this.xmax == rhs.xmax)||((this.xmax!= null)&&this.xmax.equals(rhs.xmax))))&&((this.spatialReference == rhs.spatialReference)||((this.spatialReference!= null)&&this.spatialReference.equals(rhs.spatialReference))));
+        return ((((((this.ymin == rhs.ymin) || ((this.ymin != null) && this.ymin.equals(rhs.ymin)))
+                                        && ((this.xmin == rhs.xmin)
+                                                || ((this.xmin != null)
+                                                        && this.xmin.equals(rhs.xmin))))
+                                && ((this.ymax == rhs.ymax)
+                                        || ((this.ymax != null) && this.ymax.equals(rhs.ymax))))
+                        && ((this.xmax == rhs.xmax)
+                                || ((this.xmax != null) && this.xmax.equals(rhs.xmax))))
+                && ((this.spatialReference == rhs.spatialReference)
+                        || ((this.spatialReference != null)
+                                && this.spatialReference.equals(rhs.spatialReference))));
     }
-
 }

@@ -1,16 +1,16 @@
-
 package org.geotools.data.arcgisrest.schema.query;
 
-
 public class Geometry {
-
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(Geometry.class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this))).append('[');
-        if (sb.charAt((sb.length()- 1)) == ',') {
-            sb.setCharAt((sb.length()- 1), ']');
+        sb.append(Geometry.class.getName())
+                .append('@')
+                .append(Integer.toHexString(System.identityHashCode(this)))
+                .append('[');
+        if (sb.charAt((sb.length() - 1)) == ',') {
+            sb.setCharAt((sb.length() - 1), ']');
         } else {
             sb.append(']');
         }
@@ -34,5 +34,4 @@ public class Geometry {
         Geometry rhs = ((Geometry) other);
         return true;
     }
-
 }

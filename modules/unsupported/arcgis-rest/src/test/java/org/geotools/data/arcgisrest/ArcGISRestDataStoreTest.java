@@ -139,7 +139,8 @@ public class ArcGISRestDataStoreTest {
                 .thenReturn(HttpStatus.SC_OK);
         when(getMock.getResponseBodyAsStream())
                 .thenReturn(
-                        ArcGISRestDataStoreFactoryTest.readJSONAsStream("test-data/aur-6304.json"))
+                        ArcGISRestDataStoreFactoryTest.readJSONAsStream(
+                                "test-data/wsServiceInDistribution.json"))
                 .thenReturn(
                         ArcGISRestDataStoreFactoryTest.readJSONAsStream(
                                 "test-data/lgaDataset.json"));

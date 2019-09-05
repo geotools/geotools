@@ -849,15 +849,14 @@ public class SQLServerDialect extends BasicSQLDialect {
             Connection cx, SimpleFeatureType schema, String databaseSchema, String indexName)
             throws SQLException {
         StringBuffer sql = new StringBuffer();
-        String escape = getNameEscape();
         sql.append("DROP INDEX ");
-        sql.append(escape).append(indexName).append(escape);
+        sql.append(escapeName(indexName));
         sql.append(" ON ");
         if (databaseSchema != null) {
             encodeSchemaName(databaseSchema, sql);
             sql.append(".");
         }
-        sql.append(escape).append(schema.getTypeName()).append(escape);
+        sql.append(escapeName(schema.getTypeName()));
 
         Statement st = null;
         try {

@@ -432,19 +432,44 @@ public abstract class SQLDialect {
     }
 
     /**
+     * Surrounds a name with the SQL escape string.
+     *
+     * <p>If the name contains the SQL escape string, the SQL escape string is duplicated.
+     *
+     * @param name
+     */
+    public String escapeName(String name) {
+        String nameEscape = getNameEscape();
+        if (nameEscape.isEmpty()) return name;
+        StringBuilder sb = new StringBuilder();
+        sb.append(nameEscape);
+        int offset = 0;
+        int escapeOffset;
+        while ((escapeOffset = name.indexOf(nameEscape, offset)) != -1) {
+            sb.append(name.substring(offset, escapeOffset));
+            sb.append(nameEscape);
+            sb.append(nameEscape);
+            offset = escapeOffset + nameEscape.length();
+        }
+        sb.append(name.substring(offset));
+        sb.append(nameEscape);
+        return sb.toString();
+    }
+
+    /**
      * Encodes the name of a column in an SQL statement.
      *
-     * <p>This method wraps <tt>raw</tt> in the character provided by {@link #getNameEscape()}.
-     * Subclasses usually don't override this method and instead override {@link #getNameEscape()}.
+     * <p>This method escapes <tt>raw</tt> using method {@link #escapeName(String)}. Subclasses
+     * usually don't override this method and instead override {@link #getNameEscape()}.
      *
      * <p>The <tt>prefix</tt> parameter may be <code>null</code> so subclasses that do override must
      * handle that case.
      */
     public void encodeColumnName(String prefix, String raw, StringBuffer sql) {
         if (prefix != null) {
-            sql.append(ne()).append(prefix).append(ne()).append(".");
+            sql.append(escapeName(prefix)).append(".");
         }
-        sql.append(ne()).append(raw).append(ne());
+        sql.append(escapeName(raw));
     }
 
     /**
@@ -497,21 +522,21 @@ public abstract class SQLDialect {
     /**
      * Encodes the name of a table in an SQL statement.
      *
-     * <p>This method wraps <tt>raw</tt> in the character provided by {@link #getNameEscape()}.
-     * Subclasses usually dont override this method and instead override {@link #getNameEscape()}.
+     * <p>This method escapes <tt>raw</tt> using method {@link #escapeName(String)}. Subclasses
+     * usually dont override this method and instead override {@link #getNameEscape()}.
      */
     public void encodeTableName(String raw, StringBuffer sql) {
-        sql.append(ne()).append(raw).append(ne());
+        sql.append(escapeName(raw));
     }
 
     /**
      * Encodes the name of a schema in an SQL statement.
      *
-     * <p>This method wraps <tt>raw</tt> in the character provided by {@link #getNameEscape()}.
-     * Subclasses usually dont override this method and instead override {@link #getNameEscape()}.
+     * <p>This method escapes <tt>raw</tt> using method {@link #escapeName(String)}. Subclasses
+     * usually dont override this method and instead override {@link #getNameEscape()}.
      */
     public void encodeSchemaName(String raw, StringBuffer sql) {
-        sql.append(ne()).append(raw).append(ne());
+        sql.append(escapeName(raw));
     }
 
     /**
@@ -1140,7 +1165,6 @@ public abstract class SQLDialect {
             Connection cx, SimpleFeatureType schema, String databaseSchema, Index index)
             throws SQLException {
         StringBuffer sql = new StringBuffer();
-        String escape = getNameEscape();
         sql.append("CREATE ");
         if (index.isUnique()) {
             sql.append("UNIQUE ");
@@ -1150,15 +1174,15 @@ public abstract class SQLDialect {
             encodeSchemaName(databaseSchema, sql);
             sql.append(".");
         }
-        sql.append(escape).append(index.getIndexName()).append(escape);
+        sql.append(escapeName(index.getIndexName()));
         sql.append(" ON ");
         if (databaseSchema != null) {
             encodeSchemaName(databaseSchema, sql);
             sql.append(".");
         }
-        sql.append(escape).append(index.getTypeName()).append(escape).append("(");
+        sql.append(escapeName(index.getTypeName())).append("(");
         for (String attribute : index.getAttributes()) {
-            sql.append(escape).append(attribute).append(escape).append(", ");
+            sql.append(escapeName(attribute)).append(", ");
         }
         sql.setLength(sql.length() - 2);
         sql.append(")");
@@ -1189,13 +1213,12 @@ public abstract class SQLDialect {
             Connection cx, SimpleFeatureType schema, String databaseSchema, String indexName)
             throws SQLException {
         StringBuffer sql = new StringBuffer();
-        String escape = getNameEscape();
         sql.append("DROP INDEX ");
         if (supportsSchemaForIndex() && databaseSchema != null) {
             encodeSchemaName(databaseSchema, sql);
             sql.append(".");
         }
-        sql.append(escape).append(indexName).append(escape);
+        sql.append(escapeName(indexName));
 
         Statement st = null;
         try {

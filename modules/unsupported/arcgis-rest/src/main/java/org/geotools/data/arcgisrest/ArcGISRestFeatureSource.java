@@ -111,7 +111,9 @@ public class ArcGISRestFeatureSource extends ContentFeatureSource {
                                 ArcGISRestDataStore.InputStreamToString(
                                         this.dataStore.retrieveJSON(
                                                 "GET",
-                                                new URL(ds.getWebService().toString()),
+                                                new URL(
+                                                        ArcGISRestDataStore.getWebServiceEndpoint(
+                                                                ds)),
                                                 ArcGISRestDataStore.DEFAULT_PARAMS)),
                                 Webservice.class);
 
@@ -201,7 +203,7 @@ public class ArcGISRestFeatureSource extends ContentFeatureSource {
         builder.add(ArcGISRestDataStore.GEOMETRY_ATTR, clazz);
 
         this.schema = builder.buildFeatureType();
-        this.schema.getUserData().put("serviceUrl", ds.getWebService());
+        this.schema.getUserData().put("serviceUrl", ArcGISRestDataStore.getWebServiceEndpoint(ds));
 
         return this.schema;
     }

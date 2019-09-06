@@ -55,6 +55,7 @@ public class ArcGISRestDataStoreTest {
     public static String TYPENAME3 = "Airports_3";
     public static String TYPENAME4 = "Principal Bicycle Network";
     public static String TYPENAME5 = "OS_WalkableCatchment_400m_SP";
+    public static String TYPENAME6 = "LGAProfiles2014Beta_2";
 
     private ArcGISRestDataStore dataStore;
 
@@ -133,9 +134,13 @@ public class ArcGISRestDataStoreTest {
                 .thenReturn(clientMock)
                 .thenReturn(clientMock)
                 .thenReturn(clientMock)
+                .thenReturn(clientMock)
+                .thenReturn(clientMock)
                 .thenReturn(clientMock);
         PowerMockito.whenNew(GetMethod.class)
                 .withNoArguments()
+                .thenReturn(getMock)
+                .thenReturn(getMock)
                 .thenReturn(getMock)
                 .thenReturn(getMock)
                 .thenReturn(getMock)
@@ -146,12 +151,20 @@ public class ArcGISRestDataStoreTest {
                 .thenReturn(HttpStatus.SC_BAD_REQUEST)
                 .thenReturn(HttpStatus.SC_OK)
                 .thenReturn(HttpStatus.SC_OK)
+                .thenReturn(HttpStatus.SC_OK)
+                .thenReturn(HttpStatus.SC_OK)
                 .thenReturn(HttpStatus.SC_OK);
         when(getMock.getResponseBodyAsStream())
                 .thenReturn(
                         ArcGISRestDataStoreFactoryTest.readJSONAsStream(
                                 "test-data/wsServiceInDistribution.json"))
                 .thenReturn(ArcGISRestDataStoreFactoryTest.readJSONAsStream("test-data/error.json"))
+                .thenReturn(
+                        ArcGISRestDataStoreFactoryTest.readJSONAsStream(
+                                "test-data/lgaDataset.json"))
+                .thenReturn(
+                        ArcGISRestDataStoreFactoryTest.readJSONAsStream(
+                                "test-data/lgaDataset2.json"))
                 .thenReturn(
                         ArcGISRestDataStoreFactoryTest.readJSONAsStream(
                                 "test-data/lgaDataset.json"))
@@ -168,9 +181,18 @@ public class ArcGISRestDataStoreTest {
         assertEquals(TYPENAME1, names.get(0).getLocalPart());
         assertEquals(ArcGISRestDataStoreFactoryTest.NAMESPACE, names.get(0).getNamespaceURI());
 
-        assertNotNull(
-                this.dataStore.getEntry(
-                        new NameImpl(ArcGISRestDataStoreFactoryTest.NAMESPACE, TYPENAME1)));
+        FeatureSource<SimpleFeatureType, SimpleFeature> src =
+                this.dataStore.createFeatureSource(
+                        this.dataStore.getEntry(
+                                new NameImpl(ArcGISRestDataStoreFactoryTest.NAMESPACE, TYPENAME1)));
+        src.getSchema();
+        assertTrue(src instanceof ArcGISRestFeatureSource);
+        src =
+                this.dataStore.createFeatureSource(
+                        this.dataStore.getEntry(
+                                new NameImpl(ArcGISRestDataStoreFactoryTest.NAMESPACE, TYPENAME6)));
+        src.getSchema();
+        assertTrue(src instanceof ArcGISRestFeatureSource);
     }
 
     @Test(expected = UnsupportedImplementationException.class)

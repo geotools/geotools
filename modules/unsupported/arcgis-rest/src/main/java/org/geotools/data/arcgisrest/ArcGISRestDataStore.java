@@ -360,29 +360,9 @@ public class ArcGISRestDataStore extends ContentDataStore {
                 .stream()
                 .forEach(
                         (ds) -> {
-                            if (ds.getWebService() != null
-                                    && ds.getWebService()
-                                            .toString()
-                                            .contains(FEATURESERVER_SERVICE)) {
-                                calls.add(new WsCall(ds, ds.getWebService().toString()));
-                            } else {
-                                if (ds.getDistribution() != null) {
-                                    ds.getDistribution()
-                                            .forEach(
-                                                    (dist) -> {
-                                                        if (dist.getFormat()
-                                                                        .toString()
-                                                                        .equalsIgnoreCase(
-                                                                                FORMAT_ESRIREST)
-                                                                && dist.getAccessURL() != null) {
-                                                            calls.add(
-                                                                    new WsCall(
-                                                                            ds,
-                                                                            dist.getAccessURL()
-                                                                                    .toString()));
-                                                        }
-                                                    });
-                                }
+                            String ws = ArcGISRestDataStore.getWebServiceEndpoint(ds);
+                            if (ws != null) {
+                                calls.add(new WsCall(ds, ws));
                             }
                         });
 
@@ -552,6 +532,37 @@ public class ArcGISRestDataStore extends ContentDataStore {
 
         // Extracts an returns the response
         return meth.getResponseBodyAsStream();
+    }
+
+    /**
+     * Helper method to find the web service endpoint in a Dataset (if multiple desitinations apply,
+     * chooses the first)
+     *
+     * @param ds Dataset to find the endpoint of
+     * @return URL of the web service endpoint
+     */
+    public static String getWebServiceEndpoint(Dataset ds) {
+
+        List<String> wsurl = new ArrayList<String>();
+
+        if (ds.getWebService() != null
+                && ds.getWebService().toString().contains(FEATURESERVER_SERVICE)) {
+            wsurl.add(ds.getWebService().toString());
+        } else {
+            if (ds.getDistribution() != null) {
+                ds.getDistribution()
+                        .forEach(
+                                (dist) -> {
+                                    if (dist.getFormat()
+                                                    .toString()
+                                                    .equalsIgnoreCase(FORMAT_ESRIREST)
+                                            && dist.getAccessURL() != null) {
+                                        wsurl.add(dist.getAccessURL().toString());
+                                    }
+                                });
+            }
+        }
+        return wsurl.size() == 0 ? null : wsurl.get(0);
     }
 
     /**

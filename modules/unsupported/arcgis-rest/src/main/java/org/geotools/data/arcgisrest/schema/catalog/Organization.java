@@ -1,37 +1,44 @@
+
 package org.geotools.data.arcgisrest.schema.catalog;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
 import java.util.HashMap;
 import java.util.Map;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 
 /**
  * Project Open Data Organization
- *
- * <p>A Dataset Publisher Organization as a foaf:Agent object
+ * <p>
+ * A Dataset Publisher Organization as a foaf:Agent object
+ * 
  */
 public class Organization {
 
     /**
      * Metadata Context
-     *
-     * <p>IRI for the JSON-LD data type. This should be org:Organization for each publisher
+     * <p>
+     * IRI for the JSON-LD data type. This should be org:Organization for each publisher
+     * 
      */
     @SerializedName("@type")
     @Expose
     private Organization.Type type;
     /**
      * Publisher Name
-     *
-     * <p>A full formatted name, eg Firstname Lastname (Required)
+     * <p>
+     * A full formatted name, eg Firstname Lastname
+     * (Required)
+     * 
      */
     @SerializedName("name")
     @Expose
     private String name;
     /**
      * Project Open Data Organization
-     *
-     * <p>A Dataset Publisher Organization as a foaf:Agent object
+     * <p>
+     * A Dataset Publisher Organization as a foaf:Agent object
+     * 
      */
     @SerializedName("subOrganizationOf")
     @Expose
@@ -39,8 +46,9 @@ public class Organization {
 
     /**
      * Metadata Context
-     *
-     * <p>IRI for the JSON-LD data type. This should be org:Organization for each publisher
+     * <p>
+     * IRI for the JSON-LD data type. This should be org:Organization for each publisher
+     * 
      */
     public Organization.Type getType() {
         return type;
@@ -48,8 +56,9 @@ public class Organization {
 
     /**
      * Metadata Context
-     *
-     * <p>IRI for the JSON-LD data type. This should be org:Organization for each publisher
+     * <p>
+     * IRI for the JSON-LD data type. This should be org:Organization for each publisher
+     * 
      */
     public void setType(Organization.Type type) {
         this.type = type;
@@ -57,8 +66,10 @@ public class Organization {
 
     /**
      * Publisher Name
-     *
-     * <p>A full formatted name, eg Firstname Lastname (Required)
+     * <p>
+     * A full formatted name, eg Firstname Lastname
+     * (Required)
+     * 
      */
     public String getName() {
         return name;
@@ -66,8 +77,10 @@ public class Organization {
 
     /**
      * Publisher Name
-     *
-     * <p>A full formatted name, eg Firstname Lastname (Required)
+     * <p>
+     * A full formatted name, eg Firstname Lastname
+     * (Required)
+     * 
      */
     public void setName(String name) {
         this.name = name;
@@ -75,8 +88,9 @@ public class Organization {
 
     /**
      * Project Open Data Organization
-     *
-     * <p>A Dataset Publisher Organization as a foaf:Agent object
+     * <p>
+     * A Dataset Publisher Organization as a foaf:Agent object
+     * 
      */
     public Organization getSubOrganizationOf() {
         return subOrganizationOf;
@@ -84,8 +98,9 @@ public class Organization {
 
     /**
      * Project Open Data Organization
-     *
-     * <p>A Dataset Publisher Organization as a foaf:Agent object
+     * <p>
+     * A Dataset Publisher Organization as a foaf:Agent object
+     * 
      */
     public void setSubOrganizationOf(Organization subOrganizationOf) {
         this.subOrganizationOf = subOrganizationOf;
@@ -94,24 +109,21 @@ public class Organization {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(Organization.class.getName())
-                .append('@')
-                .append(Integer.toHexString(System.identityHashCode(this)))
-                .append('[');
+        sb.append(Organization.class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this))).append('[');
         sb.append("type");
         sb.append('=');
-        sb.append(((this.type == null) ? "<null>" : this.type));
+        sb.append(((this.type == null)?"<null>":this.type));
         sb.append(',');
         sb.append("name");
         sb.append('=');
-        sb.append(((this.name == null) ? "<null>" : this.name));
+        sb.append(((this.name == null)?"<null>":this.name));
         sb.append(',');
         sb.append("subOrganizationOf");
         sb.append('=');
-        sb.append(((this.subOrganizationOf == null) ? "<null>" : this.subOrganizationOf));
+        sb.append(((this.subOrganizationOf == null)?"<null>":this.subOrganizationOf));
         sb.append(',');
-        if (sb.charAt((sb.length() - 1)) == ',') {
-            sb.setCharAt((sb.length() - 1), ']');
+        if (sb.charAt((sb.length()- 1)) == ',') {
+            sb.setCharAt((sb.length()- 1), ']');
         } else {
             sb.append(']');
         }
@@ -121,13 +133,9 @@ public class Organization {
     @Override
     public int hashCode() {
         int result = 1;
-        result = ((result * 31) + ((this.name == null) ? 0 : this.name.hashCode()));
-        result = ((result * 31) + ((this.type == null) ? 0 : this.type.hashCode()));
-        result =
-                ((result * 31)
-                        + ((this.subOrganizationOf == null)
-                                ? 0
-                                : this.subOrganizationOf.hashCode()));
+        result = ((result* 31)+((this.name == null)? 0 :this.name.hashCode()));
+        result = ((result* 31)+((this.type == null)? 0 :this.type.hashCode()));
+        result = ((result* 31)+((this.subOrganizationOf == null)? 0 :this.subOrganizationOf.hashCode()));
         return result;
     }
 
@@ -140,23 +148,18 @@ public class Organization {
             return false;
         }
         Organization rhs = ((Organization) other);
-        return ((((this.name == rhs.name) || ((this.name != null) && this.name.equals(rhs.name)))
-                        && ((this.type == rhs.type)
-                                || ((this.type != null) && this.type.equals(rhs.type))))
-                && ((this.subOrganizationOf == rhs.subOrganizationOf)
-                        || ((this.subOrganizationOf != null)
-                                && this.subOrganizationOf.equals(rhs.subOrganizationOf))));
+        return ((((this.name == rhs.name)||((this.name!= null)&&this.name.equals(rhs.name)))&&((this.type == rhs.type)||((this.type!= null)&&this.type.equals(rhs.type))))&&((this.subOrganizationOf == rhs.subOrganizationOf)||((this.subOrganizationOf!= null)&&this.subOrganizationOf.equals(rhs.subOrganizationOf))));
     }
 
     public enum Type {
+
         @SerializedName("org:Organization")
         ORG_ORGANIZATION("org:Organization");
         private final String value;
-        private static final Map<String, Organization.Type> CONSTANTS =
-                new HashMap<String, Organization.Type>();
+        private final static Map<String, Organization.Type> CONSTANTS = new HashMap<String, Organization.Type>();
 
         static {
-            for (Organization.Type c : values()) {
+            for (Organization.Type c: values()) {
                 CONSTANTS.put(c.value, c);
             }
         }
@@ -182,5 +185,7 @@ public class Organization {
                 return constant;
             }
         }
+
     }
+
 }

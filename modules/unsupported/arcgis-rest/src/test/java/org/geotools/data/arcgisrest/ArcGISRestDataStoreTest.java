@@ -126,31 +126,45 @@ public class ArcGISRestDataStoreTest {
     @Test
     public void testVictoadsOpenData() throws Exception {
 
+        // This returns an invalid webService (the first), then two invalid ones (second and third)
         PowerMockito.whenNew(HttpClient.class)
                 .withNoArguments()
+                .thenReturn(clientMock)
+                .thenReturn(clientMock)
+                .thenReturn(clientMock)
                 .thenReturn(clientMock)
                 .thenReturn(clientMock);
         PowerMockito.whenNew(GetMethod.class)
                 .withNoArguments()
                 .thenReturn(getMock)
+                .thenReturn(getMock)
+                .thenReturn(getMock)
+                .thenReturn(getMock)
                 .thenReturn(getMock);
         when(clientMock.executeMethod(getMock))
+                .thenReturn(HttpStatus.SC_OK)
+                .thenReturn(HttpStatus.SC_BAD_REQUEST)
+                .thenReturn(HttpStatus.SC_OK)
                 .thenReturn(HttpStatus.SC_OK)
                 .thenReturn(HttpStatus.SC_OK);
         when(getMock.getResponseBodyAsStream())
                 .thenReturn(
                         ArcGISRestDataStoreFactoryTest.readJSONAsStream(
                                 "test-data/wsServiceInDistribution.json"))
+                .thenReturn(ArcGISRestDataStoreFactoryTest.readJSONAsStream("test-data/error.json"))
                 .thenReturn(
                         ArcGISRestDataStoreFactoryTest.readJSONAsStream(
-                                "test-data/lgaDataset.json"));
+                                "test-data/lgaDataset.json"))
+                .thenReturn(
+                        ArcGISRestDataStoreFactoryTest.readJSONAsStream(
+                                "test-data/lgaDataset2.json"));
 
         this.dataStore =
                 (ArcGISRestDataStore)
                         ArcGISRestDataStoreFactoryTest.createDefaultOpenDataTestDataStore();
         List<Name> names = this.dataStore.createTypeNames();
 
-        assertEquals(1, names.size());
+        assertEquals(2, names.size());
         assertEquals(TYPENAME1, names.get(0).getLocalPart());
         assertEquals(ArcGISRestDataStoreFactoryTest.NAMESPACE, names.get(0).getNamespaceURI());
 

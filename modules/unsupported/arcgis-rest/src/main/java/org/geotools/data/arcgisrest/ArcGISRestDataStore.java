@@ -371,9 +371,10 @@ public class ArcGISRestDataStore extends ContentDataStore {
                                             .forEach(
                                                     (dist) -> {
                                                         if (dist.getFormat()
-                                                                .toString()
-                                                                .equalsIgnoreCase(
-                                                                        FORMAT_ESRIREST)) {
+                                                                        .toString()
+                                                                        .equalsIgnoreCase(
+                                                                                FORMAT_ESRIREST)
+                                                                && dist.getAccessURL() != null) {
                                                             calls.add(
                                                                     new WsCall(
                                                                             ds,

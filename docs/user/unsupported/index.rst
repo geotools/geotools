@@ -41,8 +41,8 @@ Unsupported DataStore implementations:
 * :doc:`/library/data/edigeo` (Inactive) Support for EDIGEO file format
 * :doc:`/library/data/excel` (Unknown) Support for Microsoft Excel files
 * :doc:`/library/data/georest` (Unknown) Support for a REST service using GeoJSON
-* :doc:`/library/data/mongodb` (Unknown) Support for using mongodb (https://www.mongodb.com/, https://en.wikipedia.org/wiki/MongoDB) as a feature store.
-* :doc:`/library/data/wfs-ng` (Active) Supports communcation with a Web Feature Server using the standard GeoTools DataStore API
+* :doc:`/library/data/mongodb` (Unknown) Support for using MongoDB (https://www.mongodb.com/, https://en.wikipedia.org/wiki/MongoDB) as a feature store.
+* :doc:`/library/data/wfs-ng` (Active) Supports communication with a Web Feature Server using the standard GeoTools DataStore API
 
 Unsupported Raster modules:
 

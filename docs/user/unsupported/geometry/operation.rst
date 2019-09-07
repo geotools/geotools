@@ -18,7 +18,7 @@ The following code shows some examples of performing operations on geometry obje
     Geometry geom = (Geometry) curve.union(surface);
     int distance = point.distance(surface);
 
-* Transofrmation
+* Transformation::
     
     // perform a transform to another CRS
     CoordinateReferenceSystem crs2 = CRS.decode("EPSG:3005");
@@ -28,36 +28,36 @@ The following is a quick list of some of the more interesting operations and met
 
 .. note::
    
-   TransfiniteSet
+   ``TransfiniteSet``
    
-   For the purpose of reading the following methods TransfiniteSet is a
-   superclass of Geometry.
+   For the purpose of reading the following methods ``TransfiniteSet`` is a
+   superclass of ``Geometry``.
 
 Geometry Methods:
 
-* Geometry.contains(TransfiniteSet)
-* Geometry.crosses(TransfiniteSet)
-* Geometry.difference(TransfiniteSet)
-* Geometry.disjoint(TransfiniteSet)
-* Geometry.distance(Geometry)
-* Geometry.equals(TransfiniteSet)
-* Geometry.getBoundary()
-* Geometry.getCentroid()
-* Geometry.getClosure()
-* Geometry.getConvexHull()
-* Geometry.getCoordinateDimension()
-* Geometry.getCoordinateReferenceSystem()
-* Geometry.getDimension(DirectPosition)
-* Geometry.getEnvelope()
-* Geometry.getRepresentativePoint()
-* Geometry.intersection(TransfiniteSet)
-* Geometry.intersects(TransfiniteSet)
-* Geometry.isCycle()
-* Geometry.overlaps(TransfiniteSet)
-* Geometry.relate(Geometry, String)
-* Geometry.symmetricDifference(TransfiniteSet)
-* Geometry.touches(TransfiniteSet)
-* Geometry.transform(CoordinateReferenceSystem)
-* Geometry.transform(CoordinateReferenceSystem, MathTransform)
-* Geometry.union(TransfiniteSet)
-* Geometry.within(TransfiniteSet)
+* ``Geometry.contains(TransfiniteSet)``
+* ``Geometry.crosses(TransfiniteSet)``
+* ``Geometry.difference(TransfiniteSet)``
+* ``Geometry.disjoint(TransfiniteSet)``
+* ``Geometry.distance(Geometry)``
+* ``Geometry.equals(TransfiniteSet)``
+* ``Geometry.getBoundary()``
+* ``Geometry.getCentroid()``
+* ``Geometry.getClosure()``
+* ``Geometry.getConvexHull()``
+* ``Geometry.getCoordinateDimension()``
+* ``Geometry.getCoordinateReferenceSystem()``
+* ``Geometry.getDimension(DirectPosition)``
+* ``Geometry.getEnvelope()``
+* ``Geometry.getRepresentativePoint()``
+* ``Geometry.intersection(TransfiniteSet)``
+* ``Geometry.intersects(TransfiniteSet)``
+* ``Geometry.isCycle()``
+* ``Geometry.overlaps(TransfiniteSet)``
+* ``Geometry.relate(Geometry, String)``
+* ``Geometry.symmetricDifference(TransfiniteSet)``
+* ``Geometry.touches(TransfiniteSet)``
+* ``Geometry.transform(CoordinateReferenceSystem)``
+* ``Geometry.transform(CoordinateReferenceSystem, MathTransform)``
+* ``Geometry.union(TransfiniteSet)``
+* ``Geometry.within(TransfiniteSet)``

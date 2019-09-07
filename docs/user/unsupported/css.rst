@@ -1,7 +1,7 @@
 Cartographic CSS Plugin
 -----------------------
 
-The **gt-css** module is a plugin used used to generate Style objects from a human readable CSS representation.
+The ``gt-css`` module is a plugin used used to generate Style objects from a human readable CSS representation.
 
 To use this module in your application:
 
@@ -11,7 +11,7 @@ Related Links:
 * `CSS <http://docs.geoserver.org/latest/en/user/styling/css/index.html>`_ (GeoServer User Guide)
 * `CSS Cookbook <http://docs.geoserver.org/latest/en/user/styling/css/cookbook/index.html>`_ (GeoServer User Guide)
 
-**Maven**::
+``Maven``::
    
     <dependency>
       <groupId>org.geotools</groupId>
@@ -43,7 +43,7 @@ The following code can be used to parse the above file and generate a GeoTools S
         CssTranslator translator = new CssTranslator();
         Style style = translator.translate(ss);
 
-Here is the SLD represenattion of the generated style:
+Here is the SLD representation of the generated style:
 
 .. code-block:: xml
 

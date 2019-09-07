@@ -7,11 +7,11 @@ encourage you to subscribe to the `user list
 community. To help make the user list as useful and friendly as possible we ask you to observe the
 following guidelines: 
 
-No advertizing
+No advertising
 --------------
 
 The user list is for technical discussion directly related to programming with GeoTools. Other
-topics such as job notices or advertizing products or services are best placed elsewhere. For job
+topics such as job notices or advertising products or services are best placed elsewhere. For job
 notices there is the `FOSS GIS mailing list <http://lists.osgeo.org/mailman/listinfo/jobs>`_ and the
 `OSGeo Jobs Board <http://wiki.osgeo.org/wiki/Jobs_Board>`_. For other topics such as product or
 company news, please contact a member of the GeoTools Project Management Committee to discuss

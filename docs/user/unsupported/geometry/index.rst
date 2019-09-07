@@ -34,13 +34,13 @@ to put in the effort.
    
    ISO 19107 Geometry Interfaces
    
-   The geometric objects in this module are implementations of the gt-opengis
-   Geometry interfaces which are realisations of the ISO 19107 Geometry
+   The geometric objects in this module are implementations of the ``gt-opengis``
+   ``Geometry`` interfaces which are realizations of the ISO 19107 Geometry
    schema.
   
    Users of the objects created by this module should therefore make
    instances using factories and then use only the methods defined in
-   the gt-opengis javadocs to avoid accidentally depending on any specific
+   the ``gt-opengis`` javadocs to avoid accidentally depending on any specific
    implementation details.
    
 **Maven**::

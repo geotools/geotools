@@ -104,11 +104,11 @@ The following example shows how to create a wizard from scratch using the base c
 
 * Page 1
 
-  .. image:: /images/jwizard1.gif
+  .. image:: /images/jwizard1.png
 
 * Page 2
 
-  .. image:: /images/jwizard2.gif
+  .. image:: /images/jwizard2.png
 
 You can download the complete example here: :download:`JExampleWizard.java </../src/main/java/org/geotools/swing/JExampleWizard.java>`
 

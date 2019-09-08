@@ -39,7 +39,7 @@ Module                Purpose
 ``gt-referencing`` Implementation of co-ordinate location and transformation
 ``gt-metadata``    Implementation of identification and description
 ``gt-opengis``     Definition of interfaces for common spatial concepts
-================= ==============================================================
+================== ==============================================================
 
 
 GeoTools Plugins
@@ -125,7 +125,7 @@ JAR                Extension
 ``gt-wms``         Web Map Server client
 ``gt-xsd``         Parsing/Encoding for common OGC schemas
 ``gt-brewer``      Generation of styles using color brewer
-================= ===============================================
+================== ===============================================
 
 xmL
 ^^^

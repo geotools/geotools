@@ -208,9 +208,9 @@ Resulting RCP
 
 If everything went smoothly, you should be able to run the application and see something like:
 
-.. image:: /images/gtswt_RCP_01.png
+.. image:: /images/gtswt_rcp_01.png
 
 And with some layers loaded:
 
 
-.. image:: /images/gtswt_RCP_02.png
+.. image:: /images/gtswt_rcp_02.png

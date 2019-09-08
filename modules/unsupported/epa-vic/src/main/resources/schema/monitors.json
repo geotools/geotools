@@ -1,0 +1,82 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "definitions": {
+    
+  },
+  "id": "http://sciwebsvc.epa.vic.gov.au/aqapi/monitors",
+  "properties": {
+    "ServiceName": {
+      "id": "/properties/ServiceName",
+      "type": "string"
+    },
+    "Version": {
+      "id": "/properties/Version",
+      "type": "string"
+    },
+    "Parameters": {
+      "id": "/properties/Parameters",
+      "type": "string"
+    },
+    "NumberOfMonitors": {
+      "id": "/properties/NumberOfMonitors",
+      "type": "integer"
+    },
+    "Monitors": {
+      "id": "/properties/Monitors",
+      "items": {
+        "id": "/properties/Monitors/items",
+        "properties": {
+          "CommonName": {
+            "id": "/properties/Monitors/items/properties/CommonName",
+            "type": "string"
+          },
+          "EPADescriptionURL": {
+            "id": "/properties/Monitors/items/properties/EPADescriptionURL",
+            "type": "string"
+          },
+          "EquipmentType": {
+            "id": "/properties/Monitors/items/properties/EquipmentType",
+            "properties": {
+              "Code": {
+                "id": "/properties/Monitors/items/properties/EquipmentType/properties/Code",
+                "type": "string"
+              },
+              "Description": {
+                "id": "/properties/Monitors/items/properties/EquipmentType/properties/Description",
+                "type": "string"
+              },
+              "IdNumber": {
+                "id": "/properties/Monitors/items/properties/EquipmentType/properties/IdNumber",
+                "type": "integer"
+              }
+            },
+            "type": "object"
+          },
+          "MonitorId": {
+            "id": "/properties/Monitors/items/properties/MonitorId",
+            "type": "string"
+          },
+          "PresentationPrecision": {
+            "id": "/properties/Monitors/items/properties/PresentationPrecision",
+            "type": "integer"
+          },
+          "ShortName": {
+            "id": "/properties/Monitors/items/properties/ShortName",
+            "type": "string"
+          },
+          "SiteId": {
+            "id": "/properties/Monitors/items/properties/SiteId",
+            "type": "integer"
+          },
+          "UnitOfMeasure": {
+            "id": "/properties/Monitors/items/properties/UnitOfMeasure",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "type": "array"
+    }
+  },
+  "type": "object"
+}

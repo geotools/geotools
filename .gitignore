@@ -15,3 +15,5 @@ nb-configuration.xml
 workspace
 *.db
 .metadata
+/deploy-to-aurin.sh
+/change-version.sh

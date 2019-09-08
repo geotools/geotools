@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WFS_Capabilities xmlns="http://www.opengis.net/wfs/2.0" xmlns:fes="http://www.opengis.net/fes/2.0" xmlns:ogc="http://www.opengis.net/ogc" xmlns:gml="http://www.opengis.net/gml/3.2" xmlns:ows="http://www.opengis.net/ows/1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:SLIP_Public_Services_Farming_WFS="https:services.slip.wa.gov.au:443/arcgis/services/SLIP_Public_Services/Farming_WFS/MapServer/WFSServer" version="2.0.0" xsi:schemaLocation="http://www.opengis.net/gml http://schemas.opengis.net/gml/3.2.1/gml.xsd http://www.opengis.net/ogc http://schemas.opengis.net/filter/2.0/filter.xsd http://www.opengis.net/ows/1.1 http://schemas.opengis.net/ows/1.1.0/owsAll.xsd http://www.opengis.net/wfs/2.0 http://schemas.opengis.net/wfs/2.0/wfs.xsd http://www.opengis.net/fes/2.0 http://schemas.opengis.net/filter/2.0/filterAll.xsd">
+  <ows:ServiceIdentification>
+    <ows:Title>SLIP_Public_Services_Farming_WFS</ows:Title>
+    <ows:Abstract/>
+    <ows:Keywords>
+      <ows:Keyword/>
+    </ows:Keywords>
+    <ows:ServiceType>WFS</ows:ServiceType>
+    <ows:ServiceTypeVersion>2.0.0</ows:ServiceTypeVersion>
+    <ows:Fees/>
+    <ows:AccessConstraints/>
+  </ows:ServiceIdentification>
+  <ows:ServiceProvider>
+    <ows:ProviderName/>
+    <ows:ServiceContact>
+      <ows:IndividualName/>
+      <ows:PositionName/>
+      <ows:ContactInfo>
+        <ows:Phone/>
+        <ows:Address/>
+        <ows:OnlineResource xlink:href="https:services.slip.wa.gov.au:443/arcgis/services/SLIP_Public_Services/Farming_WFS/MapServer/WFSServer"/>
+        <ows:HoursOfService/>
+        <ows:ContactInstructions/>
+      </ows:ContactInfo>
+    </ows:ServiceContact>
+  </ows:ServiceProvider>
+  <ows:OperationsMetadata>
+    <ows:Operation name="GetCapabilities">
+      <ows:DCP>
+        <ows:HTTP>
+          <ows:Get xlink:href="https://services.slip.wa.gov.au:443/public/services/SLIP_Public_Services/Farming_WFS/MapServer/WFSServer?"/>
+          <ows:Post xlink:href="https://services.slip.wa.gov.au:443/public/services/SLIP_Public_Services/Farming_WFS/MapServer/WFSServer"/>
+        </ows:HTTP>
+      </ows:DCP>
+      <ows:Parameter name="AcceptVersions">
+        <ows:AllowedValues>
+          <ows:Value>2.0.0</ows:Value>
+          <ows:Value>1.1.0</ows:Value>
+          <ows:Value>1.0.0</ows:Value>
+        </ows:AllowedValues>
+      </ows:Parameter>
+      <ows:Parameter name="AcceptFormats">
+        <ows:AllowedValues>
+          <ows:Value>text/xml</ows:Value>
+        </ows:AllowedValues>
+      </ows:Parameter>
+    </ows:Operation>
+    <ows:Operation name="DescribeFeatureType">
+      <ows:DCP>
+        <ows:HTTP>
+          <ows:Get xlink:href="https://services.slip.wa.gov.au:443/public/services/SLIP_Public_Services/Farming_WFS/MapServer/WFSServer?"/>
+          <ows:Post xlink:href="https://services.slip.wa.gov.au:443/public/services/SLIP_Public_Services/Farming_WFS/MapServer/WFSServer"/>
+        </ows:HTTP>
+      </ows:DCP>
+      <ows:Parameter name="outputFormat">
+        <ows:AllowedValues>
+          <ows:Value>application/gml+xml; version=3.2</ows:Value>
+        </ows:AllowedValues>
+      </ows:Parameter>
+    </ows:Operation>
+    <ows:Operation name="GetFeature">
+      <ows:DCP>
+        <ows:HTTP>
+          <ows:Get xlink:href="https://services.slip.wa.gov.au:443/public/services/SLIP_Public_Services/Farming_WFS/MapServer/WFSServer?"/>
+          <ows:Post xlink:href="https://services.slip.wa.gov.au:443/public/services/SLIP_Public_Services/Farming_WFS/MapServer/WFSServer"/>
+        </ows:HTTP>
+      </ows:DCP>
+      <ows:Parameter name="outputFormat">
+        <ows:AllowedValues>
+          <ows:Value>application/gml+xml; version=3.2</ows:Value>
+        </ows:AllowedValues>
+      </ows:Parameter>
+    </ows:Operation>
+    <ows:Operation name="ListStoredQueries">
+      <ows:DCP>
+        <ows:HTTP>
+          <ows:Get xlink:href="https://services.slip.wa.gov.au:443/public/services/SLIP_Public_Services/Farming_WFS/MapServer/WFSServer?"/>
+          <ows:Post xlink:href="https://services.slip.wa.gov.au:443/public/services/SLIP_Public_Services/Farming_WFS/MapServer/WFSServer"/>
+        </ows:HTTP>
+      </ows:DCP>
+    </ows:Operation>
+    <ows:Operation name="DescribeStoredQueries">
+      <ows:DCP>
+        <ows:HTTP>
+          <ows:Get xlink:href="https://services.slip.wa.gov.au:443/public/services/SLIP_Public_Services/Farming_WFS/MapServer/WFSServer?"/>
+          <ows:Post xlink:href="https://services.slip.wa.gov.au:443/public/services/SLIP_Public_Services/Farming_WFS/MapServer/WFSServer"/>
+        </ows:HTTP>
+      </ows:DCP>
+    </ows:Operation>
+    <ows:Constraint name="DefaultMaxFeatures">
+      <ows:Value>15000</ows:Value>
+    </ows:Constraint>
+    <ows:Constraint name="ImplementsSimpleWFS">
+      <ows:NoValues/>
+      <ows:DefaultValue>TRUE</ows:DefaultValue>
+    </ows:Constraint>
+    <ows:Constraint name="ImplementsBasicWFS">
+      <ows:NoValues/>
+      <ows:DefaultValue>TRUE</ows:DefaultValue>
+    </ows:Constraint>
+    <ows:Constraint name="ImplementsTransactionalWFS">
+      <ows:NoValues/>
+      <ows:DefaultValue>FALSE</ows:DefaultValue>
+    </ows:Constraint>
+    <ows:Constraint name="ImplementsLockingWFS">
+      <ows:NoValues/>
+      <ows:DefaultValue>FALSE</ows:DefaultValue>
+    </ows:Constraint>
+    <ows:Constraint name="ImplementsInheritance">
+      <ows:NoValues/>
+      <ows:DefaultValue>FALSE</ows:DefaultValue>
+    </ows:Constraint>
+    <ows:Constraint name="ImplementsRemoteResolve">
+      <ows:NoValues/>
+      <ows:DefaultValue>FALSE</ows:DefaultValue>
+    </ows:Constraint>
+    <ows:Constraint name="ImplementsResultPaging">
+      <ows:NoValues/>
+      <ows:DefaultValue>FALSE</ows:DefaultValue>
+    </ows:Constraint>
+    <ows:Constraint name="ImplementsStandardJoins">
+      <ows:NoValues/>
+      <ows:DefaultValue>FALSE</ows:DefaultValue>
+    </ows:Constraint>
+    <ows:Constraint name="ImplementsSpatialJoins">
+      <ows:NoValues/>
+      <ows:DefaultValue>FALSE</ows:DefaultValue>
+    </ows:Constraint>
+    <ows:Constraint name="ImplementsTemporalJoins">
+      <ows:NoValues/>
+      <ows:DefaultValue>FALSE</ows:DefaultValue>
+    </ows:Constraint>
+    <ows:Constraint name="ImplementsFeatureVersioning">
+      <ows:NoValues/>
+      <ows:DefaultValue>FALSE</ows:DefaultValue>
+    </ows:Constraint>
+    <ows:Constraint name="ManageStoredQueries">
+      <ows:NoValues/>
+      <ows:DefaultValue>FALSE</ows:DefaultValue>
+    </ows:Constraint>
+    <ows:Constraint name="KVPEncoding">
+      <ows:NoValues/>
+      <ows:DefaultValue>TRUE</ows:DefaultValue>
+    </ows:Constraint>
+    <ows:Constraint name="XMLEncoding">
+      <ows:NoValues/>
+      <ows:DefaultValue>TRUE</ows:DefaultValue>
+    </ows:Constraint>
+    <ows:Constraint name="SOAPEncoding">
+      <ows:NoValues/>
+      <ows:DefaultValue>FALSE</ows:DefaultValue>
+    </ows:Constraint>
+    <ows:ExtendedCapabilities>
+      <ows:Constraint name="serviceAxisOrderForSwappableSRS">
+        <ows:Value>latitude,longitude</ows:Value>
+      </ows:Constraint>
+    </ows:ExtendedCapabilities>
+  </ows:OperationsMetadata>
+  <FeatureTypeList>
+    <FeatureType>
+      <Name>SLIP_Public_Services_Farming_WFS:Land_Capability_-_Dryland_Cropping__DPIRD-031_</Name>
+      <Title>Land_Capability_-_Dryland_Cropping__DPIRD-031_</Title>
+      <DefaultCRS>urn:ogc:def:crs:EPSG:6.9:3857</DefaultCRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG:6.9:4326</OtherSRS>
+      <OutputFormats>
+        <Format>application/gml+xml; version=3.2</Format>
+      </OutputFormats>
+      <ows:WGS84BoundingBox>
+        <ows:LowerCorner>114.1047824337292 -35.134680385775134</ows:LowerCorner>
+        <ows:UpperCorner>123.24794557835884 -27.654435755415413</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+    </FeatureType>
+    <FeatureType>
+      <Name>SLIP_Public_Services_Farming_WFS:Land_Capability_-_Perennial_Horticulture__DPIRD-033_</Name>
+      <Title>Land_Capability_-_Perennial_Horticulture__DPIRD-033_</Title>
+      <DefaultCRS>urn:ogc:def:crs:EPSG:6.9:3857</DefaultCRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG:6.9:4326</OtherSRS>
+      <OutputFormats>
+        <Format>application/gml+xml; version=3.2</Format>
+      </OutputFormats>
+      <ows:WGS84BoundingBox>
+        <ows:LowerCorner>114.1047824337292 -35.134680385775134</ows:LowerCorner>
+        <ows:UpperCorner>123.24794557835884 -27.654435755415413</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+    </FeatureType>
+    <FeatureType>
+      <Name>SLIP_Public_Services_Farming_WFS:La_Grange_Optimised_Areas_for_Irrigated_Agriculture__DPIRD-004_</Name>
+      <Title>La_Grange_Optimised_Areas_for_Irrigated_Agriculture__DPIRD-004_</Title>
+      <DefaultCRS>urn:ogc:def:crs:EPSG:6.9:3857</DefaultCRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG:6.9:4326</OtherSRS>
+      <OutputFormats>
+        <Format>application/gml+xml; version=3.2</Format>
+      </OutputFormats>
+      <ows:WGS84BoundingBox>
+        <ows:LowerCorner>121.3224225915707 -19.616054044716801</ows:LowerCorner>
+        <ows:UpperCorner>122.96578296446107 -17.999719586754399</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+    </FeatureType>
+    <FeatureType>
+      <Name>SLIP_Public_Services_Farming_WFS:Land_Capability_-_Annual_Horticulture__DPIRD-030_</Name>
+      <Title>Land_Capability_-_Annual_Horticulture__DPIRD-030_</Title>
+      <DefaultCRS>urn:ogc:def:crs:EPSG:6.9:3857</DefaultCRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG:6.9:4326</OtherSRS>
+      <OutputFormats>
+        <Format>application/gml+xml; version=3.2</Format>
+      </OutputFormats>
+      <ows:WGS84BoundingBox>
+        <ows:LowerCorner>114.1047824337292 -35.134680385775134</ows:LowerCorner>
+        <ows:UpperCorner>123.24794557835884 -27.654435755415413</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+    </FeatureType>
+    <FeatureType>
+      <Name>SLIP_Public_Services_Farming_WFS:Client_Property_Event_System_-_Properties__DPIRD-018_</Name>
+      <Title>Client_Property_Event_System_-_Properties__DPIRD-018_</Title>
+      <DefaultCRS>urn:ogc:def:crs:EPSG:6.9:3857</DefaultCRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG:6.9:4326</OtherSRS>
+      <OutputFormats>
+        <Format>application/gml+xml; version=3.2</Format>
+      </OutputFormats>
+      <ows:WGS84BoundingBox>
+        <ows:LowerCorner>112.92112388785338 -35.135060414557756</ows:LowerCorner>
+        <ows:UpperCorner>129.00191874366465 -13.852352216134113</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+    </FeatureType>
+    <FeatureType>
+      <Name>SLIP_Public_Services_Farming_WFS:Generalised_agricultural_land_use_of_Western_Australia__DPIRD-003_</Name>
+      <Title>Generalised_agricultural_land_use_of_Western_Australia__DPIRD-003_</Title>
+      <DefaultCRS>urn:ogc:def:crs:EPSG:6.9:3857</DefaultCRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG:6.9:4326</OtherSRS>
+      <OutputFormats>
+        <Format>application/gml+xml; version=3.2</Format>
+      </OutputFormats>
+      <ows:WGS84BoundingBox>
+        <ows:LowerCorner>112.91509197470668 -35.136694419376425</ows:LowerCorner>
+        <ows:UpperCorner>129.00189703767242 -13.733217673810504</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+    </FeatureType>
+    <FeatureType>
+      <Name>SLIP_Public_Services_Farming_WFS:Potentially_Arable_Land__DPIRD-026_</Name>
+      <Title>Potentially_Arable_Land__DPIRD-026_</Title>
+      <DefaultCRS>urn:ogc:def:crs:EPSG:6.9:3857</DefaultCRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG:6.9:4326</OtherSRS>
+      <OutputFormats>
+        <Format>application/gml+xml; version=3.2</Format>
+      </OutputFormats>
+      <ows:WGS84BoundingBox>
+        <ows:LowerCorner>114.12596089118708 -35.092920690544325</ows:LowerCorner>
+        <ows:UpperCorner>123.24667990422583 -27.523293005323268</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+    </FeatureType>
+    <FeatureType>
+      <Name>SLIP_Public_Services_Farming_WFS:Land_Capability_-_Vineyards__DPIRD-034_</Name>
+      <Title>Land_Capability_-_Vineyards__DPIRD-034_</Title>
+      <DefaultCRS>urn:ogc:def:crs:EPSG:6.9:3857</DefaultCRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG:6.9:4326</OtherSRS>
+      <OutputFormats>
+        <Format>application/gml+xml; version=3.2</Format>
+      </OutputFormats>
+      <ows:WGS84BoundingBox>
+        <ows:LowerCorner>114.1047824337292 -35.134680385775134</ows:LowerCorner>
+        <ows:UpperCorner>123.24794557835884 -27.654435755415413</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+    </FeatureType>
+    <FeatureType>
+      <Name>SLIP_Public_Services_Farming_WFS:Land_Capability_-_Grazing__DPIRD-032_</Name>
+      <Title>Land_Capability_-_Grazing__DPIRD-032_</Title>
+      <DefaultCRS>urn:ogc:def:crs:EPSG:6.9:3857</DefaultCRS>
+      <OtherSRS>urn:ogc:def:crs:EPSG:6.9:4326</OtherSRS>
+      <OutputFormats>
+        <Format>application/gml+xml; version=3.2</Format>
+      </OutputFormats>
+      <ows:WGS84BoundingBox>
+        <ows:LowerCorner>114.1047824337292 -35.134680385775134</ows:LowerCorner>
+        <ows:UpperCorner>123.24794557835884 -27.654435755415413</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+    </FeatureType>
+  </FeatureTypeList>
+  <fes:Filter_Capabilities/>
+</WFS_Capabilities>

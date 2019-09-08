@@ -1,0 +1,42 @@
+{
+    "ServiceName": "Sites",
+    "Version": "2.0.10.0 (2 pm - 3 pm, 29 May 2017)",
+    "Parameters": "MonitoringPurpose: 1010 FromDate:  ToDate: ",
+    "NumberOfSites": 2,
+    "Sites": [
+        {
+            "SiteId": 10001,
+            "Name": "Alphington",
+            "Latitude": -37.77832,
+            "Longitude": 145.0306,
+            "FireHazardCategory": null,
+            "IsStationOffline": false,
+            "HasIncident": false,
+            "IncidentType": "Non-incident",
+            "SiteList": {
+                "Name": "EAST"
+            },
+            "IncidentSite": {
+                "EMVUrl": "",
+                "IncidentIcon": null
+            }
+        },
+        {
+            "SiteId": 10003,
+            "Name": "Footscray",
+            "Latitude": -37.80477,
+            "Longitude": 144.8727,
+            "FireHazardCategory": null,
+            "IsStationOffline": false,
+            "HasIncident": false,
+            "IncidentType": "Non-incident",
+            "SiteList": {
+                "Name": "WEST"
+            },
+            "IncidentSite": {
+                "EMVUrl": "",
+                "IncidentIcon": null
+            }
+        }
+    ]
+}

@@ -174,9 +174,8 @@ Implementation Notes
   indexed GeoJSON data stored in a MongoDB document collection is assumed to be 
   referenced with the WGS84 coordinate reference system.
 
-* MongoDB versions tested through 2.4.9 do not support more than one operation 
-  on a spatial index nested in an $or operation (so splitting a query into two 
-  across the dateline will not work).
+* Native $or operator execution is automatically enabled when MongoDB detected version >= 2.6.0; 
+  if you run a lower version, native $or operator execution is automatically disabled.
 
 * Within, Intersects and BBOX filters are implemented with $geoWithin and 
   $geoIntersects operations. These operations are limited when effected by 

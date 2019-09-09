@@ -1,62 +1,37 @@
-
 package org.geotools.data.arcgisrest.schema.services;
 
-import java.util.ArrayList;
-import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Services {
 
-    /**
-     * 
-     * (Required)
-     * 
-     */
+    /** (Required) */
     @SerializedName("currentVersion")
     @Expose
     private Double currentVersion;
-    /**
-     * 
-     * (Required)
-     * 
-     */
+    /** (Required) */
     @SerializedName("services")
     @Expose
     private List<Service> services = new ArrayList<Service>();
 
-    /**
-     * 
-     * (Required)
-     * 
-     */
+    /** (Required) */
     public Double getCurrentVersion() {
         return currentVersion;
     }
 
-    /**
-     * 
-     * (Required)
-     * 
-     */
+    /** (Required) */
     public void setCurrentVersion(Double currentVersion) {
         this.currentVersion = currentVersion;
     }
 
-    /**
-     * 
-     * (Required)
-     * 
-     */
+    /** (Required) */
     public List<Service> getServices() {
         return services;
     }
 
-    /**
-     * 
-     * (Required)
-     * 
-     */
+    /** (Required) */
     public void setServices(List<Service> services) {
         this.services = services;
     }
@@ -64,17 +39,20 @@ public class Services {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(Services.class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this))).append('[');
+        sb.append(Services.class.getName())
+                .append('@')
+                .append(Integer.toHexString(System.identityHashCode(this)))
+                .append('[');
         sb.append("currentVersion");
         sb.append('=');
-        sb.append(((this.currentVersion == null)?"<null>":this.currentVersion));
+        sb.append(((this.currentVersion == null) ? "<null>" : this.currentVersion));
         sb.append(',');
         sb.append("services");
         sb.append('=');
-        sb.append(((this.services == null)?"<null>":this.services));
+        sb.append(((this.services == null) ? "<null>" : this.services));
         sb.append(',');
-        if (sb.charAt((sb.length()- 1)) == ',') {
-            sb.setCharAt((sb.length()- 1), ']');
+        if (sb.charAt((sb.length() - 1)) == ',') {
+            sb.setCharAt((sb.length() - 1), ']');
         } else {
             sb.append(']');
         }
@@ -84,8 +62,10 @@ public class Services {
     @Override
     public int hashCode() {
         int result = 1;
-        result = ((result* 31)+((this.currentVersion == null)? 0 :this.currentVersion.hashCode()));
-        result = ((result* 31)+((this.services == null)? 0 :this.services.hashCode()));
+        result =
+                ((result * 31)
+                        + ((this.currentVersion == null) ? 0 : this.currentVersion.hashCode()));
+        result = ((result * 31) + ((this.services == null) ? 0 : this.services.hashCode()));
         return result;
     }
 
@@ -98,7 +78,10 @@ public class Services {
             return false;
         }
         Services rhs = ((Services) other);
-        return (((this.currentVersion == rhs.currentVersion)||((this.currentVersion!= null)&&this.currentVersion.equals(rhs.currentVersion)))&&((this.services == rhs.services)||((this.services!= null)&&this.services.equals(rhs.services))));
+        return (((this.currentVersion == rhs.currentVersion)
+                        || ((this.currentVersion != null)
+                                && this.currentVersion.equals(rhs.currentVersion)))
+                && ((this.services == rhs.services)
+                        || ((this.services != null) && this.services.equals(rhs.services))));
     }
-
 }

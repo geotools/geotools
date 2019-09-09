@@ -289,15 +289,16 @@ public class ArcGISRestDataStore extends ContentDataStore {
 
         final class WsCall implements Callable<WsCallResult> {
             public final Dataset dataset;
+            public final String webserviceUrl;
 
-            public WsCall(Dataset dsIn) {
+            public WsCall(Dataset dsIn, String wsUrl) {
                 this.dataset = dsIn;
+                this.webserviceUrl = wsUrl;
             }
 
             public WsCallResult call() throws Exception {
 
                 Webservice ws = null;
-                InputStream responseWs = null;
                 String responseWSString = null;
 
                 try {
@@ -305,15 +306,14 @@ public class ArcGISRestDataStore extends ContentDataStore {
                             ArcGISRestDataStore.inputStreamToString(
                                     retrieveJSON(
                                             "GET",
-                                            new URL(this.dataset.getWebService().toString()),
+                                            new URL(this.webserviceUrl),
                                             ArcGISRestDataStore.DEFAULT_PARAMS));
                 } catch (IOException e) {
                     LOGGER.log(
                             Level.SEVERE,
-                            "Error during retrieval of dataset '"
-                                    + this.dataset.getWebService()
-                                    + "' "
-                                    + e.getMessage(),
+                            String.format(
+                                    "Error during retrieval of dataset '%s' %s",
+                                    this.webserviceUrl, e.getMessage()),
                             e);
                     return null;
                 }
@@ -328,12 +328,9 @@ public class ArcGISRestDataStore extends ContentDataStore {
                     Error__1 errWS = (new Gson()).fromJson(responseWSString, Error__1.class);
                     LOGGER.log(
                             Level.SEVERE,
-                            "Error during retrieval of dataset "
-                                    + this.dataset.getWebService()
-                                    + " "
-                                    + errWS.getCode()
-                                    + " "
-                                    + errWS.getMessage(),
+                            String.format(
+                                    "Error during retrieval of dataset '%s' %s %s ",
+                                    this.webserviceUrl, errWS.getCode(), errWS.getMessage()),
                             e);
                     return null;
                 }
@@ -359,38 +356,20 @@ public class ArcGISRestDataStore extends ContentDataStore {
         }
 
         // Builds a list of calls to be made to retrieve FeatureServer web services
-        // metadata that support the ReST API (if there are not distribution
-        // elements, it
-        // is supposed NOT to support it)
-        try {
-            Collection<WsCall> calls = new ArrayList<WsCall>();
-            datasetList
-                    .stream()
-                    .forEach(
-                            (ds) -> {
-                                if (ds.getWebService() != null
-                                        && ds.getWebService()
-                                                .toString()
-                                                .contains(FEATURESERVER_SERVICE)) {
-                                    calls.add(new WsCall(ds));
-                                } else {
-                                    if (ds.getDistribution() != null) {
-                                        ds.getDistribution()
-                                                .forEach(
-                                                        (dist) -> {
-                                                            if (dist.getFormat()
-                                                                    .toString()
-                                                                    .equalsIgnoreCase(
-                                                                            FORMAT_ESRIREST)) {
-                                                                ds.setWebService(
-                                                                        dist.getAccessURL());
-                                                            }
-                                                        });
-                                        calls.add(new WsCall(ds));
-                                    }
-                                }
-                            });
+        // metadata that support the ReST API (if there are no distribution
+        // elements, return an error)
+        Collection<WsCall> calls = new ArrayList<WsCall>();
+        datasetList
+                .stream()
+                .forEach(
+                        (ds) -> {
+                            String ws = ArcGISRestDataStore.getWebServiceEndpoint(ds);
+                            if (ws != null) {
+                                calls.add(new WsCall(ds, ws));
+                            }
+                        });
 
+        try {
             List<Future<WsCallResult>> futures =
                     executor.invokeAll(
                             calls,
@@ -399,29 +378,40 @@ public class ArcGISRestDataStore extends ContentDataStore {
 
             for (Future<WsCallResult> future : futures) {
 
-                WsCallResult result = future.get();
+                try {
+                    WsCallResult result = future.get();
 
-                // Checks whether the layer supports query and JSON
-                // TODO: I am not quite sure this catches cases in which ESRI JSON is
-                // supported, but NOT GeoJSON
-                if (result != null
-                        && result.webservice
-                                .getSupportedQueryFormats()
-                                .toLowerCase()
-                                .contains(FORMAT_JSON.toLowerCase())
-                        && result.webservice
-                                .getCapabilities()
-                                .toLowerCase()
-                                .contains(CAPABILITIES_QUERY.toLowerCase())) {
-                    Name dsName =
-                            new NameImpl(namespace.toExternalForm(), result.webservice.getName());
-                    ContentEntry entry = new ContentEntry(this, dsName);
-                    this.datasets.put(dsName, result.dataset);
-                    this.entries.put(dsName, entry);
+                    // Checks whether the layer supports query and JSON
+                    // TODO: I am not quite sure this catches cases in which ESRI JSON is
+                    // supported, but NOT GeoJSON
+                    if (result != null
+                            && result.webservice
+                                    .getSupportedQueryFormats()
+                                    .toLowerCase()
+                                    .contains(FORMAT_JSON.toLowerCase())
+                            && result.webservice
+                                    .getCapabilities()
+                                    .toLowerCase()
+                                    .contains(CAPABILITIES_QUERY.toLowerCase())) {
+                        Name dsName =
+                                new NameImpl(
+                                        namespace.toExternalForm(), result.webservice.getName());
+                        ContentEntry entry = new ContentEntry(this, dsName);
+                        this.datasets.put(dsName, result.dataset);
+                        this.entries.put(dsName, entry);
+                    }
+                } catch (Exception e) {
+                    LOGGER.log(
+                            Level.SEVERE,
+                            String.format("Dataset call returned %s", e.getMessage()));
                 }
             }
         } catch (Exception e) {
-            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
+            LOGGER.log(
+                    Level.SEVERE,
+                    String.format(
+                            "Error during webservice calls %s", e.getMessage(), e.getStackTrace()));
+            return new ArrayList<Name>();
         }
 
         // Shuts down the executor thread pool
@@ -560,6 +550,37 @@ public class ArcGISRestDataStore extends ContentDataStore {
 
         // Extracts and returns the response
         return response.getEntity().getContent();
+    }
+
+    /**
+     * Helper method to find the web service endpoint in a Dataset (if multiple desitinations apply,
+     * chooses the first)
+     *
+     * @param ds Dataset to find the endpoint of
+     * @return URL of the web service endpoint
+     */
+    public static String getWebServiceEndpoint(Dataset ds) {
+
+        List<String> wsurl = new ArrayList<String>();
+
+        if (ds.getWebService() != null
+                && ds.getWebService().toString().contains(FEATURESERVER_SERVICE)) {
+            wsurl.add(ds.getWebService().toString());
+        } else {
+            if (ds.getDistribution() != null) {
+                ds.getDistribution()
+                        .forEach(
+                                (dist) -> {
+                                    if (dist.getFormat()
+                                                    .toString()
+                                                    .equalsIgnoreCase(FORMAT_ESRIREST)
+                                            && dist.getAccessURL() != null) {
+                                        wsurl.add(dist.getAccessURL().toString());
+                                    }
+                                });
+            }
+        }
+        return wsurl.size() == 0 ? null : wsurl.get(0);
     }
 
     /**

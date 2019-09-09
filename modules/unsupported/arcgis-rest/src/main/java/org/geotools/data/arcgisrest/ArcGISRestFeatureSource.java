@@ -120,12 +120,14 @@ public class ArcGISRestFeatureSource extends ContentFeatureSource {
                                 ArcGISRestDataStore.inputStreamToString(
                                         this.dataStore.retrieveJSON(
                                                 "GET",
-                                                new URL(ds.getWebService().toString()),
+                                                new URL(
+                                                        ArcGISRestDataStore.getWebServiceEndpoint(
+                                                                ds)),
                                                 ArcGISRestDataStore.DEFAULT_PARAMS)),
                                 Webservice.class);
 
         if (ws == null) {
-            throw new IOException("Type name " + entry.getName() + " not found");
+            throw new IOException(String.format("Type name %s not found", entry.getName()));
         }
 
         // Sets the information about the resource
@@ -136,7 +138,7 @@ public class ArcGISRestFeatureSource extends ContentFeatureSource {
             // Re-packages the exception to be compatible with method signature
             throw new IOException(e.getMessage(), e.fillInStackTrace());
         }
-        // Extracts the CRS either using WKID or WKT
+        // Exxgtracts the CRS either using WKID or WKT
         try {
             if (ws.getExtent().getSpatialReference().getLatestWkid() != null) {
                 this.resInfo.setCRS(
@@ -210,7 +212,7 @@ public class ArcGISRestFeatureSource extends ContentFeatureSource {
         builder.add(ArcGISRestDataStore.GEOMETRY_ATTR, clazz);
 
         this.schema = builder.buildFeatureType();
-        this.schema.getUserData().put("serviceUrl", ds.getWebService());
+        this.schema.getUserData().put("serviceUrl", ArcGISRestDataStore.getWebServiceEndpoint(ds));
 
         return this.schema;
     }

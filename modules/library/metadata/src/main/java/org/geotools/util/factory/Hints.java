@@ -988,6 +988,23 @@ public class Hints extends RenderingHints {
     public static final Key ENCODE_EWKT = new Key(Boolean.class);
 
     /**
+     * Controls date time formatting output for GML 2.
+     *
+     * <p>To set on the command line:
+     *
+     * <blockquote>
+     *
+     * <pre>
+     * -D{@value GeoTools#DATE_TIME_FORMAT_HANDLING}=<var>true</var>
+     * </pre>
+     *
+     * </blockquote>
+     *
+     * @since 21.0
+     */
+    public static final Key DATE_TIME_FORMAT_HANDLING = new Key(Boolean.class);
+
+    /**
      * Constructs an initially empty set of hints.
      *
      * @since 2.5

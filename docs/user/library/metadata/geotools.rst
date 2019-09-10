@@ -26,6 +26,7 @@ CRS_AUTHORITY_EXTRA_DIRECTORY     org.geotools.referencing.crs-directory
 EPSG_DATA_SOURCE                  org.geotools.referencing.epsg-datasource
 FORCE_LONGITUDE_FIRST_AXIS_ORDER  org.geotools.referencing.forceXY
 LOCAL_DATE_TIME_HANDLING          org.geotools.localDateTimeHandling
+DATE_TIME_FORMAT_HANDLING         org.geotools.dateTimeFormatHandling
 RESAMPLE_TOLERANCE                org.geotools.referencing.resampleTolerance
 ENTITY_RESOLVER                   org.xml.sax.EntityResolver
 ================================= ===============================================

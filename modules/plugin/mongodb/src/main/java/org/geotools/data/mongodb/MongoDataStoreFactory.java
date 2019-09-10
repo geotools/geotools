@@ -76,7 +76,7 @@ public class MongoDataStoreFactory implements DataStoreFactorySpi {
             DATASTORE_URI,
             SCHEMASTORE_URI,
             MAX_OBJECTS_FOR_SCHEMA,
-            OBJECTS_IDS_FOR_SCHEMA
+            OBJECTS_IDS_FOR_SCHEMA,
         };
     }
 

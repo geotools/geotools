@@ -127,7 +127,7 @@ JAR                Extension
 ``gt-brewer``      Generation of styles using color brewer
 ================== ===============================================
 
-xmL
+XML
 ^^^
 
 To support the XML module in GeoTools we have bundled up several XML schemas in JAR form (to prevent needing to download them from

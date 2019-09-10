@@ -10,7 +10,7 @@ Finding GeoTools artifact containing a Class
 
 When working on a GeoTools / Maven project within Netbeans you can take advantage of the repository search facility to find the GeoTools artifact that you need to add to your project for a given class.
 
-1. For instance, say you want to use the ShapefileDataStore class but don't know the 
+1. For instance, say you want to use the ``ShapefileDataStore`` class but don't know the 
    name of the artifact that contains it. In your code, enter the class name followed
    by a variable name. Netbeans will display the following.
       
@@ -29,7 +29,7 @@ Unfortunately, because the GeoTools repository doesn't use the indexing system r
 Artifact added to POM but imports still not found
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-1. When you want to use GeoTools class X.from artifact Y (say ShapeFileDataStore from gt-shape).
+1. When you want to use GeoTools class X.from artifact Y (say ``ShapeFileDataStore`` from ``gt-shape``).
 
 2. Add the artifact as a dependency in your ``pom.xml`` file, either:
    
@@ -60,13 +60,13 @@ Artifact added to POM but imports still not found
 Specifying and monitoring memory usage
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Netbeans is itself a Java application. It automatically sets the amount of memory (heap) that will be available to the Java runtime when it is starting, but you may find that this default size is not large enough. If you get out of memory errors, or if Netbeans seems very sluggish, you can explicitly set the maximum heap size in the file etc/netbeans.conf by adding -J-XmxNb (where N is an integer number of Mb) to the 'netbeans_default_options' variable near the top of the file. For example, here we are requesting a maximum heap size of 640Mb::
+Netbeans is itself a Java application. It automatically sets the amount of memory (heap) that will be available to the Java runtime when it is starting, but you may find that this default size is not large enough. If you get out of memory errors, or if Netbeans seems very sluggish, you can explicitly set the maximum heap size in the file :file:`etc/netbeans.conf` by adding ``-J-XmxNb`` (where ``N`` is an integer number of Mb) to the ``netbeans_default_options`` variable near the top of the file. For example, here we are requesting a maximum heap size of 640Mb::
    
    netbeans_default_options="-J-client -J-Xss2m -J-Xms32m -J-Xmx640m -J-Xverify:none "
 
 You can monitor memory use within the IDE:
 
-1. Select View menu -> Toolbars menu -> Memory
+1. Select :menuselection:`View menu -> Toolbars menu -> Memory`
 2. The current and peak memory usage are shown in the toolbar.
    
    .. image:: /images/netbeansTip3.png

@@ -1,13 +1,15 @@
-picocontainer
 Accessor
 affine
 affines
+Aime
 Albers
 arcgrid
 ArcMap
 arcsde
 ArcView
 Arial
+Atlassian
+autocorrect
 azimuthal
 Azul
 Baskar
@@ -42,20 +44,13 @@ Deegree
 Deegree
 Deolivera
 Dhanapal
+dialogs
 Didier
 dimensionally
 dom
 d'Unités
 DXF
-Aime
-Atlassian
-Geomajas
-rebundling
-Jiffle
-dialogs
-Vogella
 easting
-modularity
 EDIGEO
 EPSG
 Erdas
@@ -68,6 +63,7 @@ gdal
 geoid
 geoidal
 geolocate
+Geomajas
 Geo-Operations
 georeferenced
 georeferencing
@@ -84,6 +80,7 @@ github
 glyphs
 GOF
 Goh
+GPL
 grib
 gridded
 gtopo
@@ -110,6 +107,7 @@ JBoss
 jdbc
 JDK
 Jenks
+Jiffle
 Jira
 JTS
 JUnit
@@ -128,7 +126,9 @@ mbstyle
 md
 md5
 metres
+mIRC
 misconfigured
+modularity
 Molodenski
 MongoDB
 mosaicing
@@ -154,6 +154,8 @@ PBF
 pdf
 performant
 Peucker
+picocontainer
+picocontainer
 PIL
 placemark
 placemarks
@@ -179,6 +181,7 @@ quickstart
 quickstarts
 rasters
 rebase
+rebundling
 recurses
 redisplays
 Reeder
@@ -230,6 +233,7 @@ Système
 Teradata
 tilings
 tokenized
+transactional
 Turek
 typeless
 uDig
@@ -240,6 +244,7 @@ unmodifiable
 unselected
 validator
 viewport
+Vogella
 webdav
 websphere
 westing

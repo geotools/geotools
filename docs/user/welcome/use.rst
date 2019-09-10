@@ -179,14 +179,15 @@ common class for lookup.
 
 ``CommonFactoryFinder``
 
+
 * ``FilterFactory``
 * ``StyleFactory``
 * ``Function``
-* ``FeatureLockFactory``
 * ``FileDataStore`` - factory used to work with file data stores
 * ``FeatureFactory`` - factory used to create features
 * ``FeatureTypeFactory`` - factory used to create feature type description
 * ``FeatureCollections`` - factory used to create feature collection
+
 
 For access to feature (i.e. vector) information:
 

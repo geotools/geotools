@@ -11,7 +11,8 @@ import junit.framework.TestCase;
 import org.geotools.data.property.PropertyDataStore;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.map.DefaultMapContext;
+import org.geotools.map.FeatureLayer;
+import org.geotools.map.MapContent;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.renderer.label.LabelCacheImpl;
 import org.geotools.styling.Style;
@@ -47,10 +48,10 @@ public class LabelOrientationTest extends TestCase {
     public void testLabelNatural() throws Exception {
         Style style = RendererBaseTest.loadStyle(this, "textNaturalOrientation.sld");
 
-        DefaultMapContext mc = new DefaultMapContext(DefaultGeographicCRS.WGS84);
-        mc.addLayer(fs, style);
+        MapContent mc = new MapContent();
+        mc.addLayer(new FeatureLayer(fs, style));
 
-        renderer.setContext(mc);
+        renderer.setMapContent(mc);
 
         RendererBaseTest.showRender("Lines with circle stroke", renderer, TIME, bounds);
     }
@@ -58,10 +59,10 @@ public class LabelOrientationTest extends TestCase {
     public void testLabelLineOrientation() throws Exception {
         Style style = RendererBaseTest.loadStyle(this, "textLineOrientation.sld");
 
-        DefaultMapContext mc = new DefaultMapContext(DefaultGeographicCRS.WGS84);
-        mc.addLayer(fs, style);
+        MapContent mc = new MapContent();
+        mc.addLayer(new FeatureLayer(fs, style));
 
-        renderer.setContext(mc);
+        renderer.setMapContent(mc);
 
         RendererBaseTest.showRender("Lines with circl stroke", renderer, TIME, bounds);
     }

@@ -355,7 +355,8 @@ public class CssTranslator {
             int autoThreshold) {
         // split rules by index and typename, then build the power set for each group and
         // generate the rules and symbolizers
-        Map<Integer, List<CssRule>> zIndexRules = organizeByZIndex(allRules);
+        Map<Integer, List<CssRule>> zIndexRules =
+                organizeByZIndex(allRules, CssRule.ZIndexMode.NoZIndexAll);
         if (LOGGER.isLoggable(Level.FINE)) {
             LOGGER.fine("Split the rules into " + zIndexRules + "  sets after z-index separation");
         }
@@ -629,7 +630,8 @@ public class CssTranslator {
             return 0;
         }
 
-        Map<Integer, List<CssRule>> zIndexRules = organizeByZIndex(finalRules);
+        Map<Integer, List<CssRule>> zIndexRules =
+                organizeByZIndex(finalRules, CssRule.ZIndexMode.NoZIndexZero);
 
         for (Map.Entry<Integer, List<CssRule>> zEntry : zIndexRules.entrySet()) {
             List<CssRule> rules = zEntry.getValue();
@@ -664,6 +666,7 @@ public class CssTranslator {
                     List<CssRule> derivedRules =
                             removeNested(cssRule, targetFeatureType, cachedSimplifier);
                     for (CssRule derived : derivedRules) {
+
                         buildSldRule(derived, ftsBuilder, targetFeatureType, cachedSimplifier);
                         translatedRuleCount++;
 
@@ -923,7 +926,8 @@ public class CssTranslator {
      * @param rules
      * @return
      */
-    private Map<Integer, List<CssRule>> organizeByZIndex(List<CssRule> rules) {
+    private Map<Integer, List<CssRule>> organizeByZIndex(
+            List<CssRule> rules, CssRule.ZIndexMode zIndexMode) {
         TreeSet<Integer> indexes = getZIndexesForRules(rules);
         Map<Integer, List<CssRule>> result = new TreeMap<>();
         if (indexes.size() == 1) {
@@ -935,7 +939,7 @@ public class CssTranslator {
             for (Integer index : indexes) {
                 List<CssRule> rulesByIndex = new ArrayList<>();
                 for (CssRule rule : rules) {
-                    CssRule subRule = rule.getSubRuleByZIndex(index);
+                    CssRule subRule = rule.getSubRuleByZIndex(index, zIndexMode);
                     if (subRule != null) {
                         if (subRule.hasSymbolizerProperty()) {
                             symbolizerPropertyCount++;
@@ -2170,7 +2174,7 @@ public class CssTranslator {
 
         long start = System.currentTimeMillis();
 
-        String css = FileUtils.readFileToString(input);
+        String css = FileUtils.readFileToString(input, "UTF-8");
         Stylesheet styleSheet = CssParser.parse(css);
 
         java.util.logging.ConsoleHandler handler = new java.util.logging.ConsoleHandler();

@@ -535,6 +535,7 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
     }
 
     @Override
+    @SuppressWarnings("deprecation") // finalize is deprecated in Java 9
     protected void finalize() throws Throwable {
         if (dataStore != null) {
             LOGGER.warning(
@@ -772,11 +773,6 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
 
         public boolean isDirty(int index) {
             return dirty[index];
-        }
-
-        /** @deprecated use {@link #isDirty(String)} instead */
-        public boolean isDirrty(String name) {
-            return isDirty(name);
         }
 
         public boolean isDirty(String name) {

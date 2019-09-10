@@ -124,7 +124,7 @@ public abstract class DiffFeatureWriter implements FeatureWriter<SimpleFeatureTy
             // mark live as removed
             diff.remove(live.getID());
             fireNotification(
-                    FeatureEvent.FEATURES_REMOVED, ReferencedEnvelope.reference(live.getBounds()));
+                    FeatureEvent.Type.REMOVED.type, ReferencedEnvelope.reference(live.getBounds()));
             live = null;
             current = null;
         } else if (current != null) {
@@ -150,7 +150,7 @@ public abstract class DiffFeatureWriter implements FeatureWriter<SimpleFeatureTy
             ReferencedEnvelope bounds = new ReferencedEnvelope((CoordinateReferenceSystem) null);
             bounds.include(live.getBounds());
             bounds.include(current.getBounds());
-            fireNotification(FeatureEvent.FEATURES_CHANGED, bounds);
+            fireNotification(FeatureEvent.Type.CHANGED.type, bounds);
             live = null;
             current = null;
         } else if ((live == null) && (current != null)) {
@@ -169,7 +169,8 @@ public abstract class DiffFeatureWriter implements FeatureWriter<SimpleFeatureTy
             }
             diff.add(fid, current);
             fireNotification(
-                    FeatureEvent.FEATURES_ADDED, ReferencedEnvelope.reference(current.getBounds()));
+                    FeatureEvent.Type.ADDED.type,
+                    ReferencedEnvelope.reference(current.getBounds()));
             current = null;
         } else {
             throw new IOException("No feature available to write");

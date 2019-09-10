@@ -27,7 +27,7 @@ import javax.media.jai.PropertyGenerator;
 import javax.media.jai.RenderedOp;
 import javax.media.jai.registry.RenderedRegistryMode;
 
-@SuppressWarnings("serial")
+@SuppressWarnings({"serial", "deprecation"})
 public class TransparencyFillDescriptor extends OperationDescriptorImpl {
 
     public static final FillType FILL_AVERAGE = new FillType("FILL_AVERAGE", 0);

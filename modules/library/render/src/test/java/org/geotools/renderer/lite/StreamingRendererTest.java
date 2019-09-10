@@ -24,6 +24,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
+import java.awt.AlphaComposite;
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.Shape;
@@ -57,25 +59,23 @@ import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.feature.DefaultFeatureCollection;
-import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.LiteCoordinateSequence;
 import org.geotools.geometry.jts.LiteShape2;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.map.DefaultMapContext;
+import org.geotools.map.DirectLayer;
 import org.geotools.map.FeatureLayer;
 import org.geotools.map.GridCoverageLayer;
 import org.geotools.map.Layer;
 import org.geotools.map.MapContent;
-import org.geotools.map.MapContext;
+import org.geotools.map.MapViewport;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.renderer.RenderListener;
 import org.geotools.renderer.lite.StreamingRenderer.RenderingRequest;
 import org.geotools.styling.DescriptionImpl;
-import org.geotools.styling.Graphic;
 import org.geotools.styling.Rule;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleBuilder;
@@ -100,6 +100,7 @@ import org.opengis.filter.spatial.BBOX;
 import org.opengis.geometry.BoundingBox;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.style.GraphicLegend;
 
 /**
  * Test the inner workings of StreamingRenderer.
@@ -116,6 +117,23 @@ public class StreamingRendererTest {
     private GeometryFactory gf = new GeometryFactory();
     protected int errors;
     protected int features;
+
+    private static final class MergeLayerRequestTester extends StreamingRenderer {
+        Graphics2D graphics;
+        List<LiteFeatureTypeStyle> styles;
+
+        public MergeLayerRequestTester(Graphics2D graphics, List<LiteFeatureTypeStyle> styles) {
+            super();
+            this.graphics = graphics;
+            this.styles = styles;
+        }
+
+        public void mergeRequest() {
+
+            MergeLayersRequest request = new MergeLayersRequest(graphics, styles);
+            request.execute();
+        }
+    }
 
     @Before
     public void setUp() throws Exception {
@@ -208,6 +226,41 @@ public class StreamingRendererTest {
         Mockito.verify(graphics).draw(shape.capture());
         drawnShape = (LiteShape2) shape.getValue();
         assertTrue(drawnShape.getGeometry().getCoordinates().length == 2);
+        graphics.dispose();
+    }
+
+    @Test
+    public void testDensificationWithInvalidDomain() throws Exception {
+        // build a feature source with two zig-zag line occupying the same position
+        LiteCoordinateSequence cs = new LiteCoordinateSequence(new double[] {10, 10, 10, 40});
+        SimpleFeature line =
+                SimpleFeatureBuilder.build(
+                        testLineFeatureType, new Object[] {gf.createLineString(cs)}, "zz1");
+        DefaultFeatureCollection fc = new DefaultFeatureCollection();
+        fc.add(line);
+        SimpleFeatureSource zzSource = new CollectionFeatureSource(fc);
+
+        // prepare the map
+        MapContent mc = new MapContent();
+        StyleBuilder sb = new StyleBuilder();
+        mc.addLayer(new FeatureLayer(zzSource, sb.createStyle(sb.createLineSymbolizer())));
+        StreamingRenderer sr = new StreamingRenderer();
+        Map hints = new HashMap();
+        hints.put(StreamingRenderer.ADVANCED_PROJECTION_HANDLING_KEY, true);
+        hints.put(StreamingRenderer.ADVANCED_PROJECTION_DENSIFICATION_KEY, true);
+        sr.setRendererHints(hints);
+        sr.setMapContent(mc);
+
+        Graphics2D graphics = Mockito.mock(Graphics2D.class);
+        CoordinateReferenceSystem utm32n = CRS.decode("EPSG:32632", true);
+        ReferencedEnvelope env =
+                new ReferencedEnvelope(10, 10.5, 39, 39.5, DefaultGeographicCRS.WGS84);
+        ReferencedEnvelope mapEnv = env.transform(utm32n, true);
+        sr.paint(graphics, new Rectangle(0, 0, 100, 100), mapEnv);
+        ArgumentCaptor<Shape> shape = ArgumentCaptor.forClass(Shape.class);
+        Mockito.verify(graphics).draw(shape.capture());
+        LiteShape2 drawnShape = (LiteShape2) shape.getValue();
+        assertTrue(drawnShape.getGeometry().getCoordinates().length > 2);
         graphics.dispose();
     }
 
@@ -372,12 +425,12 @@ public class StreamingRendererTest {
         replay(fs);
 
         // build map context
-        MapContext mapContext = new DefaultMapContext(DefaultGeographicCRS.WGS84);
-        mapContext.addLayer(fs, createLineStyle());
+        MapContent mapContext = new MapContent();
+        mapContext.addLayer(new FeatureLayer(fs, createLineStyle()));
 
         // setup the renderer and listen for errors
         final StreamingRenderer sr = new StreamingRenderer();
-        sr.setContext(mapContext);
+        sr.setMapContent(mapContext);
         sr.addRenderListener(
                 new RenderListener() {
                     public void featureRenderer(SimpleFeature feature) {
@@ -494,13 +547,13 @@ public class StreamingRendererTest {
         DefaultFeatureCollection fc = new DefaultFeatureCollection();
         fc.add(createPoint(0, 0));
         fc.add(createPoint(world.getMaxX(), world.getMinY()));
-        MapContext mapContext = new DefaultMapContext(DefaultGeographicCRS.WGS84);
-        mapContext.addLayer((FeatureCollection) fc, createPointStyle());
+        MapContent map = new MapContent();
+        map.addLayer(new FeatureLayer(fc, createPointStyle()));
         BufferedImage image =
                 new BufferedImage(screen.width, screen.height, BufferedImage.TYPE_4BYTE_ABGR);
         final StreamingRenderer sr = new StreamingRenderer();
-        sr.setContext(mapContext);
-        sr.paint(image.createGraphics(), screen, worldToScreen);
+        sr.setMapContent(map);
+        sr.paint(image.createGraphics(), screen, map.getMaxBounds(), worldToScreen);
         assertTrue("Pixel should be drawn at 0,0 ", image.getRGB(0, 0) != 0);
         assertTrue(
                 "Pixel should not be drawn in image centre ",
@@ -652,13 +705,13 @@ public class StreamingRendererTest {
                 new ReferencedEnvelope(0, 100, 0, 100, DefaultGeographicCRS.WGS84);
 
         // simulate geofence adding a bbox
-        BBOX bbox = StreamingRenderer.filterFactory.bbox("", 30, 60, 30, 60, "WGS84");
+        BBOX bbox = StreamingRenderer.filterFactory.bbox("", 30, 60, 30, 60, "EPSG:4326");
         StyleFactoryImpl sf = new StyleFactoryImpl();
         Rule bboxRule =
                 sf.createRule(
                         new Symbolizer[0],
                         new DescriptionImpl(),
-                        new Graphic[0],
+                        (GraphicLegend) null,
                         "bbox",
                         bbox,
                         false,
@@ -792,5 +845,44 @@ public class StreamingRendererTest {
         // correctly handled no geometries were selected and so no features were rendered
         Assert.assertEquals(features, 4);
         Assert.assertEquals(errors, 0);
+    }
+
+    @Test
+    public void testMergeLayerWithNullImage() {
+        BufferedImage finalImage = new BufferedImage(100, 100, BufferedImage.TYPE_INT_RGB);
+        Graphics2D finalGraphics = (Graphics2D) finalImage.getGraphics();
+        finalGraphics.setColor(Color.RED);
+        finalGraphics.fillRect(0, 0, 100, 100);
+
+        List<LiteFeatureTypeStyle> lfts = new ArrayList<LiteFeatureTypeStyle>();
+        Layer layer =
+                new DirectLayer() {
+
+                    @Override
+                    public void draw(Graphics2D graphics, MapContent map, MapViewport viewport) {}
+
+                    @Override
+                    public ReferencedEnvelope getBounds() {
+                        return null;
+                    }
+                };
+
+        // style with empty (null) image
+        DelayedBackbufferGraphic graphics =
+                new DelayedBackbufferGraphic(finalGraphics, new Rectangle(100, 100));
+        LiteFeatureTypeStyle style1 =
+                new LiteFeatureTypeStyle(layer, graphics, new ArrayList(), new ArrayList(), null);
+        style1.composite = AlphaComposite.DstIn;
+        lfts.add(style1);
+
+        MergeLayerRequestTester renderer = new MergeLayerRequestTester(finalGraphics, lfts);
+        renderer.mergeRequest();
+        int color = finalImage.getRGB(0, 0);
+        int red = (color & 0x00ff0000) >> 16;
+        int green = (color & 0x0000ff00) >> 8;
+        int blue = color & 0x000000ff;
+        assertEquals(0, red);
+        assertEquals(0, green);
+        assertEquals(0, blue);
     }
 }

@@ -389,8 +389,8 @@ public class CookbookLineTest extends AbstractStyleTest {
         assertEquals(name, rule.getName());
         assertEquals(minDenominator, rule.getMinScaleDenominator(), 0.0);
         assertEquals(maxDenominator, rule.getMaxScaleDenominator(), 0.0);
-        assertEquals(1, rule.getSymbolizers().length);
-        LineSymbolizer ls = (LineSymbolizer) rule.getSymbolizers()[0];
+        assertEquals(1, rule.symbolizers().size());
+        LineSymbolizer ls = (LineSymbolizer) rule.symbolizers().get(0);
         assertEquals(size, (int) ls.getStroke().getWidth().evaluate(null, Integer.class));
     }
 

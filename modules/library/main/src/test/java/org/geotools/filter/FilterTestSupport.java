@@ -97,13 +97,13 @@ public abstract class FilterTestSupport extends TestCase {
         Object[] attributes = new Object[10];
         attributes[0] = geomFac.createLineString(coords);
         attributes[1] = Boolean.valueOf(true);
-        attributes[2] = new Character('t');
+        attributes[2] = Character.valueOf('t');
         attributes[3] = Byte.valueOf("10");
         attributes[4] = Short.valueOf("101");
         attributes[5] = Integer.valueOf(1002);
         attributes[6] = Long.valueOf(10003);
-        attributes[7] = new Float(10000.4);
-        attributes[8] = new Double(100000.5);
+        attributes[7] = Float.valueOf(10000.4f);
+        attributes[8] = Double.valueOf(100000.5);
         attributes[9] = "test string data";
 
         // Creates the feature itself

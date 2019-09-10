@@ -21,11 +21,12 @@ import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import org.geotools.data.wfs.internal.GetFeatureParser;
 import org.geotools.data.wfs.internal.GetFeatureRequest;
+import org.geotools.data.wfs.internal.GetParser;
 import org.geotools.data.wfs.internal.Versions;
 import org.geotools.wfs.v1_0.WFSConfiguration_1_0;
 import org.geotools.xsd.Configuration;
+import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.type.FeatureType;
 
 /**
@@ -55,9 +56,9 @@ public class GetFeatureResponseParserFactory extends AbstractGetFeatureResponseP
                             "GML3", //
                             "GML3L0", //
                             "text/xml", // oddly, GeoServer returns plain 'text/xml' instead of the
-                            // propper
+                            // Proper
                             // subtype when resultType=hits. Guess we should make this something
-                            // the specific strategy can hanlde?
+                            // the specific strategy can handle?
                             "text/xml; charset=UTF-8",
                             "text/gml; subtype=gml/3.1.1", // the incorrectly advertised GeoServer
                             // format
@@ -80,7 +81,7 @@ public class GetFeatureResponseParserFactory extends AbstractGetFeatureResponseP
                             ));
 
     @Override
-    protected GetFeatureParser parser(GetFeatureRequest request, InputStream in)
+    protected GetParser<SimpleFeature> parser(GetFeatureRequest request, InputStream in)
             throws IOException {
 
         FeatureType queryType = request.getQueryType();

@@ -88,17 +88,6 @@ public interface Graphic
      */
     public static final Graphic DEFAULT =
             new ConstantGraphic() {
-                public ExternalGraphic[] getExternalGraphics() {
-                    return ExternalGraphic.EXTERNAL_GRAPHICS_EMPTY;
-                }
-
-                public Mark[] getMarks() {
-                    return Mark.MARKS_EMPTY;
-                }
-
-                public Symbol[] getSymbols() {
-                    return Symbol.SYMBOLS_EMPTY;
-                }
 
                 public List<GraphicalSymbol> graphicalSymbols() {
                     return Collections.emptyList();
@@ -130,17 +119,6 @@ public interface Graphic
      */
     public static final Graphic NULL =
             new ConstantGraphic() {
-                public ExternalGraphic[] getExternalGraphics() {
-                    return ExternalGraphic.EXTERNAL_GRAPHICS_EMPTY;
-                }
-
-                public Mark[] getMarks() {
-                    return Mark.MARKS_EMPTY;
-                }
-
-                public Symbol[] getSymbols() {
-                    return Symbol.SYMBOLS_EMPTY;
-                }
 
                 public List<GraphicalSymbol> graphicalSymbols() {
                     return Collections.emptyList();
@@ -174,68 +152,6 @@ public interface Graphic
      * @return List of ExternalGraphic or Mark in the order provided.
      */
     List<GraphicalSymbol> graphicalSymbols();
-
-    /**
-     * Provides a list of external graphics which can be used to represent this graphic. Each one
-     * should be an equivalent representation but in a different format. If none are provided, or if
-     * none of the formats are supported, then the list of Marks should be used instead.
-     *
-     * @return An array of ExternalGraphics objects which should be equivalents but in different
-     *     formats. If null is returned, use getMarks instead.
-     * @task REVISIT: The following may be a handy extra to have in this interface. public
-     *     ExternalGraphic getExternalGraphic(String formats); return the first external graphic to
-     *     match one of the given formats
-     * @deprecated this method is replaced by a set : graphicalSymbols
-     */
-    ExternalGraphic[] getExternalGraphics();
-
-    /**
-     * @param externalGraphics
-     * @deprecated Please use graphicalSymbols().clear(); and graphicalSymbols().addAll(
-     *     externalGraphics )
-     */
-    void setExternalGraphics(ExternalGraphic[] externalGraphics);
-
-    /** @deprecated Please use graphicalSymbols().add( externalGraphic ) */
-    void addExternalGraphic(ExternalGraphic externalGraphic);
-
-    /**
-     * Provides a list of suitable marks which can be used to represent this graphic. These should
-     * only be used if no ExternalGraphic is provided, or if none of the external graphics formats
-     * are supported.
-     *
-     * @return An array of marks to use when displaying this Graphic. By default, a "square" with
-     *     50% gray fill and black outline with a size of 6 pixels (unless a size is specified) is
-     *     provided.
-     * @deprecated Please use graphicalSymbols()
-     */
-    Mark[] getMarks();
-
-    /** @deprecated Please use graphicSymbols().addAll() */
-    void setMarks(Mark[] marks);
-
-    /** @deprecated Please use graphicSymbols().add( Mark ) */
-    void addMark(Mark mark);
-
-    /**
-     * Provides a list of all the symbols which can be used to represent this graphic. A symbol is
-     * an ExternalGraphic, Mark or any other object which implements the Symbol interface. These are
-     * returned in the order they were set.
-     *
-     * @return An array of symbols to use when displaying this Graphic. By default, a "square" with
-     *     50% gray fill and black outline with a size of 6 pixels (unless a size is specified) is
-     *     provided.
-     * @deprecated Please use graphicalSymbols
-     */
-    Symbol[] getSymbols();
-
-    /** @deprecated symbolizers and underneath classes will be immutable in 2.6.x */
-    @Deprecated
-    void setSymbols(Symbol[] symbols);
-
-    /** @deprecated symbolizers and underneath classes are immutable */
-    @Deprecated
-    void addSymbol(Symbol symbol);
 
     /**
      * Location inside of the Graphic (or Label) to position the main-geometry point.

@@ -16,7 +16,7 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>library</artifactId>
-    <version>22-SNAPSHOT</version>
+    <version>23-SNAPSHOT</version>
   </parent>
 
 
@@ -151,5 +151,25 @@
     </plugins>
 
   </build>
+
+    <profiles>
+        <profile>
+            <id>errorprone</id>
+            <activation>
+                <property>
+                    <name>qa</name>
+                </property>
+                <jdk>(1.8,)</jdk>
+            </activation>
+            <properties>
+                <!-- 
+                  tried hard to have exclude generated sources based on the following but could not succeed.
+                  https://stackoverflow.com/questions/39994647/maven-3-how-to-exclude-generated-sources-from-xlint-check
+                  Disabling linting for java 11 in this module instead
+                -->
+                <lint>none</lint>
+            </properties>
+        </profile>
+    </profiles>
 
 </project>

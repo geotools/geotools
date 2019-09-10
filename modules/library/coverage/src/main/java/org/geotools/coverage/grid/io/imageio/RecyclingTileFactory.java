@@ -32,8 +32,6 @@ import java.awt.image.WritableRaster;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Observable;
-import java.util.Observer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.media.jai.CachedTile;
@@ -84,8 +82,11 @@ import org.geotools.util.logging.Logging;
  *
  * @since JAI 1.1.2
  */
-public class RecyclingTileFactory extends Observable
-        implements TileFactory, TileRecycler, Observer {
+// Observer and observable are deprecated in Java 11, however, this class should be rewritten
+// anyways and go into ImageN
+@SuppressWarnings("deprecation")
+public class RecyclingTileFactory extends java.util.Observable
+        implements TileFactory, TileRecycler, java.util.Observer {
 
     static final Logger LOGGER = Logging.getLogger(RecyclingTileFactory.class);
 
@@ -143,7 +144,7 @@ public class RecyclingTileFactory extends Observable
     }
 
     /** Tile cache I observe. */
-    private final Observable tileCache;
+    private final java.util.Observable tileCache;
 
     /**
      * Returns a <code>SoftReference</code> to the internal bank data of the <code>DataBuffer</code>
@@ -204,7 +205,7 @@ public class RecyclingTileFactory extends Observable
     }
 
     /** Constructs a <code>RecyclingTileFactory</code>. */
-    public RecyclingTileFactory(Observable tileCache) {
+    public RecyclingTileFactory(java.util.Observable tileCache) {
         if (tileCache instanceof TileCache) this.tileCache = tileCache;
         else throw new IllegalArgumentException("Provided argument is not of type TileCache");
         tileCache.addObserver(this);
@@ -435,7 +436,7 @@ public class RecyclingTileFactory extends Observable
         return null;
     }
 
-    public void update(Observable o, Object arg) {
+    public void update(java.util.Observable o, Object arg) {
         if (o.equals(tileCache)) {
             if (arg instanceof CachedTile) {
                 CachedTile tile = (CachedTile) arg;

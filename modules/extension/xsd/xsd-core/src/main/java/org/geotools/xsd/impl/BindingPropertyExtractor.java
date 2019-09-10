@@ -23,7 +23,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import javax.xml.namespace.QName;
-import org.apache.commons.collections.MultiHashMap;
+import org.apache.commons.collections.map.MultiValueMap;
 import org.eclipse.xsd.XSDElementDeclaration;
 import org.eclipse.xsd.XSDFactory;
 import org.eclipse.xsd.XSDParticle;
@@ -91,7 +91,7 @@ public class BindingPropertyExtractor implements PropertyExtractor {
 
         if (!executor.getProperties().isEmpty()) {
             // group into a map of name, list
-            MultiHashMap map = new MultiHashMap();
+            MultiValueMap map = new MultiValueMap();
 
             for (Iterator p = executor.getProperties().iterator(); p.hasNext(); ) {
                 Object[] property = (Object[]) p.next();

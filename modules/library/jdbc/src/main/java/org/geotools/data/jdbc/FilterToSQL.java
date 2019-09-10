@@ -37,21 +37,23 @@ import java.util.logging.Logger;
 import javax.measure.Unit;
 import javax.measure.UnitConverter;
 import javax.measure.quantity.Length;
-import org.geotools.data.jdbc.fidmapper.FIDMapper;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.FilterCapabilities;
 import org.geotools.filter.FunctionImpl;
 import org.geotools.filter.LikeFilterImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.geotools.filter.function.InFunction;
+import org.geotools.filter.spatial.BBOXImpl;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JoinPropertyName;
 import org.geotools.jdbc.PrimaryKey;
+import org.geotools.jdbc.PrimaryKeyColumn;
 import org.geotools.referencing.CRS;
 import org.geotools.util.ConverterFactory;
 import org.geotools.util.Converters;
 import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -198,13 +200,6 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
 
     /** where to write the constructed string from visiting the filters. */
     protected Writer out;
-
-    /**
-     * the fid mapper used to encode the fid filters
-     *
-     * @deprecated use {@link #primaryKey}
-     */
-    protected FIDMapper mapper;
 
     /** The primary key corresponding to the table the filter is being encoded against. */
     protected PrimaryKey primaryKey;
@@ -362,22 +357,6 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
      */
     public SimpleFeatureType getFeatureType() {
         return this.featureType;
-    }
-
-    /**
-     * Sets the FIDMapper that will be used in subsequente visit calls. There must be a FIDMapper in
-     * order to invoke the FIDFilter encoder.
-     *
-     * @param mapper
-     * @deprecated use {@link #setPrimaryKey(PrimaryKey)}
-     */
-    public void setFIDMapper(FIDMapper mapper) {
-        this.mapper = mapper;
-    }
-
-    /** @deprecated use {@link #getPrimaryKey()} */
-    public FIDMapper getFIDMapper() {
-        return this.mapper;
     }
 
     public PrimaryKey getPrimaryKey() {
@@ -1027,39 +1006,33 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
      * @throws RuntimeException If there's a problem writing output
      */
     public Object visit(Id filter, Object extraData) {
-        if (mapper == null) {
-            throw new RuntimeException("Must set a fid mapper before trying to encode FIDFilters");
+        if (primaryKey == null) {
+            throw new RuntimeException("Must set primary key before trying to encode FIDFilters");
         }
 
         Set ids = filter.getIdentifiers();
 
         LOGGER.finer("Exporting FID=" + ids);
-
-        // prepare column name array
-        String[] colNames = new String[mapper.getColumnCount()];
-
-        for (int i = 0; i < colNames.length; i++) {
-            colNames[i] = mapper.getColumnName(i);
-        }
-
         try {
             if (ids.size() > 1) {
                 out.write("(");
             }
+            List<PrimaryKeyColumn> columns = primaryKey.getColumns();
             for (Iterator i = ids.iterator(); i.hasNext(); ) {
                 Identifier id = (Identifier) i.next();
-                Object[] attValues = mapper.getPKAttributes(id.toString());
+                List<Object> attValues = JDBCDataStore.decodeFID(primaryKey, id.toString(), false);
 
                 out.write("(");
 
-                for (int j = 0; j < attValues.length; j++) {
-                    out.write(escapeName(colNames[j]));
+                for (int j = 0; j < attValues.size(); j++) {
+                    out.write(escapeName(columns.get(j).getName()));
                     out.write(" = '");
-                    out.write(attValues[j].toString()); // DJB: changed this to attValues[j] from
+                    out.write(
+                            attValues.get(j).toString()); // DJB: changed this to attValues[j] from
                     // attValues[i].
                     out.write("'");
 
-                    if (j < (attValues.length - 1)) {
+                    if (j < (attValues.size() - 1)) {
                         out.write(" AND ");
                     }
                 }
@@ -1482,6 +1455,9 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
             if (literal instanceof Geometry) {
                 // call this method for backwards compatibility with subclasses
                 visitLiteralGeometry(filterFactory.literal(literal));
+            } else if (literal instanceof Envelope) {
+                visitLiteralGeometry(
+                        filterFactory.literal(BBOXImpl.boundingPolygon((Envelope) literal)));
             } else {
                 // write out the literal allowing subclasses to override this
                 // behaviour (for writing out dates and the like using the BDMS custom functions)
@@ -1883,6 +1859,8 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
      *
      * <p>Typically this is the double-quote character, ", but may not be for all databases.
      *
+     * <p>If a name contains the escape string itself, the escape string is duplicated.
+     *
      * <p>For example, consider the following query:
      *
      * <p>SELECT Geom FROM Spear.ArchSites May be interpreted by the database as: SELECT GEOM FROM
@@ -1896,12 +1874,27 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
     }
 
     /**
-     * Surrounds a name with the SQL escape character.
+     * Surrounds a name with the SQL escape string.
+     *
+     * <p>If the name contains the SQL escape string, the SQL escape string is duplicated.
      *
      * @param name
      */
     public String escapeName(String name) {
-        return sqlNameEscape + name + sqlNameEscape;
+        if (sqlNameEscape.isEmpty()) return name;
+        StringBuilder sb = new StringBuilder();
+        sb.append(sqlNameEscape);
+        int offset = 0;
+        int escapeOffset;
+        while ((escapeOffset = name.indexOf(sqlNameEscape, offset)) != -1) {
+            sb.append(name.substring(offset, escapeOffset));
+            sb.append(sqlNameEscape);
+            sb.append(sqlNameEscape);
+            offset = escapeOffset + sqlNameEscape.length();
+        }
+        sb.append(name.substring(offset));
+        sb.append(sqlNameEscape);
+        return sb.toString();
     }
 
     /**

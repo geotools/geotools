@@ -68,7 +68,7 @@ public abstract class AbstractIntegrationTest extends CssBaseTest {
 
     @Test
     public void translateTest() throws Exception {
-        String css = FileUtils.readFileToString(file);
+        String css = FileUtils.readFileToString(file, "UTF-8");
         if (!exclusiveRulesEnabled && !css.contains("@mode")) {
             css = "@mode \"Simple\";\n" + css;
         }
@@ -111,7 +111,7 @@ public abstract class AbstractIntegrationTest extends CssBaseTest {
         File sldFile2 =
                 new File("./target/css", FilenameUtils.getBaseName(file.getName()) + ".sld");
         writeStyle(actual, sldFile2);
-        String actualSld = FileUtils.readFileToString(sldFile2);
+        String actualSld = FileUtils.readFileToString(sldFile2, "UTF-8");
 
         List validationErrors = validateSLD(actualSld);
         if (!validationErrors.isEmpty()) {
@@ -132,7 +132,7 @@ public abstract class AbstractIntegrationTest extends CssBaseTest {
             fail("Validation failed");
         }
 
-        String expectedSld = FileUtils.readFileToString(sldFile);
+        String expectedSld = FileUtils.readFileToString(sldFile, "UTF-8");
         StyledLayerDescriptor expectedSLD = parseToSld(expectedSld);
         StyledLayerDescriptor actualSLD = parseToSld(actualSld);
         // Document expectedDom = XMLUnit.buildControlDocument(expectedSld);
@@ -148,7 +148,7 @@ public abstract class AbstractIntegrationTest extends CssBaseTest {
 
             // Try the java9 version
             if (sldFile_java9.exists()) {
-                expectedSLD = parseToSld(FileUtils.readFileToString(sldFile_java9));
+                expectedSLD = parseToSld(FileUtils.readFileToString(sldFile_java9, "UTF-8"));
                 if (expectedSLD.equals(actualSLD)) {
                     return;
                 }

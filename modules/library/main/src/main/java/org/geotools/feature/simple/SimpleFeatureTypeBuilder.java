@@ -916,10 +916,8 @@ public class SimpleFeatureTypeBuilder {
             return newList();
         }
         try {
-            return origional.getClass().newInstance();
-        } catch (InstantiationException e) {
-            return newList();
-        } catch (IllegalAccessException e) {
+            return origional.getClass().getDeclaredConstructor().newInstance();
+        } catch (Exception e) {
             return newList();
         }
     }

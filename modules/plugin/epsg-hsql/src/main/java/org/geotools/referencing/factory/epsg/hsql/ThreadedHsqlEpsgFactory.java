@@ -36,6 +36,7 @@ import org.geotools.metadata.i18n.LoggingKeys;
 import org.geotools.metadata.i18n.Loggings;
 import org.geotools.referencing.factory.AbstractAuthorityFactory;
 import org.geotools.referencing.factory.epsg.ThreadedEpsgFactory;
+import org.geotools.util.Utilities;
 import org.geotools.util.Version;
 import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
@@ -68,6 +69,7 @@ import org.hsqldb.jdbc.JDBCDataSource;
  * @author Didier Richard
  */
 public class ThreadedHsqlEpsgFactory extends ThreadedEpsgFactory {
+    public static final Logger LOGGER = Logging.getLogger(ThreadedHsqlEpsgFactory.class);
     /**
      * Current version of EPSG-HSQL plugin. This is usually the same version number than the one in
      * the EPSG database bundled in this plugin. However this field may contains additional minor
@@ -75,7 +77,7 @@ public class ThreadedHsqlEpsgFactory extends ThreadedEpsgFactory {
      * database itself (for example additional database index).
      */
     @SuppressWarnings("PMD.AvoidUsingHardCodedIP")
-    public static final Version VERSION = new Version("8.6.0.1");
+    public static final Version VERSION = new Version("9.6.0");
 
     /**
      * The key for fetching the database directory from {@linkplain System#getProperty(String)
@@ -276,6 +278,13 @@ public class ThreadedHsqlEpsgFactory extends ThreadedEpsgFactory {
                     byte[] buf = new byte[1024];
                     int read = 0;
                     while ((ze = zin.getNextEntry()) != null) {
+                        try {
+                            Utilities.assertNotZipSlipVulnarable(
+                                    new File(directory, ze.getName()), directory.toPath());
+                        } catch (IOException zipSlipVulnerable) {
+                            // check not expected to work when running as a windows service
+                            LOGGER.fine("Expected Reference to internal jar:" + zipSlipVulnerable);
+                        }
                         FileOutputStream fout =
                                 new FileOutputStream(new File(directory, ze.getName()));
                         while ((read = zin.read(buf)) > 0) {

@@ -18,9 +18,7 @@ package org.geotools.feature.collection;
 
 import java.util.Iterator;
 import org.geotools.data.simple.SimpleFeatureIterator;
-import org.geotools.feature.FeatureCollection;
 import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
 
 /**
  * A feature iterator that completely delegates to a normal Iterator, simply allowing Java 1.4 code
@@ -41,16 +39,5 @@ public class DelegateSimpleFeatureIterator extends DelegateFeatureIterator<Simpl
      */
     public DelegateSimpleFeatureIterator(Iterator<SimpleFeature> iterator) {
         super(iterator);
-    }
-
-    /**
-     * Wrap the provided iterator up as a FeatureIterator.
-     *
-     * @param iterator Iterator to be used as a delegate.
-     */
-    public DelegateSimpleFeatureIterator(
-            FeatureCollection<SimpleFeatureType, SimpleFeature> collection,
-            Iterator<SimpleFeature> iterator) {
-        super(collection, iterator);
     }
 }

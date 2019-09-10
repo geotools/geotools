@@ -25,15 +25,20 @@ import java.sql.Statement;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.sql.DataSource;
 import org.geotools.data.Parameter;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCDataStoreFactory;
 import org.geotools.jdbc.SQLDialect;
 import org.geotools.util.KVP;
+import org.geotools.util.logging.Logging;
 import org.postgresql.jdbc.SslMode;
 
 public class PostgisNGDataStoreFactory extends JDBCDataStoreFactory {
+
+    static final Logger LOGGER = Logging.getLogger(PostgisNGDataStoreFactory.class);
 
     /** parameter for database type */
     public static final Param DBTYPE =
@@ -133,6 +138,24 @@ public class PostgisNGDataStoreFactory extends JDBCDataStoreFactory {
                     new KVP(Param.OPTIONS, Arrays.asList(SslMode.values())));
 
     @Override
+    protected SQLDialect createSQLDialect(JDBCDataStore dataStore, Map params) {
+        PostGISDialect dialect = new PostGISDialect(dataStore);
+        try {
+            if (Boolean.TRUE.equals(PREPARED_STATEMENTS.lookUp(params))) {
+                return new PostGISPSDialect(dataStore, dialect);
+            }
+        } catch (IOException e) {
+            if (LOGGER.isLoggable(Level.FINE))
+                LOGGER.log(
+                        Level.FINE,
+                        "Failed to lookup prepared statement parameter, continuining with non prepared dialect",
+                        e);
+        }
+
+        return dialect;
+    }
+
+    @Override
     protected SQLDialect createSQLDialect(JDBCDataStore dataStore) {
         return new PostGISDialect(dataStore);
     }
@@ -179,7 +202,13 @@ public class PostgisNGDataStoreFactory extends JDBCDataStoreFactory {
             throws IOException {
 
         // setup loose bbox
-        PostGISDialect dialect = (PostGISDialect) dataStore.getSQLDialect();
+        SQLDialect genericDialect = dataStore.getSQLDialect();
+        PostGISDialect dialect;
+        if (genericDialect instanceof PostGISPSDialect) {
+            dialect = ((PostGISPSDialect) genericDialect).getDelegate();
+        } else {
+            dialect = (PostGISDialect) dataStore.getSQLDialect();
+        }
         Boolean loose = (Boolean) LOOSEBBOX.lookUp(params);
         dialect.setLooseBBOXEnabled(loose == null || Boolean.TRUE.equals(loose));
 
@@ -245,7 +274,7 @@ public class PostgisNGDataStoreFactory extends JDBCDataStoreFactory {
         String url = "jdbc:postgresql" + "://" + host + ":" + port + "/" + db;
         SslMode mode = (SslMode) SSL_MODE.lookUp(params);
         if (mode != null) {
-            url = url + "?sslmode=" + mode;
+            url = url + "?sslmode=" + mode + "&binaryTransferEnable=bytea";
         }
 
         return url;

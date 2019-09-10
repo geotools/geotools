@@ -24,6 +24,8 @@ import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.text.ParseException;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -74,6 +76,20 @@ public class GeoTiffWriterTest extends Assert {
 
     private static final double DELTA = 1E-4;
 
+    private void setFinalStaticField(String fieldName, boolean value)
+            throws NoSuchFieldException, SecurityException, IllegalArgumentException,
+                    IllegalAccessException {
+        // Playing with System.Properties and Static boolean fields can raises issues
+        // when running Junit tests via Maven, due to initialization orders.
+        // So let's change the fields via reflections for these tests
+        Field field = GeoTiffFormat.class.getDeclaredField(fieldName);
+        field.setAccessible(true);
+        Field modifiersField = Field.class.getDeclaredField("modifiers");
+        modifiersField.setAccessible(true);
+        modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
+        field.set(null, value);
+    }
+
     /**
      * Test our ability to write non standard CRS
      *
@@ -103,9 +119,14 @@ public class GeoTiffWriterTest extends Assert {
             // System.out.println(iIOMetadataDumper.getMetadata());
         }
         assertTrue(
-                CRS.findMathTransform(reader.getCrs(), DefaultGeographicCRS.WGS84, true)
+                CRS.findMathTransform(
+                                reader.getCoordinateReferenceSystem(),
+                                DefaultGeographicCRS.WGS84,
+                                true)
                         .isIdentity()); // more lenient towards metadata differences
-        assertTrue(CRS.equalsIgnoreMetadata(reader.getCrs(), DefaultGeographicCRS.WGS84));
+        assertTrue(
+                CRS.equalsIgnoreMetadata(
+                        reader.getCoordinateReferenceSystem(), DefaultGeographicCRS.WGS84));
     }
 
     /**
@@ -506,19 +527,7 @@ public class GeoTiffWriterTest extends Assert {
                     }
 
                     @Override
-                    public String getDescription() {
-                        // TODO Auto-generated method stub
-                        return null;
-                    }
-
-                    @Override
                     public void setTask(InternationalString task) {
-                        // TODO Auto-generated method stub
-
-                    }
-
-                    @Override
-                    public void setDescription(String description) {
                         // TODO Auto-generated method stub
 
                     }
@@ -771,6 +780,7 @@ public class GeoTiffWriterTest extends Assert {
 
         // Input geotiff including noData information
         final File input = TestData.file(GeoTiffReaderTest.class, "nodata.tiff");
+        final double noDataValue = -9999;
 
         // reading the coverage, checking it has nodata
         GeoTiffReader reader = new GeoTiffReader(input);
@@ -779,41 +789,51 @@ public class GeoTiffWriterTest extends Assert {
 
         assertTrue(props.containsKey(NoDataContainer.GC_NODATA));
         NoDataContainer nodata = (NoDataContainer) props.get(NoDataContainer.GC_NODATA);
-        assertEquals(-9999, nodata.getAsSingleValue(), 1e-6);
+        assertEquals(noDataValue, nodata.getAsSingleValue(), 1e-6);
         reader.dispose();
 
         // Writing it, including noData
-        final File output = new File(TestData.file(GeoTiffReaderTest.class, "."), "outNoData.tif");
-        GeoTiffWriter writer = new GeoTiffWriter(output);
-        writer.write(coverage, null);
-        writer.dispose();
-        coverage.dispose(true);
-
-        // Reding it back, checking noData has been preserved
-        reader = new GeoTiffReader(output);
-        coverage = (GridCoverage2D) reader.read(null);
-        props = coverage.getProperties();
-        assertTrue(props.containsKey(NoDataContainer.GC_NODATA));
-        nodata = (NoDataContainer) props.get(NoDataContainer.GC_NODATA);
-        assertEquals(-9999, nodata.getAsSingleValue(), 1e-6);
-        reader.dispose();
+        writeAndRead(coverage, Boolean.TRUE, noDataValue);
 
         // Writing it again, excluding noData this time
-        final File output2 =
-                new File(TestData.file(GeoTiffReaderTest.class, "."), "outNoData2.tif");
-        writer = new GeoTiffWriter(output2);
+        writeAndRead(coverage, Boolean.FALSE, noDataValue);
 
-        ParameterValue<Boolean> writeNodata = GeoTiffFormat.WRITE_NODATA.createValue();
-        writeNodata.setValue(false);
+        // Writing it one more time, this time with no parameter being specified
+        // but using the default value being set by system properties
+        setFinalStaticField("DEFAULT_WRITE_NODATA", false);
+        writeAndRead(coverage, null, noDataValue);
+        setFinalStaticField("DEFAULT_WRITE_NODATA", true);
+    }
 
-        writer.write(coverage, new GeneralParameterValue[] {writeNodata});
+    private void writeAndRead(GridCoverage2D coverage, Boolean writeNoDataParam, double noDataValue)
+            throws IOException {
+        String suffix = "outputWithNodataParam";
+        suffix += (writeNoDataParam != null ? (writeNoDataParam.toString()) : "none");
+        final File output = new File(TestData.file(GeoTiffReaderTest.class, "."), suffix + ".tif");
+        GeoTiffWriter writer = new GeoTiffWriter(output);
+        GeneralParameterValue[] writeParams = null;
+        if (writeNoDataParam != null) {
+            ParameterValue<Boolean> writeNodata = GeoTiffFormat.WRITE_NODATA.createValue();
+            writeNodata.setValue(writeNoDataParam);
+            writeParams = new GeneralParameterValue[] {writeNodata};
+        }
+        writer.write(coverage, writeParams);
         writer.dispose();
         coverage.dispose(true);
 
-        // Reading the latest file, checking noData is now missing
-        reader = new GeoTiffReader(output2);
+        // Reading it back
+        GeoTiffReader reader = new GeoTiffReader(output);
         coverage = (GridCoverage2D) reader.read(null);
-        props = coverage.getProperties();
-        assertFalse(props.containsKey(NoDataContainer.GC_NODATA));
+        Map props = coverage.getProperties();
+        if (writeNoDataParam == null) {
+            writeNoDataParam = GeoTiffFormat.WRITE_NODATA.getDefaultValue();
+        }
+        // checking that nodata exists/not exists if the writing params is true/false
+        assertTrue(props.containsKey(NoDataContainer.GC_NODATA) == writeNoDataParam.booleanValue());
+        if (writeNoDataParam) {
+            NoDataContainer nodata = (NoDataContainer) props.get(NoDataContainer.GC_NODATA);
+            assertEquals(noDataValue, nodata.getAsSingleValue(), 1e-6);
+        }
+        reader.dispose();
     }
 }

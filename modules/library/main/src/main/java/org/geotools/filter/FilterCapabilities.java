@@ -24,6 +24,7 @@ import java.util.Set;
 import org.opengis.filter.And;
 import org.opengis.filter.BinaryLogicOperator;
 import org.opengis.filter.Filter;
+import org.opengis.filter.Id;
 import org.opengis.filter.Not;
 import org.opengis.filter.Or;
 import org.opengis.filter.PropertyIsBetween;
@@ -59,8 +60,8 @@ import org.opengis.filter.spatial.Within;
  *
  * <p>This class is used as one big mask to detect filters that cannot be performed
  *
- * @author Chris Holmes, TOPP
- * @deprecated use {@link org.opengis.filter.capability.FilterCapabilities}.
+ * @author Chris Holmes, TOPP TODO: check if possible to deprecate @ deprecated use {@link
+ *     org.opengis.filter.capability.FilterCapabilities}.
  */
 public class FilterCapabilities {
     /** Mask for no operation */
@@ -277,18 +278,6 @@ public class FilterCapabilities {
     }
 
     /**
-     * Adds a new support type to capabilities.
-     *
-     * @param type The {@link FilterType} type that is supported
-     * @deprecated
-     * @see #convertFilterTypeToMask(short)
-     * @see #addType(long)
-     */
-    public void addType(short type) {
-        addAll(convertFilterTypeToMask(type));
-    }
-
-    /**
      * Returns the mask that is equivalent to the FilterType constant.
      *
      * @param type a constant from {@link FilterType}
@@ -315,7 +304,7 @@ public class FilterCapabilities {
 
         if (functions.contains(filter.getClass())) return true;
 
-        short filterType = Filters.getFilterType(filter);
+        short filterType = getFilterType(filter);
         if (filterType == 0) {
             // unknown type
             return false;
@@ -361,18 +350,7 @@ public class FilterCapabilities {
         return supports;
     }
 
-    /**
-     * Determines if the filter type passed in is supported.
-     *
-     * @param type The AbstractFilter type to be tested
-     * @return true if supported, false otherwise.
-     * @deprecated
-     */
-    public boolean supports(short type) {
-        return supports(convertFilterTypeToMask(type));
-    }
-
-    public boolean supports(long type) {
+    private boolean supports(long type) {
         return (ops & type) == type;
     }
 
@@ -436,5 +414,60 @@ public class FilterCapabilities {
      */
     public static FilterCapabilities findFunction(String name) {
         return FilterNameTypeMapping.findFunction(name);
+    }
+
+    /**
+     * Convert filter to a constant for use in switch statements. This is an alternative to
+     * performing instanceof checks.
+     *
+     * <p>This utility method for those upgrading to a newer version of GeoTools, instance of checks
+     * are preferred as they will take into account new kinds of filters (example temporal filters
+     * added for Filter 2.0 specification). Example:
+     *
+     * <pre>
+     * <code>
+     * BEFORE: filter.getFilterType() == FilterType.GEOMETRY_CONTAINS
+     * QUICK:  Filters.getFilterType( filter ) == FilterType.GEOMETRY_CONTAINS
+     * AFTER: filter instanceof Contains
+     * </code>
+     * </pre>
+     *
+     * @param filter
+     */
+    private static short getFilterType(org.opengis.filter.Filter filter) {
+        if (filter == null) return 0;
+        if (filter == org.opengis.filter.Filter.EXCLUDE) return FilterType.ALL;
+        if (filter == org.opengis.filter.Filter.INCLUDE) return FilterType.NONE;
+        if (filter instanceof PropertyIsBetween) return FilterType.BETWEEN;
+        if (filter instanceof PropertyIsEqualTo) return FilterType.COMPARE_EQUALS;
+        if (filter instanceof PropertyIsGreaterThan) return FilterType.COMPARE_GREATER_THAN;
+        if (filter instanceof PropertyIsGreaterThanOrEqualTo)
+            return FilterType.COMPARE_GREATER_THAN_EQUAL;
+        if (filter instanceof PropertyIsLessThan) return FilterType.COMPARE_LESS_THAN;
+        if (filter instanceof PropertyIsLessThanOrEqualTo)
+            return FilterType.COMPARE_LESS_THAN_EQUAL;
+        if (filter instanceof PropertyIsNotEqualTo) return FilterType.COMPARE_NOT_EQUALS;
+        if (filter instanceof Id) return FilterType.FID;
+        if (filter instanceof BBOX) return FilterType.GEOMETRY_BBOX;
+        if (filter instanceof Beyond) return FilterType.GEOMETRY_BEYOND;
+        if (filter instanceof Contains) return FilterType.GEOMETRY_CONTAINS;
+        if (filter instanceof Crosses) return FilterType.GEOMETRY_CROSSES;
+        if (filter instanceof Disjoint) return FilterType.GEOMETRY_DISJOINT;
+        if (filter instanceof DWithin) return FilterType.GEOMETRY_DWITHIN;
+        if (filter instanceof Equals) return FilterType.GEOMETRY_EQUALS;
+        if (filter instanceof Intersects) return FilterType.GEOMETRY_INTERSECTS;
+        if (filter instanceof Overlaps) return FilterType.GEOMETRY_OVERLAPS;
+        if (filter instanceof Touches) return FilterType.GEOMETRY_TOUCHES;
+        if (filter instanceof Within) return FilterType.GEOMETRY_WITHIN;
+        if (filter instanceof PropertyIsLike) return FilterType.LIKE;
+        if (filter instanceof And) return FilterType.LOGIC_AND;
+        if (filter instanceof Not) return FilterType.LOGIC_NOT;
+        if (filter instanceof Or) return FilterType.LOGIC_OR;
+        if (filter instanceof PropertyIsNull) return FilterType.NULL;
+
+        if (filter instanceof Filter) {
+            return 0;
+        }
+        return 0;
     }
 }

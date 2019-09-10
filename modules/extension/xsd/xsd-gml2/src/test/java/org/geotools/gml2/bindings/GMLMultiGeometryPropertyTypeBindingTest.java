@@ -34,10 +34,10 @@ public class GMLMultiGeometryPropertyTypeBindingTest extends AbstractGMLBindingT
 
         association =
                 createElement(
-                        GML.NAMESPACE, "myMultiGeometryProperty", GML.GEOMETRYPROPERTYTYPE, null);
+                        GML.NAMESPACE, "myMultiGeometryProperty", GML.GeometryPropertyType, null);
         geometry =
                 createElement(
-                        GML.NAMESPACE, "myGeometryCollection", GML.GEOMETRYCOLLECTIONTYPE, null);
+                        GML.NAMESPACE, "myGeometryCollection", GML.GeometryCollectionType, null);
     }
 
     public void testWithGeometry() throws Exception {
@@ -55,9 +55,9 @@ public class GMLMultiGeometryPropertyTypeBindingTest extends AbstractGMLBindingT
                         null);
 
         GMLGeometryAssociationTypeBinding s =
-                (GMLGeometryAssociationTypeBinding) getBinding(GML.GEOMETRYASSOCIATIONTYPE);
+                (GMLGeometryAssociationTypeBinding) getBinding(GML.GeometryAssociationType);
         GMLMultiGeometryPropertyTypeBinding s1 =
-                (GMLMultiGeometryPropertyTypeBinding) getBinding(GML.MULTIGEOMETRYPROPERTYTYPE);
+                (GMLMultiGeometryPropertyTypeBinding) getBinding(GML.MultiGeometryPropertyType);
 
         GeometryCollection p =
                 (GeometryCollection) s1.parse(association, node, s.parse(association, node, null));

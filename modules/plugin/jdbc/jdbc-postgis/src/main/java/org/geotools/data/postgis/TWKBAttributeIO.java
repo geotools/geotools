@@ -49,6 +49,7 @@ class TWKBAttributeIO {
     TWKBReader twkbReader;
     ByteArrayInStream inStream = new ByteArrayInStream(new byte[0]);
     GeometryFactory gf;
+    boolean base64EncodingEnabled;
 
     /**
      * A variation of TWKBReader tha optimizes conversion of collapsed point expressed using
@@ -66,13 +67,18 @@ class TWKBAttributeIO {
                 return super.readCoordinateSequence(numPts, metadata);
             }
 
-            int dims = metadata.getDims();
-            LiteCoordinateSequence seq = (LiteCoordinateSequence) csFactory.create(numPts, dims);
-            double[] ordinates = new double[numPts * dims];
+            final int dims = metadata.getDims();
+            final LiteCoordinateSequence seq =
+                    (LiteCoordinateSequence) csFactory.create(numPts, dims);
+            final double[] ordinates = new double[numPts * dims];
+            final double[] scales = new double[dims];
+            for (int i = 0; i < scales.length; i++) {
+                scales[i] = metadata.getScale(i);
+            }
             int k = 0;
             for (int i = 0; i < numPts; i++) {
                 for (int j = 0; j < dims; j++) {
-                    double ordinateDelta = readNextDouble(metadata.getScale(j));
+                    double ordinateDelta = readNextDouble(scales[j]);
                     double value = metadata.valueArray[j] + ordinateDelta;
                     metadata.valueArray[j] = value;
                     ordinates[k++] = value;
@@ -104,6 +110,14 @@ class TWKBAttributeIO {
         return gf;
     }
 
+    public boolean isBase64EncodingEnabled() {
+        return base64EncodingEnabled;
+    }
+
+    public void setBase64EncodingEnabled(boolean base64EncodingEnabled) {
+        this.base64EncodingEnabled = base64EncodingEnabled;
+    }
+
     /**
      * This method will convert a Well Known Binary representation to a JTS Geometry object.
      *
@@ -129,7 +143,10 @@ class TWKBAttributeIO {
             byte bytes[] = rs.getBytes(columnName);
             if (bytes == null) // ie. its a null column -> return a null geometry!
             return null;
-            return wkb2Geometry(Base64.decode(bytes));
+            if (base64EncodingEnabled) {
+                bytes = Base64.decode(bytes);
+            }
+            return wkb2Geometry(bytes);
         } catch (SQLException e) {
             throw new DataSourceException("SQL exception occurred while reading the geometry.", e);
         }
@@ -145,7 +162,10 @@ class TWKBAttributeIO {
             // the TWKB encoding collapses geometries into points and encodes them as such,
             // causing an inefficient converted to be called later down the road, handle
             // this case in a special way to ensure better performance
-            Geometry g = wkb2Geometry(Base64.decode(bytes));
+            if (base64EncodingEnabled) {
+                bytes = Base64.decode(bytes);
+            }
+            Geometry g = wkb2Geometry(bytes);
             g = adaptToBinding(g, binding);
 
             return g;

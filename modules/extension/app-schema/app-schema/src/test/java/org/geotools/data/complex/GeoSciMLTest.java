@@ -31,8 +31,8 @@ import java.util.Set;
 import java.util.logging.Logger;
 import org.geotools.data.DataAccess;
 import org.geotools.data.DataAccessFinder;
-import org.geotools.data.DefaultQuery;
 import org.geotools.data.FeatureSource;
+import org.geotools.data.Query;
 import org.geotools.data.complex.config.AppSchemaDataAccessConfigurator;
 import org.geotools.data.complex.config.AppSchemaDataAccessDTO;
 import org.geotools.data.complex.config.AppSchemaFeatureTypeRegistry;
@@ -226,7 +226,7 @@ public class GeoSciMLTest extends AppSchemaTestSupport {
     public void testFeatureSourceHonoursQueryNamespace() throws Exception {
         final Name typeName = Types.typeName(GSMLNS, "MappedFeature");
         FeatureSource<FeatureType, Feature> source = mappingDataStore.getFeatureSource(typeName);
-        DefaultQuery query = new DefaultQuery();
+        Query query = new Query();
         query.setNamespace(new URI(typeName.getNamespaceURI()));
         query.setTypeName(typeName.getLocalPart());
         FeatureCollection<FeatureType, Feature> features = source.getFeatures(query);

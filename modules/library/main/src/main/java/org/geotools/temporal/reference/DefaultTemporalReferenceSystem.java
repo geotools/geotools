@@ -55,16 +55,6 @@ public class DefaultTemporalReferenceSystem implements TemporalReferenceSystem {
         return domainOfValidity;
     }
 
-    /**
-     * This method is deprecated, please use getDomainOfValidity() method.
-     *
-     * @return
-     */
-    @Deprecated
-    public Extent getValidArea() {
-        return validArea;
-    }
-
     public InternationalString getScope() {
         return scope;
     }

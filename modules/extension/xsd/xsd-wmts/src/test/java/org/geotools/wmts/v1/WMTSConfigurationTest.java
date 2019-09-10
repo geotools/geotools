@@ -26,6 +26,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.parsers.ParserConfigurationException;
+import net.opengis.ows11.ServiceIdentificationType;
 import net.opengis.wmts.v_1.CapabilitiesType;
 import net.opengis.wmts.v_1.ContentsType;
 import net.opengis.wmts.v_1.LayerType;
@@ -45,11 +46,53 @@ public class WMTSConfigurationTest {
     public WMTSConfigurationTest() {}
 
     @Test
+    /** Test GEOT-6004 GetCapabilities fails for ows:Profile */
+    public void testGEOT6004() throws IOException, SAXException, ParserConfigurationException {
+        Parser p = new Parser(new WMTSConfiguration());
+        // p.setValidating(false);
+        Object parsed;
+        try (InputStream is = getClass().getResourceAsStream("./wmtsGetCapabilities_6004.xml")) {
+            parsed = p.parse(is);
+        }
+
+        assertTrue(
+                "Capabilities failed to parse " + parsed.getClass(),
+                parsed instanceof CapabilitiesType);
+
+        CapabilitiesType caps = (CapabilitiesType) parsed;
+        ServiceIdentificationType service = caps.getServiceIdentification();
+        assertNotNull(service);
+        assertEquals(
+                "http://www.opengis.net/spec/wmts-simple/1.0/conf/simple-profile/CRS84",
+                service.getProfile());
+        ContentsType contents = caps.getContents();
+        assertNotNull(contents);
+    }
+
+    @Test
     public void testParse() throws IOException, SAXException, ParserConfigurationException {
+        Map<String, LayerType> layers = parseCaps("./nasa.getcapa.xml");
+
+        assertEquals(519, layers.size());
+        assertTrue(layers.containsKey("MODIS_Terra_L3_SST_MidIR_9km_Night_Annual"));
+
+        layers = parseCaps("geosolutions-wmts-getcapabilities.xml");
+        assertEquals(26, layers.size());
+    }
+
+    /**
+     * @param capDoc
+     * @return
+     * @throws IOException
+     * @throws SAXException
+     * @throws ParserConfigurationException
+     */
+    private Map<String, LayerType> parseCaps(String capDoc)
+            throws IOException, SAXException, ParserConfigurationException {
         Parser p = new Parser(new WMTSConfiguration());
         p.setValidating(false);
         Object parsed;
-        try (InputStream is = getClass().getResourceAsStream("./nasa.getcapa.xml")) {
+        try (InputStream is = getClass().getResourceAsStream(capDoc)) {
             parsed = p.parse(is);
         }
 
@@ -73,9 +116,7 @@ public class WMTSConfigurationTest {
                 layers.put(id, layerType);
             }
         }
-
-        assertEquals(519, layers.size());
-        assertTrue(layers.containsKey("MODIS_Terra_L3_SST_MidIR_9km_Night_Annual"));
+        return layers;
     }
 
     /**

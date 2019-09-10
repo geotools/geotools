@@ -20,32 +20,35 @@ import java.io.IOException;
 import org.geotools.data.ows.HTTPResponse;
 import org.geotools.ows.ServiceException;
 import org.locationtech.jts.geom.GeometryFactory;
+import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.FeatureType;
 
 public class GetFeatureResponse extends WFSResponse {
 
-    private final GetFeatureParser features;
+    private final GetParser<SimpleFeature> features;
 
     private boolean featuresReturned;
 
     public GetFeatureResponse(
-            WFSRequest originatingRequest, HTTPResponse httpResponse, GetFeatureParser features)
+            WFSRequest originatingRequest,
+            HTTPResponse httpResponse,
+            GetParser<SimpleFeature> features)
             throws ServiceException, IOException {
 
         super(originatingRequest, httpResponse);
         this.features = features;
     }
 
-    public GetFeatureParser getFeatures() {
+    public GetParser<SimpleFeature> getFeatures() {
         return features;
     }
 
-    public GetFeatureParser getFeatures(GeometryFactory geometryFactory) {
+    public GetParser<SimpleFeature> getFeatures(GeometryFactory geometryFactory) {
         if (featuresReturned) {
             throw new IllegalStateException("getFeatures can be called only once");
         }
-        GetFeatureParser features = getFeatures();
+        GetParser<SimpleFeature> features = getFeatures();
         if (geometryFactory != null) {
             features.setGeometryFactory(geometryFactory);
         }
@@ -53,8 +56,8 @@ public class GetFeatureResponse extends WFSResponse {
         return features;
     }
 
-    public GetFeatureParser getSimpleFeatures(GeometryFactory geometryFactory) {
-        GetFeatureParser rawFeatures = getFeatures(geometryFactory);
+    public GetParser<SimpleFeature> getSimpleFeatures(GeometryFactory geometryFactory) {
+        GetParser<SimpleFeature> rawFeatures = getFeatures(geometryFactory);
         FeatureType featureType = rawFeatures.getFeatureType();
         if (featureType instanceof SimpleFeatureType) {
             return rawFeatures;

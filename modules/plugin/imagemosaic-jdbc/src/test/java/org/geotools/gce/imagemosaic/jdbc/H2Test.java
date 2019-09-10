@@ -18,11 +18,11 @@ package org.geotools.gce.imagemosaic.jdbc;
 
 import java.awt.Color;
 import java.net.URL;
-import junit.framework.Assert;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.referencing.CRS;
+import org.junit.Assert;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
 

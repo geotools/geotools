@@ -30,7 +30,6 @@ import org.geotools.styling.ExternalGraphic;
 import org.geotools.styling.Graphic;
 import org.geotools.styling.Mark;
 import org.geotools.styling.Stroke;
-import org.geotools.styling.StyleFactoryFinder;
 import org.geotools.xml.PrintHandler;
 import org.geotools.xml.schema.Attribute;
 import org.geotools.xml.schema.ComplexType;
@@ -846,7 +845,7 @@ public class sldComplexTypes {
          */
         public Object getValue(Element element, ElementValue[] value, Attributes attrs1, Map hints)
                 throws OperationNotSupportedException {
-            Graphic symbol = StyleFactoryFinder.createStyleFactory().getDefaultGraphic();
+            Graphic symbol = CommonFactoryFinder.getStyleFactory().getDefaultGraphic();
 
             for (int i = 0; i < value.length; i++) {
                 if ((value[i] == null) || value[i].getElement() == null) {
@@ -855,10 +854,10 @@ public class sldComplexTypes {
 
                 Element e = value[i].getElement();
                 if (elems[EXTERNALGRAPHIC].getName().equals(e.getName()))
-                    symbol.addExternalGraphic((ExternalGraphic) value[i].getValue());
+                    symbol.graphicalSymbols().add((ExternalGraphic) value[i].getValue());
 
                 if (elems[MARK].getName().equals(e.getName()))
-                    symbol.addMark((Mark) value[i].getValue());
+                    symbol.graphicalSymbols().add((Mark) value[i].getValue());
 
                 if (elems[OPACITY].getName().equals(e.getName()))
                     symbol.setOpacity((Expression) value[i].getValue());
@@ -1054,7 +1053,7 @@ public class sldComplexTypes {
          */
         public Object getValue(Element element, ElementValue[] value, Attributes attrs1, Map hints)
                 throws OperationNotSupportedException {
-            Stroke symbol = StyleFactoryFinder.createStyleFactory().getDefaultStroke();
+            Stroke symbol = CommonFactoryFinder.getStyleFactory().getDefaultStroke();
 
             for (int i = 0; i < value.length; i++) {
                 if ((value[i] == null) || value[i].getElement() == null) {

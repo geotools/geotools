@@ -16,7 +16,7 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>library</artifactId>
-    <version>22-SNAPSHOT</version>
+    <version>23-SNAPSHOT</version>
   </parent>
 
 
@@ -188,7 +188,7 @@
     <dependency>
       <groupId>jgridshift</groupId>
       <artifactId>jgridshift</artifactId>
-      <version>1.0</version>
+      <version>1.1</version>
     </dependency>
    <dependency>
      <groupId>net.sf.geographiclib</groupId>

@@ -19,7 +19,6 @@ package org.geotools.coverage;
 import java.awt.Color;
 import java.awt.image.ColorModel;
 import java.awt.image.DataBuffer;
-import java.awt.image.IndexColorModel;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -41,7 +40,6 @@ import org.geotools.util.Utilities;
 import org.geotools.util.XArray;
 import org.geotools.util.logging.Logging;
 import org.opengis.coverage.ColorInterpretation;
-import org.opengis.coverage.PaletteInterpretation;
 import org.opengis.coverage.SampleDimension;
 import org.opengis.coverage.SampleDimensionType;
 import org.opengis.util.InternationalString;
@@ -217,9 +215,6 @@ public class GridSampleDimension implements SampleDimension, Serializable {
      * @param type The grid value data type (which indicate the number of bits for the data type),
      *     or {@code null} for computing it automatically from the range {@code [minimum..maximum]}.
      *     This is the value to be returned by {@link #getSampleDimensionType}.
-     * @param color The color interpretation, or {@code null} for a default value (usually {@link
-     *     ColorInterpretation#PALETTE_INDEX PALETTE_INDEX}). This is the value to be returned by
-     *     {@link #getColorInterpretation}.
      * @param palette The color palette associated with the sample dimension, or {@code null} for a
      *     default color palette (usually grayscale). If {@code categories} is non-null, then both
      *     arrays usually have the same length. However, this constructor is tolerant on this array
@@ -246,7 +241,6 @@ public class GridSampleDimension implements SampleDimension, Serializable {
      *     the value to be returned by {@link #getUnits}.
      * @throws IllegalArgumentException if the range {@code [minimum..maximum]} is not valid.
      */
-    @SuppressWarnings("deprecation")
     public GridSampleDimension(
             final CharSequence description,
             final SampleDimensionType type,
@@ -264,6 +258,65 @@ public class GridSampleDimension implements SampleDimension, Serializable {
         this(
                 description,
                 list(description, type, color, palette, categories, nodata, minimum, maximum, unit),
+                scale,
+                offset);
+    }
+
+    /**
+     * Constructs a sample dimension with the specified properties. For convenience, any argument
+     * which is not a {@code double} primitive can be {@code null}, and any {@linkplain CharSequence
+     * char sequence} can be either a {@link String} or {@link InternationalString} object.
+     *
+     * <p>This constructor allows the construction of a {@code GridSampleDimension} without explicit
+     * construction of {@link Category} objects. An heuristic approach is used for dispatching the
+     * informations into a set of {@link Category} objects. However, this constructor still less
+     * general and provides less fine-grain control than the constructor expecting an array of
+     * {@link Category} objects.
+     *
+     * @param description The sample dimension title or description, or {@code null} for the default
+     *     (the name of what looks like the "main" category). This is the value to be returned by
+     *     {@link #getDescription}.
+     * @param type The grid value data type (which indicate the number of bits for the data type),
+     *     or {@code null} for computing it automatically from the range {@code [minimum..maximum]}.
+     *     This is the value to be returned by {@link #getSampleDimensionType}.
+     * @param categories A sequence of category names for the values contained in the sample
+     *     dimension, or {@code null} if none. This is the values to be returned by {@link
+     *     #getCategoryNames}.
+     * @param nodata the values to indicate "no data", or {@code null} if none. This is the values
+     *     to be returned by {@link #getNoDataValues}.
+     * @param minimum The lower value, inclusive. The {@code [minimum..maximum]} range may or may
+     *     not includes the {@code nodata} values; the range will be adjusted as needed. If {@code
+     *     categories} was non-null, then {@code minimum} is usually 0. This is the value to be
+     *     returned by {@link #getMinimumValue}.
+     * @param maximum The upper value, <strong>inclusive</strong> as well. The {@code
+     *     [minimum..maximum]} range may or may not includes the {@code nodata} values; the range
+     *     will be adjusted as needed. If {@code categories} was non-null, then {@code maximum} is
+     *     usually equals to {@code categories.length-1}. This is the value to be returned by {@link
+     *     #getMaximumValue}.
+     * @param scale The value which is multiplied to grid values, or 1 if none. This is the value to
+     *     be returned by {@link #getScale}.
+     * @param offset The value to add to grid values, or 0 if none. This is the value to be returned
+     *     by {@link #getOffset}.
+     * @param unit The unit information for this sample dimension, or {@code null} if none. This is
+     *     the value to be returned by {@link #getUnits}.
+     * @throws IllegalArgumentException if the range {@code [minimum..maximum]} is not valid.
+     */
+    @SuppressWarnings("deprecation")
+    public GridSampleDimension(
+            final CharSequence description,
+            final SampleDimensionType type,
+            final CharSequence[] categories,
+            final double[] nodata,
+            final double minimum,
+            final double maximum,
+            final double scale,
+            final double offset,
+            final Unit<?> unit) {
+        // TODO: 'list(...)' should be inlined there if only Sun was to fix RFE #4093999
+        //       ("Relax constraint on placement of this()/super() call in constructors").
+        this(
+                description,
+                list(description, type, null, null, categories, nodata, minimum, maximum, unit),
                 scale,
                 offset);
     }
@@ -584,24 +637,9 @@ public class GridSampleDimension implements SampleDimension, Serializable {
         if (sd instanceof GridSampleDimension) {
             return (GridSampleDimension) sd;
         }
-        final int[][] palette = sd.getPalette();
-        final Color[] colors;
-        if (palette != null) {
-            final int length = palette.length;
-            colors = new Color[length];
-            for (int i = 0; i < length; i++) {
-                // Assuming RGB. It will be checked in the constructor.
-                final int[] color = palette[i];
-                colors[i] = new Color(color[0], color[1], color[2]);
-            }
-        } else {
-            colors = null;
-        }
         return new GridSampleDimension(
                 sd.getDescription(),
                 sd.getSampleDimensionType(),
-                sd.getColorInterpretation(),
-                colors,
                 sd.getCategoryNames(),
                 sd.getNoDataValues(),
                 sd.getMinimumValue(),
@@ -941,42 +979,6 @@ public class GridSampleDimension implements SampleDimension, Serializable {
      */
     public double getScale() {
         return scale;
-    }
-
-    /**
-     * Color palette associated with the sample dimension. A color palette can have any number of
-     * colors. See palette interpretation for meaning of the palette entries. If the grid coverage
-     * has no color palette, {@code null} will be returned.
-     *
-     * @return The color palette associated with the sample dimension.
-     * @see #getPaletteInterpretation
-     * @see #getColorInterpretation
-     * @see IndexColorModel
-     * @deprecated No replacement.
-     */
-    public int[][] getPalette() {
-        final ColorModel color = getColorModel();
-        if (color instanceof IndexColorModel) {
-            final IndexColorModel cm = (IndexColorModel) color;
-            final int[][] colors = new int[cm.getMapSize()][];
-            for (int i = 0; i < colors.length; i++) {
-                colors[i] = new int[] {cm.getRed(i), cm.getGreen(i), cm.getBlue(i)};
-            }
-            return colors;
-        }
-        return null;
-    }
-
-    /**
-     * Indicates the type of color palette entry for sample dimensions which have a palette. If a
-     * sample dimension has a palette, the color interpretation must be {@link
-     * ColorInterpretation#GRAY_INDEX GRAY_INDEX} or {@link ColorInterpretation#PALETTE_INDEX
-     * PALETTE_INDEX}. A palette entry type can be Gray, RGB, CMYK or HLS.
-     *
-     * @return The type of color palette entry for sample dimensions which have a palette.
-     */
-    public PaletteInterpretation getPaletteInterpretation() {
-        return PaletteInterpretation.RGB;
     }
 
     /**

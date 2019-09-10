@@ -212,6 +212,19 @@ public class ShapefileDumper {
      * @throws IOException
      */
     public boolean dump(SimpleFeatureCollection fc) throws IOException {
+        return dump(null, fc);
+    }
+
+    /**
+     * Dumps the collection into one or more shapefiles. Multiple files will be geneated when the
+     * input collection contains multiple geometry types, or as the size limit for output files get
+     * reached
+     *
+     * @param fc The input feature collection
+     * @return True if at least one feature got written, false otherwise
+     * @throws IOException
+     */
+    public boolean dump(String fileName, SimpleFeatureCollection fc) throws IOException {
         // make sure we are not trying to write out a geometryless data set
         if (fc.getSchema().getGeometryDescriptor() == null) {
             throw new DataSourceException(
@@ -225,9 +238,9 @@ public class ShapefileDumper {
         fc = RemappingFeatureCollection.getShapefileCompatibleCollection(fc);
         SimpleFeatureType schema = fc.getSchema();
 
-        Map<Class, StoreWriter> writers = new HashMap<Class, StoreWriter>();
+        Map<Class<?>, StoreWriter> writers = new HashMap<Class<?>, StoreWriter>();
         boolean featuresWritten = false;
-        Class geomType = schema.getGeometryDescriptor().getType().getBinding();
+        Class<?> geomType = schema.getGeometryDescriptor().getType().getBinding();
         // let's see if we will need to write multiple geometry types
         boolean multiWriter =
                 GeometryCollection.class.equals(geomType) || Geometry.class.equals(geomType);
@@ -246,11 +259,16 @@ public class ShapefileDumper {
                     nullStoreWriter =
                             nullStoreWriter == null
                                     ? getStoreWriter(
-                                            schema, null, multiWriter, Point.class, "_NULL")
+                                            fileName,
+                                            schema,
+                                            null,
+                                            multiWriter,
+                                            Point.class,
+                                            "_NULL")
                                     : nullStoreWriter;
                     storeWriter = nullStoreWriter;
                 } else {
-                    storeWriter = getStoreWriter(f, writers, multiWriter);
+                    storeWriter = getStoreWriter(fileName, f, writers, multiWriter);
                 }
                 // try to write, the shapefile size limits could be reached
                 try {
@@ -268,9 +286,9 @@ public class ShapefileDumper {
             if (!featuresWritten && emptyShapefileAllowed) {
                 if (multiWriter) {
                     // force the dump of a point file
-                    getStoreWriter(fc.getSchema(), writers, true, Point.class, null);
+                    getStoreWriter(fileName, fc.getSchema(), writers, true, Point.class, null);
                 } else {
-                    getStoreWriter(fc.getSchema(), writers, false, geomType, null);
+                    getStoreWriter(fileName, fc.getSchema(), writers, false, geomType, null);
                 }
             }
 
@@ -326,7 +344,7 @@ public class ShapefileDumper {
     }
 
     /**
-     * Allows subsclasses to perform extra actions against a shapefile that was completely written
+     * Allows subsclasses to perform extra actions against a shapefile that was completely written.
      *
      * @param fileName
      * @param remappedSchema
@@ -427,7 +445,10 @@ public class ShapefileDumper {
      * writer if there are none so far
      */
     private StoreWriter getStoreWriter(
-            SimpleFeature f, Map<Class, StoreWriter> writers, boolean multiWriter)
+            String fileName,
+            SimpleFeature f,
+            Map<Class<?>, StoreWriter> writers,
+            boolean multiWriter)
             throws IOException {
 
         // get the target class
@@ -445,12 +466,14 @@ public class ShapefileDumper {
             geometryType = "Geometry";
         }
 
-        return getStoreWriter(f.getFeatureType(), writers, multiWriter, target, geometryType);
+        return getStoreWriter(
+                fileName, f.getFeatureType(), writers, multiWriter, target, geometryType);
     }
 
     private StoreWriter getStoreWriter(
+            String fileName,
             SimpleFeatureType original,
-            Map<Class, StoreWriter> writers,
+            Map<Class<?>, StoreWriter> writers,
             boolean multiWriter,
             Class<?> target,
             String geometryType)
@@ -473,11 +496,10 @@ public class ShapefileDumper {
 
             // we need to associate the geometry type to the file name only if we can have be
             // multiple types
-            String fileName;
             if (multiWriter) {
-                fileName = getShapeName(original, geometryType);
+                fileName = getShapeName(fileName, original, geometryType);
             } else {
-                fileName = getShapeName(original, null);
+                fileName = getShapeName(fileName, original, null);
             }
             builder.setName(fileName);
 
@@ -496,16 +518,46 @@ public class ShapefileDumper {
      * Returns the shapefile name from the given schema and geometry type. By default it's simple
      * typeName and geometryType concatenated, subclasses can override this behavior
      *
+     * <p>This method will only be called if a custom name was not provided.
+     *
      * @param schema
      * @param geometryType The name of the geometry type, will be null if there is no need for a
      *     geometry type suffix
      * @return
      */
     protected String getShapeName(SimpleFeatureType schema, String geometryType) {
-        if (geometryType == null) {
-            return schema.getTypeName();
+        return getShapeName(schema.getTypeName(), geometryType);
+    }
+
+    /**
+     * Returns the shape name from the given suggested name (if available), schema and geometry
+     * type.
+     *
+     * @param fileName
+     * @param schema
+     * @param geometryType
+     * @return
+     */
+    private String getShapeName(String fileName, SimpleFeatureType schema, String geometryType) {
+        if (fileName == null) {
+            return getShapeName(schema, geometryType);
         } else {
-            return schema.getTypeName() + geometryType;
+            return getShapeName(fileName, geometryType);
+        }
+    }
+
+    /**
+     * Returns the shape name from the given suggested name and geometry type.
+     *
+     * @param fileName
+     * @param geometryType
+     * @return
+     */
+    private String getShapeName(String fileName, String geometryType) {
+        if (geometryType == null) {
+            return fileName;
+        } else {
+            return fileName + geometryType;
         }
     }
 }

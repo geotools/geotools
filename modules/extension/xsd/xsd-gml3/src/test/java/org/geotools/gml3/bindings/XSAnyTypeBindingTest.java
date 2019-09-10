@@ -40,7 +40,6 @@ import org.opengis.feature.type.Name;
 import org.opengis.feature.type.PropertyDescriptor;
 import org.picocontainer.MutablePicoContainer;
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 
 public class XSAnyTypeBindingTest extends GML3TestSupport {
 
@@ -103,9 +102,9 @@ public class XSAnyTypeBindingTest extends GML3TestSupport {
     }
 
     @Override
-    protected void registerNamespaces(Element root) {
-        super.registerNamespaces(root);
-        root.setAttribute("xmlns:test", "http://www.geotools.org/anytypetest");
+    protected void setUp() throws Exception {
+        super.setUp();
+        registerNamespaceMapping("test", "http://www.geotools.org/anytypetest");
     }
 
     @Override

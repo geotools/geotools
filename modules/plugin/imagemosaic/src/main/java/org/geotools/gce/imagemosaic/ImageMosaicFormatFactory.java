@@ -82,7 +82,7 @@ public final class ImageMosaicFormatFactory implements GridFormatFactorySpi {
         try {
             Class<?> cl = Class.forName(GDAL_JP2ECW_SPI);
             Class<?> cGdal = Class.forName(GDAL_SPI);
-            Object jp2ecwSPI = cl.newInstance();
+            Object jp2ecwSPI = cl.getDeclaredConstructor().newInstance();
             final Method method = cGdal.getDeclaredMethod("isAvailable", (Class[]) null);
             if (method != null) {
                 return (Boolean) method.invoke(jp2ecwSPI, (Object[]) null);
@@ -116,7 +116,7 @@ public final class ImageMosaicFormatFactory implements GridFormatFactorySpi {
         try {
             Class<?> cl = Class.forName(GDAL_JP2KAKADU_SPI);
             Class<?> cGdal = Class.forName(GDAL_SPI);
-            Object jp2Kak = cl.newInstance();
+            Object jp2Kak = cl.getDeclaredConstructor().newInstance();
             final Method method = cGdal.getDeclaredMethod("isAvailable", (Class[]) null);
             if (method != null) {
                 return (Boolean) method.invoke(jp2Kak, (Object[]) null);
@@ -150,7 +150,7 @@ public final class ImageMosaicFormatFactory implements GridFormatFactorySpi {
         try {
             Class<?> cl = Class.forName(GDAL_JP2MrSID_SPI);
             Class<?> cGdal = Class.forName(GDAL_SPI);
-            Object jp2MrSid = cl.newInstance();
+            Object jp2MrSid = cl.getDeclaredConstructor().newInstance();
             final Method method = cGdal.getDeclaredMethod("isAvailable", (Class[]) null);
             if (method != null) {
                 return (Boolean) method.invoke(jp2MrSid, (Object[]) null);

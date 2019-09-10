@@ -40,6 +40,6 @@ public class PiFunction extends FunctionExpressionImpl {
 
     @Override
     public Object evaluate(Object object) {
-        return new Double(Math.PI);
+        return Double.valueOf(Math.PI);
     }
 }

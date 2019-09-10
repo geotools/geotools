@@ -16,7 +16,9 @@
  */
 package org.geotools.data.shapefile.fid;
 
-import static junit.framework.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.net.URL;
@@ -27,10 +29,12 @@ import java.util.List;
 import java.util.Map;
 import org.geotools.data.Query;
 import org.geotools.data.shapefile.ShapefileDataStore;
+import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureStore;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.DefaultFeatureCollection;
+import org.geotools.feature.NameImpl;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.junit.After;
 import org.junit.Before;
@@ -136,8 +140,7 @@ public class FidQueryTest extends FIDTestCase {
         Id createFidFilter = ff.id(Collections.singleton(ff.featureId(feature.getID())));
 
         SimpleFeatureType schema = feature.getFeatureType();
-        featureStore.modifyFeatures(
-                schema.getDescriptor("ID"), Integer.valueOf(newId), createFidFilter);
+        featureStore.modifyFeatures(new NameImpl("ID"), Integer.valueOf(newId), createFidFilter);
 
         SimpleFeatureIterator features = featureStore.getFeatures(createFidFilter).features();
         try {
@@ -179,6 +182,56 @@ public class FidQueryTest extends FIDTestCase {
             }
         }
 
+        this.assertFidsMatch();
+    }
+
+    /**
+     * Attempt to test GEOT-5830 User reports that deleting a feature, re-requesting the data gives
+     * a duplicate FID and the subsequent attempt to delete fails due to corrupt FIX
+     *
+     * @throws Exception
+     */
+    @Test
+    public void testDeleteCloseAndRerequestFID() throws Exception {
+        SimpleFeature feature;
+        SimpleFeatureCollection allfeatures = featureStore.getFeatures();
+        int size = allfeatures.size();
+        try (SimpleFeatureIterator features = allfeatures.features()) {
+            feature = features.next();
+        }
+        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+        Id fidFilter = ff.id(Collections.singleton(ff.featureId(feature.getID())));
+
+        featureStore.removeFeatures(fidFilter);
+        fids.remove(feature.getID());
+        assertEquals((size - 1), featureStore.getCount(Query.ALL));
+        assertEquals(fids.size(), featureStore.getCount(Query.ALL));
+
+        featureStore.getDataStore().dispose();
+        URL url = backshp.toURI().toURL();
+        ds = new ShapefileDataStore(url);
+        numFeatures = 0;
+        featureStore = (SimpleFeatureStore) ds.getFeatureSource();
+        assertEquals((size - 1), featureStore.getCount(Query.ALL));
+
+        SimpleFeatureCollection features2 = featureStore.getFeatures(fidFilter);
+        assertEquals("wrong number of features", 0, features2.size());
+        try (SimpleFeatureIterator features = features2.features()) {
+            assertFalse("found fid", features.hasNext());
+        }
+        // refresh the features using the new datastore
+        allfeatures = featureStore.getFeatures();
+        try (SimpleFeatureIterator features = allfeatures.features()) {
+
+            SimpleFeature f = (SimpleFeature) features.next();
+            assertFalse(fidFilter.evaluate(f));
+        }
+
+        features2 = featureStore.getFeatures(fidFilter);
+        assertEquals("wrong number of features", 0, features2.size());
+        try (SimpleFeatureIterator features = features2.features()) {
+            assertFalse("found fid", features.hasNext());
+        }
         this.assertFidsMatch();
     }
 

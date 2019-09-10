@@ -263,7 +263,7 @@ public class PicoMap implements Map, MutablePicoContainer {
             // TODO: instantiate
             Class clazz = (Class) o;
             try {
-                return clazz.newInstance();
+                return clazz.getDeclaredConstructor().newInstance();
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
@@ -343,6 +343,7 @@ public class PicoMap implements Map, MutablePicoContainer {
         return null;
     }
 
+    @SuppressWarnings("deprecation")
     public void verify() throws PicoVerificationException {}
 
     public void start() {}

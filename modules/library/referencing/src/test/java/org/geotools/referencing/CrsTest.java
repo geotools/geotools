@@ -294,7 +294,6 @@ public final class CrsTest {
                         + "UNIT[\"degree\", 0.017453292519943295],"
                         + "AXIS[\"Geodetic longitude\", EAST],"
                         + "AXIS[\"Geodetic latitude\", NORTH]]";
-        assertEquals(AxisOrder.LON_LAT, CRS.getAxisOrder(CRS.parseWKT(wkt)));
         assertEquals(AxisOrder.EAST_NORTH, CRS.getAxisOrder(CRS.parseWKT(wkt)));
 
         wkt =
@@ -305,7 +304,6 @@ public final class CrsTest {
                         + "UNIT[\"degree\", 0.017453292519943295],"
                         + "AXIS[\"Geodetic latitude\", NORTH],"
                         + "AXIS[\"Geodetic longitude\", EAST]]";
-        assertEquals(AxisOrder.LAT_LON, CRS.getAxisOrder(CRS.parseWKT(wkt)));
         assertEquals(AxisOrder.NORTH_EAST, CRS.getAxisOrder(CRS.parseWKT(wkt)));
 
         assertEquals(

@@ -44,18 +44,10 @@ public class ChannelSelectionImpl implements ChannelSelection {
      *     elements for the RGB channels.
      */
     public SelectedChannelType[] getRGBChannels() {
-        return new SelectedChannelType[] {red, green, blue};
-    }
-
-    public SelectedChannelType[] getSelectedChannels() {
-        SelectedChannelType[] ret = null;
-        if (gray != null) {
-            ret = new SelectedChannelType[] {gray};
-        } else if (red != null || green != null || blue != null) {
-            ret = new SelectedChannelType[] {red, green, blue};
+        if (red == null && green == null && blue == null) {
+            return null;
         }
-
-        return ret;
+        return new SelectedChannelType[] {red, green, blue};
     }
 
     public void setGrayChannel(SelectedChannelType gray) {
@@ -67,13 +59,19 @@ public class ChannelSelectionImpl implements ChannelSelection {
     }
 
     public void setRGBChannels(SelectedChannelType[] channels) {
-        if (channels.length != 3) {
-            throw new IllegalArgumentException(
-                    "Three channels are required in setRGBChannels, got " + channels.length);
+        if (channels == null) {
+            red = null;
+            green = null;
+            blue = null;
+        } else {
+            if (channels.length != 3) {
+                throw new IllegalArgumentException(
+                        "Three channels are required in setRGBChannels, got " + channels.length);
+            }
+            red = channels[0];
+            green = channels[1];
+            blue = channels[2];
         }
-        red = channels[0];
-        green = channels[1];
-        blue = channels[2];
     }
 
     public void setRGBChannels(
@@ -90,20 +88,6 @@ public class ChannelSelectionImpl implements ChannelSelection {
         this.red = new SelectedChannelTypeImpl(red);
         this.green = new SelectedChannelTypeImpl(green);
         this.blue = new SelectedChannelTypeImpl(blue);
-    }
-
-    public void setSelectedChannels(SelectedChannelType[] channels) {
-        if (channels.length == 1) {
-            gray = channels[0];
-        } else if (channels.length == 3) {
-            red = channels[0];
-            green = channels[1];
-            blue = channels[2];
-        } else {
-            throw new IllegalArgumentException(
-                    "Wrong number of elements in setSelectedChannels, expected 1 or 3, got "
-                            + channels.length);
-        }
     }
 
     public Object accept(StyleVisitor visitor, Object data) {

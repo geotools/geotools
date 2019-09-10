@@ -16,11 +16,9 @@
  */
 package org.geotools.process.vector;
 
-import org.geotools.process.gs.GSProcess;
-
 /**
  * Marker interface for processes that should be grouped into the "vector" family.
  *
  * @author Justin Deoliveira, OpenGeo
  */
-public interface VectorProcess extends GSProcess {}
+public interface VectorProcess {}

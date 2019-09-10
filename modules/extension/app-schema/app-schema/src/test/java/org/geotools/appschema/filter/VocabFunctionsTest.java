@@ -28,7 +28,6 @@ import java.util.HashMap;
 import java.util.Map;
 import org.geotools.data.DataAccess;
 import org.geotools.data.DataAccessFinder;
-import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.complex.feature.type.Types;
 import org.geotools.factory.CommonFactoryFinder;
@@ -37,6 +36,7 @@ import org.geotools.feature.FeatureIterator;
 import org.geotools.gml3.bindings.GML3EncodingUtils;
 import org.geotools.test.AppSchemaTestSupport;
 import org.geotools.util.Converters;
+import org.geotools.util.URLs;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -184,9 +184,7 @@ public class VocabFunctionsTest extends AppSchemaTestSupport {
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
         Function function =
                 ff.function(
-                        "Vocab",
-                        ff.literal("1LIST"),
-                        ff.literal(DataUtilities.urlToFile(file).getPath()));
+                        "Vocab", ff.literal("1LIST"), ff.literal(URLs.urlToFile(file).getPath()));
 
         Object value = function.evaluate(null);
         assertEquals(

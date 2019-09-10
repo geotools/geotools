@@ -17,12 +17,11 @@
 package org.geotools.filter;
 
 import java.util.Collection;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.opengis.filter.FilterVisitor;
 import org.opengis.filter.PropertyIsLike;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.Literal;
 
 /**
  * Defines a like filter, which checks to see if an attribute matches a REGEXP.
@@ -222,17 +221,6 @@ public class LikeFilterImpl extends AbstractFilter implements PropertyIsLike {
     }
 
     /**
-     * Sets the expression to be evalutated as being like the pattern
-     *
-     * @param attribute The value of the attribute for comparison.
-     * @throws IllegalFilterException Filter is illegal.
-     * @deprecated Use {@link #setExpression(org.opengis.filter.expression.Expression)}
-     */
-    public final void setValue(Expression attribute) throws IllegalFilterException {
-        setExpression(attribute);
-    }
-
-    /**
      * Gets the expression for hte filter.
      *
      * <p>This method calls th deprecated {@link #getValue()} for backwards compatability with
@@ -244,66 +232,6 @@ public class LikeFilterImpl extends AbstractFilter implements PropertyIsLike {
 
     public void setExpression(org.opengis.filter.expression.Expression e) {
         this.attribute = e;
-    }
-
-    /**
-     * Sets the match pattern for this FilterLike.
-     *
-     * @param p the expression which evaluates to the match pattern for this filter
-     * @param wildcardMulti the string that represents a mulitple character (1->n) wildcard
-     * @param wildcardSingle the string that represents a single character (1) wildcard
-     * @param escape the string that represents an escape character
-     * @deprecated use one of {@link PropertyIsLike#setExpression(Expression)} {@link
-     *     PropertyIsLike#setWildCard(String)} {@link PropertyIsLike#setSingleChar(String)} {@link
-     *     PropertyIsLike#setEscape(String)}
-     */
-    public final void setPattern(
-            org.opengis.filter.expression.Expression p,
-            String wildcardMulti,
-            String wildcardSingle,
-            String escape) {
-        if (p instanceof Literal) {
-            Literal literal = (Literal) p;
-            Object value = literal.getValue();
-            if (value != null && value instanceof String) {
-                String pattern = (String) value;
-                setPattern(pattern, wildcardMulti, wildcardSingle, escape);
-            } else {
-                throw new ClassCastException("Pattern Literal must be a string:" + value);
-            }
-        } else {
-            throw new ClassCastException("Pattern must be a literal String");
-        }
-    }
-
-    /**
-     * Sets the match pattern for this FilterLike.
-     *
-     * @param pattern the string which contains the match pattern for this filter
-     * @param wildcardMulti the string that represents a mulitple character (1->n) wildcard
-     * @param wildcardSingle the string that represents a single character (1) wildcard
-     * @param escape the string that represents an escape character
-     * @deprecated use one of {@link PropertyIsLike#setLiteral(String)} {@link
-     *     PropertyIsLike#setWildCard(String)} {@link PropertyIsLike#setSingleChar(String)} {@link
-     *     PropertyIsLike#setEscape(String)}
-     */
-    public final void setPattern(
-            String pattern, String wildcardMulti, String wildcardSingle, String escape) {
-
-        setLiteral(pattern);
-        setWildCard(wildcardMulti);
-        setSingleChar(wildcardSingle);
-        setEscape(escape);
-    }
-
-    /**
-     * Accessor method to retrieve the pattern.
-     *
-     * @return the pattern being matched.
-     * @deprecated use {@link #getLiteral()}
-     */
-    public final String getPattern() {
-        return getLiteral();
     }
 
     /** Returns the pattern. */
@@ -403,41 +331,21 @@ public class LikeFilterImpl extends AbstractFilter implements PropertyIsLike {
     }
 
     /**
-     * Getter for property wildcardMulti.
-     *
-     * @return Value of property wildcardMulti.
-     * @deprecated use {@link #getWildCard()}.
-     */
-    public final String getWildcardMulti() {
-        return wildcardMulti;
-    }
-
-    /**
-     * THis method calls {@link #getWildcardMulti()} for subclass backwards compatability.
+     * Getter for property wildcardMulti
      *
      * @see org.opengis.filter.PropertyIsLike#getWildCard().
      */
     public String getWildCard() {
-        return getWildcardMulti();
+        return wildcardMulti;
     }
 
     /**
      * Getter for property wildcardSingle.
      *
-     * @return Value of property wildcardSingle.
-     * @deprecated use {@link #getSingleChar()}
-     */
-    public final String getWildcardSingle() {
-        return wildcardSingle;
-    }
-
-    /**
-     * THis method calls {@link #getWildcardSingle()()} for subclass backwards compatability.
-     *
      * @see org.opengis.filter.PropertyIsLike#getSingleChar()().
      */
     public String getSingleChar() {
-        return getWildcardSingle();
+        return wildcardSingle;
     }
 
     /**
@@ -445,20 +353,15 @@ public class LikeFilterImpl extends AbstractFilter implements PropertyIsLike {
      * same as this filter. Checks to make sure the filter types, the value, and the pattern are the
      * same. &
      *
-     * @param obj - the object to compare this LikeFilter against.
+     * @param o - the object to compare this LikeFilter against.
      * @return true if specified object is equal to this filter; false otherwise.
      */
-    public boolean equals(Object obj) {
-        if (obj instanceof LikeFilterImpl) {
-            LikeFilterImpl lFilter = (LikeFilterImpl) obj;
-
-            // REVISIT: check for nulls.
-
-            return ((Filters.getFilterType(lFilter) == Filters.getFilterType(this))
-                    && lFilter.getExpression().equals(this.attribute)
-                    && lFilter.getPattern().equals(this.pattern));
-        }
-        return false;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        LikeFilterImpl that = (LikeFilterImpl) o;
+        return Objects.equals(attribute, that.attribute) && Objects.equals(pattern, that.pattern);
     }
 
     /**
@@ -466,6 +369,7 @@ public class LikeFilterImpl extends AbstractFilter implements PropertyIsLike {
      *
      * @return the hash code for this like filter implementation.
      */
+    @Override
     public int hashCode() {
         int result = 17;
         result = (37 * result) + ((attribute == null) ? 0 : attribute.hashCode());

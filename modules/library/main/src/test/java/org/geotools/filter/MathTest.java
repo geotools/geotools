@@ -18,9 +18,7 @@
  */
 package org.geotools.filter;
 
-import junit.framework.Test;
 import junit.framework.TestCase;
-import junit.framework.TestSuite;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.locationtech.jts.geom.Geometry;
@@ -39,16 +37,6 @@ public class MathTest extends TestCase {
 
     public MathTest(java.lang.String testName) {
         super(testName);
-    }
-
-    public static void main(java.lang.String[] args) {
-        junit.textui.TestRunner.run(suite());
-    }
-
-    public static Test suite() {
-        TestSuite suite = new TestSuite(BetweenTest.class);
-
-        return suite;
     }
 
     public SimpleFeature[] sampleFeatures() throws Exception {

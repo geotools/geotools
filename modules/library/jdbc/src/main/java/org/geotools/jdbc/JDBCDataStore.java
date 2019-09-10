@@ -50,7 +50,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import javax.sql.DataSource;
 import org.geotools.data.DataStore;
-import org.geotools.data.DefaultQuery;
 import org.geotools.data.DefaultTransaction;
 import org.geotools.data.FeatureStore;
 import org.geotools.data.GmlObjectStore;
@@ -61,7 +60,6 @@ import org.geotools.data.Transaction.State;
 import org.geotools.data.jdbc.FilterToSQL;
 import org.geotools.data.jdbc.FilterToSQLException;
 import org.geotools.data.jdbc.datasource.ManageableDataSource;
-import org.geotools.data.jdbc.fidmapper.FIDMapper;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.store.ContentDataStore;
@@ -312,17 +310,6 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
      * this method will replace it with the new one. * @param vt
      *
      * @throws IOException If the view definition is not valid
-     * @deprecated Use createVirtualTable instead
-     */
-    public void addVirtualTable(VirtualTable vtable) throws IOException {
-        createVirtualTable(vtable);
-    }
-
-    /**
-     * Adds a virtual table to the data store. If a virtual table with the same name was registered
-     * this method will replace it with the new one. * @param vt
-     *
-     * @throws IOException If the view definition is not valid
      */
     public void createVirtualTable(VirtualTable vtable) throws IOException {
         try {
@@ -343,17 +330,6 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
      */
     public List<ConnectionLifecycleListener> getConnectionLifecycleListeners() {
         return connectionLifecycleListeners;
-    }
-
-    /**
-     * Removes and returns the specified virtual table
-     *
-     * @param name
-     * @return
-     * @deprecated Use dropVirtualTable instead
-     */
-    public VirtualTable removeVirtualTable(String name) {
-        return dropVirtualTable(name);
     }
 
     /**
@@ -658,15 +634,6 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
         return aggregateFunctions;
     }
 
-    /** Returns the supported functions and the dialect name they map to. */
-    public Map<String, String> getSupportedFunctions() {
-        if (supportedFunctions == null) {
-            supportedFunctions = new HashMap<>();
-            dialect.registerFunctions(supportedFunctions);
-        }
-        return supportedFunctions;
-    }
-
     /**
      * Returns the java type mapped to the specified sql type.
      *
@@ -805,7 +772,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
 
         // check for virtual table
         if (virtualTables.containsKey(typeName.getLocalPart())) {
-            removeVirtualTable(typeName.getLocalPart());
+            dropVirtualTable(typeName.getLocalPart());
             return;
         }
 
@@ -909,7 +876,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
 
         // load the feature
         Id filter = getFilterFactory().id(Collections.singleton(id));
-        DefaultQuery query = new DefaultQuery(featureTypeName);
+        Query query = new Query(featureTypeName);
         query.setFilter(filter);
         query.setHints(hints);
 
@@ -1180,7 +1147,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
 
                 StringBuffer sql = new StringBuffer();
                 sql.append("SELECT ");
-                dialect.encodeColumnName(columnName, sql);
+                dialect.encodeColumnName(null, columnName, sql);
                 sql.append(" FROM ");
                 encodeTableName(tableName, sql, null);
 
@@ -2251,7 +2218,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
      * @param strict If set to true the value of the fid will be validated against the type of the
      *     key columns. If a conversion can not be made, an exception will be thrown.
      */
-    protected static List<Object> decodeFID(PrimaryKey key, String FID, boolean strict) {
+    public static List<Object> decodeFID(PrimaryKey key, String FID, boolean strict) {
         // strip off the feature type name
         if (FID.startsWith(key.getTableName() + ".")) {
             FID = FID.substring(key.getTableName().length() + 1);
@@ -2290,8 +2257,6 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
         }
 
         // convert to the type of the key
-        // JD: usually this would be done by the dialect directly when the value
-        // actually gets set but the FIDMapper interface does not report types
         for (int i = 0; i < values.size(); i++) {
             Object value = values.get(i);
             if (value != null) {
@@ -2427,7 +2392,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
                 // intersect given filter with ids filter
                 filter = getFilterFactory().and(filter, lockFilter);
             }
-            Query query = new DefaultQuery(featureType.getTypeName(), filter, Query.NO_NAMES);
+            Query query = new Query(featureType.getTypeName(), filter, Query.NO_NAMES);
 
             Statement st = null;
             try {
@@ -2684,9 +2649,9 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
 
         StringBuffer sql = new StringBuffer();
         sql.append("SELECT ");
-        dialect.encodeColumnName("table", sql);
+        dialect.encodeColumnName(null, "table", sql);
         sql.append(",");
-        dialect.encodeColumnName("col", sql);
+        dialect.encodeColumnName(null, "col", sql);
 
         sql.append(" FROM ");
         encodeTableName(FEATURE_RELATIONSHIP_TABLE, sql, null);
@@ -2694,7 +2659,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
         if (table != null) {
             sql.append(" WHERE ");
 
-            dialect.encodeColumnName("table", sql);
+            dialect.encodeColumnName(null, "table", sql);
             sql.append(" = ");
             dialect.encodeValue(table, String.class, sql);
         }
@@ -2706,7 +2671,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
                 sql.append(" AND ");
             }
 
-            dialect.encodeColumnName("col", sql);
+            dialect.encodeColumnName(null, "col", sql);
             sql.append(" = ");
             dialect.encodeValue(column, String.class, sql);
         }
@@ -2728,9 +2693,9 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
 
         StringBuffer sql = new StringBuffer();
         sql.append("SELECT ");
-        dialect.encodeColumnName("table", sql);
+        dialect.encodeColumnName(null, "table", sql);
         sql.append(",");
-        dialect.encodeColumnName("col", sql);
+        dialect.encodeColumnName(null, "col", sql);
 
         sql.append(" FROM ");
         encodeTableName(FEATURE_RELATIONSHIP_TABLE, sql, null);
@@ -2738,7 +2703,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
         if (table != null) {
             sql.append(" WHERE ");
 
-            dialect.encodeColumnName("table", sql);
+            dialect.encodeColumnName(null, "table", sql);
             sql.append(" = ? ");
         }
 
@@ -2749,7 +2714,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
                 sql.append(" AND ");
             }
 
-            dialect.encodeColumnName("col", sql);
+            dialect.encodeColumnName(null, "col", sql);
             sql.append(" = ? ");
         }
 
@@ -2776,13 +2741,13 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
 
         StringBuffer sql = new StringBuffer();
         sql.append("SELECT ");
-        dialect.encodeColumnName("fid", sql);
+        dialect.encodeColumnName(null, "fid", sql);
         sql.append(",");
-        dialect.encodeColumnName("rtable", sql);
+        dialect.encodeColumnName(null, "rtable", sql);
         sql.append(",");
-        dialect.encodeColumnName("rcol", sql);
+        dialect.encodeColumnName(null, "rcol", sql);
         sql.append(", ");
-        dialect.encodeColumnName("rfid", sql);
+        dialect.encodeColumnName(null, "rfid", sql);
 
         sql.append(" FROM ");
         encodeTableName(FEATURE_ASSOCIATION_TABLE, sql, null);
@@ -2790,7 +2755,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
         if (fid != null) {
             sql.append(" WHERE ");
 
-            dialect.encodeColumnName("fid", sql);
+            dialect.encodeColumnName(null, "fid", sql);
             sql.append(" = ");
             dialect.encodeValue(fid, String.class, sql);
         }
@@ -2811,13 +2776,13 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
 
         StringBuffer sql = new StringBuffer();
         sql.append("SELECT ");
-        dialect.encodeColumnName("fid", sql);
+        dialect.encodeColumnName(null, "fid", sql);
         sql.append(",");
-        dialect.encodeColumnName("rtable", sql);
+        dialect.encodeColumnName(null, "rtable", sql);
         sql.append(",");
-        dialect.encodeColumnName("rcol", sql);
+        dialect.encodeColumnName(null, "rcol", sql);
         sql.append(", ");
-        dialect.encodeColumnName("rfid", sql);
+        dialect.encodeColumnName(null, "rfid", sql);
 
         sql.append(" FROM ");
         encodeTableName(FEATURE_ASSOCIATION_TABLE, sql, null);
@@ -2825,7 +2790,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
         if (fid != null) {
             sql.append(" WHERE ");
 
-            dialect.encodeColumnName("fid", sql);
+            dialect.encodeColumnName(null, "fid", sql);
             sql.append(" = ?");
         }
 
@@ -2851,22 +2816,22 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
 
         StringBuffer sql = new StringBuffer();
         sql.append("SELECT ");
-        dialect.encodeColumnName("id", sql);
+        dialect.encodeColumnName(null, "id", sql);
         sql.append(",");
-        dialect.encodeColumnName("name", sql);
+        dialect.encodeColumnName(null, "name", sql);
         sql.append(",");
-        dialect.encodeColumnName("description", sql);
+        dialect.encodeColumnName(null, "description", sql);
         sql.append(",");
-        dialect.encodeColumnName("type", sql);
+        dialect.encodeColumnName(null, "type", sql);
         sql.append(",");
-        dialect.encodeColumnName("geometry", sql);
+        dialect.encodeColumnName(null, "geometry", sql);
         sql.append(" FROM ");
         encodeTableName(GEOMETRY_TABLE, sql, null);
 
         if (gid != null) {
             sql.append(" WHERE ");
 
-            dialect.encodeColumnName("id", sql);
+            dialect.encodeColumnName(null, "id", sql);
             sql.append(" = ");
             dialect.encodeValue(gid, String.class, sql);
         }
@@ -2886,22 +2851,22 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
 
         StringBuffer sql = new StringBuffer();
         sql.append("SELECT ");
-        dialect.encodeColumnName("id", sql);
+        dialect.encodeColumnName(null, "id", sql);
         sql.append(",");
-        dialect.encodeColumnName("name", sql);
+        dialect.encodeColumnName(null, "name", sql);
         sql.append(",");
-        dialect.encodeColumnName("description", sql);
+        dialect.encodeColumnName(null, "description", sql);
         sql.append(",");
-        dialect.encodeColumnName("type", sql);
+        dialect.encodeColumnName(null, "type", sql);
         sql.append(",");
-        dialect.encodeColumnName("geometry", sql);
+        dialect.encodeColumnName(null, "geometry", sql);
         sql.append(" FROM ");
         encodeTableName(GEOMETRY_TABLE, sql, null);
 
         if (gid != null) {
             sql.append(" WHERE ");
 
-            dialect.encodeColumnName("id", sql);
+            dialect.encodeColumnName(null, "id", sql);
             sql.append(" = ?");
         }
 
@@ -2926,11 +2891,11 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
 
         StringBuffer sql = new StringBuffer();
         sql.append("SELECT ");
-        dialect.encodeColumnName("id", sql);
+        dialect.encodeColumnName(null, "id", sql);
         sql.append(",");
-        dialect.encodeColumnName("mgid", sql);
+        dialect.encodeColumnName(null, "mgid", sql);
         sql.append(",");
-        dialect.encodeColumnName("ref", sql);
+        dialect.encodeColumnName(null, "ref", sql);
 
         sql.append(" FROM ");
         encodeTableName(MULTI_GEOMETRY_TABLE, sql, null);
@@ -2938,7 +2903,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
         if (gid != null) {
             sql.append(" WHERE ");
 
-            dialect.encodeColumnName("id", sql);
+            dialect.encodeColumnName(null, "id", sql);
             sql.append(" = ");
             dialect.encodeValue(gid, String.class, sql);
         }
@@ -2959,11 +2924,11 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
 
         StringBuffer sql = new StringBuffer();
         sql.append("SELECT ");
-        dialect.encodeColumnName("id", sql);
+        dialect.encodeColumnName(null, "id", sql);
         sql.append(",");
-        dialect.encodeColumnName("mgid", sql);
+        dialect.encodeColumnName(null, "mgid", sql);
         sql.append(",");
-        dialect.encodeColumnName("ref", sql);
+        dialect.encodeColumnName(null, "ref", sql);
 
         sql.append(" FROM ");
         encodeTableName(MULTI_GEOMETRY_TABLE, sql, null);
@@ -2971,7 +2936,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
         if (gid != null) {
             sql.append(" WHERE ");
 
-            dialect.encodeColumnName("id", sql);
+            dialect.encodeColumnName(null, "id", sql);
             sql.append(" = ?");
         }
 
@@ -3014,20 +2979,20 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
 
         StringBuffer sql = new StringBuffer();
         sql.append("SELECT ");
-        dialect.encodeColumnName("fid", sql);
+        dialect.encodeColumnName(null, "fid", sql);
         sql.append(",");
-        dialect.encodeColumnName("gid", sql);
+        dialect.encodeColumnName(null, "gid", sql);
         sql.append(",");
-        dialect.encodeColumnName("gname", sql);
+        dialect.encodeColumnName(null, "gname", sql);
         sql.append(",");
-        dialect.encodeColumnName("ref", sql);
+        dialect.encodeColumnName(null, "ref", sql);
 
         sql.append(" FROM ");
         encodeTableName(GEOMETRY_ASSOCIATION_TABLE, sql, null);
 
         if (fid != null) {
             sql.append(" WHERE ");
-            dialect.encodeColumnName("fid", sql);
+            dialect.encodeColumnName(null, "fid", sql);
             sql.append(" = ");
             dialect.encodeValue(fid, String.class, sql);
         }
@@ -3039,7 +3004,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
                 sql.append(" AND ");
             }
 
-            dialect.encodeColumnName("gid", sql);
+            dialect.encodeColumnName(null, "gid", sql);
             sql.append(" = ");
             dialect.encodeValue(gid, String.class, sql);
         }
@@ -3051,7 +3016,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
                 sql.append(" AND ");
             }
 
-            dialect.encodeColumnName("gname", sql);
+            dialect.encodeColumnName(null, "gname", sql);
             sql.append(" = ");
             dialect.encodeValue(gname, String.class, sql);
         }
@@ -3073,20 +3038,20 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
 
         StringBuffer sql = new StringBuffer();
         sql.append("SELECT ");
-        dialect.encodeColumnName("fid", sql);
+        dialect.encodeColumnName(null, "fid", sql);
         sql.append(",");
-        dialect.encodeColumnName("gid", sql);
+        dialect.encodeColumnName(null, "gid", sql);
         sql.append(",");
-        dialect.encodeColumnName("gname", sql);
+        dialect.encodeColumnName(null, "gname", sql);
         sql.append(",");
-        dialect.encodeColumnName("ref", sql);
+        dialect.encodeColumnName(null, "ref", sql);
 
         sql.append(" FROM ");
         encodeTableName(GEOMETRY_ASSOCIATION_TABLE, sql, null);
 
         if (fid != null) {
             sql.append(" WHERE ");
-            dialect.encodeColumnName("fid", sql);
+            dialect.encodeColumnName(null, "fid", sql);
             sql.append(" = ? ");
         }
 
@@ -3097,7 +3062,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
                 sql.append(" AND ");
             }
 
-            dialect.encodeColumnName("gid", sql);
+            dialect.encodeColumnName(null, "gid", sql);
             sql.append(" = ? ");
         }
 
@@ -3108,7 +3073,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
                 sql.append(" AND ");
             }
 
-            dialect.encodeColumnName("gname", sql);
+            dialect.encodeColumnName(null, "gname", sql);
             sql.append(" = ?");
         }
 
@@ -3154,7 +3119,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
         // normal attributes
         for (int i = 0; i < columnNames.length; i++) {
             // the column name
-            dialect.encodeColumnName(columnNames[i], sql);
+            dialect.encodeColumnName(null, columnNames[i], sql);
             sql.append(" ");
 
             // some sql dialects require varchars to have an
@@ -4385,7 +4350,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
             }
 
             // build "colName = value"
-            dialect.encodeColumnName(attName, sql);
+            dialect.encodeColumnName(null, attName, sql);
             sql.append(" = ");
 
             if (Geometry.class.isAssignableFrom(att.getType().getBinding())) {
@@ -4445,7 +4410,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
                 continue;
             }
 
-            dialect.encodeColumnName(attName, sql);
+            dialect.encodeColumnName(null, attName, sql);
             sql.append(" = ");
 
             // geometries might need special treatment, delegate to the dialect
@@ -4544,67 +4509,8 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
                 throw new RuntimeException(e);
             }
 
-            FIDMapper mapper =
-                    new FIDMapper() {
-                        public String createID(
-                                Connection conn, SimpleFeature feature, Statement statement)
-                                throws IOException {
-                            return null;
-                        }
-
-                        public int getColumnCount() {
-                            return key.getColumns().size();
-                        }
-
-                        public int getColumnDecimalDigits(int colIndex) {
-                            return 0;
-                        }
-
-                        public String getColumnName(int colIndex) {
-                            return key.getColumns().get(colIndex).getName();
-                        }
-
-                        public int getColumnSize(int colIndex) {
-                            return 0;
-                        }
-
-                        public int getColumnType(int colIndex) {
-                            return 0;
-                        }
-
-                        public String getID(Object[] attributes) {
-                            return null;
-                        }
-
-                        public Object[] getPKAttributes(String FID) throws IOException {
-                            return decodeFID(key, FID, false).toArray();
-                        }
-
-                        public boolean hasAutoIncrementColumns() {
-                            return false;
-                        }
-
-                        public void initSupportStructures() {}
-
-                        public boolean isAutoIncrement(int colIndex) {
-                            return false;
-                        }
-
-                        public boolean isVolatile() {
-                            return false;
-                        }
-
-                        public boolean returnFIDColumnsAsAttributes() {
-                            return false;
-                        }
-
-                        public boolean isValid(String fid) {
-                            return true;
-                        }
-                    };
             toSQL.setFeatureType(featureType);
             toSQL.setPrimaryKey(key);
-            toSQL.setFIDMapper(mapper);
             toSQL.setDatabaseSchema(databaseSchema);
         }
 
@@ -4861,6 +4767,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
         }
     }
 
+    @SuppressWarnings("deprecation") // finalize is deprecated in Java 9
     protected void finalize() throws Throwable {
         if (dataSource != null) {
             LOGGER.severe(

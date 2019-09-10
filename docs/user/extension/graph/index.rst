@@ -237,7 +237,7 @@ feature used to built it.
 
 You can traverse your graph and build up ``FeatureCollection`` as you go.::
     
-    SimpleFeatureCollection features = FeatureCollections.newInstance();
+    SimpleFeatureCollection features = new DefaultFeatureCollection();
     
     for ( Iterator e = graph.getEdges().iterator(); e.hasNext(); ) {
        Edge edge = (Edge) e.next();

@@ -16,18 +16,11 @@
  */
 package org.geotools.map.legend;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
-import java.awt.Shape;
-import java.awt.Stroke;
+import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import org.geotools.data.DataUtilities;
 import org.geotools.factory.CommonFactoryFinder;
@@ -41,6 +34,7 @@ import org.geotools.renderer.style.SLDStyleFactory;
 import org.geotools.renderer.style.Style2D;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.LineSymbolizer;
+import org.geotools.styling.Mark;
 import org.geotools.styling.PointSymbolizer;
 import org.geotools.styling.PolygonSymbolizer;
 import org.geotools.styling.RasterSymbolizer;
@@ -150,14 +144,10 @@ public class Drawer {
     }
 
     Symbolizer[] getSymbolizers(Style style) {
-        List<Symbolizer> symbs = new ArrayList<Symbolizer>();
-        FeatureTypeStyle[] styles = style.getFeatureTypeStyles();
-        for (int i = 0; i < styles.length; i++) {
-            FeatureTypeStyle fstyle = styles[i];
-            Rule[] rules = fstyle.getRules();
-            for (int j = 0; j < rules.length; j++) {
-                Rule rule = rules[j];
-                symbs.addAll(Arrays.asList(rule.getSymbolizers()));
+        List<Symbolizer> symbs = new ArrayList<>();
+        for (FeatureTypeStyle fstyle : style.featureTypeStyles()) {
+            for (Rule rule : fstyle.rules()) {
+                symbs.addAll(rule.symbolizers());
             }
         }
         return symbs.toArray(new Symbolizer[symbs.size()]);
@@ -165,7 +155,7 @@ public class Drawer {
 
     Symbolizer[] getSymbolizers(Rule rule) {
         List<Symbolizer> symbs = new ArrayList<Symbolizer>();
-        symbs.addAll(Arrays.asList(rule.getSymbolizers()));
+        symbs.addAll(rule.symbolizers());
         return symbs.toArray(new Symbolizer[symbs.size()]);
     }
 
@@ -194,7 +184,8 @@ public class Drawer {
                                             .literal(10));
 
             // danger assumes a Mark!
-            point.getGraphic().getMarks()[0].setFill(builder.createFill(baseColor));
+            Mark mark = (Mark) point.getGraphic().graphicalSymbols().get(0);
+            mark.setFill(builder.createFill(baseColor));
             syms[0] = point;
         }
         if (Polygon.class.isAssignableFrom(type) || MultiPolygon.class.isAssignableFrom(type)) {

@@ -59,7 +59,12 @@ public class GeometryTestParser {
         GeometryBuilder builder = new GeometryBuilder(DefaultGeographicCRS.WGS84);
         GeometryFactory geomFact = builder.getGeometryFactory();
         PrimitiveFactory primFact = builder.getPrimitiveFactory();
-        wktFactory = new WKTParser(geomFact, primFact, null, builder.getAggregateFactory());
+        wktFactory =
+                new WKTParser(
+                        geomFact,
+                        primFact,
+                        builder.getPositionFactory(),
+                        builder.getAggregateFactory());
     }
 
     /**

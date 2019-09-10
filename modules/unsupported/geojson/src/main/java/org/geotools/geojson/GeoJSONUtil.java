@@ -234,7 +234,7 @@ public class GeoJSONUtil {
             c.y = ((Number) ordinates.get(1)).doubleValue();
         }
         if (ordinates.size() > 2) {
-            c.z = ((Number) ordinates.get(2)).doubleValue();
+            c.setZ(((Number) ordinates.get(2)).doubleValue());
         }
         return c;
     }

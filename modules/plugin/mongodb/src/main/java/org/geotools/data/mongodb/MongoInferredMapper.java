@@ -18,13 +18,21 @@
 package org.geotools.data.mongodb;
 
 import com.mongodb.DBCollection;
+import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
+import com.mongodb.QueryBuilder;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
+import org.bson.types.ObjectId;
 import org.geotools.data.mongodb.complex.MongoComplexUtilities;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
@@ -42,6 +50,17 @@ public class MongoInferredMapper extends AbstractCollectionMapper {
     MongoGeometryBuilder geomBuilder = new MongoGeometryBuilder();
 
     SimpleFeatureType schema;
+    /** Schema generation parameters, not null */
+    private MongoSchemaInitParams schemainitParams;
+
+    public MongoInferredMapper() {
+        this.schemainitParams = MongoSchemaInitParams.builder().build();
+    }
+
+    public MongoInferredMapper(MongoSchemaInitParams schemainitParams) {
+        if (schemainitParams != null) this.schemainitParams = schemainitParams;
+        else this.schemainitParams = MongoSchemaInitParams.builder().build();
+    }
 
     @Override
     public String getGeometryPath() {
@@ -80,7 +99,12 @@ public class MongoInferredMapper extends AbstractCollectionMapper {
         Set<String> indexedGeometries = MongoUtil.findIndexedGeometries(collection);
         Set<String> indexedFields = MongoUtil.findIndexedFields(collection);
         // Map<String, Class<?>> mappedFields = MongoUtil.findMappableFields(collection);
-        Map<String, Class> mappedFields = MongoComplexUtilities.findMappings(collection.findOne());
+        // if we have valid schemainitParams use a DB cursor for inferring schema. Else use the
+        // first object as default.
+        Map<String, Class> mappedFields =
+                schemainitParams.getIds().isEmpty() && schemainitParams.getMaxObjects() == 1
+                        ? MongoComplexUtilities.findMappings(collection.findOne())
+                        : generateMappedFields(collection);
 
         // don't need to worry about indexed properties we've found in our scan...
         indexedFields.removeAll(mappedFields.keySet());
@@ -153,5 +177,74 @@ public class MongoInferredMapper extends AbstractCollectionMapper {
         this.schema = featureType;
 
         return featureType;
+    }
+
+    private Map<String, Class> generateMappedFields(DBCollection collection) {
+        final Map<String, Class> resultMap = new HashMap<>();
+        final DBCursor idsCursor = obtainCursorByIds(collection);
+        Map<String, Class> idsMappings =
+                idsCursor != null
+                        ? MongoComplexUtilities.findMappings(idsCursor)
+                        : Collections.emptyMap();
+        int max = schemainitParams.getMaxObjects() - idsMappings.size();
+        final DBCursor maxObjectsCursor = obtainCursorByMaxObjects(collection, max);
+        if (maxObjectsCursor != null)
+            resultMap.putAll(MongoComplexUtilities.findMappings(maxObjectsCursor));
+        if (!idsMappings.isEmpty()) resultMap.putAll(idsMappings);
+        return resultMap;
+    }
+
+    private DBCursor obtainCursorByIds(DBCollection collection) {
+        List<String> ids = schemainitParams.getIds();
+        if (!ids.isEmpty()) {
+            LOG.info("Using IDs list for schema generation.");
+            logIdsOnCursor(queryByIds(collection, ids), ids);
+            return queryByIds(collection, ids);
+        } else {
+            LOG.info("IDs list for schema generation not available.");
+            return null;
+        }
+    }
+
+    private DBCursor queryByIds(DBCollection collection, List<String> ids) {
+        List<ObjectId> oidList =
+                ids.stream().map(id -> new ObjectId(id)).collect(Collectors.toList());
+        DBObject query = QueryBuilder.start("_id").in(oidList.toArray(new ObjectId[] {})).get();
+        LOG.log(Level.INFO, "IDs query for execute: {0}", query);
+        return collection.find(query);
+    }
+
+    private void logIdsOnCursor(DBCursor cursor, List<String> ids) {
+        final Set<String> idsOnCursor = new HashSet<>();
+        try {
+            cursor.forEach(
+                    dbo -> {
+                        ObjectId oid = (ObjectId) dbo.get("_id");
+                        idsOnCursor.add(oid.toHexString());
+                    });
+        } finally {
+            cursor.close();
+        }
+        // compare ids on list, log not found ids
+        for (String eid : ids) {
+            if (!idsOnCursor.contains(eid)) {
+                LOG.log(Level.WARNING, "ObjectId with value = '{0}' not found in collection.", eid);
+            }
+        }
+    }
+
+    private DBCursor obtainCursorByMaxObjects(DBCollection collection, int maxObects) {
+        // if configured max object is -1, we should use all collection
+        if (schemainitParams.getMaxObjects() == -1) {
+            LOG.info("Using all collection objects for schema generation.");
+            return collection.find();
+        } else if (maxObects > 0) {
+            LOG.info("Using objects max num for schema generation.");
+            // else use max num of objects
+            LOG.log(Level.INFO, "Max objects limit: {0}", schemainitParams.getMaxObjects());
+            return collection.find().limit(maxObects);
+        } else {
+            return null;
+        }
     }
 }

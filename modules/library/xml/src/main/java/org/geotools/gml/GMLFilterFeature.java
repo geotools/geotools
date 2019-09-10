@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2019, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -227,30 +227,19 @@ public class GMLFilterFeature extends XMLFilterImpl implements GMLHandlerJTS {
 
     /** Handles the string chunks collected in {@link #characters}. */
     private void handleCharacters() throws SAXException {
-        if (characters.length() == 0) {
-            return;
-        }
+
         // the methods here read in both coordinates and coords and take the
         // grunt-work out of this task for geometry handlers.
         // See the documentation for CoordinatesReader to see what this entails
-        String rawAttribute = characters.toString().trim();
+        String rawAttribute = characters.toString();
         characters.setLength(0);
 
-        if (insideAttribute && !rawAttribute.equals("")) {
+        if (insideAttribute) {
             LOGGER.info("raw att = " + rawAttribute);
-
-            try {
-                tempValue = Integer.valueOf(rawAttribute);
-            } catch (NumberFormatException e1) {
-                try {
-                    tempValue = new Double(rawAttribute);
-                } catch (NumberFormatException e2) {
-                    if (tempValue instanceof StringBuffer) {
-                        ((StringBuffer) tempValue).append(" " + rawAttribute);
-                    } else {
-                        tempValue = new StringBuffer(rawAttribute);
-                    }
-                }
+            if (tempValue instanceof StringBuffer) {
+                ((StringBuffer) tempValue).append(" " + rawAttribute);
+            } else {
+                tempValue = new StringBuffer(rawAttribute);
             }
         } else {
             parent.characters(rawAttribute.toCharArray(), 0, rawAttribute.length());

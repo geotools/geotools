@@ -46,6 +46,7 @@ import org.geotools.data.gen.info.GeneralizationInfo;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.feature.NameImpl;
+import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeImpl;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.util.factory.Hints;
@@ -190,6 +191,7 @@ public class PreGeneralizedFeatureSource implements SimpleFeatureSource {
         return new PreGeneralizedFeatureCollection(
                 getBaseFeatureSource().getFeatures(),
                 getSchema(),
+                getSchema(),
                 indexMapping.get(0.0),
                 info.getGeomPropertyName(),
                 info.getGeomPropertyName());
@@ -198,6 +200,7 @@ public class PreGeneralizedFeatureSource implements SimpleFeatureSource {
     public SimpleFeatureCollection getFeatures(Filter filter) throws IOException {
         return new PreGeneralizedFeatureCollection(
                 getBaseFeatureSource().getFeatures(filter),
+                getSchema(),
                 getSchema(),
                 indexMapping.get(0.0),
                 info.getGeomPropertyName(),
@@ -213,9 +216,20 @@ public class PreGeneralizedFeatureSource implements SimpleFeatureSource {
         return new PreGeneralizedFeatureCollection(
                 fs.getFeatures(newQuery),
                 getSchema(),
-                indexMapping.get(di == null ? 0.0 : di.getDistance()),
+                getReturnedSchema(getSchema(), query),
+                query.getPropertyNames() == Query.ALL_NAMES
+                        ? indexMapping.get(di == null ? 0.0 : di.getDistance())
+                        : null,
                 info.getGeomPropertyName(),
                 getBackendGeometryName(fs));
+    }
+
+    private SimpleFeatureType getReturnedSchema(SimpleFeatureType schema, Query query) {
+        if (query.getPropertyNames() == Query.ALL_NAMES) {
+            return schema;
+        }
+
+        return SimpleFeatureTypeBuilder.retype(schema, query.getPropertyNames());
     }
 
     public FeatureReader<SimpleFeatureType, SimpleFeature> getFeatureReader(
@@ -234,6 +248,7 @@ public class PreGeneralizedFeatureSource implements SimpleFeatureSource {
 
             return new PreGeneralizedFeatureReader(
                     getSchema(),
+                    getReturnedSchema(getSchema(), query),
                     indexMapping.get(di == null ? 0.0 : di.getDistance()),
                     backendReader,
                     info.getGeomPropertyName(),

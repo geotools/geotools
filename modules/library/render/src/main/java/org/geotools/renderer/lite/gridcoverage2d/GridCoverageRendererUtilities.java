@@ -16,11 +16,8 @@
  */
 package org.geotools.renderer.lite.gridcoverage2d;
 
-import com.sun.media.jai.util.Rational;
 import java.awt.Color;
 import java.awt.Rectangle;
-import java.awt.geom.Rectangle2D;
-import java.awt.image.RenderedImage;
 import java.util.List;
 import javax.media.jai.Interpolation;
 import org.geotools.coverage.grid.GridCoverage2D;
@@ -111,7 +108,7 @@ final class GridCoverageRendererUtilities {
     //            dstMax = floor(A) - 1
     //            OR dstMax = ceil(A - 1)
     //
-    private static float RATIONAL_TOLERANCE = 0.000001F;
+
     /**
      * Checks whether the provided object is null or not. If it is null it throws an {@link
      * IllegalArgumentException} exception.
@@ -135,121 +132,6 @@ final class GridCoverageRendererUtilities {
         if (source == null)
             throw new IllegalArgumentException(
                     Errors.format(ErrorKeys.SOURCE_CANT_BE_NULL_$1, name));
-    }
-
-    static Rectangle2D layoutHelper(
-            RenderedImage source,
-            float scaleX,
-            float scaleY,
-            float transX,
-            float transY,
-            Interpolation interp) {
-
-        // Represent the scale factors as Rational numbers.
-        // Since a value of 1.2 is represented as 1.200001 which
-        // throws the forward/backward mapping in certain situations.
-        // Convert the scale and translation factors to Rational numbers
-        Rational scaleXRational = Rational.approximate(scaleX, RATIONAL_TOLERANCE);
-        Rational scaleYRational = Rational.approximate(scaleY, RATIONAL_TOLERANCE);
-
-        long scaleXRationalNum = scaleXRational.num;
-        long scaleXRationalDenom = scaleXRational.denom;
-        long scaleYRationalNum = scaleYRational.num;
-        long scaleYRationalDenom = scaleYRational.denom;
-
-        Rational transXRational = Rational.approximate(transX, RATIONAL_TOLERANCE);
-        Rational transYRational = Rational.approximate(transY, RATIONAL_TOLERANCE);
-
-        long transXRationalNum = transXRational.num;
-        long transXRationalDenom = transXRational.denom;
-        long transYRationalNum = transYRational.num;
-        long transYRationalDenom = transYRational.denom;
-
-        int x0 = source.getMinX();
-        int y0 = source.getMinY();
-        int w = source.getWidth();
-        int h = source.getHeight();
-
-        // Variables to store the calculated destination upper left coordinate
-        long dx0Num, dx0Denom, dy0Num, dy0Denom;
-
-        // Variables to store the calculated destination bottom right
-        // coordinate
-        long dx1Num, dx1Denom, dy1Num, dy1Denom;
-
-        // Start calculations for destination
-
-        dx0Num = x0;
-        dx0Denom = 1;
-
-        dy0Num = y0;
-        dy0Denom = 1;
-
-        // Formula requires srcMaxX + 1 = (x0 + w - 1) + 1 = x0 + w
-        dx1Num = x0 + w;
-        dx1Denom = 1;
-
-        // Formula requires srcMaxY + 1 = (y0 + h - 1) + 1 = y0 + h
-        dy1Num = y0 + h;
-        dy1Denom = 1;
-
-        dx0Num *= scaleXRationalNum;
-        dx0Denom *= scaleXRationalDenom;
-
-        dy0Num *= scaleYRationalNum;
-        dy0Denom *= scaleYRationalDenom;
-
-        dx1Num *= scaleXRationalNum;
-        dx1Denom *= scaleXRationalDenom;
-
-        dy1Num *= scaleYRationalNum;
-        dy1Denom *= scaleYRationalDenom;
-
-        // Equivalent to subtracting 0.5
-        dx0Num = 2 * dx0Num - dx0Denom;
-        dx0Denom *= 2;
-
-        dy0Num = 2 * dy0Num - dy0Denom;
-        dy0Denom *= 2;
-
-        // Equivalent to subtracting 1.5
-        dx1Num = 2 * dx1Num - 3 * dx1Denom;
-        dx1Denom *= 2;
-
-        dy1Num = 2 * dy1Num - 3 * dy1Denom;
-        dy1Denom *= 2;
-
-        // Adding translation factors
-
-        // Equivalent to float dx0 += transX
-        dx0Num = dx0Num * transXRationalDenom + transXRationalNum * dx0Denom;
-        dx0Denom *= transXRationalDenom;
-
-        // Equivalent to float dy0 += transY
-        dy0Num = dy0Num * transYRationalDenom + transYRationalNum * dy0Denom;
-        dy0Denom *= transYRationalDenom;
-
-        // Equivalent to float dx1 += transX
-        dx1Num = dx1Num * transXRationalDenom + transXRationalNum * dx1Denom;
-        dx1Denom *= transXRationalDenom;
-
-        // Equivalent to float dy1 += transY
-        dy1Num = dy1Num * transYRationalDenom + transYRationalNum * dy1Denom;
-        dy1Denom *= transYRationalDenom;
-
-        // Get the integral coordinates
-        int l_x0, l_y0, l_x1, l_y1;
-
-        l_x0 = Rational.ceil(dx0Num, dx0Denom);
-        l_y0 = Rational.ceil(dy0Num, dy0Denom);
-
-        l_x1 = Rational.ceil(dx1Num, dx1Denom);
-        l_y1 = Rational.ceil(dy1Num, dy1Denom);
-
-        // Set the top left coordinate of the destination
-        final Rectangle2D retValue = new Rectangle2D.Double();
-        retValue.setFrame(l_x0, l_y0, l_x1 - l_x0 + 1, l_y1 - l_y0 + 1);
-        return retValue;
     }
 
     /**

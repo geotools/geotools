@@ -33,7 +33,6 @@ import java.sql.Statement;
 import java.util.AbstractMap;
 import java.util.AbstractSet;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -189,13 +188,6 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
     /** The name for the transformation accuracy metadata. */
     private static final InternationalString TRANSFORMATION_ACCURACY =
             Vocabulary.formatInternational(VocabularyKeys.TRANSFORMATION_ACCURACY);
-
-    /**
-     * The calendar instance for creating {@link java.util.Date} objects from a year (the "epoch" in
-     * datum definition). We use the local timezone, which may not be quite accurate. But there is
-     * no obvious timezone for "epoch", and the "epoch" is approximative anyway.
-     */
-    private final Calendar calendar = Calendar.getInstance(); // FIXME: move into factories?
 
     /**
      * The authority for this database. Will be created only when first needed. This authority will
@@ -1362,7 +1354,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
                     final String name = getString(result, 2, code);
                     final String type = getString(result, 3, code).trim().toLowerCase();
                     final String anchor = result.getString(4);
-                    final String epoch = result.getString(5);
+                    final Date epoch = result.getDate(5);
                     final String area = result.getString(6);
                     final String scope = result.getString(7);
                     final String remarks = result.getString(8);
@@ -1371,11 +1363,9 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
                     if (anchor != null) {
                         properties.put(Datum.ANCHOR_POINT_KEY, anchor);
                     }
-                    if (epoch != null && epoch.length() != 0)
+                    if (epoch != null)
                         try {
-                            calendar.clear();
-                            calendar.set(Integer.parseInt(epoch), 0, 1);
-                            properties.put(Datum.REALIZATION_EPOCH_KEY, calendar.getTime());
+                            properties.put(Datum.REALIZATION_EPOCH_KEY, epoch);
                         } catch (NumberFormatException exception) {
                             // Not a fatal error...
                             Logging.unexpectedException(
@@ -3018,6 +3008,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
      * @throws Throwable if an error occurred while closing the connection.
      */
     @Override
+    @SuppressWarnings("deprecation") // finalize is deprecated in Java 9
     protected final void finalize() throws Throwable {
         dispose();
         super.finalize();
@@ -3469,6 +3460,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
          * implementation of this method can be executed an arbitrary amount of times.
          */
         @Override
+        @SuppressWarnings("deprecation") // finalize is deprecated in Java 9
         protected synchronized void finalize() throws SQLException {
             if (querySingle != null) {
                 querySingle.close();
@@ -3559,6 +3551,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
 
             /** Closes the underlying result set. */
             @Override
+            @SuppressWarnings("deprecation") // finalize is deprecated in Java 9
             protected void finalize() throws SQLException {
                 next = null;
                 if (results != null) {

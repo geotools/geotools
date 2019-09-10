@@ -316,7 +316,8 @@ public class ComplexFilterSplitter extends PostPreProcessFilterSplittingVisitor 
             checkAttributeFound(
                     expression, exprSteps, nestedAttrExtractor, existsAttrExtractor, fcAttrs);
             // encoding of filters on multiple nested attributes is not (yet) supported
-            if (fcAttrs.size() == 1) {
+            if (fcAttrs.size() == 1
+                    || (fcAttrs.size() >= 1 && validateNoClientProperties(fcAttrs))) {
                 FeatureChainedAttributeDescriptor nestedAttrDescr = fcAttrs.get(0);
                 if (nestedAttrDescr.chainSize() > 1 && nestedAttrDescr.isJoiningEnabled()) {
                     FeatureTypeMapping featureMapping =
@@ -400,6 +401,19 @@ public class ComplexFilterSplitter extends PostPreProcessFilterSplittingVisitor 
         }
 
         return super.visit(expression, notUsed);
+    }
+
+    private boolean validateNoClientProperties(List<FeatureChainedAttributeDescriptor> fcAttrs) {
+        for (FeatureChainedAttributeDescriptor ad : fcAttrs) {
+            if (ad.getFeatureChain() == null) continue;
+            for (FeatureChainLink clink : ad.getFeatureChain()) {
+                if (clink.getNestedFeatureAttribute() == null) continue;
+                if (clink.getNestedFeatureAttribute().getClientProperties() != null
+                        && !clink.getNestedFeatureAttribute().getClientProperties().isEmpty())
+                    return false;
+            }
+        }
+        return true;
     }
 
     /** Attribute error check */

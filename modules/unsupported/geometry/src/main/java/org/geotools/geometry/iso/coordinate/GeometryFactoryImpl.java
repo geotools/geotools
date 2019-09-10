@@ -265,7 +265,7 @@ public class GeometryFactoryImpl implements Factory, GeometryFactory {
         if (directPositions == null)
             directPositions = new ArrayList<DirectPosition>(coordList.size());
         for (double[] coords : coordList) {
-            directPositions.add(createDirectPosition(coords));
+            directPositions.add(positionFactory.createDirectPosition(coords));
         }
         return directPositions;
     }
@@ -281,7 +281,7 @@ public class GeometryFactoryImpl implements Factory, GeometryFactory {
         // TODO Test
         if (coord.length != this.getDimension()) throw new MismatchedDimensionException();
 
-        return (PositionImpl) createPosition(createDirectPosition(coord));
+        return (PositionImpl) createPosition(positionFactory.createDirectPosition(coord));
     }
 
     /* (non-Javadoc)
@@ -320,7 +320,7 @@ public class GeometryFactoryImpl implements Factory, GeometryFactory {
     public EnvelopeImpl createEnvelope(double[] c) {
         if (c.length != this.getDimension()) throw new MismatchedDimensionException();
 
-        return new EnvelopeImpl(createDirectPosition(c));
+        return new EnvelopeImpl(positionFactory.createDirectPosition(c));
     }
 
     /**
@@ -512,9 +512,9 @@ public class GeometryFactoryImpl implements Factory, GeometryFactory {
             result.add(
                     this.createTriangle(
                             null,
-                            createDirectPosition(coord0),
-                            createDirectPosition(coord1),
-                            createDirectPosition(coord2)));
+                            positionFactory.createDirectPosition(coord0),
+                            positionFactory.createDirectPosition(coord1),
+                            positionFactory.createDirectPosition(coord2)));
         }
         return result;
     }

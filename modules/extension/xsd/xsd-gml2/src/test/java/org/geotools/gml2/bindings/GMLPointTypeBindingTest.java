@@ -34,9 +34,9 @@ public class GMLPointTypeBindingTest extends AbstractGMLBindingTest {
     protected void setUp() throws Exception {
         super.setUp();
 
-        point = createElement(GML.NAMESPACE, "myPoint", GML.POINTTYPE, null);
-        coord = createElement(GML.NAMESPACE, "coord", GML.COORDTYPE, null);
-        coords = createElement(GML.NAMESPACE, "coordinates", GML.COORDINATESTYPE, null);
+        point = createElement(GML.NAMESPACE, "myPoint", GML.PointType, null);
+        coord = createElement(GML.NAMESPACE, "coord", GML.CoordType, null);
+        coords = createElement(GML.NAMESPACE, "coordinates", GML.CoordinatesType, null);
 
         container = new DefaultPicoContainer();
         container.registerComponentImplementation(GeometryFactory.class);

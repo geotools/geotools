@@ -22,6 +22,8 @@ import static org.geotools.filter.capability.FunctionNameImpl.parameter;
 
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
+import org.geotools.util.Converters;
+import org.geotools.util.factory.Hints;
 import org.opengis.filter.capability.FunctionName;
 
 public class FilterFunction_pow extends FunctionExpressionImpl {
@@ -43,25 +45,21 @@ public class FilterFunction_pow extends FunctionExpressionImpl {
     }
 
     public Object evaluate(Object feature) {
-        double arg0;
-        double arg1;
+        Object arg0 = getExpression(0).evaluate(feature);
+        Object arg1 = getExpression(1).evaluate(feature);
 
-        try { // attempt to get value and perform conversion
-            arg0 = (getExpression(0).evaluate(feature, Double.class)).doubleValue();
-        } catch (Exception e) {
-            // probably a type error
-            throw new IllegalArgumentException(
-                    "Filter Function problem for function pow argument #0 - expected type double");
+        if (arg0 == null || arg1 == null) {
+            return null;
         }
 
-        try { // attempt to get value and perform conversion
-            arg1 = (getExpression(1).evaluate(feature, Double.class)).doubleValue();
-        } catch (Exception e) {
-            // probably a type error
+        arg0 = Converters.convert(arg0, Double.class, new Hints());
+        arg1 = Converters.convert(arg1, Double.class, new Hints());
+
+        if (arg0 == null || arg1 == null) {
             throw new IllegalArgumentException(
                     "Filter Function problem for function pow argument #1 - expected type double");
         }
 
-        return new Double(Math.pow(arg0, arg1));
+        return (Math.pow((Double) arg0, (Double) arg1));
     }
 }

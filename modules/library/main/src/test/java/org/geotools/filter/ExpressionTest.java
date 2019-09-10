@@ -134,13 +134,13 @@ public class ExpressionTest extends TestCase {
         GeometryFactory gf = new GeometryFactory(new PrecisionModel());
         attributes[0] = gf.createLineString(coords);
         attributes[1] = Boolean.valueOf(true);
-        attributes[2] = new Character('t');
+        attributes[2] = Character.valueOf('t');
         attributes[3] = Byte.valueOf("10");
         attributes[4] = Short.valueOf("101");
         attributes[5] = Integer.valueOf(1002);
         attributes[6] = Long.valueOf(10003);
-        attributes[7] = new Float(10000.4);
-        attributes[8] = new Double(100000.5);
+        attributes[7] = Float.valueOf(10000.4f);
+        attributes[8] = Double.valueOf(100000.5);
         attributes[9] = "test string data";
 
         // Creates the feature itself
@@ -238,14 +238,14 @@ public class ExpressionTest extends TestCase {
     public void testMinFunctionOld() throws IllegalFilterException {
         org.opengis.filter.expression.Expression a, b;
         a = new AttributeExpressionImpl(testSchema, "testInteger");
-        b = new LiteralExpressionImpl(new Double(1004));
+        b = new LiteralExpressionImpl(Double.valueOf(1004));
 
         Function min = ff.function("min", a, b);
 
         Object value = min.evaluate(testFeature);
         assertEquals(1002d, ((Double) value).doubleValue(), 0);
 
-        b = ff.literal(new Double(-100.001));
+        b = ff.literal(Double.valueOf(-100.001));
         min = ff.function("min", a, b);
 
         value = min.evaluate(testFeature);
@@ -274,12 +274,12 @@ public class ExpressionTest extends TestCase {
     public void testMaxFunction() throws IllegalFilterException {
         org.opengis.filter.expression.Expression a, b;
         a = new AttributeExpressionImpl(testSchema, "testInteger");
-        b = new LiteralExpressionImpl(new Double(1004));
+        b = new LiteralExpressionImpl(Double.valueOf(1004));
 
         Function max = ff.function("max", a, b);
         assertEquals(1004d, ((Double) max.evaluate(testFeature)).doubleValue(), 0);
 
-        b = new LiteralExpressionImpl(new Double(-100.001));
+        b = new LiteralExpressionImpl(Double.valueOf(-100.001));
         max = ff.function("max", a, b);
         assertEquals(1002d, ((Double) max.evaluate(testFeature)).doubleValue(), 0);
     }
@@ -292,7 +292,8 @@ public class ExpressionTest extends TestCase {
     public void testMaxFunctionObject() throws IllegalFilterException {
         MockDataObject testObj = new MockDataObject(10, "diez");
         org.opengis.filter.expression.Expression a = new AttributeExpressionImpl("intVal");
-        org.opengis.filter.expression.Expression b = new LiteralExpressionImpl(new Double(1004));
+        org.opengis.filter.expression.Expression b =
+                new LiteralExpressionImpl(Double.valueOf(1004));
 
         Function max = ff.function("max", a, b);
         assertEquals("max", max.getName());
@@ -300,7 +301,7 @@ public class ExpressionTest extends TestCase {
         Object maxValue = max.evaluate(testObj);
         assertEquals(1004d, ((Double) maxValue).doubleValue(), 0);
 
-        b = new LiteralExpressionImpl(new Double(-100.001));
+        b = new LiteralExpressionImpl(Double.valueOf(-100.001));
 
         max = ff.function("max", a, b);
         maxValue = max.evaluate(testObj);
@@ -387,7 +388,7 @@ public class ExpressionTest extends TestCase {
                         + testAttribute2.evaluate(testFeature)
                         + " = "
                         + mathTest.evaluate(testFeature));
-        assertEquals(new Double(2), mathTest.evaluate(testFeature));
+        assertEquals(Double.valueOf(2), mathTest.evaluate(testFeature));
     }
 
     /**
@@ -430,6 +431,6 @@ public class ExpressionTest extends TestCase {
         mathTest.setExpression1(testAttribute1);
         mathTest.setExpression2(testAttribute2);
 
-        assertEquals(new Double(2), mathTest.evaluate(testObject));
+        assertEquals(Double.valueOf(2), mathTest.evaluate(testObject));
     }
 }

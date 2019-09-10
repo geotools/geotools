@@ -22,6 +22,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -239,6 +240,23 @@ public final class GeoTools {
 
     static {
         bind(LOCAL_DATE_TIME_HANDLING, Hints.LOCAL_DATE_TIME_HANDLING);
+    }
+
+    /**
+     * The {@linkplain System#getProperty(String) system property} key for the default value to be
+     * assigned to the {@link Hints#DATE_TIME_FORMAT_HANDLING} hint.
+     *
+     * <p>This setting specifies if GML 2 temporal data shall be formatted using same approach as
+     * GML 3+.
+     *
+     * @see Hints#DATE_TIME_FORMAT_HANDLING
+     * @see #getDefaultHints
+     * @since 21.0
+     */
+    public static final String DATE_TIME_FORMAT_HANDLING = "org.geotools.dateTimeFormatHandling";
+
+    static {
+        bind(DATE_TIME_FORMAT_HANDLING, Hints.DATE_TIME_FORMAT_HANDLING);
     }
 
     /**
@@ -897,11 +915,14 @@ public final class GeoTools {
             }
             // step 2 no argument constructor
             try {
-                Object value = kind.newInstance();
+                Object value = kind.getDeclaredConstructor().newInstance();
                 if (type.isInstance(value)) {
                     return type.cast(value);
                 }
-            } catch (InstantiationException | IllegalAccessException e) {
+            } catch (InstantiationException
+                    | IllegalAccessException
+                    | NoSuchMethodException
+                    | InvocationTargetException e) {
                 LOGGER.log(
                         Level.FINER, "Unable to instantiate ENTITY_RESOLVER: " + e.getMessage(), e);
             }

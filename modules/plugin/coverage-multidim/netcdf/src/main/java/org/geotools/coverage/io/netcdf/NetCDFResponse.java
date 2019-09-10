@@ -263,10 +263,10 @@ class NetCDFResponse extends CoverageResponse {
 
                 // handle default params
                 if (timeRange == null && timeFilterAttribute != null) {
-                    defaultQuery(query, timeFilterAttribute);
+                    Query(query, timeFilterAttribute);
                 }
                 if (elevation == null && elevationFilterAttribute != null) {
-                    defaultQuery(query, elevationFilterAttribute);
+                    Query(query, elevationFilterAttribute);
                 }
                 defaultParamsManagement(query, domainsSubset, dimensionDescriptors);
 
@@ -444,7 +444,7 @@ class NetCDFResponse extends CoverageResponse {
         }
     }
 
-    private void defaultQuery(Query query, String filterAttribute) {
+    private void Query(Query query, String filterAttribute) {
         Object value = findDefaultValue(query, filterAttribute);
         if (value != null) {
             Filter filter = query.getFilter();
@@ -471,7 +471,7 @@ class NetCDFResponse extends CoverageResponse {
                 }
             }
             if (notPresent) {
-                defaultQuery(query, dim.getStartAttribute());
+                Query(query, dim.getStartAttribute());
             }
         }
     }

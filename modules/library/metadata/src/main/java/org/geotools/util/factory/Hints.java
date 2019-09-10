@@ -571,15 +571,6 @@ public class Hints extends RenderingHints {
             new ClassKey("org.opengis.feature.type.FeatureTypeFactory");
 
     /**
-     * The {@link org.geotools.data.FeatureLockFactory} instance to use.
-     *
-     * @see CommonFactoryFinder#getFeatureLockFactory
-     * @since 2.4
-     */
-    public static final ClassKey FEATURE_LOCK_FACTORY =
-            new ClassKey("org.geotools.data.FeatureLockFactory");
-
-    /**
      * The {@link org.geotools.feature.FeatureCollections} instance to use.
      *
      * @see CommonFactoryFinder#getFeatureCollections
@@ -587,15 +578,6 @@ public class Hints extends RenderingHints {
      */
     public static final ClassKey FEATURE_COLLECTIONS =
             new ClassKey("org.geotools.feature.FeatureCollections");
-
-    /**
-     * Used to provide the <cite>type name</cite> for the returned {@link
-     * org.geotools.feature.FeatureTypeFactory}. Values should be instances of {@link String}.
-     *
-     * @deprecated This hint controls FeatureTypeBuilder which is now deprecated
-     * @since 2.4
-     */
-    public static final Key FEATURE_TYPE_FACTORY_NAME = new Key(String.class);
 
     /**
      * Indicates the features returned by the feature collections should be considered detached from
@@ -1006,6 +988,23 @@ public class Hints extends RenderingHints {
     public static final Key ENCODE_EWKT = new Key(Boolean.class);
 
     /**
+     * Controls date time formatting output for GML 2.
+     *
+     * <p>To set on the command line:
+     *
+     * <blockquote>
+     *
+     * <pre>
+     * -D{@value GeoTools#DATE_TIME_FORMAT_HANDLING}=<var>true</var>
+     * </pre>
+     *
+     * </blockquote>
+     *
+     * @since 21.0
+     */
+    public static final Key DATE_TIME_FORMAT_HANDLING = new Key(Boolean.class);
+
+    /**
      * Constructs an initially empty set of hints.
      *
      * @since 2.5
@@ -1041,22 +1040,6 @@ public class Hints extends RenderingHints {
             final Object value2) {
         this(key1, value1);
         super.put(key2, value2);
-    }
-
-    /**
-     * Constructs a new object with key/value pairs from an array.
-     *
-     * @param key1 The key for the first pair.
-     * @param value1 The value for the first pair.
-     * @param pairs An array containing additional pairs of keys and values.
-     * @since 2.4
-     * @deprecated The {@code Object[]} argument was a kind of substitution for variable-length
-     *     arguments. In order to avoid confusion, it is safer to use the later.
-     */
-    @Deprecated
-    public Hints(final RenderingHints.Key key1, final Object value1, final Object[] pairs) {
-        this(key1, value1);
-        fromPairs(pairs);
     }
 
     /**

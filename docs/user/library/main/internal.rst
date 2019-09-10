@@ -19,11 +19,6 @@ A few public exceptions:
 * ``FeatureLockException``
 * ``SchemaNotFoundException``
 
-And a couple that are no longer used:
-
-* ``DefaultFeatureLock``
-* ``DefaultFeatureLockFactory``
-* ``DefaultQuery``
 
 AbstractDataStore
 ^^^^^^^^^^^^^^^^^
@@ -110,6 +105,7 @@ Lots of abstract and utility classes are available when working with ``FeatureCo
 * ``MaxFeaturesFeatureCollection`` / ``MaxFeaturesIterator``
 * ``ReprojectingFeatureCollection`` / ``ReprojectingIterator``
 * ``ReTypingFeatureCollection`` / ``ReTypingIterator``
+
 
 And the lower level iterator helpers:
 

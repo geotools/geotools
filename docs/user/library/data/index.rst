@@ -67,8 +67,6 @@ Unsupported plugins:
    
    csv
    dxf
-   edigeo
-   excel
    georest
    kml
    solr

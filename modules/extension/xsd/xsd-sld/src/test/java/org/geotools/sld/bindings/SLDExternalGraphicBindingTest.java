@@ -22,7 +22,7 @@ import org.w3c.dom.Element;
 
 public class SLDExternalGraphicBindingTest extends SLDTestSupport {
     public void testType() throws Exception {
-        assertEquals(ExternalGraphic.class, new SLDExternalGraphicBinding(null).getType());
+        assertEquals(ExternalGraphic.class, new SLDExternalGraphicBinding(null, null).getType());
     }
 
     public void testNormal() throws Exception {

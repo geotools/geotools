@@ -23,7 +23,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import junit.framework.TestCase;
-import org.geotools.data.DefaultQuery;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.Query;
 import org.geotools.data.Repository;
@@ -81,6 +80,52 @@ public abstract class AbstractPreGeneralizedFeatureSourceTest extends TestCase {
         return TestSetup.REPOSITORY;
     }
 
+    protected void testPropertySelection(String configName) {
+
+        try {
+
+            PreGeneralizedDataStore ds = getDataStore(configName);
+
+            SimpleFeatureSource fs = ds.getFeatureSource("GenStreams");
+            assertTrue(fs.getSupportedHints().contains(Hints.GEOMETRY_DISTANCE));
+
+            double[] distances = new double[] {1, 5, 10, 20, 25};
+
+            for (int i = 0; i < distances.length; i++) {
+                System.out.println(distances[i]);
+                // subset of the properties, and out of order
+                Query query =
+                        new Query(
+                                "GenStreams", Filter.INCLUDE, new String[] {"CAT_ID", "the_geom"});
+                query.getHints().put(Hints.GEOMETRY_DISTANCE, distances[i]);
+
+                // check the collection schema
+                SimpleFeatureCollection fc = fs.getFeatures(query);
+                SimpleFeatureType schema = fc.getSchema();
+                assertEquals(2, schema.getAttributeCount());
+                assertEquals("CAT_ID", schema.getDescriptor(0).getLocalName());
+                assertEquals("the_geom", schema.getDescriptor(1).getLocalName());
+
+                // grab a feature and check the schema and direct attribute access
+                try (SimpleFeatureIterator features = fc.features()) {
+                    while (features.hasNext()) {
+                        SimpleFeature sf = features.next();
+                        SimpleFeatureType sfSchema = sf.getType();
+                        assertEquals(2, sfSchema.getAttributeCount());
+                        assertEquals("CAT_ID", sfSchema.getDescriptor(0).getLocalName());
+                        assertEquals("the_geom", sfSchema.getDescriptor(1).getLocalName());
+
+                        // attributes are correctly mapped to indexes
+                        assertTrue(sf.getAttribute(0) instanceof Number);
+                        assertTrue(sf.getAttribute(1) instanceof Geometry);
+                    }
+                }
+            }
+        } catch (Exception ex) {
+            Assert.fail(ex.getMessage());
+        }
+    }
+
     protected void testGetCount(String configName) {
 
         try {
@@ -92,11 +137,11 @@ public abstract class AbstractPreGeneralizedFeatureSourceTest extends TestCase {
 
             Filter filter = CQL.toFilter("CAT_ID = 2");
 
-            DefaultQuery[] queries = new DefaultQuery[2];
-            queries[0] = new DefaultQuery("GenStreams");
-            queries[1] = new DefaultQuery("GenStreams", filter);
+            Query[] queries = new Query[2];
+            queries[0] = new Query("GenStreams");
+            queries[1] = new Query("GenStreams", filter);
 
-            for (DefaultQuery q : queries) {
+            for (Query q : queries) {
 
                 q.getHints().put(Hints.GEOMETRY_DISTANCE, 1.0);
                 int count = fs.getCount(q);
@@ -128,15 +173,15 @@ public abstract class AbstractPreGeneralizedFeatureSourceTest extends TestCase {
 
             Filter filter = CQL.toFilter("CAT_ID = 2");
 
-            DefaultQuery[] queries = new DefaultQuery[2];
-            queries[0] = new DefaultQuery("GenStreams");
-            queries[1] = new DefaultQuery("GenStreams", filter);
+            Query[] queries = new Query[2];
+            queries[0] = new Query("GenStreams");
+            queries[1] = new Query("GenStreams", filter);
 
             ReferencedEnvelope env = null;
             ReferencedEnvelope envOrig = fs.getBounds();
             assertTrue(envOrig.isEmpty() == false);
 
-            for (DefaultQuery q : queries) {
+            for (Query q : queries) {
 
                 q.getHints().put(Hints.GEOMETRY_DISTANCE, 1.0);
                 env = fs.getBounds(q);
@@ -173,12 +218,11 @@ public abstract class AbstractPreGeneralizedFeatureSourceTest extends TestCase {
 
             Filter filter = CQL.toFilter("CAT_ID = 2");
 
-            DefaultQuery[] queries = new DefaultQuery[2];
-            queries[0] = new DefaultQuery("GenStreams");
-            queries[1] =
-                    new DefaultQuery("GenStreams", filter, new String[] {"the_geom", "CAT_ID"});
+            Query[] queries = new Query[2];
+            queries[0] = new Query("GenStreams");
+            queries[1] = new Query("GenStreams", filter, new String[] {"the_geom", "CAT_ID"});
 
-            for (DefaultQuery q : queries) {
+            for (Query q : queries) {
 
                 FeatureReader<SimpleFeatureType, SimpleFeature> reader;
                 String typeName;
@@ -279,7 +323,7 @@ public abstract class AbstractPreGeneralizedFeatureSourceTest extends TestCase {
 
             Filter filter = CQL.toFilter("CAT_ID = 2");
 
-            Query q = new DefaultQuery("GenStreams", filter, new String[] {"CAT_ID"});
+            Query q = new Query("GenStreams", filter, new String[] {"CAT_ID"});
 
             for (Double distance : new Double[] {1.0, 5.0, 10.0, 20.0, 50.0}) {
                 FeatureReader<SimpleFeatureType, SimpleFeature> reader;
@@ -307,12 +351,11 @@ public abstract class AbstractPreGeneralizedFeatureSourceTest extends TestCase {
 
             Filter filter = CQL.toFilter("CAT_ID = 2");
 
-            DefaultQuery[] queries = new DefaultQuery[2];
-            queries[0] = new DefaultQuery("GenStreams");
-            queries[1] =
-                    new DefaultQuery("GenStreams", filter, new String[] {"the_geom", "CAT_ID"});
+            Query[] queries = new Query[2];
+            queries[0] = new Query("GenStreams");
+            queries[1] = new Query("GenStreams", filter, new String[] {"the_geom", "CAT_ID"});
 
-            for (DefaultQuery q : queries) {
+            for (Query q : queries) {
 
                 SimpleFeatureCollection fCollection;
                 String typeName;

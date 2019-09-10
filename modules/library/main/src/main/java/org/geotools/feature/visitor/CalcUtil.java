@@ -61,7 +61,7 @@ public class CalcUtil {
                 sum += nextValue;
             }
 
-            newSum = new Float(sum);
+            newSum = Float.valueOf(sum);
         } else if (newSum instanceof Double) {
             double sum = 0;
             double nextValue;
@@ -71,7 +71,7 @@ public class CalcUtil {
                 sum += nextValue;
             }
 
-            newSum = new Double(sum);
+            newSum = Double.valueOf(sum);
         } else {
             return null;
         }
@@ -100,13 +100,13 @@ public class CalcUtil {
         // Integer, Long, Float, Double
         if (division instanceof Integer) {
             // we've got 2 integers, but we're going to use double anyways
-            return new Double(num1.doubleValue() / num2.doubleValue());
+            return Double.valueOf(num1.doubleValue() / num2.doubleValue());
         } else if (division instanceof Long) {
             return Long.valueOf(num1.longValue() / num2.longValue());
         } else if (division instanceof Float) {
-            return new Float(num1.floatValue() / num2.floatValue());
+            return Float.valueOf(num1.floatValue() / num2.floatValue());
         } else if (division instanceof Double) {
-            return new Double(num1.doubleValue() / num2.doubleValue());
+            return Double.valueOf(num1.doubleValue() / num2.doubleValue());
         } else {
             return null;
         }
@@ -182,9 +182,9 @@ public class CalcUtil {
             } else if (type == Long.class) {
                 return Long.valueOf(newNum.longValue());
             } else if (type == Float.class) {
-                return new Float(newNum.floatValue());
+                return Float.valueOf(newNum.floatValue());
             } else if (type == Double.class) {
-                return new Double(newNum.doubleValue());
+                return Double.valueOf(newNum.doubleValue());
             } else if (type == String.class) {
                 return new String(newNum.toString());
             }
@@ -195,9 +195,9 @@ public class CalcUtil {
             } else if (type == Long.class) {
                 return Long.valueOf(((Long) var).longValue());
             } else if (type == Float.class) {
-                return new Float(((Float) var).floatValue());
+                return Float.valueOf(((Float) var).floatValue());
             } else if (type == Double.class) {
-                return new Double(((Double) var).doubleValue());
+                return Double.valueOf(((Double) var).doubleValue());
             } else if (type == String.class) {
                 return new String(var.toString());
             }
@@ -217,9 +217,9 @@ public class CalcUtil {
             } else if (newVar instanceof Long) {
                 return Long.valueOf(newNum.longValue());
             } else if (newVar instanceof Float) {
-                return new Float(newNum.floatValue());
+                return Float.valueOf(newNum.floatValue());
             } else if (newVar instanceof Double) {
-                return new Double(newNum.doubleValue());
+                return Double.valueOf(newNum.doubleValue());
             } else {
                 return null;
             }
@@ -243,9 +243,9 @@ public class CalcUtil {
         if (bestClass == String.class) {
             return ""; // $NON-NLS-1$
         } else if (bestClass == Double.class) {
-            return new Double(0);
+            return Double.valueOf(0);
         } else if (bestClass == Float.class) {
-            return new Float(0);
+            return Float.valueOf(0);
         } else if (bestClass == Long.class) {
             return Long.valueOf(0);
         } else if (bestClass == Integer.class) {

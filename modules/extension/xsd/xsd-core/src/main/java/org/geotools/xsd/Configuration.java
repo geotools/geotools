@@ -16,7 +16,6 @@
  */
 package org.geotools.xsd;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -30,7 +29,6 @@ import java.util.PriorityQueue;
 import java.util.Set;
 import java.util.Stack;
 import javax.xml.namespace.QName;
-import org.eclipse.xsd.XSDSchema;
 import org.eclipse.xsd.util.XSDSchemaLocationResolver;
 import org.eclipse.xsd.util.XSDSchemaLocator;
 import org.geotools.util.Utilities;
@@ -368,61 +366,6 @@ public abstract class Configuration {
     }
 
     /**
-     * Returns the url to the file defining the schema.
-     *
-     * <p>For schema which are defined by multiple files, this method should return the base schema
-     * which includes all other files that define the schema.
-     *
-     * @deprecated use {@link XSD#getSchemaLocation()}.
-     */
-    public final String getSchemaFileURL() {
-        return getXSD().getSchemaLocation();
-    }
-
-    /**
-     * Returns a schema location resolver instance used to override schema location uri's
-     * encountered in an instance document.
-     *
-     * <p>This method should be overridden to return such an instance. The default implementation
-     * returns <code>null</code>
-     *
-     * @return The schema location resolver, or <code>null</code>
-     * @deprecated
-     */
-    public final XSDSchemaLocationResolver getSchemaLocationResolver() {
-        return new SchemaLocationResolver(xsd);
-    }
-
-    /**
-     * Returns a schema locator, used to create imported and included schemas when parsing an
-     * instance document.
-     *
-     * <p>This method may be overridden to return such an instance. The default delegates to {@link
-     * #createSchemaLocator()} to and caches the result. This method may return <code>null</code> to
-     * indicate that no such locator should be used.
-     *
-     * @return The schema locator, or <code>null</code>
-     * @deprecated
-     */
-    public final XSDSchemaLocator getSchemaLocator() {
-        return new SchemaLocator(xsd);
-    }
-
-    /**
-     * Convenience method for creating an instance of the schema for this configuration.
-     *
-     * @return The schema for this configuration.
-     * @deprecated use {@link #getXSD()} and {@link XSD#getSchema()}.
-     */
-    public XSDSchema schema() {
-        try {
-            return getXSD().getSchema();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    /**
      * Returns an internal context which is copied into the runtime context while parsing.
      *
      * <p>This context is provided to allow for placing values in the parsing context without having
@@ -432,26 +375,6 @@ public abstract class Configuration {
      */
     public final MutablePicoContainer getContext() {
         return context;
-    }
-
-    /**
-     * Configures a container which houses all the bindings used during a parse.
-     *
-     * @param container The container housing the binding objects.
-     * @deprecated use {@link #setupBindings()}.
-     */
-    public final MutablePicoContainer setupBindings(MutablePicoContainer container) {
-        // configure bindings of all dependencies
-        for (Iterator d = allDependencies().iterator(); d.hasNext(); ) {
-            Configuration dependency = (Configuration) d.next();
-            dependency.registerBindings(container);
-        }
-
-        // call template method, create a new container to allow subclass to override bindings
-        container = container.makeChildContainer();
-        configureBindings(container);
-
-        return container;
     }
 
     /**
@@ -521,7 +444,6 @@ public abstract class Configuration {
      * implementing.
      *
      * @param container Container containing all bindings, keyed by {@link QName}.
-     * @deprecated use {@link #registerBindings(Map)}.
      */
     protected void registerBindings(MutablePicoContainer container) {
         // do nothing, in the case where the subclass has overridden the config
@@ -546,7 +468,6 @@ public abstract class Configuration {
      * Template method allowing subclass to override any bindings.
      *
      * @param container Container containing all bindings, keyed by {@link QName}.
-     * @deprecated use {@link #configureBindings(Map)}.
      */
     protected void configureBindings(MutablePicoContainer container) {
         // do nothing
@@ -574,14 +495,14 @@ public abstract class Configuration {
             Configuration dependency = (Configuration) d.next();
 
             // throw locator and location resolver into context
-            XSDSchemaLocationResolver resolver = dependency.getSchemaLocationResolver();
+            XSDSchemaLocationResolver resolver = new SchemaLocationResolver(dependency.getXSD());
 
             if (resolver != null) {
                 QName key = new QName(dependency.getNamespaceURI(), "schemaLocationResolver");
                 container.registerComponentInstance(key, resolver);
             }
 
-            XSDSchemaLocator locator = dependency.getSchemaLocator();
+            XSDSchemaLocator locator = new SchemaLocator(dependency.getXSD());
 
             if (locator != null) {
                 QName key = new QName(dependency.getNamespaceURI(), "schemaLocator");

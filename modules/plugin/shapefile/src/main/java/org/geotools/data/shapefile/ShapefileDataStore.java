@@ -133,7 +133,11 @@ public class ShapefileDataStore extends ContentDataStore implements FileDataStor
     }
 
     Name getTypeName() {
-        return new NameImpl(namespaceURI, shpFiles.getTypeName());
+        String typeName = "Null";
+        if (shpFiles != null) {
+            typeName = shpFiles.getTypeName();
+        }
+        return new NameImpl(namespaceURI, typeName);
     }
 
     @Override
@@ -449,6 +453,7 @@ public class ShapefileDataStore extends ContentDataStore implements FileDataStor
     }
 
     @Override
+    @SuppressWarnings("deprecation") // finalize is deprecated in Java 9
     protected void finalize() throws Throwable {
         super.finalize();
         if (shpFiles != null && trace != null) {

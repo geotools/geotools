@@ -27,7 +27,6 @@ import java.util.logging.Logger;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataUtilities;
-import org.geotools.data.DefaultQuery;
 import org.geotools.data.FeatureListener;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.Query;
@@ -153,9 +152,9 @@ public class DefaultView implements SimpleFeatureSource {
      * @throws IOException See DataSourceException
      * @throws DataSourceException If query could not meet the restrictions of definitionQuery
      */
-    protected DefaultQuery makeDefinitionQuery(Query query) throws IOException {
+    protected Query makeDefinitionQuery(Query query) throws IOException {
         if ((query == Query.ALL) || query.equals(Query.ALL)) {
-            return new DefaultQuery(constraintQuery);
+            return new Query(constraintQuery);
         }
 
         try {
@@ -181,10 +180,9 @@ public class DefaultView implements SimpleFeatureSource {
                 handle = handle + "(" + constraintQuery.getHandle() + ")";
             }
 
-            DefaultQuery defaultQuery =
-                    new DefaultQuery(typeName, namespace, filter, maxFeatures, propNames, handle);
-            defaultQuery.setSortBy(query.getSortBy());
-            return defaultQuery;
+            Query Query = new Query(typeName, namespace, filter, maxFeatures, propNames, handle);
+            Query.setSortBy(query.getSortBy());
+            return Query;
         } catch (Exception ex) {
             throw new DataSourceException(
                     "Could not restrict the query to the definition criteria: " + ex.getMessage(),
@@ -303,7 +301,7 @@ public class DefaultView implements SimpleFeatureSource {
      * @see org.geotools.data.FeatureSource#getFeatures(org.geotools.data.Query)
      */
     public SimpleFeatureCollection getFeatures(Query query) throws IOException {
-        DefaultQuery mergedQuery = makeDefinitionQuery(query);
+        Query mergedQuery = makeDefinitionQuery(query);
         SimpleFeatureCollection results = source.getFeatures(mergedQuery);
 
         // Get all the coordinate systems involved in the two queries
@@ -376,7 +374,7 @@ public class DefaultView implements SimpleFeatureSource {
      * @return @throws IOException
      */
     public SimpleFeatureCollection getFeatures(Filter filter) throws IOException {
-        return getFeatures(new DefaultQuery(schema.getTypeName(), filter));
+        return getFeatures(new Query(schema.getTypeName(), filter));
     }
 
     /**

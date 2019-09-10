@@ -16,6 +16,8 @@
  */
 package org.geotools.styling;
 
+import org.opengis.style.GraphicalSymbol;
+
 /**
  * A basic implementation of the StyleVisitor interface.
  *
@@ -60,21 +62,21 @@ public class AbstractStyleVisitor implements StyleVisitor {
 
     @Override
     public void visit(Style style) {
-        for (FeatureTypeStyle fts : style.getFeatureTypeStyles()) {
+        for (FeatureTypeStyle fts : style.featureTypeStyles()) {
             fts.accept(this);
         }
     }
 
     @Override
     public void visit(Rule rule) {
-        for (Symbolizer sym : rule.getSymbolizers()) {
+        for (Symbolizer sym : rule.symbolizers()) {
             sym.accept(this);
         }
     }
 
     @Override
     public void visit(FeatureTypeStyle fts) {
-        for (Rule r : fts.getRules()) {
+        for (Rule r : fts.rules()) {
             r.accept(this);
         }
     }
@@ -196,12 +198,12 @@ public class AbstractStyleVisitor implements StyleVisitor {
         if (gr.getDisplacement() != null) {
             gr.getDisplacement().accept(this);
         }
-        for (ExternalGraphic eg : gr.getExternalGraphics()) {
-            eg.accept(this);
-        }
-
-        for (Mark m : gr.getMarks()) {
-            m.accept(this);
+        for (GraphicalSymbol gs : gr.graphicalSymbols()) {
+            if (gs instanceof Symbol) {
+                ((Symbol) gs).accept(this);
+            } else {
+                throw new RuntimeException("Don't know how to visit " + gs);
+            }
         }
     }
 
@@ -276,9 +278,11 @@ public class AbstractStyleVisitor implements StyleVisitor {
         if (cs.getGrayChannel() != null) {
             cs.getGrayChannel().accept(this);
         }
-        for (SelectedChannelType ch : cs.getRGBChannels()) {
-            if (ch != null) {
-                ch.accept(this);
+        if (cs.getRGBChannels() != null) {
+            for (SelectedChannelType ch : cs.getRGBChannels()) {
+                if (ch != null) {
+                    ch.accept(this);
+                }
             }
         }
     }

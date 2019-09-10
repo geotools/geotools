@@ -70,6 +70,7 @@ import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.FeatureTypes;
+import org.geotools.feature.NameImpl;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.feature.type.BasicFeatureTypes;
@@ -1064,8 +1065,8 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
             build.add(new GeometryFactory().createPoint(new Coordinate(1, -1)));
             build.add(Byte.valueOf((byte) i));
             build.add(Short.valueOf((short) i));
-            build.add(new Double(i));
-            build.add(new Float(i));
+            build.add(Double.valueOf(i));
+            build.add(Float.valueOf(i));
             build.add(new String(i + " "));
             build.add(new Date(i));
             build.add(Boolean.valueOf(true));
@@ -1318,7 +1319,7 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
     private void make3D(Geometry g) {
         Coordinate[] c = g.getCoordinates();
         for (int i = 0, ii = c.length; i < ii; i++) {
-            c[i].z = 42 + i;
+            c[i].setZ(42 + i);
         }
     }
 
@@ -1732,11 +1733,9 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
         final SimpleFeatureType schema = store.getSchema();
         final String typeName = schema.getTypeName();
         // get a property of type String to update its value by the given filter
-        final AttributeDescriptor attribute = schema.getDescriptor("f");
-
         assertEquals(2, count(ds, typeName, fidFilter));
 
-        store.modifyFeatures(attribute, "modified", fidFilter);
+        store.modifyFeatures(new NameImpl("f"), "modified", fidFilter);
         Filter modifiedFilter = ff.equals(ff.property("f"), ff.literal("modified"));
         assertEquals(2, count(ds, typeName, modifiedFilter));
 
@@ -1895,7 +1894,9 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
         String geomName = schema.getGeometryDescriptor().getName().getLocalPart();
         ReferencedEnvelope bounds = featureSource.getBounds();
-        bounds.expandBy(-bounds.getWidth() / 2, -bounds.getHeight() / 2);
+        // before it was working with / 2, that is, point bbox, now it does not, accuracy issue
+        // maybe? Winding?
+        bounds.expandBy(-bounds.getWidth() / 2.1, -bounds.getHeight() / 2.1);
         query.setFilter(ff.bbox(ff.property(geomName), bounds));
         SimpleFeatureCollection features = featureSource.getFeatures(query);
         SimpleFeatureIterator iterator = features.features();

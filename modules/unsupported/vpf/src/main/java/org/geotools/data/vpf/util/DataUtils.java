@@ -85,12 +85,12 @@ public class DataUtils implements DataTypesDefinition {
                 break;
 
             case DATA_SHORT_FLOAT:
-                result = new Float(decodeFloat(bytes));
+                result = Float.valueOf(decodeFloat(bytes));
 
                 break;
 
             case DATA_LONG_FLOAT:
-                result = new Double(decodeDouble(bytes));
+                result = Double.valueOf(decodeDouble(bytes));
 
                 break;
 

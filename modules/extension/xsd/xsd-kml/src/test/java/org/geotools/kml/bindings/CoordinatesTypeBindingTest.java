@@ -47,9 +47,9 @@ public class CoordinatesTypeBindingTest extends KMLTestSupport {
 
         assertEquals(2, cs.size());
         assertEquals(new Coordinate(1, 1), cs.getCoordinate(0));
-        assertEquals(1d, cs.getCoordinate(0).z, 0.1);
+        assertEquals(1d, cs.getCoordinate(0).getZ(), 0.1);
         assertEquals(new Coordinate(2, 2), cs.getCoordinate(1));
-        assertEquals(2d, cs.getCoordinate(1).z, 0.1);
+        assertEquals(2d, cs.getCoordinate(1).getZ(), 0.1);
     }
 
     public void testEncode() throws Exception {

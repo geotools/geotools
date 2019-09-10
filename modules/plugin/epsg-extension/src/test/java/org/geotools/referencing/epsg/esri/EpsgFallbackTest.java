@@ -23,7 +23,6 @@ import junit.framework.TestSuite;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.NamedIdentifier;
-import org.geotools.referencing.factory.epsg.DefaultFactory;
 import org.geotools.referencing.factory.epsg.FactoryUsingWKT;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.ReferenceIdentifier;
@@ -33,8 +32,8 @@ import org.opengis.referencing.crs.GeographicCRS;
 import org.opengis.referencing.crs.ProjectedCRS;
 
 /**
- * Tests {@link FactoryUsingWKT} as a fallback after {@link DefaultFactory}. This method performs
- * the tests through the {@link CRS#decode} method.
+ * Tests {@link FactoryUsingWKT} as a fallback after the default factory. This method performs the
+ * tests through the {@link CRS#decode} method.
  *
  * @version $Id$
  * @author Jody Garnett

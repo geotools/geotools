@@ -73,7 +73,7 @@ public class SumAreaVisitor extends SumVisitor {
         }
 
         public Object getResult() {
-            return number == null ? null : new Double(number);
+            return number == null ? null : Double.valueOf(number);
         }
     }
 }

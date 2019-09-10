@@ -132,18 +132,6 @@ abstract class KeysFetcher {
             SimpleFeatureType featureType, Collection<SimpleFeature> features, PreparedStatement ps)
             throws SQLException;
 
-    /**
-     * Called after each non-prepared statement inserts to get back the key that were inserted.
-     *
-     * @deprecated Please call {@link #postInsert(SimpleFeatureType, SimpleFeature, Connection,
-     *     Statement)} instead
-     */
-    @Deprecated
-    public void postInsert(SimpleFeatureType featureType, SimpleFeature feature, Connection cx)
-            throws SQLException {
-        postInsert(featureType, feature, cx, null);
-    }
-
     /** Called after each non-prepared statement inserts to get back the key that were inserted. */
     public abstract void postInsert(
             SimpleFeatureType featureType, SimpleFeature feature, Connection cx, Statement st)

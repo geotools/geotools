@@ -23,7 +23,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import org.geotools.data.jdbc.FilterToSQL;
+import org.geotools.geometry.jts.JTS;
+import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.Polygon;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.filter.Id;
 import org.opengis.filter.expression.Literal;
@@ -49,15 +52,6 @@ public class PreparedFilterToSQL extends FilterToSQL {
     protected List<AttributeDescriptor> descriptors = new ArrayList<>();
     protected PreparedStatementSQLDialect dialect;
     boolean prepareEnabled = true;
-
-    /**
-     * Default constructor
-     *
-     * @deprecated Use {@link PreparedFilterToSQL(PreparedStatementSQLDialect)} instead
-     */
-    public PreparedFilterToSQL() {
-        this.dialect = null;
-    }
 
     /**
      * Contructor taking a reference to the SQL dialect, will use it to encode geometry placeholders
@@ -93,15 +87,23 @@ public class PreparedFilterToSQL extends FilterToSQL {
 
         // evaluate the literal and store it for later
         Object literalValue = evaluateLiteral(expression, clazz);
+
+        // bbox filters have a right side expression that's a ReferencedEnvelope,
+        // but SQL dialects use/want polygons instead
+        if (literalValue instanceof Envelope && convertEnvelopeToPolygon()) {
+            clazz = Polygon.class;
+            literalValue = JTS.toGeometry((Envelope) literalValue);
+        }
+
+        if (clazz == null && literalValue != null) {
+            clazz = literalValue.getClass();
+        }
+
         literalValues.add(literalValue);
         SRIDs.add(currentSRID);
         dimensions.add(currentDimension);
         descriptors.add(
                 context instanceof AttributeDescriptor ? (AttributeDescriptor) context : null);
-
-        if (clazz == null && literalValue != null) {
-            clazz = literalValue.getClass();
-        }
         literalTypes.add(clazz);
 
         try {
@@ -128,6 +130,17 @@ public class PreparedFilterToSQL extends FilterToSQL {
         return context;
     }
 
+    /**
+     * When returning true, the {@link Literal} visit will turn {@link Envelope} objects (typically
+     * coming from {@link org.opengis.filter.spatial.BBOX} filters) into {@link Polygon}. Defaults
+     * to true, subclasses can override.
+     *
+     * @return
+     */
+    protected boolean convertEnvelopeToPolygon() {
+        return true;
+    }
+
     private Class getTargetClassFromContext(Object context) {
         if (context instanceof Class) {
             return (Class) context;
@@ -144,41 +157,36 @@ public class PreparedFilterToSQL extends FilterToSQL {
      * @throws RuntimeException If there's a problem writing output
      */
     public Object visit(Id filter, Object extraData) {
-        if (mapper == null) {
-            throw new RuntimeException("Must set a fid mapper before trying to encode FIDFilters");
+
+        if (primaryKey == null) {
+            throw new RuntimeException("Must set a primary key before trying to encode FIDFilters");
         }
 
         Set ids = filter.getIdentifiers();
 
-        // prepare column name array
-        String[] colNames = new String[mapper.getColumnCount()];
-
-        for (int i = 0; i < colNames.length; i++) {
-            colNames[i] = mapper.getColumnName(i);
-        }
-
+        List<PrimaryKeyColumn> columns = primaryKey.getColumns();
         for (Iterator i = ids.iterator(); i.hasNext(); ) {
             try {
                 Identifier id = (Identifier) i.next();
-                Object[] attValues = mapper.getPKAttributes(id.toString());
+                List<Object> attValues = JDBCDataStore.decodeFID(primaryKey, id.toString(), false);
 
                 out.write("(");
 
-                for (int j = 0; j < attValues.length; j++) {
-                    out.write(escapeName(colNames[j]));
+                for (int j = 0; j < attValues.size(); j++) {
+                    out.write(escapeName(columns.get(j).getName()));
                     out.write(" = ");
                     out.write('?');
 
                     // store the value for later usage
-                    literalValues.add(attValues[j]);
+                    literalValues.add(attValues.get(j));
                     // no srid, pk are not formed with geometry values
                     SRIDs.add(-1);
                     dimensions.add(-1);
                     // if it's not null, we can also infer the type
-                    literalTypes.add(attValues[j] != null ? attValues[j].getClass() : null);
+                    literalTypes.add(attValues.get(j) != null ? attValues.get(j).getClass() : null);
                     descriptors.add(null);
 
-                    if (j < (attValues.length - 1)) {
+                    if (j < (attValues.size() - 1)) {
                         out.write(" AND ");
                     }
                 }

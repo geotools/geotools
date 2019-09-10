@@ -32,7 +32,6 @@ import java.awt.event.ActionListener;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
-import javax.media.jai.widget.ScrollingImagePanel;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -138,6 +137,7 @@ public class OffsetCurveBuilderTest {
                 };
             };
 
+    @SuppressWarnings("deprecation")
     class ImageDisplay extends JDialog {
         private static final long serialVersionUID = -8640087805737551918L;
 
@@ -155,8 +155,8 @@ public class OffsetCurveBuilderTest {
             topLabel.setBorder(new EmptyBorder(4, 4, 4, 4));
             content.add(topLabel, BorderLayout.NORTH);
 
-            ScrollingImagePanel imageViewer =
-                    new ScrollingImagePanel(
+            javax.media.jai.widget.ScrollingImagePanel imageViewer =
+                    new javax.media.jai.widget.ScrollingImagePanel(
                             image,
                             Math.min(400, image.getWidth()) + 100,
                             Math.min(400, image.getHeight()) + 100);

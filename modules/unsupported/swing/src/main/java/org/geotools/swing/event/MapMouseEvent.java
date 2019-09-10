@@ -43,6 +43,7 @@ public final class MapMouseEvent extends MouseEvent {
      * @param pane the source map pane
      * @param event the source mouse event
      */
+    @SuppressWarnings("deprecation")
     public MapMouseEvent(MapPane pane, MouseEvent event) {
         super(
                 (Component) pane,
@@ -66,6 +67,7 @@ public final class MapMouseEvent extends MouseEvent {
      * @param pane the source map pane
      * @param event the source mouse wheel event
      */
+    @SuppressWarnings("deprecation")
     public MapMouseEvent(MapPane pane, MouseWheelEvent event) {
         super(
                 (Component) pane,
@@ -104,16 +106,6 @@ public final class MapMouseEvent extends MouseEvent {
      */
     public int getWheelAmount() {
         return wheelAmount;
-    }
-
-    /**
-     * Gets the position, in map (world) coordinates of this mouse event
-     *
-     * @return a new DirectPosition2D object for the world coordinates
-     * @deprecated Please use {@link #getWorldPos} instead
-     */
-    public DirectPosition2D getMapPosition() {
-        return getWorldPos();
     }
 
     /**

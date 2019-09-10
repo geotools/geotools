@@ -16,11 +16,9 @@
  */
 package org.geotools.process.raster;
 
-import org.geotools.process.gs.GSProcess;
-
 /**
  * Marker interface for processes that should be grouped into the "raster" family.
  *
  * @author Justin Deoliveira, OpenGeo
  */
-public interface RasterProcess extends GSProcess {}
+public interface RasterProcess {}

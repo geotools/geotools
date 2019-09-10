@@ -470,7 +470,6 @@ public class DefaultCoordinateOperationFactory extends AbstractCoordinateOperati
      * @throws OperationNotFoundException if no operation path was found from {@code sourceCRS} to
      *     {@code targetCRS}.
      * @throws FactoryException if the operation creation failed for some other reason.
-     * @deprecated Current implementation ignore the {@code method} argument.
      */
     public CoordinateOperation createOperation(
             final CoordinateReferenceSystem sourceCRS,

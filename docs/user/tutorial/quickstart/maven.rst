@@ -269,19 +269,6 @@ Things to Try
 * Fast: We know that one of the ways people select a spatial library is based on speed. By design
   GeoTools does not load the above shapefile into memory (instead it streams it off of disk
   each time it is drawn using a spatial index to only bring the content required for display).
-  
-  If you would like to ask GeoTools to cache the shapefile in memory try the following code:
-
-  .. literalinclude:: /../src/main/java/org/geotools/tutorial/quickstart/QuickstartCache.java
-     :language: java
-     :start-after: // docs start cache
-     :end-before:  // docs end cache
-  
-  You will also need to add this import statement:
-
-  .. code-block:: java
-
-     import org.geotools.data.CachingFeatureSource;
 
   .. Hint::
      When working in a text editor instead of an IDE use the `GeoTools javadocs 

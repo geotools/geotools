@@ -63,14 +63,19 @@ public class ChannelSelectionUpdateStyleVisitor extends DuplicatingStyleVisitor 
         int[] bandIndices = null;
         ChannelSelection channelSelection = symbolizer.getChannelSelection();
         if (channelSelection != null) {
-            SelectedChannelType[] channels = channelSelection.getSelectedChannels();
-            if (channels != null) {
+            SelectedChannelType[] channels = channelSelection.getRGBChannels();
+            if (channels != null && channels.length > 0 && channels[0] != null) {
                 bandIndices = new int[channels.length];
                 for (int i = 0; i < channels.length; i++) {
                     if (channels[i] == null) return null;
                     // Note that in channel selection, channels start at index 1
                     bandIndices[i] = channels[i].getChannelName().evaluate(null, Integer.class) - 1;
                 }
+            }
+            SelectedChannelType grayChannel = channelSelection.getGrayChannel();
+            if (grayChannel != null) {
+                bandIndices = new int[1];
+                bandIndices[0] = grayChannel.getChannelName().evaluate(null, Integer.class) - 1;
             }
         }
         return bandIndices;

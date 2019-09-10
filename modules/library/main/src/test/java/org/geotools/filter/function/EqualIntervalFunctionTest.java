@@ -82,14 +82,14 @@ public class EqualIntervalFunctionTest extends FunctionTestSupport {
         assertEquals("32.667..61.333", ranged.getTitle(1));
         assertEquals("61.333..90", ranged.getTitle(2));
         // check classifier binning
-        assertEquals(0, ranged.classify(new Double(4)));
+        assertEquals(0, ranged.classify(Double.valueOf(4)));
         assertEquals(2, ranged.classify(name, testFeatures[1])); // 90
-        assertEquals(0, ranged.classify(new Double(20)));
-        assertEquals(1, ranged.classify(new Double(43)));
-        assertEquals(0, ranged.classify(new Double(29)));
-        assertEquals(1, ranged.classify(new Double(61)));
+        assertEquals(0, ranged.classify(Double.valueOf(20)));
+        assertEquals(1, ranged.classify(Double.valueOf(43)));
+        assertEquals(0, ranged.classify(Double.valueOf(29)));
+        assertEquals(1, ranged.classify(Double.valueOf(61)));
         assertEquals(0, ranged.classify(name, testFeatures[6])); // 8
-        assertEquals(0, ranged.classify(new Double(12)));
+        assertEquals(0, ranged.classify(Double.valueOf(12)));
 
         // try again with foo
     }

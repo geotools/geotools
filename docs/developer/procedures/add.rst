@@ -108,7 +108,7 @@ Deploying to Open Source Geospatial Foundation Maven 2 Repository:
    
    Your OSGeo ID must be on this list to enable WebDAV access. Anyone on the list can add you:
    
-   * https://www2.osgeo.org/cgi-bin/auth/ldap_group.py?group=geotools
+   * https://id.osgeo.org/ldap/group?group=geotools
 
 3. Create or update your ~/.m2/settings.xml file as below (~ is your home directory)::
      
@@ -131,14 +131,14 @@ Deploying to Open Source Geospatial Foundation Maven 2 Repository:
                             -Dfile=<path-to-file>        \
                             -Dpackaging=jar              \
                             -DrepositoryId=osgeo   \
-                            -Durl=dav:http://download.osgeo.org/webdav/geotools/
+                            -Durl=dav:http://download.osgeo.org/upload/geotools/
 
 4. Or if you have a pom file::
      
      mvn deploy:deploy-file -DpomFile=<path-to-pom>      \
                             -Dfile=<path-to-file>        \
                             -DrepositoryId=osgeo   \
-                            -Durl=dav:http://download.osgeo.org/webdav/geotools/
+                            -Durl=dav:http://download.osgeo.org/upload/geotools/
 
 5. Elements in bracket (<foo>) need to be replaced by their actual values.
 
@@ -176,7 +176,7 @@ Examples of Updating JTS Jar
 
 2. Here is an example of how to deploy the JTS binary jar::
      
-      C:\java\geotools\trunk>mvn deploy:deploy-file -DgroupId=org.locationtech -DartifactId=jts -Dversion=1.13 -Dfile=C:\java\jts\lib\jts-1.13.jar -Dpackaging=jar -DrepositoryId=osgeo -Durl=dav:http://download.osgeo.org/webdav/geotools/
+      C:\java\geotools\trunk>mvn deploy:deploy-file -DgroupId=org.locationtech -DartifactId=jts-core -Dversion=1.13 -Dfile=C:\java\jts\lib\jts-1.13.jar -Dpackaging=jar -DrepositoryId=osgeo -Durl=dav:http://download.osgeo.org/upload/geotools/
 
 3. And the source code (you will need to zip this up first since JTS does not provide a source download)::
     

@@ -163,7 +163,7 @@ public final class BuildResultStack {
     public double popDoubleValue() throws CQLException {
         try {
             Literal expr = this.popLiteral();
-            Double number = new Double(expr.getValue().toString());
+            Double number = Double.valueOf(expr.getValue().toString());
 
             return number.doubleValue();
         } catch (ClassCastException cce) {

@@ -613,7 +613,7 @@ public class WPSManualRequestOnlineTest extends OnlineTestCase {
         OutputDataType output = (OutputDataType) outputs.get(0);
         LiteralDataType literalData = output.getData().getLiteralData();
         String value = literalData.getValue();
-        Double result = new Double(value);
+        Double result = Double.valueOf(value);
         Double expected = 77.84 + 40039.229;
         assertEquals(result, expected);
     }

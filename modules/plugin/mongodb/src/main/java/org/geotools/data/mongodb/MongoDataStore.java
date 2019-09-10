@@ -29,8 +29,14 @@ import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.stream.StreamSupport;
+import org.bson.BsonDocument;
+import org.bson.BsonString;
+import org.bson.Document;
 import org.geotools.data.FeatureWriter;
 import org.geotools.data.Transaction;
 import org.geotools.data.store.ContentDataStore;
@@ -41,6 +47,7 @@ import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.filter.FilterCapabilities;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.geotools.util.logging.Logging;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -57,7 +64,10 @@ import org.opengis.filter.spatial.Intersects;
 import org.opengis.filter.spatial.Within;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
+@SuppressWarnings("deprecation") // DB was replaced by MongoDatabase but API is not the same
 public class MongoDataStore extends ContentDataStore {
+
+    private static final Logger LOGGER = Logging.getLogger(MongoDataStore.class);
 
     static final String KEY_mapping = "mapping";
     static final String KEY_encoding = "encoding";
@@ -68,8 +78,13 @@ public class MongoDataStore extends ContentDataStore {
     final MongoClient dataStoreClient;
     final DB dataStoreDB;
 
+    final boolean deactivateOrNativeFilter;
+
     @SuppressWarnings("deprecation")
     FilterCapabilities filterCapabilities;
+
+    // parameters for precise schema generation from actual mongodb data
+    private MongoSchemaInitParams schemaInitParams;
 
     public MongoDataStore(String dataStoreURI) {
         this(dataStoreURI, null);
@@ -81,6 +96,14 @@ public class MongoDataStore extends ContentDataStore {
 
     public MongoDataStore(
             String dataStoreURI, String schemaStoreURI, boolean createDatabaseIfNeeded) {
+        this(dataStoreURI, schemaStoreURI, createDatabaseIfNeeded, null);
+    }
+
+    public MongoDataStore(
+            String dataStoreURI,
+            String schemaStoreURI,
+            boolean createDatabaseIfNeeded,
+            MongoSchemaInitParams schemaInitParams) {
 
         MongoClientURI dataStoreClientURI = createMongoClientURI(dataStoreURI);
         dataStoreClient = createMongoClient(dataStoreClientURI);
@@ -93,6 +116,8 @@ public class MongoDataStore extends ContentDataStore {
                     "Unknown mongodb database, \"" + dataStoreClientURI.getDatabase() + "\"");
         }
 
+        this.deactivateOrNativeFilter = isMongoVersionLessThan2_6(dataStoreClientURI);
+
         schemaStore = createSchemaStore(schemaStoreURI);
         if (schemaStore == null) {
             dataStoreClient.close(); // This smells bad too...
@@ -101,6 +126,31 @@ public class MongoDataStore extends ContentDataStore {
         }
 
         filterCapabilities = createFilterCapabilties();
+
+        if (schemaInitParams != null) this.schemaInitParams = schemaInitParams;
+        else this.schemaInitParams = MongoSchemaInitParams.builder().build();
+    }
+
+    /**
+     * Checks if MongoDB version is less than 2.6.0.
+     *
+     * @return true if version less than 2.6.0 is found, otherwise false.
+     */
+    private boolean isMongoVersionLessThan2_6(MongoClientURI dataStoreClientURI) {
+        boolean deactivateOrAux = false;
+        // check server version
+        Document result =
+                dataStoreClient
+                        .getDatabase(dataStoreClientURI.getDatabase())
+                        .runCommand(new BsonDocument("buildinfo", new BsonString("")));
+        if (result.containsKey("versionArray")) {
+            List<Integer> versionArray = (List<Integer>) result.get("versionArray");
+            // if MongoDB server version < 2.6.0 disable native $or operator
+            if (versionArray.get(0) < 2 || (versionArray.get(0) == 2 && versionArray.get(1) < 6)) {
+                deactivateOrAux = true;
+            }
+        }
+        return deactivateOrAux;
     }
 
     final MongoClientURI createMongoClientURI(String dataStoreURI) {
@@ -125,7 +175,9 @@ public class MongoDataStore extends ContentDataStore {
     }
 
     final DB createDB(MongoClient mongoClient, String databaseName, boolean databaseMustExist) {
-        if (databaseMustExist && !mongoClient.getDatabaseNames().contains(databaseName)) {
+        if (databaseMustExist
+                && !StreamSupport.stream(mongoClient.listDatabaseNames().spliterator(), false)
+                        .anyMatch(name -> databaseName.equalsIgnoreCase(name))) {
             return null;
         }
         return mongoClient.getDB(databaseName);
@@ -188,13 +240,18 @@ public class MongoDataStore extends ContentDataStore {
     final FilterCapabilities createFilterCapabilties() {
         FilterCapabilities capabilities = new FilterCapabilities();
 
-        /* disable FilterCapabilities.LOGICAL_OPENGIS since it contains
-            Or.class (in addtions to And.class and Not.class.  MongodB 2.4
-            doesn't supprt '$or' with spatial operations.
-        */
-        //        capabilities.addAll(FilterCapabilities.LOGICAL_OPENGIS);
-        capabilities.addType(And.class);
-        capabilities.addType(Not.class);
+        if (deactivateOrNativeFilter) {
+            /*
+             * disable FilterCapabilities.LOGICAL_OPENGIS since it contains Or.class (in
+             * additions to And.class and Not.class. MongodB 2.4 doesn't support '$or' with
+             * spatial operations.
+             */
+            capabilities.addType(And.class);
+            capabilities.addType(Not.class);
+        } else {
+            // default behavior, '$or' is fully supported from MongoDB 2.6.0 version
+            capabilities.addAll(FilterCapabilities.LOGICAL_OPENGIS);
+        }
 
         capabilities.addAll(FilterCapabilities.SIMPLE_COMPARISONS_OPENGIS);
         capabilities.addType(PropertyIsNull.class);
@@ -414,7 +471,7 @@ public class MongoDataStore extends ContentDataStore {
         return state;
     }
 
-    final MongoSchemaStore getSchemaStore() {
+    public final MongoSchemaStore getSchemaStore() {
         return schemaStore;
     }
 
@@ -423,5 +480,22 @@ public class MongoDataStore extends ContentDataStore {
         dataStoreClient.close();
         schemaStore.close();
         super.dispose();
+    }
+
+    /** Cleans current memory cached entries. */
+    public void cleanEntries() {
+        LOGGER.info("Proceeding to clean all store cached entries");
+        for (ContentEntry entry : entries.values()) {
+            entry.dispose();
+        }
+        entries.clear();
+    }
+
+    public Optional<MongoSchemaInitParams> getSchemaInitParams() {
+        return Optional.ofNullable(schemaInitParams);
+    }
+
+    public void setSchemaInitParams(MongoSchemaInitParams schemaInitParams) {
+        this.schemaInitParams = schemaInitParams;
     }
 }

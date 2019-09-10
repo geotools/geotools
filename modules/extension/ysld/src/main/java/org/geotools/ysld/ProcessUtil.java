@@ -55,7 +55,7 @@ public class ProcessUtil {
         }
 
         try {
-            return (FunctionFactory) functionFactoryClass.newInstance();
+            return (FunctionFactory) functionFactoryClass.getDeclaredConstructor().newInstance();
         } catch (Exception e) {
             LOG.log(Level.WARNING, "Error creating process function factory", e);
         }

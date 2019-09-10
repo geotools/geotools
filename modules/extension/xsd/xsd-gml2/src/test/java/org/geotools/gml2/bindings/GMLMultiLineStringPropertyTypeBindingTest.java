@@ -36,9 +36,9 @@ public class GMLMultiLineStringPropertyTypeBindingTest extends AbstractGMLBindin
                 createElement(
                         GML.NAMESPACE,
                         "myMultiLineStringProperty",
-                        GML.MULTILINESTRINGPROPERTYTYPE,
+                        GML.MultiLineStringPropertyType,
                         null);
-        geometry = createElement(GML.NAMESPACE, "myMultiLineString", GML.MULTILINESTRINGTYPE, null);
+        geometry = createElement(GML.NAMESPACE, "myMultiLineString", GML.MultiLineStringType, null);
 
         container = new DefaultPicoContainer();
         container.registerComponentImplementation(GeometryFactory.class);

@@ -45,7 +45,7 @@ public abstract class GeoSpatialImageReader extends ImageReader implements FileS
     protected File file;
 
     /** the coverage slices slicesCatalog */
-    private CoverageSlicesCatalog slicesCatalog;
+    CoverageSlicesCatalog slicesCatalog;
 
     protected int numImages = -1;
 
@@ -54,7 +54,7 @@ public abstract class GeoSpatialImageReader extends ImageReader implements FileS
     /** Path of the auxiliary datastore properties file, used as low level granules index */
     private String auxiliaryDatastorePath = null;
 
-    private Repository repository;
+    Repository repository;
 
     protected GeoSpatialImageReader(ImageReaderSpi originatingProvider) {
         super(originatingProvider);
@@ -182,18 +182,6 @@ public abstract class GeoSpatialImageReader extends ImageReader implements FileS
     }
 
     /**
-     * Init the slicesCatalog based on the provided parameters
-     *
-     * @param parentLocation
-     * @param databaseName
-     * @throws IOException
-     * @deprecated: use the {@link #initCatalog(DataStoreConfiguration)} instead
-     */
-    protected void initCatalog(File parentLocation, String databaseName) throws IOException {
-        slicesCatalog = new CoverageSlicesCatalog(databaseName, parentLocation, repository);
-    }
-
-    /**
      * Initialize a slicesCatalog on top of the provided {@link DataStoreConfiguration} instance
      *
      * @param datastoreConfig
@@ -207,6 +195,7 @@ public abstract class GeoSpatialImageReader extends ImageReader implements FileS
     }
 
     @Override
+    @SuppressWarnings("deprecation") // finalize is deprecated in Java 9
     protected void finalize() throws Throwable {
         dispose();
         super.finalize();

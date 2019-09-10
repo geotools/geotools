@@ -24,7 +24,6 @@ import java.io.IOException;
 import java.lang.reflect.Array;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -87,7 +86,6 @@ import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.CRS;
 import org.geotools.styling.UserLayer;
 import org.geotools.util.Converters;
-import org.geotools.util.URLs;
 import org.geotools.util.Utilities;
 import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.Coordinate;
@@ -256,8 +254,8 @@ public class DataUtilities {
 
         typeEncode.put(MultiLineString.class, "MultiLineString");
         typeMap.put("MultiLineString", MultiLineString.class);
-        typeMap.put("com.vividsolutions.jts.geom.MultiPoint", MultiLineString.class);
-        typeMap.put("org.locationtech.jts.geom.MultiPoint", MultiLineString.class);
+        typeMap.put("com.vividsolutions.jts.geom.MultiLineString", MultiLineString.class);
+        typeMap.put("org.locationtech.jts.geom.MultiLineString", MultiLineString.class);
 
         typeEncode.put(MultiPolygon.class, "MultiPolygon");
         typeMap.put("MultiPolygon", MultiPolygon.class);
@@ -286,16 +284,6 @@ public class DataUtilities {
             names[i] = featureType.getDescriptor(i).getLocalName();
         }
         return names;
-    }
-
-    /** @deprecated Use {@link URLs#fileToUrl(File)} */
-    public static URL fileToURL(File file) {
-        return URLs.fileToUrl(file);
-    }
-
-    /** @deprecated Use {@link URLs#urlToFile(URL)} */
-    public static File urlToFile(URL url) {
-        return URLs.urlToFile(url);
     }
 
     /**
@@ -791,26 +779,6 @@ public class DataUtilities {
     }
 
     /**
-     * Provides a defautlValue for attributeType.
-     *
-     * <p>Will return null if attributeType isNillable(), or attempt to use Reflection, or
-     * attributeType.parse( null )
-     *
-     * @param attributeType
-     * @return null for nillable attributeType, attempt at reflection
-     * @deprecated Please {@link AttributeDescriptor#getDefaultValue()}
-     */
-    public static Object defaultValue(AttributeDescriptor attributeType)
-            throws IllegalAttributeException {
-        Object value = attributeType.getDefaultValue();
-
-        if (value == null && !attributeType.isNillable()) {
-            return null; // sometimes there is no valid default value :-(
-        }
-        return value;
-    }
-
-    /**
      * Returns a non-null default value for the class that is passed in. This is a helper class an
      * can't create a default class for all types but it does support:
      *
@@ -846,7 +814,7 @@ public class DataUtilities {
             return Integer.valueOf(0);
         }
         if (type == Double.class) {
-            return new Double(0);
+            return Double.valueOf(0);
         }
         if (type == Long.class) {
             return Long.valueOf(0);
@@ -855,7 +823,7 @@ public class DataUtilities {
             return Short.valueOf((short) 0);
         }
         if (type == Float.class) {
-            return new Float(0.0f);
+            return Float.valueOf(0.0f);
         }
         if (type == BigDecimal.class) {
             return BigDecimal.valueOf(0);
@@ -864,7 +832,7 @@ public class DataUtilities {
             return BigInteger.valueOf(0);
         }
         if (type == Character.class) {
-            return new Character(' ');
+            return Character.valueOf(' ');
         }
         if (type == Boolean.class) {
             return Boolean.FALSE;
@@ -917,6 +885,9 @@ public class DataUtilities {
 
         if (type.isArray()) {
             return Array.newInstance(type.getComponentType(), 0);
+        }
+        if (type == Geometry.class) { // return a point as default coordinate
+            return fac.createGeometry(point);
         }
 
         throw new IllegalArgumentException(type + " is not supported by this method");
@@ -1353,7 +1324,11 @@ public class DataUtilities {
                 SimpleFeatureTypeBuilder build = new SimpleFeatureTypeBuilder();
                 build.setName(featureType.getName());
                 build.setAttributes(simpleAttributes);
-                build.setDefaultGeometry(featureType.getGeometryDescriptor().getLocalName());
+
+                GeometryDescriptor defaultGeometry = featureType.getGeometryDescriptor();
+                if (defaultGeometry != null) {
+                    build.setDefaultGeometry(defaultGeometry.getLocalName());
+                }
 
                 simpleFeatureType = build.buildFeatureType();
             }
@@ -1938,45 +1913,6 @@ public class DataUtilities {
         return -1;
     }
 
-    /**
-     * A "quick" String representation of a FeatureType.
-     *
-     * <p>This string representation may be used with createType( name, spec ).
-     *
-     * @param featureType FeatureType to represent
-     * @return The string "specification" for the featureType
-     * @deprecated Renamed to {@link #encodeType} for concistency with {@link #createType}
-     */
-    public static String spec(FeatureType featureType) {
-        Collection<PropertyDescriptor> types = featureType.getDescriptors();
-        StringBuffer buf = new StringBuffer();
-
-        for (PropertyDescriptor type : types) {
-            buf.append(type.getName().getLocalPart());
-            buf.append(":");
-            buf.append(typeMap(type.getType().getBinding()));
-            if (type instanceof GeometryDescriptor) {
-                GeometryDescriptor gd = (GeometryDescriptor) type;
-                if (gd.getCoordinateReferenceSystem() != null
-                        && gd.getCoordinateReferenceSystem().getIdentifiers() != null) {
-                    for (Iterator<ReferenceIdentifier> it =
-                                    gd.getCoordinateReferenceSystem().getIdentifiers().iterator();
-                            it.hasNext(); ) {
-                        ReferenceIdentifier id = it.next();
-
-                        if ((id.getAuthority() != null)
-                                && id.getAuthority().getTitle().equals(Citations.EPSG.getTitle())) {
-                            buf.append(":srid=" + id.getCode());
-                            break;
-                        }
-                    }
-                }
-            }
-            buf.append(",");
-        }
-        buf.delete(buf.length() - 1, buf.length()); // remove last ","
-        return buf.toString();
-    }
     /**
      * Reads in SimpleFeature that has been encoded into a line of text.
      *
@@ -2806,23 +2742,6 @@ public class DataUtilities {
                 iterator.close();
             }
         }
-    }
-
-    /** @deprecated Use {@link URLs#changeUrlExt(URL, String)} */
-    public static URL changeUrlExt(URL url, String postfix) throws IllegalArgumentException {
-        return URLs.changeUrlExt(url, postfix);
-    }
-
-    /** @deprecated Use {@link URLs#getParentUrl(URL)}. */
-    public static URL getParentUrl(URL url) throws MalformedURLException {
-        return URLs.getParentUrl(url);
-    }
-
-    /**
-     * @deprecated Use {@link URLs#extendUrl(URL, String)
-     */
-    public static URL extendURL(URL base, String extension) throws MalformedURLException {
-        return URLs.extendUrl(base, extension);
     }
 
     /**

@@ -1771,7 +1771,9 @@ Contains 199 functions.
 ``ProcessFunctionFactory``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Contains 101 functions.
+Sep 10, 2019 5:15:28 PM org.geotools.image.ImageWorker <clinit>
+INFO: Warp/affine reduction enabled: true
+Contains 102 functions.
 
 ``AddCoverages(coverageA, coverageB)``: returns ``result``
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -2756,6 +2758,13 @@ Contains 101 functions.
 
 * ``result`` (``int``)
 
+``octagonalEnvelope(geom)``: returns ``result``
+'''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``geom`` (``Geometry``) required
+
+* ``result`` (``Geometry``)
+
 ``overlaps(a, b)``: returns ``result``
 ''''''''''''''''''''''''''''''''''''''
 
@@ -2893,10 +2902,3 @@ Contains 1 functions.
 * ``tolerance`` (``double``) required
 
 * ``labelPoint`` (``Point``)
-
-[INFO] ------------------------------------------------------------------------
-[INFO] BUILD SUCCESS
-[INFO] ------------------------------------------------------------------------
-[INFO] Total time:  1.679 s
-[INFO] Finished at: 2019-08-03T11:19:01+01:00
-[INFO] ------------------------------------------------------------------------

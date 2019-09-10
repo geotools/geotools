@@ -5,7 +5,7 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>modules</artifactId>
-    <version>22-SNAPSHOT</version>
+    <version>23-SNAPSHOT</version>
   </parent>
 
   <groupId>org.geotools</groupId>
@@ -72,6 +72,7 @@
     <pmd.skip>true</pmd.skip>
     <spotbugs.skip>true</spotbugs.skip>
     <checkstyle.skip>true</checkstyle.skip>
+	<lint>none</lint>
   </properties>
 
 

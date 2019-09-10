@@ -32,6 +32,7 @@ import org.locationtech.jts.geom.MultiPoint;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
+import org.locationtech.jts.geom.impl.CoordinateArraySequence;
 
 /**
  * Unit tests for the JTS utility class smooth method.
@@ -69,7 +70,7 @@ public class JTSSmoothTest extends JTSTestBase {
     @Test
     public void smoothMultiPointReturnsSameObject() {
         Coordinate[] coords = getLineCoords();
-        MultiPoint mpoint = factory.createMultiPoint(coords);
+        MultiPoint mpoint = factory.createMultiPoint(new CoordinateArraySequence(coords));
         Geometry smoothed = JTS.smooth(mpoint, 0);
         assertTrue(smoothed == mpoint);
     }

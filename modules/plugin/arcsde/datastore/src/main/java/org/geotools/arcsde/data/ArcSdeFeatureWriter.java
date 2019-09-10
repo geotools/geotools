@@ -595,9 +595,9 @@ abstract class ArcSdeFeatureWriter implements FeatureWriter<SimpleFeatureType, S
         } else if (Integer.class == binding) {
             userFidValue = Integer.valueOf(newId.intValue());
         } else if (Double.class == binding) {
-            userFidValue = new Double(newId.doubleValue());
+            userFidValue = Double.valueOf(newId.doubleValue());
         } else if (Float.class == binding) {
-            userFidValue = new Float(newId.floatValue());
+            userFidValue = Float.valueOf(newId.floatValue());
         } else {
             throw new IllegalArgumentException(
                     "Can't handle a user managed row id of type " + binding);

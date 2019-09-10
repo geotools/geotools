@@ -37,13 +37,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.media.jai.Interpolation;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.io.IOUtils;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.imageio.GeoToolsWriteParams;
 import org.geotools.data.DataAccessFactory.Param;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFactorySpi;
-import org.geotools.data.DataUtilities;
 import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.gce.imagemosaic.catalog.CatalogConfigurationBean;
@@ -96,7 +94,8 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  *       i.e., intensity is really low and transform them into transparent areas. It is obvious that
  *       depending on the nature of the input images it might interfere with the original values.
  *   <li>---ALPHA_THRESHOLD = new DefaultParameterDescriptor( "AlphaThreshold", Double.class, null,
- *       new Double(1));--- Controls the transparency addition by specifying the treshold to use.
+ *       Double.valueOf(1));--- Controls the transparency addition by specifying the treshold to
+ *       use.
  *   <li>INPUT_IMAGE_THRESHOLD = new DefaultParameterDescriptor( "InputImageROI", Boolean.class,
  *       null, Boolean.FALSE)--- INPUT_IMAGE_THRESHOLD_VALUE = new DefaultParameterDescriptor(
  *       "InputImageROIThreshold", Integer.class, null, Integer.valueOf(1));--- These two can be
@@ -293,7 +292,8 @@ public final class ImageMosaicFormat extends AbstractGridFormat implements Forma
                                     FOOTPRINT_BEHAVIOR,
                                     OVERVIEW_POLICY,
                                     BANDS,
-                                    EXCESS_GRANULE_REMOVAL
+                                    EXCESS_GRANULE_REMOVAL,
+                                    RESCALE_PIXELS
                                 }));
 
         // reading parameters
@@ -414,18 +414,16 @@ public final class ImageMosaicFormat extends AbstractGridFormat implements Forma
                     // load spi anche check it
                     // read the properties file
                     final Properties properties = new Properties();
-                    final FileInputStream stream = new FileInputStream(sourceF);
-                    try {
+                    try (FileInputStream stream = new FileInputStream(sourceF)) {
                         properties.load(stream);
-                    } finally {
-                        IOUtils.closeQuietly(stream);
                     }
 
                     // SPI
                     final String SPIClass = properties.getProperty("SPI");
                     // create a datastore as instructed
                     final DataStoreFactorySpi spi =
-                            (DataStoreFactorySpi) Class.forName(SPIClass).newInstance();
+                            (DataStoreFactorySpi)
+                                    Class.forName(SPIClass).getDeclaredConstructor().newInstance();
 
                     // get the params
                     final Map<String, Serializable> params = new HashMap<String, Serializable>();
@@ -454,7 +452,7 @@ public final class ImageMosaicFormat extends AbstractGridFormat implements Forma
                     if (tileIndexStore == null) return false;
 
                 } else {
-                    URL testPropertiesUrl = DataUtilities.changeUrlExt(sourceURL, "properties");
+                    URL testPropertiesUrl = URLs.changeUrlExt(sourceURL, "properties");
                     File testFile = URLs.urlToFile(testPropertiesUrl);
                     if (!testFile.exists()) {
                         return false;
@@ -469,7 +467,7 @@ public final class ImageMosaicFormat extends AbstractGridFormat implements Forma
                 // Now look for the properties file and try to parse relevant fields
                 //
                 URL propsUrl = null;
-                if (shapefile) propsUrl = DataUtilities.changeUrlExt(sourceURL, "properties");
+                if (shapefile) propsUrl = URLs.changeUrlExt(sourceURL, "properties");
                 else {
                     //
                     // do we have a datastore properties file? It will preempt on the shapefile

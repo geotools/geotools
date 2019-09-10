@@ -7,11 +7,11 @@ import org.geotools.data.DataUtilities;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.SchemaException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
+import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
-import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.geom.PrecisionModel;
@@ -83,8 +83,7 @@ public class BBOXImplTest {
         String srs = "AUTO:42004,9001,0,33";
         CoordinateReferenceSystem crs = CRS.decode(srs);
         BBOX bbox = ff.bbox(ff.property(""), 0, 1000, 2000, 3000, srs);
-        Geometry geom = bbox.getExpression2().evaluate(null, Geometry.class);
-        assertEquals(crs, geom.getUserData());
-        assertEquals(srs, bbox.getSRS());
+        ReferencedEnvelope envelope = (ReferencedEnvelope) bbox.getExpression2().evaluate(null);
+        assertEquals(crs, envelope.getCoordinateReferenceSystem());
     }
 }

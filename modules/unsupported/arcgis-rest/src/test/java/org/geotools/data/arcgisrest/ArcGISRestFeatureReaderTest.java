@@ -20,6 +20,8 @@ import static org.junit.Assert.*;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.NoSuchElementException;
 import java.util.logging.Logger;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
@@ -45,7 +47,7 @@ public class ArcGISRestFeatureReaderTest {
         builder.add("vint", Integer.class);
         builder.add("vfloat", Float.class);
         builder.add("vstring", String.class);
-        builder.add("vboolean", Boolean.class);
+        builder.add("vdate", Date.class);
         builder.add("geometry", Geometry.class);
 
         this.fType = builder.buildFeatureType();
@@ -101,5 +103,28 @@ public class ArcGISRestFeatureReaderTest {
         feat = this.reader.next();
         assertFalse(this.reader.hasNext());
         assertEquals("geometry", feat.getDefaultGeometryProperty().getName().getLocalPart());
+    }
+
+    @Test
+    public void properties() throws Exception {
+
+        this.json =
+                ArcGISRestDataStoreFactoryTest.readJSONAsString("test-data/properties.geo.json");
+        this.reader =
+                new ArcGISRestFeatureReader(
+                        this.fType, new ByteArrayInputStream(json.getBytes()), this.LOGGER);
+
+        assertTrue(this.reader.hasNext());
+        SimpleFeature feat = this.reader.next();
+        assertTrue(this.reader.hasNext());
+        feat = this.reader.next();
+        assertTrue(this.reader.hasNext());
+        feat = this.reader.next();
+        assertEquals(
+                (new SimpleDateFormat((GeoJSONParser.DATETIME_FORMAT))
+                        .format(new Date(1381968000000L))),
+                feat.getAttribute("vdate"));
+        assertEquals("geometry", feat.getDefaultGeometryProperty().getName().getLocalPart());
+        assertFalse(this.reader.hasNext());
     }
 }

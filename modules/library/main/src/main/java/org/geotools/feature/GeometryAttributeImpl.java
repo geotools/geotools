@@ -63,7 +63,6 @@ public class GeometryAttributeImpl extends AttributeImpl implements GeometryAttr
         return (GeometryDescriptor) super.getDescriptor();
     }
 
-    /** @deprecated */
     public Geometry getValue() {
         return (Geometry) super.getValue();
     }
@@ -72,7 +71,6 @@ public class GeometryAttributeImpl extends AttributeImpl implements GeometryAttr
         super.setValue((Geometry) newValue);
     }
 
-    /** @deprecated */
     public void setValue(Geometry geometry) {
         super.setValue(geometry);
     }

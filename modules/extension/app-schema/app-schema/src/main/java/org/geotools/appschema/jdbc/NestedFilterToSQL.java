@@ -178,75 +178,33 @@ public class NestedFilterToSQL extends FilterToSQL {
             throw new RuntimeException(e);
         }
         sql.append(" ON ");
-        store.dialect.encodeColumnName(nestedAttribute.getLastLink().getAlias(), sql);
+        store.dialect.encodeColumnName(null, nestedAttribute.getLastLink().getAlias(), sql);
         sql.append(".");
-        store.dialect.encodeColumnName(multipleValue.getSourceColumn(), sql);
+        store.dialect.encodeColumnName(null, multipleValue.getSourceColumn(), sql);
         sql.append(" = ");
         store.dialect.encodeTableName(alias, sql);
         sql.append(".");
-        store.dialect.encodeColumnName(multipleValue.getTargetColumn(), sql);
+        store.dialect.encodeColumnName(null, multipleValue.getTargetColumn(), sql);
         sql.append(" ");
     }
 
     protected Object visitNestedFilter(Filter filter, Object extraData, String xpath) {
         try {
-
             FeatureChainedAttributeVisitor nestedMappingsExtractor =
                     new FeatureChainedAttributeVisitor(rootMapping);
             nestedMappingsExtractor.visit(ff.property(xpath), null);
             List<FeatureChainedAttributeDescriptor> attributes =
                     nestedMappingsExtractor.getFeatureChainedAttributes();
-            // encoding of filters on multiple nested attributes is not (yet) supported
-            if (attributes.size() == 1) {
-                FeatureChainedAttributeDescriptor nestedAttrDescr = attributes.get(0);
-
-                int numMappings = nestedAttrDescr.chainSize();
-                if (numMappings > 0 && nestedAttrDescr.isJoiningEnabled()) {
-                    out.write("EXISTS (");
-
-                    FeatureChainLink lastMappingStep = nestedAttrDescr.getLastLink();
-                    StringBuffer sql = encodeSelectKeyFrom(lastMappingStep);
-                    JDBCDataStore store =
-                            (JDBCDataStore)
-                                    lastMappingStep
-                                            .getFeatureTypeMapping()
-                                            .getSource()
-                                            .getDataStore();
-                    encodeMultipleValueJoin(nestedAttrDescr, store, sql);
-
-                    for (int i = numMappings - 2; i > 0; i--) {
-                        FeatureChainLink mappingStep = nestedAttrDescr.getLink(i);
-                        if (mappingStep.hasNestedFeature()) {
-                            FeatureTypeMapping parentFeature = mappingStep.getFeatureTypeMapping();
-                            store = (JDBCDataStore) parentFeature.getSource().getDataStore();
-                            String parentTableName =
-                                    parentFeature.getSource().getSchema().getName().getLocalPart();
-
-                            sql.append(" INNER JOIN ");
-                            store.encodeTableName(parentTableName, sql, null);
-                            sql.append(" ");
-                            store.dialect.encodeTableName(mappingStep.getAlias(), sql);
-                            sql.append(" ON ");
-                            encodeJoinCondition(nestedAttrDescr, i, sql);
-                        }
-                    }
-
-                    if (nestedAttrDescr.getAttributePath() != null) {
-                        createWhereClause(filter, xpath, nestedAttrDescr, sql);
-
-                        sql.append(" AND ");
-                    } else {
-                        sql.append(" WHERE ");
-                    }
-
-                    // join with root table
-                    encodeJoinCondition(nestedAttrDescr, 0, sql);
-
-                    out.write(sql.toString());
-                    out.write(")");
+            if (attributes.size() >= 1) {
+                if (attributes.size() > 1) out.write("(");
+                boolean first = true;
+                for (FeatureChainedAttributeDescriptor nestedAttrDescr : attributes) {
+                    if (first) first = false;
+                    else out.write(" OR ");
+                    encodeChainedAttribute(filter, xpath, nestedAttrDescr);
                 }
+                if (attributes.size() > 1) out.write(")");
             }
-
             return extraData;
 
         } catch (java.io.IOException ioe) {
@@ -255,6 +213,53 @@ public class NestedFilterToSQL extends FilterToSQL {
             throw new RuntimeException("Problem writing filter: ", e);
         } catch (FilterToSQLException e) {
             throw new RuntimeException("Problem writing filter: ", e);
+        }
+    }
+
+    private void encodeChainedAttribute(
+            Filter filter, String xpath, FeatureChainedAttributeDescriptor nestedAttrDescr)
+            throws IOException, SQLException, FilterToSQLException {
+        int numMappings = nestedAttrDescr.chainSize();
+        if (numMappings > 0 && nestedAttrDescr.isJoiningEnabled()) {
+            out.write("EXISTS (");
+
+            FeatureChainLink lastMappingStep = nestedAttrDescr.getLastLink();
+            StringBuffer sql = encodeSelectKeyFrom(lastMappingStep);
+            JDBCDataStore store =
+                    (JDBCDataStore)
+                            lastMappingStep.getFeatureTypeMapping().getSource().getDataStore();
+            encodeMultipleValueJoin(nestedAttrDescr, store, sql);
+
+            for (int i = numMappings - 2; i > 0; i--) {
+                FeatureChainLink mappingStep = nestedAttrDescr.getLink(i);
+                if (mappingStep.hasNestedFeature()) {
+                    FeatureTypeMapping parentFeature = mappingStep.getFeatureTypeMapping();
+                    store = (JDBCDataStore) parentFeature.getSource().getDataStore();
+                    String parentTableName =
+                            parentFeature.getSource().getSchema().getName().getLocalPart();
+
+                    sql.append(" INNER JOIN ");
+                    store.encodeTableName(parentTableName, sql, null);
+                    sql.append(" ");
+                    store.dialect.encodeTableName(mappingStep.getAlias(), sql);
+                    sql.append(" ON ");
+                    encodeJoinCondition(nestedAttrDescr, i, sql);
+                }
+            }
+
+            if (nestedAttrDescr.getAttributePath() != null) {
+                createWhereClause(filter, xpath, nestedAttrDescr, sql);
+
+                sql.append(" AND ");
+            } else {
+                sql.append(" WHERE ");
+            }
+
+            // join with root table
+            encodeJoinCondition(nestedAttrDescr, 0, sql);
+
+            out.write(sql.toString());
+            out.write(")");
         }
     }
 
@@ -371,7 +376,7 @@ public class NestedFilterToSQL extends FilterToSQL {
             throws SQLException {
         store.encodeTableName(typeName, sql, hints);
         sql.append(".");
-        store.dialect.encodeColumnName(colName, sql);
+        store.dialect.encodeColumnName(null, colName, sql);
     }
 
     private void encodeAliasedColumnName(
@@ -379,7 +384,7 @@ public class NestedFilterToSQL extends FilterToSQL {
             throws SQLException {
         store.dialect.encodeTableName(typeName, sql);
         sql.append(".");
-        store.dialect.encodeColumnName(colName, sql);
+        store.dialect.encodeColumnName(null, colName, sql);
     }
 
     @Override

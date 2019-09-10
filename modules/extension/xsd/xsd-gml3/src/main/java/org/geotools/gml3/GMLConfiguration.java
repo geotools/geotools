@@ -87,7 +87,6 @@ import org.geotools.gml3.smil.SMIL20LANGConfiguration;
 import org.geotools.xlink.XLINKConfiguration;
 import org.geotools.xs.XS;
 import org.geotools.xsd.Configuration;
-import org.geotools.xsd.Parser;
 import org.locationtech.jts.geom.CoordinateSequenceFactory;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.impl.CoordinateArraySequenceFactory;
@@ -157,10 +156,6 @@ public class GMLConfiguration extends Configuration {
         // add smil dependency
         addDependency(new SMIL20Configuration());
         addDependency(new SMIL20LANGConfiguration());
-
-        // add parser properties
-        getProperties().add(Parser.Properties.PARSE_UNKNOWN_ELEMENTS);
-        getProperties().add(Parser.Properties.PARSE_UNKNOWN_ATTRIBUTES);
     }
 
     /**

@@ -39,7 +39,6 @@ import org.opengis.filter.FilterFactory;
 public class InclusionFeatureCollectionTest {
 
     FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
-    GeometryFactory gf = new GeometryFactory();
 
     @Test
     public void testExecute() throws Exception {

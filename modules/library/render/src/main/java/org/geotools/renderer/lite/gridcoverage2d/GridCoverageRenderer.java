@@ -17,6 +17,7 @@
 package org.geotools.renderer.lite.gridcoverage2d;
 
 import it.geosolutions.jaiext.range.Range;
+import it.geosolutions.jaiext.scale.Scale2OpImage;
 import it.geosolutions.jaiext.utilities.ImageLayout2;
 import it.geosolutions.jaiext.vectorbin.ROIGeometry;
 import java.awt.AlphaComposite;
@@ -26,7 +27,6 @@ import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
-import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 import java.awt.image.ImagingOpException;
@@ -645,15 +645,16 @@ public final class GridCoverageRenderer {
 
         // paranoiac check to avoid that JAI freaks out when computing its internal layouT on images
         // that are too small
-        Rectangle2D finalLayout =
-                GridCoverageRendererUtilities.layoutHelper(
+        ImageLayout finalLayout =
+                Scale2OpImage.layoutHelper(
                         finalImage,
                         (float) Math.abs(finalRasterTransformation.getScaleX()),
                         (float) Math.abs(finalRasterTransformation.getScaleY()),
                         (float) finalRasterTransformation.getTranslateX(),
                         (float) finalRasterTransformation.getTranslateY(),
-                        interpolation);
-        if (finalLayout.isEmpty()) {
+                        interpolation,
+                        null);
+        if (finalLayout.getWidth(null) < 1 || finalLayout.getHeight(null) < 1) {
             if (LOGGER.isLoggable(java.util.logging.Level.FINE))
                 LOGGER.fine(
                         "Unable to create a granuleDescriptor "
@@ -721,7 +722,7 @@ public final class GridCoverageRenderer {
      *     bounds
      * @throws FactoryException
      * @throws TransformException
-     * @throws NoninvertibleTransformException @Deprecated
+     * @throws NoninvertibleTransformException
      */
     public RenderedImage renderImage(
             final GridCoverage2D gridCoverage,
@@ -1402,7 +1403,10 @@ public final class GridCoverageRenderer {
      */
     public static RasterSymbolizer setupSymbolizerForBandsSelection(RasterSymbolizer symbolizer) {
         ChannelSelection selection = symbolizer.getChannelSelection();
-        final SelectedChannelType[] originalChannels = selection.getSelectedChannels();
+        SelectedChannelType[] originalChannels = selection.getRGBChannels();
+        if (originalChannels == null && selection.getGrayChannel() != null) {
+            originalChannels = new SelectedChannelType[] {selection.getGrayChannel()};
+        }
         if (originalChannels != null) {
             int i = 0;
             SelectedChannelType[] channels = new SelectedChannelType[originalChannels.length];

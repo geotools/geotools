@@ -31,6 +31,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.Name;
 
 /** @author tkunicki@boundlessgeo.com */
+@SuppressWarnings("deprecation") // DB was replaced by MongoDatabase but API is not the same
 public class MongoSchemaDBStore implements MongoSchemaStore {
 
     static final String DEFAULT_databaseName = "geotools";

@@ -81,15 +81,6 @@ public class DirectPosition1D implements DirectPosition, Serializable, Cloneable
      * Returns always {@code this}, the direct position for this {@linkplain
      * org.opengis.geometry.coordinate.Position position}.
      */
-    @Deprecated
-    public DirectPosition getPosition() {
-        return this;
-    }
-
-    /**
-     * Returns always {@code this}, the direct position for this {@linkplain
-     * org.opengis.geometry.coordinate.Position position}.
-     */
     public DirectPosition getDirectPosition() {
         return this;
     }
@@ -133,11 +124,6 @@ public class DirectPosition1D implements DirectPosition, Serializable, Cloneable
      */
     public double[] getCoordinate() {
         return new double[] {ordinate};
-    }
-
-    @Deprecated
-    public double[] getCoordinates() {
-        return getCoordinate();
     }
 
     /**
@@ -195,7 +181,7 @@ public class DirectPosition1D implements DirectPosition, Serializable, Cloneable
      */
     @Override
     public String toString() {
-        return DirectPosition2D.toString(this, getCoordinates());
+        return DirectPosition2D.toString(this, getCoordinate());
     }
 
     @Override

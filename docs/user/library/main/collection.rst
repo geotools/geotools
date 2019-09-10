@@ -674,6 +674,7 @@ You can think of a ``Classifier`` as a filter function similar to a Java ``switc
 Join
 ^^^^
 
+
 GeoTools does not have any native ability to "Join" ``FeatureCollections``; even though this is a very common request.
 
 References:

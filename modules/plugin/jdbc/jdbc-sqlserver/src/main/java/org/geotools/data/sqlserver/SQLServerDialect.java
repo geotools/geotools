@@ -37,7 +37,6 @@ import java.util.regex.Pattern;
 import org.geotools.data.Query;
 import org.geotools.data.jdbc.FilterToSQL;
 import org.geotools.data.sqlserver.reader.SqlServerBinaryReader;
-import org.geotools.filter.function.FilterFunction_area;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.jdbc.BasicSQLDialect;
 import org.geotools.jdbc.JDBCDataStore;
@@ -75,8 +74,6 @@ public class SQLServerDialect extends BasicSQLDialect {
     private static final int DEFAULT_AXIS_MAX = 10000000;
     private static final int DEFAULT_AXIS_MIN = -10000000;
     static final String SPATIAL_INDEX_KEY = "SpatialIndex";
-
-    private static final String AREA_FUNCTION = "STArea";
 
     /**
      * Pattern used to match the first FROM element in a SQL query, without matching also attributes
@@ -139,21 +136,6 @@ public class SQLServerDialect extends BasicSQLDialect {
 
     public SQLServerDialect(JDBCDataStore dataStore) {
         super(dataStore);
-    }
-
-    @Override
-    public void registerFunctions(Map<String, String> functions) {
-        super.registerFunctions(functions);
-        functions.put(FilterFunction_area.NAME.getName(), AREA_FUNCTION);
-    }
-
-    @Override
-    protected void encodeAggregateFunction(String function, String column, StringBuffer sql) {
-        if (AREA_FUNCTION.equalsIgnoreCase(function)) {
-            sql.append(column).append(".").append(function).append("()");
-        } else {
-            super.encodeAggregateFunction(function, column, sql);
-        }
     }
 
     @Override
@@ -867,15 +849,14 @@ public class SQLServerDialect extends BasicSQLDialect {
             Connection cx, SimpleFeatureType schema, String databaseSchema, String indexName)
             throws SQLException {
         StringBuffer sql = new StringBuffer();
-        String escape = getNameEscape();
         sql.append("DROP INDEX ");
-        sql.append(escape).append(indexName).append(escape);
+        sql.append(escapeName(indexName));
         sql.append(" ON ");
         if (databaseSchema != null) {
             encodeSchemaName(databaseSchema, sql);
             sql.append(".");
         }
-        sql.append(escape).append(schema.getTypeName()).append(escape);
+        sql.append(escapeName(schema.getTypeName()));
 
         Statement st = null;
         try {

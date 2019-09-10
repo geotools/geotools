@@ -32,6 +32,7 @@ import java.util.Set;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.feature.FakeTypes;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureTypes;
 import org.geotools.feature.NameImpl;
@@ -46,8 +47,16 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.util.factory.Hints;
+import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryCollection;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.MultiLineString;
+import org.locationtech.jts.geom.MultiPoint;
+import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.geom.Polygon;
 import org.opengis.feature.IllegalAttributeException;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -103,6 +112,11 @@ public class DataUtilitiesTest extends DataTestCase {
         FeatureSource<SimpleFeatureType, SimpleFeature> source = DataUtilities.source(collection);
         SimpleFeatureSource simple = DataUtilities.simple(source);
         assertSame(simple, source);
+    }
+
+    public void testSimpleType() throws DataSourceException {
+        SimpleFeatureType simpleFeatureType = DataUtilities.simple(FakeTypes.Mine.MINETYPE_TYPE);
+        assertEquals(null, simpleFeatureType.getGeometryDescriptor());
     }
 
     public void testDataStore() throws IOException {
@@ -499,9 +513,16 @@ public class DataUtilitiesTest extends DataTestCase {
     }
 
     public void testDefaultValue() throws IllegalAttributeException {
-        assertNull(DataUtilities.defaultValue(roadType.getDescriptor("name")));
-        assertNull(DataUtilities.defaultValue(roadType.getDescriptor("id")));
-        assertNull(DataUtilities.defaultValue(roadType.getDescriptor("geom")));
+        assertNull(roadType.getDescriptor("name").getDefaultValue());
+        assertNull(roadType.getDescriptor("id").getDefaultValue());
+        assertNull(roadType.getDescriptor("geom").getDefaultValue());
+
+        GeometryFactory fac = new GeometryFactory();
+        Coordinate coordinate = new Coordinate(0, 0);
+        Point point = fac.createPoint(coordinate);
+
+        Geometry geometry = fac.createGeometry(point);
+        assertEquals(geometry, DataUtilities.defaultValue(Geometry.class));
     }
 
     public void testDefaultValueArray() throws Exception {
@@ -643,18 +664,18 @@ public class DataUtilitiesTest extends DataTestCase {
      * @throws Exception
      */
     public void testMixQueries() throws Exception {
-        DefaultQuery firstQuery;
-        DefaultQuery secondQuery;
+        Query firstQuery;
+        Query secondQuery;
 
         firstQuery =
-                new DefaultQuery(
+                new Query(
                         "typeName",
                         Filter.EXCLUDE,
                         100,
                         new String[] {"att1", "att2", "att3"},
                         "handle");
         secondQuery =
-                new DefaultQuery(
+                new Query(
                         "typeName",
                         Filter.EXCLUDE,
                         20,
@@ -684,9 +705,9 @@ public class DataUtilitiesTest extends DataTestCase {
         filter1 = ffac.equals(ffac.property("att1"), ffac.literal("val1"));
         filter2 = ffac.equals(ffac.property("att2"), ffac.literal("val2"));
 
-        firstQuery = new DefaultQuery("typeName", filter1, 100, null, "handle");
+        firstQuery = new Query("typeName", filter1, 100, (String[]) null, "handle");
         secondQuery =
-                new DefaultQuery(
+                new Query(
                         "typeName", filter2, 20, new String[] {"att1", "att2", "att4"}, "handle2");
 
         mixed = DataUtilities.mixQueries(firstQuery, secondQuery, "newhandle");
@@ -757,6 +778,37 @@ public class DataUtilitiesTest extends DataTestCase {
         // System.out.println("BEFORE:"+spec);
         // System.out.println(" AFTER:"+spec2);
         assertEquals(spec, spec2);
+    }
+
+    public void testAllGeometryTypes() throws Exception {
+        List<Class<?>> bindings =
+                Arrays.asList(
+                        Geometry.class,
+                        Point.class,
+                        LineString.class,
+                        Polygon.class,
+                        MultiPoint.class,
+                        MultiLineString.class,
+                        MultiPolygon.class,
+                        GeometryCollection.class);
+
+        StringBuilder specBuilder = new StringBuilder();
+        bindings.forEach(
+                b ->
+                        specBuilder
+                                .append(b.getSimpleName())
+                                .append("_type:")
+                                .append(b.getName())
+                                .append(','));
+
+        String spec = specBuilder.toString();
+        SimpleFeatureType ft = DataUtilities.createType("testType", spec);
+        bindings.forEach(
+                b -> {
+                    AttributeDescriptor descriptor = ft.getDescriptor(b.getSimpleName() + "_type");
+                    assertNotNull(descriptor);
+                    assertEquals(b, descriptor.getType().getBinding());
+                });
     }
 
     public void testSpecNotIdentifiable() throws Exception {

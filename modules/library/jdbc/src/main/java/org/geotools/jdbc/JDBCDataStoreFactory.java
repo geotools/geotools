@@ -297,7 +297,7 @@ public abstract class JDBCDataStoreFactory implements DataStoreFactorySpi {
         JDBCDataStore dataStore = new JDBCDataStore();
 
         // dialect
-        final SQLDialect dialect = createSQLDialect(dataStore);
+        final SQLDialect dialect = createSQLDialect(dataStore, params);
         dataStore.setSQLDialect(dialect);
 
         // datasource
@@ -312,6 +312,7 @@ public abstract class JDBCDataStoreFactory implements DataStoreFactorySpi {
         // fetch size
         Integer fetchSize = (Integer) FETCHSIZE.lookUp(params);
         if (fetchSize != null && fetchSize > 0) dataStore.setFetchSize(fetchSize);
+        else dataStore.setFetchSize((Integer) FETCHSIZE.sample);
 
         Integer batchInsertSize = (Integer) BATCH_INSERT_SIZE.lookUp(params);
         if (batchInsertSize != null && batchInsertSize > 0) {
@@ -515,6 +516,16 @@ public abstract class JDBCDataStoreFactory implements DataStoreFactorySpi {
      * <p>For example: org.postgresql.Driver
      */
     protected abstract String getDriverClassName();
+
+    /**
+     * Creates the dialect that the datastore uses for communication with the underlying database.
+     *
+     * @param dataStore The datastore.
+     * @param params The connection parameters
+     */
+    protected SQLDialect createSQLDialect(JDBCDataStore dataStore, Map params) {
+        return createSQLDialect(dataStore);
+    }
 
     /**
      * Creates the dialect that the datastore uses for communication with the underlying database.

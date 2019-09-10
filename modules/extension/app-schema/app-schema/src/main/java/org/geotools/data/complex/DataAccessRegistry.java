@@ -431,16 +431,6 @@ public class DataAccessRegistry implements Repository {
     }
 
     /**
-     * Unregister * and dispose * all data accesses in the registry. This is may be needed to
-     * prevent unit tests from conflicting with data accesses with the same type name registered for
-     * other tests. @Deprecated use unregisterAndDisposeAll
-     */
-    @Deprecated
-    public static void unregisterAll() {
-        getInstance().disposeAndUnregisterAll();
-    }
-
-    /**
      * Return true if a type name is mapped in one of the registered data accesses. If the type
      * mapping has mappingName, then it will be the key that is matched in the search. If it
      * doesn't, then it will match the targetElementName.

@@ -214,7 +214,7 @@ public class XPath extends XPathUtil {
             AttributeDescriptor currStepDescriptor = null;
             final boolean isLastStep = !stepsIterator.hasNext();
             final QName stepName = currStep.getName();
-            final Name attributeName = Types.toName(stepName);
+            final Name attributeName = org.geotools.feature.type.Types.toTypeName(stepName);
 
             final AttributeType _parentType = parent.getType();
             if (_parentType.getName().equals(XSSchema.ANYTYPE_TYPE.getName())

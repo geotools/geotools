@@ -311,7 +311,7 @@ public abstract class PreparedStatementSQLDialect extends SQLDialect {
     }
 
     public PreparedFilterToSQL createPreparedFilterToSQL() {
-        PreparedFilterToSQL f2s = new PreparedFilterToSQL();
+        PreparedFilterToSQL f2s = new PreparedFilterToSQL(this);
         f2s.setCapabilities(BASE_DBMS_CAPABILITIES);
         return f2s;
     }

@@ -27,10 +27,7 @@ import org.geotools.filter.v1_0.OGCBBOXTypeBinding;
 import org.geotools.filter.v2_0.FES;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.gml3.v3_2.GML;
-import org.geotools.referencing.CRS;
-import org.locationtech.jts.geom.Envelope;
 import org.opengis.filter.spatial.BBOX;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * Binding object for the type http://www.opengis.net/ogc:BBOXType.
@@ -97,21 +94,7 @@ public class BBOXTypeBinding extends OGCBBOXTypeBinding {
         BBOX box = (BBOX) object;
 
         List properties = new ArrayList();
-        Envelope env = null;
-        try {
-            String srs = box.getSRS();
-            if (srs != null) {
-                CoordinateReferenceSystem crs = CRS.decode(srs);
-                env =
-                        new ReferencedEnvelope(
-                                box.getMinX(), box.getMaxX(), box.getMinY(), box.getMaxY(), crs);
-            }
-        } catch (Throwable t) {
-            // never mind
-        }
-        if (env == null) {
-            env = new Envelope(box.getMinX(), box.getMaxX(), box.getMinY(), box.getMaxY());
-        }
+        ReferencedEnvelope env = ReferencedEnvelope.reference(box.getBounds());
 
         properties.add(new Object[] {ENVELOPE_PARTICLE, env});
         return properties;

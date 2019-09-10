@@ -35,10 +35,10 @@ public class CssRuleTest extends CssBaseTest {
         assertEquals(1, zeds.size());
         assertEquals(CssRule.NO_Z_INDEX, zeds.iterator().next());
         // the subrule is the rule
-        CssRule subRule = rule.getSubRuleByZIndex(0);
+        CssRule subRule = rule.getSubRuleByZIndex(0, CssRule.ZIndexMode.NoZIndexAll);
         assertEquals(subRule, rule);
         // and since this is index independent, any other level will get the same rule
-        assertEquals(rule, rule.getSubRuleByZIndex(1));
+        assertEquals(rule, rule.getSubRuleByZIndex(1, CssRule.ZIndexMode.NoZIndexAll));
     }
 
     @Test
@@ -48,13 +48,13 @@ public class CssRuleTest extends CssBaseTest {
         Set<Integer> zeds = rule.getZIndexes();
         assertEquals(1, zeds.size());
         assertEquals(Integer.valueOf(10), zeds.iterator().next());
-        CssRule subRule = rule.getSubRuleByZIndex(10);
+        CssRule subRule = rule.getSubRuleByZIndex(10, CssRule.ZIndexMode.NoZIndexAll);
         assertEquals(1, subRule.getProperties().size());
         assertEquals(2, subRule.getProperties().get(PseudoClass.ROOT).size());
         assertProperty(subRule, 0, "fill", new Value.Literal("#000000"));
         assertProperty(subRule, 1, "z-index", new Value.Literal("10"));
         // nothing at the base level
-        assertNull(rule.getSubRuleByZIndex(0));
+        assertNull(rule.getSubRuleByZIndex(0, CssRule.ZIndexMode.NoZIndexAll));
     }
 
     @Test
@@ -67,17 +67,17 @@ public class CssRuleTest extends CssBaseTest {
         assertEquals(Integer.valueOf(1), it.next());
         assertEquals(Integer.valueOf(3), it.next());
         // nothing at the base level
-        assertNull(rule.getSubRuleByZIndex(0));
+        assertNull(rule.getSubRuleByZIndex(0, CssRule.ZIndexMode.NoZIndexAll));
         // first subrule
-        CssRule subRule1 = rule.getSubRuleByZIndex(1);
+        CssRule subRule1 = rule.getSubRuleByZIndex(1, CssRule.ZIndexMode.NoZIndexAll);
         assertEquals(1, subRule1.getProperties().size());
         assertEquals(2, subRule1.getProperties().get(PseudoClass.ROOT).size());
         assertProperty(subRule1, 0, "fill", new Value.Literal("#000000"));
         assertProperty(subRule1, 1, "z-index", new Value.Literal("1"));
         // nothing at level 2
-        assertNull(rule.getSubRuleByZIndex(2));
+        assertNull(rule.getSubRuleByZIndex(2, CssRule.ZIndexMode.NoZIndexAll));
         // second subrule
-        CssRule subRule3 = rule.getSubRuleByZIndex(3);
+        CssRule subRule3 = rule.getSubRuleByZIndex(3, CssRule.ZIndexMode.NoZIndexAll);
         assertEquals(1, subRule3.getProperties().size());
         assertEquals(2, subRule3.getProperties().get(PseudoClass.ROOT).size());
         assertProperty(subRule3, 0, "fill", new Value.Literal("#ff0000"));
@@ -94,17 +94,17 @@ public class CssRuleTest extends CssBaseTest {
         assertEquals(Integer.valueOf(1), it.next());
         assertEquals(Integer.valueOf(3), it.next());
         // nothing at the base level
-        assertNull(rule.getSubRuleByZIndex(0));
+        assertNull(rule.getSubRuleByZIndex(0, CssRule.ZIndexMode.NoZIndexAll));
         // first subrule
-        CssRule subRule1 = rule.getSubRuleByZIndex(1);
+        CssRule subRule1 = rule.getSubRuleByZIndex(1, CssRule.ZIndexMode.NoZIndexAll);
         assertEquals(1, subRule1.getProperties().size());
         assertEquals(2, subRule1.getProperties().get(PseudoClass.ROOT).size());
         assertProperty(subRule1, 0, "fill", new Value.Literal("#ff0000"));
         assertProperty(subRule1, 1, "z-index", new Value.Literal("1"));
         // nothing at level 2
-        assertNull(rule.getSubRuleByZIndex(2));
+        assertNull(rule.getSubRuleByZIndex(2, CssRule.ZIndexMode.NoZIndexAll));
         // second subrule
-        CssRule subRule3 = rule.getSubRuleByZIndex(3);
+        CssRule subRule3 = rule.getSubRuleByZIndex(3, CssRule.ZIndexMode.NoZIndexAll);
         assertEquals(1, subRule3.getProperties().size());
         assertEquals(2, subRule3.getProperties().get(PseudoClass.ROOT).size());
         assertProperty(subRule3, 0, "fill", new Value.Literal("#000000"));

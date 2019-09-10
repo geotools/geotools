@@ -74,7 +74,7 @@ public class OrdinateList extends AbstractList {
      * @see java.util.List#get(int)
      */
     public Object get(int index) {
-        return new Double(getDouble(index));
+        return Double.valueOf(getDouble(index));
     }
     /** Quick double access */
     public double getDouble(int index) {

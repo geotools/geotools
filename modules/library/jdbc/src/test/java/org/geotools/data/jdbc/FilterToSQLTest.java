@@ -18,27 +18,20 @@ package org.geotools.data.jdbc;
 
 import static org.geotools.util.Converters.convert;
 
-import java.io.IOException;
 import java.io.StringWriter;
-import java.sql.Connection;
-import java.sql.Statement;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.LinkedHashSet;
-import java.util.Locale;
-import java.util.Set;
+import java.util.*;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import junit.framework.TestCase;
-import org.geotools.data.jdbc.fidmapper.FIDMapper;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.geotools.jdbc.NonIncrementingPrimaryKeyColumn;
+import org.geotools.jdbc.PrimaryKey;
 import org.geotools.temporal.object.DefaultInstant;
 import org.geotools.temporal.object.DefaultPosition;
-import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
@@ -109,94 +102,11 @@ public class FilterToSQLTest extends TestCase {
 
         output = new StringWriter();
         encoder = new FilterToSQL(output);
-
-        FIDMapper mapper =
-                new FIDMapper() {
-
-                    @Override
-                    public boolean returnFIDColumnsAsAttributes() {
-                        // TODO Auto-generated method stub
-                        return false;
-                    }
-
-                    @Override
-                    public boolean isVolatile() {
-                        // TODO Auto-generated method stub
-                        return false;
-                    }
-
-                    @Override
-                    public boolean isValid(String fid) {
-                        // TODO Auto-generated method stub
-                        return false;
-                    }
-
-                    @Override
-                    public boolean isAutoIncrement(int colIndex) {
-                        // TODO Auto-generated method stub
-                        return false;
-                    }
-
-                    @Override
-                    public void initSupportStructures() {
-                        // TODO Auto-generated method stub
-
-                    }
-
-                    @Override
-                    public boolean hasAutoIncrementColumns() {
-                        // TODO Auto-generated method stub
-                        return false;
-                    }
-
-                    @Override
-                    public Object[] getPKAttributes(String FID) throws IOException {
-                        return new Object[] {FID};
-                    }
-
-                    @Override
-                    public String getID(Object[] attributes) {
-                        // TODO Auto-generated method stub
-                        return null;
-                    }
-
-                    @Override
-                    public int getColumnType(int colIndex) {
-                        // TODO Auto-generated method stub
-                        return 0;
-                    }
-
-                    @Override
-                    public int getColumnSize(int colIndex) {
-                        // TODO Auto-generated method stub
-                        return 0;
-                    }
-
-                    @Override
-                    public String getColumnName(int colIndex) {
-                        return "id";
-                    }
-
-                    @Override
-                    public int getColumnDecimalDigits(int colIndex) {
-                        // TODO Auto-generated method stub
-                        return 0;
-                    }
-
-                    @Override
-                    public int getColumnCount() {
-                        return 1;
-                    }
-
-                    @Override
-                    public String createID(
-                            Connection conn, SimpleFeature feature, Statement statement)
-                            throws IOException {
-                        // TODO Auto-generated method stub
-                        return null;
-                    }
-                };
-        encoder.setFIDMapper(mapper);
+        encoder.setPrimaryKey(
+                new PrimaryKey(
+                        "foobar",
+                        Collections.singletonList(
+                                new NonIncrementingPrimaryKeyColumn("id", String.class))));
     }
 
     public void testIntegerContext() throws Exception {
@@ -501,5 +411,15 @@ public class FilterToSQLTest extends TestCase {
                                 ff.less(p2, ff.literal(4))));
         FilterToSQL encoder = new FilterToSQL(output);
         assertEquals("WHERE (P1 IN (1, 2) OR P2 > 3 OR P2 < 4)", encoder.encodeToString(filter));
+    }
+
+    public void testEscapeName() {
+        encoder.setSqlNameEscape("\"");
+        assertEquals("\"abc\"", encoder.escapeName("abc"));
+        assertEquals("\"\"\"abc\"", encoder.escapeName("\"abc"));
+        assertEquals("\"a\"\"bc\"", encoder.escapeName("a\"bc"));
+        assertEquals("\"abc\"\"\"", encoder.escapeName("abc\""));
+        encoder.setSqlNameEscape("");
+        assertEquals("abc", encoder.escapeName("abc"));
     }
 }

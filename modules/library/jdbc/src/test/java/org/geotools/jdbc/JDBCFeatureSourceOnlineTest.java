@@ -152,7 +152,7 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
 
             SimpleFeature feature = (SimpleFeature) iterator.next();
             assertEquals("one", feature.getAttribute(aname("stringProperty")));
-            assertEquals(new Double(1.1), feature.getAttribute(aname("doubleProperty")));
+            assertEquals(Double.valueOf(1.1), feature.getAttribute(aname("doubleProperty")));
         }
     }
 
@@ -184,7 +184,7 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
 
             SimpleFeature feature = (SimpleFeature) iterator.next();
             assertEquals("one", feature.getAttribute(aname("stringProperty")));
-            assertEquals(new Double(1.1), feature.getAttribute(aname("doubleProperty")));
+            assertEquals(Double.valueOf(1.1), feature.getAttribute(aname("doubleProperty")));
         }
     }
 
@@ -216,7 +216,7 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
             SimpleFeature feature = (SimpleFeature) iterator.next();
             assertEquals(2, feature.getAttributeCount());
 
-            assertEquals(new Double(1.1), feature.getAttribute(aname("doubleProperty")));
+            assertEquals(Double.valueOf(1.1), feature.getAttribute(aname("doubleProperty")));
             assertNotNull(feature.getAttribute(aname("intProperty")));
         }
     }

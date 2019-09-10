@@ -30,4 +30,19 @@
         <gav regex="true">^org\.geotools:gt-app-schema-resolver:.*$</gav>
         <cve>CVE-2018-13661</cve>
     </suppress>
+    <suppress>
+        <notes><![CDATA[file name: gt-app-schema.jar]]></notes>
+        <gav regex="true">^org\.geotools:gt-app-schema:.*$</gav>
+        <cve>CVE-2018-13661</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[file name: org.geotools:gt-main]]></notes>
+        <gav regex="true">^org\.geotools:gt-main:.*$</gav>
+        <cve>CVE-2018-18749</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[file name: jtds.jar]]></notes>
+        <gav regex="true">^net\.sourceforge\.jtds:jtds:.*$</gav>
+        <cpe>cpe:/a:microsoft:sql_server</cpe>
+    </suppress>
 </suppressions>

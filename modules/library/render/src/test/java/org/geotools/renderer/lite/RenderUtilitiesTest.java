@@ -16,7 +16,7 @@
  */
 package org.geotools.renderer.lite;
 
-import java.awt.Rectangle;
+import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.util.HashMap;
 import junit.framework.TestCase;
@@ -24,7 +24,6 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultEngineeringCRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
-import org.geotools.util.XMath;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
@@ -235,11 +234,11 @@ public class RenderUtilitiesTest extends TestCase {
      * between 2.2. and 2.4.
      */
     public void testCenterTile() throws Exception {
-        Envelope centerTile = new Envelope(0, 36, -18, 18);
-        CoordinateReferenceSystem crs = DefaultGeographicCRS.WGS84;
-        double scale = RendererUtilities.calculateScale(centerTile, crs, 512, 512, 72.0);
-        double groundDistance = XMath.hypot(36, 36) * (1852 * 60);
-        double pixelDistance = XMath.hypot(512, 512) * (0.0254 / 72);
+        ReferencedEnvelope envelope =
+                new ReferencedEnvelope(0, 36, -18, 18, DefaultGeographicCRS.WGS84);
+        double scale = RendererUtilities.calculateScale(envelope, 512, 512, 72.0);
+        double groundDistance = Math.hypot(36, 36) * (1852 * 60);
+        double pixelDistance = Math.hypot(512, 512) * (0.0254 / 72);
         double expected = groundDistance / pixelDistance;
         assertEquals(expected, scale, expected * 0.05); // no projection deformation here!
     }

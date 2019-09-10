@@ -16,16 +16,16 @@
  */
 package org.geotools.styling.visitor;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Graphics;
+import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.Collections;
-import javax.swing.Icon;
+import javax.swing.*;
 import junit.framework.TestCase;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.feature.NameImpl;
 import org.geotools.filter.IllegalFilterException;
 import org.geotools.metadata.iso.citation.OnLineResourceImpl;
 import org.geotools.styling.AnchorPoint;
@@ -67,6 +67,7 @@ import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
 import org.opengis.style.ContrastMethod;
 import org.opengis.style.OverlapBehavior;
+import org.opengis.style.SemanticType;
 import org.opengis.util.Cloneable;
 
 /**
@@ -107,26 +108,31 @@ public class DuplicatingStyleVisitorTest extends TestCase {
     public void testStyleDuplication() throws IllegalFilterException {
         // create a style
         Style oldStyle = sb.createStyle("FTSName", sf.createPolygonSymbolizer());
-        oldStyle.getFeatureTypeStyles()[0].setSemanticTypeIdentifiers(
-                new String[] {"simple", "generic:geometry"});
+        oldStyle.featureTypeStyles()
+                .get(0)
+                .semanticTypeIdentifiers()
+                .addAll(
+                        Arrays.asList(
+                                SemanticType.valueOf("simple"),
+                                SemanticType.valueOf("generic:geometry")));
         // duplicate it
         oldStyle.accept(visitor);
         Style newStyle = (Style) visitor.getCopy();
 
         // compare it
         assertNotNull(newStyle);
-        assertEquals(2, newStyle.getFeatureTypeStyles()[0].getSemanticTypeIdentifiers().length);
+        assertEquals(2, newStyle.featureTypeStyles().get(0).semanticTypeIdentifiers().size());
     }
 
     public void testStyle() throws Exception {
         FeatureTypeStyle fts = sf.createFeatureTypeStyle();
-        fts.setFeatureTypeName("feature-type-1");
+        fts.featureTypeNames().add(new NameImpl("feature-type-1"));
 
         FeatureTypeStyle fts2 = fts2();
 
         Style style = sf.getDefaultStyle();
-        style.addFeatureTypeStyle(fts);
-        style.addFeatureTypeStyle(fts2);
+        style.featureTypeStyles().add(fts);
+        style.featureTypeStyles().add(fts2);
 
         style.accept(visitor);
         Style copy = (Style) visitor.getCopy();
@@ -137,7 +143,7 @@ public class DuplicatingStyleVisitorTest extends TestCase {
         Style notEq = sf.getDefaultStyle();
 
         fts2 = fts2();
-        notEq.addFeatureTypeStyle(fts2);
+        notEq.featureTypeStyles().add(fts2);
 
         assertEqualsContract(copy, notEq, style);
     }
@@ -145,15 +151,15 @@ public class DuplicatingStyleVisitorTest extends TestCase {
     private FeatureTypeStyle fts2() {
         FeatureTypeStyle fts2 = sf.createFeatureTypeStyle();
         Rule rule = sf.createRule();
-        fts2.addRule(rule);
-        fts2.setFeatureTypeName("feature-type-2");
+        fts2.rules().add(rule);
+        fts2.featureTypeNames().add(new NameImpl("feature-type-2"));
 
         return fts2;
     }
 
     public void testFeatureTypeStyle() throws Exception {
         FeatureTypeStyle fts = sf.createFeatureTypeStyle();
-        fts.setFeatureTypeName("feature-type");
+        fts.featureTypeNames().add(new NameImpl("feature-type"));
         fts.getOptions().put("key", "value");
 
         Rule rule1;
@@ -163,10 +169,10 @@ public class DuplicatingStyleVisitorTest extends TestCase {
         rule1.setFilter(ff.id(Collections.singleton(ff.featureId("FID"))));
 
         Rule rule2 = sf.createRule();
-        rule2.setIsElseFilter(true);
+        rule2.setElseFilter(true);
         rule2.setName("rule2");
-        fts.addRule(rule1);
-        fts.addRule(rule2);
+        fts.rules().add(rule1);
+        fts.rules().add(rule2);
 
         fts.accept(visitor);
         FeatureTypeStyle clone = (FeatureTypeStyle) visitor.getCopy();
@@ -179,7 +185,7 @@ public class DuplicatingStyleVisitorTest extends TestCase {
 
         FeatureTypeStyle notEq = sf.createFeatureTypeStyle();
         notEq.setName("fts-not-equal");
-        notEq.addRule(rule1);
+        notEq.rules().add(rule1);
         assertEqualsContract(clone, notEq, fts);
 
         fts.setTransformation(ff.literal("transformation"));
@@ -197,7 +203,7 @@ public class DuplicatingStyleVisitorTest extends TestCase {
                 sf.createPolygonSymbolizer(sf.getDefaultStroke(), sf.getDefaultFill(), "shape");
 
         Rule rule = sf.createRule();
-        rule.setSymbolizers(new Symbolizer[] {symb1, symb2});
+        rule.symbolizers().addAll(Arrays.asList(symb1, symb2));
 
         rule.accept(visitor);
         Rule clone = (Rule) visitor.getCopy();
@@ -207,11 +213,11 @@ public class DuplicatingStyleVisitorTest extends TestCase {
         symb2 = sf.createPolygonSymbolizer(sf.getDefaultStroke(), sf.getDefaultFill(), "shape");
 
         Rule notEq = sf.createRule();
-        notEq.setSymbolizers(new Symbolizer[] {symb2});
+        notEq.symbolizers().add(symb2);
         assertEqualsContract(clone, notEq, rule);
 
         symb1 = sf.createLineSymbolizer(sf.getDefaultStroke(), "geometry");
-        clone.setSymbolizers(new Symbolizer[] {symb1});
+        clone.symbolizers().add(symb1);
         assertTrue(!rule.equals(clone));
     }
 
@@ -481,12 +487,12 @@ public class DuplicatingStyleVisitorTest extends TestCase {
 
     public void testGraphic() {
         Graphic graphic = sf.getDefaultGraphic();
-        graphic.addMark(sf.getDefaultMark());
+        graphic.graphicalSymbols().add(sf.getDefaultMark());
 
         Graphic clone = (Graphic) visitor.copy(graphic);
         assertCopy(graphic, clone);
         assertEqualsContract(clone, graphic);
-        assertEquals(clone.getSymbols().length, graphic.getSymbols().length);
+        assertEquals(clone.graphicalSymbols().size(), graphic.graphicalSymbols().size());
 
         Graphic notEq = sf.getDefaultGraphic();
         assertEqualsContract(clone, notEq, graphic);

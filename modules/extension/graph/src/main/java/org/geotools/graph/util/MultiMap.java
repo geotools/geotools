@@ -37,10 +37,8 @@ public class MultiMap implements Map, Serializable {
 
         if ((c = (Collection) m_map.get(key)) == null) {
             try {
-                c = (Collection) m_collectionClass.newInstance();
-            } catch (InstantiationException e) {
-                throw new IllegalStateException(e.getClass().getName() + ": " + e.getMessage());
-            } catch (IllegalAccessException e) {
+                c = (Collection) m_collectionClass.getDeclaredConstructor().newInstance();
+            } catch (Exception e) {
                 throw new IllegalStateException(e.getClass().getName() + ": " + e.getMessage());
             }
 
@@ -102,10 +100,8 @@ public class MultiMap implements Map, Serializable {
         Object obj = null;
         if ((obj = m_map.get(key)) == null) {
             try {
-                obj = m_collectionClass.newInstance();
-            } catch (InstantiationException e) {
-                throw new IllegalStateException(e.getClass().getName() + ": " + e.getMessage());
-            } catch (IllegalAccessException e) {
+                obj = m_collectionClass.getDeclaredConstructor().newInstance();
+            } catch (Exception e) {
                 throw new IllegalStateException(e.getClass().getName() + ": " + e.getMessage());
             }
             putItems(key, (Collection) obj);

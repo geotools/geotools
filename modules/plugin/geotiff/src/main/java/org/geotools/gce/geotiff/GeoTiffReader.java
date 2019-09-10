@@ -35,6 +35,7 @@
 package org.geotools.gce.geotiff;
 
 import it.geosolutions.imageio.maskband.DatasetLayout;
+import it.geosolutions.imageio.utilities.ImageIOUtilities;
 import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReaderSpi;
 import it.geosolutions.imageioimpl.plugins.tiff.TiffDatasetLayoutImpl;
 import it.geosolutions.jaiext.range.NoDataContainer;
@@ -104,6 +105,7 @@ import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
 import org.geotools.util.NumberRange;
 import org.geotools.util.URLs;
+import org.geotools.util.Utilities;
 import org.geotools.util.factory.Hints;
 import org.opengis.coverage.ColorInterpretation;
 import org.opengis.coverage.grid.Format;
@@ -317,7 +319,9 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
             } else {
 
                 // check external prj first
-                crs = getCRS(source);
+                if (!ImageIOUtilities.isSkipExternalFilesLookup()) {
+                    crs = getCRS(source);
+                }
 
                 // now, if we did not want to override the inner CRS or we did not have any external
                 // PRJ at hand
@@ -335,6 +339,9 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
             if (metadata.hasNoData()) {
                 noData = metadata.getNoData();
             }
+
+            // collect scales and offsets is present
+            collectScaleOffset(iioMetadata);
 
             //
             // parse and set layout
@@ -541,6 +548,7 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
         Color inputTransparentColor = null;
         OverviewPolicy overviewPolicy = null;
         int[] suggestedTileSize = null;
+        boolean rescalePixels = AbstractGridFormat.RESCALE_PIXELS.getDefaultValue();
 
         //
         // Checking params
@@ -582,6 +590,9 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
                         }
                     }
                     continue;
+                }
+                if (name.equals(AbstractGridFormat.RESCALE_PIXELS.getName())) {
+                    rescalePixels = Boolean.TRUE.equals(param.getValue());
                 }
             }
         }
@@ -662,9 +673,23 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
         pbjRead.add(null);
         pbjRead.add(readP);
         pbjRead.add(READER_SPI.createReaderInstance());
-        RenderedOp coverageRaster =
-                JAI.create(
-                        "ImageRead", pbjRead, newHints != null ? (RenderingHints) newHints : null);
+        PlanarImage coverageRaster =
+                JAI.create("ImageRead", pbjRead, newHints != null ? newHints : null);
+
+        // applying rescale if needed
+        if (rescalePixels) {
+            if (!Double.isNaN(noData)) {
+                // Force nodata settings since JAI ImageRead may lost that
+                // We have to make sure that noData pixels won't be rescaled
+                PlanarImage t = PlanarImage.wrapRenderedImage(coverageRaster);
+                t.setProperty(NoDataContainer.GC_NODATA, new NoDataContainer(noData));
+                coverageRaster = t;
+            }
+            coverageRaster =
+                    PlanarImage.wrapRenderedImage(
+                            ImageUtilities.applyRescaling(
+                                    scales, offsets, coverageRaster, newHints));
+        }
 
         //
         // MASKING INPUT COLOR as indicated
@@ -684,7 +709,7 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
         ROI roi = null;
         // Using MaskOvrProvider
         if (hasMaskOvrProvider) {
-            // Parameter definiton
+            // Parameter definition
             GridEnvelope ogr = getOriginalGridRange();
             Rectangle sourceRegion;
             if (readP.getSourceRegion() != null) {
@@ -855,7 +880,7 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
                             Vocabulary.formatInternational(VocabularyKeys.NODATA),
                             new Color[] {new Color(0, 0, 0, 0)},
                             NumberRange.create(noData, noData));
-            CoverageUtilities.setNoDataProperty(properties, new Double(noData));
+            CoverageUtilities.setNoDataProperty(properties, Double.valueOf(noData));
             image.setProperty(NoDataContainer.GC_NODATA, new NoDataContainer(noData));
         }
         // Setting ROI Property
@@ -1021,6 +1046,17 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
             }
         }
         return null;
+    }
+
+    @Override
+    protected boolean checkName(
+            String coverageName) { // GEOS-6327 - tolerate geotiff_coverage as coverageName
+        if ("geotiff_coverage".equalsIgnoreCase(coverageName)) {
+            return true;
+        } else {
+            Utilities.ensureNonNull("coverageName", coverageName);
+            return coverageName.equalsIgnoreCase(this.coverageName);
+        }
     }
 
     /**

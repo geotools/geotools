@@ -383,15 +383,6 @@ public abstract class SQLDialect {
     }
 
     /**
-     * Register the dialect mappings between Geotools FilterFunction names and database related
-     * function.
-     *
-     * @param functions mappings from GT FilterFunction name to sql function name
-     * @deprecated No longer needed, use FilterToSQL to handle function encoding
-     */
-    public void registerFunctions(Map<String, String> functions) {}
-
-    /**
      * Returns the java class mapping for a particular column.
      *
      * <p>This method is used as a "last resort" when the mappings specified by the dialect in the
@@ -441,31 +432,44 @@ public abstract class SQLDialect {
     }
 
     /**
-     * Encodes the name of a column in an SQL statement.
+     * Surrounds a name with the SQL escape string.
      *
-     * <p>This method wraps <tt>raw</tt> in the character provided by {@link #getNameEscape()}.
-     * Subclasses usually dont override this method and instead override {@link #getNameEscape()}.
+     * <p>If the name contains the SQL escape string, the SQL escape string is duplicated.
      *
-     * @deprecated use {@link #encodeColumnName(String, String, StringBuffer)}.
+     * @param name
      */
-    public final void encodeColumnName(String raw, StringBuffer sql) {
-        encodeColumnName(null, raw, sql);
+    public String escapeName(String name) {
+        String nameEscape = getNameEscape();
+        if (nameEscape.isEmpty()) return name;
+        StringBuilder sb = new StringBuilder();
+        sb.append(nameEscape);
+        int offset = 0;
+        int escapeOffset;
+        while ((escapeOffset = name.indexOf(nameEscape, offset)) != -1) {
+            sb.append(name.substring(offset, escapeOffset));
+            sb.append(nameEscape);
+            sb.append(nameEscape);
+            offset = escapeOffset + nameEscape.length();
+        }
+        sb.append(name.substring(offset));
+        sb.append(nameEscape);
+        return sb.toString();
     }
 
     /**
      * Encodes the name of a column in an SQL statement.
      *
-     * <p>This method wraps <tt>raw</tt> in the character provided by {@link #getNameEscape()}.
-     * Subclasses usually don't override this method and instead override {@link #getNameEscape()}.
+     * <p>This method escapes <tt>raw</tt> using method {@link #escapeName(String)}. Subclasses
+     * usually don't override this method and instead override {@link #getNameEscape()}.
      *
      * <p>The <tt>prefix</tt> parameter may be <code>null</code> so subclasses that do override must
      * handle that case.
      */
     public void encodeColumnName(String prefix, String raw, StringBuffer sql) {
         if (prefix != null) {
-            sql.append(ne()).append(prefix).append(ne()).append(".");
+            sql.append(escapeName(prefix)).append(".");
         }
-        sql.append(ne()).append(raw).append(ne());
+        sql.append(escapeName(raw));
     }
 
     /**
@@ -518,21 +522,21 @@ public abstract class SQLDialect {
     /**
      * Encodes the name of a table in an SQL statement.
      *
-     * <p>This method wraps <tt>raw</tt> in the character provided by {@link #getNameEscape()}.
-     * Subclasses usually dont override this method and instead override {@link #getNameEscape()}.
+     * <p>This method escapes <tt>raw</tt> using method {@link #escapeName(String)}. Subclasses
+     * usually dont override this method and instead override {@link #getNameEscape()}.
      */
     public void encodeTableName(String raw, StringBuffer sql) {
-        sql.append(ne()).append(raw).append(ne());
+        sql.append(escapeName(raw));
     }
 
     /**
      * Encodes the name of a schema in an SQL statement.
      *
-     * <p>This method wraps <tt>raw</tt> in the character provided by {@link #getNameEscape()}.
-     * Subclasses usually dont override this method and instead override {@link #getNameEscape()}.
+     * <p>This method escapes <tt>raw</tt> using method {@link #escapeName(String)}. Subclasses
+     * usually dont override this method and instead override {@link #getNameEscape()}.
      */
     public void encodeSchemaName(String raw, StringBuffer sql) {
-        sql.append(ne()).append(raw).append(ne());
+        sql.append(escapeName(raw));
     }
 
     /**
@@ -674,35 +678,6 @@ public abstract class SQLDialect {
      * asWKB</code> when fetching a geometry.
      *
      * <p>This method must also be sure to properly encode the name of the column with the {@link
-     * #encodeColumnName(String, StringBuffer)} function.
-     *
-     * <p>Example:
-     *
-     * <pre>
-     *   <code>
-     *   sql.append( "asText(" );
-     *   column( gatt.getLocalName(), sql );
-     *   sql.append( ")" );
-     *   </code>
-     * </pre>
-     *
-     * <p>This default implementation simply uses the column name without any wrapping function,
-     * subclasses must override.
-     *
-     * @deprecated use {@link #encodeGeometryColumn(GeometryDescriptor, String, int, StringBuffer)}
-     */
-    public final void encodeGeometryColumn(GeometryDescriptor gatt, int srid, StringBuffer sql) {
-        encodeColumnName(gatt.getLocalName(), sql);
-    }
-
-    /**
-     * Encodes the name of a geometry column in a SELECT statement.
-     *
-     * <p>This method should wrap the column name in any functions that are used to retrieve its
-     * value. For instance, often it is necessary to use the function <code>asText</code>, or <code>
-     * asWKB</code> when fetching a geometry.
-     *
-     * <p>This method must also be sure to properly encode the name of the column with the {@link
      * #encodeColumnName(String, String, StringBuffer)} function.
      *
      * <p>Example:
@@ -714,93 +689,15 @@ public abstract class SQLDialect {
      *   sql.append( ")" );
      *   </code>
      * </pre>
-     *
-     * <p>This default implementation simply uses the column name without any wrapping function,
-     * subclasses must override.
-     *
-     * @deprecated use {@link #encodeGeometryColumn(GeometryDescriptor, String, int, Hints,
-     *     StringBuffer)}
-     */
-    public void encodeGeometryColumn(
-            GeometryDescriptor gatt, String prefix, int srid, StringBuffer sql) {
-        encodeColumnName(prefix, gatt.getLocalName(), sql);
-    }
-
-    /**
-     * Encodes the name of a geometry column in a SELECT statement.
-     *
-     * <p>This method should wrap the column name in any functions that are used to retrieve its
-     * value. For instance, often it is necessary to use the function <code>asText</code>, or <code>
-     * asWKB</code> when fetching a geometry.
-     *
-     * <p>This method must also be sure to properly encode the name of the column with the {@link
-     * #encodeColumnName(String, String, StringBuffer)} function.
-     *
-     * <p>Example:
-     *
-     * <pre>
-     *   <code>
-     *   sql.append( "asText(" );
-     *   column( gatt.getLocalName(), sql );
-     *   sql.append( ")" );
-     *   </code>
-     * </pre>
-     *
-     * <p>This default implementation calls the deprecated {@link
-     * #encodeGeometryColumn(GeometryDescriptor, String, int, StringBuffer)} version of this method
-     * for backward compatibility reasons.
      */
     public void encodeGeometryColumn(
             GeometryDescriptor gatt, String prefix, int srid, Hints hints, StringBuffer sql) {
-
-        // call previously deprecated
-        encodeGeometryColumn(gatt, prefix, srid, sql);
-    }
-
-    /**
-     * Encodes a generalized geometry using a DB provided SQL function if available If not
-     * supported, subclasses should not implement Only called if {@link
-     * Hints#GEOMETRY_GENERALIZATION is supported}
-     *
-     * <p>Example:
-     *
-     * <pre>
-     *   <code>
-     *   sql.append( "asText(generalize(" );
-     *   column( gatt.getLocalName(), sql );
-     *   sql.append( "," );
-     *   sql.append(distance);
-     *   sql.append( "))" );
-     *   </code>
-     * </pre>
-     *
-     * <p>
-     *
-     * @deprecated use {@link #encodeGeometryColumnGeneralized(GeometryDescriptor, String, int,
-     *     StringBuffer, Double)}
-     */
-    public final void encodeGeometryColumnGeneralized(
-            GeometryDescriptor gatt, int srid, StringBuffer sql, Double distance) {
-        throw new UnsupportedOperationException("Geometry generalization not supported");
+        encodeColumnName(prefix, gatt.getLocalName(), sql);
     }
 
     public void encodeGeometryColumnGeneralized(
             GeometryDescriptor gatt, String prefix, int srid, StringBuffer sql, Double distance) {
         throw new UnsupportedOperationException("Geometry generalization not supported");
-    }
-
-    /**
-     * Encodes a simplified geometry using a DB provided SQL function if available If not supported,
-     * subclasses should not implement Only called if {@link Hints#GEOMETRY_SIMPLIFICATION is
-     * supported}
-     *
-     * @see SQLDialect#encodeGeometryColumnGeneralized(GeometryDescriptor, StringBuffer, Double)
-     * @deprecated use {@link #encodeGeometryColumnSimplified(GeometryDescriptor, String, int,
-     *     StringBuffer, Double)}
-     */
-    public void encodeGeometryColumnSimplified(
-            GeometryDescriptor gatt, int srid, StringBuffer sql, Double distance) {
-        throw new UnsupportedOperationException("Geometry simplification not supported");
     }
 
     public void encodeGeometryColumnSimplified(
@@ -1268,7 +1165,6 @@ public abstract class SQLDialect {
             Connection cx, SimpleFeatureType schema, String databaseSchema, Index index)
             throws SQLException {
         StringBuffer sql = new StringBuffer();
-        String escape = getNameEscape();
         sql.append("CREATE ");
         if (index.isUnique()) {
             sql.append("UNIQUE ");
@@ -1278,15 +1174,15 @@ public abstract class SQLDialect {
             encodeSchemaName(databaseSchema, sql);
             sql.append(".");
         }
-        sql.append(escape).append(index.getIndexName()).append(escape);
+        sql.append(escapeName(index.getIndexName()));
         sql.append(" ON ");
         if (databaseSchema != null) {
             encodeSchemaName(databaseSchema, sql);
             sql.append(".");
         }
-        sql.append(escape).append(index.getTypeName()).append(escape).append("(");
+        sql.append(escapeName(index.getTypeName())).append("(");
         for (String attribute : index.getAttributes()) {
-            sql.append(escape).append(attribute).append(escape).append(", ");
+            sql.append(escapeName(attribute)).append(", ");
         }
         sql.setLength(sql.length() - 2);
         sql.append(")");
@@ -1317,13 +1213,12 @@ public abstract class SQLDialect {
             Connection cx, SimpleFeatureType schema, String databaseSchema, String indexName)
             throws SQLException {
         StringBuffer sql = new StringBuffer();
-        String escape = getNameEscape();
         sql.append("DROP INDEX ");
         if (supportsSchemaForIndex() && databaseSchema != null) {
             encodeSchemaName(databaseSchema, sql);
             sql.append(".");
         }
-        sql.append(escape).append(indexName).append(escape);
+        sql.append(escapeName(indexName));
 
         Statement st = null;
         try {
@@ -1419,23 +1314,6 @@ public abstract class SQLDialect {
     protected PrimaryKey getPrimaryKey(String typeName) throws IOException {
         SimpleFeatureType featureType = dataStore.getSchema(typeName);
         return dataStore.getPrimaryKey(featureType);
-    }
-
-    @Deprecated
-    protected void encodeAggregateFunction(String function, String column, StringBuffer sql) {
-        encodeAggregateFunctionPrefix(function, sql);
-        sql.append(column);
-        encodeAggregateFunctionPostfix(function, sql);
-    }
-
-    @Deprecated
-    public void encodeAggregateFunctionPrefix(String function, StringBuffer sql) {
-        sql.append(function).append("(");
-    }
-
-    @Deprecated
-    public void encodeAggregateFunctionPostfix(String function, StringBuffer sql) {
-        sql.append(")");
     }
 
     /**

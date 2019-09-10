@@ -16,12 +16,13 @@
  */
 package org.geotools.xml.filter;
 
+import static org.junit.Assert.*;
+
 import java.io.File;
 import java.io.FileFilter;
 import java.util.logging.Logger;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import junit.framework.Assert;
 import junit.framework.Protectable;
 import junit.framework.Test;
 import junit.framework.TestResult;
@@ -93,15 +94,15 @@ public class DOMParserTestSuite extends TestSuite {
         Object[] attributes = new Object[11];
         attributes[0] = geomFac.createLineString(coords);
         attributes[1] = Boolean.valueOf(true);
-        attributes[2] = new Character('t');
+        attributes[2] = Character.valueOf('t');
         attributes[3] = Byte.valueOf("10");
         attributes[4] = Short.valueOf("101");
         attributes[5] = Integer.valueOf(1002);
         attributes[6] = Long.valueOf(10003);
-        attributes[7] = new Float(10000.4);
-        attributes[8] = new Double(100000.5);
+        attributes[7] = Float.valueOf(10000.4f);
+        attributes[8] = Double.valueOf(100000.5);
         attributes[9] = "test string data";
-        attributes[10] = new Double(0.0);
+        attributes[10] = Double.valueOf(0.0);
         // Creates the feature itself
         testFeature = SimpleFeatureBuilder.build(testSchema, attributes, null);
         LOGGER.finer("...flat feature created");
@@ -142,7 +143,7 @@ public class DOMParserTestSuite extends TestSuite {
     }
 
     /** Quick test of a single xml document */
-    class DomTestXml extends Assert implements Test {
+    class DomTestXml implements Test {
         String document;
 
         public DomTestXml(String document) {

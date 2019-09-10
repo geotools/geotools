@@ -99,7 +99,7 @@ public class AbstractGeometryTypeBinding extends AbstractComplexBinding {
             CoordinateReferenceSystem crs = GML3EncodingUtils.getCRS(geometry);
 
             if (crs != null) {
-                return GML3EncodingUtils.crs(crs);
+                return GML3EncodingUtils.toURI(crs);
             }
         }
 

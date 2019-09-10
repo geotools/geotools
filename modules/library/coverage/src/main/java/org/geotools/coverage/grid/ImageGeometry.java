@@ -70,11 +70,6 @@ public class ImageGeometry implements GridGeometry, Serializable, Cloneable {
         return gridToCRS; // No need to clone since AffineTransform2D is immutable.
     }
 
-    /** @deprecated Renamed as {@link #getGridToCRS()}. */
-    public AffineTransform2D getGridToCoordinateSystem() {
-        return gridToCRS;
-    }
-
     /**
      * Returns a string representation of this grid geometry. The returned string is implementation
      * dependent. It is usually provided for debugging purposes.

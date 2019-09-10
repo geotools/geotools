@@ -16,6 +16,8 @@
  */
 package org.geotools.jdbc;
 
+import static org.opengis.filter.sort.SortOrder.*;
+
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
@@ -33,7 +35,6 @@ import org.geotools.feature.visitor.SumVisitor;
 import org.geotools.feature.visitor.UniqueVisitor;
 import org.geotools.filter.IllegalFilterException;
 import org.geotools.filter.SortByImpl;
-import org.geotools.filter.SortOrder;
 import org.geotools.filter.function.FilterFunction_area;
 import org.geotools.util.Converters;
 import org.opengis.feature.Feature;
@@ -126,7 +127,7 @@ public abstract class JDBCAggregateFunctionOnlineTest extends JDBCTestSupport {
                         .build();
 
         dataStore.getFeatureSource(tname("aggregate")).accepts(Query.ALL, v, null);
-        if (dataStore.getSupportedFunctions().containsKey(FilterFunction_area.NAME.getName())) {
+        if (dataStore.getFilterCapabilities().supports(FilterFunction_area.class)) {
             assertFalse(visited);
         }
         List groups = v.getResult().toList();
@@ -362,7 +363,7 @@ public abstract class JDBCAggregateFunctionOnlineTest extends JDBCTestSupport {
         v.setStartIndex(0);
         v.setMaxFeatures(2);
         Query q = new Query(tname("ft1"));
-        q.setSortBy(new SortBy[] {new SortByImpl(p, SortOrder.ASCENDING)});
+        q.setSortBy(new SortBy[] {new SortByImpl(p, ASCENDING)});
         dataStore.getFeatureSource(tname("ft1")).accepts(q, v, null);
         assertFalse(visited);
         Set result = v.getResult().toSet();
@@ -394,7 +395,7 @@ public abstract class JDBCAggregateFunctionOnlineTest extends JDBCTestSupport {
 
         Query q = new Query(tname("ft1"));
         q.setMaxFeatures(1);
-        q.setSortBy(new SortBy[] {new SortByImpl(p, SortOrder.ASCENDING)});
+        q.setSortBy(new SortBy[] {new SortByImpl(p, ASCENDING)});
         dataStore.getFeatureSource(tname("ft1")).accepts(q, v, null);
         assertFalse(visited);
         Set result = v.getResult().toSet();
@@ -417,7 +418,7 @@ public abstract class JDBCAggregateFunctionOnlineTest extends JDBCTestSupport {
         v.setStartIndex(1);
         v.setMaxFeatures(2);
         Query q = new Query(tname("ft1"));
-        q.setSortBy(new SortBy[] {new SortByImpl(p, SortOrder.ASCENDING)});
+        q.setSortBy(new SortBy[] {new SortByImpl(p, ASCENDING)});
         dataStore.getFeatureSource(tname("ft1")).accepts(q, v, null);
         assertFalse(visited);
         Set result = v.getResult().toSet();

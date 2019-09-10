@@ -99,11 +99,7 @@ public class QuantitativeResultImpl extends ResultImpl implements QuantitativeRe
         setValues(records);
     }
 
-    /**
-     * Temporary record implementation will we wait for a real one.
-     *
-     * @deprecated To be replaced by a better implementation as soon as we can.
-     */
+    /** Temporary record implementation will we wait for a real one. */
     private static final class SimpleRecord implements Record, java.io.Serializable {
         private final java.util.Map<org.opengis.util.MemberName, Object> map;
 

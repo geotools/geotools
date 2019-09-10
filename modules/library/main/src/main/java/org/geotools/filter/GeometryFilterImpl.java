@@ -20,11 +20,20 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.Objects;
 import org.geotools.util.Converters;
 import org.locationtech.jts.geom.Geometry;
+import org.opengis.filter.spatial.BBOX;
+import org.opengis.filter.spatial.Beyond;
 import org.opengis.filter.spatial.BinarySpatialOperator;
+import org.opengis.filter.spatial.Contains;
+import org.opengis.filter.spatial.Crosses;
+import org.opengis.filter.spatial.Disjoint;
+import org.opengis.filter.spatial.Equals;
+import org.opengis.filter.spatial.Intersects;
+import org.opengis.filter.spatial.Overlaps;
+import org.opengis.filter.spatial.Touches;
+import org.opengis.filter.spatial.Within;
 
 /**
  * Implements a geometry filter.
@@ -54,14 +63,8 @@ import org.opengis.filter.spatial.BinarySpatialOperator;
  */
 public abstract class GeometryFilterImpl extends BinaryComparisonAbstract
         implements BinarySpatialOperator {
-    /** Class logger */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(GeometryFilterImpl.class);
 
     protected MatchAction matchAction;
-
-    @Deprecated
-    protected GeometryFilterImpl() throws IllegalFilterException {}
 
     protected GeometryFilterImpl(MatchAction matchAction) {
         this.matchAction = matchAction;
@@ -117,26 +120,25 @@ public abstract class GeometryFilterImpl extends BinaryComparisonAbstract
         String operator = null;
 
         // Handles all normal geometry cases
-        int filterType = Filters.getFilterType(this);
-        if (filterType == GEOMETRY_EQUALS) {
+        if (this instanceof Equals) {
             operator = " equals ";
-        } else if (filterType == GEOMETRY_DISJOINT) {
+        } else if (this instanceof Disjoint) {
             operator = " disjoint ";
-        } else if (filterType == GEOMETRY_INTERSECTS) {
+        } else if (this instanceof Intersects) {
             operator = " intersects ";
-        } else if (filterType == GEOMETRY_TOUCHES) {
+        } else if (this instanceof Touches) {
             operator = " touches ";
-        } else if (filterType == GEOMETRY_CROSSES) {
+        } else if (this instanceof Crosses) {
             operator = " crosses ";
-        } else if (filterType == GEOMETRY_WITHIN) {
+        } else if (this instanceof Within) {
             operator = " within ";
-        } else if (filterType == GEOMETRY_CONTAINS) {
+        } else if (this instanceof Contains) {
             operator = " contains ";
-        } else if (filterType == GEOMETRY_OVERLAPS) {
+        } else if (this instanceof Overlaps) {
             operator = " overlaps ";
-        } else if (filterType == GEOMETRY_BEYOND) {
+        } else if (this instanceof Beyond) {
             operator = " beyond ";
-        } else if (filterType == GEOMETRY_BBOX) {
+        } else if (this instanceof BBOX) {
             operator = " bbox ";
         }
 
@@ -163,47 +165,10 @@ public abstract class GeometryFilterImpl extends BinaryComparisonAbstract
      * @return true if specified object is equal to this filter; else false
      */
     public boolean equals(Object obj) {
-        if (obj instanceof GeometryFilterImpl) {
+        if (this.getClass().isInstance(obj)) {
             GeometryFilterImpl geomFilter = (GeometryFilterImpl) obj;
-            boolean isEqual = true;
-
-            isEqual = Filters.getFilterType(geomFilter) == Filters.getFilterType(this);
-            if (LOGGER.isLoggable(Level.FINEST)) {
-                LOGGER.finest(
-                        "filter type match:"
-                                + isEqual
-                                + "; in:"
-                                + Filters.getFilterType(geomFilter)
-                                + "; out:"
-                                + Filters.getFilterType(this));
-            }
-            isEqual =
-                    (geomFilter.expression1 != null)
-                            ? (isEqual && geomFilter.expression1.equals(this.expression1))
-                            : (isEqual && (this.expression1 == null));
-            if (LOGGER.isLoggable(Level.FINEST)) {
-                LOGGER.finest(
-                        "left geom match:"
-                                + isEqual
-                                + "; in:"
-                                + geomFilter.expression1
-                                + "; out:"
-                                + this.expression1);
-            }
-            isEqual =
-                    (geomFilter.expression2 != null)
-                            ? (isEqual && geomFilter.expression2.equals(this.expression2))
-                            : (isEqual && (this.expression2 == null));
-            if (LOGGER.isLoggable(Level.FINEST)) {
-                LOGGER.finest(
-                        "right geom match:"
-                                + isEqual
-                                + "; in:"
-                                + geomFilter.expression2
-                                + "; out:"
-                                + this.expression2);
-            }
-            return isEqual;
+            return Objects.equals(geomFilter.expression1, expression1)
+                    && Objects.equals(geomFilter.expression2, expression2);
         } else {
             return false;
         }
@@ -219,8 +184,7 @@ public abstract class GeometryFilterImpl extends BinaryComparisonAbstract
         org.opengis.filter.expression.Expression rightGeometry = getExpression2();
 
         int result = 17;
-        int filterType = Filters.getFilterType(this);
-        result = (37 * result) + filterType;
+        result = (37 * result) + getClass().hashCode();
         result = (37 * result) + ((leftGeometry == null) ? 0 : leftGeometry.hashCode());
         result = (37 * result) + ((rightGeometry == null) ? 0 : rightGeometry.hashCode());
 

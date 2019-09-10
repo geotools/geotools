@@ -16,9 +16,9 @@
  */
 package org.geotools.map.legend;
 
-import java.awt.Color;
-import javax.swing.Icon;
-import org.geotools.map.MapLayer;
+import java.awt.*;
+import javax.swing.*;
+import org.geotools.map.Layer;
 import org.geotools.styling.Rule;
 import org.geotools.styling.SLD;
 import org.locationtech.jts.geom.MultiPolygon;
@@ -41,7 +41,7 @@ public class DefaultGlyphFactory implements GlyphFactory {
      * @param layer
      * @return Icon For the provided layer
      */
-    public Icon icon(MapLayer layer) {
+    public Icon icon(Layer layer) {
         if (layer == null || layer.getFeatureSource() == null) {
             return geometry(null, null);
         }

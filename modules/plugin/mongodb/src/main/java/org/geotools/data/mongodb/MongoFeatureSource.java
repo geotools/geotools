@@ -48,6 +48,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.BinaryComparisonOperator;
 import org.opengis.filter.Filter;
 import org.opengis.filter.PropertyIsLike;
+import org.opengis.filter.PropertyIsNull;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
@@ -71,7 +72,11 @@ public class MongoFeatureSource extends ContentFeatureSource {
     final void initMapper() {
         // use schema with mapping info if it exists
         SimpleFeatureType type = entry.getState(null).getFeatureType();
-        setMapper(type != null ? new MongoSchemaMapper(type) : new MongoInferredMapper());
+        setMapper(
+                type != null
+                        ? new MongoSchemaMapper(type)
+                        : new MongoInferredMapper(
+                                getDataStore().getSchemaInitParams().orElse(null)));
     }
 
     public DBCollection getCollection() {
@@ -370,6 +375,12 @@ public class MongoFeatureSource extends ContentFeatureSource {
                         }
 
                         preStack.pop(); // value
+                        preStack.push(filter);
+                        return null;
+                    }
+
+                    @Override
+                    public Object visit(PropertyIsNull filter, Object notUsed) {
                         preStack.push(filter);
                         return null;
                     }

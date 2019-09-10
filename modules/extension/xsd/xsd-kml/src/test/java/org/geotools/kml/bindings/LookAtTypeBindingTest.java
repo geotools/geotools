@@ -45,7 +45,7 @@ public class LookAtTypeBindingTest extends KMLTestSupport {
         Coordinate c = p.getCoordinate();
         assertEquals(1d, c.x, 0.1);
         assertEquals(2d, c.y, 0.1);
-        assertEquals(3d, c.z, 0.1);
+        assertEquals(3d, c.getZ(), 0.1);
 
         xml = "<LookAt/>";
         buildDocument(xml);
@@ -53,6 +53,6 @@ public class LookAtTypeBindingTest extends KMLTestSupport {
         c = p.getCoordinate();
         assertEquals(0d, c.x, 0.1);
         assertEquals(0d, c.y, 0.1);
-        assertEquals(0d, c.z, 0.1);
+        assertEquals(0d, c.getZ(), 0.1);
     }
 }

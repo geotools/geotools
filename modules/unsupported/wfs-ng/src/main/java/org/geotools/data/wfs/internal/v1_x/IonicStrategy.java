@@ -37,6 +37,12 @@ public class IonicStrategy extends StrictWFS_1_x_Strategy {
     /** A filter 1.0 configuration to encode Filters issued to Ionic */
     private static final Configuration Ionic_filter_1_0_0_Configuration =
             new OGCConfiguration() {
+
+                @Override
+                protected void registerBindings(Map bindings) {
+                    super.registerBindings(bindings);
+                }
+
                 @Override
                 protected void registerBindings(MutablePicoContainer container) {
                     super.registerBindings(container);

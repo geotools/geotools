@@ -66,7 +66,7 @@ public abstract class AbstractFeatureCollection implements SimpleFeatureCollecti
         if (iterator instanceof SimpleFeatureIterator) {
             return (SimpleFeatureIterator) iterator;
         } else {
-            SimpleFeatureIterator iter = new DelegateSimpleFeatureIterator(this, iterator);
+            SimpleFeatureIterator iter = new DelegateSimpleFeatureIterator(iterator);
             return iter;
         }
     }

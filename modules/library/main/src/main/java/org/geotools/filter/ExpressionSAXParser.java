@@ -315,7 +315,7 @@ public class ExpressionSAXParser {
                         currentState = "complete";
                     } catch (NumberFormatException nfe1) {
                         try {
-                            Object temp = new Double(message);
+                            Object temp = Double.valueOf(message);
                             ((LiteralExpressionImpl) curExprssn).setValue(temp);
                             currentState = "complete";
                         } catch (NumberFormatException nfe2) {

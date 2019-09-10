@@ -23,7 +23,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
-import javax.swing.Icon;
+import java.util.stream.Collectors;
+import javax.swing.*;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.visitor.DuplicatingFilterVisitor;
 import org.geotools.styling.AnchorPoint;
@@ -74,6 +75,7 @@ import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
 import org.opengis.style.Description;
 import org.opengis.style.ExternalMark;
+import org.opengis.style.GraphicalSymbol;
 
 /**
  * Creates a deep copy of a Style, this class is *NOT THREAD SAFE*.
@@ -114,7 +116,21 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
     }
 
     public DuplicatingStyleVisitor(StyleFactory styleFactory, FilterFactory2 filterFactory) {
-        this.copyFilter = new DuplicatingFilterVisitor(filterFactory);
+        this(styleFactory, filterFactory, new DuplicatingFilterVisitor(filterFactory));
+    }
+
+    /**
+     * Builds a new duplicating style visitor using a custom {@link DuplicatingStyleVisitor}
+     *
+     * @param styleFactory Creates new style objects during style duplication
+     * @param filterFactory Creates new filters and expressions during style duplication
+     * @param filterCloner Copies filters during style duplication
+     */
+    public DuplicatingStyleVisitor(
+            StyleFactory styleFactory,
+            FilterFactory2 filterFactory,
+            DuplicatingFilterVisitor filterCloner) {
+        this.copyFilter = filterCloner;
         this.sf = styleFactory;
         this.ff = filterFactory;
         this.STRICT = false;
@@ -234,21 +250,19 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
     public void visit(Style style) {
         Style copy = null;
 
-        FeatureTypeStyle[] fts = style.getFeatureTypeStyles();
-        final int length = fts.length;
-        FeatureTypeStyle[] ftsCopy = new FeatureTypeStyle[length];
-        for (int i = 0; i < length; i++) {
-            if (fts[i] != null) {
-                fts[i].accept(this);
-                ftsCopy[i] = (FeatureTypeStyle) pages.pop();
+        List<FeatureTypeStyle> ftsCopy = new ArrayList<>();
+        for (FeatureTypeStyle fts : style.featureTypeStyles()) {
+            if (fts != null) {
+                fts.accept(this);
+                ftsCopy.add((FeatureTypeStyle) pages.pop());
             }
         }
 
         copy = sf.createStyle();
-        copy.setAbstract(style.getAbstract());
+        copy.getDescription().setAbstract(style.getDescription().getAbstract());
         copy.setName(style.getName());
-        copy.setTitle(style.getTitle());
-        copy.setFeatureTypeStyles(ftsCopy);
+        copy.getDescription().setTitle(style.getDescription().getTitle());
+        copy.featureTypeStyles().addAll(ftsCopy);
 
         if (STRICT && !copy.equals(style)) {
             throw new IllegalStateException("Was unable to duplicate provided Style:" + style);
@@ -266,23 +280,18 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
             filterCopy = copy(filter);
         }
 
-        Symbolizer[] symsCopy = rule.getSymbolizers();
-        for (int i = 0; i < symsCopy.length; i++) {
-            symsCopy[i] = copy(symsCopy[i]);
-        }
+        List<Symbolizer> symsCopy =
+                rule.symbolizers().stream().map(s -> copy(s)).collect(Collectors.toList());
 
-        Graphic[] legendCopy = rule.getLegendGraphic();
-        for (int i = 0; i < legendCopy.length; i++) {
-            legendCopy[i] = copy(legendCopy[i]);
-        }
+        Graphic legendCopy = copy((Graphic) rule.getLegend());
 
         Description descCopy = rule.getDescription();
         descCopy = copy(descCopy);
 
         copy = sf.createRule();
-        copy.setSymbolizers(symsCopy);
+        copy.symbolizers().addAll(symsCopy);
         copy.setDescription(descCopy);
-        copy.setLegendGraphic(legendCopy);
+        copy.setLegend(legendCopy);
         copy.setName(rule.getName());
         copy.setFilter(filterCopy);
         copy.setElseFilter(rule.isElseFilter());
@@ -307,22 +316,25 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         //                fts.getDescription(),
         //                fts.getName());
 
-        Rule[] rules = fts.getRules();
-        int length = rules.length;
-        Rule[] rulesCopy = new Rule[length];
-        for (int i = 0; i < length; i++) {
-            if (rules[i] != null) {
-                rules[i].accept(this);
-                rulesCopy[i] = (Rule) pages.pop();
-            }
-        }
+        List<Rule> rulesCopy =
+                fts.rules()
+                        .stream()
+                        .filter(r -> r != null)
+                        .map(
+                                r -> {
+                                    r.accept(this);
+                                    return (Rule) pages.pop();
+                                })
+                        .collect(Collectors.toList());
+
         //
         //        copy = sf.createFeatureTypeStyle();
         //        copy.setName(fts.getName());
         //        copy.setTitle(fts.getTitle());
         //        copy.setAbstract(fts.getAbstract());
         //        copy.setFeatureTypeName(fts.getFeatureTypeName());
-        copy.setRules(rulesCopy);
+        copy.rules().clear();
+        copy.rules().addAll(rulesCopy);
         //        copy.setSemanticTypeIdentifiers((String[])
         // fts.getSemanticTypeIdentifiers().clone());
 
@@ -557,11 +569,12 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
     protected ChannelSelection copy(ChannelSelection channelSelection) {
         if (channelSelection == null) return null;
 
-        SelectedChannelType[] channels = copy(channelSelection.getSelectedChannels());
-        ChannelSelection copy = sf.createChannelSelection(channels);
-        copy.setGrayChannel(copy(channelSelection.getGrayChannel()));
-        copy.setRGBChannels(copy(channelSelection.getRGBChannels()));
-        return copy;
+        if (channelSelection.getGrayChannel() != null) {
+            return sf.createChannelSelection(
+                    new SelectedChannelType[] {copy(channelSelection.getGrayChannel())});
+        } else {
+            return sf.createChannelSelection(copy(channelSelection.getRGBChannels()));
+        }
     }
 
     /**
@@ -645,7 +658,6 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
 
     public void visit(Fill fill) {
         Fill copy = sf.getDefaultFill();
-        copy.setBackgroundColor(copy(fill.getBackgroundColor()));
         copy.setColor(copy(fill.getColor()));
         copy.setGraphicFill(copy(fill.getGraphicFill()));
         copy.setOpacity(copy(fill.getOpacity()));
@@ -798,26 +810,21 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         Graphic copy = null;
 
         Displacement displacementCopy = copy(gr.getDisplacement());
-        ExternalGraphic[] externalGraphicsCopy = copy(gr.getExternalGraphics());
-        Mark[] marksCopy = copy(gr.getMarks());
+        List<GraphicalSymbol> symbolsCopy = copy(gr.graphicalSymbols());
         Expression opacityCopy = copy(gr.getOpacity());
         Expression rotationCopy = copy(gr.getRotation());
         Expression sizeCopy = copy(gr.getSize());
         AnchorPoint anchorCopy = copy(gr.getAnchorPoint());
 
-        // Looks like Symbols are a "view" of marks and external graphics?
-        // Symbol[] symbolCopys = copy( gr.getSymbols() );
-
         copy = sf.createDefaultGraphic();
 
         copy.setDisplacement(displacementCopy);
-        copy.setAnchorPoint(anchorCopy);
-        copy.setExternalGraphics(externalGraphicsCopy);
-        copy.setMarks(marksCopy);
+        copy.graphicalSymbols().clear();
+        copy.graphicalSymbols().addAll(symbolsCopy);
         copy.setOpacity(opacityCopy);
         copy.setRotation(rotationCopy);
         copy.setSize(sizeCopy);
-        // copy.setSymbols(symbolCopys);
+        copy.setAnchorPoint(anchorCopy);
 
         if (STRICT) {
             if (!copy.equals(gr)) {
@@ -827,29 +834,14 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         pages.push(copy);
     }
 
-    private Mark[] copy(Mark[] marks) {
-        if (marks == null) return null;
-        Mark[] copy = new Mark[marks.length];
-        for (int i = 0; i < marks.length; i++) {
-            copy[i] = copy(marks[i]);
-        }
-        return copy;
-    }
-
-    private Symbol[] copy(Symbol[] symbols) {
-        if (symbols == null) return null;
-        Symbol[] copy = new Symbol[symbols.length];
-        for (int i = 0; i < symbols.length; i++) {
-            copy[i] = copy(symbols[i]);
-        }
-        return copy;
-    }
-
-    private ExternalGraphic[] copy(ExternalGraphic[] externalGraphics) {
-        if (externalGraphics == null) return null;
-        ExternalGraphic[] copy = new ExternalGraphic[externalGraphics.length];
-        for (int i = 0; i < externalGraphics.length; i++) {
-            copy[i] = copy(externalGraphics[i]);
+    private List<GraphicalSymbol> copy(List<GraphicalSymbol> symbols) {
+        List<GraphicalSymbol> copy = new ArrayList<>(symbols.size());
+        for (GraphicalSymbol symbol : symbols) {
+            if (symbol instanceof Symbol) {
+                copy.add(copy((Symbol) symbol));
+            } else {
+                throw new RuntimeException("Don't know how to copy " + symbol);
+            }
         }
         return copy;
     }
@@ -1056,13 +1048,7 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
     }
 
     public void visit(ChannelSelection cs) {
-        // get the channels
-        final SelectedChannelType sct[] = copy(cs.getSelectedChannels());
-        final ChannelSelection copy = sf.createChannelSelection(sct);
-        if (STRICT && !copy.equals(cs)) {
-            throw new IllegalStateException(
-                    "Was unable to duplicate provided ChannelSelection:" + cs);
-        }
+        ChannelSelection copy = copy(cs);
         pages.push(copy);
     }
 

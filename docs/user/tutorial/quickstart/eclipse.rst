@@ -347,14 +347,9 @@ Here are some additional challenges for you to try:
      :start-after: // docs start cache
      :end-before:  // docs end cache
   
-  For the above example to compile hit :kbd:`Control-Shift-O` to organize imports; it will pull
-  in the following import:
-    
-  .. code-block:: java
 
-     import org.geotools.data.CachingFeatureSource;
-     
-  .. note:: When building you may see a message that ``CachingFeatureSource`` is deprecated. It's OK to ignore it, it's just a warning. The class is still under test but usable.
+  For the above example to compile hit :kbd:`Control-Shift-O` to organise imports.
+
 
 ..  The ability to grab figure out what classes to import is a key skill; we are
     starting off here with a simple example with a single import.

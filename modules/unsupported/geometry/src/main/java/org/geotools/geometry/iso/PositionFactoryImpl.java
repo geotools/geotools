@@ -115,6 +115,10 @@ public class PositionFactoryImpl implements Serializable, Factory, PositionFacto
         return Collections.unmodifiableMap(hintsWeCareAbout);
     }
 
+    public DirectPosition createDirectPosition() throws MismatchedDimensionException {
+        return new DirectPositionImpl(crs);
+    }
+
     public DirectPosition createDirectPosition(double[] coords)
             throws MismatchedDimensionException {
         if (coords != null) return new DirectPositionImpl(crs, coords);

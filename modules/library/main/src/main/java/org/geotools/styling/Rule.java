@@ -94,37 +94,6 @@ public interface Rule extends org.opengis.style.Rule {
     void setDescription(org.opengis.style.Description description);
 
     /**
-     * Gets the title.
-     *
-     * @return The title of the rule. This is a brief, human readable, description of the rule.
-     * @deprecated use getDescription().getTitle().getString()
-     */
-    String getTitle();
-
-    /**
-     * Sets the title.
-     *
-     * @param title The title of the rule. This is a brief, human readable, description of the rule.
-     */
-    void setTitle(String title);
-
-    /**
-     * Gets the abstract text for the rule.
-     *
-     * @return The abstract text, a more detailed description of the rule.
-     * @deprecated use getDescription().getAbstract().getString()
-     */
-    String getAbstract();
-
-    /**
-     * Sets the abstract text for the rule.
-     *
-     * @param abstractStr The abstract text, a more detailed description of the rule.
-     * @deprecated use getDescription().setAbstract()
-     */
-    void setAbstract(String abstractStr);
-
-    /**
      * The smallest value for scale denominator at which symbolizers contained by this rule should
      * be applied.
      *
@@ -160,40 +129,14 @@ public interface Rule extends org.opengis.style.Rule {
      */
     void setFilter(Filter filter);
 
-    /** @deprecated Please use isElseFilter */
-    boolean hasElseFilter();
-
     /** @param isElse if this rule should accept any features not already rendered */
     void setElseFilter(boolean isElse);
 
-    /**
-     * @param isElse
-     * @deprecaated Please use setElseFilter( isElse );
-     */
-    void setIsElseFilter(boolean isElse);
     /** */
     public GraphicLegend getLegend();
 
     /** @param legend */
     void setLegend(GraphicLegend legend);
-
-    /**
-     * A set of equivalent Graphics in different formats which can be used as a legend against
-     * features stylized by the symbolizers in this rule.
-     *
-     * @return A single Graphic matching the getLegend()
-     * @deprecated Please use getLegend
-     */
-    Graphic[] getLegendGraphic();
-
-    /**
-     * A set of equivalent Graphics in different formats which can be used as a legend against
-     * features stylized by the symbolizers in this rule.
-     *
-     * @param graphics Graphic objects; the first one will be used to configure getGraphicLenged
-     * @deprecated Please use setLegend
-     */
-    void setLegendGraphic(Graphic[] graphics);
 
     /**
      * The symbolizers contain the actual styling information for different geometry types. A single
@@ -217,23 +160,6 @@ public interface Rule extends org.opengis.style.Rule {
      * <p>Please note that this list may be modified direct.
      */
     List<org.geotools.styling.Symbolizer> symbolizers();
-
-    /**
-     * The symbolizers contain the actual styling information for different geometry types. A single
-     * feature may be rendered by more than one of the symbolizers returned by this method. It is
-     * important that the symbolizers be applied in the order in which they are returned if the end
-     * result is to be as intended. All symbolizers should be applied to all features which make it
-     * through the filters in this rule regardless of the features' geometry. For example, a polygon
-     * symbolizer should be applied to line geometries and even points. If this is not the desired
-     * beaviour, ensure that either the filters block inappropriate features or that the
-     * FeatureTypeStyler which contains this rule has its FeatureTypeName or SemanticTypeIdentifier
-     * set appropriately.
-     *
-     * @param symbolizers An array of symbolizers to be applied, in sequence, to all of the features
-     *     addressed by the FeatureTypeStyler which contains this rule.
-     * @deprecated please use symbolizers().addAll()
-     */
-    void setSymbolizers(Symbolizer[] symbolizers);
 
     /** @return Location where this style is defined; file or server; or null if unknown */
     public OnLineResource getOnlineResource();

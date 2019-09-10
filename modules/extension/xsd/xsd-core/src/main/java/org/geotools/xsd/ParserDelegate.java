@@ -17,6 +17,7 @@
 package org.geotools.xsd;
 
 import javax.xml.namespace.QName;
+import org.geotools.xsd.impl.Handler;
 import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
 
@@ -45,14 +46,14 @@ public interface ParserDelegate extends ContentHandler {
      * <p>A common check in this method would be to check the namespace of the element.
      *
      * @param elementName The name of the element to potentially handle.
+     * @param attributes The attributes of the element to potentially handle
+     * @param handler The parse handler that would normally handle the element, possibly <code>null
+     *     </code>
+     * @param parent The parse handler for the parent element, possibly <code>null</code>.
      * @return True if this delegate handles elements of the specified name and should take over
      *     parsing.
-     * @deprecated This method is deprecated and {@link ParserDelegate2#canHandle(QName, Attributes,
-     *     Handler)} should be used. After one major release cycle ParserDelegate2 methods will be
-     *     pulled into this interface and this method will be removed. In preparation
-     *     implementations should implement both interfaces.
      */
-    boolean canHandle(QName elementName);
+    boolean canHandle(QName elementName, Attributes attributes, Handler handler, Handler parent);
 
     /**
      * Gets the final parsed object from the delegate.

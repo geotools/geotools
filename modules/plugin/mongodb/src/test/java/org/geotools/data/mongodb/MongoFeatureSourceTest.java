@@ -25,12 +25,18 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.filter.And;
+import org.opengis.filter.BinaryLogicOperator;
+import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
+import org.opengis.filter.IncludeFilter;
+import org.opengis.filter.Or;
 import org.opengis.filter.PropertyIsBetween;
 import org.opengis.filter.PropertyIsEqualTo;
 import org.opengis.filter.PropertyIsGreaterThan;
 import org.opengis.filter.PropertyIsLessThan;
 import org.opengis.filter.PropertyIsLike;
+import org.opengis.filter.PropertyIsNull;
 import org.opengis.filter.spatial.BBOX;
 
 public abstract class MongoFeatureSourceTest extends MongoTestSupport {
@@ -279,5 +285,46 @@ public abstract class MongoFeatureSourceTest extends MongoTestSupport {
 
         // no feature should match
         assertEquals(0, source.getCount(q));
+    }
+
+    public void testIsNullFilter() throws Exception {
+        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        PropertyIsNull isNull = ff.isNull(ff.literal("properties.nullableAttribute"));
+        SimpleFeatureSource source = dataStore.getFeatureSource("ft1");
+        Query q = new Query("ft1", isNull);
+        assertEquals(2, source.getCount(q));
+    }
+
+    public void testOrPostFilter() throws Exception {
+        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        PropertyIsLike f1 =
+                ff.like(ff.property("properties.stringProperty"), "on%", "%", "_", "\\");
+        PropertyIsLike f2 =
+                ff.like(ff.property("properties.stringProperty"), "no%", "%", "_", "\\");
+        Or or = ff.or(f1, f2);
+        checkBinaryLogicOperatorFilterSplitting(or);
+    }
+
+    public void testAndPostFilter() throws Exception {
+        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        PropertyIsLike f1 =
+                ff.like(ff.property("properties.stringProperty"), "on%", "%", "_", "\\");
+        PropertyIsLike f2 =
+                ff.like(ff.property("properties.stringProperty"), "no%", "%", "_", "\\");
+        And and = ff.and(f1, f2);
+        checkBinaryLogicOperatorFilterSplitting(and);
+    }
+
+    private void checkBinaryLogicOperatorFilterSplitting(BinaryLogicOperator filter)
+            throws Exception {
+        SimpleFeatureSource source = dataStore.getFeatureSource("ft1");
+        assertTrue(source instanceof MongoFeatureStore);
+        MongoFeatureStore mongoStore = (MongoFeatureStore) source;
+        MongoFeatureSource mongoSource = mongoStore.delegate;
+        Filter[] filters = mongoSource.splitFilter(filter);
+        Filter preFilter = filters[0];
+        assertTrue(preFilter instanceof BinaryLogicOperator);
+        Filter postFilter = filters[1];
+        assertTrue(postFilter instanceof IncludeFilter);
     }
 }

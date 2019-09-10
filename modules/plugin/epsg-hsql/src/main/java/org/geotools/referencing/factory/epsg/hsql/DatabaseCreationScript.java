@@ -19,9 +19,9 @@ package org.geotools.referencing.factory.epsg.hsql;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -41,7 +41,7 @@ public class DatabaseCreationScript {
          * instructions - update ThreadedHsqlEpsgFactory.VERSION - modify the "directory" variable
          * below to point to the folder containing the SQL scripts
          */
-        String inputDirectory = "./src/main/resources/org/geotools/referencing/factory/epsg/";
+        String inputDirectory = "./src/main/resources/org/geotools/referencing/factory/epsg/hsql";
 
         /** The files we're interested into */
         File directory = new File(inputDirectory);
@@ -92,7 +92,7 @@ public class DatabaseCreationScript {
             executeScript(new File(directory, "EPSG_Data.sql"), statement);
             statement.execute(
                     "UPDATE EPSG_DATUM SET REALIZATION_EPOCH = NULL WHERE REALIZATION_EPOCH = ''");
-            statement.execute("ALTER TABLE EPSG_DATUM ALTER COLUMN REALIZATION_EPOCH INTEGER");
+            statement.execute("ALTER TABLE EPSG_DATUM ALTER COLUMN REALIZATION_EPOCH DATE");
             executeScript(new File(directory, "EPSG_FKeys.sql"), statement);
             executeScript(new File(directory, "EPSG_Indexes.sql"), statement);
             statement.execute("SHUTDOWN COMPACT");
@@ -158,11 +158,10 @@ public class DatabaseCreationScript {
         SqlScriptReader reader = null;
         try {
             // first read in the tables
-            reader =
-                    new SqlScriptReader(
-                            new InputStreamReader(new FileInputStream(scriptFile), "ISO-8859-15"));
+            reader = new SqlScriptReader(new FileReader(scriptFile));
             while (reader.hasNext()) {
-                statement.execute(reader.next());
+                String sql = reader.next();
+                statement.execute(sql);
             }
         } finally {
             if (reader != null) reader.dispose();

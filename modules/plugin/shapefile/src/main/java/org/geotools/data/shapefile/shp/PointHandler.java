@@ -108,10 +108,10 @@ public class PointHandler implements ShapeHandler {
         buffer.putDouble(c.y);
 
         if (shapeType == ShapeType.POINTZ) {
-            if (Double.isNaN(c.z)) { // nan means not defined
+            if (Double.isNaN(c.getZ())) { // nan means not defined
                 buffer.putDouble(0.0);
             } else {
-                buffer.putDouble(c.z);
+                buffer.putDouble(c.getZ());
             }
         }
 

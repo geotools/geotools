@@ -60,6 +60,14 @@ following connection parameters:
   are stored as MongoDB documents or files adhering to the JSON schema format with 
   the schema "Type Name" (``typeName``) as the key.
 
+* max_objs_schema: specifies the maximun integer number of JSON objects on the collection
+  to be used in the schema generation process.  
+  The default value is 1.  This parameter  is not required.
+  
+* objs_id_schema: specifies a collection of comma separated Object IDs to be used 
+  in the schema generation process.  It can be used along 
+  with ``max_objs_schema`` parameter.  Default is empty.  This parameter is not required.
+
 JSON Schema
 -----------
 
@@ -167,9 +175,9 @@ Implementation Notes
   indexed GeoJSON data stored in a MongoDB document collection is assumed to be 
   referenced with the WGS84 coordinate reference system.
 
-* MongoDB versions tested through 2.4.9 do not support more than one operation 
-  on a spatial index nested in an ``$or`` operation (so splitting a query into two 
-  across the dateline will not work).
+
+* Native ``$or`` operator execution is automatically enabled when MongoDB detected version >= 2.6.0; 
+  if you run a lower version, native $or operator execution is automatically disabled.
 
 * ``Within``, ``Intersects`` and ``BBOX`` filters are implemented with
   ``$geoWithin`` and 

@@ -43,7 +43,7 @@ public class LiteralTest extends TestCase {
     }
 
     public void testValidConstruction() throws Exception {
-        Literal a = new LiteralExpressionImpl(new Double(10));
+        Literal a = new LiteralExpressionImpl(Double.valueOf(10));
         Literal b = new LiteralExpressionImpl("Label");
         Literal c = new LiteralExpressionImpl(Integer.valueOf(10));
         GeometryFactory gf = new GeometryFactory(new PrecisionModel());
@@ -52,7 +52,7 @@ public class LiteralTest extends TestCase {
 
     public void testInvalidConstruction1() throws Exception {
         try {
-            Literal a = new LiteralExpressionImpl(new Double(10));
+            Literal a = new LiteralExpressionImpl(Double.valueOf(10));
             Literal b = new LiteralExpressionImpl(a);
         } catch (IllegalFilterException ife) {
             return;
@@ -62,8 +62,8 @@ public class LiteralTest extends TestCase {
     public void testConversion() throws Exception {
         assertEquals("abc", ff.literal("abc").evaluate(null));
         assertEquals(Integer.valueOf(12), ff.literal("12").evaluate(null, Integer.class));
-        assertEquals(new Double(12.0), ff.literal("12.0").evaluate(null, Double.class));
-        assertEquals(new Double(12.5), ff.literal("12.5").evaluate(null, Double.class));
+        assertEquals(Double.valueOf(12.0), ff.literal("12.0").evaluate(null, Double.class));
+        assertEquals(Double.valueOf(12.5), ff.literal("12.5").evaluate(null, Double.class));
         assertEquals(
                 Long.valueOf(Long.MAX_VALUE),
                 ff.literal(Long.MAX_VALUE + "").evaluate(null, Long.class));

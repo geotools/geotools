@@ -32,7 +32,7 @@ import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.data.collection.TreeSetFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.feature.FeatureCollections;
+import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.visitor.MaxVisitor.MaxResult;
 import org.geotools.feature.visitor.MedianVisitor.MedianResult;
@@ -73,7 +73,7 @@ public class VisitorCalculationTest extends DataTestCase {
 
     protected void setUp() throws Exception {
         super.setUp();
-        empty = FeatureCollections.newCollection();
+        empty = new DefaultFeatureCollection();
         fc = DataUtilities.collection(roadFeatures);
         invfc = new TreeSetFeatureCollection(fc).sort(SortBy.REVERSE_ORDER);
         fc2 = DataUtilities.collection(riverFeatures);
@@ -135,7 +135,7 @@ public class VisitorCalculationTest extends DataTestCase {
         minResult7 = minResult7.merge(minResult1);
         assertEquals(-50, minResult7.toInt());
         // test varying data types
-        minVisitor.setValue(new Double(-100.0));
+        minVisitor.setValue(Double.valueOf(-100.0));
         minResult1 = minVisitor.getResult();
         minResult7 = minResult7.merge(minResult1);
         assertEquals(-100.0, minResult7.toDouble(), 0);
@@ -167,7 +167,7 @@ public class VisitorCalculationTest extends DataTestCase {
         CalcResult maxResult3 = (MaxResult) maxResult1.merge(maxResult2);
         assertEquals((double) 4.5, maxResult3.toDouble(), 0);
         // test for destruction during merge
-        CalcResult maxResult4 = new MaxResult((Comparable) new Double(2));
+        CalcResult maxResult4 = new MaxResult((Comparable) Double.valueOf(2));
         CalcResult maxResult5 = (MaxResult) maxResult4.merge(maxResult1);
         assertEquals(3, maxResult5.toDouble(), 0);
         assertEquals(2, maxResult4.toDouble(), 0);
@@ -177,7 +177,7 @@ public class VisitorCalculationTest extends DataTestCase {
         assertEquals(3, maxResult7.toDouble(), 0);
         assertEquals(-5, maxResult6.toDouble(), 0);
         // test a mock optimization
-        maxVisitor.setValue(new Double(544));
+        maxVisitor.setValue(Double.valueOf(544));
         maxResult1 = maxVisitor.getResult();
         maxResult7 = maxResult7.merge(maxResult1);
         assertEquals(544, maxResult7.toDouble(), 0);
@@ -211,15 +211,15 @@ public class VisitorCalculationTest extends DataTestCase {
         assertEquals(2, medianResult3.toDouble(), 0);
         // test for destruction during merge
         List vals = new ArrayList();
-        vals.add(new Double(2.5));
-        vals.add(new Double(3.5));
-        vals.add(new Double(4.5));
+        vals.add(Double.valueOf(2.5));
+        vals.add(Double.valueOf(3.5));
+        vals.add(Double.valueOf(4.5));
         CalcResult medianResult4 = new MedianResult(vals);
         CalcResult medianResult5 = medianResult4.merge(medianResult1);
         assertEquals(2.75, medianResult5.toDouble(), 0);
         assertEquals(3.5, medianResult4.toDouble(), 0);
         // test a mock optimization
-        medianVisitor1.setValue(new Double(544));
+        medianVisitor1.setValue(Double.valueOf(544));
         medianResult1 = medianVisitor1.getResult();
         try {
             medianResult3 = medianResult5.merge(medianResult1);
@@ -353,7 +353,7 @@ public class VisitorCalculationTest extends DataTestCase {
         assertEquals(20, averageResult2.toInt());
         averageResult3 = averageResult1.merge(averageResult2);
         assertEquals((double) 13.25, averageResult3.toDouble(), 0);
-        averageVisitor2.setValue(new Double(15.4)); // un-mergeable optimization
+        averageVisitor2.setValue(Double.valueOf(15.4)); // un-mergeable optimization
         averageResult2 = averageVisitor2.getResult();
         assertEquals((double) 15.4, averageResult2.toDouble(), 0);
         try {
@@ -365,7 +365,7 @@ public class VisitorCalculationTest extends DataTestCase {
         // throw a monkey in the wrench (combine number classes)
         averageVisitor.setValue(5, Integer.valueOf(10));
         averageResult1 = averageVisitor.getResult();
-        averageVisitor2.setValue(5, new Double(33.3));
+        averageVisitor2.setValue(5, Double.valueOf(33.3));
         averageResult2 = averageVisitor2.getResult();
         averageResult3 = averageResult1.merge(averageResult2); // int + double --> double?
         assertEquals((double) 4.33, averageResult3.toDouble(), 0);
@@ -524,9 +524,8 @@ public class VisitorCalculationTest extends DataTestCase {
         AverageVisitor visit1 = new AverageVisitor(expr);
         fc3.accepts(visit1, null);
         CalcResult result = visit1.getResult();
-        double average = result.toDouble();
 
-        StandardDeviationVisitor visit2 = new StandardDeviationVisitor(expr, average);
+        StandardDeviationVisitor visit2 = new StandardDeviationVisitor(expr);
         fc3.accepts(visit2, null);
         assertEquals(28.86, visit2.getResult().toDouble(), 0.01);
         // then do it single pass
@@ -534,7 +533,7 @@ public class VisitorCalculationTest extends DataTestCase {
         fc3.accepts(visit3, null);
         assertEquals(28.86, visit3.getResult().toDouble(), 0.01);
         // test empty collection
-        StandardDeviationVisitor emptyVisitor = new StandardDeviationVisitor(expr, average);
+        StandardDeviationVisitor emptyVisitor = new StandardDeviationVisitor(expr);
         empty.accepts(emptyVisitor, null);
         assertEquals(CalcResult.NULL_RESULT, emptyVisitor.getResult());
         // test merge
@@ -567,7 +566,7 @@ public class VisitorCalculationTest extends DataTestCase {
         countVisitor.setValue(8);
         CalcResult countResult = countVisitor.getResult();
         MaxVisitor maxVisitor = new MaxVisitor((Expression) null);
-        maxVisitor.setValue(new Double(99));
+        maxVisitor.setValue(Double.valueOf(99));
         CalcResult maxResult = maxVisitor.getResult();
         try {
             CalcResult boomResult = maxResult.merge(countResult);

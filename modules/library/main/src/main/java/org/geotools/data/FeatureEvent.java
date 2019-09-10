@@ -18,7 +18,6 @@ package org.geotools.data;
 
 import java.util.EventObject;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.locationtech.jts.geom.Envelope;
 import org.opengis.feature.Feature;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.filter.Filter;
@@ -58,10 +57,8 @@ public class FeatureEvent extends EventObject {
      *
      * <p>FeatureEvent.getBounds() should reflect the the Bounding Box of the newly created
      * Features.
-     *
-     * @deprecated Please use FeatureEvent.getType() == Type.ADDED
      */
-    public static final int FEATURES_ADDED = 1;
+    private static final int FEATURES_ADDED = 1;
 
     /**
      * Event type constant denoting that features in the collection has been modified.
@@ -83,11 +80,9 @@ public class FeatureEvent extends EventObject {
      *
      * <p>FeatureEvent.getBounds() should reflect the the BoundingBox of the FeatureWriter modified
      * Features. This may not be possible during a <code>commit()</code> or <code>rollback()</code>
-     * opperation.
-     *
-     * @deprecated Please use FeatureEvent.getType() == Type.CHANGED
+     * operation.
      */
-    public static final int FEATURES_CHANGED = 0;
+    private static final int FEATURES_CHANGED = 0;
 
     /**
      * Event type constant denoting the removal of a feature.
@@ -104,8 +99,6 @@ public class FeatureEvent extends EventObject {
      * on the FeatureSource.
      *
      * <p>FeatureEvent.getBounds() should reflect the the Bounding Box of the removed Features.
-     *
-     * @deprecated Please use FeatureEvent.getType() == Type.REMOVED
      */
     public static final int FEATURES_REMOVED = -1;
 
@@ -199,6 +192,19 @@ public class FeatureEvent extends EventObject {
         this.filter = origional.filter; // filter is immutable
         this.featureSource = origional.getFeatureSource();
     }
+
+    /**
+     * Constructs a new FeatureEvent.
+     *
+     * @param source The writer or feature store that fired the event
+     * @param type One of FEATURE_CHANGED, FEATURE_REMOVED or FEATURE_ADDED
+     * @param bounds The area modified by this change
+     */
+    @SuppressWarnings("rawtypes")
+    public FeatureEvent(Object source, Type type, ReferencedEnvelope bounds) {
+        this(source, type, bounds, Filter.INCLUDE);
+    }
+
     /**
      * Constructs a new FeatureEvent.
      *
@@ -215,36 +221,6 @@ public class FeatureEvent extends EventObject {
         if (source instanceof FeatureSource) {
             this.featureSource = (FeatureSource) source;
         }
-    }
-
-    /**
-     * Constructs a new FeatureEvent.
-     *
-     * @param featureSource The DataStore that fired the event
-     * @param eventType One of FEATURE_CHANGED, FEATURE_REMOVED or FEATURE_ADDED
-     * @param bounds The area modified by this change
-     * @deprecated Please use FeatureEvent( FeatureSource, Type, Envelope )
-     */
-    public FeatureEvent(
-            FeatureSource<? extends FeatureType, ? extends Feature> featureSource,
-            int eventType,
-            Envelope bounds) {
-        super(featureSource);
-        switch (eventType) {
-            case FEATURES_ADDED:
-                type = Type.ADDED;
-                break;
-            case FEATURES_CHANGED:
-                type = Type.CHANGED;
-                break;
-            case FEATURES_REMOVED:
-                type = Type.REMOVED;
-                break;
-            default:
-                type = Type.CHANGED;
-        }
-        this.bounds = ReferencedEnvelope.reference(bounds);
-        this.featureSource = featureSource;
     }
 
     /**

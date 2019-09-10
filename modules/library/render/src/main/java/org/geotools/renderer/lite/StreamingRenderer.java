@@ -20,13 +20,8 @@ import static java.lang.Math.abs;
 
 import com.conversantmedia.util.concurrent.PushPullBlockingQueue;
 import com.conversantmedia.util.concurrent.SpinPolicy;
-import java.awt.AlphaComposite;
-import java.awt.Composite;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
-import java.awt.RenderingHints;
+import java.awt.*;
 import java.awt.RenderingHints.Key;
-import java.awt.Shape;
 import java.awt.font.GlyphVector;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
@@ -97,8 +92,6 @@ import org.geotools.image.util.ImageUtilities;
 import org.geotools.map.DirectLayer;
 import org.geotools.map.Layer;
 import org.geotools.map.MapContent;
-import org.geotools.map.MapContext;
-import org.geotools.map.MapLayer;
 import org.geotools.map.StyleLayer;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
@@ -125,6 +118,7 @@ import org.geotools.styling.PointSymbolizer;
 import org.geotools.styling.RasterSymbolizer;
 import org.geotools.styling.Rule;
 import org.geotools.styling.RuleImpl;
+import org.geotools.styling.StyleFactory;
 import org.geotools.styling.Symbolizer;
 import org.geotools.styling.TextSymbolizer;
 import org.geotools.styling.visitor.DpiRescaleStyleVisitor;
@@ -227,6 +221,8 @@ public class StreamingRenderer implements GTRenderer {
     /** Filter factory for creating bounding box filters */
     protected static final FilterFactory2 filterFactory =
             CommonFactoryFinder.getFilterFactory2(null);
+
+    protected static final StyleFactory STYLE_FACTORY = CommonFactoryFinder.getStyleFactory();
 
     private static final PropertyName gridPropertyName = filterFactory.property("grid");
 
@@ -561,9 +557,6 @@ public class StreamingRenderer implements GTRenderer {
      * @param worldToScreen A transform which converts World coordinates to Screen coordinates.
      * @task Need to check if the Layer CoordinateSystem is different to the BoundingBox rendering
      *     CoordinateSystem and if so, then transform the coordinates.
-     * @deprecated Use paint(Graphics2D graphics, Rectangle paintArea, ReferencedEnvelope mapArea)
-     *     or paint(Graphics2D graphics, Rectangle paintArea, ReferencedEnvelope mapArea,
-     *     AffineTransform worldToScreen) instead.
      */
     public void paint(Graphics2D graphics, Rectangle paintArea, AffineTransform worldToScreen) {
         if (worldToScreen == null || paintArea == null) {
@@ -590,20 +583,28 @@ public class StreamingRenderer implements GTRenderer {
      * @param graphics The graphics object to draw to.
      * @param paintArea The size of the output area in output units (eg: pixels).
      * @param mapArea the map's visible area (viewport) in map coordinates.
-     * @deprecated Use paint(Graphics2D graphics, Rectangle paintArea, ReferencedEnvelope mapArea)
-     *     or paint(Graphics2D graphics, Rectangle paintArea, ReferencedEnvelope mapArea,
-     *     AffineTransform worldToScreen) instead.
      */
     public void paint(Graphics2D graphics, Rectangle paintArea, Envelope mapArea) {
         if (mapArea == null || paintArea == null) {
             LOGGER.info("renderer passed null arguments");
             return;
         } // Other arguments get checked later
-        paint(
-                graphics,
-                paintArea,
-                mapArea,
-                RendererUtilities.worldToScreenTransform(mapArea, paintArea));
+        paint(graphics, paintArea, mapArea, worldToScreenTransform(mapArea, paintArea));
+    }
+
+    private static AffineTransform worldToScreenTransform(Envelope mapExtent, Rectangle paintArea) {
+        double scaleX = paintArea.getWidth() / mapExtent.getWidth();
+        double scaleY = paintArea.getHeight() / mapExtent.getHeight();
+
+        double tx = -mapExtent.getMinX() * scaleX;
+        double ty = (mapExtent.getMinY() * scaleY) + paintArea.getHeight();
+
+        AffineTransform at = new AffineTransform(scaleX, 0.0d, 0.0d, -scaleY, tx, ty);
+        AffineTransform originTranslation =
+                AffineTransform.getTranslateInstance(paintArea.x, paintArea.y);
+        originTranslation.concatenate(at);
+
+        return originTranslation != null ? originTranslation : at;
     }
 
     /**
@@ -641,9 +642,6 @@ public class StreamingRenderer implements GTRenderer {
      * @param paintArea The size of the output area in output units (eg: pixels).
      * @param mapArea the map's visible area (viewport) in map coordinates.
      * @param worldToScreen A transform which converts World coordinates to Screen coordinates.
-     * @deprecated Use paint(Graphics2D graphics, Rectangle paintArea, ReferencedEnvelope mapArea)
-     *     or paint(Graphics2D graphics, Rectangle paintArea, ReferencedEnvelope mapArea,
-     *     AffineTransform worldToScreen) instead.
      */
     public void paint(
             Graphics2D graphics,
@@ -1027,7 +1025,6 @@ public class StreamingRenderer implements GTRenderer {
      *     source
      * @throws IllegalFilterException if something goes wrong constructing the bbox filter
      * @throws IOException
-     * @see MapLayer#setQuery(org.geotools.data.Query)
      */
     /*
      * Default visibility for testing purposes
@@ -1123,7 +1120,10 @@ public class StreamingRenderer implements GTRenderer {
                                         sourceEnvelope.getHeight());
                         WarpBuilder wb = new WarpBuilder(tolerance);
                         double densifyDistance = 0.0;
-                        int[] actualSplit = wb.getRowColsSplit(fullTranform, sourceDomain);
+                        int[] actualSplit =
+                                wb.isValidDomain(sourceDomain)
+                                        ? wb.getRowColsSplit(fullTranform, sourceDomain)
+                                        : null;
                         double minDistance =
                                 Math.min(
                                         MAX_PIXELS_DENSIFY
@@ -1711,8 +1711,8 @@ public class StreamingRenderer implements GTRenderer {
     }
 
     /**
-     * Inspects the <code>MapLayer</code>'s style and retrieves it's needed attribute names,
-     * returning at least the default geometry attribute name.
+     * Inspects the <code>Layer</code>'s style and retrieves it's needed attribute names, returning
+     * at least the default geometry attribute name.
      *
      * @param styles the <code>styles</code> to determine the needed attributes from
      * @param schema the <code>layer</code>'s FeatureSource<SimpleFeatureType, SimpleFeature> schema
@@ -2000,11 +2000,10 @@ public class StreamingRenderer implements GTRenderer {
         // TODO: find a complex feature equivalent for this check
         return fts.featureTypeNames().isEmpty()
                 || ((ftype.getName().getLocalPart() != null)
-                        && (ftype.getName()
-                                        .getLocalPart()
-                                        .equalsIgnoreCase(fts.getFeatureTypeName())
-                                || FeatureTypes.isDecendedFrom(
-                                        ftype, null, fts.getFeatureTypeName())));
+                        && (fts.featureTypeNames().isEmpty()
+                                || fts.featureTypeNames()
+                                        .stream()
+                                        .anyMatch(tn -> FeatureTypes.matches(ftype, tn))));
     }
 
     private List<List<Rule>> splitRules(FeatureTypeStyle fts) {
@@ -2066,7 +2065,7 @@ public class StreamingRenderer implements GTRenderer {
      * When drawing in optimized mode a 32bit surface is created for each FeatureTypeStyle other
      * than the first in order to draw features in parallel while respecting the feature draw
      * ordering multiple FTS impose. This method allows to estimate how many megabytes will be
-     * needed, in terms of back buffers, to draw the current {@link MapContext}, assuming the
+     * needed, in terms of back buffers, to draw the current {@link MapContent}, assuming the
      * feature type style optimizations are turned on (in the case they are off, no extra memory
      * will be used).
      *
@@ -2152,17 +2151,42 @@ public class StreamingRenderer implements GTRenderer {
         List<List<LiteFeatureTypeStyle>> txClassified = classifyByFeatureProduction(lfts);
 
         // render groups by uniform transformation
-        for (List<LiteFeatureTypeStyle> uniform : txClassified) {
-            FeatureCollection features = getFeatures(layer, schema, uniform);
+        for (List<LiteFeatureTypeStyle> uniformLfts : txClassified) {
+            FeatureCollection features = getFeatures(layer, schema, uniformLfts);
             if (features == null) {
                 continue;
             }
 
+            // optimize filters for in memory sequential execution
+            // step one, collect duplicated filters and expressions
+            RepeatedFilterVisitor repeatedVisitor = new RepeatedFilterVisitor();
+            uniformLfts
+                    .stream()
+                    .flatMap(fts -> Arrays.stream(fts.ruleList))
+                    .filter(r -> !r.isElseFilter() && r.getFilter() != null)
+                    .forEach(r -> r.getFilter().accept(repeatedVisitor, null));
+            Set<Object> repeatedObjects = repeatedVisitor.getRepeatedObjects();
+            // step two, memoize the repeated ones and convert simple features access to indexed
+            if (schema instanceof SimpleFeatureType || !repeatedObjects.isEmpty()) {
+                MemoryFilterOptimizer filterOptimizer =
+                        new MemoryFilterOptimizer(features.getSchema(), repeatedObjects);
+                for (LiteFeatureTypeStyle fts : uniformLfts) {
+                    for (int i = 0; i < fts.ruleList.length; i++) {
+                        Rule rule = fts.ruleList[i];
+                        DuplicatingStyleVisitor optimizingStyleVisitor =
+                                new DuplicatingStyleVisitor(
+                                        STYLE_FACTORY, filterFactory, filterOptimizer);
+                        rule.accept(optimizingStyleVisitor);
+                        fts.ruleList[i] = (Rule) optimizingStyleVisitor.getCopy();
+                    }
+                }
+            }
+
             // finally, perform rendering
             if (isOptimizedFTSRenderingEnabled() && lfts.size() > 1) {
-                drawOptimized(graphics, layerId, features, uniform);
+                drawOptimized(graphics, layerId, features, uniformLfts);
             } else {
-                drawPlain(graphics, layerId, features, uniform);
+                drawPlain(graphics, layerId, features, uniformLfts);
             }
         }
     }
@@ -3197,32 +3221,6 @@ public class StreamingRenderer implements GTRenderer {
         return rendererHints;
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     * @deprecated The {@code MapContext} class is being phased out. Please use {@link
-     *     #setMapContent}.
-     */
-    public void setContext(MapContext context) {
-        // MapContext isA MapContent
-        mapContent = context;
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @deprecated The {@code MapContext} class is being phased out. Please use {@link
-     *     #setMapContent}.
-     */
-    public MapContext getContext() {
-        if (mapContent instanceof MapContext) {
-            return (MapContext) mapContent;
-        } else {
-            MapContext context = new MapContext(mapContent);
-            return context;
-        }
-    }
-
     public void setMapContent(MapContent mapContent) {
         this.mapContent = mapContent;
     }
@@ -3612,15 +3610,21 @@ public class StreamingRenderer implements GTRenderer {
                 // straight, so we don't need to compose it back in.
                 final Graphics2D ftsGraphics = currentLayer.graphics;
                 if (ftsGraphics instanceof DelayedBackbufferGraphic && !(ftsGraphics == graphics)) {
-                    final BufferedImage image = ((DelayedBackbufferGraphic) ftsGraphics).image;
-                    // we may have not found anything to paint, in that case the delegate
-                    // has not been initialized
-                    if (image != null) {
-                        if (currentLayer.composite == null) {
-                            graphics.setComposite(AlphaComposite.SrcOver);
-                        } else {
-                            graphics.setComposite(currentLayer.composite);
+                    BufferedImage image = ((DelayedBackbufferGraphic) ftsGraphics).image;
+                    if (currentLayer.composite == null) {
+                        graphics.setComposite(AlphaComposite.SrcOver);
+                    } else {
+                        // we may have not found anything to paint, in that case the delegate
+                        // has not been initialized
+                        if (image == null) {
+                            Rectangle size = ((DelayedBackbufferGraphic) ftsGraphics).screenSize;
+                            image =
+                                    new BufferedImage(
+                                            size.width, size.height, BufferedImage.TYPE_4BYTE_ABGR);
                         }
+                        graphics.setComposite(currentLayer.composite);
+                    }
+                    if (image != null) {
                         graphics.drawImage(image, 0, 0, null);
                         ftsGraphics.dispose();
                     }

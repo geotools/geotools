@@ -225,7 +225,13 @@ public class SolrFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
                     try {
                         QueryResponse rsp = server.query(solrQuery);
                         if (this.solrDataStore.getLogger().isLoggable(Level.FINE)) {
-                            this.solrDataStore.getLogger().log(Level.FINE, solrQuery.toString());
+                            this.solrDataStore
+                                    .getLogger()
+                                    .log(
+                                            Level.FINE,
+                                            server.getBaseURL()
+                                                    + "/select?"
+                                                    + solrQuery.toString());
                         }
                         this.solrDocIterator = rsp.getResults().iterator();
                         nextCursorMark = rsp.getNextCursorMark();

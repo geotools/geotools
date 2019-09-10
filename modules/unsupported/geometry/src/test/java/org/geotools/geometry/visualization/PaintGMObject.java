@@ -68,7 +68,7 @@ public class PaintGMObject {
         } else if (object instanceof PointImpl) {
             object_x = new int[1];
             object_y = new int[1];
-            DirectPositionImpl pos = ((PointImpl) object).getPosition();
+            DirectPositionImpl pos = ((PointImpl) object).getDirectPosition();
             object_x[0] = (int) pos.getX();
             object_y[0] = (int) pos.getY();
 

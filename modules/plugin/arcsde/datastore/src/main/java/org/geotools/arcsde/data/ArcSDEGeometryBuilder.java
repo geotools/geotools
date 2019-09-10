@@ -45,6 +45,7 @@ import org.locationtech.jts.geom.MultiPoint;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
+import org.locationtech.jts.geom.impl.CoordinateArraySequence;
 
 /**
  * Creates proper JTS Geometry objects from <code>SeShape</code> objects and vice versa.
@@ -487,7 +488,7 @@ public abstract class ArcSDEGeometryBuilder {
                 points[i] = new Coordinate(x, y);
             }
 
-            return geometryFactory.createMultiPoint(points);
+            return geometryFactory.createMultiPoint(new CoordinateArraySequence(points));
         }
     }
 
@@ -680,38 +681,6 @@ public abstract class ArcSDEGeometryBuilder {
 
             return p;
         }
-
-        @Deprecated
-        protected Polygon buildPolygon(
-                final double[][] parts, final GeometryFactory geometryFactory) {
-            Polygon p = null;
-
-            double[] linearCoordArray = parts[0];
-
-            int nHoles = parts.length - 1;
-
-            final CoordinateSequenceFactory coordinateSequenceFactory =
-                    geometryFactory.getCoordinateSequenceFactory();
-            LinearRing shell =
-                    geometryFactory.createLinearRing(
-                            toCoords(linearCoordArray, coordinateSequenceFactory));
-
-            LinearRing[] holes = new LinearRing[nHoles];
-
-            if (nHoles > 0) {
-                for (int i = 0; i < nHoles; i++) {
-                    linearCoordArray = parts[i + 1];
-
-                    holes[i] =
-                            geometryFactory.createLinearRing(
-                                    toCoords(linearCoordArray, coordinateSequenceFactory));
-                }
-            }
-
-            p = geometryFactory.createPolygon(shell, holes);
-
-            return p;
-        }
     }
 
     /**
@@ -776,6 +745,37 @@ public abstract class ArcSDEGeometryBuilder {
             MultiPolygon multiPoly = geometryFactory.createMultiPolygon(polys);
 
             return multiPoly;
+        }
+
+        private Polygon buildPolygon(
+                final double[][] parts, final GeometryFactory geometryFactory) {
+            Polygon p = null;
+
+            double[] linearCoordArray = parts[0];
+
+            int nHoles = parts.length - 1;
+
+            final CoordinateSequenceFactory coordinateSequenceFactory =
+                    geometryFactory.getCoordinateSequenceFactory();
+            LinearRing shell =
+                    geometryFactory.createLinearRing(
+                            toCoords(linearCoordArray, coordinateSequenceFactory));
+
+            LinearRing[] holes = new LinearRing[nHoles];
+
+            if (nHoles > 0) {
+                for (int i = 0; i < nHoles; i++) {
+                    linearCoordArray = parts[i + 1];
+
+                    holes[i] =
+                            geometryFactory.createLinearRing(
+                                    toCoords(linearCoordArray, coordinateSequenceFactory));
+                }
+            }
+
+            p = geometryFactory.createPolygon(shell, holes);
+
+            return p;
         }
     }
 }

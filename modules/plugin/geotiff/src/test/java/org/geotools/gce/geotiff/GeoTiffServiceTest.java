@@ -16,8 +16,9 @@
  */
 package org.geotools.gce.geotiff;
 
+import static org.junit.Assert.assertTrue;
+
 import java.util.Iterator;
-import junit.framework.Assert;
 import org.geotools.coverage.grid.io.GridFormatFactorySpi;
 import org.geotools.coverage.grid.io.GridFormatFinder;
 import org.junit.Test;
@@ -27,7 +28,7 @@ import org.junit.Test;
  *
  * @author Simone Giannecchini
  */
-public class GeoTiffServiceTest extends Assert {
+public class GeoTiffServiceTest {
 
     @Test
     public void testIsAvailable() {

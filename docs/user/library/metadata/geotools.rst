@@ -30,6 +30,7 @@ By contrast Java system properties are similar to a ``Map<String,String>`` and m
 ``ENTITY_RESOLVER``                   ``org.xml.sax.EntityResolver``
 ===================================== ===============================================
 
+
 The bound system properties can also be used to configure Hints:
 
 .. code-block:: java

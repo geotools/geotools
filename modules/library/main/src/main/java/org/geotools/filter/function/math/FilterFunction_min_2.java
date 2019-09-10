@@ -22,6 +22,8 @@ import static org.geotools.filter.capability.FunctionNameImpl.parameter;
 
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
+import org.geotools.util.Converters;
+import org.geotools.util.factory.Hints;
 import org.opengis.filter.capability.FunctionName;
 
 public class FilterFunction_min_2 extends FunctionExpressionImpl {
@@ -40,25 +42,25 @@ public class FilterFunction_min_2 extends FunctionExpressionImpl {
     }
 
     public Object evaluate(Object feature) {
-        long arg0;
-        long arg1;
+        Object arg0 = getExpression(0).evaluate(feature);
+        Object arg1 = getExpression(1).evaluate(feature);
 
-        try { // attempt to get value and perform conversion
-            arg0 = (getExpression(0).evaluate(feature, Long.class)).longValue();
-        } catch (Exception e) {
-            // probably a type error
+        if (arg0 == null || arg1 == null) {
+            return null;
+        }
+
+        arg0 = Converters.convert(arg0, Long.class, new Hints());
+        arg1 = Converters.convert(arg1, Long.class, new Hints());
+
+        if (arg0 == null) {
             throw new IllegalArgumentException(
                     "Filter Function problem for function min argument #0 - expected type long");
         }
-
-        try { // attempt to get value and perform conversion
-            arg1 = (getExpression(1).evaluate(feature, Long.class)).longValue();
-        } catch (Exception e) {
-            // probably a type error
+        if (arg1 == null) {
             throw new IllegalArgumentException(
                     "Filter Function problem for function min argument #1 - expected type long");
         }
 
-        return Long.valueOf(Math.min(arg0, arg1));
+        return (Math.min((Long) arg0, (Long) arg1));
     }
 }

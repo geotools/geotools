@@ -44,7 +44,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.OutputStream;
 import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -79,13 +78,11 @@ import javax.xml.bind.Unmarshaller;
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.Element;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.filefilter.FileFilterUtils;
 import org.apache.commons.io.filefilter.IOFileFilter;
 import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.data.DataAccessFactory.Param;
 import org.geotools.data.DataStoreFactorySpi;
-import org.geotools.data.DataUtilities;
 import org.geotools.data.shapefile.ShapefileDataStoreFactory;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.visitor.DefaultFilterVisitor;
@@ -574,7 +571,7 @@ public class Utils {
         //
         URL propsURL = sourceURL;
         if (!sourceURL.toExternalForm().endsWith(".properties")) {
-            propsURL = DataUtilities.changeUrlExt(sourceURL, "properties");
+            propsURL = URLs.changeUrlExt(sourceURL, "properties");
             if (propsURL.getProtocol().equals("file")) {
                 final File sourceFile = URLs.urlToFile(propsURL);
                 if (!sourceFile.exists()) {
@@ -819,7 +816,11 @@ public class Utils {
                                             Prop.ABSOLUTE_PATH,
                                             Boolean.toString(Utils.DEFAULT_PATH_BEHAVIOR))
                                     .trim());
-            catalogConfigurationBean.setAbsolutePath(absolutePath);
+            if (absolutePath) {
+                catalogConfigurationBean.setPathType(PathType.ABSOLUTE);
+            } else {
+                catalogConfigurationBean.setPathType(PathType.RELATIVE);
+            }
         }
 
         if (!ignoreSome || !ignorePropertiesSet.contains(Prop.PATH_TYPE)) {
@@ -1182,7 +1183,8 @@ public class Utils {
         try {
             // create a datastore as instructed
             final DataStoreFactorySpi spi =
-                    (DataStoreFactorySpi) Class.forName(SPIClass).newInstance();
+                    (DataStoreFactorySpi)
+                            Class.forName(SPIClass).getDeclaredConstructor().newInstance();
             return createDataStoreParamsFromPropertiesFile(properties, spi);
         } catch (Exception e) {
             final IOException ioe = new IOException();
@@ -1205,23 +1207,10 @@ public class Utils {
         SampleImage sampleImage = new SampleImage(defaultSM, defaultCM);
 
         // serialize it
-        OutputStream outStream = null;
-        ObjectOutputStream ooStream = null;
-        try {
-            outStream = new BufferedOutputStream(new FileOutputStream(sampleImageFile));
-            ooStream = new ObjectOutputStream(outStream);
+        try (ObjectOutputStream ooStream =
+                new ObjectOutputStream(
+                        new BufferedOutputStream(new FileOutputStream(sampleImageFile)))) {
             ooStream.writeObject(sampleImage);
-        } finally {
-            try {
-                if (ooStream != null) ooStream.close();
-            } catch (Throwable e) {
-                IOUtils.closeQuietly(ooStream);
-            }
-            try {
-                if (outStream != null) outStream.close();
-            } catch (Throwable e) {
-                IOUtils.closeQuietly(outStream);
-            }
         }
     }
 
@@ -1713,7 +1702,7 @@ public class Utils {
             if (ehcache.isElementInMemory(file)) {
                 final Element element = ehcache.get(file);
                 if (element != null) {
-                    final Serializable value = element.getValue();
+                    final Object value = element.getObjectValue();
                     if (value != null && value instanceof Histogram) {
                         histogram = (Histogram) value;
                         return histogram;
@@ -1724,12 +1713,8 @@ public class Utils {
 
         // No histogram in cache. Deserializing...
         if (histogram == null) {
-            FileInputStream fileStream = null;
-            ObjectInputStream objectStream = null;
-            try {
-
-                fileStream = new FileInputStream(file);
-                objectStream = new ObjectInputStream(fileStream);
+            try (ObjectInputStream objectStream =
+                    new ObjectInputStream(new FileInputStream(file))) {
                 histogram = (Histogram) objectStream.readObject();
                 if (ehcache != null) {
                     ehcache.put(new Element(file, histogram));
@@ -1745,13 +1730,6 @@ public class Utils {
             } catch (ClassNotFoundException e) {
                 if (LOGGER.isLoggable(Level.FINE)) {
                     LOGGER.fine("Unable to parse Histogram:" + e.getLocalizedMessage());
-                }
-            } finally {
-                if (objectStream != null) {
-                    IOUtils.closeQuietly(objectStream);
-                }
-                if (fileStream != null) {
-                    IOUtils.closeQuietly(fileStream);
                 }
             }
         }

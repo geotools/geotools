@@ -25,8 +25,8 @@ import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.map.DefaultMapContext;
-import org.geotools.map.MapContext;
+import org.geotools.map.FeatureLayer;
+import org.geotools.map.MapContent;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.renderer.RenderListener;
@@ -86,8 +86,8 @@ public class ReprojectionTest extends TestCase {
 
     public void testSkipProjectionErrors() throws Exception {
         // build map context
-        MapContext mapContext = new DefaultMapContext(DefaultGeographicCRS.WGS84);
-        mapContext.addLayer(createLineCollection(), createLineStyle());
+        MapContent MapContent = new MapContent();
+        MapContent.addLayer(new FeatureLayer(createLineCollection(), createLineStyle()));
 
         // build projected envelope to work with (small one around the area of
         // validity of utm zone 1, which being a Gauss projection is a vertical
@@ -103,7 +103,7 @@ public class ReprojectionTest extends TestCase {
 
         // setup the renderer and listen for errors
         StreamingRenderer sr = new StreamingRenderer();
-        sr.setContext(mapContext);
+        sr.setMapContent(MapContent);
         sr.addRenderListener(
                 new RenderListener() {
                     public void featureRenderer(SimpleFeature feature) {}
@@ -116,7 +116,7 @@ public class ReprojectionTest extends TestCase {
                 });
         errors = 0;
         sr.paint((Graphics2D) image.getGraphics(), new Rectangle(200, 200), reUtm);
-        mapContext.dispose();
+        MapContent.dispose();
         // we should get two errors since there are two features that cannot be
         // projected but the renderer itself should not throw exceptions
         assertEquals(1, errors);

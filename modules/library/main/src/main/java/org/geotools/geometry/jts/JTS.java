@@ -16,7 +16,7 @@
  */
 package org.geotools.geometry.jts;
 
-import java.awt.Shape;
+import java.awt.*;
 import java.awt.geom.IllegalPathStateException;
 import java.awt.geom.PathIterator;
 import java.awt.geom.Rectangle2D;
@@ -37,7 +37,7 @@ import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.operation.TransformPathNotFoundException;
 import org.geotools.referencing.operation.projection.PointOutsideEnvelopeException;
 import org.geotools.util.Classes;
-import org.locationtech.jts.algorithm.CGAlgorithms;
+import org.locationtech.jts.algorithm.Orientation;
 import org.locationtech.jts.awt.ShapeReader;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.CoordinateSequence;
@@ -57,6 +57,7 @@ import org.locationtech.jts.geom.impl.CoordinateArraySequenceFactory;
 import org.locationtech.jts.geom.util.AffineTransformation;
 import org.locationtech.jts.operation.polygonize.Polygonizer;
 import org.opengis.geometry.BoundingBox;
+import org.opengis.geometry.BoundingBox3D;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.referencing.FactoryException;
@@ -297,7 +298,7 @@ public final class JTS {
      * Transform from 3D down to 2D.
      *
      * <p>This method transforms each ordinate into WGS84, manually converts this to WGS84_3D with
-     * the addition of a Double.NaN, and then transforms to the final 3D position.
+     * the addition of a Double.NaN, and then transforms to the final 2D position.
      *
      * @param sourceEnvelope
      * @param targetEnvelope
@@ -474,7 +475,7 @@ public final class JTS {
 
         switch (transform.getTargetDimensions()) {
             case 3:
-                dest.z = array[2]; // Fall through
+                dest.setZ(array[2]); // Fall through
 
             case 2:
                 dest.y = array[1]; // Fall through
@@ -673,7 +674,7 @@ public final class JTS {
                     case 1:
                         return point.y;
                     case 2:
-                        return point.z;
+                        return point.getZ();
                     default:
                         return Double.NaN;
                 }
@@ -688,7 +689,7 @@ public final class JTS {
                         point.y = value;
                         return;
                     case 2:
-                        point.z = value;
+                        point.setZ(value);
                         return;
                     default:
                         // ignore
@@ -714,7 +715,7 @@ public final class JTS {
                 Arrays.fill(ordinates, 3, ordinates.length, Double.NaN); // Fall through
 
             case 3:
-                ordinates[2] = point.z; // Fall through
+                ordinates[2] = point.getZ(); // Fall through
 
             case 2:
                 ordinates[1] = point.y; // Fall through
@@ -725,20 +726,6 @@ public final class JTS {
             case 0:
                 break;
         }
-    }
-
-    /**
-     * Converts an arbitrary Java2D shape into a JTS geometry. The created JTS geometry may be any
-     * of {@link LineString}, {@link LinearRing} or {@link MultiLineString}.
-     *
-     * @param shape The Java2D shape to create.
-     * @param factory The JTS factory to use for creating geometry.
-     * @return The JTS geometry.
-     * @deprecated Please use {@link #toGeometry(Shape)} or {@link #toGeometry(Shape,
-     *     GeometryFactory)}
-     */
-    public static Geometry shapeToGeometry(final Shape shape, final GeometryFactory factory) {
-        return toGeometry(shape, factory);
     }
 
     /**
@@ -915,7 +902,7 @@ public final class JTS {
 
         Coordinate coordinate = new Coordinate(position.getOrdinate(0), position.getOrdinate(1));
         if (position.getDimension() == 3) {
-            coordinate.z = position.getOrdinate(2);
+            coordinate.setZ(position.getOrdinate(2));
         }
         return factory.createPoint(coordinate);
     }
@@ -1450,10 +1437,9 @@ public final class JTS {
             midCoord = ls.getCoordinateN(i1);
             lastCoord = ls.getCoordinateN(i2);
 
-            final int orientation =
-                    CGAlgorithms.computeOrientation(firstCoord, midCoord, lastCoord);
+            final int orientation = Orientation.index(firstCoord, midCoord, lastCoord);
             // Colllinearity test
-            if (orientation != CGAlgorithms.COLLINEAR) {
+            if (orientation != Orientation.COLLINEAR) {
                 // add midcoord and change head
                 retain.add(midCoord);
                 i0 = i1;
@@ -1703,5 +1689,53 @@ public final class JTS {
             geomROI.apply(Y_INVERSION);
         }
         return (Polygon) geomROI;
+    }
+
+    /**
+     * Envelope equality with target tolerance.
+     *
+     * @param e1 The first envelope
+     * @param e2 The second envelope
+     * @param tolerance The tolerance
+     * @return True if the envelopes have the same boundaries, minus the given tolerance
+     */
+    public static boolean equals(Envelope e1, Envelope e2, double tolerance) {
+        return Math.abs(e1.getMinX() - e2.getMinX()) < tolerance
+                && Math.abs(e1.getMinY() - e2.getMinY()) < tolerance
+                && Math.abs(e1.getMaxX() - e2.getMaxX()) < tolerance
+                && Math.abs(e1.getMaxY() - e2.getMaxY()) < tolerance;
+    }
+
+    /**
+     * BoundingBox equality with target tolerance. This method compares also coordinate reference
+     * systems.
+     *
+     * @param a The first envelope
+     * @param b The second envelope
+     * @param tolerance The tolerance
+     * @return True if the envelopes have the same boundaries, minus the given tolerance, and the
+     *     CRSs are equal according to CRS#equalsIgnoreMetadata
+     */
+    public static boolean equals(BoundingBox a, BoundingBox b, double tolerance) {
+        boolean flatEqual =
+                Math.abs(a.getMinX() - b.getMinX()) <= tolerance
+                        && Math.abs(a.getMinY() - b.getMinY()) <= tolerance
+                        && Math.abs(a.getMaxX() - b.getMaxX()) <= tolerance
+                        && Math.abs(a.getMaxY() - b.getMaxY()) <= tolerance
+                        && CRS.equalsIgnoreMetadata(
+                                a.getCoordinateReferenceSystem(), b.getCoordinateReferenceSystem());
+        if (!flatEqual) return false;
+
+        if (a instanceof BoundingBox3D && b instanceof BoundingBox3D) {
+            BoundingBox3D a3 = (BoundingBox3D) a;
+            BoundingBox3D b3 = (BoundingBox3D) b;
+            return Math.abs(a3.getMinZ() - b3.getMinZ()) <= tolerance
+                    && Math.abs(a3.getMaxZ() - b3.getMaxZ()) <= tolerance;
+        } else if (a instanceof BoundingBox3D && !(b instanceof BoundingBox3D)
+                || !(a instanceof BoundingBox3D) && b instanceof BoundingBox3D) {
+            return false;
+        }
+
+        return true;
     }
 }

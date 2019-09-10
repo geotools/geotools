@@ -5690,7 +5690,7 @@ Creates a color value from red, green, blue components, which must range between
 .. _expressions-to-rgba:
 
 ``to-rgba``
-^^^^^^^^^^
+^^^^^^^^^^^^^^
 
 Returns a four-element array containing the input color's red, green, blue, and alpha components, in that order.
 

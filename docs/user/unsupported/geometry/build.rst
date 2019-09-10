@@ -39,7 +39,7 @@ The ``gt-opengis`` module several factories for working with ISO 19107 construct
 
 You can create the factories by hand; a technique that is not recommended, but does illustrate how the parts fit together.
   
-.. codeblock:: java
+:: 
 
   PositionFactory posF = new PositionFactoryImpl(DefaultGeographicCRS.WGS84, new PrecisionModel());
   PrimitiveFactory primF = new PrimitiveFactoryImpl(DefaultGeographicCRS.WGS84, posF);

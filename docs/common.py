@@ -116,7 +116,7 @@ pygments_style = 'sphinx'
 
 spelling_lang='en_US'
 spelling_show_suggestions=True
-spelling_word_list_filename='/home/ian/code/geotools/docs/spelling/local.dict'
+spelling_word_list_filename='./spelling/local.dict'
 
 # -- Options for HTML output ---------------------------------------------------
 

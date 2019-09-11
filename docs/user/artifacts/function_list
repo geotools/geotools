@@ -1807,8 +1807,6 @@ Contains 203 functions.
 ``ProcessFunctionFactory``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Sep 11, 2019 8:35:40 AM org.geotools.image.ImageWorker <clinit>
-INFO: Warp/affine reduction enabled: true
 Contains 102 functions.
 
 ``AddCoverages(coverageA, coverageB)``: returns ``result``

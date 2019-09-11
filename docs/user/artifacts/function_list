@@ -1,7 +1,7 @@
 ``DefaultFunctionFactory``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Contains 199 functions.
+Contains 203 functions.
 
 ``Area(geometry)``: returns ``area``
 ''''''''''''''''''''''''''''''''''''
@@ -1023,6 +1023,15 @@ Contains 199 functions.
 
 * ``result``
 
+``lapply(source, expression)``: returns ``result``
+''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``source`` (``List``) required
+
+* ``expression``
+
+* ``result`` (``List``)
+
 ``length(string)``: returns ``length``
 ''''''''''''''''''''''''''''''''''''''
 
@@ -1074,6 +1083,26 @@ Contains 199 functions.
 * ``list`` (``String``) required
 
 * ``listMultiply`` (``String``)
+
+``litem(source, index)``: returns ``result``
+''''''''''''''''''''''''''''''''''''''''''''
+
+* ``source`` (``List``) required
+
+* ``index`` (``Integer``) required
+
+* ``result``
+
+``literate(index, times, expression)``: returns ``result``
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``index``
+
+* ``times`` (``Integer``) required
+
+* ``expression``
+
+* ``result`` (``List``)
 
 ``log(value)``: returns ``logarithm``
 '''''''''''''''''''''''''''''''''''''
@@ -1454,6 +1483,13 @@ Contains 199 functions.
 
 * ``sine`` (``Double``)
 
+``size(source)``: returns ``result``
+''''''''''''''''''''''''''''''''''''
+
+* ``source`` (``Collection``) required
+
+* ``result`` (``Integer``)
+
 ``spin(color, amount)``: returns ``result``
 '''''''''''''''''''''''''''''''''''''''''''
 
@@ -1771,7 +1807,7 @@ Contains 199 functions.
 ``ProcessFunctionFactory``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Sep 10, 2019 5:15:28 PM org.geotools.image.ImageWorker <clinit>
+Sep 11, 2019 8:35:40 AM org.geotools.image.ImageWorker <clinit>
 INFO: Warp/affine reduction enabled: true
 Contains 102 functions.
 
@@ -2902,3 +2938,4 @@ Contains 1 functions.
 * ``tolerance`` (``double``) required
 
 * ``labelPoint`` (``Point``)
+

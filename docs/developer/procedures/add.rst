@@ -30,7 +30,7 @@ Review a couple of the repository search websites:
         <version>1.0.2</version>
       </dependency>
 
-3. Navigate to the root pom.xml for the project and go to the dependency management section.
+3. Navigate to the root ``pom.xml`` for the project and go to the dependency management section.
    
    Cut and past paste the dependency information here as well::
       
@@ -40,7 +40,7 @@ Review a couple of the repository search websites:
         <version>1.0.2</version>
       </dependency>
 
-3. You can then adjust your pom.xml to not include the version number (as it will be retrieved
+3. You can then adjust your ``pom.xml`` to not include the version number (as it will be retrieved
    from the dependency management section).::
       
       <dependency>
@@ -52,14 +52,14 @@ Review a couple of the repository search websites:
 Recommended reading on Dependencies
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-If you are not familiar with the way to declare a dependency in a Maven pom.xml file, see "How do I use external dependencies?" in the Maven Getting started guide. More information can also be found in the Guide to deploying 3rd party JARs to remote repository in Maven documentation.
+If you are not familiar with the way to declare a dependency in a Maven ``pom.xml`` file, see "How do I use external dependencies?" in the Maven Getting started guide. More information can also be found in the Guide to deploying 3rd party JARs to remote repository in Maven documentation.
 
 References:
 
 * http://maven.apache.org/guides/getting-started/index.html
 * http://maven.apache.org/guides/mini/guide-3rd-party-jars-local.html
 
-Our build process does not include jar files inside the subversion repository, instead Maven downloads jar files it needs from remote repositories (web sites). The location of these web sites is specified in the parent pom.xml file, which is inherited by all modules. There are mainly three sites available:
+Our build process does not include jar files inside the subversion repository, instead Maven downloads jar files it needs from remote repositories (web sites). The location of these web sites is specified in the parent ``pom.xml`` file, which is inherited by all modules. There are mainly three sites available:
 
 * Java.net repository
   
@@ -82,14 +82,14 @@ Our build process does not include jar files inside the subversion repository, i
   
   General utility open source projects, especially apache related
 
-Take a look at these sites and some of the "mystery" out of how Maven works. You may notice that the directory structure matches the dependency entries that you see in the pom.xml files. If the dependency entry has a groupId tag then this will be the name of the folder, if it just has an id tag then this will be used for the name of the folder and the jar within it.
+Take a look at these sites and some of the "mystery" out of how Maven works. You may notice that the directory structure matches the dependency entries that you see in the ``pom.xml`` files. If the dependency entry has a groupId tag then this will be the name of the folder, if it just has an id tag then this will be used for the name of the folder and the jar within it.
 
 It is always worth taking a look at these sites (particularly the maven one) just to check that a version of the jar you want to use is not already available.
 
 It really is not available - how to upload?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Assuming the jar you want is not already hosted on one of these sites you need to upload it and add a dependency entry to your pom.xml file.
+Assuming the jar you want is not already hosted on one of these sites you need to upload it and add a dependency entry to your ``pom.xml`` file.
 
 * Upload with Maven (not by copy-and-paste)
   
@@ -169,7 +169,7 @@ Uploading to Ibiblio
 Examples of Updating JTS Jar
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-1. Change into one of the GeoTools directories (the geotools pom.xml has all the
+1. Change into one of the GeoTools directories (the geotools ``pom.xml`` has all the
    repository definitions so changing directories is easier than editing your settings.xml)::
      
      C:\> cd java\geotools\trunk

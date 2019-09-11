@@ -12,7 +12,7 @@ The first time you go to look at any of the GeoTools classes you will need to te
 
 1. From the "Source not found" editor press the Attach Source... Button.
 2. Press the Workspace button
-3. Select the gt2-2.4-RC0-src.zip
+3. Select the ``gt2-2.4-RC0-src.zip``
 4. And press OK
 
 .. image:: /images/eclipseTip1.png
@@ -23,5 +23,5 @@ The first time you go to look at any of the GeoTools classes you will need to te
      <classpathentry exported="true" kind="lib"
                      path="gt2-2.4-RC0/gt2-api-2.4-RC0.jar"
                      sourcepath="gt2-2.4-RC0-src.zip"/>
-6. You can quickly cut and paste sourcepath="gt2-2.4-RC0-src.zip" for the rest of the
-   gt2 jars.
+6. You can quickly cut and paste ``sourcepath="gt2-2.4-RC0-src.zip"`` for the rest of the
+   GeoTools jars.

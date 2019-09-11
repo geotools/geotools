@@ -1,33 +1,34 @@
 Rich Client Platform
 ^^^^^^^^^^^^^^^^^^^^
 
-Well , the reason for having an SWT module is to be able to exploit a lightweight map viewer inside
+Well, the reason for having an SWT module is to be able to exploit a lightweight map viewer inside
 an RCP application, whenever the "weight" of the RCP GIS application uDig is too much.
 
 The Hello World RCP application
 ''''''''''''''''''''''''''''''''
 
-To integrate the gt-swt map panel inside an rcp application, we will start with an existing simple
-rcp hello world application that contains a view. To explain how to achieve that is beyond the aim
+To integrate the ``gt-swt`` map panel inside an RCP application, we will start with an existing simple
+RCP Hello World application that contains a view. To explain how to achieve that is beyond the aim
 of this tutorial, if you need help, there are a ton of tutorials out there that will guide you in
-that (one example is the really good rcp tutorial by Vogella).
+that (one example is the really good RCP tutorial by Vogella).
 
 References:
 
 * http://www.vogella.de/articles/EclipseRCP/article.html
 
-Put the map panel inside the rcp application
+Put the map panel inside the RCP application
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The source of the rcp application has been bundeled together with all the needed geotools libs and
+The source of the RCP application has been bundled together with all the needed GeoTools libraries
+and
 uploaded here. From here import the project into eclipse and you are ready to go.
 
-* http://jgrasstools.googlecode.com/files/rcp-gt-swt.tar.gz
+* http://jgrasstools.googlecode.com/files/RCP-gt-swt.tar.gz
 
 
-Putting the gt-swt map panel inside the view of your application:
+Putting the ``gt-swt`` map panel inside the view of your application:
 
-1. It is as easy as implementing the createPartControl method of the view like the following::
+1. It is as easy as implementing the ``createPartControl`` method of the view like the following::
      
      public void createPartControl( Composite parent ) {
         // handle icons, will be explained later
@@ -59,11 +60,11 @@ Putting the gt-swt map panel inside the view of your application:
         mapPane.setRenderer(renderer);
      }
 
-2. One method that has to be explained is the handleImages. Since the handling of file paths
-   inside a java project and an rcp plugin project are quite different, the ImageCache isn't
-   able to retrieve the necessary icons fro the gui from the gt-swt module. Therefore it is
+2. One method that has to be explained is the ``handleImages``. Since the handling of file paths
+   inside a java project and an RCP plugin project are quite different, the ``ImageCache`` isn't
+   able to retrieve the necessary icons fro the GUI from the ``gt-swt`` module. Therefore it is
    necessary to supply the needed images to the cache before starting. This can be done as
-   follows based on the rcp file path handling::
+   follows based on the RCP file path handling::
    
      private void handleImages() {
         // get the image cache
@@ -84,8 +85,8 @@ Putting the gt-swt map panel inside the view of your application:
         }
      }
     
-3. For the exact same reason it is also necessary to have the language file of the gt-swt module
-   insid the plugin root as::
+3. For the exact same reason it is also necessary to have the language file of the ``gt-swt`` module
+   inside the plugin root as::
      
       /resources/Text.properties
    
@@ -95,15 +96,15 @@ Adding the map tools as view actions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Right now we have only the map view. The best place to put the tools like pan and zoom is probably
-the toolbar of the map view. To do so, we can add a viewActions extension point to our view, then
-add a viewContribution to the viewActions and finally all the actions we need there.
+the toolbar of the map view. To do so, we can add a ``viewActions`` extension point to our view, then
+add a ``viewContribution`` to the ``viewActions`` and finally all the actions we need there.
 
 1. To add the Info Tool action, you add::
 
        <action
              class="org.geotools.swt.actions.InfoAction"
              icon="icons/info_mode.gif"
-             id="rcp-gt-swt.info"
+             id="RCP-gt-swt.info"
              label="Info Action"
              style="push"
              toolbarPath="gtswt">
@@ -111,7 +112,7 @@ add a viewContribution to the viewActions and finally all the actions we need th
            
 2. Then we have to implement the action itself.
    
-   That is fairly easy, since we can delegate the activation of the tools to the gt-swt map panel::
+   That is fairly easy, since we can delegate the activation of the tools to the ``gt-swt`` map panel::
      
      public class InfoAction implements IViewActionDelegate {
         private IViewPart view;
@@ -131,7 +132,7 @@ add a viewContribution to the viewActions and finally all the actions we need th
 Adding the layer addition as menu commands
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-One last thing we will add is a command to load shapefiles from the filesystem.  This just to show
+One last thing we will add is a command to load shapefiles from the file system.  This just to show
 how to retrieve the map panel in case the view is not directly accessible.
 
 1. First you create a command through the proper extension point. It should look like this::
@@ -140,7 +141,7 @@ how to retrieve the map panel in case the view is not directly accessible.
            point="org.eclipse.ui.commands">
       <command
             defaultHandler="org.geotools.swt.actions.OpenShapefileCommand"
-            id="rcp-gt-swt.openshp"
+            id="RCP-gt-swt.openshp"
             name="Open Shapefile">
       </command>
      </extension>
@@ -159,7 +160,7 @@ how to retrieve the map panel in case the view is not directly accessible.
             </command>
             <!-- add the commadn to the menu -->  
             <command
-                  commandId="rcp-gt-swt.openshp"
+                  commandId="RCP-gt-swt.openshp"
                   icon="icons/open.gif"
                   label="Open Shapefile"
                   style="push"
@@ -169,11 +170,12 @@ how to retrieve the map panel in case the view is not directly accessible.
       </menuContribution>
      </extension>
 
-3. Last thing is to implement the org.geotools.swt.actions.OpenShapefileCommand, that we supplied in
+3. Last thing is to implement the
+   ``org.geotools.swt.actions.OpenShapefileCommand``, that we supplied in
    the above command as the one that would handle the command.
   
    There is not that much behind that. We open a file browser, gather the selected file and add it to
-   the mapcontext of the map pane, that we as usual retrieve from the map view::
+   the ``mapcontext`` of the map pane, that we as usual retrieve from the map view::
 
      public class OpenShapefileCommand extends AbstractHandler {
         
@@ -181,13 +183,10 @@ how to retrieve the map panel in case the view is not directly accessible.
         public Object execute( ExecutionEvent event ) throws ExecutionException {
           IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
           MapView mapView = (MapView) activePage.findView(MapView.ID);
-  
           SwtMapPane mapPane = mapView.getMapPane();
-  
           Display display = Display.getCurrent();
           Shell shell = new Shell(display);
           File openFile = JFileDataStoreChooser.showOpenFile(new String[]{"*.shp"}, shell); 
-  
           try {
               if (openFile != null && openFile.exists()) {
                   MapContext mapContext = mapPane.getMapContext();
@@ -207,7 +206,7 @@ how to retrieve the map panel in case the view is not directly accessible.
 Resulting RCP
 ^^^^^^^^^^^^^
 
-If everything went smooth, you should be able to run the application and see something like:
+If everything went smoothly, you should be able to run the application and see something like:
 
 .. image:: /images/gtswt_rcp_01.png
 

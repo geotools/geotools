@@ -52,7 +52,7 @@ method in question.
 By convention the last parameter is a progress monitor you can use to report back
 what is going on to your user - and let them cancel.
 
-Since processes can take minuets to hours this is a good plan.::
+Since processes can take minutes to hours this is a good plan.::
 
     features = RasterToVectorProcess.process( gridCoverage, 2, Collections.EMPTY, monitor );
 
@@ -93,14 +93,14 @@ to report progress below).::
     ProgressListener progress = new ProgressWindow(null);
     Map<String, Object> results = r2v.execute(params, progress);
 
-Using a ProcessorExecutor
-'''''''''''''''''''''''''
+Using a ``ProcessorExecutor``
+''''''''''''''''''''''''''''''
 
 The real fun with using the Processes utility class is that you can set up work and then schedule
 the work in two separate steps. This is a great way to use multi-core processors in
 your application.
 
-1. You can then use a ProcessorExecutor is going to be in charge of running your processes - you
+1. You can then use a ``ProcessorExecutor`` is going to be in charge of running your processes - you
    can indicate how many threads you want it to keep going at once.
    
    A good idea is the number of cores you have plus 1.::
@@ -108,7 +108,7 @@ your application.
         ProcessExecutor schedule = Processors.newProcessExecutor( 3, null );
         
 2. You can then schedule your process - which will produce a Progress - this is a placeholder
-   object that you can use to retrive the answer when it is ready.
+   object that you can use to retrieve the answer when it is ready.
    
    You can think of it like a "work ticket".::
     

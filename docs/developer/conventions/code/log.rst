@@ -130,7 +130,7 @@ Provides fairly detailed logging message from the GML module, but not from the r
 Log4J interoperability
 ^^^^^^^^^^^^^^^^^^^^^^
 
-Geotools can produces a console output similar to the Log4J one (single-line instead of multi-line log message) if the following code is invoked once at application starting time::
+GeoTools can produces a console output similar to the Log4J one (single-line instead of multi-line log message) if the following code is invoked once at application starting time::
    
    Logging.ALL.forceMonolineConsoleOutput();
    

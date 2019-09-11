@@ -72,7 +72,7 @@ Here is an example template to get you started.
         and you will have a chance to try out using PostGIS or a Web Feature Server at the end of this
         example.
         
-        1. Please ensure your pom.xml includes the following:
+        1. Please ensure your ``pom.xml`` includes the following:
            
            .. literalinclude:: artifacts/pom.xml
               :language: xml

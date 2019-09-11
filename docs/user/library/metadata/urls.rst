@@ -1,14 +1,14 @@
 URLs
 ----
 
-**org.geotools.util.URLs** provides methods for safely handling URLs.
+``org.geotools.util.URLs`` provides methods for safely handling URLs.
 
-* URLs.fileToUrl(File)
-* URLs.urlToFile(URL)
+* ``URLs.fileToUrl(File)``
+* ``URLs.urlToFile(URL)``
 
-One of the changes between Java 5 and Java 6 is the deprecation of the File.toURL() method. Earlier version of Java implemented this method incorrectly, and Java 6 offers File.toURI().toURL() as a replacement.
+One of the changes between Java 5 and Java 6 is the deprecation of the ``File.toURL()`` method. Earlier version of Java implemented this method incorrectly, and Java 6 offers ``File.toURI().toURL()`` as a replacement.
 
-Problem is that does not help anyone - since when we are provided a URL we cannot be sure if it was constructed correctly.
+The problem is that does not help anyone - since when we are provided a URL we cannot be sure if it was constructed correctly.
 
 These two methods have been extensively tested and can handle odd corner cases such as files located on windows shared folders.
 
@@ -21,9 +21,9 @@ Here is a scary example of a windows network share::
 
 See also:
 
-* changeUrlExt(URL, String)
-* extendUrl(URL, String)
-* getParentUrl(URL)
+* ``changeUrlExt(URL, String)``
+* ``extendUrl(URL, String)``
+* ``getParentUrl(URL)``
 
 References:
 

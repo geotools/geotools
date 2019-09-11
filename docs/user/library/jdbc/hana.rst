@@ -14,7 +14,7 @@ You need HANA's JDBC driver ``ngdbc.jar`` to connect to HANA. Its license does n
 
 **Maven**
    
-Note that the groupId is **org.geotools.jdbc** for this and other JDBC plugin modules.
+Note that the ``groupId`` is ``org.geotools.jdbc`` for this and other JDBC plugin modules.
 
 ::
 
@@ -30,15 +30,15 @@ Connection Parameters
 ============== ============================================
 Parameter      Description
 ============== ============================================
-"dbtype"       Must be the string "hana"
-"host"         Machine name or IP address to connect to
-"port"         Port to connect to. If set and different from 0, parameters "instance" and "database" are ignored. If not set or 0, the "instance" parameter must be set.
-"instance"     Instance of the database. Ignored if a port is set.
-"database"     Database to connect to. Leave empty in case of single-container databases. Set to ``SYSTEMDB`` to connect to the system database of a multi-container database. Ignored if a port is set.
-"schema"       The database schema to access
-"user"         User name
-"passwd"       Password
-"use ssl"      Use SSL to connect
+``dbtype``       Must be the string ``hana``
+``host``         Machine name or IP address to connect to
+``port``         Port to connect to. If set and different from 0, parameters "instance" and "database" are ignored. If not set or 0, the "instance" parameter must be set.
+``instance``     Instance of the database
+``database``     Database to connect to. Leave empty in case of single-container databases. Set to ``SYSTEMDB`` to connect to the system database of a multi-container database.
+``schema``       The database schema to access
+``user``         User name
+``passwd``       Password
+``use ssl``      Use SSL to connect
 ============== ============================================
 
 Creating
@@ -57,16 +57,16 @@ Here is an example of connecting::
   
   DataStore datastore = DataStoreFinder.getDataStore(params);
 
-Advanced Geotools Parameters
+Advanced GeoTools Parameters
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-+--------------------+-------------------------------------------+
-| Parameter          | Description                               |
-+====================+===========================================+
-| "encode functions" | Flag controlling if a set of filter       |
-|                    | functions are translated directly in SQL. |
-|                    | Default is false.                         |
-+--------------------+-------------------------------------------+
++----------------------+-------------------------------------------+
+| Parameter            | Description                               |
++======================+===========================================+
+| ``encode functions`` | Flag controlling if a set of filter       |
+|                      | functions are translated directly in SQL. |
+|                      | Default is false.                         |
++----------------------+-------------------------------------------+
 
 Importing spatial reference systems
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

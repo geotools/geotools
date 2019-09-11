@@ -17,7 +17,7 @@ Style is all about looking good. In this lab we are going to learn the basics of
 Style
 ======
  
-Please ensure your pom.xml includes the following:
+Please ensure your ``pom.xml`` includes the following:
 
 .. literalinclude:: ./artifacts/pom.xml
         :language: xml
@@ -35,7 +35,7 @@ The example code is available
 
 Main Application
 ----------------
-1. Create the package **org.geotools.tutorial.style** and class **StyleLab** .
+1. Create the package ``org.geotools.tutorial.style`` and class ``StyleLab`` .
 2. Copy and paste in the following code:
 
    .. literalinclude:: /../src/main/java/org/geotools/tutorial/style/StyleLab.java
@@ -53,14 +53,14 @@ If you have worked through the previous labs, most of this method will look fami
       :start-after: // docs start display
       :end-before: // docs end display
 
-The main thing to note is that we are calling a **createStyle** method to set a Style for the map layer.
+The main thing to note is that we are calling a ``createStyle`` method to set a Style for the map layer.
 Let's look at this method next.
 
 Creating a style
 ----------------
 
 This method first looks to see if there is an SLD document (Styled Layer Descriptor) associated with the shapefile.
-If it finds one it processes that file to create the style. Otherwise, it displays a **JSimpleStyleDialog** to
+If it finds one it processes that file to create the style. Otherwise, it displays a ``JSimpleStyleDialog`` to
 prompt the user for style choices:
 
    .. literalinclude:: /../src/main/java/org/geotools/tutorial/style/StyleLab.java
@@ -80,11 +80,11 @@ Creating styles By Hand
 ------------------------
 
 The methods that we've looked at so far are all we really need in this simple application. But now let's look at how to create a style programmatically.
-This illustrates some of what is happening behind the scenes in the previous code. It also introduces you to **StyleFactory** and **FilterFactory** 
+This illustrates some of what is happening behind the scenes in the previous code. It also introduces you to ``StyleFactory`` and ``FilterFactory`` 
 which provide a huge amount of flexibility in the styles that you can create.
 
 In the code below, the first method works out what type of geometry we have in our shapefile: points, lines or polygons. It then calls a geometry-specific
-method to create a Style object.
+method to create a ``Style`` object.
 
 .. literalinclude:: /../src/main/java/org/geotools/tutorial/style/StyleLab.java
    :language: java
@@ -93,29 +93,29 @@ method to create a Style object.
 
 Things to note:
 
-* Each of the geometry specific methods is creating a type of **Symbolizer**: the class that controls how features are rendered
-* Each method wraps the symbolizer in a **Rule**, then a **FeatureTypeStyle**, and finally a **Style**
-* In real life, it is common to have more than one Rule in a FeatureTypeStyle. For example, we might create one rule to draw features when the 
+* Each of the geometry specific methods is creating a type of ``Symbolizer``: the class that controls how features are rendered
+* Each method wraps the symbolizer in a ``Rule``, then a ``FeatureTypeStyle``, and finally a ``Style``
+* In real life, it is common to have more than one ``Rule`` in a ``FeatureTypeStyle``. For example, we might create one rule to draw features when the 
   map is zoomed out, and another for when we are displaying fine details.
 
 Selection
 ==========
 
 This tutorial brings together many of the techniques and classes that we've covered in the previous
-examples. It is best if you have already worked through at least the quickstart, csv2shp and style
+examples. It is best if you have already worked through at least the quickstart, CSV2SHP and style
 tutorials.
 
 We are going to:
 
  * Create a custom map cursor tool to select features when the user clicks the map
- * Add a toolbar button to JMapFrame to launch this tool
+ * Add a toolbar button to ``JMapFrame`` to launch this tool
  * Use a Filter to find which features were under, or near the mouse click
- * Create rendering styles to draw selected and unselected features in different colours
+ * Create rendering styles to draw selected and unselected features in different colors
 
 Dependencies
 ------------
  
-Please ensure your pom.xml includes the following::
+Please ensure your ``pom.xml`` includes the following::
 
   <properties>
       <geotools.version>14.0</geotools.version>
@@ -150,7 +150,7 @@ The example code is available
  
 Main Application
 ----------------
-1. Please create the file **SelectionLab.java**
+1. Please create the file ``SelectionLab.java``
 2. Copy and paste in the following code:
 
    .. literalinclude:: /../src/main/java/org/geotools/tutorial/style/SelectionLab.java
@@ -161,13 +161,13 @@ Main Application
 Much of this should look familiar to you from the style tutorial. We've added some constants and
 class variables that we'll use when creating styles. 
 
-A subtle difference is that we are now using FilterFactory2 instead of FilterFactory. This class
+A subtle difference is that we are now using ``FilterFactory2`` instead of ``FilterFactory``. This class
 adds additional methods, one of which we'll need when selecting features based on a mouse click.
 
 Shapefile viewer with custom map tool
 -------------------------------------
 
-Next we add the displayShapefile method which is also very similar to the one that we used in
+Next we add the ``displayShapefile`` method which is also very similar to the one that we used in
 style tutorial.
 
 .. literalinclude:: /../src/main/java/org/geotools/tutorial/style/SelectionLab.java
@@ -175,8 +175,8 @@ style tutorial.
    :start-after: // docs start display shapefile
    :end-before: // docs end display shapefile
 
-Note that we are customizing the JMapFrame by adding a button to its toolbar. When the user clicks this button a new
-**CursorTool** is set for the map window.  This tool has just one method that responds to a mouse click in the map area.
+Note that we are customizing the ``JMapFrame`` by adding a button to its toolbar. When the user clicks this button a new
+``CursorTool`` is set for the map window.  This tool has just one method that responds to a mouse click in the map area.
 
 What features did the user click on ?
 -------------------------------------
@@ -184,7 +184,7 @@ What features did the user click on ?
 Next we'll add the method that is called when the user is in selection mode. Our custom toolbar
 button has been pressed, and the user has now clicked somewhere on the map.
 
-The method first creates a 5x5 pixel wide rectangle around the mouse position to make it easier to
+The method first creates a ``5x5`` pixel wide rectangle around the mouse position to make it easier to
 select point and line features. This is transformed from pixel coordinates to world coordinates
 and used to create a Filter to identify features under, or close to, the mouse click.
 
@@ -200,15 +200,15 @@ this example...
 
 .. image:: images/selectionlab-bbox.png
 
-The blue shapes are parts of a single MultiPolygon which is the standard geometry type for polygonal features in
+The blue shapes are parts of a single ``MultiPolygon`` which is the standard geometry type for polygonal features in
 shapefiles. Using a bounding box filter, clicking in the orange shape would select it plus all of the blue shapes
-because the click region is within their envelope (the grey rectangle).
+because the click region is within their envelope (the gray rectangle).
 
 Creating a Style based on the selection
 ---------------------------------------
 
-Once the method above has worked out which features were selected, if any, it passes their FeatureIds to the
-**displaySelected** method.  This calls one of two Style creating methods and then redisplays the map with the
+Once the method above has worked out which features were selected, if any, it passes their ``FeatureIds`` to the
+``displaySelected`` method.  This calls one of two Style creating methods and then redisplays the map with the
 updated Style:
 
    .. literalinclude:: /../src/main/java/org/geotools/tutorial/style/SelectionLab.java
@@ -219,7 +219,7 @@ updated Style:
 The default style
 ~~~~~~~~~~~~~~~~~
 
-This method creates a Style with a single **Rule** for all features using the line and fill constants defined at the top
+This method creates a Style with a single ``Rule`` for all features using the line and fill constants defined at the top
 of the class:
 
    .. literalinclude:: /../src/main/java/org/geotools/tutorial/style/SelectionLab.java
@@ -230,25 +230,25 @@ of the class:
 The selected style
 ~~~~~~~~~~~~~~~~~~
 
-This method creates a Style with one **Rule** for selected features, to paint them in a
-highlight colour, and a second **Rule** for unselected features. Both rules are then wrapped in the Style object.
+This method creates a Style with one ``Rule`` for selected features, to paint them in a
+highlight color, and a second ``Rule`` for unselected features. Both rules are then wrapped in the ``Style`` object.
 
    .. literalinclude:: /../src/main/java/org/geotools/tutorial/style/SelectionLab.java
       :language: java
       :start-after: // docs start selected style
       :end-before: // docs end selected style
 
-Note that the first Rule includes a **Filter**, created with the **FilterFactory2.id** method. This means the rule will
+Note that the first Rule includes a ``Filter``, created with the ``FilterFactory2.id`` method. This means the rule will
 only apply to the selected features.
 
-The second rule is flagged as an *alternative* (applies to all other features) with the **setElseFilter** method.
+The second rule is flagged as an *alternative* (applies to all other features) with the ``setElseFilter`` method.
 
 Creating a Rule and Symbolizer
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 OK, we're nearly at the end !
 
-Here is the method **createRule**. This is where the **Symbolizer** is created that describes how to draw a feature.
+Here is the method ``createRule``. This is where the ``Symbolizer`` is created that describes how to draw a feature.
 
    .. literalinclude:: /../src/main/java/org/geotools/tutorial/style/SelectionLab.java
       :language: java
@@ -258,8 +258,8 @@ Here is the method **createRule**. This is where the **Symbolizer** is created t
 Geometry type of the shapefile features
 ---------------------------------------
 
-Finally (yes, really) the createRule method above needs to know what sort of feature geometry we are dealing with to
-create the appropriate class of Symbolizer. Here is the method that works that out:
+Finally (yes, really) the ``createRule`` method above needs to know what sort of feature geometry we are dealing with to
+create the appropriate class of ``Symbolizer``. Here is the method that works that out:
 
    .. literalinclude:: /../src/main/java/org/geotools/tutorial/style/SelectionLab.java
       :language: java
@@ -269,7 +269,7 @@ create the appropriate class of Symbolizer. Here is the method that works that o
 Running the application
 -----------------------
 
-Here is the program displaying the **bc_voting_areas** shapefile (included in the `uDig sample data`__) with one feature
+Here is the program displaying the ``bc_voting_areas`` shapefile (included in the `uDig sample data`__) with one feature
 (polygon) selected:
 
 .. _udigdata: http://udig.refractions.net/docs/data-v1_2.zip
@@ -281,17 +281,17 @@ __ udigdata_
 Things to try
 ==============
 
-In Geometry and CRS tutorial we saw how to change the Coordinate Reference System of a MapContent.
+In the Geometry and CRS tutorial we saw how to change the Coordinate Reference System of a ``MapContent``.
 Try the following:
 
 * Modify this application so that you can change the CRS in which the features are displayed.
-* Display the **bc_voting_areas** shapefile and change the CRS to EPSG:4326
+* Display the ``bc_voting_areas`` shapefile and change the CRS to EPSG:4326
 * Now try to use the selection tool. You will find that it no longer works !
 
 See if you can you figure out why the tool isn't working and how to fix it.
 
 There is actually some amazing style generation code included with GeoTools. Add a dependency
-on the **gt-brewer** module and having a look at the **ColorBrewer class**.
+on the ``gt-brewer`` module and having a look at the ``ColorBrewer class``.
  
 The class works by first asking you to calculate a *categorization* using one of the categorization
 functions on a feature collection; you can then pass the resulting categorization on to color brewer
@@ -345,22 +345,22 @@ Rendering occurs in the following stages:
 * Portrayal: actual drawing
 * Composition: putting everything together
 
-The first line of defence is |ldquo| FeatureTypeStyle |rdquo|, it makes use of a constraint to select what
-FeatureType you want to work with. If you don't care use the FeatureType with the name `Feature`
+The first line of defense is  ``FeatureTypeStyle``, it makes use of a constraint to select what
+``FeatureType`` you want to work with. If you don't care use the ``FeatureType`` with the name `Feature`
 as kind of a wild card (since everything extends `Feature`). 
 
 Next up we have Rules. Rules actually use Filter (from the Filter tutorial) to perform strict
-checks about what is going to get drawn. In addition to checking feature attributes with Filter,
+checks about what is going to get drawn. In addition to checking feature attributes with ``Filter``,
 a Rule is able to check the current scale of the map. Finally there is an `Other` rule to catch any
 features left over from earlier Rules.
 
-Now that a Rule has selected features for us to work with we can get down to drawing in the
-Portrayal step. The renderer will go through a list of symbolizers (for a Rule) and draw the
+Now that a ``Rule`` has selected features for us to work with we can get down to drawing in the
+Portrayal step. The renderer will go through a list of ``Symbolizers`` (for a ``Rule``) and draw the
 results. The symbolizers are just a list of draw instructions to be done in order. The symbolizers
 use expressions to define width and color |hyphen| allowing you to dynamically generate the
 appearance on a feature by feature basis!
 
-The only symbolizer which is not drawn in order is TextSymbolizer which gathers up text labels for 
+The only symbolizer which is not drawn in order is ``TextSymbolizer`` which gathers up text labels for 
 the next step.
 
 Finally in the composition step |hyphen| will take all the content drawn during portrayal and squish

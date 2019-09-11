@@ -85,7 +85,7 @@ The modules/unsupported/ directory is there to welcome your experimental work; t
 
 #. pom.xml
 
-   We start by getting the pom.xml configured since maven will need that to work against the module. The following will start you out:
+   We start by getting the ``pom.xml`` configured since maven will need that to work against the module. The following will start you out:
 
    Change all occurances of the word example to the name of your module::
 

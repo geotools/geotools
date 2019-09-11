@@ -1,4 +1,4 @@
 XSD WFS
 -------
 
-Web feature service (WFS) for gt-xml.
+Web feature service (WFS) for ``gt-xml`` 

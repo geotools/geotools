@@ -24,7 +24,7 @@ Example
 ^^^^^^^
 
 On disk an image pyramid is going to look a bit like the following (you can use any format for
-the tiles from mrsid to tiff)::
+the tiles from MRSid to tiff)::
 
   directory/
   directory/pyramid.properties

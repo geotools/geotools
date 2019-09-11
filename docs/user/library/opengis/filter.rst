@@ -1,11 +1,11 @@
 Filter
 ------
 
-The filter api defines the first step of a Query, it is used when requesting data from a DataStore
+The filter API defines the first step of a Query, it is used when requesting data from a DataStore
 or Catalog. The Filter specification itself is maintained by the OGC and is used in a number of
 their specifications (Catalog, WFS, and so on).
 
-In practice **Filter** is used to select features that are of interest and the **Expression** to
+In practice ``Filter`` is used to select features that are of interest and the ``Expression`` to
 drill in and access information.
 
 Although this forms a closed set of classes (for interoperability), you can extend the system with
@@ -21,8 +21,8 @@ References:
 Introduction
 ^^^^^^^^^^^^
 
-The Filer specification defines a the **filter** data structure used to perform selection.
-A subset of this data structure is used to define **expressions** to define, calculate or
+The Filter specification defines the ``filter`` data structure used to perform selection.
+A subset of this data structure is used to define ``expressions`` to define, calculate or
 extract information.
 
 * Here is an example of using filter and expression together::
@@ -35,7 +35,6 @@ extract information.
           public void visit( SimpleFeature feature ){
               Expression expression = ff.property( "NAME" );
               String name = expression.evaulate( feature, String.class );
-    
               System.out.println( feature.getID() + " is named: "+ name );
           }
        }, null );
@@ -88,9 +87,9 @@ extract information.
         Expression expression = ff.literal("#FFFFFF");
         Color color = expression.evaluate( feature, Color.class );
     
-  * You can also use a Filter on normal Java objects (ie POJOs)
+  * You can also use a Filter on normal Java objects (i.e. POJOs)
     
-    If you are willing to write custom code you can define your own PropertyAccessor
+    If you are willing to write custom code you can define your own ``PropertyAccessor``
     to teach filters how to work with your own data structures
 
 Filter
@@ -132,7 +131,7 @@ only allows property values to be compared.
 FilterFactory
 '''''''''''''
 
-By using the FilterFactory you can create objects by hand. The FilterFactory interface is limited
+By using the ``FilterFactory`` you can create objects by hand. The ``FilterFactory`` interface is limited
 to strict specification compliance.::
    
    FilterFactory ff = CommonFactoryFinder.getFilterFactory( GeoTools.getDefaultHints() );
@@ -141,14 +140,14 @@ to strict specification compliance.::
 FilterFactory2
 ''''''''''''''
 
-In the real world we need to go beyond the specification. FilterFactory2 will let you work with JTS
+In the real world we need to go beyond the specification. ``FilterFactory2`` will let you work with JTS
 Geometry instances (the specification is only defined to work with ISO Geometry).::
    
    FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2( GeoTools.getDefaultHints() );
    Filter filter = ff.contains( ff.property( "THE_GEOM"), ff.literal( geometry ) );
 
-FilterFactory2 also let's you define your filters in a bit more of a free form manner. In the
-specification all operations must have the PropertyName expression first.
+``FilterFactory2`` also let's you define your filters in a bit more of a free form manner. In the
+specification all operations must have the ``PropertyName`` expression first.
 
 XML
 '''
@@ -163,7 +162,7 @@ like this::
      </ogc:PropertyIsGreaterThanOrEqualTo>
    </ogc:Filter>
 
-To parse an xml stream::
+To parse an XML stream::
    
    Configuration configuration = new org.geotools.filter.v1_0.OGCConfiguration();
    Parser parser = new Parser( configuration );
@@ -226,11 +225,11 @@ Null vs Nil
 '''''''''''
 
 A related topic to comparing a property value is testing to see if a property *has* a value
-at all. In the simple case PropertyIsNull can be used to check that a property exists; and
+at all. In the simple case ``PropertyIsNull`` can be used to check that a property exists; and
 that the value is empty.
 
 We also have the situation where a property is allowed to occur zero or many times; in this case
-we want a nice clear way to check that a Property does not exsit at all (that is occur = zero).
+we want a nice clear way to check that a Property does not exist at all (that is occur = zero).
 
 .. literalinclude:: /../src/main/java/org/geotools/opengis/FilterExamples.java
    :language: java
@@ -248,24 +247,24 @@ when constructing your filter as shown below.
    :start-after: // caseSensitive start
    :end-before: // caseSensitive end
   
-This capability was added by the Filter 1.1 specificaiton.
+This capability was added by the Filter 1.1 specification.
 
 MatchAction
 '''''''''''
 
-All filters that implement the MultiValuedFilter interface, support filtering on operands that
+All filters that implement the ``MultiValuedFilter`` interface, support filtering on operands that
 return multiple values on evaluation. The way these filters handle multiple values can be modified
-through the 'MatchAction' property.
+through the ``MatchAction`` property.
 
 The property can be retrieved through a simple getter::
 
   filter.getMatchAction()
 
-MatchAction has three possible values: 
+``MatchAction`` has three possible values: 
 
-* MatchAction.ANY
+* ``MatchAction.ANY``
 
-  When no MatchAction is specified, it is set to the default MatchAction.ANY.
+  When no ``MatchAction`` is specified, it is set to the default ``MatchAction.ANY``.
   
   Evaluates to true if any possible combinations of operands evaluates to true:
      
@@ -274,7 +273,7 @@ MatchAction has three possible values:
      :start-after: // matchActionAny start
      :end-before: // matchActionAny end
   
-* MatchAction.ALL
+* ``MatchAction.ALL``
   
   Evaluates to true if all possible combinations of operands evaluates to true.:
 
@@ -283,7 +282,7 @@ MatchAction has three possible values:
      :start-after: // matchActionAll start
      :end-before: // matchActionAll end
 
-* MatchAction.ONE
+* ``MatchAction.ONE``
   
   Evaluates to true if exactly one possible combination of values evaluates to true:
   
@@ -294,7 +293,7 @@ MatchAction has three possible values:
 
 Multiple values are possible in a couple situations: when working with application schemas, or
 working directly with java objects. When an expression is evaluated against rich content
-of this nature child references may return a multi-valued attribue.
+of this nature child references may return a multi-valued attribute.
 
 As an example this filter tests whether all children are older than 12:
     
@@ -329,7 +328,7 @@ about it.
   Don't include any content. Would return an empty Collection if used in a Query.
 
 These values are often used as default values in other data structures - for example the default
-value for Query.getFilter() is Filter.INCLUDES.
+value for ``Query.getFilter()`` is ``Filter.INCLUDES``.
 
 * These are static constants and do not require a constructor:
   
@@ -338,7 +337,7 @@ value for Query.getFilter() is Filter.INCLUDES.
      :start-after: // includeExclude start
      :end-before: // includeExclude end
 
-* You can check for these values when optimising::
+* You can check for these values when optimizing::
     
     public void draw( Filter filter ){
        if( filter == Filter.EXCLUDES ) return; // draw nothing
@@ -354,15 +353,15 @@ value for Query.getFilter() is Filter.INCLUDES.
          System.out.println( "Selected "+ feature.getId();
      }
 
-Identifer
-^^^^^^^^^
+Identifier
+^^^^^^^^^^
 
 The other interesting way to use a filter to more as a "selection" in the GIS sense. In this
-case rather than evaluating the attributes we will directly match the FeatureId.
+case rather than evaluating the attributes we will directly match the ``FeatureId``.
 
 .. image:: /images/filter_id.PNG
 
-The most common test is against FeatureId:
+The most common test is against ``FeatureId``:
   
   .. literalinclude:: /../src/main/java/org/geotools/opengis/FilterExamples.java
     :language: java
@@ -372,7 +371,7 @@ The most common test is against FeatureId:
 Formally this style of Id matching is not supposed to be mixed with the traditional attribute
 based evaluation (such as a bounding box filter).
 
-You can also use a Set<FeatureId>:
+You can also use a ``Set<FeatureId>``:
 
   .. literalinclude:: /../src/main/java/org/geotools/opengis/FilterExamples.java
     :language: java
@@ -380,9 +379,9 @@ You can also use a Set<FeatureId>:
     :end-before: // idSet end
 
 The other place where identifiers are used are when working with versioned information. In this
-case a ResourceId is used that consists of both a "fid" and a "rid".
+case a ``ResourceId`` is used that consists of both a ``fid`` and a ``rid``.
 
-ResourceId can be used to explore versioned information:
+``ResourceId`` can be used to explore versioned information:
 
   .. literalinclude:: /../src/main/java/org/geotools/opengis/FilterExamples.java
     :language: java
@@ -416,8 +415,8 @@ are a new addition for GeoTools 8.0.
 
 The gt-main module supplies some of the implementation classes we will need:
   
-* DefaultIntant: this is an implementation of Instant used to represent a single point in time.
-* DefaultPeriod: this is an implementation of Period used to reresent a range in time
+* ``DefaultIntant``: this is an implementation of Instant used to represent a single point in time.
+* ``DefaultPeriod``: this is an implementation of Period used to represent a range in time
   
 Here is an example illustrating their construction and use with temporal filters:
   
@@ -440,7 +439,7 @@ You evaluate an expression against a feature::
    
    Object value = expression.evaluate( feature );
 
-Or against a Java Bean, or even java.util.Map::
+Or against a Java Bean, or even ``java.util.Map``::
 
    Object value = expression.evaluate( bean );
 
@@ -459,9 +458,9 @@ As an example of conversion here is an expression converting a String to a Color
 Expressions are so useful that you will see them pop up in many parts of GeoTools. They are used
 by styles to select which data for portrayal and so forth.
 
-* PropertyName
+* ``PropertyName``
   
-  The PropertyName expression is used to extract information from your data model.
+  The ``PropertyName`` expression is used to extract information from your data model.
   
   The most common use is to access a Feature Property.::
      
@@ -489,11 +488,11 @@ by styles to select which data for portrayal and so forth.
 
 * X-Paths and Namespaces
   
-  It is possible to use X-Path expressions in filters. This is particularly useful for evaluating nested
-  properties against complex features. To evaluate X-path expressions, an
-  org.xml.sax.helpers.NamespaceSupport object is needed to associate prefixes with Namespace URI's.
+  It is possible to use XPath expressions in filters. This is particularly useful for evaluating nested
+  properties against complex features. To evaluate XPath expressions, an
+  ``org.xml.sax.helpers.NamespaceSupport`` object is needed to associate prefixes with namespace URI's.
   
-  FilterFactory2 supports the creation of PropertyName expression with associated Namespace context
+  ``FilterFactory2`` supports the creation of ``PropertyName`` expression with associated namespace context
   information.::
      
      FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2( GeoTools.getDefaultHints() );
@@ -503,18 +502,18 @@ by styles to select which data for portrayal and so forth.
      
      Filter filter = ff.greater(ff.property("foo:city/foo:size",namespaceSupport),ff.literal(300000));
      
-  Namespace context information can be retrieved from an existing PropertyName expression::
+  Namespace context information can be retrieved from an existing ``PropertyName`` expression::
      
      PropertyName propertyName = ff.property("foo:city/foo:size", namespaceSupport);
      NamespaceSupport namespaceSupport2 = propertyName.getNamespaceContext();
       // now namespaceSupport2 == namespaceSupport !
 
-  PropertyName.getNamespaceContext() will return null when the PropertyName expression does not
+  ``PropertyName.getNamespaceContext()`` will return null when the ``PropertyName`` expression does not
   contain or does not support Namespace context information.
 
 * Functions
   
-  You can create functions using FilterFactory2::
+  You can create functions using ``FilterFactory2``::
      
      FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2( GeoTools.getDefaultHints() );
      
@@ -534,22 +533,21 @@ by styles to select which data for portrayal and so forth.
 
   What can you do when a Function is not found - creating the Function will fail!
   
-  The Symbology Encoding 2.0 specification has the concept of a fallbackValue - while we have not
-  made it available via the factory yet you can use the FunctionFinder.::
+  The Symbology Encoding 2.0 specification has the concept of a ``fallbackValue`` - while we have not
+  made it available via the factory yet you can use the ``FunctionFinder``.::
       
       FunctionFinder finder = new FunctionFinder(null);
       finder.findFunction("pi", Collections.emptyList(), ff.literal(Math.PI));
   
-  Please note that the literal value provided above is only used when the expression is evaluated
-  in context of a service that does not support the **pi()** function.
+  .. note:: that the literal value provided above is only used when the expression is evaluated in context of a service that does not support the ``pi()`` function.
 
 FilterVisitor
 ^^^^^^^^^^^^^
 
-FilterVisitor is used to traverse the filter data structure. Common uses include:
+``FilterVisitor`` is used to traverse the filter data structure. Common uses include:
 
 * Asking questions about the content of a Filter
-* Performing analysis and optimisations on a Filter (say replacing "1+1" with "2" )
+* Performing analysis and optimizations on a Filter (say replacing "1+1" with "2" )
 * Transforming the filter (think search and replace)
 
 .. sidebar:: Visitor
@@ -597,9 +595,9 @@ databases have different native capabilities. For any functionality that cannot 
 natively GeoTools will perform the work locally in Java. Indeed for simple file formats almost
 everything occurs locally in Java.
 
-The **FilterCapabilities** data structure is used to describe the native abilities of a
-WebFeatureService. We also use this data structure to describe the abilities of the different
-JDBC DataStores for working with Databases. Of special interest is the list of FunctionNames
+The ``FilterCapabilities`` data structure is used to describe the native abilities of a
+``WebFeatureService``. We also use this data structure to describe the abilities of the different
+JDBC ``DataStores`` for working with Databases. Of special interest is the list of ``FunctionNames``
 supported.
 
 .. image:: /images/filter_capabilities.PNG

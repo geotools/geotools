@@ -8,7 +8,8 @@ The following Module contains two new plugins for reading the following raster f
 * NetCDF
 * Grib
 
-Also the module contains a sub-module called coverage-api containing a few classes than can be used for creating a new plugin 
+Also the module contains a sub-module called ``gt-coverage-api`` containing a 
+few classes than can be used for creating a new plugin 
 for another multidimensional raster format.
 
 It should be pointed out that the two modules internally use the `Unidata JAVA Libraries <http://www.unidata.ucar.edu/software/thredds/current/netcdf-java/>`_
@@ -96,15 +97,15 @@ The data dimension values will be mapped to three bands called quality, pressure
 
 Default Enhance Mode
 ++++++++++++++++++++
-The default `Enhance <https://www.unidata.ucar.edu/software/thredds/v4.3/netcdf-java/v4.3/javadoc/ucar/nc2/dataset/NetcdfDataset.Enhance.html>`_ mode used
+The default `Enhance <https://www.unidata.ucar.edu/software/thredds/v4.3/netcdf-java/v4.3/javadoc/ucar/nc2/data set/NetcdfData set.Enhance.html>`_ mode used
 by GeoTools is `Enhance.CoordSys`, in order to change the enhance mode use the following system properties:
 
-- org.geotools.coverage.io.netcdf.enhance.CoordSystems
-- org.geotools.coverage.io.netcdf.enhance.ScaleMissing
-- org.geotools.coverage.io.netcdf.enhance.ConvertEnums
-- org.geotools.coverage.io.netcdf.enhance.ScaleMissingDefer
+- ``org.geotools.coverage.io.netcdf.enhance.CoordSystems``
+- ``org.geotools.coverage.io.netcdf.enhance.ScaleMissing``
+- ``org.geotools.coverage.io.netcdf.enhance.ConvertEnums``
+- ``org.geotools.coverage.io.netcdf.enhance.ScaleMissingDefer``
 
-These can be set individually. According to the NetCDF-Java docs it is not safe to use ScaleMissing and ScaleMissingDefer
+These can be set individually. According to the NetCDF-Java docs it is not safe to use ``ScaleMissing`` and ``ScaleMissingDefer``
 simultaneously.
 	
 GRIB

@@ -13,27 +13,27 @@ Download and Install Maven
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 1. Download Maven. Last tested with Maven 3.3.9.
-2. Unzip the maven download to your computer:
+2. Unzip the Maven download to your computer:
    
-   Example: C:\java\apache-maven-3.3.9.
+   Example: ``C:\java\apache-maven-3.3.9``.
    
    If you do not have an unzip program may we recommend: http://www.7-zip.org/
 
-3. You need to have the following environmental variables set for maven to work (note your paths may differ based on Java or Maven revision numbers):
+3. You need to have the following environmental variables set for Maven to work (note your paths may differ based on Java or Maven revision numbers):
    
-   * JAVA_HOME = C:\Program Files\java\jdk1.8.0_91\
+   * ``JAVA_HOME = C:\Program Files\java\jdk1.8.0_91\``
     
      Location of your JDK installation
    
-   * M2_HOME = C:\java\apache-maven-3.0.5
+   * ``M2_HOME = C:\java\apache-maven-3.0.5``
      
-     Location of your maven installation
+     Location of your Maven installation
    
-   * PATH = %PATH%;%JAVA_HOME%\bin;%M2_HOME%\bin
+   * ``PATH = %PATH%;%JAVA_HOME%\bin;%M2_HOME%\bin``
      
-     Include java and maven bin directory in your PATH
+     Include Java and Maven bin directory in your PATH
 
-4. Open up a cmd window and type the following::
+4. Open up a ``cmd`` window and type the following::
      
      > mvn -version
      Apache Maven 3.0.5 (r01de14724cdef164cd33c7c8c2fe155faf9602da; 2013-02-20 00:51:28+1100)
@@ -52,6 +52,6 @@ install the latest version manually by following the `official installation inst
 Maven and Home Brew
 ^^^^^^^^^^^^^^^^^^^
 
-On MacOS the homebrew package manager provides a "formula" to install maven::
+On macOS the homebrew package manager provides a "formula" to install Maven::
 
   brew install maven

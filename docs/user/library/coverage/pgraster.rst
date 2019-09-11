@@ -1,8 +1,9 @@
 Postgis Raster Plug in
 ----------------------
 
-This plug in is an extension to the Image Mosaicing Pyramidal JDBC Plugin. Since a Postgis raster
-object offers spatial functions and predicates,  configuration is simple.
+This plugin is an extension to the Image Mosaicing Pyramidal JDBC
+Plugin. Since a Postgis raster object offers spatial functions and
+predicates,  configuration is simple.
 
 Prerequisites
 
@@ -21,25 +22,25 @@ This plugin expects the following table layout:
 
 .. note::
 
-   Of course, it is possible to use sql views instead of tables for
+   Of course, it is possible to use SQL views instead of tables for
    creating the best physical table layout for the local deployment
 
 .. warning::
 
-   For Postgis JDBC drivers < version 9 it is necessary to set a property in the database:
+   For Postgis JDBC drivers < version 9 it is necessary to set a property in the database::
 
-   ALTER DATABASE dbname SET bytea_output TO 'escape'
+    ALTER DATABASE dbname SET bytea_output TO 'escape'
 
 
-Prepare the tiles and overviews using the gdal tool box http://www.gdal.org. 
+Prepare the tiles and overviews using the GDAL tool box http://www.gdal.org. 
 A good candidate is http://www.gdal.org/gdal_retile.html.
 
 The utility for importing the tiles is described here http://postgis.refractions.net/docs/using_raster.xml.html and is included in Postgis 2.0.
 
 
-An example setup assumes the existense of 3 tables, **rtable1**, **rtable2** **rtable3**. **rtable1** is populated with the tiles from the base image,
+An example setup assumes the existence of 3 tables, **rtable1**, **rtable2** **rtable3**. **rtable1** is populated with the tiles from the base image,
 **rtable2** and **rtable3** are tables for overviews. The raster column in all tables is named **rast**. The plugin needs exactly one meta data table. Table name
-and column names must match with the xml configuration (example follows) . If the table is not present, create it with::
+and column names must match with the XML configuration (example follows) . If the table is not present, create it with::
      
    create table MOSAIC (NAME varchar(254) not null, 
             TileTable varchar(254)not null, 
@@ -47,7 +48,7 @@ and column names must match with the xml configuration (example follows) . If th
             primary key (NAME,TileTable))
 
 
-Now insert a record for a coverage named **oek**, which is stored in **rtable1**, **rtable2** **rtable3**. **oek** is the geotools name of the coverage::
+Now insert a record for a coverage named **oek**, which is stored in **rtable1**, **rtable2** **rtable3**. **oek** is the GeoTools name of the coverage::
    
      insert into MOSAIC(NAME,TileTable) values ('oek',''rtable1)     
      insert into MOSAIC(NAME,TileTable) values ('oek',''rtable2)     
@@ -57,7 +58,9 @@ Now insert a record for a coverage named **oek**, which is stored in **rtable1**
 Configuration
 ^^^^^^^^^^^^^
 
-The plugin needs a xml configuration file. Since connect and mapping info can be reused by many coverages, it is better to have the configuration splitted into 3 parts.
+The plugin needs a XML configuration file. Since connect and mapping info
+can be reused by many coverages, it is better to have the configuration
+split into 3 parts.
 
 1. JDBC connect configuration stored as  **connect.pgraster.xml.inc** in this example setup.
 
@@ -108,7 +111,7 @@ The plugin needs a xml configuration file. Since connect and mapping info can be
   <config version="1.0">
 	<coverageName name="oek"/>
 	<coordsys name="EPSG:4326"/>
-	<!-- interpolation 1 = nearest neighbour, 2 = bipolar, 3 = bicubic -->
+	<!-- interpolation 1 = nearest neighbor, 2 = bipolar, 3 = bicubic -->
 	<scaleop  interpolation="1"/>
    <axisOrder ignore="false"/>
 	&mapping;

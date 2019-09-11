@@ -5,14 +5,14 @@ This page consists of a series of code examples showing how to do common tasks w
 
 Reference:
 
-* :doc:`../opengis/model` gt-opengis data model
-* :doc:`../opengis/type` gt-opengis feature type interfaces
-* :doc:`../opengis/feature` gt-opengis feature interfaces
+* :doc:`../opengis/model` ``gt-opengis`` data model
+* :doc:`../opengis/type` ``gt-opengis`` feature type interfaces
+* :doc:`../opengis/feature` ``gt-opengis`` feature interfaces
 
 Build a Feature Type
 ^^^^^^^^^^^^^^^^^^^^
 
-Since FeatureType is immutable you will often see them used as constants as shown in the following examples:
+Since ``FeatureType`` is immutable you will often see them used as constants as shown in the following examples:
 
 Simple case::
   
@@ -61,7 +61,7 @@ Multiple geometries (with implicit default geometry)::
   b.add( "hub", Point.class );
   b.add( "network", MultiLineString.class );
 
-Multiple geometries with explicit default geoemtry::
+Multiple geometries with explicit default geometry::
   
   b.setCRS( DefaultGeographicCRS.WSG84 );
   
@@ -108,7 +108,7 @@ Alternative: Chaining::
   b.crs( crs1 ).add( "local", Point.class );
   b.crs( crs2 ).add( "world", Point.class );
 
-Alternative: Using an SRS::
+Alternative: Using an CRS::
   
   b.srs( "EPSG:3005" ).add( "local", Point.class );
   b.srs( "EPSG:4326" ).add( "world", Point.class );
@@ -165,15 +165,15 @@ Creating a global name::
 DataUtilities
 '''''''''''''
 
-DataUtilities has a method that you can use to quickly create a FeatureType for test cases::
+``DataUtilities`` has a method that you can use to quickly create a ``FeatureType`` for test cases::
   
   final SimpleFeatureType FLAG = DataUtilities.createType("Flag","Location:Point,Name:String");
 
-You can define the Coordinate Reference System using :
+You can define the Coordinate Reference System using::
   
   final SimpleFeatureType FLAG = DataUtilities.createType("Flags","geom:MultiPoint:srid=4326,Name:String");
 
-You can also ask for the String representation of a FeatureType:
+You can also ask for the String representation of a ``FeatureType``::
   
   System.out.println( DataUtilities.spec( FLAG ) );
 
@@ -182,9 +182,9 @@ For more information see :doc:`data`.
 FeatureFactory
 ''''''''''''''
 
-You can also use FeatureFactory directly; this is advised when building nested features (as we only have a SimpleFeatureTypeBuilder at present).
+You can also use ``FeatureFactory`` directly; this is advised when building nested features (as we only have a ``SimpleFeatureTypeBuilder`` at present).
 
-Using a TypeFactory::
+Using a ``TypeFactory``::
 
   TypeFactory typeFactory = CommonFactoryFinder.getTypeFactory( null );
   SimpleTypeFactory featureTypeFactory =   CommonFactoryFinder.getSimpleTypeFeatureFactory( null );
@@ -214,7 +214,7 @@ Using a TypeFactory::
   
   final FeatureType FLAG = featureTypeFactory.createSimpleFeatureType( name, types, defaultGeometry, crs, Collections.EMPTY_SET, description );
 
-As you can see we usually recommend SimpleFeatureTypeBuilder as it provides assistance with the above work for you.
+As you can see we usually recommend ``SimpleFeatureTypeBuilder`` as it provides assistance with the above work for you.
 
 Build a Feature
 ^^^^^^^^^^^^^^^
@@ -269,14 +269,14 @@ Alternative setting by index::
 DataUtilities
 '''''''''''''
 
-DataUtilities has some utility methods that will create a "template" feature with sensible default values filled in based on the FeatureType.
+``DataUtilities`` has some utility methods that will create a "template" feature with sensible default values filled in based on the ``FeatureType``.
 
 For more information see :doc:`data`.
 
 FeatureFactory
 ''''''''''''''
 
-Once again we will ask you to use FilterFactory directly if you are building up a Feature by hand.
+Once again we will ask you to use ``FilterFactory`` directly if you are building up a ``Feature`` by hand.
 
 Accessing
 ^^^^^^^^^
@@ -353,17 +353,17 @@ Geometry value access using name::
 Coordinate Reference System
 '''''''''''''''''''''''''''
 
-CoordinateReferenceSystem access::
+``CoordinateReferenceSystem`` access::
   
   // Access the CRS of getDefaultGeometryProperty()
   CoordinateReferenceSystem crs = feature.getCRS();
 
-CoordinateReferenceSystem of default geometry property::
+``CoordinateReferenceSystem`` of default geometry property::
   
   CoordinateReferenceSystem crs =
        feature.getDefaultGeometryProperty() == null ? null : feature.getDefaultGeometryProperty().getCRS();
 
-CoordinateReferenceSystem of named Property::
+``CoordinateReferenceSystem`` of named Property::
   
   GeometryAttribute location = (GeometryAttribute) feature.getProperty( "location" );
   CoordinateReferenceSystem bounds = location.getCRS();
@@ -371,17 +371,17 @@ CoordinateReferenceSystem of named Property::
 BoundingBox
 '''''''''''
 
-BoundingBox access::
+``BoundingBox`` access::
   
   // Access the BoundingBox of getDefaultGeometryProperty()
   BoundingBox bounds = feature.getBounds();
 
-BoundingBox of getDefaultGeometryProperty()::
+``BoundingBox`` of ``getDefaultGeometryProperty()``::
   
   BoundingBox bounds =
        feature.getDefaultGeometryProperty() == null ? null : feature.getDefaultGeometryProperty().getBounds();
 
-BoundingBox of named Property::
+``BoundingBox`` of named ``Property``::
   
   GeometryAttribute location = (GeometryAttribute) feature.getProperty( "location" );
   BoundingBox bounds = location.getBounds();
@@ -389,7 +389,7 @@ BoundingBox of named Property::
 Name
 ''''
 
-Name access::
+``Name`` access::
   
   // can access both parts of a name - similar to XML QName
   String localName = name.getLocalPart();
@@ -399,7 +399,7 @@ Check if name is global::
   
   name.isGlobal(); // true! name.getNamespaceURI() == null
 
-Name comparison::
+``Name`` comparison::
   
   Name name1 = new Name( "gopher://localhost/example", "name" );
   Name name2 = new Name( "gopher://localhost", "example/name" );

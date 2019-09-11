@@ -19,16 +19,16 @@ There is a helper method allowing you to calculate the real-world distance betwe
    :start-after: // orthodromicDistance start
    :end-before: // orthodromicDistance end
 
-Internally this method makes use of GeodeticCalculator which offers a more general purpose solution
+Internally this method makes use of ``GeodeticCalculator`` which offers a more general purpose solution
 able to take the distance between any two points (even if they are provided in different
-coordiante reference systems).
+coordinate reference systems).
 
 Transform
 ^^^^^^^^^
 
-You can make use of *MathTransform** directly - it has methods for feeding **DirectPosition** instances in one at a time, transforming, and returning a modified **DirectPosition**.
+You can make use of ``MathTransform`` directly - it has methods for feeding ``DirectPosition`` instances in one at a time, transforming, and returning a modified ``DirectPosition``.
 
-The problem is our JTS Geometry instances are built out of **Coordinate** instances rather than using **DirectPosition**.
+The problem is our JTS Geometry instances are built out of ``Coordinate`` instances rather than using ``DirectPosition``.
 
 The **JTS** utility class defines a helper method for this common activity::
   
@@ -49,7 +49,7 @@ As a quick example, you can make use of an affine transformation to perform simp
   
   Geometry rotatedPoint = JTS.transform(geometry, mathTransform);
 
-The same approach works with a JTS Coordinate::
+The same approach works with a JTS ``Coordinate``::
   
   // by default it can make a new Coordinate for the result
   Coordinate targetCoordinate = JTS.transform( coordinate, null, transform );
@@ -60,14 +60,14 @@ The same approach works with a JTS Coordinate::
   // or modify a coordinate in place
   JTS.transform( coordinate, coordinate, transform );
 
-And also a JTS Envelope, although this case is a bit special in that you get a chance to specify how many points along the edge of the boundary are sampled. If you specify 5, five points along the top, bottom, left and right edges will be transformed - giving you a chance to better account for the curvature of the earth.:
+And also a JTS ``Envelope``, although this case is a bit special in that you get a chance to specify how many points along the edge of the boundary are sampled. If you specify 5, five points along the top, bottom, left and right edges will be transformed - giving you a chance to better account for the curvature of the earth.:
   
 .. literalinclude:: /../src/main/java/org/geotools/api/APIExamples.java
    :language: java
    :start-after: // transformEnvelope start
    :end-before: // transformEnvelope end
   
-Finally the common target of DefaultGeographicCRS.WGS84 is given its own method (to quickly
+Finally the common target of ``DefaultGeographicCRS.WGS84`` is given its own method (to quickly
 transform to geographic bounds)::
 
   Envelope geographicBounds = JTS.toGeographic( envelope, dataCRS );
@@ -79,10 +79,10 @@ Finally there is a very fast method for performing a transform directly on an ar
 Convert
 ^^^^^^^
 
-There are a number of methods to help convert JTS Geometry to some of the ISO Geometry ideas used
+There are a number of methods to help convert JTS ``Geometry`` to some of the ISO ``Geometry`` ideas used
 by the referencing module.
 
-Quickly convert from a JTS Envelope to the ISO Geometry Envelope (with a provided CoordinateReferenceSystem)::
+Quickly convert from a JTS ``Envelope`` to the ISO Geometry ``Envelope`` (with a provided ``CoordinateReferenceSystem``)::
 
    Envelope envelope = geometry.getEnvelopeInternal();
 

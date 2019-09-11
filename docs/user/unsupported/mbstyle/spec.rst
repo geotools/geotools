@@ -314,7 +314,7 @@ the light (from 0°, directly above, to 180°, directly below).
 color
 ~~~~~
 
-*Optional* :ref:`types-color`. *Defaults to* #ffffff.
+*Optional* :ref:`types-color`. *Defaults to* ``#ffffff``
 
 
 Color tint for lighting extruded geometries.
@@ -363,7 +363,7 @@ Sources
 
 Sources supply data to be shown on the map. The type of source is
 specified by the ``"type"`` property, and must be one of vector, raster,
-geojson, image, video, canvas. Adding a source won't immediately make
+GeoJSON, image, video, canvas. Adding a source won't immediately make
 data appear on the map because sources don't contain styling details
 like color or width. Layers refer to a source and give it a visual
 representation. This makes it possible to style the same source in
@@ -375,7 +375,7 @@ the `TileJSON
 specification <https://github.com/mapbox/tilejson-spec>`__. This can be
 done in several ways:
 
--  By supplying TileJSON properties such as ``"tiles"``, ``"minzoom"``,
+-  By supplying ``TileJSON`` properties such as ``"tiles"``, ``"minzoom"``,
    and ``"maxzoom"`` directly in the source:
 
    ::
@@ -389,7 +389,7 @@ done in several ways:
          "maxzoom": 14
        }
 
--  By providing a ``"url"`` to a TileJSON resource:
+-  By providing a ``"url"`` to a ``TileJSON`` resource:
 
 
    ::
@@ -399,8 +399,8 @@ done in several ways:
          "url": "http://api.example.com/tilejson.json"
        }
 
--  By providing a url to a WMS server that supports EPSG:3857 (or
-   EPSG:900913) as a source of tiled data. The server url should contain
+-  By providing a URL to a WMS server that supports EPSG:3857 (or
+   EPSG:900913) as a source of tiled data. The server URL should contain
    a ``"{bbox-epsg-3857}"`` replacement token to supply the ``bbox``
    parameter.
 
@@ -423,6 +423,7 @@ geometric coordinates in vector tiles must be between ``-1 * extent``
 and ``(extent * 2) - 1`` inclusive. All layers that use a vector source
 must specify a ``"source-layer"`` value. For vector tiles hosted by
 Mapbox, the ``"url"`` value should be of the form ``mapbox://mapid``.
+
 ::
 
     "mapbox-streets": {
@@ -430,42 +431,42 @@ Mapbox, the ``"url"`` value should be of the form ``mapbox://mapid``.
       "url": "mapbox://mapbox.mapbox-streets-v6"
     }
 
-url
-^^^
+``url``
+^^^^^^^
 
 *Optional* :ref:`types-string`.
 
 
 
-A URL to a TileJSON resource. Supported protocols are ``http:``,
+A URL to a ``TileJSON`` resource. Supported protocols are ``http:``,
 ``https:``, and ``mapbox://<mapid>``.
 
-tiles
-^^^^^
+``tiles``
+^^^^^^^^^
 
 *Optional* :ref:`types-array`.
 
 
 
-An array of one or more tile source URLs, as in the TileJSON spec.
+An array of one or more tile source URLs, as in the ``TileJSON`` spec.
 
-minzoom
-^^^^^^^
+``minzoom``
+^^^^^^^^^^^
 
 *Optional* :ref:`types-number`. *Defaults to* 0.
 
 
-Minimum zoom level for which tiles are available, as in the TileJSON
+Minimum zoom level for which tiles are available, as in the ``TileJSON``
 spec.
 
-maxzoom
-^^^^^^^
+``maxzoom``
+^^^^^^^^^^^
 
 *Optional* :ref:`types-number`. *Defaults to* 22.
 
 
-Maximum zoom level for which tiles are available, as in the TileJSON
-spec. Data from tiles at the maxzoom are used when displaying the map at
+Maximum zoom level for which tiles are available, as in the ``TileJSON``
+spec. Data from tiles at the ``maxzoom`` are used when displaying the map at
 higher zoom levels.
 
 
@@ -482,8 +483,8 @@ higher zoom levels.
      - Not yet supported
      - >= 2.4.0
 
-raster
-~~~~~~
+``raster``
+~~~~~~~~~~
 
 A raster tile source. For raster tiles hosted by Mapbox, the ``"url"``
 value should be of the form ``mapbox://mapid``.
@@ -496,13 +497,13 @@ value should be of the form ``mapbox://mapid``.
       "tileSize": 256
     }
 
-url
-^^^
+``url``
+^^^^^^^
 
 *Optional* :ref:`types-string`.
 
 
-A URL to a TileJSON resource. Supported protocols are ``http:``,
+A URL to a ``TileJSON`` resource. Supported protocols are ``http:``,
 ``https:``, and ``mapbox://<mapid>``.
 
 tiles
@@ -512,29 +513,29 @@ tiles
 
 
 
-An array of one or more tile source URLs, as in the TileJSON spec.
+An array of one or more tile source URLs, as in the ``TileJSON`` spec.
 
-minzoom
-^^^^^^^
+``minzoom``
+^^^^^^^^^^^^
 
 *Optional* :ref:`types-number`. *Defaults to* 0.
 
 
-Minimum zoom level for which tiles are available, as in the TileJSON
+Minimum zoom level for which tiles are available, as in the ``TileJSON``
 spec.
 
-maxzoom
-^^^^^^^
+``maxzoom``
+^^^^^^^^^^^
 
 *Optional* :ref:`types-number`. *Defaults to* 22.
 
 
-Maximum zoom level for which tiles are available, as in the TileJSON
-spec. Data from tiles at the maxzoom are used when displaying the map at
+Maximum zoom level for which tiles are available, as in the ``TileJSON``
+spec. Data from tiles at the ``maxzoom`` are used when displaying the map at
 higher zoom levels.
 
-tileSize
-^^^^^^^^
+``tileSize``
+^^^^^^^^^^^^
 
 *Optional* :ref:`types-number`. *Defaults to* 512.
 
@@ -560,6 +561,7 @@ geojson
 
 A `GeoJSON <http://geojson.org/>`__ source. Data must be provided via a
 ``"data"`` property, whose value can be a URL or inline GeoJSON.
+
 ::
 
     "geojson-marker": {
@@ -596,8 +598,8 @@ data
 
 A URL to a GeoJSON file, or inline GeoJSON.
 
-maxzoom
-^^^^^^^
+``maxzoom``
+^^^^^^^^^^^
 
 *Optional* :ref:`types-number`. *Defaults to* 18.
 
@@ -634,8 +636,8 @@ cluster
 If the data is a collection of point features, setting this to true
 clusters the points by radius into groups.
 
-clusterRadius
-^^^^^^^^^^^^^
+``clusterRadius``
+^^^^^^^^^^^^^^^^^^
 
 *Optional* :ref:`types-number`. *Defaults to* 50.
 
@@ -644,14 +646,14 @@ clusterRadius
 Radius of each cluster if clustering is enabled. A value of 512
 indicates a radius equal to the width of a tile.
 
-clusterMaxZoom
-^^^^^^^^^^^^^^
+``clusterMaxZoom``
+^^^^^^^^^^^^^^^^^^
 
 *Optional* :ref:`types-number`.
 
 
 Max zoom on which to cluster points if clustering is enabled. Defaults
-to one zoom less than maxzoom (so that last zoom features are not
+to one zoom less than ``maxzoom`` (so that last zoom features are not
 clustered).
 
 .. list-table::
@@ -692,8 +694,8 @@ right, bottom left.
       ]
     }
 
-url
-^^^
+``url``
+^^^^^^^
 
 *Required* :ref:`types-string`.
 
@@ -747,8 +749,8 @@ right, bottom left.
       ]
     }
 
-urls
-^^^^
+``urls``
+^^^^^^^^^
 
 *Required* :ref:`types-array`.
 
@@ -842,7 +844,7 @@ HTML ID of the canvas from which to read pixels.
    * - basic functionality
      - >= 0.32.0
      - Not yet supported
-     - Not yet yupported
+     - Not yet supported
 
 .. _sprite:
 
@@ -1040,7 +1042,7 @@ metadata
 
 Arbitrary properties useful to track with the layer, but do not
 influence rendering. Properties should be prefixed to avoid collisions,
-like 'mapbox:'.
+like ``mapbox:``.
 
 source
 ^^^^^^
@@ -1061,8 +1063,8 @@ source-layer
 Layer to use from a vector tile source. Required if the source supports
 multiple layers.
 
-minzoom
-^^^^^^^
+``minzoom``
+^^^^^^^^^^^^
 
 *Optional* :ref:`types-number`.
 
@@ -1070,8 +1072,8 @@ minzoom
 
 The minimum zoom level on which the layer gets parsed and appears on.
 
-maxzoom
-^^^^^^^
+``maxzoom``
+^^^^^^^^^^^^
 
 *Optional* :ref:`types-number`.
 
@@ -1255,13 +1257,13 @@ none
 Paint Properties
 ^^^^^^^^^^^^^^^^
 
-fill-antialias
-""""""""""""""
+``fill-antialias``
+"""""""""""""""""""
 
 *Optional* :ref:`types-boolean`. *Defaults to* true.
 
 
-Whether or not the fill should be antialiased.
+Whether or not the fill should be anti-aliased.
 
 
 .. list-table::
@@ -1288,7 +1290,7 @@ fill-opacity
 
 
 The opacity of the entire fill layer. In contrast to the ``fill-color``,
-this value will also affect the 1px stroke around the fill, if the
+this value will also affect the 1 px stroke around the fill, if the
 stroke is used.
 
 .. list-table::
@@ -1339,7 +1341,7 @@ affect the opacity of the 1px stroke, if it is used.
 fill-outline-color
 """"""""""""""""""
 
-*Optional* :ref:`types-color`. *Disabled by* fill-pattern. *Requires* fill-antialias = true.
+*Optional* :ref:`types-color`. *Disabled by* fill-pattern. *Requires* ``fill-antialias = true``.
 
 
 The outline color of the fill. Matches the value of ``fill-color`` if
@@ -1839,8 +1841,8 @@ Blur applied to the line, in pixels.
      - Not yet supported
 
 
-line-dasharray
-""""""""""""""
+``line-dasharray``
+""""""""""""""""""
 
 *Optional* :ref:`types-array`. *Units in* line widths. *Disabled by* line-pattern.
 
@@ -2452,7 +2454,7 @@ literal ``text-field`` values--not for property functions.)
 text-font
 """""""""
 
-*Optional* :ref:`types-array`. *Defaults to* Open Sans Regular,Arial Unicode MS Regular. *Requires* text-field.
+*Optional* :ref:`types-array`. *Defaults to* Open Sans Regular, Arial Unicode MS Regular. *Requires* text-field.
 
 Font stack to use for displaying text.
 
@@ -3004,7 +3006,7 @@ icon-color
 
 
 
-The color of the icon. This can only be used with sdf icons.
+The color of the icon. This can only be used with SDF icons.
 
 
 .. list-table::
@@ -3027,7 +3029,7 @@ The color of the icon. This can only be used with sdf icons.
 icon-halo-color
 """""""""""""""
 
-*Optional* :ref:`types-color`. *Defaults to* rgba(0, 0, 0, 0). *Requires* icon-image.
+*Optional* :ref:`types-color`. *Defaults to* ``rgba(0, 0, 0, 0)``. *Requires* icon-image.
 
 
 
@@ -3230,7 +3232,7 @@ The color with which the text will be drawn.
 text-halo-color
 """""""""""""""
 
-*Optional* :ref:`types-color`. *Defaults to* rgba(0, 0, 0, 0). *Requires* text-field.
+*Optional* :ref:`types-color`. *Defaults to* ``rgba(0, 0, 0, 0)``. *Requires* text-field.
 
 
 
@@ -3291,7 +3293,7 @@ text-halo-blur
 
 
 
-The halo's fadeout distance towards the outside.
+The halo's fade out distance towards the outside.
 
 
 .. list-table::
@@ -3706,7 +3708,7 @@ circle-blur
 
 
 Amount to blur the circle. 1 blurs the circle such that only the
-centerpoint is full opacity.
+center point is full opacity.
 
 
 .. list-table::
@@ -4177,7 +4179,7 @@ Color
 ~~~~~
 
 Colors are written as JSON strings in a variety of permitted formats:
-HTML-style hex values, rgb, rgba, hsl, and hsla. Predefined HTML colors
+HTML-style hex values, ``rgb``, ``rgba``, ``hsl``, and ``hsla``. Predefined HTML colors
 names, like ``yellow`` and ``blue``, are also permitted.
 
 ::
@@ -4192,13 +4194,13 @@ names, like ``yellow`` and ``blue``, are also permitted.
       "line-color": "yellow"
     }
 
-Especially of note is the support for hsl, which can be `easier to
+Especially of note is the support for ``hsl``, which can be `easier to
 reason about than rgb() <http://mothereffinghsl.com/>`__.
 
 .. _types-enum:
 
-Enum
-~~~~
+``Enum``
+~~~~~~~~
 
 One of a fixed list of string values. Use quotes around values.
 
@@ -4433,7 +4435,7 @@ Asserts that the input is an array (optionally with a specific item type and len
 boolean
 ^^^^^^^
 
-Asserts that the input value is a boolean. If multiple values are provided, each one is evaluated in order until a boolean is obtained. If none of the inputs are booleans, the expression is an error.
+Asserts that the input value is a boolean. If multiple values are provided, each one is evaluated in order until a boolean is obtained. If none of the inputs are boolean, the expression is an error.
 
 ::
 
@@ -4721,8 +4723,8 @@ Converts the input value to a string. If the input is ``null``, the result is ``
 
 .. _expressions-typeof:
 
-typeof
-^^^^^^
+``typeof``
+^^^^^^^^^^^
 
 Returns a string describing the type of the given value.
 
@@ -5352,8 +5354,8 @@ Produces continuous, smooth results by interpolating between pairs of input and 
 Interpolation types:
 
 - ``["linear"]``: interpolates linearly between the pair of stops just less than and just greater than the input.
-- ``["exponential", base]``: interpolates exponentially between the stops just less than and just greater than the input. base controls the rate at which the output increases: higher values make the output increase more towards the high end of the range. With values close to 1 the output increases linearly.
-- ``["cubic-bezier", x1, y1, x2, y2]``: interpolates using the cubic bezier curve defined by the given control points.
+- ``["exponential", base]``: interpolates exponentially between the stops just less than and just greater than the input. Base controls the rate at which the output increases: higher values make the output increase more towards the high end of the range. With values close to 1 the output increases linearly.
+- ``["cubic-bezier", x1, y1, x2, y2]``: interpolates using the cubic Bezier curve defined by the given control points.
 
 ::
 
@@ -5379,10 +5381,10 @@ Interpolation types:
 
 .. _expressions-interpolate-hcl:
 
-interpolate-hcl
-^^^^^^^^^^^^^^^
+``interpolate-hcl``
+^^^^^^^^^^^^^^^^^^^
 
-Produces continuous, smooth results by interpolating between pairs of input and output values ("stops"). Works like ``interpolate``, but the output type must be ``color``, and the interpolation is performed in the Hue-Chroma-Luminance color space.
+Produces continuous, smooth results by interpolating between pairs of input and output values ("stops"). Works like ``interpolate``, but the output type must be ``color``, and the interpolation is performed in the "Hue-Chroma-Luminance" color space.
 
 ::
 
@@ -5440,7 +5442,7 @@ Produces continuous, smooth results by interpolating between pairs of input and 
 step
 ^^^^
 
-Produces discrete, stepped results by evaluating a piecewise-constant function defined by pairs of input and output values ("stops"). The ``input`` may be any numeric expression (e.g.,  ``["get", "population"]``). Stop inputs must be numeric literals in strictly ascending order. Returns the output value of the stop just less than the input, or the first input if the input is less than the first stop.
+Produces discrete, stepped results by evaluating a piece wise-constant function defined by pairs of input and output values ("stops"). The ``input`` may be any numeric expression (e.g.,  ``["get", "population"]``). Stop inputs must be numeric literals in strictly ascending order. Returns the output value of the stop just less than the input, or the first input if the input is less than the first stop.
 
 ::
 
@@ -5527,8 +5529,8 @@ String
 
 .. _expressions-concat:
 
-concat
-^^^^^^
+``concat``
+^^^^^^^^^^
 
 Returns a string consisting of the concatenation of the inputs. Each input is converted to a string as if by ``to-string``.
 
@@ -5551,8 +5553,8 @@ Returns a string consisting of the concatenation of the inputs. Each input is co
 
 .. _expressions-downcase:
 
-downcase
-^^^^^^^^
+``downcase``
+^^^^^^^^^^^^
 
 Returns the input string converted to lowercase. Follows the Unicode Default Case Conversion algorithm and the locale-insensitive case mappings in the Unicode Character Database.
 
@@ -5578,7 +5580,7 @@ Returns the input string converted to lowercase. Follows the Unicode Default Cas
 is-supported-script
 ^^^^^^^^^^^^^^^^^^^
 
-Returns ``true`` if the input string is expected to render legibly. Returns ``false`` if the input string contains sections that cannot be rendered without potential loss of meaning (e.g. Indic scripts that require complex text shaping, or right-to-left scripts if the the ``mapbox-gl-rtl-text`` plugin is not in use in Mapbox GL JS).
+Returns ``true`` if the input string is expected to render legibly. Returns ``false`` if the input string contains sections that cannot be rendered without potential loss of meaning (e.g. Indic scripts that require complex text shaping, or right-to-left scripts if the ``mapbox-gl-rtl-text`` plugin is not in use in Mapbox GL JS).
 
 ::
 
@@ -5610,8 +5612,8 @@ Returns the IETF language tag of the locale being used by the provided ``collato
 
 .. _expressions-upcase:
 
-upcase
-^^^^^^
+``upcase``
+^^^^^^^^^^
 
 Returns the input string converted to uppercase. Follows the Unicode Default Case Conversion algorithm and the locale-insensitive case mappings in the Unicode Character Database.
 
@@ -5639,8 +5641,8 @@ Color
 
 .. _expressions-rgb:
 
-rgb
-^^^
+``rgb``
+^^^^^^^
 
 Creates a color value from red, green, and blue components, which must range between 0 and 255, and an alpha component of 1. If any component is out of range, the expression is an error.
 
@@ -5663,8 +5665,8 @@ Creates a color value from red, green, and blue components, which must range bet
 
 .. _expressions-rgba:
 
-rgba
-^^^^
+``rgba``
+^^^^^^^^^
 
 Creates a color value from red, green, blue components, which must range between 0 and 255, and an alpha component which must range between 0 and 1. If any component is out of range, the expression is an error.
 
@@ -5687,8 +5689,8 @@ Creates a color value from red, green, blue components, which must range between
 
 .. _expressions-to-rgba:
 
-to-rgba
-^^^^^^^
+``to-rgba``
+^^^^^^^^^^^^^^
 
 Returns a four-element array containing the input color's red, green, blue, and alpha components, in that order.
 
@@ -5888,10 +5890,10 @@ Returns the absolute value of the input.
 
 .. _expressions-acos:
 
-acos
-^^^^
+``acos``
+^^^^^^^^^
 
-Returns the arccosine of the input.
+Returns the ``arccosine`` of the input.
 
 ::
 
@@ -5912,10 +5914,10 @@ Returns the arccosine of the input.
 
 .. _expressions-asin:
 
-asin
-^^^^
+``asin``
+^^^^^^^^
 
-Returns the arcsine of the input.
+Returns the ``arcsine`` of the input.
 
 ::
 
@@ -5936,10 +5938,10 @@ Returns the arcsine of the input.
 
 .. _expressions-atan:
 
-atan
-^^^^
+``atan``
+^^^^^^^^^
 
-Returns the arctangent of the input.
+Returns the ``arctangent`` of the input.
 
 ::
 
@@ -5960,8 +5962,8 @@ Returns the arctangent of the input.
 
 .. _expressions-ceil:
 
-ceil
-^^^^
+``ceil``
+^^^^^^^^^
 
 Returns the smallest integer that is greater than or equal to the input.
 
@@ -5984,8 +5986,8 @@ Returns the smallest integer that is greater than or equal to the input.
 
 .. _expressions-cos:
 
-cos
-^^^
+``cos``
+^^^^^^^^
 
 Returns the cosine of the input.
 
@@ -6056,8 +6058,8 @@ Returns the largest integer that is less than or equal to the input.
 
 .. _expressions-ln:
 
-ln
-^^
+``ln``
+^^^^^^^^
 
 Returns the natural logarithm of the input.
 
@@ -6080,10 +6082,10 @@ Returns the natural logarithm of the input.
 
 .. _expressions-ln2:
 
-ln2
-^^^
+``ln2``
+^^^^^^^
 
-Returns mathematical constant ln(2).
+Returns mathematical constant ``ln(2)``.
 
 ::
 
@@ -6104,8 +6106,8 @@ Returns mathematical constant ln(2).
 
 .. _expressions-log10:
 
-log10
-^^^^^
+``log10``
+^^^^^^^^^^
 
 Returns the base-ten logarithm of the input.
 
@@ -6128,8 +6130,8 @@ Returns the base-ten logarithm of the input.
 
 .. _expressions-log2:
 
-log2
-^^^^
+``log2``
+^^^^^^^^^
 
 Returns the base-two logarithm of the input.
 
@@ -6273,8 +6275,8 @@ Returns the sine of the input.
 
 .. _expressions-sqrt:
 
-sqrt
-^^^^
+``sqrt``
+^^^^^^^^^
 
 Returns the square root of the input.
 
@@ -6480,10 +6482,10 @@ circumstances.
 
 .. _function-colorspace:
 
-colorSpace
-^^^^^^^^^^
+``colorSpace``
+^^^^^^^^^^^^^^^
 
-*Optional* :ref:`types-enum`. *One of* rgb, lab, hcl.
+*Optional* :ref:`types-enum`. *One of* ``rgb``, ``lab``, ``hcl``.
 
 The color space in which colors interpolated. Interpolating colors in
 perceptual color spaces like LAB and HCL tend to produce color ramps
@@ -6491,11 +6493,11 @@ that look more consistent and produce colors that can be differentiated
 more easily than those interpolated in RGB space.
 
 
-rgb
+``rgb``
     Use the RGB color space to interpolate color values
-lab
+``lab``
     Use the LAB color space to interpolate color values.
-hcl
+``hcl``
     Use the HCL color space to interpolate color values, interpolating
     the Hue, Chroma, and Luminance channels individually.
 
@@ -6569,9 +6571,9 @@ the first is a zoom level and the second is a function output value.
 
 The rendered values of :ref:`types-color`,
 :ref:`types-number`, and :ref:`types-array` properties are
-intepolated between stops. :ref:`types-enum`,
+interpolated between stops. :ref:`types-enum`,
 :ref:`types-boolean`, and :ref:`types-string` property
-values cannot be intepolated, so their rendered values only change at
+values cannot be interpolated, so their rendered values only change at
 the specified stops.
 
 There is an important difference between the way that zoom functions
@@ -6591,7 +6593,7 @@ zoom levels.)
 
 **Property functions** allow the appearance of a map feature to change
 with its properties. Property functions can be used to visually
-differentate types of features within the same layer or create data
+differentiate types of features within the same layer or create data
 visualizations. Each stop is an array with two elements, the first is a
 property input value and the second is a function output value. Note
 that support for property functions is not available across all
@@ -6686,23 +6688,23 @@ Comparison Filters
 Set Membership Filters
 ^^^^^^^^^^^^^^^^^^^^^^
 
-``["in", key, v0, ..., vn]`` set inclusion: feature[key] ∈ {v0, ..., vn}
+``["in", key, v0, ..., vn]`` set inclusion: feature[key] ∈ {v_0, ..., v_n}
 
 
-``["!in", key, v0, ..., vn]`` set exclusion: feature[key] ∉ {v0, ...,
-vn}
+``["!in", key, v0, ..., vn]`` set exclusion: feature[key] ∉ {v_0, ...,
+v_n}
 
 
 Combining Filters
 ^^^^^^^^^^^^^^^^^
 
-``["all", f0, ..., fn]`` logical ``AND``: f0 ∧ ... ∧ fn
+``["all", f0, ..., fn]`` logical ``AND``: f_0 ∧ ... ∧ f_n
 
 
-``["any", f0, ..., fn]`` logical ``OR``: f0 ∨ ... ∨ fn
+``["any", f0, ..., fn]`` logical ``OR``: f_0 ∨ ... ∨ f_n
 
 
-``["none", f0, ..., fn]`` logical ``NOR``: ¬f0 ∧ ... ∧ ¬fn
+``["none", f0, ..., fn]`` logical ``NOR``: ¬f_0 ∧ ... ∧ ¬f_n
 
 
 
@@ -6716,7 +6718,7 @@ following special keys:
    ``"=="``, ``"!="``, ``"has"``, ``"!has"``, ``"in"``, and ``"!in"``
    operators.
 
-A value (and v0, ..., vn for set operators) must be a
+A value (and v_0, ..., v_n for set operators) must be a
 :ref:`types-string`, :ref:`types-number`, or :ref:`types-boolean` to
 compare the property value against.
 
@@ -6728,8 +6730,9 @@ comparisons; for example, all of the following evaluate to false:
 ``0 < "1"``, ``2 == "2"``, ``"true" in [true, false]``.
 
 The ``"all"``, ``"any"``, and ``"none"`` filter operators are used to
-create compound filters. The values f0, ..., fn must be filter
+create compound filters. The values f\_0, ..., f\_n must be filter
 expressions themselves.
+
 ::
 
     ["==", "$type", "LineString"]
@@ -6737,6 +6740,7 @@ expressions themselves.
 
 This filter requires that the ``class`` property of each feature is
 equal to either "street\_major", "street\_minor", or "street\_limited".
+
 ::
 
     ["in", "class", "street_major", "street_minor", "street_limited"]
@@ -6749,6 +6753,7 @@ feature must have a ``class`` equal to "street\_limited", its
 be Polygon. You could change the combining filter to "any" to allow
 features matching any of those criteria to be included - features that
 are Polygons, but have a different ``class`` value, and so on.
+
 ::
 
     [

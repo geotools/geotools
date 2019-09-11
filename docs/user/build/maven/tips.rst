@@ -1,7 +1,7 @@
 Maven Tips
 ----------
 
-Maven has a fair few tricks and tips associated with its use. The major benefit is with a consistent project structure (and pom.xml description) a number of plugins can be used.
+Maven has a fair few tricks and tips associated with its use. The major benefit is with a consistent project structure (and ``pom.xml`` description) a number of plugins can be used.
 
 Really Building All Modules
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -10,23 +10,23 @@ GeoTools plays host to a number of experiment "unsupported" modules; if you woul
 
    mvn install -Dall
 
-The "-Dall" acts as a switch to part engages several profiles; you can also do this by hand with -P
+The ``-Dall`` acts as a switch to part engages several profiles; you can also do this by hand with -P
 
-The following "profiles" are included by the "-Dall":
+The following "profiles" are included by the ``-Dall``:
 
 =================== ========== ===================================================================
-Profile             \-Dall     Builds
+Profile             ``-Dall``    Builds
 =================== ========== ===================================================================
 ``-Ppending``       included   several experimental modules
 ``-Praster``        included   builds coverage tools
-``-Pgeometry``      included   builds iso 19107 geometry implementations
+``-Pgeometry``      included   builds ISO 19107 geometry implementations
 ``-Pswing``         included
-``-Pwps``           included   wps client
-``-Pprocess``       included   addotopma; geometry, raster and feature processes
+``-Pwps``           included   WPS client
+``-Pprocess``       included   geometry, raster and feature processes
 ``-Parchive``                  modules that no longer work
 =================== ========== ===================================================================
 
-Fore more details see :file:`unsupported/pom.xml` (or try ``mvn help:all-profiles`` for the complete list).
+For more details see :file:`unsupported/pom.xml` (or try ``mvn help:all-profiles`` for the complete list).
 
 Parallel Builds
 ^^^^^^^^^^^^^^^
@@ -35,7 +35,7 @@ Maven 3 allows you to control your computing resources a bit more::
 
   mvn install -Dall -T 2C
 
-The above command builds using two threads for each cpu core available.
+The above command builds using two threads for each CPU core available.
 
 You can also set an exact number of threads to use::
 
@@ -70,26 +70,26 @@ Provided you have done at least one complete build you should be able to build i
 
      cd modules/library/cql
 
-2. Use maven to compile - it should do a complete build::
+2. Use Maven to compile - it should do a complete build::
 
       mvn compile
 
-3. Use maven to update the local repository - it should run the test cases and install the jar in the local
+3. Use Maven to update the local repository - it should run the test cases and install the jar in the local
    repository for other modules (or applications) to use when they build.::
 
      mvn install
 
 If you have not done a full build yet then the build may fail because it can't find the jar for a module it depends on.
 
-* An error caused by not having another geotools module installed can be a little misleading::
+  * An error caused by not having another GeoTools module installed can be a little misleading::
 
-    Error: unable to download main-2.1.x.jar
+      Error: unable to download main-2.1.x.jar
 
-* Maven failed to find main-2.1,x.jar in the local repository where a full build should have put it
-* Maven tried to download the file from the internet (and failed)
-* If you see an error like that, either do a full build or change into the module which is missing (main in this case) and type.::
+  * Maven failed to find main-2.1,x.jar in the local repository where a full build should have put it
+  * Maven tried to download the file from the internet (and failed)
+  * If you see an error like that, either do a full build or change into the module which is missing (main in this case) and type.::
 
-   maven install
+     maven install
 
 Avoiding Tests
 ^^^^^^^^^^^^^^
@@ -100,7 +100,7 @@ The following will build the tests - but not run them::
 
    mvn -DskipTests install
 
-This is useful for installing the postgis module test jar; which is used by the postgis-version module as a dependency.
+This is useful for installing the PostGIS module test jar; which is used by the ``postgis-version`` module as a dependency.
 
 The following will not even build the tests::
 
@@ -111,7 +111,7 @@ Resuming After a Failure
 
 When doing a full build of GeoTools it can be disheartening when a build fails 90% of the way through causing you to fix and start again.
 
-The -rf (resume from) parameter of is useful in these cases. It is used to resume a multi-module build such as GeoTools from a specific location to avoid rebuilding those modules you have already successfully build.
+The ``-rf`` (resume from) parameter of is useful in these cases. It is used to resume a multi-module build such as GeoTools from a specific location to avoid rebuilding those modules you have already successfully build.
 
 1. For instance, consider quickly building offline::
 
@@ -126,23 +126,23 @@ This same technique can be used to restart a build after fixing a failed test in
 Generate a Web Site
 ^^^^^^^^^^^^^^^^^^^
 
-Maven reports can be generated by the following command, to be executed from the directory that contains the parent pom.xml file::
+Maven reports can be generated by the following command, to be executed from the directory that contains the parent ``pom.xml`` file::
 
    mvn site:site
 
-The site are created in target/site directory of every module. An aggregated javadoc is also created in the parent target/site/apidocs directory.
+The site are created in :file:`target/site` directory of every module. An aggregated javadoc is also created in the parent :file:`target/site/apidocs` directory.
 
-Oracle ojdbc jar
-^^^^^^^^^^^^^^^^
+Oracle JDBC Jar
+^^^^^^^^^^^^^^^
 
-We are not in position to publish everything in a public maven repository. The ojdbc7 JDBC driver
+We are not in position to publish everything in a public maven repository. The ``ojdbc7.jar`` JDBC driver
 (required to run oracle online tests) will need to be installed by hand.
 
 If you have access to the real driver you can rebuild the ``jdbc-oracle`` plugin
-with ojdbc driver.                                               -->
+with jdbc driver.                                               -->
 
-1. Download the ojdbc jar from oracle
-2. Install the ojdbc jar into your local maven repository::
+1. Download the jdbc jar from oracle
+2. Install the jdbc jar into your local Maven repository::
 
       mvn install:install-file -Dfile=ojdbc7.jar \
           -DgroupId=com.oracle -DartifactId=ojdbc7 \
@@ -167,19 +167,19 @@ with ojdbc driver.                                               -->
         [INFO] Final Memory: 3M/81M
         [INFO] ------------------------------------------------------------------------
 
-3. You can then supply -Doracle=true on the command line when building::
+3. You can then supply ``-Doracle=true`` on the command line when building::
 
       cd modules/plugins/jdbc/jdbc-oracle
       mvn clean install -Doracle=true
 
    The ``gt-jdbc-oracle`` plugin is now deployed in your repository with a dependency
-   on the ojdbc oracle driver.
+   on the oracle JDBC driver.
 
 4. Or when setting up eclipse::
 
       mvn eclipse:eclipse -Dall -Doracle=true
 
-   The eclipse .project and .classpath generated now includes a reference to the ojdbc oracle
+   The eclipse :file:`.project` and :file:`.classpath` generated now includes a reference to the oracle JDBC 
    driver.
 
 5. Or when running online tests::

@@ -8,45 +8,44 @@ Call Syntax::
 
 Options:
 
-* \-config
-  
-  The URL or the file name of your xml configuration
+* ``-config``  
+  The URL or the file name of your XML configuration
 
-* \-spatialTNPrefix
-  
+* ``-spatialTNPrefix``  
   The Prefix of the spatial tables. A prefix of "SPAT" results in tables SPAT_0,SPAT_1,....
 
-* \-tileTNPrefix
+* ``-tileTNPrefix``
   
   The Prefix of the tile tables. Only needed if you plan to store image data in a separate table.
 
-* \-pyramids
+* ``-pyramids``
   
   Number of pyramid tables
 
-* \-statementDelim
+* ``-statementDelim``
   
-  The sql statement delimiter used in the scripts
+  The SQL statement delimiter used in the scripts
 
-* \-srs
+* ``-srs``
   
-  The srs needed for a spatial extension. Not required for universal and mysql.
+  The SRS needed for a spatial extension. Not required for universal and MySQL.
 
-* \-targetDir
+* ``-targetDir``
   
   The directory where to put the script templates.
 
 Generated Scripts
 ^^^^^^^^^^^^^^^^^
 
-createmeta.sql
-  The create table statement for the metatable
+``createmeta.sql``
+  The create table statement for the meta table
 
-dropmeta.sql
+  ``dropmeta.sql``
   The drop table statement for the meta table
 
-add_<coverage_name>.sql
-  All statements for adding a coverage named <coverage_name> (taken from the config)
+  ``add_<coverage_name>.sql``
+  All statements for adding a coverage named <coverage_name> (taken from the configuration)
 
-remove_<coverage_name>.sql
-  All statements for removing a coverage named <coverage_name> (taken from the config)
+  ``remove_<coverage_name>.sql``
+  All statements for removing a coverage named <coverage_name> (taken from the configuration
+  )

@@ -1,11 +1,11 @@
 ImageIO-EXT GDAL Plugin
 -----------------------
 
-The ImageIO-EXT plug-in allows geotools to make use of the additional formats provided via the
+The ImageIO-EXT plug-in allows GeoTools to make use of the additional formats provided via the
 Java Extension ImageIO-EXT.
 
 The Java ImageIO library comes with a few formats out of the box (such as PNG, etc...) the
-imageio-ext project provides support for additional geospatial formats.
+ImageIO-EXT project provides support for additional geospatial formats.
 
 **References**
 
@@ -26,7 +26,7 @@ At the GeoTools level, the set of formats supported by the GeoTools ImageIO-Ext 
 is composed of:
 
 * DTED Elevation Raster
-* ESRI .hdr labelled
+* ESRI ``.hdr`` labeled
 * Erdas Imagine Images
 * NITF: National Imagery Transmission Format
 * ECW: ERMapper Compressed Wavelets
@@ -43,7 +43,7 @@ file formats:
 
 * Arc/Info ASCII Grid
 * Arc/Info Binary Grid
-* ENVI .hdr Labelled
+* ENVI ``.hdr`` labeled
 * ENVISAT Image Format
 * GDAL VRT
 * GeoTIFF

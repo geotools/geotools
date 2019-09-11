@@ -1,11 +1,11 @@
-MemoryDataStore
----------------
+``MemoryDataStore``
+--------------------
 
-We do have one MemoryDataStore suitable for storing temporary information in memory prior to saving it out to disk.
+We do have one ``MemoryDataStore`` suitable for storing temporary information in memory prior to saving it out to disk.
 Please be advised that it is set up to accurately mirror information being located on disk and is not performant in
 any way. That said it works; and is pretty easy to stuff your data into.
 
-This implementation is actually offered by the **gt-main** module, it is being documented here for consistency.
+This implementation is actually offered by the **``gt-main``** module, it is being documented here for consistency.
 
 References:
 
@@ -15,9 +15,9 @@ References:
 Create
 ^^^^^^
 
-MemoryDataStore is not fast - it is for testing. Why is it not fast do you ask? Because we use it to be strict and model what working with an external service is like (as such it is going to copy your data again and again and again).
+``MemoryDataStore`` is not fast - it is for testing. Why is it not fast do you ask? Because we use it to be strict and model what working with an external service is like (as such it is going to copy your data again and again and again).
 
-Unlike most DataStores we will be creating this one by hand, rather than using a factory.::
+Unlike most ``DataStores`` we will be creating this one by hand, rather than using a factory.::
   
   MemoryDataStore memory = new MemoryDataStore();
   
@@ -37,12 +37,12 @@ Unlike most DataStores we will be creating this one by hand, rather than using a
 * Q: Given me something faster
   
   The :doc:`gt-main DataUtilities<../main/data>` offers several high performance alternatives to
-  MemoryDataStore.
+  ``MemoryDataStore``.
 
 Examples
 ^^^^^^^^
 
-* Using a Memory DataStore to alter content.
+* Using a ``MemoryDataStore`` to alter content.
   
   Thanks to Mau Macros for the following example:
    

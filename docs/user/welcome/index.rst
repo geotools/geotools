@@ -2,7 +2,7 @@
 Welcome
 *******
 
-Welcome to the Geotools Users Guide. This space serves as a reference to the GeoTools library, and collecting documentation and examples provided by the developer community.
+Welcome to the GeoTools Users Guide. This space serves as a reference to the GeoTools library, and collecting documentation and examples provided by the developer community.
 
 .. toctree::
    :maxdepth: 1

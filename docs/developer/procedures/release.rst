@@ -29,7 +29,7 @@ Versions and revisions
 
 When performing a release we don't require a "code freeze" in which no developers can commit to the repository. Instead we release from a revision that is known to pass all tests, including unit/integration tests as well as CITE tests on the GeoServer side. These instructions are valid in case you are making a release in combination with GeoServer, if you are making a stand alone release it's up to you to choose the proper GIT revision number for the GeoTools released to be picked from.
 
-To obtain the GeoServer and Geotools revisions that have passed the `CITE test <https://build.geoserver.org/view/testing-cite/>`_, navigate to the latest Jenkins run of the CITE test  and view it's console output and select to view its full log. For example:
+To obtain the GeoServer and GeoTools revisions that have passed the `CITE test <https://build.geoserver.org/view/testing-cite/>`_, navigate to the latest Jenkins run of the CITE test  and view it's console output and select to view its full log. For example:
 
     https://build.geoserver.org/job/2.11-cite-wms-1.1/286/consoleText
 
@@ -77,10 +77,10 @@ When creating the first release candidate of a series, there are some extra step
 
 * Enable `GitHub branch protection <https://github.com/geotools/geotools/settings/branches>`_ for the new stable branch: tick "Protect this branch" (only) and press "Save changes".
 
-* Checkout the master branch and update the version in all pom.xml files and a few miscellaneous files; for example, if changing master from ``17-SNAPSHOT`` to ``18-SNAPSHOT``::
+* Checkout the master branch and update the version in all ``pom.xml`` files and a few miscellaneous files; for example, if changing master from ``17-SNAPSHOT`` to ``18-SNAPSHOT``::
 
     git checkout master
-    find . -name pom.xml -exec sed -i 's/17-SNAPSHOT/18-SNAPSHOT/g' {} \;
+    find . -name ``pom.xml`` -exec sed -i 's/17-SNAPSHOT/18-SNAPSHOT/g' {} \;
     sed -i 's/17-SNAPSHOT/18-SNAPSHOT/g' \
         build/rename.xml \
         docs/build.xml \
@@ -129,7 +129,7 @@ Run the `geotools-release <https://build.geoserver.org/view/geotools/job/geotool
      
 **REV**
 
-  The Git revision number to release from. eg, "24ae10fe662c....". If left blank the latest revision (ie HEAD) on the ``BRANCH`` being released is used.
+  The Git revision number to release from. eg, "24ae10fe662c....". If left blank the latest revision (i.e. HEAD) on the ``BRANCH`` being released is used.
   
 **VERSION**
    

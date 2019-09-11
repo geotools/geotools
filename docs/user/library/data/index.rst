@@ -10,13 +10,13 @@ the toolkit to work.
 
 .. image:: /images/gt-main.png
 
-The gt-main module is the foundation for implementing additional :doc:`DataStore <../main/datastore>`
+The ``gt-main`` module is the foundation for implementing additional :doc:`DataStore <../main/datastore>`
  formats:
 
-* Abstract classes for :doc:`DataStore <../main/datastore>` implementors to start from such
+* Abstract classes for :doc:`DataStore <../main/datastore>` implementers to start from such
   as **ContentDataStore** and **DirectoryDataStore**
 
-The gt-main module requires plug ins for different formats to be supplied.
+The ``gt-main`` module requires plug ins for different formats to be supplied.
 
 **Maven**::
    

@@ -1,4 +1,4 @@
 XSD-FES
 --------
 
-Filter 2.0 schema for gt-xml.
+Filter 2.0 schema for ``gt-xml`` 

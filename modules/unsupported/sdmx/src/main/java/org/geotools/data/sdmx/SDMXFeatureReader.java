@@ -44,7 +44,7 @@ public abstract class SDMXFeatureReader implements FeatureReader<SimpleFeatureTy
     protected Iterator<PortableTimeSeries> tsIter;
     protected PortableTimeSeries ts;
     protected Iterator<String> timeIter;
-    protected Iterator<Double> obsIter;
+    protected Iterator<Object> obsIter;
     protected boolean empty;
     protected int featIndex = 0;
 

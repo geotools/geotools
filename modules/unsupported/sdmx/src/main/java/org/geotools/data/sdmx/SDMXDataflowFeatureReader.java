@@ -69,7 +69,7 @@ public class SDMXDataflowFeatureReader extends SDMXFeatureReader {
         logger.log(
                 Level.FINE,
                 "SDMX Server "
-                        + clientIn.getEndpoint().toExternalForm()
+                        + clientIn.getEndpoint()
                         + " is about to be queried with: "
                         + sdmxConstraints);
 

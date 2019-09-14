@@ -129,7 +129,8 @@ public class ArcGISRestFeatureSource extends ContentFeatureSource {
             // Re-packages the exception to be compatible with method signature
             throw new IOException(e.getMessage(), e.fillInStackTrace());
         }
-        // Exxgtracts the CRS either using WKID or WKT
+
+        // Extracts the CRS either using WKID or WKT
         try {
             if (ws.getExtent().getSpatialReference().getLatestWkid() != null) {
                 this.resInfo.setCRS(

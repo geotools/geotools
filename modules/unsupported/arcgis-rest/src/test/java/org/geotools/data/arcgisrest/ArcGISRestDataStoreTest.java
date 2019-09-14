@@ -195,6 +195,8 @@ public class ArcGISRestDataStoreTest {
         assertTrue(src instanceof ArcGISRestFeatureSource);
     }
 
+    // This is iggnore due to the mix of old and vnew feature  server versions in some OpnData
+    // catalog
     @Test(expected = UnsupportedImplementationException.class)
     public void testUnsupportedAPIVersion() throws Exception {
 

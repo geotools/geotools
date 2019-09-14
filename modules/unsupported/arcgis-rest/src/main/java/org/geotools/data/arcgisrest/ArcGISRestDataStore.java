@@ -66,7 +66,7 @@ import sun.misc.IOUtils;
 public class ArcGISRestDataStore extends ContentDataStore {
 
     // API version supported
-    public static final double MINIMUM_API_VERSION = 10.41;
+    public static final double MINIMUM_API_VERSION = 10.0;
 
     // Common parameters used in the API
     public static final String GEOMETRYTYPE_PARAM = "geometryType";
@@ -75,6 +75,7 @@ public class ArcGISRestDataStore extends ContentDataStore {
     public static final String FORMAT_PARAM = "f";
     public static final String ATTRIBUTES_PARAM = "outFields";
     public static final String WITHGEOMETRY_PARAM = "returnGeometry";
+    public static final String DATASETTYPE_FEATURELAYER = "Feature Layer";
 
     // Parameter values
     public static final String FORMAT_JSON = "json";
@@ -382,10 +383,16 @@ public class ArcGISRestDataStore extends ContentDataStore {
                     // TODO: I am not quite sure this catches cases in which ESRI JSON is
                     // supported, but NOT GeoJSON
                     if (result != null
+                            && result.webservice.getType() != null
+                            && result.webservice
+                                    .getType()
+                                    .equalsIgnoreCase(DATASETTYPE_FEATURELAYER)
                             && result.webservice
                                     .getSupportedQueryFormats()
                                     .toLowerCase()
                                     .contains(FORMAT_JSON.toLowerCase())
+                            && result.webservice.getCurrentVersion() >= MINIMUM_API_VERSION
+                            && result.webservice.getName().length() > 0
                             && result.webservice
                                     .getCapabilities()
                                     .toLowerCase()

@@ -414,7 +414,6 @@ public abstract class AbstractWFSStrategy extends WFSStrategy {
         kvp.put("SERVICE", "WFS");
         kvp.put("VERSION", getServiceVersion().toString());
         kvp.put("REQUEST", "DescribeFeatureType");
-
         // ommit output format by now, server should just return xml shcema
         // kvp.put("OUTPUTFORMAT", outputFormat);
 

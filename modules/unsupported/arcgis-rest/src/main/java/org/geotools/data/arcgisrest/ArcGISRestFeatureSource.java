@@ -196,7 +196,7 @@ public class ArcGISRestFeatureSource extends ContentFeatureSource {
                             if (clazz == null) {
                                 this.getDataStore()
                                         .getLogger()
-                                        .severe("Type " + fld.getType() + " not found");
+                                        .severe(String.format("Type %s not found", fld.getType()));
                             }
                             builder.add(fld.getName(), clazz);
                         });
@@ -206,7 +206,7 @@ public class ArcGISRestFeatureSource extends ContentFeatureSource {
         if (clazz == null) {
             this.getDataStore()
                     .getLogger()
-                    .severe("Geometry type " + ws.getGeometryType() + " not found");
+                    .severe(String.format("Geometry type %s not found", ws.getGeometryType()));
         }
 
         builder.add(ArcGISRestDataStore.GEOMETRY_ATTR, clazz);
@@ -268,7 +268,7 @@ public class ArcGISRestFeatureSource extends ContentFeatureSource {
                                                     params)),
                                     Count.class);
         } catch (JsonSyntaxException e) {
-            throw new IOException("Error " + e.getMessage());
+            throw new IOException(String.format("Error %s", e.getMessage()));
         }
 
         return cnt == null ? -1 : cnt.getCount();

@@ -21,7 +21,10 @@ import java.io.ObjectInputStream;
 import java.io.PrintWriter;
 import java.io.Serializable;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.prefs.Preferences;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
@@ -155,6 +158,8 @@ public class NADCONTransform extends AbstractMathTransform
     /** The grid driving this transform */
     NADConGridShift grid;
 
+    private static Logger logger = Logger.getLogger(NADCONTransform.class.getName());
+
     /**
      * Constructs a {@code NADCONTransform} from the specified grid shift files.
      *
@@ -186,7 +191,42 @@ public class NADCONTransform extends AbstractMathTransform
         this.gridShiftTransform = grid.getMathTransform();
     }
 
+    /**
+     * Fix for GEOT-4319 allow for a URL to be passed in to bypass an issue with classpatch
+     * visibility in the ClasspathGridShiftLocator.
+     */
+    public NADCONTransform(URL latGridUrl, URL lngGridUrl)
+            throws FactoryException, URISyntaxException {
+        if (latGridUrl == null) {
+            throw new NoSuchIdentifierException("Latitude grid shift file name is null", null);
+        }
+
+        if (lngGridUrl == null) {
+            throw new NoSuchIdentifierException("Longitude grid shift file name is null", null);
+        }
+
+        this.latGridName = latGridUrl.toURI();
+        this.longGridName = lngGridUrl.toURI();
+
+        this.grid = FACTORY.loadGridShift(latGridUrl, lngGridUrl);
+        this.gridShiftTransform = grid.getMathTransform();
+    }
+
+    /**
+     * Attempts to locate a grid shift file first by converting the URI to a URL then by invoking a
+     * GridShiftLocator.
+     */
     protected URL locateGrid(URI uri) throws FactoryException {
+        try {
+            return uri.toURL();
+        } catch (Exception e) {
+            logger.log(
+                    Level.WARNING,
+                    String.format(
+                            "%s cannot be converted to a URL, falling back to GridShiftLocator. %s",
+                            uri.toString(), e.getMessage()));
+        }
+
         String grid = uri.toString();
         for (GridShiftLocator locator : ReferencingFactoryFinder.getGridShiftLocators(null)) {
             URL result = locator.locateGrid(grid);

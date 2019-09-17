@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -83,6 +84,8 @@ public class NTv2Transform extends AbstractMathTransform implements MathTransfor
     /** The inverse of this transform. Will be created only when needed. */
     private transient MathTransform2D inverse;
 
+    private static Logger logger = Logger.getLogger(NADCONTransform.class.getName());
+
     /**
      * Constructs a {@code NTv2Transform} from the specified grid shift file.
      *
@@ -99,7 +102,7 @@ public class NTv2Transform extends AbstractMathTransform implements MathTransfor
 
         this.grid = file;
 
-        gridLocation = locateGrid(grid.toString());
+        gridLocation = locateGrid(grid);
         if (gridLocation == null) {
             throw new NoSuchIdentifierException("Could not locate NTv2 Grid File " + file, null);
         }
@@ -110,7 +113,41 @@ public class NTv2Transform extends AbstractMathTransform implements MathTransfor
         }
     }
 
-    URL locateGrid(String grid) {
+    /**
+     * Attempts to locate a grid shift file first by converting the URI to a URL then by invoking a
+     * GridShiftLocator.
+     */
+    public NTv2Transform(URL gridLocation) throws NoSuchIdentifierException {
+        if (gridLocation == null) {
+            throw new NoSuchIdentifierException("No NTv2 Grid File specified.", null);
+        }
+
+        try {
+            this.grid = gridLocation.toURI();
+        } catch (URISyntaxException e) {
+            throw new NoSuchIdentifierException(
+                    "Could not locate NTv2 Grid File " + gridLocation, null);
+        }
+
+        // Search for grid file
+        if (!FACTORY.isNTv2Grid(gridLocation)) {
+            throw new NoSuchIdentifierException(
+                    "NTv2 Grid File not available.", gridLocation.toString());
+        }
+    }
+
+    URL locateGrid(URI uri) {
+        try {
+            return uri.toURL();
+        } catch (Exception e) {
+            logger.log(
+                    Level.WARNING,
+                    String.format(
+                            "%s cannot be converted to a URL, falling back to GridShiftLocator. %s",
+                            uri.toString(), e.getMessage()));
+        }
+
+        String grid = uri.toString();
         for (GridShiftLocator locator : ReferencingFactoryFinder.getGridShiftLocators(null)) {
             URL result = locator.locateGrid(grid);
             if (result != null) {

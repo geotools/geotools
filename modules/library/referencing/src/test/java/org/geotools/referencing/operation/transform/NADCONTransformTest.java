@@ -18,10 +18,15 @@ package org.geotools.referencing.operation.transform;
 
 import static org.junit.Assert.*;
 
+import java.io.*;
+import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import org.junit.Before;
 import org.junit.Test;
 import org.opengis.parameter.ParameterValueGroup;
+import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchIdentifierException;
 import org.opengis.referencing.operation.TransformException;
 
@@ -49,6 +54,46 @@ public class NADCONTransformTest {
     @Before
     public void setUp() throws Exception {
         transform = new NADCONTransform(new URI(STPAUL_LAS), new URI(STPAUL_LOS));
+    }
+
+    @Test(expected = FactoryException.class)
+    public void testNonAbsoluteUriReference() throws FactoryException {
+        try {
+            new NADCONTransform(new URL("file:/stpaul.las"), new URL("file:/stpaul.los"));
+        } catch (MalformedURLException e) {
+            assert false;
+        } catch (URISyntaxException e) {
+            assert false;
+        }
+    }
+
+    @Test
+    public void testAbsoluteUriShouldNotThrowException() throws Exception {
+        URL latShift = getResource("/org/geotools/referencing/factory/gridshift/stpaul.las");
+        URL lngShift = getResource("/org/geotools/referencing/factory/gridshift/stpaul.los");
+        assertTrue(
+                latShift.toURI()
+                        .toString()
+                        .contains("/org/geotools/referencing/factory/gridshift/stpaul.las"));
+        assertTrue(
+                lngShift.toURI()
+                        .toString()
+                        .contains("/org/geotools/referencing/factory/gridshift/stpaul.los"));
+
+        new NADCONTransform(latShift, lngShift);
+    }
+
+    private URL getResource(String path) {
+        return getResourceAsStream(path);
+    }
+
+    private URL getResourceAsStream(String resource) {
+        final URL in = getContextClassLoader().getResource(resource);
+        return in == null ? getClass().getResource(resource) : in;
+    }
+
+    private ClassLoader getContextClassLoader() {
+        return Thread.currentThread().getContextClassLoader();
     }
 
     /**
@@ -100,7 +145,7 @@ public class NADCONTransformTest {
     public void testNADCONTransform() throws Exception {
 
         try {
-            new NADCONTransform(null, null);
+            new NADCONTransform((URI) null, (URI) null);
         } catch (NoSuchIdentifierException e) {
             assert true;
         }

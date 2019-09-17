@@ -18,7 +18,9 @@ package org.geotools.referencing.operation.transform;
 
 import static org.junit.Assert.*;
 
+import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URL;
 import org.junit.Before;
 import org.junit.Test;
 import org.opengis.parameter.ParameterValueGroup;
@@ -48,6 +50,39 @@ public class NTv2TransformTest {
     @Before
     public void setUp() throws Exception {
         transform = new NTv2Transform(new URI(TEST_GRID));
+    }
+
+    @Test(expected = NoSuchIdentifierException.class)
+    public void testNonAbsoluteUriReference() throws NoSuchIdentifierException {
+        try {
+            new NTv2Transform(new URL("file:/BALR2009.gsb"));
+        } catch (MalformedURLException e) {
+            assert false;
+        }
+    }
+
+    @Test
+    public void testAbsoluteUriShouldNotThrowException() throws Exception {
+        URL gridFile = getResource("/org/geotools/referencing/factory/gridshift/BALR2009.gsb");
+        assertTrue(
+                gridFile.toURI()
+                        .toString()
+                        .contains("/org/geotools/referencing/factory/gridshift/BALR2009.gsb"));
+
+        new NTv2Transform(gridFile);
+    }
+
+    private URL getResource(String path) {
+        return getResourceAsStream(path);
+    }
+
+    private URL getResourceAsStream(String resource) {
+        final URL in = getContextClassLoader().getResource(resource);
+        return in == null ? getClass().getResource(resource) : in;
+    }
+
+    private ClassLoader getContextClassLoader() {
+        return Thread.currentThread().getContextClassLoader();
     }
 
     /**
@@ -100,7 +135,7 @@ public class NTv2TransformTest {
     public void testNTv2Transform() throws Exception {
 
         try {
-            new NTv2Transform(null);
+            new NTv2Transform((URL) null);
         } catch (NoSuchIdentifierException e) {
             assert true;
         }

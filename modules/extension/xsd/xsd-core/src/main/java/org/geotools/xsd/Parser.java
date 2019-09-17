@@ -29,6 +29,7 @@ import java.net.URISyntaxException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Logger;
 import javax.xml.namespace.QName;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
@@ -40,6 +41,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import org.eclipse.emf.ecore.resource.URIHandler;
 import org.eclipse.xsd.XSDSchema;
+import org.geotools.util.logging.Logging;
 import org.geotools.xs.XS;
 import org.geotools.xsd.impl.ParserHandler;
 import org.geotools.xsd.impl.ParserHandler.ContextCustomizer;
@@ -47,6 +49,8 @@ import org.w3c.dom.Document;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+import org.xml.sax.SAXNotRecognizedException;
+import org.xml.sax.SAXNotSupportedException;
 import org.xml.sax.helpers.NamespaceSupport;
 
 /**
@@ -67,6 +71,9 @@ import org.xml.sax.helpers.NamespaceSupport;
  * @author Justin Deoliveira, The Open Planning Project
  */
 public class Parser {
+
+    private static final Logger LOGGER = Logging.getLogger(Parser.class);
+
     private static final String LEXICAL_HANDLER_PROPERTY = "lexical-handler";
 
     private static final String SAX_PROPERTY_PREFIX = "http://xml.org/sax/properties/";
@@ -553,14 +560,27 @@ public class Parser {
         // add the handler as a LexicalHandler too.
         parser.setProperty(SAX_PROPERTY_PREFIX + LEXICAL_HANDLER_PROPERTY, handler);
         // set Entity expansion limit
-        parser.setProperty(
-                JDK_ENTITY_EXPANSION_LIMIT,
-                entityExpansionLimit != null
-                        ? entityExpansionLimit
-                        : DEFAULT_ENTITY_EXPANSION_LIMIT);
+        setupEntityExpansionLimit(parser);
+
         //
         // return builded parser
         return parser;
+    }
+
+    private void setupEntityExpansionLimit(final SAXParser parser) throws SAXNotSupportedException {
+        try {
+            parser.setProperty(
+                    JDK_ENTITY_EXPANSION_LIMIT,
+                    entityExpansionLimit != null
+                            ? entityExpansionLimit
+                            : DEFAULT_ENTITY_EXPANSION_LIMIT);
+        } catch (SAXNotRecognizedException ex) {
+            LOGGER.warning(
+                    "Sax parser property '"
+                            + JDK_ENTITY_EXPANSION_LIMIT
+                            + "' not recognized.  "
+                            + "Xerces version is incompatible.");
+        }
     }
 
     public Optional<Integer> getEntityExpansionLimit() {

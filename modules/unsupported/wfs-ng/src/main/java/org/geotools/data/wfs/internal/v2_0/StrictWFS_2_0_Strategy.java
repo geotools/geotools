@@ -38,6 +38,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
+import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 import net.opengis.fes20.AbstractQueryExpressionType;
 import net.opengis.ows11.DCPType;
@@ -269,6 +270,20 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
             }
         }
 
+        return kvp;
+    }
+
+    @Override
+    protected Map<String, String> buildDescribeFeatureTypeParametersForGET(
+            Map<String, String> kvp, QName typeName) {
+        String prefixedTypeName = getPrefixedTypeName(typeName);
+
+        kvp.put("TYPENAMES", prefixedTypeName);
+
+        if (!XMLConstants.DEFAULT_NS_PREFIX.equals(typeName.getPrefix())) {
+            String nsUri = typeName.getNamespaceURI();
+            kvp.put("NAMESPACES", "xmlns(" + typeName.getPrefix() + "," + nsUri + ")");
+        }
         return kvp;
     }
 

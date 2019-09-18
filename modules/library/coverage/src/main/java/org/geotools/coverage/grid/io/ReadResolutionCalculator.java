@@ -16,7 +16,7 @@
  */
 package org.geotools.coverage.grid.io;
 
-import java.awt.Rectangle;
+import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -47,6 +47,9 @@ public class ReadResolutionCalculator {
 
     static final Logger LOGGER = Logging.getLogger(ReadResolutionCalculator.class);
 
+    static final int MAX_OVERSAMPLING_FACTOR_DEFAULT =
+            Integer.valueOf(System.getProperty("org.geotools.coverage.max.oversample", "10000"));
+
     static final double DELTA = 1E-10;
 
     private ReferencedEnvelope requestedBBox;
@@ -62,6 +65,8 @@ public class ReadResolutionCalculator {
     private boolean isFullResolutionInRequestedCRS;
 
     private MathTransform destinationToSourceTransform;
+
+    private int maxOversamplingFactor = MAX_OVERSAMPLING_FACTOR_DEFAULT;
 
     public ReadResolutionCalculator(
             GridGeometry2D requestedGridGeometry,
@@ -250,8 +255,8 @@ public class ReadResolutionCalculator {
             fullRes[1] = XAffineTransform.getScaleY0(transform);
         }
         // fall back on the full resolution when zero length
-        double minDistanceX = Math.max(fullRes[0], minDistance);
-        double minDistanceY = Math.max(fullRes[1], minDistance);
+        double minDistanceX = Math.max(fullRes[0] / maxOversamplingFactor, minDistance);
+        double minDistanceY = Math.max(fullRes[1] / maxOversamplingFactor, minDistance);
         return new double[] {minDistanceX, minDistanceY};
     }
 
@@ -261,5 +266,22 @@ public class ReadResolutionCalculator {
 
     public void setAccurateResolution(boolean accurateResolution) {
         this.accurateResolution = accurateResolution;
+    }
+
+    public int getMaxOversamplingFactor() {
+        return maxOversamplingFactor;
+    }
+
+    /**
+     * Sets the max oversampling factor for resolution calculation. That is, in case of high
+     * deformation on reprojection, how much higher the read resolution can be, compared to the
+     * known maximum resolution. This affects raster readers that can do internal resampling
+     * operations like a heterogeneous CRS mosaic, in which there is a resampling step to go from
+     * native CRS to the declared one.
+     *
+     * @param maxOversamplingFactor
+     */
+    public void setMaxOversamplingFactor(int maxOversamplingFactor) {
+        this.maxOversamplingFactor = maxOversamplingFactor;
     }
 }

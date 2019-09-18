@@ -124,6 +124,13 @@ public class GranuleDescriptor {
 
     /** Hints to use for avoiding to search for the ImageMosaic format */
     public static final Hints EXCLUDE_MOSAIC = new Hints(Utils.EXCLUDE_MOSAIC, true);
+    /**
+     * Minimum portion of a single pixel the code is going to read before giving up on the read,
+     * this is used to avoid reading granules that touch the reading area without actually
+     * contributing anything to the output
+     */
+    public static final double READ_THRESHOLD =
+            Double.parseDouble(System.getProperty("org.geotools.mosaic.read.threshold", "0.001"));
 
     static {
         try {
@@ -1149,7 +1156,7 @@ public class GranuleDescriptor {
             // it.
             Rectangle2D r2d = CRS.transform(cropWorldToGrid, intersection).toRectangle2D();
             // if we are reading basically nothing, bail out immediately
-            if (r2d.getWidth() < 0.1 || r2d.getHeight() < 0.1) {
+            if (r2d.getWidth() < READ_THRESHOLD || r2d.getHeight() < READ_THRESHOLD) {
                 cleanupInFinally = true;
                 return null;
             }

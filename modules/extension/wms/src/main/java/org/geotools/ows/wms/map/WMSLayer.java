@@ -88,6 +88,10 @@ public class WMSLayer extends GridReaderLayer {
         super(new WMSCoverageReader(wms, layer, style), STYLE);
     }
 
+    public WMSLayer(WebMapServer wms, Layer layer, String style, String imageFromat) {
+        super(new WMSCoverageReader(wms, layer, style, imageFromat), STYLE);
+    }
+
     public WMSCoverageReader getReader() {
         return (WMSCoverageReader) this.reader;
     }

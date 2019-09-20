@@ -73,19 +73,37 @@ public class CreateIndexer {
             System.out.println(
                     "Usage: java -jar CreateIndexer"
                             + " /path/to/sampleFile.nc "
-                            + "-P /path/to/netcdfprojectionsfile "
+                            + "[-P /path/to/netcdfprojectionsfile]\n "
+                            + "[-cd [=create sample_datastore.properties]]\n "
                             + "[/path/to/optional/outputFolder]\n");
             System.exit(1);
         }
-        if (!args[1].equalsIgnoreCase("-P")) {
-            System.out.println(
-                    " The second parameter needs to be " + "-p /path/to/netcdfprojectionsfile\n");
-            System.exit(1);
-        }
+
+        int numArgs = args.length;
         String sampleFilePath = args[0];
-        String projectionFilePath = args[2];
-        System.out.println("Setting netcdf.projections.file = " + projectionFilePath);
-        System.setProperty("netcdf.projections.file", projectionFilePath);
+        boolean hasProjection = false;
+        int nextArgs = 1;
+        boolean createDatastoreProperties = false;
+        if (numArgs > nextArgs && args[nextArgs].equalsIgnoreCase("-p")) {
+            hasProjection = true;
+            nextArgs++;
+        }
+        if (hasProjection) {
+            String projectionFilePath = args[nextArgs++];
+            System.out.println("Setting netcdf.projections.file = " + projectionFilePath);
+            System.setProperty("netcdf.projections.file", projectionFilePath);
+        }
+        if (numArgs > nextArgs && args[nextArgs].equalsIgnoreCase("-cd")) {
+            createDatastoreProperties = true;
+            nextArgs++;
+        }
+        String providedOutputPath = null;
+        if (numArgs > nextArgs) {
+            providedOutputPath = args[nextArgs++];
+        }
+        if (!hasProjection) {
+            System.out.println("No custom projections will be supported");
+        }
 
         // Force the quickscan properties so that only 1 slice for NetCDF variable
         // will be used at time of NetCDF index creation.
@@ -116,9 +134,10 @@ public class CreateIndexer {
         files = files[0].listFiles((FileFilter) FileFilterUtils.suffixFileFilter("xml"));
 
         final File auxiliaryFile = files[0];
-        String parentFolder = setOuputFolder(args, sampleFile);
+        String parentFolder = setOuputFolder(providedOutputPath, sampleFile);
         String indexerFilePath = parentFolder + File.separatorChar + "indexer.xml";
         String auxiliaryFilePath = parentFolder + File.separatorChar + "_auxiliary.xml";
+        String datastorePath = parentFolder + File.separatorChar + "datastore.properties";
         final File finalAuxFile = new File(auxiliaryFilePath);
         formatAuxiliaryXml(auxiliaryFile, finalAuxFile);
 
@@ -142,14 +161,36 @@ public class CreateIndexer {
         if (!(FileUtils.deleteQuietly(temp))) {
             System.out.println("Unable to delete folder: " + temp);
         }
+        if (createDatastoreProperties) {
+            writeDatastorePropertyFile(datastorePath);
+        }
         System.out.println("DONE!!");
     }
 
     @SuppressWarnings("PMD.SystemPrintln")
-    private static String setOuputFolder(String[] args, File sampleFile) {
+    private static void writeDatastorePropertyFile(String datastorePath) throws IOException {
+        PrintWriter out;
+        System.out.println("Writing the sample datastore.properties: " + datastorePath);
+        out = new PrintWriter(new File(datastorePath));
+        out.write("SPI=org.geotools.data.postgis.PostgisNGDataStoreFactory\n");
+        out.write("host=localhost\n");
+        out.write("port=5432\n");
+        out.write("database=sampledb\n");
+        out.write("user=postgres\n");
+        out.write("passwd=postgres\n");
+        out.write("schema=myschema\n");
+        out.write("Estimated\\ extends=false\n");
+        out.write("Loose\\ bbox=true\n");
+        out.write("driver=org.postgresql.Driver");
+        out.flush();
+        out.close();
+    }
+
+    @SuppressWarnings("PMD.SystemPrintln")
+    private static String setOuputFolder(String providedOutputPath, File sampleFile) {
         String outputPath = FilenameUtils.getFullPathNoEndSeparator(sampleFile.getAbsolutePath());
-        if (args.length > 3) {
-            outputPath = args[3];
+        if (providedOutputPath != null) {
+            outputPath = providedOutputPath;
             System.out.println("Output folder has been specified: " + outputPath);
             final File outputFolder = new File(outputPath);
             if (!outputFolder.exists()) {
@@ -250,7 +291,7 @@ public class CreateIndexer {
         String schemaName = schema.getAttributeValue("name");
         builder.append("      <schema name=\"" + schemaName + "\" >\n");
         Element schemaAttributesElement =
-                (Element) XPathFactory.instance().compile("attributes").evaluateFirst(cov);
+                (Element) XPathFactory.instance().compile("attributes").evaluateFirst(schema);
         String schemaAttribs = schemaAttributesElement.getText();
         schemaAttribs =
                 schemaAttribs.replace("imageindex:Integer", "imageindex:Integer,location:String");

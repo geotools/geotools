@@ -163,7 +163,7 @@ Check the artifacts by:
 
 The Jenkins job will perform a build of the source artifacts on an empty Maven
 repository to make sure any random user out there can do the same. If you want
-you still manually test the artifacts by:
+you can still manually test the artifacts by:
 *  Temporarily moving the ``$HOME/.m2/repository`` to a different location, so that Maven will be forced to build from an empty repo. If you don't want to fiddle with your main repo just use ``mvn -Dmaven.repo.local=/tmp/m2 install -Dall -T1C`` where it points to any empty directory.
 *  Do a full build using ``mvn install -Dall -T1C``
 *  On a successfull build, delete ``$HOME/.m2/repository`` and restore the old maven repository backed up at the beginning

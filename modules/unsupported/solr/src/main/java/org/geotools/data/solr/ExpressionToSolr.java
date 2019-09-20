@@ -130,42 +130,9 @@ public class ExpressionToSolr implements ExpressionVisitor {
 
         Object literal = expression.getValue();
         if (literal instanceof Geometry) {
-            if (spatialStrategy == null) {
-                throw new IllegalStateException(
-                        "Attempt to encode geometry literal but spatialStrategy is null");
-            }
-
-            Geometry geometry = (Geometry) literal;
-            if (!WORLD.contains(geometry.getEnvelopeInternal())
-                    && !WORLD.equals(geometry.getEnvelopeInternal())) {
-                if (LOGGER.isLoggable(Level.FINE)) {
-                    LOGGER.fine(
-                            "SOLR cannot deal with filters using geometries that span beyond the whole world, clip feature geometry to world");
-                }
-                geometry = geometry.intersection(JTS.toGeometry(WORLD));
-            }
-            // Splits segments exceeds the 180 degrees longitude limit to conforms to SOLR WKT
-            // manager specification
-            // Using JTS Densify, all segments exceeds the 180 degrees length will be densified, not
-            // only the one exceeds it in longitude!
-            Envelope env = geometry.getEnvelopeInternal();
-            if (env.getWidth() > SOLR_DISTANCE_TOLERANCE) {
-                if (LOGGER.isLoggable(Level.FINE)) {
-                    LOGGER.fine(
-                            "Split segment exceeds the 180 degree longitude limit to conform to SOLR WKT manager specification");
-                }
-                Densifier densifier = new Densifier(geometry);
-                densifier.setDistanceTolerance(SOLR_DISTANCE_TOLERANCE);
-                if (LOGGER.isLoggable(Level.FINE)) {
-                    LOGGER.fine("Original geometry: " + geometry.toText());
-                }
-                geometry = densifier.getResultGeometry();
-                if (LOGGER.isLoggable(Level.FINE)) {
-                    LOGGER.fine("Densified geometry: " + geometry.toText());
-                }
-            }
-
-            temp.append(spatialStrategy.encode(geometry));
+            handle(temp, (Geometry) literal);
+        } else if (literal instanceof Envelope) {
+            handle(temp, (Envelope) literal);
         } else if (literal instanceof Number) {
             // don't convert to string
             temp.append(literal.toString());
@@ -211,6 +178,51 @@ public class ExpressionToSolr implements ExpressionVisitor {
         }
         output.append(temp);
         return temp;
+    }
+
+    /** Handles an Envelope literal encoding. */
+    private void handle(StringBuffer buff, Envelope envelope) {
+        // convert to polygon for reusing Geometry well tested algorithm
+        handle(buff, JTS.toGeometry(envelope));
+    }
+
+    /** Handles a Geometry literal encoding. */
+    private void handle(StringBuffer buff, Geometry geometry) {
+        if (spatialStrategy == null) {
+            throw new IllegalStateException(
+                    "Attempt to encode geometry literal but spatialStrategy is null");
+        }
+
+        if (!WORLD.contains(geometry.getEnvelopeInternal())
+                && !WORLD.equals(geometry.getEnvelopeInternal())) {
+            if (LOGGER.isLoggable(Level.FINE)) {
+                LOGGER.fine(
+                        "SOLR cannot deal with filters using geometries that span beyond the whole world, clip feature geometry to world");
+            }
+            geometry = geometry.intersection(JTS.toGeometry(WORLD));
+        }
+        // Splits segments exceeds the 180 degrees longitude limit to conforms to SOLR WKT
+        // manager specification
+        // Using JTS Densify, all segments exceeds the 180 degrees length will be densified, not
+        // only the one exceeds it in longitude!
+        Envelope env = geometry.getEnvelopeInternal();
+        if (env.getWidth() > SOLR_DISTANCE_TOLERANCE) {
+            if (LOGGER.isLoggable(Level.FINE)) {
+                LOGGER.fine(
+                        "Split segment exceeds the 180 degree longitude limit to conform to SOLR WKT manager specification");
+            }
+            Densifier densifier = new Densifier(geometry);
+            densifier.setDistanceTolerance(SOLR_DISTANCE_TOLERANCE);
+            if (LOGGER.isLoggable(Level.FINE)) {
+                LOGGER.fine("Original geometry: " + geometry.toText());
+            }
+            geometry = densifier.getResultGeometry();
+            if (LOGGER.isLoggable(Level.FINE)) {
+                LOGGER.fine("Densified geometry: " + geometry.toText());
+            }
+        }
+
+        buff.append(spatialStrategy.encode(geometry));
     }
 
     @Override

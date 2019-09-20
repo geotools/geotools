@@ -4198,6 +4198,13 @@ public class ImageWorker {
                         tolerance = 0.333;
                     }
 
+                    // in case of oversampling, reduce the tolerance by the oversampling factor
+                    // as the oversampling magnifies errors that would not be otherwise visible
+                    if (tx.getScaleX() > 1 || tx.getScaleY() > 1) {
+                        double factor = Math.max(tx.getScaleX(), tx.getScaleY());
+                        tolerance = tolerance / factor;
+                    }
+
                     // setup a warp builder that is not gong to use too much memory
                     WarpBuilder wb = new WarpBuilder(tolerance);
                     wb.setMaxPositions(4 * 1024 * 1024);
@@ -4234,12 +4241,16 @@ public class ImageWorker {
                     }
                     Warp warp = wb.buildWarp(chained, mappingBB);
 
-                    // do the switch only if we get a warp that is as fast as the original one
+                    // do the switch only if we get a warp that is as fast as the original one,
+                    // of if we are upsampling, in which case the merge is required to preserve
+                    // good image quality (warp on NN produces pixels that are aligned to the axis
+                    // and then scaled, while the pixels should appear rotated instead)
                     Warp sourceWarp = (Warp) sourceParamBlock.getObjectParameter(0);
                     if (warp instanceof WarpGrid
                             || warp instanceof WarpAffine
-                            || !(sourceWarp instanceof WarpGrid
-                                    || sourceWarp instanceof WarpAffine)) {
+                            || !(sourceWarp instanceof WarpGrid || sourceWarp instanceof WarpAffine)
+                            || tx.getScaleX() > 1
+                            || tx.getScaleY() > 1) {
                         // and then the JAI Operation
                         PlanarImage sourceImage = op.getSourceImage(0);
                         final ParameterBlock paramBlk = new ParameterBlock().addSource(sourceImage);

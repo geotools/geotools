@@ -517,7 +517,7 @@ public class FilterExamples {
         } else {
             arg.append(" (" + codeBlock);
             arg.append(type.getSimpleName());
-            arg.append(codeBlock+")");
+            arg.append(codeBlock + ")");
             int min = argument.getMinOccurs();
             int max = argument.getMaxOccurs();
             if (min > 1 && max > 1) {
@@ -543,4 +543,3 @@ public class FilterExamples {
         functionListPretty();
     }
 }
-

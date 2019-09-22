@@ -135,7 +135,7 @@ public class WFSDataStoreFactory extends WFSDataAccessFactory implements DataSto
         final URL capabilitiesURL = (URL) URL.lookUp(params);
         final WFSConfig config = WFSConfig.fromParams(params);
         return config.isUseHttpConnectionPooling() && isHttp(capabilitiesURL)
-                ? new MultithreadedHttpClient()
+                ? new MultithreadedHttpClient(config)
                 : new SimpleHttpClient();
     }
 

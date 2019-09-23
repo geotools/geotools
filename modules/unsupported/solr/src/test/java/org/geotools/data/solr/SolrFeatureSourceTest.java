@@ -62,7 +62,7 @@ public class SolrFeatureSourceTest extends SolrTestSupport {
 
     public void testCount() throws Exception {
         init();
-        assertEquals(11, featureSource.getCount(Query.ALL));
+        assertEquals(13, featureSource.getCount(Query.ALL));
     }
 
     public void testBounds() throws Exception {
@@ -97,7 +97,7 @@ public class SolrFeatureSourceTest extends SolrTestSupport {
         Query query = new Query();
         query.setStartIndex(5);
         query.setMaxFeatures(11);
-        assertEquals(6, featureSource.getCount(query));
+        assertEquals(8, featureSource.getCount(query));
     }
 
     public void testGetFeaturesWithAndLogicFilter() throws Exception {
@@ -244,14 +244,16 @@ public class SolrFeatureSourceTest extends SolrTestSupport {
         query.setSortBy(new SortBy[] {sort});
 
         SimpleFeatureCollection features = featureSource.getFeatures(query);
-        assertEquals(11, features.size());
+        assertEquals(13, features.size());
 
         SimpleFeatureIterator iterator = features.features();
         SimpleFeature f;
         try {
-            assertTrue(iterator.hasNext());
-            f = iterator.next();
-            assertEquals("Asus", f.getAttribute("vendor_s"));
+            for (int i = 0; i < 3; i++) {
+                assertTrue(iterator.hasNext());
+                f = iterator.next();
+                assertEquals("Asus", f.getAttribute("vendor_s"));
+            }
             assertTrue(iterator.hasNext());
             f = iterator.next();
             assertEquals("Cisco", f.getAttribute("vendor_s"));

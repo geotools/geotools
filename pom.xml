@@ -1149,13 +1149,6 @@
         <version>1.1.1-20090908</version>
       </dependency>
     
-      <!-- XML -->
-      <dependency>
-        <groupId>org.jdom</groupId>
-        <artifactId>jdom2</artifactId>
-        <version>2.0.6</version>
-      </dependency>
-
       <!-- Apache -->
       <dependency>
         <groupId>oro</groupId>

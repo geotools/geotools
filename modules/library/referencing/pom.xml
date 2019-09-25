@@ -187,8 +187,8 @@
     </dependency>
     <dependency>
       <groupId>jgridshift</groupId>
-      <artifactId>jgridshift</artifactId>
-      <version>1.1</version>
+      <artifactId>jgridshift-core</artifactId>
+      <version>1.2</version>
     </dependency>
    <dependency>
      <groupId>net.sf.geographiclib</groupId>

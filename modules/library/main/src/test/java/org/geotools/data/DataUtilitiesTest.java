@@ -16,7 +16,9 @@
  */
 package org.geotools.data;
 
+import static org.hamcrest.Matchers.arrayContaining;
 import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertThat;
 
 import java.io.File;
 import java.io.FilenameFilter;
@@ -76,6 +78,7 @@ import org.opengis.filter.PropertyIsNull;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.PropertyName;
+import org.opengis.filter.sort.SortBy;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
@@ -888,7 +891,26 @@ public class DataUtilitiesTest extends DataTestCase {
         assertEquals(3, list2.size());
     }
 
-    public static void main(String[] args) {
-        junit.textui.TestRunner.run(DataUtilitiesTest.class);
+    public void testMixQueriesSort() {
+        // simple merge, no conflict
+        Query q1 = new Query();
+        Query q2 = new Query();
+        q2.setSortBy(new SortBy[] {SortBy.NATURAL_ORDER});
+        assertThat(
+                DataUtilities.mixQueries(q1, q2, null).getSortBy(),
+                arrayContaining(SortBy.NATURAL_ORDER));
+        assertThat(
+                DataUtilities.mixQueries(q2, q1, null).getSortBy(),
+                arrayContaining(SortBy.NATURAL_ORDER));
+
+        // more complex, override (the second wins)
+        Query q3 = new Query();
+        q3.setSortBy(new SortBy[] {SortBy.REVERSE_ORDER});
+        assertThat(
+                DataUtilities.mixQueries(q2, q3, null).getSortBy(),
+                arrayContaining(SortBy.REVERSE_ORDER));
+        assertThat(
+                DataUtilities.mixQueries(q3, q2, null).getSortBy(),
+                arrayContaining(SortBy.NATURAL_ORDER));
     }
 }

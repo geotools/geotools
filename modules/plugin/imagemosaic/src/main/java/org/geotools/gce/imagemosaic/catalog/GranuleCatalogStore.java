@@ -45,15 +45,12 @@ public class GranuleCatalogStore extends GranuleCatalogSource implements Granule
 
     private Transaction transaction;
 
-    private RasterManager manager;
-
     public GranuleCatalogStore(
             RasterManager manager,
             GranuleCatalog catalog,
             final String typeName,
             final Hints hints) {
-        super(catalog, typeName, hints);
-        this.manager = manager;
+        super(manager, catalog, typeName, hints);
     }
 
     @Override

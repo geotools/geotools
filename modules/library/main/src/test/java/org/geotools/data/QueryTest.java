@@ -18,6 +18,10 @@
  */
 package org.geotools.data;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.MatcherAssert.assertThat;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -203,5 +207,17 @@ public class QueryTest extends TestCase {
         assertTrue(query.toString().contains("[sort by: NATURAL]"));
         query.setSortBy(new SortBy[] {SortBy.REVERSE_ORDER});
         assertTrue(query.toString().contains("[sort by: REVERSE]"));
+    }
+
+    public void testSortByEquality() {
+        Query q1 = new Query();
+
+        Query q2 = new Query();
+        q2.setSortBy(new SortBy[] {SortBy.NATURAL_ORDER});
+        assertThat(q1, not(equalTo(q2)));
+
+        Query q3 = new Query();
+        q3.setSortBy(new SortBy[] {SortBy.NATURAL_ORDER});
+        assertThat(q2, equalTo(q3));
     }
 }

@@ -916,10 +916,24 @@ public class Query {
                         ? (other.getCoordinateSystemReproject() == null)
                         : getCoordinateSystemReproject()
                                 .equals(other.getCoordinateSystemReproject()))
+                && isSortEquals(other)
                 && Objects.equals(getStartIndex(), other.getStartIndex())
                 && (getHints() == null
                         ? (other.getHints() == null)
                         : getHints().equals(other.getHints()));
+    }
+
+    /**
+     * Compares the sortby by their effect (null and empty arrays are considered the same)
+     *
+     * @param other
+     * @return
+     */
+    private boolean isSortEquals(Query other) {
+        if (this.sortBy == null || this.sortBy.length == 0) {
+            return other.getSortBy() == null || other.getSortBy().length == 0;
+        }
+        return Arrays.equals(getSortBy(), other.getSortBy());
     }
 
     /**

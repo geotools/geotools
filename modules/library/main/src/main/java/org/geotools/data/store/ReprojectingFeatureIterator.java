@@ -117,7 +117,11 @@ public class ReprojectingFeatureIterator implements SimpleFeatureIterator {
         }
 
         try {
-            return SimpleFeatureBuilder.build(schema, attributes, feature.getID());
+            SimpleFeature result = SimpleFeatureBuilder.build(schema, attributes, feature.getID());
+            if (feature.getUserData() != null && !feature.getUserData().isEmpty()) {
+                result.getUserData().putAll(feature.getUserData());
+            }
+            return result;
         } catch (IllegalAttributeException e) {
             String msg = "Error creating reprojeced feature";
             throw (IOException) new IOException(msg).initCause(e);

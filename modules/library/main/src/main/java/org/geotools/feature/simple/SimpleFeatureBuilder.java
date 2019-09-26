@@ -504,6 +504,18 @@ public class SimpleFeatureBuilder extends FeatureBuilder<FeatureType, Feature> {
         return this;
     }
 
+    /** Sets the feature wide user data copying them from the template feature provided */
+    public SimpleFeatureBuilder featureUserData(SimpleFeature source) {
+        Map<Object, Object> sourceUserData = source.getUserData();
+        if (sourceUserData != null && !sourceUserData.isEmpty()) {
+            if (featureUserData == null) {
+                featureUserData = new HashMap<Object, Object>();
+            }
+            featureUserData.putAll(sourceUserData);
+        }
+        return this;
+    }
+
     /**
      * Sets a feature wide use data key/value pair. The user data map is reset when the feature is
      * built

@@ -30,6 +30,8 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 public class FeatureCollectionWrapperTestSupport extends TestCase {
 
+    protected static final String TEST_VALUE = "test_value";
+    protected static final String TEST_KEY = "test_key";
     protected CoordinateReferenceSystem crs;
     protected DefaultFeatureCollection delegate;
 
@@ -71,6 +73,7 @@ public class FeatureCollectionWrapperTestSupport extends TestCase {
                             });
             line.setUserData(crs);
             builder.add(line);
+            builder.featureUserData(TEST_KEY, TEST_VALUE);
 
             delegate.add(builder.buildFeature(i + ""));
         }

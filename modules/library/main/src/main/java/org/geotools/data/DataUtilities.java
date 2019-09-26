@@ -2289,6 +2289,8 @@ public class DataUtilities {
      *       must create the query with the names of the properties you want to load.
      *   <li>filter: the filters of both queries are or'ed, then simplified using
      *       SimplifiyingFilterVisitor
+     *   <li>sort: if the second query has a sorting it's used for output, otherwise the one of the
+     *       first is used
      *   <li><b>any other query property is ignored</b> and no guarantees are made of their return
      *       values, so client code shall explicitly care of hints, startIndex, etc., if needed.
      * </ul>
@@ -2369,10 +2371,18 @@ public class DataUtilities {
                 firstQuery.getTypeName() != null
                         ? firstQuery.getTypeName()
                         : secondQuery.getTypeName();
+        // check the sort
+        SortBy[] sort;
+        if (secondQuery.getSortBy() != null && secondQuery.getSortBy().length > 0) {
+            sort = secondQuery.getSortBy();
+        } else {
+            sort = firstQuery.getSortBy();
+        }
 
         Query mixed = new Query(typeName, filter, maxFeatures, propNames, handle);
         mixed.setVersion(version);
         mixed.setHints(hints);
+        mixed.setSortBy(sort);
         if (start != 0) {
             mixed.setStartIndex(start);
         }

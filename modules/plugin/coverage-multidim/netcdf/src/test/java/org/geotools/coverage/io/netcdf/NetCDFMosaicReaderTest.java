@@ -877,6 +877,7 @@ public class NetCDFMosaicReaderTest extends Assert {
 
             // test the newly ingested granules, which are in a separate coverage
             q.setTypeName("NO2");
+            source = reader.getGranules("NO2", true);
             granules = source.getGranules(q);
             assertEquals(2, granules.size());
             it = granules.features();
@@ -1556,9 +1557,14 @@ public class NetCDFMosaicReaderTest extends Assert {
     }
 
     private Date parseTimeStamp(String timeStamp) throws ParseException {
+        final SimpleDateFormat formatD = getIsoFormat();
+        return formatD.parse(timeStamp);
+    }
+
+    private SimpleDateFormat getIsoFormat() {
         final SimpleDateFormat formatD = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
         formatD.setTimeZone(TimeZone.getTimeZone("Zulu"));
-        return formatD.parse(timeStamp);
+        return formatD;
     }
 
     /**
@@ -1769,5 +1775,43 @@ public class NetCDFMosaicReaderTest extends Assert {
         JDBCDataStore store = new H2DataStoreFactory().createDataStore(connectionParams);
         assertEquals(0, store.getFeatureSource("NO2").getFeatures(locationFilter).size());
         assertEquals(0, store.getFeatureSource("O3").getFeatures(locationFilter).size());
+    }
+
+    @Test
+    public void testGranuleSourceFileView() throws Exception {
+        File testDir = tempFolder.newFolder("multi-coverage-fileview");
+        URL testUrl = URLs.fileToUrl(testDir);
+        FileUtils.copyDirectory(TestData.file(this, "multi-coverage"), testDir);
+        ImageMosaicReader reader = new ImageMosaicReader(testUrl);
+        try {
+            assertNotNull(reader);
+
+            Query q = new Query();
+            q.setHints(new Hints(GranuleSource.FILE_VIEW, true));
+            GranuleSource source = reader.getGranules("air_temperature", true);
+            SimpleFeatureCollection granules = source.getGranules(q);
+
+            // many slices but only two files
+            assertEquals(2, granules.size());
+
+            SimpleFeatureType schema = granules.getSchema();
+            assertNull(schema.getDescriptor("location"));
+            assertNull(schema.getDescriptor("imageindex"));
+            assertNotNull(schema.getDescriptor("the_geom"));
+            assertNotNull(schema.getDescriptor("time"));
+
+            SimpleFeature nc1, nc2;
+            try (SimpleFeatureIterator it = granules.features()) {
+                nc1 = it.next();
+                nc2 = it.next();
+            }
+
+            assertEquals("2017-02-06 00:00:00.0", nc1.getAttribute("time").toString());
+            assertEquals("2017-02-06 12:00:00.0", nc2.getAttribute("time").toString());
+        } finally {
+            if (reader != null) {
+                reader.dispose();
+            }
+        }
     }
 }

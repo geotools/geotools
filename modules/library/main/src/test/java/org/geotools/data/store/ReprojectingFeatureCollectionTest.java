@@ -16,8 +16,14 @@
  */
 package org.geotools.data.store;
 
-import static org.easymock.EasyMock.*;
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.createNiceMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.expectLastCall;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
 
+import org.geotools.data.DataUtilities;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.factory.CommonFactoryFinder;
@@ -175,5 +181,11 @@ public class ReprojectingFeatureCollectionTest extends FeatureCollectionWrapperT
         rfc = new ReprojectingFeatureCollection(delegate, target);
         rfc.accepts(vis, null);
         verify(delegate);
+    }
+
+    public void testPreserveUserData() {
+        SimpleFeatureCollection reproject = new ReprojectingFeatureCollection(delegate, target);
+        SimpleFeature first = DataUtilities.first(reproject);
+        assertEquals(TEST_VALUE, first.getUserData().get(TEST_KEY));
     }
 }

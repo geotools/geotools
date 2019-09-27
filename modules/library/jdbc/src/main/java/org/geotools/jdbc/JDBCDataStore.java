@@ -49,6 +49,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import javax.sql.DataSource;
+import org.apache.commons.lang3.ArrayUtils;
 import org.geotools.data.DataStore;
 import org.geotools.data.DefaultTransaction;
 import org.geotools.data.FeatureStore;
@@ -236,6 +237,9 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
 
     /** sql type to sql type name overrides */
     protected HashMap<Integer, String> sqlTypeToSqlTypeNameOverrides;
+
+    /** cache of sqltypes found in database */
+    protected ConcurrentHashMap<Integer, String> dBsqlTypesCache;
 
     /** Feature visitor to aggregate function name */
     protected HashMap<Class<? extends FeatureVisitor>, String> aggregateFunctions;
@@ -623,6 +627,20 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
         }
 
         return sqlTypeToSqlTypeNameOverrides;
+    }
+
+    /**
+     * Returns a map integer constants for database types (from {@link Types}) to database type
+     * names.
+     *
+     * <p>This method will return an empty map when there are no overrides.
+     */
+    public ConcurrentHashMap<Integer, String> getDBsqlTypesCache() {
+        if (dBsqlTypesCache == null) {
+            dBsqlTypesCache = new ConcurrentHashMap<Integer, String>();
+        }
+
+        return dBsqlTypesCache;
     }
 
     /** Returns the supported aggregate functions and the visitors they map to. */
@@ -3223,73 +3241,81 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
                 }
             }
 
-            // check the overrides
-            String sqlTypeName = getSqlTypeToSqlTypeNameOverrides().get(sqlType);
-            if (sqlTypeName != null) {
-                sqlTypeNames[i] = sqlTypeName;
+            // check types previously read from DB
+            String sqlTypeDBName = getDBsqlTypesCache().get(sqlType);
+            if (sqlTypeDBName != null) {
+                sqlTypeNames[i] = sqlTypeDBName;
             }
         }
+        // GEOT-6347 if all sql type names have been found in dialect dont
+        // go to database
+        boolean allTypesFound = !ArrayUtils.contains(sqlTypeNames, null);
+        if (!allTypesFound) {
+            LOGGER.log(Level.WARNING, "Fetching fields from Database");
+            // figure out the type names that correspond to the sql types from
+            // the database metadata
+            DatabaseMetaData metaData = cx.getMetaData();
 
-        // figure out the type names that correspond to the sql types from
-        // the database metadata
-        DatabaseMetaData metaData = cx.getMetaData();
+            /*
+            *      <LI><B>TYPE_NAME</B> String => Type name
+            *        <LI><B>DATA_TYPE</B> int => SQL data type from java.sql.Types
+            *        <LI><B>PRECISION</B> int => maximum precision
+            *        <LI><B>LITERAL_PREFIX</B> String => prefix used to quote a literal
+            *      (may be <code>null</code>)
+            *        <LI><B>LITERAL_SUFFIX</B> String => suffix used to quote a literal
+                (may be <code>null</code>)
+            *        <LI><B>CREATE_PARAMS</B> String => parameters used in creating
+            *      the type (may be <code>null</code>)
+            *        <LI><B>NULLABLE</B> short => can you use NULL for this type.
+            *      <UL>
+            *      <LI> typeNoNulls - does not allow NULL values
+            *      <LI> typeNullable - allows NULL values
+            *      <LI> typeNullableUnknown - nullability unknown
+            *      </UL>
+            *        <LI><B>CASE_SENSITIVE</B> boolean=> is it case sensitive.
+            *        <LI><B>SEARCHABLE</B> short => can you use "WHERE" based on this type:
+            *      <UL>
+            *      <LI> typePredNone - No support
+            *      <LI> typePredChar - Only supported with WHERE .. LIKE
+            *      <LI> typePredBasic - Supported except for WHERE .. LIKE
+            *      <LI> typeSearchable - Supported for all WHERE ..
+            *      </UL>
+            *        <LI><B>UNSIGNED_ATTRIBUTE</B> boolean => is it unsigned.
+            *        <LI><B>FIXED_PREC_SCALE</B> boolean => can it be a money value.
+            *        <LI><B>AUTO_INCREMENT</B> boolean => can it be used for an
+            *      auto-increment value.
+            *        <LI><B>LOCAL_TYPE_NAME</B> String => localized version of type name
+            *      (may be <code>null</code>)
+            *        <LI><B>MINIMUM_SCALE</B> short => minimum scale supported
+            *        <LI><B>MAXIMUM_SCALE</B> short => maximum scale supported
+            *        <LI><B>SQL_DATA_TYPE</B> int => unused
+            *        <LI><B>SQL_DATETIME_SUB</B> int => unused
+            *        <LI><B>NUM_PREC_RADIX</B> int => usually 2 or 10
+            */
+            ResultSet types = metaData.getTypeInfo();
 
-        /*
-        *      <LI><B>TYPE_NAME</B> String => Type name
-        *        <LI><B>DATA_TYPE</B> int => SQL data type from java.sql.Types
-        *        <LI><B>PRECISION</B> int => maximum precision
-        *        <LI><B>LITERAL_PREFIX</B> String => prefix used to quote a literal
-        *      (may be <code>null</code>)
-        *        <LI><B>LITERAL_SUFFIX</B> String => suffix used to quote a literal
-            (may be <code>null</code>)
-        *        <LI><B>CREATE_PARAMS</B> String => parameters used in creating
-        *      the type (may be <code>null</code>)
-        *        <LI><B>NULLABLE</B> short => can you use NULL for this type.
-        *      <UL>
-        *      <LI> typeNoNulls - does not allow NULL values
-        *      <LI> typeNullable - allows NULL values
-        *      <LI> typeNullableUnknown - nullability unknown
-        *      </UL>
-        *        <LI><B>CASE_SENSITIVE</B> boolean=> is it case sensitive.
-        *        <LI><B>SEARCHABLE</B> short => can you use "WHERE" based on this type:
-        *      <UL>
-        *      <LI> typePredNone - No support
-        *      <LI> typePredChar - Only supported with WHERE .. LIKE
-        *      <LI> typePredBasic - Supported except for WHERE .. LIKE
-        *      <LI> typeSearchable - Supported for all WHERE ..
-        *      </UL>
-        *        <LI><B>UNSIGNED_ATTRIBUTE</B> boolean => is it unsigned.
-        *        <LI><B>FIXED_PREC_SCALE</B> boolean => can it be a money value.
-        *        <LI><B>AUTO_INCREMENT</B> boolean => can it be used for an
-        *      auto-increment value.
-        *        <LI><B>LOCAL_TYPE_NAME</B> String => localized version of type name
-        *      (may be <code>null</code>)
-        *        <LI><B>MINIMUM_SCALE</B> short => minimum scale supported
-        *        <LI><B>MAXIMUM_SCALE</B> short => maximum scale supported
-        *        <LI><B>SQL_DATA_TYPE</B> int => unused
-        *        <LI><B>SQL_DATETIME_SUB</B> int => unused
-        *        <LI><B>NUM_PREC_RADIX</B> int => usually 2 or 10
-        */
-        ResultSet types = metaData.getTypeInfo();
+            try {
+                while (types.next()) {
+                    int sqlType = types.getInt("DATA_TYPE");
+                    String sqlTypeName = types.getString("TYPE_NAME");
 
-        try {
-            while (types.next()) {
-                int sqlType = types.getInt("DATA_TYPE");
-                String sqlTypeName = types.getString("TYPE_NAME");
+                    for (int i = 0; i < sqlTypes.length; i++) {
+                        // check if we already have the type name from the dialect
+                        if (sqlTypeNames[i] != null) {
+                            continue;
+                        }
 
-                for (int i = 0; i < sqlTypes.length; i++) {
-                    // check if we already have the type name from the dialect
-                    if (sqlTypeNames[i] != null) {
-                        continue;
-                    }
-
-                    if (sqlType == sqlTypes[i]) {
-                        sqlTypeNames[i] = sqlTypeName;
+                        if (sqlType == sqlTypes[i]) {
+                            sqlTypeNames[i] = sqlTypeName;
+                            // GEOT-6347
+                            // cache the sqlType which required going to database for sql types
+                            getDBsqlTypesCache().putIfAbsent(sqlType, sqlTypeName);
+                        }
                     }
                 }
+            } finally {
+                closeSafe(types);
             }
-        } finally {
-            closeSafe(types);
         }
 
         // apply the overrides specified by the dialect

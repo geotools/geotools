@@ -76,8 +76,8 @@ public class CSVLatLonStrategyTest {
         SimpleFeature feature = iterator.next();
         Point geometry = (Point) feature.getDefaultGeometry();
         Coordinate coordinate = geometry.getCoordinate();
-        assertEquals("Invalid point", 3, coordinate.x, 0.1);
-        assertEquals("Invalid point", 4, coordinate.y, 0.1);
+        assertEquals("Invalid point", 3, coordinate.y, 0.1);
+        assertEquals("Invalid point", 4, coordinate.x, 0.1);
         assertEquals("Invalid feature property", "car", feature.getAttribute("fleem").toString());
         assertEquals("Invalid feature property", "cdr", feature.getAttribute("zoo").toString());
 
@@ -85,8 +85,8 @@ public class CSVLatLonStrategyTest {
         feature = iterator.next();
         geometry = (Point) feature.getDefaultGeometry();
         coordinate = geometry.getCoordinate();
-        assertEquals("Invalid point", 8, coordinate.x, 0.1);
-        assertEquals("Invalid point", 9, coordinate.y, 0.1);
+        assertEquals("Invalid point", 8, coordinate.y, 0.1);
+        assertEquals("Invalid point", 9, coordinate.x, 0.1);
         assertEquals("Invalid feature property", "blub", feature.getAttribute("fleem").toString());
         assertEquals("Invalid feature property", "frob", feature.getAttribute("zoo").toString());
         assertFalse("extra next value", iterator.hasNext());
@@ -97,6 +97,37 @@ public class CSVLatLonStrategyTest {
         } catch (NoSuchElementException e) {
             assertTrue(true);
         }
+    }
+
+    @Test
+    /* check for GEOT-6387 */
+    public void testAxisOrder() throws IOException {
+        String input =
+                CSVTestStrategySupport.buildInputString(
+                        "lat,lon,fleem,zoo", "-90,-180,car,cdr", "90,180,blub,frob");
+        checkAxisOrder(input);
+        input =
+                CSVTestStrategySupport.buildInputString(
+                        "lon,lat,fleem,zoo", "-180,-90,car,cdr", "180,90,blub,frob");
+        checkAxisOrder(input);
+    }
+
+    /**
+     * @param input
+     * @throws IOException
+     */
+    private void checkAxisOrder(String input) throws IOException {
+        CSVFileState fileState = new CSVFileState(input, "bar");
+        CSVLatLonStrategy strategy = new CSVLatLonStrategy(fileState);
+
+        CSVIterator iterator = strategy.iterator();
+
+        assertTrue("next value not read", iterator.hasNext());
+        SimpleFeature feature = iterator.next();
+        Point geometry = (Point) feature.getDefaultGeometry();
+        Coordinate coordinate = geometry.getCoordinate();
+
+        assertTrue("Swapped axis", -90 <= coordinate.y && coordinate.y <= 90);
     }
 
     @Test
@@ -209,8 +240,8 @@ public class CSVLatLonStrategyTest {
         SimpleFeature feature = iterator.next();
         Point point = (Point) feature.getAttribute("location");
         Coordinate coordinate = point.getCoordinate();
-        assertEquals("Invalid y coordinate", 42.29, coordinate.y, 0.1);
-        assertEquals("Invalid x coordinate", -72.3829, coordinate.x, 0.1);
+        assertEquals("Invalid longitude coordinate", 42.29, coordinate.x, 0.1);
+        assertEquals("Invalid latitude coordinate", -72.3829, coordinate.y, 0.1);
         assertEquals("Invalid attribute value", "quux", feature.getAttribute("foo"));
         assertNull("Expected null", feature.getAttribute("bar"));
     }
@@ -289,8 +320,8 @@ public class CSVLatLonStrategyTest {
         SimpleFeature feature = iterator.next();
         Point geometry = (Point) feature.getDefaultGeometry();
         Coordinate coordinate = geometry.getCoordinate();
-        assertEquals("Invalid lat", -42.389, coordinate.y, 0.1);
-        assertEquals("Invalid lon", 73.239, coordinate.x, 0.1);
+        assertEquals("Invalid lon", -42.389, coordinate.x, 0.1);
+        assertEquals("Invalid lat", 73.239, coordinate.y, 0.1);
         assertEquals("Invalid attribute value", "morx", feature.getAttribute("fleem"));
     }
 
@@ -307,8 +338,8 @@ public class CSVLatLonStrategyTest {
         SimpleFeature feature = iterator.next();
         Point geometry = (Point) feature.getDefaultGeometry();
         Coordinate coordinate = geometry.getCoordinate();
-        assertEquals("Invalid lat", -42.389, coordinate.y, 0.1);
-        assertEquals("Invalid lon", 73.239, coordinate.x, 0.1);
+        assertEquals("Invalid lon", -42.389, coordinate.x, 0.1);
+        assertEquals("Invalid lat", 73.239, coordinate.y, 0.1);
         assertEquals("Invalid attribute value", "morx", feature.getAttribute("fleem"));
     }
 
@@ -326,8 +357,8 @@ public class CSVLatLonStrategyTest {
         SimpleFeature feature = iterator.next();
         Point geometry = (Point) feature.getDefaultGeometry();
         Coordinate coordinate = geometry.getCoordinate();
-        assertEquals("Invalid lat", -42.389, coordinate.y, 0.1);
-        assertEquals("Invalid lon", 73.239, coordinate.x, 0.1);
+        assertEquals("Invalid lon", -42.389, coordinate.x, 0.1);
+        assertEquals("Invalid lat", 73.239, coordinate.y, 0.1);
         assertEquals("Invalid attribute value", "morx", feature.getAttribute("fleem"));
     }
 

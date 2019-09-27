@@ -3246,17 +3246,11 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
             if (sqlTypeDBName != null) {
                 sqlTypeNames[i] = sqlTypeDBName;
             }
-
-            // check the overrides
-            String sqlTypeName = getSqlTypeToSqlTypeNameOverrides().get(sqlType);
-            if (sqlTypeName != null) {
-                sqlTypeNames[i] = sqlTypeName;
-            }
         }
         // GEOT-6347 if all sql type names have been found in dialect dont
         // go to database
         boolean allTypesFound = !ArrayUtils.contains(sqlTypeNames, null);
-        if (allTypesFound) {
+        if (!allTypesFound) {
             LOGGER.log(Level.WARNING, "Fetching fields from Database");
             // figure out the type names that correspond to the sql types from
             // the database metadata

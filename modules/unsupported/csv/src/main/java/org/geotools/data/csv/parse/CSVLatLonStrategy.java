@@ -45,6 +45,9 @@ import org.opengis.referencing.cs.AxisDirection;
 // docs start CSVLatLonStrategy
 public class CSVLatLonStrategy extends CSVStrategy {
 
+    /** _CRS */
+    public static final DefaultGeographicCRS _CRS = DefaultGeographicCRS.WGS84;
+
     private String latField;
 
     private String lngField;
@@ -105,7 +108,7 @@ public class CSVLatLonStrategy extends CSVStrategy {
             List<String> csvHeaders = Arrays.asList(headers);
             int index = csvHeaders.indexOf(latField);
             AttributeTypeBuilder builder2 = new AttributeTypeBuilder();
-            builder2.setCRS(DefaultGeographicCRS.WGS84);
+            builder2.setCRS(_CRS);
             builder2.binding(Point.class);
             AttributeDescriptor descriptor = builder2.buildDescriptor(pointField);
             builder.add(index, descriptor);
@@ -139,11 +142,11 @@ public class CSVLatLonStrategy extends CSVStrategy {
 
         List<String> header = new ArrayList<String>();
 
-        GeometryDescriptor geometryDescrptor = featureType.getGeometryDescriptor();
-        CoordinateReferenceSystem crs = geometryDescrptor.getCoordinateReferenceSystem();
-        if (geometryDescrptor != null
-                && CRS.equalsIgnoreMetadata(DefaultGeographicCRS.WGS84, crs)
-                && geometryDescrptor.getType().getBinding().isAssignableFrom(Point.class)) {
+        GeometryDescriptor gd = featureType.getGeometryDescriptor();
+        CoordinateReferenceSystem crs = gd != null ? gd.getCoordinateReferenceSystem() : null;
+        if (gd != null
+                && CRS.equalsIgnoreMetadata(_CRS, crs)
+                && gd.getType().getBinding().isAssignableFrom(Point.class)) {
             if (crs.getCoordinateSystem().getAxis(0).getDirection().equals(AxisDirection.NORTH)) {
                 header.add(this.latField);
                 header.add(this.lngField);
@@ -205,7 +208,7 @@ public class CSVLatLonStrategy extends CSVStrategy {
                     .getCoordinateSystem()
                     .getAxis(0)
                     .getDirection()
-                    .equals(AxisDirection.NORTH)) {
+                    .equals(AxisDirection.EAST)) {
                 coordinate = new Coordinate(lng, lat);
             } else {
                 coordinate = new Coordinate(lat, lng);

@@ -129,7 +129,7 @@
     <pmd.version>6.11.0</pmd.version>
     <checkstyle.skip>false</checkstyle.skip>
     <qa>false</qa>
-    <jackson2.version>2.9.9</jackson2.version>
+    <jackson2.version>2.9.10</jackson2.version>
     <lint>deprecation</lint>
   </properties>
 

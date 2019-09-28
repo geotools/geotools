@@ -161,7 +161,7 @@ public class CSVLatLonStrategy extends CSVStrategy {
                             + "/"
                             + this.lngField
                             + " to represent "
-                            + geometryDescrptor);
+                            + gd);
         }
         for (AttributeDescriptor descriptor : featureType.getAttributeDescriptors()) {
             if (descriptor instanceof GeometryDescriptor) continue;

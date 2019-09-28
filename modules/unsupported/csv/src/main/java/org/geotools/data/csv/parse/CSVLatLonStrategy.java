@@ -156,12 +156,7 @@ public class CSVLatLonStrategy extends CSVStrategy {
             }
         } else {
             throw new IOException(
-                    "Unable use "
-                            + this.latField
-                            + "/"
-                            + this.lngField
-                            + " to represent "
-                            + gd);
+                    "Unable use " + this.latField + "/" + this.lngField + " to represent " + gd);
         }
         for (AttributeDescriptor descriptor : featureType.getAttributeDescriptors()) {
             if (descriptor instanceof GeometryDescriptor) continue;

@@ -53,6 +53,10 @@
             <classifier>tests</classifier>
             <scope>test</scope>
         </dependency>
+       <dependency>
+           <groupId>org.jdom</groupId>
+           <artifactId>jdom2</artifactId>
+       </dependency>
         <dependency>
             <groupId>commons-digester</groupId>
             <artifactId>commons-digester</artifactId>

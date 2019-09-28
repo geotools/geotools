@@ -61,12 +61,6 @@ import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.util.URLs;
 import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
-import org.jdom2.Document;
-import org.jdom2.Element;
-import org.jdom2.JDOMException;
-import org.jdom2.Parent;
-import org.jdom2.input.DOMBuilder;
-import org.jdom2.output.DOMOutputter;
 import org.opengis.coverage.grid.Format;
 import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.coverage.grid.GridCoverageWriter;
@@ -76,6 +70,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.crs.GeographicCRS;
 import org.opengis.referencing.crs.ProjectedCRS;
 import org.opengis.util.ProgressListener;
+import org.w3c.dom.Node;
 
 /**
  * {@link AbstractGridCoverageWriter} implementation for the geotiff format.
@@ -470,24 +465,13 @@ public class GeoTiffWriter extends AbstractGridCoverageWriter implements GridCov
         org.w3c.dom.Element w3cElement =
                 (org.w3c.dom.Element)
                         imageMetadata.getAsTree(GeoTiffConstants.GEOTIFF_IIO_METADATA_FORMAT_NAME);
-        final Element element = new DOMBuilder().build(w3cElement);
 
-        geoTIFFMetadata.assignTo(element);
-
-        final Parent parent = element.getParent();
-        parent.removeContent(element);
-
-        final Document document = new Document(element);
-
+        geoTIFFMetadata.assignTo(w3cElement);
         try {
-            final org.w3c.dom.Document w3cDoc = new DOMOutputter().output(document);
+            Node TIFFIFD = w3cElement.getChildNodes().item(0);
             final IIOMetadata iioMetadata =
-                    new TIFFImageMetadata(
-                            TIFFImageMetadata.parseIFD(
-                                    w3cDoc.getDocumentElement().getFirstChild()));
+                    new TIFFImageMetadata(TIFFImageMetadata.parseIFD(TIFFIFD));
             imageMetadata = iioMetadata;
-        } catch (JDOMException e) {
-            throw new IIOException("Failed to set GeoTIFFWritingUtilities specific tags.", e);
         } catch (IIOInvalidTreeException e) {
             throw new IIOException("Failed to set GeoTIFFWritingUtilities specific tags.", e);
         }

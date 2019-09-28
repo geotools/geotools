@@ -227,11 +227,6 @@
       <artifactId>jts-core</artifactId>
       <!-- The version number is specified in the parent POM. -->
     </dependency>
-    <dependency>
-      <groupId>org.jdom</groupId>
-      <artifactId>jdom2</artifactId>
-      <!-- The version number is specified in the parent POM. -->
-    </dependency>
 	<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-text -->
 	<dependency>
 		<groupId>org.apache.commons</groupId>

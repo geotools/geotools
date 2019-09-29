@@ -125,7 +125,7 @@
     <errorProne.version>2.3.2</errorProne.version>
     <javac.version>9+181-r4173-1</javac.version>
     <pmd.skip>false</pmd.skip>
-    <jackson2.version>2.9.9</jackson2.version>
+    <jackson2.version>2.9.10</jackson2.version>
   </properties>
 
   <!-- Profiles set on the command-line overwrite default properties. -->

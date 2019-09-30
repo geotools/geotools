@@ -32,8 +32,9 @@ public class PFSequencedPrimaryKeyColumn extends PrimaryKeyColumn {
     String sequenceName;
 
     /**
-     * @param name
-     * @param type
+     * @param name : name of column in table/view
+     * @param type : data type of columns
+     * @param sequenceName : name of Sequence object in database to generate keys
      */
     public PFSequencedPrimaryKeyColumn(String name, Class type, String sequenceName) {
         super(name, type);

@@ -42,8 +42,6 @@ public class OracleInsteadOfTriggerTest extends JDBCFeatureStoreOnlineTest {
     }
 
     private void setUptestInsteadOfTriggerInsert() throws Exception {
-        // set testInsteadOfTriggerInsert
-
         // create sequence
         oracleTestSetup.run("CREATE SEQUENCE POI_ID");
         // create actual table
@@ -161,16 +159,9 @@ public class OracleInsteadOfTriggerTest extends JDBCFeatureStoreOnlineTest {
         List<SimpleFeature> features =
                 new ArrayList<SimpleFeature>(Arrays.asList(featureToInsert, featureToInsert2));
 
-        // NOW INSERTING
-        // Transaction transaction = new DefaultTransaction("create");
-        // SimpleFeatureStore featureStore = (SimpleFeatureStore) source; //for writing
-        //   featureStore.setTransaction(transaction);
+        // Now Inserting
         SimpleFeatureCollection fcollection = new ListFeatureCollection(type, features);
-
         featureStore.addFeatures(fcollection);
-
-        // transaction.commit();
-
         // there should be two features inserted
         assertTrue(featureStore.getFeatures().size() == 2);
     }

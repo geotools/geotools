@@ -624,11 +624,13 @@ abstract class KeysFetcher {
     }
 
     /**
-     * For PK columns that have sequence on which the sequence value should must be fetched before
-     * the INSERT operation
+     * Pre-Fetch From Sequence Key Fetcher
+     *
+     * <p>Subclass to cache values for Primary Key column before insertion The cache values will be
+     * inserted as regular parameters instead of DB expressions that will fetch the next number from
+     * Sequence.
      */
     private static class FromPFSequence extends KeyFetcher {
-        // private Object next;
         private JDBCDataStore ds;
         private Connection cx;
         private String sequenceName;
@@ -668,15 +670,5 @@ abstract class KeysFetcher {
         public boolean isPostInsert() {
             return false;
         }
-
-        //        /**
-        //         * list of all the pre-generated keys from the given sequence during an Insert
-        // Operation
-        //         *
-        //         * @return the pregeneratedKeys
-        //         */
-        //        public List<Object> getPregeneratedKeys() {
-        //            return pregeneratedKeys;
-        //        }
     }
 }

@@ -17,11 +17,15 @@
 package org.geotools.data.oracle;
 
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCDataStoreFactory;
 import org.geotools.jdbc.JDBCTestSetup;
 
 public class OracleTestSetup extends JDBCTestSetup {
+
+    static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(OracleTestSetup.class);
 
     @Override
     protected String typeName(String raw) {
@@ -121,6 +125,7 @@ public class OracleTestSetup extends JDBCTestSetup {
         try {
             super.run("DROP VIEW " + view);
         } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
         }
     }
 

@@ -47,7 +47,8 @@ import org.geotools.data.jdbc.datasource.ManageableDataSource;
  * @author Justin Deoliveira, The Open Planning Project
  */
 public abstract class JDBCTestSetup {
-    static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(JDBCTestSetup.class);
+    protected static final Logger LOGGER =
+            org.geotools.util.logging.Logging.getLogger(JDBCTestSetup.class);
     protected Properties fixture = null;
     private DataSource dataSource = null;
 

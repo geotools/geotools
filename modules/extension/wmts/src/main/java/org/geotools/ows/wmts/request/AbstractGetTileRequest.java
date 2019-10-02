@@ -24,6 +24,7 @@ import java.net.URLEncoder;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.lang3.StringUtils;
 import org.geotools.data.ows.HTTPResponse;
 import org.geotools.data.ows.Response;
@@ -76,6 +77,8 @@ public abstract class AbstractGetTileRequest extends AbstractWMTSRequest impleme
 
     public static final String FORMAT = "Format";
 
+    private final HttpClient client;
+
     private WMTSLayer layer = null;
 
     private String styleName = "";
@@ -107,7 +110,13 @@ public abstract class AbstractGetTileRequest extends AbstractWMTSRequest impleme
      * @param properties pre-set properties to be used. Can be null.
      */
     public AbstractGetTileRequest(URL onlineResource, Properties properties) {
+        this(onlineResource, properties, new HttpClient());
+    }
+
+    public AbstractGetTileRequest(URL onlineResource, Properties properties, HttpClient client) {
         super(onlineResource, properties);
+        Objects.requireNonNull(client, "client");
+        this.client = client;
     }
 
     protected abstract void initVersion();
@@ -242,7 +251,7 @@ public abstract class AbstractGetTileRequest extends AbstractWMTSRequest impleme
         }
 
         WMTSTileService wmtsService =
-                new WMTSTileService(requestUrl, type, layer, styleString, matrixSet);
+                new WMTSTileService(requestUrl, type, layer, styleString, matrixSet, this.client);
 
         wmtsService.setFormat(format);
 

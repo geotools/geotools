@@ -17,12 +17,10 @@
  */
 package org.geotools.tile;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.apache.commons.httpclient.HttpClient;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
@@ -59,6 +57,7 @@ public abstract class TileService {
     private String baseURL;
 
     private String name;
+    private final HttpClient client;
 
     /**
      * Create a new TileService with a name and a base URL
@@ -69,8 +68,24 @@ public abstract class TileService {
      *     URL is well-formed.
      */
     protected TileService(String name, String baseURL) {
+        this(name, baseURL, new HttpClient());
+    }
+
+    /**
+     * Create a new TileService with a name and a base URL
+     *
+     * @param name the name. Cannot be null.
+     * @param baseURL the base URL. This is a string representing the common part of the URL for all
+     *     this service's tiles. Cannot be null. Note that this constructor doesn't ensure that the
+     *     URL is well-formed.
+     * @param client HttpClient instance to use for a tile request.
+     */
+    protected TileService(String name, String baseURL, HttpClient client) {
         setName(name);
         setBaseURL(baseURL);
+
+        Objects.requireNonNull(client);
+        this.client = client;
     }
 
     private void setBaseURL(String baseURL) {
@@ -155,7 +170,7 @@ public abstract class TileService {
     /**
      * Returns the zoom-level that should be used to fetch the tiles.
      *
-     * @param scale
+     * @param zoomLevelMatcher
      * @param scaleFactor
      * @param useRecommended always use the calculated zoom-level, do not use the one the user
      *     selected
@@ -186,7 +201,6 @@ public abstract class TileService {
     /**
      * Returns the lowest zoom-level number from the scaleList.
      *
-     * @param scaleList
      * @return
      */
     public int getMinZoomLevel() {
@@ -203,7 +217,6 @@ public abstract class TileService {
     /**
      * Returns the highest zoom-level number from the scaleList.
      *
-     * @param scaleList
      * @return
      */
     public int getMaxZoomLevel() {
@@ -421,5 +434,9 @@ public abstract class TileService {
 
     public String toString() {
         return getName();
+    }
+
+    public final HttpClient getHttpClient() {
+        return this.client;
     }
 }

@@ -19,6 +19,7 @@ package org.geotools.ows.wmts;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Properties;
+import org.apache.commons.httpclient.HttpClient;
 import org.geotools.data.ows.AbstractGetCapabilitiesRequest;
 import org.geotools.data.ows.GetCapabilitiesRequest;
 import org.geotools.data.ows.HTTPResponse;
@@ -60,7 +61,12 @@ public class WMTSSpecification extends Specification {
 
     public GetTileRequest createGetTileRequest(
             URL server, Properties props, WMTSCapabilities caps) {
-        return new GetTileRequest(server, props, caps);
+        return this.createGetTileRequest(server, props, caps, new HttpClient());
+    }
+
+    public GetTileRequest createGetTileRequest(
+            URL server, Properties props, WMTSCapabilities caps, HttpClient client) {
+        return new GetTileRequest(server, props, caps, client);
     }
 
     public static class GetTileRequest extends AbstractGetTileRequest {
@@ -68,11 +74,19 @@ public class WMTSSpecification extends Specification {
         /**
          * @param onlineResource
          * @param properties
-         * @param type
+         * @param capabilities
          */
         public GetTileRequest(
                 URL onlineResource, Properties properties, WMTSCapabilities capabilities) {
-            super(onlineResource, properties);
+            this(onlineResource, properties, capabilities, new HttpClient());
+        }
+
+        public GetTileRequest(
+                URL onlineResource,
+                Properties properties,
+                WMTSCapabilities capabilities,
+                HttpClient client) {
+            super(onlineResource, properties, client);
             this.type = capabilities.getType();
             this.capabilities = capabilities;
         }

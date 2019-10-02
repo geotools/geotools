@@ -232,12 +232,13 @@ class WMTSTile extends Tile {
     }
 
     private InputStream setupInputStream(URL url, Map<String, String> headers) throws IOException {
-        HttpClient client = new HttpClient();
+        HttpClient client = this.service.getHttpClient();
         String uri = url.toExternalForm();
 
         if (LOGGER.isLoggable(Level.FINE)) LOGGER.log(Level.FINE, "URL is " + uri);
 
         HttpMethod get = new GetMethod(uri);
+        get.setDoAuthentication(true);
         if (MapUtils.isNotEmpty(headers)) {
             for (String headerName : headers.keySet()) {
                 if (LOGGER.isLoggable(Level.FINE)) {

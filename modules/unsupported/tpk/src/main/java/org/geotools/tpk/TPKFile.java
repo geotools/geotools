@@ -23,6 +23,8 @@ import org.w3c.dom.NodeList;
 
 public class TPKFile {
 
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(TPKFile.class);
+
     // circumference of the earth in metres at the equator
     private static double WORLD_CIRCUMFERENCE = 40075016.69;
     private static double ORIGIN_OFFSET = WORLD_CIRCUMFERENCE / 2.0;
@@ -305,11 +307,6 @@ public class TPKFile {
             ZipEntry entry = zipEntries.nextElement();
             zipEntryMap.put(entry.getName(), entry);
         }
-        String msg =
-                String.format(
-                        "Opened TPK and mapped zipentries in %d milliseconds",
-                        System.currentTimeMillis() - startOpen);
-        Logger.getLogger(this.getClass().getName()).info(msg);
     }
 
     /**
@@ -460,7 +457,7 @@ public class TPKFile {
                 String.format(
                         "Loaded zoom levels in %d milliseconds",
                         System.currentTimeMillis() - startLoad);
-        Logger.getLogger(this.getClass().getName()).info(msg);
+        LOGGER.fine(msg);
     }
 
     /**

@@ -39,6 +39,9 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 public class TPKReader extends AbstractGridCoverage2DReader {
 
+    private static final Logger LOGGER =
+            org.geotools.util.logging.Logging.getLogger(TPKReader.class);
+
     static final CoordinateReferenceSystem SPHERICAL_MERCATOR;
 
     static final CoordinateReferenceSystem WGS_84;
@@ -101,11 +104,12 @@ public class TPKReader extends AbstractGridCoverage2DReader {
 
         file.close();
 
-        Logger.getLogger(this.getClass().getName())
-                .info(
-                        String.format(
-                                "TPKReader constructor finished in %d milliseconds",
-                                System.currentTimeMillis() - startConstructor));
+        String msg =
+                String.format(
+                        "TPKReader constructor finished in %d milliseconds",
+                        System.currentTimeMillis() - startConstructor);
+
+        LOGGER.fine(msg);
     }
 
     @Override
@@ -257,13 +261,14 @@ public class TPKReader extends AbstractGridCoverage2DReader {
 
         file.close();
 
-        Logger.getLogger(this.getClass().getName())
-                .info(
-                        String.format(
-                                "At zoom level %d TPK read completed in %d milliseconds",
-                                zoomLevel, System.currentTimeMillis() - startRead));
+        String msg =
+                String.format(
+                        "At zoom level %d TPK read completed in %d milliseconds",
+                        zoomLevel, System.currentTimeMillis() - startRead);
 
-        return coverageFactory.create("any name for now", image, resultEnvelope);
+        LOGGER.fine(msg);
+
+        return coverageFactory.create("unnamed", image, resultEnvelope);
     }
 
     protected static BufferedImage readImage(byte[] data, String format) throws IOException {

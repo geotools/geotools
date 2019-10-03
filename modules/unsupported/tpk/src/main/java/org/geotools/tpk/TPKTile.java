@@ -44,7 +44,7 @@ public class TPKTile {
      *
      * <p>In a V2 cache both fields are used and populated directly from the tile's index entry
      */
-    static class TileInfo {
+    public static class TileInfo {
         int tileLength;
         long tileDataOffset;
 

@@ -3,7 +3,6 @@ package org.geotools.tpk;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
@@ -65,13 +64,7 @@ public class TPKZoomLevelV2 implements TPKZoomLevel {
         max_row_column = new Double(Math.pow(2, zoomLevel) - 1).longValue();
 
         bundles = new ArrayList<>();
-        long startParse = System.currentTimeMillis();
         init(bundleNames);
-        String msg =
-                String.format(
-                        "Loaded zoom levels %d in %d milliseconds",
-                        zoomLevel, System.currentTimeMillis() - startParse);
-        Logger.getLogger(this.getClass().getName()).info(msg);
     }
 
     // ***********************************************************************

@@ -5,7 +5,6 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.commons.httpclient.*;
-import org.apache.commons.httpclient.params.HttpConnectionManagerParams;
 
 public abstract class MockHttpCommonClient extends HttpClient {
 
@@ -78,25 +77,12 @@ public abstract class MockHttpCommonClient extends HttpClient {
         }
     }
 
-    private static class MockHttpConnectionManager implements HttpConnectionManager {
+    private static class MockHttpConnectionManager extends SimpleHttpConnectionManager {
 
         private final MockHttpConnection connection;
-        private HttpConnectionManagerParams params;
 
         public MockHttpConnectionManager() {
             this.connection = new MockHttpConnection(this);
-            this.params = new HttpConnectionManagerParams();
-        }
-
-        @Override
-        public HttpConnection getConnection(HostConfiguration hostConfiguration) {
-            return this.connection;
-        }
-
-        @Override
-        public HttpConnection getConnection(HostConfiguration hostConfiguration, long timeout)
-                throws HttpException {
-            return this.connection;
         }
 
         @Override
@@ -110,15 +96,5 @@ public abstract class MockHttpCommonClient extends HttpClient {
 
         @Override
         public void closeIdleConnections(long idleTimeout) {}
-
-        @Override
-        public HttpConnectionManagerParams getParams() {
-            return this.params;
-        }
-
-        @Override
-        public void setParams(HttpConnectionManagerParams params) {
-            this.params = params;
-        }
     }
 }

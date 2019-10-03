@@ -1,3 +1,4 @@
+package org.geotools.tpk;
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
@@ -16,7 +17,6 @@
  *
  */
 
-package org.geotools.tpk;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -149,6 +149,9 @@ public class TPKBundle {
 
                 // determine if we need to skip over any bytes in the stream
                 long toSkip = offset - currentReadPosition;
+                if (toSkip > 0) {
+                    stream.skip(toSkip);
+                    currentReadPosition += toSkip; // update position!
                 while (toSkip > 0) {
                     long skipped = stream.skip(toSkip);
                     toSkip -= skipped;

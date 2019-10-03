@@ -414,6 +414,10 @@ public class TPKReader extends AbstractGridCoverage2DReader {
         TileImage(TPKTile tile) {
             this.col = tile.col;
             this.row = tile.row;
+            try {
+                image = readImage(tile.tileData, tile.imageFormat);
+            } catch (IOException ex) {
+                throw new RuntimeException("Failed to covert tile data to image");
             if (tile.tileData != null && tile.tileData.length > 0) {
                 try {
                     image = readImage(tile.tileData, tile.imageFormat);

@@ -22,8 +22,13 @@ import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashSet;
@@ -39,6 +44,7 @@ import org.bson.BsonString;
 import org.bson.Document;
 import org.geotools.data.FeatureWriter;
 import org.geotools.data.Transaction;
+import org.geotools.data.ows.HTTPClient;
 import org.geotools.data.store.ContentDataStore;
 import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentFeatureSource;
@@ -73,12 +79,17 @@ public class MongoDataStore extends ContentDataStore {
     static final String KEY_encoding = "encoding";
     static final String KEY_collection = "collection";
 
+    static final String DOWNLOAD_FOLDER_PREFIX = "gs_mongodb_schema_";
+
     final MongoSchemaStore schemaStore;
 
     final MongoClient dataStoreClient;
     final DB dataStoreDB;
 
     final boolean deactivateOrNativeFilter;
+
+    // for reading schema from hosted files
+    private HTTPClient httpClient;
 
     @SuppressWarnings("deprecation")
     FilterCapabilities filterCapabilities;
@@ -96,14 +107,24 @@ public class MongoDataStore extends ContentDataStore {
 
     public MongoDataStore(
             String dataStoreURI, String schemaStoreURI, boolean createDatabaseIfNeeded) {
-        this(dataStoreURI, schemaStoreURI, createDatabaseIfNeeded, null);
+        this(dataStoreURI, schemaStoreURI, createDatabaseIfNeeded, null, null);
     }
 
     public MongoDataStore(
             String dataStoreURI,
             String schemaStoreURI,
             boolean createDatabaseIfNeeded,
-            MongoSchemaInitParams schemaInitParams) {
+            HTTPClient httpClient) {
+        // helpful for unit tests
+        this(dataStoreURI, schemaStoreURI, createDatabaseIfNeeded, null, httpClient);
+    }
+
+    public MongoDataStore(
+            String dataStoreURI,
+            String schemaStoreURI,
+            boolean createDatabaseIfNeeded,
+            MongoSchemaInitParams schemaInitParams,
+            HTTPClient httpClient) {
 
         MongoClientURI dataStoreClientURI = createMongoClientURI(dataStoreURI);
         dataStoreClient = createMongoClient(dataStoreClientURI);
@@ -117,7 +138,7 @@ public class MongoDataStore extends ContentDataStore {
         }
 
         this.deactivateOrNativeFilter = isMongoVersionLessThan2_6(dataStoreClientURI);
-
+        this.httpClient = httpClient;
         schemaStore = createSchemaStore(schemaStoreURI);
         if (schemaStore == null) {
             dataStoreClient.close(); // This smells bad too...
@@ -186,6 +207,9 @@ public class MongoDataStore extends ContentDataStore {
     private MongoSchemaStore createSchemaStore(String schemaStoreURI) {
         if (schemaStoreURI.startsWith("file:")) {
             try {
+                // check if the file is a zip file
+                if (MongoUtil.isZipFile(schemaStoreURI))
+                    return new MongoSchemaZipFileStore(schemaStoreURI);
                 return new MongoSchemaFileStore(schemaStoreURI);
             } catch (URISyntaxException e) {
                 LOGGER.log(
@@ -209,6 +233,21 @@ public class MongoDataStore extends ContentDataStore {
                 LOGGER.log(
                         Level.SEVERE,
                         "Unable to create mongodb-based schema store with URI \""
+                                + schemaStoreURI
+                                + "\"",
+                        e);
+            }
+        } else if (schemaStoreURI.startsWith(MongoSchemaFileStore.PRE_FIX_HTTP)) {
+            try {
+                File downloadFile =
+                        downloadFile(dataStoreDB.getName(), new URL(schemaStoreURI), httpClient);
+                if (MongoUtil.isZipFile(downloadFile))
+                    return new MongoSchemaZipFileStore(downloadFile.toURI());
+                else return new MongoSchemaFileStore(downloadFile.getParentFile().toURI());
+            } catch (Exception e) {
+                LOGGER.log(
+                        Level.SEVERE,
+                        "Unable to create mongodb-based schema store with URL \""
                                 + schemaStoreURI
                                 + "\"",
                         e);
@@ -497,5 +536,35 @@ public class MongoDataStore extends ContentDataStore {
 
     public void setSchemaInitParams(MongoSchemaInitParams schemaInitParams) {
         this.schemaInitParams = schemaInitParams;
+    }
+
+    public File downloadFile(String storeName, URL url, HTTPClient httpClient) throws Exception {
+        File tempDir =
+                new File(
+                        System.getProperty("java.io.tmpdir")
+                                + File.separator
+                                + DOWNLOAD_FOLDER_PREFIX
+                                + storeName);
+        MongoUtil.validateDirectory(tempDir);
+        try (InputStream in = httpClient.get(url).getResponseStream()) {
+            Logger.getGlobal()
+                    .info(
+                            "MongoDBStore:"
+                                    + storeName
+                                    + ":Downloading Schema File from :"
+                                    + url.toExternalForm());
+            // create file in temp with name of store
+            String filesName = MongoUtil.extractFilesNameFromUrl(url.toExternalForm());
+            File schemaStoreFile = new File(tempDir, filesName);
+
+            Files.copy(in, schemaStoreFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            Logger.getGlobal()
+                    .info(
+                            "MongoDBStore:"
+                                    + storeName
+                                    + ":Downloaded File Stored at :"
+                                    + schemaStoreFile.getAbsolutePath());
+            return schemaStoreFile;
+        }
     }
 }

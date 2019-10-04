@@ -17,7 +17,6 @@
  */
 package org.geotools.data.mongodb;
 
-import com.mongodb.DBObject;
 import com.mongodb.util.JSON;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -26,10 +25,16 @@ import java.io.FileFilter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
+import org.geotools.data.ows.HTTPClient;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.Name;
 
@@ -37,8 +42,10 @@ import org.opengis.feature.type.Name;
 public class MongoSchemaFileStore implements MongoSchemaStore {
 
     static final String SUFFIX_json = ".json";
+    // covers http(s) also
+    static final String PRE_FIX_HTTP = "http";
 
-    final File schemaStoreFile;
+    protected File schemaStoreFile;
 
     public MongoSchemaFileStore(String uri) throws IOException, URISyntaxException {
         this(new URI(uri));
@@ -46,6 +53,36 @@ public class MongoSchemaFileStore implements MongoSchemaStore {
 
     public MongoSchemaFileStore(URI uri) throws IOException {
         this(new File(uri));
+    }
+
+    public MongoSchemaFileStore(String storeName, URL url, HTTPClient httpClient) throws Exception {
+        schemaStoreFile =
+                new File(System.getProperty("java.io.tmpdir") + File.separator + storeName);
+        validateDirectory(schemaStoreFile);
+        InputStream in = null;
+        try {
+
+            in = httpClient.get(url).getResponseStream();
+            Logger.getGlobal()
+                    .info(
+                            "MongoDBStore:"
+                                    + storeName
+                                    + ":Downloading Schema File from :"
+                                    + url.toExternalForm());
+            // create directory in temp with name of store
+            String filesName = MongoUtil.extractFilesNameFromUrl(url.toExternalForm());
+            File downloadedFile = new File(schemaStoreFile, filesName);
+            Files.copy(in, downloadedFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            Logger.getGlobal()
+                    .info(
+                            "MongoDBStore:"
+                                    + storeName
+                                    + ":Downloaded File Stored at :"
+                                    + downloadedFile.getAbsolutePath());
+
+        } finally {
+            if (in != null) in.close();
+        }
     }
 
     public MongoSchemaFileStore(File file) throws IOException {
@@ -77,22 +114,7 @@ public class MongoSchemaFileStore implements MongoSchemaStore {
             return null;
         }
         BufferedReader reader = new BufferedReader(new FileReader(schemaFile));
-        try {
-            String lineSeparator = System.getProperty("line.separator");
-            StringBuilder jsonBuilder = new StringBuilder();
-            String line;
-            while ((line = reader.readLine()) != null) {
-                jsonBuilder.append(line);
-                jsonBuilder.append(lineSeparator);
-            }
-            Object o = JSON.parse(jsonBuilder.toString());
-            if (o instanceof DBObject) {
-                return FeatureTypeDBObject.convert((DBObject) o, name);
-            }
-        } finally {
-            reader.close();
-        }
-        return null;
+        return MongoSchemaStore.super.getSimpleFeatureType(reader, name);
     }
 
     @Override

@@ -21,6 +21,11 @@ import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
+import java.io.File;
+import java.io.IOException;
+import java.io.RandomAccessFile;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
@@ -30,6 +35,8 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /** @author tkunicki@boundlessgeo.com */
 public class MongoUtil {
@@ -166,5 +173,46 @@ public class MongoUtil {
             return o.getClass();
         }
         return null;
+    }
+
+    public static String extractFilesNameFromUrl(String url) {
+        return url.substring(url.lastIndexOf('/') + 1, url.length());
+    }
+
+    public static boolean isZipFile(File file) throws IOException {
+        try (RandomAccessFile raf = new RandomAccessFile(file, "r")) {
+            long n = raf.readInt();
+            raf.close();
+            return n == 0x504B0304;
+        } catch (Exception e) {
+            Logger.getGlobal().log(Level.SEVERE, e.getMessage(), e);
+            return false;
+        }
+    }
+
+    public static boolean isZipFile(String uri) throws IOException, URISyntaxException {
+        File file = new File(new URI(uri));
+        return isZipFile(file);
+    }
+
+    static void validateDirectory(File file) throws IOException {
+        if (!file.exists() && !file.mkdirs()) {
+            throw new IOException(
+                    "Schema store directory does not exist and could not be created: "
+                            + file.getAbsolutePath());
+        }
+        if (file.isDirectory()) {
+            // File.canWrite() doesn't report as intended for directories on
+            // certain platforms with certain permissions scenarios.  Will
+            // instead we verify we can create a file then delete it.
+            if (!File.createTempFile("test", ".tmp", file).delete()) {
+                throw new IOException(
+                        "Unable to write to schema store directory: " + file.getAbsolutePath());
+            }
+        } else {
+            throw new IOException(
+                    "Specified schema store directory exists but is not a directory: "
+                            + file.getAbsolutePath());
+        }
     }
 }

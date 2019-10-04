@@ -24,12 +24,16 @@ import static org.junit.Assert.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import org.apache.commons.io.IOUtils;
 import org.geotools.feature.NameImpl;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.opengis.feature.simple.SimpleFeatureType;
 
 /** @author tkunicki@boundlessgeo.com */
 public class MongoSchemaFileStoreTest extends MongoSchemaStoreTest<MongoSchemaFileStore> {
@@ -93,6 +97,86 @@ public class MongoSchemaFileStoreTest extends MongoSchemaStoreTest<MongoSchemaFi
         } finally {
             test.delete();
         }
+    }
+
+    @Test
+    public void test_Constructor_URL() throws Exception {
+        final String mockFileURL = "https://mock.url.com/stations.json";
+
+        MockHTTPClient mockHttpClient = new MockHTTPClient();
+        byte[] responseBytes =
+                IOUtils.toByteArray(getClass().getResourceAsStream("stations-schema.json"));
+        MockHttpResponse mockResponse = new MockHttpResponse(responseBytes, "text/json");
+        mockHttpClient.expectGet(mockFileURL, mockResponse);
+
+        MongoSchemaStore mss =
+                new MongoSchemaFileStore("mockshema", new URL(mockFileURL), mockHttpClient);
+        assertEquals(1, mss.typeNames().size());
+        SimpleFeatureType type = mss.retrieveSchema(new NameImpl("stations"));
+        assertNotNull(type);
+        mss.deleteSchema(new NameImpl("stations"));
+    }
+
+    @Test
+    public void test_Constructor_ZIP_FILE() throws Exception {
+
+        boolean isZip =
+                MongoUtil.isZipFile(getClass().getResource("schemas.zip").toURI().toString());
+        assertTrue(isZip);
+
+        File test = createUniqueTempDirectory();
+        Files.createDirectories(test.toPath());
+        try {
+            Files.copy(
+                    new File(getClass().getResource("schemas.zip").toURI()).toPath(),
+                    new File(test, "schemas.zip").toPath());
+
+            MongoSchemaStore mss =
+                    new MongoSchemaZipFileStore(new File(test, "schemas.zip").toURI());
+            // retreive test
+            assertEquals(2, mss.typeNames().size());
+            SimpleFeatureType type = mss.retrieveSchema(new NameImpl("stations"));
+            assertNotNull(type);
+            SimpleFeatureType type2 = mss.retrieveSchema(new NameImpl("stations2"));
+            assertNotNull(type2);
+
+            // delete test
+            mss.deleteSchema(new NameImpl("stations2"));
+            assertEquals(1, mss.typeNames().size());
+
+            // store test
+            mss.storeSchema(type2);
+            assertEquals(2, mss.typeNames().size());
+        } finally {
+            test.delete();
+        }
+    }
+
+    @Test
+    public void test_Constructor_ZIP_URL() throws Exception {
+        final String mockFileURL = "https://mock.url.com/schemas.zip";
+
+        MockHTTPClient mockHttpClient = new MockHTTPClient();
+        byte[] responseBytes = IOUtils.toByteArray(getClass().getResourceAsStream("schemas.zip"));
+        MockHttpResponse mockResponse = new MockHttpResponse(responseBytes, "application/zip");
+        mockHttpClient.expectGet(mockFileURL, mockResponse);
+
+        MongoSchemaStore mss =
+                new MongoSchemaZipFileStore("mockstore", new URL(mockFileURL), mockHttpClient);
+        // retreive test
+        assertEquals(2, mss.typeNames().size());
+        SimpleFeatureType type = mss.retrieveSchema(new NameImpl("stations"));
+        assertNotNull(type);
+        SimpleFeatureType type2 = mss.retrieveSchema(new NameImpl("stations2"));
+        assertNotNull(type2);
+
+        // delete test
+        mss.deleteSchema(new NameImpl("stations2"));
+        assertEquals(1, mss.typeNames().size());
+
+        // store test
+        mss.storeSchema(type2);
+        assertEquals(2, mss.typeNames().size());
     }
 
     @Test

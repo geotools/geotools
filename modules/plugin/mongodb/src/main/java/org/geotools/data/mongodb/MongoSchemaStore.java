@@ -17,6 +17,9 @@
  */
 package org.geotools.data.mongodb;
 
+import com.mongodb.DBObject;
+import com.mongodb.util.JSON;
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.List;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -34,4 +37,24 @@ public interface MongoSchemaStore {
     List<String> typeNames();
 
     void close();
+
+    default SimpleFeatureType getSimpleFeatureType(BufferedReader reader, Name name)
+            throws IOException {
+        try {
+            String lineSeparator = System.getProperty("line.separator");
+            StringBuilder jsonBuilder = new StringBuilder();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                jsonBuilder.append(line);
+                jsonBuilder.append(lineSeparator);
+            }
+            Object o = JSON.parse(jsonBuilder.toString());
+            if (o instanceof DBObject) {
+                return FeatureTypeDBObject.convert((DBObject) o, name);
+            }
+        } finally {
+            reader.close();
+        }
+        return null;
+    }
 }

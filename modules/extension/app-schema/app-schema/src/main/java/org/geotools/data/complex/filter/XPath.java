@@ -60,6 +60,7 @@ import org.opengis.feature.type.PropertyDescriptor;
 import org.opengis.feature.type.PropertyType;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Expression;
+import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.xml.sax.Attributes;
@@ -467,7 +468,8 @@ public class XPath extends XPathUtil {
                 if (currStepValue instanceof Collection) {
                     List<Attribute> values = new ArrayList((Collection) currStepValue);
                     if (!values.isEmpty()) {
-                        if (isEmpty(convertedValue)) {
+                        if ((!(isUnboundedMultivalue(parent)) || !descriptor.isNillable())
+                                && isEmpty(convertedValue)) {
                             // when attribute is empty, it is probably just a parent of a leaf
                             // attribute
                             // it could already exist from another attribute mapping for a different
@@ -764,6 +766,10 @@ public class XPath extends XPathUtil {
             String collectionString = value.toString();
             return collectionString.substring(1, collectionString.length() - 1);
         }
+        if (value instanceof Literal) {
+            final Literal literal = (Literal) value;
+            return literal.evaluate(literal.getValue(), binding);
+        }
         return FF.literal(value).evaluate(value, binding);
     }
 
@@ -840,5 +846,13 @@ public class XPath extends XPathUtil {
     /** @return true if this step represents an id attribute */
     public static boolean isId(Step step) {
         return step.isXmlAttribute() && step.getName().equals(GML.id);
+    }
+
+    private boolean isUnboundedMultivalue(final Attribute parent) {
+        final Object value = parent.getUserData().get("multi_value_type");
+        if (value instanceof String) {
+            return "unbounded-multi-value".equalsIgnoreCase((String) value);
+        }
+        return false;
     }
 }

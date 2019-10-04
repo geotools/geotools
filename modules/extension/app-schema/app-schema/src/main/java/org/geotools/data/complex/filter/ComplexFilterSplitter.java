@@ -426,6 +426,7 @@ public class ComplexFilterSplitter extends PostPreProcessFilterSplittingVisitor 
         if (fcAttrs.size() == 0
                 && !nestedAttrExtractor.conditionalMappingWasFound()
                 && !isXlinkHRef(exprSteps)
+                && !existsAttrExtractor.isUnboundedNestedElementFound()
                 && existsAttrExtractor.getFeatureChainedAttributes().isEmpty()) {
             throw new IllegalArgumentException(
                     String.format(

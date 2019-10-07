@@ -79,11 +79,11 @@ class ChoiceAttributeTypeImpl extends AttributeTypeImpl implements ChoiceAttribu
     }
 
     public int getMaxOccurs() {
-        return minOccurs;
+        return maxOccurs;
     }
 
     public int getMinOccurs() {
-        return maxOccurs;
+        return minOccurs;
     }
 
     public boolean isNillable() {

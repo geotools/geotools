@@ -254,7 +254,7 @@
 		<module>wfs-ng</module>
 		<module>ogr</module>
 		<module>postgis-raster</module>
-        <module>tpk</module>
+		<module>tpk</module>
     </modules>
 
 </project>

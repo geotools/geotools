@@ -481,7 +481,8 @@ public class DataUtilities {
             return true;
         }
 
-        if (a.getLocalName().equals(b.getLocalName()) && a.getClass().equals(b.getClass())) {
+        if (a.getLocalName().equals(b.getLocalName())
+                && a.getType().getBinding().equals(b.getType().getBinding())) {
             return true;
         }
 

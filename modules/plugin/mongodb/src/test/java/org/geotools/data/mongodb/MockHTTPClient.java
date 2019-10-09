@@ -1,6 +1,18 @@
-/* (c) 2019 Open Source Geospatial Foundation - all rights reserved
- * This code is licensed under the GPL 2.0 license, available at the root
- * application directory.
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2019, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
  */
 package org.geotools.data.mongodb;
 
@@ -12,7 +24,10 @@ import java.util.Map;
 import org.geotools.data.ows.HTTPClient;
 import org.geotools.data.ows.HTTPResponse;
 
-/** @author ImranR */
+/**
+ * @author ImranR
+ *     <p>Mock HTTP Class used in Unit Tests to Mock Schema Downloads
+ */
 public class MockHTTPClient implements HTTPClient {
 
     /** Mocks HTTP calls */
@@ -42,61 +57,41 @@ public class MockHTTPClient implements HTTPClient {
 
     @Override
     public String getUser() {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public void setUser(String user) {
-        // TODO Auto-generated method stub
-
-    }
+    public void setUser(String user) {}
 
     @Override
     public String getPassword() {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public void setPassword(String password) {
-        // TODO Auto-generated method stub
-
-    }
+    public void setPassword(String password) {}
 
     @Override
     public int getConnectTimeout() {
-        // TODO Auto-generated method stub
         return 0;
     }
 
     @Override
-    public void setConnectTimeout(int connectTimeout) {
-        // TODO Auto-generated method stub
-
-    }
+    public void setConnectTimeout(int connectTimeout) {}
 
     @Override
     public int getReadTimeout() {
-        // TODO Auto-generated method stub
         return 0;
     }
 
     @Override
-    public void setReadTimeout(int readTimeout) {
-        // TODO Auto-generated method stub
-
-    }
+    public void setReadTimeout(int readTimeout) {}
 
     @Override
-    public void setTryGzip(boolean tryGZIP) {
-        // TODO Auto-generated method stub
-
-    }
+    public void setTryGzip(boolean tryGZIP) {}
 
     @Override
     public boolean isTryGzip() {
-        // TODO Auto-generated method stub
         return false;
     }
 }

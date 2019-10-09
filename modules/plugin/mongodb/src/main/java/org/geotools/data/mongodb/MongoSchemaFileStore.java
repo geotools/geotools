@@ -25,16 +25,10 @@ import java.io.FileFilter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
-import org.geotools.data.ows.HTTPClient;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.Name;
 
@@ -45,6 +39,8 @@ public class MongoSchemaFileStore implements MongoSchemaStore {
     // covers http(s) also
     static final String PRE_FIX_HTTP = "http";
 
+    static final String SUFFIX_ZIP = ".zip";
+
     protected File schemaStoreFile;
 
     public MongoSchemaFileStore(String uri) throws IOException, URISyntaxException {
@@ -53,36 +49,6 @@ public class MongoSchemaFileStore implements MongoSchemaStore {
 
     public MongoSchemaFileStore(URI uri) throws IOException {
         this(new File(uri));
-    }
-
-    public MongoSchemaFileStore(String storeName, URL url, HTTPClient httpClient) throws Exception {
-        schemaStoreFile =
-                new File(System.getProperty("java.io.tmpdir") + File.separator + storeName);
-        validateDirectory(schemaStoreFile);
-        InputStream in = null;
-        try {
-
-            in = httpClient.get(url).getResponseStream();
-            Logger.getGlobal()
-                    .info(
-                            "MongoDBStore:"
-                                    + storeName
-                                    + ":Downloading Schema File from :"
-                                    + url.toExternalForm());
-            // create directory in temp with name of store
-            String filesName = MongoUtil.extractFilesNameFromUrl(url.toExternalForm());
-            File downloadedFile = new File(schemaStoreFile, filesName);
-            Files.copy(in, downloadedFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
-            Logger.getGlobal()
-                    .info(
-                            "MongoDBStore:"
-                                    + storeName
-                                    + ":Downloaded File Stored at :"
-                                    + downloadedFile.getAbsolutePath());
-
-        } finally {
-            if (in != null) in.close();
-        }
     }
 
     public MongoSchemaFileStore(File file) throws IOException {
@@ -114,7 +80,8 @@ public class MongoSchemaFileStore implements MongoSchemaStore {
             return null;
         }
         BufferedReader reader = new BufferedReader(new FileReader(schemaFile));
-        return MongoSchemaStore.super.getSimpleFeatureType(reader, name);
+
+        return MongoUtil.getSimpleFeatureType(reader, name);
     }
 
     @Override

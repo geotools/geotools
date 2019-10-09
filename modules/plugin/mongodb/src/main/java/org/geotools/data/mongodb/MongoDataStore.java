@@ -24,11 +24,8 @@ import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashSet;
@@ -44,6 +41,7 @@ import org.bson.BsonString;
 import org.bson.Document;
 import org.geotools.data.FeatureWriter;
 import org.geotools.data.Transaction;
+import org.geotools.data.mongodb.data.SchemaStoreDirectoryProvider;
 import org.geotools.data.ows.HTTPClient;
 import org.geotools.data.store.ContentDataStore;
 import org.geotools.data.store.ContentEntry;
@@ -78,8 +76,6 @@ public class MongoDataStore extends ContentDataStore {
     static final String KEY_mapping = "mapping";
     static final String KEY_encoding = "encoding";
     static final String KEY_collection = "collection";
-
-    static final String DOWNLOAD_FOLDER_PREFIX = "gs_mongodb_schema_";
 
     final MongoSchemaStore schemaStore;
 
@@ -204,12 +200,9 @@ public class MongoDataStore extends ContentDataStore {
         return mongoClient.getDB(databaseName);
     }
 
-    private MongoSchemaStore createSchemaStore(String schemaStoreURI) {
+    private synchronized MongoSchemaStore createSchemaStore(String schemaStoreURI) {
         if (schemaStoreURI.startsWith("file:")) {
             try {
-                // check if the file is a zip file
-                if (MongoUtil.isZipFile(schemaStoreURI))
-                    return new MongoSchemaZipFileStore(schemaStoreURI);
                 return new MongoSchemaFileStore(schemaStoreURI);
             } catch (URISyntaxException e) {
                 LOGGER.log(
@@ -239,15 +232,29 @@ public class MongoDataStore extends ContentDataStore {
             }
         } else if (schemaStoreURI.startsWith(MongoSchemaFileStore.PRE_FIX_HTTP)) {
             try {
-                File downloadFile =
-                        downloadFile(dataStoreDB.getName(), new URL(schemaStoreURI), httpClient);
-                if (MongoUtil.isZipFile(downloadFile))
-                    return new MongoSchemaZipFileStore(downloadFile.toURI());
-                else return new MongoSchemaFileStore(downloadFile.getParentFile().toURI());
-            } catch (Exception e) {
+
+                File downloadedFile =
+                        MongoUtil.downloadSchemaFile(
+                                dataStoreDB.getName(),
+                                new URL(schemaStoreURI),
+                                httpClient,
+                                SchemaStoreDirectoryProvider.getHighestPriority());
+                if (MongoUtil.isZipFile(downloadedFile)) {
+                    File extractedFileLocation =
+                            MongoUtil.extractZipFile(
+                                    downloadedFile.getParentFile(), downloadedFile);
+                    LOGGER.log(
+                            Level.INFO,
+                            "Found Schema Files at "
+                                    + extractedFileLocation.toString()
+                                    + "after extracting ");
+                    return new MongoSchemaFileStore(extractedFileLocation.toURI());
+                } else return new MongoSchemaFileStore(downloadedFile.getParentFile().toURI());
+
+            } catch (IOException e) {
                 LOGGER.log(
                         Level.SEVERE,
-                        "Unable to create mongodb-based schema store with URL \""
+                        "Unable to create file-based schema store with URI \""
                                 + schemaStoreURI
                                 + "\"",
                         e);
@@ -536,35 +543,5 @@ public class MongoDataStore extends ContentDataStore {
 
     public void setSchemaInitParams(MongoSchemaInitParams schemaInitParams) {
         this.schemaInitParams = schemaInitParams;
-    }
-
-    public File downloadFile(String storeName, URL url, HTTPClient httpClient) throws Exception {
-        File tempDir =
-                new File(
-                        System.getProperty("java.io.tmpdir")
-                                + File.separator
-                                + DOWNLOAD_FOLDER_PREFIX
-                                + storeName);
-        MongoUtil.validateDirectory(tempDir);
-        try (InputStream in = httpClient.get(url).getResponseStream()) {
-            Logger.getGlobal()
-                    .info(
-                            "MongoDBStore:"
-                                    + storeName
-                                    + ":Downloading Schema File from :"
-                                    + url.toExternalForm());
-            // create file in temp with name of store
-            String filesName = MongoUtil.extractFilesNameFromUrl(url.toExternalForm());
-            File schemaStoreFile = new File(tempDir, filesName);
-
-            Files.copy(in, schemaStoreFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
-            Logger.getGlobal()
-                    .info(
-                            "MongoDBStore:"
-                                    + storeName
-                                    + ":Downloaded File Stored at :"
-                                    + schemaStoreFile.getAbsolutePath());
-            return schemaStoreFile;
-        }
     }
 }

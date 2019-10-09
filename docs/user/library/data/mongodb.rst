@@ -51,8 +51,13 @@ following connection parameters:
 * ``schema_store``: Designates the storage for inferred and manually defined 
   schemas.
 
-  This field can accept either a MongoDB or file URI. The directory will be 
-  created if it does not exist, in which case write permissions will be necessary.
+  This field can accept either a MongoDB , file URI or Http(s) URL (Pointing to single
+  JSON file or a Zip files containing JSON files at root or inside a directory).
+  The directory will be created if it does not exist,in which case write permissions
+  will be necessary. If schema_store is pointing to a Http(s) URL, the files be downloaded
+  inside the working directory. If URL is pointing to a Zip file, it will be downloaded 
+  inside working directory and the extracted directory will be used as Schema Store directory.
+  Downloaded Zip file can have schema JSON files at root or inside a directory.
 
   The database and collection names are optional. If missing, the database name 
   will default to ``geotools`` and the collection name to ``schemas``. The database and 

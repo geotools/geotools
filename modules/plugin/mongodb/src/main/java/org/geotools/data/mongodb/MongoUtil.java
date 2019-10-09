@@ -21,14 +21,29 @@ import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
+import com.mongodb.util.JSON;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.RandomAccessFile;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.FileVisitResult;
+import java.nio.file.FileVisitor;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
+import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
@@ -37,6 +52,13 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipException;
+import java.util.zip.ZipFile;
+import org.geotools.data.mongodb.data.SchemaStoreDirectory;
+import org.geotools.data.ows.HTTPClient;
+import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.feature.type.Name;
 
 /** @author tkunicki@boundlessgeo.com */
 public class MongoUtil {
@@ -175,8 +197,9 @@ public class MongoUtil {
         return null;
     }
 
-    public static String extractFilesNameFromUrl(String url) {
-        return url.substring(url.lastIndexOf('/') + 1, url.length());
+    public static String extractFilesNameFromUrl(String url) throws MalformedURLException {
+        URL urlObject = new URL(url);
+        return urlObject.getPath().replaceAll("/", "");
     }
 
     public static boolean isZipFile(File file) throws IOException {
@@ -213,6 +236,143 @@ public class MongoUtil {
             throw new IOException(
                     "Specified schema store directory exists but is not a directory: "
                             + file.getAbsolutePath());
+        }
+    }
+
+    static SimpleFeatureType getSimpleFeatureType(BufferedReader reader, Name name)
+            throws IOException {
+        try {
+            String lineSeparator = System.getProperty("line.separator");
+            StringBuilder jsonBuilder = new StringBuilder();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                jsonBuilder.append(line);
+                jsonBuilder.append(lineSeparator);
+            }
+            Object o = JSON.parse(jsonBuilder.toString());
+            if (o instanceof DBObject) {
+                return FeatureTypeDBObject.convert((DBObject) o, name);
+            }
+        } finally {
+            reader.close();
+        }
+        return null;
+    }
+
+    static File downloadSchemaFile(
+            String storeName,
+            URL url,
+            HTTPClient httpClient,
+            SchemaStoreDirectory downloadDirectory)
+            throws IOException {
+        File downloadDir = new File(downloadDirectory.getDirectory(), storeName);
+        MongoUtil.validateDirectory(downloadDir);
+        httpClient.setTryGzip(true);
+        try (InputStream in = httpClient.get(url).getResponseStream()) {
+            Logger.getGlobal()
+                    .info(
+                            "MongoDBStore:"
+                                    + storeName
+                                    + ":Downloading Schema File from :"
+                                    + url.toExternalForm());
+
+            // create file in temp with name of store
+            String filesName = MongoUtil.extractFilesNameFromUrl(url.toExternalForm());
+            File schemaStoreFile = new File(downloadDir, filesName);
+
+            Files.copy(in, schemaStoreFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            Logger.getGlobal()
+                    .info(
+                            "MongoDBStore:"
+                                    + storeName
+                                    + ":Downloaded File Stored at :"
+                                    + schemaStoreFile.getAbsolutePath());
+            return schemaStoreFile;
+        }
+    }
+
+    public static File extractZipFile(File destDir, File zipFile) throws ZipException, IOException {
+
+        int BUFFER = 2048;
+        String extractFolderName = zipFile.getName();
+        int idx = extractFolderName.lastIndexOf(MongoSchemaFileStore.SUFFIX_ZIP);
+        extractFolderName = extractFolderName.substring(0, idx);
+        File extractLocation = new File(destDir, extractFolderName);
+        extractLocation.mkdir();
+        try (ZipFile zip = new ZipFile(zipFile)) {
+            Enumeration zipFileEntries = zip.entries();
+            // Process each entry
+            while (zipFileEntries.hasMoreElements()) {
+                // grab a zip file entry
+                ZipEntry entry = (ZipEntry) zipFileEntries.nextElement();
+                String currentEntry = entry.getName();
+                File destFile = new File(extractLocation, currentEntry);
+                // destFile = new File(newPath, destFile.getName());
+                File destinationParent = destFile.getParentFile();
+
+                // create the parent directory structure if needed
+                destinationParent.mkdirs();
+
+                if (!entry.isDirectory()) {
+                    try (BufferedInputStream is =
+                            new BufferedInputStream(zip.getInputStream(entry))) {
+                        int currentByte;
+                        // establish buffer for writing file
+                        byte data[] = new byte[BUFFER];
+
+                        // write the current file to disk
+                        FileOutputStream fos = new FileOutputStream(destFile);
+                        try (BufferedOutputStream dest = new BufferedOutputStream(fos, BUFFER)) {
+                            // read and write until last byte is encountered
+                            while ((currentByte = is.read(data, 0, BUFFER)) != -1) {
+                                dest.write(data, 0, currentByte);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        Files.deleteIfExists(zipFile.toPath());
+
+        SchemaFolderFinder jsonFolderFinder = new SchemaFolderFinder();
+        Files.walkFileTree(extractLocation.toPath(), jsonFolderFinder);
+        return jsonFolderFinder.getLastDirectory();
+    }
+
+    public static class SchemaFolderFinder implements FileVisitor<Path> {
+
+        private File lastDirectory = null;
+
+        @Override
+        public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs)
+                throws IOException {
+            return FileVisitResult.CONTINUE;
+        }
+
+        @Override
+        public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+            if (file.toString().endsWith(MongoSchemaFileStore.SUFFIX_json.toLowerCase())) {
+                Path parent = file.getParent();
+                if (parent != null) {
+                    lastDirectory = parent.toFile();
+                    return FileVisitResult.TERMINATE;
+                }
+            }
+            return FileVisitResult.CONTINUE;
+        }
+
+        @Override
+        public FileVisitResult visitFileFailed(Path file, IOException exc) throws IOException {
+            return FileVisitResult.CONTINUE;
+        }
+
+        @Override
+        public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
+            return FileVisitResult.CONTINUE;
+        }
+
+        public File getLastDirectory() {
+            return lastDirectory;
         }
     }
 }

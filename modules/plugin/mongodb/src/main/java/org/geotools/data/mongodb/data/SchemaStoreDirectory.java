@@ -2,8 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2015, Open Source Geospatial Foundation (OSGeo)
- *    (C) 2014-2015, Boundless
+ *    (C) 2019, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -15,23 +14,16 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.data.mongodb;
+package org.geotools.data.mongodb.data;
 
-import java.io.IOException;
-import java.util.List;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.Name;
+import java.io.File;
 
-/** @author tkunicki@boundlessgeo.com */
-public interface MongoSchemaStore {
+/** @author ImranR */
+public interface SchemaStoreDirectory {
 
-    void storeSchema(SimpleFeatureType schema) throws IOException;
+    public File getDirectory();
 
-    SimpleFeatureType retrieveSchema(Name name) throws IOException;
+    public int getPriority();
 
-    void deleteSchema(Name name) throws IOException;
-
-    List<String> typeNames();
-
-    void close();
+    public String getName();
 }

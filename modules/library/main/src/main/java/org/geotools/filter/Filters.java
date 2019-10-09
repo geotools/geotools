@@ -33,6 +33,8 @@ import org.geotools.util.Converters;
 import org.geotools.util.Utilities;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
+import org.opengis.feature.ComplexAttribute;
+import org.opengis.feature.Property;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.And;
 import org.opengis.filter.BinaryLogicOperator;
@@ -544,6 +546,17 @@ public class Filters {
                 return number.doubleValue();
             } catch (Throwable e) {
                 throw new IllegalArgumentException("Unable to decode '" + text + "' as a number");
+            }
+        }
+        // if value is coming from ComplexAttribute through Xpath
+        if (value instanceof ComplexAttribute) {
+            ComplexAttribute complexAttrib = (ComplexAttribute) value;
+            Iterator<Property> iterator = (Iterator<Property>) complexAttrib.getValue().iterator();
+            if (iterator.hasNext()) {
+                Class valueClass = iterator.next().getType().getBinding();
+                Object result = Converters.convert(value, valueClass);
+                Number number = (Number) result;
+                return number.doubleValue();
             }
         }
         if (value instanceof Expression) {

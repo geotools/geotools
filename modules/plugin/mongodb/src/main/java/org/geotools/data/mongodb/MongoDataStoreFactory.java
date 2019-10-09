@@ -25,6 +25,8 @@ import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFactorySpi;
+import org.geotools.data.ows.HTTPClient;
+import org.geotools.data.ows.SimpleHttpClient;
 
 public class MongoDataStoreFactory implements DataStoreFactorySpi {
 
@@ -41,9 +43,9 @@ public class MongoDataStoreFactory implements DataStoreFactorySpi {
             new Param(
                     "schema_store",
                     String.class,
-                    "Schema Store URI",
+                    "Schema Store URI or URL",
                     true,
-                    "file://<absolute path>");
+                    "file://<absolute path> or http://www.hosting.com/files.json");
     public static final Param MAX_OBJECTS_FOR_SCHEMA =
             new Param(
                     "max_objs_schema",
@@ -56,6 +58,20 @@ public class MongoDataStoreFactory implements DataStoreFactorySpi {
                     "objs_id_schema",
                     String.class,
                     "Objects IDs for schema generation (comma separated)",
+                    false,
+                    null);
+    public static final Param HTTP_USER =
+            new Param(
+                    "http_user",
+                    String.class,
+                    "(Optional)If Schema file is hosted behind a password protected URL",
+                    false,
+                    null);
+    public static final Param HTTP_PASSWORD =
+            new Param(
+                    "http_pass",
+                    String.class,
+                    "(Optional)If Schema file is hosted behind a password protected URL",
                     false,
                     null);
 
@@ -77,6 +93,8 @@ public class MongoDataStoreFactory implements DataStoreFactorySpi {
             SCHEMASTORE_URI,
             MAX_OBJECTS_FOR_SCHEMA,
             OBJECTS_IDS_FOR_SCHEMA,
+            HTTP_USER,
+            HTTP_PASSWORD
         };
     }
 
@@ -101,7 +119,8 @@ public class MongoDataStoreFactory implements DataStoreFactorySpi {
                         (String) DATASTORE_URI.lookUp(params),
                         (String) SCHEMASTORE_URI.lookUp(params),
                         true,
-                        schemaParams);
+                        schemaParams,
+                        getHTTPClient(params));
         String uri = (String) NAMESPACE.lookUp(params);
         if (uri != null) {
             dataStore.setNamespaceURI(uri);
@@ -125,6 +144,22 @@ public class MongoDataStoreFactory implements DataStoreFactorySpi {
             if (StringUtils.isNotEmpty(id)) ids.add(id);
         }
         return ids;
+    }
+
+    private HTTPClient getHTTPClient(Map<String, Serializable> params) throws IOException {
+        String uri = (String) SCHEMASTORE_URI.lookUp(params);
+        // check if the URI is a URL
+        if (!uri.startsWith(MongoSchemaFileStore.PRE_FIX_HTTP)) return null;
+
+        SimpleHttpClient simpleHttpClient = new SimpleHttpClient();
+        // check for credentials
+        if (HTTP_USER.lookUp(params) == null || HTTP_PASSWORD.lookUp(params) == null)
+            return simpleHttpClient;
+
+        simpleHttpClient.setUser((String) HTTP_USER.lookUp(params));
+        simpleHttpClient.setPassword((String) HTTP_PASSWORD.lookUp(params));
+
+        return simpleHttpClient;
     }
 
     @Override

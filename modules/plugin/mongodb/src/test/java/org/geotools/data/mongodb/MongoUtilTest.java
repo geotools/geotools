@@ -22,6 +22,7 @@ import static org.junit.Assert.*;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
+import java.io.IOException;
 import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 
@@ -52,5 +53,17 @@ public class MongoUtilTest {
 
         result = MongoUtil.getDBOValue(dbo, "bugusroot.neglectedchild");
         assertThat(result, is(nullValue()));
+    }
+
+    @Test
+    public void testFileNameExtractionFromUrl() throws IOException {
+        String url1 = "http://www.mock.com/filename.zip?param=1&query=44";
+        assertTrue(MongoUtil.extractFilesNameFromUrl(url1).equalsIgnoreCase("filename.zip"));
+        String url2 = "https://mock.url.com/filename.zip";
+        assertTrue(MongoUtil.extractFilesNameFromUrl(url2).equalsIgnoreCase("filename.zip"));
+        String url3 = "https://mock.url.com/filename.json?param=1&query=44";
+        assertTrue(MongoUtil.extractFilesNameFromUrl(url3).equalsIgnoreCase("filename.json"));
+        String url4 = "https://mock.url.com/filename.json";
+        assertTrue(MongoUtil.extractFilesNameFromUrl(url4).equalsIgnoreCase("filename.json"));
     }
 }

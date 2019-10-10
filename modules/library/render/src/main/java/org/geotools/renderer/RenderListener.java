@@ -43,22 +43,26 @@ public interface RenderListener {
      */
     public void errorOccurred(Exception e);
 
-    /** Event issued when the layer begins rendering */
+    /** Event issued when the layer begins rendering. */
     default void layerStart(Layer layer) {
         // does nothing
     }
-    /** Event issued when the layer completed rendering. May not be issued */
+    
+    /** Event issued when the layer completed rendering. May not be issued. */
     default void layerEnd(Layer layer) {
         // does nothing
     }
+    
     /** Event issued when labelling starts. May not be issued if there are no labels to paint. */
     default void labellingStart() {
         // does nothing
     }
-    /** Event issued when labelling ends. May not be issued */
+    
+    /** Event issued when labelling ends. May not be issued. */
     default void labellingEnd() {
         // does nothing
     }
+    
     /** Event issued when rendering ends. Always issued. */
     default void renderingComplete() {
         // does nothing
